@@ -32,7 +32,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
 - Full regression gate on all organizer recordings (downloaded and cached this session; the sealed gate
   reproduced exactly): PASS, 7 gated metrics better, none worse. Ride 32 / 31 → 26 / 28 events / STOP
   episodes, five empty recordings 11 / 13 → 8 / 12, set F false detections box1.0 12 → 6, cable 3 → 0; set O,
-  set F first detections and `doubleT_obstacle` identical. 1 280 tests pass. New seal
+  set F first detections and `doubleT_obstacle` identical. 1 279 tests pass on `7532a6b` (plus 6 subtests; 8
+  deselected, they need local data caches; 74 dashboard tests). New seal
   `docs/evidence/detector_freeze_2026-09-29_competitor_rules.json` (at `1e2ed82`, comments only since `f67e4fb`, which
   makes the LiDAR speed estimate 4.3 -> 1.3 ms per frame with identical counts; the veto now costs +2.1 ms mean, +2.4 ms p95 on 360°
   frames and +1.7 / +1.6 ms on 120° frames, down from +7 / +8.5 ms on 360°).

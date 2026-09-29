@@ -7,9 +7,10 @@
 > [`archive/CAPTAIN_board_2026-09-28.md`](archive/CAPTAIN_board_2026-09-28.md); 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29: GitHub (0 tags, 0 releases; `main` at `6cafb28`, CI green), the VM
-> run of 28.09, the node change of 29.09 and the independent judgement of 28.09
-> ([`SCORECARD.md`](SCORECARD.md)).
+> **Last verified:** 2026-09-29 evening: GitHub (0 tags, 0 releases, no open PR; `main` at `7532a6b`,
+> PR #29, CI green), the seal (`1e2ed82`, verify PASS), 1 279 tests passing on `7532a6b`, the VM run of
+> 28.09 and the independent judgement of 28.09 ([`SCORECARD.md`](SCORECARD.md)); the requirements map
+> [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md).
 > **Status:** current
 
 ## 1. Role and dates
@@ -18,9 +19,10 @@ P1 is the captain: system analyst and ROS 2 / integration developer ([`PLAN.md`]
 captain owns the jury chain `docker load` (or `docker build`) `→ docker run → ros2 bag play →
 /resense/decision`, the node, Docker, CI and the release, the documents in §8, liaison with the
 organizers ([`QUESTIONS.md`](QUESTIONS.md), [`organizers/answers.md`](organizers/answers.md)),
-merges and the submission (sent by the captain personally). **Since 28.09 the pitch and the video
-belong to P2** (the defence on 23.10, the deck and the private deck, the video and its voice-over,
-rehearsals, the live remote demo; [`PRESENTATION.md`](PRESENTATION.md)).
+merges and the submission (sent by the captain personally). The pitch and the video went to P2 on
+28.09; **on 29.09 evening P2 declined the pitch** after delivering the deck with the team's photos: the
+captain owns the pitch again (deck, speech, demo, rehearsals, the defence on 23.10) with agent help,
+and the team records the video ([`PRESENTATION.md`](PRESENTATION.md)).
 
 Dates (organizers' README): upload by **29.09 23:59** (target 18:00; the form takes links),
 technical expertise 30.09–14.10, pitch 23.10, awards 30.10. The detector is sealed; only the node,
@@ -38,57 +40,54 @@ since); maxima are the team's reading of the spec, the organizers publish no wei
 | **8.6 Ease of launch** | 10 | **7** | all of it | no published image archive for README step 1; `--read-ahead-queue-size 10` required; `--net=host` | 29.09: the node exits cleanly on Ctrl+C; the start-up burst is caught up faster |
 | **captain's criteria** | **30** | **21.5** | | | |
 | 8.7 Team approach (shared) | 10 | 8 | DECISIONS, the documents' structure | the record was scattered and partly described an older detector | 29.09: one compact EXPERIMENTS, DECISIONS current |
-| 8.8 Pitch — **P2 since 28.09** | 5 | 3 | liaison only | silent video, team slides without names, dense slides, no rehearsal | — |
+| 8.8 Pitch — P2 28.09, **the captain again since 29.09 evening** | 5 | 3 | the deck, the speech, the demo, rehearsals | silent video, team slides without names, dense slides, no rehearsal | 29.09: the deck with the team's photos and current numbers, the speech and the video script ([`PRESENTATION.md`](PRESENTATION.md)) |
 
 The rest of the total is the detector's (8.1, 8.2, 8.4: P3 with P4's evaluation); the detector is
 sealed, so moving those needs the captain to unfreeze it (§3, item 6).
 
 ## 3. Work to do
 
-H = only a person can do it; A = an agent can do it, the captain merges.
+H = only a person can do it; A = an agent can do it, the captain merges. The full requirement →
+artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) §4–§5.
 
-**Before the upload (29.09, target 18:00):**
+**Before the upload (29.09, closes 23:59 MSK):**
 
-| # | item | who | gain |
+| # | item | who | state |
 |---|---|---|---|
-| 1 | **Merge the working branch** (the 29.09 node change and the documentation sweep) into `main` after its CI is green; GitBook syncs `gitbook/` from `main`. | H merges | 8.3, 8.5 |
-| 2 | **Publish the image archive.** Push the `v1.0.0` tag on the final `main` commit: `.github/workflows/release.yml` builds, loads back, plays both smoke bags and publishes `resense-image-v1.0.0.tar.gz`, its `.sha256` and `SHA256SUMS`. Then, logged out: download, `sha256sum -c`, `docker load`, README steps 2–5 on a clean machine. README step 1 has nothing to load until this is done. | H tags; A verifies | 8.6 +0.5–1 |
-| 3 | **Submit**: the repository at the tag with its commit hash, the archive link with its sha256, the video, the deck (PDF) — every link opened logged out first. | H | required |
-| 4 | Branches (§4): merge none of them before the upload; tell their owners. | H | protects CI |
-| 5 | The literal `ros2 bag play <bag>` (Humble's default read-ahead) still gives stale results: the player sends the whole overdue recording at once. Since 29.09 the node gets through it faster (145 instead of 57 of 201 frames, first STOP +2.3 s instead of +7.5 s), but the results stay stale. Keep `--read-ahead-queue-size 10` prominent in every instruction. | A | 8.6 |
-
-**Decide (the detector is sealed):**
-
-| # | item | who |
-|---|---|---|
-| 6 | The GO at `doubleT_obstacle` frame 111 — **closed 29.09**. `tracking.hold_misses` 1 → 2 (measured 28.09 on the branch `gpt-score-push-20260928`) restored the three frames but failed the strict gate (ride 130 → 150 alarm frames, 32 → 34 events; five recordings 40 → 46 alarm frames; more set F false detections) and was rejected. What reached `main` in PR #27 is the bounded `tracking.stop_keep_low_s` = 0.3: on `6cafb28` the detector gives STOP on 193 of 201 frames with no gap, offline and through the node in CI (the 27.09 detector: 190, gaps at 111 / 117 / 197; `stop_keep_low_s` = 0 brings them back) — [`evidence/frame111_2026-09-29/`](evidence/frame111_2026-09-29/README.md). It was tuned on this one recording. The `beyond_axis` demotion at platforms and the frequent CAUTION stay documented. | done; P3 |
+| 1 | **Final documentation pass** (every doc against `7532a6b`, the 29.09 rules in ALGORITHM / EXPERIMENTS / DECISIONS, the pitch deck with current numbers, the requirements map, the judgement's offline measurements re-run on `7532a6b` as `evidence/judgement_2026-09-29/`) → one PR from `claude/admiring-pascal-ex9v51`; merge after CI is green. Docs only: no sealed file changes. | A; H merges | in progress |
+| 2 | **Release candidate:** push `v1.0.0-rc1` on `7532a6b` (the image's code is final; the doc PR changes nothing the runtime uses). `release.yml` publishes the archive; then on the team VM, logged out: download, `sha256sum -c`, `IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh` on `doubleT_obstacle` and `roundT_doubleT`; commit the output as `evidence/vm_2026-09-29/`. The agent session cannot push tags (its git proxy takes only its branch). | H tags, H runs the VM | waiting for the tag |
+| 3 | **Final release:** push `v1.0.0` on the final `main` after item 1 merges; check the release assets and their sha256. | H | after 1 |
+| 4 | **Submit** (links): the repository with the final commit hash, the `v1.0.0` archive and its sha256, the video, the deck (PDF), the GitBook — every link opened logged out first. | H | after 3 |
+| 5 | Keep `--read-ahead-queue-size 10` prominent in every instruction: with Humble's default read-ahead the results stay stale. | A | done in README / GitBook |
 
 **After the upload:**
 
 | # | item | who |
 |---|---|---|
-| 7 | Answer the organizers daily during the expertise 30.09–14.10; new answers into `organizers/answers.md` (Q1 / Q2 answered 29.09, §9; no question open). | H |
-| 8 | Pitch on 23.10: two rehearsals, the live remote demo from a second device, the private deck, the optional voice-over — **P2**; the captain joins the rehearsals. | P2 (+ team) |
+| 6 | Answer the organizers daily during the expertise 30.09–14.10; new answers into `organizers/answers.md` (no question open). | H |
+| 7 | Pitch on 23.10: two rehearsals, the live remote demo from a second device ([`../web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md)), the speech of [`PRESENTATION.md`](PRESENTATION.md). | P1 + team |
+| 8 | The independent safety review of the three rules of 29.09 (DETECTOR_FREEZE step 3; the agent review of 29.09 evening is recorded in the doc PR). | A |
 | 9 | If an 8-core machine is available: `scripts/bench_8core.sh` on both original bags, evidence committed. | H (+ A) |
 
-## 4. Branches other than `main` (29.09)
+## 4. Branches other than `main` (29.09 evening)
 
-Checked read-only against `main`: none conflicts with `main`; none has an open pull request.
+Checked on GitHub: `main` and one other branch; no open pull request.
 
 | branch | state | recommendation |
 |---|---|---|
-| `experiment/cross-ring-sparse-evidence` (andrey) | **merged into `main` on 29.09** (PR #27, `6cafb28`, together with P3's later work). It brought an opt-in "cross-ring sparse evidence" (`cluster.weak_min_rings`, `tracking.far_min_ring_count`, off by default), tests, analysis scripts, `docs/EXPERIMENT_CROSS_RING.md` and a ride trace. Its own results: no improvement; the filter costs STOP range (0.3 m cube 55.8 → 52.5 m, box on top 111.4 → 101.3 m, plank 87.2 → 82.2 m). The sealed detector files it changed were resealed on 29.09 after the full gate ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); CI is green on `main` | keep it off; switching it on by default needs its own gate and a safety review |
-| `claude/amazing-fermi-t67v8g` (P2) | its last commit 2242bc6 (dense slides 5 and 15 simplified, PPTX / PDF / MP4 rebuilt, the demo runbook [`web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md)); everything before it is `main`'s 464f5bc | **merged into the working branch on 29.09** (full P2 check on the rebuilt files: 83 passed, 0 skipped); the branch can be deleted |
-| `gpt-score-push-20260928` (an agent VM, likikikpa) | the former `testovaya-gpt` (deleted on the remote; compressed ride-cache tooling, P4's full-data evidence, a rebuilt deck) plus: a self-review with a criterion score, 24.8 MB of unused `.npy` fixtures force-added past `.gitignore`, the rejected `hold_misses` 2 candidate with its evidence (item 6). It does not contain the current `main` | do not merge as is; after the upload cherry-pick the cache tooling and the evidence packets (deduplicated), drop the fixtures and the score |
+| `claude/admiring-pascal-ex9v51` | the final documentation pass (item 1) | PR to `main` tonight |
+| `claude/prototype-website-rebuild-tz31o0` | a work-in-progress web app (FastAPI backend, React pages in the «Линия» design; its last commit says the player and system pages are partial); not merged into `main` | **do not merge before the upload**; decide after 30.09 |
+| `experiment/cross-ring-sparse-evidence`, `claude/funny-gates-3358a8`, `claude/amazing-fermi-t67v8g`, `gpt-score-push-20260928` | merged into `main` (PR #27, #28, #29) or deleted on the remote | nothing to do |
 
 ## 5. Release and submission
 
-No tag or release exists (GitHub, 28.09 ~21:30 Moscow time; `v1.0.0` had been scheduled for 21:00).
-It is published by `.github/workflows/release.yml` when the tag is pushed (§3, item 2); the version
-in `pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` is 1.0.0 and kept equal by
-`tests/test_release.py`. Until then the image archive of a `main` commit is a CI artifact (GitHub
-login required) or `scripts/export_image.sh` on a machine with internet. The submission is the
-captain's personally.
+No tag or release exists yet (GitHub, 29.09 19:30 MSK). `.github/workflows/release.yml` publishes one
+per pushed tag `v1.0.0-rcN` / `v1.0.0` (§3, items 2–3): it builds the runtime image from the tag,
+removes it, loads the archive back, plays both smoke bags through the loaded image with no internet
+and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The version in
+`pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` is 1.0.0, kept equal by
+`tests/test_release.py`. Fallbacks: the CI artifact of a `main` run (GitHub login, 30 days) or
+`scripts/export_image.sh` on a machine with internet. The submission is the captain's personally.
 
 ## 6. Freeze and merge rules
 
@@ -103,7 +102,7 @@ captain's personally.
   in the PR title and a heads-up to the consumers; add, never rename or remove.
 - Freeze: detector and config sealed since 27.09 (`docs/DETECTOR_FREEZE.md`, checked by CI); the node, the image, the tools and the documents change through reviewed PRs with CI green.
 - Detector / config gate: `python scripts/regression_gate.py --baseline
-  docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json` exits 0 on the change. Every
+  docs/evidence/results/regression_baseline_2026-09-29_competitor_rules.json` (the sealing gate of `1e2ed82`) exits 0 on the change. Every
   gated metric must be identical or better on the six recordings, set O, the ride and set F
   straight (the last two need `/data/cache/new_data`, streamed split by split as in
   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3; without it their rows fail as "missing in this run", and a run
@@ -198,6 +197,10 @@ captain's personally.
 | 28.09 evening | independent judgement of `464f5bc` (the user: "re-judge independently all criteria, don't trust current scores and docs, write your new judgement and purge old"): re-measured on the organizers' data; it replaces every earlier judgement, whose scores and judge reports are removed; the dated board is archived; the captain's work and the branches are in §2–§4 | [`SCORECARD.md`](SCORECARD.md), [`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md) |
 | 29.09 | the start-up lag fixed in the node only (the user: "fix lags in results on start … apply optimizations on root causes"): a byte-identical fast decode, a 5 Hz start-up catch-up, a warm-up and a clean Ctrl+C; the detector stays sealed; pitch and video moved to P2; the documentation swept and compacted; P2's branch `claude/amazing-fermi-t67v8g` merged into the working branch | [`evidence/node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md), [`DECISIONS.md`](DECISIONS.md) row 28 |
 | 29.09 | the organizers answer Q1 / Q2: the envelope is measured from the rail heads, the rails may run at any angle to the LiDAR, the synthetic objects are placed approximately and the check corrects for that; `gauge.reference` 3 kept (bounded union, no measured false-alarm cost), `gauge.axis_union` stays off, Q2's object stays an obstacle; no detector change, the seal stands | [`organizers/answers.md`](organizers/answers.md) §9, [`QUESTIONS.md`](QUESTIONS.md), [`DECISIONS.md`](DECISIONS.md) rows 1, 18 |
+| 29.09 evening | three false-alarm rules from other case-05 teams' public solutions on by default (`tracking.explained_run` 5, `cluster.shell_min_top` 2.3 m, `tracking.ego_veto_min_speed` 4 m/s), each gated on all organizer data: PASS, 7 metrics better, none worse (ride 32 / 31 → 26 / 28 events / STOP episodes); five other candidates rejected; resealed at `1e2ed82`; the safety review of step 3 was not done before the seal | PR #29, [`evidence/cycle_2026-09-29/competitor_rules/gate_table.md`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md), CHANGELOG |
+| 29.09 evening | the current gate becomes the regression baseline (`evidence/results/regression_baseline_2026-09-29_competitor_rules.json`, a copy of the sealing gate; the user's decision): the deck and video tests check today's numbers and a future gate compares against the shipped detector | the user, 29.09 |
+| 29.09 evening | P2 declined the pitch after delivering the deck with the team's photos; the captain owns the pitch with agent help, the team records the video; the named deck (names and photos) is committed to the public repository (the user's decision; lifts the placeholder rule of 25.09) | the user, 29.09 |
+| 29.09 evening | release: `v1.0.0-rc1` on `7532a6b` first (the runtime is final), verified on the team VM from the published archive; `v1.0.0` on the final `main` after the documentation PR | the user, 29.09; §3 items 2–3 |
 
 ## Experimental branch integration, 28.09
 

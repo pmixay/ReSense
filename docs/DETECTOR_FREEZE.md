@@ -3,9 +3,10 @@
 > **Назначение:** что опечатано, как проверяется печать, шлюз, который её подтверждает, и как будет
 > приниматься изменение детектора.
 > **Аудитория:** команда, жюри · **Ответственный:** P1 (печать), P3 (детектор) · **Язык:** RU
-> **Проверено:** 2026-09-29: `python3 scripts/detector_freeze.py verify` PASS; полный шлюз, сверка
-> по кадрам и стресс-истории измерены на исходниках `3eeb106` · **Статус:** активный цикл улучшений;
-> печать фиксирует проверенный срез, каждый кандидат требует новой приёмки
+> **Проверено:** 2026-09-29, вечер: `python3 scripts/detector_freeze.py verify` PASS на `main`
+> `7532a6b` (36 файлов, исходники `1cc3deaa…`); полный шлюз текущей печати измерен на `1e2ed82`,
+> сверка по кадрам, стресс-истории и независимое ревью — на предыдущей печати `3eeb106` · **Статус:**
+> актуален; печать фиксирует проверенный срез, каждый кандидат требует новой приёмки
 
 ## Что опечатано
 
@@ -14,11 +15,16 @@
 детектора, конфигурации и сборки, измеренных на исходниках `1e2ed82`, SHA-256
 `1cc3deaa3cce3c8f16a02fd3616291b67c113a8267b90aab6ad56b960a946d8d`: три правила против ложных тревог из
 чужих решений кейса 5 включены по умолчанию (`tracking.explained_run` 5 с `explained_reasons`
-column, overhead, retro, shell; `cluster.shell_min_top` 2,3 м; `tracking.ego_veto_min_speed` 4 м/с).
+column, overhead, retro, shell; `cluster.shell_min_top` 2,3 м; `tracking.ego_veto_min_speed` 4 м/с;
+идеи из открытых репозиториев других команд, переписаны у нас: [`ALGORITHM.md`](ALGORITHM.md) §3.5b).
+Коммиты `1e2ed82`, `f67e4fb`, `ee7b920` и `3eeb106` — коммиты веток PR, влитых в `main` сжатием
+(squash; PR #29 — `7532a6b`, PR #27 — `6cafb28`): в истории `main` их нет, совпадение исходников
+доказывает SHA-256 манифеста.
 Полный шлюз `1e2ed82` против шлюза печати `3eeb106`: PASS без послаблений (решения совпадают со шлюзом `ee7b920`, где правила включены впервые; `f67e4fb` лишь ускоряет оценку скорости по LiDAR, `1e2ed82` меняет только комментарии, отличаются только зависящие от задержки счётчики health; шлюз `f67e4fb` сохранён как `gate_f67e4fb.json`), 7 проверяемых метрик лучше, ни
 одной хуже; поездка 32 / 31 → 26 / 28 событий / эпизодов STOP, набор O, дальности набора F и
 `doubleT_obstacle` без изменений ([`evidence/cycle_2026-09-29/competitor_rules/`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md)).
-Независимое ревью безопасности этого изменения ещё не проводилось. Предыдущий манифест
+Независимое ревью безопасности этого изменения ещё не проводилось; ограничения правил, известные
+на момент загрузки, — в [`ALGORITHM.md`](ALGORITHM.md) §6. Предыдущий манифест
 [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json) (`3eeb106`, `70faef90…`) сохранён.
 Состав включает `resense/`, `native/`, конфигурации ROS и входы сборки; точный список и хеши находятся
 в манифесте. Код ноды ROS, launch-файл, Docker, CI и документация вне печати и проходят отдельные
@@ -35,7 +41,18 @@ column, overhead, retro, shell; `cluster.shell_min_top` 2,3 м; `tracking.ego_ve
 
 ## Шлюз, подтверждающий печать
 
-Текущий шлюз — [подсчёт секторов сравнениями](evidence/cycle_2026-09-29/health_compare_counts/README.md)
+Текущий шлюз — [`competitor_rules/gate.json`](evidence/cycle_2026-09-29/competitor_rules/gate.json)
+(`validation` манифеста): полный шлюз на `1e2ed82` (конфигурация по умолчанию, шесть записей, набор O,
+поездка в 8 частях, набор F, прямые) против шлюза печати `3eeb106`
+([`health_compare_counts/candidate/gate.json`](evidence/cycle_2026-09-29/health_compare_counts/candidate/gate.json),
+`baseline` манифеста): PASS без послаблений, 7 проверяемых метрик лучше, 196 без изменений, ни одной
+хуже ([таблица](evidence/cycle_2026-09-29/competitor_rules/gate_table.md)). Сверка по кадрам и
+стресс-истории для трёх правил в evidence не записаны. Копия этого шлюза —
+текущая базовая линия для следующего изменения,
+[`regression_baseline_2026-09-29_competitor_rules.json`](evidence/results/regression_baseline_2026-09-29_competitor_rules.json)
+(манифест печати ссылается на исходный файл и не менялся).
+
+Шлюз предыдущей печати `3eeb106` — [подсчёт секторов сравнениями](evidence/cycle_2026-09-29/health_compare_counts/README.md)
 (протокол зарегистрирован до прогонов): полный нативный шлюз на `3eeb106` против шлюза прошлой
 печати ([`thin_far_threshold/default_gate.json`](evidence/cycle_2026-09-29/thin_far_threshold/default_gate.json)),
 код выхода 0, все 207 сравниваемых метрик без изменений, без послаблений. Контрольный шлюз на
@@ -51,11 +68,12 @@ column, overhead, retro, shell; `cluster.shell_min_top` 2,3 м; `tracking.ego_ve
 строк, без изменений решений и других нетайминговых выходов. Изменения уровня `health`, вызванные
 исправленной телеметрией, отдельно учтены; это не измеренный выигрыш скорости и не новая оценка балла.
 
+Шлюз печати 27.09
 [`regression_gate_2026-09-27_quality.json`](evidence/results/regression_gate_2026-09-27_quality.json):
 каждый кадр шести записей, набора O, всей поездки и набора F straight на конфигурации по умолчанию,
 против [`regression_baseline_2026-09-26_ride_p3d.json`](evidence/results/regression_baseline_2026-09-26_ride_p3d.json):
 PASS без `--allow`, без отсутствующих строк и без ухудшившихся проверяемых метрик. Этот же прогон
-служит текущей базовой линией
+был базовой линией детектора 27.09
 [`regression_baseline_2026-09-27_quality.json`](evidence/results/regression_baseline_2026-09-27_quality.json);
 повторный прогон против неё на ВМ команды 28.09 дал тот же результат, кроме информационных строк
 задержки ([`gate_2026-09-28/`](evidence/gate_2026-09-28/gate_table.txt)). Независимые выходные данные
@@ -83,10 +101,10 @@ PASS без `--allow`, без отсутствующих строк и без у
 
 ```bash
 python scripts/regression_gate.py --cache /data/cache --jobs 4 \
-  --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json \
+  --baseline docs/evidence/results/regression_baseline_2026-09-29_competitor_rules.json \
   --out docs/evidence/results/regression_gate_<date>_<change>.json
 python scripts/detector_freeze.py create --manifest docs/evidence/detector_freeze_<date>.json \
-  --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json \
+  --baseline docs/evidence/results/regression_baseline_2026-09-29_competitor_rules.json \
   --evidence docs/evidence/results/regression_gate_<date>_<change>.json
 ```
 

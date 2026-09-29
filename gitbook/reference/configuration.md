@@ -10,8 +10,8 @@
 | `sensor` | соответствие осей (`forward: -y`, `left: +x`, `up: +z` для крепления организаторов), обрезка по дальности, фиксированный наклон крепления |
 | `track` | модель пути: профиль полотна, шаблон пары рельсов (колея 1,52 м), подгонка по стенам для курсового угла и кривизны, до какой дальности доверять оси |
 | `gauge` | габарит: `profile` (2,1 × 3,0 м организаторов, т. е. \|dy\| ≤ 1,05 м, 0,12–3,0 м над головкой рельса), `warning_margin` (зона предупреждения 0,35 м), дальность |
-| `cluster` | DBSCAN с радиусом по дальности (`eps`, `range_scale`, `voxel`), фильтры и сигнатуры инфраструктуры |
-| `tracking` | устойчивость до тревоги (`confirm_time_s`, `confirm_hits`, `conf_threshold`), удержания и оценка трека обученной моделью |
+| `cluster` | DBSCAN с радиусом по дальности (`eps`, `range_scale`, `voxel`), фильтры и сигнатуры инфраструктуры (с 29.09 — и `shell`, ниже) |
+| `tracking` | устойчивость до тревоги (`confirm_time_s`, `confirm_hits`, `conf_threshold`), удержания, правила начала `STOP` (ниже) и оценка трека обученной моделью |
 | `accumulation` | накопление кадров, только при известной скорости поезда |
 | `lowobj` | низкие объекты на рельсах |
 | `calibration` | автокалибровка крепления |
@@ -20,6 +20,32 @@
 У большинства ключей в файле есть комментарий с датой и измерением, по которому выбрано значение.
 Самые важные параметры и их влияние:
 [`docs/ALGORITHM.md` §5](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md#5-наиболее-важные-параметры).
+
+## Изменения 29.09 <a href="#rules-2909" id="rules-2909"></a>
+
+Включены по умолчанию и входят в печать детектора (шлюз:
+[`gate_table.md`](https://github.com/pmixay/ReSense/blob/main/docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)).
+Ключей с пометкой «код» в `configs/default.yaml` нет: их значение по умолчанию задаёт
+`resense/config.py`. `0` в первом ключе строки выключает правило (кроме последней строки).
+
+| ключ | по умолчанию | что делает |
+|---|---|---|
+| `tracking.explained_run`, `tracking.explained_window`, `tracking.explained_reasons` | `5`, `10` (код), `column,overhead,retro,shell` | «чистая серия»: трек, у которого среди последних 10 попаданий было понижение как инфраструктура (указанные причины), начинает `STOP` только после 5 чистых попаданий подряд в строгом габарите |
+| `cluster.shell_min_top`, `cluster.shell_min_distance`, `cluster.shell_max_bottom` | `2.3`, `40.0` (код), `0.8` (код) | кластер в габарите дальше 40 м, стоящий на полу (низ ниже 0,8 м) и достающий до 2,3 м, — инфраструктура (причина `shell`), если прямо над ним продолжается обделка тоннеля |
+| `tracking.ego_veto_min_speed`, `tracking.ego_veto_min_distance`, `tracking.ego_veto_max_slope`, `tracking.ego_veto_min_hits`, `tracking.ego_veto_min_travel` | `4.0`, `25.0`, `-0.35`, `4`, `4.0` (все, кроме первого, — код) | запрет эго-движения: пока поезд идёт не медленнее 4 м/с (оценка по LiDAR или заданная скорость), трек дальше 25 м, расстояние до которого не сокращается вместе с пробегом (наклон Тейла — Сена выше −0,35 по ≥ 4 попаданиям и ≥ 4 м пути), не начинает `STOP` |
+| `tracking.stop_keep_low_s`, `lowobj.straddle_keep_height_margin` | `0.3`, `0.03` | уже подтверждённый низкий `STOP` продолжается до 0,3 с по возвратам, которым до порога высоты не хватает не более 0,03 м; новых треков не создаёт |
+| `tracking.thin_far_min_voxels` | `3` (было 4) | вокселей в строгом габарите, нужных дальней тонкой линии |
+
+Первые три правила действуют только на начало `STOP`: ближняя эскалация сильнее, заблокированный
+трек остаётся `CAUTION`.
+
+Выключены по умолчанию и в оценку не входят: `cluster.weak_min_rings` и
+`tracking.far_min_ring_count` (0), `tracking.fresh_stop_evidence` (false),
+`lowobj.local_support_enabled` (false), `track.rails_far_rings` (false; нужен ещё
+`track.rails_far_check_enabled`, полный шлюз не проходит) и `gauge.edge_margin_per_100m2` (0). Для
+всех, кроме последнего, есть готовые профили
+[`configs/experimental_*.yaml`](https://github.com/pmixay/ReSense/tree/main/configs), например
+`resense run --bag <bag> --config configs/experimental_cross_ring.yaml`.
 
 ## Свой файл
 
@@ -43,5 +69,6 @@ docker run --rm -it --net=host --ipc=host -v $PWD/my.yaml:/cfg/my.yaml:ro resens
 1. Отредактируйте `configs/default.yaml`.
 2. `./scripts/sync_params.sh` копирует его в пакет ROS (с `--check` его запускает CI).
 3. Изменение, которое влияет на обнаружение, проходит регрессионный гейт и получает новую печать
-   детектора: [Изменение детектора](../development/detector-changes.md). Файл входит в печать 27.09,
-   поэтому до сдачи значения по умолчанию не меняются.
+   детектора: [Изменение детектора](../development/detector-changes.md). Файл входит в печать
+   детектора (текущая — 29.09, `1e2ed82`), и `scripts/detector_freeze.py verify` в CI падает, если
+   он изменился без новой печати.
