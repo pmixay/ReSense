@@ -70,6 +70,9 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 * **RViz** (нужен X11): вместо шага 2 — `xhost +local:docker && docker run --rm -it --net=host
   --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix resense ros2 launch resense_ros
   detector.launch.py rviz:=true freshness_mode:=replay`.
+* **Веб-прототип** (без ROS и Docker): `scripts/run_webapp.sh` → http://localhost:8080 — загрузка
+  записи (файл, папка на сервере или демо-запись), очередь обработки, результаты прогона, сравнение,
+  оценка по разметке, 3D-плеер из кабины и прямой эфир ноды; описание — [`webapp/README.md`](webapp/README.md).
 
 | `/resense/decision` | значение |
 |---|---|
@@ -223,6 +226,7 @@ ROS содержит проверяемую копию): габарит `gauge.p
 | [`docker/`](docker), [`scripts/`](scripts), [`.github/workflows/`](.github/workflows) | образ, инструменты (прогон dry run, экспорт, релиз, оценка), CI и релиз |
 | [`configs/default.yaml`](configs/default.yaml) | параметры детектора |
 | [`tests/`](tests), [`web/`](web) | набор тестов pytest; дашборд, раскладка Foxglove, инструмент разметки |
+| [`webapp/`](webapp) | веб-прототип для жюри: бэкенд FastAPI ([`webapp/backend`](webapp/backend)), фронтенд React ([`webapp/frontend`](webapp/frontend)), контракт API ([`webapp/API.md`](webapp/API.md)), браузерные тесты ([`webapp/e2e`](webapp/e2e)) |
 | [`docs/`](docs), [`gitbook/`](gitbook), [`labels/`](labels) | документы и evidence; руководство пользователя; метки записей организаторов |
 
 ## Команда «Молоток»

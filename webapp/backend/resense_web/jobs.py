@@ -235,7 +235,7 @@ class JobManager:
             raise JobError(409, "Запись этой задачи удалена")
         preset = presets_mod.get(self.db, row["preset_id"])
         if preset is None:
-            raise JobError(409, "Набор параметров этой задачи удалён")
+            raise JobError(409, "Пресет этой задачи удалён")
         return self.create(rec, preset, jload(row["options"], {}))
 
     def delete(self, job_id: str) -> None:

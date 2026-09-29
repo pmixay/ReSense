@@ -2,7 +2,7 @@
 
 Real flows of every page in headless Chromium against a real backend running the sealed detector:
 no mocks, except where a test provokes a failure on purpose (`page.route` holds, fails or aborts a
-backend call). About 4–5 minutes for the whole suite on 4 cores.
+backend call). About 6 minutes for the whole suite on 4 cores.
 
 ```bash
 # from the repository root; the interpreter needs resense_web, pytest, playwright and websockets

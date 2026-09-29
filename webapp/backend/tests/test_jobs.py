@@ -45,7 +45,7 @@ def test_create_validation(client, env):
     r = client.post("/api/jobs", json={"recording_id": "nosuchrec"})
     assert r.status_code == 404 and r.json()["detail"] == "Запись не найдена"
     r = client.post("/api/jobs", json={"recording_id": rec["id"], "preset_id": "nosuch"})
-    assert r.status_code == 404 and "Набор" in r.json()["detail"]
+    assert r.status_code == 404 and r.json()["detail"] == "Пресет не найден"
     r = client.post("/api/jobs", json={"recording_id": rec["id"], "options": {"every": 0}})
     assert r.status_code == 422 and "every" in r.json()["detail"] and "не меньше 1" in r.json()["detail"]
     r = client.post("/api/jobs", json={"recording_id": rec["id"], "options": {"cloud_points": 10}})

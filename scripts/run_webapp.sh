@@ -7,8 +7,8 @@
 #   ./scripts/run_webapp.sh --install            # first run with internet: pip + npm dependencies
 #   ./scripts/run_webapp.sh --build --reload     # rebuild the frontend; the rest goes to the server
 #
-# Installs nothing unless --install is given. Builds webapp/frontend/dist when it is missing (or
-# with --build) and npm and node_modules are there; without a build the API still works and "/"
+# Installs nothing unless --install is given. Builds webapp/frontend/dist when it is missing or
+# older than the sources (or with --build) and npm and node_modules are there; without a build the API still works and "/"
 # explains how to build. Options:
 #   --install   pip install -e . -e webapp/backend, npm ci in webapp/frontend (needs the internet)
 #   --build     rebuild the frontend even if dist exists
@@ -57,7 +57,14 @@ if ! "$PY" -c 'import resense, fastapi, uvicorn, rosbags, resense_web' 2>/dev/nu
   exit 2
 fi
 
-if [ ! -f "$FRONTEND/dist/index.html" ] || [ "$BUILD" = 1 ]; then
+# rebuild when asked, when there is no build, or when a source file is newer than the build
+STALE=""
+if [ -f "$FRONTEND/dist/index.html" ]; then
+  STALE="$(find "$FRONTEND/src" "$FRONTEND/index.html" "$FRONTEND/package.json" "$FRONTEND/vite.config.ts" \
+             -newer "$FRONTEND/dist/index.html" -print -quit 2>/dev/null || true)"
+  [ -n "$STALE" ] && echo "== the frontend build is older than $STALE: rebuilding"
+fi
+if [ ! -f "$FRONTEND/dist/index.html" ] || [ "$BUILD" = 1 ] || [ -n "$STALE" ]; then
   if ! command -v npm >/dev/null 2>&1; then
     echo "WARNING: npm not found: serving the API only (\"/\" explains how to build the frontend)" >&2
   else

@@ -73,7 +73,7 @@ worker builds a `DetectorConfig` from a preset and calls `Detector.process` fram
 ```bash
 cd webapp/backend && python -m pytest -q                 # backend: units + the real worker chain (~1 min)
 cd webapp/frontend && npx tsc --noEmit && npm test       # frontend: types + vitest (~10 s)
-python -m pytest -q webapp/e2e                           # browser end to end on the built site (~5 min)
+python -m pytest -q webapp/e2e                           # browser end to end on the built site (~6 min)
 ```
 
 The e2e suite is described in [`e2e/README.md`](e2e/README.md).

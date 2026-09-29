@@ -38,7 +38,7 @@ def create_job(body: JobCreate, ctx: Context = Depends(get_ctx)) -> dict:
         raise not_found("Запись не найдена")
     preset = presets_mod.get(ctx.db, body.preset_id or "standard")
     if preset is None:
-        raise not_found("Набор параметров не найден")
+        raise not_found("Пресет не найден")
     opts = (body.options or JobOptions()).model_dump()
     return ctx.jobs.to_api(ctx.jobs.create(rec, preset, opts))
 
