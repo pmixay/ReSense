@@ -60,12 +60,23 @@ def test_no_veto_near_the_train():
     assert _is_stop(_run(Tracker(_cfg()), [20.0] * 8, 10.0))
 
 
-def test_an_implausible_speed_jump_restarts_the_odometry():
+def test_odometry_coasts_through_short_gaps_and_restarts_after_long_ones():
     t = Tracker(_cfg())
     _run(t, [100.0] * 4, 10.0)
     seg = t._odo_seg
-    _run(t, [100.0], 25.0)
-    assert t._odo_seg == seg + 1
+    _run(t, [100.0] * 3, None)
+    assert t._odo_seg == seg and t._odo_v == 10.0
+    _run(t, [100.0], None)
+    assert t._odo_seg == seg + 1 and t._odo_v is None
+
+
+def test_an_artefact_is_vetoed_with_a_noisy_and_patchy_speed():
+    speeds = [10.0, None, 11.5, 8.0, None, 10.5, 9.0, 12.0, 10.0, None]
+    t = Tracker(_cfg())
+    for v in speeds:
+        t.update([_cluster(100.0)], ego_shift=0.0, frame_dt=0.1, far_thin=[], odo_speed=v)
+    track = t.tracks[0]
+    assert track.reported and not _is_stop(track)
 
 
 def test_an_earned_stop_is_not_vetoed_later():

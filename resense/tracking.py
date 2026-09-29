@@ -160,10 +160,12 @@ class Tracker:
         self.record = self.opinion is not None
         self._clock = 0.0            # 27.09: s of sensor time since the start (approach_*)
         self._odo_x, self._odo_seg, self._odo_v = 0.0, 0, None   # 29.09 (ego_veto_*): train travel, segment, speed
+        self._odo_hist, self._odo_gap = [], 0
 
     def reset(self) -> None:
         self.tracks.clear()
         self._odo_x, self._odo_seg, self._odo_v = 0.0, self._odo_seg + 1, None
+        self._odo_hist, self._odo_gap = [], 0
         self._next_id = 1
         self._timed = False
 
@@ -672,17 +674,27 @@ class Tracker:
         t.approach = (t.approach + [(self._clock, float(cl.distance))])[-max(2, int(c.approach_hits)):]
 
     def _odometry(self, speed: Optional[float], frame_dt: Optional[float]) -> None:
-        """29.09 (ego_veto_*): integrate the train's travel from the per-frame speed; an unknown speed,
-        an unusable interval or an implausible jump (> 1.5 m/s^2 + 0.3 m/s) starts a new segment."""
+        """29.09 (ego_veto_*): integrate the train's travel. The per-frame LiDAR estimate is noisy and
+        unknown in about a quarter of the frames, so the travel uses the median of the last five known
+        speeds and coasts through up to three unknown frames (TunnelGuard coasts on its prior); a longer
+        gap or an unusable interval starts a new segment."""
         dt = float(frame_dt) if frame_dt is not None else self.cfg.frame_dt
-        v = None if speed is None or not np.isfinite(speed) else float(speed)
-        if (v is None or not 0.0 < dt <= 0.35
-                or (self._odo_v is not None and abs(v - self._odo_v) > 1.5 * dt + 0.3)):
+        if not 0.0 < dt <= 0.35:
             self._odo_seg += 1
-            self._odo_v = None if v is None else v
+            self._odo_hist, self._odo_v, self._odo_gap = [], None, 0
             return
-        self._odo_x += v * dt
-        self._odo_v = v
+        if speed is not None and np.isfinite(speed):
+            self._odo_hist = (self._odo_hist + [float(speed)])[-5:]
+            self._odo_gap = 0
+        else:
+            self._odo_gap += 1
+            if self._odo_gap > 3 or not self._odo_hist:
+                if self._odo_v is not None:
+                    self._odo_seg += 1
+                self._odo_hist, self._odo_v = [], None
+                return
+        self._odo_v = float(np.median(self._odo_hist))
+        self._odo_x += self._odo_v * dt
 
     def _carried_along(self, t: Track) -> bool:
         """29.09 (ego_veto_*, after TunnelGuard ``_carried_along``): while the train demonstrably moves,
