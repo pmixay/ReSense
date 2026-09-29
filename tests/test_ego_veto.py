@@ -34,8 +34,8 @@ def _is_stop(track) -> bool:
     return bool(track is not None and track.reported and track.zone == "gauge")
 
 
-def test_off_by_default():
-    assert TrackingConfig().ego_veto_min_speed == 0.0
+def test_on_by_default():
+    assert TrackingConfig().ego_veto_min_speed == 4.0
 
 
 def test_a_static_object_approaches_at_the_train_speed_and_stops():

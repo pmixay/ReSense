@@ -279,7 +279,7 @@ class ClusterConfig:
     # tunnel infrastructure when the lining continues right above it: >= shell_min_points returns of the whole frame
     # within shell_gap above its top, over its lateral extent +- shell_lateral and along-track extent +- (1 + 1 % of X),
     # the lowest within max(shell_touch_min, shell_touch_beams vertical beam spacings) of its top (reason 'shell')
-    shell_min_top: float = 0.0
+    shell_min_top: float = 2.3            # on since 29.09 (full gate: docs/COMPETITOR_REVIEW_2026-09-29.md section 6)
     shell_max_bottom: float = 0.8
     shell_min_distance: float = 40.0
     shell_gap: float = 1.2
@@ -346,16 +346,16 @@ class TrackingConfig:
     # hits may start a STOP only after explained_run consecutive clean hits (an ordinary cluster in the strict
     # gauge, no reason); a miss breaks the run. Onset only: an earned STOP keeps the usual rules; near
     # escalation wins; a blocked track stays a visible advisory.
-    explained_run: int = 0
+    explained_run: int = 5                # on since 29.09, infrastructure reasons only (explained_reasons)
     explained_window: int = 10
-    explained_reasons: str = ""      # comma-separated reasons that count as explained; '' = any reason
+    explained_reasons: str = "column,overhead,retro,shell"  # comma-separated; '' = any reason. Shape signatures (floating, elevated, edge, wall_face) are left to the stop-keep / near-escalation rules (a hanging cable demoted as floating must stop); with the range demotions beyond_axis / beyond_height_ref, set F far first detection -22 m: not shipped
     # 29.09 (opt-in, 0 = off; after EhimenNathan/tunnelguard-lct2026 core/detector.py _carried_along): while the
     # train moves at >= ego_veto_min_speed (m/s, the LiDAR estimate of resense/egomotion.py or a given speed), a
     # track beyond ego_veto_min_distance whose distance does not fall with the train's travel (Theil-Sen slope of
     # distance against travel above ego_veto_max_slope over >= ego_veto_min_hits hits and >= ego_veto_min_travel m;
     # a static object gives -1, an artefact carried with the train 0) may not start a STOP; it stays advisory.
     # Onset only; near escalation wins; the odometry chain restarts on an unknown or implausible speed.
-    ego_veto_min_speed: float = 0.0
+    ego_veto_min_speed: float = 4.0       # on since 29.09
     ego_veto_max_slope: float = -0.35
     ego_veto_min_hits: int = 4
     ego_veto_min_travel: float = 4.0

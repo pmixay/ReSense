@@ -48,7 +48,7 @@ def test_clear_tunnel_has_no_low_object_alarm(tunnel):
 RAIL_HEAD_Z = FLOOR_Z + 0.18    # synthetic rails are 0.18 m tall
 
 
-@pytest.mark.parametrize("distance,lateral", [(10.0, -0.8), (16.0, 0.8), (20.0, -0.75)])
+@pytest.mark.parametrize("distance,lateral", [(10.0, -0.8), (16.0, 0.8), (20.0, -0.75), (25.0, -0.8), (50.0, 0.8)])
 @pytest.mark.synthetic
 def test_organizers_minimum_object_on_a_rail(distance, lateral):
     """300 x 300 x 100 mm lying on a rail head: 0.1 m above the rail-head plane, below the

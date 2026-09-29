@@ -35,8 +35,11 @@ def _is_stop(track) -> bool:
     return bool(track is not None and track.reported and track.zone == "gauge")
 
 
-def test_off_by_default():
-    assert TrackingConfig().explained_run == 0
+def test_on_by_default_for_infrastructure_reasons_only():
+    c = TrackingConfig()
+    assert c.explained_run == 5
+    assert "beyond_axis" not in c.explained_reasons and "floating" not in c.explained_reasons
+    assert "column" in c.explained_reasons
 
 
 def test_clean_history_starts_as_before():
@@ -59,7 +62,7 @@ def test_an_explained_history_needs_a_clean_run():
 
 def test_a_miss_breaks_the_run():
     t = Tracker(_cfg())
-    for cl in (_cluster(90.0, zone="warning", reason="beyond_axis"), _cluster(90.0), _cluster(90.0)):
+    for cl in (_cluster(90.0, zone="warning", reason="column"), _cluster(90.0), _cluster(90.0)):
         tr = _update(t, [cl])
     tr = _update(t, [])
     assert tr.clean_run == 0
