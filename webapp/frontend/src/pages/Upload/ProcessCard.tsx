@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCreateJob, useDeleteLabels, usePresets, useUploadLabels } from '../../api/hooks';
 import type { Recording } from '../../api/types';
-import { Button, Card, Chip, ErrorBanner, Help, IconButton, Select, Stepper, Toggle } from '../../components';
+import { Button, Card, Chip, ErrorBanner, Help, Icon, IconButton, Select, Stepper, Toggle } from '../../components';
 import { fmtBytes, fmtDuration, fmtFrames } from '../../lib/format';
 import { cloudBytes, framesToProcess, processSeconds } from './estimate';
 import { cloudTopics } from './recording';
@@ -55,10 +55,10 @@ export function ProcessCard({ rec, className }: { rec: Recording | null; classNa
   const cloudSize = !results && clouds ? cloudBytes(frames) : null;
   const disabled = !rec;
 
-  const presetOptions = (presets.data ?? []).map((p) => ({ value: p.id, label: p.builtin ? `${p.name} · базовый` : p.name }));
+  const presetOptions = (presets.data ?? []).map((p) => ({ value: p.id, label: p.name }));
   if (!presetOptions.length) presetOptions.push({ value: 'standard', label: presets.isLoading ? 'загрузка…' : 'стандартный' });
   const topicOptions = [
-    { value: AUTO, label: rec?.default_topic ? `авто · ${rec.default_topic}` : 'авто' },
+    { value: AUTO, label: 'авто' },
     ...topics.map((t) => ({ value: t, label: t })),
   ];
 
@@ -102,59 +102,84 @@ export function ProcessCard({ rec, className }: { rec: Recording | null; classNa
       <div className={styles.row}>
         <div className={styles.field}>
           <FieldLabel help="Набор параметров детектора; свои пресеты — на странице «Параметры».">Пресет</FieldLabel>
-          <Select label="Пресет" icon="sliders" options={presetOptions} value={presetId} onChange={setPresetId} disabled={disabled || !presets.data} />
+          <Select label="Пресет" icon="sliders" options={presetOptions} value={presetId} onChange={setPresetId} disabled={!presets.data} />
         </div>
         <div className={styles.field}>
           <FieldLabel>Топик облака</FieldLabel>
-          <Select label="Топик облака" icon="sparkle" options={topicOptions} value={topic} onChange={setTopic} disabled={disabled || results || topics.length < 2} />
+          <Select label="Топик облака" icon="sparkle" options={topicOptions} value={topic} onChange={setTopic} disabled={results} />
         </div>
         <div className={styles.field}>
           <FieldLabel help="1 — каждый кадр, как на поезде. 2 и больше — быстрее, но решения реже.">Шаг кадров</FieldLabel>
-          <Stepper value={results ? 1 : every} onChange={setEvery} min={1} max={10} label="Шаг кадров" disabled={disabled || results} />
+          <Stepper value={results ? 1 : every} onChange={setEvery} min={1} max={10} label="Шаг кадров" disabled={results} />
         </div>
         <div className={styles.field}>
           <FieldLabel help="Прореженные облака точек для 3D-плеера: до 3000 кадров по 30 000 точек.">Для плеера</FieldLabel>
-          <Toggle label="Облака точек" checked={!results && clouds} onChange={setClouds} disabled={disabled || results} />
-        </div>
-        <div className={styles.field}>
-          <FieldLabel
-            help={
-              hasLabels
-                ? 'Сравнить решения с разметкой: верные СТОП на объектах, пропуски и ложные СТОП.'
-                : 'У записи нет разметки. Прикрепите файл labels/*.json кнопкой «Разметка .json».'
+          <Toggle
+            label={
+              <>
+                <span className={styles.long}>Облака точек</span>
+                <span className={styles.short}>Облака</span>
+              </>
             }
-          >
-            По разметке
-          </FieldLabel>
-          <Toggle label="Оценка" checked={hasLabels && evaluate} onChange={setEvaluate} disabled={disabled || !hasLabels} />
+            checked={!results && clouds}
+            onChange={setClouds}
+            disabled={results}
+          />
         </div>
       </div>
 
       <div className={styles.foot}>
-        <Chip icon="layers">{frames !== null ? fmtFrames(frames) : 'кадров —'}</Chip>
-        <Chip icon="clock">{seconds !== null ? `≈ ${fmtDuration(Math.max(1, seconds))}` : 'время —'}</Chip>
-        {cloudSize !== null && <Chip icon="cube">облака ≈ {fmtBytes(cloudSize)}</Chip>}
-        {rec &&
-          (hasLabels ? (
-            <Chip variant="well" icon="tag" className={styles.labels} title={rec.labels.name ?? undefined}>
-              разметка
-              {rec.labels.source === 'upload' && (
-                <IconButton
-                  icon="x"
-                  label="Убрать загруженную разметку"
-                  variant="white"
-                  size="xs"
-                  className={styles.labelsX}
-                  loading={delLabels.isPending}
-                  onClick={() => delLabels.mutate(rec.id)}
-                />
+        {frames !== null && (
+          <Chip icon="layers" title="Кадров к обработке и время при ~10 кадрах в секунду">
+            {fmtFrames(frames)}
+            {seconds !== null ? ` · ≈ ${fmtDuration(Math.max(1, seconds))}` : ''}
+          </Chip>
+        )}
+        {cloudSize !== null && (
+          <Chip icon="cube" className={styles.cloudChip}>
+            облака ≈ {fmtBytes(cloudSize)}
+          </Chip>
+        )}
+        {rec && (
+          <div className={styles.evalPill}>
+            <Icon name="tag" size={16} />
+            <span className={styles.evalText}>По разметке</span>
+            <Help placement="top" width={260}>
+              {hasLabels ? (
+                <>
+                  Сравнить решения с разметкой <b>{rec.labels.name}</b>: верные СТОП на объектах, пропуски и ложные СТОП.
+                </>
+              ) : (
+                <>
+                  У записи нет разметки — оценка недоступна. Прикрепите файл в формате <b>labels/*.json</b> кнопкой «+».
+                </>
               )}
-            </Chip>
-          ) : (
-            <Button variant="outline" size="sm" icon="tag" loading={putLabels.isPending} onClick={() => labelsInput.current?.click()}>
-              Разметка .json
-            </Button>
-          ))}
+            </Help>
+            <Toggle ariaLabel="Оценка по разметке" checked={hasLabels && evaluate} onChange={setEvaluate} disabled={!hasLabels} />
+            {!hasLabels && (
+              <IconButton
+                icon="plus"
+                label="Прикрепить разметку .json"
+                tooltip
+                variant="white"
+                size="xs"
+                loading={putLabels.isPending}
+                onClick={() => labelsInput.current?.click()}
+              />
+            )}
+            {hasLabels && rec.labels.source === 'upload' && (
+              <IconButton
+                icon="x"
+                label="Убрать загруженную разметку"
+                tooltip
+                variant="white"
+                size="xs"
+                loading={delLabels.isPending}
+                onClick={() => delLabels.mutate(rec.id)}
+              />
+            )}
+          </div>
+        )}
         <span className={styles.sp} />
         <Button variant="primary" size="lg" icon="play" onClick={() => void start()} disabled={disabled} loading={createJob.isPending}>
           Обработать

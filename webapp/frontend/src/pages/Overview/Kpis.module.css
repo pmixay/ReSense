@@ -1,0 +1,44 @@
+.kpis {
+  grid-column: 9 / 13;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--gut);
+  min-height: 0;
+}
+.tile {
+  min-height: 0;
+  overflow: hidden;
+  container-type: inline-size;
+}
+.fit {
+  font-size: min(1em, calc(100cqi / (var(--n) * 0.8)));
+  white-space: nowrap;
+}
+.viz {
+  width: 100%;
+  height: 56px;
+}
+.viz svg {
+  display: block;
+  overflow: visible;
+}
+.vizEmpty {
+  width: 100%;
+  height: 44px;
+  border-radius: 14px;
+  border: 2px dashed var(--hair-2);
+}
+.vizEmptyDark {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-height: 950px) {
+  .viz {
+    height: 46px;
+  }
+  .vizEmpty {
+    height: 36px;
+  }
+}

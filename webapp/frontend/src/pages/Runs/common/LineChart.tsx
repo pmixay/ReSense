@@ -12,6 +12,8 @@ export interface ChartLine {
   t: readonly number[];
   v: readonly (number | null)[];
   width?: number;
+  /** stroke-dasharray (a secondary encoding when lines overlap) */
+  dash?: string;
 }
 
 export interface ChartBand {
@@ -39,8 +41,8 @@ export interface LineChartProps {
   /** tooltip body at the hovered sample (idx = nearest index per line, −1 when a line has no data) */
   tooltip?: (t: number, idx: readonly number[]) => ReactNode;
   onPick?: (t: number, idx: readonly number[]) => void;
-  /** shade the stretches where the first line has no value, with this label */
-  emptyLabel?: string;
+  /** shade the stretches where the first line has no value, labelled (per stretch of sample indices) */
+  emptyLabel?: string | ((from: number, to: number) => string);
   /** under the x labels, aligned with the plot (e.g. a thin decision strip) */
   footer?: ReactNode;
   /** a cursor set from outside (e.g. the hovered event), in seconds */
@@ -132,19 +134,22 @@ export function LineChart({ lines, band, points, xMax, unit, minSpan = 1, toolti
     for (const p of points ?? []) all.push(p.v);
     const dom = niceDomain(all, minSpan);
     if (!dom || w < 80 || h < 60) return null;
-    const [y0, y1] = dom;
     const pw = w - L - R;
     const phh = h - T - B;
+    // snap the domain to the tick step so the top and bottom lines are labelled
+    const raw = niceTicks(dom[0], dom[1], Math.max(3, Math.min(8, Math.floor(phh / 44))));
+    const yStep = raw.length > 1 ? raw[1] - raw[0] : 1;
+    const y0 = Math.floor(dom[0] / yStep + 1e-9) * yStep;
+    const y1 = Math.ceil(dom[1] / yStep - 1e-9) * yStep;
+    const yTicks = niceTicks(y0, y1, Math.round((y1 - y0) / yStep) + 1);
     const X = (t: number) => L + (Math.min(Math.max(t, 0), x1) / x1) * pw;
     const Y = (v: number) => T + (1 - (v - y0) / (y1 - y0 || 1)) * phh;
-    const yTicks = niceTicks(y0, y1, Math.max(3, Math.min(8, Math.floor(phh / 44))));
-    const yStep = yTicks.length > 1 ? yTicks[1] - yTicks[0] : 1;
     const yDigits = yStep < 1 ? (yStep < 0.1 ? 2 : 1) : 0;
     const xTicks = niceTicks(0, x1, Math.max(3, Math.min(10, Math.floor(pw / 90))));
     const paths = lines.map((l) => linePath(l.t, l.v, X, Y));
     const bp = band ? bandPaths(band, X, Y) : null;
     // stretches of the first line without a value
-    const empties: { x0: number; x1: number }[] = [];
+    const empties: { x0: number; x1: number; label: string }[] = [];
     const first = lines[0];
     if (emptyLabel && first && first.v.some((v) => v !== null)) {
       const n = first.t.length;
@@ -158,7 +163,7 @@ export function LineChart({ lines, band, points, xMax, unit, minSpan = 1, toolti
         while (j + 1 < n && first.v[j + 1] === null) j += 1;
         const a = i === 0 ? L : (X(first.t[i - 1]) + X(first.t[i])) / 2;
         const b = j === n - 1 ? L + pw : (X(first.t[j]) + X(first.t[j + 1])) / 2;
-        if (b - a >= 6) empties.push({ x0: a, x1: b });
+        if (b - a >= 6) empties.push({ x0: a, x1: b, label: typeof emptyLabel === 'function' ? emptyLabel(i, j) : emptyLabel });
         i = j + 1;
       }
     }
@@ -189,7 +194,7 @@ export function LineChart({ lines, band, points, xMax, unit, minSpan = 1, toolti
     const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : e.key === 'PageUp' ? big : e.key === 'PageDown' ? -big : 0;
     if (step) {
       e.preventDefault();
-      const next = Math.min(main.t.length - 1, Math.max(0, (cur < 0 ? 0 : cur) + (cur < 0 ? 0 : step)));
+      const next = cur < 0 ? 0 : Math.min(main.t.length - 1, Math.max(0, cur + step));
       setHoverT(main.t[next]);
     } else if (e.key === 'Enter' && shownT !== null && onPick) {
       e.preventDefault();
@@ -197,7 +202,9 @@ export function LineChart({ lines, band, points, xMax, unit, minSpan = 1, toolti
     } else if (e.key === 'Escape') setHoverT(null);
   };
 
-  const crossX = geo && shownT !== null && lines[0] && idx[0] >= 0 ? geo.X(lines[0].t[idx[0]] ?? shownT) : geo && shownT !== null ? geo.X(shownT) : null;
+  // the crosshair snaps to the first line's nearest sample
+  const snapT = shownT === null ? null : lines[0] && idx[0] >= 0 ? lines[0].t[idx[0]] : shownT;
+  const crossX = geo && snapT !== null ? geo.X(snapT) : null;
   const tipLeft = crossX !== null && geo ? crossX > L + geo.pw * 0.62 : false;
 
   return (
@@ -218,13 +225,14 @@ export function LineChart({ lines, band, points, xMax, unit, minSpan = 1, toolti
         <svg className={styles.svg} width={size.w} height={size.h} aria-hidden>
           {geo.empties.map((e, i) => {
             const wdt = e.x1 - e.x0;
-            const tall = geo.phh > 230;
+            // the label runs up the stretch when it fits (≈ 6.4 px per character at 11.5 px)
+            const fits = wdt >= 18 && e.label.length * 6.4 + 20 < geo.phh;
             return (
               <g key={i}>
                 <rect x={e.x0} y={T} width={wdt} height={geo.phh} rx={6} className={styles.empty} />
-                {wdt >= 18 && geo.phh > 110 && (
+                {fits && (
                   <text className={styles.emptyText} transform={`translate(${(e.x0 + e.x1) / 2 + 4} ${T + geo.phh - 10}) rotate(-90)`}>
-                    {tall ? emptyLabel : 'нет объекта'}
+                    {e.label}
                   </text>
                 )}
               </g>
@@ -256,7 +264,16 @@ export function LineChart({ lines, band, points, xMax, unit, minSpan = 1, toolti
             </g>
           )}
           {geo.paths.map((d, i) => (
-            <path key={lines[i].id} d={d} fill="none" stroke={lines[i].color} strokeWidth={lines[i].width ?? 2.4} strokeLinejoin="round" strokeLinecap="round" />
+            <path
+              key={lines[i].id}
+              d={d}
+              fill="none"
+              stroke={lines[i].color}
+              strokeWidth={lines[i].width ?? 2.4}
+              strokeDasharray={lines[i].dash}
+              strokeLinejoin="round"
+              strokeLinecap={lines[i].dash ? 'butt' : 'round'}
+            />
           ))}
           {points?.map((p, i) => {
             const x = geo.X(p.t);

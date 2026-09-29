@@ -52,15 +52,15 @@ export function ServerSource({ current, onRecording, onClear }: ServerSourceProp
     const rec = await register.mutateAsync({ path: e.path }).catch(() => null);
     if (rec) onRecording(rec);
   };
+  /** double click / Enter: a recording is used, a plain folder is opened */
   const open = (e: ServerEntry) => {
-    if (e.type === 'dir') setPath(e.path);
-    else if (isRecordingEntry(e)) void use(e);
+    if (isRecordingEntry(e)) void use(e);
+    else if (e.type === 'dir') setPath(e.path);
   };
   const onRowKey = (ev: KeyboardEvent<HTMLButtonElement>, e: ServerEntry) => {
     if (ev.key === 'Enter') {
       ev.preventDefault();
-      if (isRecordingEntry(e)) void use(e);
-      else open(e);
+      open(e);
     } else if (ev.key === 'Backspace' && files.data?.parent !== null && files.data?.parent !== undefined) {
       ev.preventDefault();
       setPath(files.data.parent);
@@ -77,12 +77,19 @@ export function ServerSource({ current, onRecording, onClear }: ServerSourceProp
   if (exists === false) {
     return (
       <div className={styles.box}>
-        <EmptyState icon="server" title="Папка данных не найдена">
-          Сервер ищет записи в <code className={styles.code}>{root}</code>
-          <Help placement="top" width={270} className={styles.inlineHelp}>
-            Путь задаёт переменная <b>RESENSE_DATA</b> при запуске сервера (по умолчанию <b>/data</b>). Положите туда папки rosbag2 и обновите страницу.
-          </Help>
-        </EmptyState>
+        <EmptyState
+          icon="server"
+          title="Папка данных не найдена"
+          action={
+            <div className={styles.missing}>
+              <code className={styles.code}>{root}</code>
+              <Help placement="top" width={270}>
+                Сервер ищет записи в этой папке. Путь задаёт переменная <b>RESENSE_DATA</b> при запуске сервера (по умолчанию <b>/data</b>). Положите туда папки
+                rosbag2 и обновите страницу.
+              </Help>
+            </div>
+          }
+        />
       </div>
     );
   }
@@ -111,7 +118,7 @@ export function ServerSource({ current, onRecording, onClear }: ServerSourceProp
           {files.data?.truncated && <Chip size="sm">первые {fmtInt(entries.length)}</Chip>}
           {files.isFetching && <Spinner size={16} />}
           <Help placement="bottom-end" width={260}>
-            Двойной щелчок открывает папку. Записи с сервера не копируются — детектор читает их на месте.
+            Двойной щелчок открывает папку или выбирает запись. Записи с сервера не копируются — детектор читает их на месте.
           </Help>
         </nav>
 

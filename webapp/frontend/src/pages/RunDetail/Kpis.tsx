@@ -36,19 +36,25 @@ export function Kpis({ r, series, labels, frameOf }: { r: RunDetail; series: Run
       <KpiTile
         className={styles.kpi}
         label="Кадров"
+        help="Сколько кадров облака обработал детектор; ниже — частота кадров записи."
         value={fmtNum(s.n_frames)}
         sub={fr ? `${fmtNumTrim(fr, 1)} Гц${every > 1 ? ` · шаг ${every}` : ''}` : '—'}
       />
       <KpiTile
         className={styles.kpi}
         label="Длительность"
+        help="От первого до последнего обработанного кадра; ниже — объём облаков точек, сохранённых для плеера."
         value={durV}
         unit={durU}
         sub={clouds ? `${fmtBytes(clouds)} облаков` : r.recording ? `запись ${fmtBytes(r.recording.size_bytes)}` : r.source_kind}
       />
       <KpiTile
         className={styles.kpi}
-        icon={<StopMark />}
+        icon={
+          <span className={styles.kpiIcon}>
+            <StopMark />
+          </span>
+        }
         label="СТОП-эпизоды"
         help={
           stopEps.length ? (
@@ -64,7 +70,11 @@ export function Kpis({ r, series, labels, frameOf }: { r: RunDetail; series: Run
       />
       <KpiTile
         className={styles.kpi}
-        icon={<StopMark />}
+        icon={
+          <span className={styles.kpiIcon}>
+            <StopMark />
+          </span>
+        }
         label="Первый СТОП"
         help={
           fs ? (
@@ -122,7 +132,7 @@ export function Kpis({ r, series, labels, frameOf }: { r: RunDetail; series: Run
         help="95 % кадров детектор обработал быстрее этого времени (без чтения файла). Бюджет — 100 мс на кадр при 10 Гц."
         value={fmtNum(s.latency_ms.p95, s.latency_ms.p95 < 10 ? 1 : 0)}
         unit="мс"
-        sub={`p50 ${fmtMs(s.latency_ms.p50)} · макс ${fmtMs(s.latency_ms.max)}`}
+        sub={`p50 ${fmtNum(s.latency_ms.p50)} · макс ${fmtMs(s.latency_ms.max)}`}
       />
       <KpiTile
         className={styles.kpi}

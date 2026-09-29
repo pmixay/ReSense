@@ -1,0 +1,102 @@
+.live {
+  grid-template-rows: auto minmax(0, 1.2fr) minmax(0, 1fr);
+}
+.beacon {
+  grid-column: 1 / 5;
+}
+.view {
+  grid-column: 5 / 10;
+}
+.node {
+  grid-column: 10 / 13;
+}
+.timeline {
+  grid-column: 1 / 6;
+}
+.dets {
+  grid-column: 6 / 10;
+}
+.health {
+  grid-column: 10 / 13;
+}
+
+/* ---- source bar */
+.bar {
+  grid-column: 1 / -1;
+  background: var(--card);
+  border-radius: var(--r-tile);
+  box-shadow: var(--shadow);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 70px;
+  min-width: 0;
+}
+.url {
+  width: 340px;
+  flex: 0 1 340px;
+  min-width: 200px;
+}
+.runSel {
+  flex: 0 1 280px;
+  min-width: 160px;
+}
+.seek {
+  flex: 1 1 200px;
+  min-width: 110px;
+}
+.frame {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  white-space: nowrap;
+  font-weight: 700;
+  font-size: var(--fs-label);
+  min-width: 70px;
+  justify-content: flex-end;
+}
+.frame :global(.num) {
+  font-size: 20px;
+}
+.sp {
+  flex: 1;
+}
+.chips {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+.hint {
+  font-weight: 700;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+}
+.barError {
+  flex: 0 1 520px;
+  min-width: 0;
+  margin-left: auto;
+}
+.barCenter {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  height: 46px;
+}
+.noRuns {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  font-weight: 800;
+  font-size: 14px;
+}
+.noRunsIc {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--well);
+  display: grid;
+  place-items: center;
+  flex: none;
+}

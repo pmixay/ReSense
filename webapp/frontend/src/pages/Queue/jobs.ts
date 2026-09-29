@@ -55,7 +55,8 @@ export function finishedJobs(jobs: readonly Job[] | undefined): Job[] {
   return (jobs ?? []).filter((j) => j.status === 'done' || j.status === 'failed' || j.status === 'cancelled');
 }
 
-/** Russian names of the detector's timing_ms keys, in pipeline order. */
+/** Russian names of the detector's timing_ms stages, in pipeline order ("stages" is the sum of the
+ *  first six, "total" the whole frame: both are left out of the breakdown). */
 export const STAGE_MS_LABEL: Record<string, string> = {
   track: 'модель пути',
   corridor: 'габарит',
@@ -63,6 +64,8 @@ export const STAGE_MS_LABEL: Record<string, string> = {
   accumulate: 'накопление',
   cluster: 'кластеризация',
   tracking: 'трекинг',
+  health: 'самоконтроль',
+  result: 'итог',
 };
 
 export interface StageMs {
@@ -71,17 +74,12 @@ export interface StageMs {
   ms: number;
 }
 
-/** stage_ms as ordered parts of one frame (without "total"; unknown keys at the end). */
-export function stageBreakdown(stageMs: Record<string, number> | undefined): StageMs[] {
+/** stage_ms as the ordered parts of one frame: the known stages that took measurable time. */
+export function stageBreakdown(stageMs: Record<string, number> | undefined, minMs = 0.05): StageMs[] {
   if (!stageMs) return [];
-  const known = Object.keys(STAGE_MS_LABEL);
-  const keys = Object.keys(stageMs).filter((k) => k !== 'total' && Number.isFinite(stageMs[k]) && stageMs[k] >= 0);
-  keys.sort((a, b) => {
-    const ia = known.indexOf(a);
-    const ib = known.indexOf(b);
-    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
-  });
-  return keys.map((k) => ({ key: k, label: STAGE_MS_LABEL[k] ?? k, ms: stageMs[k] }));
+  return Object.keys(STAGE_MS_LABEL)
+    .filter((k) => typeof stageMs[k] === 'number' && Number.isFinite(stageMs[k]) && stageMs[k] >= minMs)
+    .map((k) => ({ key: k, label: STAGE_MS_LABEL[k], ms: stageMs[k] }));
 }
 
 export const LIDAR_HZ = 10;

@@ -110,8 +110,9 @@ export function DemoSource({ demo, current, onRecording, onClear }: DemoSourcePr
           <Stepper value={seconds} onChange={setSeconds} min={5} max={60} step={5} unit="с" label="Длительность демо-записи" disabled={busy} />
         </div>
         <div className={styles.facts}>
-          <Chip icon="database">≈ {fmtBytes(bytes)}</Chip>
-          <Chip icon="clock">≈ {fmtDuration(demoSeconds(seconds))} на создание</Chip>
+          <Chip icon="database" title="Размер на диске и время создания">
+            ≈ {fmtBytes(bytes)} · {fmtDuration(demoSeconds(seconds))}
+          </Chip>
           <Chip variant="ink" icon="sparkle">
             синтетическая
           </Chip>

@@ -30,18 +30,21 @@
 .back {
   align-self: flex-start;
 }
+.missing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+}
 .code {
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-weight: 700;
   font-size: 12.5px;
   background: var(--white);
-  padding: 2px 8px;
-  border-radius: 8px;
-  margin: 0 6px;
+  padding: 8px 14px;
+  border-radius: var(--r-xs);
   word-break: break-all;
-}
-.inlineHelp {
-  vertical-align: middle;
+  text-align: left;
 }
 .crumbs {
   display: flex;

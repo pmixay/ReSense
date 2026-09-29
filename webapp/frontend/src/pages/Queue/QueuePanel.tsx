@@ -3,7 +3,7 @@
 import { Button, Card, EmptyState, ErrorBanner, Icon, IconButton, Spinner } from '../../components';
 import { FailedRow, FinishedRow, QueuedRow } from './JobRows';
 import { CountChips, SectionHead } from './QueueParts';
-import { RunningJob } from './RunningJob';
+import { JobCard } from './JobCard';
 import { useQueue } from './useQueue';
 import styles from './QueuePanel.module.css';
 
@@ -25,7 +25,7 @@ export function QueuePanel({ className }: { className?: string }) {
       ) : (
         <>
           {running ? (
-            <RunningJob job={running} recording={recById.get(running.recording_id)} variant="compact" />
+            <JobCard job={running} recording={recById.get(running.recording_id)} variant="compact" />
           ) : (
             <div className={styles.idle}>
               <span className={styles.idleIc}>

@@ -1,7 +1,17 @@
 // Pure helpers of the analysis pages (Прогоны, Прогон, Сравнение): positions ↔ bag frames, misses,
 // events, the verdict against labels, list filtering, comparison metrics and chart ticks.
 import type { Decision, Episode, EvalSummary, ParamSpec, ParamValue, Run, RecordingKind } from '../../../api/types';
-import { fmtCount, fmtDuration, fmtFps, fmtMeters, fmtMs, fmtNum, fmtPercent, plural, FRAMES, EPISODES } from '../../../lib/format';
+import { fmtCount, fmtDuration, fmtMeters, fmtMs, fmtNum, fmtPercent, plural, FRAMES, EPISODES } from '../../../lib/format';
+
+// ---------------------------------------------------------------- data
+
+/** refetchInterval of a query that should reconnect by itself: every 5 s while it failed for a
+ *  reason other than «not found» (the banner promises the page comes back with the backend). */
+export const RECONNECT_MS = 5000;
+export function reconnect(q: { state: { status: string; error: unknown } }): number | false {
+  const err = q.state.error as { status?: number } | null;
+  return q.state.status === 'error' && err?.status !== 404 ? RECONNECT_MS : false;
+}
 
 // ---------------------------------------------------------------- links
 
@@ -27,6 +37,36 @@ export function parseRunIds(params: URLSearchParams): string[] {
     if (id && !out.includes(id)) out.push(id);
   }
   return out.slice(0, MAX_COMPARE);
+}
+
+/** Colour slots of /compare: `?runs=a,,c` keeps c in slot 3 after b was removed, so a run keeps
+ *  its colour while others come and go. Duplicates and slots past 4 are dropped. */
+export function parseRunSlots(params: URLSearchParams): (string | null)[] {
+  const raw = params.has('runs') ? (params.get('runs') ?? '').split(',') : [params.get('a') ?? '', params.get('b') ?? ''];
+  const out: (string | null)[] = [];
+  for (const r of raw.slice(0, MAX_COMPARE)) {
+    const id = r.trim();
+    out.push(id && !out.includes(id) ? id : null);
+  }
+  while (out.length && out[out.length - 1] === null) out.pop();
+  return out;
+}
+
+/** The `runs` parameter of slots (empty slots stay as empty items, trailing ones are cut). */
+export function slotsParam(slots: readonly (string | null)[]): string {
+  const s = [...slots];
+  while (s.length && !s[s.length - 1]) s.pop();
+  return s.map((x) => x ?? '').join(',');
+}
+
+/** Slots with `id` put into the first free slot (no-op when present or full). */
+export function addToSlots(slots: readonly (string | null)[], id: string): (string | null)[] {
+  if (slots.includes(id)) return [...slots];
+  const out = [...slots];
+  const free = out.indexOf(null);
+  if (free >= 0) out[free] = id;
+  else if (out.length < MAX_COMPARE) out.push(id);
+  return out;
 }
 
 // ---------------------------------------------------------------- positions
@@ -234,6 +274,23 @@ export function filterRuns(runs: readonly Run[], o: { q: string; filter: RunFilt
 /** Series colours of compared runs: distinct, never a safety colour (validated for CVD). */
 export const RUN_COLORS = ['#16151A', '#1F5FD0', '#A0612B', '#0A8FA6'] as const;
 
+/** Line styles per slot: runs of one recording often overlap, so the width and dash differ too. */
+export const RUN_LINES: readonly { width: number; dash?: string }[] = [
+  { width: 3.4 },
+  { width: 2.4, dash: '9 6' },
+  { width: 2.4 },
+  { width: 2.6, dash: '2 5' },
+];
+
+/** A legend / key swatch that mirrors the slot's line (solid or dashed). */
+export function lineSwatch(slot: number): string {
+  const c = RUN_COLORS[slot];
+  const d = RUN_LINES[slot]?.dash;
+  if (!d) return c;
+  const [on, off] = d.split(' ').map(Number);
+  return `repeating-linear-gradient(90deg, ${c} 0 ${on * 0.7}px, transparent ${on * 0.7}px ${(on + off) * 0.7}px)`;
+}
+
 export interface Metric {
   key: string;
   label: string;
@@ -261,7 +318,14 @@ export const METRICS: readonly Metric[] = [
   },
   { key: 'distance_min', label: 'Мин. дистанция', help: 'Ближайшее препятствие среди кадров СТОП.', better: null, value: (r) => r.summary.distance_min, fmt: (v) => fmtMeters(v) },
   { key: 'p95', label: 'p95 задержка', help: '95 % кадров детектор обработал быстрее этого времени.', better: 'min', value: (r) => r.summary.latency_ms.p95, fmt: (v) => fmtMs(v) },
-  { key: 'fps', label: 'Скорость обработки', help: 'Кадров в секунду при обработке записи на сервере (датчик даёт 10).', better: 'max', value: (r) => r.summary.processing_fps, fmt: (v) => fmtFps(v) },
+  {
+    key: 'fps',
+    label: 'Обработка, кадр/с',
+    help: 'Кадров в секунду при обработке записи на сервере (датчик даёт 10).',
+    better: 'max',
+    value: (r) => r.summary.processing_fps,
+    fmt: (v) => fmtNum(v, v !== null && v < 10 ? 1 : 0),
+  },
   {
     key: 'recall',
     label: 'Полнота',
@@ -272,7 +336,7 @@ export const METRICS: readonly Metric[] = [
   },
   {
     key: 'false_frames',
-    label: 'Ложные СТОП, кадры',
+    label: 'Ложные кадры',
     help: 'Кадры СТОП, где по разметке в габарите пусто.',
     better: 'min',
     value: (r) => r.summary.eval?.false_stop_frames ?? null,
@@ -280,8 +344,8 @@ export const METRICS: readonly Metric[] = [
   },
   {
     key: 'false_episodes',
-    label: 'Ложные СТОП, эпизоды',
-    help: 'Сколько раз поезд остановился бы без причины.',
+    label: 'Ложные эпизоды',
+    help: 'Эпизоды СТОП без объекта в габарите по разметке: сколько раз поезд остановился бы без причины.',
     better: 'min',
     value: (r) => r.summary.eval?.false_stop_episodes ?? null,
     fmt: (v) => fmtNum(v),
@@ -334,7 +398,9 @@ export function fmtParam(v: ParamValue, unit?: string): string {
   if (typeof v === 'boolean') return v ? 'да' : 'нет';
   if (typeof v === 'number') {
     const s = Number.isInteger(v) ? fmtNum(v) : fmtNum(v, Math.min(3, (String(v).split('.')[1] ?? '').length));
-    return unit ? `${s} ${unit}` : s;
+    // the schema's units are singular: "кадр" agrees with the number
+    const u = unit === 'кадр' && Number.isInteger(v) ? plural(v, FRAMES) : unit;
+    return u ? `${s} ${u}` : s;
   }
   return String(v);
 }

@@ -1,0 +1,507 @@
+.grid {
+  grid-template-rows: minmax(0, 1fr);
+  gap: 16px;
+}
+.left {
+  grid-column: 1 / 8;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  min-width: 0;
+}
+.right {
+  grid-column: 8 / 13;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  min-width: 0;
+}
+.center {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+}
+.ell {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.key {
+  width: 14px;
+  height: 14px;
+  border-radius: 5px;
+  flex: none;
+  display: inline-block;
+}
+
+/* ---- header chips */
+.chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.runChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  max-width: 250px;
+  padding: 0 5px 0 10px;
+  border-radius: var(--pill);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--hair-2);
+  font-weight: 800;
+  font-size: 13px;
+  min-width: 0;
+}
+.runChip a:hover {
+  text-decoration: underline 2px var(--red);
+  text-underline-offset: 3px;
+}
+.runChipBad {
+  background: var(--fault-bg);
+  box-shadow: inset 0 0 0 1.5px var(--fault-line);
+}
+.runChip button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--well);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.runChip button:hover {
+  background: var(--well-2);
+}
+.addWrap {
+  display: inline-flex;
+  flex: none;
+}
+
+/* ---- strips */
+.stripsCard {
+  flex: none;
+  padding: 18px 24px 16px;
+}
+.strips {
+  position: relative;
+}
+.stripRow,
+.axisRow {
+  display: grid;
+  grid-template-columns: 14px 176px minmax(0, 1fr) 150px;
+  column-gap: 12px;
+  align-items: center;
+}
+.stripRow {
+  height: 38px;
+}
+.stripName {
+  font-weight: 800;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stripCell {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+.stripErr {
+  font-weight: 700;
+  font-size: var(--fs-min);
+}
+.stripRead {
+  font-weight: 700;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+  text-align: right;
+}
+.axisRow {
+  height: 26px;
+}
+.axis {
+  position: relative;
+  height: 22px;
+  border-top: 1.5px solid var(--hair-2);
+  margin-top: 4px;
+}
+.axis span {
+  position: absolute;
+  top: 5px;
+  transform: translateX(-50%);
+  font-weight: 700;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+}
+.axis span.t0 {
+  transform: none;
+}
+.hoverArea {
+  position: absolute;
+  top: 0;
+  bottom: 26px;
+  left: 214px;
+  right: 162px;
+  cursor: pointer;
+}
+.hoverLine {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--ink);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+/* ---- distance overlay */
+.dist {
+  flex: 1;
+  min-height: 0;
+  padding: 18px 22px 12px;
+  display: flex;
+  flex-direction: column;
+}
+.chartBox {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  overflow: hidden;
+  margin: 2px 0 6px;
+}
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  max-width: 260px;
+  min-width: 0;
+}
+.legendItem i {
+  width: 20px;
+  height: 4px;
+  border-radius: 2px;
+  flex: none;
+}
+.tipHead {
+  font-weight: 800;
+  font-size: 12.5px;
+  margin-bottom: 4px;
+}
+.tipRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  margin-top: 3px;
+}
+.tipRow i {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  flex: none;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+.tipRow b {
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 12.5px;
+  min-width: 62px;
+}
+
+/* ---- tables */
+.kpiCard {
+  flex: none;
+  max-height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px 14px;
+}
+.diffCard {
+  flex: 1;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px 14px;
+}
+.tableScroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.kt {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+.kt th,
+.kt td {
+  padding: 0 4px;
+  height: 34px;
+  border-bottom: 1px solid var(--hair);
+  text-align: left;
+  white-space: nowrap;
+}
+.kt thead th {
+  position: sticky;
+  top: 0;
+  background: var(--card);
+  z-index: 1;
+  height: 44px;
+  padding-bottom: 4px;
+}
+.kt tbody tr:last-child th,
+.kt tbody tr:last-child td {
+  border-bottom: 0;
+}
+.kt th:first-child {
+  width: 36%;
+}
+.diff th:first-child {
+  width: 50%;
+}
+.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+}
+.runTh {
+  font-weight: 800;
+  font-size: var(--fs-meta);
+}
+.runHead {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding-left: 8px;
+}
+.rowHead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  min-width: 0;
+}
+.val {
+  display: inline-block;
+  padding: 3px 8px;
+  font-weight: 700;
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+.best {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: var(--pill);
+  white-space: nowrap;
+  background: var(--ink);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 13.5px;
+}
+.same {
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 0;
+}
+
+/* ---- choosing */
+.chooseCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.chooser {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.chooserSearch {
+  width: 320px;
+}
+.tiles {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  align-content: start;
+  gap: 12px;
+  padding: 2px;
+  scrollbar-width: thin;
+}
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: var(--r-md);
+  background: var(--well);
+  padding: 14px 16px;
+  cursor: pointer;
+  min-width: 0;
+}
+.tile:hover {
+  box-shadow: inset 0 0 0 1.5px var(--hair-2);
+}
+.tileOn {
+  background: var(--white);
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.tileOn:hover {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.tileTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.tileName {
+  font-weight: 800;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tileMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 600;
+  font-size: var(--fs-meta);
+  min-width: 0;
+}
+
+/* ---- the add-run popover */
+.pop {
+  position: fixed;
+  z-index: 70;
+  width: 390px;
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-pop);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.popList {
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  scrollbar-width: thin;
+}
+.popItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  border-radius: 14px;
+  padding: 9px 10px;
+  text-align: left;
+  color: var(--ink);
+}
+.popItem:hover,
+.popItem:focus-visible {
+  background: var(--well);
+  box-shadow: none;
+}
+.popName {
+  font-weight: 800;
+  font-size: 13.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.popMeta {
+  font-weight: 600;
+  font-size: var(--fs-min);
+}
+.popEmpty {
+  font-weight: 700;
+  font-size: 13px;
+  padding: 12px 10px;
+}
+
+@media (max-height: 950px) {
+  .kt th,
+  .kt td {
+    height: 30px;
+  }
+  .stripRow {
+    height: 34px;
+  }
+  .stripsCard,
+  .dist,
+  .kpiCard,
+  .diffCard {
+    padding-top: 14px;
+  }
+}
+@media (max-width: 1500px) {
+  .left {
+    grid-column: 1 / 8;
+  }
+  .stripRow,
+  .axisRow {
+    grid-template-columns: 14px 140px minmax(0, 1fr) 128px;
+  }
+  .hoverArea {
+    left: 178px;
+    right: 140px;
+  }
+  .runChip {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 1320px) {
+  .kt th:first-child {
+    width: 42%;
+  }
+  .val,
+  .best {
+    font-size: 12.5px;
+    padding: 3px 6px;
+  }
+  .runHead {
+    padding-left: 6px;
+  }
+}

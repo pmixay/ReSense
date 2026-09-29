@@ -5,18 +5,23 @@ import { fmtInt, plural } from '../../lib/format';
 import type { JobGroups } from './jobs';
 import styles from './QueueParts.module.css';
 
-export function CountChips({ groups }: { groups: JobGroups }) {
+/** «1 в работе · 1 ждёт · 2 готово · 1 ошибка»; `outline` on the page background, `well` in cards. */
+export function CountChips({ groups, variant = 'well' }: { groups: JobGroups; variant?: 'well' | 'outline' }) {
   const { running, queued, done, failed } = groups;
   const errors = failed.filter((j) => j.status === 'failed').length;
   return (
     <div className={styles.counts}>
-      <Chip variant={running.length ? 'ink' : 'well'} size="sm">
+      <Chip variant={running.length ? 'ink' : variant} size="sm">
         {fmtInt(running.length)} в работе
       </Chip>
-      <Chip size="sm">{fmtInt(queued.length)} ждёт</Chip>
-      <Chip size="sm">{fmtInt(done.length)} готово</Chip>
+      <Chip variant={variant} size="sm">
+        {fmtInt(queued.length)} ждёт
+      </Chip>
+      <Chip variant={variant} size="sm">
+        {fmtInt(done.length)} готово
+      </Chip>
       {errors > 0 && (
-        <Chip size="sm" dot="var(--fault)">
+        <Chip variant={variant} size="sm" dot="var(--fault)">
           {fmtInt(errors)} {plural(errors, ['ошибка', 'ошибки', 'ошибок'])}
         </Chip>
       )}

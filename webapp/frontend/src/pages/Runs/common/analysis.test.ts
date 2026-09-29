@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Episode, EvalSummary, ParamSpec, Run } from '../../../api/types';
 import {
+  addToSlots,
   bestIndices,
   compareUrl,
   computeMisses,
@@ -14,9 +15,11 @@ import {
   niceDomain,
   niceTicks,
   parseRunIds,
+  parseRunSlots,
   playerUrl,
   posOfFrame,
   spansText,
+  slotsParam,
   stopGaps,
 } from './analysis';
 
@@ -72,6 +75,18 @@ describe('links', () => {
     expect(playerUrl('r1', null)).toBe('/player/r1');
     expect(compareUrl(['a', 'b', 'c', 'd', 'e'])).toBe('/compare?runs=a,b,c,d');
     expect(compareUrl([])).toBe('/compare');
+  });
+
+  it('keeps colour slots of /compare', () => {
+    expect(parseRunSlots(new URLSearchParams('runs=a,,c'))).toEqual(['a', null, 'c']);
+    expect(parseRunSlots(new URLSearchParams('runs=a,a,b,,'))).toEqual(['a', null, 'b']);
+    expect(parseRunSlots(new URLSearchParams('a=x&b=y'))).toEqual(['x', 'y']);
+    expect(parseRunSlots(new URLSearchParams(''))).toEqual([]);
+    expect(slotsParam(['a', null, 'c', null])).toBe('a,,c');
+    expect(addToSlots(['a', null, 'c'], 'd')).toEqual(['a', 'd', 'c']);
+    expect(addToSlots(['a', 'b'], 'c')).toEqual(['a', 'b', 'c']);
+    expect(addToSlots(['a', 'b', 'c', 'd'], 'e')).toEqual(['a', 'b', 'c', 'd']);
+    expect(addToSlots(['a'], 'a')).toEqual(['a']);
   });
 
   it('parses the selection of /compare', () => {
@@ -204,6 +219,8 @@ describe('comparison', () => {
     expect(fmtParam(150, 'м')).toBe('150 м');
     expect(fmtParam(false)).toBe('нет');
     expect(fmtParam(0.125)).toBe('0,125');
+    expect(fmtParam(3, 'кадр')).toBe('3 кадра');
+    expect(fmtParam(1, 'кадр')).toBe('1 кадр');
   });
 });
 

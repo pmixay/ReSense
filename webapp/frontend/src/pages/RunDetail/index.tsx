@@ -7,9 +7,10 @@ import type { RunDetail as RunDetailT } from '../../api/types';
 import { Button, Card, Chip, DecisionChip, EmptyState, ErrorBanner, PageHeader, useRailSub } from '../../components';
 import { decisionAt } from '../../lib/decisions';
 import { fmtBytes, fmtFrames, fmtMeters, fmtRelDate } from '../../lib/format';
-import { compareUrl, playerUrl, posOfFrame } from '../Runs/common/analysis';
+import { compareUrl, playerUrl, posOfFrame, reconnect } from '../Runs/common/analysis';
 import { Skeleton } from '../Runs/common/Bits';
 import { Menu } from '../Runs/common/Menu';
+import { useMedia } from '../Runs/common/useMedia';
 import { DeleteDialog, RenameDialog } from '../Runs/common/RunDialogs';
 import { DownloadsCard, EvalCard, EventsCard, PresetChip, PreviewCard } from './Cards';
 import { DistanceCard } from './DistanceCard';
@@ -17,9 +18,9 @@ import { Kpis } from './Kpis';
 import { Timeline } from './Timeline';
 import styles from './RunDetail.module.css';
 
-function Badge({ r }: { r: RunDetailT }) {
+function Badge({ r, short }: { r: RunDetailT; short: boolean }) {
   const fs = r.summary.first_stop;
-  if (fs) return <DecisionChip decision="STOP" size="lg" extra={`с кадра ${fs.frame}${fs.distance !== null ? ` · ${fmtMeters(fs.distance)}` : ''}`} />;
+  if (fs) return <DecisionChip decision="STOP" size="lg" extra={`${short ? 'кадр' : 'с кадра'} ${fs.frame}${fs.distance !== null ? ` · ${fmtMeters(fs.distance)}` : ''}`} />;
   if (r.summary.counts.FAULT > 0) return <DecisionChip decision="FAULT" size="lg" extra={fmtFrames(r.summary.counts.FAULT)} />;
   return <DecisionChip decision="GO" size="lg" label="БЕЗ СТОП" />;
 }
@@ -58,17 +59,19 @@ function LoadingBento() {
 export default function RunDetail() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
-  const run = useRun(id, { retry: (n, err) => err.status !== 404 && !err.offline && n < 1 });
-  const series = useRunSeries(id, { retry: 1 });
+  const run = useRun(id, { retry: (n, err) => err.status !== 404 && !err.offline && n < 1, refetchInterval: reconnect });
   const r = run.data;
+  // after the run itself, so a wrong id costs one 404, not two
+  const series = useRunSeries(r ? id : null, { retry: (n, err) => err.status !== 404 && n < 1 });
   const wantLabels = !!r && (!!r.summary.eval || !!series.data?.labels_in_gauge);
   const labels = useRunLabels(wantLabels ? id : null);
   const schema = usePresetSchema({ retry: false });
-  const runs = useRuns({ retry: false });
+  const runs = useRuns({ retry: false, refetchInterval: reconnect });
   const [hoverPos, setHoverPos] = useState<number | null>(null);
   const [renaming, setRenaming] = useState(false);
   const [deleting, setDeleting] = useState(false);
   useRailSub(r?.name);
+  const narrow = useMedia('(max-width: 1320px)');
 
   const frames = series.data?.frame;
   const posOf = useCallback((frame: number) => posOfFrame(frames, frame), [frames]);
@@ -88,15 +91,18 @@ export default function RunDetail() {
   const sibling = r && runs.data?.find((x) => x.id !== r.id && x.recording_id !== null && x.recording_id === r.recording_id);
   const notFound = run.error?.status === 404;
   const decisions = series.data?.decisions ?? r?.summary.decisions ?? '';
+  // a default name is "<recording> · <preset>": the preset chip already says the second half
+  const suffix = r ? ` · ${r.preset.name}` : '';
+  const title = r && r.name.endsWith(suffix) && r.name.length > suffix.length ? r.name.slice(0, -suffix.length) : r?.name;
 
   return (
     <>
       <PageHeader
-        title={r?.name ?? (notFound ? 'Прогон не найден' : 'Прогон')}
+        title={<span className={styles.title}>{title ?? (notFound ? 'Прогон не найден' : 'Прогон')}</span>}
         docTitle={r?.name ?? 'Прогон'}
         eyebrow="Прогон"
         back={{ to: '/runs', label: 'К прогонам' }}
-        badge={r ? <Badge r={r} /> : undefined}
+        badge={r ? <Badge r={r} short={narrow} /> : undefined}
         chips={
           r ? (
             <>
@@ -116,8 +122,8 @@ export default function RunDetail() {
               <Button variant="outline" icon="compare" to={compareUrl(sibling ? [r.id, sibling.id] : [r.id])}>
                 Сравнить
               </Button>
-              <Button variant="dark" icon="play" to={playerUrl(r.id)}>
-                Открыть в плеере
+              <Button variant="dark" icon="play" to={playerUrl(r.id)} aria-label="Открыть в плеере">
+                {narrow ? 'Плеер' : 'Открыть в плеере'}
               </Button>
               <Menu
                 label="Действия с прогоном"
@@ -136,17 +142,15 @@ export default function RunDetail() {
         <div className={styles.notFound}>
           <EmptyState
             icon="list"
-            title="Прогон не найден"
+            title="Возможно, его удалили"
             action={
               <Button variant="dark" icon="arrow-left" to="/runs">
                 К прогонам
               </Button>
             }
-          >
-            Возможно, его удалили.
-          </EmptyState>
+          />
         </div>
-      ) : run.isError ? (
+      ) : !r && run.isError ? (
         <ErrorBanner error={run.error} onRetry={() => void run.refetch()} retrying={run.isFetching} />
       ) : !r ? (
         <LoadingBento />

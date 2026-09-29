@@ -24,7 +24,7 @@ function Meta({ job, recording, children }: { job: Job; recording?: Recording; c
     <div className={styles.mt}>
       <Icon name={recording ? SOURCE_ICON[recording.source] : 'file'} size={15} />
       {recording && <b className={styles.src}>{SOURCE_LABEL[recording.source]} ·</b>}
-      {children ?? <span>{job.preset_name}</span>}
+      {children ?? <span className={styles.ell}>{job.preset_name}</span>}
     </div>
   );
 }
@@ -42,7 +42,7 @@ export function QueuedRow({ job, recording, compact }: RowProps) {
           {job.recording_name}
         </div>
         <Meta job={job} recording={recording}>
-          <span>
+          <span className={styles.ell}>
             {job.preset_name}
             {frames !== null ? ` · ${fmtFrames(frames)}` : ''}
             {recording && recording.duration_s !== null ? ` · ${fmtDuration(recording.duration_s)}` : ''}
@@ -76,7 +76,7 @@ export function FinishedRow({ job, recording, run, compact }: RowProps & { run?:
           {run?.name ?? job.recording_name}
         </div>
         <Meta job={job} recording={recording}>
-          <span>
+          <span className={styles.ell}>
             {fmtFrames(frames)}
             {took !== null ? ` · за ${fmtDuration(took)}` : ''}
           </span>
@@ -114,7 +114,7 @@ export function FailedRow({ job, recording, compact, onLog }: RowProps & { onLog
             </span>
           ) : (
             <span className={styles.ell}>
-              <b>отменено</b>
+              {compact ? <b>отменено</b> : <b>{recording ? SOURCE_LABEL[recording.source] : job.preset_name}</b>}
               {recording ? ` · ${recordingMeta(recording, false)}` : ''}
             </span>
           )}

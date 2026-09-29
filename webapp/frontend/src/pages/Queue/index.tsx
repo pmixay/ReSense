@@ -7,7 +7,7 @@ import { Button, Card, EmptyState, ErrorBanner, PageHeader, Spinner } from '../.
 import { FailedRow, FinishedRow, QueuedRow } from './JobRows';
 import { LogDialog } from './LogDialog';
 import { CountChips } from './QueueParts';
-import { RunningJob } from './RunningJob';
+import { JobActions, JobCard } from './JobCard';
 import { useQueue } from './useQueue';
 import styles from './Queue.module.css';
 
@@ -17,6 +17,7 @@ export default function Queue() {
   const [logJob, setLogJob] = useState<Job | null>(null);
   const closeLog = useCallback(() => setLogJob(null), []);
   const running = groups.running[0];
+  const lastFinished = finished[0];
   const loading = jobs.isLoading;
 
   const body = (content: ReactNode) =>
@@ -35,7 +36,7 @@ export default function Queue() {
       <PageHeader
         title="Очередь"
         station={1}
-        chips={jobs.data ? <CountChips groups={groups} /> : undefined}
+        chips={jobs.data ? <CountChips groups={groups} variant="outline" /> : undefined}
         actions={
           <>
             <Button variant="outline" icon="trash" onClick={() => clear.mutate()} loading={clear.isPending} disabled={finished.length === 0}>
@@ -50,14 +51,17 @@ export default function Queue() {
       {clear.isError && <ErrorBanner error={clear.error} compact className={styles.topErr} />}
       <section className={`grid-12 fill-viewport ${styles.grid}`}>
         <Card
-          title="В работе"
-          help="Детектор обрабатывает одну запись за раз, остальные ждут в порядке очереди. Прогон появляется в «Прогонах», когда задача готова."
+          title={running || !lastFinished ? 'В работе' : 'Последняя задача'}
+          help="Детектор обрабатывает одну запись за раз, остальные ждут в порядке очереди. Готовый прогон появляется в «Прогонах»."
           helpPlacement="bottom-start"
           className={styles.main}
+          actions={!running && lastFinished ? <JobActions job={lastFinished} onLog={setLogJob} /> : undefined}
         >
           {body(
             running ? (
-              <RunningJob job={running} recording={recById.get(running.recording_id)} variant="full" />
+              <JobCard job={running} recording={recById.get(running.recording_id)} variant="full" />
+            ) : lastFinished ? (
+              <JobCard job={lastFinished} recording={recById.get(lastFinished.recording_id)} variant="full" headActions={false} />
             ) : (
               <EmptyState
                 icon="cpu"

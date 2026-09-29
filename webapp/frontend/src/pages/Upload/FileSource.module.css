@@ -6,10 +6,12 @@
   background: radial-gradient(circle at 50% 58%, rgba(22, 21, 26, 0.035), rgba(22, 21, 26, 0) 55%), var(--well-3);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
   position: relative;
-  padding: 92px 14px 60px;
+  padding: 14px 14px 16px;
+  gap: 10px;
+  overflow: hidden;
+  container: drop / size;
   transition: background-color 0.15s, border-color 0.15s;
 }
 .over {
@@ -17,10 +19,7 @@
   background: var(--well-2);
 }
 .top {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  top: 14px;
+  flex: none;
   z-index: 2;
 }
 .card {
@@ -113,8 +112,11 @@
 }
 
 .prompt {
+  flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 34px;
 }
 .big {
@@ -140,10 +142,7 @@
   margin-top: 18px;
 }
 .fm {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 16px;
+  flex: none;
   display: flex;
   flex-wrap: wrap;
   row-gap: 8px;
@@ -214,9 +213,6 @@
   .or {
     margin-top: 14px;
   }
-  .drop {
-    padding: 84px 14px 54px;
-  }
   .prompt {
     gap: 28px;
   }
@@ -226,5 +222,42 @@
   .fi {
     width: 40px;
     height: 40px;
+  }
+}
+
+/* the zone compacts by its own height (the chosen recording's card takes the top) */
+@container drop (max-height: 330px) {
+  .big {
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 0 0 8px var(--red-tint), 0 12px 20px -12px rgba(228, 0, 13, 0.7);
+  }
+  .big svg {
+    width: 26px;
+    height: 26px;
+  }
+  .h {
+    font-size: 19px;
+  }
+  .or {
+    margin-top: 10px;
+  }
+  .prompt {
+    gap: 22px;
+  }
+  .fchip {
+    height: 28px;
+    font-size: var(--fs-min);
+  }
+  .fci {
+    display: none;
+  }
+}
+@container drop (max-height: 250px) {
+  .big {
+    display: none;
+  }
+  .fm {
+    display: none;
   }
 }

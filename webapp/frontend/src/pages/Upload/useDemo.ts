@@ -19,6 +19,7 @@ export const SCENARIO_LABEL: Record<DemoScenario, string> = {
   clear: 'Чистый путь',
 };
 
+const POLL_AFTER_S = 0.8;
 const newProgressId = () => `demo-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 
 /** Progress 0..1 and seconds left: the server's fraction when known, else elapsed / expected. */
@@ -43,10 +44,12 @@ export function useDemoGenerator() {
     return () => window.clearInterval(t);
   }, [active]);
 
+  const elapsedS = active ? Math.max(0, (now - active.t0) / 1000) : 0;
   const poll = useQuery<DemoProgress, ApiError>({
     queryKey: ['demo-progress', active?.id ?? ''],
     queryFn: ({ signal }) => api.get<DemoProgress>(`/recordings/demo/progress/${encodeURIComponent(active?.id ?? '')}`, { signal }),
-    enabled: !!active,
+    // the POST registers the id when the server starts on it: give it a head start (no 404 race)
+    enabled: !!active && elapsedS >= POLL_AFTER_S,
     refetchInterval: 400,
     retry: false,
     gcTime: 0,
@@ -68,7 +71,6 @@ export function useDemoGenerator() {
     [mutateAsync],
   );
 
-  const elapsedS = active ? Math.max(0, (now - active.t0) / 1000) : 0;
   const real = active && poll.data && !poll.isError ? poll.data.fraction : null;
   const { fraction, etaS } = active ? demoProgress(elapsedS, demoSeconds(active.req.seconds), real) : { fraction: 0, etaS: 0 };
 

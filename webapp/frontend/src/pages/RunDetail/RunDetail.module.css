@@ -5,23 +5,27 @@
   grid-template-rows: minmax(92px, 118fr) 186px minmax(0, 408fr);
   gap: 16px;
   height: calc(100vh - var(--chrome-h));
-  min-height: 600px;
+  min-height: 640px;
 }
 
 /* ---- KPI tiles */
 .kpis {
   grid-column: 1 / 13;
   display: grid;
-  grid-template-columns: 118px 150px repeat(6, minmax(0, 1fr));
+  grid-template-columns: 118px 162px repeat(6, minmax(0, 1fr));
   gap: 14px;
   min-height: 0;
 }
 .kpis > .kpi {
-  padding: 16px 18px 15px;
+  padding: 16px 16px 15px;
   min-height: 0;
 }
 .kpis > .kpi > div:first-child {
   gap: 6px;
+}
+.kpiIcon {
+  display: inline-flex;
+  flex: none;
 }
 
 /* ---- timeline */
@@ -187,46 +191,33 @@
   flex: none;
   padding: 16px 20px 16px;
 }
-.evGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-.evStat {
-  border-radius: 16px;
-  background: var(--well);
-  padding: 10px 11px 9px;
-  min-width: 0;
+
+.evRows {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
+}
+.evRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  border-radius: 12px;
+  background: var(--well);
+  padding: 0 12px;
+  font-weight: 700;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+  min-width: 0;
 }
 .evNum {
   font-family: var(--f-head);
   font-weight: 800;
-  font-size: 20px;
-  line-height: 1.05;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.evNum small {
-  font-size: 11px;
-  margin-left: 3px;
-}
-.evLab {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: 800;
-  font-size: var(--fs-min);
-  white-space: nowrap;
-  margin-top: 3px;
+  font-size: 14px;
 }
 .evSub {
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--fs-min);
-  white-space: nowrap;
 }
 
 /* ---- side: 3D + downloads */
@@ -350,11 +341,23 @@
 }
 
 /* ---- header bits */
+.title {
+  font-size: inherit;
+}
 .preset {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   flex: none;
+}
+.presetChip {
+  max-width: 150px;
+}
+.ell {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .helpList {
   margin: 6px 0 0;
@@ -372,8 +375,17 @@
 }
 
 @media (max-width: 1500px) {
+  .kpiIcon {
+    display: none;
+  }
+  .kpis > .kpi > div:first-child {
+    font-size: 12px;
+  }
+  .dlt {
+    padding: 9px 10px;
+  }
   .kpis {
-    grid-template-columns: 104px 136px repeat(6, minmax(0, 1fr));
+    grid-template-columns: 106px 152px repeat(6, minmax(0, 1fr));
     gap: 12px;
   }
   .kpis > .kpi {
@@ -384,9 +396,30 @@
   }
 }
 @media (max-height: 950px) {
+  .evc {
+    padding-top: 13px;
+    padding-bottom: 12px;
+  }
+  .evRow {
+    height: 27px;
+  }
   .kpis > .kpi {
     padding-top: 13px;
     padding-bottom: 11px;
+  }
+  .kpis > .kpi > div:nth-child(2) {
+    font-size: 26px;
+    padding-top: 4px;
+  }
+  .kpis > .kpi > div:nth-child(3) {
+    margin-top: 4px;
+  }
+  .grid {
+    grid-template-rows: minmax(88px, 118fr) 172px minmax(0, 408fr);
+  }
+  .tl {
+    padding-top: 14px;
+    padding-bottom: 8px;
   }
   .dist,
   .ev {
@@ -400,5 +433,31 @@
   }
   .evr {
     min-height: 56px;
+  }
+}
+
+@media (max-width: 1320px) {
+  .title {
+    font-size: 26px;
+  }
+  .chartLegend {
+    display: none;
+  }
+  .kpis {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .kpis > .kpi {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .kpis > .kpi > div:first-child {
+    font-size: 12px;
+  }
+  .dl {
+    padding: 14px 14px;
+  }
+  .dlg {
+    gap: 6px;
   }
 }

@@ -6,10 +6,15 @@
   flex-direction: column;
   min-width: 0;
 }
+.job > * {
+  flex: none; /* the processing line has only absolute children: it must not shrink to 0 */
+}
 .full {
   flex: 1;
   min-height: 0;
   padding: 22px 26px 22px;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 .head {
   display: flex;
@@ -246,4 +251,20 @@
   .timings {
     padding-top: 10px;
   }
+}
+
+.acts {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.ell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.jobErr {
+  margin: 4px 0 8px;
 }

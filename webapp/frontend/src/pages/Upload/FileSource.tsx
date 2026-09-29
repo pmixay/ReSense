@@ -1,7 +1,7 @@
 // «Файл»: a drop zone for files AND folders (folders are walked with webkitGetAsEntry), «Выбрать
 // файлы» / «Выбрать папку» (input webkitdirectory); the upload streams with progress (bytes, speed,
 // ETA, cancel); after finalize the detected recording becomes the chosen one.
-import { useEffect, useRef, useState, type DragEvent } from 'react';
+import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import { useUpload, useUploadLabels } from '../../api/hooks';
 import type { Recording } from '../../api/types';
 import { filesFromDataTransfer, suggestName, toUploadItems, type UploadItem } from '../../api/upload';
@@ -18,7 +18,7 @@ interface Picked {
   bytes: number;
 }
 
-function UploadingCard({ picked, upload }: { picked: Picked; upload: ReturnType<typeof useUpload> }) {
+function UploadingCard({ picked, upload, onCancel }: { picked: Picked; upload: ReturnType<typeof useUpload>; onCancel: () => void }) {
   const p = upload.progress;
   const finalizing = p?.phase === 'finalizing' || p?.phase === 'done';
   const staging = !p || p.phase === 'staging';
@@ -62,7 +62,7 @@ function UploadingCard({ picked, upload }: { picked: Picked; upload: ReturnType<
           )}
         </div>
       </div>
-      <IconButton icon="x" label="Отменить загрузку" tooltip variant="well" size="sm" onClick={upload.abort} disabled={finalizing} />
+      <IconButton icon="x" label="Отменить загрузку" tooltip variant="well" size="sm" onClick={onCancel} disabled={finalizing} />
     </div>
   );
 }
@@ -89,13 +89,19 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     dirRef.current?.setAttribute('directory', '');
   }, []);
 
+  const cancelled = useRef(false);
   const start = async (p: Picked) => {
+    cancelled.current = false;
     const rec = await upload.start(p.items, p.name || undefined);
-    if (rec) {
+    if (rec || cancelled.current) {
       setPicked(null);
       upload.reset();
-      onRecording(rec);
     }
+    if (rec) onRecording(rec);
+  };
+  const cancel = () => {
+    cancelled.current = true;
+    upload.abort();
   };
 
   const take = (items: UploadItem[]) => {
@@ -131,8 +137,8 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     }
   };
 
-  let top = null;
-  if (picked && upload.status === 'uploading') top = <UploadingCard picked={picked} upload={upload} />;
+  let top: ReactNode = null;
+  if (picked && upload.status === 'uploading') top = <UploadingCard picked={picked} upload={upload} onCancel={cancel} />;
   else if (picked && upload.status === 'error')
     top = (
       <div className={styles.errBox}>

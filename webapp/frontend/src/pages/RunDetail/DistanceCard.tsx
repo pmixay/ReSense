@@ -1,7 +1,7 @@
 // «Дистанция»: the detector's nearest in-gauge distance over time with the labelled object's extent as
 // a band, the first STOP and the minimum marked; a toggle shows the clear track length or the
 // visibility instead. Hover shows frame / time / decision / value; a click opens the player there.
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { RunDetail, RunLabels, RunSeries } from '../../api/types';
 import { Card, DecisionStrip, ErrorBanner, Segmented, Spinner } from '../../components';
@@ -38,8 +38,15 @@ export function DistanceCard({
   const hasNearest = !!series?.nearest.some((v) => v !== null);
   const [picked, setPicked] = useState<Metric | null>(null);
   const metric: Metric = picked ?? (series && !hasNearest ? 'clear' : 'nearest');
-  const band: ChartBand | null =
-    series && metric === 'nearest' && labels?.available && labels.near.length === series.t.length ? { t: series.t, lo: labels.near, hi: labels.far } : null;
+  const band = useMemo<ChartBand | null>(
+    () => (series && metric === 'nearest' && labels?.available && labels.near.length === series.t.length ? { t: series.t, lo: labels.near, hi: labels.far } : null),
+    [series, metric, labels],
+  );
+  // stretches without a detection: «not confirmed yet» where the labels have an object
+  const emptyLabel = useCallback(
+    (a: number, b: number) => (band && band.lo.slice(a, b + 1).some((v) => v !== null) ? 'объект не подтверждён' : 'нет объекта в габарите'),
+    [band],
+  );
   const bandRange = useMemo(() => {
     if (!band) return null;
     const lo = band.lo.filter((v): v is number => v !== null);
@@ -86,7 +93,7 @@ export function DistanceCard({
       actions={
         <>
           <div className={styles.chartLegend}>
-            <span>
+            <span className={bandRange ? styles.hideNarrow : undefined}>
               <i className={styles.lgLine} aria-hidden />
               {unitLabel}
             </span>
@@ -127,7 +134,7 @@ export function DistanceCard({
             points={points}
             unit="м"
             minSpan={metric === 'nearest' ? 1.5 : 10}
-            emptyLabel={metric === 'nearest' ? 'нет объекта в габарите' : undefined}
+            emptyLabel={metric === 'nearest' ? emptyLabel : undefined}
             cursor={cursorPos !== null && cursorPos < series.t.length ? series.t[cursorPos] : null}
             ariaLabel={`График: ${unitLabel} по времени`}
             footer={<DecisionStrip decisions={series.decisions} height={7} radius={3.5} ariaLabel="Решения по времени" />}
@@ -149,7 +156,7 @@ export function DistanceCard({
                   </div>
                   {metric !== 'nearest' && (
                     <div className={styles.tipSub}>
-                      {metric === 'clear' ? 'свободно' : 'видимость'} {fmtMeters(v, 0)}
+                      {metric === 'clear' ? 'свободный путь' : 'видимость'} {fmtMeters(v, 0)}
                     </div>
                   )}
                   {near !== null && near !== undefined && <div className={styles.tipSub}>разметка {fmtRange(near, band?.hi[i] ?? near)}</div>}
