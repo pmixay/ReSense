@@ -156,6 +156,20 @@ def test_comparison_rejects_each_preregistered_regression(metric, value):
     assert not result["passed"] and result["regressions"][0]["metric"] == metric
 
 
+def test_comparison_rejects_a_false_stop_moved_to_a_new_frame():
+    baseline = report(positive=False)
+    rows = [{"frame": i, "unmatched_stop": i == 3} for i in range(16)]
+    for encoding in baseline["cases"][0]["encodings"].values():
+        encoding["rows"] = deepcopy(rows)
+    current = deepcopy(baseline)
+    for encoding in current["cases"][0]["encodings"].values():
+        encoding["rows"] = [{"frame": i, "unmatched_stop": i == 12} for i in range(16)]  # same count
+    result = evaluation.compare_reports(baseline, current)
+    assert not result["passed"]
+    assert {r["metric"] for r in result["regressions"]} == {"new_unmatched_stop_frames"}
+    assert result["regressions"][0]["current"] == [12]
+
+
 def test_comparison_rejects_changed_clouds_and_missing_cases():
     baseline = report()
     current = deepcopy(baseline)

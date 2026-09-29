@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import asdict
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -37,6 +38,21 @@ from resense.detector import Detector  # noqa: E402
 from resense.frame import axis_matrix, frame_from_compact  # noqa: E402
 from resense.pointcloud import COMPACT_DTYPE, compact_to_compact16  # noqa: E402
 from resense.sensor import RING_ELEVATION_DEG  # noqa: E402
+
+_OBSERVER = None
+
+
+def _geometry():
+    """The geometry auditor of this checkout (``ROOT``), the file whose hash the report records.
+    ``scripts`` is a namespace package and ``DETECTOR_ROOT`` comes first on ``sys.path``, so a plain
+    ``from scripts.synthetic_geometry import ...`` would load the detector checkout's copy instead."""
+    global _OBSERVER
+    if _OBSERVER is None:
+        spec = importlib.util.spec_from_file_location("resense_observer_synthetic_geometry",
+                                                      ROOT / "scripts" / "synthetic_geometry.py")
+        _OBSERVER = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(_OBSERVER)
+    return _OBSERVER
 
 def validate_source_origin():
     if Path(sys.modules["resense"].__file__).resolve().parent != DETECTOR_ROOT / "resense":
@@ -96,8 +112,7 @@ def sequence_cases(protocol, split):
         case["floor_z"] = settings["geometry"]["floor_z"]
         case["axis_y"] = settings["geometry"]["axis_y"]
         if "physical_geometry" in protocol:
-            from scripts.synthetic_geometry import audit_case
-            physical = audit_case(case)
+            physical = _geometry().audit_case(case)
             if case["positive"] and (not physical["body_intersects_envelope_interior"]
                     or physical["vertical_envelope_overlap_m"] + 1e-10
                     < protocol["physical_geometry"]["minimum_positive_vertical_overlap_m"]):
@@ -326,8 +341,8 @@ def evaluate(args):
                 result = detectors[encoding].process(frame)
                 saved_row = observation(result, case, returns, row["index"], row["stamp_s"], protocol["matching"])
                 if "physical_geometry" in case:
-                    from scripts.synthetic_geometry import physical_return_count
-                    saved_row["target_returns_in_physical_envelope"] = physical_return_count(array, target_mask, cfg.sensor, case)
+                    saved_row["target_returns_in_physical_envelope"] = _geometry().physical_return_count(
+                        array, target_mask, cfg.sensor, case)
                 outputs[encoding].append(saved_row)
         report["cases"].append({"case": {k: v for k, v in case.items() if k != "frames"},
                                 "input_sha256": json_hash(case["frames"]),
@@ -383,6 +398,13 @@ def compare_reports(baseline, current):
                 gain = a is None or (b is not None and direction * (b - a) > 0)
                 entry = {"case": name, "encoding": encoding, "metric": key, "baseline": a, "current": b}
                 (improvements if gain else regressions).append(entry)
+            # "no new false STOP frame": equal counts may still move a false STOP to another frame
+            was = {r["frame"] for r in old[name]["encodings"][encoding].get("rows", []) if r["unmatched_stop"]}
+            added = [r["frame"] for r in new[name]["encodings"][encoding].get("rows", [])
+                     if r["unmatched_stop"] and r["frame"] not in was]
+            if added:
+                regressions.append({"case": name, "encoding": encoding, "metric": "new_unmatched_stop_frames",
+                                    "baseline": sorted(was), "current": added})
     return {"passed": not regressions, "regressions": regressions, "improvements": improvements,
             "detector_gain": bool(improvements and not regressions)}
 

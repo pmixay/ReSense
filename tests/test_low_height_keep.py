@@ -351,3 +351,27 @@ def test_sparse_bed_transients_and_permanent_height_failure_cannot_persist():
     assert not any(bed_sequence(True, [0.12] * 2 + [0.09] * 12))
     out = bed_sequence(True, [0.12] * 6 + [0.09] * 10)
     assert all(out[5:9]) and not any(out[9:])
+
+
+def _replay_module():
+    import importlib.util
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[1] / "scripts" / "evaluate_low_height_keep.py"
+    spec = importlib.util.spec_from_file_location("evaluate_low_height_keep", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_replay_compares_unmatched_detections_by_place_not_track_id():
+    new_unmatched = _replay_module().new_unmatched
+    baseline = [{"frame": 5, "id": 7, "center": [40.0, 1.0, 0.5]}, {"frame": 9, "id": 8, "center": [30.0, 0.0, 0.2]}]
+    # the candidate kept one extra track alive earlier: the same false alarms carry ids + 1
+    renumbered = [dict(r, id=r["id"] + 1) for r in baseline]
+    assert new_unmatched(baseline, renumbered) == []
+    # a new false alarm that happens to reuse a baseline (frame, id) is still new
+    moved = [{"frame": 5, "id": 7, "center": [55.0, -1.0, 0.5]}, baseline[1]]
+    assert new_unmatched(baseline, moved) == [moved[0]]
+    # one baseline alarm pairs with one candidate alarm only
+    twice = [baseline[0], dict(baseline[0], id=99)]
+    assert new_unmatched(baseline, twice) == [twice[1]]

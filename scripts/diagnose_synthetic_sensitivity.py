@@ -23,7 +23,7 @@ from resense.config import DetectorConfig  # noqa: E402
 from resense.frame import frame_from_compact  # noqa: E402
 from resense.gauge import point_in_polygon  # noqa: E402
 from resense.pointcloud import compact_to_compact16, compact_to_xyz, expand_compact16  # noqa: E402
-from synthetic_sensitivity import file_hash, json_hash, observation, source_identity  # noqa: E402
+from synthetic_sensitivity import _geometry, file_hash, json_hash, observation, source_identity  # noqa: E402
 from trace_detector_stages import TraceDetector, cluster_record  # noqa: E402
 
 
@@ -202,6 +202,10 @@ def run(args):
                     raise ValueError("target mask row mapping differs from production decoder")
                 result = detector.process_target(frame, {name: ids})
                 actual = observation(result, case, int(mask.sum()), source_row["index"], source_row["stamp_s"], manifest["protocol"]["matching"])
+                if "physical_geometry" in case:
+                    # v2 rows carry this input-side count too (synthetic_sensitivity.evaluate)
+                    actual["target_returns_in_physical_envelope"] = _geometry().physical_return_count(
+                        array, mask, cfg.sensor, case)
                 expected = by_name[name]["encodings"][encoding]["rows"][source_row["index"]]
                 if semantic_observation(actual) != semantic_observation(expected):
                     raise ValueError(f"instrumented output differs: {name}, {encoding}, frame {source_row['index']}")

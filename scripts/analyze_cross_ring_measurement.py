@@ -16,7 +16,10 @@ def load_rows(directory, bag):
     rows = []
     for path in paths:
         with path.open(encoding="utf-8") as fh:
-            rows.extend(json.loads(line) for line in fh if line.strip())
+            piece = [json.loads(line) for line in fh if line.strip()]
+        if piece:
+            piece[0]["_piece_start"] = True   # each piece ran on a fresh detector: episodes restart
+        rows.extend(piece)
     return rows
 
 
@@ -41,7 +44,8 @@ def structural(row):
 
 def episodes(rows):
     values = [bool(row.get("obstacle")) for row in rows]
-    starts = sum(value and (i == 0 or not values[i - 1]) for i, value in enumerate(values))
+    starts = sum(value and (i == 0 or not values[i - 1] or bool(rows[i].get("_piece_start")))
+                 for i, value in enumerate(values))
     return {"frames": sum(values), "episodes": starts}
 
 

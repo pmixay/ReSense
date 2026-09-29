@@ -67,6 +67,27 @@ def counts(rows, labels):
                 d.get("reason") == "low_height_hold" for d in r["detections"])]}
 
 
+def new_unmatched(baseline, candidate, tol=0.5):
+    """Candidate unmatched detections with no baseline unmatched detection in the same frame at the
+    same place (``center`` within ``tol`` m on every axis), paired one to one. Track ids are not
+    compared: ``Tracker`` numbers tracks with one counter, so one track kept alive by the candidate
+    renumbers every later track and would make every existing false alarm look new."""
+    free = {}
+    for r in baseline:
+        free.setdefault(r["frame"], []).append(r)
+    added = []
+    for r in candidate:
+        pool = free.get(r["frame"], [])
+        near = [k for k, b in enumerate(pool)
+                if all(abs(p - q) <= tol for p, q in zip(r["center"], b["center"]))]
+        if near:
+            best = min(near, key=lambda k: sum((p - q) ** 2 for p, q in zip(r["center"], pool[k]["center"])))
+            pool.pop(best)
+        else:
+            added.append(r)
+    return added
+
+
 class HeightTrace(TraceDetector):
     def __init__(self, cfg, roi, frames):
         super().__init__(cfg)
@@ -159,10 +180,8 @@ def main():
             print(f"raw frame {k}; schedules {','.join(names)}", flush=True)
     for name, (baseline, current) in output.items():
         a, b = counts(baseline, args.labels), counts(current, args.labels)
-        unmatched_key = lambda r: (r["frame"], r["id"])  # noqa: E731
-        previous = {unmatched_key(row) for row in a["unmatched"]}
         entry = {"baseline": a, "candidate": b,
-                 "new_unmatched": [r for r in b["unmatched"] if unmatched_key(r) not in previous],
+                 "new_unmatched": new_unmatched(a["unmatched"], b["unmatched"]),
                  "new_labelled_misses": [r for r in b["misses"] if r not in a["misses"]],
                  "inputs": [{"frame": r["frame"], "stamp": r["stamp"]} for r in baseline]}
         entry["passed_no_regression"] = not entry["new_unmatched"] and not entry["new_labelled_misses"]

@@ -150,3 +150,17 @@ def test_default_decisions_do_not_depend_on_ring_metadata():
         b = tagged.process(replace(current, ring=ring)).to_dict()
         assert {key: a[key] for key in keys} == {key: b[key] for key in keys}
     assert a["n_candidates"] > 0
+
+
+def test_measurement_summary_restarts_stop_episodes_at_ride_piece_boundaries(tmp_path):
+    import importlib.util
+    import json
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[1] / "scripts" / "analyze_cross_ring_measurement.py"
+    spec = importlib.util.spec_from_file_location("analyze_cross_ring_measurement", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    for i, alarms in enumerate(([False, True], [True, False])):   # a STOP ends piece 0, another starts piece 1
+        (tmp_path / f"new_data_{i}.jsonl").write_text("".join(json.dumps({"obstacle": a}) + "\n" for a in alarms))
+    rows = module.load_rows(tmp_path, "new_data")
+    assert module.episodes(rows) == {"frames": 2, "episodes": 2}

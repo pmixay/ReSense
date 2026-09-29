@@ -49,3 +49,23 @@ def test_measurement_rejects_implicit_installed_source_mismatch(installed_packag
     result = observe(installed_package, measure=True)
     assert result.returncode != 0
     assert "does not belong to selected detector checkout" in result.stderr
+
+
+def test_geometry_auditor_comes_from_the_observer_checkout(tmp_path):
+    """The report hashes this checkout's scripts/synthetic_geometry.py; the auditor must be that file
+    even when the selected detector checkout has its own copy (``scripts`` is a namespace package)."""
+    detector = tmp_path / "detector"
+    shutil.copytree(ROOT / "resense", detector / "resense", ignore=shutil.ignore_patterns("__pycache__"))
+    (detector / "scripts").mkdir()
+    (detector / "scripts/synthetic_geometry.py").write_text(
+        "def audit_case(case):\n    raise RuntimeError('detector checkout auditor used')\n")
+    protocol = ROOT / "docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json"
+    code = (f"import json, runpy; ns = runpy.run_path({str(SCRIPT)!r}, run_name='observer'); "
+            f"print(len(ns['sequence_cases'](json.load(open({str(protocol)!r})), 'development')))")
+    environment = {**os.environ, "RESENSE_DETECTOR_ROOT": str(detector),
+                   "OPENBLAS_NUM_THREADS": "1", "OMP_NUM_THREADS": "1"}
+    environment.pop("PYTHONPATH", None)
+    result = subprocess.run([sys.executable, "-c", code], cwd=tmp_path, env=environment,
+                            capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stderr
+    assert int(result.stdout.strip()) > 0
