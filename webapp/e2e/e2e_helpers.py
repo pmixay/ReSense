@@ -27,6 +27,23 @@ def real_errors(errors: list[str], allowed: tuple[int, ...] = (), patterns: tupl
     return out
 
 
+def box_of(locator, timeout: float = 15_000, scroll: bool = True) -> dict:
+    """The element's bounding box once it is visible and laid out. ``Locator.bounding_box()`` does not
+    wait: right after a navigation a lazily rendered chart is not in the layout yet and it returns
+    None (CI run 36613216928). ``scroll=False`` measures the page as it is (layout-fit checks)."""
+    locator.wait_for(state="visible", timeout=timeout)
+    if scroll:
+        locator.scroll_into_view_if_needed(timeout=timeout)
+    deadline = time.monotonic() + timeout / 1000
+    while True:
+        box = locator.bounding_box()
+        if box and box["width"] > 0 and box["height"] > 0:
+            return box
+        if time.monotonic() > deadline:
+            raise AssertionError(f"{locator} is visible but has no layout box after {timeout / 1000:.0f} s")
+        time.sleep(0.05)
+
+
 def api_route(base: str, path_re: str) -> re.Pattern:
     """A ``page.route`` pattern for backend calls only: ``base + /api + path_re`` (the page's own
     assets never match)."""

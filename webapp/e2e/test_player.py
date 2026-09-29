@@ -12,7 +12,7 @@ import re
 from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
-from e2e_helpers import Held, api_route, real_errors
+from e2e_helpers import Held, api_route, box_of, real_errors
 
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
@@ -252,7 +252,7 @@ def test_events_scrubber_loop_and_end(app, seeded):
     expect(page.get_by_role("region", name="Решение")).to_contain_text("в габарите 2,1 × 3,0 м")
 
     # a click on the strip seeks there; the keyboard works on the focused slider too
-    box = slider(page).bounding_box()
+    box = box_of(slider(page))
     page.mouse.click(box["x"] + box["width"] * 0.75, box["y"] + box["height"] / 2)
     p = playhead(page)
     assert abs(p - round(0.75 * n)) <= 2, p
@@ -307,7 +307,7 @@ def test_deep_link_shows_real_values(app, backend, seeded):
     page.get_by_role("region", name="До препятствия").get_by_role("button").hover()
     tip = page.get_by_role("tooltip")
     expect(tip).to_contain_text("в этом кадре")
-    b = tip.bounding_box()
+    b = box_of(tip)
     assert b["x"] >= 0 and b["y"] >= 0 and b["x"] + b["width"] <= 1600 and b["y"] + b["height"] <= 1000, b
 
     # out-of-range and junk parameters are clamped / ignored
@@ -507,7 +507,7 @@ def test_fullscreen_orbit_and_back(app, seeded):
 
     # dragging the 3D view frees the camera; double-click (or the chip's button) gives it back
     canvas = page.get_by_role("img", name="3D-вид из кабины")
-    box = canvas.bounding_box()
+    box = box_of(canvas)
     page.mouse.move(box["x"] + 800, box["y"] + 350)
     page.mouse.down()
     page.mouse.move(box["x"] + 900, box["y"] + 320, steps=8)
@@ -539,8 +539,8 @@ def test_cab_fits_small_viewports(app, seeded):
         open_player(app, f"/player/{rid}?pos=30")
         assert page.evaluate("document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth")
         for name in ("Схема пути", "Решение", "До препятствия", "Задержка и частота", "Исправность"):
-            b = page.get_by_role("region", name=name).bounding_box()
+            b = box_of(page.get_by_role("region", name=name), scroll=False)
             assert b and b["x"] >= 0 and b["y"] >= 0 and b["x"] + b["width"] <= w and b["y"] + b["height"] <= h, (w, h, name, b)
-        sb = slider(page).bounding_box()
+        sb = box_of(slider(page), scroll=False)
         assert sb["y"] + sb["height"] <= h, (w, h, sb)
     assert real_errors(app.errors) == []

@@ -10,7 +10,7 @@ import re
 import urllib.request
 
 import pytest
-from e2e_helpers import Held, api_route, real_errors
+from e2e_helpers import Held, api_route, box_of, real_errors
 
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
@@ -257,7 +257,7 @@ def test_run_page_timeline_chart_events_and_downloads(app, backend, seeded):
     back_to(page, rf"/runs/{rid}$")
     # a click on a frame opens that frame
     strip = page.get_by_role("slider", name=re.compile("^Решения по кадрам: выберите кадр"))
-    box = strip.bounding_box()
+    box = box_of(strip)
     target = len(frames) // 4
     page.mouse.click(box["x"] + (target + 0.5) / len(frames) * box["width"], box["y"] + box["height"] / 2)
     assert player_pos(page, rid) == target
@@ -265,7 +265,7 @@ def test_run_page_timeline_chart_events_and_downloads(app, backend, seeded):
 
     # the distance chart: hover reads frame / time / decision, a click opens the player
     chart = page.get_by_role("group", name="График: детектор по времени")
-    cb = chart.bounding_box()
+    cb = box_of(chart)
     page.mouse.move(cb["x"] + cb["width"] * 0.6, cb["y"] + cb["height"] * 0.4)
     tip = chart.locator("[class*=_tip_]")
     expect(tip).to_contain_text(re.compile(r"кадр \d+ · [\d,]+\s?с"))
@@ -383,7 +383,7 @@ def test_compare_deep_link_table_strips_chart_and_diff(app, backend, seeded):
 
     # the strips share one time axis: hovering reads each run's frame there
     area = page.locator("[class*=_hoverArea_]")
-    ab = area.bounding_box()
+    ab = box_of(area)
     page.mouse.move(ab["x"] + ab["width"] * 0.3, ab["y"] + 10)
     reads = page.locator("[class*=_stripRead_]")
     expect(reads).to_have_count(3)
@@ -391,14 +391,14 @@ def test_compare_deep_link_table_strips_chart_and_diff(app, backend, seeded):
         expect(reads.nth(i)).to_have_text(re.compile(rf"кадр \d+ · {DECISION_WORD}"))
     # a click opens the run under the pointer (the third row) in the player
     rows = page.locator("[class*=_stripRow_]")
-    rb = rows.nth(2).bounding_box()
+    rb = box_of(rows.nth(2))
     page.mouse.click(ab["x"] + ab["width"] * 0.3, rb["y"] + rb["height"] / 2)
     player_pos(page, ids["approach"])
     back_to(page, r"/compare\?runs=")
 
     # the overlaid distances: one tooltip row per run
     chart = page.get_by_role("group", name="Дистанция по времени, все прогоны")
-    cb = chart.bounding_box()
+    cb = box_of(chart)
     page.mouse.move(cb["x"] + cb["width"] * 0.5, cb["y"] + cb["height"] * 0.5)
     expect(chart.locator("[class*=_tipRow_]")).to_have_count(3)
     page.get_by_role("radio", name="Путь").click()

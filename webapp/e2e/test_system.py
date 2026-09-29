@@ -14,7 +14,7 @@ import threading
 import urllib.parse
 
 import pytest
-from e2e_helpers import Held, api_route, free_port, real_errors
+from e2e_helpers import Held, api_route, box_of, free_port, real_errors
 
 pw = pytest.importorskip("playwright.sync_api")
 websockets = pytest.importorskip("websockets")
@@ -237,7 +237,7 @@ def test_live_simulation_transport(app, seeded):
 
     # seek while paused: the frame comes at once
     strip = page.get_by_role("slider", name="Перемотка прогона")
-    box = strip.bounding_box()
+    box = box_of(strip)
     target = n // 2
     page.mouse.click(box["x"] + box["width"] * (target + 0.5) / n, box["y"] + box["height"] / 2)
     expect(strip).to_have_attribute("aria-valuenow", str(target))
@@ -301,7 +301,7 @@ def test_live_seek_before_start_uses_the_chosen_transport(app, seeded):
     strip.evaluate("""el => { window.__shown = [];
         new MutationObserver(() => { const v = el.getAttribute('aria-valuenow'); if (v !== null) window.__shown.push(+v); })
           .observe(el, {attributes: true, attributeFilter: ['aria-valuenow']}); }""")
-    box = strip.bounding_box()
+    box = box_of(strip)
     target = n // 3
     with page.expect_websocket(lambda ws: "/api/live/sim" in ws.url) as opened:
         page.mouse.click(box["x"] + box["width"] * (target + 0.5) / n, box["y"] + box["height"] / 2)
