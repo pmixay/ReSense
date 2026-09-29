@@ -9,13 +9,13 @@ WebSocket. The HTTP contract is [`../API.md`](../API.md).
 
 ```bash
 pip install -e ".[dev]"                     # from the repository root: the detector (resense)
-pip install -e webapp/backend               # this package: resense-web
+pip install -e "webapp/backend[dev]"        # this package: resense-web (+ pytest, httpx for the tests)
 python -m resense_web                       # http://0.0.0.0:8080 (serves webapp/frontend/dist when built)
 python -m resense_web --port 8000 --reload  # development, behind Vite on :5173 (proxies /api)
 cd webapp/backend && python -m pytest -q    # tests (~50 s; they write real bags, need open3d + rosbags)
 ```
 
-One command for the whole prototype (builds the frontend when `dist/` is missing, installs nothing
+One command for the whole prototype (builds the frontend when `dist/` is missing or older than the sources, installs nothing
 unless `--install`): `scripts/run_webapp.sh` — http://localhost:8080/, `RESENSE_DATA` defaults to
 `/data/for_hackathon` when it exists.
 
