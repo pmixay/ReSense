@@ -287,6 +287,8 @@ class Detector:
             valid = self._far_both_sides(clusters, valid, floor_valid)
         if cfg.cluster.hanging_enabled and (not cfg.cluster.hanging_needs_rails or self.track.rail_slabs > 0):
             clusters = self._hanging(xyz, frame.intensity, dy_all, h_all, cand, clusters, min(valid, floor_valid))
+        if cfg.cluster.shell_min_top > 0:
+            self._shell(clusters, xyz, dy_all, h_all)
         if cfg.lowobj.rail_start_within > 0:
             # 26.09 (P3 rail start): low clusters near the train that are rail geometry; the rail lines
             # are at the axis +- rails_spacing / 2 of the rail coordinate (dy_rail, as the low stage)
@@ -691,6 +693,32 @@ class Detector:
             if not dup:
                 keep.append(c)
         return keep
+
+    def _shell(self, clusters: List[Cluster], xyz: np.ndarray, dy_all: np.ndarray, h_all: np.ndarray) -> None:
+        """29.09 (cluster.shell_*, after TunnelGuard ``_shell_points``): a far gauge cluster standing on
+        the floor and reaching the upper envelope is infrastructure when the tunnel lining continues
+        right above it (a column, a post, a mast): demoted with reason 'shell' (a shape signature,
+        so an earned STOP is kept by the stop-keep rule and near escalation still wins)."""
+        c = self.cfg.cluster
+        cand = [cl for cl in clusters if cl.zone == "gauge" and not cl.reason and cl.kind != "low"
+                and cl.distance >= c.shell_min_distance and cl.height_max >= c.shell_min_top
+                and cl.height_min < c.shell_max_bottom and cl.points_idx.size]
+        if not cand:
+            return
+        X = xyz[:, 0]
+        for cl in cand:
+            idx = cl.points_idx
+            x0, x1 = float(cl.bbox_min[0]), float(cl.bbox_max[0])
+            ds = 1.0 + 0.01 * x0
+            d0, d1 = float(dy_all[idx].min()) - c.shell_lateral, float(dy_all[idx].max()) + c.shell_lateral
+            top = float(cl.height_max)
+            m = ((X > x0 - ds) & (X < x1 + ds) & (h_all > top) & (h_all < top + c.shell_gap)
+                 & (dy_all > d0) & (dy_all < d1))
+            if int(np.count_nonzero(m)) < c.shell_min_points:
+                continue
+            touch = max(c.shell_touch_min, c.shell_touch_beams * 0.00218 * x0)
+            if float(h_all[m].min()) - top <= touch:
+                cl.reason, cl.zone, cl.demoted = "shell", "warning", True
 
     # -- 6 -------------------------------------------------------------------------------------
     def _confirm(self, clusters: List[Cluster], speed: Optional[float], dt: float):

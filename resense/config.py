@@ -274,6 +274,19 @@ class ClusterConfig:
     hanging_needs_rails: bool = True   # on since 25.09, round 2 (the captain's delegate; pre-registered in p3_thin_hanging_2026-09-25.json addendum_rail_lock, both conditions held): the hanging stage runs only on frames whose track model found the rail pair in the near range (track.rail_slabs > 0): 28 of the ride's 29 hanging groups were station column tops in frames without one; set O thin_hanging keeps 15 STOP frames from 30.1 m, the combined gate identical with and without it; false = every frame
     hanging_yield_gauge_only: bool = True   # 26.09 (safety review): a hanging cluster is dropped only for an overlapping cluster of the other stages that is an obstacle (zone 'gauge', no demotion reason); an advisory one there no longer removes it (a cable hanging to 1.85-2.2 m, 0.65-0.75 m off the axis, was demoted as floating and its hanging cluster dropped: no STOP); false = any overlapping cluster
     wall_face_min_height: float = 2.0  # m, taller than a person (1.5 demoted a person standing on a 1.1 m platform edge, review 22.09); taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
+    # 29.09 (opt-in, 0 = off; after EhimenNathan/tunnelguard-lct2026 core/detector.py _shell_points): a gauge cluster at
+    # least shell_min_distance away that stands on the floor (bottom below shell_max_bottom) and reaches shell_min_top is
+    # tunnel infrastructure when the lining continues right above it: >= shell_min_points returns of the whole frame
+    # within shell_gap above its top, over its lateral extent +- shell_lateral and along-track extent +- (1 + 1 % of X),
+    # the lowest within max(shell_touch_min, shell_touch_beams vertical beam spacings) of its top (reason 'shell')
+    shell_min_top: float = 0.0
+    shell_max_bottom: float = 0.8
+    shell_min_distance: float = 40.0
+    shell_gap: float = 1.2
+    shell_lateral: float = 0.15
+    shell_min_points: int = 3
+    shell_touch_min: float = 0.25
+    shell_touch_beams: float = 3.0
     wall_face_min_top: float = 2.8     # m, v0.6: the face reaches above this (just under the 3.0 m envelope top; v0.5 used overhead_min_height = 2.4 under a 3.5 m top)
     wall_face_edge: float = 1.3        # m (v0.6: the advisory zone now ends at 1.40 m; 1.6 with the 1.75 m zone of v0.5)
     wall_face_min_inner: float = 0.3   # m
