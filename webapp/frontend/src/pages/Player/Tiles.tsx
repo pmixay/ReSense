@@ -8,7 +8,7 @@ import { DECISION_ICON, Help, Icon } from '../../components';
 import { DECISION_CHIP_LABEL } from '../../lib/decisions';
 import { DASH, fmtInt, fmtMeters, fmtMs, fmtNum } from '../../lib/format';
 import { SENSOR_REACH } from '../../lib/track';
-import { decisionText, decisionWordSize, distanceModel, envelopeText, healthRows, type Tone } from './cab';
+import { decisionText, decisionWordSize, distanceLabels, distanceModel, envelopeText, healthRows, type Tone } from './cab';
 import { MiniMap } from './MiniMap';
 import styles from './Player.module.css';
 
@@ -98,7 +98,7 @@ function DistanceBar({
   const x = (m: number) => (Math.min(SENSOR_REACH, Math.max(0, m)) / SENSOR_REACH) * W;
   const mon = monitored !== null ? x(monitored) : null;
   const fx = x(free);
-  const labelX = Math.min(W - 150, Math.max(70, fx));
+  const labels = distanceLabels(W, unverified ? 'не проверено' : 'свободно', value !== null && obstacle ? fmtNum(value, 1) : null, fx, mon, monitored);
   return (
     <svg width={W} height="42" viewBox={`0 0 ${W} 42`} className={styles.dbar} aria-hidden>
       <defs>
@@ -118,16 +118,16 @@ function DistanceBar({
         </g>
       )}
       <text x="0" y="39" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
-        {unverified ? 'не проверено' : 'свободно'}
+        {labels.free}
       </text>
-      {value !== null && obstacle && (
-        <text x={labelX} y="39" textAnchor="middle" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
-          {fmtNum(value, 1)}
+      {labels.value && (
+        <text x={labels.valueX} y="39" textAnchor="middle" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
+          {labels.value}
         </text>
       )}
-      {mon !== null && (
-        <text x={Math.max(150, mon + 2)} y="39" textAnchor="end" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
-          контроль {fmtNum(monitored, 0)} м
+      {labels.mon && (
+        <text x={labels.monEnd} y="39" textAnchor="end" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
+          {labels.mon}
         </text>
       )}
     </svg>

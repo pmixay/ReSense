@@ -1,5 +1,30 @@
 import { describe, expect, it, vi } from 'vitest';
+import { laneStep } from './Scrubber';
 import { keyAction } from './useCab';
+
+const key = (k: string, mods: { shiftKey?: boolean; altKey?: boolean; ctrlKey?: boolean; metaKey?: boolean } = {}) => ({
+  key: k,
+  shiftKey: false,
+  altKey: false,
+  ctrlKey: false,
+  metaKey: false,
+  ...mods,
+});
+
+describe('laneStep', () => {
+  it('keeps ←/→ (and Shift ±10) on the focused scrubber the same as everywhere in the player', () => {
+    expect(laneStep(key('ArrowRight'))).toBe(1);
+    expect(laneStep(key('ArrowLeft'))).toBe(-1);
+    expect(laneStep(key('ArrowRight', { shiftKey: true }))).toBe(10);
+    expect(laneStep(key('ArrowLeft', { shiftKey: true }))).toBe(-10);
+  });
+
+  it('leaves the slider its own keys and modified arrows to the browser', () => {
+    for (const k of ['Home', 'End', 'PageUp', 'PageDown', 'ArrowUp', 'ArrowDown', ' ']) expect(laneStep(key(k))).toBeNull();
+    expect(laneStep(key('ArrowLeft', { altKey: true }))).toBeNull();
+    expect(laneStep(key('ArrowRight', { metaKey: true }))).toBeNull();
+  });
+});
 
 describe('keyAction', () => {
   it('maps layout-independent codes to the player actions', () => {

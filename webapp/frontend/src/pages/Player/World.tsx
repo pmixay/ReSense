@@ -58,7 +58,16 @@ export function World({ engine, mode, pixelRatio, cloudBudget, onFreeChange, sin
     scene.setMode(live.current.mode, false);
     sceneRef.current = scene;
     engine.attach(scene);
+    // a GPU reset takes the context away: say so (the owner rebuilds the view on «Повторить»)
+    const onLost = (e: Event) => {
+      e.preventDefault();
+      engine.detach();
+      live.current.onError('Видеокарта сбросила 3D-вид.');
+    };
+    canvas.addEventListener('webglcontextlost', onLost);
     return () => {
+      // removed first: dispose() drops the context on purpose
+      canvas.removeEventListener('webglcontextlost', onLost);
       engine.detach();
       sceneRef.current = null;
       scene.dispose();

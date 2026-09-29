@@ -50,7 +50,8 @@ export function NodeCard({ snap, kind, latency, latencyBudget, className }: Node
   const node = snap.msg?.node;
   // a rate is only true while messages arrive: a stale, paused or ended feed has none
   const fps = snap.view === 'live' ? num(node?.fps) : null;
-  const lat = num(node?.latency_ms) ?? num(snap.msg?.timing_ms?.total);
+  // the frame's own processing time: current while live, or for the frame a paused replay shows
+  const lat = snap.view === 'live' || snap.view === 'paused' ? (num(node?.latency_ms) ?? num(snap.msg?.timing_ms?.total)) : null;
   const frames = num(node?.frames) ?? (snap.count || null);
   const dropped = num(node?.dropped_frames);
   const first = latency.findIndex((v) => v !== null);
@@ -174,7 +175,12 @@ export function HealthCard({ snap, fresh, minVisibility, className }: { snap: Fe
   const rows = healthRows(snap.msg, fresh, minVisibility);
   const level = fresh ? healthLevel(snap.msg) : null;
   const freshness = snap.msg?.freshness;
-  const freshLamp: Lamp = snap.age === null ? 'off' : snap.view === 'paused' ? 'wait' : fresh && freshness?.valid !== false ? 'ok' : 'error';
+  // violet «нет» only when data should arrive and does not (stale, a broken link, the node's own
+  // check); a stopped replay, a disconnected node or the end of the record are just dark
+  const late = snap.view === 'stale' || snap.view === 'error' || snap.reconnecting;
+  const freshLamp: Lamp =
+    snap.age === null ? 'off' : snap.view === 'paused' ? 'wait' : fresh ? (freshness?.valid === false ? 'error' : 'ok') : late ? 'error' : 'off';
+  const freshText = freshLamp === 'off' ? '—' : freshLamp === 'wait' ? 'пауза' : freshLamp === 'ok' ? 'да' : 'нет';
   return (
     <Card
       title="Исправность"
@@ -202,7 +208,7 @@ export function HealthCard({ snap, fresh, minVisibility, className }: { snap: Fe
             <Icon name="clock" size={16} />
             Свежесть
           </span>
-          <b>{snap.age === null ? '—' : snap.view === 'paused' ? 'пауза' : fresh ? 'да' : 'нет'}</b>
+          <b>{freshText}</b>
         </li>
         {rows.map((r) => (
           <li key={r.key}>

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { DecodedCloud } from '../api/cloud';
 import type { FrameResultDict } from '../api/types';
 import { PlayerEngine, type EngineScene } from './engine';
@@ -185,6 +185,49 @@ describe('PlayerEngine', () => {
     engine.setLoop(true);
     expect(engine.getSnapshot().loop).toBe(true);
     engine.dispose();
+  });
+
+  it('brings the cloud of a new position after a step or seek while paused', async () => {
+    const { engine, cloudCalls } = setup(120, { cloudPositions: Array.from({ length: 120 }, (_, i) => i) });
+    const scene = new StubScene();
+    engine.seek(90);
+    engine.attach(scene);
+    await flush();
+    engine.advance(0);
+    expect(scene.clouds.at(-1)).toBe(1090);
+    engine.step(-40);
+    await flush();
+    engine.advance(0);
+    expect(cloudCalls).toContain(50);
+    expect(engine.getSnapshot().cloudPos).toBe(50);
+    expect(scene.clouds.at(-1)).toBe(1050);
+    engine.seek(7);
+    await flush();
+    engine.advance(0);
+    expect(scene.clouds.at(-1)).toBe(1007);
+    engine.dispose();
+  });
+
+  it('keeps the clock running without a 3D view (no WebGL, a lost context)', async () => {
+    const frames: FrameRequestCallback[] = [];
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb));
+    vi.stubGlobal('cancelAnimationFrame', () => undefined);
+    try {
+      const { engine, tick } = setup(50);
+      await flush();
+      engine.play(); // no scene was ever attached
+      for (let i = 0, ts = 1000; i < 6; i += 1, ts += 100) {
+        tick(100);
+        frames.shift()?.(ts);
+      }
+      expect(engine.getSnapshot().pos).toBe(5);
+      engine.dispose();
+      expect(frames.length).toBe(1);
+      frames.shift()?.(2000); // a callback already queued at dispose does nothing and stops the loop
+      expect(frames.length).toBe(0);
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it('prefetches the clouds ahead while playing', async () => {

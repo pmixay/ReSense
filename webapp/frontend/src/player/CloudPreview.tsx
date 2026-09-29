@@ -60,6 +60,13 @@ export default function CloudPreview({ runId, pos = 0, height = 240, interactive
     let cancelled = false;
     let scene: PlayerScene | null = null;
     let ro: ResizeObserver | null = null;
+    const canvasEl = canvasRef.current;
+    // a GPU reset takes the context away: say so instead of a black view
+    const onLost = (e: Event) => {
+      e.preventDefault();
+      setSceneError('Видеокарта сбросила 3D-вид');
+    };
+    canvasEl?.addEventListener('webglcontextlost', onLost);
     import('./scene')
       .then(({ PlayerScene }) => {
         const canvas = canvasRef.current;
@@ -87,6 +94,8 @@ export default function CloudPreview({ runId, pos = 0, height = 240, interactive
       .catch(() => setSceneError('3D-вид не загрузился'));
     return () => {
       cancelled = true;
+      // removed first: dispose() drops the context on purpose
+      canvasEl?.removeEventListener('webglcontextlost', onLost);
       ro?.disconnect();
       cancelAnimationFrame(rafRef.current);
       rafRef.current = 0;

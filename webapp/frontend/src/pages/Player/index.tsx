@@ -2,7 +2,7 @@
 // train (webapp/design/mockup/player.html made live). The 1600×1000 composition is scaled to fit;
 // the 3D view behind the glass is driven by the playback engine (src/player), the console tiles and
 // the scrubber read its snapshot. Deep links: /player/<runId>?pos=<n>&speed=<x>&cam=cab|top|chase.
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { usePresetSchema, useRun, useRunClouds, useRunSeries } from '../../api/hooks';
 import type { ApiError } from '../../api/client';
@@ -36,23 +36,29 @@ function useBack(runId?: string) {
   }, [location.key, navigate, runId]);
 }
 
-interface StageProps {
-  children: (ctx: { k: number; fs: ReturnType<typeof useFullscreen> }) => ReactNode;
-  state?: string;
-  rootRef?: React.RefObject<HTMLDivElement>;
+type Fullscreen = ReturnType<typeof useFullscreen>;
+interface CabChrome {
+  /** scale of the 1600×1000 stage */
+  k: number;
+  fs: Fullscreen;
 }
 
-/** The fixed 1600×1000 cab, scaled to the window; the root is the fullscreen element. */
-function Stage({ children, state, rootRef }: StageProps) {
-  const own = useRef<HTMLDivElement>(null);
-  const ref = rootRef ?? own;
-  const k = useStageScale();
-  const fs = useFullscreen(ref);
+/** The route's root (the fullscreen element) and its scale: they outlive run switches and the picker,
+ *  so a jury in fullscreen stays there when it opens another run. */
+const ChromeContext = createContext<CabChrome>({ k: 1, fs: { active: false, real: false, pseudo: false, toggle: () => undefined, exit: async () => undefined } });
+
+interface StageProps {
+  children: ReactNode;
+  state?: string;
+  stageRef?: React.RefObject<HTMLDivElement>;
+}
+
+/** The fixed 1600×1000 cab, scaled to the window (inside the route's fullscreen root). */
+function Stage({ children, state, stageRef }: StageProps) {
+  const { k } = useContext(ChromeContext);
   return (
-    <div ref={ref} className={styles.root}>
-      <div className={styles.stage} style={{ ['--k' as string]: k }} data-state={state}>
-        {children({ k, fs })}
-      </div>
+    <div ref={stageRef} className={styles.stage} style={{ ['--k' as string]: k }} data-state={state}>
+      {children}
     </div>
   );
 }
@@ -88,39 +94,38 @@ function TrayActions() {
 /** Loading / error / picker: the cab with something in the glass and a quiet console. */
 function CabShell({ runId, runName, glass, console: cons }: { runId?: string; runName?: string; glass: ReactNode; console?: ReactNode }) {
   const back = useBack(runId);
+  const { fs } = useContext(ChromeContext);
+  // without a run only F and Esc mean something; every other key keeps its default
+  usePlayerKeys({ fullscreen: fs.toggle, escape: () => (fs.active ? void fs.exit() : back()) });
   return (
     <Stage>
-      {({ fs }) => (
-        <>
-          <div className={styles.glassFill} />
-          <CabFrame className={styles.cab} stop={false} obstacleM={null} />
-          <div className={styles.glassArea}>{glass}</div>
-          <Roof runId={runId} runName={runName} decision={null} fullscreen={fs.active} kiosk={fs.pseudo} onFullscreen={fs.toggle} onBack={back} />
-          {cons}
-          <ShellKeys onEscape={() => (fs.active ? void fs.exit() : back())} onFullscreen={fs.toggle} />
-        </>
-      )}
+      <div className={styles.glassFill} />
+      <CabFrame className={styles.cab} stop={false} obstacleM={null} />
+      <div className={styles.glassArea}>{glass}</div>
+      <Roof runId={runId} runName={runName} decision={null} fullscreen={fs.active} kiosk={fs.pseudo} onFullscreen={fs.toggle} onBack={back} />
+      {cons}
     </Stage>
   );
-}
-
-/** Without a run only F and Esc mean something; every other key keeps its default. */
-function ShellKeys({ onEscape, onFullscreen }: { onEscape: () => void; onFullscreen: () => void }) {
-  usePlayerKeys({ fullscreen: onFullscreen, escape: onEscape });
-  return null;
 }
 
 // ---------------------------------------------------------------- route
 
 export default function Player() {
   const { runId } = useParams();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const k = useStageScale();
+  const fs = useFullscreen(rootRef);
+  const chrome = useMemo(() => ({ k, fs }), [k, fs]);
   useEffect(() => {
     document.title = 'Плеер · ReSense';
   }, []);
-  if (!runId) {
-    return <CabShell glass={<RunPickerGlass />} console={<PickerConsole />} />;
-  }
-  return <PlayerRun key={runId} runId={runId} />;
+  return (
+    <div ref={rootRef} className={styles.root}>
+      <ChromeContext.Provider value={chrome}>
+        {runId ? <PlayerRun key={runId} runId={runId} /> : <CabShell glass={<RunPickerGlass />} console={<PickerConsole />} />}
+      </ChromeContext.Provider>
+    </div>
+  );
 }
 
 function PlayerRun({ runId }: { runId: string }) {
@@ -199,7 +204,6 @@ const IDLE: EngineSnapshot = {
   playFps: null,
 };
 const noopSubscribe = () => () => undefined;
-const idleSnapshot = () => IDLE;
 
 interface CabProps {
   run: RunDetail;
@@ -218,7 +222,7 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
   const hasClouds = run.has_clouds && run.cloud_frames > 0;
   const back = useBack(run.id);
   const schema = usePresetSchema();
-  const rootRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     document.title = `${run.name} · Плеер · ReSense`;
     return () => {
@@ -246,7 +250,12 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
     engine?.updateRun({ clouds: hasClouds ? (cloudFrames ?? []) : [] });
   }, [engine, cloudFrames, hasClouds]);
 
-  const snap = useSyncExternalStore(engine?.subscribe ?? noopSubscribe, engine?.getSnapshot ?? idleSnapshot);
+  // before the engine exists (the first paint) the console already shows the deep link's position
+  const idle = useMemo<EngineSnapshot>(
+    () => ({ ...IDLE, n, pos: Math.min(Math.max(0, n - 1), startRef.current.pos ?? 0), speed: startRef.current.speed }),
+    [n],
+  );
+  const snap = useSyncExternalStore(engine?.subscribe ?? noopSubscribe, engine?.getSnapshot ?? (() => idle));
 
   const [mode, setMode] = useState<CamMode>(initial.cam);
   const [free, setFree] = useState(false);
@@ -272,13 +281,14 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
   const nearestObstacle = frame?.obstacle ? (frame.nearest_distance ?? null) : null;
 
   // controls
-  const fsRef = useRef<ReturnType<typeof useFullscreen> | null>(null);
+  const { k, fs } = useContext(ChromeContext);
   const seek = useCallback((p: number) => engine?.seek(p), [engine]);
+  const stepBy = useCallback((d: number) => engine?.step(d), [engine]);
   const prevEv = prevEventPos(marks, pos);
   const nextEv = nextEventPos(marks, pos);
   const actions = {
     toggle: () => engine?.toggle(),
-    step: (d: number) => engine?.step(d),
+    step: stepBy,
     prevEvent: () => {
       const p = prevEventPos(marks, engine?.clock.pos ?? pos);
       if (p !== null) {
@@ -295,10 +305,10 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
     },
     camera: (i: number) => setMode(CAMERAS[i] ?? 'cab'),
     speed: (dir: 1 | -1) => engine?.setSpeed(stepSpeed(engine.clock.speed, dir)),
-    fullscreen: () => fsRef.current?.toggle(),
+    fullscreen: fs.toggle,
     escape: () => {
       if (sceneRef.current?.isFree) sceneRef.current.resetView();
-      else if (fsRef.current?.active) void fsRef.current.exit();
+      else if (fs.active) void fs.exit();
       else back();
     },
   };
@@ -326,103 +336,97 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
     return () => window.clearTimeout(id);
   }, [engine, run.id, snap.playing, urlPos, snap.speed, mode]);
 
-  // measured render rate on the root (for performance checks; no UI)
+  // measured render rate on the stage (for performance checks; no UI)
   useEffect(() => {
     if (!engine) return;
     const id = window.setInterval(() => {
-      if (rootRef.current) rootRef.current.dataset.renderFps = engine.renderFps.toFixed(1);
+      if (stageRef.current) stageRef.current.dataset.renderFps = engine.renderFps.toFixed(1);
     }, 1000);
     return () => window.clearInterval(id);
   }, [engine]);
 
   const stateAttr = decision ? decision.toLowerCase() : undefined;
+  const pr = Math.min(2, (window.devicePixelRatio || 1) * k);
   return (
-    <Stage state={stateAttr} rootRef={rootRef}>
-      {({ k, fs }) => {
-        fsRef.current = fs;
-        const pr = Math.min(2, (window.devicePixelRatio || 1) * k);
-        return (
-          <>
-            {engine && !webglError && (
-              <World
-                engine={engine}
-                mode={mode}
-                pixelRatio={pr}
-                cloudBudget={hasClouds ? cloudBudget : null}
-                onFreeChange={setFree}
-                sink={sink}
-                sceneRef={sceneRef}
-                onError={setWebglError}
-              />
-            )}
-            {webglError && <div className={styles.glassFill} />}
-            <CabFrame className={styles.cab} stop={decision === 'STOP'} obstacleM={nearestObstacle} />
-            <Hud
-              frame={frame}
-              mode={mode}
-              free={free}
-              onResetView={() => sceneRef.current?.resetView()}
-              hasClouds={hasClouds}
-              cloudLoading={snap.cloudLoading || (hasClouds && cloudIndex.loading)}
-              cloudError={snap.cloudError ?? (hasClouds ? (cloudIndex.error?.message ?? null) : null)}
-              onRetryCloud={hasClouds && cloudIndex.error ? cloudIndex.retry : null}
-              buffering={snap.buffering}
-              framesFailed={snap.framesError !== null}
-              motion={snap.motion}
-              register={register}
-            />
-            {(webglError || snap.framesError !== null) && (
-              <div className={styles.glassBanner}>
-                <ErrorBanner
-                  compact
-                  error={webglError ?? snap.framesError}
-                  title={webglError ? '3D-вид недоступен' : 'Кадры не загрузились'}
-                  onRetry={webglError ? undefined : () => engine?.retry()}
-                />
-              </div>
-            )}
-            <Roof
-              runId={run.id}
-              runName={run.name}
-              decision={decision}
-              mode={mode}
-              onMode={setMode}
-              fullscreen={fs.active}
-              kiosk={fs.pseudo}
-              onFullscreen={fs.toggle}
-              onBack={back}
-            />
-            <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />
-            {decision && <DecisionTile decision={decision} frame={frame} frameNo={frameNo} confirmS={confirmS} />}
-            <DistanceTile frame={frame} decision={decision} />
-            <MetricsTile frame={frame} latency={latency} pos={pos} p95={run.summary.latency_ms?.p95 ?? null} playFps={snap.playFps} speed={snap.speed} playing={snap.playing} />
-            <HealthTile frame={frame} minVisibility={minVis} />
-            <Scrubber
-              decisions={run.summary.decisions}
-              pos={pos}
-              n={n}
-              frameNo={frameNo}
-              lastFrameNo={lastFrameNo}
-              t={seriesT?.[pos] ?? frame?.t ?? null}
-              duration={run.summary.duration_s}
-              playing={snap.playing}
-              speed={snap.speed}
-              loop={snap.loop}
-              markers={markers}
-              hasPrevEvent={prevEv !== null}
-              hasNextEvent={nextEv !== null}
-              posLabel={posLabel}
-              onToggle={actions.toggle}
-              onStep={actions.step}
-              onPrevEvent={actions.prevEvent}
-              onNextEvent={actions.nextEvent}
-              onSeek={seek}
-              onSpeed={(s) => engine?.setSpeed(s)}
-              onLoop={() => engine?.setLoop(!snap.loop)}
-            />
-          </>
-        );
-      }}
+    <Stage state={stateAttr} stageRef={stageRef}>
+      {engine && !webglError && (
+        <World
+          engine={engine}
+          mode={mode}
+          pixelRatio={pr}
+          cloudBudget={hasClouds ? cloudBudget : null}
+          onFreeChange={setFree}
+          sink={sink}
+          sceneRef={sceneRef}
+          onError={setWebglError}
+        />
+      )}
+      {webglError && <div className={styles.glassFill} />}
+      <CabFrame className={styles.cab} stop={decision === 'STOP'} obstacleM={nearestObstacle} />
+      <Hud
+        frame={frame}
+        mode={mode}
+        free={free}
+        onResetView={() => sceneRef.current?.resetView()}
+        hasClouds={hasClouds}
+        cloudLoading={snap.cloudLoading || (hasClouds && cloudIndex.loading)}
+        cloudError={snap.cloudError ?? (hasClouds ? (cloudIndex.error?.message ?? null) : null)}
+        onRetryCloud={hasClouds && cloudIndex.error ? cloudIndex.retry : null}
+        buffering={snap.buffering}
+        framesFailed={snap.framesError !== null}
+        motion={snap.motion}
+        register={register}
+        noView={!!webglError}
+      />
+      {(webglError || snap.framesError !== null) && (
+        <div className={styles.glassBanner}>
+          <ErrorBanner
+            compact
+            error={webglError ?? snap.framesError}
+            title={webglError ? '3D-вид недоступен' : 'Кадры не загрузились'}
+            onRetry={webglError ? () => setWebglError(null) : () => engine?.retry()}
+          />
+        </div>
+      )}
+      <Roof
+        runId={run.id}
+        runName={run.name}
+        decision={decision}
+        mode={mode}
+        onMode={setMode}
+        fullscreen={fs.active}
+        kiosk={fs.pseudo}
+        onFullscreen={fs.toggle}
+        onBack={back}
+      />
+      <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />
+      {decision && <DecisionTile decision={decision} frame={frame} frameNo={frameNo} confirmS={confirmS} />}
+      <DistanceTile frame={frame} decision={decision} />
+      <MetricsTile frame={frame} latency={latency} pos={pos} p95={run.summary.latency_ms?.p95 ?? null} playFps={snap.playFps} speed={snap.speed} playing={snap.playing} />
+      <HealthTile frame={frame} minVisibility={minVis} />
+      <Scrubber
+        decisions={run.summary.decisions}
+        pos={pos}
+        n={n}
+        frameNo={frameNo}
+        lastFrameNo={lastFrameNo}
+        t={seriesT?.[pos] ?? frame?.t ?? null}
+        duration={run.summary.duration_s}
+        playing={snap.playing}
+        speed={snap.speed}
+        loop={snap.loop}
+        markers={markers}
+        hasPrevEvent={prevEv !== null}
+        hasNextEvent={nextEv !== null}
+        posLabel={posLabel}
+        onToggle={actions.toggle}
+        onStep={actions.step}
+        onPrevEvent={actions.prevEvent}
+        onNextEvent={actions.nextEvent}
+        onSeek={seek}
+        onSpeed={(s) => engine?.setSpeed(s)}
+        onLoop={() => engine?.setLoop(!snap.loop)}
+      />
     </Stage>
   );
 }

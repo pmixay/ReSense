@@ -164,6 +164,47 @@ export function distanceModel(frame: FrameResultDict | null, decision: Decision 
   return { obstacle: false, unverified: false, title: 'Свободный путь', value: clear, free: clear ?? 0, monitored };
 }
 
+/** Approximate width of a label under the distance bar (Montserrat 800 12 px). */
+const labelWidth = (s: string): number => s.length * 7.8;
+
+export interface DistanceLabels {
+  free: string;
+  /** the obstacle's distance under its marker (null = none) */
+  value: string | null;
+  valueX: number;
+  /** «контроль 187 м», shortened to «187 м» or dropped when it would collide */
+  mon: string | null;
+  monEnd: number;
+}
+
+/**
+ * The labels under the distance bar of width `w`: «свободно» at the left, the obstacle's distance
+ * under its marker (`fx`), the monitored range ending at its tick (`monX`) — laid out by width so they
+ * never overlap (a near obstacle, a far one next to the monitored end, a short monitored range).
+ */
+export function distanceLabels(w: number, free: string, value: string | null, fx: number, monX: number | null, monitored: number | null): DistanceLabels {
+  const GAP = 10;
+  const freeEnd = labelWidth(free);
+  const vw = value ? labelWidth(value) : 0;
+  const valueX = value ? Math.min(w - vw / 2, Math.max(freeEnd + GAP + vw / 2, fx)) : fx;
+  // does [a0, a1] keep clear of the value label?
+  const clear = (a0: number, a1: number): boolean => !value || a1 + GAP <= valueX - vw / 2 || a0 >= valueX + vw / 2 + GAP;
+  let mon: string | null = null;
+  let monEnd = 0;
+  if (monX !== null && monitored !== null) {
+    for (const text of [`контроль ${fmtNum(monitored, 0)} м`, `${fmtNum(monitored, 0)} м`]) {
+      const tw = labelWidth(text);
+      const end = Math.min(w, Math.max(freeEnd + GAP + tw, monX + 2));
+      if (clear(end - tw, end)) {
+        mon = text;
+        monEnd = end;
+        break;
+      }
+    }
+  }
+  return { free, value, valueX, mon, monEnd };
+}
+
 /** Width of the scrubber's strip in stage px (1600 − the controls around it). */
 export const SCRUB_LANE_W = 670;
 /** Approximate width of a pin pill (DecisionStrip: Montserrat 800 11 px, 7 px padding). */

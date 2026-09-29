@@ -76,6 +76,13 @@ describe('stored clouds of a run', () => {
     expect(cloudsAhead(clouds, 0, 0)).toEqual([]);
   });
 
+  it('wraps the prefetch to the start of the run while looping', () => {
+    expect(cloudsAhead(clouds, 17, 3, 1, true)).toEqual([20, 0, 5]);
+    expect(cloudsAhead(clouds, 20, 10, 1, true)).toEqual([0, 5, 10, 15]);
+    expect(cloudsAhead(clouds, 7, 10, 1, true)).toEqual([10, 15, 20, 0]);
+    expect(cloudsAhead(clouds, 0, 10, 1, true)).toEqual([5, 10, 15, 20]);
+  });
+
   it('thins the prefetch at high speeds', () => {
     expect(prefetchStride(1)).toBe(1);
     expect(prefetchStride(2)).toBe(1);

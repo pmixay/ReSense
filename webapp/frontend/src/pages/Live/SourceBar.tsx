@@ -61,7 +61,11 @@ function RosControls({ snap, feed, url, onUrl }: SourceBarProps) {
         invalid={touched && !valid}
         spellCheck={false}
         disabled={busy}
-        onChange={(e) => onUrl(e.target.value)}
+        onChange={(e) => {
+          onUrl(e.target.value);
+          // the error was about the old address
+          if (snap.link === 'error' && snap.source?.kind === 'ros') feed.stop();
+        }}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !busy) connect();
         }}
@@ -200,7 +204,7 @@ function SimControls({ snap, feed, runs, runsLoading, runsError, onRetryRuns, ru
           height={22}
           radius={8}
           playhead={pos}
-          onSeek={(p) => feed.seek(p, run.id)}
+          onSeek={(p) => feed.seek(p, { runId: run.id, speed, loop })}
           posLabel={(p) => `кадр ${fmtInt(p)}`}
           ariaLabel="Перемотка прогона"
         />

@@ -1,6 +1,6 @@
 // Small hooks of the cab: the 1600×1000 composition scaled to fit the viewport, the Fullscreen API
 // with a fallback when the browser refuses it, and the player's keyboard map.
-import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 
 export const STAGE_W = 1600;
 export const STAGE_H = 1000;
@@ -56,7 +56,7 @@ export function useFullscreen(ref: RefObject<HTMLElement>) {
 
   const active = real || pseudo;
   const toggle = useCallback(() => void (active ? exit() : enter()), [active, enter, exit]);
-  return { active, real, pseudo, toggle, exit };
+  return useMemo(() => ({ active, real, pseudo, toggle, exit }), [active, real, pseudo, toggle, exit]);
 }
 
 export interface PlayerKeys {

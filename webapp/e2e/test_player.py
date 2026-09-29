@@ -3,7 +3,7 @@ SwiftShader) against a real backend (fixtures in conftest.py). The first test se
 the others share runs seeded once through the API: two short demos with stored clouds, a results-only
 .jsonl (schematic mode) and a .jsonl with an input fault (FAULT frames).
 
-  python -m pytest -q webapp/e2e/test_player.py     (~1.5 min; the whole suite: python -m pytest -q webapp/e2e)
+  python -m pytest -q webapp/e2e/test_player.py     (~2.5 min with the build; the whole suite: python -m pytest -q webapp/e2e)
 """
 from __future__ import annotations
 
@@ -321,9 +321,42 @@ def test_deep_link_shows_real_values(app, backend, seeded):
 # ---------------------------------------------------------------------------------------- 6
 
 
+def test_paused_steps_bring_their_clouds(app, backend, seeded):
+    page, rid = app.page, seeded["ids"]["approach"]
+    n = seeded["details"]["approach"]["summary"]["n_frames"]
+    stored = set(backend.api.get(f"/runs/{rid}/clouds")["frames"])
+    pos = n - 5
+    assert {pos, pos - 10, pos - 11} <= stored, sorted(stored)  # a short demo keeps every cloud
+    open_player(app, f"/player/{rid}?pos={pos}")
+    expect(page.get_by_text("загрузка облака")).to_have_count(0)
+    # paused, a step or a jump shows the points of the new frame (its cloud is fetched), not the old ones
+    with page.expect_response(re.compile(rf"/api/runs/{rid}/clouds/{pos - 10}$")) as r:
+        page.keyboard.press("Shift+ArrowLeft")
+    assert r.value.ok
+    expect_pos(page, pos - 10)
+    with page.expect_response(re.compile(rf"/api/runs/{rid}/clouds/{pos - 11}$")):
+        page.get_by_role("button", name="Кадр назад (←)").click()
+    expect_pos(page, pos - 11)
+    expect(page.get_by_text("загрузка облака")).to_have_count(0)
+    # the focused strip keeps the player's keys: ← / → step one frame, Shift ten
+    slider(page).focus()
+    page.keyboard.press("Shift+ArrowLeft")
+    expect_pos(page, pos - 21)
+    page.keyboard.press("ArrowRight")
+    expect_pos(page, pos - 20)
+    expect(page.get_by_role("button", name="Воспроизвести (пробел)")).to_be_visible()
+    assert real_errors(app.errors) == []
+
+
+# ---------------------------------------------------------------------------------------- 7
+
+
 def test_run_menu_switch_and_browser_back(app, seeded):
     page, ids = app.page, seeded["ids"]
     open_player(app, f"/player/{ids['approach']}?pos=7")
+    # the jury in fullscreen stays there when it opens another run
+    page.keyboard.press("f")
+    page.wait_for_function("() => !!document.fullscreenElement")
     page.get_by_role("button", name="Другой прогон").click()
     menu = page.get_by_role("navigation", name="Прогоны")
     expect(menu.get_by_role("button", name=re.compile("demo_approach"))).to_have_attribute("aria-current", "page")
@@ -331,6 +364,9 @@ def test_run_menu_switch_and_browser_back(app, seeded):
     expect(page).to_have_url(re.compile(rf"/player/{ids['crossing']}"))
     # the new run plays at once; «back» returns to the old run where it was left
     expect(page.get_by_role("button", name="Пауза (пробел)")).to_be_visible()
+    assert page.evaluate("!!document.fullscreenElement")
+    page.get_by_role("button", name="Выйти из полноэкранного режима (F)").click()
+    page.wait_for_function("() => !document.fullscreenElement")
     expect(page).to_have_url(re.compile(rf"/player/{ids['crossing']}\?pos=[1-9]"), timeout=15_000)
     page.go_back()
     expect(page).to_have_url(re.compile(rf"/player/{ids['approach']}\?pos=7$"))
@@ -351,7 +387,7 @@ def test_run_menu_switch_and_browser_back(app, seeded):
     assert real_errors(app.errors) == []
 
 
-# ---------------------------------------------------------------------------------------- 7
+# ---------------------------------------------------------------------------------------- 8
 
 
 def test_schematic_and_fault_runs(app, seeded):
@@ -369,7 +405,7 @@ def test_schematic_and_fault_runs(app, seeded):
     assert real_errors(app.errors) == []
 
 
-# ---------------------------------------------------------------------------------------- 8
+# ---------------------------------------------------------------------------------------- 9
 
 
 def test_loading_and_backend_errors(app, seeded):
@@ -424,7 +460,31 @@ def test_loading_and_backend_errors(app, seeded):
     assert real_errors(app.errors, allowed=(500, 503)) == []
 
 
-# ---------------------------------------------------------------------------------------- 9
+# ---------------------------------------------------------------------------------------- 10
+
+
+def test_lost_3d_view_keeps_the_console(app, seeded):
+    page, rid = app.page, seeded["ids"]["approach"]
+    open_player(app, f"/player/{rid}?pos=10")
+    # the GPU drops the context: a message instead of a black glass; the console still plays
+    page.evaluate(
+        "() => document.querySelector('canvas[aria-label=\"3D-вид из кабины\"]').getContext('webgl2')"
+        ".getExtension('WEBGL_lose_context').loseContext()"
+    )
+    alert = page.get_by_role("alert").filter(has_text="3D-вид недоступен")
+    expect(alert).to_contain_text("Видеокарта сбросила 3D-вид")
+    expect(page.get_by_role("img", name="3D-вид из кабины")).to_have_count(0)
+    page.keyboard.press("Space")
+    page.wait_for_function("() => +document.querySelector('[role=slider]').getAttribute('aria-valuenow') > 12", timeout=20_000)
+    page.keyboard.press("Space")
+    # «Повторить» builds the view again
+    alert.get_by_role("button", name="Повторить").click()
+    expect(page.get_by_role("img", name="3D-вид из кабины")).to_be_visible()
+    expect(page.get_by_role("alert")).to_have_count(0)
+    assert real_errors(app.errors) == []
+
+
+# ---------------------------------------------------------------------------------------- 11
 
 
 def test_fullscreen_orbit_and_back(app, seeded):
@@ -469,7 +529,7 @@ def test_fullscreen_orbit_and_back(app, seeded):
     assert real_errors(app.errors) == []
 
 
-# ---------------------------------------------------------------------------------------- 10
+# ---------------------------------------------------------------------------------------- 12
 
 
 def test_cab_fits_small_viewports(app, seeded):

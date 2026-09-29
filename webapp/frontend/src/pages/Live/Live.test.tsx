@@ -4,7 +4,9 @@ import { describe, expect, it } from 'vitest';
 import type { Run } from '../../api/types';
 import { Beacon, fmtAge, stateLabel } from './Beacon';
 import type { FeedSnapshot } from './feed';
-import { HealthCard } from './Panels';
+import type { DecisionLetter } from '../../lib/decisions';
+import { HealthCard, NodeCard } from './Panels';
+import { TimelineCard } from './TimelineCard';
 import { ViewCard, webglAvailable } from './ViewCard';
 import type { StatusMessage } from './timeline';
 
@@ -104,6 +106,57 @@ describe('HealthCard', () => {
     expect(shown('нет')).toHaveLength(1);
     expect(container.querySelectorAll('[class*="l-ok"]')).toHaveLength(0);
     expect(container.querySelectorAll('[class*="l-off"]')).toHaveLength(3);
+  });
+});
+
+describe('freshness after a deliberate stop', () => {
+  it('is dark, not a fault, once the replay is stopped or the node disconnected', () => {
+    const idle = snap({ view: 'idle', link: 'idle', age: 5000 });
+    const { container } = render(<HealthCard snap={idle} fresh={false} minVisibility={60} />);
+    expect(container.querySelectorAll('[class*="l-error"]')).toHaveLength(0);
+    expect(shown('нет')).toHaveLength(0);
+    const beacon = render(<Beacon snap={idle} kind="ros" />);
+    expect(beacon.container.querySelector('[class*="lampBad"]')).toBeNull();
+  });
+
+  it('is a violet «нет» while the data is late or the link broke', () => {
+    const { container } = render(<HealthCard snap={snap({ view: 'error', link: 'error', age: 5000 })} fresh={false} minVisibility={60} />);
+    expect(container.querySelectorAll('[class*="l-error"]')).toHaveLength(1);
+    expect(shown('нет')).toHaveLength(1);
+  });
+});
+
+describe('NodeCard', () => {
+  it('shows the latency only for the frame on screen (live or paused), never after a stop', () => {
+    const msg = { ...STOP, node: { fps: 10, latency_ms: 42, frames: 12, dropped_frames: 0 } } as unknown as StatusMessage;
+    const live = render(<NodeCard snap={snap({ msg })} kind="ros" latency={[]} latencyBudget={100} />);
+    expect(text(live.container)).toContain('42мс');
+    live.unmount();
+    const stopped = render(<NodeCard snap={snap({ msg, view: 'idle', link: 'idle' })} kind="ros" latency={[]} latencyBudget={100} />);
+    expect(text(stopped.container)).not.toContain('42');
+    expect(text(stopped.container)).toContain('12'); // the frames of that connection stay
+  });
+});
+
+describe('TimelineCard', () => {
+  it('draws the last 30 s as blocks (STOP hatched, a gap where no message came), not a canvas redrawn every tick', () => {
+    const letters: (DecisionLetter | null)[] = [
+      ...Array<null>(100).fill(null),
+      ...Array<DecisionLetter>(50).fill('G'),
+      ...Array<DecisionLetter>(10).fill('S'),
+      ...Array<null>(40).fill(null),
+      ...Array<DecisionLetter>(100).fill('C'),
+    ];
+    const slots = { letters, free: letters.map((l) => (l ? 120 : null)), latency: letters.map(() => null) };
+    const { container } = render(<TimelineCard slots={slots} live />);
+    const pieces = container.querySelectorAll<HTMLElement>('[class*="piece"]');
+    expect(pieces).toHaveLength(2);
+    expect(parseFloat(pieces[0].style.left)).toBeCloseTo(33.333, 2);
+    expect(parseFloat(pieces[0].style.width)).toBeCloseTo(20, 2);
+    expect(pieces[0].querySelectorAll('i')).toHaveLength(2);
+    expect(container.querySelectorAll('[class*="seg-stop"]')).toHaveLength(1);
+    expect(container.querySelector('canvas')).toBeNull();
+    expect(shown('нет данных')).toHaveLength(0);
   });
 });
 

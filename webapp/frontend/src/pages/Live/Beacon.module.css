@@ -44,6 +44,13 @@
   background: var(--well);
   color: var(--ink);
 }
+/* the icon and the label (the live region): the head's flex row continues inside */
+.say {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
 .icon {
   flex: none;
 }

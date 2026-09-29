@@ -110,15 +110,17 @@ export function cloudIndex(clouds: readonly number[], cpos: number): number {
 
 /**
  * The clouds to prefetch ahead of a playhead: the next `count` stored clouds, every `stride`-th
- * (at 5–10× only some frames reach the screen).
+ * (at 5–10× only some frames reach the screen); with `wrap` (loop) the run's start follows its end.
  */
-export function cloudsAhead(clouds: readonly number[], pos: number, count: number, stride = 1): number[] {
+export function cloudsAhead(clouds: readonly number[], pos: number, count: number, stride = 1, wrap = false): number[] {
   const out: number[] = [];
   if (!clouds.length || count <= 0) return out;
   const cur = cloudAtOrBefore(clouds, pos);
-  let i = cur === null ? 0 : cloudIndex(clouds, cur) + 1;
+  const start = cur === null ? 0 : cloudIndex(clouds, cur) + 1;
   const k = Math.max(1, Math.floor(stride));
+  let i = start;
   for (; i < clouds.length && out.length < count; i += k) out.push(clouds[i]);
+  if (wrap) for (i -= clouds.length; i < start - 1 && out.length < count; i += k) out.push(clouds[i]);
   return out;
 }
 

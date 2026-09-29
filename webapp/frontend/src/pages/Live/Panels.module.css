@@ -31,6 +31,25 @@
   position: absolute;
   top: 0;
   bottom: 0;
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.piece i {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.seg-go {
+  background: var(--go);
+}
+.seg-caution {
+  background: var(--caution);
+}
+.seg-stop {
+  background: var(--stop) var(--hatch);
+}
+.seg-fault {
+  background: var(--fault);
 }
 .nodata {
   position: absolute;

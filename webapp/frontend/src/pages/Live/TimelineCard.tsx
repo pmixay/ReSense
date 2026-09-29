@@ -1,7 +1,10 @@
 // The last 30 seconds: the decision per 0,1 s (gaps where no message came) and the monitored free
-// distance ahead under it.
+// distance ahead under it. The strip is plain DOM blocks, not the canvas DecisionStrip: it changes
+// ten times a second, and a canvas re-allocated at that rate stalls the main thread on a software
+// GPU (late messages would then read as gaps).
 import { useMemo } from 'react';
-import { Card, DecisionStrip, Sparkline } from '../../components';
+import { Card, Sparkline } from '../../components';
+import { decisionSegments } from '../../lib/decisions';
 import { fmtInt, fmtNum } from '../../lib/format';
 import { dataRuns, type Slots } from './timeline';
 import { useSize } from '../../lib/useSize';
@@ -37,16 +40,12 @@ export function TimelineCard({ slots, live, className }: { slots: Slots; live: b
       }
     >
       <div className={styles.roll} role="img" aria-label="Решения за последние 30 секунд">
+        {/* index keys: the blocks slide every tick, their elements are reused */}
         {runs.map((r, i) => (
-          <div
-            key={i}
-            className={styles.piece}
-            style={{
-              left: pct(r.start / n),
-              width: pct((r.end - r.start) / n),
-            }}
-          >
-            <DecisionStrip decisions={r.decisions} height={30} radius={6} />
+          <div key={i} className={styles.piece} style={{ left: pct(r.start / n), width: pct((r.end - r.start) / n) }}>
+            {decisionSegments(r.decisions).map((s, j) => (
+              <i key={j} className={styles[`seg-${s.decision.toLowerCase()}`]} style={{ flexGrow: s.length }} />
+            ))}
           </div>
         ))}
         {!runs.length && <span className={styles.nodata}>нет данных</span>}

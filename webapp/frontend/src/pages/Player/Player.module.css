@@ -50,6 +50,11 @@
   inset: 0;
   pointer-events: none;
 }
+/* the obstacle on the dash line (CabFrame.tsx), outside the cab SVG */
+.dashMark {
+  position: absolute;
+  pointer-events: none;
+}
 
 /* ---------------------------------------------------------------- HUD in the glass */
 .hud {
@@ -59,11 +64,20 @@
   width: 1600px;
   height: 700px;
   pointer-events: none;
+  /* its own layer: the labels move every render; sharing a layer with the blurred cab SVG left
+     stale copies of them on screen after repaints (Chromium) */
+  will-change: transform;
 }
 /* labels that follow the 3D view: anchored at 0,0 and moved with `translate` (Hud.tsx) — no layout */
 .follow {
   left: 0;
   top: 0;
+}
+/* no 3D view: nothing to anchor to */
+.hudNoView .follow,
+.hudNoView .brk,
+.hudNoView .zoom {
+  display: none;
 }
 .hudc {
   position: absolute;
@@ -180,6 +194,14 @@
   height: 8px;
   border-radius: 50%;
   background: #2bd46f;
+}
+.envOff {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(8, 10, 16, 0.62);
+}
+.envOff i {
+  background: var(--fault);
+  box-shadow: 0 0 0 1.5px var(--white);
 }
 .brk {
   position: absolute;

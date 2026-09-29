@@ -79,8 +79,10 @@ export class PlayerEngine {
   private run: EngineRun;
   private scene: EngineScene | null = null;
   private raf = 0;
+  private disposed = false;
   private lastTs = 0;
-  private lastRenderTs = 0;
+  private renderT0 = 0;
+  private renders = 0;
   private listeners = new Set<() => void>();
   private snap: EngineSnapshot;
   private dirty = true;
@@ -104,7 +106,7 @@ export class PlayerEngine {
   private stepsAcc = 0;
   private rateT0 = 0;
   private playFps: number | null = null;
-  /** exponential average of the render rate (debug / measurements) */
+  /** 3D renders per second while rendering (performance checks; `data-render-fps` on the stage) */
   renderFps = 0;
 
   constructor(run: EngineRun, opts: EngineOptions = {}) {
@@ -173,7 +175,10 @@ export class PlayerEngine {
     this.stepsAcc = 0;
     this.rateT0 = this.now();
     this.playFps = null;
+    // the prefetch ahead starts with the drive
+    this.cloudsDirty = true;
     this.after();
+    this.startLoop();
   }
 
   pause(): void {
@@ -191,6 +196,8 @@ export class PlayerEngine {
     // prefetches far from the new playhead are useless now
     this.clouds.cancelQueued((q) => q >= p - 2 && q <= p + 40);
     this.lastPrefetchPos = -1;
+    // the cloud of the new position (also while paused: a step or a scrub must bring its points)
+    this.cloudsDirty = true;
     this.after();
   }
 
@@ -201,12 +208,17 @@ export class PlayerEngine {
 
   setSpeed(s: number): void {
     this.clock.setSpeed(clampSpeed(s));
+    // the prefetch stride follows the speed
     this.lastPrefetchPos = -1;
+    this.cloudsDirty = true;
     this.after();
   }
 
   setLoop(on: boolean): void {
     this.clock.loop = on;
+    // with the loop, the prefetch ahead wraps to the start
+    this.lastPrefetchPos = -1;
+    this.cloudsDirty = true;
     this.after();
   }
 
@@ -246,26 +258,33 @@ export class PlayerEngine {
     if (!this.run.clouds.length) scene.setCloud(null);
     this.cloudsDirty = true;
     this.sync();
-    if (!this.raf && typeof requestAnimationFrame !== 'undefined') {
-      this.lastTs = 0;
-      this.raf = requestAnimationFrame(this.loop);
-    }
+    this.startLoop();
   }
 
+  /** The scene goes away (unmount, a lost WebGL context); the clock keeps running for the console. */
   detach(): void {
-    if (this.raf) cancelAnimationFrame(this.raf);
-    this.raf = 0;
     this.scene = null;
   }
 
   dispose(): void {
+    this.disposed = true;
     this.detach();
+    if (this.raf) cancelAnimationFrame(this.raf);
+    this.raf = 0;
     this.frames.dispose();
     this.clouds.dispose();
     this.listeners.clear();
   }
 
+  /** The animation loop: started by a scene or by playback (without a 3D view the console still plays). */
+  private startLoop(): void {
+    if (this.raf || this.disposed || typeof requestAnimationFrame === 'undefined') return;
+    this.lastTs = 0;
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
   private loop = (ts: number): void => {
+    if (this.disposed) return;
     this.raf = requestAnimationFrame(this.loop);
     const dt = this.lastTs ? (ts - this.lastTs) / 1000 : 0;
     this.lastTs = ts;
@@ -276,12 +295,19 @@ export class PlayerEngine {
     scene.setDrive(d.world, d.cloud);
     // paused with the camera at rest: nothing moves, the last picture stays (saves the GPU)
     if (!this.clock.playing && scene.needsRender && !scene.needsRender()) {
-      this.lastRenderTs = 0;
+      this.renderT0 = 0;
       return;
     }
-    const rdt = this.lastRenderTs ? (ts - this.lastRenderTs) / 1000 : 0;
-    this.lastRenderTs = ts;
-    if (rdt > 0 && rdt < 1) this.renderFps = this.renderFps ? this.renderFps + (1 / rdt - this.renderFps) * 0.05 : 1 / rdt;
+    // renders per wall-clock second, over windows of about a second
+    if (!this.renderT0) {
+      this.renderT0 = ts;
+      this.renders = 0;
+    } else if (ts - this.renderT0 >= 1000) {
+      this.renderFps = (this.renders * 1000) / (ts - this.renderT0);
+      this.renderT0 = ts;
+      this.renders = 0;
+    }
+    this.renders += 1;
     scene.render(dt);
   };
 
@@ -361,7 +387,7 @@ export class PlayerEngine {
     this.clouds.request(want, PRIO_NOW);
     if (this.clock.playing && pos !== this.lastPrefetchPos) {
       this.lastPrefetchPos = pos;
-      this.clouds.prefetch(cloudsAhead(list, pos, this.prefetchN, prefetchStride(this.clock.speed)));
+      this.clouds.prefetch(cloudsAhead(list, pos, this.prefetchN, prefetchStride(this.clock.speed), this.clock.loop));
     }
     let show: number | null = this.clouds.get(want) ? want : this.clouds.latestAtOrBefore(pos);
     if (show === null) show = this.shownCloudPos;

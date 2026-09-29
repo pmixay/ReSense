@@ -58,9 +58,11 @@ export interface HudProps {
   motion: Motion;
   /** registers the per-render position writer */
   register: (sink: OverlaySink | null) => void;
+  /** no 3D view (WebGL missing or lost): the labels anchored in it are hidden */
+  noView?: boolean;
 }
 
-export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, cloudError, buffering, framesFailed, onRetryCloud, motion, register }: HudProps) {
+export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, cloudError, buffering, framesFailed, onRetryCloud, motion, register, noView = false }: HudProps) {
   const detRefs = useRef<(HTMLDivElement | null)[]>([]);
   const warnRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tickRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -133,11 +135,13 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
   }, [dets.length, warnIdxKey]);
 
   const nPoints = frame?.n_points;
+  // FAULT without an object: nothing ahead is verified (the scene draws no green) — the tag is neutral
+  const unverified = frame?.decision === 'FAULT' && !dets.length;
   const framesLoading = buffering || (!frame && !framesFailed);
   // the speed the job or the detector reported; the glide's fallback (objects' shift) is not shown as one
   const speedShown = motion.v > 0.05 && (motion.source === 'given' || motion.source === 'estimated');
   return (
-    <div className={styles.hud}>
+    <div className={`${styles.hud} ${noView ? styles.hudNoView : ''}`}>
       <div className={styles.hudc}>
         <div className={styles.g}>
           <Icon name="camera" size={16} />
@@ -195,7 +199,7 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
           {m} м
         </div>
       ))}
-      <div ref={envRef} className={`${styles.envtag} ${styles.follow}`} style={{ visibility: 'hidden' }}>
+      <div ref={envRef} className={`${styles.envtag} ${styles.follow} ${unverified ? styles.envOff : ''}`} style={{ visibility: 'hidden' }}>
         <i />
         габарит {envelopeText()}
       </div>

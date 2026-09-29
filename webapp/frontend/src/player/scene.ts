@@ -223,7 +223,11 @@ export class PlayerScene {
     this.opts = opts;
     this.pointSize = opts.preview ? 0.024 : 0.028;
     this.minPx = opts.preview ? 1.25 : 1.6;
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
+    // the context is asked for here: without WebGL 2 the owner shows its own message (three.js
+    // would log errors to the console first)
+    const gl = canvas.getContext('webgl2', { alpha: false, antialias: true, depth: true, stencil: false, powerPreference: 'high-performance' });
+    if (!gl) throw new Error('WebGL 2 недоступен');
+    this.renderer = new THREE.WebGLRenderer({ canvas, context: gl, antialias: true, alpha: false, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.autoClear = false;
 
@@ -615,8 +619,10 @@ export class PlayerScene {
     for (const d of this.disposables) d.dispose();
     this.scene.clear();
     this.quadScene.clear();
+    const lost = this.renderer.getContext().isContextLost();
     this.renderer.dispose();
-    this.renderer.forceContextLoss();
+    // frees the GPU context at once (browsers cap live contexts); a lost one has nothing to free
+    if (!lost) this.renderer.forceContextLoss();
   }
 
   // ---------------------------------------------------------------- internals
@@ -959,6 +965,13 @@ export class PlayerScene {
     return out;
   }
 
+  /** Would a label anchored at p, spanning x0..x1 / y0..y1 px around it, overlap the «крупно» inset? */
+  private underPip(p: ScreenPoint, pipOn: boolean, x0 = -30, x1 = 30, y0 = -12, y1 = 12): boolean {
+    const r = this.pipRect;
+    if (!pipOn || !r) return false;
+    return p.x + x1 > r.x && p.x + x0 < r.x + r.w && p.y + y1 > r.y && p.y + y0 < r.y + r.h;
+  }
+
   private computeOverlay(pipOn: boolean): void {
     const ov = this.overlay;
     const dets = this.frame?.detections ?? [];
@@ -1006,7 +1019,7 @@ export class PlayerScene {
         b.y1 = y1;
       }
     }
-    // distance ticks: greedy, a label too close to the previous one is hidden
+    // distance ticks: greedy, a label too close to the previous one (or under the inset) is hidden
     const t = this.track;
     let lx = -1e9;
     let ly = -1e9;
@@ -1014,13 +1027,18 @@ export class PlayerScene {
       const m = TICK_LABELS[i];
       const p = this.toScreen(ov.ticks[i], m, centerY(t, m) + 1.75, railZ(t, m) + 0.02, false, 0);
       const beyond = m > this.span.end + 5;
-      if (p.visible && !beyond && Math.hypot(p.x - lx, p.y - ly) > 30) {
+      if (p.visible && !beyond && !this.underPip(p, pipOn) && Math.hypot(p.x - lx, p.y - ly) > 30) {
         lx = p.x;
         ly = p.y;
       } else p.visible = false;
     }
     this.toScreen(ov.envTag, 13, centerY(t, 13) - 1.05, railZ(t, 13) + 0.12, false, 0);
-    ov.envTag.visible = ov.envTag.visible && this.mode !== 'top' && !this.free;
+    // the tag starts 16 px right of its anchor (Hud.tsx); a warning label stands above its anchor
+    ov.envTag.visible = ov.envTag.visible && this.mode !== 'top' && !this.free && !this.underPip(ov.envTag, pipOn, 16, 180, -13, 13);
+    for (let i = 0; i < ov.warnings.length; i += 1) {
+      const w = ov.warnings[i];
+      if (w.visible && this.underPip(w, pipOn, -45, 45, -34, 0)) w.visible = false;
+    }
     // the close-up ruler: heights above the bed at the object, in inset px
     const pip = ov.pip;
     pip.visible = pipOn;

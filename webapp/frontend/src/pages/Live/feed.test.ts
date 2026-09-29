@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { RosStatusHandlers } from '../../api/rosbridge';
 import type { LiveHandlers, LiveSimParams } from '../../api/ws';
-import { LiveFeedStore, RECONNECT_MS, TICK_MS } from './feed';
+import { LiveFeedStore, RECONNECT_MS, SEEK_SKIP_MAX, TICK_MS } from './feed';
 
 /** A store with a fake socket / rosbridge and a hand-driven clock. */
 function setup() {
@@ -118,13 +118,59 @@ describe('LiveFeedStore — simulation', () => {
     store.pause();
     store.setLoop(false); // reconnects, still paused
     expect(store.getSnapshot()).toMatchObject({ link: 'connecting', paused: true });
-    store.seek(49, 'r1'); // before the new socket opened
+    store.seek(49, { runId: 'r1', speed: 1, loop: false }); // before the new socket opened
     expect(sims).toHaveLength(3);
     expect(store.getSnapshot().paused).toBe(true);
     sims[2].h.onOpen?.();
     expect(sims[2].send).toHaveBeenCalledWith({ cmd: 'seek', pos: 49 });
     expect(sims[2].send).toHaveBeenLastCalledWith({ cmd: 'pause' });
     expect(store.getSnapshot().view).toBe('paused');
+    store.destroy();
+  });
+
+  it('starts a seek on an idle page with the speed and loop chosen there', () => {
+    const { store, sims } = setup();
+    store.seek(30, { runId: 'r7', speed: 5, loop: false });
+    expect(sims).toHaveLength(1);
+    expect(sims[0].params).toEqual({ runId: 'r7', speed: 5, loop: false });
+    sims[0].h.onOpen?.();
+    expect(sims[0].send).toHaveBeenCalledWith({ cmd: 'seek', pos: 30 });
+    store.seek(3); // no target, no replay of another run: ignored for the node
+    store.reset();
+    store.seek(3);
+    expect(sims).toHaveLength(1);
+    store.destroy();
+  });
+
+  it('drops the frames sent before a seek landed (no flash of the old position)', () => {
+    const { store, sims, tick, frame } = setup();
+    store.start({ kind: 'sim', runId: 'r1', speed: 1, loop: true, startPos: 40 });
+    sims[0].h.onOpen?.();
+    sims[0].h.onMessage(frame({ decision: 'GO', t: 0, pos: 0 }) as never); // sent before the seek arrived
+    tick(TICK_MS);
+    expect(store.getSnapshot()).toMatchObject({ msg: null, count: 0, view: 'waiting' });
+    sims[0].h.onMessage(frame({ decision: 'STOP', t: 4, pos: 40 }) as never);
+    sims[0].h.onMessage(frame({ decision: 'STOP', t: 4.1, pos: 41 }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot()).toMatchObject({ view: 'live', count: 2 });
+    expect(store.getSnapshot().msg?.pos).toBe(41);
+
+    store.seek(10); // an open replay: frames in flight before the jump are dropped too
+    sims[0].h.onMessage(frame({ t: 4.2, pos: 42 }) as never);
+    expect(store.getSnapshot().msg?.pos).toBe(41);
+    sims[0].h.onMessage(frame({ t: 1, pos: 10 }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot().msg?.pos).toBe(10);
+    store.destroy();
+  });
+
+  it('gives up waiting for a seek that never lands after a bounded number of frames', () => {
+    const { store, sims, tick, frame } = setup();
+    store.start({ kind: 'sim', runId: 'r1', speed: 10, loop: true, startPos: 999 });
+    sims[0].h.onOpen?.();
+    for (let i = 0; i <= SEEK_SKIP_MAX; i += 1) sims[0].h.onMessage(frame({ t: i / 10, pos: i }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot().count).toBe(1);
     store.destroy();
   });
 

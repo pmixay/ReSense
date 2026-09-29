@@ -79,7 +79,7 @@ export function HowCard({ className }: { className?: string }) {
                 width={280}
                 label={`Когда ${DECISION_CHIP_LABEL[d.decision]}`}
               >
-                <b>{d.topic}</b> — {d.rule}
+                {d.rule} Топик /resense/decision: <b>{d.topic}</b>.
               </Help>
             </li>
           ))}

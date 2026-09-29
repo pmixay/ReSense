@@ -274,11 +274,43 @@ def test_live_simulation_transport(app, seeded):
     expect(chips(page)).to_have_text("не запущен")
     expect(beacon(page).get_by_text("ЭФИР НЕ ЗАПУЩЕН")).to_be_visible()
     expect(card(page, "Узел").get_by_text("Гц")).to_have_count(0)  # no rate without a feed
+    expect(card(page, "Узел").get_by_text("мс", exact=True)).to_have_count(0)  # nor a latency as if current
+    # stopping on purpose is not a fault: the freshness lamps go dark, not violet
+    expect(card(page, "Исправность").locator("[class*='l-error']")).to_have_count(0)
+    expect(beacon(page).locator("[class*='lampBad']")).to_have_count(0)
 
     # another run from the list; the address bar follows
     other = seeded["ids"]["clear"]
     page.get_by_label("Прогон", exact=True).select_option(other)
     expect(page).to_have_url(re.compile(rf"/live\?source=sim&run={other}$"))
+    assert real_errors(app.errors) == []
+
+
+def test_live_seek_before_start_uses_the_chosen_transport(app, seeded):
+    """A click on the strip of a replay that is not running starts it there, at the speed and loop
+    chosen on the page, and nothing before the chosen frame is ever shown."""
+    page, rid = app.page, seeded["ids"]["clear"]
+    n = seeded["runs"][rid]["summary"]["n_frames"]
+    app.goto(f"/live?source=sim&run={rid}")
+    page.get_by_role("radio", name="5×", exact=True).click()
+    page.get_by_role("button", name="По кругу: вкл.").click()
+    expect(page.get_by_role("button", name="По кругу: выкл.")).to_be_visible()
+    strip = page.get_by_role("slider", name="Перемотка прогона")
+    expect(strip).not_to_have_attribute("aria-valuenow", re.compile("."))
+    # every frame position the playhead shows from now on
+    strip.evaluate("""el => { window.__shown = [];
+        new MutationObserver(() => { const v = el.getAttribute('aria-valuenow'); if (v !== null) window.__shown.push(+v); })
+          .observe(el, {attributes: true, attributeFilter: ['aria-valuenow']}); }""")
+    box = strip.bounding_box()
+    target = n // 3
+    with page.expect_websocket(lambda ws: "/api/live/sim" in ws.url) as opened:
+        page.mouse.click(box["x"] + box["width"] * (target + 0.5) / n, box["y"] + box["height"] / 2)
+    q = urllib.parse.parse_qs(urllib.parse.urlparse(opened.value.url).query)
+    assert (q["run_id"], q["speed"], q["loop"]) == ([rid], ["5"], ["false"])
+    # 5× without a loop: the rest of the run plays out and the record ends
+    expect(chips(page)).to_have_text("конец записи", timeout=20_000)
+    shown = page.evaluate("window.__shown")
+    assert shown and min(shown) >= target and shown[-1] == n - 1, shown
     assert real_errors(app.errors) == []
 
 
@@ -380,6 +412,10 @@ def test_live_ros_node(app, rosbridge):
     expect(alert).to_contain_text("Нет связи с узлом ROS (rosbridge)", timeout=15_000)
     expect(alert.get_by_role("button", name="Повторить")).to_be_visible()
     expect(page).to_have_url(re.compile(re.escape("url=" + urllib.parse.quote(dead, safe=""))))  # a link to this address
+    # the error was about that address: editing it clears the error
+    url_box.fill(rosbridge.url)
+    expect(page.locator("main").get_by_role("alert")).to_have_count(0)
+    expect(chips(page)).to_have_text("не подключено")
 
     # the other source: nothing of the node's is shown as the replay's
     page.get_by_role("radio", name="Симуляция").click()
@@ -480,6 +516,11 @@ def test_presets_errors_and_deep_link(app, backend, seeded):
     """A deep link opens a user preset; a preset deleted elsewhere cannot be saved (404, the
     backend's message in a banner); loading and offline states with a retry."""
     page, base, api = app.page, app.base, backend.api
+    # a link to a preset that does not exist (any more) opens «Стандарт 1.0» and says so in the address
+    app.goto("/presets?id=nosuch")
+    expect(page.locator("main").get_by_role("heading", name="Стандарт 1.0")).to_be_visible()
+    expect(page).to_have_url(re.compile(r"/presets$"))
+
     tmp = api.post("/presets", {"name": "Временный", "overrides": {"gauge.range_max": 150}})
     app.goto(f"/presets?id={tmp['id']}")
     expect(page.get_by_label("Название пресета")).to_have_value("Временный")

@@ -3,7 +3,7 @@
 // differs from the default, keeps unsaved edits per preset while you switch, and shows the backend's
 // validation errors at the parameter they name. «Обработать с этим пресетом» → /upload?preset=<id>.
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { qk, useCreatePreset, useDeletePreset, usePresetSchema, usePresets, useUpdatePreset } from '../../api/hooks';
 import type { ApiError } from '../../api/client';
@@ -59,6 +59,20 @@ export default function Presets() {
   const dirty = isNew || (!!draft && !!base && !sameDraft(draft, base, specs));
   const builtin = !!preset?.builtin && !isNew;
   const changed = draft ? changedKeys(draft.values, specs).size : 0;
+
+  // a link to a preset that is gone (or to an unsaved draft after a reload) shows «Стандарт»: the
+  // address says so too, so a reload or a shared link opens what is on screen. Not while the list is
+  // being refetched, and not for a draft that was just saved or dropped: the router applies that
+  // select() as a transition, after the draft is already gone.
+  const listChecked = useRef(false);
+  const listSettled = !!list && !presets.isFetching;
+  useEffect(() => {
+    if (!listSettled) return;
+    const first = !listChecked.current;
+    listChecked.current = true;
+    if (wanted === selectedId || (wanted === NEW_ID && !first)) return;
+    setParams(selectedId === STANDARD ? {} : { id: selectedId }, { replace: true });
+  }, [listSettled, wanted, selectedId, setParams]);
 
   const select = (id: string) => {
     create.reset();

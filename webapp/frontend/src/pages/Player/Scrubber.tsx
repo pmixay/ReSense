@@ -33,15 +33,34 @@ export interface ScrubberProps {
 
 const speedLabel = (s: number) => `${fmtNumTrim(s, 2)}×`;
 
+/** ←/→ on the focused strip mean what they mean everywhere in the player (a frame, Shift ten, and
+ *  a pause) instead of the slider's plain ±1 seek; Home / End / PageUp / PageDown stay the slider's. */
+export function laneStep(e: Pick<KeyboardEvent, 'key' | 'shiftKey' | 'altKey' | 'ctrlKey' | 'metaKey'>): number | null {
+  if (e.altKey || e.ctrlKey || e.metaKey) return null;
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return null;
+  return (e.key === 'ArrowRight' ? 1 : -1) * (e.shiftKey ? 10 : 1);
+}
+
 const Lane = memo(function Lane({
   decisions,
   pos,
   markers,
   onSeek,
+  onStep,
   posLabel,
-}: Pick<ScrubberProps, 'decisions' | 'pos' | 'markers' | 'onSeek' | 'posLabel'>) {
+}: Pick<ScrubberProps, 'decisions' | 'pos' | 'markers' | 'onSeek' | 'onStep' | 'posLabel'>) {
   return (
-    <div className={styles.tlane}>
+    <div
+      className={styles.tlane}
+      onKeyDownCapture={(e) => {
+        const d = laneStep(e);
+        if (d === null) return;
+        // stops the event before the slider (and the window's player keys): stepped once, here
+        e.preventDefault();
+        e.stopPropagation();
+        onStep(d);
+      }}
+    >
       <DecisionStrip
         decisions={decisions}
         height={24}
@@ -84,7 +103,7 @@ export function Scrubber(p: ScrubberProps) {
           {fmtDuration(p.t)} из {fmtDuration(p.duration)}
         </span>
       </div>
-      <Lane decisions={p.decisions} pos={p.pos} markers={p.markers} onSeek={p.onSeek} posLabel={p.posLabel} />
+      <Lane decisions={p.decisions} pos={p.pos} markers={p.markers} onSeek={p.onSeek} onStep={p.onStep} posLabel={p.posLabel} />
       <div className={styles.spd} role="group" aria-label="Скорость">
         {SPEEDS.map((s) => (
           <button key={s} type="button" aria-pressed={p.speed === s} className={p.speed === s ? styles.on : ''} onClick={() => p.onSpeed(s)}>

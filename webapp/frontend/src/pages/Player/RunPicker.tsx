@@ -123,17 +123,18 @@ export function PickerConsole() {
           ))}
         </div>
       </section>
+      {/* keyed: a button never morphs into another one (no red flash while the list arrives) */}
       <div className={`${styles.scrub} ${styles.scrubPick}`}>
-        {empty ? (
-          <Button variant="outline" icon="upload" to="/upload">
+        {runs.isPending ? null : empty ? (
+          <Button key="upload" variant="outline" icon="upload" to="/upload">
             Загрузить запись
           </Button>
         ) : (
           <>
-            <Button variant="primary" icon="sparkle" to="/upload?source=demo">
+            <Button key="demo" variant="primary" icon="sparkle" to="/upload?source=demo">
               Сделать демо-прогон
             </Button>
-            <Button variant="outline" icon="list" to="/runs">
+            <Button key="runs" variant="outline" icon="list" to="/runs">
               Все прогоны
             </Button>
           </>

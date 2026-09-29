@@ -57,31 +57,37 @@ export function Beacon({ snap, kind, className }: BeaconProps) {
   const busy = view === 'connecting' || view === 'waiting';
   // the clock only runs while the link delivers: after the end or an error an old age would read as fresh
   const age = view === 'live' || view === 'stale' || view === 'paused' ? snap.age : null;
+  // violet only for data that should be arriving and is not; a stop or the end of the record is no fault
+  const lamp = live ? styles.lampOk : snap.age !== null && (view === 'stale' || view === 'error' || snap.reconnecting) ? styles.lampBad : '';
 
   return (
-    <Card className={[styles.beacon, className].filter(Boolean).join(' ')} padding="sm" aria-live="polite">
+    <Card className={[styles.beacon, className].filter(Boolean).join(' ')} padding="sm">
       <div className={[styles.head, styles[headTone], live && decision === 'STOP' ? 'pulse' : ''].join(' ')}>
-        {live && decision ? (
-          <>
-            <Icon name={DECISION_ICON[decision]} size={40} strokeWidth={2.6} className={styles.icon} />
-            <span className={[styles.label, DECISION_CHIP_LABEL[decision].length > 5 ? styles.long : ''].join(' ')}>{DECISION_CHIP_LABEL[decision]}</span>
-          </>
-        ) : (
-          <>
-            {busy ? (
-              <Spinner size={30} tone="ink" />
-            ) : (
-              <Icon
-                name={view === 'paused' ? 'pause' : view === 'idle' ? (kind === 'sim' ? 'play' : 'live') : view === 'error' ? 'wifi-off' : 'clock'}
-                size={34}
-                className={styles.icon}
-              />
-            )}
-            <span className={[styles.label, styles.state].join(' ')}>{stateLabel(view as Exclude<LiveView, 'live'>, kind)}</span>
-            {/* a paused replay is inspected on purpose: its frame's decision; stale data shows none */}
-            {decision && view === 'paused' && <DecisionChip decision={decision} size="sm" className={styles.lastChip} title="Решение кадра на паузе" />}
-          </>
-        )}
+        {/* the live region: screen readers hear the decision or the state as it changes, not every
+            distance and age */}
+        <span className={styles.say} aria-live="polite" aria-atomic="true">
+          {live && decision ? (
+            <>
+              <Icon name={DECISION_ICON[decision]} size={40} strokeWidth={2.6} className={styles.icon} />
+              <span className={[styles.label, DECISION_CHIP_LABEL[decision].length > 5 ? styles.long : ''].join(' ')}>{DECISION_CHIP_LABEL[decision]}</span>
+            </>
+          ) : (
+            <>
+              {busy ? (
+                <Spinner size={30} tone="ink" />
+              ) : (
+                <Icon
+                  name={view === 'paused' ? 'pause' : view === 'idle' ? (kind === 'sim' ? 'play' : 'live') : view === 'error' ? 'wifi-off' : 'clock'}
+                  size={34}
+                  className={styles.icon}
+                />
+              )}
+              <span className={[styles.label, styles.state].join(' ')}>{stateLabel(view as Exclude<LiveView, 'live'>, kind)}</span>
+              {/* a paused replay is inspected on purpose: its frame's decision; stale data shows none */}
+              {decision && view === 'paused' && <DecisionChip decision={decision} size="sm" className={styles.lastChip} title="Решение кадра на паузе" />}
+            </>
+          )}
+        </span>
         <Help
           placement="bottom-end"
           width={300}
@@ -115,7 +121,7 @@ export function Beacon({ snap, kind, className }: BeaconProps) {
       </div>
 
       <div className={styles.foot}>
-        <span className={[styles.lamp, live ? styles.lampOk : snap.age !== null && view !== 'paused' ? styles.lampBad : ''].join(' ')} aria-hidden />
+        <span className={[styles.lamp, lamp].join(' ')} aria-hidden />
         <span className={styles.fl}>свежесть</span>
         <b>{fmtAge(age)}</b>
         <span className={styles.sp} />

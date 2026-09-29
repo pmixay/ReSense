@@ -15,6 +15,17 @@ export type FeedSource =
   | { kind: 'sim'; runId: string; speed: number; loop: boolean; startPos?: number }
   | { kind: 'ros'; url: string };
 
+/** The replay a seek starts when none is running: the run and the transport chosen on the page. */
+export interface SimTarget {
+  runId: string;
+  speed: number;
+  loop: boolean;
+}
+
+/** After a seek, frames the server sent before it (at most this many) are dropped: the screen
+ *  never flashes the old position (a fresh socket starts at frame 0 until the seek arrives). */
+export const SEEK_SKIP_MAX = 50;
+
 export interface FeedSnapshot {
   link: LinkStatus;
   view: LiveView;
@@ -72,6 +83,9 @@ export class LiveFeedStore {
   private paused = false;
   private everOpen = false;
   private source: FeedSource | null = null;
+  /** a seek in flight: frames of other positions are dropped until it lands */
+  private seekTo: number | null = null;
+  private seekSkip = 0;
 
   constructor(deps: Partial<FeedDeps> = {}) {
     this.deps = { ...DEFAULT_DEPS, ...deps };
@@ -99,6 +113,7 @@ export class LiveFeedStore {
     this.everOpen = false;
     this.paused = false;
     this.link = 'connecting';
+    this.awaitSeek(source.kind === 'sim' && source.startPos ? Math.floor(source.startPos) : null);
     if (source.kind === 'sim') this.openSim(source);
     else void this.openRos(source.url);
     this.publish();
@@ -128,6 +143,7 @@ export class LiveFeedStore {
     this.samples = [];
     this.paused = false;
     this.everOpen = false;
+    this.awaitSeek(null);
     this.publish();
   }
 
@@ -151,25 +167,27 @@ export class LiveFeedStore {
     this.publish();
   }
 
-  /** Jumps to a processed-order position; starts the replay there when it is not running. */
-  seek(pos: number, runId?: string): void {
+  /** Jumps to a processed-order position. Without an open replay of that run it starts one there,
+   *  with the run, speed and loop of `target` (the page's choice) or else of the last replay. */
+  seek(pos: number, target?: SimTarget): void {
     const src = this.source;
     const p = Math.max(0, Math.floor(pos));
-    if (src?.kind === 'sim' && this.link === 'open' && (!runId || runId === src.runId)) {
+    const same = src?.kind === 'sim' && (!target || target.runId === src.runId);
+    if (same && this.link === 'open') {
       this.sim?.send({ cmd: 'seek', pos: p });
       this.samples = [];
+      this.awaitSeek(p);
       this.publish();
       return;
     }
-    if (src?.kind === 'sim' || runId) {
-      const base = src?.kind === 'sim' ? src : { kind: 'sim' as const, runId: runId ?? '', speed: 1, loop: true };
-      // a replay paused on purpose stays paused when a seek lands while it (re)connects
-      const keepPaused = this.paused && this.link === 'connecting' && src?.kind === 'sim' && (!runId || runId === src.runId);
-      this.start({ ...base, runId: runId ?? base.runId, startPos: p });
-      if (keepPaused) {
-        this.paused = true;
-        this.publish();
-      }
+    const base = target ? { kind: 'sim' as const, ...target } : src?.kind === 'sim' ? src : null;
+    if (!base) return;
+    // a replay paused on purpose stays paused when a seek lands while it (re)connects
+    const keepPaused = same && this.paused && this.link === 'connecting';
+    this.start({ ...base, startPos: p });
+    if (keepPaused) {
+      this.paused = true;
+      this.publish();
     }
   }
 
@@ -325,12 +343,33 @@ export class LiveFeedStore {
       this.retry = null;
       if (this.source?.kind !== 'ros' || this.link !== 'connecting') return;
       this.gen += 1;
+      // the failed attempt's client may have been stored after it failed: close it before the next
+      const old = this.ros;
+      this.ros = null;
+      try {
+        old?.close();
+      } catch {
+        /* already closed */
+      }
       void this.openRos(url);
     }, RECONNECT_MS);
   }
 
+  private awaitSeek(pos: number | null): void {
+    this.seekTo = pos;
+    this.seekSkip = pos === null ? 0 : SEEK_SKIP_MAX;
+  }
+
   private receive(raw: unknown): void {
     if (!isMessage(raw)) return;
+    if (this.seekTo !== null) {
+      // frames sent before the server took the seek: not the position asked for
+      if (typeof raw.pos === 'number' && raw.pos !== this.seekTo && this.seekSkip > 0) {
+        this.seekSkip -= 1;
+        return;
+      }
+      this.awaitSeek(null);
+    }
     const now = this.deps.now();
     const sim = this.source?.kind === 'sim';
     const t = typeof raw.t === 'number' && Number.isFinite(raw.t) ? raw.t * 1000 : null;

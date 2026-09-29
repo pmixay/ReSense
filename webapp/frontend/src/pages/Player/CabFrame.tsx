@@ -3,6 +3,7 @@
 // the curved console with the recess of the scrubber, the red ambient wash while STOP, and the
 // 0–200 m distance line on the dash with the obstacle as its only red mark.
 import { memo } from 'react';
+import styles from './Player.module.css';
 
 export const GLASS_PATH =
   'M150 110 C520 76 1080 76 1450 110 Q1522 118 1530 184 C1542 310 1542 452 1524 540 Q1512 598 1446 606 C1100 650 500 650 154 606 Q88 598 76 540 C58 452 58 310 70 184 Q78 118 150 110 Z';
@@ -148,8 +149,7 @@ const Ambient = memo(function Ambient() {
   );
 });
 
-export function CabFrame({ stop, obstacleM, className }: { stop: boolean; obstacleM: number | null; className?: string }) {
-  const ob = obstacleM !== null && obstacleM >= 0 && obstacleM <= 200 ? dashPoint(obstacleM) : null;
+const Shell = memo(function Shell({ stop, className }: { stop: boolean; className?: string }) {
   return (
     <svg className={className} viewBox="0 0 1600 1000" width="1600" height="1000" aria-hidden>
       <Interior />
@@ -159,16 +159,33 @@ export function CabFrame({ stop, obstacleM, className }: { stop: boolean; obstac
         </g>
       )}
       {stop && <Ambient />}
-      {ob && (
-        <g>
-          <circle cx={ob.x} cy={ob.y} r="18" fill="#FF2A3C" fillOpacity=".18" />
-          <circle cx={ob.x} cy={ob.y} r="11" fill="#D0001B" stroke="#fff" strokeWidth="3" />
-          <path d={`M${(ob.x - 5).toFixed(1)} ${ob.y.toFixed(1)}h10`} stroke="#fff" strokeWidth="2.8" strokeLinecap="round" />
-        </g>
-      )}
       {/* glass rim */}
       <use href="#cab-glass" fill="none" stroke="#FFFFFF" strokeWidth="6" />
       <use href="#cab-glass" fill="none" stroke="#2A2830" strokeOpacity=".6" strokeWidth="2" />
     </svg>
+  );
+});
+
+/** The obstacle on the dash line: its own small SVG, so the blurred cab above never repaints at 10 Hz. */
+function DashMarker({ m }: { m: number }) {
+  const ob = dashPoint(m);
+  const x = ob.x - 20;
+  const y = ob.y - 20;
+  return (
+    <svg className={styles.dashMark} style={{ left: x, top: y }} width="40" height="40" viewBox="0 0 40 40" aria-hidden>
+      <circle cx="20" cy="20" r="18" fill="#FF2A3C" fillOpacity=".18" />
+      <circle cx="20" cy="20" r="11" fill="#D0001B" stroke="#fff" strokeWidth="3" />
+      <path d="M15 20h10" stroke="#fff" strokeWidth="2.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function CabFrame({ stop, obstacleM, className }: { stop: boolean; obstacleM: number | null; className?: string }) {
+  const show = obstacleM !== null && obstacleM >= 0 && obstacleM <= 200;
+  return (
+    <>
+      <Shell stop={stop} className={className} />
+      {show && <DashMarker m={obstacleM} />}
+    </>
   );
 }

@@ -113,6 +113,19 @@ describe('Presets page', () => {
     expect(screen.getByRole('link', { name: /Обработать с этим пресетом/ }).getAttribute('href')).toBe('/upload?preset=p1');
   });
 
+  it('turns a link to a preset that is gone, or to a draft lost on reload, into the address of what is shown', async () => {
+    backend();
+    renderPage('/presets?id=gone');
+    await waitFor(() => expect(screen.getByTestId('where').textContent).toBe('/presets'));
+    expect(shown('Стандарт 1.0').length).toBeGreaterThan(0);
+  });
+
+  it('forgets a draft id that has no draft (a reload)', async () => {
+    backend();
+    renderPage('/presets?id=__new__');
+    await waitFor(() => expect(screen.getByTestId('where').textContent).toBe('/presets'));
+  });
+
   it('shows the backend’s message at the name field on a conflict', async () => {
     backend(() => ({ status: 409, body: { detail: 'Пресет с таким названием уже есть' } }));
     renderPage();

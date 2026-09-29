@@ -6,6 +6,7 @@ import {
   confirmTime,
   decisionText,
   decisionWordSize,
+  distanceLabels,
   distanceModel,
   envelopeText,
   healthRows,
@@ -79,6 +80,44 @@ describe('distanceModel', () => {
     expect(m).toEqual({ obstacle: false, unverified: true, title: 'Путь не проверен', value: null, free: 0, monitored: null });
     // an obstacle still wins (STOP outranks FAULT)
     expect(distanceModel(fr({ decision: 'STOP', obstacle: true, nearest_distance: 20 })).obstacle).toBe(true);
+  });
+});
+
+describe('distanceLabels', () => {
+  const W = 426;
+  const X = (m: number) => (m / 210) * W;
+  const width = (s: string) => s.length * 7.8;
+  /** the labels' spans never touch */
+  const noOverlap = (l: ReturnType<typeof distanceLabels>) => {
+    const spans: [number, number][] = [[0, width(l.free)]];
+    if (l.value) spans.push([l.valueX - width(l.value) / 2, l.valueX + width(l.value) / 2]);
+    if (l.mon) spans.push([l.monEnd - width(l.mon), l.monEnd]);
+    spans.sort((a, b) => a[0] - b[0]);
+    for (let i = 1; i < spans.length; i += 1) expect(spans[i][0]).toBeGreaterThanOrEqual(spans[i - 1][1]);
+    for (const [a, b] of spans) expect(a >= 0 && b <= W).toBe(true);
+  };
+
+  it('keeps a near obstacle clear of «свободно»', () => {
+    const l = distanceLabels(W, 'свободно', '25,2', X(25.2), X(182), 182);
+    expect(l.valueX).toBeGreaterThan(X(25.2));
+    expect(sp(l.mon ?? '')).toBe('контроль 182 м');
+    noOverlap(l);
+  });
+
+  it('shortens or drops the monitored range next to a far obstacle', () => {
+    const mid = distanceLabels(W, 'свободно', '140,0', X(140), X(187), 187);
+    expect(sp(mid.mon ?? '')).toBe('187 м');
+    noOverlap(mid);
+    const far = distanceLabels(W, 'свободно', '180,0', X(180), X(187), 187);
+    expect(far.mon).toBeNull();
+    noOverlap(far);
+  });
+
+  it('moves a short monitored range off «свободно»', () => {
+    const l = distanceLabels(W, 'свободно', null, X(30), X(30), 30);
+    expect(l.value).toBeNull();
+    expect(sp(l.mon ?? '')).toBe('контроль 30 м');
+    noOverlap(l);
   });
 });
 

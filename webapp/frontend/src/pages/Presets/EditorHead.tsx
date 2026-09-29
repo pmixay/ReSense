@@ -1,6 +1,6 @@
 // The editor's header card: the name and description (read-only for the sealed built-in), how many
 // parameters differ from the standard, and the actions — revert, duplicate, delete (asks once), save.
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { Button, Chip, Help, Icon, IconButton, TextInput, Tooltip } from '../../components';
 import type { Draft } from './model';
 import styles from './Presets.module.css';
@@ -25,6 +25,8 @@ export interface EditorHeadProps {
 
 export function EditorHead(p: EditorHeadProps) {
   const blank = !p.draft.name.trim();
+  const nameErr = blank ? 'Укажите название' : p.nameError;
+  const errId = useId();
   return (
     <div className={styles.head}>
       {p.builtin ? (
@@ -49,10 +51,15 @@ export function EditorHead(p: EditorHeadProps) {
               maxLength={80}
               aria-label="Название пресета"
               placeholder="Название"
-              invalid={blank || !!p.nameError}
+              invalid={!!nameErr}
+              aria-describedby={nameErr ? errId : undefined}
               onChange={(e) => p.onName(e.target.value)}
             />
-            {(blank || p.nameError) && <span className={styles.fieldErr}>{blank ? 'Укажите название' : p.nameError}</span>}
+            {nameErr && (
+              <span id={errId} className={styles.fieldErr} role="alert">
+                {nameErr}
+              </span>
+            )}
           </div>
           <TextInput
             className={styles.descField}
