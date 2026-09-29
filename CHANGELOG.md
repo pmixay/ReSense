@@ -19,6 +19,23 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
 
+### Changed — health sector counts (29.09; resealed)
+
+- `resense.health._sector_counts` counts `values >= edge` per edge instead of a per-value binary
+  search. It compares a float32 cloud with float32 thresholds (the smallest float32 at least each
+  edge), which gives the same counts as `np.histogram`. Randomised and edge-case tests cover this.
+- It is the fastest counter in all 12 measured cells (NumPy 1.26 / 2.4, AVX-512 on / off, 127–890 k
+  points). At 381 k points on the image's NumPy 1.26 without AVX-512 it takes 0.54 ms, against
+  2.89 ms for the sealed search and 17.3 ms for `np.histogram`.
+- Validation:
+  - the full native gate on this change and on the unmodified source, both exit 0, all 207 compared
+    metrics unchanged, no waivers;
+  - 15 269 frames and set F's 3 060 rows identical outside timing;
+  - 33 stress histories with no STOP change;
+  - an independent review.
+- A first variant was rejected at its speed step. The seal was replaced; the evidence is in
+  [`health_compare_counts`](docs/evidence/cycle_2026-09-29/health_compare_counts/README.md).
+
 ### Changed — detector timing contract (28.09)
 
 - `timing_ms.total` now includes health monitoring and result construction; `stages` retains the

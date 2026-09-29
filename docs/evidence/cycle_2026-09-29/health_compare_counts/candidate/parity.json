@@ -1,0 +1,123 @@
+{
+ "schema": "resense-gate-output-parity-v1",
+ "recordings": {
+  "cloud_with_fake_obj": {
+   "frames": 1510,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "doubleT_obstacle": {
+   "frames": 201,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "doubleT_platform": {
+   "frames": 345,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "new_data_0": {
+   "frames": 1409,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "new_data_1": {
+   "frames": 1409,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "new_data_2": {
+   "frames": 1409,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "new_data_3": {
+   "frames": 1409,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "new_data_4": {
+   "frames": 1409,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 2,
+   "examples": []
+  },
+  "new_data_5": {
+   "frames": 1409,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "new_data_6": {
+   "frames": 1409,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "new_data_7": {
+   "frames": 1408,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "roundT_doubleT": {
+   "frames": 252,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "roundT_pressureGate_roundT": {
+   "frames": 268,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "frames": 545,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  },
+  "squareT_platform_squareT_switch": {
+   "frames": 877,
+   "changed_frames": 0,
+   "blocked_sectors_changed_frames": 0,
+   "latency_level_only_frames": 0,
+   "examples": []
+  }
+ },
+ "frames": 15269,
+ "changed_frames": 0,
+ "blocked_sectors_changed_frames": 0,
+ "latency_only_frames": 2,
+ "set_F": {
+  "equal_except_wall_s": true,
+  "wall_s": {
+   "control": 232.3,
+   "candidate": 122.9
+  },
+  "rows": 3060
+ },
+ "passed": true
+}

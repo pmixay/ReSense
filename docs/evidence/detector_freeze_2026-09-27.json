@@ -1,11 +1,11 @@
 {
   "schema": "resense-detector-freeze-v1",
   "status": "frozen",
-  "created_utc": "2026-09-29T02:55:02.358141+00:00",
+  "created_utc": "2026-09-29T08:54:42.663488+00:00",
   "authorization": "User delegated captain work and requested detector freeze on 2026-09-26.",
-  "source_commit": "dcaa5dbddb1dbc0ed30ccb50bed569390bca060d",
-  "measured_commit": "dcaa5dbddb1dbc0ed30ccb50bed569390bca060d",
-  "source_sha256": "f20dd9eff0d810483a3f9d015700c164bbd39f8e237feeee058c2826db49afc4",
+  "source_commit": "3eeb106a1c2719b4d295445f3ffbd4b732654994",
+  "measured_commit": "3eeb106a1c2719b4d295445f3ffbd4b732654994",
+  "source_sha256": "70faef901cb480b31f2f55ff1a28a2f4dc5c83c6bcda41371ee078eb79955a1c",
   "files": {
     "configs/default.yaml": "0079d8615282c2769ecf4b445309f3fcd721f5c72275cf1828605966465970a3",
     "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
@@ -25,7 +25,7 @@
     "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
     "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
     "resense/gauge.py": "0cd3b119249dc34fd36397afa3f60a5aaa22c9917d94dea4ffe6c79e4e744f35",
-    "resense/health.py": "e6509be18cddb72c58bbf4870a45c26ab123b5c221177a5a5af480836e6f6e20",
+    "resense/health.py": "7bfde7fada9c4726d59720fbe81216c5418af978c8bbed8d26e7fa684f519a5a",
     "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
     "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
     "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
@@ -45,18 +45,18 @@
   "config_file_sha256": "0079d8615282c2769ecf4b445309f3fcd721f5c72275cf1828605966465970a3",
   "effective_config_sha256": "8f112b81c8178ce3ec7e5b7aba5bbae42e86cffbcb40a9e67b2bde94e1869075",
   "baseline": {
-    "path": "docs/evidence/cycle_2026-09-28/complete_timing/default/gate.json",
-    "sha256": "357852e788471faf270e4c31f070e39e01123e0645e396ada512496c67df969e"
+    "path": "docs/evidence/cycle_2026-09-29/thin_far_threshold/default_gate.json",
+    "sha256": "b365173280c55290db8350d8fb863a3008f9ee6dfc0cf0cc90f02ec8986d8991"
   },
   "validation": {
-    "path": "docs/evidence/cycle_2026-09-29/thin_far_threshold/default_gate.json",
-    "sha256": "b365173280c55290db8350d8fb863a3008f9ee6dfc0cf0cc90f02ec8986d8991",
-    "measured_at": "2026-09-29T02:52:15+00:00",
+    "path": "docs/evidence/cycle_2026-09-29/health_compare_counts/candidate/gate.json",
+    "sha256": "a268b6348ce950d84ba4cae4591babd59596862fb3af49cede64eb2e00cc88da",
+    "measured_at": "2026-09-29T08:40:32+00:00",
     "kind": "committed full regression gate"
   },
   "decisions": {
     "candidate_B": "not shipped: one extra STOP frame at 7.1 m; keep voxel bar 10",
-    "axis_union": "off: organizer Q1 unanswered and shape-safety review remains open"
+    "axis_union": "off: the organizers measure the envelope from the rail heads (answer of 29.09); gauge.reference 3 keeps the bounded union"
   },
   "change_policy": "Blocker fixes only; review the fix, repeat affected checks and the full gate, then replace this seal.",
   "limits": [

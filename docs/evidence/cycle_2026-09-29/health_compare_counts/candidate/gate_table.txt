@@ -1,0 +1,256 @@
+code 3eeb106a1c2719b4d295445f3ffbd4b732654994  config 8f112b81c817   native (_resense_native.so)
+recording                              frames alarmF events STOPep  advis  1st
+doubleT_obstacle                          201    193      2      1     89    8
+   labelled 190/246: object_on_rail 129/185, person_crossing 61/61, object_on_rail_from_frame_75 126/126; fp events 0, distance error <= 0.23 m
+doubleT_platform                          345      2      3      1    182   36
+roundT_doubleT                            252      0      0      0    173    -
+roundT_pressureGate_roundT                268      0      0      0    107    -
+roundT_squareT_pressureGate_squareT       545      0      0      0    146    -
+squareT_platform_squareT_switch           877     38      8     12    398  312
+five obstacle-free recordings: 40 alarm frames / 11 events / 13 STOP episodes in 2287 frames
+ride (set E): 130 / 32 / 31 in 11271 frames
+set O: STOP in 411 of 801 visible inside object-frames (8 of 8 objects), 6 false STOP frames outside, background 0 frames / 0 ids
+   big_center           inside   STOP 208/213 advisory   0 first STOP 98.0 m held from 98.7 m
+   small_center         inside   STOP  32/ 79 advisory   0 first STOP 55.8 m held from 60.8 m
+   small_on_rail        inside   STOP  23/ 49 advisory   0 first STOP 42.7 m held from 46.2 m
+   small_edge_inside    inside   STOP  18/ 83 advisory   7 first STOP 35.0 m held from 38.7 m
+   small_outside_near   outside  false STOP   0/112 advisory  24
+   big_edge_inside      inside   STOP   7/125 advisory   1 first STOP 18.3 m held from 10.3 m
+   big_outside          outside  false STOP   6/104 advisory  43
+   big_above            inside   STOP  56/124 advisory   6 first STOP 111.4 m held from 123.6 m
+   long_low_on_rails    inside   STOP  52/ 86 advisory   0 first STOP 87.2 m held from 95.9 m
+   thin_hanging         inside   STOP  15/ 42 advisory   0 first STOP 30.1 m held from 31.8 m
+set F straight person   detected 6/6, first median 151.0 m, false 6
+set F straight box1.0   detected 6/6, first median 123.9 m, false 12
+set F straight box0.5   detected 2/6, first median 64.4 m, false 0
+set F straight trolley  detected 6/6, first median 151.4 m, false 5
+set F straight cable    detected 6/6, first median 98.9 m, false 3
+
+baseline docs/evidence/cycle_2026-09-29/thin_far_threshold/default_gate.json: code dcaa5dbddb1dbc0ed30ccb50bed569390bca060d, config 8f112b81c817, native (_resense_native.so)
+metric                                                                 gate   baseline    current  verdict
+recordings.doubleT_obstacle.frames                                      yes        201        201  same
+recordings.doubleT_obstacle.alarm_events                                             2          2  same
+recordings.doubleT_obstacle.stop_episodes                                            1          1  same
+recordings.doubleT_obstacle.alarm_frames                                           193        193  same
+recordings.doubleT_obstacle.advisory_frames                                         91         89  better
+recordings.doubleT_obstacle.first_alarm_frame                           yes          8          8  same
+recordings.doubleT_obstacle.labelled.object_on_rail.hits                yes        129        129  same
+recordings.doubleT_obstacle.labelled.person_crossing.hits               yes         61         61  same
+recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits  yes        126        126  same
+recordings.doubleT_obstacle.labelled.hits                                          190        190  same
+recordings.doubleT_obstacle.labelled.fp_events                          yes          0          0  same
+recordings.doubleT_obstacle.labelled.distance_error_max_m                         0.23       0.23  same
+recordings.doubleT_platform.frames                                      yes        345        345  same
+recordings.doubleT_platform.alarm_events                                yes          3          3  same
+recordings.doubleT_platform.stop_episodes                               yes          1          1  same
+recordings.doubleT_platform.alarm_frames                                             2          2  same
+recordings.doubleT_platform.advisory_frames                                        182        182  same
+recordings.roundT_doubleT.frames                                        yes        252        252  same
+recordings.roundT_doubleT.alarm_events                                  yes          0          0  same
+recordings.roundT_doubleT.stop_episodes                                 yes          0          0  same
+recordings.roundT_doubleT.alarm_frames                                               0          0  same
+recordings.roundT_doubleT.advisory_frames                                          173        173  same
+recordings.roundT_pressureGate_roundT.frames                            yes        268        268  same
+recordings.roundT_pressureGate_roundT.alarm_events                      yes          0          0  same
+recordings.roundT_pressureGate_roundT.stop_episodes                     yes          0          0  same
+recordings.roundT_pressureGate_roundT.alarm_frames                                   0          0  same
+recordings.roundT_pressureGate_roundT.advisory_frames                              107        107  same
+recordings.roundT_squareT_pressureGate_squareT.frames                   yes        545        545  same
+recordings.roundT_squareT_pressureGate_squareT.alarm_events             yes          0          0  same
+recordings.roundT_squareT_pressureGate_squareT.stop_episodes            yes          0          0  same
+recordings.roundT_squareT_pressureGate_squareT.alarm_frames                          0          0  same
+recordings.roundT_squareT_pressureGate_squareT.advisory_frames                     146        146  same
+recordings.squareT_platform_squareT_switch.frames                       yes        877        877  same
+recordings.squareT_platform_squareT_switch.alarm_events                 yes          8          8  same
+recordings.squareT_platform_squareT_switch.stop_episodes                yes         12         12  same
+recordings.squareT_platform_squareT_switch.alarm_frames                             38         38  same
+recordings.squareT_platform_squareT_switch.advisory_frames                         398        398  same
+five_empty.alarm_events                                                             11         11  same
+five_empty.stop_episodes                                                            13         13  same
+five_empty.alarm_frames                                                             40         40  same
+ride.frames                                                             yes      11271      11271  same
+ride.alarm_events                                                       yes         32         32  same
+ride.stop_episodes                                                      yes         31         31  same
+ride.alarm_frames                                                                  130        130  same
+set_O.frames                                                            yes       1510       1510  same
+set_O.objects.big_center.stop_frames                                    yes        208        208  same
+set_O.objects.big_center.first_stop_m                                   yes       98.0       98.0  same
+set_O.objects.big_center.held_from_m                                    yes       98.7       98.7  same
+set_O.objects.big_center.max_missed_streak_frames                       yes          5          5  same
+set_O.objects.big_center.max_missed_span_m                              yes        0.5        0.5  same
+set_O.objects.big_center.advisory_frames                                             0          0  same
+set_O.objects.big_center.bins.0-50.visible_frames                       yes         43         43  same
+set_O.objects.big_center.bins.0-50.stop_frames                          yes         43         43  same
+set_O.objects.big_center.bins.50-100.visible_frames                     yes        170        170  same
+set_O.objects.big_center.bins.50-100.stop_frames                        yes        165        165  same
+set_O.objects.small_center.stop_frames                                  yes         32         32  same
+set_O.objects.small_center.first_stop_m                                 yes       55.8       55.8  same
+set_O.objects.small_center.held_from_m                                  yes       60.8       60.8  same
+set_O.objects.small_center.max_missed_streak_frames                     yes         47         47  same
+set_O.objects.small_center.max_missed_span_m                            yes       71.4       71.4  same
+set_O.objects.small_center.advisory_frames                                           0          0  same
+set_O.objects.small_center.bins.0-50.visible_frames                     yes         28         28  same
+set_O.objects.small_center.bins.0-50.stop_frames                        yes         28         28  same
+set_O.objects.small_center.bins.50-100.visible_frames                   yes         31         31  same
+set_O.objects.small_center.bins.50-100.stop_frames                      yes          4          4  same
+set_O.objects.small_center.bins.100-150.visible_frames                  yes         20         20  same
+set_O.objects.small_center.bins.100-150.stop_frames                     yes          0          0  same
+set_O.objects.small_on_rail.stop_frames                                 yes         23         23  same
+set_O.objects.small_on_rail.first_stop_m                                yes       42.7       42.7  same
+set_O.objects.small_on_rail.held_from_m                                 yes       46.2       46.2  same
+set_O.objects.small_on_rail.max_missed_streak_frames                    yes         23         23  same
+set_O.objects.small_on_rail.max_missed_span_m                           yes       38.7       38.7  same
+set_O.objects.small_on_rail.advisory_frames                                          0          0  same
+set_O.objects.small_on_rail.bins.0-50.visible_frames                    yes         27         27  same
+set_O.objects.small_on_rail.bins.0-50.stop_frames                       yes         23         23  same
+set_O.objects.small_on_rail.bins.50-100.visible_frames                  yes         19         19  same
+set_O.objects.small_on_rail.bins.50-100.stop_frames                     yes          0          0  same
+set_O.objects.small_on_rail.bins.100-150.visible_frames                 yes          1          1  same
+set_O.objects.small_on_rail.bins.100-150.stop_frames                    yes          0          0  same
+set_O.objects.small_on_rail.bins.200-300.visible_frames                 yes          2          2  same
+set_O.objects.small_on_rail.bins.200-300.stop_frames                    yes          0          0  same
+set_O.objects.small_edge_inside.stop_frames                             yes         18         18  same
+set_O.objects.small_edge_inside.first_stop_m                            yes       35.0       35.0  same
+set_O.objects.small_edge_inside.held_from_m                             yes       38.7       38.7  same
+set_O.objects.small_edge_inside.max_missed_streak_frames                yes         61         61  same
+set_O.objects.small_edge_inside.max_missed_span_m                       yes      109.0      109.0  same
+set_O.objects.small_edge_inside.advisory_frames                                      7          7  same
+set_O.objects.small_edge_inside.bins.0-50.visible_frames                yes         26         26  same
+set_O.objects.small_edge_inside.bins.0-50.stop_frames                   yes         18         18  same
+set_O.objects.small_edge_inside.bins.50-100.visible_frames              yes         27         27  same
+set_O.objects.small_edge_inside.bins.50-100.stop_frames                 yes          0          0  same
+set_O.objects.small_edge_inside.bins.100-150.visible_frames             yes         27         27  same
+set_O.objects.small_edge_inside.bins.100-150.stop_frames                yes          0          0  same
+set_O.objects.small_edge_inside.bins.150-200.visible_frames             yes          3          3  same
+set_O.objects.small_edge_inside.bins.150-200.stop_frames                yes          0          0  same
+set_O.objects.small_outside_near.false_stop_frames                      yes          0          0  same
+set_O.objects.small_outside_near.advisory_frames                                    24         24  same
+set_O.objects.big_edge_inside.stop_frames                               yes          7          7  same
+set_O.objects.big_edge_inside.first_stop_m                              yes       18.3       18.3  same
+set_O.objects.big_edge_inside.held_from_m                               yes       10.3       10.3  same
+set_O.objects.big_edge_inside.max_missed_streak_frames                  yes        106        106  same
+set_O.objects.big_edge_inside.max_missed_span_m                         yes      202.4      202.4  same
+set_O.objects.big_edge_inside.advisory_frames                                        1          1  same
+set_O.objects.big_edge_inside.bins.0-50.visible_frames                  yes         25         25  same
+set_O.objects.big_edge_inside.bins.0-50.stop_frames                     yes          7          7  same
+set_O.objects.big_edge_inside.bins.50-100.visible_frames                yes         26         26  same
+set_O.objects.big_edge_inside.bins.50-100.stop_frames                   yes          0          0  same
+set_O.objects.big_edge_inside.bins.100-150.visible_frames               yes         26         26  same
+set_O.objects.big_edge_inside.bins.100-150.stop_frames                  yes          0          0  same
+set_O.objects.big_edge_inside.bins.150-200.visible_frames               yes         26         26  same
+set_O.objects.big_edge_inside.bins.150-200.stop_frames                  yes          0          0  same
+set_O.objects.big_edge_inside.bins.200-300.visible_frames               yes         22         22  same
+set_O.objects.big_edge_inside.bins.200-300.stop_frames                  yes          0          0  same
+set_O.objects.big_outside.false_stop_frames                             yes          6          6  same
+set_O.objects.big_outside.advisory_frames                                           43         43  same
+set_O.objects.big_above.stop_frames                                     yes         56         56  same
+set_O.objects.big_above.first_stop_m                                    yes      111.4      111.4  same
+set_O.objects.big_above.held_from_m                                     yes      123.6      123.6  same
+set_O.objects.big_above.max_missed_streak_frames                        yes         68         68  same
+set_O.objects.big_above.max_missed_span_m                               yes      134.7      134.7  same
+set_O.objects.big_above.advisory_frames                                              6          6  same
+set_O.objects.big_above.bins.0-50.visible_frames                        yes         25         25  same
+set_O.objects.big_above.bins.0-50.stop_frames                           yes         25         25  same
+set_O.objects.big_above.bins.50-100.visible_frames                      yes         25         25  same
+set_O.objects.big_above.bins.50-100.stop_frames                         yes         25         25  same
+set_O.objects.big_above.bins.100-150.visible_frames                     yes         25         25  same
+set_O.objects.big_above.bins.100-150.stop_frames                        yes          6          6  same
+set_O.objects.big_above.bins.150-200.visible_frames                     yes         24         24  same
+set_O.objects.big_above.bins.150-200.stop_frames                        yes          0          0  same
+set_O.objects.big_above.bins.200-300.visible_frames                     yes         25         25  same
+set_O.objects.big_above.bins.200-300.stop_frames                        yes          0          0  same
+set_O.objects.long_low_on_rails.stop_frames                             yes         52         52  same
+set_O.objects.long_low_on_rails.first_stop_m                            yes       87.2       87.2  same
+set_O.objects.long_low_on_rails.held_from_m                             yes       95.9       95.9  same
+set_O.objects.long_low_on_rails.max_missed_streak_frames                yes         18         18  same
+set_O.objects.long_low_on_rails.max_missed_span_m                       yes       30.4       30.4  same
+set_O.objects.long_low_on_rails.advisory_frames                                      0          0  same
+set_O.objects.long_low_on_rails.bins.0-50.visible_frames                yes         29         29  same
+set_O.objects.long_low_on_rails.bins.0-50.stop_frames                   yes         29         29  same
+set_O.objects.long_low_on_rails.bins.50-100.visible_frames              yes         30         30  same
+set_O.objects.long_low_on_rails.bins.50-100.stop_frames                 yes         23         23  same
+set_O.objects.long_low_on_rails.bins.100-150.visible_frames             yes         15         15  same
+set_O.objects.long_low_on_rails.bins.100-150.stop_frames                yes          0          0  same
+set_O.objects.long_low_on_rails.bins.200-300.visible_frames             yes         12         12  same
+set_O.objects.long_low_on_rails.bins.200-300.stop_frames                yes          0          0  same
+set_O.objects.thin_hanging.stop_frames                                  yes         15         15  same
+set_O.objects.thin_hanging.first_stop_m                                 yes       30.1       30.1  same
+set_O.objects.thin_hanging.held_from_m                                  yes       31.8       31.8  same
+set_O.objects.thin_hanging.max_missed_streak_frames                     yes          4          4  same
+set_O.objects.thin_hanging.max_missed_span_m                            yes        4.9        4.9  same
+set_O.objects.thin_hanging.advisory_frames                                           0          0  same
+set_O.objects.thin_hanging.bins.0-50.visible_frames                     yes         24         24  same
+set_O.objects.thin_hanging.bins.0-50.stop_frames                        yes         15         15  same
+set_O.objects.thin_hanging.bins.50-100.visible_frames                   yes         10         10  same
+set_O.objects.thin_hanging.bins.50-100.stop_frames                      yes          0          0  same
+set_O.objects.thin_hanging.bins.100-150.visible_frames                  yes          3          3  same
+set_O.objects.thin_hanging.bins.100-150.stop_frames                     yes          0          0  same
+set_O.objects.thin_hanging.bins.150-200.visible_frames                  yes          5          5  same
+set_O.objects.thin_hanging.bins.150-200.stop_frames                     yes          0          0  same
+set_O.background.alarm_frames                                           yes          0          0  same
+set_O.background.track_ids                                              yes          0          0  same
+set_O.inside_stop_frames                                                           411        411  same
+set_O.outside_false_stop_frames                                                      6          6  same
+set_F_straight.person.detected                                          yes          6          6  same
+set_F_straight.person.first_detection_median_m                          yes      151.0      151.0  same
+set_F_straight.person.false_detections                                  yes          6          6  same
+set_F_straight.person.sustained_median_m                                         157.1      157.1  same
+set_F_straight.person.recall_0-50                                                  106        106  same
+set_F_straight.person.recall_50-100                                                125        125  same
+set_F_straight.person.recall_100-150                                               120        120  same
+set_F_straight.person.recall_150-200                                                13         13  same
+set_F_straight.person.recall_200-250                                                 0          0  same
+set_F_straight.box1.0.detected                                          yes          6          6  same
+set_F_straight.box1.0.first_detection_median_m                          yes      123.9      123.9  same
+set_F_straight.box1.0.false_detections                                  yes         12         12  same
+set_F_straight.box1.0.sustained_median_m                                         119.0      119.0  same
+set_F_straight.box1.0.recall_0-50                                                  106        106  same
+set_F_straight.box1.0.recall_50-100                                                123        123  same
+set_F_straight.box1.0.recall_100-150                                                47         47  same
+set_F_straight.box1.0.recall_150-200                                                 0          0  same
+set_F_straight.box1.0.recall_200-250                                                 0          0  same
+set_F_straight.box0.5.detected                                          yes          2          2  same
+set_F_straight.box0.5.first_detection_median_m                          yes       64.4       64.4  same
+set_F_straight.box0.5.false_detections                                  yes          0          0  same
+set_F_straight.box0.5.sustained_median_m                                          55.6       55.6  same
+set_F_straight.box0.5.recall_0-50                                                   18         18  same
+set_F_straight.box0.5.recall_50-100                                                  5          5  same
+set_F_straight.box0.5.recall_100-150                                                 0          0  same
+set_F_straight.box0.5.recall_150-200                                                 0          0  same
+set_F_straight.box0.5.recall_200-250                                                 0          0  same
+set_F_straight.trolley.detected                                         yes          6          6  same
+set_F_straight.trolley.first_detection_median_m                         yes      151.4      151.4  same
+set_F_straight.trolley.false_detections                                 yes          5          5  same
+set_F_straight.trolley.sustained_median_m                                        120.9      120.9  same
+set_F_straight.trolley.recall_0-50                                                 106        106  same
+set_F_straight.trolley.recall_50-100                                               124        124  same
+set_F_straight.trolley.recall_100-150                                               60         60  same
+set_F_straight.trolley.recall_150-200                                                9          9  same
+set_F_straight.trolley.recall_200-250                                                0          0  same
+set_F_straight.cable.detected                                           yes          6          6  same
+set_F_straight.cable.first_detection_median_m                           yes       98.9       98.9  same
+set_F_straight.cable.false_detections                                   yes          3          3  same
+set_F_straight.cable.sustained_median_m                                           34.2       34.2  same
+set_F_straight.cable.recall_0-50                                                    43         43  same
+set_F_straight.cable.recall_50-100                                                  47         47  same
+set_F_straight.cable.recall_100-150                                                 12         12  same
+set_F_straight.cable.recall_150-200                                                  0          0  same
+set_F_straight.cable.recall_200-250                                                  0          0  same
+latency_ms.doubleT_obstacle.mean                                                  87.3       35.8  better
+latency_ms.doubleT_obstacle.p95                                                  126.2       51.4  better
+latency_ms.doubleT_platform.mean                                                 145.2       32.5  better
+latency_ms.doubleT_platform.p95                                                  221.6       47.7  better
+latency_ms.roundT_doubleT.mean                                                    90.3       30.0  better
+latency_ms.roundT_doubleT.p95                                                    115.4       45.3  better
+latency_ms.roundT_pressureGate_roundT.mean                                        79.9       26.2  better
+latency_ms.roundT_pressureGate_roundT.p95                                        103.5       37.7  better
+latency_ms.roundT_squareT_pressureGate_squareT.mean                              108.8       25.4  better
+latency_ms.roundT_squareT_pressureGate_squareT.p95                               138.8       33.8  better
+latency_ms.squareT_platform_squareT_switch.mean                                  105.9       26.1  better
+latency_ms.squareT_platform_squareT_switch.p95                                   133.7       35.0  better
+latency_ms.cloud_with_fake_obj.mean                                               96.1       25.8  better
+latency_ms.cloud_with_fake_obj.p95                                               131.2       34.9  better
+latency_ms.new_data.mean                                                         121.6       28.6  better
+latency_ms.new_data.p95                                                          184.5       40.5  better
+GATE PASS: no gated metric worse (0 gated better, 0 worse but allowed, 17 information rows changed)
+wrote /tmp/claude-0/-home-user-ReSense/b275ce55-c14e-5fe0-a717-afaaecedb6b4/scratchpad/gates/v2/gate.json
