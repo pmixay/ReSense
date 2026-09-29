@@ -16,7 +16,7 @@ from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.evidence import PersistentEvidence
 from resense.farrails import ring_index
 from resense.frame import Frame
-from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
+from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
                            widened_profile)
 from resense.health import HealthMonitor
@@ -415,7 +415,7 @@ class Detector:
             # whose part inside the reference envelope took in an edge line falls back to it (the safety
             # review's scene of 26.09), and the wall keep counts it
             in_rail = cand.in_gauge
-            if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
+            if has_edge_margin(cfg.gauge):
                 in_rail = in_rail & gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
             cand.in_rail = in_rail
             cand.dy_rail = cand.dy
@@ -423,7 +423,7 @@ class Detector:
             # nearer the centre there, so neither side of the rails' envelope is narrowed
             cand.dy = cand.dy + (union_shift(cand.dy, ref[1]) if cfg.gauge.reference == 3 else ref[1])
             cand.in_gauge = point_in_polygon(cand.dy, cand.h, cfg.gauge.profile)
-        if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
+        if has_edge_margin(cfg.gauge):
             core = gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
             if ref is not None and cfg.gauge.reference_edge_margin != 1.0:
                 # 27.09 (gauge.reference_edge_margin): the margin models the fitted rail axis' uncertainty;
@@ -432,7 +432,8 @@ class Detector:
                 ok = ref[0]
                 if ok.any():
                     g = replace(cfg.gauge, edge_margin=cfg.gauge.edge_margin * s,
-                                edge_margin_per_100m=cfg.gauge.edge_margin_per_100m * s)
+                                edge_margin_per_100m=cfg.gauge.edge_margin_per_100m * s,
+                                edge_margin_per_100m2=cfg.gauge.edge_margin_per_100m2 * s)
                     core[ok] = gauge_core_mask(cand.dy[ok], cand.h[ok], cand.xyz[ok, 0], g)
             cand.in_gauge = cand.in_gauge & core
         if cfg.gauge.axis_union in (1, 3):
