@@ -699,7 +699,35 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
     return RailsFit(best[0], float(c), best[2], len(mids), float(t), xm, mids_abs, wts, **heads)
 
 
-def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near: RailsFit) -> None:
+_RING_MIN_STATIONS = 3     # consistent ring-pair stations beyond the near rails needed as evidence
+_RING_MIN_REACH = 15.0     # m beyond rails_range[1] the last of them must reach
+_RING_GROUP_M = 5.0        # stations are averaged per this along-track span before the axis refit
+
+
+def _ring_far_evidence(xyz: np.ndarray, ring: np.ndarray, model: TrackModel, cfg: TrackConfig,
+                       near: RailsFit, x_max: float):
+    """Far rail-pair centres from single ring crossings as ``(RailsFit-like, last station)``, or None.
+
+    The stations (``resense.farrails.far_rails``) are averaged per ``_RING_GROUP_M`` so that the
+    dense far evidence does not outweigh the three near slabs in the axis refit."""
+    from resense.farrails import FarRailParams, far_rails
+    p = FarRailParams(x_max=x_max, gauge=cfg.rails_spacing, min_stations=_RING_MIN_STATIONS)
+    far = far_rails(xyz, ring, model, (float(near.xm[-1]), float(near.mids[-1])), p)
+    if far.n < p.min_stations or float(far.x.max()) < cfg.rails_range[1] + _RING_MIN_REACH:
+        return None
+    group = np.round(far.x / _RING_GROUP_M)
+    keys = np.unique(group)
+    if keys.size < 2:
+        return None
+    xm = np.array([far.x[group == k].mean() for k in keys])
+    mids = np.array([far.y[group == k].mean() for k in keys])
+    wts = np.full(keys.size, float(np.median(near.wts)))
+    return (RailsFit(score=float(np.median(near.wts)), center=model.center, rail_offset=model.rail_offset,
+                     n_slabs=int(keys.size), xm=xm, mids=mids, wts=wts), float(far.x.max()))
+
+
+def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near: RailsFit,
+                      ring: Optional[np.ndarray] = None) -> None:
     """Replace wall-derived curvature that contradicts independently visible rails.
 
     Station hall walls can look like a gentle curve while the rails remain straight. A
@@ -707,6 +735,11 @@ def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near:
     Use two *independent* slabs beyond the near fit; with no far pair there is no new
     evidence and the existing range policy applies unchanged. Beyond the last rail
     slab the contradictory walls cannot validate the axis, so that range is advisory.
+
+    With ``cfg.rails_far_rings`` and the per-point ``ring`` index of the uncorrected frame
+    (``resense.farrails.ring_index``) the far rail evidence comes from single ring crossings
+    (``resense.farrails``): the slab profile never finds a pair beyond ``rails_range[1]``.
+    Everything after the evidence, the disagreement rule and the correction, is the same.
     """
     if (near.n_slabs < cfg.rails_yaw_min_slabs or near.xm is None or model.axis_sides == 0
             or model.axis_valid <= cfg.rails_range[1] + cfg.axis_valid_margin):
@@ -716,25 +749,31 @@ def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near:
                       rails_yaw_slabs=2, rails_yaw_min_slabs=2)
     if abs(model.curvature) * far_cfg.rails_range[1] ** 2 / 2 <= cfg.rails_yaw_max_dev:
         return  # a wall bend this small cannot displace the far corridor appreciably
-    # Remove the unverified curvature from the search coordinates: otherwise the
-    # wall's error can make the real far ridges disappear from the rail profile.
-    tangent = replace(model, curvature=0.0)
-    rails = estimate_rails(xyz, model, far_cfg, model.center, prior=tangent)
-    if rails.score < cfg.rails_min_score or rails.n_slabs < 2 or rails.xm is None:
-        return
-    # The second slab must actually extend to its far end. A short fragment at a
-    # switch must not be assigned the centre of an otherwise empty 25 m slab.
-    end = far_cfg.rails_range[1]
-    tail = xyz[(xyz[:, 0] > end - 5) & (xyz[:, 0] < end)]
-    if tail.size == 0:
-        return
-    height = tail[:, 2] - model.floor_z(tail[:, 0])
-    y_tangent = model.center + np.tan(model.yaw) * tail[:, 0]
-    lateral = tail[:, 1] - y_tangent
-    head = (height > cfg.rails_head_height[0]) & (height < cfg.rails_head_height[1])
-    if any(np.count_nonzero(head & (np.abs(lateral - side * cfg.rails_spacing / 2)
-                                   < cfg.rails_yaw_max_dev)) < 50 for side in (-1, 1)):
-        return
+    if cfg.rails_far_rings and ring is not None:
+        far = _ring_far_evidence(xyz, ring, model, cfg, near, far_cfg.rails_range[1])
+        if far is None:
+            return
+        rails, end = far
+    else:
+        # Remove the unverified curvature from the search coordinates: otherwise the
+        # wall's error can make the real far ridges disappear from the rail profile.
+        tangent = replace(model, curvature=0.0)
+        rails = estimate_rails(xyz, model, far_cfg, model.center, prior=tangent)
+        if rails.score < cfg.rails_min_score or rails.n_slabs < 2 or rails.xm is None:
+            return
+        # The second slab must actually extend to its far end. A short fragment at a
+        # switch must not be assigned the centre of an otherwise empty 25 m slab.
+        end = far_cfg.rails_range[1]
+        tail = xyz[(xyz[:, 0] > end - 5) & (xyz[:, 0] < end)]
+        if tail.size == 0:
+            return
+        height = tail[:, 2] - model.floor_z(tail[:, 0])
+        y_tangent = model.center + np.tan(model.yaw) * tail[:, 0]
+        lateral = tail[:, 1] - y_tangent
+        head = (height > cfg.rails_head_height[0]) & (height < cfg.rails_head_height[1])
+        if any(np.count_nonzero(head & (np.abs(lateral - side * cfg.rails_spacing / 2)
+                                       < cfg.rails_yaw_max_dev)) < 50 for side in (-1, 1)):
+            return
     error = rails.mids - model.center_y(rails.xm)
     # Both slabs must disagree in the same direction, beyond the ridge search's
     # lateral tolerance. A single switch fitting or noisy slab cannot shorten range.
@@ -779,7 +818,7 @@ def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackM
 
 
 def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None,
-                   periods: int = 1) -> TrackModel:
+                   periods: int = 1, ring: Optional[np.ndarray] = None) -> TrackModel:
     """Fit floor + rails + boundary-based yaw/curvature for one frame, smoothing against the
     previous model. ``periods`` is the number of nominal frame periods since ``prev`` (1 at
     the nominal rate); with ``cfg.rates_per_period`` the yaw / curvature rate limits and the
@@ -787,7 +826,9 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     ``cfg.walls_smoothing_per_period`` the yaw / curvature EMA weight is ``walls_smoothing ** k``
     (the axis changes with the distance travelled); else it is ignored. The bed and rail-head
     weights stay per processed frame: they average the per-frame noise (squaring them at 5 Hz
-    made the bed fit noisy enough to lose the object on the rail, EXPERIMENTS.md section 1i)."""
+    made the bed fit noisy enough to lose the object on the rail, EXPERIMENTS.md section 1i).
+    ``ring`` (per-point ring index of the uncorrected frame) is read only by the opt-in far rail
+    evidence (``cfg.rails_far_check_enabled`` with ``cfg.rails_far_rings``); None = unused."""
     k = max(1, int(periods)) if cfg.rates_per_period else 1
     kw = max(1, int(periods)) if cfg.walls_smoothing_per_period else 1
     prior = prev if prev is not None else default_track_model(cfg)
@@ -901,6 +942,6 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             r = k * cfg.axis_max_curvature_rate
             model.curvature = float(np.clip(model.curvature, prev.curvature - r, prev.curvature + r))
     if cfg.rails_far_check_enabled and rails is not None and cfg.walls_enabled:
-        _check_far_rails(xyz, model, cfg, rails)
+        _check_far_rails(xyz, model, cfg, rails, ring)
     model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)
     return model

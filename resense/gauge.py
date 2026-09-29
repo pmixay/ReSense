@@ -97,13 +97,26 @@ def corridor_mask(xyz: np.ndarray, track: TrackModel, cfg: GaugeConfig,
     return mask, strict
 
 
+def has_edge_margin(cfg: GaugeConfig) -> bool:
+    """Whether the strict decision is shrunk by an edge margin at all."""
+    return cfg.edge_margin > 0 or cfg.edge_margin_per_100m > 0 or getattr(cfg, "edge_margin_per_100m2", 0.0) > 0
+
+
+def edge_margin_at(X, cfg: GaugeConfig) -> np.ndarray:
+    """The lateral edge margin at along-track distance X: ``edge_margin + edge_margin_per_100m * X / 100
+    + edge_margin_per_100m2 * (X / 100) ** 2`` (29.09: the quadratic term, off by default)."""
+    x = np.asarray(X, dtype=np.float64) / 100.0
+    q = getattr(cfg, "edge_margin_per_100m2", 0.0)
+    return cfg.edge_margin + cfg.edge_margin_per_100m * x + (q * x * x if q > 0 else 0.0)
+
+
 def gauge_core_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeConfig) -> np.ndarray:
     """Strict-gauge membership with the lateral edge margin (v0.5): a point counts only when it
     lies ``edge_margin + edge_margin_per_100m * X / 100`` inside the polygon's lateral edge,
     i.e. it is tested at |dy| + margin. The axis is uncertain by about 0.1 deg (0.1 m per
     60 m), so a return a few centimetres inside the edge at range is not evidence of an
     object in the gauge; candidates and the advisory zone are unaffected."""
-    m = cfg.edge_margin + cfg.edge_margin_per_100m * np.asarray(X, dtype=np.float64) / 100.0
+    m = edge_margin_at(X, cfg)
     if not np.any(m > 0):
         return point_in_polygon(dy, h, cfg.profile)
     return point_in_polygon(dy + np.sign(dy) * m, h, cfg.profile)
@@ -123,7 +136,7 @@ def gauge_reach_mask(dy: np.ndarray, h: np.ndarray, X: np.ndarray, cfg: GaugeCon
     h = np.asarray(h, dtype=np.float64)
     if cfg.lateral_growth_per_100m > 0:
         dy = dy / (1.0 + cfg.lateral_growth_per_100m * X / 100.0)
-    m = np.maximum(cfg.edge_margin + cfg.edge_margin_per_100m * X / 100.0, 0.0)
+    m = np.maximum(edge_margin_at(X, cfg), 0.0)
     return (point_in_polygon(dy, h, cfg.profile)
             | point_in_polygon(np.sign(dy) * np.maximum(np.abs(dy) - m, 0.0), h, cfg.profile))
 
@@ -208,7 +221,7 @@ def axis_union_strict(X: np.ndarray, dy: np.ndarray, h: np.ndarray, track: Track
     ya = np.asarray(dy, dtype=np.float64)[i] + c[i]
     hh = np.asarray(h, dtype=np.float64)[i]
     inside = point_in_polygon(ya, hh, cfg.profile)
-    if cfg.edge_margin > 0 or cfg.edge_margin_per_100m > 0:
+    if has_edge_margin(cfg):
         inside &= gauge_core_mask(ya, hh, np.asarray(X, dtype=np.float64)[i], cfg)
     out[i] = inside
     return out

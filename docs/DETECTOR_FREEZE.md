@@ -9,12 +9,17 @@
 
 ## Что опечатано
 
-Текущий манифест [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json) (имя файла
-историческое, его читает CI) фиксирует 34 файла детектора, конфигурации и сборки, измеренные на
-исходниках `3eeb106`, SHA-256 `70faef901cb480b31f2f55ff1a28a2f4dc5c83c6bcda41371ee078eb79955a1c`: порог
-тонких дальних линий 3 (`dcaa5db`) и подсчёт секторов исправности сравнениями с порогами (29.09).
-Предыдущий манифест (`dcaa5db`, `f20dd9e…`) сохранён как
-[`previous_seal.json`](evidence/cycle_2026-09-29/health_compare_counts/previous_seal.json).
+Текущий манифест [`detector_freeze_2026-09-29_competitor_rules.json`](evidence/detector_freeze_2026-09-29_competitor_rules.json)
+(его называет `DEFAULT_MANIFEST` в `scripts/detector_freeze.py`, CI проверяет его) фиксирует 36 файлов
+детектора, конфигурации и сборки, измеренных на исходниках `1e2ed82`, SHA-256
+`1cc3deaa3cce3c8f16a02fd3616291b67c113a8267b90aab6ad56b960a946d8d`: три правила против ложных тревог из
+чужих решений кейса 5 включены по умолчанию (`tracking.explained_run` 5 с `explained_reasons`
+column, overhead, retro, shell; `cluster.shell_min_top` 2,3 м; `tracking.ego_veto_min_speed` 4 м/с).
+Полный шлюз `1e2ed82` против шлюза печати `3eeb106`: PASS без послаблений (решения совпадают со шлюзом `ee7b920`, где правила включены впервые; `f67e4fb` лишь ускоряет оценку скорости по LiDAR, `1e2ed82` меняет только комментарии, отличаются только зависящие от задержки счётчики health; шлюз `f67e4fb` сохранён как `gate_f67e4fb.json`), 7 проверяемых метрик лучше, ни
+одной хуже; поездка 32 / 31 → 26 / 28 событий / эпизодов STOP, набор O, дальности набора F и
+`doubleT_obstacle` без изменений ([`evidence/cycle_2026-09-29/competitor_rules/`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md)).
+Независимое ревью безопасности этого изменения ещё не проводилось. Предыдущий манифест
+[`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json) (`3eeb106`, `70faef90…`) сохранён.
 Состав включает `resense/`, `native/`, конфигурации ROS и входы сборки; точный список и хеши находятся
 в манифесте. Код ноды ROS, launch-файл, Docker, CI и документация вне печати и проходят отдельные
 проверки. Предыдущие манифесты и результаты сохранены в истории Git.

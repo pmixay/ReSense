@@ -16,7 +16,7 @@ import sys
 from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_MANIFEST = "docs/evidence/detector_freeze_2026-09-27.json"
+DEFAULT_MANIFEST = "docs/evidence/detector_freeze_2026-09-29_competitor_rules.json"
 DEFAULT_BASELINE = "docs/evidence/results/regression_baseline_2026-09-26_ride_p3d.json"
 SCHEMA = "resense-detector-freeze-v1"
 DIRECTORIES = ("resense", "native", "configs", "ros2_ws/src/resense_ros/config")

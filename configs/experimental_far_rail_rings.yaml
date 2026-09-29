@@ -1,0 +1,11 @@
+resense:
+  # Opt-in experiment: the far rail evidence of the station-wall axis check comes from single
+  # LiDAR ring crossings (resense/farrails.py) instead of the slab profile that never finds a rail
+  # pair beyond 30 m. The check replaces a wall-derived curvature that contradicts the rails and
+  # then limits the trusted axis range to 15 m beyond the last verified far station; with no far
+  # evidence nothing changes. Measure first: scripts/far_rail_yield.py on the recordings (yield,
+  # reach, frames in which the check would act); then the full gate against the current baseline
+  # (docs/DETECTOR_FREEZE.md). It fails that gate on the recordings (CHANGELOG 29.09).
+  track:
+    rails_far_check_enabled: true
+    rails_far_rings: true

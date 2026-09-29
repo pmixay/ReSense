@@ -19,6 +19,49 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
 
+### Changed — three false-alarm rules from other teams on by default (29.09 evening; resealed at `1e2ed82`)
+
+- `tracking.explained_run` 5, `explained_reasons` column, overhead, retro, shell (after Tactical-Inventor's
+  gauge processor): a track with fixed infrastructure in its recent history needs 5 consecutive clean
+  strict-gauge hits before a new STOP; a blocked track stays advisory, near escalation wins.
+- `cluster.shell_min_top` 2.3 m (after TunnelGuard): a far tall floor-standing cluster that continues into the
+  lining is infrastructure (reason `shell`).
+- `tracking.ego_veto_min_speed` 4 m/s (after TunnelGuard): while the train moves, a track whose distance does
+  not fall with the travel starts no STOP; the tracker integrates the LiDAR speed estimate (median of the
+  last five, coasting through three unknown frames).
+- Full regression gate on all organizer recordings (downloaded and cached this session; the sealed gate
+  reproduced exactly): PASS, 7 gated metrics better, none worse. Ride 32 / 31 → 26 / 28 events / STOP
+  episodes, five empty recordings 11 / 13 → 8 / 12, set F false detections box1.0 12 → 6, cable 3 → 0; set O,
+  set F first detections and `doubleT_obstacle` identical. 1 280 tests pass. New seal
+  `docs/evidence/detector_freeze_2026-09-29_competitor_rules.json` (at `1e2ed82`, comments only since `f67e4fb`, which
+  makes the LiDAR speed estimate 4.3 -> 1.3 ms per frame with identical counts; the veto now costs +2.1 ms mean, +2.4 ms p95 on 360°
+  frames and +1.7 / +1.6 ms on 120° frames, down from +7 / +8.5 ms on 360°).
+- Measured and not shipped (every candidate's full gate: [`gate_table.md`](docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)):
+  `lowobj.min_top` 0.08 (loses the organizers' 10 cm box on a rail at 10-50 m in the ray-cast tunnel; the test now
+  covers 25 and 50 m), the clean run with range demotions or shape signatures, `fresh_stop_evidence`, a quadratic
+  edge margin (`gauge.edge_margin_per_100m2`, opt-in), far ring rails.
+
+### Added — far rail evidence from ring crossings, opt-in (29.09; seal to be renewed after the gate)
+
+- `scripts/screen_competitor_rules.py` applies a rule ported from another team's repository as a post-filter on the
+  sealed detector's saved STOP detections and reports the false alarms it removes against the true detections it
+  takes (empty recordings, `doubleT_obstacle`, set O with the independent judge's matcher, the ride's residual false
+  events). It first reproduces the published `setO.json` exactly and refuses to run if it does not. Tests:
+  `tests/test_screen_competitor_rules.py` (two read the committed judgement outputs and carry `realdata`).
+- Result (evidence `docs/evidence/results/competitor_rule_screen_2026-09-29.json`): TunnelGuard's gravity rule would cut set O's
+  `big_center` from 208 to 87 STOP frames (rejected); its shape rule removes 2 of 7 false episodes on the empty
+  recordings for 10 m of range on the low board (not adopted); promoting centred `beyond_axis` /
+  `beyond_height_ref` advisories would turn 325 advisories on the empty recordings into STOPs for 3 gains, all
+  beyond 225 m (not adopted).
+- The one idea that passed the filter is implemented and **off by default**: far rail evidence from single LiDAR ring
+  crossings (`resense/farrails.py`, an idea of another team's repository, written from its description) as the
+  evidence source of the disabled far-rail check (`track.rails_far_check_enabled` + new `track.rails_far_rings`;
+  profile `configs/experimental_far_rail_rings.yaml`; `scripts/far_rail_yield.py` measures it on the recordings).
+  With the flags off the per-frame output is bit-identical to `main`. On the ray-cast tunnel it corrects a wall bend
+  that the rails contradict (axis 2.7 m off at 60 m -> 0.004 m) where the slab path does not; nothing is measured on
+  real data at the time; measured later the same day on the recordings, it fails the gate (stations reach 34-47 m on
+  real rails and a new low STOP at 3 m on `doubleT_platform`) and stays off.
+
 ### Changed — the experimental line is merged into `main` (29.09, PR #27)
 
 - `catchup_startup_step` now defaults to **0**: every frame of a recording's first backlog is

@@ -14,8 +14,9 @@ from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.evidence import PersistentEvidence
+from resense.farrails import ring_index
 from resense.frame import Frame
-from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
+from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
                            widened_profile)
 from resense.health import HealthMonitor
@@ -272,6 +273,12 @@ class Detector:
                                                min(axis_valid, floor_valid))
         t2 = time.perf_counter()
         speed, source, est = self._speed(xyz, dy_rail, h_all, dt, ego_speed)
+        if cfg.tracking.ego_veto_min_speed > 0 and est is None and ego_speed is None:
+            # 29.09 (tracking.ego_veto_*): the LiDAR speed estimate for the veto only; accumulation
+            # keeps its own switch (accumulation.estimate_speed)
+            est = self.ego.estimate(xyz, self.track, dt, self.tracker.tracks, dy_rail, h_all)
+        self._odo_speed = (float(ego_speed) if ego_speed is not None
+                           else (float(est.speed) if est is not None and est.speed is not None else None))
         t3 = time.perf_counter()
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
@@ -280,6 +287,8 @@ class Detector:
             valid = self._far_both_sides(clusters, valid, floor_valid)
         if cfg.cluster.hanging_enabled and (not cfg.cluster.hanging_needs_rails or self.track.rail_slabs > 0):
             clusters = self._hanging(xyz, frame.intensity, dy_all, h_all, cand, clusters, min(valid, floor_valid))
+        if cfg.cluster.shell_min_top > 0:
+            self._shell(clusters, xyz, dy_all, h_all)
         if cfg.lowobj.rail_start_within > 0:
             # 26.09 (P3 rail start): low clusters near the train that are rail geometry; the rail lines
             # are at the axis +- rails_spacing / 2 of the rail coordinate (dy_rail, as the low stage)
@@ -340,7 +349,11 @@ class Detector:
         frames, then a drift check every few seconds). Returns the cloud in the corrected frame."""
         cfg = self.cfg
         xyz = self.calib.apply(xyz_cfg)
-        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods)
+        # ring identity is a property of the uncorrected frame: after the mount correction a ring is no
+        # longer a constant elevation (resense/farrails.py); only the opt-in far rail evidence needs it
+        ring = (ring_index(xyz_cfg, band=(cfg.track.rails_range[1] - 10.0, 100.0, 6.0, 0.5))
+                if cfg.track.rails_far_check_enabled and cfg.track.rails_far_rings else None)
+        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring)
         R_old = self.calib.R.copy()
         if self.calib.update(xyz_cfg, xyz, self.track, periods=periods):
             xyz = self.calib.apply(xyz_cfg)
@@ -354,7 +367,7 @@ class Detector:
                 # accumulation buffer is in track coordinates, which the rotation leaves as they are
                 self.track = rotate_track_model(self.track, dR)
             else:
-                self.track = estimate_track(xyz, cfg.track, prev=None)  # re-seed in the corrected frame
+                self.track = estimate_track(xyz, cfg.track, prev=None, ring=ring)  # re-seed in the corrected frame
                 self.buffer.clear()                                     # merged clouds are in the old frame
                 # re-review 26.09: the hold window covers at least the frames the re-seeded model
                 # has no floor-shadow reference (this one, then until its age reaches
@@ -404,7 +417,7 @@ class Detector:
             # whose part inside the reference envelope took in an edge line falls back to it (the safety
             # review's scene of 26.09), and the wall keep counts it
             in_rail = cand.in_gauge
-            if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
+            if has_edge_margin(cfg.gauge):
                 in_rail = in_rail & gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
             cand.in_rail = in_rail
             cand.dy_rail = cand.dy
@@ -412,7 +425,7 @@ class Detector:
             # nearer the centre there, so neither side of the rails' envelope is narrowed
             cand.dy = cand.dy + (union_shift(cand.dy, ref[1]) if cfg.gauge.reference == 3 else ref[1])
             cand.in_gauge = point_in_polygon(cand.dy, cand.h, cfg.gauge.profile)
-        if cfg.gauge.edge_margin > 0 or cfg.gauge.edge_margin_per_100m > 0:
+        if has_edge_margin(cfg.gauge):
             core = gauge_core_mask(cand.dy, cand.h, cand.xyz[:, 0], cfg.gauge)
             if ref is not None and cfg.gauge.reference_edge_margin != 1.0:
                 # 27.09 (gauge.reference_edge_margin): the margin models the fitted rail axis' uncertainty;
@@ -421,7 +434,8 @@ class Detector:
                 ok = ref[0]
                 if ok.any():
                     g = replace(cfg.gauge, edge_margin=cfg.gauge.edge_margin * s,
-                                edge_margin_per_100m=cfg.gauge.edge_margin_per_100m * s)
+                                edge_margin_per_100m=cfg.gauge.edge_margin_per_100m * s,
+                                edge_margin_per_100m2=cfg.gauge.edge_margin_per_100m2 * s)
                     core[ok] = gauge_core_mask(cand.dy[ok], cand.h[ok], cand.xyz[ok, 0], g)
             cand.in_gauge = cand.in_gauge & core
         if cfg.gauge.axis_union in (1, 3):
@@ -680,6 +694,32 @@ class Detector:
                 keep.append(c)
         return keep
 
+    def _shell(self, clusters: List[Cluster], xyz: np.ndarray, dy_all: np.ndarray, h_all: np.ndarray) -> None:
+        """29.09 (cluster.shell_*, after TunnelGuard ``_shell_points``): a far gauge cluster standing on
+        the floor and reaching the upper envelope is infrastructure when the tunnel lining continues
+        right above it (a column, a post, a mast): demoted with reason 'shell' (a shape signature,
+        so an earned STOP is kept by the stop-keep rule and near escalation still wins)."""
+        c = self.cfg.cluster
+        cand = [cl for cl in clusters if cl.zone == "gauge" and not cl.reason and cl.kind != "low"
+                and cl.distance >= c.shell_min_distance and cl.height_max >= c.shell_min_top
+                and cl.height_min < c.shell_max_bottom and cl.points_idx.size]
+        if not cand:
+            return
+        X = xyz[:, 0]
+        for cl in cand:
+            idx = cl.points_idx
+            x0, x1 = float(cl.bbox_min[0]), float(cl.bbox_max[0])
+            ds = 1.0 + 0.01 * x0
+            d0, d1 = float(dy_all[idx].min()) - c.shell_lateral, float(dy_all[idx].max()) + c.shell_lateral
+            top = float(cl.height_max)
+            m = ((X > x0 - ds) & (X < x1 + ds) & (h_all > top) & (h_all < top + c.shell_gap)
+                 & (dy_all > d0) & (dy_all < d1))
+            if int(np.count_nonzero(m)) < c.shell_min_points:
+                continue
+            touch = max(c.shell_touch_min, c.shell_touch_beams * 0.00218 * x0)
+            if float(h_all[m].min()) - top <= touch:
+                cl.reason, cl.zone, cl.demoted = "shell", "warning", True
+
     # -- 6 -------------------------------------------------------------------------------------
     def _confirm(self, clusters: List[Cluster], speed: Optional[float], dt: float):
         """Temporal persistence (in seconds: the tracker gets the measured frame interval).
@@ -687,6 +727,7 @@ class Detector:
         low = self.cfg.lowobj
         low_ok = low.min_model_age <= 0 or self.track.age >= low.min_model_age
         self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
+                            odo_speed=getattr(self, "_odo_speed", None),
                             rail_within=low.rail_start_within,
                             thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None,
                             low_height=self._low_height,

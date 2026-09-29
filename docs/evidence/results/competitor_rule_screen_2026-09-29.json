@@ -1,0 +1,296 @@
+{
+ "schema": "resense-competitor-rule-screen-v1",
+ "baseline": {
+  "empty_recordings": {
+   "stop_frames": 23,
+   "stop_episodes": 7,
+   "detections": 24,
+   "vetoed": 0
+  },
+  "doubleT_obstacle": {
+   "stop_frames": 190,
+   "first_stop_frame": 8
+  },
+  "set_o": {
+   "objects": {
+    "big_center": {
+     "in_gauge": true,
+     "stop_frames": 208,
+     "first_stop_m": 98.0
+    },
+    "small_center": {
+     "in_gauge": true,
+     "stop_frames": 32,
+     "first_stop_m": 55.8
+    },
+    "small_on_rail": {
+     "in_gauge": true,
+     "stop_frames": 26,
+     "first_stop_m": 48.0
+    },
+    "small_edge_inside": {
+     "in_gauge": true,
+     "stop_frames": 18,
+     "first_stop_m": 35.0
+    },
+    "small_outside_near": {
+     "in_gauge": false,
+     "stop_frames": 0,
+     "first_stop_m": null
+    },
+    "big_edge_inside": {
+     "in_gauge": true,
+     "stop_frames": 15,
+     "first_stop_m": 28.7
+    },
+    "big_outside": {
+     "in_gauge": false,
+     "stop_frames": 9,
+     "first_stop_m": 142.3
+    },
+    "big_above": {
+     "in_gauge": true,
+     "stop_frames": 56,
+     "first_stop_m": 111.5
+    },
+    "long_low_on_rails": {
+     "in_gauge": true,
+     "stop_frames": 52,
+     "first_stop_m": 87.3
+    },
+    "thin_hanging": {
+     "in_gauge": true,
+     "stop_frames": 15,
+     "first_stop_m": 30.1
+    }
+   },
+   "stray_stop_detections": 22
+  }
+ },
+ "rules": {
+  "tunnelguard_shape": {
+   "source": "EhimenNathan/tunnelguard-lct2026 core/detector.py",
+   "empty_recordings": {
+    "stop_frames": 16,
+    "stop_episodes": 5,
+    "detections": 24,
+    "vetoed": 8
+   },
+   "doubleT_obstacle": {
+    "stop_frames": 190,
+    "first_stop_frame": 8
+   },
+   "set_o": {
+    "objects": {
+     "big_center": {
+      "in_gauge": true,
+      "stop_frames": 208,
+      "first_stop_m": 98.0
+     },
+     "small_center": {
+      "in_gauge": true,
+      "stop_frames": 31,
+      "first_stop_m": 54.2
+     },
+     "small_on_rail": {
+      "in_gauge": true,
+      "stop_frames": 26,
+      "first_stop_m": 48.0
+     },
+     "small_edge_inside": {
+      "in_gauge": true,
+      "stop_frames": 18,
+      "first_stop_m": 35.0
+     },
+     "small_outside_near": {
+      "in_gauge": false,
+      "stop_frames": 0,
+      "first_stop_m": null
+     },
+     "big_edge_inside": {
+      "in_gauge": true,
+      "stop_frames": 15,
+      "first_stop_m": 28.7
+     },
+     "big_outside": {
+      "in_gauge": false,
+      "stop_frames": 9,
+      "first_stop_m": 142.3
+     },
+     "big_above": {
+      "in_gauge": true,
+      "stop_frames": 53,
+      "first_stop_m": 107.4
+     },
+     "long_low_on_rails": {
+      "in_gauge": true,
+      "stop_frames": 44,
+      "first_stop_m": 77.2
+     },
+     "thin_hanging": {
+      "in_gauge": true,
+      "stop_frames": 15,
+      "first_stop_m": 30.1
+     }
+    },
+    "stray_stop_detections": 22
+   },
+   "ride_residual_events": {
+    "events": 27,
+    "records": 133,
+    "events_removed": 2,
+    "records_removed": 20
+   },
+   "set_o_changed": {
+    "small_center": {
+     "stop_frames": [
+      32,
+      31
+     ],
+     "first_stop_m": [
+      55.8,
+      54.2
+     ]
+    },
+    "big_above": {
+     "stop_frames": [
+      56,
+      53
+     ],
+     "first_stop_m": [
+      111.5,
+      107.4
+     ]
+    },
+    "long_low_on_rails": {
+     "stop_frames": [
+      52,
+      44
+     ],
+     "first_stop_m": [
+      87.3,
+      77.2
+     ]
+    }
+   }
+  },
+  "tunnelguard_gravity": {
+   "source": "EhimenNathan/tunnelguard-lct2026 core/detector.py",
+   "empty_recordings": {
+    "stop_frames": 21,
+    "stop_episodes": 6,
+    "detections": 24,
+    "vetoed": 2
+   },
+   "doubleT_obstacle": {
+    "stop_frames": 190,
+    "first_stop_frame": 8
+   },
+   "set_o": {
+    "objects": {
+     "big_center": {
+      "in_gauge": true,
+      "stop_frames": 87,
+      "first_stop_m": 85.8
+     },
+     "small_center": {
+      "in_gauge": true,
+      "stop_frames": 32,
+      "first_stop_m": 55.8
+     },
+     "small_on_rail": {
+      "in_gauge": true,
+      "stop_frames": 26,
+      "first_stop_m": 48.0
+     },
+     "small_edge_inside": {
+      "in_gauge": true,
+      "stop_frames": 18,
+      "first_stop_m": 35.0
+     },
+     "small_outside_near": {
+      "in_gauge": false,
+      "stop_frames": 0,
+      "first_stop_m": null
+     },
+     "big_edge_inside": {
+      "in_gauge": true,
+      "stop_frames": 15,
+      "first_stop_m": 28.7
+     },
+     "big_outside": {
+      "in_gauge": false,
+      "stop_frames": 9,
+      "first_stop_m": 142.3
+     },
+     "big_above": {
+      "in_gauge": true,
+      "stop_frames": 30,
+      "first_stop_m": 59.6
+     },
+     "long_low_on_rails": {
+      "in_gauge": true,
+      "stop_frames": 52,
+      "first_stop_m": 87.3
+     },
+     "thin_hanging": {
+      "in_gauge": true,
+      "stop_frames": 15,
+      "first_stop_m": 30.1
+     }
+    },
+    "stray_stop_detections": 22
+   },
+   "ride_residual_events": {
+    "events": 27,
+    "records": 133,
+    "events_removed": 2,
+    "records_removed": 11
+   },
+   "set_o_changed": {
+    "big_center": {
+     "stop_frames": [
+      208,
+      87
+     ],
+     "first_stop_m": [
+      98.0,
+      85.8
+     ]
+    },
+    "big_above": {
+     "stop_frames": [
+      56,
+      30
+     ],
+     "first_stop_m": [
+      111.5,
+      59.6
+     ]
+    }
+   }
+  }
+ },
+ "promotion": {
+  "reasons": [
+   "beyond_axis",
+   "beyond_height_ref"
+  ],
+  "lateral_max_m": 0.6,
+  "empty_recordings_would_be_false_stops": {
+   "beyond_axis": 60,
+   "beyond_height_ref": 265
+  },
+  "set_o_in_gauge_object_gains": {
+   "beyond_axis": 3,
+   "beyond_height_ref": 0
+  },
+  "set_o_gain_range_m": {
+   "beyond_axis": [
+    225.9,
+    238.3
+   ],
+   "beyond_height_ref": null
+  }
+ }
+}
