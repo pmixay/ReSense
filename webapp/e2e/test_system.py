@@ -61,6 +61,7 @@ class FakeRosbridge:
         self.publishing = threading.Event()
         self.publishing.set()
         self.subscriptions = 0
+        self.sent = 0  # status messages published (tells a silent node from a page that missed it)
         self._conns: set = set()
         self._loop = asyncio.new_event_loop()
         self._ready = threading.Event()
@@ -111,6 +112,7 @@ class FakeRosbridge:
                                "input_topic": "/lidar_points"},
                          snapshot_kind="frame", freshness={"mode": "replay", "valid": True, "reason": "ok"}, stop_held=False)
                 await ws.send(json.dumps({"op": "publish", "topic": STATUS_TOPIC, "msg": {"data": json.dumps(f)}}))
+                self.sent += 1
         except websockets.ConnectionClosed:
             pass
         finally:
@@ -381,14 +383,21 @@ def test_live_ros_node(app, rosbridge):
     expect(page.get_by_role("img", name=re.compile("Схема пути сверху"))).to_be_visible()
     expect(url_box).to_be_disabled()
 
-    # the node falls silent: stale within a second, the decision and the lamps go dark
+    # the node falls silent: stale within a second, the decision and the lamps go dark. The 0,5 s
+    # rule itself is pinned by the unit tests (timeline / feed); this checks the wiring, with slack
+    # for a stalled CI runner (CI run 36613335393), and says which side failed if it does.
     rosbridge.publishing.clear()
-    expect(chips(page)).to_have_text("данные устарели", timeout=5_000)
+    sent_at_stop = rosbridge.sent
+    try:
+        expect(chips(page)).to_have_text("данные устарели", timeout=15_000)
+    except AssertionError as e:
+        raise AssertionError(f"still «в эфире» 15 s after the node stopped; the stand-in sent "
+                             f"{rosbridge.sent - sent_at_stop} message(s) after the stop") from e
     expect(b.get_by_text("ДАННЫЕ УСТАРЕЛИ")).to_be_visible()
     expect(b.get_by_text("СТОП", exact=True)).to_have_count(0)
     expect(card(page, "Исправность").locator("[class*='l-ok']")).to_have_count(0)
     rosbridge.publishing.set()
-    expect(chips(page)).to_have_text("в эфире", timeout=5_000)
+    expect(chips(page)).to_have_text("в эфире", timeout=15_000)
 
     # the node restarts: the page reconnects by itself
     rosbridge.drop()
