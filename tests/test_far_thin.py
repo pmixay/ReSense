@@ -54,6 +54,7 @@ def test_shipped_default_and_both_yaml():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         assert cfg.tracking.thin_far_min_distance == 60.0 and cfg.cluster.weak_min_points == 4
+        assert cfg.tracking.thin_far_min_voxels == 3
         assert cfg.cluster.weak_min_rings == 0 and cfg.tracking.far_min_ring_count == 0
 
 
@@ -83,13 +84,18 @@ def test_jumping_scan_line_is_never_a_stop():
     assert not any(_run(xs))
 
 
-def test_near_or_sparse_or_advisory_scan_lines_are_not_used():
-    cfg = _cfg(thin_far_min_distance=60.0, thin_far_min_voxels=4)
-    tr = Tracker(cfg)
-    for k in range(8):
-        near = _cl(55.0 - 1.7 * k)                 # the detector selects far_thin; the tracker trusts it
-        tr.update([], ego_shift=0.0, frame_dt=0.1, thin=[near], far_thin=[])
-    assert not tr.tracks
+def test_far_scan_lines_obey_distance_and_strict_voxel_floor():
+    from resense.detector import Detector
+
+    det = Detector()
+    sparse = _cl(90.0, n_gauge=3)
+    det._thin = [sparse]
+    assert det._far_thin([]) == [sparse]  # the shipped three-voxel floor admits it
+
+    det.cfg.tracking.thin_far_min_voxels = 4
+    assert det._far_thin([]) == []        # the measured four-voxel ablation rejects it
+    det._thin = [_cl(55.0, n_gauge=4)]
+    assert det._far_thin([]) == []        # even dense scan lines nearer than 60 m are excluded
 
 
 def test_mixed_track_needs_the_approach_only_to_start_a_report():

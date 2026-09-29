@@ -228,7 +228,7 @@ resense:
     doubt_body_height: 1.0         # 27.09 (judges' review; 0 = off): m, a track whose cluster stands at least this tall ...
     doubt_body_range: 40.0         # 27.09: m, ... and is this near is never delayed (a standing body, not a flat floor / bed return: every ride track the opinion withheld within 40 m was at most 0.5 m tall; set O #6, 1.9 m tall, was withheld at 28.7 m)
     thin_far_min_distance: 60.0     # 27.09 (P5 range, on; 0 = off): m; a scan line (corridor cluster flatter than cluster.min_height) at least this far, inside the strict envelope (zone gauge) with >= thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; while the gauge vote of a track needs such hits, the track becomes a STOP only while its distance approaches on a line (approach_*) and is reported as advisory otherwise, never hidden; a track whose clean hits alone vote gauge, and a STOP in the previous frame, keep the usual rules: a bed / vault scan line is fixed in the sensor frame or jumps with the pitch, an object approaches at the train's speed
-    thin_far_min_voxels: 4         # 27.09: strict-envelope voxels such a scan line needs
+    thin_far_min_voxels: 3         # 29.09: synthetic Set F 0.5 m box improved 1/6 -> 2/6
     far_min_ring_count: 0         # experimental: distinct current-frame strict-gauge channels for far sparse evidence; 0 = off
     approach_hits: 5               # 27.09: the last hits whose distances are fitted by a line in sensor time
     approach_min_speed: 2.0        # 27.09: m/s the fitted line must approach at (at most ego_speed_max)

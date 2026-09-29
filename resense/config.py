@@ -365,7 +365,7 @@ class TrackingConfig:
     # with the pitch (0.05 deg moves it ~4 m at 100 m); a static object approaches at the train's
     # speed, frame after frame on a line.
     thin_far_min_distance: float = 60.0  # m; > 0: a scan line at least this far, inside the strict gauge (zone gauge) with thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; while the gauge vote of a track needs such hits, the track becomes a STOP only while it approaches (approach_*) and is reported as advisory otherwise, never hidden; a track whose clean hits alone vote gauge, and a STOP in the previous frame, keep the usual rules
-    thin_far_min_voxels: int = 4        # strict-envelope voxels such a scan line needs
+    thin_far_min_voxels: int = 3        # strict-envelope voxels such a scan line needs; measured on the synthetic Set F 0.5 m box
     far_min_ring_count: int = 0         # experimental: distinct current-frame strict-gauge channels for far sparse evidence; 0 = off
     approach_hits: int = 5              # the last hits whose distances are fitted by a line in sensor time
     approach_min_speed: float = 2.0     # m/s the fitted line must approach at (and at most ego_speed_max)
