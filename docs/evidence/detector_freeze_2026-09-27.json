@@ -1,13 +1,13 @@
 {
   "schema": "resense-detector-freeze-v1",
   "status": "frozen",
-  "created_utc": "2026-09-28T20:59:23.076564+00:00",
+  "created_utc": "2026-09-29T02:55:02.358141+00:00",
   "authorization": "User delegated captain work and requested detector freeze on 2026-09-26.",
-  "source_commit": "7063c921080a6f32f46dea3e8524672653e90280",
-  "measured_commit": "bc75abe04a0b13c29c555a7baf64b4745603c02a",
-  "source_sha256": "506a1e05d19b99bae936188bfed4f2015a0cc0d562dec0251457022f6668f194",
+  "source_commit": "dcaa5dbddb1dbc0ed30ccb50bed569390bca060d",
+  "measured_commit": "dcaa5dbddb1dbc0ed30ccb50bed569390bca060d",
+  "source_sha256": "f20dd9eff0d810483a3f9d015700c164bbd39f8e237feeee058c2826db49afc4",
   "files": {
-    "configs/default.yaml": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2",
+    "configs/default.yaml": "0079d8615282c2769ecf4b445309f3fcd721f5c72275cf1828605966465970a3",
     "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
     "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
     "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
@@ -19,10 +19,10 @@
     "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
     "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
     "resense/clustering.py": "4aa07b00e1e23be3a70942a4411233b73c4b3a17ae1145a09cf279c76f124f1a",
-    "resense/config.py": "0c1bfe51e44dec5370cbc415e18fa3050192514151222f87d252536c14be1f0c",
-    "resense/detector.py": "6613c14f6541948af7e84dd09b30e525f1d1fea0b0fd21212fd2521b50de4d0d",
+    "resense/config.py": "70856936f1da18339c691722100b3d958846f267154d7254339f4d65b44bb6e6",
+    "resense/detector.py": "14d3361eab018140ece3f69cfb38deae0a084211e50f0ed93b11a1015ae29e9d",
     "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
-    "resense/evidence.py": "083ee20fc8bb9fc915575bd06fa04869a5f5ddc6ca9217a6145879d3c8249853",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
     "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
     "resense/gauge.py": "0cd3b119249dc34fd36397afa3f60a5aaa22c9917d94dea4ffe6c79e4e744f35",
     "resense/health.py": "e6509be18cddb72c58bbf4870a45c26ab123b5c221177a5a5af480836e6f6e20",
@@ -38,20 +38,20 @@
     "resense/track.py": "f9e405ea1f74555e55d2bf6de9664d8078349e42077dcab4a6c3a5a3284c56ba",
     "resense/tracking.py": "155f54bfb208d68f527d2d6d942499d6bf1c50327f616d9f9905033f26c85ef8",
     "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
-    "ros2_ws/src/resense_ros/config/detector.yaml": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "0079d8615282c2769ecf4b445309f3fcd721f5c72275cf1828605966465970a3",
     "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
     "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
   },
-  "config_file_sha256": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2",
-  "effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+  "config_file_sha256": "0079d8615282c2769ecf4b445309f3fcd721f5c72275cf1828605966465970a3",
+  "effective_config_sha256": "8f112b81c8178ce3ec7e5b7aba5bbae42e86cffbcb40a9e67b2bde94e1869075",
   "baseline": {
-    "path": "docs/evidence/cycle_2026-09-28/health_histogram/default/gate.json",
-    "sha256": "f131829cab4ee765b8fb77868d95798ebcdcf855dd48a7ccf1abe6fe485e076d"
+    "path": "docs/evidence/cycle_2026-09-28/complete_timing/default/gate.json",
+    "sha256": "357852e788471faf270e4c31f070e39e01123e0645e396ada512496c67df969e"
   },
   "validation": {
-    "path": "docs/evidence/cycle_2026-09-28/complete_timing/default/gate.json",
-    "sha256": "357852e788471faf270e4c31f070e39e01123e0645e396ada512496c67df969e",
-    "measured_at": "2026-09-28T20:45:04+00:00",
+    "path": "docs/evidence/cycle_2026-09-29/thin_far_threshold/default_gate.json",
+    "sha256": "b365173280c55290db8350d8fb863a3008f9ee6dfc0cf0cc90f02ec8986d8991",
+    "measured_at": "2026-09-29T02:52:15+00:00",
     "kind": "committed full regression gate"
   },
   "decisions": {
