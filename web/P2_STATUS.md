@@ -21,7 +21,7 @@ Dates: upload 29.09 by 23:59 MSK; technical expertise 30.09–14.10; pitch 23.10
 | deliverable | state | owner / left |
 |---|---|---|
 | Web dashboard, label tool, RViz and Foxglove layouts | done; `web/demo` checks in CI | P2 |
-| Deck `docs/presentation/ReSense_LCT2026.pptx` + PDF, 16 slides | final (29.09 night): P2's deck with the team's photos and names on slides 2–3 (`build_deck.py --team`), the numbers of the final gate `7464d80` (shell rule off: ride 27 events = 2,1 per km, 30 STOP episodes), 193 of 201 with no gap, 126 of 126, 81–82 ms, 1 279 tests | captain |
+| Deck `docs/presentation/ReSense_LCT2026.pptx` + PDF, 16 slides | final (29.09 night): P2's deck with the team's photos and names on slides 2–3 (`build_deck.py --team`), the numbers of the final gate `7464d80` (shell rule off: ride 27 events = 2,1 per km, 30 STOP episodes), 193 of 201 with no gap, 126 of 126, 81–82 ms, 1 284 tests | captain |
 | Overview video `docs/video/resense_overview.mp4` + `.srt` | being re-rendered for the current numbers ([`docs/video/README.md`](../docs/video/README.md)) | video agent |
 | Fallback demo `docs/video/docker_chain_rviz.mp4` | committed: 69 s archival recording of the jury chain (23.09) | — |
 | Live demo | RViz in Docker on the captain's laptop, shared screen; Foxglove optional ([`DEMO_HANDOFF.md`](DEMO_HANDOFF.md)) | captain, at both rehearsals |

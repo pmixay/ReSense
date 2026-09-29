@@ -34,6 +34,11 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   3.6 m-tall box like the rear of a standing train at 60 / 90 / 150 m was CAUTION instead of STOP. Alone the rule had
   bought little: ride events / STOP episodes 32 / 31 → 31 / 29. Re-enabling it would need an exemption for objects
   that cross the envelope top.
+- The deck (`docs/presentation/`, P2's version with the team's photos and names) and the overview video
+  (`docs/video/resense_overview.mp4`, 3:00, the jury's arc, a synthetic Russian voice-over; script and a shot list
+  for the team's own recording in [`docs/video/README.md`](docs/video/README.md)) carry the final gate's numbers;
+  [`docs/REQUIREMENTS_MAP.md`](docs/REQUIREMENTS_MAP.md) maps every requirement of the spec to the repository.
+  1 284 tests pass on the final branch (plus 6 subtests; 8 need local data caches) and 74 dashboard tests.
 - `tracking.explained_run` 5 and `tracking.ego_veto_min_speed` 4 m/s stay on: the review found them non-blocking,
   with limits now in [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §6. `explained_run` delays a new STOP by at most 10
   hits (~1 s, ~22 m at 22 m/s) after an infrastructure-demoted hit. The ego veto blocks STOP onset beyond 25 m for an

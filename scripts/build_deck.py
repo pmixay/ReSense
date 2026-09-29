@@ -109,9 +109,9 @@ GATE = {
     "set_f": {"person": 151.0, "box1.0": 123.9, "trolley": 151.4, "cable": 98.9},
     "bed_box_found": (2, 6),         # set_F_straight.kinds.box0.5.detected, .sequences
 }
-# re-measured on the final commit, not by the gate: `python3 -m pytest -q` (CHANGELOG 29.09: 1 279 pass,
+# re-measured on the final commit, not by the gate: `python3 -m pytest -q` (29.09 night, the final branch: 1 284 pass,
 # plus 74 web/demo dashboard tests); the deck test (web/demo/test_web.py) asks >= 667
-TESTS = "1 279"
+TESTS = "1 284"
 # ==== end of FINAL
 
 # ---- every other measured number on the slides and in the speaker notes; each is written here once and
@@ -1198,7 +1198,7 @@ def s_reliability(sl):      # template slide 16: four cards
         (50, 39, 40, "Свежесть данных", "нет актуального статуса → FAULT или удержание STOP; "
                                       "потребитель проверяет /resense/status своим таймером"),
         (51, 41, 42, "Любой вход", "оба набора топик / frame_id, поиск топика, перезапуск на новой записи"),
-        (52, 43, 44, "Воспроизводимо", f"{N['tests']} тестов на путях numpy и C++ (выход совпадает бит в бит); "
+        (52, 43, 44, "Воспроизводимо", f"{N['tests']} {plural(int(N['tests'].replace(' ', '')), 'тест', 'теста', 'тестов')} на путях numpy и C++ (выход совпадает бит в бит); "
                                        "CI собирает образ и проигрывает бэги через узел; цепочка организаторов "
                                        "прогнана в Docker на реальных записях"),
     ]
@@ -1235,7 +1235,7 @@ def s_next(sl):             # template slide 17: three cards
         (49, 37, 38, "Что получилось", f"ROS 2-модуль в Docker; все {num(frames_total())} реальных кадров: человек и "
                                        f"предмет на рельсе — {gap_phrase()}, ложные события — {per_km()} на км (на данных, "
                                        f"где подбирались правила); ящик организаторов — с {set_o_first('big_center')} м; "
-                                       f"{N['tests']} тестов и CI; идеи других команд — только через полный гейт "
+                                       f"{N['tests']} {plural(int(N['tests'].replace(' ', '')), 'тест', 'теста', 'тестов')} и CI; идеи других команд — только через полный гейт "
                                        "и свою проверку безопасности"),
         (50, 39, 40, "Что дальше", "мелкие объекты раньше: короткие сигнатуры инфраструктуры, опора высоты "
                                    "по своду тоннеля; скорость от одометрии вместо оценки по лидару; "
