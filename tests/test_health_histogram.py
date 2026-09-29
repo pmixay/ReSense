@@ -154,3 +154,20 @@ def test_randomised_clouds_with_edge_nan_and_infinite_values(value_dtype, edge_d
             values[k[10]] = np.nextafter(value_dtype(edges[0]), value_dtype(-np.inf))
             values[k[11]] = -0.0
         assert_counts(values, edges)
+
+
+@pytest.mark.parametrize("edges", [
+    np.asarray([0.1, 0.2, 0.30000000000000004, 1 / 3]),            # not representable in float32
+    np.asarray([-1e-40, 0.0, 1e-45, 1e-38]),                        # float32 subnormal / tiny range
+    np.asarray([-3.0e38, -1.0, 0.0, 3.3e38]),                       # beyond float32 max: float64 path
+    np.asarray([np.float32(0.1), np.nextafter(np.float32(0.1), np.float32(1))], dtype=np.float32),
+])
+def test_float32_thresholds_match_float64_comparison(edges):
+    """29.09: float32 clouds are compared with float32 thresholds; every float32 next to an edge,
+    on either side, must fall in the bin np.histogram's float64 comparison puts it in."""
+    near = edges.astype(np.float32)
+    values = np.concatenate([near, np.nextafter(near, np.float32(np.inf)), np.nextafter(near, np.float32(-np.inf)),
+                             np.asarray([np.nan, np.inf, -np.inf, -0.0, 0.0, np.finfo(np.float32).max,
+                                         -np.finfo(np.float32).max], dtype=np.float32)])
+    with np.errstate(over="ignore"):
+        assert_counts(values, edges)

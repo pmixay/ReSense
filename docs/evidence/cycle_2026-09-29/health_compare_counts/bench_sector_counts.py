@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Protocol step 5: the three exact sector counters on scan-ordered clouds (indicative timing).
+"""Protocol step 5: the exact sector counters on scan-ordered clouds (indicative timing).
 
     PYTHONPATH=. python docs/evidence/cycle_2026-09-29/health_compare_counts/bench_sector_counts.py
     NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL AVX512_SPR" \
@@ -38,6 +38,16 @@ def binary_search(values, edges):
     return counts
 
 
+def compare_counts_v1(values, edges):
+    """v1 (838f45c, rejected): float64 copy of the values compared with the edges."""
+    v = values.astype(np.float64, copy=False)
+    e = edges.astype(np.float64, copy=False).tolist()
+    at_least = np.array([np.count_nonzero(v >= x) for x in e], dtype=np.intp)
+    counts = at_least[:-1] - at_least[1:]
+    counts[-1] += at_least[-1] - np.count_nonzero(v > e[-1])
+    return counts
+
+
 def median_ms(fn, repeat=15):
     fn()
     times = []
@@ -59,10 +69,12 @@ def main():
         expected = np.histogram(az, bins=edges)[0]
         assert np.array_equal(expected, _sector_counts(az, edges))
         assert np.array_equal(expected, binary_search(az, edges))
+        assert np.array_equal(expected, compare_counts_v1(az, edges))
         print(json.dumps({"numpy": np.__version__, "python": platform.python_version(), "points": int(az.size),
                           "histogram_ms": median_ms(lambda: np.histogram(az, bins=edges)),
                           "binary_search_ms": median_ms(lambda: binary_search(az, edges)),
-                          "compare_counts_ms": median_ms(lambda: _sector_counts(az, edges))}))
+                          "compare_counts_v1_ms": median_ms(lambda: compare_counts_v1(az, edges)),
+                          "sector_counts_ms": median_ms(lambda: _sector_counts(az, edges))}))
 
 
 if __name__ == "__main__":

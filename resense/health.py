@@ -51,16 +51,27 @@ from resense.config import GaugeConfig, HealthConfig
 LEVELS = ("ok", "warn", "error")
 
 
+_F32_MAX = float(np.finfo(np.float32).max)
+
+
+def _float32_at_least(edge: float) -> np.float32:
+    """The smallest float32 >= ``edge``: for float32 ``v``, ``v >= edge`` exactly when ``v`` is at
+    least this."""
+    f = np.float32(edge)
+    return np.nextafter(f, np.float32(np.inf)) if float(f) < edge else f
+
+
 def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
     """Exact ``np.histogram(values, bins=edges)[0]`` for the small explicit edge array of health.
 
-    Counts ``values >= edge`` for every edge: vectorised comparisons, no sort (``np.histogram``
-    sorts for explicit edges, slow on NumPy 1.x without AVX-512) and no per-value binary search
-    (branchy, slower than ``np.histogram`` on NumPy 2). Values are compared in float64, as
-    ``np.histogram`` compares float32 data with float64 edges; NaN fails every comparison and
-    +-inf cancel out, as there. Unusual layouts/dtypes and subclass dispatch keep the original
-    call. 29.09: replaces the 28.09 binary search, same counts (docs/evidence/cycle_2026-09-29/
-    health_compare_counts).
+    Counts ``values >= edge`` for every edge and differences the counts: vectorised comparisons, no
+    sort (``np.histogram`` sorts for explicit edges, slow on NumPy 1.x without AVX-512) and no
+    per-value search (branchy, slower than ``np.histogram`` on NumPy 2). ``np.histogram`` compares
+    float32 data with float64 edges exactly; float32 data are compared here with the float32
+    threshold that gives the same answer for every float32 value (the smallest float32 at least the
+    edge, or above the last edge), so the cloud is not converted. NaN fails every comparison and
+    +-inf cancel out, as there. Unusual layouts/dtypes and subclass dispatch keep the original call.
+    29.09 (docs/evidence/cycle_2026-09-29/health_compare_counts): replaces the 28.09 binary search.
     """
     floating = (np.dtype("float32"), np.dtype("float64"))
     if not (type(values) is np.ndarray and values.ndim == 1 and values.dtype in floating
@@ -68,11 +79,18 @@ def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
             and 2 <= edges.size <= 257 and np.isfinite(edges).all()
             and (edges[1:] > edges[:-1]).all()):
         return np.histogram(values, bins=edges)[0]
-    v = values.astype(np.float64, copy=False)
     e = edges.astype(np.float64, copy=False).tolist()
-    at_least = np.array([np.count_nonzero(v >= x) for x in e], dtype=np.intp)
+    if values.dtype == np.float32 and max(abs(e[0]), abs(e[-1])) < _F32_MAX:
+        at = [_float32_at_least(x) for x in e]
+        above = at[-1] if float(at[-1]) > e[-1] else np.nextafter(at[-1], np.float32(np.inf))
+        v = values
+    else:
+        v = values.astype(np.float64, copy=False)
+        at, above = e, None
+    at_least = np.array([np.count_nonzero(v >= x) for x in at], dtype=np.intp)
+    beyond = np.count_nonzero(v > e[-1]) if above is None else np.count_nonzero(v >= above)
     counts = at_least[:-1] - at_least[1:]
-    counts[-1] += at_least[-1] - np.count_nonzero(v > e[-1])   # the last bin includes its right edge
+    counts[-1] += at_least[-1] - beyond   # the last bin includes its right edge
     return counts
 
 

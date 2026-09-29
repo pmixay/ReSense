@@ -5,16 +5,22 @@
 
 Every ``<name>.jsonl`` / ``<name>_<k>.jsonl`` of the control must exist in the candidate with the
 same rows. A row is compared without ``timing_ms`` and without the latency-derived health fields:
-``latency_p95_ms``, the ``latency p95 ...`` messages and a ``level`` / ``decision_level`` that
-differs only where exactly one run carries such a message. ``setF_straight.json`` is compared
-without ``summary.wall_s``. ``health.blocked_sectors`` (the histogram's output) is also counted
-separately and must match on every frame.
+``latency_p95_ms``, the ``latency p95 ...`` messages and a ``level`` that differs only where
+exactly one run carries such a message (``decision_level`` must always match: with
+``health.latency_affects_decision`` off a latency warning never reaches it). ``setF_straight.json``
+is compared without ``summary.wall_s``. ``health.blocked_sectors`` (the histogram's output) is also
+counted separately and must match on every frame. Both runs must hold exactly the same capture
+files, all of ``EXPECTED`` and none empty, and set F must hold its 30 sequences with rows.
 """
 from __future__ import annotations
 
 import argparse
 import json
 from pathlib import Path
+
+EXPECTED = ("cloud_with_fake_obj", "doubleT_obstacle", "doubleT_platform", "roundT_doubleT",
+            "roundT_pressureGate_roundT", "roundT_squareT_pressureGate_squareT",
+            "squareT_platform_squareT_switch", *(f"new_data_{i}" for i in range(8)))
 
 
 def rows(path: Path) -> list:
@@ -44,7 +50,7 @@ def compare_rows(a: dict, b: dict) -> str | None:
     if na == nb:
         return None
     ha, hb = na["health"], nb["health"]
-    levels = ("level", "decision_level")
+    levels = ("level",)
     if la != lb and {k: v for k, v in na.items() if k != "health"} == {k: v for k, v in nb.items() if k != "health"} \
             and {k: v for k, v in ha.items() if k not in levels} == {k: v for k, v in hb.items() if k not in levels}:
         return None                      # the level differs only by one run's latency warning
@@ -62,11 +68,14 @@ def main() -> int:
     a = ap.parse_args()
     report = {"schema": "resense-gate-output-parity-v1", "recordings": {}, "frames": 0,
               "changed_frames": 0, "blocked_sectors_changed_frames": 0, "latency_only_frames": 0}
+    names = {p.stem for p in a.control.glob("*.jsonl")}
+    if names != {p.stem for p in a.candidate.glob("*.jsonl")} or names != set(EXPECTED):
+        raise SystemExit(f"capture files differ from each other or from the expected {len(EXPECTED)}")
     for path in sorted(a.control.glob("*.jsonl")):
         other = a.candidate / path.name
-        if not other.is_file():
-            raise SystemExit(f"candidate lacks {path.name}")
         ra, rb = rows(path), rows(other)
+        if not ra:
+            raise SystemExit(f"{path.name}: no rows")
         if len(ra) != len(rb):
             raise SystemExit(f"{path.name}: {len(ra)} control rows, {len(rb)} candidate rows")
         changed, blocked, latency_only, examples = 0, 0, 0, []
@@ -88,8 +97,10 @@ def main() -> int:
         report["latency_only_frames"] += latency_only
     setf_a, setf_b = (json.loads((d / "setF_straight.json").read_text()) for d in (a.control, a.candidate))
     wall = {"control": setf_a["summary"].pop("wall_s", None), "candidate": setf_b["summary"].pop("wall_s", None)}
-    report["set_F"] = {"equal_except_wall_s": setf_a == setf_b, "wall_s": wall,
-                       "rows": sum(len(s.get("rows", [])) for s in setf_a.get("sequences", []))}
+    setf_rows = sum(len(s.get("rows", [])) for s in setf_a.get("sequences", []))
+    if len(setf_a.get("sequences", [])) != 30 or not setf_rows:
+        raise SystemExit("set F must hold 30 sequences with rows")
+    report["set_F"] = {"equal_except_wall_s": setf_a == setf_b, "wall_s": wall, "rows": setf_rows}
     report["passed"] = (report["frames"] > 0 and report["changed_frames"] == 0
                         and report["blocked_sectors_changed_frames"] == 0 and report["set_F"]["equal_except_wall_s"])
     a.out.write_text(json.dumps(report, indent=1) + "\n")
