@@ -364,16 +364,17 @@ resense:
     # clear_distance too; never changes a detection or the decision. clear_cap_thin: a scan-line
     # cluster (tracking.stop_keep_thin) inside the strict envelope, not demoted, within the trusted range
     clear_cap_thin: true
-    # clear_cap_persist = k > 0: a sparse blob of returns inside the nominal envelope (no edge margin)
-    # seen in k frames in a row, coming nearer at a constant apparent speed, caps at its nearest return
+    # clear_cap_persist = k > 0: keep the shipped frame-based cap and also let k time-linked sparse
+    # envelope observations add a nearer cap under changed cadences. Invalid or >0.3 s gaps break
+    # only the timestamp-aware chain; they cannot remove an existing frame-based cap.
     clear_cap_persist: 4
     persist_min_points: 2            # returns of a blob
     persist_max_extent: 0.5          # m, length along the track and (unless a scan line) width and height
     persist_row_height: 0.05         # m, a scan line this flat may be up to persist_row_width wide
     persist_row_width: 2.1           # m
     persist_max_around: 10           # other corridor returns within 2 m along the track (isolation)
-    persist_shift: [0.5, 3.0]        # m per frame the blob comes nearer (5-30 m/s at 10 Hz)
+    persist_shift: [0.5, 3.0]        # m per nominal period; timestamp chain scales association by elapsed time
     persist_tol_dy: 0.12             # m, lateral match between frames
     persist_tol_h: 0.2               # m, height match between frames
-    persist_tol_shift: 0.08          # m, change of the shift between links (constant apparent speed)
+    persist_tol_shift: 0.08          # m per nominal period, change of apparent displacement speed between links
   voxel: 0.0

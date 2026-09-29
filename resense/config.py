@@ -535,10 +535,10 @@ class HealthConfig:
     persist_row_height: float = 0.05       # m, a scan line: a blob this flat may be up to persist_row_width wide
     persist_row_width: float = 2.1         # m
     persist_max_around: int = 10           # other corridor returns within 2 m along the track (isolation)
-    persist_shift: List[float] = field(default_factory=lambda: [0.5, 3.0])  # m per frame the blob comes nearer (5-30 m/s at 10 Hz)
+    persist_shift: List[float] = field(default_factory=lambda: [0.5, 3.0])  # m per nominal period (5-30 m/s at 10 Hz)
     persist_tol_dy: float = 0.12           # m, lateral match between frames
     persist_tol_h: float = 0.2             # m, height match between frames
-    persist_tol_shift: float = 0.08        # m, the shift may change by this between links (constant apparent speed)
+    persist_tol_shift: float = 0.08        # m per nominal period, change in apparent displacement speed
 
 
 @dataclass

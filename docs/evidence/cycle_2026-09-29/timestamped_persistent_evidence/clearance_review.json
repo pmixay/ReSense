@@ -1,0 +1,238 @@
+{
+  "schema": "resense-timestamped-clearance-review-v1",
+  "source": "paired frozen recordings; per-frame comparison to complete_timing/default",
+  "frames": 15269,
+  "recordings": {
+    "doubleT_obstacle": {
+      "frames": 201,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "doubleT_platform": {
+      "frames": 345,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "roundT_doubleT": {
+      "frames": 252,
+      "shorter_clear_frames": 3,
+      "largest_shortening_m": 78.8
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "new_data_0": {
+      "frames": 1409,
+      "shorter_clear_frames": 2,
+      "largest_shortening_m": 82.6
+    },
+    "new_data_1": {
+      "frames": 1409,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "new_data_2": {
+      "frames": 1409,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "new_data_3": {
+      "frames": 1409,
+      "shorter_clear_frames": 0,
+      "largest_shortening_m": 0
+    },
+    "new_data_4": {
+      "frames": 1409,
+      "shorter_clear_frames": 1,
+      "largest_shortening_m": 4.0
+    },
+    "new_data_5": {
+      "frames": 1409,
+      "shorter_clear_frames": 2,
+      "largest_shortening_m": 25.0
+    },
+    "new_data_6": {
+      "frames": 1409,
+      "shorter_clear_frames": 2,
+      "largest_shortening_m": 43.5
+    },
+    "new_data_7": {
+      "frames": 1408,
+      "shorter_clear_frames": 1,
+      "largest_shortening_m": 53.8
+    }
+  },
+  "shortened_frames": {
+    "roundT_doubleT": [
+      {
+        "frame": 33,
+        "frame_id": "roundT_doubleT_0033",
+        "stamp": 1788359062.4773037,
+        "reference_m": 132.7,
+        "candidate_m": 118.0,
+        "shortened_m": 14.7,
+        "obstacle": false,
+        "warning": false
+      },
+      {
+        "frame": 81,
+        "frame_id": "roundT_doubleT_0081",
+        "stamp": 1788359067.2813368,
+        "reference_m": 142.2,
+        "candidate_m": 74.4,
+        "shortened_m": 67.8,
+        "obstacle": false,
+        "warning": true
+      },
+      {
+        "frame": 103,
+        "frame_id": "roundT_doubleT_0103",
+        "stamp": 1788359069.4738426,
+        "reference_m": 120.0,
+        "candidate_m": 41.2,
+        "shortened_m": 78.8,
+        "obstacle": false,
+        "warning": true
+      }
+    ],
+    "new_data_0": [
+      {
+        "frame": 538,
+        "frame_id": "new_data_10_0028",
+        "stamp": 1789642979.9552612,
+        "reference_m": 123.0,
+        "candidate_m": 83.8,
+        "shortened_m": 39.2,
+        "obstacle": false,
+        "warning": true
+      },
+      {
+        "frame": 1087,
+        "frame_id": "new_data_21_0016",
+        "stamp": 1789643034.857619,
+        "reference_m": 135.7,
+        "candidate_m": 53.1,
+        "shortened_m": 82.6,
+        "obstacle": false,
+        "warning": true
+      }
+    ],
+    "new_data_4": [
+      {
+        "frame": 1231,
+        "frame_id": "new_data_134_0033",
+        "stamp": 1789643612.8985727,
+        "reference_m": 47.5,
+        "candidate_m": 43.5,
+        "shortened_m": 4.0,
+        "obstacle": false,
+        "warning": true
+      }
+    ],
+    "new_data_5": [
+      {
+        "frame": 866,
+        "frame_id": "new_data_155_0006",
+        "stamp": 1789643717.3202693,
+        "reference_m": 82.8,
+        "candidate_m": 63.2,
+        "shortened_m": 19.6,
+        "obstacle": false,
+        "warning": false
+      },
+      {
+        "frame": 1329,
+        "frame_id": "new_data_164_0010",
+        "stamp": 1789643769.8156185,
+        "reference_m": 116.9,
+        "candidate_m": 91.9,
+        "shortened_m": 25.0,
+        "obstacle": false,
+        "warning": false
+      }
+    ],
+    "new_data_6": [
+      {
+        "frame": 61,
+        "frame_id": "new_data_166_0049",
+        "stamp": 1789643785.1167135,
+        "reference_m": 119.6,
+        "candidate_m": 92.2,
+        "shortened_m": 27.4,
+        "obstacle": false,
+        "warning": false
+      },
+      {
+        "frame": 81,
+        "frame_id": "new_data_167_0018",
+        "stamp": 1789643787.117395,
+        "reference_m": 106.6,
+        "candidate_m": 63.1,
+        "shortened_m": 43.5,
+        "obstacle": false,
+        "warning": false
+      }
+    ],
+    "new_data_7": [
+      {
+        "frame": 311,
+        "frame_id": "new_data_199_0025",
+        "stamp": 1789643984.429195,
+        "reference_m": 161.2,
+        "candidate_m": 107.4,
+        "shortened_m": 53.8,
+        "obstacle": false,
+        "warning": false
+      }
+    ]
+  },
+  "no_frame_lengthened": true,
+  "monitoring_cost_passed": true,
+  "no_new_negative_alarm_frames": true,
+  "identical_negative_alarm_outputs": true,
+  "set_O_reference_GO_overclaims": 16,
+  "set_O_candidate_GO_overclaims": 16,
+  "empty_clear_median_fraction": {
+    "doubleT_platform": 1.0,
+    "roundT_doubleT": 0.9934640522875815,
+    "roundT_pressureGate_roundT": 1.0,
+    "roundT_squareT_pressureGate_squareT": 1.0,
+    "squareT_platform_squareT_switch": 1.0
+  },
+  "ride_clear_median_fraction": 1.0,
+  "newly_uncertain_percentage_points": {
+    "doubleT_platform": 0.0,
+    "roundT_doubleT": 0.0,
+    "roundT_pressureGate_roundT": 0.0,
+    "roundT_squareT_pressureGate_squareT": 0.0,
+    "squareT_platform_squareT_switch": 0.0,
+    "ride": 0.0
+  },
+  "no_increase_set_O_GO_overclaims": true,
+  "shorter_clear_frames_total": 11,
+  "shortened_frames_recordings": {
+    "roundT_doubleT": 3,
+    "new_data_0": 2,
+    "new_data_4": 1,
+    "new_data_5": 2,
+    "new_data_6": 2,
+    "new_data_7": 1
+  }
+}
