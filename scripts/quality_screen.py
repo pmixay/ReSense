@@ -45,8 +45,20 @@ def _run(cmd, log):
     return r.returncode, round(time.time() - t0, 1)
 
 
-def summarize(work: str, gate_rc: int, quick: bool, history_rc=None) -> dict:
-    gate = json.load(open(os.path.join(work, "gate.json"), encoding="utf-8"))
+def _fresh(path: str) -> str:
+    """Remove a stage's output before the stage runs: a skipped or crashed stage must not leave an
+    earlier invocation's file for :func:`summarize` to report as this candidate's."""
+    if os.path.exists(path):
+        os.remove(path)
+    return path
+
+
+def summarize(work: str, gate_rc: int, quick: bool, history_rc=None, acceptance_rc=None) -> dict:
+    """The headline problems from this invocation's stage outputs. ``acceptance_rc`` /
+    ``history_rc``: that stage's exit code, ``None`` when it did not run; a stage that did not run
+    or failed contributes nothing (its file was removed before it ran, :func:`_fresh`)."""
+    gate_path = os.path.join(work, "gate.json")
+    gate = json.load(open(gate_path, encoding="utf-8")) if os.path.exists(gate_path) else {}
     so = gate.get("set_O") or {}
     objs = so.get("objects") or {}
     edge = {k: {f: objs.get(k, {}).get(f) for f in ("stop_frames", "first_stop_m", "held_from_m",
@@ -69,7 +81,9 @@ def summarize(work: str, gate_rc: int, quick: bool, history_rc=None) -> dict:
                              "per_label": lab.get("per_label"), "fp_events": lab.get("fp_events")},
     }
     acc_path = os.path.join(work, "acceptance.json")
-    if os.path.exists(acc_path):
+    if acceptance_rc is not None:
+        out["acceptance_execution"] = {"exit_code": acceptance_rc, "passed": acceptance_rc == 0}
+    if os.path.exists(acc_path) and acceptance_rc == 0:
         acc = json.load(open(acc_path, encoding="utf-8"))
         tot = acc["set_O_candidate"]["totals"]
         out["p3_overclaims"] = {"GO": tot["target_by_decision"].get("GO", 0), "target": tot["target"],
@@ -81,7 +95,7 @@ def summarize(work: str, gate_rc: int, quick: bool, history_rc=None) -> dict:
     hist_path = os.path.join(work, "history.json")
     if history_rc is not None:
         out["history_execution"] = {"exit_code": history_rc, "passed": history_rc == 0}
-    if os.path.exists(hist_path) and history_rc in (None, 0):
+    if os.path.exists(hist_path) and history_rc == 0:
         out["p4_history"] = json.load(open(hist_path, encoding="utf-8"))["totals"]
     return out
 
@@ -106,11 +120,14 @@ def main(argv=None) -> int:
     work = os.path.join(a.work, a.name)
     os.makedirs(work, exist_ok=True)
     sets = [x for s in a.set for x in ("--set", s)]
-    lock, rc3 = None, None
+    lock, rc2, rc3 = None, None, None
     if not a.no_lock:
         lock = open(os.path.join(a.work, ".cpu.lock"), "w")
         print(f"[{a.name}] waiting for the machine lock ...", flush=True)
         fcntl.flock(lock, fcntl.LOCK_EX)
+    # this invocation's outputs only: nothing of an earlier run of the same --name is summarised
+    for stale in ("acceptance.json", "history.json"):
+        _fresh(os.path.join(work, stale))
     try:
         cache = a.cache
         allow = []
@@ -123,7 +140,7 @@ def main(argv=None) -> int:
                     os.symlink(os.path.join(a.cache, n), os.path.join(cache, n))
             allow = ["--allow", "ride.*", "--allow", "set_F_straight.*"]
         gate_cmd = [sys.executable, "scripts/regression_gate.py", "--cache", cache, "--config", a.config, *sets,
-                    "--jobs", str(a.jobs), "--work", os.path.join(work, "gate"), "--out", os.path.join(work, "gate.json"),
+                    "--jobs", str(a.jobs), "--work", os.path.join(work, "gate"), "--out", _fresh(os.path.join(work, "gate.json")),
                     "--baseline", a.baseline, *allow]
         print(f"[{a.name}] gate ...", flush=True)
         rc, s = _run(gate_cmd, os.path.join(work, "gate.log"))
@@ -143,12 +160,13 @@ def main(argv=None) -> int:
         if lock is not None:
             fcntl.flock(lock, fcntl.LOCK_UN)
             lock.close()
-    summary = summarize(work, rc, a.quick, history_rc=rc3)
+    summary = summarize(work, rc, a.quick, history_rc=rc3, acceptance_rc=rc2)
     summary["name"], summary["sets"], summary["config"] = a.name, a.set, a.config
     with open(os.path.join(work, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1)
     print(json.dumps(summary, indent=1))
-    return rc3 or 0
+    # the first failing stage's exit code: a gate with a worse metric (1) is a failed screen too
+    return rc or rc2 or rc3 or 0
 
 
 if __name__ == "__main__":

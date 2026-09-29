@@ -117,3 +117,9 @@ def test_anchored_set_f_rejects_missing_or_invalid_timestamps(synth_npy_dir):
     assert "missing timestamp" in run_sequence(job)["skipped"]
     job = (files, {stem0: 0.1, stem1: 20.1}, *job[2:])
     assert "invalid timestamp step" in run_sequence(job)["skipped"]
+
+
+def test_selected_stamps_key_compressed_and_plain_cache_files_alike():
+    stamps = {"new_data_5_0000": 100.0, "new_data_5_0001": 100.1}
+    got = _module.selected_stamps_of(["new_data_5_0000.npy.zst", "new_data_5_0001.npy"], stamps)
+    assert got == {"new_data_5_0000": 100.0, "new_data_5_0001": 100.1}

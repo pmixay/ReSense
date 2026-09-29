@@ -23,6 +23,7 @@ from resense.detector import Detector  # noqa: E402
 from resense.frame import frame_from_compact  # noqa: E402
 from resense.gauge import corridor_coordinates  # noqa: E402
 from resense.io import _natural_key  # noqa: E402
+from scripts.cache_io import cache_file_stem, cache_files, load_cache_array  # noqa: E402
 
 
 def selection(rows):
@@ -130,6 +131,8 @@ def main():
     (out / "points").mkdir(parents=True, exist_ok=True)
     cfg = DetectorConfig()
     all_events, mismatches, total = [], [], 0
+    # the extended ride cache is written as .npy.zst (cache_extended_ride.py); plain .npy still works
+    cache = {cache_file_stem(p): p for p in cache_files(args.cache)}
     for path in sorted(Path(args.archives).glob("new_data_*.jsonl.gz"), key=lambda p: _natural_key(str(p))):
         piece = path.name.removesuffix(".jsonl.gz")
         with gzip.open(path, "rt") as fh:
@@ -140,7 +143,9 @@ def main():
         detector = Detector(cfg)
         observe_associations(detector.tracker)
         for k, row in enumerate(rows):
-            frame = frame_from_compact(np.load(Path(args.cache) / f"{row['frame_id']}.npy"), cfg.sensor,
+            if row["frame_id"] not in cache:
+                raise FileNotFoundError(f"no cached frame {row['frame_id']} in {args.cache}")
+            frame = frame_from_compact(load_cache_array(cache[row["frame_id"]]), cfg.sensor,
                                        stamp=row["stamp"], frame_id=row["frame_id"])
             result = detector.process(frame)
             actual = [d.to_dict() for d in result.detections]

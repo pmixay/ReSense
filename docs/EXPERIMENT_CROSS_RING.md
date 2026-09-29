@@ -235,7 +235,8 @@ source base `df24c18`. Preserve the patch/source identity, effective config, cac
 with each result. A smoke or quick subset is not full acceptance.
 
 Inspect `gate.json`, `acceptance.json`, `history.json` and the stage logs, not just the command's exit
-code: the current quality-screen wrapper can exit zero after a failing gate. Check:
+code (since 29.09 the quality-screen wrapper exits with the first failing stage's code and reports
+only the stages it ran in that invocation). Check:
 
 1. No missing or worse gated metric against the current 27.09 baseline, without waivers.
 2. First/sustained STOP distances, per-object and per-distance-bin coverage, and missed intervals

@@ -291,7 +291,11 @@ def measure(a) -> dict:
     with open(cfg_path, "w", encoding="utf-8") as fh:
         yaml.safe_dump({"resense": cfg_dict}, fh, sort_keys=False)
     ride_dir = os.path.join(a.cache, RIDE)
-    ride_files = cache_files(ride_dir)
+    try:
+        ride_files = cache_files(ride_dir)    # a duplicate stem (.npy and .npy.zst) is an input error: 2
+    except ValueError as exc:
+        print(f"regression_gate: invalid ride cache: {exc}", file=sys.stderr)
+        raise SystemExit(2) from exc
     ride_markers = glob.glob(os.path.join(ride_dir, "new_data_*_stamps.json"))
     have_ride = bool(ride_files or ride_markers)
     if have_ride:

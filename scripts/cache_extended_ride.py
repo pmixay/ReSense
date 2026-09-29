@@ -162,7 +162,7 @@ def stream_cache(cache_dir: str, spool_dir: str, reserve_gib: float = 3.0,
         raise ValueError("cache and spool must be separate directories")
     if reserve_gib < 3.0:
         raise ValueError("reserve-gib must be at least 3")
-    reserve_bytes = int(reserve_gib * 1e9)
+    reserve_bytes = int(reserve_gib * 2**30)   # GiB, as the flag says
     selected = None if only_splits is None else {int(n) for n in only_splits}
     if selected is not None and (not selected or min(selected) < 0 or max(selected) >= EXPECTED_SPLITS):
         raise ValueError(f"split ids must be in 0..{EXPECTED_SPLITS - 1}")
@@ -243,7 +243,7 @@ def stream_cache(cache_dir: str, spool_dir: str, reserve_gib: float = 3.0,
                 free_after = min(shutil.disk_usage(cache).free, shutil.disk_usage(spool).free)
                 if free_after < reserve_bytes:
                     raise RuntimeError(f"stopping: only {free_after / 1e9:.2f} GB free; "
-                                       f"the required {reserve_gib:.1f} GB reserve would be violated")
+                                       f"the required {reserve_gib:.1f} GiB reserve would be violated")
         splitter.close()
         hashed.drain()
     finally:

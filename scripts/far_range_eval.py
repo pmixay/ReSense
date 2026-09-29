@@ -337,6 +337,14 @@ def run_sequence(job):
             "anchor_frame": os.path.basename(path[anchor][0]) if anchor is not None else None}
 
 
+def selected_stamps_of(files, stamps: dict) -> dict:
+    """Frame stem -> bag stamp of the selected cache files, the record ``selected_stamps_sha256``
+    hashes. The stem drops the whole cache suffix (``.npy`` or ``.npy.zst``, ``cache_file_stem``):
+    ``os.path.splitext`` left ``.npy`` on a compressed file, so every stamp read as ``None`` and the
+    hash could not tell two stamp sidecars apart."""
+    return {cache_file_stem(f): stamps.get(cache_file_stem(f)) for f in files}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--cache", default="/data/cache/new_data")
@@ -446,7 +454,7 @@ def main():
                                   "first_detection_median": round(float(np.median(firsts)), 1) if firsts else None,
                                   "recall_by_bin": bins, "false_detections": sum(o["fp"] for o in attempted)}
     selected_files = [os.path.basename(f) for job in jobs for f in job[0]]
-    selected_stamps = {os.path.splitext(f)[0]: stamps.get(os.path.splitext(f)[0]) for f in selected_files}
+    selected_stamps = selected_stamps_of(selected_files, stamps)
     report = {"schema": "setF-placement-v1", "source": "synthetic objects on real empty ride frames",
               "parameters": {"placement_mode": a.placement_mode, "reference": reference,
                              "perturbation": {"lateral_m": a.lateral_offset, "yaw_deg": a.yaw_perturb_deg},

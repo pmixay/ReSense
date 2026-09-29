@@ -11,7 +11,7 @@ screen = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(screen)
 
 
-def fake_pipeline(monkeypatch, history_rc=0):
+def fake_pipeline(monkeypatch, history_rc=0, gate_rc=0):
     commands = []
     totals = {"histories": 33, "stop_frames": 204, "stop_events": 55}
 
@@ -23,7 +23,7 @@ def fake_pipeline(monkeypatch, history_rc=0):
                 output.write_text(json.dumps({"schema": "resense-history-stress-v2", "totals": totals}))
             return history_rc, 0.0
         output.write_text(json.dumps({"set_O": {}}))
-        return 0, 0.0
+        return gate_rc, 0.0
 
     monkeypatch.setattr(screen, "_run", run)
     return commands, totals
@@ -69,3 +69,18 @@ def test_history_failure_is_nonzero_and_cannot_reuse_stale_totals(tmp_path, monk
     summary = json.loads((work / "summary.json").read_text())
     assert summary["history_execution"] == {"exit_code": 2, "passed": False}
     assert "p4_history" not in summary
+
+
+def test_skipped_stages_cannot_report_stale_outputs_and_a_failing_gate_is_nonzero(tmp_path, monkeypatch):
+    commands, _ = fake_pipeline(monkeypatch, gate_rc=1)
+    work = tmp_path / "candidate"
+    work.mkdir()
+    (work / "history.json").write_text(json.dumps({"totals": {"stale": True}}))
+    (work / "acceptance.json").write_text(json.dumps({"stale": True}))
+    (tmp_path / "cache").mkdir()
+    assert screen.main([*arguments(tmp_path), "--quick", "--no-history", "--cache", str(tmp_path / "cache")]) == 1
+    assert [c[1] for c in commands] == ["scripts/regression_gate.py"]
+    summary = json.loads((work / "summary.json").read_text())
+    assert summary["gate"] == {"exit_code": 1, "passed": False}
+    assert "p4_history" not in summary and "p3_overclaims" not in summary
+    assert not (work / "history.json").exists() and not (work / "acceptance.json").exists()
