@@ -48,3 +48,7 @@ resense run --bag /data/for_hackathon/<bag> --limit 30
 Скрипты монтируют родительский каталог бэга в `/data`; `docker compose` монтирует
 `$RESENSE_DATA` (по умолчанию `/data/for_hackathon`) и проигрывает `$RESENSE_BAG`; обычному
 `docker run` передаётся `-v <host dir>:/data:ro`.
+
+[Веб-прототип](../visualisation/web-prototype.md) показывает записи из того же `RESENSE_DATA` на
+вкладке «Папка на сервере» (`scripts/run_webapp.sh` берёт `/data/for_hackathon`, если он есть,
+иначе `/data`) и обрабатывает выбранный бэг на месте, без копирования.

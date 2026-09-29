@@ -5,7 +5,8 @@
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
 > **Last verified:** 2026-09-29 night (`fe27068`, seal `7464d80`, before the merge into `main`): each section against the archived
 > changelog, the 29.09 node change against the node source and launch file, the rules of 29.09
-> evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link ·
+> evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link;
+> 2026-09-29: the web prototype entry against `webapp/`, `scripts/run_webapp.sh` and `.github/workflows/ci.yml` of PR #31 ·
 > **Status:** current
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
@@ -13,6 +14,36 @@ are team labels, the package is 1.0.0 since 25.09. Figures are the team's, measu
 landed (detector figures on the 1 cm frame cache). Current results: [`README.md`](README.md),
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
+
+## [Unreleased] — web prototype (PR #31; outside the `v1.0.0` release)
+
+[PR #31](https://github.com/pmixay/ReSense/pull/31), branch `claude/prototype-website-rebuild-tz31o0` with `main`
+merged in; optional, it reaches `main` only through that PR with CI green.
+
+### Added — the web prototype for the jury (`webapp/`, 29.09)
+
+- A multi-page web site with a Russian UI in the «Линия» design ([`webapp/README.md`](webapp/README.md)): FastAPI
+  backend `resense-web` ([`webapp/backend`](webapp/backend/README.md)), React + TypeScript + Vite frontend
+  ([`webapp/frontend`](webapp/frontend/README.md)), the HTTP contract [`webapp/API.md`](webapp/API.md). One command,
+  no ROS or Docker: `scripts/run_webapp.sh` → http://localhost:8080 (the API and the built site on one port; first
+  run with internet: `--install`; Python ≥ 3.10, Node.js 20.19+ / 22.12+ only to build the frontend).
+- Inputs: a rosbag2 bag (a `.zip` of its folder, `.db3` + `metadata.yaml`, `.mcap`), a `results.jsonl` from
+  `resense run --out` (decisions recomputed, no point clouds), cached `.npy` / `.npz` frames; files and folders by
+  drag-and-drop, a server folder registered in place, and synthetic demo recordings (three tunnel scenarios,
+  labelled synthetic; optimistic: the approach demo's first STOP comes at ≈ 130 m, which is not a measured range).
+- Pages: Главная, Загрузка, Очередь, Прогоны, Прогон (KPIs, per-frame decisions against labels, distance chart,
+  events, the score against labels, downloads), a fullscreen 3D Плеер from the cab (point cloud, the 2.1 × 3.0 m
+  envelope, detections, HUD tiles, a scrubber coloured by decision), Сравнение of 2–4 runs, Прямой эфир (the node
+  through rosbridge, or a replay of a run), Параметры (the sealed «Стандарт 1.0» and user presets of 20 tunable
+  parameters), О системе.
+- The detector and the runtime image are unchanged: a worker process runs the same sealed `resense.Detector`,
+  one job at a time, with the ROS node's per-frame decision rule; the image does not contain `webapp/`. The
+  single-page dashboard [`web/index.html`](web/index.html) stays as it is.
+- Tests: 149 backend (pytest), 278 frontend (vitest), 44 browser end-to-end (Playwright, [`webapp/e2e`](webapp/e2e/README.md),
+  ≈ 6 min); new CI job `webapp` after `checks` in [`.github/workflows/ci.yml`](.github/workflows/ci.yml), which
+  fails if a backend or browser test is skipped.
+- Known limits: 60 fps playback not measured (headless SwiftShader only); the live mode tested against a
+  rosbridge stand-in only; no authentication and one server process — a local stand.
 
 ## [Unreleased] — package 1.0.0
 
