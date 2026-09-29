@@ -15,8 +15,8 @@ is changed by this work.
 ## Evidence and method
 
 Read together with [EXPERIMENT_CROSS_RING.md](EXPERIMENT_CROSS_RING.md),
-[QUALITY_CYCLE_2026-09-27.md](QUALITY_CYCLE_2026-09-27.md),
-[P4_FALSE_TARGET_DIAGNOSIS.md](P4_FALSE_TARGET_DIAGNOSIS.md), and the rejected
+[QUALITY_CYCLE_2026-09-27.md](archive/QUALITY_CYCLE_2026-09-27.md),
+[P4_FALSE_TARGET_DIAGNOSIS.md](archive/P4_FALSE_TARGET_DIAGNOSIS.md), and the rejected
 [D1 context protocol](evidence/results/quality_cycle_2026-09-26_D1_protocol.json).
 The earlier D1 experiment increased outside-object false STOPs from 6 to 9 and ride STOP
 episodes from 38 to 40; it was rejected. It promoted clipped candidates and did not validate

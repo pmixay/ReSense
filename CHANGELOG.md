@@ -3,8 +3,10 @@
 > **Purpose:** what changed in ReSense, newest first, readable in two minutes; the full dated
 > history with every measurement: [`docs/archive/CHANGELOG_2026-09.md`](docs/archive/CHANGELOG_2026-09.md).
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29: each section against the archived changelog, the 29.09 node
-> change against the node source and launch file; every relative link · **Status:** current
+> **Last verified:** 2026-09-29 evening (`main` `7532a6b`): each section against the archived
+> changelog, the 29.09 node change against the node source and launch file, the three rules of 29.09
+> evening against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link ·
+> **Status:** current
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
 are team labels, the package is 1.0.0 since 25.09. Figures are the team's, measured when a change
@@ -41,8 +43,16 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   `lowobj.min_top` 0.08 (loses the organizers' 10 cm box on a rail at 10-50 m in the ray-cast tunnel; the test now
   covers 25 and 50 m), the clean run with range demotions or shape signatures, `fresh_stop_evidence`, a quadratic
   edge margin (`gauge.edge_margin_per_100m2`, opt-in), far ring rails.
+- No independent safety review of the three rules yet. Known limits
+  ([`docs/ALGORITHM.md`](docs/ALGORITHM.md) §6): a track beyond 25 m that moves with the train starts
+  no STOP while the train runs at ≥ 4 m/s (and the veto trusts the LiDAR speed estimate); a new STOP
+  next to known infrastructure waits for up to 5 clean hits; in the ray-cast synthetic tunnel a wide
+  object taller than the envelope (3.1–3.6 m, like rolling stock) standing on the track at 60–150 m is
+  CAUTION instead of STOP (`shell`; one-off check during the documentation audit, not committed). The
+  range test that pastes a person at a fixed distance ahead of a moving train is what the veto blocks,
+  so that test is not valid for moving windows with the veto on.
 
-### Added — far rail evidence from ring crossings, opt-in (29.09; seal to be renewed after the gate)
+### Added — far rail evidence from ring crossings, opt-in (29.09; fails the gate, stays off; in the seal of `1e2ed82`)
 
 - `scripts/screen_competitor_rules.py` applies a rule ported from another team's repository as a post-filter on the
   sealed detector's saved STOP detections and reports the false alarms it removes against the true detections it
