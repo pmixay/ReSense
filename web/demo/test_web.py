@@ -630,7 +630,7 @@ def test_presentation_artifact_uses_the_organizers_slide_sequence():
     ):
         assert required in text
     # the test count on the slides is a full local pass, at least the 667 of 26.09
-    counts = [int(n.replace(" ", "")) for n in re.findall(r"(\d[\d ]*)\+? тестов", text)]
+    counts = [int(n.replace(" ", "")) for n in re.findall(r"(\d[\d ]*)\+? тест(?:ов|а)\b", text)]   # 1 284 теста, 667 тестов
     assert counts and min(counts) >= 667
     assert "релиз v1.0.0" not in text
     assert "пропущен" not in text                               # every in-envelope object gets a STOP

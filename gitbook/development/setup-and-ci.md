@@ -5,7 +5,7 @@
 ```bash
 git clone https://github.com/pmixay/ReSense && cd ReSense
 pip install -e ".[dev]"          # Python ≥ 3.10; при наличии компилятора собирает ядра C++
-pytest -q                        # набор тестов (770); «skipped» — значит, нет open3d
+pytest -q                        # набор тестов; «skipped» — значит, нет open3d
 pipx run ruff==0.15.8 check .    # линтер, версия закреплена как в CI
 ./scripts/sync_params.sh --check # копия параметров ROS совпадает с configs/default.yaml
 python scripts/detector_freeze.py verify   # опечатанные файлы детектора не изменились

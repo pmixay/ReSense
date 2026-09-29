@@ -1,0 +1,41 @@
+"""Train approaching a static object at V m/s (object re-rendered at decreasing distance each frame, 10 Hz).
+First STOP distance: default vs shell off vs all three rules off. ego_speed None (LiDAR estimate path)."""
+import sys
+from dataclasses import replace
+import numpy as np
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
+from resense.synthetic import ObstacleSpec, catalogue_spec, synthetic_tunnel_frame
+
+def cfg_variant(shell=True, expl=True, ego=True):
+    c = DetectorConfig()
+    return replace(c, cluster=replace(c.cluster, shell_min_top=2.3 if shell else 0.0),
+                   tracking=replace(c.tracking, explained_run=5 if expl else 0, ego_veto_min_speed=4.0 if ego else 0.0))
+
+V = float(sys.argv[1]) if len(sys.argv) > 1 else 22.0
+D0, D1 = 120.0, 15.0
+objs = {
+  "cable_low lat0": lambda D: [catalogue_spec("cable_low", D, 0.0, reflectivity=25.0)],
+  "cable_low lat-0.2": lambda D: [catalogue_spec("cable_low", D, -0.2, reflectivity=25.0)],
+  "cable vault->0.1m lat0.3": lambda D: [ObstacleSpec(kind="cable", size=(0.03,0.03,4.72), distance=D, lateral=0.3, reflectivity=25.0, label="cv", base=0.1)],
+  "pole 0.1m floor->vault lat0.3": lambda D: [ObstacleSpec(kind="box", size=(0.1,0.1,4.9), distance=D, lateral=0.3, reflectivity=25.0, label="pole")],
+}
+names = sys.argv[2:] or list(objs)
+variants = {"default": cfg_variant(), "shell_off": cfg_variant(shell=False), "expl_off": cfg_variant(expl=False)}
+for name in names:
+    dets = {k: Detector(v) for k, v in variants.items()}
+    first = {k: None for k in variants}; status = {k: [] for k in variants}
+    k = 0; D = D0
+    while D > D1:
+        frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(100 + k), specs=objs[name](D))
+        for key, det in dets.items():
+            r = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k))
+            s = "S" if r.obstacle else ("c" if r.warning else ".")
+            status[key].append(s)
+            if r.obstacle and first[key] is None:
+                first[key] = (k, round(D, 1))
+        k += 1; D -= V * 0.1
+    print(f"{name}  V={V}: first STOP (frame, distance m): " + ", ".join(f"{k}={v}" for k, v in first.items()), flush=True)
+    for key in variants:
+        print(f"   {key:9s} {''.join(status[key])}", flush=True)

@@ -4,8 +4,11 @@ Every node parameter is a launch argument, so the demo can be retuned without re
 ``input_topic`` is a comma-separated candidate list; the node also auto-discovers PointCloud2
 topics unless ``auto_discover:=false`` (the organizers' bags disagree on the topic name).
 ``bag:=`` plays a bag from the launch file (``loop:=true`` forever, ``rate:=`` playback rate);
-``ego_speed_mps:=22`` (or ``speed_topic:=`` / ``odom_topic:=``) feeds the train speed to the
-multi-frame accumulation; ``publish_tf`` links the fixed frame ``resense_lidar`` to the bag's frame.
+``speed_topic:=`` / ``odom_topic:=`` feed a measured train speed to the multi-frame accumulation
+and to the ego-motion veto (without them the detector uses its own LiDAR speed estimate for the
+veto). Do not give a constant ``ego_speed_mps``: on a standing train it makes the veto read every
+static object as moving with the train, so no STOP can start beyond 25 m (a person there stays
+CAUTION). ``publish_tf`` links the fixed frame ``resense_lidar`` to the bag's frame.
 A different LiDAR mount: ``sensor_forward:=+x sensor_left:=+y sensor_up:=+z`` (axis mapping),
 ``mount_roll_deg:=`` / ``mount_pitch_deg:=`` / ``mount_yaw_deg:=`` (fixed tilt), and
 ``auto_calibrate:=true`` (default) finds orientation and tilt from the rails in the first frames.

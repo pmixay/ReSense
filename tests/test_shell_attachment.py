@@ -29,8 +29,9 @@ def _det(**kw):
     return Detector(replace(cfg, cluster=replace(cfg.cluster, shell_min_top=2.3, **kw)))
 
 
-def test_on_by_default():
-    assert DetectorConfig().cluster.shell_min_top == 2.3
+def test_off_by_default():
+    # off since 29.09 night: the rule demoted floor-to-vault objects (a hanging cable, a standing train) beyond 40 m
+    assert DetectorConfig().cluster.shell_min_top == 0.0
 
 
 def test_a_column_continuing_into_the_lining_is_infrastructure():

@@ -1,0 +1,31 @@
+"""Side-by-side key numbers of regression gates: python gate_summary.py label=path ..."""
+import json, sys
+runs = [(a.split('=',1)[0], json.load(open(a.split('=',1)[1]))) for a in sys.argv[1:]]
+def row(name, f):
+    vals = []
+    for _, g in runs:
+        try: vals.append(str(f(g)))
+        except Exception as e: vals.append('?')
+    print(f"| {name} | " + " | ".join(vals) + " |")
+print("| metric | " + " | ".join(l for l,_ in runs) + " |"); print("|---|" + "---|"*len(runs))
+row("commit", lambda g: g['code'].get('commit', '?')[:7] if isinstance(g['code'], dict) else g['code'])
+row("gate passed / worse", lambda g: f"{g['gate'].get('passed')} / {len(g['gate'].get('worse', []))}")
+fe = lambda g: g['five_empty']
+row("5 empty: STOP episodes / events / alarm frames", lambda g: f"{fe(g)['stop_episodes']} / {fe(g)['alarm_events']} / {fe(g)['alarm_frames']}")
+row("5 empty: advisory frames", lambda g: fe(g)['advisory_frames'])
+for r in ("doubleT_platform","roundT_doubleT","roundT_pressureGate_roundT","roundT_squareT_pressureGate_squareT","squareT_platform_squareT_switch"):
+    row(f"  {r}: ep / ev / frames", lambda g, r=r: f"{g['recordings'][r]['stop_episodes']} / {g['recordings'][r]['alarm_events']} / {g['recordings'][r]['alarm_frames']}")
+rd = lambda g: g['ride']
+row("ride: STOP episodes / events / alarm frames", lambda g: f"{rd(g)['stop_episodes']} / {rd(g)['alarm_events']} / {rd(g)['alarm_frames']}")
+row("ride: per km (episodes / events, 13.0 km)", lambda g: f"{rd(g)['stop_episodes']/13.0:.1f} / {rd(g)['alarm_events']/13.0:.1f}")
+row("ride: advisory frames", lambda g: rd(g)['advisory_frames'])
+d = lambda g: g['recordings']['doubleT_obstacle']
+row("doubleT_obstacle: first STOP frame / STOP frames / dist", lambda g: f"{d(g)['first_alarm_frame']} / {d(g)['alarm_frames']} of {d(g)['frames']} / {d(g)['alarm_dist']}")
+row("doubleT: person hits / object hits", lambda g: f"{d(g)['labelled']['per_label']['person_crossing']} / {d(g)['labelled']['per_label']['object_on_rail']}")
+so = lambda g: g['set_O']
+row("set O: inside STOP frames / visible; objects with STOP; outside false", lambda g: f"{so(g)['inside_stop_frames']} / {so(g)['inside_visible_frames']}; {so(g)['inside_objects_with_stop']} of {so(g)['inside_objects']}; {so(g)['outside_false_stop_frames']}")
+names = list(runs[0][1]['set_O']['objects'])
+for n in names:
+    row(f"  set O {n}: first STOP m / STOP frames", lambda g, n=n: f"{g['set_O']['objects'][n].get('first_stop_m')} / {g['set_O']['objects'][n].get('stop_frames')}")
+for k in runs[0][1]['set_F_straight']['kinds']:
+    row(f"set F {k}: first det median m / detected / false", lambda g, k=k: f"{g['set_F_straight']['kinds'][k]['first_detection_median_m']} / {g['set_F_straight']['kinds'][k]['detected']} of {g['set_F_straight']['kinds'][k]['sequences']} / {g['set_F_straight']['kinds'][k]['false_detections']}")

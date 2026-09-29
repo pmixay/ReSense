@@ -1,0 +1,18 @@
+"""Full detector, train standing (same ray-cast frame repeated), person 0.5 m wide 1.7 m at D on the axis,
+ego_speed given as a constant (the node's ego_speed_mps parameter) vs unknown."""
+from dataclasses import replace
+import numpy as np
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
+from resense.synthetic import catalogue_spec, synthetic_tunnel_frame
+for D in (30.0, 60.0, 100.0):
+    frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(5), specs=[catalogue_spec("person", D, 0.0, reflectivity=30.0)])
+    for speed in (None, 22.0, 5.0):
+        for veto in (4.0, 0.0):
+            c = DetectorConfig(); c = replace(c, tracking=replace(c.tracking, ego_veto_min_speed=veto))
+            det = Detector(c); s = []
+            for k in range(40):
+                r = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k), ego_speed=speed)
+                s.append("S" if r.obstacle else ("c" if r.warning else "."))
+            print(f"person at {D} m, standing train, ego_speed={speed}, veto={'on' if veto else 'off'}: {''.join(s)}", flush=True)

@@ -1,86 +1,72 @@
-# Показ на стенде и репетиции: сценарий P2
+# Показ на питче и репетиции
 
-> **Назначение:** порядок живого показа на стенде, проверка Foxglove со второго устройства, запасной
-> показ, что записывать на репетициях, сборка приватной колоды.
-> **Аудитория:** P2 (ведёт показ и питч), команда · **Ответственный:** P2; образ и сдачу даёт капитан (P1)
+> **Назначение:** порядок живого показа на питче 23.10 (онлайн, демонстрация экрана), удалённый
+> просмотр через Foxglove, запасной показ, что записывать на репетициях.
+> **Аудитория:** капитан (ведёт питч и показ), команда · **Ответственный:** капитан (P1) с вечера 29.09 —
+> P2 отказался от питча 29.09 вечером; интерфейс (дашборд, раскладки RViz и Foxglove) остаётся за P2
 > · **Язык:** RU
-> **Проверено:** 2026-09-29: команды сверены с `docker-compose.yml` и узлом 29.09 (прогрев, старт на
-> 5 Гц); это сценарий, а не пройденная репетиция: второго устройства и bag-файлов стенда в клоне нет
-> · **Статус:** текущий
+> **Проверено:** 2026-09-29 вечер: команды сверены с [`README.md`](../README.md) «Кратко для жюри»,
+> `docker-compose.yml` и [`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Демонстрация»; это сценарий,
+> а не пройденная репетиция · **Статус:** текущий
 
-Требования к показу и текст питча — [`docs/PRESENTATION.md`](../docs/PRESENTATION.md); проверки и
-свидетельства P2 — [`P2_REVIEW.md`](P2_REVIEW.md).
+Речь, слайды, вопросы жюри и репетиции — [`docs/PRESENTATION.md`](../docs/PRESENTATION.md); проверки
+интерфейса — [`P2_REVIEW.md`](P2_REVIEW.md).
 
 ## Перед выступлением
 
-1. P1 передаёт проверенный образ `resense:latest`, путь к исходным bag-файлам и порядок запуска на
-   стенде. При офлайн-передаче сначала загрузить образ по инструкции в [`README.md`](../README.md).
-   В каталоге проекта задать `RESENSE_DATA=/путь/к/каталогу/с/bag` и `RESENSE_BAG=doubleT_obstacle`;
-   убедиться, что в каталоге есть сама запись.
-2. На компьютере демонстрации запустить узел и мост:
-
-   ```bash
-   RESENSE_DATA=/путь/к/каталогу/с/bag docker compose --profile viz up detector foxglove
-   ```
-
-   RViz при рабочем X11: `docker compose --profile viz up detector foxglove rviz`; для показа через
-   Foxglove он не нужен.
-3. Дождаться в логе узла строки `ReSense detector listening on` (перед ней узел ~0,7 с прогревается) и
-   в другом терминале запустить запись (ограниченный read-ahead обязателен):
-
-   ```bash
-   RESENSE_DATA=/путь/к/каталогу/с/bag RESENSE_BAG=doubleT_obstacle \
-     docker compose --profile tools up player
-   ```
-
-   Текстовое решение без визуализации: `docker compose --profile tools run --rm echo`.
-
-## Что показать за минуту
-
-На **втором устройстве в той же сети**: Foxglove → Open connection → Foxglove WebSocket →
-`ws://<адрес компьютера демонстрации>:8765` → Layout → Import from file → `web/foxglove_layout.json`.
-Показать облако `/lidar_points` (для другой записи — `/sensing/lidar/hesai128/pointcloud`), оранжевые
-точки коридора, красную рамку препятствия, `/resense/decision` и дистанцию в
-`/resense/nearest_distance` и `/resense/status`. Для `doubleT_obstacle` ожидается STOP около 56 м с
-первых секунд; это знакомая запись, не тест на новых данных. Если облако перегружает сеть, отключить
-*только* сырой облачный слой в 3D, коридор и маркеры оставить. Протокол моста проверяется командой
-`python web/demo/check_foxglove_live.py --url ws://127.0.0.1:8765 --require-freshness`.
-
-**Потеря связи:** прервать соединение второго устройства, восстановить его, убедиться, что приходят
-новые статусы. Индикатор Foxglove показывает *последнее* полученное значение (`LAST`) и не гасит его по
-таймеру: старое GO не называть текущим. Смотреть статус соединения и свежесть `/resense/status`, при
-необходимости — веб-дашборд с истечением актуальности. Не обещать, что в показе не будет отдельных
-пропусков детектора (кадр 111 — один GO).
-
-## Запасной показ и протокол репетиции
-
-Если живой показ недоступен: [`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4)
-(архивная цепочка), затем [`docs/video/resense_overview.mp4`](../docs/video/resense_overview.mp4)
-(текущие числовые карточки, старые иллюстративные клипы). Не выдавать архивные клипы за запуск
-запечатанного детектора на стенде.
-
-На каждой репетиции записать: коммит, ID образа, bag, адрес подключения, устройства, время, результат
-импорта раскладки, STOP и дистанцию, проверку обрыва и восстановления, затраченное время, был ли переход
-на запасной показ. После первой репетиции исправить замечания, вторую провести целиком. Записи — в
-[`P2_STATUS.md`](P2_STATUS.md).
-
-## Приватная колода
-
-P2 собирает у команды **вне публичного репозитория** подтверждённые `captain`,
-`captain_specialty`, `formed` (история формирования), `study`, `study_short`, `city` и для каждого из
-четырёх участников `name`, `nick`, `photo` — по образцу
-[`docs/presentation/team.example.json`](../docs/presentation/team.example.json). Фото лежат рядом с
-`team.json` в игнорируемой Git папке `docs/presentation/private/`; групповое фото `team_photo` —
-по желанию. Сборка:
-
 ```bash
-python scripts/build_deck.py --template /путь/к/шаблону.pptx \
-  --team docs/presentation/private/team.json --out docs/presentation/private/ReSense_LCT2026.pptx
+sudo sysctl -w net.core.rmem_max=33554432                # буфер UDP для 360° облаков
+docker load -i resense-image-<версия>.tar.gz             # или: docker build -t resense -f docker/Dockerfile .
+cat /data/for_hackathon/doubleT_obstacle/*.db3 > /dev/null   # запись — в кэш диска (холодный диск срывал 120° на ВМ 28.09)
+xhost +local:docker                                      # RViz из контейнера
 ```
 
-Затем экспортировать PDF и проверить слайды 2–4 глазами: имена, роли, фото, город, история, нет
-незаполненных полей. Сборка на вымышленных участниках (28.09) проверяет скрипт, а не окончательную
-колоду.
+Открыть заранее: окно для демонстрации экрана, плеер с
+[`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4), именную колоду.
 
-Сведения о команде, время питча и обе репетиции ведёт P2, команда участвует; капитан (P1) отвечает
-за образ и отправляет сдачу.
+## Показ (слайд 10, ~50 с)
+
+```bash
+# консоль 1: узел + RViz; ждать строку «ReSense detector listening on» (~0,7 с прогрева)
+docker run --rm -it --net=host --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix resense \
+  ros2 launch resense_ros detector.launch.py rviz:=true freshness_mode:=replay
+# консоль 2 (ROS 2 Humble на хосте): ограниченная очередь обязательна, иначе результаты устаревшие
+ros2 bag play /data/for_hackathon/doubleT_obstacle --delay 3 --read-ahead-queue-size 10
+# консоль 3 (по желанию): ros2 topic echo /resense/decision --field data
+```
+
+Без ROS 2 на хосте плеер — из образа: `RESENSE_DATA=/data/for_hackathon RESENSE_BAG=doubleT_obstacle
+docker compose --profile tools up player`. Ожидается: в RViz коридор габарита, красная рамка и STOP
+около 56 м в первые секунды; человек уходит — STOP держится на предмете у рельса до конца записи.
+Это знакомая запись, не тест на новых данных. Узел в первые секунды догоняет стартовую пачку записи —
+это нормально. Дашборд `web/index.html` в живом режиме требует rosbridge на хосте (`ws://localhost:9090`,
+в образе его нет); без него — скриншот на слайде 10.
+
+## Удалённый просмотр через Foxglove (по желанию)
+
+```bash
+RESENSE_DATA=/data/for_hackathon docker compose --profile viz up detector foxglove
+RESENSE_DATA=/data/for_hackathon RESENSE_BAG=doubleT_obstacle docker compose --profile tools up player
+```
+
+Второе устройство в той же сети: Foxglove → Open connection → Foxglove WebSocket →
+`ws://<адрес машины>:8765` → Layout → Import from file → `web/foxglove_layout.json`. По медленной сети
+выключить только слой сырого облака. Индикаторы Foxglove показывают *последнее* значение (`LAST`) и не
+гаснут: при обрыве смотреть соединение и свежесть `/resense/status`, старое GO не называть текущим.
+Протокол моста: `python web/demo/check_foxglove_live.py --url ws://127.0.0.1:8765 --require-freshness`.
+
+## Запасной показ
+
+Нет решения через ~30 с после плеера или упал X11 — не чинить в эфире: показать
+[`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) (69 с, STOP около 56 м на
+0:24–0:30) и сказать, что это архивная запись той же цепочки (23.09), а не прогон текущего детектора.
+
+## Репетиции
+
+На каждой записать в [`P2_STATUS.md`](P2_STATUS.md) «Rehearsals»: дата, коммит и ID образа, время
+(общее и по слайдам), STOP и дистанция в RViz, был ли переход на запасной ролик и сколько он занял.
+Чек-лист — [`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Репетиции».
+
+Именная колода (имена и фото на слайдах 2–3) собирается `scripts/build_deck.py --team`; команда
+разрешила коммитить её вместо публичной, `team.json` и фото остаются вне git — команда сборки в
+[`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Сборка колоды».

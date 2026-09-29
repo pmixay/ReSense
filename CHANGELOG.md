@@ -3,8 +3,10 @@
 > **Purpose:** what changed in ReSense, newest first, readable in two minutes; the full dated
 > history with every measurement: [`docs/archive/CHANGELOG_2026-09.md`](docs/archive/CHANGELOG_2026-09.md).
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29: each section against the archived changelog, the 29.09 node
-> change against the node source and launch file; every relative link · **Status:** current
+> **Last verified:** 2026-09-29 night (`fe27068`, seal `7464d80`, before the merge into `main`): each section against the archived
+> changelog, the 29.09 node change against the node source and launch file, the rules of 29.09
+> evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link ·
+> **Status:** current
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
 are team labels, the package is 1.0.0 since 25.09. Figures are the team's, measured when a change
@@ -19,6 +21,43 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
 
+### Changed — shell rule off after the safety review (29.09 night; resealed at `fe27068`)
+
+- `cluster.shell_min_top` 2.3 → 0 (`a5455b3`: the code default, `configs/default.yaml` and the ROS copy): the
+  `shell` signature switched on in PR #29 is off again the same night. An independent safety review of the three
+  rules below (29.09 evening; [`docs/evidence/safety_review_2026-09-29/`](docs/evidence/safety_review_2026-09-29/README.md),
+  its first rows reproduced by the coordinator) found that it reads a floor-standing cluster's own top as
+  the tunnel lining whenever the object continues above the 3.0 m envelope top, which the corridor clips. Synthetic
+  tunnel, ray-cast, train at 22 m/s: the catalogue hanging cable `cable_low` (0.03 m, down to 0.2 m above the rail
+  head — the case the organizers called very important, [QA session](docs/organizers/QA_session.md) fact 3) got its
+  first STOP at 21.0 m with the rule on and at 73.8 m with it off; a 0.1 m floor-to-vault pole 36.4 m vs 104.6 m; a
+  3.6 m-tall box like the rear of a standing train at 60 / 90 / 150 m was CAUTION instead of STOP. Alone the rule had
+  bought little: ride events / STOP episodes 32 / 31 → 31 / 29. Re-enabling it would need an exemption for objects
+  that cross the envelope top.
+- The deck (`docs/presentation/`, P2's version with the team's photos and names) and the overview video
+  (`docs/video/resense_overview.mp4`, 3:00, the jury's arc, a synthetic Russian voice-over; script and a shot list
+  for the team's own recording in [`docs/video/README.md`](docs/video/README.md)) carry the final gate's numbers;
+  [`docs/REQUIREMENTS_MAP.md`](docs/REQUIREMENTS_MAP.md) maps every requirement of the spec to the repository.
+  1 284 tests pass on the final branch (plus 6 subtests; 8 need local data caches) and 74 dashboard tests.
+- `tracking.explained_run` 5 and `tracking.ego_veto_min_speed` 4 m/s stay on: the review found them non-blocking,
+  with limits now in [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §6. `explained_run` delays a new STOP by at most 10
+  hits (~1 s, ~22 m at 22 m/s) after an infrastructure-demoted hit. The ego veto blocks STOP onset beyond 25 m for an
+  object receding faster than ~0.65 × the train speed, and must only be fed a measured speed (the LiDAR estimate, the
+  default, or `speed_topic` / `odom_topic`): with a constant `ego_speed_mps` a standing train would veto a static
+  person beyond 25 m. The launch file's docstring no longer suggests `ego_speed_mps:=22`.
+- Full regression gate of the shell-off detector (`7464d80`) against the gate of the seal `3eeb106`
+  ([`docs/evidence/cycle_2026-09-29/shell_off/`](docs/evidence/cycle_2026-09-29/shell_off/README.md)): PASS, no
+  waivers, 6 gated metrics better, none worse. Five empty recordings STOP episodes / events / alarm frames
+  13 / 11 / 40 → 12 / 8 / 39 (as with the three rules); ride 31 / 32 / 130 → 30 / 27 / 126 (2.3 episodes and
+  2.1 events per km; with the three rules 28 / 26 / 123); set F false detections box1.0 12 (6 with the three
+  rules), cable 3 → 0; set O, set F first detections and `doubleT_obstacle` identical. Removing `shell` from the
+  three rules cost ride events / episodes 26 / 28 → 27 / 30 and box1.0 false detections 6 → 12, and gives the
+  hanging cable back its STOP from 73.8 m instead of 21.0 m (synthetic). New seal
+  `docs/evidence/detector_freeze_2026-09-29_shell_off.json`: 36 files measured at `7464d80`, source `075a20df…`,
+  committed in `fe27068`; `1e2ed82`'s seal is kept as superseded ([`docs/DETECTOR_FREEZE.md`](docs/DETECTOR_FREEZE.md)).
+- The approach, stated plainly: the three ideas came from other teams' open case 05 solutions, were rewritten here,
+  passed the full gate, and one of them was then removed by our own safety review.
+
 ### Changed — three false-alarm rules from other teams on by default (29.09 evening; resealed at `1e2ed82`)
 
 - `tracking.explained_run` 5, `explained_reasons` column, overhead, retro, shell (after Tactical-Inventor's
@@ -32,7 +71,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
 - Full regression gate on all organizer recordings (downloaded and cached this session; the sealed gate
   reproduced exactly): PASS, 7 gated metrics better, none worse. Ride 32 / 31 → 26 / 28 events / STOP
   episodes, five empty recordings 11 / 13 → 8 / 12, set F false detections box1.0 12 → 6, cable 3 → 0; set O,
-  set F first detections and `doubleT_obstacle` identical. 1 280 tests pass. New seal
+  set F first detections and `doubleT_obstacle` identical. 1 279 tests pass on `7532a6b` (plus 6 subtests; 8
+  deselected, they need local data caches; 74 dashboard tests). New seal
   `docs/evidence/detector_freeze_2026-09-29_competitor_rules.json` (at `1e2ed82`, comments only since `f67e4fb`, which
   makes the LiDAR speed estimate 4.3 -> 1.3 ms per frame with identical counts; the veto now costs +2.1 ms mean, +2.4 ms p95 on 360°
   frames and +1.7 / +1.6 ms on 120° frames, down from +7 / +8.5 ms on 360°).
@@ -40,8 +80,17 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   `lowobj.min_top` 0.08 (loses the organizers' 10 cm box on a rail at 10-50 m in the ray-cast tunnel; the test now
   covers 25 and 50 m), the clean run with range demotions or shape signatures, `fresh_stop_evidence`, a quadratic
   edge margin (`gauge.edge_margin_per_100m2`, opt-in), far ring rails.
+- No independent safety review of the three rules yet (done the same night: `shell` switched off, see the entry
+  above). Known limits
+  ([`docs/ALGORITHM.md`](docs/ALGORITHM.md) §6): a track beyond 25 m that moves with the train starts
+  no STOP while the train runs at ≥ 4 m/s (and the veto trusts the LiDAR speed estimate); a new STOP
+  next to known infrastructure waits for up to 5 clean hits; in the ray-cast synthetic tunnel a wide
+  object taller than the envelope (3.1–3.6 m, like rolling stock) standing on the track at 60–150 m is
+  CAUTION instead of STOP (`shell`; one-off check during the documentation audit, not committed). The
+  range test that pastes a person at a fixed distance ahead of a moving train is what the veto blocks,
+  so that test is not valid for moving windows with the veto on.
 
-### Added — far rail evidence from ring crossings, opt-in (29.09; seal to be renewed after the gate)
+### Added — far rail evidence from ring crossings, opt-in (29.09; fails the gate, stays off; in the seal of `1e2ed82`)
 
 - `scripts/screen_competitor_rules.py` applies a rule ported from another team's repository as a post-filter on the
   sealed detector's saved STOP detections and reports the false alarms it removes against the true detections it
