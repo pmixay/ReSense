@@ -3,7 +3,10 @@
 **Status: implemented, default-off, local replay completed; no acceptance claim.** The local replay
 did not show a detection-distance gain. The filter reduced alarm frames on the available recordings,
 but also removed synthetic-object STOP frames and the set O cache has no real ring metadata, so this
-is not evidence for shipping the filter. This working-tree experiment is not a replacement for the
+is not evidence for shipping the filter. (29.09: `cloud_with_fake_obj` has no `ring` field and its
+frame cache stores channel 0 for every point, so on set O every cluster counts as one known channel
+and `far_min_ring_count` 2 drops all far sparse evidence there; the node passes unknown channels
+since `84da355`, the offline cache path does not.) This working-tree experiment is not a replacement for the
 [sealed detector](DETECTOR_FREEZE.md). Source base: `df24c18`.
 
 ## Hypothesis and mechanism
