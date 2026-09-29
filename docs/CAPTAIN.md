@@ -7,8 +7,9 @@
 > [`archive/CAPTAIN_board_2026-09-28.md`](archive/CAPTAIN_board_2026-09-28.md); 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29: GitHub (0 tags, 0 releases), the VM run of 28.09, the node change
-> of 29.09 and the independent judgement of 28.09 ([`SCORECARD.md`](SCORECARD.md)).
+> **Last verified:** 2026-09-29: GitHub (0 tags, 0 releases; `main` at `6cafb28`, CI green), the VM
+> run of 28.09, the node change of 29.09 and the independent judgement of 28.09
+> ([`SCORECARD.md`](SCORECARD.md)).
 > **Status:** current
 
 ## 1. Role and dates
@@ -76,7 +77,7 @@ Checked read-only against `main`: none conflicts with `main`; none has an open p
 
 | branch | state | recommendation |
 |---|---|---|
-| `experiment/cross-ring-sparse-evidence` (andrey) | three commits on `df24c18`: an opt-in "cross-ring sparse evidence" (`cluster.weak_min_rings`, `tracking.far_min_ring_count`, off by default), tests, analysis scripts, `docs/EXPERIMENT_CROSS_RING.md` and a ride trace. Its own results: no improvement; the filter costs STOP range (0.3 m cube 55.8 → 52.5 m, box on top 111.4 → 101.3 m, plank 87.2 → 82.2 m). It changes five sealed detector files without resealing: **CI red** on every push | keep as an experiment; after the upload only with a reseal, the full gate and a safety review |
+| `experiment/cross-ring-sparse-evidence` (andrey) | **merged into `main` on 29.09** (PR #27, `6cafb28`, together with P3's later work). It brought an opt-in "cross-ring sparse evidence" (`cluster.weak_min_rings`, `tracking.far_min_ring_count`, off by default), tests, analysis scripts, `docs/EXPERIMENT_CROSS_RING.md` and a ride trace. Its own results: no improvement; the filter costs STOP range (0.3 m cube 55.8 → 52.5 m, box on top 111.4 → 101.3 m, plank 87.2 → 82.2 m). The sealed detector files it changed were resealed on 29.09 after the full gate ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); CI is green on `main` | keep it off; switching it on by default needs its own gate and a safety review |
 | `claude/amazing-fermi-t67v8g` (P2) | its last commit 2242bc6 (dense slides 5 and 15 simplified, PPTX / PDF / MP4 rebuilt, the demo runbook [`web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md)); everything before it is `main`'s 464f5bc | **merged into the working branch on 29.09** (full P2 check on the rebuilt files: 83 passed, 0 skipped); the branch can be deleted |
 | `gpt-score-push-20260928` (an agent VM, likikikpa) | the former `testovaya-gpt` (deleted on the remote; compressed ride-cache tooling, P4's full-data evidence, a rebuilt deck) plus: a self-review with a criterion score, 24.8 MB of unused `.npy` fixtures force-added past `.gitignore`, the rejected `hold_misses` 2 candidate with its evidence (item 6). It does not contain the current `main` | do not merge as is; after the upload cherry-pick the cache tooling and the evidence packets (deduplicated), drop the fixtures and the score |
 

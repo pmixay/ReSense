@@ -226,10 +226,10 @@ times that means the disk set the pace: pre-read the bags (§3) and run again.
 **The node's start-up.** It logs `ReSense detector listening on …` after a warm-up (`warmup`, on by
 default: the decode and a throwaway detector on three synthetic frames, ~0.7 s), so the first real
 frame costs what the next ones do. A new recording's first backlog (the player's start-up burst)
-is worked through every observed input-period frame by default on experimental
+is worked through every observed input-period frame by default
 (`catchup_startup_step` = 0), within `catchup_startup_max_lag` 20 s. Explicit
-`catchup_startup_step:=0.2` enables main's 5 Hz thinning; its target coverage still needs separate
-acceptance on this branch. A frame waiting alone is processed at once; later stalls use
+`catchup_startup_step:=0.2` enables the 5 Hz thinning that was the default until PR #27 was merged
+(29.09); its target coverage still needs separate acceptance. A frame waiting alone is processed at once; later stalls use
 `catchup_step` 0.3 s and `catchup_max_lag` 5 s. Results made while it catches up are not
 current (`node.catchup`): FAULT, CAUTION or a held STOP, never GO. A storage stall of a second or
 more mid-recording makes the catch-up skip frames after the settle point and fails the check.
@@ -498,6 +498,5 @@ evidence too: commit it as it is.
 For the accepted P3 and health changes, use the measured commits and procedures recorded in
 [`P3_SCORE_SYNC_2026-09-28.md`](P3_SCORE_SYNC_2026-09-28.md) and the
 [health validation record](evidence/cycle_2026-09-28/health_histogram/README.md). Its runtime
-captures precede the new node implementation. The experimental branch keeps
-`catchup_startup_step:=0` by default; the main branch A/B at 0.2 s does not prove full input-frame
-coverage for this branch.
+captures precede the new node implementation. `catchup_startup_step:=0` is the default; the A/B at
+0.2 s (the default before PR #27 was merged) does not prove full input-frame coverage.
