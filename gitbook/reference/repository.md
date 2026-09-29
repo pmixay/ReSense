@@ -28,7 +28,7 @@
 | [EVALUATION](https://github.com/pmixay/ReSense/blob/main/docs/EVALUATION.md) | протокол оценки и наборы данных |
 | [DATASET](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md), [SENSOR](https://github.com/pmixay/ReSense/blob/main/docs/SENSOR.md) | записи, форматы, Hesai Pandar128 |
 | [DECISIONS](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md), [RESEARCH](https://github.com/pmixay/ReSense/blob/main/docs/RESEARCH.md) | ключевые решения на одной странице; обзор литературы и рассмотренные подходы |
-| [DETECTOR_FREEZE](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md) | печать детектора (текущая — 29.09 ночь, после выключения `shell`, `<SEAL-COMMIT>` <!-- GATE: seal commit -->) и её проверка |
+| [DETECTOR_FREEZE](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md) | печать детектора (текущая — 29.09 ночь, после выключения `shell`, `7464d80`) и её проверка |
 | [VM_GUIDE](https://github.com/pmixay/ReSense/blob/main/docs/VM_GUIDE.md) | пробный прогон на чистой машине, замеры производительности и репетиция без интернета на облачной ВМ |
 | [CHANGELOG](https://github.com/pmixay/ReSense/blob/main/CHANGELOG.md) | что изменилось — по версиям |
 | [docs/archive/](https://github.com/pmixay/ReSense/tree/main/docs/archive) | датированные записи: полный журнал экспериментов, подробный журнал изменений, циклы качества |

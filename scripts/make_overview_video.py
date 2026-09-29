@@ -60,7 +60,7 @@ DURATION = 180.0                                        # 3:00, the organizers' 
 FPS = 25
 XFADE = 0.4                                             # cross-fade between shots, s
 STILL_HZ = 10                                           # a zooming still changes this often (as the clips)
-CRF = 23                                                # x264 quality (shots with ``bits`` scale it)
+CRF = 25                                                # x264 quality (shots with ``bits`` scale it)
 REPO_LINE = "github.com/pmixay/ReSense · исходный код"
 
 REAL, OURS, ORG = "real", "ours", "org"                 # how a number was measured (the script's marks)
@@ -101,15 +101,16 @@ def steps(t, items, active):
 
 # ---- gate-dependent numbers: the ONE place to update ------------------------------------------
 # Every number below comes from ONE team regression gate baseline (the 1 cm frame cache, all
-# organizers' recordings). PROVISIONAL: run r_1e2ed82 = docs/evidence/results/
-# regression_baseline_2026-09-29_competitor_rules.json (detector 1e2ed82, 29.09 evening, with the
-# shell rule still ON). For the final detector (shell rule OFF since a5455b3) replace each value by
-# the baseline field named on its line, set "run", re-render (mp4 + srt) and run
-# tests/test_overview_video.py, which compares this block with the newest baseline.
+# organizers' recordings): the final detector of 29.09 (shell rule OFF since a5455b3; explained_run and
+# the ego veto ON), full gate of 7464d80 = docs/evidence/results/regression_baseline_2026-09-29_shell_off.json
+# (docs/evidence/cycle_2026-09-29/shell_off/). For a newer detector run
+# ``--gate-from <new baseline>``, replace each changed value (one line per number), set "run",
+# re-render (mp4 + srt) and run tests/test_overview_video.py, which compares this block with the
+# newest baseline.
 GATE = {
-    "run": "r_1e2ed82",           # the gate run the numbers come from (shown in the source lines)
-    "ride_events": 26,            # ride.alarm_events            (new_data: 13.0 km, 11 271 frames)
-    "ride_stop_episodes": 28,     # ride.stop_episodes
+    "run": "r_7464d80",           # the gate run the numbers come from (shown in the source lines)
+    "ride_events": 27,            # ride.alarm_events            (new_data: 13.0 km, 11 271 frames)
+    "ride_stop_episodes": 30,     # ride.stop_episodes
     "empty_events": 8,            # five_empty.alarm_events      (five empty recordings, 2 287 frames)
     "empty_stop_episodes": 12,    # five_empty.stop_episodes
     "o_inside_stop": 8,           # set_O.inside_objects_with_stop
@@ -134,6 +135,39 @@ GATE = {
     "dt_far_m": 56.6,             # recordings.doubleT_obstacle.alarm_dist[1]
     "dt_person": 61,              # recordings.doubleT_obstacle.labelled.per_label.person_crossing.hits
     "dt_rail": 126,               # ...labelled.per_label.object_on_rail_from_frame_75.hits
+}
+# Where each GATE number lives in a gate baseline JSON: (path, rounding digits or None, what it is,
+# data kind). tests/test_overview_video.py compares GATE with the newest baseline through this map;
+# ``--script-md`` prints it as the numbers table of docs/video/README.md.
+GATE_SOURCES = {
+    "ride_events": (("ride", "alarm_events"), None, "ложные события на поездке 13 км", "real"),
+    "ride_stop_episodes": (("ride", "stop_episodes"), None, "эпизоды STOP на поездке", "real"),
+    "empty_events": (("five_empty", "alarm_events"), None, "ложные события, пять пустых записей", "real"),
+    "empty_stop_episodes": (("five_empty", "stop_episodes"), None, "эпизоды STOP, пять пустых записей", "real"),
+    "o_inside_stop": (("set_O", "inside_objects_with_stop"), None, "объекты в габарите со STOP", "org"),
+    "o_inside": (("set_O", "inside_objects"), None, "объекты в габарите", "org"),
+    "o_outside_false": (("set_O", "outside_false_stop_frames"), None, "ложный STOP вне габарита, кадры", "org"),
+    "o_big_center_m": (("set_O", "objects", "big_center", "first_stop_m"), 0, "ящик 2 × 2 м в центре: первый STOP, м", "org"),
+    "o_big_above_m": (("set_O", "objects", "big_above", "first_stop_m"), 0, "ящик у верха габарита, м", "org"),
+    "o_long_low_m": (("set_O", "objects", "long_low_on_rails", "first_stop_m"), 0, "доска поперёк рельсов, м", "org"),
+    "o_small_center_m": (("set_O", "objects", "small_center", "first_stop_m"), 0, "куб 0,3 м в центре, м", "org"),
+    "o_small_on_rail_m": (("set_O", "objects", "small_on_rail", "first_stop_m"), 0, "куб 0,3 м на рельсе, м", "org"),
+    "o_small_edge_m": (("set_O", "objects", "small_edge_inside", "first_stop_m"), 0, "куб 0,3 м у края, м", "org"),
+    "o_thin_hanging_m": (("set_O", "objects", "thin_hanging", "first_stop_m"), 0, "висящий предмет, м", "org"),
+    "o_big_edge_m": (("set_O", "objects", "big_edge_inside", "first_stop_m"), 0, "ящик 2 × 2 м у края, м", "org"),
+    "f_person_m": (("set_F_straight", "kinds", "person", "first_detection_median_m"), 0, "человек на подходе, м", "ours"),
+    "f_trolley_m": (("set_F_straight", "kinds", "trolley", "first_detection_median_m"), 0, "тележка, м", "ours"),
+    "f_box1_m": (("set_F_straight", "kinds", "box1.0", "first_detection_median_m"), 0, "ящик 1 м, м", "ours"),
+    "f_cable_m": (("set_F_straight", "kinds", "cable", "first_detection_median_m"), 0, "висящий кабель 3 см, м", "ours"),
+    "f_box05_m": (("set_F_straight", "kinds", "box0.5", "first_detection_median_m"), 0, "ящик 0,5 м, м", "ours"),
+    "dt_stop_frames": (("recordings", "doubleT_obstacle", "alarm_frames"), None, "doubleT_obstacle: кадры STOP из 201", "real"),
+    "dt_first_stop_frame": (("recordings", "doubleT_obstacle", "first_alarm_frame"), None, "doubleT_obstacle: первый STOP, кадр", "real"),
+    "dt_near_m": (("recordings", "doubleT_obstacle", "alarm_dist", 0), 1, "doubleT_obstacle: ближняя дистанция STOP, м", "real"),
+    "dt_far_m": (("recordings", "doubleT_obstacle", "alarm_dist", 1), 1, "doubleT_obstacle: дальняя дистанция STOP, м", "real"),
+    "dt_person": (("recordings", "doubleT_obstacle", "labelled", "per_label", "person_crossing", "hits"), None,
+                  "человек: кадры с тревогой из 61", "real"),
+    "dt_rail": (("recordings", "doubleT_obstacle", "labelled", "per_label", "object_on_rail_from_frame_75", "hits"),
+                None, "предмет на рельсе: кадры STOP из 126 (с кадра 75)", "real"),
 }
 # Fixed facts (not re-measured by the gate): sizes of the data, history, the latency judgement.
 FIXED = {
@@ -235,6 +269,7 @@ DT_SAY_M = int(round((G["dt_near_m"] + G["dt_far_m"]) / 2))            # the per
 DT_GAPLESS = G["dt_stop_frames"] == F["dt_frames"] - G["dt_first_stop_frame"]
 RIDE_PER_KM = G["ride_events"] / F["ride_km"]
 M = lambda n: pl(n, "метр", "метра", "метров")                           # noqa: E731
+MG = lambda n: pl(n, "метра", "метров", "метров")                        # noqa: E731  (после «с», «до»)
 FR = lambda n: pl(n, "кадр", "кадра", "кадров")                          # noqa: E731
 EV = lambda n: pl(n, "событие", "события", "событий")                    # noqa: E731
 OBJ = lambda n: pl(n, "объект", "объекта", "объектов")                   # noqa: E731
@@ -270,15 +305,15 @@ BLOCKS = [
      ],
      "cards": [
          num(8.6, "100 · 200 · 300 м", "хорошо · очень хорошо · отлично: дальность обнаружения "
-                                        "по ТЗ, §8.2"),
+                                        "по ТЗ, п. 8.2"),
          num(13.2, "13 км", "20-минутная поездка организаторов; препятствий для обучения нейросети "
                             "в данных почти нет", REAL),
      ],
      "subs": [
          (0.6, 5.0, "Поезд метро без машиниста должен сам понять, свободен ли путь впереди."),
-         (5.2, 10.0, "Дальность по ТЗ: 100 м — хорошо, 200 — очень хорошо, 300 — отлично.",
-          "Дальность по заданию: сто метров — хорошо, двести — очень хорошо, триста — отлично."),
-         (10.2, 13.0, "А тоннель однообразен и почти всегда пуст:"),
+         (5.2, 10.2, "Дальность по ТЗ: 100 м — хорошо, 200 — очень хорошо, 300 — отлично.",
+          "По заданию: сто метров — хорошо, двести — очень хорошо, триста — отлично."),
+         (10.4, 13.0, "А тоннель однообразен и почти всегда пуст:"),
          (13.2, 17.6, "препятствий, на которых можно учить нейросеть, в данных почти нет."),
      ]},
     {"name": "Идея", "t0": 18.0, "t1": 35.0,
@@ -342,7 +377,8 @@ BLOCKS = [
              + (", без пропусков" if DT_GAPLESS else ""), REAL),
          num(86.2, f"{G['dt_person']} из {F['dt_person_frames']}", "кадров с человеком — тревога", REAL),
          num(91.0, f"{G['dt_rail']} из {F['dt_rail_frames']}",
-             "кадров с предметом на рельсе (с кадра 75) — STOP", REAL),
+             f"кадров с предметом на рельсе (с кадра 75) — STOP через узел ROS; на кэше 1 см — "
+             f"{G['dt_rail']}", REAL),
      ],
      "subs": [
          (52.4, 57.8, "Цепочка жюри как есть: docker load ставит образ без интернета,",
@@ -371,7 +407,7 @@ BLOCKS = [
          shot(101.0, 115.0, "board:set_o",
               note=f"набор O: cloud_with_fake_obj, синтетика организаторов · {GATE_NOTE}"),
          shot(115.0, 127.0, "board:false", note=f"поездка new_data и пять пустых записей · {GATE_NOTE}"),
-         shot(127.0, 139.0, "board:rules", note="правила 29.09 · docs/DECISIONS.md № 30; коммит a5455b3"),
+         shot(127.0, 139.0, "board:rules", note="правила 29.09 · docs/DECISIONS.md № 30–31; коммит a5455b3"),
          shot(139.0, 150.0, "board:set_f", note=f"набор F: наша синтетика в реальных кадрах · {GATE_NOTE}"),
      ],
      "cards": [
@@ -394,25 +430,28 @@ BLOCKS = [
           f"{M(G['o_big_center_m'])}."),
          (110.6, 114.8, f"Кубы по 30 см — лишь с {G['o_small_on_rail_m']}–{G['o_small_center_m']} м.",
           f"Кубы по тридцать сантиметров — лишь с {words(G['o_small_on_rail_m'], 'gen')} — "
-          f"{words(G['o_small_center_m'], 'gen')} метров."),
+          f"{words(G['o_small_center_m'], 'gen')} {MG(G['o_small_center_m'])}."),
          (115.4, 121.0, f"Ложные тревоги: на поездке {F['ride_km']} км — {G['ride_events']} "
                         f"{EV(G['ride_events'])}, {dec(RIDE_PER_KM)} на километр.",
           f"Ложные тревоги: на поездке {words(F['ride_km'])} километров — {words(G['ride_events'], gender='n')} "
-          f"{EV(G['ride_events'])}, {words_dec(RIDE_PER_KM)} на километр."),
-         (121.2, 126.6, "Это та же поездка, на которой подбирались правила, — оценка в выборке."),
+          f"{EV(G['ride_events'])}, "
+          + (f"{words_dec(RIDE_PER_KM)} на километр." if round(RIDE_PER_KM * 10) % 10 == 0
+             else f"около {words(round(RIDE_PER_KM), 'gen')} на километр.")),
+         (121.6, 126.8, "Это та же поездка, на которой подбирались правила, — оценка в выборке."),
          (127.4, 132.4, f"Правила других команд против ложных тревог: было {F['ride_events_before']} "
                         f"{EV(F['ride_events_before'])}, стало {G['ride_events']}.",
           f"Правила других команд против ложных тревог: было {words(F['ride_events_before'], gender='n')} "
           f"{EV(F['ride_events_before'])}, стало {words(G['ride_events'], gender='n')}."),
-         (132.8, 138.8, f"Одно правило выключили: висящий кабель оно пропускало до {F['shell_cable_on']} м.",
-          f"Одно правило мы выключили: висящий кабель оно пропускало до "
-          f"{words(F['shell_cable_on'], 'gen')} метров."),
+         (132.8, 138.8, f"Одно правило выключили: висящий кабель с ним получал STOP лишь с "
+                        f"{F['shell_cable_on']} м.",
+          f"Одно правило мы выключили: висящий кабель с ним получал стоп лишь с "
+          f"{words(F['shell_cable_on'], 'gen')} {MG(F['shell_cable_on'])}."),
          (139.4, 144.4, f"На нашей синтетике человека на подходе видно за {G['f_person_m']} "
                         f"{M(G['f_person_m'])}.",
           f"На нашей синтетике человека на подходе видно за {words(G['f_person_m'])} "
           f"{M(G['f_person_m'])}."),
          (144.6, 149.4, f"Дальше {F['echo_max_m']} метров отражений в тоннеле нет.",
-          f"Дальше {words(F['echo_max_m'], 'gen')} метров отражений в тоннеле нет."),
+          f"Дальше {words(F['echo_max_m'], 'gen')} {MG(F['echo_max_m'])} отражений в тоннеле нет."),
      ]},
     {"name": "Что получилось", "t0": 150.0, "t1": 180.0,
      "shots": [
@@ -500,14 +539,15 @@ BOARDS = {
                        (thousands(F["real_frames"]), "реальных кадров прогнаны целиком")],
               "foot": f"в выборке: на этой поездке подбирались правила · {GATE_NOTE}"},
     "rules": {"title": "Правила 29.09 из открытых решений кейса 05", "kind": "checks",
-              "rows": [(True, "объяснённый пробег: пропуск, если трек объяснён инфраструктурой"),
-                       (True, "запрет эго-движения: трек, который не приближается при движении поезда, "
-                              "не даёт STOP"),
+              "rows": [(True, "чистая серия: у колонны или конструкции над путём новый STOP — только после "
+                              "5 чистых попаданий подряд"),
+                       (True, "вето по собственному движению: если расстояние до трека не сокращается, "
+                              "пока поезд едет, STOP нет"),
                        (False, f"«оболочка» — выключена: висящий кабель получал STOP лишь с "
                                f"{F['shell_cable_on']} м вместо {F['shell_cable_off']} м")],
               "foot": f"поездка: было {F['ride_events_before']} {EV(F['ride_events_before'])}, стало "
                       f"{G['ride_events']} · {GATE_NOTE}"},
-    "set_f": {"title": "Человек и предметы на подходе: первое обнаружение, м", "kind": "bars",
+    "set_f": {"title": "На подходе по прямой: первое обнаружение, м", "kind": "bars",
               "tag": OURS,
               "rows": [("человек 1,7 м", G["f_person_m"]),
                        ("тележка", G["f_trolley_m"]),
@@ -733,7 +773,7 @@ def split_subtitle(textline, font, one_line, max_w):
         wa, wb = text_w(font, a), text_w(font, b)
         if wa > max_w or wb > max_w:
             continue
-        score = max(wa, wb) - (0.12 * max_w if a[-1] in ",;:—" else 0.0)
+        score = max(wa, wb) - (0.12 * max_w if a[-1] in ".,;:—" else 0.0)
         if best is None or score < best[0]:
             best = (score, [a, b])
     if best is None:
@@ -894,11 +934,16 @@ def render_board(board, fonts, scale, w, h):
     im = Image.new("RGBA", (w, h), BOARD_BG + (255,))
     d = ImageDraw.Draw(im)
     x0, right = S(64, scale), w - S(64, scale)
-    d.text((x0, S(92, scale)), board["title"], font=fonts.get("bold", 46), fill=WHITE, anchor="ls")
-    d.rectangle((x0, S(112, scale), x0 + S(72, scale), S(118, scale)), fill=RED)
+    title_w = right - x0
     if board.get("tag"):
         pill = tag_pill(fonts, scale, board["tag"])
         im.alpha_composite(pill, (right - pill.size[0], S(64, scale)))
+        title_w -= pill.size[0] + S(28, scale)
+    size = 46
+    while text_w(fonts.get("bold", size), board["title"]) > title_w and size > 30:
+        size -= 2
+    d.text((x0, S(92, scale)), board["title"], font=fonts.get("bold", size), fill=WHITE, anchor="ls")
+    d.rectangle((x0, S(112, scale), x0 + S(72, scale), S(118, scale)), fill=RED)
     top, bottom = S(160, scale), h - S(84, scale)
     rows = board["rows"]
     kind = board["kind"]
@@ -1509,7 +1554,12 @@ def synthesize(voice_path, out_wav, length_scale=1.0, log=sys.stderr):
         dur = len(audio) / rate
         if dur > room:
             tempo = min(VOICE_MAX_TEMPO, dur / room * 1.02)
-            audio = read(say, length_scale / tempo)
+            for _ in range(4):                      # the voice's timing is sampled: keep the shortest take
+                take = read(say, length_scale / tempo)
+                if len(take) < len(audio):
+                    audio = take
+                if len(audio) / rate <= room:
+                    break
             dur = len(audio) / rate
         if dur > room + 0.05:
             print(f"  voice at {t0:.1f} s: {dur:.2f} s > room {room:.2f} s", file=log)
@@ -1552,6 +1602,11 @@ def script_markdown():
             extra = f" *({say})*" if say != c[2] else ""
             out.append(f"* `{mmss(c[0])}–{mmss(c[1])}` {c[2]}{extra}")
         out.append("")
+    out += [f"Числа гейта в ролике (блок `GATE`, прогон `{G['run']}`):", "",
+            "| число | значение | тип данных | поле базовой линии гейта |", "|---|---|---|---|"]
+    for key, (path, _, what, kind) in GATE_SOURCES.items():
+        field = ".".join(str(p) if not isinstance(p, int) else f"[{p}]" for p in path).replace(".[", "[")
+        out.append(f"| {what} | {G[key]} | {TAGS[kind][0]} | `{field}` |")
     return "\n".join(out)
 
 
@@ -1652,7 +1707,27 @@ def main(argv=None):
     ap.add_argument("--voice-only", action="store_true", help="only synthesize the narration and report")
     ap.add_argument("--script-md", action="store_true",
                     help="print the shot list and the narration as Markdown (docs/video/README.md) and exit")
+    ap.add_argument("--gate-from", metavar="BASELINE_JSON",
+                    help="print the GATE values of a gate baseline (docs/evidence/results/regression_"
+                         "baseline_*.json) next to the current ones and exit")
     args = ap.parse_args(argv)
+
+    if args.gate_from:
+        import json
+
+        with open(args.gate_from, encoding="utf-8") as f:
+            base = json.load(f)
+        for key, (path, digits, what, _) in GATE_SOURCES.items():
+            value = base
+            for step in path:
+                value = value[step] if value is not None else None
+            if value is not None and digits is not None:
+                value = round(value, digits) if digits else int(round(value))
+            mark = "" if value == G[key] else "   <- CHANGED"
+            print(f'    "{key}": {value!r},  # was {G[key]!r}: {what}{mark}')
+        print(f'    commit of the baseline: {base.get("code", {}).get("commit", "?")[:7]} '
+              f'(set GATE["run"] accordingly)')
+        return
 
     bad = check_table()
     if bad:

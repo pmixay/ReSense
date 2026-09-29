@@ -21,7 +21,7 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
 
-### Changed — shell rule off after the safety review (29.09 night; resealed at `<COMMIT>`)
+### Changed — shell rule off after the safety review (29.09 night; resealed at `fe27068`)
 
 - `cluster.shell_min_top` 2.3 → 0 (`a5455b3`: the code default, `configs/default.yaml` and the ROS copy): the
   `shell` signature switched on in PR #29 is off again the same night. An independent safety review of the three
@@ -40,12 +40,16 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   object receding faster than ~0.65 × the train speed, and must only be fed a measured speed (the LiDAR estimate, the
   default, or `speed_topic` / `odom_topic`): with a constant `ego_speed_mps` a standing train would veto a static
   person beyond 25 m. The launch file's docstring no longer suggests `ego_speed_mps:=22`.
-- Full regression gate of the shell-off detector against the gate of the previous seal `3eeb106`
-  (`<GATE-PATH>`): five empty recordings STOP episodes / events / alarm frames 13 / 11 / 40 → 12 / 8 / 39 <!-- GATE: five_empty stop_episodes / alarm_events / alarm_frames -->;
-  ride 31 / 32 / 130 → 28 / 26 / 123 <!-- GATE: ride stop_episodes / alarm_events / alarm_frames -->; set F false
-  detections box1.0 12 → 6 <!-- GATE: set_F box1.0 false_detections -->, cable 3 → 0 <!-- GATE: set_F cable false_detections -->;
-  set O, set F first detections and `doubleT_obstacle` identical <!-- GATE: set_O, set_F first_detection_median_m, doubleT_obstacle (re-confirm) -->.
-  New seal at `<COMMIT>` ([`docs/DETECTOR_FREEZE.md`](docs/DETECTOR_FREEZE.md)).
+- Full regression gate of the shell-off detector (`7464d80`) against the gate of the seal `3eeb106`
+  ([`docs/evidence/cycle_2026-09-29/shell_off/`](docs/evidence/cycle_2026-09-29/shell_off/README.md)): PASS, no
+  waivers, 6 gated metrics better, none worse. Five empty recordings STOP episodes / events / alarm frames
+  13 / 11 / 40 → 12 / 8 / 39 (as with the three rules); ride 31 / 32 / 130 → 30 / 27 / 126 (2.3 episodes and
+  2.1 events per km; with the three rules 28 / 26 / 123); set F false detections box1.0 12 (6 with the three
+  rules), cable 3 → 0; set O, set F first detections and `doubleT_obstacle` identical. Removing `shell` from the
+  three rules cost ride events / episodes 26 / 28 → 27 / 30 and box1.0 false detections 6 → 12, and gives the
+  hanging cable back its STOP from 73.8 m instead of 21.0 m (synthetic). New seal
+  `docs/evidence/detector_freeze_2026-09-29_shell_off.json`: 36 files measured at `7464d80`, source `075a20df…`,
+  committed in `fe27068`; `1e2ed82`'s seal is kept as superseded ([`docs/DETECTOR_FREEZE.md`](docs/DETECTOR_FREEZE.md)).
 - The approach, stated plainly: the three ideas came from other teams' open case 05 solutions, were rewritten here,
   passed the full gate, and one of them was then removed by our own safety review.
 

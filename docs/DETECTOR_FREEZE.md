@@ -4,7 +4,7 @@
 > приниматься изменение детектора.
 > **Аудитория:** команда, жюри · **Ответственный:** P1 (печать), P3 (детектор) · **Язык:** RU
 > **Проверено:** 2026-09-29, ночь: `python3 scripts/detector_freeze.py verify` PASS на
-> `<SEAL-COMMIT>` (36 <!-- GATE: seal file count --> файлов, исходники `<SEAL-SHA>`); полный шлюз
+> `7464d80` (36 файлов, исходники `075a20df…`; печать записана в `fe27068`); полный шлюз
 > текущей печати измерен на `<SEAL-COMMIT>` против шлюза печати `3eeb106`; независимое ревью
 > безопасности двух оставшихся правил 29.09 проведено (не блокирующие, с ограничениями), `shell`
 > по нему выключен; сверка по кадрам и стресс-истории — на печати `3eeb106` · **Статус:**
@@ -12,9 +12,10 @@
 
 ## Что опечатано
 
-Текущий манифест `<SEAL-MANIFEST>` (его называет `DEFAULT_MANIFEST` в `scripts/detector_freeze.py`,
-CI проверяет его) фиксирует 36 <!-- GATE: seal file count --> файлов детектора, конфигурации и
-сборки, измеренных на исходниках `<SEAL-COMMIT>`, SHA-256 `<SEAL-SHA>`: два правила против ложных
+Текущий манифест [`detector_freeze_2026-09-29_shell_off.json`](evidence/detector_freeze_2026-09-29_shell_off.json) (его называет `DEFAULT_MANIFEST` в `scripts/detector_freeze.py`,
+CI проверяет его) фиксирует 36 файлов детектора, конфигурации и
+сборки, измеренных на исходниках `7464d80`, SHA-256
+`075a20df9fcdba6605a92e6505ae4dfdb3bf410ec09d17a8b3c79ce714db9292` (печать записана в `fe27068`): два правила против ложных
 тревог из чужих решений кейса 5 включены по умолчанию (`tracking.explained_run` 5 с
 `explained_reasons` column, overhead, retro, shell; `tracking.ego_veto_min_speed` 4 м/с), третье —
 сигнатура `shell` — выключено (`cluster.shell_min_top` 2,3 → 0, коммит `a5455b3`); идеи из открытых
@@ -35,11 +36,12 @@ CI проверяет его) фиксирует 36 <!-- GATE: seal file count -
 25 м объекту, уходящему быстрее ~0,65 скорости поезда, и ему нельзя подавать постоянную
 `ego_speed_mps` — только измеренную скорость или оценку по LiDAR (по умолчанию).
 
-Полный шлюз `<SEAL-COMMIT>` против шлюза печати `3eeb106`: PASS <!-- GATE: gate verdict --> без
-послаблений; поездка 32 / 31 → 26 / 28 <!-- GATE: ride alarm_events / stop_episodes --> событий /
-эпизодов STOP, пять пустых записей 11 / 13 → 8 / 12 <!-- GATE: five_empty alarm_events / stop_episodes -->;
-набор O, дальности набора F и `doubleT_obstacle` без изменений <!-- GATE: set_O, set_F first_detection_median_m, doubleT_obstacle (re-confirm) -->
-(`<GATE-PATH>`).
+Полный шлюз `7464d80` против шлюза печати `3eeb106`: PASS без послаблений, 6 проверяемых метрик
+лучше, ни одной хуже; поездка 32 / 31 → 27 / 30 событий / эпизодов STOP (2,1 события и 2,3 эпизода
+на км; с тремя правилами было 26 / 28), пять пустых записей 11 / 13 → 8 / 12 (как с тремя
+правилами), ложные обнаружения набора F: ящик 1 м 12 (с `shell` было 6), кабель 3 → 0; набор O,
+дальности набора F и `doubleT_obstacle` без изменений
+([`shell_off/`](evidence/cycle_2026-09-29/shell_off/README.md), таблица трёх шлюзов).
 
 Предыдущая печать, 29.09 вечером, — манифест
 [`detector_freeze_2026-09-29_competitor_rules.json`](evidence/detector_freeze_2026-09-29_competitor_rules.json)
@@ -70,14 +72,15 @@ CI проверяет его) фиксирует 36 <!-- GATE: seal file count -
 
 ## Шлюз, подтверждающий печать
 
-Текущий шлюз — `<GATE-PATH>` (`validation` манифеста): полный шлюз на `<SEAL-COMMIT>`
+Текущий шлюз — [`shell_off/gate.json`](evidence/cycle_2026-09-29/shell_off/gate.json) (`validation` манифеста): полный шлюз на `7464d80`
 (конфигурация по умолчанию, шесть записей, набор O, поездка в 8 частях, набор F, прямые) против
 шлюза печати `3eeb106`
 ([`health_compare_counts/candidate/gate.json`](evidence/cycle_2026-09-29/health_compare_counts/candidate/gate.json),
-`baseline` манифеста): PASS <!-- GATE: gate verdict / better / unchanged / worse counts --> без
-послаблений. Сверка по кадрам и стресс-истории для правил 29.09 в evidence не записаны; ревью
+`baseline` манифеста): PASS без послаблений и без отсутствующих строк; 6 проверяемых метрик лучше
+(события `doubleT_platform`; события и эпизоды STOP `squareT_platform_squareT_switch` и поездки;
+ложные обнаружения кабеля набора F), ни одной хуже. Сверка по кадрам и стресс-истории для правил 29.09 в evidence не записаны; ревью
 безопасности — выше. Базовая линия для следующего изменения — копия этого шлюза
-<!-- GATE: baseline copy path (was regression_baseline_2026-09-29_competitor_rules.json) -->.
+[`regression_baseline_2026-09-29_shell_off.json`](evidence/results/regression_baseline_2026-09-29_shell_off.json).
 
 Шлюз печати `1e2ed82` —
 [`competitor_rules/gate.json`](evidence/cycle_2026-09-29/competitor_rules/gate.json) против того же
@@ -132,14 +135,12 @@ PASS без `--allow`, без отсутствующих строк и без у
    который отличается от измеренного коммита; затем `DEFAULT_MANIFEST` в
    `scripts/detector_freeze.py` указывает на новый манифест, и `verify` проходит.
 
-<!-- GATE: baseline in the commands below = the copy of the current seal's gate (<GATE-PATH>) once committed -->
-
 ```bash
 python scripts/regression_gate.py --cache /data/cache --jobs 4 \
-  --baseline docs/evidence/results/regression_baseline_2026-09-29_competitor_rules.json \
+  --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json \
   --out docs/evidence/results/regression_gate_<date>_<change>.json
 python scripts/detector_freeze.py create --manifest docs/evidence/detector_freeze_<date>.json \
-  --baseline docs/evidence/results/regression_baseline_2026-09-29_competitor_rules.json \
+  --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json \
   --evidence docs/evidence/results/regression_gate_<date>_<change>.json
 ```
 

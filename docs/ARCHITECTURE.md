@@ -336,7 +336,7 @@ headless Chromium), **`docker`** (набор тестов в образе `WITH_
   формировала кластер, а `tracking.hold_misses` = 1 перекрывает только первый пропуск. Исправление
   (`main`, PR #27): `tracking.stop_keep_low_s` = 0,3 с продолжает уже подтверждённый низкий STOP по
   возвратам, которым до порога не хватает не более `lowobj.straddle_keep_height_margin` = 0,03 м; новый
-  трек оно не создаёт. Результат на `doubleT_obstacle` (29.09): STOP на 193 из 201 результата <!-- GATE: doubleT_obstacle alarm_frames (re-confirm) -->, с кадра 8
+  трек оно не создаёт. Результат на `doubleT_obstacle` (29.09): STOP на 193 из 201 результата, с кадра 8
   до конца, без пропусков, включая 111, 117 и 197: офлайн на сырой записи и через ноду в Docker в CI на
   `6cafb28`; при `stop_keep_low_s` = 0 возвращаются 190 из 201 и GO на 111
   ([`evidence/frame111_2026-09-29/`](evidence/frame111_2026-09-29/README.md)). Оговорки: правило

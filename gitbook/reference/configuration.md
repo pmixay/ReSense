@@ -24,7 +24,7 @@
 ## Изменения 29.09 <a href="#rules-2909" id="rules-2909"></a>
 
 Значения по умолчанию ниже входят в печать детектора (шлюз:
-[`gate_table.md`](https://github.com/pmixay/ReSense/blob/main/docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md) <!-- GATE: source → docs/evidence/cycle_2026-09-29/shell_off/gate.json -->).
+[`shell_off/`](https://github.com/pmixay/ReSense/blob/main/docs/evidence/cycle_2026-09-29/shell_off/README.md)).
 Ключей с пометкой «код» в `configs/default.yaml` нет: их значение по умолчанию задаёт
 `resense/config.py`. `0` в первом ключе строки выключает правило (кроме последней строки).
 Правило `shell` было включено вечером 29.09 вместе с двумя другими правилами из решений других
@@ -72,5 +72,5 @@ docker run --rm -it --net=host --ipc=host -v $PWD/my.yaml:/cfg/my.yaml:ro resens
 2. `./scripts/sync_params.sh` копирует его в пакет ROS (с `--check` его запускает CI).
 3. Изменение, которое влияет на обнаружение, проходит регрессионный гейт и получает новую печать
    детектора: [Изменение детектора](../development/detector-changes.md). Файл входит в печать
-   детектора (текущая — 29.09, ночь, `<SEAL-COMMIT>` <!-- GATE: seal commit -->), и `scripts/detector_freeze.py verify` в CI падает, если
+   детектора (текущая — 29.09, ночь, `7464d80`), и `scripts/detector_freeze.py verify` в CI падает, если
    он изменился без новой печати.

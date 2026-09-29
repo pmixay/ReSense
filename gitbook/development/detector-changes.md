@@ -1,7 +1,7 @@
 # Изменение детектора
 
-Детектор опечатан: манифест `<SEAL-MANIFEST>` (печать 29.09 ночь, 36 файлов, измерены на
-`<SEAL-COMMIT>`) <!-- GATE: seal manifest, file count, commit --> перечисляет по SHA256 каждый файл, от
+Детектор опечатан: манифест `docs/evidence/detector_freeze_2026-09-29_shell_off.json` (печать 29.09
+ночь, 36 файлов, измерены на `7464d80`) перечисляет по SHA256 каждый файл, от
 которого зависит его выход (`resense/`, `native/`, конфигурации, копия параметров ROS, обученная
 модель, входы сборки), и задание CI `checks` падает, если какой-то из них изменился без новой
 печати (`python3 scripts/detector_freeze.py verify`). Поэтому для изменения детектора нужны
@@ -19,11 +19,10 @@
 
 ```bash
 python scripts/regression_gate.py --cache /data/cache --jobs 4 \
-    --baseline docs/evidence/cycle_2026-09-29/competitor_rules/gate.json \
+    --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json \
     --out out/gate/<change>.json
 ```
 
-<!-- GATE: baseline in the command above → docs/evidence/cycle_2026-09-29/shell_off/gate.json once the new seal lands -->
 Базовая линия — шлюз текущей печати (так 29.09 правила сравнивались со шлюзом прошлой печати);
 базовая линия печати 27.09 —
 `docs/evidence/results/regression_baseline_2026-09-27_quality.json`.

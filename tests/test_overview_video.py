@@ -118,40 +118,11 @@ if (ROOT / module.OUT_MP4).is_file():
 
 RESULTS = ROOT / "docs" / "evidence" / "results"
 
-# GATE key -> (path in the baseline JSON, rounding): the one block of gate-dependent numbers
-GATE_FIELDS = {
-    "ride_events": (("ride", "alarm_events"), None),
-    "ride_stop_episodes": (("ride", "stop_episodes"), None),
-    "empty_events": (("five_empty", "alarm_events"), None),
-    "empty_stop_episodes": (("five_empty", "stop_episodes"), None),
-    "o_inside_stop": (("set_O", "inside_objects_with_stop"), None),
-    "o_inside": (("set_O", "inside_objects"), None),
-    "o_outside_false": (("set_O", "outside_false_stop_frames"), None),
-    "o_big_center_m": (("set_O", "objects", "big_center", "first_stop_m"), 0),
-    "o_big_above_m": (("set_O", "objects", "big_above", "first_stop_m"), 0),
-    "o_long_low_m": (("set_O", "objects", "long_low_on_rails", "first_stop_m"), 0),
-    "o_small_center_m": (("set_O", "objects", "small_center", "first_stop_m"), 0),
-    "o_small_on_rail_m": (("set_O", "objects", "small_on_rail", "first_stop_m"), 0),
-    "o_small_edge_m": (("set_O", "objects", "small_edge_inside", "first_stop_m"), 0),
-    "o_thin_hanging_m": (("set_O", "objects", "thin_hanging", "first_stop_m"), 0),
-    "o_big_edge_m": (("set_O", "objects", "big_edge_inside", "first_stop_m"), 0),
-    "f_person_m": (("set_F_straight", "kinds", "person", "first_detection_median_m"), 0),
-    "f_trolley_m": (("set_F_straight", "kinds", "trolley", "first_detection_median_m"), 0),
-    "f_box1_m": (("set_F_straight", "kinds", "box1.0", "first_detection_median_m"), 0),
-    "f_cable_m": (("set_F_straight", "kinds", "cable", "first_detection_median_m"), 0),
-    "f_box05_m": (("set_F_straight", "kinds", "box0.5", "first_detection_median_m"), 0),
-    "dt_stop_frames": (("recordings", "doubleT_obstacle", "alarm_frames"), None),
-    "dt_first_stop_frame": (("recordings", "doubleT_obstacle", "first_alarm_frame"), None),
-    "dt_near_m": (("recordings", "doubleT_obstacle", "alarm_dist", 0), 1),
-    "dt_far_m": (("recordings", "doubleT_obstacle", "alarm_dist", 1), 1),
-    "dt_person": (("recordings", "doubleT_obstacle", "labelled", "per_label", "person_crossing", "hits"), None),
-    "dt_rail": (("recordings", "doubleT_obstacle", "labelled", "per_label", "object_on_rail_from_frame_75",
-                 "hits"), None),
-}
-
 
 def test_every_gate_number_has_a_baseline_field():
-    assert set(GATE_FIELDS) == set(module.GATE) - {"run"}
+    assert set(module.GATE_SOURCES) == set(module.GATE) - {"run"}
+    for key, (path, digits, what, kind) in module.GATE_SOURCES.items():
+        assert path and what and kind in module.TAGS, key
 
 
 # The image may carry individual evidence fixtures without the published video/baselines.
@@ -169,7 +140,7 @@ if (ROOT / module.OUT_MP4).is_file():
         without an updated block (and a re-rendered video: the .srt test above) fails here."""
         latest = _latest_baseline()
         wrong = {}
-        for key, (path, digits) in GATE_FIELDS.items():
+        for key, (path, digits, _, _) in module.GATE_SOURCES.items():
             value = latest
             for step in path:
                 value = value[step]
