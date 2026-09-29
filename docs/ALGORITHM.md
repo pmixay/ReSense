@@ -484,9 +484,12 @@ from the judgement of 28.09 ([`SCORECARD.md`](SCORECARD.md)); the node's view:
   envelope, the hanging stage looks to 60 m only and not without a rail lock. Beyond the height
   reference only clusters ≥ 0.6 m tall alarm (§3.3c).
 * **Edge objects and the envelope reference.** Set O's edge cube and edge 2 m box STOP from 35 m and
-  29 m. Beyond 60 m, on curves and without a rail lock the envelope is measured from the rails only,
-  while the organizers place objects from the sensor axis; which reference the hidden check uses is
-  open ([`QUESTIONS.md`](QUESTIONS.md) Q1).
+  29 m. The organizers measure the envelope from the rail heads, the rails may run at any angle to
+  the LiDAR, and their synthetic objects are placed approximately, which they correct for when
+  checking (answer of 29.09, [`organizers/answers.md`](organizers/answers.md) §9). Within 60 m on
+  straight track the detector's envelope is the union of the rails' one and the sensor-axis one (at
+  most 0.2 m wider, never narrower): an object up to 0.2 m outside the rails' envelope there can be a
+  STOP; beyond, on curves and without a rail lock it is the rails' envelope alone.
 * **The learned opinion delays a doubtful far STOP** by up to 10 processed frames over a track's
   life (beyond 25 m, not a body ≥ 1 m tall within 40 m): ~1 s at 10 Hz, ~2 s at 5 Hz. Its positives
   are synthetic; a real object unlike them can use the whole budget.

@@ -110,12 +110,14 @@ Three properties decide how the recording can be scored:
   edge tests #4–#7 sit within ±0.1–0.4 m of the envelope edge, on either side depending on the
   frame (#5 "outside" has points inside the rail-measured envelope in 101 of its 112 frames). The
   sealed detector takes the union of both references within 60 m on straight track
-  ([`ALGORITHM.md`](ALGORITHM.md) §3.6); which one the hidden check uses is question 1 in
-  [`QUESTIONS.md`](QUESTIONS.md). Far out the objects follow their own path, not the tunnel (#3 is
+  ([`ALGORITHM.md`](ALGORITHM.md) §3.6). The organizers' answer of 29.09: the envelope is measured
+  from the rail heads, and the synthetic objects are placed approximately and may drift relative to
+  it along the track, which they correct for when checking
+  ([`organizers/answers.md`](organizers/answers.md) §9); `in_gauge` keeps their intent. Far out the objects follow their own path, not the tunnel (#3 is
   4 m above the rail head at 81 m): `plausible` drops those rows.
 * **"сверху габарита" is read as the top of the envelope.** The bottom of #8 is 2.4–2.9 m above
-  the rail head, inside the 3.0 m envelope, so it is labelled `in_gauge: true`; the opposite
-  reading ("must not alarm") is question 2 in [`QUESTIONS.md`](QUESTIONS.md).
+  the rail head, inside the 3.0 m envelope, so it is labelled `in_gauge: true`; the answer of 29.09
+  (the envelope is measured from the rail heads) confirms that reading.
 
 Results per object: [`SCORECARD.md`](SCORECARD.md), [`EXPERIMENTS.md`](EXPERIMENTS.md).
 

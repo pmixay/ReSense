@@ -89,7 +89,8 @@ N = {
     # frame cache (the gate). Not fixed: the detector is sealed
     "rail_object_node": (123, 126), "rail_object_node_go": 111,
     # the person with the envelope from the rails alone (gauge.reference 0): the gain to 61 is entirely
-    # the sensor-axis addition, the frame the organizers measure lateral positions in (Q1 open)
+    # the sensor-axis addition (the union, at most 0.2 m wider within 60 m); the organizers measure the
+    # envelope from the rail heads (answer of 29.09, docs/organizers/answers.md §9)
     "person_rails_only": 58,
     # false alarm events (ride / five empty recordings), in-sample: the rules and the track opinion's
     # negatives come from these recordings; the per-km figures are derived (/ ride_km)
@@ -1111,8 +1112,7 @@ def s_next(sl):             # template slide 17: three cards
                                        f"ящик организаторов — с {set_o_first('big_center')} м; {N['tests']} тестов и CI"),
         (50, 39, 40, "Что дальше", "мелкие объекты раньше: короткие сигнатуры инфраструктуры, опора высоты "
                                    "по своду тоннеля; скорость от одометрии (своя по лидару — опция); "
-                                   "«мнение» о треке — переобучить на реальных препятствиях; ответ организаторов: габарит от рельсов "
-                                   "или от оси лидара"),
+                                   "«мнение» о треке — переобучить на реальных препятствиях"),
         (51, 41, 42, "Внедрение", "docker load → run → ros2 bag play или одной командой: scripts/play_bag.sh "
                                   "путь_к_бэгу [--archive resense-image-версия.tar.gz] — образ, узел, запись и "
                                   "каждая смена решения с дистанцией; один файл параметров; стандартные "
