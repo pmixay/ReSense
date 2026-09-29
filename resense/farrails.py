@@ -4,9 +4,8 @@ The near rail tracker (``track.estimate_rails``) needs three returns per 5 cm pr
 stops at ~30 m. Beyond that a ring crosses each rail head once or twice, but the two heads of a
 rail pair still sit one gauge apart on the *same* ring, and pairs found on many rings must lie on
 one smooth offset curve that starts at the last near rail. That is the idea of the
-``Tactical-Inventor/LCT-2026.NIIstovye`` repository (``route/_core/far_rails.py``; see
-docs/COMPETITOR_REVIEW_2026-09-29.md), written here from its description: a vectorised lateral-cell
-grid per ring instead of per-ring loops, and no numba.
+``Tactical-Inventor/LCT-2026.NIIstovye`` repository (``route/_core/far_rails.py``), written here from its description: a vectorised
+lateral-cell grid per ring instead of per-ring loops, and no numba.
 
 It is the evidence source ``track._check_far_rails`` lacks: that check corrects a wall-derived
 curvature that contradicts the rails (a station hall's walls look like a gentle curve while the rails

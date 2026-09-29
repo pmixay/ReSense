@@ -5,7 +5,7 @@ resense:
   # then limits the trusted axis range to 15 m beyond the last verified far station; with no far
   # evidence nothing changes. Measure first: scripts/far_rail_yield.py on the recordings (yield,
   # reach, frames in which the check would act); then the full gate against the current baseline
-  # (docs/DETECTOR_FREEZE.md). Record: docs/COMPETITOR_REVIEW_2026-09-29.md section 4.
+  # (docs/DETECTOR_FREEZE.md). It fails that gate on the recordings (CHANGELOG 29.09).
   track:
     rails_far_check_enabled: true
     rails_far_rings: true

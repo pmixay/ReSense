@@ -17,8 +17,7 @@
 column, overhead, retro, shell; `cluster.shell_min_top` 2,3 м; `tracking.ego_veto_min_speed` 4 м/с).
 Полный шлюз `f67e4fb` против шлюза печати `3eeb106`: PASS без послаблений (решения совпадают со шлюзом `ee7b920`, где правила включены впервые; `f67e4fb` лишь ускоряет оценку скорости по LiDAR, отличаются только зависящие от задержки счётчики health), 7 проверяемых метрик лучше, ни
 одной хуже; поездка 32 / 31 → 26 / 28 событий / эпизодов STOP, набор O, дальности набора F и
-`doubleT_obstacle` без изменений ([`COMPETITOR_REVIEW_2026-09-29.md`](COMPETITOR_REVIEW_2026-09-29.md) §6,
-[`evidence/cycle_2026-09-29/competitor_rules/`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md)).
+`doubleT_obstacle` без изменений ([`evidence/cycle_2026-09-29/competitor_rules/`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md)).
 Независимое ревью безопасности этого изменения ещё не проводилось. Предыдущий манифест
 [`detector_freeze_2026-09-27.json`](evidence/detector_freeze_2026-09-27.json) (`3eeb106`, `70faef90…`) сохранён.
 Состав включает `resense/`, `native/`, конфигурации ROS и входы сборки; точный список и хеши находятся

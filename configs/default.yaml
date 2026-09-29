@@ -71,7 +71,7 @@ resense:
     rails_yaw_min_slabs: 2
     rails_yaw_max_dev: 0.3         # near slab ridge tolerance; also the far-rail disagreement needed to replace a station-wall bend
     rails_far_check_enabled: false # experimental station-wall axis correction; opt-in until real-data A/B and timing
-    rails_far_rings: false         # 29.09 (experimental, off; needs rails_far_check_enabled): far rail evidence from single LiDAR ring crossings (resense/farrails.py, scripts/far_rail_yield.py; assumes sensor.roll/pitch/yaw_deg 0, the default: a configured fixed tilt smears the rings and no far evidence is found) instead of the slab profile that never finds a pair beyond rails_range[1]; opt-in until the full gate (docs/COMPETITOR_REVIEW_2026-09-29.md section 4)
+    rails_far_rings: false         # 29.09 (experimental, off; needs rails_far_check_enabled): far rail evidence from single LiDAR ring crossings (resense/farrails.py, scripts/far_rail_yield.py; assumes sensor.roll/pitch/yaw_deg 0, the default: a configured fixed tilt smears the rings and no far evidence is found) instead of the slab profile that never finds a pair beyond rails_range[1]; off: fails the full gate on the recordings (CHANGELOG 29.09)
     axis_max_yaw_rate: 0.003
     axis_max_curvature_rate: 0.0001
     axis_warmup_frames: 5          # v0.6: no rate limits for this many frames after a (re)seed of the track model
@@ -238,7 +238,7 @@ resense:
     max_misses: 3
     explained_run: 5               # on since 29.09 (after Tactical-Inventor gauge/processor.py; 0 = off): a track with a hit demoted as fixed infrastructure (explained_reasons) among its last explained_window hits starts a STOP only after this many consecutive clean strict-gauge hits; onset only, near escalation wins, a blocked track stays advisory. Counting beyond_axis / beyond_height_ref too: ride 22 / 18 but set F far first detection 151 -> 129 m; counting the shape signatures: a hanging cable demoted as floating no longer stops; neither shipped
     explained_reasons: column,overhead,retro,shell   # shape signatures stay with the stop-keep / near-escalation rules (a hanging cable demoted as floating must stop)
-    ego_veto_min_speed: 4.0        # on since 29.09 (after TunnelGuard _carried_along; 0 = off): while the train moves at >= 4 m/s (LiDAR estimate, robust odometry), a track beyond 25 m whose distance does not fall with the travel (Theil-Sen slope > -0.35 over >= 4 hits and 4 m) starts no STOP; alone: ride 32 / 31 -> 27 / 30; the three together (with explained_run, shell): full gate PASS, ride 32 / 31 -> 26 / 28 events / STOP episodes, five recordings 11 / 13 -> 8 / 12, set F false detections box1.0 12 -> 6, cable 3 -> 0, set O, set F first detections and doubleT_obstacle identical (docs/COMPETITOR_REVIEW_2026-09-29.md section 6)
+    ego_veto_min_speed: 4.0        # on since 29.09 (after TunnelGuard _carried_along; 0 = off): while the train moves at >= 4 m/s (LiDAR estimate, robust odometry), a track beyond 25 m whose distance does not fall with the travel (Theil-Sen slope > -0.35 over >= 4 hits and 4 m) starts no STOP; alone: ride 32 / 31 -> 27 / 30; the three together (with explained_run, shell): full gate PASS, ride 32 / 31 -> 26 / 28 events / STOP episodes, five recordings 11 / 13 -> 8 / 12, set F false detections box1.0 12 -> 6, cable 3 -> 0, set O, set F first detections and doubleT_obstacle identical (docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)
     conf_gain: 0.35
     conf_decay: 0.25
     conf_threshold: 0.6
@@ -265,7 +265,7 @@ resense:
     half_width: 1.05
     min_excess: 0.05               # m above the learned bed cross-section
     max_excess: 1.0
-    min_top: 0.0                   # m above the rail head the top of a low cluster must reach (bed fixtures stay below it; -1 = any bump above the bed); 29.09: 0.08 passes the full gate (ride 32 / 31 -> 22 / 25) but loses the organizers' 30x30x10 cm box on a rail at 10, 25, 45 and 50 m in the ray-cast tunnel (its top falls between rings: measured 0.055-0.075 m), so it stays 0 (docs/COMPETITOR_REVIEW_2026-09-29.md section 6)
+    min_top: 0.0                   # m above the rail head the top of a low cluster must reach (bed fixtures stay below it; -1 = any bump above the bed); 29.09: 0.08 passes the full gate (ride 32 / 31 -> 22 / 25) but loses the organizers' 30x30x10 cm box on a rail at 10, 25, 45 and 50 m in the ray-cast tunnel (its top falls between rings: measured 0.055-0.075 m), so it stays 0 (docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)
     min_point_top: 0.03            # m above the rail head every low candidate must be (rail-area fixtures reach the rail-head level); -1 = off
     template_range:
     - 4.0

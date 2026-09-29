@@ -144,7 +144,7 @@ class GaugeConfig:
     # candidates and the advisory zone are unaffected. 0 = off (v0.3 behaviour)
     edge_margin: float = 0.0
     edge_margin_per_100m: float = 0.15   # v0.6: 0.15 m per 100 m (0.3 m at 200 m) of axis uncertainty at the envelope edge
-    edge_margin_per_100m2: float = 0.0   # 29.09 (opt-in, 0 = off): + this many m per (100 m)^2: the axis error against the track measured by anchored placements grows faster than linearly beyond ~80 m (p75 0.17 / 0.45 / 0.91 m at 80-100 / 100-120 / 120-140 m; docs/COMPETITOR_REVIEW_2026-09-29.md)
+    edge_margin_per_100m2: float = 0.0   # 29.09 (opt-in, 0 = off): + this many m per (100 m)^2: the axis error against the track measured by anchored placements grows faster than linearly beyond ~80 m (p75 0.17 / 0.45 / 0.91 m at 80-100 / 100-120 / 120-140 m); 0.3 fails set O: docs/evidence/cycle_2026-09-29/competitor_rules/candidates/q_em03.json
     no_rail_range: float = 40.0    # v0.6.2: m; in a frame without the rail pair in the near range (stations, switch caverns: the axis rests on walls alone) the corridor beyond this is advisory only; 0 = off
     # 26.09 (P3, judge A action 7; docs/evidence/results/p3_edge_axis_2026-09-26.json): the envelope also
     # measured from the SENSOR axis (the processed frame's X axis, the organizers' placement frame), as a
@@ -279,7 +279,7 @@ class ClusterConfig:
     # tunnel infrastructure when the lining continues right above it: >= shell_min_points returns of the whole frame
     # within shell_gap above its top, over its lateral extent +- shell_lateral and along-track extent +- (1 + 1 % of X),
     # the lowest within max(shell_touch_min, shell_touch_beams vertical beam spacings) of its top (reason 'shell')
-    shell_min_top: float = 2.3            # on since 29.09 (full gate: docs/COMPETITOR_REVIEW_2026-09-29.md section 6)
+    shell_min_top: float = 2.3            # on since 29.09 (full gate: docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)
     shell_max_bottom: float = 0.8
     shell_min_distance: float = 40.0
     shell_gap: float = 1.2

@@ -8,9 +8,8 @@ Our near rail tracker looks at 4-30 m (``track.rails_range``) and needs three re
 profile bin, so it stops at ~30 m. Beyond that a ring crosses each rail head once or twice, but the
 two heads of a rail pair still sit one gauge apart on the *same* ring, and pairs found on many
 rings must lie on one smooth offset curve that starts at the last near rail. That is the idea of
-the ``Tactical-Inventor/LCT-2026.NIIstovye`` repository (``route/_core/far_rails.py``, see
-docs/COMPETITOR_REVIEW_2026-09-29.md), written here from its description: a vectorised lateral-cell
-grid per ring instead of per-ring loops, no numba.
+the ``Tactical-Inventor/LCT-2026.NIIstovye`` repository (``route/_core/far_rails.py``), written here from its description: a vectorised
+lateral-cell grid per ring instead of per-ring loops, no numba.
 
 The pairing lives in ``resense/farrails.py``. It is the evidence source our disabled
 ``track._check_far_rails`` lacks: that check corrects a wall-derived curvature that contradicts the
@@ -27,7 +26,7 @@ This script changes no decision; it is the measurement to make before the gate. 
   which ``_check_far_rails`` would act: both slabs on the same side, further than half a profile
   bin and somewhere more than ``track.rails_yaw_max_dev`` (0.3 m) from our axis.
 
-Run it before the gate (docs/DETECTOR_FREEZE.md, docs/COMPETITOR_REVIEW_2026-09-29.md section 4): if
+Run it before the gate (docs/DETECTOR_FREEZE.md): if
 the yield is low or the centres disagree with our axis where they should agree, stop there.
 
 Ring identity comes from the elevation angle of a return in the *sensor* frame (the axis-permuted

@@ -36,7 +36,7 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   `docs/evidence/detector_freeze_2026-09-29_competitor_rules.json` (at `f67e4fb`, which also makes the LiDAR speed
   estimate 4.3 -> 1.3 ms per frame with identical counts; the veto now costs +2.1 ms mean, +2.4 ms p95 on 360°
   frames and +1.7 / +1.6 ms on 120° frames, down from +7 / +8.5 ms on 360°).
-- Measured and not shipped ([`docs/COMPETITOR_REVIEW_2026-09-29.md`](docs/COMPETITOR_REVIEW_2026-09-29.md) §6):
+- Measured and not shipped (every candidate's full gate: [`gate_table.md`](docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)):
   `lowobj.min_top` 0.08 (loses the organizers' 10 cm box on a rail at 10-50 m in the ray-cast tunnel; the test now
   covers 25 and 50 m), the clean run with range demotions or shape signatures, `fresh_stop_evidence`, a quadratic
   edge margin (`gauge.edge_margin_per_100m2`, opt-in), far ring rails.
@@ -48,8 +48,7 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   takes (empty recordings, `doubleT_obstacle`, set O with the independent judge's matcher, the ride's residual false
   events). It first reproduces the published `setO.json` exactly and refuses to run if it does not. Tests:
   `tests/test_screen_competitor_rules.py` (two read the committed judgement outputs and carry `realdata`).
-- Result ([`docs/COMPETITOR_REVIEW_2026-09-29.md`](docs/COMPETITOR_REVIEW_2026-09-29.md), evidence
-  `docs/evidence/results/competitor_rule_screen_2026-09-29.json`): TunnelGuard's gravity rule would cut set O's
+- Result (evidence `docs/evidence/results/competitor_rule_screen_2026-09-29.json`): TunnelGuard's gravity rule would cut set O's
   `big_center` from 208 to 87 STOP frames (rejected); its shape rule removes 2 of 7 false episodes on the empty
   recordings for 10 m of range on the low board (not adopted); promoting centred `beyond_axis` /
   `beyond_height_ref` advisories would turn 325 advisories on the empty recordings into STOPs for 3 gains, all
@@ -61,7 +60,7 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   With the flags off the per-frame output is bit-identical to `main`. On the ray-cast tunnel it corrects a wall bend
   that the rails contradict (axis 2.7 m off at 60 m -> 0.004 m) where the slab path does not; nothing is measured on
   real data at the time; measured later the same day on the recordings, it fails the gate (stations reach 34-47 m on
-  real rails; `docs/COMPETITOR_REVIEW_2026-09-29.md` sections 4 and 6) and stays off.
+  real rails and a new low STOP at 3 m on `doubleT_platform`) and stays off.
 
 ### Changed — health sector counts (29.09; resealed)
 
