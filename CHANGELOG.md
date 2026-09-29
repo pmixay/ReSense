@@ -19,7 +19,7 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
 
-### Changed — three false-alarm rules from other teams on by default (29.09 evening; resealed at `ee7b920`)
+### Changed — three false-alarm rules from other teams on by default (29.09 evening; resealed at `f67e4fb`)
 
 - `tracking.explained_run` 5, `explained_reasons` column, overhead, retro, shell (after Tactical-Inventor's
   gauge processor): a track with fixed infrastructure in its recent history needs 5 consecutive clean
@@ -33,7 +33,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   reproduced exactly): PASS, 7 gated metrics better, none worse. Ride 32 / 31 → 26 / 28 events / STOP
   episodes, five empty recordings 11 / 13 → 8 / 12, set F false detections box1.0 12 → 6, cable 3 → 0; set O,
   set F first detections and `doubleT_obstacle` identical. 1 280 tests pass. New seal
-  `docs/evidence/detector_freeze_2026-09-29_competitor_rules.json`.
+  `docs/evidence/detector_freeze_2026-09-29_competitor_rules.json` (at `f67e4fb`, which also makes the LiDAR speed
+  estimate 4.3 -> 1.3 ms per frame with identical counts; before it the veto cost +7 ms mean, +8.5 ms p95 on 360°).
 - Measured and not shipped ([`docs/COMPETITOR_REVIEW_2026-09-29.md`](docs/COMPETITOR_REVIEW_2026-09-29.md) §6):
   `lowobj.min_top` 0.08 (loses the organizers' 10 cm box on a rail at 10-50 m in the ray-cast tunnel; the test now
   covers 25 and 50 m), the clean run with range demotions or shape signatures, `fresh_stop_evidence`, a quadratic

@@ -1,11 +1,11 @@
 {
   "schema": "resense-detector-freeze-v1",
   "status": "frozen",
-  "created_utc": "2026-09-29T14:20:25.637664+00:00",
+  "created_utc": "2026-09-29T14:32:46.690368+00:00",
   "authorization": "User delegated captain work and requested detector freeze on 2026-09-26.",
-  "source_commit": "ee7b920388b0fe4ea1d1266509fc6e6f1024c8e9",
-  "measured_commit": "ee7b920388b0fe4ea1d1266509fc6e6f1024c8e9",
-  "source_sha256": "5e9f70ef489edae0b06b7797e97e99a2f26bd03940000642d45b790ba7b611c4",
+  "source_commit": "f67e4fb8cdca8a442c83cd7687200db44855a96b",
+  "measured_commit": "f67e4fb8cdca8a442c83cd7687200db44855a96b",
+  "source_sha256": "d310a93d9c22d4709f7ea6843d1aafcad12156295e0198f35d18431b10291979",
   "files": {
     "configs/default.yaml": "6c6570cf676b5cca25a6090ce31f5fdd5089c7541c7808b97778327ef86049e8",
     "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
@@ -22,7 +22,7 @@
     "resense/clustering.py": "4aa07b00e1e23be3a70942a4411233b73c4b3a17ae1145a09cf279c76f124f1a",
     "resense/config.py": "f2e7ef0e33bc36d63b3296f40201e0b71f6354ce162049d04cb783436f9e571e",
     "resense/detector.py": "859190c21457ea2078c160decf002c80c2c9cd5f942fee298937a5c04ea07903",
-    "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
     "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
     "resense/farrails.py": "2894b3edb9b890a49e0ad7102e546e063eb543bf7ab3559bf6bc83013b56f514",
     "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
@@ -52,8 +52,8 @@
   },
   "validation": {
     "path": "docs/evidence/cycle_2026-09-29/competitor_rules/gate.json",
-    "sha256": "cf1b668330101f6fab1aab1824b493a43f2ea150b17cda81d952594ee026ac18",
-    "measured_at": "2026-09-29T14:20:09+00:00",
+    "sha256": "d3b4fe2974af54e280824882bea957bd875d627dededfd27272aece4e98a4ece",
+    "measured_at": "2026-09-29T14:32:15+00:00",
     "kind": "committed full regression gate"
   },
   "decisions": {

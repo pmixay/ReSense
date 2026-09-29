@@ -11,11 +11,11 @@
 
 Текущий манифест [`detector_freeze_2026-09-29_competitor_rules.json`](evidence/detector_freeze_2026-09-29_competitor_rules.json)
 (его называет `DEFAULT_MANIFEST` в `scripts/detector_freeze.py`, CI проверяет его) фиксирует 36 файлов
-детектора, конфигурации и сборки, измеренных на исходниках `ee7b920`, SHA-256
-`5e9f70ef489edae0b06b7797e97e99a2f26bd03940000642d45b790ba7b611c4`: три правила против ложных тревог из
+детектора, конфигурации и сборки, измеренных на исходниках `f67e4fb`, SHA-256
+`d310a93d9c22d4709f7ea6843d1aafcad12156295e0198f35d18431b10291979`: три правила против ложных тревог из
 чужих решений кейса 5 включены по умолчанию (`tracking.explained_run` 5 с `explained_reasons`
 column, overhead, retro, shell; `cluster.shell_min_top` 2,3 м; `tracking.ego_veto_min_speed` 4 м/с).
-Полный шлюз `ee7b920` против шлюза печати `3eeb106`: PASS без послаблений, 7 проверяемых метрик лучше, ни
+Полный шлюз `f67e4fb` против шлюза печати `3eeb106`: PASS без послаблений (решения совпадают со шлюзом `ee7b920`, где правила включены впервые; `f67e4fb` лишь ускоряет оценку скорости по LiDAR, отличаются только зависящие от задержки счётчики health), 7 проверяемых метрик лучше, ни
 одной хуже; поездка 32 / 31 → 26 / 28 событий / эпизодов STOP, набор O, дальности набора F и
 `doubleT_obstacle` без изменений ([`COMPETITOR_REVIEW_2026-09-29.md`](COMPETITOR_REVIEW_2026-09-29.md) §6,
 [`evidence/cycle_2026-09-29/competitor_rules/`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md)).

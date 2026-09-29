@@ -2,7 +2,7 @@
 
 > **Purpose:** which techniques of the other public case 5 (metro obstacle detection) repositories are
 > better than ours, how each one fared on the organizers' recordings through the full regression gate, and
-> which three are now on by default (resealed at `ee7b920`).
+> which three are now on by default (resealed at `f67e4fb`).
 > **Audience:** team, jury · **Owner:** P1 (record), P3 (candidates) · **Language:** EN
 > **Last verified:** 2026-09-29 evening: §6 from the full regression gates in
 > [`evidence/cycle_2026-09-29/competitor_rules/`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md)
@@ -201,8 +201,11 @@ removes it without costing the organizers' far objects; a per-frame axis uncerta
 |lateral| ≈ 1.2 m and 31-48 m, low clusters 11-12 cm above the rail head near a rail (indistinguishable by
 height from the real object on the rail), and one wide flat structure across the track at 96 m.
 
-**Seal.** `ee7b920` carries the three defaults; its full gate
-([`gate.json`](evidence/cycle_2026-09-29/competitor_rules/gate.json)) is the validation of the new manifest
+**Seal.** `ee7b920` turned the three defaults on ([its gate](evidence/cycle_2026-09-29/competitor_rules/gate_ee7b920.json));
+`f67e4fb` made the LiDAR speed estimate the veto needs 4.3 → 1.3 ms per frame (identical counts; the veto added
++7 ms mean, +8.5 ms p95 on 360° frames before it). The full gate of `f67e4fb`
+([`gate.json`](evidence/cycle_2026-09-29/competitor_rules/gate.json): every decision as at `ee7b920`, only the
+latency-dependent health counts differ) is the validation of the new manifest
 [`detector_freeze_2026-09-29_competitor_rules.json`](evidence/detector_freeze_2026-09-29_competitor_rules.json);
 `python3 scripts/detector_freeze.py verify` passes. Code: `resense/tracking.py` (`explained_run`,
 `_carried_along`, `_odometry`), `resense/detector.py` (`_shell`, the veto's speed estimate),

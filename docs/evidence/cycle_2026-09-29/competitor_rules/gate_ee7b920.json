@@ -1,8 +1,8 @@
 {
  "schema": "resense-regression-gate-v1",
- "created": "2026-09-29T14:32:15+00:00",
+ "created": "2026-09-29T14:20:09+00:00",
  "code": {
-  "commit": "f67e4fb8cdca8a442c83cd7687200db44855a96b",
+  "commit": "ee7b920388b0fe4ea1d1266509fc6e6f1024c8e9",
   "branch": "claude/funny-gates-3358a8",
   "version": "1.0.0",
   "uncommitted_detector_changes": []
@@ -21,7 +21,7 @@
   "cache": "/data/cache",
   "jobs": 4,
   "nominal_stamps": false,
-  "wall_s": 255.7,
+  "wall_s": 302.6,
   "machine": {
    "cpus": 4,
    "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
@@ -176,8 +176,8 @@
    155.4
   ],
   "health": {
-   "ok": 11098,
-   "warn": 173,
+   "ok": 11086,
+   "warn": 185,
    "error": 0
   },
   "monitored_range_median": 127.6
@@ -961,44 +961,44 @@
  "latency_ms": {
   "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
   "doubleT_obstacle": {
-   "mean_ms": 29.5,
-   "p95_ms": 38.6,
-   "max_ms": 47.9
+   "mean_ms": 38.6,
+   "p95_ms": 49.1,
+   "max_ms": 62.1
   },
   "doubleT_platform": {
-   "mean_ms": 27.6,
-   "p95_ms": 38.6,
-   "max_ms": 85.5
+   "mean_ms": 36.6,
+   "p95_ms": 53.8,
+   "max_ms": 109.2
   },
   "roundT_doubleT": {
-   "mean_ms": 25.0,
-   "p95_ms": 33.4,
-   "max_ms": 48.4
+   "mean_ms": 31.2,
+   "p95_ms": 41.1,
+   "max_ms": 53.2
   },
   "roundT_pressureGate_roundT": {
-   "mean_ms": 21.4,
-   "p95_ms": 28.1,
-   "max_ms": 31.1
+   "mean_ms": 28.7,
+   "p95_ms": 37.2,
+   "max_ms": 52.1
   },
   "roundT_squareT_pressureGate_squareT": {
-   "mean_ms": 21.6,
-   "p95_ms": 29.1,
-   "max_ms": 41.5
+   "mean_ms": 27.8,
+   "p95_ms": 36.2,
+   "max_ms": 57.9
   },
   "squareT_platform_squareT_switch": {
-   "mean_ms": 22.7,
-   "p95_ms": 29.4,
-   "max_ms": 60.5
+   "mean_ms": 28.2,
+   "p95_ms": 36.4,
+   "max_ms": 64.1
   },
   "cloud_with_fake_obj": {
-   "mean_ms": 21.4,
-   "p95_ms": 28.0,
-   "max_ms": 71.6
+   "mean_ms": 27.9,
+   "p95_ms": 36.8,
+   "max_ms": 64.0
   },
   "new_data": {
-   "mean_ms": 23.4,
-   "p95_ms": 32.4,
-   "max_ms": 143.3
+   "mean_ms": 30.4,
+   "p95_ms": 41.6,
+   "max_ms": 139.4
   }
  },
  "gate": {
