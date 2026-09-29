@@ -4,9 +4,10 @@
 > `results/`, the logs, captures and bench output of each run, and the recordings' original
 > metadata. One line per file or folder: what it is, date, commit, result.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-29 evening (`main` `7532a6b`): every link of this index; "Start here"
-> points at the seal of 29.09 evening and its gate; rows added for the 29.09 folders; each file
-> remains the record of its own date · **Status:** current
+> **Last verified:** 2026-09-29 night (`a5455b3`, `main` `7532a6b`): every link of this index; "Start
+> here" points at the seal of 29.09 evening and its gate, and at the pending seal of the shell-off
+> detector; rows added for the 29.09 folders; each file remains the record of its own date ·
+> **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
 (`results/<what>_<date>.json`, `<run>_<date>/`). "Log §…" refers to the full experiment log
@@ -20,7 +21,8 @@ per-file speeds and intake events) stays in `docs/` because scripts read it.
 
 | what | where |
 |---|---|
-| the detector seal of 29.09 evening (three false-alarm rules on; `1e2ed82`, 36 files) and its full gate | [`detector_freeze_2026-09-29_competitor_rules.json`](detector_freeze_2026-09-29_competitor_rules.json), [`cycle_2026-09-29/competitor_rules/`](cycle_2026-09-29/competitor_rules/gate_table.md) (= [the current baseline](results/regression_baseline_2026-09-29_competitor_rules.json)) |
+| the detector seal of 29.09 night (two false-alarm rules on, `shell` off after the safety review; `<SEAL-COMMIT>`) and its full gate against the `3eeb106` gate | `<SEAL-MANIFEST>`, `<GATE-PATH>` <!-- GATE: seal manifest and gate links (docs/evidence/cycle_2026-09-29/shell_off/gate.json) --> |
+| the detector seal of 29.09 evening (three false-alarm rules on; `1e2ed82`, 36 files) and its full gate; superseded the same night | [`detector_freeze_2026-09-29_competitor_rules.json`](detector_freeze_2026-09-29_competitor_rules.json), [`cycle_2026-09-29/competitor_rules/`](cycle_2026-09-29/competitor_rules/gate_table.md) (= [the current baseline](results/regression_baseline_2026-09-29_competitor_rules.json)) |
 | the seal of 27.09 and its full gate (the detector the judgement of 28.09 measured) | [`results/regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json), [its baseline](results/regression_baseline_2026-09-27_quality.json); the file [`detector_freeze_2026-09-27.json`](detector_freeze_2026-09-27.json) was reissued on 29.09 for `3eeb106` |
 | the independent judgement of 28.09 evening (`464f5bc`, detector of 27.09), basis of the SCORECARD | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) |
 | per-frame outputs of the sealed detector with a recount script | [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md) |
@@ -35,7 +37,7 @@ was run; "code" is the commit it records.
 | file | date | code | what it is, result |
 |---|---|---|---|
 | [`cycle_2026-09-29/competitor_rules/`](cycle_2026-09-29/competitor_rules/gate_table.md), [`detector_freeze_2026-09-29_competitor_rules.json`](detector_freeze_2026-09-29_competitor_rules.json) | 29.09 evening | `ee7b920`, `f67e4fb`, `1e2ed82` | full gates of every rule taken from other case 5 repositories on the locally cached organizer data (the sealed gate reproduced exactly); the sealing gate of the three shipped rules: PASS, ride 32 / 31 → 26 / 28 events / STOP episodes, nothing worse; veto latency A/B `latency_ab.json` ([record](../../CHANGELOG.md)) |
-| [`regression_baseline_2026-09-29_competitor_rules.json`](results/regression_baseline_2026-09-29_competitor_rules.json) | 29.09 evening | `1e2ed82` | byte-identical copy of the sealing gate `cycle_2026-09-29/competitor_rules/gate.json`: the current baseline for the next detector change (the seal manifest names the original) |
+| [`regression_baseline_2026-09-29_competitor_rules.json`](results/regression_baseline_2026-09-29_competitor_rules.json) | 29.09 evening | `1e2ed82` | byte-identical copy of the sealing gate `cycle_2026-09-29/competitor_rules/gate.json`: the baseline for the next detector change until the shell-off seal's gate copy lands <!-- GATE: baseline copy of <GATE-PATH> --> (the seal manifest names the original) |
 | [`competitor_rule_screen_2026-09-29.json`](results/competitor_rule_screen_2026-09-29.json) | 29.09 | sealed detector (`70faef90…`) | two rules of another repository screened as post-filters on the sealed detector's saved outputs (empty recordings, `doubleT_obstacle`, set O, the ride's residual false events) and one advisory-promotion screen; recomputed by `scripts/screen_competitor_rules.py` and a test ([record](../../CHANGELOG.md)): neither rule adopted |
 | [`regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json), [`regression_baseline_2026-09-27_quality.json`](results/regression_baseline_2026-09-27_quality.json) | 27.09 | `d572807` (detector `352ca13`) | full gate of the detector sealed on 27.09 against `_ride_p3d`: PASS, no waivers; the baseline until 29.09 |
 | [`quality_cycle_2026-09-27/`](results/quality_cycle_2026-09-27) | 27.09 | `352ca13` | raw material of the 27.09 cycle ([record](../archive/QUALITY_CYCLE_2026-09-27.md)): screens, review fixes, ablations, acceptance, history stress, the 72-case [plan](results/quality_cycle_2026-09-27/novel_plan.json) and [results](results/quality_cycle_2026-09-27/novel_results.json.gz), [side-symmetry check](results/quality_cycle_2026-09-27/side_person_check.json), the opinion's [cross-fitted ride](results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json) ([zero margin](results/quality_cycle_2026-09-27/opinion_crossfit_zero_margin.json)) |

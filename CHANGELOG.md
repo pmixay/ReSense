@@ -3,9 +3,9 @@
 > **Purpose:** what changed in ReSense, newest first, readable in two minutes; the full dated
 > history with every measurement: [`docs/archive/CHANGELOG_2026-09.md`](docs/archive/CHANGELOG_2026-09.md).
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29 evening (`main` `7532a6b`): each section against the archived
-> changelog, the 29.09 node change against the node source and launch file, the three rules of 29.09
-> evening against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link ·
+> **Last verified:** 2026-09-29 night (`a5455b3`, `main` `7532a6b`): each section against the archived
+> changelog, the 29.09 node change against the node source and launch file, the rules of 29.09
+> evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link ·
 > **Status:** current
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
@@ -20,6 +20,33 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 [`.github/workflows/release.yml`](.github/workflows/release.yml) builds and proves the runtime image
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
+
+### Changed — shell rule off after the safety review (29.09 night; resealed at `<COMMIT>`)
+
+- `cluster.shell_min_top` 2.3 → 0 (`a5455b3`: the code default, `configs/default.yaml` and the ROS copy): the
+  `shell` signature switched on in PR #29 is off again the same night. An independent safety review of the three
+  rules below (29.09 evening; its runs repeated separately) found that it reads a floor-standing cluster's own top as
+  the tunnel lining whenever the object continues above the 3.0 m envelope top, which the corridor clips. Synthetic
+  tunnel, ray-cast, train at 22 m/s: the catalogue hanging cable `cable_low` (0.03 m, down to 0.2 m above the rail
+  head — the case the organizers called very important, [QA session](docs/organizers/QA_session.md) fact 3) got its
+  first STOP at 21.0 m with the rule on and at 73.8 m with it off; a 0.1 m floor-to-vault pole 36.4 m vs 104.6 m; a
+  3.6 m-tall box like the rear of a standing train at 60 / 90 / 150 m was CAUTION instead of STOP. Alone the rule had
+  bought little: ride events / STOP episodes 32 / 31 → 31 / 29. Re-enabling it would need an exemption for objects
+  that cross the envelope top.
+- `tracking.explained_run` 5 and `tracking.ego_veto_min_speed` 4 m/s stay on: the review found them non-blocking,
+  with limits now in [`docs/ALGORITHM.md`](docs/ALGORITHM.md) §6. `explained_run` delays a new STOP by at most 10
+  hits (~1 s, ~22 m at 22 m/s) after an infrastructure-demoted hit. The ego veto blocks STOP onset beyond 25 m for an
+  object receding faster than ~0.65 × the train speed, and must only be fed a measured speed (the LiDAR estimate, the
+  default, or `speed_topic` / `odom_topic`): with a constant `ego_speed_mps` a standing train would veto a static
+  person beyond 25 m. The launch file's docstring no longer suggests `ego_speed_mps:=22`.
+- Full regression gate of the shell-off detector against the gate of the previous seal `3eeb106`
+  (`<GATE-PATH>`): five empty recordings STOP episodes / events / alarm frames 13 / 11 / 40 → 12 / 8 / 39 <!-- GATE: five_empty stop_episodes / alarm_events / alarm_frames -->;
+  ride 31 / 32 / 130 → 28 / 26 / 123 <!-- GATE: ride stop_episodes / alarm_events / alarm_frames -->; set F false
+  detections box1.0 12 → 6 <!-- GATE: set_F box1.0 false_detections -->, cable 3 → 0 <!-- GATE: set_F cable false_detections -->;
+  set O, set F first detections and `doubleT_obstacle` identical <!-- GATE: set_O, set_F first_detection_median_m, doubleT_obstacle (re-confirm) -->.
+  New seal at `<COMMIT>` ([`docs/DETECTOR_FREEZE.md`](docs/DETECTOR_FREEZE.md)).
+- The approach, stated plainly: the three ideas came from other teams' open case 05 solutions, were rewritten here,
+  passed the full gate, and one of them was then removed by our own safety review.
 
 ### Changed — three false-alarm rules from other teams on by default (29.09 evening; resealed at `1e2ed82`)
 
@@ -43,7 +70,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   `lowobj.min_top` 0.08 (loses the organizers' 10 cm box on a rail at 10-50 m in the ray-cast tunnel; the test now
   covers 25 and 50 m), the clean run with range demotions or shape signatures, `fresh_stop_evidence`, a quadratic
   edge margin (`gauge.edge_margin_per_100m2`, opt-in), far ring rails.
-- No independent safety review of the three rules yet. Known limits
+- No independent safety review of the three rules yet (done the same night: `shell` switched off, see the entry
+  above). Known limits
   ([`docs/ALGORITHM.md`](docs/ALGORITHM.md) §6): a track beyond 25 m that moves with the train starts
   no STOP while the train runs at ≥ 4 m/s (and the veto trusts the LiDAR speed estimate); a new STOP
   next to known infrastructure waits for up to 5 clean hits; in the ray-cast synthetic tunnel a wide

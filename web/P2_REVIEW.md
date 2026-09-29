@@ -1,25 +1,28 @@
 # P2 review: organizer requirements, evidence and checks
 
 > **Purpose:** each organizer requirement P2's work covers, its evidence, what is left, and the repeatable P2 checks.
-> **Audience:** team, reviewers · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-29: evidence paths, ownership (pitch and video with P2 since 28.09) and the
-> committed media hashes checked; numbers point to the independent judgement of 28.09
+> **Audience:** team, reviewers · **Owner:** P2 for the interface; the pitch, deck and demo are the
+> captain's (P1) since 29.09 evening · **Language:** EN
+> **Last verified:** 2026-09-29 evening: ownership (P2 declined the pitch on 29.09 evening), the deck
+> rebuild and the demo path checked; the media hashes of 28.09 below are historical (the deck and the
+> video were rebuilt after them)
 > **Status:** current
 
-Deliverable state, dates and the rehearsal record: [`P2_STATUS.md`](P2_STATUS.md). How to build,
-rehearse and present: [`docs/PRESENTATION.md`](../docs/PRESENTATION.md). Dashboard, layouts and label
-tool: [`README.md`](README.md).
+**P2 declined the pitch on 29.09 evening;** the captain owns the pitch, the deck, the live demo and the
+rehearsals, with agent help. Deliverable state and the rehearsal record: [`P2_STATUS.md`](P2_STATUS.md).
+How to build, rehearse and present: [`docs/PRESENTATION.md`](../docs/PRESENTATION.md). Dashboard,
+layouts and label tool: [`README.md`](README.md).
 
 ## Requirements and evidence
 
 | organizer requirement | P2 work and evidence | left (P2 unless noted) |
 |---|---|---|
 | §4: Docker → bag → raw cloud → detection → distance; preferably live | RViz layout with both known raw-cloud topics, corridor, boxes and status text; Foxglove layout; archival Docker/RViz chain [`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4); the browser's bundled roslib tested across subscribe, STOP, expiry, recovery and disconnect; CI on `main` runs the remote-viewer probe in a second container with link pause and recovery (`scripts/p2_viewer_test.sh`) | the live remote demo from a physical second device (visual layout import, link loss and recovery) at both rehearsals |
-| §5, §7.2: short video, accessible documentation | 2:50 overview video with Russian subtitles (burned in and `.srt`), 16-slide PPTX/PDF in the organizers' template, interface screenshots, label-tool and replay instructions; every number marked real / our synthetic / organizers' synthetic | optional voice-over; the number differences listed in PRESENTATION «Числа на слайдах и их источники» |
+| §5, §7.2: short video, accessible documentation | 2:50 overview video with Russian subtitles (burned in and `.srt`), 16-slide PPTX/PDF in the organizers' template, interface screenshots, label-tool and replay instructions; every number marked real / our synthetic / organizers' synthetic | the video is re-rendered for the current numbers by the video agent ([`docs/video/README.md`](../docs/video/README.md)); the deck's final gate values (coordinator) |
 | §8.5: robustness, tests, honest documentation | live validity contract, STOP hold, stale overlays, report schema v2, label import and numeric validation, Foxglove split-advertisement checks; browser tests cannot skip silently in CI | the organizers' stand is not available to the team |
 | §8.6: easy launch | [`README.md`](README.md): offline replay, browser validation, live Foxglove; the jury path (`scripts/play_bag.sh`, Docker CI) is P1's | — |
-| §8.7–8.8: approach, trade-offs, pitch | public deck with speaker notes in the spec's order; in-sample and held-out figures labelled; misses and false alarms named; no claims of arbitrary mounts, ready braking integration or unmeasured competitor accuracy | private deck, two rehearsals, the defence on 23.10 |
-| §8.1–8.4: quality, range, speed, generalization | P2 shows measured numbers and does not produce them: the deck's `N` (27.09 gate, 28.09 node captures) and the independent judgement ([`SCORECARD.md`](../docs/SCORECARD.md)) | keep slides and video in step with accepted measurements; the detector is sealed |
+| §8.7–8.8: approach, trade-offs, pitch | deck with speaker notes in the spec's order (the «увидел за 56 м» main shot on slide 9); in-sample and held-out figures labelled; misses and false alarms named; the team's approach to other teams' ideas (8 gated, 5 rejected, `shell` switched off after our safety review); no claims of arbitrary mounts, ready braking integration or unmeasured competitor accuracy | the captain: named deck, two rehearsals, the defence on 23.10 |
+| §8.1–8.4: quality, range, speed, generalization | the deck shows measured numbers and does not produce them: `GATE` in `scripts/build_deck.py` (the regression gate, provisional `r_1e2ed82` until the final gate), `N` (node and VM timings of 28.09, older dated checks), the independent judgement of 28.09 labelled as the earlier detector | final gate values into `GATE`, rebuild (coordinator) |
 
 ## Client behaviour fixed in the audit
 
@@ -62,7 +65,17 @@ Not checkable in this clone: the organizers' bags (`/data/for_hackathon`), the g
 deck data, a physical second device and human rehearsals. The CI two-container probe is a protocol
 check, not a visual Foxglove import.
 
-## Rebuild of 28.09 evening
+## Rebuild of 29.09 evening (captain's pitch, agent)
+
+* `scripts/build_deck.py`: every number the regression gate measures in one `GATE` block (provisional
+  `r_1e2ed82`), `--check-gate <baseline.json>` lists the lines that differ; slides current for the rules
+  of 29.09 (explained_run and the ego veto on, `shell` off), the «увидел за 56 м» main shot, the team's
+  approach to other teams' ideas; `--team` reproduces P2's slides 2–3 with names and photos.
+* The public PPTX / PDF rebuilt, all 16 PDF pages inspected at presentation size, no overflow;
+  `python -m pytest -q web/demo`: the deck test passes (the overview video test waits for the video
+  agent's re-render).
+
+## Rebuild of 28.09 evening (historical)
 
 * The dense public slides 5 and 15 shortened without changing a measured claim; the 16-slide
   PPTX / PDF and the 170 s video rebuilt from those sources (new hashes in the evidence JSON); PDF
@@ -78,7 +91,8 @@ check, not a visual Foxglove import.
   check, the stale-indicator caution, the offline fallback and what to record at each rehearsal. A
   runbook, not a completed rehearsal.
 * The public team cards in `build_deck.py` were changed after this rebuild (P1: submission; P2:
-  pitch, deck, video): the committed PPTX / PDF show the old cards until P2's next rebuild.
+  pitch, deck, video): the committed PPTX / PDF show the old cards until P2's next rebuild (done 29.09
+  evening, above).
 
 ## Experimental branch evidence
 
