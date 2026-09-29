@@ -62,6 +62,27 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   real data at the time; measured later the same day on the recordings, it fails the gate (stations reach 34-47 m on
   real rails and a new low STOP at 3 m on `doubleT_platform`) and stays off.
 
+### Changed — the experimental line is merged into `main` (29.09, PR #27)
+
+- `catchup_startup_step` now defaults to **0**: every frame of a recording's first backlog is
+  processed. The 5 Hz thinning added in the node change below (0.2) is an explicit option. The
+  start-up figures below were measured with 0.2; with the default 0 the start-up is not measured.
+- `tracking.thin_far_min_voxels` 4 → 3 (resealed): the full gate has 202 metrics unchanged and two
+  synthetic Set F 0.5 m box metrics better; on the ride 5 of 11,271 frames went GO → CAUTION and no
+  STOP frame changed ([`thin_far_threshold.md`](docs/evidence/cycle_2026-09-29/thin_far_threshold.md)).
+- Opt-in experiments, all off by default and outside the score: cross-ring sparse evidence
+  (`cluster.weak_min_rings`, `tracking.far_min_ring_count`), provenance-aware STOP onset
+  (`tracking.fresh_stop_evidence`) and bed / rail low-object support (`lowobj.local_support_*`);
+  their profiles are `configs/experimental_*.yaml`.
+- The single GO at `doubleT_obstacle` frame 111 (and the CAUTION at 117 and 197) is closed:
+  `tracking.stop_keep_low_s` = 0.3 continues an already reported low STOP on returns that miss the
+  height threshold by at most `lowobj.straddle_keep_height_margin` = 0.03 m, and cannot start a track.
+  STOP on 193 of 201 frames with no gap, offline on the raw recording and through the node in Docker
+  in CI; the 27.09 detector gives 190 and the three gaps, and `stop_keep_low_s` = 0 brings them back.
+  Tuned on this one recording. Evidence:
+  [`docs/evidence/frame111_2026-09-29/`](docs/evidence/frame111_2026-09-29/README.md).
+- Tests: 1,225 pass; 8 are deselected because they need data caches.
+
 ### Changed — health sector counts (29.09; resealed)
 
 - `resense.health._sector_counts` counts `values >= edge` per edge instead of a per-value binary
@@ -94,16 +115,17 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
 - **Faster, bit-identical decode:** `resense_ros/fastcloud.decode` returns the same arrays byte for
   byte as `resense.pointcloud.pointcloud2_to_arrays` (one x/y/z copy, one index gather): median
   20.3 → 16.6 ms at 360°, 7.4 → 4.8 ms at 120°; identical on both original bags (453 frames).
-- **Start-up catch-up at 5 Hz:** a recording's first backlog (the player's start-up burst, short
+- **Start-up catch-up at 5 Hz** (the default of this change; since the merge of PR #27 the default
+  is 0 and 0.2 is explicit): a recording's first backlog (the player's start-up burst, short
   ones included) is worked through `catchup_startup_step` = 0.2 s apart (every other 10 Hz frame,
   the rate the detector is validated on); a lone frame is processed at once; `0` = every frame.
 - **Warm-up** (`warmup`, default true): before logging "listening", the node runs the decode and a
   throwaway detector on three synthetic frames (~0.7 s), so the first real frame costs what the
   next ones do (decode + detect ~31 + 42 ms instead of 49 + 72 ms).
 - **Clean exit on Ctrl+C** (`rclpy.try_shutdown()`); launch used to report exit code 1.
-- Two new node parameters, both launch arguments: `catchup_startup_step` (0.2), `warmup` (true);
-  every other parameter unchanged.
-- **Measured** (A/B through the jury chain against the image of 28.09,
+- Two new node parameters, both launch arguments: `catchup_startup_step` (0.2 when added; 0 since
+  the merge of PR #27), `warmup` (true); every other parameter unchanged.
+- **Measured** with `catchup_startup_step` 0.2 (A/B through the jury chain against the image of 28.09,
   [`docs/evidence/node_startup_2026-09-29/`](docs/evidence/node_startup_2026-09-29/README.md)): at
   360° the results of the first 3 s are 38–105 ms old instead of 312–325 ms (median; 120–300
   instead of 829–1029 ms from a cold page cache), all results p95 212–344 instead of 410–447 ms,
@@ -138,7 +160,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
 - CI in two stages: `checks` (ruff, parameter copy, detector seal) gates the three other jobs.
 - Russian user guide on [GitBook](https://resense.gitbook.io/resense-docs/) (source `gitbook/`).
 - Documented limitation of the sealed detector: one GO at `doubleT_obstacle` frame 111 (the rail
-  object missed two frames in a row; [ARCHITECTURE](docs/ARCHITECTURE.md)).
+  object missed two frames in a row; [ARCHITECTURE](docs/ARCHITECTURE.md)). Closed on 29.09, see
+  the merge entry above.
 
 ## 2026-09-27 — detector quality cycle; the submitted detector, sealed
 
