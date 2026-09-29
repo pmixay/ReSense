@@ -335,6 +335,17 @@ class TrackingConfig:
     explained_run: int = 0
     explained_window: int = 10
     explained_reasons: str = ""      # comma-separated reasons that count as explained; '' = any reason
+    # 29.09 (opt-in, 0 = off; after EhimenNathan/tunnelguard-lct2026 core/detector.py _carried_along): while the
+    # train moves at >= ego_veto_min_speed (m/s, the LiDAR estimate of resense/egomotion.py or a given speed), a
+    # track beyond ego_veto_min_distance whose distance does not fall with the train's travel (Theil-Sen slope of
+    # distance against travel above ego_veto_max_slope over >= ego_veto_min_hits hits and >= ego_veto_min_travel m;
+    # a static object gives -1, an artefact carried with the train 0) may not start a STOP; it stays advisory.
+    # Onset only; near escalation wins; the odometry chain restarts on an unknown or implausible speed.
+    ego_veto_min_speed: float = 0.0
+    ego_veto_max_slope: float = -0.35
+    ego_veto_min_hits: int = 4
+    ego_veto_min_travel: float = 4.0
+    ego_veto_min_distance: float = 25.0
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour

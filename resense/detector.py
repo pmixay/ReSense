@@ -273,6 +273,12 @@ class Detector:
                                                min(axis_valid, floor_valid))
         t2 = time.perf_counter()
         speed, source, est = self._speed(xyz, dy_rail, h_all, dt, ego_speed)
+        if cfg.tracking.ego_veto_min_speed > 0 and est is None and ego_speed is None:
+            # 29.09 (tracking.ego_veto_*): the LiDAR speed estimate for the veto only; accumulation
+            # keeps its own switch (accumulation.estimate_speed)
+            est = self.ego.estimate(xyz, self.track, dt, self.tracker.tracks, dy_rail, h_all)
+        self._odo_speed = (float(ego_speed) if ego_speed is not None
+                           else (float(est.speed) if est is not None and est.speed is not None else None))
         t3 = time.perf_counter()
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
@@ -692,6 +698,7 @@ class Detector:
         low = self.cfg.lowobj
         low_ok = low.min_model_age <= 0 or self.track.age >= low.min_model_age
         self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
+                            odo_speed=getattr(self, "_odo_speed", None),
                             rail_within=low.rail_start_within,
                             thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None,
                             low_height=self._low_height,
