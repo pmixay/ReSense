@@ -102,6 +102,8 @@ class Track:
     fresh_blocked: bool = False     # opt-in: a reported advisory cannot become a STOP on this hit
     low_clean: Optional[Cluster] = None  # last clean low cluster; weak continuation cannot change this shape reference
     low_since_clean: float = 0.0  # actual elapsed time, including stamp gaps clipped for the existing motion/fit rules
+    explained_hist: List[bool] = field(default_factory=list)  # 29.09 (explained_run): last hits demoted with a reason?
+    clean_run: int = 0              # 29.09 (explained_run): consecutive clean strict-gauge hits, broken by a miss
 
     @property
     def near_escalated(self) -> bool:
@@ -346,6 +348,7 @@ class Tracker:
                 t.centroid = t.centroid + t.velocity
                 if t.hold > 0:              # a calibration re-seed hold: this miss does not count
                     continue
+                t.clean_run = 0
                 t.confidence = max(0.0, t.confidence - c.conf_decay)
                 t.hit_hist = (t.hit_hist + [False])[-hw:]
         self.tracks = [t for t in self.tracks if t.misses <= c.max_misses or (t.hold > 0 and t.reported)]
@@ -382,6 +385,7 @@ class Tracker:
         for t in self.tracks:
             was_reported = t.reported
             earned_stop = t.stop_earned
+            was_blocked = t.fresh_blocked
             fresh_blocked = False
             t.fresh_blocked = False
             q = self._qualifies(t)
@@ -416,8 +420,22 @@ class Tracker:
                 fresh_blocked = not q
                 if fresh_blocked:
                     fresh_blocked_tracks.add(id(t))
+            if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == "gauge"
+                    and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run):
+                # 29.09 (explained_run): a history of explained (demoted) hits needs a clean run before
+                # a new STOP; the track stays a visible advisory meanwhile
+                q = False
+                fresh_blocked = explained_blocked = True
+                fresh_blocked_tracks.add(id(t))
+            else:
+                explained_blocked = False
             t.reported = (q or (t.reported and 0 < t.misses <= c.hold_misses)
-                          or (t.reported and t.hold > 0))
+                          or (t.reported and t.hold > 0) or (explained_blocked and t.misses == 0))
+            if was_blocked and not q and t.reported and t.misses > 0:
+                # 29.09: a blocked advisory held through a missed frame stays blocked; otherwise its
+                # zone vote would report it as a STOP on the very frame nothing was seen
+                fresh_blocked = True
+                fresh_blocked_tracks.add(id(t))
             if fresh_blocked and was_reported and not earned_stop and t.misses == 0:
                 # The candidate blocks an advisory-to-STOP transition, but does not make an
                 # already reported advisory track disappear on the matched frame.
@@ -628,6 +646,11 @@ class Tracker:
         continuation source supplies fresh evidence for a new STOP onset.
         """
         c = self.cfg
+        if c.explained_run > 0 and source == "ordinary":
+            reasons = [r.strip() for r in str(c.explained_reasons).split(",") if r.strip()]
+            explained = bool(cl.reason) and (not reasons or cl.reason in reasons)
+            t.explained_hist = (t.explained_hist + [explained])[-max(1, int(c.explained_window)):]
+            t.clean_run = t.clean_run + 1 if (cl.zone == "gauge" and not cl.reason) else 0
         if c.fresh_stop_evidence:
             n = max(1, int(c.fresh_stop_evidence_window))
             if source == "ordinary" and cl.zone != "gauge":

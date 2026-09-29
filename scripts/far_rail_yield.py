@@ -42,6 +42,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 
@@ -90,6 +91,25 @@ def measure(frames, cfg, params: FarRailParams) -> dict:
             "frames_where_check_far_rails_would_act": int(n_correct)}
 
 
+def iter_cache_frames(directory: str, sensor, every: int = 1, start: int = 0, limit: Optional[int] = None):
+    """(index, Frame) of a frame cache, ``*.npy`` and ``*.npy.zst`` alike (scripts/cache_io.py), in
+    recording order, with the bag receive stamps when the cache carries them."""
+    from resense.frame import frame_from_compact
+    from scripts.cache_io import cache_file_stem, cache_files, load_cache_array, load_cache_stamps
+    files = cache_files(directory)
+    stamps = load_cache_stamps(directory)
+    n_out = 0
+    for i, f in enumerate(files):
+        if i < start or (i - start) % every != 0:
+            continue
+        stem = cache_file_stem(f)
+        yield i, frame_from_compact(load_cache_array(f), sensor, stamp=stamps.get(stem, 0.1 * i),
+                                    frame_id=os.path.basename(f))
+        n_out += 1
+        if limit is not None and n_out >= limit:
+            return
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     src = p.add_mutually_exclusive_group(required=True)
@@ -103,11 +123,10 @@ def main() -> None:
     p.add_argument("--out", default=None, help="write the summary as JSON")
     a = p.parse_args()
     from resense.config import DetectorConfig
-    from resense.io import iter_bag_frames, iter_npy_frames
+    from resense.io import iter_bag_frames
     cfg = DetectorConfig()
     frames = (iter_bag_frames(a.bag, cfg.sensor, topic=a.topic, every=a.every, start=a.start, limit=a.limit)
-              if a.bag else iter_npy_frames(a.npy, cfg.sensor, every=a.every, start=a.start, limit=a.limit,
-                                            index_from_name=True))
+              if a.bag else iter_cache_frames(a.npy, cfg.sensor, every=a.every, start=a.start, limit=a.limit))
     res = measure(frames, cfg, FarRailParams(min_stations=a.min_stations))
     res["input"] = os.path.abspath(a.bag or a.npy)
     print(json.dumps(res, indent=1))

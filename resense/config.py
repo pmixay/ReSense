@@ -327,6 +327,14 @@ class TrackingConfig:
     fresh_stop_evidence: bool = False
     fresh_stop_evidence_window: int = 3  # matched hits retained for the onset provenance check
     fresh_stop_evidence_min_hits: int = 2 # eligible hits required in that bounded window
+    # 29.09 (opt-in, 0 = off; after Tactical-Inventor/LCT-2026.NIIstovye gauge/processor.py): a track that had a
+    # hit demoted with a reason (column, a shape signature, beyond_axis, ...) among its last explained_window
+    # hits may start a STOP only after explained_run consecutive clean hits (an ordinary cluster in the strict
+    # gauge, no reason); a miss breaks the run. Onset only: an earned STOP keeps the usual rules; near
+    # escalation wins; a blocked track stays a visible advisory.
+    explained_run: int = 0
+    explained_window: int = 10
+    explained_reasons: str = ""      # comma-separated reasons that count as explained; '' = any reason
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
