@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ReSense · doubleT_obstacle</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../shared/fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+<script>window.__ready = false;</script>
+<script type="importmap">{"imports":{"three":"../shared/vendor/three.module.js"}}</script>
+<style>
+.ph .bk{width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;flex:none;margin-right:-8px}
+.ttl{display:flex;align-items:center;gap:16px;min-width:0}
+.ttl h1{font-size:32px}
+.tstack{display:flex;flex-direction:column;gap:3px;min-width:0}
+.eyb{display:flex;align-items:center;gap:7px;font-weight:800;font-size:12px;line-height:14px;letter-spacing:.06em;text-transform:uppercase}
+.eyb i{width:10px;height:10px;border-radius:50%;border:2.5px solid var(--red);background:#fff}
+.stations .st .lbl .sub{display:inline-block;margin-left:6px;font-weight:600}
+.ttl .mc{display:flex;gap:10px}
+.rg{grid-template-rows:minmax(92px,118fr) 186px minmax(0,408fr);row-gap:16px;column-gap:16px}
+.kpis{grid-column:1/13;display:grid;grid-template-columns:118px 150px repeat(6,minmax(0,1fr));gap:14px}
+.kpi{padding:16px 18px 15px}
+.kpi .k-l{white-space:nowrap}
+.kpi .k-v{font-size:30px;margin-top:auto}
+.kpi .k-v small{font-size:15px}
+.kpi .k-f{overflow:hidden;text-overflow:ellipsis}
+.kpi.ink{background:var(--ink);color:#fff}
+.kpi.good{background:var(--go-tint)}
+.kpi.good .ck{display:inline-grid;vertical-align:4px;margin-left:10px;width:24px;height:24px;border-radius:50%;background:var(--go-deep);color:#fff;place-items:center}
+.kpi.good .ck svg{width:14px;height:14px;stroke-width:3}
+.ic-st{width:20px;height:20px;border-radius:50%;background:var(--stop) var(--hatch);color:#fff;display:grid;place-items:center;flex:none;margin-right:-2px}
+.ic-st svg.i{width:14px;height:14px;stroke-width:2.6}
+/* timeline: decisions + labelled ground truth */
+.tl{grid-column:1/13;padding:18px 24px 12px}
+.tl-wrap{position:relative;height:118px;margin-top:2px}
+.tl-strip{position:absolute;left:0;right:0;top:28px;height:44px}
+.tl-strip .strip{border-radius:14px}
+.gt-lane{position:absolute;left:0;right:0;top:77px;height:10px;border-radius:5px;background:var(--well);overflow:hidden}
+.gt-lane b{position:absolute;top:0;bottom:0;right:0;border-radius:0 5px 5px 0;background:repeating-linear-gradient(135deg,var(--ink) 0 4px,#6B6870 4px 6.5px)}
+.mk{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.mk b{height:22px;padding:0 7px;border-radius:11px;font-weight:800;font-size:11px;display:grid;place-items:center;white-space:nowrap}
+.mk i{width:2px;height:6px}
+.mk.stop b{background:var(--stop) var(--hatch);color:#fff}.mk.stop i{background:var(--stop)}
+.mk.go b{background:var(--go-deep);color:#fff}.mk.go i{background:var(--go-deep)}
+.mk.caution b{background:var(--caution);color:var(--ink)}.mk.caution i{background:var(--caution)}
+.mk.first{transform:translateX(-12px);align-items:flex-start}.mk.first i{margin-left:11px}
+.ph-head{position:absolute;top:22px;height:70px;width:4px;background:var(--ink);border-radius:2px;transform:translateX(-50%);box-shadow:0 0 0 2px #fff}
+.ph-head::after{content:"";position:absolute;left:50%;bottom:-8px;width:14px;height:14px;border-radius:50%;background:var(--ink);transform:translateX(-50%);box-shadow:0 0 0 3px #fff}
+.axis{position:absolute;left:0;right:0;top:96px;height:22px}
+.axis span{position:absolute;transform:translateX(-50%);font-weight:700;font-size:12px;white-space:nowrap;top:6px}
+.axis span::before{content:"";position:absolute;left:50%;top:-6px;width:1.5px;height:5px;background:var(--ink)}
+.axis span.l0{transform:none}.axis span.l0::before{left:0}
+.axis span.lN{transform:translateX(-100%)}.axis span.lN::before{left:auto;right:0}
+.lg-gt{background:repeating-linear-gradient(135deg,var(--ink) 0 3px,#6B6870 3px 5px)}
+.lg-band{background:rgba(22,21,26,.08);box-shadow:inset 0 0 0 1.5px var(--ink);width:18px !important}
+/* chart */
+.dist{grid-column:1/7;padding:18px 22px 12px;display:flex;flex-direction:column;min-height:0}
+.dist .cw{flex:1;min-height:0;position:relative}
+.dist svg#chart{position:absolute;inset:0;width:100%;height:100%}
+.ev{grid-column:7/10;padding:18px 20px 10px;display:flex;flex-direction:column;min-height:0}
+.evr{display:flex;align-items:center;gap:12px;flex:1;min-height:46px;border-top:1px solid var(--hair)}
+.evr .ico{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;flex:none}
+.evr .ico svg{width:20px;height:20px;stroke-width:2.4}
+.evr .ico.stop{background:var(--stop) var(--hatch);color:#fff}
+.evr .ico.go{background:var(--go-deep);color:#fff}
+.evr .ico.caution{background:var(--caution);color:var(--ink)}
+.evr .et{font-weight:800;font-size:13.5px;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.evr .m{font-weight:600;font-size:12px;margin-top:2px;white-space:nowrap}
+.evr .v{margin-left:auto;font-family:var(--f-head);font-weight:800;font-size:14px;white-space:nowrap}
+.evr .v small{font-family:var(--f-body);font-weight:800;font-size:12px;margin-left:4px}
+.side{grid-column:10/13;display:grid;grid-template-rows:minmax(0,1fr) 148px;gap:16px;min-height:0}
+.pv{background:#05070D;color:#fff;padding:0;overflow:hidden}
+.pv canvas{position:absolute;inset:0;width:100%;height:100%}
+.pv .o1{position:absolute;left:18px;right:16px;top:16px;display:flex;align-items:center;gap:8px;z-index:2}
+.pv .o1 h2{font-size:14px;font-weight:700}
+.pv .o2{position:absolute;left:16px;right:16px;bottom:16px;display:flex;align-items:center;gap:8px;z-index:2}
+.glass{background:rgba(10,12,20,.66);border-radius:12px;padding:7px 11px;font-weight:700;font-size:12px;white-space:nowrap}
+.dl{padding:18px 20px}
+.dlg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.dlt{border-radius:18px;background:var(--well);padding:10px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.dlt .f{display:flex;align-items:center;justify-content:space-between;font-family:var(--f-head);font-weight:800;font-size:12.5px}
+.dlt .s{font-weight:600;font-size:12px;line-height:1.3}.dlt .s b{font-weight:800;font-size:13px}
+@media (max-width:1500px){
+  .ph{height:auto;min-height:52px}
+  .ttl{flex-wrap:wrap;row-gap:6px;column-gap:14px}
+  .ttl h1{font-size:28px}
+  .ttl .mc{flex-basis:100%}
+  .ttl .mc .chip{height:26px;font-size:12px}
+  .fill{height:calc(100vh - 282px);min-height:600px}
+  .kpis{grid-template-columns:104px 136px repeat(6,minmax(0,1fr));gap:12px}
+  .kpi{padding:14px 15px 13px}
+  .ic-st{display:none}
+  .kpi .k-v{font-size:27px}
+}
+@media (max-height:950px){
+  .kpi{padding-top:13px;padding-bottom:11px}.kpi .k-v{font-size:26px}.kpi .k-f{margin-top:4px}
+  .dist,.ev{padding-top:14px}.dl{padding:14px 18px}
+}
+</style></head>
+<body>
+<script src="common.js"></script>
+
+<header class="top">
+  <a class="logo" href="overview.html"><svg class="logo-mark" viewBox="0 0 40 38" aria-hidden="true"><path d="M3.5 19H12" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="19" cy="19" r="7" fill="#E4000D" stroke="#fff" stroke-width="5"/><path d="M28.2 11.3A12 12 0 0 1 28.2 26.7M32 8.1A17 17 0 0 1 32 29.9" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></svg><span class="logo-word">ReSense</span></a>
+  <nav class="nav">
+    <a class="nav-pill" href="overview.html"><svg class="i s"><use href="#i-home"/></svg>Главная</a>
+    <div class="nav-pill grp"><span class="ln">1</span>Данные<svg class="i chev"><use href="#i-chev"/></svg></div>
+    <div class="nav-pill grp active"><span class="ln">2</span>Анализ<svg class="i chev"><use href="#i-chev"/></svg></div>
+    <div class="nav-pill grp"><span class="ln">3</span>Система<svg class="i chev"><use href="#i-chev"/></svg></div>
+  </nav>
+  <div class="top-right">
+    <span class="top-chip"><span class="dot"></span>бэкенд онлайн</span>
+    <span class="top-chip">ЛЦТ 2026 · кейс 05</span>
+    <span class="avatar">М</span>
+  </div>
+</header>
+
+<div class="line-band">
+  <div class="line"></div>
+  <div class="stations">
+    <a class="st home" href="overview.html"><span class="c"><svg class="i"><use href="#i-home"/></svg></span><span class="lbl">Главная</span></a>
+    <a class="st" href="upload.html"><span class="c"></span><span class="lbl">Загрузка</span></a>
+    <a class="st" href="upload.html#queue"><span class="c"></span><span class="lbl">Очередь</span></a>
+    <a class="st cur" href="runs.html"><span class="c"></span><span class="lbl">Прогоны<span class="sub">/ doubleT_obstacle</span></span></a>
+    <a class="st" href="player.html"><span class="c"></span><span class="lbl">Плеер</span></a>
+    <a class="st" href="compare.html"><span class="c"></span><span class="lbl">Сравнение</span></a>
+  </div>
+</div>
+
+<main class="page">
+  <div class="ph">
+    <a class="bk" href="runs.html" title="к прогонам"><svg class="i s"><use href="#i-left"/></svg></a>
+    <div class="ttl">
+      <div class="tstack"><span class="eyb"><i></i>Прогон</span><h1>doubleT_obstacle</h1></div>
+      <span class="dc stop lg"><svg class="i"><use href="#i-octa"/></svg>СТОП <span class="cnt" style="font-size:13.5px">с кадра 8 · 55,6 м</span></span>
+      <div class="mc"><span class="chip out">4,5 ГБ</span><span class="chip out">Базовый v1.0</span><span class="chip out">сегодня 14:32</span></div>
+    </div>
+    <span class="sp"></span>
+    <a class="btn wht" href="compare.html"><svg class="i s"><use href="#i-compare"/></svg>Сравнить</a>
+    <a class="btn ink" href="player.html"><svg class="i s"><use href="#i-play"/></svg>Открыть в плеере</a>
+  </div>
+
+  <section class="grid rg fill">
+    <div class="kpis">
+      <div class="kpi"><div class="k-l">Кадров</div><div class="k-v">201</div><div class="k-f">10 Гц</div></div>
+      <div class="kpi"><div class="k-l">Длительность</div><div class="k-v">20,4<small>с</small></div><div class="k-f">4,5 ГБ облаков</div></div>
+      <div class="kpi"><div class="k-l"><span class="ic-st"><svg class="i"><use href="#i-octa"/></svg></span>СТОП-эпизоды <span class="q-wrap"><button class="q">?</button><span class="tip b" style="width:268px;margin-left:-134px">Один эпизод: с кадра <b>8</b> до конца записи. Внутри — кадр <b>СВОБОДНО</b> (111) и два <b>ВНИМАНИЕ</b> (117, 197).</span></span></div><div class="k-v">1</div><div class="k-f">кадры 8–200</div></div>
+      <div class="kpi"><div class="k-l"><span class="ic-st"><svg class="i"><use href="#i-octa"/></svg></span>Первый СТОП <span class="q-wrap"><button class="q">?</button><span class="tip b" style="width:250px;margin-left:-125px">Кадр <b>8</b> — первый, где человек входит в габарит по разметке: СТОП без задержки.</span></span></div><div class="k-v">55,6<small>м</small></div><div class="k-f">кадр 8 · задержка 0</div></div>
+      <div class="kpi"><div class="k-l">Мин. дистанция</div><div class="k-v">55,5<small>м</small></div><div class="k-f">разметка 55,4 м</div></div>
+      <div class="kpi"><div class="k-l">Пропуски <span class="q-wrap"><button class="q">?</button><span class="tip b" style="width:250px;margin-left:-125px">Объект в габарите, а решение СВОБОДНО: кадр <b>111</b>. ВНИМАНИЕ (117, 197) — подсказка, не пропуск.</span></span></div><div class="k-v">1<small>кадр</small></div><div class="k-f">кадр 111</div></div>
+      <div class="kpi ink"><div class="k-l">p95 задержка</div><div class="k-v">72<small>мс</small></div><div class="k-f">сквозная 81 мс</div></div>
+      <div class="kpi good"><div class="k-l">Ложные тревоги</div><div class="k-v">0<span class="ck"><svg class="i"><use href="#i-check"/></svg></span></div><div class="k-f">против разметки</div></div>
+    </div>
+
+    <div class="card tl">
+      <div class="card-h" style="margin-bottom:6px">
+        <h2>Решения по кадрам</h2>
+        <span class="q-wrap"><button class="q open">?</button><span class="tip r" style="width:300px">Верхняя полоса — решение детектора в каждом из 201 кадра, нижняя — ручная разметка. Клик открывает кадр в плеере.</span></span>
+        <span class="sp"></span>
+        <div class="legend" style="gap:18px"><span><i class="lg-go"></i>свободно 9</span><span><i class="lg-caution"></i>внимание 2</span><span><i class="lg-stop"></i>стоп 190</span><span><i class="lg-fault"></i>ошибка 0</span><span><i class="lg-gt" style="width:18px;height:8px;vertical-align:1px"></i>разметка: в габарите 193</span></div>
+      </div>
+      <div class="tl-wrap" id="tlw">
+        <div class="tl-strip" id="tls"></div>
+        <div class="gt-lane" id="gtl"><b></b></div>
+        <div class="axis" id="axis"></div>
+      </div>
+    </div>
+
+    <div class="card dist">
+      <div class="card-h" style="margin-bottom:4px"><h2>Дистанция</h2>
+        <span class="q-wrap"><button class="q">?</button><span class="tip br">Дистанция до препятствия в габарите по кадрам; серая полоса — ручная разметка, внизу — решения.</span></span>
+        <span class="sp"></span>
+        <div class="legend"><span><i style="background:var(--ink);height:4px;border-radius:2px;width:18px;vertical-align:3px"></i>детектор</span><span><i class="lg-band"></i>разметка 55,4–56,6 м</span></div>
+      </div>
+      <div class="cw"><svg id="chart"></svg></div>
+    </div>
+
+    <div class="card ev">
+      <div class="card-h" style="margin-bottom:6px"><h2>События</h2><span class="sp"></span><span class="chip">5</span></div>
+      <div class="evr"><span class="ico stop"><svg class="i"><use href="#i-octa"/></svg></span><div><div class="et">Начало СТОП</div><div class="m">кадр 8 · 0,8 с</div></div><span class="v">55,6<small>м</small></span></div>
+      <div class="evr"><span class="ico go"><svg class="i"><use href="#i-go"/></svg></span><div><div class="et">Ложное «свободно» <span class="q-wrap"><button class="q">?</button><span class="tip t">Объект в габарите, но трекер потерял его 2 кадра подряд — известное ограничение.</span></span></div><div class="m">кадр 111 · 11,1 с</div></div><span class="v">1<small>кадр</small></span></div>
+      <div class="evr"><span class="ico caution"><svg class="i"><use href="#i-tri"/></svg></span><div><div class="et">Внимание</div><div class="m">кадр 117 · 11,7 с</div></div><span class="v">1<small>кадр</small></span></div>
+      <div class="evr"><span class="ico caution"><svg class="i"><use href="#i-tri"/></svg></span><div><div class="et">Внимание</div><div class="m">кадр 197 · 19,7 с</div></div><span class="v">1<small>кадр</small></span></div>
+      <div class="evr"><span class="ico stop"><svg class="i"><use href="#i-octa"/></svg></span><div><div class="et">Конец записи · СТОП</div><div class="m">кадр 200 · 20,0 с</div></div><span class="v">55,8<small>м</small></span></div>
+    </div>
+
+    <div class="side">
+      <a class="card pv" href="player.html">
+        <canvas id="pv"></canvas>
+        <div class="o1"><h2>3D-вид</h2><span style="flex:1"></span><span class="glass">кадр 112 / 201</span></div>
+        <div class="o2"><span class="dc stop"><svg class="i"><use href="#i-octa"/></svg>СТОП · кадр 112</span><span style="flex:1"></span>
+          <span class="btn sm" style="background:#fff;color:var(--ink)"><svg class="i s"><use href="#i-play"/></svg>Плеер</span></div>
+      </a>
+      <div class="card dl">
+        <div class="card-h" style="margin-bottom:10px"><h2>Скачать</h2></div>
+        <div class="dlg">
+          <a class="dlt" href="#"><span class="f">JSONL<svg class="i s"><use href="#i-download"/></svg></span><span class="s">кадры<br><b>1,2 МБ</b></span></a>
+          <a class="dlt" href="#"><span class="f">JSON<svg class="i s"><use href="#i-download"/></svg></span><span class="s">отчёт<br><b>18 КБ</b></span></a>
+          <a class="dlt" href="#"><span class="f">CSV<svg class="i s"><use href="#i-download"/></svg></span><span class="s">таблица<br><b>96 КБ</b></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const seq = D2.RUNS.doubleT_obstacle(), N = seq.length;
+  const P = f => ((f + 0.5) / N * 100).toFixed(3) + '%';           // every overlay in % of the strip width
+  const w = document.getElementById('tlw');
+  let ax = '';
+  for (const f of [0, 25, 50, 75, 100, 125, 150, 175, 200]){
+    const cls = f === 0 ? 'l0' : f === 200 ? 'lN' : '';
+    ax += `<span class="${cls}" style="left:${f === 0 ? '0' : f === 200 ? '100%' : P(f)}">${f}${f === 0 ? ' кадр' : ''}</span>`; }
+  document.getElementById('axis').innerHTML = ax;
+  const mk = [[8, 'stop first', 'кадр 8 · СТОП'], [111, 'go', '111'], [117, 'caution', '117'], [197, 'caution', '197']];
+  for (const [f, c, t] of mk) w.insertAdjacentHTML('beforeend', `<div class="mk ${c}" style="left:${P(f)}"><b>${t}</b><i></i></div>`);
+  w.insertAdjacentHTML('beforeend', `<div class="ph-head" style="left:${P(112)}"></div>`);
+  document.querySelector('#gtl b').style.left = (8 / N * 100).toFixed(3) + '%';
+
+  // distance per frame: small jitter inside 55,5–56,6 m; gap at the GO frame 111
+  const r = D2.rng(3), d = [];
+  for (let f = 0; f < N; f++){
+    if (f < 8 || seq[f] === 0){ d.push(null); continue; }
+    let v = 55.95 + 0.22 * Math.sin(f / 11) + 0.12 * Math.sin(f / 3.7) + (r() - 0.5) * 0.22;
+    v = Math.max(55.5, Math.min(56.6, v));
+    d.push(f === 8 ? 55.6 : f === 61 ? 55.5 : f === 200 ? 55.8 : v);
+  }
+  function drawAll(){
+    document.getElementById('tls').innerHTML = D2.strip(seq, {w: Math.round(w.clientWidth), h: 44, rx: 14});
+    const svg = document.getElementById('chart'), CW = svg.clientWidth, CH = svg.clientHeight;
+    const L = 54, R = 12, T = 10, B = 50, y0 = 54.5, y1 = 57.5;
+    const X = f => L + f / 200 * (CW - L - R), Y = v => T + (1 - (v - y0) / (y1 - y0)) * (CH - T - B), PB = CH - B;
+    const ru = v => v.toFixed(1).replace('.', ',');
+    let h = '';
+    // frames 0–7: nothing in the envelope yet — a neutral well, labelled along its height
+    { const xw = X(7.5); h += `<rect x="${L}" y="${T}" width="${xw - L}" height="${PB - T}" rx="6" fill="#F1EDE8"/>`;
+      h += `<text transform="translate(${((L + xw) / 2 + 4).toFixed(1)} ${PB - 10}) rotate(-90)" font-family="Montserrat" font-weight="700" font-size="11.5" fill="#16151A">${PB - T > 230 ? 'нет объекта в габарите' : 'нет объекта'}</text>`; }
+    for (let i = 0; i <= 6; i++){ const v = y0 + i * 0.5, yy = Y(v);
+      h += `<line x1="${L}" x2="${CW - R}" y1="${yy}" y2="${yy}" stroke="#E7E2DB" stroke-width="1"/>`;
+      h += `<text x="${L - 10}" y="${yy + 4}" text-anchor="end" font-family="Montserrat" font-weight="700" font-size="12" fill="#16151A">${ru(v)} м</text>`; }
+    // labelled band: neutral fill, dashed ink edges
+    const by0 = Y(56.6), by1 = Y(55.4);
+    h += `<rect x="${X(7.5)}" y="${by0}" width="${CW - R - X(7.5)}" height="${by1 - by0}" fill="rgba(22,21,26,.07)"/>`;
+    for (const yy of [by0, by1]) h += `<line x1="${X(7.5)}" x2="${CW - R}" y1="${yy}" y2="${yy}" stroke="#16151A" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+    for (const f of [0, 50, 100, 150, 200]) h += `<text x="${X(f)}" y="${PB + 19}" text-anchor="${f === 0 ? 'start' : f === 200 ? 'end' : 'middle'}" font-family="Montserrat" font-weight="700" font-size="12" fill="#16151A">${(f / 10).toString().replace('.', ',')} с</text>`;
+    // decision band under the time labels, so it never reads as data at the bottom gridline
+    h += `<g transform="translate(${L},${CH - 12})">${D2.strip(seq, {w: CW - L - R, h: 7, rx: 3.5}).replace('<svg class="strip"', '<svg')}</g>`;
+    // detector line (breaks at the GO frame)
+    let path = '', pen = false;
+    for (let f = 0; f < N; f++){ if (d[f] == null){ pen = false; continue; } path += (pen ? 'L' : 'M') + X(f).toFixed(1) + ' ' + Y(d[f]).toFixed(1); pen = true; }
+    h += `<path d="${path}" fill="none" stroke="#16151A" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+    { const mx = X(61), my = Y(55.5); h += `<circle cx="${mx}" cy="${my}" r="4.5" fill="#16151A" stroke="#fff" stroke-width="2"/><text x="${mx}" y="${my + 24}" text-anchor="middle" font-family="Montserrat" font-weight="800" font-size="11.5" fill="#16151A">мин 55,5 м</text>`; }
+    for (const f of [117, 197]) h += `<circle cx="${X(f)}" cy="${Y(d[f])}" r="5" fill="#FFB300" stroke="#16151A" stroke-width="1.5"/>`;
+    // hover state at frame 8: crosshair, point, tooltip parked in the empty band above with a leader
+    const hx = X(8), hy = Y(55.6), ty = Y(57.42);
+    h += `<line x1="${hx}" x2="${hx}" y1="${T}" y2="${PB}" stroke="#16151A" stroke-width="1.2" stroke-dasharray="3 4"/>`;
+    h += `<line x1="${hx}" x2="${hx + 22}" y1="${hy - 8}" y2="${ty + 25}" stroke="#16151A" stroke-width="1"/>`;
+    h += `<circle cx="${hx}" cy="${hy}" r="8" fill="#fff" stroke="#D0001B" stroke-width="4"/>`;
+    h += `<g transform="translate(${hx + 14},${ty})"><rect width="156" height="50" rx="14" fill="#16151A"/>
+          <text x="14" y="21" font-family="Montserrat" font-weight="800" font-size="12.5" fill="#fff">кадр 8 · 0,8 с</text>
+          <text x="14" y="39" font-family="Benzin" font-weight="800" font-size="13" fill="#fff">СТОП 55,6 м</text></g>`;
+    svg.innerHTML = h;
+  }
+  drawAll(); document.fonts.ready.then(drawAll);
+})();
+</script>
+<script type="module">
+import {loadFrame, createView} from './cloud.js';
+await document.fonts.ready;
+const cv = document.getElementById('pv');
+const rc = cv.getBoundingClientRect();
+const d = await loadFrame();
+const C = d.result.track.center;
+const v = createView(cv, d, {width: rc.width, height: rc.height, preview: true, fov: 22, cam: {pos: [24, C - 1.1, 3.3], look: [57, C + 0.15, -0.8]}, pointSize: 0.045, minPx: 1.4, near: 4, fog: 0.006});
+v.render();
+requestAnimationFrame(() => { window.__ready = true; });
+</script>
+</body></html>
