@@ -34,7 +34,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   episodes, five empty recordings 11 / 13 → 8 / 12, set F false detections box1.0 12 → 6, cable 3 → 0; set O,
   set F first detections and `doubleT_obstacle` identical. 1 280 tests pass. New seal
   `docs/evidence/detector_freeze_2026-09-29_competitor_rules.json` (at `f67e4fb`, which also makes the LiDAR speed
-  estimate 4.3 -> 1.3 ms per frame with identical counts; before it the veto cost +7 ms mean, +8.5 ms p95 on 360°).
+  estimate 4.3 -> 1.3 ms per frame with identical counts; the veto now costs +2.1 ms mean, +2.4 ms p95 on 360°
+  frames and +1.7 / +1.6 ms on 120° frames, down from +7 / +8.5 ms on 360°).
 - Measured and not shipped ([`docs/COMPETITOR_REVIEW_2026-09-29.md`](docs/COMPETITOR_REVIEW_2026-09-29.md) §6):
   `lowobj.min_top` 0.08 (loses the organizers' 10 cm box on a rail at 10-50 m in the ray-cast tunnel; the test now
   covers 25 and 50 m), the clean run with range demotions or shape signatures, `fresh_stop_evidence`, a quadratic

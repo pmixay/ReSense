@@ -202,8 +202,10 @@ removes it without costing the organizers' far objects; a per-frame axis uncerta
 height from the real object on the rail), and one wide flat structure across the track at 96 m.
 
 **Seal.** `ee7b920` turned the three defaults on ([its gate](evidence/cycle_2026-09-29/competitor_rules/gate_ee7b920.json));
-`f67e4fb` made the LiDAR speed estimate the veto needs 4.3 → 1.3 ms per frame (identical counts; the veto added
-+7 ms mean, +8.5 ms p95 on 360° frames before it). The full gate of `f67e4fb`
+`f67e4fb` made the LiDAR speed estimate the veto needs 4.3 → 1.3 ms per frame (identical counts). The veto added
++7 ms mean, +8.5 ms p95 on 360° frames before that change and adds +2.1 / +2.4 ms after it (+1.7 / +1.6 ms on 120° frames):
+[`latency_ab.json`](evidence/cycle_2026-09-29/competitor_rules/latency_ab.json), veto on against off, both detectors
+running on the same frames and taking turns on each frame. The full gate of `f67e4fb`
 ([`gate.json`](evidence/cycle_2026-09-29/competitor_rules/gate.json): every decision as at `ee7b920`, only the
 latency-dependent health counts differ) is the validation of the new manifest
 [`detector_freeze_2026-09-29_competitor_rules.json`](evidence/detector_freeze_2026-09-29_competitor_rules.json);
