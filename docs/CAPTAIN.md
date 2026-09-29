@@ -55,8 +55,8 @@ artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) �
 | # | item | who | state |
 |---|---|---|---|
 | 1 | **Final documentation pass** (every doc against `7532a6b`, the 29.09 rules in ALGORITHM / EXPERIMENTS / DECISIONS, the pitch deck with current numbers, the requirements map, the judgement's offline measurements re-run on `7532a6b` as `evidence/judgement_2026-09-29/`) → one PR from `claude/admiring-pascal-ex9v51`; merge after CI is green. Docs only: no sealed file changes. | A; H merges | in progress |
-| 2 | **Release candidate:** push `v1.0.0-rc2` on the commit of the new seal (the image's code is final there; `rc1` on `7532a6b` is cancelled: it still has the `shell` rule). `release.yml` publishes the archive; then on the team VM, logged out: download, `sha256sum -c`, `IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh` on `doubleT_obstacle` and `roundT_doubleT`; commit the output as `evidence/vm_2026-09-29/`. The agent session cannot push tags (its git proxy takes only its branch). | H tags, H runs the VM | after the reseal |
-| 3 | **Final release:** push `v1.0.0` on the final `main` after item 1 merges; check the release assets and their sha256. | H | after 1 |
+| 2 | **No release candidate** (the user, 29.09 ~20:00): the release is `v1.0.0` only, pushed on the final `main` once the interface work and this documentation PR are merged. `release.yml` needs 30–40 min to build, prove and publish the archive, so the tag goes out by ~23:00 MSK. The agent session cannot push tags (its git proxy takes only its branch). | H | after 1 and the interface |
+| 3 | **Check the release:** logged out, download `resense-image-v1.0.0.tar.gz` and its `.sha256`, `sha256sum -c`; on the team VM `IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh` on `doubleT_obstacle` and `roundT_doubleT` if time allows (CI's `release.yml` already loads the archive back and plays both smoke bags through it with no network). | H | after 2 |
 | 4 | **Submit** (links): the repository with the final commit hash, the `v1.0.0` archive and its sha256, the video, the deck (PDF), the GitBook — every link opened logged out first. | H | after 3 |
 | 5 | Keep `--read-ahead-queue-size 10` prominent in every instruction: with Humble's default read-ahead the results stay stale. | A | done in README / GitBook |
 
@@ -76,7 +76,7 @@ Checked on GitHub: `main` and one other branch; no open pull request.
 | branch | state | recommendation |
 |---|---|---|
 | `claude/admiring-pascal-ex9v51` | the final documentation pass (item 1) | PR to `main` tonight |
-| `claude/prototype-website-rebuild-tz31o0` | a work-in-progress web app (FastAPI backend, React pages in the «Линия» design; its last commit says the player and system pages are partial); not merged into `main` | **do not merge before the upload**; decide after 30.09 |
+| `claude/prototype-website-rebuild-tz31o0` | the web interface (FastAPI backend, React pages in the «Линия» design; at 29.09 ~20:00 its player and system pages were still partial); not merged into `main` | the user, 29.09 ~20:00: finished and merged **before** `v1.0.0`, through a PR with CI green (merge `main` into it first: `main` moves with the documentation PR and the new seal) |
 | `experiment/cross-ring-sparse-evidence`, `claude/funny-gates-3358a8`, `claude/amazing-fermi-t67v8g`, `gpt-score-push-20260928` | merged into `main` (PR #27, #28, #29) or deleted on the remote | nothing to do |
 
 ## 5. Release and submission
@@ -201,7 +201,7 @@ and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The 
 | 29.09 evening | the current gate becomes the regression baseline (`evidence/results/regression_baseline_2026-09-29_competitor_rules.json`, a copy of the sealing gate; the user's decision): the deck and video tests check today's numbers and a future gate compares against the shipped detector | the user, 29.09 |
 | 29.09 evening | P2 declined the pitch after delivering the deck with the team's photos; the captain owns the pitch with agent help, the team records the video; the named deck (names and photos) is committed to the public repository (the user's decision; lifts the placeholder rule of 25.09) | the user, 29.09 |
 | 29.09 night | **the `shell` rule off** (`cluster.shell_min_top` 0, `a5455b3`; the user's decision on the safety review): the rule read a floor-standing cluster's own top above the 3.0 m envelope as the lining, so a cable hanging from the vault to the rails, a pole, a standing train were CAUTION beyond 40 m (ray-cast tunnel, 22 m/s: catalogue `cable_low` first STOP 21.0 m on vs 73.8 m off; pole 36.4 vs 104.6 m); alone it bought ride 32 / 31 → 31 / 29. `explained_run` and the ego veto stay (NON-BLOCKING; the ego veto must only get a measured speed). Full gate of the shell-off commit against the `3eeb106` gate, then a new seal | the user, 29.09; safety review in the doc PR |
-| 29.09 night | release: `v1.0.0-rc1` on `7532a6b` cancelled (it has the `shell` rule); `v1.0.0-rc2` on the new seal's commit, verified on the team VM from the published archive; `v1.0.0` on the final `main` after the documentation PR | the user, 29.09; §3 items 2–3 |
+| 29.09 night | release: no release candidate (`rc1` on `7532a6b` would have shipped the `shell` rule); only `v1.0.0`, on the final `main` after the interface work and the documentation PR are merged, tagged by ~23:00 MSK so the archive is published and checked before 23:59 | the user, 29.09; §3 items 2–3 |
 
 ## Experimental branch integration, 28.09
 
