@@ -802,13 +802,16 @@ def s09_cards(sl):
             continue
         frame = shape(sl, photo)
         label = shape(sl, name)
-        # the name under the photo, surname over first name, above the P1-P4 line (as P2 laid it out)
+        # the name under the photo, surname over first name, above the P1-P4 line (as P2 laid it out);
+        # the P1-P4 line and the details move down to make room (the cards have it below the details)
+        for sid in (name, det):
+            shape(sl, sid).top = Emu(shape(sl, sid).top + 320000)
         top = frame.top + frame.height + 50000
         tb = textbox(sl, Emu(label.left), Emu(top), Emu(frame.width + frame.left - label.left),
                      Emu(max(label.top - top - 10000, 300000)), who["name"].split(" ", 1),
                      size=14, color="4B0E73", bold=True)
         tf = tb.text_frame
-        tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
+        tf.margin_right = tf.margin_top = tf.margin_bottom = 0      # left: the label's own inset
         for p in tf.paragraphs:
             p.line_spacing = 0.9
         if team_photo(who.get("photo")):
