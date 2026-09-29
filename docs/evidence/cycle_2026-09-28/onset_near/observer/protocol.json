@@ -1,0 +1,67 @@
+{
+  "schema": "resense-onset-observer-protocol-v1",
+  "registered_utc": "2026-09-28T20:17:17.219909+00:00",
+  "scope": "Diagnosis only: exactly four previously failed Set F sequences, baseline and candidate; no policy changes or acceptance claim.",
+  "sequences": [
+    {
+      "kind": "trolley",
+      "file0": "new_data_46_0000.npy.zst",
+      "lost_frames": [
+        "new_data_46_0037",
+        "new_data_46_0038",
+        "new_data_46_0039"
+      ]
+    },
+    {
+      "kind": "box1.0",
+      "file0": "new_data_140_0000.npy.zst",
+      "lost_frames": [
+        "new_data_140_0038",
+        "new_data_140_0043"
+      ]
+    },
+    {
+      "kind": "person",
+      "file0": "new_data_168_0000.npy.zst",
+      "lost_frames": [
+        "new_data_168_0028"
+      ]
+    },
+    {
+      "kind": "trolley",
+      "file0": "new_data_172_0000.npy.zst",
+      "lost_frames": [
+        "new_data_172_0038",
+        "new_data_172_0039",
+        "new_data_173_0003"
+      ]
+    }
+  ],
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "variants": {
+    "candidate": {
+      "source_root": "/workspace/ReSense-onset",
+      "commit": "ff1b8bd63ef4c51532d44e422b854847e72220fb",
+      "source_sha256": "15f67a0b1739716ab2e5aa182198f95f6e68a8ad9c5d08f147b3c7106c7f2a82",
+      "config_sha256": "8c25720bfbe082bcef41a6f69ea5916068221dec79adc628e5b4543533f065b1",
+      "capture": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/onset_near/default/captures/setF_straight.json.gz",
+      "capture_sha256": "d54d884d8947897598f5ea8f4d7086d561a4e354292e2ba6937ec5290c408c97",
+      "config": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/onset_near/default/captures/config.yaml",
+      "config_file_sha256": "72836545de92c18275feb92ffb56079c7d2b4c8e9f51f83c5324918c6131da88"
+    },
+    "baseline": {
+      "source_root": "/workspace/ReSense-health",
+      "commit": "5fa978f59d4e787bce04da3ab9b4257f5474d772",
+      "source_sha256": "c0273a13a67ab4872dab00154caa75f6b30f50416775062c591fbb47906a0fa4",
+      "config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+      "capture": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/setF_straight.json.gz",
+      "capture_sha256": "f229e2ef0d755ea45d52b40a666fdc6df3c938f7e29be33ffba9475e31bc0548",
+      "config": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/config.yaml",
+      "config_file_sha256": "a0d452681afd32c96491c6c8030a034c7eeeac9c6a6d0b1e2093f8822ba4e640"
+    }
+  },
+  "runner": "Existing scripts.far_range_eval.run_sequence called unchanged; jobs reconstructed with original full RNG consumption/order, cache, stamps, speed intake, exact saved config, parameters. Only selected four jobs executed.",
+  "observer": "External wrappers around Detector.process, Tracker.update, Tracker._note and Tracker._fresh_stop_ok delegate exactly once to original functions without modifying inputs or return. Snapshot every track/current cluster, provenance note, fresh predicate decision, near/approach/clean gauge/column/hold/withheld and final detections. Read-only derived predicates only.",
+  "acceptance": "For each variant compare entire returned run_sequence dictionary to its archived sequence, with zero differences required; no fields excluded (sequence output has no wall/timing fields). Verify clean HEAD, detector source digest, effective config, local enabled native hash before and after. Retain any failure; do not reinterpret it as parity.",
+  "execution": "At most one detector process, four sequences sequentially per variant; pause new work immediately when parent announces quiet runtime. No full gate/history run."
+}

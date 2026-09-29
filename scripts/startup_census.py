@@ -30,7 +30,6 @@ if __name__ == "__main__":        # one BLAS / OpenMP thread per worker: set bef
 
 import argparse  # noqa: E402
 import datetime  # noqa: E402
-import glob  # noqa: E402
 import json  # noqa: E402
 import sys  # noqa: E402
 import time  # noqa: E402
@@ -54,9 +53,16 @@ LABELLED = "doubleT_obstacle"
 
 def starts(cache: str, n_frames: int, chunks: int) -> list:
     """[(kind, name, [files])] of every start."""
-    from resense.io import _natural_key
+    from scripts.cache_io import (cache_files, validate_extended_ride_cache,
+                                  validate_ride_intake_manifest)
     out = []
-    ride = sorted(glob.glob(os.path.join(cache, RIDE, "*.npy")), key=_natural_key)
+    ride_dir = os.path.join(cache, RIDE)
+    ride = cache_files(ride_dir)
+    has_ride_markers = (os.path.isdir(ride_dir) and any(
+        name.startswith("new_data_") and name.endswith("_stamps.json") for name in os.listdir(ride_dir)))
+    if ride or has_ride_markers:
+        inventory = validate_extended_ride_cache(ride_dir, load_arrays=False)
+        validate_ride_intake_manifest(ride_dir, inventory)
     if ride:
         by_split = {}
         for f in ride:
@@ -66,7 +72,7 @@ def starts(cache: str, n_frames: int, chunks: int) -> list:
         for k, part in enumerate(np.array_split(np.array(ride), chunks)):
             out.append(("ride_chunk", f"{RIDE}_chunk{k}", list(part[:n_frames])))
     for name in eval_real.SIX + [SET_O]:
-        files = sorted(glob.glob(os.path.join(cache, name, "*.npy")), key=_natural_key)
+        files = cache_files(os.path.join(cache, name))
         if files:
             out.append(("recording", name, files[:n_frames]))
     return out
@@ -78,12 +84,14 @@ def run_start(job):
     from resense.config import DetectorConfig
     from resense.detector import Detector
     from resense.frame import frame_from_compact
+    from scripts.cache_io import cache_file_stem, load_cache_array
     cfg = DetectorConfig.from_dict(cfg_dict)
     det = Detector(cfg)
     rows = []
     for i, f in enumerate(files):
-        stem = os.path.splitext(os.path.basename(f))[0]
-        fr = frame_from_compact(np.load(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
+        stem = cache_file_stem(f)
+        fr = frame_from_compact(load_cache_array(f), cfg.sensor,
+                                stamp=stamps.get(stem, i * 0.1), frame_id=stem)
         res = det.process(fr)
         d = res.to_dict()
         d.pop("track", None)
@@ -184,7 +192,7 @@ def main(argv=None) -> int:
     ap.add_argument("--rows", default=None, metavar="JSONL", help="also write every frame row here")
     ap.add_argument("--out", required=True)
     a = ap.parse_args(argv)
-    from resense.io import load_cache_stamps
+    from scripts.cache_io import load_cache_stamps
     cfg_dict = eval_real.load_cfg_dict(a.config, a.set)
     eval_real.load_cfg(a.config, a.set)                 # fail fast on an unknown key
     todo = starts(a.cache, a.frames, a.chunks)

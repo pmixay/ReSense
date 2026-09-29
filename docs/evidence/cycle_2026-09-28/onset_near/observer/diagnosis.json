@@ -1,0 +1,140 @@
+{
+  "schema": "resense-onset-observer-diagnosis-v1",
+  "status": "completed; source candidate remains rejected; no production edits",
+  "candidate_frames": 400,
+  "candidate_wall_s": 94.48238754272461,
+  "full_semantic_parity": true,
+  "identity_unchanged": true,
+  "direct_loss_branches": {
+    "current_off_gauge_beyond_height_ref": [
+      "new_data_46_0037",
+      "new_data_46_0038",
+      "new_data_140_0038",
+      "new_data_168_0028"
+    ],
+    "insufficient_eligible_with_off_off_ordinary": [
+      "new_data_46_0039",
+      "new_data_140_0043",
+      "new_data_172_0038",
+      "new_data_173_0003"
+    ]
+  },
+  "follower_loss": {
+    "frame": "new_data_172_0039",
+    "candidate_track_id": 10,
+    "misses": 1,
+    "reported": false,
+    "earned_stop": false,
+    "fresh_called": false,
+    "baseline_hold_confirmation": {
+      "frame": "new_data_172_0039",
+      "track_id": 10,
+      "misses": 1,
+      "reported": true,
+      "zone": "gauge",
+      "stop_earned": true,
+      "previous_frame_stop_earned": true,
+      "same_id_candidate_previous_frame_fresh_rejection": "insufficient_eligible"
+    }
+  },
+  "shared_direct_target_state": {
+    "clean_gauge": true,
+    "far_evidence": false,
+    "near_escalated": false,
+    "column_held": false,
+    "approach_block": false,
+    "withheld": false
+  },
+  "removed_setF_false_detection": {
+    "frame": "new_data_173_0001",
+    "track_id": 17,
+    "branch": "current_off_gauge",
+    "reason": "beyond_height_ref",
+    "clean_gauge": true,
+    "approaching": false,
+    "slope": -28.759665509962538,
+    "rms": 1.4049078258001926
+  },
+  "conclusions": [
+    "Reducing fresh_stop_evidence_min_hits alone cannot recover the four current-off-gauge losses.",
+    "An approaching-only bypass cannot recover box140 frame38 (four hits before required five) or trolley173 frame3 (RMS exceeds existing limit).",
+    "A blanket clean_gauge ordinary/off_gauge bypass would permit the known removed Set F false detection, so a retained false-alarm gain is not established.",
+    "All findings are diagnosis on the failed selection data, not independent validation. No production change or new candidate acceptance is made."
+  ],
+  "ride_public_capture_limitation": "No provenance, current cluster zone or match/miss state in stored real captures; reason may describe held last cluster. See ride_saved_analysis.json; do not infer fresh branch.",
+  "baseline_frames": 400,
+  "baseline_wall_s": 85.04135203361511,
+  "baseline_full_semantic_parity": true,
+  "baseline_identity_unchanged": true,
+  "ride_observer": {
+    "frames": 589,
+    "wall_s": 42.759371757507324,
+    "full_non_timing_semantic_parity": true,
+    "identity_unchanged": true,
+    "events": [
+      {
+        "chunk": 4,
+        "track_id": 210,
+        "onset_frame": 266,
+        "source": "off_gauge",
+        "branch": "current_off_gauge",
+        "reason": "",
+        "kind": "",
+        "n_gauge": 2,
+        "prior_low_gauge_notes": [
+          261,
+          263,
+          264
+        ],
+        "following_miss_frames": [
+          267
+        ]
+      },
+      {
+        "chunk": 5,
+        "track_id": 146,
+        "onset_frame": 316,
+        "source": "off_gauge",
+        "branch": "current_off_gauge",
+        "reason": "",
+        "kind": "",
+        "n_gauge": 1,
+        "prior_low_gauge_notes": [
+          310,
+          311,
+          312
+        ],
+        "following_miss_frames": [
+          317
+        ]
+      },
+      {
+        "chunk": 5,
+        "track_id": 146,
+        "onset_frame": 319,
+        "source": "ordinary",
+        "branch": "insufficient_eligible",
+        "evidence_hist": [
+          "off_gauge",
+          "off_gauge",
+          "ordinary"
+        ],
+        "kind": "low",
+        "n_gauge": 6,
+        "following_miss_frames": [
+          320
+        ]
+      }
+    ]
+  },
+  "next_mechanism_for_review_only": {
+    "proposal": "Limit the fresh onset provenance veto to tracks with low-kind gauge evidence in the existing bounded gauge-vote window, preserving inherited ordinary-corridor-only confirmation. Do not use a sticky lifetime low flag.",
+    "basis": "Both representative false events mixed low and ordinary corridor evidence. All five affected Set F target track IDs had no low-kind note in their complete traced lifetimes.",
+    "not_claimed": [
+      "restoration of every gate metric",
+      "retention of all five removed ride events",
+      "safety or recall acceptance"
+    ],
+    "status": "No production implementation or new candidate evaluation; requires parent protocol review."
+  }
+}

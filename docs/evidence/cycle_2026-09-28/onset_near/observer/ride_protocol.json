@@ -1,0 +1,53 @@
+{
+  "schema": "resense-onset-ride-observer-protocol-v1",
+  "registered_utc": "2026-09-28T20:27:32.743349+00:00",
+  "candidate": {
+    "source_root": "/workspace/ReSense-onset",
+    "commit": "ff1b8bd63ef4c51532d44e422b854847e72220fb",
+    "source_sha256": "15f67a0b1739716ab2e5aa182198f95f6e68a8ad9c5d08f147b3c7106c7f2a82",
+    "config_sha256": "8c25720bfbe082bcef41a6f69ea5916068221dec79adc628e5b4543533f065b1",
+    "capture": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/onset_near/default/captures/setF_straight.json.gz",
+    "capture_sha256": "d54d884d8947897598f5ea8f4d7086d561a4e354292e2ba6937ec5290c408c97",
+    "config": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/onset_near/default/captures/config.yaml",
+    "config_file_sha256": "72836545de92c18275feb92ffb56079c7d2b4c8e9f51f83c5324918c6131da88"
+  },
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "cache": "/cycle/cache/new_data",
+  "cache_chunks": 8,
+  "prefixes": [
+    {
+      "chunk": 4,
+      "last_frame_inclusive": 267,
+      "target_track_id": 210,
+      "target_frames": [
+        266,
+        267
+      ],
+      "capture": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/onset_near/default/captures/new_data_4.jsonl.gz",
+      "capture_sha256": "fbb4f3b6d0f1e23c0898a67de2c6e8c4e938a685572d8c3860bc00e7c5aa2d17"
+    },
+    {
+      "chunk": 5,
+      "last_frame_inclusive": 320,
+      "target_track_id": 146,
+      "target_frames": [
+        316,
+        317,
+        319,
+        320
+      ],
+      "capture": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/onset_near/default/captures/new_data_5.jsonl.gz",
+      "capture_sha256": "06e8372371c7ea1ff2daf38e51cf98c28d81faa87d2d012196650826a9583431"
+    }
+  ],
+  "purpose": "Diagnose fresh predicate branches on two representative already-observed false events; no policy changes, holdout claim, retuning or promotion.",
+  "runner": "Use original scripts.eval_real.run_piece unchanged, exact np.array_split natural sorted full ride cache into eight chunks, original gate receive stamps, speeds=None, committed effective config. Preserve every prefix frame from original chunk boundary. One detector process maximum.",
+  "observer": "External read-only wrappers, identical snapshot fields and return delegation as four-sequence observer; no track/input/result mutations.",
+  "parity": "Require complete prefix normalized row equality to archived failed candidate gate; use scripts.compare_health_gate.normalized which removes timing_ms and validates/removes only latency_p95 and its mathematically consistent message/level effect. All decision_level, non-latency messages, monitoring, visibility, detections, warnings, track, frame IDs/stamps and other fields must match. No unregistered exclusions.",
+  "identity_checks": "Clean pinned HEAD, source/config/native hashes before/after, native local enabled; hash exact cache inputs/stamps, archived capture and runner/normalizer scripts. Record all failures.",
+  "helper_sha256": {
+    "scripts/eval_real.py": "b6accfe85926c489e7048609f9243f21ff87c02b0a03a2eef6817210918e080c",
+    "scripts/cache_io.py": "6368aa168712a11e07562bbc71f39fffb373e60bbacec54ef7907a5080165793",
+    "scripts/compare_health_gate.py": "07edb9b1eaa2e622965c89264ec8bbb23ad8be51b0ebd5a38e8ec14e34931cc0"
+  }
+}

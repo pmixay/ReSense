@@ -1,0 +1,9 @@
+START ('trolley', 'new_data_46_0000.npy.zst')
+FINISH ('trolley', 'new_data_46_0000.npy.zst') semantic_match True frames 102
+START ('box1.0', 'new_data_140_0000.npy.zst')
+FINISH ('box1.0', 'new_data_140_0000.npy.zst') semantic_match True frames 110
+START ('person', 'new_data_168_0000.npy.zst')
+FINISH ('person', 'new_data_168_0000.npy.zst') semantic_match True frames 78
+START ('trolley', 'new_data_172_0000.npy.zst')
+FINISH ('trolley', 'new_data_172_0000.npy.zst') semantic_match True frames 110
+{"variant": "baseline", "sequences": [{"kind": "trolley", "file0": "new_data_46_0000.npy.zst", "frames": 102, "full_semantic_match": true, "changed_rows": []}, {"kind": "box1.0", "file0": "new_data_140_0000.npy.zst", "frames": 110, "full_semantic_match": true, "changed_rows": []}, {"kind": "person", "file0": "new_data_168_0000.npy.zst", "frames": 78, "full_semantic_match": true, "changed_rows": []}, {"kind": "trolley", "file0": "new_data_172_0000.npy.zst", "frames": 110, "full_semantic_match": true, "changed_rows": []}], "started_unix": 1790627143.4949462, "diagnosis_only": true, "finished_unix": 1790627228.5362983, "identity_unchanged": true, "passed_observer_parity": true}

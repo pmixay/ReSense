@@ -1,0 +1,65 @@
+{
+  "schema": "resense-detector-freeze-v1",
+  "status": "frozen",
+  "created_utc": "2026-09-28T18:13:36.605658+00:00",
+  "authorization": "User authorized the 28 September improvement cycle and branch pushes; this seal records the freshly revalidated baseline after the standalone-bag dependency repair.",
+  "source_commit": "4b6f3440b37ace46f01f91de2941f38abf02f051",
+  "measured_commit": "4b6f3440b37ace46f01f91de2941f38abf02f051",
+  "source_sha256": "4e6eb1e72c49980a345134373e4e05e053b61aa4e4fb5e54854a3cb9f83ca252",
+  "files": {
+    "configs/default.yaml": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "088fb6545b1c9f7339b838cef779d0a24a3e8e24a1322a0392b5aa383c40e12a",
+    "resense/__init__.py": "fdf04a88071df1d8300d46f75d34cc00bf9fa205369be99b3cfef6db514ae306",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "7a10272eb7b23b3a1cf15891a363bfbc50aebeef6f6335b66a0687b51e38f87a",
+    "resense/config.py": "53e97be4024dc1f3bbb91cfa2515582ce56645124922e81a56c1c97ef81e5ed4",
+    "resense/detector.py": "7eac7f53a90b92dd63f332e629d5b691b1943575418c54369d0bf95ea9f8da3e",
+    "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
+    "resense/evidence.py": "083ee20fc8bb9fc915575bd06fa04869a5f5ddc6ca9217a6145879d3c8249853",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "0cd3b119249dc34fd36397afa3f60a5aaa22c9917d94dea4ffe6c79e4e744f35",
+    "resense/health.py": "dd8f34dac8c886ebd88ba49d0a950b6bc9c12a810bb1b583f6a6c076f7e61546",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "f943a33bf660c0d63e9f37aaa16297a508ec75ce2dfb3475b65b30a65ad660d8",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "f9e405ea1f74555e55d2bf6de9664d8078349e42077dcab4a6c3a5a3284c56ba",
+    "resense/tracking.py": "ed1b2a970e9a6a7b2f1646e7490b4fe11c7a1fe063c110b58cfe4e6fb9526e82",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6",
+    "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "config_file_sha256": "a5acd9214d2aeb58bf86e0a3b91685a1f3ab17ebbf60dbfe6b39edbe616a72f6",
+  "effective_config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+  "baseline": {
+    "path": "docs/evidence/results/regression_baseline_2026-09-27_quality.json",
+    "sha256": "34b8e43ce582f40691e6ccb9fe3b37b19bc7b8bd27b914027e9ee8cc98329192"
+  },
+  "validation": {
+    "path": "docs/evidence/cycle_2026-09-28/regression/baseline/gate.json",
+    "sha256": "ff6f03e3ba98f5ed16ef6465fb0bd436caef7d72c43ea60507611720ab95775f",
+    "measured_at": "2026-09-28T18:12:01+00:00",
+    "kind": "committed full regression gate"
+  },
+  "decisions": {
+    "candidate_B": "not shipped: one extra STOP frame at 7.1 m; keep voxel bar 10",
+    "axis_union": "off: organizer Q1 unanswered and shape-safety review remains open",
+    "low_height_continuity": "Provisional in an isolated checkout; shipping baseline detector remains unchanged pending full acceptance."
+  },
+  "change_policy": "Further authorized candidates use isolated worktrees, targeted review, the full strict regression gate and stated acceptance checks before exact measured source/defaults replace this seal.",
+  "limits": [
+    "Verification checks source and evidence integrity; it does not replay recordings.",
+    "Node, launch, Docker and documentation have separate acceptance checks.",
+    "A detector freeze is not a release, deployment approval or proof of safety."
+  ]
+}

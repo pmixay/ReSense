@@ -17,8 +17,8 @@ from pathlib import Path
 
 import numpy as np
 
-from resense.clustering import Cluster
-from resense.config import DetectorConfig, TrackingConfig
+from resense.clustering import Cluster, find_clusters
+from resense.config import ClusterConfig, DetectorConfig, TrackingConfig
 from resense.tracking import Tracker
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,6 +54,8 @@ def test_shipped_default_and_both_yaml():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         assert cfg.tracking.thin_far_min_distance == 60.0 and cfg.cluster.weak_min_points == 4
+        assert cfg.tracking.thin_far_min_voxels == 3
+        assert cfg.cluster.weak_min_rings == 0 and cfg.tracking.far_min_ring_count == 0
 
 
 def test_off_scan_lines_never_start_a_track():
@@ -82,13 +84,18 @@ def test_jumping_scan_line_is_never_a_stop():
     assert not any(_run(xs))
 
 
-def test_near_or_sparse_or_advisory_scan_lines_are_not_used():
-    cfg = _cfg(thin_far_min_distance=60.0, thin_far_min_voxels=4)
-    tr = Tracker(cfg)
-    for k in range(8):
-        near = _cl(55.0 - 1.7 * k)                 # the detector selects far_thin; the tracker trusts it
-        tr.update([], ego_shift=0.0, frame_dt=0.1, thin=[near], far_thin=[])
-    assert not tr.tracks
+def test_far_scan_lines_obey_distance_and_strict_voxel_floor():
+    from resense.detector import Detector
+
+    det = Detector()
+    sparse = _cl(90.0, n_gauge=3)
+    det._thin = [sparse]
+    assert det._far_thin([]) == [sparse]  # the shipped three-voxel floor admits it
+
+    det.cfg.tracking.thin_far_min_voxels = 4
+    assert det._far_thin([]) == []        # the measured four-voxel ablation rejects it
+    det._thin = [_cl(55.0, n_gauge=4)]
+    assert det._far_thin([]) == []        # even dense scan lines nearer than 60 m are excluded
 
 
 def test_mixed_track_needs_the_approach_only_to_start_a_report():
@@ -183,6 +190,52 @@ def test_weak_cluster_needs_the_approach_like_a_scan_line():
         tr.update([], ego_shift=0.0, frame_dt=0.1, far_thin=[cl])
     assert not any(t.reported and t.zone == "gauge" for t in tr.tracks)
     assert any(t.reported and t.zone == "warning" for t in tr.tracks)   # held advisory, not hidden
+
+
+def test_cross_ring_weak_evidence_accepts_two_channels_but_not_one():
+    """The experimental sparse path trades adjacent points for distinct elevation channels.
+
+    A three-voxel group is deliberately below the ordinary far point bar.  Three returns from one
+    ring remain below threshold; two rings admit the same geometry as weak evidence for the
+    temporal approach gate. This checks the mechanism, not real-world precision or recall.
+    """
+    pts = np.array([[70.0, -0.30, 0.30], [70.04, 0.0, 0.45], [70.08, 0.30, 0.60]], dtype=np.float32)
+    inten = np.full(3, 30.0, np.float32)
+    dy, h, inside = pts[:, 1].astype(float), pts[:, 2].astype(float), np.ones(3, bool)
+    cfg = ClusterConfig(min_points_far=5, weak_min_points=4, weak_min_rings=2,
+                        weak_min_points_with_rings=3)
+    one_ring = find_clusters(pts, inten, dy, h, inside, cfg, weak_from=60.0,
+                             ring=np.array([7, 7, 7], dtype=np.uint16))
+    two_rings = find_clusters(pts, inten, dy, h, inside, cfg, weak_from=60.0,
+                              ring=np.array([7, 7, 8], dtype=np.uint16))
+    assert one_ring == []
+    assert len(two_rings) == 1 and two_rings[0].weak and two_rings[0].ring_count == 2
+
+
+def test_ring_filter_preserves_unknown_metadata_and_existing_stop_continuation():
+    from resense.detector import Detector
+    det = Detector()
+    det.cfg.tracking.far_min_ring_count = 2
+    for count in (0, 1, 2):
+        c = _cl(90.0)
+        c.ring_count = count
+        det._thin = [c]
+        assert bool(det._far_thin([])) == (count != 1)
+        assert det._thin[0] is c           # rejection must not remove STOP-continuation evidence
+        assert det._far_thin([_cl(90.0, thin=False)]) == []  # overlap guard still applies
+    tr = Tracker(TrackingConfig(doubt_extra_hits=0))
+    for _ in range(8):
+        tr.update([_cl(90.0, thin=False, n_gauge=10)], frame_dt=0.1)
+    assert len(tr.tracks) == 1 and tr.tracks[0].reported and tr.tracks[0].zone == "gauge"
+    ident = tr.tracks[0].id
+    single = _cl(90.0, n_gauge=10)
+    single.ring_count = 1
+    det._thin = [single]
+    for _ in range(3):
+        tr.update([], frame_dt=0.1, thin=det._thin, far_thin=det._far_thin([]))
+        assert tr.tracks[0].id == ident and tr.tracks[0].reported and tr.tracks[0].zone == "gauge"
+    det.cfg.tracking.far_min_ring_count = 0
+    assert det._far_thin([])[0] is single
 
 
 def test_ambiguous_scan_line_is_not_used():

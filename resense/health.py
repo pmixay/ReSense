@@ -14,7 +14,9 @@ per frame and without touching any detection:
   3 m of the track axis): the sightline in a curve, the end of the tunnel, fog;
 * ``rail_lock`` - share of the recent frames in which the rail pair was found (the track model
   runs on its prior without it: stations, switches, a covered bed);
-* ``latency_p95_ms`` against the frame budget;
+* ``latency_p95_ms`` against the frame budget. The detector supplies the previous completed
+  process interval, including health, and labels this basis and one-frame age in its result.
+  Its first call/reset has no sample: p95 is 0 until a completed call is supplied;
 * the mount calibration status and drift (``resense/calibration.py``);
 * ``floor_shadow_frames`` / ``floor_held_frames`` / ``floor_released_frames`` (review 25.09) -
   since the start (or a reset), the frames in which the floor-shadow rule of the track model
@@ -47,6 +49,49 @@ from resense import _native
 from resense.config import GaugeConfig, HealthConfig
 
 LEVELS = ("ok", "warn", "error")
+
+
+_F32_MAX = float(np.finfo(np.float32).max)
+
+
+def _float32_at_least(edge: float) -> np.float32:
+    """The smallest float32 >= ``edge``: for float32 ``v``, ``v >= edge`` exactly when ``v`` is at
+    least this."""
+    f = np.float32(edge)
+    return np.nextafter(f, np.float32(np.inf)) if float(f) < edge else f
+
+
+def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
+    """Exact ``np.histogram(values, bins=edges)[0]`` for the small explicit edge array of health.
+
+    Counts ``values >= edge`` for every edge and differences the counts: vectorised comparisons, no
+    sort (``np.histogram`` sorts for explicit edges, slow on NumPy 1.x without AVX-512) and no
+    per-value search (branchy, slower than ``np.histogram`` on NumPy 2). ``np.histogram`` compares
+    float32 data with float64 edges exactly; float32 data are compared here with the float32
+    threshold that gives the same answer for every float32 value (the smallest float32 at least the
+    edge, or above the last edge), so the cloud is not converted. NaN fails every comparison and
+    +-inf cancel out, as there. Unusual layouts/dtypes and subclass dispatch keep the original call.
+    29.09 (docs/evidence/cycle_2026-09-29/health_compare_counts): replaces the 28.09 binary search.
+    """
+    floating = (np.dtype("float32"), np.dtype("float64"))
+    if not (type(values) is np.ndarray and values.ndim == 1 and values.dtype in floating
+            and type(edges) is np.ndarray and edges.ndim == 1 and edges.dtype in floating
+            and 2 <= edges.size <= 257 and np.isfinite(edges).all()
+            and (edges[1:] > edges[:-1]).all()):
+        return np.histogram(values, bins=edges)[0]
+    e = edges.astype(np.float64, copy=False).tolist()
+    if values.dtype == np.float32 and max(abs(e[0]), abs(e[-1])) < _F32_MAX:
+        at = [_float32_at_least(x) for x in e]
+        above = at[-1] if float(at[-1]) > e[-1] else np.nextafter(at[-1], np.float32(np.inf))
+        v = values
+    else:
+        v = values.astype(np.float64, copy=False)
+        at, above = e, None
+    at_least = np.array([np.count_nonzero(v >= x) for x in at], dtype=np.intp)
+    beyond = np.count_nonzero(v > e[-1]) if above is None else np.count_nonzero(v >= above)
+    counts = at_least[:-1] - at_least[1:]
+    counts[-1] += at_least[-1] - beyond   # the last bin includes its right edge
+    return counts
 
 
 def visibility_along_track(xyz: np.ndarray, center_y, band: float = 3.0, k: int = 20) -> float:
@@ -85,8 +130,14 @@ class HealthMonitor:
         self._shadow = [0, 0, 0]
 
     def update(self, xyz: np.ndarray, meta: dict, track, gauge: GaugeConfig, trusted_range: float,
-               rails_min_score: float, latency_ms: float, calibration: Optional[dict] = None,
+               rails_min_score: float, latency_ms: Optional[float], calibration: Optional[dict] = None,
                obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None) -> dict:
+        """Update scene health once; append a supplied latency sample, or none for ``None``.
+
+        Numeric callers retain their existing supplied-interval semantics. The detector
+        supplies its previous completed call so timing includes the health update itself.
+        The latency warning still requires ten samples in the configured window.
+        """
         cfg = self.cfg
         msgs, level, dlevel = [], 0, 0
 
@@ -115,7 +166,7 @@ class HealthMonitor:
         if n:
             az = np.degrees(np.arctan2(xyz[:, 1], xyz[:, 0]))
             edges = np.arange(-30.0, 30.0 + 1e-6, cfg.sector_deg)
-            counts = np.histogram(az, bins=edges)[0]
+            counts = _sector_counts(az, edges)
             ref = float(np.median(counts)) if counts.size else 0.0
             blocked = int((counts < 0.05 * max(ref, 1.0)).sum()) if ref > 0 else int(counts.size)
             if blocked:
@@ -138,8 +189,9 @@ class HealthMonitor:
             elif getattr(track, "floor_hold_run", 0) > 0:
                 self._shadow[2] += 1
 
-        self._lat.append(float(latency_ms))
-        p95 = float(np.percentile(self._lat, 95))
+        if latency_ms is not None:
+            self._lat.append(float(latency_ms))
+        p95 = float(np.percentile(self._lat, 95)) if self._lat else 0.0
         if len(self._lat) >= 10 and p95 > cfg.latency_budget_ms:
             flag(1, f"latency p95 {p95:.0f} ms over the {cfg.latency_budget_ms:.0f} ms budget",
                  decision=cfg.latency_affects_decision)

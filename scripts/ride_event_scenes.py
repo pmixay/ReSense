@@ -19,6 +19,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from scripts.cache_io import cache_file_stem, cache_files, load_cache_array  # noqa: E402
 from resense.config import SensorConfig  # noqa: E402
 from resense.frame import frame_from_compact  # noqa: E402
 from resense.io import _natural_key  # noqa: E402
@@ -58,16 +59,25 @@ def collect(paths):
             "alarm_events": len(out), "events": out}
 
 
+def cache_index(directory):
+    """Index either raw NPY or zstd-compressed NPY cache files by frame ID."""
+    return {cache_file_stem(path): path for path in cache_files(str(directory))}
+
+
 def render(inventory, cache, out):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
+    frames = cache_index(cache)
     for page in range((len(inventory["events"]) + 5) // 6):
         events = inventory["events"][page * 6:page * 6 + 6]
         fig, axes = plt.subplots(len(events), 3, figsize=(18, 3.6 * len(events)), squeeze=False)
         for row, event in enumerate(events):
-            frame = frame_from_compact(np.load(Path(cache) / f"{event['representative_frame']}.npy"), SensorConfig())
+            frame_id = event["representative_frame"]
+            if frame_id not in frames:
+                raise FileNotFoundError(f"no cached frame for event representative {frame_id}")
+            frame = frame_from_compact(load_cache_array(frames[frame_id]), SensorConfig())
             xyz = frame.xyz
             # Deterministic thinning is only for presentation; scoring never reads these views.
             p = xyz[(xyz[:, 0] > 2) & (xyz[:, 0] < 180) & (np.abs(xyz[:, 1]) < 9)][::3]

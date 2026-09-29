@@ -1,0 +1,145 @@
+{
+  "files": [
+    {
+      "bytes": 2805,
+      "path": "README.md",
+      "sha256": "b20105ab7b4a33b203cd4e646f773dd130310c8369647050ee7ad92eadb680d8"
+    },
+    {
+      "bytes": 2157,
+      "path": "cache/new_data_intake_manifest.json",
+      "sha256": "e973932d1ebc4ca9b02d500146dadb57022abe6a80649e2978d83630e38f97d1"
+    },
+    {
+      "bytes": 2260,
+      "path": "cache_identity.json",
+      "sha256": "8f7dae75f88b6f3b149145545e5b52ad3978b402b18ccf7cef81f6749859fad2"
+    },
+    {
+      "bytes": 12365,
+      "path": "candidate-source.patch",
+      "sha256": "7805bb5b74a5940fae9a49a13fbf8c5cdbd5eb2e74ed2e6d71e22328261377a8"
+    },
+    {
+      "bytes": 1543657,
+      "path": "comparison.json",
+      "sha256": "065616909f47d4e43c9b610ee4e22da5729f44284adff98e911b20be8910c767"
+    },
+    {
+      "bytes": 4804,
+      "path": "completion.json",
+      "sha256": "9870712f51f171a69bc10f51e5d15e47fe52bbebdb1608fde59cefd88dca789d"
+    },
+    {
+      "bytes": 19908,
+      "path": "gate.json",
+      "sha256": "8abae6496ffbe512c3643a0c6e97632ce61118e86078681c2f55f7282d14ffc7"
+    },
+    {
+      "bytes": 26039,
+      "path": "gate.txt",
+      "sha256": "398fbce84470c533c0aa5239a730934bec97311dfcee9339f3fb81c909e16cca"
+    },
+    {
+      "bytes": 4570,
+      "path": "identity_pre.json",
+      "sha256": "7de690b575e794df9464ecf8e5b68e8bf6f96bcb2f13abc5c2d978f956f5729b"
+    },
+    {
+      "bytes": 4465,
+      "path": "protocol.json",
+      "sha256": "fb6fd0e044996f5c3b0d331e1fc5cc0e3c09d6c8c6c8e0f86ffbd68b853176ae"
+    },
+    {
+      "bytes": 3632,
+      "path": "run_gate.py",
+      "sha256": "e667e9e2f6720a7ee1ddfcb204a69e6484f9b3ec94e7f64d55e31990f770fde7"
+    },
+    {
+      "bytes": 279096,
+      "path": "work/cloud_with_fake_obj.jsonl.gz",
+      "sha256": "046441eea4273417fd279fb7b11181d565ee3e5d21b11f7ea9cd31cd85853d35"
+    },
+    {
+      "bytes": 8787,
+      "path": "work/config.yaml",
+      "sha256": "a0d452681afd32c96491c6c8030a034c7eeeac9c6a6d0b1e2093f8822ba4e640"
+    },
+    {
+      "bytes": 38480,
+      "path": "work/doubleT_obstacle.jsonl.gz",
+      "sha256": "b958a6c153bd1bf490dfd97fda6f12beab6625fe4e8364116d1f94e9656dcf3e"
+    },
+    {
+      "bytes": 63462,
+      "path": "work/doubleT_platform.jsonl.gz",
+      "sha256": "dc0e2ee35fbdef8969379f1c1d1978aa54114e4d07cb803ab09dd8ffdd6f5af2"
+    },
+    {
+      "bytes": 262698,
+      "path": "work/new_data_0.jsonl.gz",
+      "sha256": "561ff2c9cff2773065cf102d3d3e95584d867e64f93e034de9efbef77e5629ff"
+    },
+    {
+      "bytes": 291271,
+      "path": "work/new_data_1.jsonl.gz",
+      "sha256": "08ce674d62cc76f2f71c5a3f1e62415f5db3f8095b3c7b62e69c2125ead33762"
+    },
+    {
+      "bytes": 263196,
+      "path": "work/new_data_2.jsonl.gz",
+      "sha256": "30e52c7e9710b6ebff05bfad0cd768d5ec7eef630fe4e4425e59bc08021b0d66"
+    },
+    {
+      "bytes": 274606,
+      "path": "work/new_data_3.jsonl.gz",
+      "sha256": "07852458921bc8dfa0a0e7a2403362834c1510ac47963bcbb94e940cd72f054a"
+    },
+    {
+      "bytes": 258553,
+      "path": "work/new_data_4.jsonl.gz",
+      "sha256": "b4da152e9254fb97f68946c0a26ce2df70bbeffe832c1edad2124967a78ae103"
+    },
+    {
+      "bytes": 247869,
+      "path": "work/new_data_5.jsonl.gz",
+      "sha256": "c06ba5419287a74e7834986a0d952395a3665355f8659be5f72e0325e763a836"
+    },
+    {
+      "bytes": 249280,
+      "path": "work/new_data_6.jsonl.gz",
+      "sha256": "313323b2bacbd4406bd1c811cdc3c9c8b75cee6df7759e02a367e8184b56115d"
+    },
+    {
+      "bytes": 233622,
+      "path": "work/new_data_7.jsonl.gz",
+      "sha256": "459235603801f81ecbb3a414b37de445c0da7c749ffb77c9c80f0dff5ad00142"
+    },
+    {
+      "bytes": 52978,
+      "path": "work/roundT_doubleT.jsonl.gz",
+      "sha256": "fc5eaff56f04bb484472d349573ce6befb0ddac5654a65b2f4f050683d8cece1"
+    },
+    {
+      "bytes": 50181,
+      "path": "work/roundT_pressureGate_roundT.jsonl.gz",
+      "sha256": "7f3fa02562cbc9335696389c962e382f8d1a5a2d682047180e2e3d43a3a51003"
+    },
+    {
+      "bytes": 95260,
+      "path": "work/roundT_squareT_pressureGate_squareT.jsonl.gz",
+      "sha256": "9397120457b8dbf373ebf57f0e14d3c39e9fa94880cab8a22b12893f9f7b9449"
+    },
+    {
+      "bytes": 1817560,
+      "path": "work/setF_straight.json",
+      "sha256": "80e8f9fea87f98beea5012c64eb72c7f9b0bf47ba0ea6b85678656d56c0ccb4e"
+    },
+    {
+      "bytes": 167092,
+      "path": "work/squareT_platform_squareT_switch.jsonl.gz",
+      "sha256": "70026385916caeb0d1cbcbe2f834f13f37bc4441ef8bf172794e17983e1fc6c2"
+    }
+  ],
+  "schema": "resense-low-ray-full-gate-artifacts-v1"
+}

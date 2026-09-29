@@ -67,6 +67,14 @@
 `extended_dataset_intake.json` остаётся в `docs/`: его читают скрипты (`scripts/far_range_eval.py`,
 `scripts/eval_real.py`, `scripts/ml_dataset.py`).
 
+## Экспериментальная ветка
+
+Текущие измерения экспериментальной ветки и ограничения обзоров: [`SCORECARD.md`](SCORECARD.md).
+Приёмка полного тайминга и печать: [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) и
+[`evidence/cycle_2026-09-28/complete_timing/default/README.md`](evidence/cycle_2026-09-28/complete_timing/default/README.md).
+Эксперименты, не включённые в базовую конфигурацию, публикуются вместе с исходными данными и явно
+указывают, что ещё требуется проверить.
+
 ## 3. Глоссарий
 
 | термин | значение |

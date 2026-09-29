@@ -1,0 +1,125 @@
+{
+  "schema": "resense-current-review-v1",
+  "date": "2026-09-28",
+  "reviewed_commit": "20e82297bbf859e7d63bee35044d6c8314f746c5",
+  "branch": "gpt-score-push-20260928",
+  "score_type": "internal engineering reassessment; not an organizer score",
+  "method": "Lead reviewer with three specialist reviews; prior scores visible; no blinded-panel or paired-mean claim.",
+  "criteria": [
+    {
+      "id": "8.1",
+      "name": "Functionality",
+      "maximum": 25,
+      "score": 16,
+      "delta_from_previous_single_review": 0
+    },
+    {
+      "id": "8.2",
+      "name": "Range",
+      "maximum": 15,
+      "score": 7.5,
+      "delta_from_previous_single_review": 0
+    },
+    {
+      "id": "8.3",
+      "name": "Speed",
+      "maximum": 10,
+      "score": 8,
+      "delta_from_previous_single_review": 0
+    },
+    {
+      "id": "8.4",
+      "name": "Generalization",
+      "maximum": 15,
+      "score": 8,
+      "delta_from_previous_single_review": 0
+    },
+    {
+      "id": "8.5",
+      "name": "Technical quality",
+      "maximum": 10,
+      "score": 8,
+      "delta_from_previous_single_review": 0
+    },
+    {
+      "id": "8.6",
+      "name": "Ease of launch",
+      "maximum": 10,
+      "score": 8.5,
+      "delta_from_previous_single_review": 0
+    },
+    {
+      "id": "8.7",
+      "name": "Team approach",
+      "maximum": 10,
+      "score": 9,
+      "delta_from_previous_single_review": 0
+    },
+    {
+      "id": "8.8",
+      "name": "Pitch",
+      "maximum": 5,
+      "score": 4,
+      "delta_from_previous_single_review": 0
+    }
+  ],
+  "total": 69,
+  "previous_single_review": {
+    "commit": "a2f9122acdd9de83d4bf30a2befdc0d3e1f9cdd5",
+    "total": 69
+  },
+  "delta_from_previous_single_review": 0,
+  "historical_paired_review": {
+    "commit": "806b6c4912d0a2bd92f5f4cc726fba87758e6548",
+    "total": 66.5,
+    "note": "Different method and source; not averaged with this review."
+  },
+  "reason_for_no_increase": "Production detector, settings, launch and pitch unchanged. Synthetic fixture adds diagnostic input. Continuity candidate improves known rail object but fails four enforced metrics and remains rejected.",
+  "fresh_replay": {
+    "frames": 201,
+    "person_hits": 61,
+    "person_visible_frames": 61,
+    "rail_object_hits_after_frame_75": 123,
+    "rail_object_visible_frames_after_frame_75": 126,
+    "rail_object_non_stop_frames": [
+      111,
+      117,
+      197
+    ]
+  },
+  "gate_accounting": {
+    "comparison_rows": 224,
+    "enforced_rows": 146,
+    "enforced_unchanged": 146,
+    "informational_unchanged": 62,
+    "informational_changed": 16,
+    "note": "208 same includes informational rows, not 208 enforced rows."
+  },
+  "checks": {
+    "detector_seal": "PASS:31 files",
+    "parameter_sync": "PASS",
+    "ruff": "PASS:0.15.8",
+    "reviewed_source_ci": "https://github.com/pmixay/ReSense/actions/runs/36453635491",
+    "reviewed_source_ci_jobs_passed": 4,
+    "synthetic_smoke_frames": 302,
+    "local_unit_tests": {
+      "initial_passed": 764,
+      "initial_failed": 1,
+      "subtests_passed": 6,
+      "initial_failure": "Missing cache frame new_data_55_0013, before detector assertion",
+      "repair": "Rebuilt splits55/56 from local original DB3, then reran only affected test",
+      "focused_rerun_passed": 1,
+      "unique_tests_passed_across_runs": 765,
+      "unresolved_failures": 0,
+      "skipped": 0
+    }
+  },
+  "limitations": [
+    "Official criterion weights are unpublished; prior internal weights retained.",
+    "No untouched real positive recording or new stand measurement.",
+    "Full gate/robustness/ROS figures primarily inherited and recomputed from saved outputs, not rerun in full.",
+    "Current branch skips extended cold-bag and remote-viewer jobs and archive retention; earlier source evidence is identified.",
+    "Local raw replay timings were not used for score due concurrent workload."
+  ],
+  "report": "../../CURRENT_REVIEW_2026-09-28.md"
+}

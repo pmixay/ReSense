@@ -1,0 +1,18 @@
+{
+  "commit": "ff1b8bd63ef4c51532d44e422b854847e72220fb",
+  "status": "",
+  "source_sha256": "15f67a0b1739716ab2e5aa182198f95f6e68a8ad9c5d08f147b3c7106c7f2a82",
+  "config_sha256": "8c25720bfbe082bcef41a6f69ea5916068221dec79adc628e5b4543533f065b1",
+  "config_file_sha256": "72836545de92c18275feb92ffb56079c7d2b4c8e9f51f83c5324918c6131da88",
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "native_path": "/workspace/ReSense-onset/resense/_resense_native.so",
+  "native_enabled": true,
+  "protocol_sha256": "9548d73f22f98015231d7b88de79181df1fc1de87f1f465ce35d0383cbe2abf7",
+  "observer_sha256": "12767e188dc5f3fc11afffd619adc31af97e3620e034e45e97cf1774787c5661",
+  "snapshot_helper_sha256": "24f99af31f79eaafe606b322ad8c2309b5c0cd9f6e186ef0e4f7a43aeba60120",
+  "helper_sha256": {
+    "scripts/eval_real.py": "b6accfe85926c489e7048609f9243f21ff87c02b0a03a2eef6817210918e080c",
+    "scripts/cache_io.py": "6368aa168712a11e07562bbc71f39fffb373e60bbacec54ef7907a5080165793",
+    "scripts/compare_health_gate.py": "07edb9b1eaa2e622965c89264ec8bbb23ad8be51b0ebd5a38e8ec14e34931cc0"
+  }
+}

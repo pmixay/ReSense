@@ -1,0 +1,823 @@
+{
+  "schema": "resense.synthetic_development_baseline_summary.v1",
+  "synthetic": true,
+  "real_holdout": false,
+  "reserved_evaluation_run": false,
+  "complete_split": true,
+  "positive_cases": 32,
+  "negative_cases": 3,
+  "detector_frames_per_encoding": 560,
+  "source": {
+    "commit": "09912515587adef22668107abfe04c048f0c7a1c",
+    "detector_source_sha256": "29574d0f9ce5ae90749cd2d4a8c28bd7d2bf607f43a17fd494b0c10f8c662636"
+  },
+  "config_sha256": "de5c7fd6dfa74c1e656af6e233efd625e3e552736534e32efa625e5e8ff57f47",
+  "protocol_sha256": "4a2aed405e6aabd3ff53df3b29a2dee2ca8cc588340fc1357a3036e7a31ccd9a",
+  "cache_manifest_sha256": "b6ad3980cd426848a71ece35b6b9b601c15a8f29bf37e07edda47d07c29cb330",
+  "cache_generator_script_sha256": "e6789b908f95d83d43cb838ec9809bb699c95daa130d7da71f550bb41098b5a0",
+  "evaluator_sha256": "2e61504a9be1bf5f5ec4da4b77474f89814780907f6c5cbb831f16a62a3ae66a",
+  "raw_report": {
+    "file": "baseline-development.json.gz",
+    "sha256": "681489faf606fe07e67af4df7e774cb5d376ec1f02b3bf761400be36bdd517c2",
+    "uncompressed_sha256": "70c7c651b55e70e208d62d4c139ab11fbeb1984ed1fa22b49797911a53e62fc6",
+    "compressed_bytes": 57297,
+    "uncompressed_bytes": 1714562
+  },
+  "encodings": {
+    "float32": {
+      "positive_sequences_any_stop": 19,
+      "positive_sequences_sustained": 19,
+      "visible_target_frames": 512,
+      "matched_visible_stop_frames": 228,
+      "zero_return_positive_cases": 0,
+      "unmatched_positive_stop_frames": 0,
+      "negative_stop_frames": 0,
+      "negative_stop_episodes": 0,
+      "clear_overclaim_visible_frames": 208
+    },
+    "compact16": {
+      "positive_sequences_any_stop": 19,
+      "positive_sequences_sustained": 19,
+      "visible_target_frames": 512,
+      "matched_visible_stop_frames": 228,
+      "zero_return_positive_cases": 0,
+      "unmatched_positive_stop_frames": 0,
+      "negative_stop_frames": 0,
+      "negative_stop_episodes": 0,
+      "clear_overclaim_visible_frames": 208
+    }
+  },
+  "quantization_disagreement_frames": 0,
+  "cases": [
+    {
+      "name": "rail_box_24m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "rail_box_24m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "rail_box_50m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "rail_box_50m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "rail_box_100m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "rail_box_100m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "rail_box_150m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "rail_box_150m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "cube30_24m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "cube30_24m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "cube30_50m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "cube30_50m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "cube30_100m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "cube30_100m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "cube30_150m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "cube30_150m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "box50_24m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "box50_24m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "box50_50m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "box50_50m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "box50_100m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "box50_100m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "box50_150m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "box50_150m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 16
+        }
+      }
+    },
+    {
+      "name": "person_24m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "person_24m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "person_50m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "person_50m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "person_100m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "person_100m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "person_150m_0",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "person_150m_1",
+      "positive": true,
+      "encodings": {
+        "float32": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 16,
+          "matched_stop_frames": 12,
+          "first_stop_frame": 4,
+          "sustained": true,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "clear",
+      "positive": false,
+      "encodings": {
+        "float32": {
+          "visible_frames": 0,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 0,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "outside_person_left",
+      "positive": false,
+      "encodings": {
+        "float32": {
+          "visible_frames": 0,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 0,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    },
+    {
+      "name": "outside_person_right",
+      "positive": false,
+      "encodings": {
+        "float32": {
+          "visible_frames": 0,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        },
+        "compact16": {
+          "visible_frames": 0,
+          "matched_stop_frames": 0,
+          "first_stop_frame": null,
+          "sustained": false,
+          "unmatched_stop_frames": 0,
+          "clear_overclaim_frames": 0
+        }
+      }
+    }
+  ]
+}

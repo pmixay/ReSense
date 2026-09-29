@@ -540,12 +540,11 @@ def test_input_queue_depth(node_cls):
     assert node_cls().subs["/lidar_points"].qos["depth"] == 3
 
 
-def test_first_backlog_is_worked_through_at_5_hz_and_zero_step_keeps_latest(node_cls):
-    """The first backlog of a recording (the player's start-up burst, or the whole overdue
-    recording from a cold disk) is worked through ``catchup_startup_step`` (0.2 s) apart: the 5 Hz
-    input the detector is validated on, with no gap that resets the scene; ``catchup_startup_step:
-    0`` keeps every input-period frame (the 26.09 behaviour). Later live bursts still use the
-    configured catch-up step; ``catchup_step: 0`` remains newest-only."""
+def test_first_backlog_preserves_every_frame_by_default_and_supports_opt_in_thinning(node_cls):
+    """Experimental preserves all 201 startup frames by default. Explicit startup_step=0.2
+    enables main's 5 Hz chain; catchup_step=0 remains newest-only. Later live bursts still use
+    the configured catch-up step."""
+    assert node_cls().catchup_startup_step == 0.0
     plan = node_cls.catchup_plan
     assert plan([5.0], 4.9, 0.3, 5.0) == [0]
     t = [0.1 * k for k in range(41)]
@@ -561,8 +560,8 @@ def test_first_backlog_is_worked_through_at_5_hz_and_zero_step_keeps_latest(node
 
     every_frame = [round(0.1 * k, 1) for k in range(201)]
     five_hz = [round(0.2 * k, 1) for k in range(101)]
-    for overrides, expect in (({"catchup_step": 0.3}, five_hz),
-                              ({"catchup_step": 0.3, "catchup_startup_step": 0.0}, every_frame),
+    for overrides, expect in (({}, every_frame),
+                              ({"catchup_step": 0.3, "catchup_startup_step": 0.2}, five_hz),
                               ({"catchup_step": 0.0}, [20.0])):
         _Node.overrides = overrides
         node = node_cls()
@@ -604,7 +603,7 @@ def test_first_backlog_is_worked_through_at_5_hz_and_zero_step_keeps_latest(node
 
 @pytest.mark.parametrize("startup_step", [0.0, 0.2])
 def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, monkeypatch, startup_step):
-    """Frames the start-up catch-up skips on purpose (every other one at the default 0.2 s) are
+    """Frames the start-up catch-up skips on purpose (every other one with explicit 0.2 s) are
     ``catchup_skipped``; a later live gap still counts missing recording messages separately."""
     _Node.overrides = {"catchup_startup_step": startup_step}
     node = node_cls()
@@ -709,14 +708,16 @@ def _catchup_stream(node, monkeypatch, now, topic="/lidar_points", frame_id="hes
 
 
 @pytest.mark.parametrize("startup_lag, expect_resets", [(5.0, True), (20.0, False)])
-def test_cold_recording_burst_keeps_a_continuous_startup_chain(node_cls, monkeypatch, startup_lag, expect_resets):
+@pytest.mark.parametrize("startup_step", [0.0, 0.2])
+def test_cold_recording_burst_keeps_a_continuous_startup_chain(
+        node_cls, monkeypatch, startup_lag, expect_resets, startup_step):
     """Replay the failure's arrival pattern: each callback gets another 1.5 s of recording.
 
     The old 5 s cutoff repeatedly jumps over a second of scene history. The startup allowance
-    keeps a chain 0.2 s apart (5 Hz, no scene reset) even after its one-second entry window has
-    elapsed, and closes when caught up. A later live backlog still uses the 0.3 s step and 5 s bound.
+    keeps the default every-frame chain or the explicit 5 Hz chain even after its one-second
+    entry window has elapsed, and closes when caught up. Later live backlogs use the normal bound.
     """
-    _Node.overrides = {"catchup_startup_max_lag": startup_lag}
+    _Node.overrides = {"catchup_startup_max_lag": startup_lag, "catchup_startup_step": startup_step}
     node = node_cls()
     now = [100.0]
     queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
@@ -733,9 +734,11 @@ def test_cold_recording_burst_keeps_a_continuous_startup_chain(node_cls, monkeyp
     assert next_frame == 201 and seen[-1] == 20.0
     assert bool(resets) is expect_resets
     if not expect_resets:
-        assert max(np.diff(seen)) <= 0.200001
+        assert max(np.diff(seen)) <= max(0.1, startup_step) + 1e-6
         assert seen[0] == 0.0 and len(seen) >= 101
         assert node.dropped == node.dropped_skipped and not node.skipped
+        if startup_step == 0:
+            assert len(seen) == 201 and node.dropped == 0
     assert not node.startup_catchup_active and node.catchup is None
     # An independent stall in this recording must not inherit the startup allowance.
     queue.extend(cloud(k / 10) for k in range(202, 351))
@@ -743,7 +746,9 @@ def test_cold_recording_burst_keeps_a_continuous_startup_chain(node_cls, monkeyp
     assert 30.0 <= seen[-1] <= 30.3
 
 
-def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch):
+@pytest.mark.parametrize("startup_step", [0.0, 0.2])
+def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch, startup_step):
+    _Node.overrides = {"catchup_startup_step": startup_step}
     node = node_cls()
     now = [100.0]
     queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
@@ -753,8 +758,9 @@ def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch)
     node.on_cloud(cloud(0.1), "/lidar_points")
     while node.pending:
         node.on_pending()
-    assert seen[:3] == pytest.approx([0.0, 0.2, 0.4])  # the start-up burst at 5 Hz
-    assert max(np.diff(seen)) <= 0.200001
+    step = max(0.1, startup_step)
+    assert seen[:3] == pytest.approx([0.0, step, 2 * step])
+    assert max(np.diff(seen)) <= step + 1e-6
     assert seen[-1] == 15.0 and not node.startup_catchup_active
 
 
@@ -1125,6 +1131,26 @@ def test_raw_cdr_input_gives_the_same_results_as_messages(node_cls, tunnel, box_
     assert b[-1]["node"]["latency_ms"] >= b[-1]["node"]["detect_ms"] > 0
 
 
+def test_a_cloud_without_a_ring_field_reaches_the_detector_with_unknown_channels(node_cls, tunnel, monkeypatch):
+    """Both decoders fill a missing ``ring`` field with zeros. The node passes ``ring=None`` then, so
+    the cross-ring rules (``tracking.far_min_ring_count``) see unknown channels, not one known channel
+    for every point (which would drop all far sparse evidence of a sensor without that field)."""
+    node = node_cls()
+    seen = []
+    process = node.detector.process
+    monkeypatch.setattr(node.detector, "process",
+                        lambda frame, **k: (seen.append(frame.ring), process(frame, **k))[1])
+    for k, drop_ring in enumerate((False, True)):
+        msg, _ = _cloud(tunnel[0].xyz, 0.1 * k)
+        if drop_ring:
+            msg.fields = [f for f in msg.fields if f.name != "ring"]   # its bytes become padding
+        node.on_cloud(msg, "/lidar_points", {"source_timestamp": time.time_ns()})
+    assert len(seen) == 2
+    assert seen[0] is not None and seen[0].dtype == np.uint16 and seen[0].size > 0
+    assert seen[1] is None
+    assert node.published["/resense/decision"][-1].data != "FAULT"
+
+
 def test_input_is_subscribed_raw_unless_disabled_and_bad_bytes_fall_back(node_cls):
     node = node_cls()
     assert all(sub.raw is True for sub in node.subs.values())
@@ -1240,3 +1266,34 @@ def test_startup_chains_even_a_short_backlog_but_live_keeps_it_whole(node_cls):
     assert plan([0.2, 0.3, 0.4], 0.1, 0.2, 5.0, thin_short=True) == [1, 2]
     assert plan([0.2], 0.1, 0.2, 5.0, thin_short=True) == [0]
     assert plan([0.2, 0.3], 0.1, 0.2, 5.0) == [0, 1]
+
+
+def test_truncated_padded_cloud_faults_before_detection_and_recovers(freshness_driver, monkeypatch):
+    """A payload with both points but missing declared row padding must not publish fresh GO."""
+    node, clock, send = freshness_driver
+    send(20.0)
+    assert send(20.1)["decision"] == "GO"
+    msg, _ = _cloud(np.array([[5.0, 0.0, 0.0]], dtype=np.float32), 20.2, frame_id="lidar")
+    point = msg.data
+    msg.height, msg.width, msg.row_step = 2, 1, 2 * msg.point_step
+    msg.data = point + bytes(msg.point_step) + point
+    assert msg.width * msg.height * msg.point_step <= len(msg.data) < msg.height * msg.row_step
+    calls = []
+    detect = node.detector.process
+
+    def recording_detect(frame, **kwargs):
+        calls.append(frame.stamp)
+        return detect(frame, **kwargs)
+
+    monkeypatch.setattr(node.detector, "process", recording_detect)
+    clock["wall"] += 0.1
+    clock["mono"] += 0.1
+    before = node.n_frames
+    node.on_cloud(msg, "/lidar_points", {"source_timestamp": int((clock["wall"] - 0.1) * 1e9)})
+    fault = json.loads(node.published["/resense/status"][-1].data)
+    assert not calls and node.n_frames == before
+    assert fault["snapshot_kind"] == "processing_error" and fault["decision"] == "FAULT"
+    assert fault["clear_distance"] == 0 and not fault["freshness"]["valid"]
+    assert send(20.3)["decision"] == "FAULT"
+    recovered = send(20.4)
+    assert recovered["decision"] == "GO" and recovered["freshness"]["valid"]

@@ -1,0 +1,145 @@
+{
+  "schema": "resense-main-sync-installed-verification-v1",
+  "image_id": "sha256:f7ae11b87e187448ac25166983438e7304617b2eb85505564b38ed647dc2ec50",
+  "commit": "75ef4e20e587203a394e365c4fa601c822adb164",
+  "expected_identity_sha256": "99a2194414f09eb09ed7dfeb3beffe932414f9220551d08254ad7c8a281c9714",
+  "protocol_sha256": "b9ebdad98c6a80c12ddbaa0295aad5c056c0c2cd7a961721ca94c48b3d04bb63",
+  "observer_sha256": "e69e534b58ee8600b02e9535c651dc72fad953a3a6d8b4bf654f25880b59ba62",
+  "files": {
+    "resense/__init__.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+      "sha256": "fdf04a88071df1d8300d46f75d34cc00bf9fa205369be99b3cfef6db514ae306"
+    },
+    "resense/_native.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/_native.py",
+      "sha256": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58"
+    },
+    "resense/accumulate.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/accumulate.py",
+      "sha256": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd"
+    },
+    "resense/calibration.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/calibration.py",
+      "sha256": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a"
+    },
+    "resense/cli.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/cli.py",
+      "sha256": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f"
+    },
+    "resense/clustering.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/clustering.py",
+      "sha256": "4aa07b00e1e23be3a70942a4411233b73c4b3a17ae1145a09cf279c76f124f1a"
+    },
+    "resense/config.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/config.py",
+      "sha256": "0c1bfe51e44dec5370cbc415e18fa3050192514151222f87d252536c14be1f0c"
+    },
+    "resense/detector.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/detector.py",
+      "sha256": "28b6ea34f9d7487c11b5c6ae2ec0c77ad7bf1fd16ff30218a64c55bc666203e7"
+    },
+    "resense/egomotion.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/egomotion.py",
+      "sha256": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a"
+    },
+    "resense/evidence.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/evidence.py",
+      "sha256": "083ee20fc8bb9fc915575bd06fa04869a5f5ddc6ca9217a6145879d3c8249853"
+    },
+    "resense/frame.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/frame.py",
+      "sha256": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9"
+    },
+    "resense/gauge.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/gauge.py",
+      "sha256": "0cd3b119249dc34fd36397afa3f60a5aaa22c9917d94dea4ffe6c79e4e744f35"
+    },
+    "resense/health.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/health.py",
+      "sha256": "20a046d43cbacfb11929ba4437c1a4c2618263c9fb5b558a3b7a9471bcddea00"
+    },
+    "resense/io.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/io.py",
+      "sha256": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34"
+    },
+    "resense/lowobj.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/lowobj.py",
+      "sha256": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12"
+    },
+    "resense/metrics.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/metrics.py",
+      "sha256": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a"
+    },
+    "resense/models/track_opinion.json": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/models/track_opinion.json",
+      "sha256": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6"
+    },
+    "resense/models/track_opinion_report.json": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/models/track_opinion_report.json",
+      "sha256": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa"
+    },
+    "resense/opinion.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/opinion.py",
+      "sha256": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8"
+    },
+    "resense/pointcloud.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/pointcloud.py",
+      "sha256": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053"
+    },
+    "resense/sensor.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/sensor.py",
+      "sha256": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0"
+    },
+    "resense/synthetic.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/synthetic.py",
+      "sha256": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747"
+    },
+    "resense/track.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/track.py",
+      "sha256": "f9e405ea1f74555e55d2bf6de9664d8078349e42077dcab4a6c3a5a3284c56ba"
+    },
+    "resense/tracking.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/tracking.py",
+      "sha256": "155f54bfb208d68f527d2d6d942499d6bf1c50327f616d9f9905033f26c85ef8"
+    },
+    "resense/viz.py": {
+      "path": "/usr/local/lib/python3.10/dist-packages/resense/viz.py",
+      "sha256": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db"
+    },
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": {
+      "path": "/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+      "sha256": "1b9c40581c39ddecbd81097dc4da4bb9e9a9fa09d1028f58cffc6c76171422f5"
+    },
+    "ros2_ws/src/resense_ros/resense_ros/fastcloud.py": {
+      "path": "/opt/resense/ros2_ws/src/resense_ros/resense_ros/fastcloud.py",
+      "sha256": "fe211c7c8bcf729a3d7d9e771aace2452a6326556b42f3a9bdfbfa16d97cb9f5"
+    },
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": {
+      "path": "/opt/resense/ros2_ws/src/resense_ros/launch/detector.launch.py",
+      "sha256": "76f66989011ae51d13689f2232a4690ce616d3b2f541e9316820d81f1cc2bcaa"
+    },
+    "configs/default.yaml": {
+      "path": "/opt/resense/ros2_ws/src/resense_ros/config/detector.yaml",
+      "sha256": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2"
+    },
+    "scripts/check_dry_run.py": {
+      "path": "/opt/resense/scripts/check_dry_run.py",
+      "sha256": "5249ef4457a0337c3d7f11c7d071341dfc51eea14885568ba2fb6d513ac39590"
+    },
+    "scripts/check_fast_input.py": {
+      "path": "/opt/resense/scripts/check_fast_input.py",
+      "sha256": "5f82b278b53e006fa63c168ca09b79313a4aae0b6fcbf7937ebcfcb185b6e852"
+    }
+  },
+  "native": {
+    "enabled": true,
+    "status": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+    "path": "/usr/local/lib/python3.10/dist-packages/resense/_resense_native.cpython-310-x86_64-linux-gnu.so",
+    "sha256": "dc549d0583f92c3acd93c455bf94bab4bbedae35a9580d82ad24786473661d5c"
+  },
+  "node_defaults": {
+    "catchup_startup_step": 0.0,
+    "warmup": true
+  },
+  "pass": true
+}

@@ -1,0 +1,156 @@
+{
+  "schema": "resense-independent-priority-review-v1",
+  "reviewed_commit": "25a218a0a8b4e10089dfcf73b8d557d4a963290e",
+  "reviewed_branch": "experiment/cross-ring-sparse-evidence",
+  "review_type": "fresh-context evidence-informed internal judgment, not blinded or paired",
+  "score": 67,
+  "scores": {
+    "functionality": 17,
+    "range": 6,
+    "speed": 7.5,
+    "generalization": 6,
+    "technical_quality": 9,
+    "launch": 8.5,
+    "approach": 9,
+    "pitch": 4
+  },
+  "preserved_assessments": {
+    "established_lead": 69,
+    "previous_independent": 66,
+    "same_reviewer_paired": {
+      "baseline": 66,
+      "candidate": 66,
+      "delta": 0
+    }
+  },
+  "score_change_interpretation": "New judgment credits archived continuity-source CI modestly; no measured paired score delta or regression is claimed.",
+  "verification": {
+    "heavy_jobs_run": false,
+    "tests_run": false,
+    "internet_searches": false,
+    "github_read_only": true,
+    "raw_archive_hashes_verified": 5,
+    "measured_source_inventory_files_matching_head": 33,
+    "enforced_gate_metrics_unchanged": 146,
+    "gate_wall_seconds": 820
+  },
+  "ci": {
+    "reviewed_head_run": 36471997066,
+    "status_at_read": "in_progress",
+    "archived_continuity_run": 36467904812,
+    "archived_positive_frames": 201,
+    "archived_clear_frames": 252,
+    "positive_decode_detect_p95_ms": 78,
+    "positive_current_e2e_p95_ms": 96,
+    "positive_current_results": 165
+  },
+  "pending_health": {
+    "implementation": "7885c6d",
+    "merged_evaluation_source": "83bc5d8",
+    "focused_tests": 48,
+    "full_gate_and_runtime": "pending; no score credit"
+  },
+  "priorities": [
+    {
+      "rank": 1,
+      "action": "Resolve fresh-onset near-escalation policy conflict and complete native acceptance",
+      "conditional_score_gain": [
+        0.5,
+        1.5
+      ],
+      "engineer_hours": [
+        2,
+        4
+      ],
+      "compute": "One full native gate ~15\u201330 min; histories and ROS after passing",
+      "locations": [
+        "resense/tracking.py:404",
+        "resense/tracking.py:410",
+        "resense/tracking.py:642",
+        "tests/test_fresh_stop_evidence.py:186"
+      ],
+      "evidence": "Windows ride events32\u219227, episodes31\u219226; raw header-clock known positive parity",
+      "risk": "Current advisory cluster vetoes near escalation; demotion/re-entry can lose previously reported STOP frames",
+      "next_action": "Freeze mechanism, resolve policy conflict without a blanket advisory exception, gate source-bound candidate; keep default off unless accepted"
+    },
+    {
+      "rank": 2,
+      "action": "Correct full-call timing; conditionally bound startup recovery",
+      "conditional_score_gain": [
+        0.5,
+        1
+      ],
+      "engineer_hours": [
+        1,
+        3
+      ],
+      "compute": "Quiet paired ROS and focused history 30\u201360 min; broader gate if processing history changes",
+      "locations": [
+        "resense/detector.py:277",
+        "resense/detector.py:279",
+        "resense/detector.py:290",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py:743"
+      ],
+      "evidence": "Health excluded from detector total; quiet traces remain stale throughout because startup preservation survives active catchup",
+      "risk": "Thinning can skip positive evidence; latency monitor change can affect configured decisions",
+      "next_action": "Finish histogram acceptance, measure quiet ROS, correct telemetry, alter startup policy only as separate validated change"
+    },
+    {
+      "rank": 3,
+      "action": "Bound stationary sparse-evidence monitoring with physical-label validation",
+      "conditional_score_gain": [
+        0,
+        1
+      ],
+      "engineer_hours": [
+        3,
+        6
+      ],
+      "compute": "Small development screen then full native gate and monitoring comparison if promising",
+      "locations": [
+        "resense/evidence.py:111",
+        "resense/evidence.py:125",
+        "configs/default.yaml:375",
+        "resense/detector.py:716"
+      ],
+      "evidence": "Two strict voxels can fail clustering; persistent monitoring requires 0.5\u20133m/frame approach",
+      "risk": "Stationary infrastructure can collapse useful range; monitoring is not obstacle recall",
+      "next_action": "Register narrow stable-support exception and coverage bounds; avoid reserved-output tuning"
+    }
+  ],
+  "not_prioritized": [
+    "two-ring filter: no event reduction and synthetic coverage loss",
+    "low-local-support: measured rejected",
+    "simple longer/full-return translated accumulation: fails background screen"
+  ],
+  "barriers": {
+    "data": "No untouched real-positive route or long-range small-target evidence",
+    "hardware": "No early target-stand access; uncertainty rather than failed mandatory check",
+    "labels": "Physical envelope labels not independently surveyed",
+    "human": "Physical second-device and timed human rehearsal unverified"
+  },
+  "report": "/home/likikikpa/ReSense-cycle-data/checkpoint2_priority_astra.md",
+  "near_policy_followup": {
+    "verdict": "Support guarded current ordinary/off_gauge near exception as minimal preservation candidate, not acceptance",
+    "preconditions": [
+      "misses==0",
+      "last exists",
+      "evidence_hist nonempty",
+      "near_escalated",
+      "self._near(last)",
+      "latest source ordinary or off_gauge"
+    ],
+    "ordering": "Before current last.zone gauge check, inside existing q/rule_zone onset gate",
+    "reject_blanket_bypass": "near_escalated alone can be true on current keep_thin evidence",
+    "history_limitation": "Prior keep_thin can contribute to near_hist; current guard preserves default history policy rather than proving all recent hits are ordinary",
+    "stricter_history_change": "Requiring all near_hits ordinary provenance is separate policy with recall risk and history storage requirements",
+    "preserved_guards": [
+      "confirmation thresholds",
+      "column and approach precedence",
+      "calibration handling",
+      "subsequent opinion withholding"
+    ],
+    "required_acceptance": "Re-establish false-event gain, raw/synthetic recall and processing-history behavior after correction",
+    "parent_reported_health_gate_source": "ef71c9d"
+  }
+}

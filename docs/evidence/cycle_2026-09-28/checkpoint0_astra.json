@@ -1,0 +1,85 @@
+{
+  "schema": "resense-improvement-checkpoint-v1",
+  "checkpoint": 0,
+  "date": "2026-09-28",
+  "reviewed_commit": "f5db6d3078869a074b07bb002d4581304229208d",
+  "reviewer": "fresh-context GPT-6 Astra",
+  "score_type": "subjective internal engineering review, not an organizer score",
+  "weights": [
+    25,
+    15,
+    10,
+    15,
+    10,
+    10,
+    10,
+    5
+  ],
+  "criteria": {
+    "functionality": 15.5,
+    "range": 6,
+    "speed": 9,
+    "generalization": 6.5,
+    "technical_quality": 9,
+    "ease_of_launch": 9,
+    "team_approach": 9,
+    "pitch": 4
+  },
+  "total": 68,
+  "prior_lead_score": 69,
+  "independence": "Fresh context; not numerically blind. Reviewer encountered 66.5 in a measurement summary and 69 in README before fixing scores.",
+  "independently_checked": {
+    "raw_positive_missing_stop_frames": [
+      111,
+      117,
+      197
+    ],
+    "raw_five_empty": {
+      "alarm_frames": 23,
+      "alarm_events": 8,
+      "stop_episodes": 7
+    },
+    "cached_ride": {
+      "alarm_frames": 130,
+      "alarm_events": 32,
+      "stop_episodes": 31
+    },
+    "default_input": {
+      "accumulation_frames": 1,
+      "ego_speed_source": "none"
+    }
+  },
+  "priorities": [
+    {
+      "work": "Bounded obstacle continuity and association using current evidence and actual sensor time",
+      "acceptance": [
+        "Continuous correct raw rail-object STOP including all three gaps",
+        "No extra empty-bag or ride STOP episodes",
+        "Moving-away and removal controls bound release",
+        "Check 5 Hz, bursty stamps and startup offsets"
+      ]
+    },
+    {
+      "work": "Improve corridor geometry and distinguish objects from tunnel structure",
+      "acceptance": [
+        "Earlier sustained edge-object detection",
+        "Better small-object and curve/edge recall beyond 100 m",
+        "Fewer ride false STOP episodes without positive recall loss",
+        "Placement labels independent of detector geometry"
+      ]
+    },
+    {
+      "work": "Validate motion compensation for sparse distant evidence",
+      "acceptance": [
+        "Supplied speed upper bound before LiDAR-only estimator",
+        "Unfamiliar trajectories, stationary train, curves, speed changes and timing gaps",
+        "Report recall, sustained range and false alarms together",
+        "Preserve runtime budget"
+      ]
+    }
+  ],
+  "review_corrections": [
+    "Pitch comment about team placeholders came from an older manifest. The current artifact audit verifies role cards, ten hashes and 16 slides; no new physical rehearsal was performed."
+  ],
+  "interpretation": "68 and 69 express reviewer variation at the same behavior. Do not average them or claim a measured one-point regression. Packaging changes alone do not earn detector-quality credit."
+}

@@ -1,0 +1,2797 @@
+{
+  "protocol_sha256": "c93c4de4af298b10cbdf6ab15803645dce89d374dd547fc88131bb07afa7711e",
+  "audit_script_sha256": "b0c20e73cdb42e8bda1ee361073dcee02206360c3e6bba3cac21f11924886cab",
+  "note": "Geometry audit only. No clouds generated, no reserved detector outputs observed, no v1 labels changed.",
+  "splits": {
+    "development": [
+      {
+        "name": "rail_box_24m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.48677949017322775,
+          1.1132205098267725
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5632205098267723,
+        "projected_envelope_overlap_area_m2": 0.033793230589606316
+      },
+      {
+        "name": "rail_box_24m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.1132205098267725,
+          -0.48677949017322775
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5632205098267723,
+        "projected_envelope_overlap_area_m2": 0.033793230589606316
+      },
+      {
+        "name": "rail_box_50m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.48677949017322775,
+          1.1132205098267725
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5632205098267723,
+        "projected_envelope_overlap_area_m2": 0.033793230589606316
+      },
+      {
+        "name": "rail_box_50m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.1132205098267725,
+          -0.48677949017322775
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5632205098267723,
+        "projected_envelope_overlap_area_m2": 0.033793230589606316
+      },
+      {
+        "name": "rail_box_100m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.48677949017322775,
+          1.1132205098267725
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5632205098267723,
+        "projected_envelope_overlap_area_m2": 0.033793230589606316
+      },
+      {
+        "name": "rail_box_100m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.1132205098267725,
+          -0.48677949017322775
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5632205098267723,
+        "projected_envelope_overlap_area_m2": 0.033793230589606316
+      },
+      {
+        "name": "rail_box_150m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.48677949017322775,
+          1.1132205098267725
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5632205098267723,
+        "projected_envelope_overlap_area_m2": 0.033793230589606316
+      },
+      {
+        "name": "rail_box_150m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.1132205098267725,
+          -0.48677949017322775
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5632205098267723,
+        "projected_envelope_overlap_area_m2": 0.033793230589606316
+      },
+      {
+        "name": "compact_box30_24m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.16009807860059241,
+          0.16009807860059241
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.32019615720118483,
+        "projected_envelope_overlap_area_m2": 0.01921176943207109
+      },
+      {
+        "name": "compact_box30_24m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.7899019213994075,
+          1.1100980786005923
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.26009807860059253,
+        "projected_envelope_overlap_area_m2": 0.015605884716035523
+      },
+      {
+        "name": "compact_box30_50m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.16009807860059241,
+          0.16009807860059241
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.32019615720118483,
+        "projected_envelope_overlap_area_m2": 0.01921176943207109
+      },
+      {
+        "name": "compact_box30_50m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.7899019213994075,
+          1.1100980786005923
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.26009807860059253,
+        "projected_envelope_overlap_area_m2": 0.015605884716035523
+      },
+      {
+        "name": "compact_box30_100m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.16009807860059241,
+          0.16009807860059241
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.32019615720118483,
+        "projected_envelope_overlap_area_m2": 0.01921176943207109
+      },
+      {
+        "name": "compact_box30_100m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.7899019213994075,
+          1.1100980786005923
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.26009807860059253,
+        "projected_envelope_overlap_area_m2": 0.015605884716035523
+      },
+      {
+        "name": "compact_box30_150m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.16009807860059241,
+          0.16009807860059241
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.32019615720118483,
+        "projected_envelope_overlap_area_m2": 0.01921176943207109
+      },
+      {
+        "name": "compact_box30_150m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.7899019213994075,
+          1.1100980786005923
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.1400000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.26009807860059253,
+        "projected_envelope_overlap_area_m2": 0.015605884716035523
+      },
+      {
+        "name": "box50_24m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.2668301310009874,
+          0.2668301310009874
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.32,
+        "body_top_z_m": -1.0,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.2,
+        "lateral_envelope_overlap_m": 0.5336602620019748,
+        "projected_envelope_overlap_area_m2": 0.10673205240039497
+      },
+      {
+        "name": "box50_24m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.2168301310009872,
+          -0.6831698689990126
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.32,
+        "body_top_z_m": -1.0,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.2,
+        "lateral_envelope_overlap_m": 0.3668301310009875,
+        "projected_envelope_overlap_area_m2": 0.07336602620019755
+      },
+      {
+        "name": "box50_50m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.2668301310009874,
+          0.2668301310009874
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.32,
+        "body_top_z_m": -1.0,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.2,
+        "lateral_envelope_overlap_m": 0.5336602620019748,
+        "projected_envelope_overlap_area_m2": 0.10673205240039497
+      },
+      {
+        "name": "box50_50m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.2168301310009872,
+          -0.6831698689990126
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.32,
+        "body_top_z_m": -1.0,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.2,
+        "lateral_envelope_overlap_m": 0.3668301310009875,
+        "projected_envelope_overlap_area_m2": 0.07336602620019755
+      },
+      {
+        "name": "box50_100m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.2668301310009874,
+          0.2668301310009874
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.32,
+        "body_top_z_m": -1.0,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.2,
+        "lateral_envelope_overlap_m": 0.5336602620019748,
+        "projected_envelope_overlap_area_m2": 0.10673205240039497
+      },
+      {
+        "name": "box50_100m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.2168301310009872,
+          -0.6831698689990126
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.32,
+        "body_top_z_m": -1.0,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.2,
+        "lateral_envelope_overlap_m": 0.3668301310009875,
+        "projected_envelope_overlap_area_m2": 0.07336602620019755
+      },
+      {
+        "name": "box50_150m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.2668301310009874,
+          0.2668301310009874
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.32,
+        "body_top_z_m": -1.0,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.2,
+        "lateral_envelope_overlap_m": 0.5336602620019748,
+        "projected_envelope_overlap_area_m2": 0.10673205240039497
+      },
+      {
+        "name": "box50_150m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.2168301310009872,
+          -0.6831698689990126
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.32,
+        "body_top_z_m": -1.0,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.2,
+        "lateral_envelope_overlap_m": 0.3668301310009875,
+        "projected_envelope_overlap_area_m2": 0.07336602620019755
+      },
+      {
+        "name": "person_24m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.24939101256495605,
+          0.24939101256495605
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.4987820251299121,
+        "projected_envelope_overlap_area_m2": 0.6085943998516762
+      },
+      {
+        "name": "person_24m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5506089874350439,
+          1.0493910125649561
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.4987820251299122,
+        "projected_envelope_overlap_area_m2": 0.6085943998516739
+      },
+      {
+        "name": "person_50m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.24939101256495605,
+          0.24939101256495605
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.4987820251299121,
+        "projected_envelope_overlap_area_m2": 0.6085943998516762
+      },
+      {
+        "name": "person_50m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5506089874350439,
+          1.0493910125649561
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.4987820251299122,
+        "projected_envelope_overlap_area_m2": 0.6085943998516739
+      },
+      {
+        "name": "person_100m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.24939101256495605,
+          0.24939101256495605
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.4987820251299121,
+        "projected_envelope_overlap_area_m2": 0.6085943998516762
+      },
+      {
+        "name": "person_100m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5506089874350439,
+          1.0493910125649561
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.4987820251299122,
+        "projected_envelope_overlap_area_m2": 0.6085943998516739
+      },
+      {
+        "name": "person_150m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.24939101256495605,
+          0.24939101256495605
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.4987820251299121,
+        "projected_envelope_overlap_area_m2": 0.6085943998516762
+      },
+      {
+        "name": "person_150m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5506089874350439,
+          1.0493910125649561
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.4987820251299122,
+        "projected_envelope_overlap_area_m2": 0.6085943998516739
+      },
+      {
+        "name": "clear",
+        "registered_positive": false,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "empty",
+        "body_intersects_envelope_interior": false,
+        "body_touches_envelope_only": false
+      },
+      {
+        "name": "outside_person_left",
+        "registered_positive": false,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "outside",
+        "body_intersects_envelope_interior": false,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          1.35,
+          1.85
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.0,
+        "projected_envelope_overlap_area_m2": 0.0
+      },
+      {
+        "name": "outside_person_right",
+        "registered_positive": false,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "outside",
+        "body_intersects_envelope_interior": false,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.85,
+          -1.35
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.1649999999999998,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.0,
+        "projected_envelope_overlap_area_m2": 0.0
+      },
+      {
+        "name": "below_rail_bed_box",
+        "registered_positive": false,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.32,
+        "uses_fitted_detector_geometry": false,
+        "classification": "outside",
+        "body_intersects_envelope_interior": false,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.15,
+          0.15
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": -0.07999999999999999,
+        "body_top_z_m": -1.4000000000000001,
+        "entire_body_below_rail_head": true,
+        "vertical_envelope_overlap_m": 0.0,
+        "lateral_envelope_overlap_m": 0.3,
+        "projected_envelope_overlap_area_m2": 0.0
+      }
+    ],
+    "evaluation": [
+      {
+        "name": "rail_box_28m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5100760572439165,
+          1.0899239427560836
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5399239427560836,
+        "projected_envelope_overlap_area_m2": 0.03239543656536503
+      },
+      {
+        "name": "rail_box_28m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.0899239427560836,
+          -0.5100760572439165
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5399239427560836,
+        "projected_envelope_overlap_area_m2": 0.03239543656536503
+      },
+      {
+        "name": "rail_box_60m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5100760572439165,
+          1.0899239427560836
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5399239427560836,
+        "projected_envelope_overlap_area_m2": 0.03239543656536503
+      },
+      {
+        "name": "rail_box_60m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.0899239427560836,
+          -0.5100760572439165
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5399239427560836,
+        "projected_envelope_overlap_area_m2": 0.03239543656536503
+      },
+      {
+        "name": "rail_box_110m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5100760572439165,
+          1.0899239427560836
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5399239427560836,
+        "projected_envelope_overlap_area_m2": 0.03239543656536503
+      },
+      {
+        "name": "rail_box_110m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.0899239427560836,
+          -0.5100760572439165
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5399239427560836,
+        "projected_envelope_overlap_area_m2": 0.03239543656536503
+      },
+      {
+        "name": "rail_box_170m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5100760572439165,
+          1.0899239427560836
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5399239427560836,
+        "projected_envelope_overlap_area_m2": 0.03239543656536503
+      },
+      {
+        "name": "rail_box_170m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.0899239427560836,
+          -0.5100760572439165
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.5399239427560836,
+        "projected_envelope_overlap_area_m2": 0.03239543656536503
+      },
+      {
+        "name": "compact_box30_28m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.1504460918312734,
+          0.1504460918312734
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.3008921836625468,
+        "projected_envelope_overlap_area_m2": 0.018053531019752808
+      },
+      {
+        "name": "compact_box30_28m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.7995539081687266,
+          1.1004460918312733
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.2504460918312734,
+        "projected_envelope_overlap_area_m2": 0.015026765509876472
+      },
+      {
+        "name": "compact_box30_60m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.1504460918312734,
+          0.1504460918312734
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.3008921836625468,
+        "projected_envelope_overlap_area_m2": 0.018053531019752808
+      },
+      {
+        "name": "compact_box30_60m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.7995539081687266,
+          1.1004460918312733
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.2504460918312734,
+        "projected_envelope_overlap_area_m2": 0.015026765509876472
+      },
+      {
+        "name": "compact_box30_110m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.1504460918312734,
+          0.1504460918312734
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.3008921836625468,
+        "projected_envelope_overlap_area_m2": 0.018053531019752808
+      },
+      {
+        "name": "compact_box30_110m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.7995539081687266,
+          1.1004460918312733
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.2504460918312734,
+        "projected_envelope_overlap_area_m2": 0.015026765509876472
+      },
+      {
+        "name": "compact_box30_170m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.1504460918312734,
+          0.1504460918312734
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.3008921836625468,
+        "projected_envelope_overlap_area_m2": 0.018053531019752808
+      },
+      {
+        "name": "compact_box30_170m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.7995539081687266,
+          1.1004460918312733
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.18,
+        "body_top_z_m": -1.2400000000000002,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.06,
+        "lateral_envelope_overlap_m": 0.2504460918312734,
+        "projected_envelope_overlap_area_m2": 0.015026765509876472
+      },
+      {
+        "name": "box50_28m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.2507434863854556,
+          0.2507434863854556
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.27,
+        "body_top_z_m": -1.1500000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.15000000000000002,
+        "lateral_envelope_overlap_m": 0.5014869727709113,
+        "projected_envelope_overlap_area_m2": 0.07522304591563672
+      },
+      {
+        "name": "box50_28m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.2007434863854556,
+          -0.6992565136145443
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.27,
+        "body_top_z_m": -1.1500000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.15000000000000002,
+        "lateral_envelope_overlap_m": 0.3507434863854557,
+        "projected_envelope_overlap_area_m2": 0.052611522957818346
+      },
+      {
+        "name": "box50_60m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.2507434863854556,
+          0.2507434863854556
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.27,
+        "body_top_z_m": -1.1500000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.15000000000000002,
+        "lateral_envelope_overlap_m": 0.5014869727709113,
+        "projected_envelope_overlap_area_m2": 0.07522304591563672
+      },
+      {
+        "name": "box50_60m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.2007434863854556,
+          -0.6992565136145443
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.27,
+        "body_top_z_m": -1.1500000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.15000000000000002,
+        "lateral_envelope_overlap_m": 0.3507434863854557,
+        "projected_envelope_overlap_area_m2": 0.052611522957818346
+      },
+      {
+        "name": "box50_110m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.2507434863854556,
+          0.2507434863854556
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.27,
+        "body_top_z_m": -1.1500000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.15000000000000002,
+        "lateral_envelope_overlap_m": 0.5014869727709113,
+        "projected_envelope_overlap_area_m2": 0.07522304591563672
+      },
+      {
+        "name": "box50_110m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.2007434863854556,
+          -0.6992565136145443
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.27,
+        "body_top_z_m": -1.1500000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.15000000000000002,
+        "lateral_envelope_overlap_m": 0.3507434863854557,
+        "projected_envelope_overlap_area_m2": 0.052611522957818346
+      },
+      {
+        "name": "box50_170m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.2507434863854556,
+          0.2507434863854556
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.27,
+        "body_top_z_m": -1.1500000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.15000000000000002,
+        "lateral_envelope_overlap_m": 0.5014869727709113,
+        "projected_envelope_overlap_area_m2": 0.07522304591563672
+      },
+      {
+        "name": "box50_170m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.2007434863854556,
+          -0.6992565136145443
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 0.27,
+        "body_top_z_m": -1.1500000000000001,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 0.15000000000000002,
+        "lateral_envelope_overlap_m": 0.3507434863854557,
+        "projected_envelope_overlap_area_m2": 0.052611522957818346
+      },
+      {
+        "name": "person_28m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.22332288411929746,
+          0.22332288411929746
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.3405,
+        "body_top_z_m": -0.07950000000000013,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.2205,
+        "lateral_envelope_overlap_m": 0.4466457682385949,
+        "projected_envelope_overlap_area_m2": 0.48416949693441014
+      },
+      {
+        "name": "person_28m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5766771158807026,
+          1.0233228841192976
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.3405,
+        "body_top_z_m": -0.07950000000000013,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.2205,
+        "lateral_envelope_overlap_m": 0.44664576823859503,
+        "projected_envelope_overlap_area_m2": 0.48416949693441325
+      },
+      {
+        "name": "person_60m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.22332288411929746,
+          0.22332288411929746
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.3405,
+        "body_top_z_m": -0.07950000000000013,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.2205,
+        "lateral_envelope_overlap_m": 0.4466457682385949,
+        "projected_envelope_overlap_area_m2": 0.48416949693441014
+      },
+      {
+        "name": "person_60m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5766771158807026,
+          1.0233228841192976
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.3405,
+        "body_top_z_m": -0.07950000000000013,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.2205,
+        "lateral_envelope_overlap_m": 0.44664576823859503,
+        "projected_envelope_overlap_area_m2": 0.48416949693441325
+      },
+      {
+        "name": "person_110m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.22332288411929746,
+          0.22332288411929746
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.3405,
+        "body_top_z_m": -0.07950000000000013,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.2205,
+        "lateral_envelope_overlap_m": 0.4466457682385949,
+        "projected_envelope_overlap_area_m2": 0.48416949693441014
+      },
+      {
+        "name": "person_110m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5766771158807026,
+          1.0233228841192976
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.3405,
+        "body_top_z_m": -0.07950000000000013,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.2205,
+        "lateral_envelope_overlap_m": 0.44664576823859503,
+        "projected_envelope_overlap_area_m2": 0.48416949693441325
+      },
+      {
+        "name": "person_170m_0",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.22332288411929746,
+          0.22332288411929746
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.3405,
+        "body_top_z_m": -0.07950000000000013,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.2205,
+        "lateral_envelope_overlap_m": 0.4466457682385949,
+        "projected_envelope_overlap_area_m2": 0.48416949693441014
+      },
+      {
+        "name": "person_170m_1",
+        "registered_positive": true,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "interior",
+        "body_intersects_envelope_interior": true,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          0.5766771158807026,
+          1.0233228841192976
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.3405,
+        "body_top_z_m": -0.07950000000000013,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.2205,
+        "lateral_envelope_overlap_m": 0.44664576823859503,
+        "projected_envelope_overlap_area_m2": 0.48416949693441325
+      },
+      {
+        "name": "clear",
+        "registered_positive": false,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "empty",
+        "body_intersects_envelope_interior": false,
+        "body_touches_envelope_only": false
+      },
+      {
+        "name": "outside_person_left",
+        "registered_positive": false,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "outside",
+        "body_intersects_envelope_interior": false,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          1.35,
+          1.85
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.06499999999999972,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.0,
+        "projected_envelope_overlap_area_m2": 0.0
+      },
+      {
+        "name": "outside_person_right",
+        "registered_positive": false,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "outside",
+        "body_intersects_envelope_interior": false,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -1.85,
+          -1.35
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": 1.4849999999999999,
+        "body_top_z_m": 0.06499999999999972,
+        "entire_body_below_rail_head": false,
+        "vertical_envelope_overlap_m": 1.3649999999999998,
+        "lateral_envelope_overlap_m": 0.0,
+        "projected_envelope_overlap_area_m2": 0.0
+      },
+      {
+        "name": "below_rail_bed_box",
+        "registered_positive": false,
+        "canonical_profile_m": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "physical_rail_height_m": 0.18,
+        "physical_rail_head_z_m": -1.4200000000000002,
+        "uses_fitted_detector_geometry": false,
+        "classification": "outside",
+        "body_intersects_envelope_interior": false,
+        "body_touches_envelope_only": false,
+        "body_lateral_interval_m": [
+          -0.15,
+          0.15
+        ],
+        "body_bottom_above_rail_m": -0.18,
+        "body_top_above_rail_m": -0.07999999999999999,
+        "body_top_z_m": -1.5000000000000002,
+        "entire_body_below_rail_head": true,
+        "vertical_envelope_overlap_m": 0.0,
+        "lateral_envelope_overlap_m": 0.3,
+        "projected_envelope_overlap_area_m2": 0.0
+      }
+    ]
+  }
+}

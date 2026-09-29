@@ -1,0 +1,164 @@
+"""Audit the recent score-branch evidence with the Python standard library only.
+
+Run from the repository root:
+  python3 out/current_score_2026-09-28/recompute_recent_evidence.py [output.json]
+Gate comparison functions are AST-extracted from the repository script to avoid its
+optional numeric imports; label matching is independently enumerated for these small frames.
+"""
+import ast
+from collections import defaultdict
+import fnmatch
+import gzip
+import hashlib
+import itertools
+import json
+from pathlib import Path
+import struct
+import subprocess
+import sys
+
+root = Path.cwd()
+packet = root / 'docs/evidence/results/p1_raw_continuity_2026-09-28'
+summary = json.loads((packet / 'summary.json').read_text())
+fixture = root / 'tests/fixtures/synthetic_lidar_v1'
+manifest = json.loads((fixture / 'manifest.json').read_text())
+result = {'schema': 'resense-recent-evidence-review-v1',
+          'reviewed_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+          'checks': {}, 'gate_comparisons': {}, 'raw_runs': {},
+          'limits': ['Validates committed artifacts and counts; no original DB3 or full cache replay.',
+                     'Ground-truth labels are the team labels already in the repository.']}
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def npy(path):
+    raw = path.read_bytes()
+    assert raw[:6] == b'\x93NUMPY'
+    base, fmt = (10, '<H') if raw[6] == 1 else (12, '<I')
+    length = struct.unpack(fmt, raw[8:base])[0]
+    return ast.literal_eval(raw[base:base + length].decode()), raw[base + length:]
+
+
+frames = (manifest['scenes']['clear_tunnel']['frames']
+          + manifest['scenes']['rail_straddle']['frames']
+          + manifest['scenes']['range_edge_survey']['cases'])
+mask_count = 0
+coverage = {}
+for row in frames:
+    path = fixture / row['points_file']
+    assert sha(path) == row['point_sha256']
+    header, data = npy(path)
+    assert header['shape'] == (row['point_count'],)
+    assert len(data) == row['point_count'] * 8
+    masks = list(row.get('object_masks', {}).values())
+    if 'object_mask' in row:
+        masks.append(row['object_mask'])
+    for mask in masks:
+        path = fixture / mask['file']
+        assert sha(path) == mask['sha256']
+        mask_header, mask_data = npy(path)
+        assert mask_header['shape'][0] == (row['point_count'] + 7) // 8
+        assert sum(int(v).bit_count() for v in mask_data) == mask['positive_count']
+        coverage[row['points_file']] = mask['positive_count']
+        mask_count += 1
+assert sha(root / manifest['provenance']['generator']['path']) == manifest['provenance']['generator']['sha256']
+result['checks']['fixture'] = {'cloud_hashes_shapes_validated': len(frames),
+                                'mask_hashes_shapes_counts_validated': mask_count,
+                                'generator_hash_validated': True,
+                                'object_return_counts': coverage}
+for key, path in [('detector_sha256', 'resense/detector.py'),
+                  ('tracking_sha256', 'resense/tracking.py'),
+                  ('default_config_file_sha256', 'configs/default.yaml')]:
+    assert sha(root / path) == summary['runtime'][key]
+result['checks']['runtime_source_hashes'] = 'detector, tracking, default config match packet'
+
+labels_by_frame = json.loads((root / 'labels/doubleT_obstacle.json').read_text())
+for name, hashes in summary['raw_offline']['files'].items():
+    raw = (packet / name).read_bytes()
+    decoded = gzip.decompress(raw)
+    assert hashlib.sha256(raw).hexdigest() == hashes['sha256']
+    assert hashlib.sha256(decoded).hexdigest() == hashes['uncompressed_sha256']
+    rows = [json.loads(line) for line in decoded.decode().splitlines()]
+    assert [row['frame'] for row in rows] == list(range(201))
+    counts = defaultdict(lambda: [0, 0])
+    unmatched = []
+    for row in rows:
+        labels = [g for g in labels_by_frame[f"{row['frame']:05d}"]
+                  if g.get('n_points', 1) != 0 and g.get('in_gauge', True)]
+        detections = row['detections']
+        miss = 2 * min(len(labels), len(detections)) + 1
+        best = None
+        for choices in itertools.product(range(-1, len(detections)), repeat=len(labels)):
+            chosen = [i for i in choices if i != -1]
+            if len(chosen) != len(set(chosen)):
+                continue
+            cost = 0.0
+            for ground, i in zip(labels, choices):
+                if i == -1:
+                    cost += miss
+                    continue
+                det = detections[i]
+                tol = max(2, 0.03 * ground['distance']) + 0.5 * max(ground['size'][0], 0)
+                dx = abs(det['distance'] - ground['distance'])
+                dy = abs(det['lateral'] - ground['lateral'])
+                cost += dx / tol + dy if dx <= tol and dy <= 1 else 1e6
+            if best is None or cost < best[0]:
+                best = cost, choices
+        used = set()
+        for ground, i in zip(labels, best[1]):
+            matched = i != -1
+            counts[ground['label']][0] += matched
+            counts[ground['label']][1] += 1
+            if matched:
+                used.add(i)
+            if ground['label'] == 'object_on_rail' and row['frame'] >= 75:
+                counts['object_after_frame_75'][0] += matched
+                counts['object_after_frame_75'][1] += 1
+        unmatched.extend({'frame': row['frame'], 'id': det['id']} for i, det in enumerate(detections) if i not in used)
+    result['raw_runs'][name] = {'frames': len(rows), 'compressed_and_uncompressed_hashes_match': True,
+                               'labelled_hits_and_visible_frames': dict(counts),
+                               'alarm_frames': sum(row['obstacle'] for row in rows),
+                               'advisory_frames': sum(row['warning'] for row in rows),
+                               'non_stop_after_frame_75': [row['frame'] for row in rows if row['frame'] >= 75 and not row['obstacle']],
+                               'unmatched_detections': unmatched}
+
+script = root / 'scripts/regression_gate.py'
+selected = []
+for node in ast.parse(script.read_text()).body:
+    if isinstance(node, ast.FunctionDef) and node.name in {'metrics', 'verdict', 'compare', 'gate_summary'}:
+        selected.append(node)
+    elif isinstance(node, ast.Assign) and any(isinstance(n, ast.Name) and n.id in {'HIGHER', 'LOWER', 'EQUAL', 'INFO', 'MISSING'} for n in ast.walk(node.targets[0])):
+        selected.append(node)
+namespace = {'fnmatch': fnmatch, 'FIVE_EMPTY': {'doubleT_platform', 'roundT_doubleT', 'roundT_pressureGate_roundT', 'roundT_squareT_pressureGate_squareT', 'squareT_platform_squareT_switch'}}
+exec(compile(ast.Module(body=selected, type_ignores=[]), str(script), 'exec'), namespace)
+quality_baseline = root / 'docs/evidence/results/regression_baseline_2026-09-27_quality.json'
+p4 = root / 'docs/evidence/results/p4_full_data_2026-09-28'
+for name, artifact, baseline in [
+        ('p4_reference_vs_quality', p4 / 'regression_gate.json', quality_baseline),
+        ('p4_final_vs_quality', p4 / 'final_regression_gate.json', quality_baseline),
+        ('candidate_vs_quality', packet / 'strict_gate_hold_misses_2.json', quality_baseline),
+        ('candidate_vs_current_reference', packet / 'current_reference_comparison.json', p4 / 'final_regression_gate.json')]:
+    current = json.loads(artifact.read_text())
+    base = json.loads(baseline.read_text())
+    rows = namespace['compare'](base, current, [])
+    gate = namespace['gate_summary'](rows, base, current['gate']['baseline'], [])
+    assert gate == current['gate']
+    result['gate_comparisons'][name] = {
+        'artifact': artifact.relative_to(root).as_posix(),
+        'baseline': baseline.relative_to(root).as_posix(),
+        'stored_summary_matches_recomputed': True,
+        'total_rows': len(rows), 'gated_rows': sum(row['gated'] for row in rows),
+        'gated_same': sum(row['gated'] and row['verdict'] == 'same' for row in rows),
+        'informational_same': sum(not row['gated'] and row['verdict'] == 'same' for row in rows),
+        'all_same': gate['same'],
+        'passed': gate['passed'],
+        'failures': [row for row in rows if row['fails']],
+        'improvements': [row for row in rows if row['gated'] and row['verdict'] == 'better']}
+result['checks']['p4_prose_count_correction'] = '208 same rows = 146 gated plus 62 informational; 16 other informational latency rows changed. No gate failures.'
+text = json.dumps(result, indent=2) + '\n'
+if len(sys.argv) > 1:
+    Path(sys.argv[1]).write_text(text)
+else:
+    print(text)

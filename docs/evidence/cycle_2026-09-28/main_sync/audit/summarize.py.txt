@@ -1,0 +1,169 @@
+"""Bind the combined-node captures to their source and compare raw outputs with ef71c9d."""
+from collections import Counter
+import hashlib
+import json
+import math
+from pathlib import Path
+import subprocess
+import sys
+
+ROOT = Path('/home/likikikpa/ReSense-p3-sync')
+OUT = Path(__file__).resolve().parents[1]
+OLD = OUT.parent / 'health_histogram/runtime'
+sys.path.insert(0, str(ROOT / 'scripts'))
+from check_dry_run import load, percentile, playback_pace
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def read(name):
+    return json.loads((OUT / name).read_text())
+
+
+def distribution(values):
+    assert all(isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x) for x in values)
+    return {'count': len(values), 'mean': sum(values) / len(values) if values else None,
+            'min': min(values) if values else None, 'max': max(values) if values else None,
+            **{f'p{q}': percentile(values, q) for q in (50, 90, 95, 99)}}
+
+
+protocol, plan, execution = read('runtime_protocol.json'), read('execution_plan.json'), read('execution.json')
+identity, build, preflight = read('image_identity.json'), read('build.json'), read('preflight.json')
+installed = read('installed_verification.json')
+old_identity = json.loads((OLD / 'candidate_image.json').read_text())
+old_build = json.loads((OLD / 'candidate_build.json').read_text())
+assert subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD'], text=True).strip() == protocol['commit']
+assert build['commit'] == preflight['commit'] == protocol['commit'] == installed['commit']
+assert build['image_id'] == execution['image_id'] == installed['image_id']
+assert build['exit_code'] == 0 and build['verified_installed_identity'] and installed['pass']
+assert sha(OUT / 'runtime_protocol.json') == plan['protocol_sha256'] == execution['protocol_sha256'] == build['protocol_sha256'] == installed['protocol_sha256']
+assert sha(OUT / 'execution_plan.json') == execution['plan_sha256']
+assert sha(OUT / 'run_runtime.py') == execution['runner_sha256'] == plan['runner_sha256']
+assert sha(OUT / 'image_identity.json') == build['image_identity_sha256'] == installed['expected_identity_sha256']
+assert sha(OUT / 'image_identity.py') == identity['observer_sha256']
+assert sha(OUT / 'audit/verify_installed.py') == installed['observer_sha256']
+assert sha(OLD / 'execution.json') == plan['input_reference_sha256']
+assert execution['warmed_inputs'] == plan['input_sha256']
+assert plan['no_timing_gain_claim'] is True
+for relative, checksum in protocol['files'].items():
+    assert sha(ROOT / relative) == checksum, relative
+for relative, checksum in identity['files'].items():
+    assert sha(ROOT / relative) == checksum, relative
+assert digest(identity['files']) == identity['source_sha256'] == protocol['sealed_source_sha256']
+assert digest(identity['effective_config']) == identity['effective_config_sha256']
+assert identity['files'] == old_identity['files'] and identity['installed_files'] == old_identity['installed_files']
+assert identity['effective_config'] == old_identity['effective_config']
+assert identity['native_sha256'] == old_identity['native_sha256'] == installed['native']['sha256']
+assert identity['packages'] == old_identity['packages']
+assert identity['node_sha256'] != old_identity['node_sha256']
+assert installed['node_defaults'] == {'catchup_startup_step': 0.0, 'warmup': True}
+fast = read('fast_input.json')
+assert fast['pass'] is True and len(fast['results']) == 2
+assert [r['frames'] for r in fast['results']] == [201, 252]
+assert all(r['frames'] == r['identical_frames'] and not r['mismatched_frames'] for r in fast['results'])
+actual_check = (ROOT / 'scripts/check_fast_input.py').read_text()
+assert 'b = fastcloud.decode(fastcloud.packed(fast)' in actual_check
+assert 'a = pointcloud2_to_arrays(ref' in actual_check
+
+report = {
+    'schema': 'resense-main-sync-strict-runtime-audit-v1',
+    'commit': protocol['commit'], 'image_id': build['image_id'],
+    'sealed_source_sha256': identity['source_sha256'],
+    'native_sha256': identity['native_sha256'],
+    'effective_config_sha256': identity['effective_config_sha256'],
+    'integration_files': identity['integration_files'], 'node_sha256': identity['node_sha256'],
+    'previous_capture_source': old_build,
+    'source_comparison': {
+        'sealed_files_equal': True, 'installed_detector_equal': True, 'effective_config_equal': True,
+        'native_binary_equal': True, 'package_versions_equal': True,
+        'node_equal': False, 'old_node_sha256': old_identity['node_sha256'],
+        'meaning': 'The previous health candidate has the same detector but a different node. These runs are not a paired timing experiment.',
+    },
+    'fast_input': {'frames': 453, 'identical_frames': 453, 'mismatched_frames': [],
+                   'scope': 'rclpy deserialize + reference pointcloud2_to_arrays versus parse_pointcloud2 + packed + actual fastcloud.decode; arrays and counts byte-identical',
+                   'report_sha256': sha(OUT / 'fast_input.json'),
+                   'checker_sha256': sha(ROOT / 'scripts/check_fast_input.py')},
+    'p3_handoff_url': preflight['communication'], 'exact_source_ci_url': preflight['ci'],
+    'runs': {}, 'raw_output_comparison': {},
+    'limitations': [
+        'One local warm-disk capture per recording; no cold-start or target-hardware conclusion.',
+        'Previous ef71c9d captures are historical comparisons, not contemporaneous paired timings.',
+        'Full source-frame coverage and unchanged raw detector output do not imply full fresh target recall.',
+        'Playback pace uses first/last processed evaluation clocks, not an independently observed player clock.',
+        'E2E is freshness.source_age_s from publication to status evaluation, not external listener arrival latency.',
+        'Health fields overwritten by freshness and health latency diagnostics cannot be compared as raw geometry.',
+    ],
+}
+excluded = {'timing_ms', 'node', 'health', 'freshness', 'decision', 'clear_distance'}
+excluded_health = {'latency_p95_ms', 'level', 'decision_level', 'messages', 'clear_distance',
+                   'monitored_range', 'freshness_valid', 'freshness_reason'}
+for kind, expected_count in (('positive', 201), ('clear', 252)):
+    audit = read(f'audit/{kind}.json')
+    assert audit['capture_sha256'] == sha(OUT / kind / 'status.jsonl')
+    assert audit['checker_sha256'] == sha(ROOT / 'scripts/check_dry_run.py')
+    assert audit['metrics_sha256'] == sha(ROOT / 'resense/metrics.py')
+    assert audit['original_frames'] == audit['captured_frames'] == expected_count
+    assert audit['exact_header_sequence_complete'] and not audit['missing_indices']
+    assert not audit['freshness_contract_failures'] and audit['held_stop_frames'] == 0
+    assert execution['runs'][kind]['exit_code'] == 0 and execution['runs'][kind]['source_unchanged']
+    old, _ = load(OLD / f'candidate_{kind}' / 'status.jsonl')
+    new, _ = load(OUT / kind / 'status.jsonl')
+    assert [f['stamp'] for f in old] == [f['stamp'] for f in new]
+    assert all(f.get('stop_held') is False for f in old + new)
+    fields = sorted(set().union(*(set(f) for f in old + new)) - excluded)
+    health_fields = sorted(set().union(*(set(f['health']) for f in old + new)) - excluded_health)
+    diffs = []
+    for i, (before, after) in enumerate(zip(old, new)):
+        changed = [k for k in fields if before.get(k) != after.get(k)]
+        changed += ['health.' + k for k in health_fields if before['health'].get(k) != after['health'].get(k)]
+        if changed:
+            diffs.append({'frame': i, 'fields': changed})
+    report['raw_output_comparison'][kind] = {
+        'compared_frames': len(new), 'fields': fields, 'health_fields': health_fields,
+        'excluded_fields': sorted(excluded), 'excluded_health_fields': sorted(excluded_health),
+        'difference_counts': dict(Counter(k for d in diffs for k in d['fields'])), 'differences': diffs,
+        'previous_capture_sha256': sha(OLD / f'candidate_{kind}' / 'status.jsonl'),
+        'current_capture_sha256': audit['capture_sha256'],
+    }
+    keep = ('captured_frames', 'original_frames', 'exact_header_sequence_complete', 'missing_indices',
+            'strict_fresh_frames', 'strict_fresh_intervals', 'invalid_reasons', 'freshness_contract_failures',
+            'last_node_counters', 'source_stamp_gaps_over_150ms', 'timing_distributions_ms',
+            'raw_current_stop_frames', 'held_stop_frames', 'decisions')
+    row = {k: audit[k] for k in keep}
+    ages = [1000 * f['freshness']['source_age_s'] for f in new]
+    clocks = [f['freshness']['evaluated_at_utc_s'] for f in new]
+    assert all(isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x) and x > 0 for x in clocks)
+    assert all(b > a for a, b in zip(clocks, clocks[1:]))
+    pace = playback_pace(new)
+    assert pace is not None
+    row['timing_distributions_ms']['all_frame_end_to_end_ms'] = distribution(ages)
+    row['all_frame_end_to_end_values_ms'] = ages
+    row['playback'] = {'recording_seconds': pace[0], 'evaluation_seconds': pace[1],
+                       'rate': pace[0] / pace[1], 'minimum_rate': .9,
+                       'one_recording': len({f['node']['recording'] for f in new}) == 1,
+                       'finite_positive_nonnboolean_clocks': True, 'strictly_progressing_evaluation_clocks': True,
+                       'first_stamp': new[0]['stamp'], 'last_stamp': new[-1]['stamp'],
+                       'first_evaluated_at_utc_s': clocks[0], 'last_evaluated_at_utc_s': clocks[-1]}
+    assert row['playback']['one_recording'] and row['playback']['rate'] >= .9
+    if 'targets' in audit:
+        row['targets'] = {name: {mode: target[mode] for mode in ('raw', 'fresh')}
+                          for name, target in audit['targets'].items()}
+        rail = audit['targets']['object_on_rail']
+        row['rail_from_frame75'] = {mode: {'hits': sum(i >= 75 for i in rail[mode + '_matched_indices']),
+                                         'frames': sum(i >= 75 for i in rail['visible_indices'])}
+                                    for mode in ('raw', 'fresh')}
+    report['runs'][kind] = row
+assert all(not x['differences'] for x in report['raw_output_comparison'].values())
+report['audit_sha256'] = sha(__file__)
+report['provenance_files'] = {str(p.relative_to(OUT)): {'sha256': sha(p), 'bytes': p.stat().st_size}
+                            for p in sorted(OUT.rglob('*')) if p.is_file() and p.name != 'summary.json'
+                            and 'ci_75ef4e2' not in p.parts}
+(OUT / 'audit/summary.json').write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps({'raw_output_comparison': report['raw_output_comparison'],
+                  'identity_valid': True, 'fast_input_identical_frames': 453}))

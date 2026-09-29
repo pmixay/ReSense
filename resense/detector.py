@@ -111,7 +111,9 @@ class Candidates:
     index in the frame (``-1``: merged from an earlier frame by the accumulation) and the
     low-object flag (a bump above the track bed, below the envelope floor). ``in_rail`` (26.09):
     the strict membership measured from the rails only, when ``gauge.axis_union`` made
-    ``in_gauge`` the union with the envelope measured from the sensor axis; ``None`` = ``in_gauge``."""
+    ``in_gauge`` the union with the envelope measured from the sensor axis; ``None`` = ``in_gauge``.
+    ``ring`` holds decoded elevation channels; ``None`` or negative entries mean unknown. The
+    accumulation buffer does not preserve channels: old points receive -1 when concatenated."""
     xyz: np.ndarray
     dy: np.ndarray
     h: np.ndarray
@@ -121,6 +123,7 @@ class Candidates:
     low: np.ndarray
     in_rail: Optional[np.ndarray] = None
     dy_rail: Optional[np.ndarray] = None
+    ring: Optional[np.ndarray] = None
 
     def __len__(self) -> int:
         return int(self.idx.size)
@@ -135,11 +138,15 @@ class Candidates:
 
     def concat(self, other: "Candidates") -> "Candidates":
         out = {f.name: np.concatenate([getattr(self, f.name), getattr(other, f.name)])
-               for f in fields(self) if f.name not in ("in_rail", "dy_rail")}
+               for f in fields(self) if f.name not in ("in_rail", "dy_rail", "ring")}
         if self.in_rail is not None or other.in_rail is not None:
             out["in_rail"] = np.concatenate([self.rail(), other.rail()])
         if self.dy_rail is not None or other.dy_rail is not None:
             out["dy_rail"] = np.concatenate([self.lateral_rail(), other.lateral_rail()])
+        if self.ring is not None or other.ring is not None:
+            a = self.ring if self.ring is not None else np.full(len(self), -1, dtype=np.int64)
+            b = other.ring if other.ring is not None else np.full(len(other), -1, dtype=np.int64)
+            out["ring"] = np.concatenate([a, b])
         return Candidates(**out)
 
     def subset(self, m: np.ndarray) -> "Candidates":
@@ -149,7 +156,7 @@ class Candidates:
 
 def _clusters_of(c: Candidates, cfg, **kw) -> List[Cluster]:
     return find_clusters(c.xyz, c.intensity, c.dy, c.h, c.in_gauge, cfg, frame_idx=c.idx, in_rail=c.in_rail,
-                         dy_report=c.dy_rail, **kw)
+                         dy_report=c.dy_rail, ring=c.ring, **kw)
 
 
 def _finite_only(frame: Frame) -> Frame:
@@ -176,11 +183,16 @@ class Detector:
         self.ego = EgoSpeedEstimator(acc)
         self.calib = MountCalibrator(self.cfg.calibration, self.cfg.track)
         self.health = HealthMonitor(self.cfg.health)
-        self.evidence = PersistentEvidence(self.cfg.health, self.cfg.gauge)   # 27.09 (health.clear_cap_persist)
+        self.evidence = PersistentEvidence(self.cfg.health, self.cfg.gauge, self.cfg.tracking.frame_dt)  # health.clear_cap_persist
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
+        self._frame_ring: Optional[np.ndarray] = None
+        self._low_height: List[Cluster] = []  # current straddle evidence just below its clean top-height threshold
         self._prev_stamp: Optional[float] = None
+        self._previous_latency_ms: Optional[float] = None  # previous completed process interval
+        self._low_frame_dt: Optional[float] = None  # actual positive stamp interval for the bounded low continuation
+        self._evidence_dt: Optional[float] = None  # validated sensor interval for sparse clear-distance evidence
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
 
     @property
@@ -199,15 +211,27 @@ class Detector:
         self.evidence.reset()
         self.bed.reset()
         self._thin = []
+        self._frame_ring = None
+        self._low_height = []
         self._prev_stamp = None
+        self._previous_latency_ms = None
+        self._low_frame_dt = None
+        self._evidence_dt = None
         self._gaps.clear()
 
     def _frame_dt(self, stamp: float) -> float:
         """Time since the previous frame from the stamps when they are sane, else the nominal
         frame period (cached frames and synthetic tests carry no usable stamp)."""
         dt = self.cfg.tracking.frame_dt
+        self._low_frame_dt = dt
+        self._evidence_dt = None
         if self._prev_stamp is not None:
             gap = float(stamp) - self._prev_stamp
+            # The existing motion/fit timing clips long gaps below. They still consume
+            # their real elapsed time from the independent low-evidence continuation cap.
+            self._low_frame_dt = gap if gap > 0 else dt
+            if np.isfinite(gap) and gap > 0:
+                self._evidence_dt = gap
             lo, hi = self.cfg.accumulation.stamp_dt_range
             if lo <= gap <= hi:
                 dt = gap
@@ -226,10 +250,18 @@ class Detector:
         The stages are the methods below, in this order (docs/ALGORITHM.md has the reasoning):
         ``_fit_track`` (1, 1b), ``_corridor`` (2), ``_low_stage`` (2b), ``_speed`` (3),
         ``_accumulate`` (4), ``_cluster`` (5), ``_hanging`` (5b, 25.09), ``_confirm`` (6).
+
+        ``timing_ms.total`` runs from entry through health and result construction;
+        ``stages`` preserves the old total through tracking. The final timing writes and
+        return are outside the measured interval. Health uses the previous completed
+        call's total (one frame of delay); the first call/reset has no latency sample.
         """
-        cfg = self.cfg
         t0 = time.perf_counter()
+        cfg = self.cfg
+        previous_latency_ms = self._previous_latency_ms
+        self._previous_latency_ms = None  # a failed call must not leave an older pending sample
         frame = _finite_only(frame)
+        self._frame_ring = frame.ring
         dt = self._frame_dt(frame.stamp)
         xyz = self._fit_track(frame.xyz, self._periods())
         t1 = time.perf_counter()
@@ -251,16 +283,20 @@ class Detector:
         if cfg.lowobj.rail_start_within > 0:
             # 26.09 (P3 rail start): low clusters near the train that are rail geometry; the rail lines
             # are at the axis +- rails_spacing / 2 of the rail coordinate (dy_rail, as the low stage)
-            mark_rail_line(clusters, xyz[:, 0], dy_rail, h_all, cfg.lowobj, cfg.track.rails_spacing, cfg.gauge.range_min)
+            mark_rail_line(clusters + self._low_height, xyz[:, 0], dy_rail, h_all, cfg.lowobj,
+                           cfg.track.rails_spacing, cfg.gauge.range_min)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
-                                    (t6 - t0) * 1e3, mount, gauge[0].distance if gauge else None, cap)
+                                    previous_latency_ms, mount, gauge[0].distance if gauge else None, cap)
+        health["latency_basis"] = "previous_complete_process"
+        health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
+        t7 = time.perf_counter()
 
-        return FrameResult(
+        result = FrameResult(
             stamp=frame.stamp, obstacle=len(gauge) > 0, warning=len(warn) > 0,
             nearest_distance=gauge[0].distance if gauge else None,
             detections=gauge, warnings=warn, candidates=clusters, track=self.track,
@@ -268,12 +304,16 @@ class Detector:
             timing_ms={"track": (t1 - t0) * 1e3, "corridor": (t2 - t1) * 1e3,
                        "egomotion": (t3 - t2) * 1e3, "accumulate": (t4 - t3) * 1e3,
                        "cluster": (t5 - t4) * 1e3, "tracking": (t6 - t5) * 1e3,
-                       "total": (t6 - t0) * 1e3},
+                       "stages": (t6 - t0) * 1e3, "health": (t7 - t6) * 1e3},
             ego_speed=speed, ego_speed_source=source, n_accumulated=n_acc,
             ego_speed_estimate=None if est is None else est.speed,
             ego_speed_confidence=0.0 if est is None else est.confidence,
             health=health, mount=mount, clear_distance=health["clear_distance"], xyz=xyz,
         )
+        t8 = time.perf_counter()
+        result.timing_ms["result"] = (t8 - t7) * 1e3
+        result.timing_ms["total"] = self._previous_latency_ms = (t8 - t0) * 1e3
+        return result
 
     def _periods(self) -> int:
         """Nominal frame periods (``tracking.frame_dt``) per processed frame at the current input
@@ -349,7 +389,8 @@ class Detector:
         mask, strict = corridor_mask(xyz, self.track, cfg.gauge, dy_all, h_all)
         idx = np.flatnonzero(mask)
         cand = Candidates(xyz=xyz[idx], dy=dy_all[idx], h=h_all[idx], in_gauge=strict[idx],
-                          intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool))
+                          intensity=intensity[idx], idx=idx, low=np.zeros(idx.size, dtype=bool),
+                          ring=None if self._frame_ring is None else self._frame_ring[idx])
         ref = reference_offset(cand.xyz[:, 0], self.track, cfg.gauge) if cfg.gauge.reference > 0 else None
         if ref is not None:
             # 27.09 (gauge.reference 1 / 2 / 3, 3 on): the envelope measured from the sensor axis where
@@ -432,17 +473,20 @@ class Detector:
             if si.size >= 3:
                 ones = np.ones(si.size, dtype=bool)
                 straddle = Candidates(xyz=xyz[si], dy=dy_all[si], h=h_all[si], in_gauge=ones,
-                                      intensity=intensity[si], idx=si, low=ones)
+                                      intensity=intensity[si], idx=si, low=ones,
+                                      ring=None if self._frame_ring is None else self._frame_ring[si])
         if lidx.size:
             ones = np.ones(lidx.size, dtype=bool)
             cand = cand.concat(Candidates(xyz=xyz[lidx], dy=dy_all[lidx], h=h_all[lidx], in_gauge=ones,
-                                           intensity=intensity[lidx], idx=lidx, low=ones))
+                                           intensity=intensity[lidx], idx=lidx, low=ones,
+                                           ring=None if self._frame_ring is None else self._frame_ring[lidx]))
         near = None
         if nidx.size and self.track.rail_score >= cfg.track.rails_min_score:
             nidx = nidx[~mask[nidx]]
             ones = np.ones(nidx.size, dtype=bool)
             near = Candidates(xyz=xyz[nidx], dy=dy_all[nidx], h=h_all[nidx], in_gauge=ones,
-                              intensity=intensity[nidx], idx=nidx, low=ones)
+                              intensity=intensity[nidx], idx=nidx, low=ones,
+                              ring=None if self._frame_ring is None else self._frame_ring[nidx])
         return cand, straddle, near
 
     # -- 3 -------------------------------------------------------------------------------------
@@ -507,6 +551,7 @@ class Detector:
         corridor object are dropped."""
         cfg = self.cfg
         acc = cfg.accumulation
+        self._low_height = []
         factor = max(1.0, n_acc * acc.min_points_scale) if n_acc > 1 else 1.0
         corr = cand.subset(~cand.low)
         dy_alt = None
@@ -522,7 +567,8 @@ class Detector:
                                 smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
                                 dy_alt=dy_alt, keep_thin=keep_thin,
-                                weak_from=cfg.tracking.thin_far_min_distance if cfg.cluster.weak_min_points > 0 else 0.0)
+                                weak_from=cfg.tracking.thin_far_min_distance
+                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
@@ -540,7 +586,11 @@ class Detector:
         if straddle is not None:
             scfg = replace(cfg.lowobj, min_top=cfg.lowobj.straddle_min_top,
                            min_width=cfg.lowobj.straddle_min_width, max_length=cfg.lowobj.straddle_max_length)
-            straddling = _clusters_of(straddle, lcfg, axis_valid=valid, low=straddle.low, low_cfg=scfg)
+            margin = cfg.lowobj.straddle_keep_height_margin if cfg.tracking.stop_keep_low_s > 0 else 0.0
+            straddling = _clusters_of(straddle, lcfg, axis_valid=valid, low=straddle.low, low_cfg=scfg,
+                                     low_height_margin=margin)
+            self._low_height = [c for c in straddling if c.low_height_weak]
+            straddling = [c for c in straddling if not c.low_height_weak]
             # a straddling cluster is the whole of what the point-wise low stage saw a slice of
             lows = [c for c in lows if not any(_overlap(c, k) for k in straddling)] + straddling
         if near is not None and len(near):
@@ -557,6 +607,11 @@ class Detector:
         if lows:
             keep = self._not_part_of_corridor_objects(lows, straddling, clusters, corr)
             clusters = sorted(clusters + keep, key=lambda c: c.distance)
+        if self._low_height:
+            # The same foot and duplicate rules apply to continuation evidence. It never
+            # enters the normal candidate list or supersedes a clean low/corridor cluster.
+            self._low_height = self._not_part_of_corridor_objects(
+                self._low_height, self._low_height, clusters, corr)
         return clusters
 
     def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
@@ -634,6 +689,8 @@ class Detector:
         self.tracker.update(clusters, ego_shift=(speed or 0.0) * dt, frame_dt=dt, low_ok=low_ok,
                             rail_within=low.rail_start_within,
                             thin=self._thin if self.cfg.tracking.stop_keep_thin > 0 else None,
+                            low_height=self._low_height,
+                            low_frame_dt=self._low_frame_dt,
                             far_thin=self._far_thin(clusters) if self.cfg.tracking.thin_far_min_distance > 0 else None)
         pending = low.pending_advisory and self.calib.state.status == "pending"
         dets: List[Detection] = []
@@ -647,7 +704,8 @@ class Detector:
                 center=t.centroid if t.misses else t.last.centroid,
                 size=t.last.size, n_points=t.last.n, confidence=t.confidence, age=t.age,
                 zone=t.zone, height_min=t.last.height_min, intensity=t.last.intensity,
-                reason=("doubt" if t.withheld else "near_envelope" if t.escalated else "stop_hold" if (t.kept and t.zone == "gauge")
+                reason=("doubt" if t.withheld else "near_envelope" if t.escalated
+                        else "low_height_hold" if t.last.low_height_weak else "stop_hold" if (t.kept and t.zone == "gauge")
                         else t.last.reason), kind=t.last.kind,
             ))
             d = dets[-1]
@@ -664,11 +722,16 @@ class Detector:
         or signature demotion) with ``thin_far_min_voxels`` strict voxels, and overlapping no other
         cluster of the frame (the lower edge of an object another cluster already describes). With
         ``cluster.weak_min_points`` also the clusters under the point-count bar (``Cluster.weak``)
-        that far and in zone ``gauge`` (``cluster.gauge_min_points`` strict voxels)."""
+        that far and in zone ``gauge`` (``cluster.gauge_min_points`` strict voxels). Experimental
+        ``far_min_ring_count`` filters known single-channel evidence only here; unknown channels
+        retain the usual path, and ``self._thin`` still supports continuation of existing STOPs."""
         tc = self.cfg.tracking
+        min_rings = tc.far_min_ring_count
         return [c for c in self._thin
                 if c.distance >= tc.thin_far_min_distance and c.zone == "gauge"
-                and (c.n_gauge >= tc.thin_far_min_voxels or not c.thin) and not any(_overlap(c, k) for k in clusters)]
+                and (c.n_gauge >= tc.thin_far_min_voxels or not c.thin)
+                and (min_rings <= 0 or c.ring_count <= 0 or c.ring_count >= min_rings)
+                and not any(_overlap(c, k) for k in clusters)]
 
     # -- 6b ------------------------------------------------------------------------------------
     def _clear_cap(self, clusters: List[Cluster], cand: Candidates, dy_all: np.ndarray,
@@ -685,7 +748,7 @@ class Detector:
         if hcfg.clear_cap_thin and self.cfg.tracking.stop_keep_thin > 0:
             extra.append(thin_cap_distance(self._thin, self.cfg.cluster.gauge_min_points, trust, n_acc))
         if hcfg.clear_cap_persist > 0:
-            extra.append(self.evidence.update(cand.xyz[:, 0], cand.dy, cand.h, cand.low))
+            extra.append(self.evidence.update(cand.xyz[:, 0], cand.dy, cand.h, cand.low, self._evidence_dt))
         for d in extra:
             if d is not None:
                 best = d if best is None else min(best, d)

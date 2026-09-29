@@ -2,7 +2,10 @@
 
 import importlib.util
 from dataclasses import asdict
+import os
 from pathlib import Path
+import subprocess
+import sys
 
 import numpy as np
 import pytest
@@ -21,6 +24,15 @@ _spec.loader.exec_module(_module)
 near_anchor_placements = _module.near_anchor_placements
 run_sequence = _module.run_sequence
 consecutive_files = _module.consecutive_files
+
+
+def test_far_range_cli_imports_cache_helpers_outside_repository(tmp_path):
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+    result = subprocess.run([sys.executable, str(_script), "--help"], cwd=tmp_path,
+                            env=env, capture_output=True, text=True, timeout=20)
+    assert result.returncode == 0, result.stderr
+    assert "--placement-mode" in result.stdout
 
 
 def model(center=0.0, slope=0.0, curvature=0.0, rail_score=0.1):
@@ -105,3 +117,9 @@ def test_anchored_set_f_rejects_missing_or_invalid_timestamps(synth_npy_dir):
     assert "missing timestamp" in run_sequence(job)["skipped"]
     job = (files, {stem0: 0.1, stem1: 20.1}, *job[2:])
     assert "invalid timestamp step" in run_sequence(job)["skipped"]
+
+
+def test_selected_stamps_key_compressed_and_plain_cache_files_alike():
+    stamps = {"new_data_5_0000": 100.0, "new_data_5_0001": 100.1}
+    got = _module.selected_stamps_of(["new_data_5_0000.npy.zst", "new_data_5_0001.npy"], stamps)
+    assert got == {"new_data_5_0000": 100.0, "new_data_5_0001": 100.1}

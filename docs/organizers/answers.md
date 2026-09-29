@@ -3,7 +3,8 @@
 > **Purpose:** every answer the organizers gave to our questions (case 05), verbatim where it was
 > written, and what each answer changed in ReSense.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, the answers verbatim in RU
-> **Last verified:** 2026-09-25 against `7290873` · **Status:** current
+> **Last verified:** 2026-09-29: §9 against the sealed detector's `gauge.*` settings and the labels
+> of `cloud_with_fake_obj` · **Status:** current
 
 Everything the organizers answered to the questions of [`../QUESTIONS.md`](../QUESTIONS.md),
 from these sources:
@@ -21,9 +22,12 @@ from these sources:
 * the **organizers' statement of 25.09** that the upload form takes links and has no file-size
   limit, reported by the captain, §8;
 * the **organizers' answer of 25.09** to our Q3 (a 30 × 30 × 10 cm object lying on the bed between
-  the rails is not an obstacle), reported by the captain, §8.
+  the rails is not an obstacle), reported by the captain, §8;
+* the **organizers' written answer of 29.09** to our Q1 and Q2 (the envelope's reference and the
+  accuracy of the synthetic objects), passed on by the team, §9.
 
-The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md).
+The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md)
+(none since 29.09).
 
 ## 1. Answers by question (Q&A session 22.09 + written answers 23.09)
 
@@ -104,7 +108,7 @@ on; the date of the answers is not given; recorded in `41b7ae7`, 24.09).
 |---|---|---|---|---|
 | 1 | will the mount position be passed to the algorithm, or found from the cloud every time? | «Лучше, если позиция будет определяться автоматически. Если нет - то в конфиг мы всё, что надо пропишем.» | automatic detection is preferred; otherwise the organizers write what is needed into the config | mount auto-calibration stays on (`calibration.enabled`); the mount launch arguments stay (`sensor_forward/left/up`, `mount_roll/pitch/yaw_deg`, `auto_calibrate`) |
 | 2 | the range of possible positions and orientations (x, y, z, roll, pitch, yaw)? | «В тестовых бэгах позиции такие же, как в тех, что мы предоставили вам.» | the test bags use the same positions as the provided ones | the two mounts in the data (the empty-tunnel rides and `doubleT_obstacle`) cover the test bags; the calibration stays as a safeguard |
-| 3 | will the LiDAR height above the rail head be known? | «Я же уже писал, что лидар установлен в 1075 мм над головкой рельса и ровно посередине состава.» (common answer to questions 3–4) | 1075 mm above the rail head, exactly on the train's centreline | the calibration measures 1.12 m and −0.02 m lateral on `roundT_doubleT` (4.5 cm from the answer) and 1.51 m on the older `doubleT_obstacle` mount; [`../QUESTIONS.md`](../QUESTIONS.md) Q1 asks whether the envelope follows the LiDAR's axis or the rails |
+| 3 | will the LiDAR height above the rail head be known? | «Я же уже писал, что лидар установлен в 1075 мм над головкой рельса и ровно посередине состава.» (common answer to questions 3–4) | 1075 mm above the rail head, exactly on the train's centreline | the calibration measures 1.12 m and −0.02 m lateral on `roundT_doubleT` (4.5 cm from the answer) and 1.51 m on the older `doubleT_obstacle` mount; whether the envelope follows the LiDAR's axis or the rails was our Q1, answered 29.09: the rails (§9) |
 | 4 | will the orientation relative to the train's longitudinal axis be known? | the common answer to questions 3–4 above; no numeric orientation is given | no orientation value | roll, pitch and yaw keep coming from the calibration |
 | 5 | switches: without the switch state, is an obstacle on only one branch an obstacle (union of the possible paths or the chosen branch)? | «Сейчас состояния стрелок неизвестны, поэтому если решение будет глючить на стрелках - то мы не будем учитывать это как минус.» | switch states are unknown; glitches at switches will not count against the solution | station and platform false STOPs come before switch ones in P3's work ([`../CAPTAIN.md`](../CAPTAIN.md) §9) |
 
@@ -143,3 +147,24 @@ facts 1–2, §1 #5), which the detector measures from the rail head.
 |---|---|---|---|---|
 | 25.09 | the captain (P1) | (a) the upload form has **no file-size limit**: the team types **links** into the form | **closed** | nothing is uploaded as a file: the form gets links — the repository with its commit hash, the image archive `resense-image-<version>.tar.gz` and its `.sha256` (§7), the video and the presentation. Which links, and when, is the captain's: he sends the submission himself (25.09, [`../archive/CAPTAIN_board_2026-09-28.md`](../archive/CAPTAIN_board_2026-09-28.md) C12); GitHub releases are deferred (C13). The archive's size (0.49 GiB at gzip -1 in CI) is no longer a constraint on the form; a GitHub release asset holds up to 2 GB per file. Each link must open for a logged-out visitor, and the archive is loaded once on a second machine before submitting ([`../CAPTAIN.md`](../CAPTAIN.md) action 1b) |
 | 25.09 | the captain (P1) | (b) a **30 × 30 × 10 cm object lying on the bed between the rails** (below the rail head) is **not an obstacle**: it is not inside the train's clearance envelope | **closed** | the shipped bed policy is the organizers' own: nothing below the envelope floor (0.12 m above the rail head) between the rails is reported ([`../ALGORITHM.md`](../ALGORITHM.md) §3.3b, `gauge.profile`, `lowobj.*` unchanged). The opt-in central near-bed path (`lowobj.near_enabled`, off; [`../EXPERIMENTS.md`](../archive/EXPERIMENTS_log_2026-09.md) §1e) stays off and is no longer an open question: it is not needed for the organizers' check, and its ride and set F re-run is dropped. The criteria judgement's 8.1 hold-down "the 30 × 30 × 10 cm object below the rail head is not detected by default" is answered by the organizers ([`../SCORECARD.md`](../SCORECARD.md) §8; no re-score). Objects that reach the envelope — across a rail, straddling the floor, on a rail head, taller than the floor — are reported as before |
+
+## 9. The envelope's reference and the synthetic objects (written answer, 29.09)
+
+Our Q1 and Q2 of 25.09 (the message is in the git history of [`../QUESTIONS.md`](../QUESTIONS.md))
+asked, for the organizers' synthetic-obstacle recording `cloud_with_fake_obj`: (Q1) is the envelope
+measured from the LiDAR's (the train's) axis or from the track's (the rails'), given that the rails
+of that recording run at 0.24° to the LiDAR's axis; (Q2) is «2х2 сверху габарита», whose bottom is
+2.4–2.9 m above the rail head, an obstacle. The answer, verbatim, as the team received it on 29.09:
+
+> Доброе утро!
+> Габарит поезда отсчитывается от головки рельсов. Рельсы могут быть под любым углом к лидару.
+> Синтетика расставлена условно-приблизительно и может плавать по отношению к габариту вдоль путей.
+> Над её точностью мы данный момент работаем и при проверке решенй иучастников будем делать
+> поправку на точность синтетики
+
+| # | answer (English) | status | consequence in ReSense |
+|---|---|---|---|
+| Q1 | the train's envelope is **measured from the rail heads**; the rails **may run at any angle to the LiDAR** | **closed** | the organizers' envelope is the one the detector builds from the rails (`gauge.profile`: \|dy\| ≤ 1.05 m from the fitted track axis, 0.12–3.0 m above the rail-head plane); nothing is measured from the sensor axis in their definition. The shipped `gauge.reference` 3 stays: it is the union of the rails' envelope and the sensor-axis one, so it never narrows the organizers' envelope, and it only widens it within 60 m on straight track by at most `reference_max_offset` = 0.2 m, inside the 0.35 m advisory band, whatever the rail angle (the offset is clipped). Taking it off (`reference` 0) loses measured recall for no measured false-alarm gain: in the matched quality-cycle screens ([`review_fix_d`](../evidence/results/quality_cycle_2026-09-27/screens/review_fix_d.json) vs [`ablation_reference_off`](../evidence/results/quality_cycle_2026-09-27/screens/ablation_reference_off.json)) the real person drops 61 → 58 of 61 frames and set O's edge cube 18 → 2 STOP frames (first STOP 35.0 → 5.2 m), while the ride, the five empty recordings and set O's outside-object false STOPs (6) are identical ([`../DECISIONS.md`](../DECISIONS.md) row 18). The cost the answer defines: an object up to 0.2 m outside the rails' envelope, within 60 m on straight track, can be a STOP. `gauge.axis_union` (off) loses its reason (the sensor-axis frame) and stays off. "Any angle" is what the mount calibration and the per-frame track axis already assume: the envelope follows the fitted rails, not the LiDAR's X axis |
+| Q2 | not answered in so many words; it follows from Q1: the envelope's top is 3.0 m **above the rail head** | **closed** (by Q1) | the bottom of #8 «2х2 сверху габарита» is 2.4–2.9 m above the rail head, 0.1–0.6 m inside the 3.0 m envelope: an obstacle. Its label stays `in_gauge: true` and its STOPs (from ~111 m) stay counted as detections. If the organizers meant "must not alarm", the answer's allowance below covers a placement that far from the top edge only loosely; nothing changes in the detector either way |
+| — | the synthetic objects are **placed approximately** and **may drift relative to the envelope along the track**; the organizers are improving their accuracy and **will correct for it when checking the solutions** | noted | set O's edge tests (#4 `small_edge_inside`, #5 `small_outside_near`, #6 `big_edge_inside`, #7 `big_outside`) sit within ±0.1–0.4 m of the rails' envelope edge and cross it along the track ([`../DATASET.md`](../DATASET.md) "Synthetic-obstacle recording"). Their labels keep the organizers' intent (`in_gauge`); their in/out results are within the organizers' stated tolerance and are reported, not tuned further. The hidden check's synthetic objects may be placed as loosely: no rule is fitted to an exact synthetic placement |
+

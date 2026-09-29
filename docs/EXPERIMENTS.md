@@ -315,3 +315,11 @@ v0.6.1 не строго сопоставимы.
 Сырые сводки истории: [`evidence/results/`](evidence/results) (указатель:
 [`evidence/README.md`](evidence/README.md)); датированный журнал изменений со всеми измерениями:
 [`archive/CHANGELOG_2026-09.md`](archive/CHANGELOG_2026-09.md).
+
+## Experimental branch evidence, 28.09
+
+The accepted P3 changes and health histogram optimization on the experimental branch have a
+separate [integration record](P3_SCORE_SYNC_2026-09-28.md) and
+[health validation record](evidence/cycle_2026-09-28/health_histogram/README.md). Those records
+identify the measured source and captures. The health runtime captures use the earlier node;
+they do not establish runtime parity for the later node changes described above.
