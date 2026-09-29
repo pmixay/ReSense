@@ -27,7 +27,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # speed-up (65 vs 64 ms per frame, 1.0 core instead; EXPERIMENTS.md section 3)
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        python3-pip python3-numpy python3-yaml g++ \
+        python3-pip python3-numpy python3-yaml g++ libusb-1.0-0 \
         ros-humble-vision-msgs ros-humble-nav-msgs ros-humble-tf2-ros-py \
         ros-humble-rviz2 ros-humble-rosbag2 \
         ros-humble-rosbag2-storage-default-plugins ros-humble-rosbag2-storage-mcap \
@@ -60,8 +60,14 @@ RUN pip3 install --upgrade "pip>=24" \
 # generator itself needs open3d, i.e. WITH_TOOLS=1).
 COPY tests ./tests
 COPY scripts ./scripts
+# The paired synthetic evaluator and its tests use the registered protocol in the image too.
+COPY docs/evidence/cycle_2026-09-28/evaluation/protocol.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol.json
+COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
+# Committed residual-inventory fixtures keep the dataset-free tests runnable in the image.
+COPY docs/evidence/results/residual_events_2026-09-28.json ./docs/evidence/results/residual_events_2026-09-28.json
+COPY docs/RESIDUAL_EVENTS_2026-09-28.md ./docs/RESIDUAL_EVENTS_2026-09-28.md
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
-        pip3 install "rosbags==0.10.11" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2"; \
+        pip3 install "rosbags==0.11.5" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2"; \
     fi
 
 # ROS 2 workspace. configs/default.yaml is the single source of truth for the detector

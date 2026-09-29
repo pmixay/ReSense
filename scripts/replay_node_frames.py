@@ -106,6 +106,8 @@ def bag_frames(bag, cfg, topic, seq_stamps, every):
             if not every and round(stamp, 6) not in want:
                 continue
             xyz, inten, ring, n_raw, n_near = pointcloud2_to_arrays(msg, cfg.sensor.min_range, cfg.sensor.max_range)
+            if not any(f.name == "ring" for f in msg.fields):
+                ring = None                 # unknown channels, as the node passes them
             yield i, Frame(xyz=xyz @ R_vs.T, intensity=inten, ring=ring, stamp=stamp,
                            frame_id=msg.header.frame_id, meta={"n_raw": n_raw, "n_near": n_near})
 

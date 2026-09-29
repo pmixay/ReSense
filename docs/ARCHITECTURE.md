@@ -1,11 +1,11 @@
-# Architecture
+# Архитектура
 
-> **Purpose:** components, data flow, the ROS node, timing, delivery and CI of ReSense (spec §5
-> "Архитектура"). The algorithm itself: [`ALGORITHM.md`](ALGORITHM.md).
-> **Audience:** jury, team · **Owner:** P1 · **Language:** EN, summary RU
-> **Last verified:** 2026-09-29: the node against `detector_node.py`, `fastcloud.py` and the launch
-> file (node change of 29.09, sealed 27.09 detector), timing against the judgement and the VM run
-> of 28.09 and the start-up A/B of 29.09, CI against `.github/workflows/` · **Status:** current
+> **Назначение:** компоненты, поток данных, ROS-нода, тайминги, поставка и CI ReSense (ТЗ §5
+> «Архитектура»). Сам алгоритм: [`ALGORITHM.md`](ALGORITHM.md).
+> **Аудитория:** жюри, команда · **Ответственный:** P1 · **Язык:** RU
+> **Проверено:** 2026-09-29: нода — по `detector_node.py`, `fastcloud.py` и launch-файлу
+> (изменение ноды от 29.09, детектор, опечатанный 27.09), тайминги — по независимой оценке и прогону
+> на ВМ от 28.09 и A/B-сравнению старта от 29.09, CI — по `.github/workflows/` · **Статус:** актуален
 
 **Кратко.** ROS 2-нода `resense_ros` принимает `PointCloud2` от `ros2 bag play` (любая из двух пар
 топик / frame id или любой найденный топик), читает облако прямо из сериализованных байтов и
@@ -16,298 +16,325 @@ JSON-статус. Цепочка жюри на 4 ядрах: 360° — p95 от
 100 мс), 120° — 49–78 мс, до одного ядра CPU, без видеокарты. Образ — архив для `docker load`.
 
 ```
-ros2 bag play ── PointCloud2, 10 Hz: /lidar_points | /sensing/lidar/hesai128/pointcloud | any found ──┐
-                                                                                                      ▼
+ros2 bag play ── PointCloud2, 10 Гц: /lidar_points | /sensing/lidar/hesai128/pointcloud | любой найденный ──┐
+                                                                                                            ▼
 resense_ros/detector_node (Docker, --net=host)                                    detector_node.py
-   input: topic discovery, one input at a time, a new recording → a fresh detector
-   queue of 40 frames; start-up burst worked through at 5 Hz, later backlogs 0.3 s apart
-   decode from the serialized bytes (fastcloud.py, bit-identical to resense.pointcloud)
-   freshness check of every result; watchdog on a silent input
-        │ Frame (xyz float32 in the vehicle frame, intensity, ring, stamp)
+   вход: поиск топика, один вход за раз, новая запись → новый детектор
+   очередь на 40 кадров; стартовая пачка разбирается с частотой 5 Гц, позднее отставание — с шагом 0.3 с
+   декодирование из сериализованных байтов (fastcloud.py, побитово совпадает с resense.pointcloud)
+   проверка свежести каждого результата; watchdog при молчащем входе
+        │ Frame (xyz float32 в системе координат поезда, intensity, ring, stamp)
         ▼
-resense.Detector.process(frame, ego_speed=None)            module            ALGORITHM
-   1.  sensor → vehicle frame, mount auto-calibration      calibration.py    §2, §2b
-   2.  track model: bed, rails 1.59 m apart, axis, curvature from the walls
-                                                           track.py          §3.1
-   3.  envelope 2.1 × 3.0 m swept along the axis (+0.35 m advisory band);
-       union with the sensor-axis envelope within 60 m     gauge.py          §3.2, §3.6
-   3b. objects on the rails / across the envelope floor    lowobj.py         §3.3b
-   3c. multi-frame accumulation (only with a given speed)  accumulate.py     §3.4
-   4.  voxels + range-adaptive DBSCAN, infrastructure filters and signatures,
-       thin hanging objects                                clustering.py     §3.3
-   5.  tracking, 0.5 s confirmation, learned opinion       tracking.py, opinion.py   §3.5, §3.6
-   6.  clear-distance caps, health                         evidence.py, health.py    §4b
+resense.Detector.process(frame, ego_speed=None)            модуль            ALGORITHM
+   1.  датчик → система координат поезда,
+       автокалибровка крепления                            calibration.py    §2, §2b
+   2.  модель пути: полотно, рельсы на расстоянии 1.59 м,
+       ось, кривизна по стенам                             track.py          §3.1
+   3.  габарит 2.1 × 3.0 м вдоль оси (+ зона предупреждения
+       0.35 м); объединение с габаритом по оси датчика
+       в пределах 60 м                                     gauge.py          §3.2, §3.6
+   3b. объекты на рельсах / поперёк пола габарита          lowobj.py         §3.3b
+   3c. накопление кадров (только при заданной скорости)    accumulate.py     §3.4
+   4.  воксели + DBSCAN с адаптацией к дальности, фильтры и
+       сигнатуры инфраструктуры, тонкие свисающие объекты  clustering.py     §3.3
+   5.  трекинг, подтверждение 0.5 с,
+       оценка обученной моделью                            tracking.py, opinion.py   §3.5, §3.6
+   6.  ограничение свободной дистанции, исправность        evidence.py, health.py   §4b
         │ FrameResult
         ▼
 /resense/decision (GO|CAUTION|STOP|FAULT)  /resense/obstacle_detected  /resense/warning
 /resense/nearest_distance  /resense/clear_distance  /resense/health (DiagnosticArray)
 /resense/status (JSON)  /resense/detections (Detection3DArray)  /resense/latency_ms  /resense/fps
-/resense/markers  /resense/corridor_points (built only while subscribed)  /tf_static
+/resense/markers  /resense/corridor_points (строится только при наличии подписчика)  /tf_static
         │
         ▼
-train controller (decision, clear_distance, status) · RViz2 · Foxglove (port 8765) · web dashboard
+контроллер поезда (decision, clear_distance, status) · RViz2 · Foxglove (порт 8765) · веб-дашборд
 ```
 
-## Packages and directories
+## Пакеты и каталоги
 
-| path | purpose |
+| путь | назначение |
 |---|---|
-| `resense/` | core library, no ROS dependency: decoding, calibration, track model, gauge, low objects, clustering, tracking, learned opinion (`models/`), health, CLI (`resense run / bench / inject / eval`) |
-| `ros2_ws/src/resense_ros/` | ROS 2 Humble `ament_python` package: node, fast decode, launch file, parameter copy, RViz config |
-| `native/`, `setup.py` | optional C++ kernels, bit-identical to the numpy code they replace ("Native kernels") |
-| `configs/default.yaml` | every detector parameter; the ROS package's copy is kept identical (`scripts/sync_params.sh --check` in CI) |
-| `docker/`, `docker-compose.yml`, `scripts/` | image, DDS profiles, entrypoint; build, run, dry run, export / load of the image archive, release |
-| `tests/` | pytest on a synthetic ray-cast tunnel (no dataset needed) |
-| `web/` | dashboard: replays a `results.jsonl` or shows the live node through rosbridge; not in the image, needs no internet |
-| `docs/`, `gitbook/` | documents ([`docs/README.md`](README.md)); the Russian user guide, synced to https://resense.gitbook.io/resense-docs/ |
+| `resense/` | основная библиотека, без зависимости от ROS: декодирование, калибровка, модель пути, габарит, низкие объекты, кластеризация, трекинг, обученная оценка (`models/`), исправность, CLI (`resense run / bench / inject / eval`) |
+| `ros2_ws/src/resense_ros/` | пакет ROS 2 Humble `ament_python`: нода, быстрое декодирование, launch-файл, копия параметров, конфигурация RViz |
+| `native/`, `setup.py` | необязательные ядра на C++, побитово совпадающие с заменяемым ими кодом на numpy («Ядра на C++») |
+| `configs/default.yaml` | все параметры детектора; копия в ROS-пакете держится идентичной (`scripts/sync_params.sh --check` в CI) |
+| `docker/`, `docker-compose.yml`, `scripts/` | образ, профили DDS, точка входа; сборка, запуск, прогон (dry run), экспорт / загрузка архива образа, релиз |
+| `tests/` | pytest на синтетическом тоннеле, построенном лучевым методом (ray casting) (датасет не нужен) |
+| `web/` | дашборд: воспроизводит `results.jsonl` или показывает работающую ноду через rosbridge; не входит в образ, интернет не нужен |
+| `docs/`, `gitbook/` | документы ([`docs/README.md`](README.md)); руководство пользователя на русском, синхронизируется с https://resense.gitbook.io/resense-docs/ |
 
-The detector (the `resense/` sources, the configuration and the build files) is sealed since 27.09
-([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); `scripts/detector_freeze.py verify` checks the seal.
+Детектор (исходники `resense/`, конфигурация и файлы сборки) опечатан с 27.09
+([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); `scripts/detector_freeze.py verify` проверяет печать.
 
-## Data flow and formats
+## Поток данных и форматы
 
-* **Input:** `sensor_msgs/PointCloud2`, fields `x y z intensity ring timestamp`, dual-return layout
-  with empty `(0,0,0)` slots ([`DATASET.md`](DATASET.md)), played by `ros2 bag play`; nothing in the
-  solution reads bag files (the offline CLI does, as a development tool).
-* **Internal `Frame`:** `xyz (N,3) float32` in the vehicle frame, `intensity`, `ring`, `stamp`.
-* **Output `FrameResult`** (JSON on `/resense/status` and per line of `resense run --out`):
-  `obstacle`, `warning`, `nearest_distance`, `clear_distance`, `detections[]` (id, zone, kind,
-  reason, distance, lateral offset, centre, size, points, confidence, age), `track` (bed, axis,
-  rail offset, trusted ranges), `health` (level, `decision_level`, messages, monitored range),
-  `mount`, the ego speed and its source, `timing_ms`. The node adds a `node` object (`latency_ms`,
-  `decode_ms`, `detect_ms`, `fps`, `frames`, `dropped_frames`, `catchup`, `catchup_skipped`,
-  `input_topic`, `recording`, `cpu_cores`, `rss_peak_mb`, …), a `freshness` object and
-  `snapshot_kind` (frame result, or watchdog / error snapshot).
-* **Transport:** Fast DDS over UDP only (`docker/fastdds_udp.xml`, so that a player run by any user
-  reaches the root node; `--net=host`), 32 MiB receive buffers. The kernel silently caps them at
-  `net.core.rmem_max` (212992 on stock Ubuntu): a stock Fast DDS player still delivered every 24 MB
-  360° cloud, a CycloneDDS player 0–1 of 201 (all at 32 MiB), so the jury commands start with
-  `sudo sysctl -w net.core.rmem_max=33554432` and the node warns below 32 MiB. Opt-in shared memory
-  (`-e RESENSE_DDS=shm --ipc=host`, `docker/dds_transport.sh`) hands the clouds over `/dev/shm` to
-  players that support it; the others are served over UDP.
-* **Offline tools:** `resense run --bag` (per-frame JSON, renders), `resense bench` (stage timing),
-  `resense inject` / `eval` (synthetic objects on real frames). `scripts/make_smoke_bag.py` writes a
-  synthetic bag in the organizers' layout; `scripts/check_dry_run.py` checks a captured status
-  stream against the bag (decisions, distance, processed and dropped frames, e2e latency over
-  current and over all results, playback pace).
+* **Вход:** `sensor_msgs/PointCloud2`, поля `x y z intensity ring timestamp`, раскладка с двойным
+  возвратом (dual return) и пустыми слотами `(0,0,0)` ([`DATASET.md`](DATASET.md)), воспроизводится
+  `ros2 bag play`; ничто в решении не читает файлы бэгов (офлайн-CLI читает — как инструмент
+  разработки).
+* **Внутренний `Frame`:** `xyz (N,3) float32` в системе координат поезда, `intensity`, `ring`, `stamp`.
+* **Выход `FrameResult`** (JSON в `/resense/status` и в каждой строке `resense run --out`):
+  `obstacle`, `warning`, `nearest_distance`, `clear_distance`, `detections[]` (id, зона, вид,
+  причина, расстояние, боковое смещение, центр, размер, точки, уверенность, возраст), `track` (полотно,
+  ось, смещение рельсов, доверенные дальности), `health` (уровень, `decision_level`, сообщения,
+  контролируемая дальность), `mount`, скорость поезда и её источник, `timing_ms`. Нода добавляет объект
+  `node` (`latency_ms`, `decode_ms`, `detect_ms`, `fps`, `frames`, `dropped_frames`, `catchup`,
+  `catchup_skipped`, `input_topic`, `recording`, `cpu_cores`, `rss_peak_mb`, …), объект `freshness` и
+  `snapshot_kind` (результат кадра либо снимок watchdog / ошибки).
+  В `timing_ms.stages` остаётся прежний интервал до конца трекинга; `health`, `result` и `total`
+  показывают расходы на проверку исправности, создание результата и полный вызов детектора.
+  Исправность оценивает полное время предыдущего вызова и публикует его возраст в один кадр.
+* **Транспорт:** только Fast DDS поверх UDP (`docker/fastdds_udp.xml` — чтобы плеер, запущенный любым
+  пользователем, достучался до ноды под root; `--net=host`), приёмные буферы по 32 МиБ. Ядро молча
+  ограничивает их значением `net.core.rmem_max` (212992 в стандартной Ubuntu): штатный плеер на Fast
+  DDS всё равно доставил каждое 24 МБ облако 360°, плеер на CycloneDDS — 0–1 из 201 (все при 32 МиБ),
+  поэтому команды жюри начинаются с `sudo sysctl -w net.core.rmem_max=33554432`, а нода предупреждает,
+  если значение ниже 32 МиБ. Необязательная разделяемая память (`-e RESENSE_DDS=shm --ipc=host`,
+  `docker/dds_transport.sh`) передаёт облака через `/dev/shm` плеерам, которые её поддерживают;
+  остальным они доставляются по UDP.
+* **Офлайн-инструменты:** `resense run --bag` (JSON по кадрам, рендеры), `resense bench` (тайминг
+  стадий), `resense inject` / `eval` (синтетические объекты на реальных кадрах).
+  `scripts/make_smoke_bag.py` пишет синтетический бэг в раскладке организаторов;
+  `scripts/check_dry_run.py` сверяет записанный поток статусов с бэгом (решения, расстояние,
+  обработанные и отброшенные кадры, сквозная задержка e2e по текущим и по всем результатам, темп
+  воспроизведения).
 
-## The node
+## Нода
 
-`ros2_ws/src/resense_ros/resense_ros/detector_node.py` on one single-threaded executor; every node
-parameter is also a launch argument of `detector.launch.py`.
+`ros2_ws/src/resense_ros/resense_ros/detector_node.py` на одном однопоточном исполнителе (executor);
+каждый параметр ноды — также аргумент запуска `detector.launch.py`.
 
-* **Inputs and recordings.** `input_topic` lists both organizer topics; `auto_discover` also takes
-  any other `PointCloud2` topic found on the graph. All subscriptions stay open, one is processed;
-  after `input_switch_timeout` = 1 s of silence another is taken. A **new recording** (another topic
-  or `frame_id`, stamps jumping back or forward by more than `new_input_gap` = 30 s) gets a fresh
-  detector, scene and mount calibration; a forward gap above `hole_reset_gap` = 1 s resets the scene
-  only, so bags can be played one after another into one node. `input_reliability: auto` is reliable
-  for `ros2 bag play` (a best-effort reader lost 196 of 201 360° clouds), best-effort for a
-  sensor-data driver.
-* **Decode.** With `raw_input` (default) the clouds arrive as serialized bytes and `fastcloud.py`
-  parses them (0.1 ms instead of rclpy's 12.5 ms median conversion of a 24 MB cloud).
-  `fastcloud.decode` reads x / y / z with one 12-byte-per-point copy and one index gather: the same
-  arrays byte for byte as `resense.pointcloud.pointcloud2_to_arrays` on all 453 frames of both
-  original recordings, 20.3 → 16.6 ms median at 360°, 7.4 → 4.8 ms at 120°. Other layouts use the
-  reference decode.
-* **Backlog and catch-up.** Humble's `ros2 bag play` reads ahead while its clock runs, then sends the
-  overdue first frames back to back. The queue holds `input_queue_depth` = 40 frames; a frame waiting
-  alone is processed at once. A recording's **first backlog** (the start-up burst) is worked through
-  **`catchup_startup_step` = 0.2 s** of recording apart — every other 10 Hz frame, the 5 Hz input the
-  detector is validated on — short backlogs included, within `catchup_startup_max_lag` = 20 s (closed
-  when that catch-up drains, or after 1 s without one). Later backlogs up to `catchup_step` = 0.3 s
-  are processed in full, longer ones 0.3 s of recording apart, none more than `catchup_max_lag` = 5 s
-  behind the newest; the chain never has a gap that resets the scene. `catchup_startup_step: 0`
-  processes every start-up frame; `catchup_step: 0` only ever the newest.
-* **Warm-up and shutdown.** With `warmup` (default) the node runs the decode and a throwaway
-  detector on three synthetic frames before logging "listening" (~0.7 s), so the first real frame
-  costs ~31 + 42 ms decode + detect instead of 49 + 72 ms. Ctrl+C exits cleanly
-  (`rclpy.try_shutdown()`).
-* **Publishing.** Decision topics go out first; markers and the corridor cloud are built only while
-  subscribed. A static identity TF `resense_lidar → <frame_id>` serves one RViz / Foxglove layout
-  for both organizer frame ids. BLAS / OpenMP threads default to 1.
-* **Ego speed and mount.** `ego_speed_mps` (if ≥ 0), else `speed_topic` / `odom_topic` younger than
-  `speed_timeout` = 1 s, else none (single-frame). `sensor_forward/left/up`, `mount_*_deg` and
-  `auto_calibrate` set the mount ([`ALGORITHM.md`](ALGORITHM.md) §2b).
+* **Входы и записи.** `input_topic` перечисляет оба топика организаторов; `auto_discover` берёт
+  также любой другой топик `PointCloud2`, найденный в графе. Все подписки остаются открытыми,
+  обрабатывается один вход; после `input_switch_timeout` = 1 с тишины берётся другой. **Новая
+  запись** (другой топик или `frame_id`, метки времени, скакнувшие назад или вперёд больше чем на
+  `new_input_gap` = 30 с) получает новый детектор, новую сцену и новую калибровку крепления; скачок
+  вперёд больше `hole_reset_gap` = 1 с сбрасывает только сцену, поэтому бэги можно проигрывать один
+  за другим в одну ноду. `input_reliability: auto` — reliable для `ros2 bag play` (читатель с
+  best-effort потерял 196 из 201 облака 360°), best-effort для драйвера sensor-data.
+* **Декодирование.** При `raw_input` (по умолчанию) облака приходят как сериализованные байты, и
+  `fastcloud.py` разбирает их (0,1 мс вместо медианных 12,5 мс на преобразование облака 24 МБ
+  средствами rclpy). `fastcloud.decode` читает x / y / z одним копированием по 12 байт на точку и одной выборкой
+  по индексам (gather): те же массивы байт в байт, что и `resense.pointcloud.pointcloud2_to_arrays`,
+  на всех 453 кадрах обеих исходных записей, медиана 20,3 → 16,6 мс при 360°, 7,4 → 4,8 мс при 120°.
+  Другие раскладки идут через исходное (reference) декодирование.
+* **Отставание и навёрстывание.** `ros2 bag play` из Humble читает вперёд, пока идут его часы, а
+  затем отправляет просроченные первые кадры подряд. Очередь вмещает `input_queue_depth` = 40
+  кадров; кадр, ждущий в одиночку, обрабатывается сразу. **Первое отставание** записи (стартовая
+  пачка) на `main` разбирается с шагом **`catchup_startup_step` = 0,2 с** записи — каждый второй кадр 10 Гц,
+  вход 5 Гц, на котором проверен детектор, — включая короткие отставания, в пределах
+  `catchup_startup_max_lag` = 20 с (закрывается, когда это навёрстывание завершилось, или через 1 с
+  без навёрстывания). Более поздние отставания до `catchup_step` = 0,3 с обрабатываются целиком,
+  более длинные — с шагом 0,3 с записи, и ни один кадр не отстаёт от самого нового больше чем на
+  `catchup_max_lag` = 5 с; в цепочке никогда нет разрыва, сбрасывающего сцену.
+  экспериментальная ветка задаёт `catchup_startup_step: 0` и обрабатывает каждый кадр стартовой
+  пачки; `catchup_step: 0` — только самый новый.
+* **Прогрев и остановка.** При `warmup` (по умолчанию) нода прогоняет декодирование и одноразовый
+  детектор на трёх синтетических кадрах, прежде чем записать в журнал «listening» (~0,7 с), поэтому
+  первый настоящий кадр стоит ~31 + 42 мс (декодирование + обнаружение) вместо 49 + 72 мс. Ctrl+C
+  завершает работу чисто (`rclpy.try_shutdown()`).
+* **Публикация.** Топики решения уходят первыми; маркеры и облако коридора строятся, только пока на
+  них есть подписчик. Статический тождественный TF `resense_lidar → <frame_id>` позволяет одной
+  раскладке RViz / Foxglove работать с обоими frame id организаторов. Число потоков BLAS / OpenMP по
+  умолчанию равно 1.
+* **Скорость поезда и крепление.** `ego_speed_mps` (если ≥ 0), иначе `speed_topic` / `odom_topic`,
+  не старше `speed_timeout` = 1 с, иначе скорости нет (режим по одному кадру). `sensor_forward/left/up`,
+  `mount_*_deg` и `auto_calibrate` задают крепление ([`ALGORITHM.md`](ALGORITHM.md) §2b).
 
-## Freshness contract
+## Контракт свежести
 
-Whether a result may be acted on ([registered contract](evidence/results/quality_freshness_2026-09-26_protocol.json)):
+Можно ли действовать по результату ([зарегистрированный контракт](evidence/results/quality_freshness_2026-09-26_protocol.json)):
 
-* `freshness_mode` **`live`** (the node's default) compares the acquisition stamp with system UTC;
-  **`replay`** ages the input from its DDS publication by the player, because recorded stamps are
-  the sensor's clock. **The image's default command passes `freshness_mode:=replay`**; a live LiDAR
-  passes `live`. An executor adapter (`SourceInfoExecutor`) keeps the publication metadata.
-* Source age, queue residence and recording lag must be ≤ `max_result_age` = 0.5 s, future skew ≤
-  `future_tolerance` = 0.05 s; a first, resumed or jumped epoch needs progression before `GO`.
-  Invalid or stale clocks give `FAULT`, a current result made during a catch-up `CAUTION`; an
-  outstanding `STOP` is held until a fresh valid non-STOP result. While the input is invalid
-  `clear_distance` is 0; the status `freshness` object gives the ages, the reason and `go_allowed`.
-* The watchdog gives `FAULT` / health `STALE` after `stale_timeout` = 0.5 s without a frame and
-  `FAULT` / `NO_INPUT` if nothing arrived `startup_grace` = 2 s after start; it shares the executor
-  and cannot run during a blocked callback. An exception publishes `FAULT`; after
-  `max_consecutive_errors` = 5 in a row the detector is reset.
-* A consumer must expire timestamped status on its own synchronized clock: `/resense/decision`
-  alone cannot prove current validity. The dashboard does so and keeps `STOP` through invalid input.
+* `freshness_mode` **`live`** (по умолчанию для ноды) сравнивает метку получения с системным UTC;
+  **`replay`** отсчитывает возраст входа от его публикации плеером по DDS, потому что записанные
+  метки — это часы датчика. **Команда образа по умолчанию передаёт `freshness_mode:=replay`**; живой
+  LiDAR передаёт `live`. Адаптер исполнителя (`SourceInfoExecutor`) сохраняет метаданные публикации.
+* Возраст источника, пребывание в очереди и отставание записи должны быть ≤ `max_result_age` = 0,5 с,
+  расхождение «в будущее» ≤ `future_tolerance` = 0,05 с; для первой, возобновлённой или скачкообразно
+  изменившейся эпохи перед `GO` требуется продвижение времени. Недействительные или устаревшие часы
+  дают `FAULT`, текущий результат, полученный во время навёрстывания, — `CAUTION`; действующий `STOP`
+  удерживается, пока не придёт свежий допустимый результат, не являющийся STOP. Пока вход
+  недействителен, `clear_distance` равен 0; объект `freshness` статуса содержит возрасты, причину и
+  `go_allowed`.
+* Watchdog даёт `FAULT` / исправность `STALE` после `stale_timeout` = 0,5 с без кадра и `FAULT` /
+  `NO_INPUT`, если через `startup_grace` = 2 с после старта ничего не пришло; он работает на том же
+  исполнителе и не может сработать во время заблокированного обратного вызова (callback).
+  Исключение публикует `FAULT`; после `max_consecutive_errors` = 5 подряд детектор сбрасывается.
+* Потребитель должен сам признавать статус с меткой времени просроченным по собственным
+  синхронизированным часам: один только `/resense/decision` не может доказать текущую
+  действительность. Дашборд так и делает и удерживает `STOP` при недействительном входе.
 
-Health (`/resense/health`) and the decision rule: [`ALGORITHM.md`](ALGORITHM.md) §4b.
+Исправность (`/resense/health`) и правило решения: [`ALGORITHM.md`](ALGORITHM.md) §4b.
 
-## Why this design
+## Почему такая архитектура
 
-* **Environment prior, no map** (spec §8.4): anything inside the train's envelope that is not rails,
-  bed or known infrastructure is a hazard; bed, rails, axis and mount are re-estimated from the data,
-  because the check includes a ride beyond the given recordings. No labelled obstacles are needed.
-* **Curvature from parallel references:** rails are seen to ~30–40 m, walls and column rows to
-  150–200 m; where no boundary is observed the corridor is not trusted and only advisory.
-* **Persistence before alarm:** 0.5 s of confirmation (11 m at 80 km/h), nothing extra for an
-  object tracked while it approaches; processing is < 15 % of the time to an alarm, so the CPU
-  suffices ("GPU: evaluated, not used").
+* **Априорные знания о среде, без карты** (ТЗ §8.4): всё, что находится внутри габарита поезда и не
+  является рельсами, полотном или известной инфраструктурой, — опасность; полотно, рельсы, ось и
+  крепление заново оцениваются по данным, потому что проверка включает поездку сверх выданных
+  записей. Размеченные препятствия не требуются.
+* **Кривизна по параллельным ориентирам:** рельсы видны до ~30–40 м, стены и ряды колонн — до
+  150–200 м; там, где ни одна граница не наблюдается, коридору не доверяют, и он служит только
+  предупреждением.
+* **Устойчивость раньше тревоги:** 0,5 с подтверждения (11 м при 80 км/ч), ничего дополнительно для
+  объекта, который отслеживался, пока приближался; обработка занимает < 15 % времени до тревоги,
+  поэтому хватает CPU («GPU: оценено, не используется»).
 
-## Real-time budget
+## Бюджет реального времени
 
-The frame period is 100 ms. Jury chain (`docker run` default command → `ros2 bag play --delay 3
---read-ahead-queue-size 10` as uid 1000 → `/resense/*`), image of `464f5bc` (28.09); e2e = the
-player publishes a cloud → the result with its stamp ([`SCORECARD.md`](SCORECARD.md),
+Период кадра — 100 мс. Цепочка жюри (команда `docker run` по умолчанию →
+`ros2 bag play --delay 3 --read-ahead-queue-size 10` под uid 1000 → `/resense/*`), образ коммита
+`464f5bc` (28.09); e2e = плеер публикует облако → результат с его меткой
+([`SCORECARD.md`](SCORECARD.md),
 [`evidence/vm_2026-09-28/`](evidence/vm_2026-09-28/summary.md)):
 
-| | 360° `doubleT_obstacle` (24 MB clouds) | 120° `roundT_doubleT` |
+| | 360° `doubleT_obstacle` (облака по 24 МБ) | 120° `roundT_doubleT` |
 |---|---|---|
-| e2e p95, current results | 81–82 ms warm, 88–96 ms cold (team VM, 4 cores); 85–94 ms warm, 87–172 ms cold (4-vCPU sandbox) | 49–78 ms (sandbox) |
-| node decode + detect p95 | 63–72 ms (VM); 79–98 ms (sandbox) | 56–75 ms (sandbox) |
-| CPU, resident memory (sandbox) | 0.8–1.0 core, 430–740 MB | 0.5–0.8 core, 130–250 MB |
-| decode + detect p95 on the numpy fallback (`RESENSE_NATIVE=0`) | 103 ms (VM): not real time | 71 ms (VM) |
+| e2e p95, текущие результаты | 81–82 мс с прогретым диском, 88–96 мс с холодным (ВМ команды, 4 ядра); 85–94 мс с прогретым, 87–172 мс с холодным (песочница на 4 vCPU) | 49–78 мс (песочница) |
+| p95 декодирования + обнаружения в ноде | 63–72 мс (ВМ); 79–98 мс (песочница) | 56–75 мс (песочница) |
+| CPU, резидентная память (песочница) | 0,8–1,0 ядра, 430–740 МБ | 0,5–0,8 ядра, 130–250 МБ |
+| p95 декодирования + обнаружения на запасном пути numpy (`RESENSE_NATIVE=0`) | 103 мс (ВМ): не реальное время | 71 мс (ВМ) |
 
-**Start-up**, node of 29.09 against the image of `464f5bc`, alternated on one 4-vCPU sandbox
+**Старт**, нода от 29.09 против образа коммита `464f5bc`, поочерёдно на одной песочнице с 4 vCPU
 ([`evidence/node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md)):
 
-| 360° `doubleT_obstacle` | e2e median, first 3 s | e2e p95, all results | first STOP after the first cloud |
+| 360° `doubleT_obstacle` | медиана e2e, первые 3 с | p95 e2e, все результаты | первый STOP после первого облака |
 |---|---|---|---|
-| bag in page cache | 312–325 → **38–105 ms** | 410–447 → **212–344 ms** | 0.90–0.99 → 0.79–0.98 s |
-| page cache dropped | 829–1029 → **120–300 ms** | 864–1084 → **333–599 ms** | 1.16–1.35 → 0.81–1.16 s |
+| бэг в страничном кэше | 312–325 → **38–105 мс** | 410–447 → **212–344 мс** | 0,90–0,99 → 0,79–0,98 с |
+| страничный кэш сброшен | 829–1029 → **120–300 мс** | 864–1084 → **333–599 мс** | 1,16–1,35 → 0,81–1,16 с |
 
-The 120° clear bag's first-3 s p95 fell from 295–340 to 66–123 ms; the decisions and the
-steady-state cost are unchanged. **The player and the disk matter:** with Humble's default
-read-ahead (no `--read-ahead-queue-size 10`) the player sends the overdue recording in a burst and
-every result is stale (57–135 of 201 360° frames processed, queue lag median 11 s, RSS up to 4 GB;
-145 of 201 with the 29.09 node); 360° playback reads ~225 MB/s, and on the VM's 79 MB/s network
-disk a 1.4 s stall failed the 120° dry run until the bags were pre-read. The organizers' 8-core
-i7-9700E was not available for a measurement ([`organizers/answers.md`](organizers/answers.md) §6).
+p95 за первые 3 с у бэга 120° без препятствий снизился с 295–340 до 66–123 мс; решения и стоимость в
+установившемся режиме не изменились. **Важны плеер и диск:** при чтении вперёд по умолчанию в Humble
+(без `--read-ahead-queue-size 10`) плеер отправляет просроченную запись пачкой, и каждый результат
+устарел (обработано 57–135 из 201 кадра 360°, медиана отставания очереди 11 с, RSS до 4 ГБ; 145 из
+201 с нодой от 29.09); воспроизведение 360° читает ~225 МБ/с, а на сетевом диске ВМ со скоростью
+79 МБ/с остановка на 1,4 с провалила прогон 120°, пока бэги не были заранее прочитаны. 8-ядерный
+i7-9700E организаторов для замера был недоступен ([`organizers/answers.md`](organizers/answers.md) §6).
 
-## Native kernels (optional, C++)
+## Ядра на C++ (необязательные)
 
-`native/resense_native.cpp`, a plain C ABI loaded with ctypes (`resense/_native.py`), does in one
-pass each what the numpy code does in several full-cloud masks, gathers and `np.lexsort`s: per-bin
-percentiles (`rs_bin_percentile`), bed / axis / corridor coordinates, the selection prologues of
-the bed, rail, wall and verification fits, the corridor masks (`rs_select`) and the visibility.
+`native/resense_native.cpp`, простой C ABI, загружаемый через ctypes (`resense/_native.py`), выполняет
+каждую из перечисленных операций за один проход, тогда как код на numpy делает то же несколькими
+масками по всему облаку, выборками (gather) и `np.lexsort`: процентили по интервалам
+(`rs_bin_percentile`), координаты полотна / оси / коридора, начальные выборки точек для подгонок
+полотна, рельсов, стен и проверки, маски коридора (`rs_select`) и видимость.
 
-* **Same output, bit for bit:** the same IEEE operations in the same order (no FMA contraction,
-  fast-math or `-march=native`), float32 comparisons where numpy makes them; anything unusual takes
-  the numpy code, which stays as the fallback. Checked by `tests/test_native.py` and on all 3 998
-  cached real frames (identical results and `scripts/output_fingerprint.py`).
-* **Faster:** detector stages 24.6 against 55.9 ms mean at 360°, 22.5 against 43.6 ms at 120° (team
-  VM, 28.09, [`evidence/bench_2026-09-28/`](evidence/bench_2026-09-28/summary.txt)).
-* **DBSCAN on cKDTree** (`resense.clustering.dbscan_labels`) reproduces scikit-learn's labels
-  exactly (identical on all 9 240 real calls and on random sets with ties, `tests/test_cpu_savings.py`).
-* **Build and switch:** `pip install .` compiles them as an optional extension (without a compiler
-  the install succeeds on numpy); the image builds them and the node logs the path at start;
-  `RESENSE_NATIVE=0` forces numpy. Not ported on purpose: the mount rotation (BLAS rounding) and the
-  health monitor's `arctan2` histogram.
+* **Тот же результат, бит в бит:** те же операции IEEE в том же порядке (без FMA-слияния, fast-math
+  и `-march=native`), сравнения float32 там, где их делает numpy; нештатные случаи обрабатывает код
+  на numpy, который остаётся запасным путём. Проверено `tests/test_native.py` и на всех 3 998
+  закэшированных реальных кадрах (идентичные результаты и `scripts/output_fingerprint.py`).
+* **Быстрее:** стадии детектора 24,6 против 55,9 мс в среднем при 360°, 22,5 против 43,6 мс при 120°
+  (ВМ команды, 28.09, [`evidence/bench_2026-09-28/`](evidence/bench_2026-09-28/summary.txt)).
+* **DBSCAN на cKDTree** (`resense.clustering.dbscan_labels`) в точности воспроизводит метки
+  scikit-learn (идентичны на всех 9 240 реальных вызовах и на случайных наборах с одинаковыми
+  расстояниями (ties), `tests/test_cpu_savings.py`).
+* **Сборка и переключение:** `pip install .` компилирует их как необязательное расширение (без
+  компилятора установка проходит на numpy); образ собирает их, и нода пишет путь в журнал при старте;
+  `RESENSE_NATIVE=0` принудительно включает numpy. Намеренно не перенесены: поворот по креплению
+  (округление BLAS) и гистограмма `arctan2` в мониторе исправности.
 
-## GPU: evaluated, not used
+## GPU: оценено, не используется
 
-The stand has an RTX 4070 Ti SUPER ([`organizers/test_stand_software.md`](organizers/test_stand_software.md));
-the spec (§3.1) allows the GPU only if the algorithm needs it. A study of 24.09 (estimates from the
-measured CPU stages; no GPU in the sandbox or CI): a frame is ~1 160 small array operations, many
-feeding Python `if`s, so a CuPy port is dispatch-bound and would save ≤ 30–45 ms per 360° frame
-against numpy, 5–15 ms against the native kernels; cuML DBSCAN is slower than the CPU on our
-100–1 000-voxel calls. A container that requests the GPU does not start without `nvidia-container-toolkit` (not in
-the organizers' package list), the image would grow by 0.3–6 GB, and CI could not test the path.
+На стенде стоит RTX 4070 Ti SUPER ([`organizers/test_stand_software.md`](organizers/test_stand_software.md));
+ТЗ (§3.1) разрешает GPU, только если он нужен алгоритму. Исследование от 24.09 (оценки по измеренным
+стадиям на CPU; GPU нет ни в песочнице, ни в CI): кадр — это ~1 160 мелких операций над массивами,
+результаты многих из них попадают в условия Python `if`, поэтому порт на CuPy упирается в накладные
+расходы запуска (dispatch-bound) и сэкономил бы ≤ 30–45 мс на кадр 360° против numpy, 5–15 мс против
+ядер на C++; DBSCAN из cuML медленнее CPU на наших вызовах на 100–1 000 вокселей. Контейнер,
+запрашивающий GPU, не стартует без `nvidia-container-toolkit` (его нет в списке пакетов
+организаторов), образ вырос бы на 0,3–6 ГБ, а CI не смог бы проверить этот путь.
 
-## Deployment without internet
+## Развёртывание без интернета
 
-The test machine has no internet ([`organizers/answers.md`](organizers/answers.md) §7). Only
-`docker build` needs the network (base image, ROS / Ubuntu packages, pinned PyPI wheels); at run time
-the node, launch file, compose services, RViz and foxglove_bridge use only DDS on the host's
-interfaces, and the dashboard's fonts and roslib are bundled.
+У тестовой машины нет интернета ([`organizers/answers.md`](organizers/answers.md) §7). Сеть нужна
+только для `docker build` (базовый образ, пакеты ROS / Ubuntu, закреплённые по версиям wheel-пакеты
+PyPI); во время работы нода, launch-файл, сервисы compose, RViz и foxglove_bridge используют только
+DDS на интерфейсах хоста, а шрифты и roslib дашборда встроены.
 
-* **Image:** `docker/Dockerfile` on `ros:humble-ros-base-jammy`, pinned numpy / scipy /
-  scikit-learn, kernels compiled at build time; default command `ros2 launch resense_ros
-  detector.launch.py freshness_mode:=replay`, run with `--net=host`. A clean build takes 79 s with
-  the base image cached (534 s with `--no-cache` on the team VM); `WITH_TOOLS=1` adds the dev tools.
-* **Archive:** `scripts/export_image.sh` builds the runtime image from `git archive HEAD` and writes
-  `dist/resense-image-<version>.tar.gz` with its `.sha256`; `scripts/load_image.sh` checks the sum,
-  loads it and runs it with `--network none` (475 947 817 bytes on the team VM, PASS).
-* **Where it comes from:** the image archive is published as the assets of the GitHub release
-  `v1.0.0` by `.github/workflows/release.yml` when the tag is pushed; until then it is the CI
-  artifact `resense-image-<version>-<short commit>` of a `main` run (Actions → Artifacts, GitHub
-  login, kept 30 days) or `scripts/export_image.sh` on any machine with Docker.
-* **Offline `docker build`** (best effort): after `docker load`, `chmod -R u+rwX,go+rX,go-w .` in the
-  same commit's tree and `docker build --cache-from resense:<version> -t resense -f
-  docker/Dockerfile .` takes every step from the archive's inline cache (BuildKit, classic image
-  store). CI proves it with Docker Hub blocked; `docker load` stays the documented path.
+* **Образ:** `docker/Dockerfile` на `ros:humble-ros-base-jammy`, numpy / scipy / scikit-learn закреплены
+  по версиям, ядра компилируются при сборке; команда по умолчанию
+  `ros2 launch resense_ros detector.launch.py freshness_mode:=replay`, запуск с `--net=host`.
+  Чистая сборка занимает 79 с при закэшированном базовом образе (534 с с `--no-cache` на ВМ команды);
+  `WITH_TOOLS=1` добавляет инструменты разработки.
+* **Архив:** `scripts/export_image.sh` собирает runtime-образ из `git archive HEAD` и пишет
+  `dist/resense-image-<version>.tar.gz` с его `.sha256`; `scripts/load_image.sh` проверяет сумму,
+  загружает образ и запускает его с `--network none` (475 947 817 байт на ВМ команды, PASS).
+* **Откуда взять:** архив образа публикуется как файлы (assets) релиза GitHub `v1.0.0` через
+  `.github/workflows/release.yml` при пуше тега; до этого — артефакт CI
+  `resense-image-<version>-<short commit>` запуска на `main` (Actions → Artifacts, вход в GitHub,
+  хранение 30 дней) или `scripts/export_image.sh` на любой машине с Docker.
+* **Офлайн `docker build`** (по мере возможности, best effort): после `docker load` команды
+  `chmod -R u+rwX,go+rX,go-w .` в дереве того же коммита и
+  `docker build --cache-from resense:<version> -t resense -f docker/Dockerfile .` берут каждый шаг из
+  встроенного (inline) кэша архива (BuildKit, классическое хранилище образов). CI доказывает это при
+  заблокированном Docker Hub; `docker load` остаётся документированным путём.
 
-## CI and release
+## CI и релиз
 
-`.github/workflows/ci.yml` runs on every push, 4 jobs in 2 stages: **`checks`** (ruff, the ROS
-parameter copy, `scripts/detector_freeze.py verify`) and then in parallel **`pytest`** (the suite
-with `RESENSE_REQUIRE_SYNTHETIC=1`, so a skipped synthetic test fails, and the dashboard in headless
-Chromium), **`docker`** (the suite in the `WITH_TOOLS=1` image; the node reached every way the jury
-can — synthetic bags with no network, node and player in separate containers, the one-command
-wrapper, stock Fast DDS as uid 1000, shared memory, a remote Foxglove viewer — and a cold-disk start
-with both original bags) and **`offline-build`** (the release archive made, every image and the
-build cache removed, the archive loaded, rebuilt offline from its cache, both smoke bags played
-through it on an `--internal` network; on `main` it is uploaded as the run artifact). Tests: 770
-passed, 1 deselected (needs the ride's frame cache); CI green on `main`.
+`.github/workflows/ci.yml` запускается при каждом пуше, 4 задания в 2 этапа: **`checks`** (ruff, копия
+параметров ROS, `scripts/detector_freeze.py verify`), затем параллельно **`pytest`** (набор тестов с
+`RESENSE_REQUIRE_SYNTHETIC=1`, так что пропущенный синтетический тест — это падение, и дашборд в
+headless Chromium), **`docker`** (набор тестов в образе `WITH_TOOLS=1`; нода, к которой обращаются всеми
+способами, доступными жюри, — синтетические бэги без сети, нода и плеер в отдельных контейнерах,
+обёртка в одну команду, штатный Fast DDS под uid 1000, общая память, удалённый просмотр в Foxglove, —
+и холодный старт с обоими исходными бэгами) и **`offline-build`** (собирается архив релиза, удаляются
+все образы и кэш сборки, архив загружается, образ пересобирается офлайн из его кэша, оба smoke-бэга
+проигрываются через него во внутренней сети `--internal`; на `main` он выгружается как артефакт
+запуска). Тесты: 770 пройдено, 1 исключён (deselected; нужен кэш кадров поездки); CI зелёный на `main`.
 
-**Release:** a pushed tag `v<version>-rcN` / `v<version>` (checked against the package version by
-`scripts/release_meta.py`) runs `release.yml`: the tag's tests, the image exported, removed and
-loaded back, two synthetic bags through the loaded image on an `--internal` network and in the
-jury's form (`--net=host`, stock Fast DDS player as uid 1000), then the GitHub release with the
-archive, `.sha256` and `SHA256SUMS`, downloaded again and its sum checked. `scripts/release.sh` is
-the same chain by hand (`DRY_RUN=1 SMOKE=1` prints the plan).
+**Релиз:** отправленный тег `v<version>-rcN` / `v<version>` (сверяется с версией пакета через
+`scripts/release_meta.py`) запускает `release.yml`: тесты тега, образ экспортируется, удаляется и
+загружается обратно, два синтетических бэга проигрываются через загруженный образ во внутренней сети
+`--internal` и в форме жюри (`--net=host`, штатный плеер на Fast DDS под uid 1000), затем создаётся
+релиз GitHub с архивом, `.sha256` и `SHA256SUMS`; он скачивается заново, и сумма проверяется.
+`scripts/release.sh` — та же цепочка вручную (`DRY_RUN=1 SMOKE=1` печатает план).
 
-## Known limitations
+## Известные ограничения
 
-The detector's own: [`ALGORITHM.md`](ALGORITHM.md) §6 and the next section. Node and deployment:
-latency at 360° on 4 cores is close to the 100 ms period (e2e p95 81–94 ms warm, up to 172 ms cold;
-the numpy fallback is not real time there); results are stale without `--read-ahead-queue-size 10`,
-and a disk slower than ~225 MB/s cannot feed 360° playback in real time; at start the player's burst (~0.7 s of recording) is worked
-through at 5 Hz and the first STOP comes 0.8–1.2 s after the first cloud; freshness needs
-synchronized clocks and a consumer that expires the status itself.
+Собственные ограничения детектора: [`ALGORITHM.md`](ALGORITHM.md) §6 и следующий раздел. Нода и
+развёртывание: задержка при 360° на 4 ядрах близка к периоду 100 мс (e2e p95 81–94 мс с прогретым
+диском, до 172 мс с холодным; запасной путь на numpy там не работает в реальном времени); без
+`--read-ahead-queue-size 10` результаты устаревают, а диск медленнее ~225 МБ/с не может подавать
+воспроизведение 360° в реальном времени; при старте пачка плеера (~0,7 с записи) разбирается с
+частотой 5 Гц, и первый STOP приходит через 0,8–1,2 с после первого облака; свежесть требует
+синхронизированных часов и потребителя, который сам признаёт статус просроченным.
 
-### Limitations of the sealed 27.09 detector (verified 28.09)
+### Ограничения опечатанного детектора 27.09 (проверено 28.09)
 
-The detector is sealed ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)): these are documented, not
-fixed. Figures: the judgement of 28.09 ([`SCORECARD.md`](SCORECARD.md)).
+Детектор опечатан ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)): эти ограничения задокументированы,
+а не исправлены. Цифры: независимая оценка 28.09 ([`SCORECARD.md`](SCORECARD.md)).
 
-* **A confirmed STOP drops for one frame when its object is missed twice in a row.** On
-  `doubleT_obstacle` the object lying across the rail (about 20 points at 56 m, in view the whole
-  recording) gets **GO at frame 111** and CAUTION at 117 and 197: in frames 110–111, 116–117 and
-  196–197 the low-object stage ([`ALGORITHM.md`](ALGORITHM.md) §3.3b) forms no cluster from it, and
-  `tracking.hold_misses` = 1 bridges only the first miss (ALGORITHM §4); the next frame is a STOP again. STOP
-  on 123 of the 126 frames after the person leaves it (190 of 201 in all). `clear_distance` stays
-  capped at 56.2 m (`health.clear_cap_lost`), but a consumer reading only `/resense/decision` gets
-  GO for one 100 ms frame: do not act on a single-frame GO. It reproduces offline and in 4 of the 5
-  jury-chain runs (the fifth had its GO at 197): the stages that form the cluster keep state (the
-  bed template, the smoothed track model). The candidate fix `tracking.hold_misses` 2 restores those
-  frames but failed the strict gate (ride 130 → 150 alarm frames and 32 → 34 events, five empty
-  recordings 40 → 46 alarm frames, more set F false detections) and was rejected. Evidence:
+* **Подтверждённый STOP пропадает на один кадр, когда его объект пропущен два раза подряд.** На
+  `doubleT_obstacle` объект, лежащий поперёк рельса (около 20 точек на расстоянии 56 м, в поле зрения
+  всю запись), получает **GO на кадре 111** и CAUTION на кадрах 117 и 197: на кадрах 110–111, 116–117
+  и 196–197 стадия низких объектов ([`ALGORITHM.md`](ALGORITHM.md) §3.3b) не формирует из него
+  кластер, а `tracking.hold_misses` = 1 перекрывает только первый пропуск (ALGORITHM §4); следующий
+  кадр снова STOP. STOP на 123 из 126 кадров после того, как человек отходит от объекта (190 из 201
+  в целом). `clear_distance` остаётся ограниченным 56,2 м (`health.clear_cap_lost`), но потребитель,
+  читающий только `/resense/decision`, получает GO на один кадр в 100 мс: не следует действовать по GO
+  длиной в один кадр. Воспроизводится офлайн и в 4 из 5 прогонов цепочки жюри (в пятом GO был на кадре
+  197): стадии, формирующие кластер, хранят состояние (шаблон полотна, сглаженная модель пути).
+  Предложенное исправление `tracking.hold_misses` 2 восстанавливает эти кадры, но не прошло строгий
+  шлюз (поездка: 130 → 150 кадров тревоги и 32 → 34 события, пять записей без препятствий: 40 → 46
+  кадров тревоги, больше ложных срабатываний на наборе F) и было отклонено.
+  Материалы-доказательства (evidence):
   [`evidence/judge_outputs_2026-09-28/`](evidence/judge_outputs_2026-09-28/README.md).
-* **Beyond the trusted axis an object on the track is `CAUTION`, not `STOP`.** A real person pasted
-  into the other five tunnels gives a sustained STOP at 60 m in 11 of 15 windows, 100 m in 6, 130 m
-  in 2, 160 m in 1, 200 m in none; the misses are `beyond_axis` where the trusted axis range is
-  short (platforms, double-track sections: 45 m for a whole platform window) or a merge with
-  trackside structure into a `column` ([`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md)).
-* **The learned opinion's delay is counted in processed frames** (ALGORITHM §3.6): at most 10 over a track's
-  life, beyond 25 m, not for a body ≥ 1 m tall within 40 m — ~1 s at 10 Hz, ~2 s at 5 Hz, longer in
-  recording time during a catch-up. Its positives are synthetic.
-* **In-sample.** Every rule and the opinion's negatives were tuned on the six recordings, the ride
-  and set O; the only held-out figure is the ride with the opinion cross-fitted (37 events). The
-  labels of `doubleT_obstacle` and set O come from the team's own tools
-  ([`EVALUATION.md`](EVALUATION.md) §1).
-* **`CAUTION` is frequent**: 49 % of the frames of the obstacle-free recordings (35–69 % each), 37 %
-  of the ride; an object demoted to it is easy to overlook.
-* **Small and edge objects are confirmed late**: set O's 0.3 m cubes from 48–56 m, the edge cube
-  from 35 m, the edge 2 m box from 29 m, the 5 cm hanging object from 30 m.
-* **`clear_distance` is an estimate, not a guarantee**: it extends past an object inside the
-  envelope in 300 of 605 set-O frames (68 of them GO).
+* **За пределами доверенной оси объект на пути получает `CAUTION`, а не `STOP`.** Настоящий человек,
+  вставленный в остальные пять тоннелей, даёт устойчивый STOP на 60 м в 11 из 15 окон, на 100 м — в 6,
+  на 130 м — в 2, на 160 м — в 1, на 200 м — ни в одном; промахи — это `beyond_axis`, где доверенная
+  дальность оси короткая (платформы, двухпутные участки: 45 м для целого окна на платформе), или
+  слияние с конструкцией вдоль пути в `column`
+  ([`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md)).
+* **Задержка от оценки обученной моделью считается в обработанных кадрах** (ALGORITHM §3.6): не более
+  10 за жизнь трека, дальше 25 м, не для тела высотой ≥ 1 м в пределах 40 м — ~1 с при 10 Гц, ~2 с при
+  5 Гц, дольше по времени записи во время навёрстывания. Её положительные примеры синтетические.
+* **В выборке (in-sample).** Каждое правило и отрицательные примеры обученной модели настраивались на
+  шести записях, поездке и наборе O; единственная цифра вне выборки — поездка с перекрёстно обученной
+  моделью (37 событий). Метки `doubleT_obstacle` и набора O получены собственными инструментами
+  команды ([`EVALUATION.md`](EVALUATION.md) §1).
+* **`CAUTION` встречается часто**: на 49 % кадров записей без препятствий (по 35–69 % в каждой), на
+  37 % кадров поездки; объект, понижённый до него, легко не заметить.
+* **Малые и краевые объекты подтверждаются поздно**: кубы 0,3 м набора O — с 48–56 м, краевой куб — с
+  35 м, краевой ящик 2 м — с 29 м, свисающий объект 5 см — с 30 м.
+* **`clear_distance` — оценка, а не гарантия**: она простирается дальше объекта внутри габарита в 300
+  из 605 кадров набора O (68 из них — GO).

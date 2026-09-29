@@ -341,7 +341,7 @@ few ms). No measurement on the 8-core stand exists.
 - **A confirmed STOP drops for one frame on two misses in a row** (found by the 28.09
   re-judgement): the object on the rail of `doubleT_obstacle` is 125 of 126 on the gate's frame
   cache, but 123 of 126 on the raw recording, offline and through the node — GO at frame 111,
-  CAUTION at 117 and 197 ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809)).
+  CAUTION at 117 and 197 ([ARCHITECTURE «Known limitations»](../ARCHITECTURE.md#ограничения-опечатанного-детектора-2709-проверено-2809)).
   It predates this cycle (the P3d detector's node capture of 27.09 shows it too).
 
 ## Acceptance record

@@ -64,19 +64,21 @@ def test_records_actual_rejection_return_condition_and_restores_function():
     assert clustering._corridor_cluster is original
     record = detector.trace["blobs"][0]
     assert record["target_points"] == 4
-    # the blob is under the point-count bar; without a weak_from distance (cluster.weak_min_points,
-    # 27.09) the return is the one under the weak-evidence test nested in that branch
-    assert record["returns"][-1]["condition"] == (
-        "not (weak_from > 0 and cfg.weak_min_points > 0 and (b.n_vox >= cfg.weak_min_points) and (dist >= weak_from))")
+    # Below the point-count bar and without weak_from, neither the ordinary weak path nor
+    # the opt-in cross-ring relaxation is eligible. The trace records their joint rejection.
+    assert record["returns"][-1]["condition"] == "not (ordinary or cross_ring)"
     assert record["returns"][-1]["value"] is None
     assert sys.getprofile() is None
 
 
 @pytest.mark.synthetic
-def test_tracing_preserves_stateful_detector_output():
+@pytest.mark.parametrize("fresh", [False, True])
+def test_tracing_preserves_stateful_detector_output(fresh):
     cloud, labels, _ = synthetic_tunnel_frame(rng=np.random.default_rng(12), specs=[
         ObstacleSpec(kind="box", size=(0.3, 0.3, 0.3), distance=25, lateral=0, base_z=-0.2)])
-    plain, traced = Detector(DetectorConfig()), TraceDetector(DetectorConfig())
+    cfg = DetectorConfig()
+    cfg.tracking.fresh_stop_evidence = fresh
+    plain, traced = Detector(cfg), TraceDetector(DetectorConfig.from_dict(cfg.to_dict()))
     original = clustering._corridor_cluster
     targets = np.flatnonzero(labels == 1)
     assert len(targets) > 0
@@ -88,3 +90,6 @@ def test_tracing_preserves_stateful_detector_output():
         assert traced.trace["geometry"]["groups"]["cube"]["points"] == len(targets)
         assert clustering._corridor_cluster is original
     assert traced.trace["blobs"]
+    assert traced.trace["tracker_hits"]
+    if fresh:
+        assert all(hit["evidence_after"] for hit in traced.trace["tracker_hits"].values())

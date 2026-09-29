@@ -2,9 +2,9 @@
 """One command for a detector candidate: the regression gate, the monitoring diagnostics and the
 processing-history stress, summarised against the four open quality problems (27.09).
 
-    python scripts/quality_screen.py --name base                       # the checkout as it is
-    python scripts/quality_screen.py --name c1 --set gauge.axis_union=1 [--set ...] [--config FILE]
-    python scripts/quality_screen.py --name c1 --quick                 # six recordings + set O only
+    python scripts/quality_screen.py --name base --bag /data/for_hackathon/roundT_doubleT
+    python scripts/quality_screen.py --name c1 --bag BAG --set gauge.axis_union=1 [--set ...] [--config FILE]
+    python scripts/quality_screen.py --name c1 --quick --no-history     # six recordings + set O only
 
 It runs, from the checkout it lives in, on the caches of ``--cache``:
 
@@ -45,8 +45,20 @@ def _run(cmd, log):
     return r.returncode, round(time.time() - t0, 1)
 
 
-def summarize(work: str, gate_rc: int, quick: bool) -> dict:
-    gate = json.load(open(os.path.join(work, "gate.json"), encoding="utf-8"))
+def _fresh(path: str) -> str:
+    """Remove a stage's output before the stage runs: a skipped or crashed stage must not leave an
+    earlier invocation's file for :func:`summarize` to report as this candidate's."""
+    if os.path.exists(path):
+        os.remove(path)
+    return path
+
+
+def summarize(work: str, gate_rc: int, quick: bool, history_rc=None, acceptance_rc=None) -> dict:
+    """The headline problems from this invocation's stage outputs. ``acceptance_rc`` /
+    ``history_rc``: that stage's exit code, ``None`` when it did not run; a stage that did not run
+    or failed contributes nothing (its file was removed before it ran, :func:`_fresh`)."""
+    gate_path = os.path.join(work, "gate.json")
+    gate = json.load(open(gate_path, encoding="utf-8")) if os.path.exists(gate_path) else {}
     so = gate.get("set_O") or {}
     objs = so.get("objects") or {}
     edge = {k: {f: objs.get(k, {}).get(f) for f in ("stop_frames", "first_stop_m", "held_from_m",
@@ -69,7 +81,9 @@ def summarize(work: str, gate_rc: int, quick: bool) -> dict:
                              "per_label": lab.get("per_label"), "fp_events": lab.get("fp_events")},
     }
     acc_path = os.path.join(work, "acceptance.json")
-    if os.path.exists(acc_path):
+    if acceptance_rc is not None:
+        out["acceptance_execution"] = {"exit_code": acceptance_rc, "passed": acceptance_rc == 0}
+    if os.path.exists(acc_path) and acceptance_rc == 0:
         acc = json.load(open(acc_path, encoding="utf-8"))
         tot = acc["set_O_candidate"]["totals"]
         out["p3_overclaims"] = {"GO": tot["target_by_decision"].get("GO", 0), "target": tot["target"],
@@ -79,7 +93,9 @@ def summarize(work: str, gate_rc: int, quick: bool) -> dict:
                                                         "clear_median_fraction": round(v["clear_median_fraction"], 4)}
                                                     for k, v in acc["monitoring_cost"].items()}}
     hist_path = os.path.join(work, "history.json")
-    if os.path.exists(hist_path):
+    if history_rc is not None:
+        out["history_execution"] = {"exit_code": history_rc, "passed": history_rc == 0}
+    if os.path.exists(hist_path) and history_rc == 0:
         out["p4_history"] = json.load(open(hist_path, encoding="utf-8"))["totals"]
     return out
 
@@ -89,6 +105,7 @@ def main(argv=None) -> int:
     ap.add_argument("--name", required=True)
     ap.add_argument("--work", default="/data/work")
     ap.add_argument("--cache", default="/data/cache")
+    ap.add_argument("--bag", help="original roundT_doubleT bag; required unless --no-history")
     ap.add_argument("--config", default=os.path.join(ROOT, "configs", "default.yaml"))
     ap.add_argument("--set", action="append", default=[])
     ap.add_argument("--baseline", default=BASELINE)
@@ -98,14 +115,19 @@ def main(argv=None) -> int:
     ap.add_argument("--no-history", action="store_true")
     ap.add_argument("--no-lock", action="store_true")
     a = ap.parse_args(argv)
+    if not a.no_history and not a.bag:
+        ap.error("--bag is required unless --no-history; all three raw histories must be replayed")
     work = os.path.join(a.work, a.name)
     os.makedirs(work, exist_ok=True)
     sets = [x for s in a.set for x in ("--set", s)]
-    lock = None
+    lock, rc2, rc3 = None, None, None
     if not a.no_lock:
         lock = open(os.path.join(a.work, ".cpu.lock"), "w")
         print(f"[{a.name}] waiting for the machine lock ...", flush=True)
         fcntl.flock(lock, fcntl.LOCK_EX)
+    # this invocation's outputs only: nothing of an earlier run of the same --name is summarised
+    for stale in ("acceptance.json", "history.json"):
+        _fresh(os.path.join(work, stale))
     try:
         cache = a.cache
         allow = []
@@ -118,7 +140,7 @@ def main(argv=None) -> int:
                     os.symlink(os.path.join(a.cache, n), os.path.join(cache, n))
             allow = ["--allow", "ride.*", "--allow", "set_F_straight.*"]
         gate_cmd = [sys.executable, "scripts/regression_gate.py", "--cache", cache, "--config", a.config, *sets,
-                    "--jobs", str(a.jobs), "--work", os.path.join(work, "gate"), "--out", os.path.join(work, "gate.json"),
+                    "--jobs", str(a.jobs), "--work", os.path.join(work, "gate"), "--out", _fresh(os.path.join(work, "gate.json")),
                     "--baseline", a.baseline, *allow]
         print(f"[{a.name}] gate ...", flush=True)
         rc, s = _run(gate_cmd, os.path.join(work, "gate.log"))
@@ -130,6 +152,7 @@ def main(argv=None) -> int:
             print(f"[{a.name}] acceptance exit {rc2} ({s2} s)", flush=True)
         if not a.no_history:
             rc3, s3 = _run([sys.executable, "scripts/history_stress.py", "--cache", a.cache, "--config", a.config, *sets,
+                            "--bag", a.bag,
                             "--jobs", str(a.jobs), "--out", os.path.join(work, "history.json")],
                            os.path.join(work, "history.log"))
             print(f"[{a.name}] history exit {rc3} ({s3} s)", flush=True)
@@ -137,12 +160,13 @@ def main(argv=None) -> int:
         if lock is not None:
             fcntl.flock(lock, fcntl.LOCK_UN)
             lock.close()
-    summary = summarize(work, rc, a.quick)
+    summary = summarize(work, rc, a.quick, history_rc=rc3, acceptance_rc=rc2)
     summary["name"], summary["sets"], summary["config"] = a.name, a.set, a.config
     with open(os.path.join(work, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1)
     print(json.dumps(summary, indent=1))
-    return 0
+    # the first failing stage's exit code: a gate with a worse metric (1) is a failed screen too
+    return rc or rc2 or rc3 or 0
 
 
 if __name__ == "__main__":

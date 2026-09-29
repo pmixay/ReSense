@@ -1,0 +1,54 @@
+import gzip
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path('/work')
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / 'scripts'))
+import regression_gate as rg
+from resense.config import DetectorConfig
+
+out = ROOT / 'out/current_score_2026-09-28'
+fresh = out / 'fresh_raw_default.jsonl'
+previous = ROOT / 'docs/evidence/results/p1_raw_continuity_2026-09-28/raw_default.jsonl.gz'
+current = [json.loads(line) for line in fresh.read_text().splitlines()]
+with gzip.open(previous, 'rt') as stream:
+    prior = [json.loads(line) for line in stream]
+fields = ['stamp', 'obstacle', 'warning', 'nearest_distance', 'detections', 'warnings',
+          'clear_distance', 'mount']
+diffs = []
+for i, (a, b) in enumerate(zip(current, prior)):
+    for field in fields:
+        if a.get(field) != b.get(field):
+            diffs.append({'frame': i, 'field': field})
+entry = rg.recording_entry('doubleT_obstacle', [str(fresh)],
+                          DetectorConfig.from_yaml(str(ROOT / 'configs/default.yaml')),
+                          str(ROOT / 'labels/doubleT_obstacle.json'))
+track_differences = {}
+for a, b in zip(current, prior):
+    for key, value in a['track'].items():
+        old = b['track'][key]
+        if value != old:
+            values = value if isinstance(value, list) else [value]
+            olds = old if isinstance(old, list) else [old]
+            delta = max(abs(v - w) for v, w in zip(values, olds))
+            item = track_differences.setdefault(key, {'frames': 0, 'max_absolute_difference': 0})
+            item['frames'] += 1
+            item['max_absolute_difference'] = max(item['max_absolute_difference'], delta)
+result = {
+    'input_db3_sha256': '05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9',
+    'command': 'python3 -m resense.cli run --bag /data/for_hackathon/doubleT_obstacle --config configs/default.yaml --out out/current_score_2026-09-28/fresh_raw_default.jsonl --quiet',
+    'fresh_frames': len(current), 'prior_frames': len(prior),
+    'compared_fields': fields, 'differences': diffs,
+    'all_compared_fields_equal': len(current) == len(prior) and not diffs,
+    'track_model_numeric_differences': track_differences,
+    'excluded_fields_note': 'Timing and health depend on machine load; other diagnostic-only fields are not compared.',
+    'counts': {k: entry[k] for k in ['frames', 'alarm_frames', 'alarm_events', 'stop_episodes', 'first_alarm_frame', 'labelled']},
+    'rail_object_non_stop_frames': [i for i, row in enumerate(current) if i >= 75 and not row['obstacle']],
+    'fresh_jsonl_sha256': hashlib.sha256(fresh.read_bytes()).hexdigest(),
+    'latency_note': 'Concurrent checks ran on a laptop; this is a functional replay, not a speed benchmark.'
+}
+(out / 'fresh_replay_comparison.json').write_text(json.dumps(result, indent=2) + '\n')
+print(json.dumps(result, indent=2))

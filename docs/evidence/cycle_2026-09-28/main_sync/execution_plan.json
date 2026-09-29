@@ -1,0 +1,20 @@
+{
+  "schema": "resense-main-sync-execution-plan-v1",
+  "registered_utc": "2026-09-28T20:19:11.342647+00:00",
+  "input_sha256": {
+    "doubleT_obstacle": {
+      "doubleT_obstacle_0.db3": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9"
+    },
+    "roundT_doubleT": {
+      "roundT_doubleT_0.db3": "6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d"
+    }
+  },
+  "input_reference_sha256": "cda009d78c03261d145f8b86784e131c33c6eba321d26252fb70d035f33d60ce",
+  "runner_sha256": "1dbc8b94807be2d64cb867bcb557ea6dbda8ba931c8d5ba0c6604d69e37458d4",
+  "protocol_sha256": "b9ebdad98c6a80c12ddbaa0295aad5c056c0c2cd7a961721ca94c48b3d04bb63",
+  "order": [
+    "positive",
+    "clear"
+  ],
+  "no_timing_gain_claim": true
+}

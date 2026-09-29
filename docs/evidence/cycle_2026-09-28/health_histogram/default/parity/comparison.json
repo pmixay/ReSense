@@ -1,0 +1,487 @@
+{
+  "schema": "resense-health-gate-parity-v1",
+  "passed": true,
+  "protocol_sha256": "35f179fd569e566d88199fb30184a02e8ca86eb2584c7aac0e4999ff1fac510a",
+  "freeze_sha256": "9548793cb267545048670f79369e612e69498577453ee87dcc601ffe9be8f3c6",
+  "comparator_sha256": "07edb9b1eaa2e622965c89264ec8bbb23ad8be51b0ebd5a38e8ec14e34931cc0",
+  "reference_manifest_sha256": "87ad31f65f05b83baa40542681db45cec04d7e2ce8ac8fb96704d0f11cadd687",
+  "reference_gate_sha256": "4072f9c5d9f00b50e46bcf5f2ccd16df1d3efe4b7dc7d6329bd33840317a6702",
+  "candidate_gate_sha256": "f131829cab4ee765b8fb77868d95798ebcdcf855dd48a7ccf1abe6fe485e076d",
+  "candidate_commit": "ef71c9dc4f88147327dcb41ea79358dfc690ba77",
+  "candidate_source_sha256": "c0273a13a67ab4872dab00154caa75f6b30f50416775062c591fbb47906a0fa4",
+  "effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+  "cases": {
+    "doubleT_obstacle": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/doubleT_obstacle.jsonl.gz",
+        "sha256": "395df8496d6f7a2f2d126633902f6d8a038457a789f9419e2c5891d0a1d2aa08",
+        "frames": 201
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/doubleT_obstacle.jsonl",
+        "sha256": "914dc3e22f7de64e2f8061303d461ea86060aa56cf09a4222d0f571d84c67bc3",
+        "frames": 201
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 201,
+      "health_level_changed_frames": 54,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 81.1905472636816,
+        "p95": 112.0,
+        "min": 64.2,
+        "max": 115.6
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 78.72985074626865,
+        "p95": 103.0,
+        "min": 68.0,
+        "max": 110.4
+      },
+      "passed": true
+    },
+    "doubleT_platform": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/doubleT_platform.jsonl.gz",
+        "sha256": "3cc750484ea5b5ac4bfdbb2bb024f6225c941db09a48476cf539fe61f8726f0d",
+        "frames": 345
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/doubleT_platform.jsonl",
+        "sha256": "27f36bc6501d3e755c5524298ce9e6faf6383e7d21265e891523a1cc400ddd61",
+        "frames": 345
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 345,
+      "health_level_changed_frames": 164,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 102.36840579710145,
+        "p95": 129.4,
+        "min": 73.8,
+        "max": 129.5
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 152.1321739130435,
+        "p95": 214.4,
+        "min": 102.5,
+        "max": 238.2
+      },
+      "passed": true
+    },
+    "roundT_doubleT": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/roundT_doubleT.jsonl.gz",
+        "sha256": "b684d1c27481bc28fbf871a38f426a51c89a5dc1bc8bcce7c7a2813852e7ad66",
+        "frames": 252
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/roundT_doubleT.jsonl",
+        "sha256": "9f40af4b8e8a5c9e0cfa1a32504ae7ac0688258a2a52dd6624ac878716ab09c8",
+        "frames": 252
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 252,
+      "health_level_changed_frames": 153,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 92.78531746031746,
+        "p95": 109.6,
+        "min": 79.6,
+        "max": 109.6
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 117.58888888888889,
+        "p95": 135.9,
+        "min": 90.3,
+        "max": 137.6
+      },
+      "passed": true
+    },
+    "roundT_pressureGate_roundT": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/roundT_pressureGate_roundT.jsonl.gz",
+        "sha256": "1eac67e9a0fe239a8d770932135cda317721620d568b989815a1f24bce198f54",
+        "frames": 268
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/roundT_pressureGate_roundT.jsonl",
+        "sha256": "20970fe09352863bcc1c9c5940efac20a3cccfdd42f2e1fa65989ddc6b3e96c8",
+        "frames": 268
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 268,
+      "health_level_changed_frames": 179,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 81.4473880597015,
+        "p95": 99.065,
+        "min": 68.7,
+        "max": 105.5
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 104.82574626865672,
+        "p95": 119.9,
+        "min": 74.6,
+        "max": 119.9
+      },
+      "passed": true
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/roundT_squareT_pressureGate_squareT.jsonl.gz",
+        "sha256": "45a4e9be3f52bdbe643dab46f9343c53a51e71ecaaa7c92b7585c7f41d414caa",
+        "frames": 545
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/roundT_squareT_pressureGate_squareT.jsonl",
+        "sha256": "5ee9abf8f19bdbb3b675c1c5b485cff923df76cb5e4a0fd97b91a5870668169e",
+        "frames": 545
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 545,
+      "health_level_changed_frames": 147,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 68.56385321100917,
+        "p95": 88.05999999999999,
+        "min": 50.1,
+        "max": 106.4
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 90.28495412844036,
+        "p95": 107.8,
+        "min": 71.9,
+        "max": 112.1
+      },
+      "passed": true
+    },
+    "squareT_platform_squareT_switch": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/squareT_platform_squareT_switch.jsonl.gz",
+        "sha256": "5be2336172db5a9d24da8e1a09b756012224da2621fc349e3ef85fe7b337f32d",
+        "frames": 877
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/squareT_platform_squareT_switch.jsonl",
+        "sha256": "6b4296de13ef9b6382818710fa9210a9e62b8385f945ff99a7f49e2ba667fc6d",
+        "frames": 877
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 877,
+      "health_level_changed_frames": 287,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 76.08358038768529,
+        "p95": 101.6,
+        "min": 50.1,
+        "max": 102.2
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 93.5618015963512,
+        "p95": 113.0,
+        "min": 66.5,
+        "max": 123.9
+      },
+      "passed": true
+    },
+    "cloud_with_fake_obj": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/cloud_with_fake_obj.jsonl.gz",
+        "sha256": "ab382446a79992aa02879ec70adc435ac13097455f32e5a6cd23b5c17b9d6c58",
+        "frames": 1510
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/cloud_with_fake_obj.jsonl",
+        "sha256": "fce2a5223623fdaa30e6e92fd6ef800539af6b60396a15542e59d3356ccebcce",
+        "frames": 1510
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1510,
+      "health_level_changed_frames": 93,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 65.13039735099338,
+        "p95": 106.8,
+        "min": 43.3,
+        "max": 118.3
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 62.21066225165563,
+        "p95": 82.5,
+        "min": 44.7,
+        "max": 99.0
+      },
+      "passed": true
+    },
+    "new_data_0": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/new_data_0.jsonl.gz",
+        "sha256": "00ee6e0e8abb43d5313d1ce4be9bd8350c412381ffae23271344e69e123d07d0",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/new_data_0.jsonl",
+        "sha256": "1ae602345332ef87358cadac531c0e9c19a779e5200eb150c4545d7eee515522",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 102,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 68.3930447125621,
+        "p95": 106.6,
+        "min": 47.9,
+        "max": 117.1
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 61.10667139815472,
+        "p95": 84.9,
+        "min": 40.5,
+        "max": 86.5
+      },
+      "passed": true
+    },
+    "new_data_1": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/new_data_1.jsonl.gz",
+        "sha256": "e573ad444a1255eb96eed0a51f7aed1b632e0c924034f615e1010237259a25d6",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/new_data_1.jsonl",
+        "sha256": "126d46cfc7b3577fef16a6b17ebb821f94b71f2cd102843398d5c5d58fd6fd5a",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1400,
+      "health_level_changed_frames": 4,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 69.50652945351312,
+        "p95": 97.9,
+        "min": 44.6,
+        "max": 159.9
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 61.1417317246274,
+        "p95": 97.3,
+        "min": 37.0,
+        "max": 210.7
+      },
+      "passed": true
+    },
+    "new_data_2": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/new_data_2.jsonl.gz",
+        "sha256": "769c5d49cbc28791df704f106eded4a71d6192d412717741487afb37017a6e93",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/new_data_2.jsonl",
+        "sha256": "20ab778f866a0835a65700f3212c381887d27f979b7122afb9923943c59549f0",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 61,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 74.70574875798438,
+        "p95": 99.1,
+        "min": 47.1,
+        "max": 117.3
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 66.66323633782825,
+        "p95": 86.07999999999997,
+        "min": 48.3,
+        "max": 95.4
+      },
+      "passed": true
+    },
+    "new_data_3": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/new_data_3.jsonl.gz",
+        "sha256": "daef32bca13f842fe36a8033515c1f4d66581212418cce34e2bf79f045a5ba08",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/new_data_3.jsonl",
+        "sha256": "02f99e759a8f3248abbde196bf935a6e90c1e60b722c0054d5d1a4ea5a1b88be",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1407,
+      "health_level_changed_frames": 180,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 80.40489709013485,
+        "p95": 106.7,
+        "min": 51.2,
+        "max": 127.8
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 89.79808374733854,
+        "p95": 128.7,
+        "min": 49.9,
+        "max": 129.9
+      },
+      "passed": true
+    },
+    "new_data_4": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/new_data_4.jsonl.gz",
+        "sha256": "f4878798bd176fe4b3bacb8ef28bd5aca0dc4505cb4ef3fa0091195633bf0421",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/new_data_4.jsonl",
+        "sha256": "3d3ace45719e3666b29ca7719af74cc155da1546cb43b41b88a1dc2a10a457c4",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1408,
+      "health_level_changed_frames": 271,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 98.00766501064585,
+        "p95": 211.0,
+        "min": 54.7,
+        "max": 261.5
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 110.23931866572038,
+        "p95": 317.4,
+        "min": 51.3,
+        "max": 332.6
+      },
+      "passed": true
+    },
+    "new_data_5": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/new_data_5.jsonl.gz",
+        "sha256": "b0fbcee3fff9ed250792bf5c7aca5ef41c169dc9252d750f4eb2b3f5eeab6a86",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/new_data_5.jsonl",
+        "sha256": "2302c3cd48916b28b428280c8129243451a3c309baef41554a199f6f2b150692",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1407,
+      "health_level_changed_frames": 176,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 79.03229240596167,
+        "p95": 110.8,
+        "min": 47.4,
+        "max": 122.5
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 85.62044002838893,
+        "p95": 130.6,
+        "min": 53.5,
+        "max": 135.1
+      },
+      "passed": true
+    },
+    "new_data_6": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/new_data_6.jsonl.gz",
+        "sha256": "1bb61b71b8b2de1c10c92000f44e92595700f2862ca5a1ef2f590e3a080b4660",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/new_data_6.jsonl",
+        "sha256": "0fab89d5999fef16334b21031afe55159666b10503091ef7dc77da0def7f7696",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1407,
+      "health_level_changed_frames": 301,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 74.37295954577715,
+        "p95": 101.3,
+        "min": 47.4,
+        "max": 103.8
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 81.98438608942513,
+        "p95": 108.21999999999998,
+        "min": 57.6,
+        "max": 120.5
+      },
+      "passed": true
+    },
+    "new_data_7": {
+      "reference": {
+        "path": "/workspace/ReSense-health/docs/evidence/cycle_2026-09-28/p3_sync/default/captures/new_data_7.jsonl.gz",
+        "sha256": "1add71a903f514ec38f450a5bcd04171111eb7831985e5689d52891c24f0cea7",
+        "frames": 1408
+      },
+      "candidate": {
+        "path": "/cycle/health_histogram/default/captures/new_data_7.jsonl",
+        "sha256": "6b5c9048c13ddbe9deebdef36af3b232a74c1b72e911abd86b2fe47ad55443b3",
+        "frames": 1408
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1407,
+      "health_level_changed_frames": 161,
+      "new_alarm_frames": 0,
+      "removed_alarm_frames": 0,
+      "reference_health_latency_p95_ms": {
+        "mean": 63.10205965909091,
+        "p95": 106.0,
+        "min": 27.6,
+        "max": 108.8
+      },
+      "candidate_health_latency_p95_ms": {
+        "mean": 82.11264204545455,
+        "p95": 146.8,
+        "min": 37.3,
+        "max": 179.3
+      },
+      "passed": true
+    }
+  },
+  "set_F": {
+    "reference_sha256": "6a4b008dc12cac1a16ab6cb93a41324c3c17ce49d4e0419972bcda4990fcd86d",
+    "candidate_sha256": "64de2dbda4f5bffa866103ccdaafb24d521ebb29f2e01eabf9483dd89585f19d",
+    "sequences": 30,
+    "rows": 3060,
+    "wall_s": {
+      "reference": 280.0,
+      "candidate": 390.9
+    },
+    "exact_equal_except_wall_s": true
+  },
+  "differences": {
+    "payload_differences.jsonl.gz": {
+      "sha256": "9d91fa1e2788f29553dfddf2c8d7eaf5d53836e7ff5ce39fab1c5b58d99fa940",
+      "bytes": 51
+    },
+    "health_timing_differences.jsonl.gz": {
+      "sha256": "07b214ba4857206678b6b3c6ab5df112f7d72641d272bb20753eb54d34bffb74",
+      "bytes": 542273
+    }
+  },
+  "timing_note": "All source outputs are retained. Only stage timings and validated latency health effects are excluded from exact semantic comparison; all health changes are recorded. Shared-load timings are not runtime acceptance."
+}

@@ -1,0 +1,29 @@
+........................................................................ [  9%]
+........................................................................ [ 18%]
+.................................................................. [ 27%]
+........................................................................ [ 36%]
+........................................................................ [ 46%]
+........................................................................ [ 55%]
+........................................................................ [ 65%]
+.................................................................F...... [ 74%]
+........................................................................ [ 83%]
+........................................................................ [ 93%]
+....................................................                     [100%]
+=================================== FAILURES ===================================
+_____ test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop ______
+
+    @pytest.mark.realdata(RIDE)
+    def test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop():
+        """The judge's case: a fresh detector from ``new_data_55_0013`` (the gate's piece-2 cut), 40
+        frames. Off (with the association gate of 26.09): STOP on frames 12-15 at 2.9-3.1 m (low). On: no
+        STOP. Since 27.09 the along-track association gate (tracking.gate_along_only) alone also keeps
+        this low track from confirming: no STOP with the rule off either."""
+        from resense.frame import frame_from_compact
+        from scripts.cache_io import cache_file_stem, cache_files, load_cache_array, load_cache_stamps
+        files = cache_files(RIDE)
+>       i0 = [cache_file_stem(f) for f in files].index("new_data_55_0013")
+E       ValueError: 'new_data_55_0013' is not in list
+
+tests/test_rail_start.py:204: ValueError
+-------------- generated xml file: /cycle/work/tooling-junit.xml ---------------
+1 failed, 765 passed, 6 subtests passed in 298.02s (0:04:58)

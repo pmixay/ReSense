@@ -1,0 +1,8 @@
+{
+  "status": "observer-only guard corrected; no production change",
+  "initial_failure": "validate_setf incorrectly required exactly 110 rows per sequence (3300 total).",
+  "cause": "scripts/far_range_eval.py stops a sequence when distance drops below 8 m; --frames 110 is a maximum. Both frozen baseline and candidate have 3060 actual rows.",
+  "corrected_guard": "All 30 registered unique kind/file0 cases; reject empty/skipped sequences; require exact frozen ordered per-case frame identities and lengths, bounded by the registered maximum.",
+  "timing": "All semantic fields remain exact. Explicitly exclude only finite summary.wall_s and retain both values.",
+  "independent_review": "detector_review confirmed generator early-stop rule and corrected observer completeness guard."
+}

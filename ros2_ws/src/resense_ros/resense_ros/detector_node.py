@@ -92,12 +92,12 @@ is processed at once. Short backlogs spanning at most ``catchup_step`` are proce
 longer live backlogs are worked through ``catchup_step`` s of recording apart (the ones in between
 skipped, none older than ``catchup_max_lag`` s behind the newest). On the first backlog of a new
 recording (the player's start-up burst, ~0.7 s of recording with ``--read-ahead-queue-size 10``,
-the whole recording from a cold disk) the node takes frames ``catchup_startup_step`` (0.2 s) apart,
-the 5 Hz input the detector is validated on, within the start-up lag allowance
-(``catchup_startup_max_lag``), so the chain never has a gap that resets the scene. The start-up
+the whole recording from a cold disk) the experimental branch preserves every observed
+input-period frame by default (``catchup_startup_step: 0``), within the start-up lag allowance
+(``catchup_startup_max_lag``). An explicit ``catchup_startup_step: 0.2`` enables the main branch's
+5 Hz start-up thinning; its A/B improved latency but skipped some obstacle frames. The start-up
 allowance closes when that first catch-up drains, or after 1 s without a catch-up starting; later
-stalls retain the normal 5 s limit. ``catchup_startup_step: 0`` preserves every input-period frame
-(the 26.09 behaviour); ``catchup_step: 0`` keeps the newest-only behavior.
+stalls retain the normal 5 s limit. ``catchup_step: 0`` keeps the newest-only behavior.
 
 Warm-up (29.09, ``warmup``): before it logs "listening", the node runs the decode and a
 throwaway detector on three synthetic frames, so the first real frame does not pay first-call
@@ -238,12 +238,10 @@ class DetectorNode(Node):
                                                               # 0 = always the newest (the v0.6.3 behaviour)
         self.declare_parameter("catchup_max_lag", 5.0)        # s: waiting frames older than the newest by more are dropped
         self.declare_parameter("catchup_startup_max_lag", 20.0)  # s: extra allowance for a recording's initial burst
-        # --- 29.09: a recording's first backlog (the player's start-up burst) is worked through at most
-        # every catchup_startup_step s of recording - 0.2 s = every other frame of a 10 Hz sensor, the
-        # 5 Hz input the detector is validated on (EXPERIMENTS 1g) - instead of every frame: at ~70 ms a
-        # frame a node working every frame gains only ~30 ms per frame on a 100 ms period and needed
-        # ~2 s to get current after a 0.7 s burst. 0 = every input-period frame (the 26.09 behaviour).
-        self.declare_parameter("catchup_startup_step", 0.2)
+        # --- 29.09 main integration: experimental keeps every input-period frame by default.
+        # Explicit 0.2 s enables main's 5 Hz start-up thinning, which lowers start-up latency but
+        # has not passed the branch's paired target-coverage acceptance (see P3_SCORE_SYNC_2026-09-28).
+        self.declare_parameter("catchup_startup_step", 0.0)
         # --- 29.09: run the decode and a throwaway detector on synthetic frames before listening, so the
         # first real frame does not pay the first-call costs (imports, allocations: +55 ms measured)
         self.declare_parameter("warmup", True)
@@ -823,10 +821,8 @@ class DetectorNode(Node):
         step = self.catchup_step
         startup = last is None or self.startup_catchup_active
         if step > 0 and startup:
-            # Do not thin the first cold-disk burst: it may be the whole recording sent overdue,
-            # so 0.3 s sampling can keep the node behind until playback has already ended. Use
-            # the smallest observed gap as well as the running estimate: the latter may still
-            # describe a previous recording with a different sensor rate.
+            # Preserve the observed input period unless startup thinning was explicitly enabled.
+            # The running period may still describe a previous recording with a different rate.
             observed = min((b - a for a, b in zip(stamps, stamps[1:]) if b > a),
                            default=self.input_period)
             step = min(step, max(min(self.input_period, observed), self.catchup_startup_step))
@@ -899,8 +895,9 @@ class DetectorNode(Node):
                 fastcloud.packed(msg), self.cfg.sensor.min_range, self.cfg.sensor.max_range)
             xyz_v = xyz_s @ self.R_vs.T.astype(np.float32)
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
-            frame = Frame(xyz=xyz_v, intensity=inten, ring=ring, stamp=stamp, frame_id=msg.header.frame_id,
-                          meta={"n_raw": n_raw, "n_near": n_near})
+            # a cloud without a ring field has unknown channels, not channel 0 for every point
+            frame = Frame(xyz=xyz_v, intensity=inten, ring=ring if fastcloud.has_field(msg, "ring") else None,
+                          stamp=stamp, frame_id=msg.header.frame_id, meta={"n_raw": n_raw, "n_near": n_near})
             self._account_frame(stamp, (topic, msg.header.frame_id))
             self.last_speed, self.last_speed_source = self.ego_speed()
             t_detect = time.perf_counter()

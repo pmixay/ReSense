@@ -66,7 +66,7 @@ H = only a person can do it; A = an agent can do it, the captain merges.
 
 | # | item | who |
 |---|---|---|
-| 7 | Answer the organizers daily during the expertise 30.09–14.10; Q1 / Q2 answers into `organizers/answers.md`. | H |
+| 7 | Answer the organizers daily during the expertise 30.09–14.10; new answers into `organizers/answers.md` (Q1 / Q2 answered 29.09, §9; no question open). | H |
 | 8 | Pitch on 23.10: two rehearsals, the live remote demo from a second device, the private deck, the optional voice-over — **P2**; the captain joins the rehearsals. | P2 (+ team) |
 | 9 | If an 8-core machine is available: `scripts/bench_8core.sh` on both original bags, evidence committed. | H (+ A) |
 
@@ -196,3 +196,12 @@ captain's personally.
 | 26.09 evening | the P3 / P4 pass checked by both re-judgement judges (the user: "p3 & p4 work arrived, re-judge and check your scores"): judge A re-ran the rate / mount / start-offset checks and the gates of candidate B and the union on its own machine, judge B diffed the JSONs; every number reproduces; seven text issues fixed (EXPERIMENTS §1p counts, the 1–3 m pitch STOP and the roll's unfinished calibration, the third judge's self-credit); no score moved (those scores are superseded by the judgement of 28.09 evening) | [`evidence/rejudge_2026-09-26/p34/`](evidence/rejudge_2026-09-26/p34) |
 | 28.09 evening | independent judgement of `464f5bc` (the user: "re-judge independently all criteria, don't trust current scores and docs, write your new judgement and purge old"): re-measured on the organizers' data; it replaces every earlier judgement, whose scores and judge reports are removed; the dated board is archived; the captain's work and the branches are in §2–§4 | [`SCORECARD.md`](SCORECARD.md), [`evidence/judgement_2026-09-28/`](evidence/judgement_2026-09-28/README.md) |
 | 29.09 | the start-up lag fixed in the node only (the user: "fix lags in results on start … apply optimizations on root causes"): a byte-identical fast decode, a 5 Hz start-up catch-up, a warm-up and a clean Ctrl+C; the detector stays sealed; pitch and video moved to P2; the documentation swept and compacted; P2's branch `claude/amazing-fermi-t67v8g` merged into the working branch | [`evidence/node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md), [`DECISIONS.md`](DECISIONS.md) row 28 |
+| 29.09 | the organizers answer Q1 / Q2: the envelope is measured from the rail heads, the rails may run at any angle to the LiDAR, the synthetic objects are placed approximately and the check corrects for that; `gauge.reference` 3 kept (bounded union, no measured false-alarm cost), `gauge.axis_union` stays off, Q2's object stays an obstacle; no detector change, the seal stands | [`organizers/answers.md`](organizers/answers.md) §9, [`QUESTIONS.md`](QUESTIONS.md), [`DECISIONS.md`](DECISIONS.md) rows 1, 18 |
+
+## Experimental branch integration, 28.09
+
+The experimental branch also contains the accepted P3 changes and health histogram optimization.
+Their measured commits, acceptance checks and remaining work are in
+[`P3_SCORE_SYNC_2026-09-28.md`](P3_SCORE_SYNC_2026-09-28.md) and the
+[health evidence](evidence/cycle_2026-09-28/health_histogram/README.md). The 61/100 judgement above
+remains the assessment of `464f5bc`; it does not score the combined branch.

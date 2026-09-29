@@ -226,10 +226,11 @@ times that means the disk set the pace: pre-read the bags (§3) and run again.
 **The node's start-up.** It logs `ReSense detector listening on …` after a warm-up (`warmup`, on by
 default: the decode and a throwaway detector on three synthetic frames, ~0.7 s), so the first real
 frame costs what the next ones do. A new recording's first backlog (the player's start-up burst)
-is worked through `catchup_startup_step` = 0.2 s of recording apart (every other 10 Hz frame, the
-5 Hz input the detector is validated on), within `catchup_startup_max_lag` 20 s; a frame waiting
-alone is processed at once; later stalls use `catchup_step` 0.3 s and `catchup_max_lag` 5 s (launch
-arguments; `catchup_startup_step:=0` takes every frame). Results made while it catches up are not
+is worked through every observed input-period frame by default on experimental
+(`catchup_startup_step` = 0), within `catchup_startup_max_lag` 20 s. Explicit
+`catchup_startup_step:=0.2` enables main's 5 Hz thinning; its target coverage still needs separate
+acceptance on this branch. A frame waiting alone is processed at once; later stalls use
+`catchup_step` 0.3 s and `catchup_max_lag` 5 s. Results made while it catches up are not
 current (`node.catchup`): FAULT, CAUTION or a held STOP, never GO. A storage stall of a second or
 more mid-recording makes the catch-up skip frames after the settle point and fails the check.
 
@@ -491,3 +492,12 @@ evidence too: commit it as it is.
 | the block is still on (§5) | `sudo /bin/sh /run/resense-restore.sh`; else the serial console; else a reboot |
 | no ROS 2 on the host | everything but the host consoles runs; the organizers' console rests on the stock player in Docker |
 | a step fails | keep its output, commit it, report it in the PR; do not change code on the VM |
+
+## Experimental branch validation record
+
+For the accepted P3 and health changes, use the measured commits and procedures recorded in
+[`P3_SCORE_SYNC_2026-09-28.md`](P3_SCORE_SYNC_2026-09-28.md) and the
+[health validation record](evidence/cycle_2026-09-28/health_histogram/README.md). Its runtime
+captures precede the new node implementation. The experimental branch keeps
+`catchup_startup_step:=0` by default; the main branch A/B at 0.2 s does not prove full input-frame
+coverage for this branch.

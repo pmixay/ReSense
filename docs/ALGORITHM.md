@@ -1,12 +1,12 @@
-# Algorithm
+# Алгоритм
 
-> **Purpose:** how ReSense decides that the path ahead is blocked, stage by stage, structured
-> after spec §5 "Описание алгоритма": problem → input data → point-cloud processing → decision
-> rule → parameters → limitations. Code comments cite the section numbers: keep them.
-> **Audience:** jury, P3 · **Owner:** P1 (structure), P3 (content) · **Language:** EN, summary RU
-> **Last verified:** 2026-09-29: every parameter value against `configs/default.yaml` and
-> `resense/config.py` of the sealed 27.09 detector, the results against the judgement of 28.09
-> · **Status:** current
+> **Назначение:** как ReSense решает, что путь впереди перекрыт, этап за этапом; структура
+> следует §5 ТЗ «Описание алгоритма»: задача → входные данные → обработка облака точек → правило
+> решения → параметры → ограничения. Комментарии в коде ссылаются на номера разделов: не меняйте их.
+> **Аудитория:** жюри, P3 · **Ответственный:** P1 (структура), P3 (содержание) · **Язык:** RU
+> **Проверено:** 2026-09-29: каждое значение параметра — по `configs/default.yaml` и
+> `resense/config.py` опечатанного детектора от 27.09, результаты — по независимой оценке 28.09
+> · **Статус:** актуален
 
 **Кратко.** ReSense описывает не объекты, а окружение: в каждом кадре лидара заново строится
 модель пути (полотно, рельсы, ось с кривизной по стенам), вдоль оси откладывается габарит поезда
@@ -19,519 +19,573 @@ FAULT, расстояние до препятствия, оценка прове
 Обучающие данные с препятствиями не нужны. Параметры — §5, ограничения — §6. Детектор опечатан
 27.09 ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)).
 
-The code path is `resense.Detector.process()` (`resense/detector.py`), one method per stage;
-each stage below names its module and its section of `configs/default.yaml`. The node, topics and
-data flow: [`ARCHITECTURE.md`](ARCHITECTURE.md). Results: [`EXPERIMENTS.md`](EXPERIMENTS.md),
-[`SCORECARD.md`](SCORECARD.md); "log §x" is a section of the full dated experiment log
-[`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md), where each threshold
-was measured.
+Путь кода — `resense.Detector.process()` (`resense/detector.py`), по одному методу на этап;
+каждый этап ниже называет свой модуль и свою секцию `configs/default.yaml`. Нода, топики и
+поток данных: [`ARCHITECTURE.md`](ARCHITECTURE.md). Результаты: [`EXPERIMENTS.md`](EXPERIMENTS.md),
+[`SCORECARD.md`](SCORECARD.md); «журнал §x» — раздел полного датированного журнала экспериментов
+[`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md), где измерен каждый порог.
 
-## 1. Problem
+## 1. Задача
 
-A driverless metro train has a forward-looking 3D LiDAR (Hesai Pandar128, ~190 000 valid returns
-per frame, none beyond ~210 m in the data; [`DATASET.md`](DATASET.md), [`SENSOR.md`](SENSOR.md)).
-Ten times a second the system must answer: **is there a foreign object inside the space the train
-is about to sweep, and how far ahead is it?** The objects are unknown (a person, a box, a plank, a
-trolley, a hanging cable); the environment is known: a tunnel with two rails, a track bed, walls,
-columns, ducts, platforms, pressure gates and switches. We therefore model the *environment*, not
-the objects (spec §8.4): anything inside the train's envelope that is not track, bed or known
-infrastructure is reported, whatever it looks like; no labelled obstacles are needed.
+У беспилотного поезда метро есть направленный вперёд 3D LiDAR (Hesai Pandar128, ~190 000 валидных
+отражений на кадр, ни одного дальше ~210 м в данных; [`DATASET.md`](DATASET.md), [`SENSOR.md`](SENSOR.md)).
+Десять раз в секунду система должна ответить: **есть ли посторонний объект в объёме, через который
+сейчас пройдёт поезд, и как далеко он впереди?** Объекты заранее неизвестны (человек, коробка, доска,
+тележка, висящий кабель); окружение известно: тоннель с двумя рельсами, полотно пути, стены, колонны,
+короба, платформы, гермозатворы и стрелки. Поэтому мы моделируем *окружение*, а не объекты (ТЗ §8.4):
+о любом объекте внутри габарита поезда, который не является путём, полотном или известной
+инфраструктурой, сообщается, каким бы он ни выглядел; размеченные препятствия не нужны.
 
-## 2. Input and coordinate frames
+## 2. Вход и системы координат
 
-* `sensor_msgs/PointCloud2` on `/lidar_points` (`hesai_lidar`) or
-  `/sensing/lidar/hesai128/pointcloud` (`lidar_livox`, full-turn recording): the organizers
-  confirmed that the control data may use either pair, all from the same LiDAR. Fields
-  `x y z intensity ring timestamp`, dual-return layout with empty `(0,0,0)` slots. The node takes
-  one input at a time and restarts the detector for every new recording
-  ([`ARCHITECTURE.md`](ARCHITECTURE.md) "The node").
-* Decoding (`resense/pointcloud.py`; in the node `resense_ros/fastcloud.py`, the same arrays)
-  drops the empty slots and returns closer than `sensor.min_range` (2.5 m, the train's own nose)
-  or beyond `sensor.max_range` (250 m).
-* Three axis strings (`sensor.forward/left/up`, default `-y/+x/+z`) and the mount rotation of §2b
-  map the sensor onto the **vehicle frame** X forward, Y left, Z up, used by every later stage.
+* `sensor_msgs/PointCloud2` в `/lidar_points` (`hesai_lidar`) или
+  `/sensing/lidar/hesai128/pointcloud` (`lidar_livox`, запись полного оборота): организаторы
+  подтвердили, что контрольные данные могут использовать любую из этих пар, все — с одного и того же
+  LiDAR. Поля `x y z intensity ring timestamp`, раскладка с двумя отражениями (dual return) с пустыми
+  слотами `(0,0,0)`. Нода принимает один вход за раз и перезапускает детектор для каждой новой записи
+  ([`ARCHITECTURE.md`](ARCHITECTURE.md), «Нода»).
+* Декодирование (`resense/pointcloud.py`; в ноде — `resense_ros/fastcloud.py`, те же массивы)
+  отбрасывает пустые слоты и отражения ближе `sensor.min_range` (2,5 м, собственный нос поезда)
+  или дальше `sensor.max_range` (250 м).
+* Три строки осей (`sensor.forward/left/up`, по умолчанию `-y/+x/+z`) и поворот крепления из §2b
+  переводят датчик в **систему координат поезда** (X вперёд, Y влево, Z вверх), которую используют
+  все последующие этапы.
 
-Height, lateral offset and yaw of the track are re-estimated every frame (§3.1); the mount itself
-is found once from the data (§2b). The organizers stated that the LiDAR position is not fixed
-between trains ([`organizers/QA_session.md`](organizers/QA_session.md) fact 7) and that the test
-recordings use the mounts of the provided ones, 1 075 mm above the rail head on the centreline,
-with no numeric orientation ([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md)).
-The provided data hold two rigs: the calibration measures 1.12 m above the rail head on
-`roundT_doubleT` (4.5 cm from the stated height) and 1.51 m with a +3.0° roll on `doubleT_obstacle`.
+Высота, боковое смещение и курс пути переоцениваются в каждом кадре (§3.1); само крепление
+определяется один раз по данным (§2b). Организаторы заявили, что положение LiDAR не одинаково на
+разных поездах ([`organizers/QA_session.md`](organizers/QA_session.md), факт 7) и что в тестовых
+записях используются крепления, как в предоставленных: 1 075 мм над головкой рельса по осевой линии,
+числовая ориентация не задана ([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md)).
+В предоставленных данных два варианта установки: калибровка измеряет 1,12 м над головкой рельса на
+`roundT_doubleT` (на 4,5 см от заявленной высоты) и 1,51 м с креном +3,0° на `doubleT_obstacle`.
 
-### 2b. Mount auto-calibration (`resense/calibration.py`, section `calibration`)
+### 2b. Автокалибровка крепления (`resense/calibration.py`, секция `calibration`)
 
-The calibrator hands the detector a rotation `R` (`p_processed = R · p_configured`) found from:
+Калибратор передаёт детектору поворот `R` (`p_processed = R · p_configured`), найденный по:
 
-1. **orientation** — only if the configured mapping shows no rail pair ahead: the 8 axis-aligned
-   rotations that keep the spin axis vertical are scored by the rail pair they reveal (two ridges
-   1.59 m apart, 0.08–0.5 m above a bed below the sensor, along +X); a winner of
-   `orientation_votes` = 2 frames is adopted. Upside-down, backwards, `+x`-forward and rolled mounts
-   are recovered to < 0.5° (`tests/test_calibration.py`, log §6); sideways mounts are not searched;
-2. **roll** from the height difference of the two rail heads (the envelope lives in the rail plane);
-3. **pitch** from the slope of the bed fit at X = 0 (the train rides on the track);
-4. **yaw** from the rail tangent, only above `min_yaw_deg` = 3° (the track model follows the rest).
+1. **ориентации** — только если заданное отображение осей не показывает пары рельсов впереди: 8
+   поворотов, выровненных по осям и сохраняющих ось вращения вертикальной, оцениваются по паре
+   рельсов, которую они проявляют (два гребня на расстоянии 1,59 м друг от друга, на 0,08–0,5 м
+   выше полотна под датчиком, вдоль +X); победитель, набравший `orientation_votes` = 2 кадра,
+   принимается. Перевёрнутые, обращённые назад, с `+x` вперёд и повёрнутые по крену крепления
+   восстанавливаются с точностью < 0,5° (`tests/test_calibration.py`, журнал §6); крепления набок
+   не ищутся;
+2. **крена** — по разности высот двух головок рельсов (габарит лежит в плоскости рельсов);
+3. **тангажа** — по уклону подгонки полотна при X = 0 (поезд едет по пути);
+4. **курса** — по касательной к рельсам, только выше `min_yaw_deg` = 3° (остальное отслеживает
+   модель пути).
 
-On a moving train the per-frame roll swings by ±1° with cant and body lean, so the tilt is taken
-in two stages: a **provisional** tilt from the first `provisional_frames` = 5 observations only for
-a clearly tilted rig (≥ `provisional_min_deg` = 2.5°: the `doubleT_obstacle` rig after 0.5 s), and
-the **final** tilt, the median of `frames` = 20 observations every `obs_spacing` = 10 frames (20 s;
-p90 error 0.5° on the ride), applied above `apply_min_deg` = 0.75° and then frozen. Tilts above
-`max_tilt_deg` = 15° are rejected; without a rail pair in `max_frames` = 400 frames the calibrator
-gives up (`fallback`, configured mapping kept). A change up to `reseed_keep_max_deg` = 1° rotates
-the track model into the corrected frame; a larger one re-seeds it. A track reported as a STOP stays
-reported for `tracking.reseed_hold` = 5 frames from any change, matched or not. Afterwards the same
-measurement runs every `monitor_period` = 50 frames, and a median of the last `drift_window` = 10
-checks above `drift_warn_deg` = 1.5° (a mount knocked loose) is reported in `health`, never applied.
-Spacings and limits count periods of the measured input rate (`time_cadence`), so 5 Hz input
-calibrates in the same 20 s. The status JSON carries `mount` (status pending / provisional / ok /
-identity / fallback, orientation, roll, pitch, yaw, height, lateral, drift); a known mount can be
-frozen with `sensor.roll_deg/pitch_deg/yaw_deg` or the node's `mount_*_deg` / `sensor_*` arguments.
+На движущемся поезде крен в отдельном кадре колеблется на ±1° из-за возвышения рельса в кривой (cant)
+и наклона кузова, поэтому наклон определяется в два этапа: **предварительный** наклон по первым
+`provisional_frames` = 5 наблюдениям — только для явно наклонённой установки (≥ `provisional_min_deg`
+= 2,5°: установка `doubleT_obstacle` через 0,5 с) и **окончательный** наклон — медиана `frames` = 20
+наблюдений, берущихся каждые `obs_spacing` = 10 кадров (20 с; ошибка p90 0,5° на поездке); он
+применяется выше `apply_min_deg` = 0,75° и затем замораживается. Наклоны выше `max_tilt_deg` = 15°
+отвергаются; если за `max_frames` = 400 кадров пары рельсов не нашлось, калибратор сдаётся
+(`fallback`, остаётся заданное отображение осей). Изменение до `reseed_keep_max_deg` = 1° поворачивает
+модель пути в исправленную систему координат; большее — инициализирует её заново. Трек, о котором
+сообщено как о STOP, остаётся сообщённым `tracking.reseed_hold` = 5 кадров после любого изменения —
+сопоставлен он или нет. Затем то же измерение повторяется каждые `monitor_period` = 50 кадров, а
+медиана последних `drift_window` = 10 проверок выше `drift_warn_deg` = 1,5° (сбитое крепление)
+выдаётся в `health`, но никогда не применяется. Интервалы и пределы считаются в периодах
+измеренной частоты входа (`time_cadence`), поэтому вход 5 Гц калибруется за те же 20 с. JSON статуса
+содержит `mount` (статус pending / provisional / ok / identity / fallback, ориентация, крен, тангаж,
+курс, высота, боковое смещение, дрейф); известное крепление можно зафиксировать параметрами
+`sensor.roll_deg/pitch_deg/yaw_deg` или аргументами ноды `mount_*_deg` / `sensor_*`.
 
-## 3. Processing pipeline
+## 3. Конвейер обработки
 
-**The model in formulas.** With X along the track (vehicle frame), the track model of §3.1 gives
-per frame
+**Модель в формулах.** При X вдоль пути (система координат поезда) модель пути из §3.1 даёт для
+каждого кадра
 
 ```
-axis        y_c(X)    = c + tan(ψ)·X + ½·κ·X²          (c centre, ψ yaw, κ = 1/R curvature)
-rail head   z_rail(X) = z_floor(X) + r                  (z_floor fitted bed, r rail offset)
-corridor    dy = y − y_c(X),   h = z − z_rail(X)       (per point)
-envelope    E = { |dy| ≤ 1.05 m, 0.12 m ≤ h ≤ 3.0 m },  advisory band |dy| ≤ 1.40 m
-DBSCAN      eps(r) = 0.35 m · (1 + r / 40 m)           (r = range of the point)
+ось             y_c(X)    = c + tan(ψ)·X + ½·κ·X²          (c — центр, ψ — курсовой угол, κ = 1/R — кривизна)
+головка рельса  z_rail(X) = z_floor(X) + r                  (z_floor — подогнанное полотно, r — смещение рельса)
+коридор         dy = y − y_c(X),   h = z − z_rail(X)       (для каждой точки)
+габарит         E = { |dy| ≤ 1.05 m, 0.12 m ≤ h ≤ 3.0 m },  зона предупреждения |dy| ≤ 1.40 m
+DBSCAN          eps(r) = 0.35 m · (1 + r / 40 m)           (r — дальность точки)
 ```
 
-A cluster of points in `E` that is not explained by infrastructure (§3.3) and persists (§3.5) is
-an obstacle; its distance is the smallest X of its points inside `E` (§4).
+Кластер точек в `E`, который не объясняется инфраструктурой (§3.3) и сохраняется (§3.5), является
+препятствием; его расстояние — наименьшее X его точек внутри `E` (§4).
 
-### 3.1 Track model (`resense/track.py`, section `track`)
+### 3.1 Модель пути (`resense/track.py`, секция `track`)
 
-* **Bed height `z_floor(X)`.** Per bin (2 m, 5 m beyond 40 m) the 20th percentile of Z in a ±1 m
-  band around the previous axis; a robust line through the near bins, far bins kept within 0.35 m
-  of it; a quadratic only with ≥ 4 consistent far bins bending less than a 1 500 m vertical curve;
-  linear extrapolation beyond; EMA across frames. **Shadow of a large near object**: two adjacent
-  bins > `floor_shadow_height` = 1 m above the previous bed, the first within
-  `floor_shadow_range` = 30 m, mean the bed behind an object is hidden; then only bins near the
-  previous bed are fitted, the rail pair is searched in front of the object, and with fewer than 5
-  bed bins there the previous bed and rails are held (at most `floor_shadow_max_hold` = 20 frames
-  in a row). Without it the organizers' 2 m box 26 → 9 m ahead was reported at the bed (log §1h).
-* **Verified extrapolation `floor_verified`.** The bed stops returning at ~100 m, but the foot of
-  walls, benches and ducts is seen to the end of the range at a constant height above the rail
-  head. Per 5 m bin the lowest point in the side band |dy| 1.6–3.5 m is compared with the
-  extrapolated bed; the extrapolation stays verified while the median deviation over the last 30 m
-  is within `floor_verify_tolerance` = 0.5 m (a vertical curve or a platform ends it). The height
-  reference is trusted to `max(fit end + floor_valid_margin (20 m), floor_verified)`.
-* **Rail head, centre and yaw.** A lateral height profile at 4–30 m in 5 cm bins (85th percentile),
-  built in the previous axis' coordinate so the rails stay straight lines in a curve; the rails
-  are the pair of ridges `rails_spacing` = 1.59 m apart with a head 0.08–0.5 m above the bed. The
-  pair is located again in `rails_yaw_slabs` = 3 along-track slabs; a line through their midpoints
-  (previous curvature held) gives `c` and `tan(ψ)`: ±2 cm per ridge over 26 m ≈ 0.1°.
-* **Curvature from the walls.** Per 4 m bin between 6 and 160 m, in a band 1.6–2.8 m above the
-  rail head (above platforms, below the roof), each side's boundary is the 90th percentile of
-  |dy|; a robust quadratic per side **with the tangent fixed by the rails** gives κ. A boundary
-  that does not fit with that tangent (a diverging hall wall) is rejected; if the sides disagree by
-  more than `axis_sides_max_disagreement` (6.7e-4 m⁻¹, R 1 500 m) the **nearer** one wins. Clipped
-  to |tan ψ| ≤ 0.09 and R ≥ 150 m, smoothed, and rate-limited to `axis_max_yaw_rate` = 0.003 rad
-  (0.17°) and `axis_max_curvature_rate` = 1e-4 m⁻¹ per input period (a train at 15 m/s on
-  R = 700 m yaws 0.12° per frame) after `axis_warmup_frames` = 5 frames.
-* **Trusted axis range `axis_valid`.** The last observed boundary bin + 15 m (+50 m on straight,
-  well fitted track with agreeing sides); at most `axis_one_side_range` = 120 m with one boundary
-  and `axis_disagree_range` = 60 m when the sides disagree; −20 m per frame without a fit, down to
-  the height reference. Beyond it clusters are advisory (`beyond_axis`). A far rail-pair
-  cross-check of the wall curvature (`rails_far_check_enabled`) exists and is off (no evaluation
-  on real recordings).
+* **Высота полотна `z_floor(X)`.** В каждом интервале (2 м, 5 м дальше 40 м) — 20-й процентиль Z в
+  полосе ±1 м вокруг предыдущей оси; робастная прямая по ближним интервалам, дальние интервалы
+  удерживаются в пределах 0,35 м от неё; квадратичная подгонка — только при ≥ 4 согласованных
+  дальних интервалах, изгибающихся слабее вертикальной кривой 1 500 м; дальше — линейная
+  экстраполяция; EMA по кадрам. **Тень большого ближнего объекта**: два соседних интервала выше
+  предыдущего полотна более чем на `floor_shadow_height` = 1 м, первый — не дальше
+  `floor_shadow_range` = 30 м, означают, что полотно за объектом скрыто; тогда подгоняются только
+  интервалы вблизи предыдущего полотна, пара рельсов ищется перед объектом, а при менее чем 5
+  интервалах полотна там удерживаются предыдущие полотно и рельсы (не более
+  `floor_shadow_max_hold` = 20 кадров подряд). Без этого 2-метровая коробка организаторов на
+  расстоянии 26 → 9 м воспринималась на уровне полотна (журнал §1h).
+* **Проверенная экстраполяция `floor_verified`.** Полотно перестаёт давать отражения примерно на
+  100 м, но основания стен, скамей и коробов видны до конца дальности на постоянной высоте над
+  головкой рельса. В каждом 5-метровом интервале самая низкая точка в боковой полосе |dy| 1,6–3,5 м
+  сравнивается с экстраполированным полотном; экстраполяция остаётся проверенной, пока медианное
+  отклонение на последних 30 м не превышает `floor_verify_tolerance` = 0,5 м (вертикальная кривая или
+  платформа прекращают её). Опорной высоте доверяют до
+  `max(fit end + floor_valid_margin (20 m), floor_verified)`.
+* **Головка рельса, центр и курс.** Боковой профиль высоты на 4–30 м в интервалах по 5 см (85-й
+  процентиль), построенный в координате предыдущей оси, чтобы рельсы оставались прямыми линиями в
+  кривой; рельсы — пара гребней на расстоянии `rails_spacing` = 1,59 м друг от друга с головкой на
+  0,08–0,5 м выше полотна. Пара находится заново в `rails_yaw_slabs` = 3 продольных слоях; прямая
+  через их середины (предыдущая кривизна сохраняется) даёт `c` и `tan(ψ)`: ±2 см на гребень на
+  протяжении 26 м ≈ 0,1°.
+* **Кривизна по стенам.** В каждом 4-метровом интервале между 6 и 160 м, в полосе 1,6–2,8 м над
+  головкой рельса (выше платформ, ниже потолка), граница каждой стороны — 90-й процентиль |dy|;
+  робастная квадратичная подгонка по каждой стороне **с касательной, заданной рельсами**, даёт κ.
+  Граница, не согласующаяся с этой касательной (расходящаяся стена зала), отвергается; если стороны
+  расходятся больше чем на `axis_sides_max_disagreement` (6,7e-4 м⁻¹, R 1 500 м), побеждает **ближняя**
+  сторона. Результат ограничивается |tan ψ| ≤ 0,09 и R ≥ 150 м, сглаживается, а после
+  `axis_warmup_frames` = 5 кадров ещё и ограничивается по скорости изменения:
+  `axis_max_yaw_rate` = 0,003 рад (0,17°) и `axis_max_curvature_rate` = 1e-4 м⁻¹ на период входа
+  (поезд на 15 м/с в кривой R = 700 м поворачивается на 0,12° за кадр).
+* **Доверенная дальность оси `axis_valid`.** Последний наблюдаемый интервал границы + 15 м (+50 м на
+  прямом, хорошо подогнанном пути при согласных сторонах); не более `axis_one_side_range` = 120 м
+  при одной границе и `axis_disagree_range` = 60 м, когда стороны расходятся; −20 м за кадр без
+  подгонки, вплоть до опорной высоты. Дальше неё кластеры предупредительные (`beyond_axis`).
+  Дальняя перекрёстная проверка кривизны по стенам парой рельсов (`rails_far_check_enabled`) есть и
+  выключена (нет оценки на реальных записях).
 
-### 3.2 Clearance-gauge corridor (`resense/gauge.py`, section `gauge`)
+### 3.2 Коридор габарита (`resense/gauge.py`, секция `gauge`)
 
-The gauge is a closed polygon in `(dy, h)` swept along the axis: **the train envelope the
-organizers gave, 2.1 m wide × 3.0 m high, protruding elements included**
-([`organizers/QA_session.md`](organizers/QA_session.md) fact 1): |dy| ≤ 1.05 m, from 0.12 m above
-the rail head (rail heads, fastenings and joint bars stay out; lower objects are §3.3b's) to 3.0 m.
-The **advisory** polygon is the same profile widened by `warning_margin` = 0.35 m (|dy| ≤ 1.40 m):
-a confirmed object there is a `warning` (`CAUTION`), not an alarm — a person on a platform or beside
-the track is not an obstacle unless inside the envelope (the organizers' answer).
+Габарит — замкнутый многоугольник в `(dy, h)`, протянутый вдоль оси: **габарит поезда, заданный
+организаторами, шириной 2,1 м и высотой 3,0 м, включая выступающие элементы**
+([`organizers/QA_session.md`](organizers/QA_session.md), факт 1): |dy| ≤ 1,05 м, от 0,12 м над
+головкой рельса (головки рельсов, скрепления и стыковые накладки остаются снаружи; более низкими
+объектами занимается §3.3b) до 3,0 м. Многоугольник **зоны предупреждения** — тот же профиль,
+расширенный на `warning_margin` = 0,35 м (|dy| ≤ 1,40 м): подтверждённый там объект — `warning`
+(`CAUTION`), а не тревога: человек на платформе или рядом с путём не является препятствием, если он
+не внутри габарита (ответ организаторов).
 
-Points between `range_min` (3 m) and `range_max` (250 m) are tested against both polygons (a
-bounding-box prefilter, then a vectorised even-odd test); points in the advisory polygon are the
-*candidates*, their strict membership is kept per point. The **edge margin**
-(`edge_margin_per_100m` = 0.15 m per 100 m, 0.3 m at 200 m) counts a point as strictly inside only
-that far inside the lateral edge: the axis is uncertain by ~0.1°.
+Точки между `range_min` (3 м) и `range_max` (250 м) проверяются по обоим многоугольникам
+(предварительный фильтр по ограничивающему прямоугольнику, затем векторизованная проверка чётности
+пересечений, even-odd); точки в многоугольнике зоны предупреждения — это *кандидаты*, их
+принадлежность строгому габариту хранится для каждой точки. **Краевой запас**
+(`edge_margin_per_100m` = 0,15 м на 100 м, 0,3 м на 200 м) считает точку строго внутри, только
+если она лежит настолько глубоко внутри бокового края: ось неопределена на ~0,1°.
 
-**Without rails the far corridor is advisory** (`no_rail_range` = 40 m). In a frame without a rail
-pair in the near range (a station with the rails in shadow, a switch cavern) the axis rests on
-walls, which at stations are platform edges and end structures: clusters beyond 40 m are advisory
-(`beyond_axis`) and the clear distance is capped at 40 m; nearer, the strict decision stays (a 0.1°
-error is 7 cm at 40 m). **Near the train the envelope is also measured from the sensor axis**
-(`gauge.reference` 3, §3.6; the earlier variant `gauge.axis_union` is off).
+**Без рельсов дальний коридор — предупредительный** (`no_rail_range` = 40 м). В кадре без пары
+рельсов на ближней дальности (станция, где рельсы в тени, стрелочная камера) ось опирается на
+стены, которые на станциях — это края платформ и торцевые конструкции: кластеры дальше 40 м
+предупредительные (`beyond_axis`), а свободная дистанция ограничена 40 м; ближе строгое решение
+сохраняется (ошибка 0,1° — это 7 см на 40 м). **Вблизи поезда габарит также измеряется от оси
+датчика** (`gauge.reference` 3, §3.6; прежний вариант `gauge.axis_union` выключен).
 
-### 3.3 Candidate clustering and infrastructure filters (`resense/clustering.py`, section `cluster`)
+### 3.3 Кластеризация кандидатов и фильтры инфраструктуры (`resense/clustering.py`, секция `cluster`)
 
-Everything is **range-adaptive**, because a 0.5 m object gives ~500 returns at 20 m and ~7 at
-100 m (`resense/sensor.py`):
+Всё **адаптируется к дальности**, потому что объект 0,5 м даёт ~500 отражений на 20 м и ~7 на
+100 м (`resense/sensor.py`):
 
-1. coordinates are scaled by `1 / (1 + r / range_scale)` with `range_scale` = 40 m, so a fixed
-   voxel (`voxel` = 5 cm) and a fixed DBSCAN radius (`eps` = 0.35 m) grow linearly with range;
-2. candidates are voxel-downsampled in that space (merges dual returns; the voxel count is a proxy
-   for distinct rays) and clustered with DBSCAN (`min_samples` = 3) on scipy's `cKDTree` with
-   scikit-learn's exact labels (`resense.clustering.dbscan_labels`);
-3. each cluster gets a bounding box, the distance of its nearest point inside the envelope
-   (`gauge_distance`), its centroid's lateral offset, lowest and highest point and mean intensity;
-4. clusters that describe infrastructure rather than obstacles are removed, in this order:
+1. координаты масштабируются на `1 / (1 + r / range_scale)` при `range_scale` = 40 м, поэтому
+   фиксированный воксель (`voxel` = 5 см) и фиксированный радиус DBSCAN (`eps` = 0,35 м) растут с
+   дальностью линейно;
+2. кандидаты прореживаются по вокселям в этом пространстве (сливает двойные отражения; число
+   вокселей — заменитель числа различных лучей) и кластеризуются DBSCAN (`min_samples` = 3) на
+   `cKDTree` из scipy с метками, в точности совпадающими с метками scikit-learn
+   (`resense.clustering.dbscan_labels`);
+3. каждый кластер получает ограничивающий параллелепипед, расстояние до его ближайшей точки внутри
+   габарита (`gauge_distance`), боковое смещение его центроида, самую низкую и самую высокую точки и
+   среднюю интенсивность;
+4. кластеры, которые описывают инфраструктуру, а не препятствия, удаляются в таком порядке:
 
-| filter | rule (defaults) | what it removes |
+| фильтр | правило (по умолчанию) | что удаляет |
 |---|---|---|
-| size | extent > 8 m or height < 0.08 m; a cluster > 8 m whose part inside the strict envelope is ≤ 3 m long and starts within 30 m is kept as that part (`oversize_split_*`: an object touching a long line at the corridor edge) | walls, floor noise |
-| point count | < 5 voxels (< 3 beyond 100 m) | noise |
-| thin linear | length > 3 m, width < 0.35 m, height < 0.25 m | rails, pipes, cables, duct edges |
-| low hardware | top < 0.35 m, width < 0.4 m, height < 0.3 m | clamps, joint bars, cables on the sleepers |
-| wall-like | height > 1.9 m and \|lateral\| > 1.2 m, or height > 1.9 m, length > 4 m, width < 1.5 m; kept when it has ≥ 10 voxels in the strict envelope within 20 m (`wall_keep_*`) | columns, gate frames, platform walls |
-| linear side structure | aspect > 5, height < 0.8 m, \|lateral\| > 0.8 m | platform edges, ducts, cabinet rows |
+| размер | протяжённость > 8 м или высота < 0,08 м; кластер > 8 м, часть которого внутри строгого габарита не длиннее 3 м и начинается в пределах 30 м, сохраняется как эта часть (`oversize_split_*`: объект, касающийся длинной линии на краю коридора) | стены, шум пола |
+| число точек | < 5 вокселей (< 3 дальше 100 м) | шум |
+| тонкие линейные | длина > 3 м, ширина < 0,35 м, высота < 0,25 м | рельсы, трубы, кабели, края коробов |
+| низкое оборудование | верх < 0,35 м, ширина < 0,4 м, высота < 0,3 м | зажимы, стыковые накладки, кабели на шпалах |
+| стенообразные | высота > 1,9 м и \|боковое смещение\| > 1,2 м, или высота > 1,9 м, длина > 4 м, ширина < 1,5 м; сохраняется, если содержит ≥ 10 вокселей в строгом габарите в пределах 20 м (`wall_keep_*`) | колонны, рамы ворот, стены платформ |
+| линейные боковые конструкции | отношение сторон > 5, высота < 0,8 м, \|боковое смещение\| > 0,8 м | края платформ, короба, ряды шкафов |
 
-5. the surviving cluster gets a **zone**: `gauge` if ≥ `gauge_min_points` (3) voxels lie inside
-   the strict polygon, otherwise `warning`; it is demoted to `warning` beyond the trusted axis
-   (`beyond_axis`) or entirely above `overhead_min_height` (3.0 m, the envelope top);
+5. оставшийся кластер получает **зону**: `gauge`, если ≥ `gauge_min_points` (3) вокселей лежат
+   внутри строгого многоугольника, иначе `warning`; он понижается до `warning` за пределами
+   доверенной оси (`beyond_axis`) или целиком выше `overhead_min_height` (3,0 м, верх габарита);
 
-5b. **infrastructure signatures** demote a gauge cluster to `warning` with their name as `reason`
-   (0 switches a rule off); derived on the six organizer recordings (log §1b), checked against
-   hand-built persons, trolleys, boxes and a train ahead, which stay `gauge`:
+5b. **сигнатуры инфраструктуры** понижают кластер gauge до `warning`, а своё название записывают
+   в `reason` (0 выключает правило); выведены на шести записях организаторов (журнал §1b),
+   проверены на построенных вручную людях, тележках, коробках и поезде впереди, которые остаются
+   `gauge`:
 
-   | signature | rule (defaults) | what it is | why a listed obstacle does not match |
+   | сигнатура | правило (по умолчанию) | что это | почему перечисленное препятствие не подходит |
    |---|---|---|---|
-   | `column` | height > 2.2 m and width < 1.0 m, and either \|lateral\| > `signature_min_lateral` (0.6 m) or width ≥ `column_min_width` (0.25 m); the width is read between the 5 % and 95 % lateral quantiles when the trimmed tails span ≥ 0.25 m (`column_width_trim`) | columns of the double-track tunnel, posts, gate legs | a person is 1.7 m; a trolley or train is wider; **a thin cable hanging near the axis stays an obstacle** |
-   | `elevated` | lowest point > 1.2 m above the rail head and width > 2.0 m | roof strips and beams read too low by the extrapolated bed | listed objects stand on the bed; a train ahead reaches the polygon bottom |
-   | `floating` | lowest point > 0.7 m, height < 1.2 m, width < 1.0 m and \|lateral\| > 0.6 m; near the axis only when longer than `floating_long_min_length` (3.0 m) with the lowest point above `floating_long_min_bottom` (1.6 m); never a compact free-hanging cluster (every extent ≤ `floating_free_max_size` 0.5 m, outermost point ≤ `floating_free_max_dy` **1.2 m** off the axis, top ≤ `floating_free_max_top` 2.5 m) | signs, lamps, brackets on the wall; ducts, trays and beams along the track overhead | an object on the track touches the ground; an object hanging into the envelope near the axis, or a tray fallen lower than 1.6 m, stays an obstacle |
-   | `edge` | \|lateral\| > `edge_min_lateral` (1.0 m), length > 2.5 × width, height < 1.0 m | duct, bench and platform-edge fragments along the corridor edge | boxes and persons are not elongated |
-   | `wall_face` | height > 2.0 m, top above 2.8 m, and the part below has \|dy\| ≥ 0.3 m everywhere and > 1.3 m somewhere | platform-hall end walls, portal jambs | a train ahead fills the corridor centre; a person is lower than 2.0 m (also on a 1.1 m platform edge) |
+   | `column` | высота > 2,2 м и ширина < 1,0 м, и либо \|боковое смещение\| > `signature_min_lateral` (0,6 м), либо ширина ≥ `column_min_width` (0,25 м); ширина считается между 5 %- и 95 %-квантилями бокового смещения, когда отсечённые хвосты простираются на ≥ 0,25 м (`column_width_trim`) | колонны двухпутного тоннеля, стойки, ножки ворот | человек — 1,7 м; тележка или поезд шире; **тонкий кабель, висящий у оси, остаётся препятствием** |
+   | `elevated` | самая низкая точка > 1,2 м над головкой рельса и ширина > 2,0 м | потолочные полосы и балки, которые по экстраполированному полотну оказываются слишком низко | перечисленные объекты стоят на полотне; поезд впереди доходит до низа многоугольника |
+   | `floating` | самая низкая точка > 0,7 м, высота < 1,2 м, ширина < 1,0 м и \|боковое смещение\| > 0,6 м; у оси — только если длиннее `floating_long_min_length` (3,0 м) при самой низкой точке выше `floating_long_min_bottom` (1,6 м); никогда — компактный свободно висящий кластер (каждый размер ≤ `floating_free_max_size` 0,5 м, крайняя точка не дальше `floating_free_max_dy` **1,2 м** от оси, верх ≤ `floating_free_max_top` 2,5 м) | знаки, лампы, кронштейны на стене; короба, лотки и балки вдоль пути над головой | объект на пути касается земли; объект, свисающий в габарит у оси, или лоток, упавший ниже 1,6 м, остаётся препятствием |
+   | `edge` | \|боковое смещение\| > `edge_min_lateral` (1,0 м), длина > 2,5 × ширина, высота < 1,0 м | фрагменты коробов, скамей и краёв платформ вдоль края коридора | коробки и люди не вытянуты |
+   | `wall_face` | высота > 2,0 м, верх выше 2,8 м, а нижняя часть везде имеет \|dy\| ≥ 0,3 м и где-то > 1,3 м | торцевые стены платформенных залов, косяки порталов | поезд впереди заполняет центр коридора; человек ниже 2,0 м (в том числе на краю платформы высотой 1,1 м) |
 
-   A demoted cluster is never dropped: a persistent object that stops matching (a person stepping
-   away from a column) returns to `gauge` through the zone history, and near an obstacle the shape
-   signatures give way (§3.5). `short_signature_max_length` is off (it added ride false alarms);
-6. **retro-reflector rule** (`retro_intensity`, off): when on (100), a cluster lower than 1.2 m and
-   narrower than 0.8 m with ≥ 50 % of its returns above 100 % reflectivity is a sign (`retro`)
-   ([`SENSOR.md`](SENSOR.md) §3.3);
-7. a **visibility score** (voxels against the returns a target of that size should give at that
-   range, saturating at `visibility_ratio` = 15 %) feeds the tracker's confidence;
-8. **thin objects hanging from above** (`hanging_*`): a cable dipping 0.2–0.4 m below the envelope
-   top gives 1–3 returns there, below the 5-voxel minimum. Points near the axis (|dy| < 0.8 m) from
-   1.8 m up to 0.6 m above the envelope top are linked at the corridor radius; a group with a voxel
-   inside the strict envelope and one above it, ≤ 0.5 m along and across the track and ≤ 60 m away,
-   is a gauge cluster of kind `hanging`. It yields to an overlapping gauge obstacle and runs only
-   with a rail pair in the near range (`hanging_needs_rails`: else station column tops pass).
+   Пониженный кластер никогда не отбрасывается: устойчивый объект, который перестаёт подходить под
+   сигнатуру (человек, отошедший от колонны), возвращается в `gauge` через историю зон, а вблизи
+   препятствия сигнатуры формы уступают (§3.5). `short_signature_max_length` выключен (он добавлял
+   ложные тревоги на поездке);
+6. **правило ретрорефлектора** (`retro_intensity`, выключено): при включении (100) кластер ниже
+   1,2 м и уже 0,8 м, у которого ≥ 50 % отражений выше 100 % отражательной способности, считается
+   знаком (`retro`) ([`SENSOR.md`](SENSOR.md) §3.3);
+7. **оценка видимости** (воксели относительно числа отражений, которое должна давать цель такого
+   размера на этой дальности, с насыщением на `visibility_ratio` = 15 %) входит в уверенность
+   трекера;
+8. **тонкие объекты, свисающие сверху** (`hanging_*`): кабель, опускающийся на 0,2–0,4 м ниже верха
+   габарита, даёт там 1–3 отражения — меньше минимума в 5 вокселей. Точки у оси (|dy| < 0,8 м) от
+   1,8 м вплоть до 0,6 м выше верха габарита связываются радиусом коридора; группа с вокселем внутри
+   строгого габарита и вокселем выше него, размером ≤ 0,5 м вдоль и поперёк пути и на расстоянии
+   ≤ 60 м, — кластер gauge вида `hanging`. Он уступает перекрывающемуся препятствию gauge и
+   работает только при паре рельсов на ближней дальности (`hanging_needs_rails`: иначе проходят
+   верхушки колонн станций).
 
-### 3.3b Low objects on the track (`resense/lowobj.py`, section `lowobj`)
+### 3.3b Низкие объекты на пути (`resense/lowobj.py`, секция `lowobj`)
 
-The organizers' size criterion is **300 × 300 × 100 mm** (Q&A fact 2). Such an object is lower than
-the polygon bottom (0.12 m above the rail head), so the corridor cannot see it; it is, however, an
-anomaly of the *track bed*, whose cross-section (rails, fastenings, bed, drainage trough) repeats
-every metre:
+Критерий размера у организаторов — **300 × 300 × 100 мм** (факт 2 из Q&A). Такой объект ниже низа
+многоугольника (0,12 м над головкой рельса), поэтому коридор его не видит; однако он — аномалия
+*полотна пути*, поперечное сечение которого (рельсы, скрепления, полотно, дренажный лоток)
+повторяется каждый метр:
 
-1. the **bed template** `h_bed(dy)` (bed height above the rail head at lateral offset `dy`): the
-   30th percentile per 2.5 cm lateral bin at 4–30 m, dilated by ±5 cm, EMA 0.8, learned only while
-   the rail pair is locked;
-2. per 2 m along-track bin the **local offset** from the template is the median residual of the
-   bed-like points; a bin without bed returns ends the stage's range (`range_max` = 60 m);
-3. a point inside the envelope width, below the polygon bottom, with a residual above `min_excess`
-   = 5 cm **and itself at least `min_point_top` = 3 cm above the rail head** is a low candidate;
-4. low candidates are clustered on their own with a tighter radius (`lowobj.eps` = 0.2,
-   range-normalised: 0.48 m at 56 m); a low cluster is ≤ 1.5 m long, 0.15–2.2 m across (a person
-   lying across the track fits), has ≥ 3 voxels and reaches the rail-head plane (`min_top` = 0); it
-   is a gauge obstacle of kind `low`, confirmed after `tracking.low_confirm_hits` = 5 hits;
-5. it is dropped when corridor candidates taller than `foot_max_top` = 0.35 m stand in its footprint
-   (the foot of a sign or a person) or a corridor cluster overlaps it (one detection per object).
+1. **шаблон полотна** `h_bed(dy)` (высота полотна над головкой рельса при боковом смещении `dy`):
+   30-й процентиль в каждом боковом интервале 2,5 см на 4–30 м, расширенный на ±5 см, EMA 0,8,
+   обучается только пока пара рельсов захвачена;
+2. в каждом 2-метровом интервале вдоль пути **локальное смещение** от шаблона — медианная невязка
+   точек, похожих на полотно; интервал без отражений от полотна обрывает дальность этапа
+   (`range_max` = 60 м);
+3. точка в пределах ширины габарита, ниже низа многоугольника, с невязкой выше `min_excess`
+   = 5 см **и сама не менее чем на `min_point_top` = 3 см выше головки рельса** — низкий кандидат;
+4. низкие кандидаты кластеризуются отдельно с более узким радиусом (`lowobj.eps` = 0,2,
+   нормированный по дальности: 0,48 м на 56 м); низкий кластер имеет длину ≤ 1,5 м, поперечный размер
+   0,15–2,2 м (человек, лежащий поперёк пути, подходит), содержит ≥ 3 вокселей и достигает плоскости
+   головок рельсов (`min_top` = 0); это препятствие gauge вида `low`, подтверждаемое после
+   `tracking.low_confirm_hits` = 5 попаданий;
+5. он отбрасывается, если в его проекции стоят кандидаты коридора выше `foot_max_top` = 0,35 м
+   (основание знака или человека) или его перекрывает кластер коридора (одно обнаружение на объект).
 
-**Why the rail-head rule.** The metro bed carries fixtures 5–40 cm tall every few tens of metres
-(train-control inductors, drain covers, cable crossings), geometrically a 30 × 30 × 10 cm box and
-below the rail head by design. Every bump above the bed gave ~1 350 false events on the 20-minute
-ride, a cluster top at the rail head ~800 (joints, guard and check rails); every candidate point
-≥ 3 cm above the rail head leaves 2 on the 13 worst files of the ride and still finds a 10 cm box on
-a rail head at 10–25 m (log §1d, `tests/test_envelope.py`). The organizers confirmed the policy: an
-object on the bed between the rails is not inside the envelope, so it is not an obstacle
-([`organizers/answers.md`](organizers/answers.md) §8). `min_top` / `min_point_top` −1 restore the
-bed-level policy for a line with a clean bed; the central near-bed path (`lowobj.near_enabled`) is
-off, because a compact inductor returns the same scan line as a box (log §1e).
+**Почему правило головки рельса.** На полотне метро через каждые несколько десятков метров стоит
+оборудование высотой 5–40 см (индукторы системы управления поездом, крышки водостоков, кабельные
+переходы) — геометрически коробка 30 × 30 × 10 см, по конструкции ниже головки рельса. Каждый
+бугорок над полотном давал ~1 350 ложных событий на 20-минутной поездке, верх кластера на уровне
+головки рельса — ~800 (стыки, охранные рельсы и контррельсы); каждая точка-кандидат ≥ 3 см над
+головкой рельса оставляет 2 на 13 худших файлах поездки и по-прежнему находит коробку 10 см на
+головке рельса на 10–25 м (журнал §1d, `tests/test_envelope.py`). Организаторы подтвердили эту
+политику: объект на полотне между рельсами не находится внутри габарита, а значит, не является
+препятствием ([`organizers/answers.md`](organizers/answers.md) §8). `min_top` / `min_point_top` −1
+возвращают политику уровня полотна для линии с чистым полотном; центральный путь у полотна
+(`lowobj.near_enabled`) выключен, потому что компактный индуктор даёт ту же линию сканирования, что
+и коробка (журнал §1e).
 
-**Objects straddling the envelope floor** (`straddle_*`). The organizers' object across the right
-rail of `doubleT_obstacle` (0.45 × 0.6 × 0.3 m, 56 m) returns ~21 points, most below the rail head
-and ~3 above the envelope floor, so it fell between the two stages. A third clustering joins the
-bed anomalies without the 3 cm rule and the corridor points less than `straddle_band` = 0.30 m above
-the floor; a cluster is `low` when its top reaches `straddle_min_top` = 0.10 m above the rail head
-(rail fittings reach 1–8 cm), it is ≥ `straddle_min_width` = 0.35 m across and ≤
-`straddle_max_length` = 0.8 m along the track (trackside devices are mounted along the rail,
-0.2–0.3 m across). The object is a STOP in 123 of the 126 frames after the person leaves it (§6);
-the margins are thin on its side (top 0.11–0.16 m, width 0.38–0.50 m; log §0). Puddles return
-nothing or mirror images below the bed (negative residuals) and are ignored by construction.
+**Объекты, пересекающие нижнюю границу габарита** (`straddle_*`). Объект организаторов поперёк
+правого рельса в `doubleT_obstacle` (0,45 × 0,6 × 0,3 м, 56 м) даёт ~21 точку, большинство ниже
+головки рельса и ~3 выше нижней границы габарита, поэтому он выпадал между двумя этапами. Третья
+кластеризация объединяет аномалии полотна без правила 3 см и точки коридора менее чем на
+`straddle_band` = 0,30 м выше нижней границы; кластер считается `low`, если его верх достигает
+`straddle_min_top` = 0,10 м над головкой рельса (рельсовые детали достигают 1–8 см), его поперечный
+размер ≥ `straddle_min_width` = 0,35 м, а длина вдоль пути ≤
+`straddle_max_length` = 0,8 м (устройства у пути монтируются вдоль рельса, 0,2–0,3 м в поперечнике).
+Объект — STOP в 123 из 126 кадров после ухода человека (§6); у этого объекта запасы малы
+(верх 0,11–0,16 м, ширина 0,38–0,50 м; журнал §0). Лужи не дают отражений или дают зеркальные
+изображения ниже полотна (отрицательные невязки) и по построению игнорируются.
 
-### 3.3c The far field of a straight tunnel
+### 3.3c Дальняя зона прямого тоннеля
 
-On a straight tunnel the height reference, not the axis, limits the corridor: the bed fit ends at
-70–90 m, its verification at 100–145 m, while the walls confirm the axis to ~200 m. The
-extrapolated rail level runs 0.1 m low at 85 m and 0.4–0.5 m at 150–200 m (log §2d): enough to lift
-far-bed returns into the polygon bottom, not to change whether a person is inside a 3 m envelope. So **between the height reference and the
-axis range a cluster is an obstacle only if it is at least `far_min_height` = 0.6 m tall, at most
-`far_max_length` = 3 m long and reaches below `far_max_bottom` = 1.0 m** — a face standing on the
-track, not a surface at grazing incidence nor a sign above the corridor (`beyond_height_ref`
-otherwise).
+В прямом тоннеле коридор ограничивает опорная высота, а не ось: подгонка полотна заканчивается на
+70–90 м, её проверка — на 100–145 м, тогда как стены подтверждают ось до ~200 м. Экстраполированный
+уровень рельсов оказывается ниже на 0,1 м на 85 м и на 0,4–0,5 м на 150–200 м (журнал §2d): этого
+достаточно, чтобы поднять дальние отражения полотна в низ многоугольника, но не чтобы изменить,
+находится ли человек внутри 3-метрового габарита. Поэтому **между опорной высотой и дальностью оси
+кластер — препятствие, только если он не ниже `far_min_height` = 0,6 м, не длиннее
+`far_max_length` = 3 м и достигает ниже `far_max_bottom` = 1,0 м** — грань, стоящая на пути, а не
+поверхность при скользящем падении луча и не знак над коридором (иначе `beyond_height_ref`).
 
-### 3.4 Ego speed and multi-frame accumulation (`resense/egomotion.py`, `resense/accumulate.py`, section `accumulation`)
+### 3.4 Скорость поезда и накопление кадров (`resense/egomotion.py`, `resense/accumulate.py`, секция `accumulation`)
 
-Beyond ~150 m a person returns 3–5 points per frame, near the clusterer's floor. The candidates
-beyond `min_range` = 40 m of the last `n_frames` = 5 frames can therefore be merged before
-clustering: stored in track coordinates (X, dy, h), shifted by `v · dt` per frame and re-embedded
-with the current track model, so they follow the curve; the voxel grid makes a static object
-denser, not doubled. **This runs only with a speed the caller gives** (`Detector.process(frame,
-ego_speed)`, the node's `ego_speed_mps` / `speed_topic` / `odom_topic`) of at least `min_speed` =
-1 m/s; the organizers' recordings carry no odometry (Q&A fact 6), so the delivered path is
-single-frame. Merged clusters get a higher voxel bar (`1 + n_merged · min_points_scale`, ×1.5 for 5
-frames), and a **smear guard** re-describes a merged cluster longer than 2 m or wider than 1 m from
-its current-frame points (a wrong speed or a moving object), so a wrong speed degrades to the
-single-frame result. The LiDAR-only estimator (`estimate_speed`, off) cross-correlates the wall
-texture along the track between frames (ICP is degenerate along a straight tunnel,
-[`RESEARCH.md`](RESEARCH.md) §2); it is accurate (median error 0.06–0.08 m/s), but neither it nor a
-perfect speed improved the organizers' check, and it added false alarms (log §1b, §9).
+Дальше ~150 м человек даёт 3–5 точек на кадр, у самого нижнего порога кластеризатора. Поэтому
+кандидаты дальше `min_range` = 40 м из последних `n_frames` = 5 кадров можно объединять перед
+кластеризацией: они хранятся в координатах пути (X, dy, h), сдвигаются на `v · dt` за кадр и заново
+встраиваются по текущей модели пути, так что следуют за кривой; воксельная сетка делает статичный
+объект плотнее, а не удваивает его. **Это работает только при заданной вызывающей стороной
+скорости** (`Detector.process(frame, ego_speed)`, `ego_speed_mps` / `speed_topic` / `odom_topic`
+ноды) не менее `min_speed` = 1 м/с; в записях организаторов нет одометрии (факт 6 из Q&A), поэтому
+в поставляемой версии путь однокадровый. Объединённые кластеры получают более высокий порог по
+вокселям (`1 + n_merged · min_points_scale`, ×1,5 для 5 кадров), а **защита от размазывания**
+заново описывает объединённый кластер длиннее 2 м или шире 1 м по точкам текущего кадра (неверная
+скорость или движущийся объект), так что неверная скорость деградирует до однокадрового
+результата. Оценщик скорости только по LiDAR (`estimate_speed`, выключен) взаимно коррелирует
+текстуру стен вдоль пути между кадрами (ICP вырождается в прямом тоннеле,
+[`RESEARCH.md`](RESEARCH.md) §2); он точен (медианная ошибка 0,06–0,08 м/с), но ни он, ни
+идеальная скорость не улучшили проверку организаторов и добавили ложные тревоги (журнал §1b, §9).
 
-### 3.5 Temporal persistence (`resense/tracking.py`, section `tracking`)
+### 3.5 Устойчивость во времени (`resense/tracking.py`, секция `tracking`)
 
-**Association.** Greedy nearest neighbour on predicted centroids (constant velocity per track),
-gate `gate_base + gate_per_m · distance` (1.5 m + 2 cm/m), widened along X only by
-`ego_speed_max · frame_dt` (25 m/s × 0.1 s = 2.5 m) towards the vehicle, because without odometry a
-static obstacle approaches at the train's speed. Confidence rises by `conf_gain · score` per hit and
-falls by `conf_decay` per miss; a track is dropped after `max_misses` = 3.
+**Сопоставление.** Жадный поиск ближайшего соседа по предсказанным центроидам (постоянная скорость
+на трек), строб `gate_base + gate_per_m · distance` (1,5 м + 2 см/м), расширяемый только вдоль X на
+`ego_speed_max · frame_dt` (25 м/с × 0,1 с = 2,5 м) в сторону поезда, потому что без одометрии
+неподвижное препятствие приближается со скоростью поезда. Уверенность растёт на `conf_gain · score`
+за каждое попадание и падает на `conf_decay` за каждый промах; трек удаляется после `max_misses` = 3.
 
-**Confirmation and zone.** A track must have `confirm_hits` = 3 hits over `confirm_time_s` = 0.5 s
-of sensor time (5 frames at 10 Hz, 3 at 5 Hz), be matched in `min_hit_fraction` = 60 % of its last
-`hit_window` = 10 frames (a structure flickering into the corridor never qualifies) and be matched
-now (or held, §4). Its **zone** is voted over its last `zone_window` = 10 hits: `gauge` when
-`zone_min_fraction` = 60 % were inside the strict envelope, so an object first seen beyond the
-trusted corridor, or an edge structure flickering with the axis, stays advisory until the history is
-clear; also while `column_hold` = 2 of those hits were a `column`.
+**Подтверждение и зона.** У трека должно быть `confirm_hits` = 3 попадания за `confirm_time_s` = 0,5 с
+времени датчика (5 кадров при 10 Гц, 3 при 5 Гц), он должен быть сопоставлен в
+`min_hit_fraction` = 60 % из последних `hit_window` = 10 кадров (конструкция, мерцающая в коридоре,
+никогда не проходит) и сопоставлен сейчас (или удерживаться, §4). Его **зона** определяется
+голосованием по последним `zone_window` = 10 попаданиям: `gauge`, когда `zone_min_fraction` = 60 % из
+них были внутри строгого габарита, поэтому объект, впервые замеченный за пределами доверенного
+коридора, или краевая конструкция, мерцающая вместе с осью, остаются предупредительными, пока
+история не станет ясной; то же — пока `column_hold` = 2 из этих попаданий были `column`.
 
-**Near an obstacle the shape signatures give way** (a signature may keep a track from being
-confirmed, not take a confirmed obstacle down):
+**Вблизи препятствия сигнатуры формы уступают** (сигнатура может помешать подтверждению трека, но
+не может снять подтверждённое препятствие):
 
-* **near escalation** (`near_escalate_*`): a track whose last 5 hits each had ≥ 10 voxels inside the
-  strict envelope within 35 m is a STOP whatever shape signature or zone vote demoted it (never a
-  `column`, `beyond_axis` or `beyond_height_ref` demotion);
-* **STOP keep** (`stop_keep_*`): a track that was a STOP in the previous frame counts a cluster with
-  ≥ 10 strict voxels demoted only by a shape signature as a hit inside the envelope, and a
-  one-scan-line cluster inside the envelope may continue it; never starts a track, and only while
-  its last clean hit is at most `stop_keep_max_s` = 10 s of sensor time ago;
-* **rail start** (`lowobj.rail_start_within` = 4 m): a narrow (≤ 0.45 m) low cluster nearer than
-  4 m on a rail line, at most 5 cm above the rail head's own returns, is rail geometry (a bag
-  starting at a standing train showed the rail heads at 2.9–3.1 m).
+* **ближняя эскалация** (`near_escalate_*`): трек, у которого в каждом из последних 5 попаданий было
+  ≥ 10 вокселей внутри строгого габарита в пределах 35 м, — это STOP, какая бы сигнатура формы или
+  голосование по зоне его ни понизили (кроме понижений `column`, `beyond_axis` и
+  `beyond_height_ref`);
+* **удержание STOP** (`stop_keep_*`): трек, бывший STOP в предыдущем кадре, засчитывает кластер с
+  ≥ 10 строгими вокселями, понижённый только сигнатурой формы, как попадание внутри габарита, а
+  кластер из одной линии сканирования внутри габарита может его продолжить; правило никогда не
+  начинает трек и действует, только пока его последнее чистое попадание было не более
+  `stop_keep_max_s` = 10 с времени датчика назад;
+* **старт на рельсах** (`lowobj.rail_start_within` = 4 м): узкий (≤ 0,45 м) низкий кластер ближе 4 м
+  на линии рельса, не более чем на 5 см выше собственных отражений головки рельса, — это геометрия
+  рельсов (бэг, начинающийся у стоящего поезда, показал головки рельсов на 2,9–3,1 м).
 
-**Far evidence for approaching tracks** (`thin_far_min_distance` = 60 m, `cluster.weak_min_points`
-= 4). Beyond 60 m a scan line inside the envelope, or a cluster one voxel under the point-count bar,
-may start or continue a track when unambiguous; while its gauge vote needs such hits, the track is a
-STOP only while its distances approach on a line in sensor time (`approach_hits` 5, 2–25 m/s,
-RMS ≤ 0.5 m), and advisory otherwise, never hidden.
+**Дальние свидетельства для приближающихся треков** (`thin_far_min_distance` = 60 м,
+`cluster.weak_min_points` = 4). Дальше 60 м линия сканирования внутри габарита или кластер на один
+воксель ниже порога по числу точек могут начать или продолжить трек, если они однозначны; пока для
+его голосования по gauge нужны такие попадания, трек — STOP, только пока его расстояния
+приближаются по прямой во времени датчика (`approach_hits` 5, 2–25 м/с, RMS ≤ 0,5 м), а в остальных
+случаях — предупредительный, но не скрытый.
 
-### 3.6 Envelope reference near the train and the learned track opinion
+### 3.6 Опорная ось габарита вблизи поезда и обученное мнение о треке
 
-**Envelope reference** (`gauge.reference` 3; `resense/gauge.py` `reference_offset`, `union_shift`).
-The organizers place their test objects from the sensor's X axis, which on straight track runs
-0.22–0.29° off the rails in most recordings (0.2 m apart at 50 m); §3.2 measures from the rails.
-Within `reference_range` = 60 m, on straight track (|κ| ≤ 2e-4 m⁻¹) with the rail pair locked, the
-strict membership and the shape rules read the **union** of the two envelopes: with `c(X)` the rail
-axis in the sensor frame, clamped to ±`reference_max_offset` = 0.2 m, a return takes the lateral
-`dy + c` only where that is nearer the centre than `dy`, so neither side of the rails' envelope is
-ever narrowed. The candidates, the reported lateral and distance, the bed, low-object, rail-start
-and clear-distance stages and the rules for structure along the track (`reference_along_rails`:
-linear side structure, `edge`) keep the rails. Beyond 60 m, on curves and without a rail lock the
-envelope is the rails' alone.
+**Опорная ось габарита** (`gauge.reference` 3; `resense/gauge.py` `reference_offset`, `union_shift`).
+Организаторы размещают свои тестовые объекты от оси X датчика, которая на прямом пути в большинстве
+записей отклонена от рельсов на 0,22–0,29° (0,2 м на 50 м); §3.2 измеряет от рельсов. В пределах
+`reference_range` = 60 м, на прямом пути (|κ| ≤ 2e-4 м⁻¹) при захваченной паре рельсов строгая
+принадлежность и правила формы читают **объединение** двух габаритов: пусть `c(X)` — ось рельсов в
+системе координат датчика, ограниченная ±`reference_max_offset` = 0,2 м; отражение берёт боковое
+смещение `dy + c` только там, где оно ближе к центру, чем `dy`, поэтому ни одна сторона габарита по
+рельсам никогда не сужается. Кандидаты, сообщаемые боковое смещение и расстояние, этапы полотна,
+низких объектов, старта на рельсах и свободной дистанции, а также правила для конструкций вдоль
+пути (`reference_along_rails`: линейные боковые конструкции, `edge`) остаются по рельсам. Дальше
+60 м, в кривых и без захвата рельсов габарит — только по рельсам.
 
-**Learned track opinion** (`tracking.doubt_*`, `resense/opinion.py`,
-`resense/models/track_opinion.json`). When the rules are about to make a track a STOP beyond
-`doubt_near` = 25 m, a gradient-boosted tree ensemble (60 trees, 19 features of the last 10 matched
-clusters: range, lateral stability, approach consistency, size and height, strict-envelope share,
-demotion history) scores it. Below `doubt_threshold` = 0.015 the track stays advisory (`doubt`) for
-at most `doubt_extra_hits` = 10 frames over its whole life (misses spend the budget); it is released
-at once within 25 m, and a cluster ≥ `doubt_body_height` = 1.0 m tall within `doubt_body_range` =
-40 m is never delayed. The opinion **never vetoes and never takes a STOP down**. Negatives: the
-rules' STOPs on the ride and the empty recordings; positives: synthetic sequences; trained grouped by
-ride piece / recording (`scripts/track_opinion.py`), threshold a 2× margin below the highest one
-that delays no held-out synthetic sequence. Run with models that never saw the ride piece
-(`scripts/opinion_crossfit.py`), it cuts the ride's false events from 43 to 37
-([`DECISIONS.md`](DECISIONS.md) row 19).
+**Обученное мнение о треке** (`tracking.doubt_*`, `resense/opinion.py`,
+`resense/models/track_opinion.json`). Когда правила собираются сделать трек STOP дальше
+`doubt_near` = 25 м, его оценивает ансамбль деревьев с градиентным бустингом (60 деревьев, 19
+признаков по последним 10 сопоставленным кластерам: дальность, боковая устойчивость, согласованность
+приближения, размер и высота, доля в строгом габарите, история понижений). При оценке ниже
+`doubt_threshold` = 0,015 трек остаётся предупредительным (`doubt`) не более `doubt_extra_hits` = 10
+кадров за всю свою жизнь (промахи расходуют этот запас); в пределах 25 м он освобождается сразу, а
+кластер высотой ≥ `doubt_body_height` = 1,0 м в пределах `doubt_body_range` = 40 м не задерживается
+никогда. Мнение **никогда не накладывает вето и никогда не снимает STOP**. Отрицательные примеры:
+STOP правил на поездке и на пустых записях; положительные: синтетические последовательности;
+обучение сгруппировано по участкам поездки / записям (`scripts/track_opinion.py`), порог — с запасом
+в 2× ниже наибольшего, который не задерживает ни одной синтетической последовательности вне
+выборки. При запуске с моделями, ни разу не видевшими данный участок поездки
+(`scripts/opinion_crossfit.py`), оно снижает число ложных событий на поездке с 43 до 37
+([`DECISIONS.md`](DECISIONS.md), строка 19).
 
-## 4. Decision rule
+## 4. Правило решения
 
-A frame reports `obstacle = true` when at least one track is **confirmed**:
+Кадр сообщает `obstacle = true`, когда **подтверждён** хотя бы один трек:
 
-* ≥ `confirm_hits` = 3 hits (low objects `low_confirm_hits` = 5) spanning ≥ `confirm_time_s` =
-  0.5 s of sensor time, matched in ≥ 60 % of its last 10 frames, confidence ≥ `conf_threshold` =
-  0.6;
-* matched in the current frame, or reported in the previous frame and missed for at most
-  `hold_misses` = 1 frame (then at its predicted distance; a code default in `resense/config.py`);
-* zone `gauge`: ≥ 60 % of its last 10 hits had ≥ `gauge_min_points` voxels inside the strict
-  envelope and none of the demotions of §3.3 (signature, beyond the trusted axis or height
-  reference, overhead, retro) — unless the near escalation or the STOP keep (§3.5) overrides a
-  shape signature — and it is not withheld by the learned opinion (§3.6); `tracking.reseed_hold`
-  holds a STOP through a mount-calibration change (§2b).
+* ≥ `confirm_hits` = 3 попаданий (низкие объекты — `low_confirm_hits` = 5), охватывающих
+  ≥ `confirm_time_s` = 0,5 с времени датчика, сопоставлен в ≥ 60 % из последних 10 кадров,
+  уверенность ≥ `conf_threshold` = 0,6;
+* сопоставлен в текущем кадре либо сообщён в предыдущем кадре и пропущен не более чем на
+  `hold_misses` = 1 кадр (тогда — на предсказанном расстоянии; значение по умолчанию задано в коде
+  `resense/config.py`);
+* зона `gauge`: у ≥ 60 % его последних 10 попаданий было ≥ `gauge_min_points` вокселей внутри
+  строгого габарита и ни одного из понижений §3.3 (сигнатура, за пределами доверенной оси или
+  опорной высоты, выше габарита, retro) — если только ближняя эскалация или удержание STOP (§3.5) не
+  отменяют сигнатуру формы, — и он не задержан обученным мнением (§3.6); `tracking.reseed_hold`
+  удерживает STOP при изменении калибровки крепления (§2b).
 
-`nearest_distance` is the along-track distance of the nearest confirmed gauge track, to the
-object's nearest point inside the envelope. Confirmed advisory tracks set `warning`, not
-`obstacle`. Every confirmed track (distance, lateral, size, confidence, age, kind, reason), the
-track model, `mount`, `health`, `clear_distance`, the ego speed and per-stage timing go into the
-status JSON ([`ARCHITECTURE.md`](ARCHITECTURE.md) "Data flow and formats").
+`nearest_distance` — расстояние вдоль пути до ближайшего подтверждённого трека gauge, до
+ближайшей точки объекта внутри габарита. Подтверждённые предупредительные треки устанавливают
+`warning`, а не `obstacle`. Каждый подтверждённый трек (расстояние, боковое смещение, размер,
+уверенность, возраст, вид, причина), модель пути, `mount`, `health`, `clear_distance`, скорость
+поезда и время по этапам попадают в JSON статуса ([`ARCHITECTURE.md`](ARCHITECTURE.md),
+«Поток данных и форматы»).
 
-**Cost of the rule.** An object appearing inside the envelope is reported after 0.5 s (11 m at
-80 km/h). One tracked while it approached — a person stepping in from the side, a far object the
-train nears — costs nothing extra: the persistence clock runs while the track is advisory. On
-`doubleT_obstacle` the crossing person is a STOP from frame 8, its first frame inside the envelope.
+`timing_ms.stages` сохраняет сумму шести прежних этапов детектора вплоть до трекинга. Поле `total`
+измеряет полный вызов до создания `FrameResult`; поля `health` и `result` показывают добавленные
+затраты. Проверка исправности использует полное время предыдущего кадра и указывает возраст этого
+замера; у первого кадра после сброса предыдущего замера нет. По умолчанию задержка не меняет решение.
 
-### 4b. Outputs for the train: decision, verified-clear distance, health
+**Цена правила.** Об объекте, появившемся внутри габарита, сообщается через 0,5 с (11 м при
+80 км/ч). Объект, который отслеживался во время приближения, — человек, шагнувший сбоку, далёкий
+объект, к которому подъезжает поезд, — не стоит ничего дополнительно: отсчёт времени устойчивости
+идёт, пока трек предупредительный. На `doubleT_obstacle` пересекающий путь человек — STOP с кадра 8,
+первого кадра внутри габарита.
 
-The organizers asked "can we go / is there an obstacle / how far" (Q&A fact 9). Besides the flag
-and the distance every frame carries:
+### 4b. Выходы для поезда: решение, проверенная свободная дистанция, исправность
 
-* **`clear_distance`** (`/resense/clear_distance`) — metres of track estimated clear: the nearest
-  confirmed obstacle, else the **monitored range** `min(visibility, trusted corridor, gauge
-  range)`, *visibility* being the X of the 20th farthest return within 3 m of the axis (the
-  sightline in a curve, the end of a platform hall). Without changing any decision it is also
-  capped at the nearest unconfirmed or advisory cluster touching the strict envelope (columns
-  excluded; `health.clear_cap`), at the predicted distance of a reported track missed this frame
-  (`clear_cap_lost`), at the nearest supported scan-line cluster inside the envelope
-  (`clear_cap_thin`) and at sparse envelope evidence chained over `clear_cap_persist` = 4 frames
-  (`resense/evidence.py`). A blinded sensor, a lost track model or invalid input make it 0. **It is
-  an estimate, not a guarantee of an empty track** (§6).
-* **`health`** (`resense/health.py`, `/resense/health`): `ok` / `warn` / `error` — returns per frame
-  (error below 20 000, warning below half the running median), returns closer than 2.5 m (> 20 %: a
-  dirty window), empty 10° sectors in the central ±30° (view blocked), visibility < 60 m, rail lock
-  in < 30 % of the last 20 frames, latency p95 over 100 ms, calibration fallback or drift. An error
-  sets the monitored range to 0. `decision_level` is `level` without the latency warning (a slow
-  machine is not an unsafe path; `health.latency_affects_decision` false).
-* **`decision`** (node, `/resense/decision`): `STOP` for a confirmed obstacle inside the envelope;
-  `FAULT` on a health error, on a processing exception (the detector is reset after 5 in a row),
-  when no frame arrived for `stale_timeout` = 0.5 s, or on invalid input clocks; `CAUTION` for an
-  advisory object, a warning in `decision_level` or a result made while the node catches up; else
-  `GO`. A STOP is held until a fresh valid non-STOP result ([`ARCHITECTURE.md`](ARCHITECTURE.md)
-  "Freshness contract"). `CAUTION` is advisory; the alarm is `STOP` (`/resense/obstacle_detected`).
+Организаторы спрашивали «можно ли ехать / есть ли препятствие / как далеко» (факт 9 из Q&A). Помимо
+флага и расстояния каждый кадр несёт:
 
-## 5. Parameters that matter most
+* **`clear_distance`** (`/resense/clear_distance`) — метры пути, оцениваемые как свободные: до
+  ближайшего подтверждённого препятствия, иначе — **дальность контроля**
+  `min(visibility, trusted corridor, gauge range)`, где *видимость* — X 20-го по удалённости
+  отражения в пределах 3 м от оси (линия видимости в кривой, конец платформенного зала). Не меняя ни
+  одного решения, она дополнительно ограничивается ближайшим неподтверждённым или предупредительным
+  кластером, касающимся строгого габарита (колонны исключены; `health.clear_cap`), предсказанным
+  расстоянием сообщённого трека, пропущенного в этом кадре (`clear_cap_lost`), ближайшим
+  подкреплённым кластером из линии сканирования внутри габарита (`clear_cap_thin`) и скудными
+  свидетельствами внутри габарита, связанными в цепочку на протяжении `clear_cap_persist` = 4
+  кадров (`resense/evidence.py`): существующая цепочка по кадрам остаётся без изменений, а цепочка
+  с метками времени может добавить более близкий предел при другой частоте сканирования. Она
+  требует не менее трёх номинальных периодов и сбрасывается при интервале больше 0,3 с или
+  недопустимой метке времени; она не может увеличить `clear_distance` относительно прежнего пути.
+  Ослеплённый датчик, потерянная модель пути или недопустимый вход
+  делают её равной 0. **Это оценка, а не гарантия того, что путь пуст** (§6).
+* **`health`** (`resense/health.py`, `/resense/health`): `ok` / `warn` / `error` — число отражений в
+  кадре (ошибка ниже 20 000, предупреждение ниже половины скользящей медианы), отражения ближе
+  2,5 м (> 20 %: загрязнённое окно), пустые секторы по 10° в центральных ±30° (обзор закрыт),
+  видимость < 60 м, захват рельсов менее чем в 30 % из последних 20 кадров, задержка p95 выше
+  100 мс, калибровка в fallback или дрейф. Ошибка устанавливает дальность контроля в 0. `decision_level` —
+  это `level` без предупреждения о задержке (медленная машина не означает небезопасный путь;
+  `health.latency_affects_decision` false).
+* **`decision`** (нода, `/resense/decision`): `STOP` — при подтверждённом препятствии внутри
+  габарита; `FAULT` — при ошибке исправности, при исключении обработки (детектор сбрасывается после
+  5 подряд), когда кадр не приходил в течение `stale_timeout` = 0,5 с или при недопустимых часах
+  входа; `CAUTION` — при предупредительном объекте, предупреждении в `decision_level` или результате,
+  полученном, пока нода навёрстывает; иначе `GO`. STOP удерживается до свежего допустимого результата
+  не-STOP ([`ARCHITECTURE.md`](ARCHITECTURE.md), «Контракт свежести»). `CAUTION` — предупреждение;
+  тревога — это `STOP` (`/resense/obstacle_detected`).
 
-All detector parameters live in `configs/default.yaml` (`resense:` root key), loaded by the CLI and
-the ROS node (the ROS package carries a copy, kept identical by `scripts/sync_params.sh --check`
-in CI); the one exception is `tracking.hold_misses`, a code default in `resense/config.py`. The
-node's own parameters are in [`ARCHITECTURE.md`](ARCHITECTURE.md) "The node". Values as sealed on
-27.09:
+## 5. Наиболее важные параметры
 
-| parameter | default | effect |
+Все параметры детектора находятся в `configs/default.yaml` (корневой ключ `resense:`), их загружают
+CLI и ROS-нода (пакет ROS содержит копию, идентичность которой обеспечивает
+`scripts/sync_params.sh --check` в CI); единственное исключение — `tracking.hold_misses`, значение по
+умолчанию в коде `resense/config.py`. Собственные параметры ноды — в
+[`ARCHITECTURE.md`](ARCHITECTURE.md), «Нода». Значения, как опечатаны 27.09:
+
+| параметр | по умолчанию | влияние |
 |---|---|---|
-| `sensor.forward/left/up`; `min_range`, `max_range` | `-y/+x/+z`; 2.5 m, 250 m | sensor → vehicle axes (the calibration corrects upright / inverted mounts); returns kept |
-| `gauge.profile`, `warning_margin`, `range_min` / `range_max` | \|dy\| ≤ 1.05 m, h 0.12–3.0 m; 0.35 m; 3 / 250 m | what counts as "in the way" (the organizers' envelope), the advisory band, how far the corridor is evaluated |
-| `gauge.edge_margin`, `edge_margin_per_100m` | 0, 0.15 m | lateral margin inside the edge required for the strict decision, growing with range |
-| `gauge.no_rail_range` | 40 m | without a near rail pair, clusters beyond are advisory and the clear distance is capped there |
-| `gauge.reference`, `reference_range`, `reference_max_offset`, `reference_max_curvature` | 3, 60 m, 0.2 m, 2e-4 m⁻¹ | union of the rails' and the sensor-axis envelope near the train (§3.6); 0 = rails only |
-| `track.rails_range`, `rails_spacing`, `rails_yaw_slabs` | 4–30 m, 1.59 m, 3 | rail pair search and the yaw from it |
-| `track.walls_range`, `walls_band`, `walls_bin` | 6–160 m, 1.6–2.8 m, 4 m | curvature from the tunnel boundaries |
-| `track.axis_valid_margin`, `axis_valid_straight_bonus` | 15 m, 50 m | trusted axis beyond the last boundary bin |
-| `track.axis_one_side_range`, `axis_disagree_range`, `axis_sides_max_disagreement` | 120 m, 60 m, 6.7e-4 m⁻¹ | trusted range with one boundary or disagreeing ones |
-| `track.axis_max_yaw_rate`, `axis_max_curvature_rate` | 0.003 rad, 1e-4 m⁻¹ per period | how fast the corridor may swing; 0 = unlimited |
-| `track.floor_valid_margin`, `floor_verify_tolerance`, `floor_verify_band` | 20 m, 0.5 m, \|dy\| 1.6–3.5 m | how far the height reference is trusted beyond the bed fit |
-| `track.floor_shadow_height`, `floor_shadow_range`, `floor_shadow_max_hold` | 1.0 m, 30 m, 20 frames | bed and rails in front of a large near object |
-| `cluster.eps`, `range_scale`, `voxel`, `min_samples` | 0.35 m, 40 m, 5 cm, 3 | cluster granularity against range |
-| `cluster.min_points`, `min_points_far`, `far_range`, `gauge_min_points` | 5, 3, 100 m, 3 | sensitivity at range against noise |
-| `cluster.max_extent`, `oversize_split_max_length`, `oversize_split_max_distance` | 8 m, 3 m, 30 m | oversize clusters; an object touching a long edge line |
-| `cluster.wall_keep_gauge_voxels`, `wall_keep_distance` | 10, 20 m | a tall side cluster with real envelope mass near the train is kept |
-| `cluster.hardware_*`, `thin_*`, `wall_*`, `linear_*`; `column_*`, `elevated_*`, `floating_*`, `edge_*`, `wall_face_*`, `signature_min_lateral`, `retro_intensity` | tables in §3.3; retro 0 (off) | infrastructure removal (`hardware` also hides objects under 35 cm on the sleepers) and signatures (advisory only; 0 switches a rule off) |
-| `cluster.floating_long_min_length` / `_min_bottom`; `floating_free_max_size` / `_max_dy` / `_max_top` | 3.0 m / 1.6 m; 0.5 m / 1.2 m / 2.5 m | long overhead structure near the axis is `floating` only above 1.6 m; a compact cluster hanging free inside the envelope never is |
-| `cluster.far_min_height`, `far_max_length`, `far_max_bottom`; `overhead_min_height` | 0.6 m, 3 m, 1.0 m; 3.0 m | what may alarm between the height reference and the axis range; clusters entirely above 3 m are advisory |
-| `cluster.hanging_enabled`, `hanging_max_distance`, `hanging_max_size`, `hanging_needs_rails` | true, 60 m, 0.5 m, true | thin objects hanging into the envelope (§3.3 item 8) |
-| `cluster.weak_min_points` | 4 | far weak clusters for approaching tracks |
-| `lowobj.min_point_top`, `min_top`, `min_excess`, `eps`, `range_max` | 0.03 m, 0 m, 0.05 m, 0.2, 60 m | low objects: every candidate ≥ 3 cm above the rail head (−1 = any bump above the bed) |
-| `lowobj.max_length`, `min_width`, `max_width` | 1.5 m, 0.15 m, 2.2 m | size of a low cluster |
-| `lowobj.straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` | 0.10 m, 0.35 m, 0.8 m, 0.30 m | an object across a rail, clustered whole |
-| `lowobj.near_enabled`, `rail_start_within` | false, 4 m | the central near-bed path (off); rail geometry near a standing train is not a low obstacle |
-| `tracking.confirm_hits`, `confirm_time_s`, `low_confirm_hits`, `conf_threshold` | 3, 0.5 s, 5, 0.6 | latency against false alarms |
-| `tracking.hit_window`, `min_hit_fraction`, `zone_window`, `zone_min_fraction`, `column_hold` | 10, 0.6, 10, 0.6, 2 | persistence and the zone vote over the track's history |
-| `tracking.hold_misses`, `max_misses` | 1, 3 | frames a reported obstacle stays reported without a match; frames a track survives |
-| `tracking.gate_base`, `gate_per_m`, `ego_speed_max`, `gate_along_only` | 1.5 m, 0.02, 25 m/s, true | association gate and its slack without odometry |
-| `tracking.near_escalate_voxels`, `near_escalate_distance`, `near_escalate_hits` | 10, 35 m, 5 | near escalation (§3.5) |
-| `tracking.stop_keep_signature`, `stop_keep_thin`, `stop_keep_max_s`, `stop_keep_min_voxels` | true, 1, 10 s, 10 | STOP keep (§3.5) |
-| `tracking.thin_far_min_distance`, `approach_hits`, `approach_min_speed`, `approach_max_residual` | 60 m, 5, 2 m/s, 0.5 m | far evidence for approaching tracks |
-| `tracking.doubt_model`, `doubt_threshold`, `doubt_extra_hits`, `doubt_near`, `doubt_body_height` / `doubt_body_range` | `track_opinion.json`, 0.015, 10, 25 m, 1.0 m / 40 m | the learned opinion (§3.6); `""` = off |
-| `accumulation.enabled`, `n_frames`, `min_range`, `min_speed`, `estimate_speed` | true, 5, 40 m, 1 m/s, false | merging only with a given speed; the estimator off |
-| `accumulation.min_points_scale`, `smear_max_length`, `smear_max_width` | 0.3, 2 m, 1 m | noise bar of merged clusters; smear guard |
-| `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `apply_min_deg` | true, 20 × 10 frames, 2.5°, 0.75° | mount auto-calibration; `sensor.roll_deg/pitch_deg/yaw_deg` freeze a known mount |
-| `calibration.min_yaw_deg`, `max_tilt_deg`, `max_frames`, `reseed_keep_max_deg`, `drift_warn_deg` / `drift_window`; `tracking.reseed_hold` | 3°, 15°, 400, 1°, 1.5° / 10 checks; 5 | limits, re-seed, drift monitor; frames a STOP is held through a change |
-| `health.clear_cap`, `clear_cap_lost`, `clear_cap_thin`, `clear_cap_persist` | true, true, true, 4 | caps of the clear distance (§4b) |
-| `health.min_points`, `min_visibility`, `min_lock_rate`, `latency_budget_ms`, `latency_affects_decision` | 20 000, 60 m, 0.3, 100 ms, false | health thresholds; they never change a detection |
+| `sensor.forward/left/up`; `min_range`, `max_range` | `-y/+x/+z`; 2,5 м, 250 м | оси датчика → оси поезда (калибровка исправляет прямое / перевёрнутое крепление); сохраняемые отражения |
+| `gauge.profile`, `warning_margin`, `range_min` / `range_max` | \|dy\| ≤ 1,05 м, h 0,12–3,0 м; 0,35 м; 3 / 250 м | что считается «на пути» (габарит организаторов), зона предупреждения, до какой дальности оценивается коридор |
+| `gauge.edge_margin`, `edge_margin_per_100m` | 0, 0,15 м | боковой запас внутри края, требуемый для строгого решения, растёт с дальностью |
+| `gauge.no_rail_range` | 40 м | без ближней пары рельсов кластеры дальше предупредительные, а свободная дистанция ограничивается этим значением |
+| `gauge.reference`, `reference_range`, `reference_max_offset`, `reference_max_curvature` | 3, 60 м, 0,2 м, 2e-4 м⁻¹ | объединение габарита по рельсам и по оси датчика вблизи поезда (§3.6); 0 = только рельсы |
+| `track.rails_range`, `rails_spacing`, `rails_yaw_slabs` | 4–30 м, 1,59 м, 3 | поиск пары рельсов и курс по ней |
+| `track.walls_range`, `walls_band`, `walls_bin` | 6–160 м, 1,6–2,8 м, 4 м | кривизна по границам тоннеля |
+| `track.axis_valid_margin`, `axis_valid_straight_bonus` | 15 м, 50 м | доверенная ось за последним интервалом границы |
+| `track.axis_one_side_range`, `axis_disagree_range`, `axis_sides_max_disagreement` | 120 м, 60 м, 6,7e-4 м⁻¹ | доверенная дальность при одной границе или при расходящихся границах |
+| `track.axis_max_yaw_rate`, `axis_max_curvature_rate` | 0,003 рад, 1e-4 м⁻¹ за период | как быстро может поворачиваться коридор; 0 = без ограничения |
+| `track.floor_valid_margin`, `floor_verify_tolerance`, `floor_verify_band` | 20 м, 0,5 м, \|dy\| 1,6–3,5 м | как далеко за подгонкой полотна доверяют опорной высоте |
+| `track.floor_shadow_height`, `floor_shadow_range`, `floor_shadow_max_hold` | 1,0 м, 30 м, 20 кадров | полотно и рельсы перед большим ближним объектом |
+| `cluster.eps`, `range_scale`, `voxel`, `min_samples` | 0,35 м, 40 м, 5 см, 3 | зернистость кластеров в зависимости от дальности |
+| `cluster.min_points`, `min_points_far`, `far_range`, `gauge_min_points` | 5, 3, 100 м, 3 | чувствительность на дальности против шума |
+| `cluster.max_extent`, `oversize_split_max_length`, `oversize_split_max_distance` | 8 м, 3 м, 30 м | слишком большие кластеры; объект, касающийся длинной краевой линии |
+| `cluster.wall_keep_gauge_voxels`, `wall_keep_distance` | 10, 20 м | высокий боковой кластер с реальной массой в габарите вблизи поезда сохраняется |
+| `cluster.hardware_*`, `thin_*`, `wall_*`, `linear_*`; `column_*`, `elevated_*`, `floating_*`, `edge_*`, `wall_face_*`, `signature_min_lateral`, `retro_intensity` | таблицы в §3.3; retro 0 (выключено) | удаление инфраструктуры (`hardware` также скрывает объекты ниже 35 см на шпалах) и сигнатуры (только предупреждение; 0 выключает правило) |
+| `cluster.floating_long_min_length` / `_min_bottom`; `floating_free_max_size` / `_max_dy` / `_max_top` | 3,0 м / 1,6 м; 0,5 м / 1,2 м / 2,5 м | длинная конструкция над головой у оси считается `floating` только выше 1,6 м; компактный кластер, свободно висящий внутри габарита, — никогда |
+| `cluster.far_min_height`, `far_max_length`, `far_max_bottom`; `overhead_min_height` | 0,6 м, 3 м, 1,0 м; 3,0 м | что может вызвать тревогу между опорной высотой и дальностью оси; кластеры целиком выше 3 м предупредительные |
+| `cluster.hanging_enabled`, `hanging_max_distance`, `hanging_max_size`, `hanging_needs_rails` | true, 60 м, 0,5 м, true | тонкие объекты, свисающие в габарит (§3.3, пункт 8) |
+| `cluster.weak_min_points` | 4 | дальние слабые кластеры для приближающихся треков |
+| `lowobj.min_point_top`, `min_top`, `min_excess`, `eps`, `range_max` | 0,03 м, 0 м, 0,05 м, 0,2, 60 м | низкие объекты: каждый кандидат ≥ 3 см над головкой рельса (−1 = любой бугорок над полотном) |
+| `lowobj.max_length`, `min_width`, `max_width` | 1,5 м, 0,15 м, 2,2 м | размер низкого кластера |
+| `lowobj.straddle_min_top`, `straddle_min_width`, `straddle_max_length`, `straddle_band` | 0,10 м, 0,35 м, 0,8 м, 0,30 м | объект поперёк рельса, кластеризуемый целиком |
+| `lowobj.near_enabled`, `rail_start_within` | false, 4 м | центральный путь у полотна (выключен); геометрия рельсов около стоящего поезда — не низкое препятствие |
+| `tracking.confirm_hits`, `confirm_time_s`, `low_confirm_hits`, `conf_threshold` | 3, 0,5 с, 5, 0,6 | задержка против ложных тревог |
+| `tracking.hit_window`, `min_hit_fraction`, `zone_window`, `zone_min_fraction`, `column_hold` | 10, 0,6, 10, 0,6, 2 | устойчивость и голосование по зоне по истории трека |
+| `tracking.hold_misses`, `max_misses` | 1, 3 | сколько кадров сообщённое препятствие остаётся сообщённым без сопоставления; сколько кадров трек живёт |
+| `tracking.gate_base`, `gate_per_m`, `ego_speed_max`, `gate_along_only` | 1,5 м, 0,02, 25 м/с, true | строб сопоставления и его запас без одометрии |
+| `tracking.near_escalate_voxels`, `near_escalate_distance`, `near_escalate_hits` | 10, 35 м, 5 | ближняя эскалация (§3.5) |
+| `tracking.stop_keep_signature`, `stop_keep_thin`, `stop_keep_max_s`, `stop_keep_min_voxels` | true, 1, 10 с, 10 | удержание STOP (§3.5) |
+| `tracking.thin_far_min_distance`, `approach_hits`, `approach_min_speed`, `approach_max_residual` | 60 м, 5, 2 м/с, 0,5 м | дальние свидетельства для приближающихся треков |
+| `tracking.doubt_model`, `doubt_threshold`, `doubt_extra_hits`, `doubt_near`, `doubt_body_height` / `doubt_body_range` | `track_opinion.json`, 0,015, 10, 25 м, 1,0 м / 40 м | обученное мнение (§3.6); `""` = выключено |
+| `accumulation.enabled`, `n_frames`, `min_range`, `min_speed`, `estimate_speed` | true, 5, 40 м, 1 м/с, false | объединение только при заданной скорости; оценщик выключен |
+| `accumulation.min_points_scale`, `smear_max_length`, `smear_max_width` | 0,3, 2 м, 1 м | порог шума объединённых кластеров; защита от размазывания |
+| `calibration.enabled`, `frames` × `obs_spacing`, `provisional_min_deg`, `apply_min_deg` | true, 20 × 10 кадров, 2,5°, 0,75° | автокалибровка крепления; `sensor.roll_deg/pitch_deg/yaw_deg` фиксируют известное крепление |
+| `calibration.min_yaw_deg`, `max_tilt_deg`, `max_frames`, `reseed_keep_max_deg`, `drift_warn_deg` / `drift_window`; `tracking.reseed_hold` | 3°, 15°, 400, 1°, 1,5° / 10 проверок; 5 | пределы, повторная инициализация, монитор дрейфа; сколько кадров STOP удерживается при изменении |
+| `health.clear_cap`, `clear_cap_lost`, `clear_cap_thin`, `clear_cap_persist` | true, true, true, 4 | ограничения свободной дистанции (§4b) |
+| `health.min_points`, `min_visibility`, `min_lock_rate`, `latency_budget_ms`, `latency_affects_decision` | 20 000, 60 м, 0,3, 100 мс, false | пороги исправности; они никогда не меняют обнаружение |
 
-## 6. Limitations of the sealed 27.09 detector
+## 6. Ограничения опечатанного детектора 27.09
 
-Every rule and the opinion's negatives were tuned on the six organizer recordings, the 20-minute
-ride and the organizers' test objects (set O) and checked on the same data; `doubleT_obstacle` and
-set O were labelled with the team's own tools ([`EVALUATION.md`](EVALUATION.md) §1). Figures are
-from the judgement of 28.09 ([`SCORECARD.md`](SCORECARD.md)); the node's view:
-[`ARCHITECTURE.md`](ARCHITECTURE.md#limitations-of-the-sealed-2709-detector-verified-2809).
+Каждое правило и отрицательные примеры мнения настраивались на шести записях организаторов,
+20-минутной поездке и тестовых объектах организаторов (набор O) и проверялись на тех же данных;
+`doubleT_obstacle` и набор O размечены собственными инструментами команды
+([`EVALUATION.md`](EVALUATION.md) §1). Цифры взяты из независимой оценки 28.09
+([`SCORECARD.md`](SCORECARD.md)); описание со стороны ноды:
+[`ARCHITECTURE.md`](ARCHITECTURE.md#ограничения-опечатанного-детектора-2709-проверено-2809).
 
-**Detection and range**
+**Обнаружение и дальность**
 
-* **A confirmed STOP drops for one frame when its object is missed twice in a row**
-  (`hold_misses` = 1). On `doubleT_obstacle` the object across the rail forms no low cluster in
-  frames 110–111, 116–117 and 196–197: GO at frame 111, CAUTION at 117 and 197 (STOP on 190 of 201
-  frames offline; `clear_distance` stays capped at the lost track's 56.2 m). `hold_misses` 2
-  restores those frames but failed the gate (more false alarms on the ride and the empty
-  recordings) and was rejected. A consumer should not act on a single-frame GO.
-* **Range.** A real person pasted into the five other tunnels gives a sustained STOP at 60 m in 11
-  of 15 windows, 80 m 8, 100 m 6, 130 m 2, 160 m 1, 200 m 0. The misses are `CAUTION`, not silence:
-  `beyond_axis` where the trusted axis range is short (platforms, double-track sections; 45 m for a
-  whole platform window), or a merge with trackside structure into a `column`. Without a rail lock
-  anything beyond 40 m is advisory (§3.2).
-* **Small objects are confirmed late.** Set O's 0.3 m cubes STOP from 48–56 m (at 60–115 m they
-  return 2–4 points a frame, below the 5-voxel minimum); a 10 cm face is one ring high beyond
-  ~20–25 m. The 5 cm hanging object STOPs from 30 m: beyond ~50 m none of its returns is inside the
-  envelope, the hanging stage looks to 60 m only and not without a rail lock. Beyond the height
-  reference only clusters ≥ 0.6 m tall alarm (§3.3c).
-* **Edge objects and the envelope reference.** Set O's edge cube and edge 2 m box STOP from 35 m and
-  29 m. Beyond 60 m, on curves and without a rail lock the envelope is measured from the rails only,
-  while the organizers place objects from the sensor axis; which reference the hidden check uses is
-  open ([`QUESTIONS.md`](QUESTIONS.md) Q1).
-* **The learned opinion delays a doubtful far STOP** by up to 10 processed frames over a track's
-  life (beyond 25 m, not a body ≥ 1 m tall within 40 m): ~1 s at 10 Hz, ~2 s at 5 Hz. Its positives
-  are synthetic; a real object unlike them can use the whole budget.
+* **Подтверждённый STOP пропадает на один кадр, когда его объект пропущен дважды подряд**
+  (`hold_misses` = 1). На `doubleT_obstacle` объект поперёк рельса не образует низкого кластера в
+  кадрах 110–111, 116–117 и 196–197: GO на кадре 111, CAUTION на 117 и 197 (STOP на 190 из 201
+  кадра офлайн; `clear_distance` остаётся ограниченной 56,2 м потерянного трека). `hold_misses` 2
+  восстанавливает эти кадры, но не прошёл шлюз (больше ложных тревог на поездке и пустых записях) и
+  был отклонён. Потребителю не следует действовать по одиночному GO.
+* **Дальность.** Реальный человек, вставленный в пять остальных тоннелей, даёт устойчивый STOP на
+  60 м в 11 из 15 окон, на 80 м — в 8, на 100 м — в 6, на 130 м — в 2, на 160 м — в 1, на 200 м —
+  в 0. Промахи — это `CAUTION`, а не молчание: `beyond_axis` там, где доверенная дальность оси коротка
+  (платформы, двухпутные участки; 45 м для целого окна платформы), или слияние с конструкцией у пути
+  в `column`. Без захвата рельсов всё дальше 40 м — предупредительное (§3.2).
+* **Мелкие объекты подтверждаются поздно.** Кубы 0,3 м из набора O дают STOP с 48–56 м (на 60–115 м
+  они дают 2–4 точки на кадр, меньше минимума в 5 вокселей); грань 10 см дальше ~20–25 м — одно
+  кольцо (ring) по высоте. Висящий объект 5 см даёт STOP с 30 м: дальше ~50 м ни одно из его
+  отражений не оказывается внутри габарита, этап висящих объектов смотрит только до 60 м и не
+  работает без захвата рельсов. За опорной высотой тревогу вызывают только кластеры высотой
+  ≥ 0,6 м (§3.3c).
+* **Краевые объекты и опорная ось габарита.** Краевой куб и краевая 2-метровая коробка из набора O
+  дают STOP с 35 м и 29 м. Организаторы отсчитывают габарит от головки рельсов, рельсы могут идти под
+  любым углом к лидару, а их синтетические объекты расставлены приблизительно, и на это при проверке
+  делается поправка (ответ 29.09, [`organizers/answers.md`](organizers/answers.md) §9). В пределах
+  60 м на прямом пути габарит детектора — объединение габарита по рельсам и габарита от оси датчика
+  (не более чем на 0,2 м шире, нигде не уже): объект до 0,2 м снаружи габарита по рельсам там может
+  получить STOP; дальше, в кривых и без захвата рельсов — только габарит по рельсам.
+* **Обученное мнение задерживает сомнительный дальний STOP** до 10 обработанных кадров за жизнь
+  трека (дальше 25 м, но не фигура высотой ≥ 1 м в пределах 40 м): ~1 с при 10 Гц, ~2 с при 5 Гц.
+  Его положительные примеры синтетические; реальный объект, не похожий на них, может израсходовать
+  весь запас.
 
-**By design**
+**По замыслу**
 
-* A compact object on the bed between the rails is not reported (the organizers' policy, §3.3b);
-  one across a rail is, while the bed is seen (≤ ~50–60 m) and when ≥ 0.35 m across; one lying
-  *along* a rail looks like the trackside devices there. A person lying between the rails rises only
-  0.01–0.09 m above the rail head in these tunnels: found from ~42 m at 0.10 m, from ~17 m at 0.05 m,
-  not below 3 cm (synthetic, log §2d). Objects under 35 cm and 0.4 m wide on the sleepers are
-  removed as hardware.
-* Tall narrow things (> 2.2 m, < 1 m wide: a ladder on the track) are `column` and never escalate;
-  a long object near the axis with its bottom above 1.6 m (the shape of overhead ducts) is
-  `floating`. A person, a train, a trolley or a crate keep their zone.
-* A sensor mounted on its side is not recognised; the calibration needs a rail pair within 400
-  frames and treats the tilt as a whole-run constant (the cant of a curve is not separated from the
-  mount roll); a 5 Hz input or a re-mounted rig raise the false events slightly (log §1g, §1i).
-* No semantics: a parked train, a trolley or a worker on the track are all obstacles, as a safety
-  function should report them.
+* Компактный объект на полотне между рельсами не регистрируется (политика организаторов, §3.3b);
+  объект поперёк рельса — регистрируется, пока видно полотно (≤ ~50–60 м) и когда его поперечный
+  размер ≥ 0,35 м; объект, лежащий *вдоль* рельса, похож на расположенные там устройства у пути.
+  Человек, лежащий между рельсами, возвышается над головкой рельса в этих тоннелях всего на
+  0,01–0,09 м: находится с ~42 м при 0,10 м, с ~17 м при 0,05 м, не ниже 3 см (синтетика,
+  журнал §2d). Объекты ниже 35 см и шириной до 0,4 м на шпалах удаляются как оборудование.
+* Высокие узкие предметы (> 2,2 м, шириной < 1 м: лестница на пути) считаются `column` и никогда не
+  эскалируют; длинный объект у оси с нижней точкой выше 1,6 м (форма коробов над головой)
+  считается `floating`. Человек, поезд, тележка или ящик сохраняют свою зону.
+* Датчик, установленный набок, не распознаётся; калибровке нужна пара рельсов в течение 400 кадров,
+  и она считает наклон постоянным на весь проезд (возвышение рельса в кривой не отделяется от крена
+  крепления); вход 5 Гц или переустановленный датчик слегка повышают число ложных событий
+  (журнал §1g, §1i).
+* Никакой семантики: стоящий поезд, тележка или рабочий на пути — всё это препятствия, как и должна
+  сообщать о них функция безопасности.
 
-**False alarms and advisories**
+**Ложные тревоги и предупреждения**
 
-* **STOP on empty track**: 23 STOP frames (1.0 %) in 7 episodes on the five obstacle-free
-  recordings, 30 episodes on the 13 km ride (2.3 per km). Most are axis errors: at the platform end
-  of `squareT_platform_squareT_switch` (83 m) a platform boundary joined to the diverging hall end
-  bends the axis by ~0.8 m, at its switch (~147 m) a hall wall seen only to 72–92 m moves the far
-  corridor by 1.4–3.4 m; in general the wall curvature leaves 0.1–0.3 m of lateral uncertainty at
-  60–80 m, enough to put edge fixtures inside. Rules that removed some of them cost real objects
-  range or moved false alarms onto the ride and were not shipped (log §1h).
-* **`CAUTION` is frequent**: 49 % of the frames of the empty recordings (35–69 % per recording),
-  37 % of the ride (columns, the advisory band, beyond the trusted axis); an object demoted to it is
-  easy to overlook.
-* **`clear_distance` is an estimate**: it extends past an object inside the envelope in 300 of 605
-  set-O frames (68 of them GO); an object forming no cluster at the envelope does not cap it.
-* **Far and near geometry**: an obstacle far ahead can lengthen the bed fit beyond ~90 m and bend
-  the far corridor (edge fixtures beyond an injected object alarmed in a few ride frames while the
-  object was confirmed, log §2d); a large near object's shadow is handled only within 30 m, and an
-  object touching a long edge line beyond 30 m is dropped with it.
-* **Single-frame without a given speed** (§3.4); **CPU only**: with the native kernels a 360° frame
-  fits the 100 ms period on 4 cores, the numpy fallback does not
-  ([`ARCHITECTURE.md`](ARCHITECTURE.md) "Real-time budget").
+* **STOP на пустом пути**: 23 кадра STOP (1,0 %) в 7 эпизодах на пяти записях без препятствий,
+  30 эпизодов на 13-километровой поездке (2,3 на км). Большинство — ошибки оси: в конце платформы
+  `squareT_platform_squareT_switch` (83 м) граница платформы, соединённая с расходящимся торцом
+  зала, изгибает ось примерно на 0,8 м, у стрелки этой записи (~147 м) стена зала, видимая лишь до
+  72–92 м, смещает дальний коридор на 1,4–3,4 м; в целом кривизна по стенам оставляет 0,1–0,3 м
+  боковой неопределённости на 60–80 м, чего достаточно, чтобы поместить краевое оборудование внутрь.
+  Правила, которые устраняли часть из них, стоили реальным объектам дальности или переносили ложные
+  тревоги на поездку и не были внедрены (журнал §1h).
+* **`CAUTION` частый**: 49 % кадров пустых записей (35–69 % по записям), 37 % поездки (колонны,
+  зона предупреждения, за пределами доверенной оси); пониженный до него объект легко пропустить.
+* **`clear_distance` — оценка**: она уходит за объект внутри габарита в 300 из 605 кадров набора O
+  (68 из них — GO); объект, не образующий кластера у габарита, её не ограничивает.
+* **Дальняя и ближняя геометрия**: далёкое препятствие впереди может удлинить подгонку полотна
+  дальше ~90 м и изогнуть дальний коридор (краевое оборудование за вписанным объектом вызывало
+  тревогу в нескольких кадрах поездки, пока объект был подтверждён, журнал §2d); тень большого
+  ближнего объекта обрабатывается только в пределах 30 м, а объект, касающийся длинной краевой
+  линии дальше 30 м, отбрасывается вместе с ней.
+* **Однокадровость без заданной скорости** (§3.4); **только CPU**: с нативными ядрами кадр 360°
+  укладывается в период 100 мс на 4 ядрах, резервный путь на numpy — нет
+  ([`ARCHITECTURE.md`](ARCHITECTURE.md), «Бюджет реального времени»).
 
-**What the organizers' answers settle.** *Switches*: the switch state is not an input; the detector
-follows the track its model locks on, and glitches at switches do not count as a minus
-([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md) §5). *Mount*: the test
-recordings use the provided mounts (§2). *Bed*: a 30 × 30 × 10 cm object between the rails is not
-an obstacle ([`organizers/answers.md`](organizers/answers.md) §8).
+**Что решают ответы организаторов.** *Стрелки*: состояние стрелки не является входом; детектор
+следует за путём, на который захватывается его модель, а сбои на стрелках не засчитываются как
+минус ([`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md) §5). *Крепление*: в
+тестовых записях используются предоставленные крепления (§2). *Полотно*: объект 30 × 30 × 10 см
+между рельсами не является препятствием ([`organizers/answers.md`](organizers/answers.md) §8).

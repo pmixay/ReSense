@@ -123,6 +123,13 @@ def parse_pointcloud2(raw, make_header=_plain_header) -> SimpleNamespace:
                            data=data, is_dense=is_dense)
 
 
+def has_field(msg, name: str) -> bool:
+    """Whether the cloud declares the point field ``name``. Both decoders fill a missing ``ring``
+    with zeros (channel 0 for every point); the detector needs ``None`` there to tell an unknown
+    channel from a known single channel (``cluster.weak_min_rings``, ``tracking.far_min_ring_count``)."""
+    return any(getattr(f, "name", None) == name for f in (getattr(msg, "fields", None) or ()))
+
+
 def _xyz_leading(msg) -> bool:
     """x, y, z are native little-endian float32 at offsets 0, 4, 8: one 12-byte block per point."""
     if msg.is_bigendian or np.little_endian is False or int(msg.point_step) < 12:
@@ -164,18 +171,34 @@ def decode(msg, min_range: float, max_range: float):
 
 
 def packed(msg):
-    """``msg`` without row padding: an organized cloud (``height`` > 1) whose ``row_step`` is longer
-    than ``width * point_step`` gets its rows copied together (a new object, ``row_step`` set to
-    the packed length); anything else is returned as is. ``resense.pointcloud`` reads the payload
-    as ``width * height`` consecutive points, which is right only without padding."""
+    """Validate the declared row layout and remove organized-cloud padding before decoding.
+
+    The payload must contain exactly ``height * row_step`` bytes, including the final row's
+    padding. A missing or zero ``row_step`` retains the packed-stride fallback for generic
+    message objects. Complete unpadded and single-row messages are returned without a copy;
+    organized padded rows are copied together with ``row_step`` set to their packed length.
+    ``resense.pointcloud`` ignores row strides, so a malformed layout must fail here instead
+    of letting padding bytes masquerade as points in an otherwise long-enough payload.
+    """
     height, width, step = int(msg.height), int(msg.width), int(msg.point_step)
+    if min(height, width, step) < 0:
+        raise ValueError("PointCloud2 height, width and point_step must be nonnegative")
+    if height and width and not step:
+        raise ValueError("PointCloud2 point_step must be positive for a nonempty cloud")
     row = int(getattr(msg, "row_step", width * step) or width * step)
-    if height <= 1 or row <= width * step:
+    if row < width * step:
+        raise ValueError("PointCloud2 row_step is shorter than width * point_step")
+    try:
+        payload = memoryview(msg.data)
+    except TypeError:
+        payload = memoryview(bytes(msg.data))  # the reference decode also accepts a list of octets
+    if payload.nbytes != height * row:
+        raise ValueError(f"PointCloud2 data length {payload.nbytes} differs from height * row_step "
+                         f"({height * row})")
+    if height <= 1 or row == width * step:
         return msg
-    buf = np.frombuffer(memoryview(msg.data).cast("B"), np.uint8)
-    if buf.size < height * row:
-        return msg                   # truncated: let the decode report it
-    data = buf[:height * row].reshape(height, row)[:, :width * step].tobytes()
+    buf = np.frombuffer(payload.cast("B"), np.uint8)
+    data = buf.reshape(height, row)[:, :width * step].tobytes()
     return SimpleNamespace(header=msg.header, height=height, width=width, fields=msg.fields,
                            is_bigendian=msg.is_bigendian, point_step=step, row_step=width * step,
                            data=data, is_dense=getattr(msg, "is_dense", False))

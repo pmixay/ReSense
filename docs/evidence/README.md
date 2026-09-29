@@ -126,3 +126,13 @@ the repository.
 | the judges' own runs of 24.09 (bench under load, stress tests, `clear_distance` audit) | 24.09 | the archived captain board and log | their outputs (the judges' VM only) |
 | the late candidates of 25.09 (DBSCAN on cKDTree, forward crop, the first gate runs of two flags, `far_min_height` 1.0, the far-rail probe) | 25.09 | log §1f, §3, §7; ARCHITECTURE; ALGORITHM §3.3, §6 | per-frame dumps, A/B logs, gate JSONs; the two flags' figures recur in [`rules_decision_2026-09-25.json`](results/rules_decision_2026-09-25.json) |
 | the stock-Fast-DDS console mode and the bench kit against a mock `docker` | 25.09 | archived changelog | the mock harness; the real proof is CI and the VM runs |
+
+## Experimental branch acceptance, 28.09
+
+* [P3 integration](../P3_SCORE_SYNC_2026-09-28.md) records accepted branch changes and the scope of
+  each assessment.
+* [Health histogram evidence](cycle_2026-09-28/health_histogram/README.md) contains the full
+  native gate, parity comparison and runtime capture provenance. These runtime captures use
+  the earlier node and do not validate the subsequent node changes.
+* [Node startup A/B](node_startup_2026-09-29/README.md) is main branch evidence with startup
+  thinning at 0.2 s; the experimental branch keeps startup thinning disabled by default.

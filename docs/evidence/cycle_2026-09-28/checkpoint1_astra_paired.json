@@ -1,0 +1,104 @@
+{
+  "schema": "resense-same-reviewer-paired-assessment-v1",
+  "reviewer": "GPT-6 Astra",
+  "date": "2026-09-28",
+  "assessment_kind": "Review opinion, not test metric or organizer score",
+  "comparison": "Detector behavior under identical current evidence, common cycle tooling and the same internal rubric",
+  "baseline_identity": [
+    "4b6f344",
+    "f5db6d3"
+  ],
+  "candidate_identity": "ef1d8f50299d9ccbbf65fc4ad5519764615853f6",
+  "baseline_score": 66,
+  "candidate_score": 66,
+  "maximum": 100,
+  "within_review_delta": 0,
+  "weights_status": "Internal weights 25/15/10/15/10/10/10/5; organizers publish no numerical weights",
+  "criteria": [
+    {
+      "section": "8.1",
+      "name": "Detection performance",
+      "weight": 25,
+      "baseline": 17,
+      "candidate": 17,
+      "delta": 0
+    },
+    {
+      "section": "8.2",
+      "name": "Detection range",
+      "weight": 15,
+      "baseline": 6,
+      "candidate": 6,
+      "delta": 0
+    },
+    {
+      "section": "8.3",
+      "name": "Speed",
+      "weight": 10,
+      "baseline": 7,
+      "candidate": 7,
+      "delta": 0
+    },
+    {
+      "section": "8.4",
+      "name": "Generalization",
+      "weight": 15,
+      "baseline": 6,
+      "candidate": 6,
+      "delta": 0
+    },
+    {
+      "section": "8.5",
+      "name": "Technical development",
+      "weight": 10,
+      "baseline": 9,
+      "candidate": 9,
+      "delta": 0
+    },
+    {
+      "section": "8.6",
+      "name": "Ease of launch",
+      "weight": 10,
+      "baseline": 8,
+      "candidate": 8,
+      "delta": 0
+    },
+    {
+      "section": "8.7",
+      "name": "Team approach",
+      "weight": 10,
+      "baseline": 9,
+      "candidate": 9,
+      "delta": 0
+    },
+    {
+      "section": "8.8",
+      "name": "Pitch",
+      "weight": 5,
+      "baseline": 4,
+      "candidate": 4,
+      "delta": 0
+    }
+  ],
+  "rationale": {
+    "detection": "Candidate improves raw rail continuity from 123/126 to 126/126 after frame 75: three recovered frames, a 2.38 percentage-point increase for this measured subset. Person remains 61/61. This is a real narrow improvement; both remain 17/25 at this review’s whole-point resolution because coverage of real positives, detection range and false alarms are otherwise unchanged. Equal rubric scores do not mean identical detector performance.",
+    "history": "All 33 paired history captures are identical.",
+    "reserved": "Reserved synthetic comparison has no gain or regression; both have the same weak absolute outcomes, 14/32 sustained positives for float32 and 13/32 compact, zero negative STOP frames out of 64 per encoding.",
+    "runtime": "Both quiet full-speed local runs fail freshness and the 100 ms target. Candidate 198/201 statuses and decode-plus-detect p95 125 ms; baseline 166/201 and p95 137 ms. A single unrandomized pair does not establish speed improvement. These current limitations apply to both ratings.",
+    "tooling": "Cycle evaluator/provenance fixes, physical-label protocol, regression tooling, source freeze, packaging and ROS observer evidence are assessed consistently for both detector variants. They improve measurement and reproducibility but are not candidate detector gains. Candidate image has 841 passing tests and baseline/tooling CI passed; these are distinct validation artifacts, not a claim that identical suites ran on both. No baseline penalty is assigned solely because its historical commit predates common cycle tooling.",
+    "other_criteria": "No measured pairwise range, generalization, launch, pitch or resource improvement warrants a whole-point difference. The bounded implementation and negative gates support development integration while deployment remains provisional."
+  },
+  "prior_score_comparability": "The earlier reviewer’s 69/100 and this reviewer’s paired 66/66 use different reviewer judgments and evidence contexts. They cannot be directly subtracted to infer a three-point regression, and this pair does not replace or retroactively revise the earlier 69.",
+  "recommendation": "Integrate continuity change in development based on its measured narrow gain and no measured quality regression; retain the shared runtime acceptance gap.",
+  "evidence": [
+    "docs/evidence/cycle_2026-09-28/checkpoint1_astra.json",
+    "docs/evidence/cycle_2026-09-28/regression/baseline/gate.json",
+    "docs/evidence/cycle_2026-09-28/regression/candidate/gate.json",
+    "/home/likikikpa/ReSense-continuity/docs/evidence/cycle_2026-09-28/continuity/raw/summary.json",
+    "/home/likikikpa/ReSense-continuity/docs/evidence/cycle_2026-09-28/continuity/history",
+    "/home/likikikpa/ReSense-cycle-data/synthetic/candidate-reserved-v2.json",
+    "/home/likikikpa/ReSense-cycle-data/candidate_raw_node/quiet_positive/status.jsonl",
+    "/home/likikikpa/ReSense-cycle-data/baseline_raw_node/quiet_positive/status.jsonl"
+  ],
+  "procedure": "Same reviewer applies completed candidate rubric to original baseline under identical current evidence. No new tests, code changes or alteration of the completed independent review. Earlier 69 is acknowledged for reporting context, not used as a target."
+}

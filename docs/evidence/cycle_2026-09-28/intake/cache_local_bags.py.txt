@@ -1,0 +1,16 @@
+"""Rebuild the complete six-recording/set-O caches from the original local recordings."""
+import json
+from pathlib import Path
+from scripts.cache_frames import cache_bag
+
+out = []
+bags = sorted(Path('/data/for_hackathon').iterdir())
+bags += [Path('/data/fake-positive/cloud_with_fake_obj')]
+for bag in bags:
+    if not (bag / 'metadata.yaml').is_file():
+        continue
+    name, frames = cache_bag(str(bag), '/cycle/cache/' + bag.name,
+                             every=1, int16=True, stamps=True, zstd_level=3)
+    out.append({'name': name, 'frames': frames, 'source': str(bag)})
+    print(name, frames, flush=True)
+Path('/cycle/bags_intake.json').write_text(json.dumps(out, indent=2) + '\n')

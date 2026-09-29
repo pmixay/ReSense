@@ -1,0 +1,50 @@
+five obstacle-free recordings, offline on the raw bags (judge A):
+  doubleT_platform                       frames 345  alarm_frames 3  alarm_events 1  stop_episodes 1  advisory_frames 196
+  roundT_doubleT                         frames 252  alarm_frames 0  alarm_events 0  stop_episodes 0  advisory_frames 173
+  roundT_pressureGate_roundT             frames 268  alarm_frames 2  alarm_events 1  stop_episodes 1  advisory_frames 121
+  roundT_squareT_pressureGate_squareT    frames 545  alarm_frames 0  alarm_events 0  stop_episodes 0  advisory_frames 190
+  squareT_platform_squareT_switch        frames 877  alarm_frames 18  alarm_events 6  stop_episodes 5  advisory_frames 452
+  total                                  frames 2287  alarm_frames 23  alarm_events 8  stop_episodes 7  advisory_frames 1132
+doubleT_obstacle, offline on the raw bag: alarm frames 190, STOP episodes 4, first alarm frame 8, distance error max 0.24 m
+  object_on_rail: 125 of 185
+  person_crossing: 61 of 61
+  object_on_rail_from_frame_75: 123 of 126
+  not STOP from frame 75: [[111, 'no obstacle'], [117, 'no obstacle'], [197, 'no obstacle']]
+set_O_offline: inside STOP frames 414 of 801, objects with a STOP 8 of 8, outside false STOP frames 7, background alarm frames 0
+  big_center           STOP 208 of 213, first STOP 98.0 m, held from 98.7 m
+  small_center         STOP  32 of  79, first STOP 55.8 m, held from 60.8 m
+  small_on_rail        STOP  26 of  49, first STOP 48.0 m, held from 51.5 m
+  small_edge_inside    STOP  18 of  83, first STOP 35.0 m, held from 38.7 m
+  small_outside_near   (outside) false STOP frames 0, from None m
+  big_edge_inside      STOP   7 of 125, first STOP 18.3 m, held from 10.3 m
+  big_outside          (outside) false STOP frames 7, from 142.3 m
+  big_above            STOP  56 of 124, first STOP 111.4 m, held from 123.6 m
+  long_low_on_rails    STOP  52 of  86, first STOP 87.2 m, held from 95.9 m
+  thin_hanging         STOP  15 of  42, first STOP 30.1 m, held from 31.8 m
+set_O_node: inside STOP frames 416 of 801, objects with a STOP 8 of 8, outside false STOP frames 7, background alarm frames 0
+  big_center           STOP 209 of 213, first STOP 98.2 m, held from 98.7 m
+  small_center         STOP  32 of  79, first STOP 55.8 m, held from 60.8 m
+  small_on_rail        STOP  26 of  49, first STOP 48.0 m, held from 51.5 m
+  small_edge_inside    STOP  18 of  83, first STOP 35.0 m, held from 38.7 m
+  small_outside_near   (outside) false STOP frames 0, from None m
+  big_edge_inside      STOP   7 of 125, first STOP 18.3 m, held from 10.3 m
+  big_outside          (outside) false STOP frames 7, from 142.3 m
+  big_above            STOP  56 of 124, first STOP 111.4 m, held from 123.6 m
+  long_low_on_rails    STOP  53 of  86, first STOP 89.0 m, held from 97.7 m
+  thin_hanging         STOP  15 of  42, first STOP 30.1 m, held from 31.8 m
+ride segments (judge A, frame cache of new_data 46-48 / 68-70):
+  ride_46                                frames 153  alarm_frames 0  alarm_events 0  stop_episodes 0  advisory_frames 2
+  ride_68                                frames 153  alarm_frames 0  alarm_events 0  stop_episodes 0  advisory_frames 32
+node captures of doubleT_obstacle, decisions that are not STOP from frame 75 (bag message index):
+  node_input_2026-09-28/ab/base_obst_1_status.jsonl.gz: [[111, 'GO'], [117, 'CAUTION'], [197, 'CAUTION']] (201 frames processed)
+      labelled hits: object_on_rail 125 of 185, person_crossing 61 of 61, object_on_rail_from_frame_75 123 of 126
+  node_input_2026-09-28/ab/base_obst_2_status.jsonl.gz: [[111, 'GO'], [117, 'CAUTION'], [197, 'CAUTION']] (201 frames processed)
+      labelled hits: object_on_rail 125 of 185, person_crossing 61 of 61, object_on_rail_from_frame_75 123 of 126
+  node_input_2026-09-28/ab/new_obst_1_status.jsonl.gz: not every message processed: pass --bag to index it (191 frames processed)
+  node_input_2026-09-28/ab/new_obst_2_status.jsonl.gz: [[111, 'GO'], [117, 'CAUTION'], [197, 'CAUTION']] (201 frames processed)
+      labelled hits: object_on_rail 125 of 185, person_crossing 61 of 61, object_on_rail_from_frame_75 123 of 126
+  node_input_2026-09-28/cold_local/doubleT_obstacle_status.jsonl.gz: [[111, 'GO'], [117, 'CAUTION'], [197, 'CAUTION']] (201 frames processed)
+      labelled hits: object_on_rail 125 of 185, person_crossing 61 of 61, object_on_rail_from_frame_75 123 of 126
+  p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/doubleT_obstacle_status.jsonl.gz: [[111, 'GO'], [117, 'CAUTION'], [197, 'CAUTION']] (201 frames processed)
+      labelled hits: object_on_rail 125 of 185, person_crossing 58 of 61, object_on_rail_from_frame_75 123 of 126
+  p1_p2_supported_playback_2026-09-27/doubleT_obstacle_status.jsonl.gz: not every message processed: pass --bag to index it (199 frames processed)

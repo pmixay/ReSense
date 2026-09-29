@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Cold-disk startup check using the organizer's bag. A small rosbag2
+# Cold-disk startup and separate warm-cache full-rate checks using the organizers' bags. A small rosbag2
 # read-ahead queue avoids turning the 20 s recording into a burst while the cold 4.8 GB SQLite
 # file is preloaded; storage stalls remain real and the node still gets the original point clouds.
-# Requires Docker and runs on the working branch and main.
+# Requires Docker and runs on the score/P3 branches, retained working branches and main.
 # The two bags come from scripts/fetch_cold_bags.sh: DATASET_DIR=<dir> keeps them there (CI
 # restores that directory from its cache, job "docker") and reuses them while their sha256 still
 # match scripts/cold_bags.sha256, so that Google Drive is asked for the 3.7 GB archive only when
@@ -10,8 +10,8 @@
 set -euo pipefail
 
 case "${GITHUB_REF:-}" in
-  refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/claude/amazing-fermi-t67v8g|refs/heads/main) ;;
-  *) echo "skip: original-bag cold-disk test runs on the working branch and main"; exit 0 ;;
+  refs/heads/gpt-score-push-20260928|refs/heads/integration/p3-score-sync-20260928|refs/heads/experiment/cross-ring-sparse-evidence|refs/heads/testovaya-gpt|refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/claude/amazing-fermi-t67v8g|refs/heads/main) ;;
+  *) echo "skip: original-bag cold-disk test runs on the score/P3 branches, retained working branches and main"; exit 0 ;;
 esac
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -61,3 +61,20 @@ docker run --rm -v "$BAGS_DIR/for_hackathon":/data:ro -v "$OUT":/out "$IMAGE" \
   python3 /opt/resense/scripts/check_fast_input.py /data/doubleT_obstacle /data/roundT_doubleT \
   --json /out/fast_input.json | tee "$OUT/fast_input.txt"
 echo "PASS: fast input path identical on every frame of both original recordings" | tee -a "$OUT/result.txt"
+
+# Cold storage can slow the player while each received result looks current. Keep those cold
+# checks above and add separate full-rate acceptance after warming each bag's page cache.
+# Do not evict caches here: these results have their own folders and are explicitly warm.
+for warm_db in "$BAG"/*.db3; do cat "$warm_db" > /dev/null; done
+IMAGE="$IMAGE" SKIP_BUILD=1 OFFLINE=1 RATE=1.0 BAG_READ_AHEAD_QUEUE_SIZE=10 \
+  OUT="$OUT/warm_positive" scripts/dry_run.sh "$BAG" \
+  --expect-obstacle --distance 50:62 --min-frames 201 --max-p95-latency 100 \
+  --max-dropped 0 --min-playback-rate 0.9 | tee "$OUT/warm_positive.txt"
+echo "PASS: original doubleT_obstacle warm-cache full-rate dry run" | tee -a "$OUT/result.txt"
+
+for warm_db in "$CLEAR_BAG"/*.db3; do cat "$warm_db" > /dev/null; done
+IMAGE="$IMAGE" SKIP_BUILD=1 OFFLINE=1 RATE=1.0 BAG_READ_AHEAD_QUEUE_SIZE=10 \
+  OUT="$OUT/warm_clear" scripts/dry_run.sh "$CLEAR_BAG" \
+  --expect-clear --max-alarm-frames 0 --min-frames 252 --max-p95-latency 100 \
+  --max-dropped 0 --min-playback-rate 0.9 | tee "$OUT/warm_clear.txt"
+echo "PASS: original roundT_doubleT warm-cache full-rate dry run" | tee -a "$OUT/result.txt"

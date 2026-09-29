@@ -132,3 +132,10 @@ does not predetermine independent judges' scores.
 - [Loaded cold node log](../evidence/freeze_2026-09-26/cold_load_final/node.log.gz)
 - [Frozen organizer-object frame output](../evidence/freeze_2026-09-26/gate_frames/cloud_with_fake_obj.jsonl.gz)
 - [Current independent scorecard](../SCORECARD.md)
+
+## Later experimental branch work
+
+This document records the earlier freeze planning. The experimental branch
+[integration record](../P3_SCORE_SYNC_2026-09-28.md) and
+[health validation](../evidence/cycle_2026-09-28/health_histogram/README.md) track the accepted
+work of 28.09 and its remaining limits.

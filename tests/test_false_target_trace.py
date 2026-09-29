@@ -55,3 +55,29 @@ def test_selection_uses_piece_local_identity_and_bounded_context():
     assert events == {7: [0, 10, 29], 2: [10]}
     assert {0, 10, 29}.issubset(snapshots[7])
     assert all(0 <= i < 30 for indexes in snapshots.values() for i in indexes)
+
+
+def test_replay_reads_the_compressed_ride_cache(tmp_path, monkeypatch):
+    """The extended ride cache is written as .npy.zst (cache_extended_ride.py)."""
+    import gzip
+    import json
+    import sys
+    from pathlib import Path
+
+    import pytest
+    zstandard = pytest.importorskip("zstandard")
+    from scripts import trace_false_targets
+
+    fixture = Path(__file__).parent / "fixtures" / "synthetic_lidar_v1" / "frames" / "clear_tunnel" / "frame_000.npy"
+    cache, archives = tmp_path / "cache", tmp_path / "archives"
+    cache.mkdir()
+    archives.mkdir()
+    (cache / "new_data_1_0000.npy.zst").write_bytes(zstandard.ZstdCompressor().compress(fixture.read_bytes()))
+    with gzip.open(archives / "new_data_1.jsonl.gz", "wt") as fh:
+        fh.write(json.dumps({"frame_id": "new_data_1_0000", "stamp": 0.0, "detections": []}) + "\n")
+    monkeypatch.setattr(sys, "argv", ["trace", "--archives", str(archives), "--cache", str(cache),
+                                      "--out", str(tmp_path / "out"), "--expect-events", "0"])
+    with pytest.raises(SystemExit, match="complete frozen ride"):      # one frame, not the whole ride
+        trace_false_targets.main()
+    report = json.loads((tmp_path / "out" / "trace.json").read_text())
+    assert report["frames"] == 1 and report["detection_mismatch_frames"] == []

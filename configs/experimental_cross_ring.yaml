@@ -1,0 +1,10 @@
+resense:
+  # Opt-in LiDAR experiment: distinct current-frame channels inside the strict
+  # gauge support far sparse targets. Different rings are not independent sensors.
+  # Evaluate both ablations and this combined profile on empty and obstacle bags;
+  # protocol and limitations: docs/EXPERIMENT_CROSS_RING.md.
+  cluster:
+    weak_min_rings: 2
+    weak_min_points_with_rings: 3
+  tracking:
+    far_min_ring_count: 2

@@ -1,0 +1,822 @@
+{
+  "schema": "resense-history-stress-acceptance-v1",
+  "passed": true,
+  "histories": 33,
+  "failed_histories": [],
+  "expected_identities": {
+    "file": "history_identities.json",
+    "sha256": "5d50a42c2867414efa9c7e7efe2793dd733b6b057cf16c006b3d504ccc17e0cf"
+  },
+  "baseline": {
+    "file": "control.json",
+    "sha256": "2e97840d25210eba5cc98e2f329675f27e26eef233afe2f5ac52edaf2e34cc02",
+    "source_sha256": "f20dd9eff0d810483a3f9d015700c164bbd39f8e237feeee058c2826db49afc4",
+    "config_sha256": "8f112b81c8178ce3ec7e5b7aba5bbae42e86cffbcb40a9e67b2bde94e1869075"
+  },
+  "candidate": {
+    "file": "candidate.json",
+    "sha256": "d34ce54731f781ae4c88d57e9efef21c1cfeb7f7d455230fd4738c5912aaf244",
+    "source_sha256": "70faef901cb480b31f2f55ff1a28a2f4dc5c83c6bcda41371ee078eb79955a1c",
+    "config_sha256": "8f112b81c8178ce3ec7e5b7aba5bbae42e86cffbcb40a9e67b2bde94e1869075"
+  },
+  "rule": "Every history must have zero new false STOP frames and zero unmatched false STOP events; no aggregate cancellation.",
+  "event_correspondence": "One-to-one matching requires an overlapping input frame with distance within 0.5 m, lateral within 0.25 m, and the same kind.",
+  "rows": [
+    {
+      "source": "cache",
+      "bag": "doubleT_platform",
+      "history": "catchup",
+      "seed": 0,
+      "baseline_stop_frames": 7,
+      "candidate_stop_frames": 7,
+      "baseline_stop_events": 2,
+      "candidate_stop_events": 2,
+      "frames": 305,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 19,
+          "candidate_id": 19
+        },
+        {
+          "baseline_id": 124,
+          "candidate_id": 124
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "doubleT_platform",
+      "history": "dither5",
+      "seed": 0,
+      "baseline_stop_frames": 10,
+      "candidate_stop_frames": 10,
+      "baseline_stop_events": 4,
+      "candidate_stop_events": 4,
+      "frames": 345,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 34,
+          "candidate_id": 34
+        },
+        {
+          "baseline_id": 44,
+          "candidate_id": 44
+        },
+        {
+          "baseline_id": 161,
+          "candidate_id": 161
+        },
+        {
+          "baseline_id": 169,
+          "candidate_id": 169
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "doubleT_platform",
+      "history": "drop20",
+      "seed": 0,
+      "baseline_stop_frames": 5,
+      "candidate_stop_frames": 5,
+      "baseline_stop_events": 2,
+      "candidate_stop_events": 2,
+      "frames": 277,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 30,
+          "candidate_id": 30
+        },
+        {
+          "baseline_id": 33,
+          "candidate_id": 33
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "doubleT_platform",
+      "history": "drop40",
+      "seed": 0,
+      "baseline_stop_frames": 13,
+      "candidate_stop_frames": 13,
+      "baseline_stop_events": 5,
+      "candidate_stop_events": 5,
+      "frames": 226,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 3,
+          "candidate_id": 3
+        },
+        {
+          "baseline_id": 16,
+          "candidate_id": 16
+        },
+        {
+          "baseline_id": 30,
+          "candidate_id": 30
+        },
+        {
+          "baseline_id": 114,
+          "candidate_id": 114
+        },
+        {
+          "baseline_id": 131,
+          "candidate_id": 131
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "doubleT_platform",
+      "history": "every",
+      "seed": 0,
+      "baseline_stop_frames": 2,
+      "candidate_stop_frames": 2,
+      "baseline_stop_events": 3,
+      "candidate_stop_events": 3,
+      "frames": 345,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 46,
+          "candidate_id": 46
+        },
+        {
+          "baseline_id": 47,
+          "candidate_id": 47
+        },
+        {
+          "baseline_id": 49,
+          "candidate_id": 49
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "doubleT_platform",
+      "history": "offset",
+      "seed": 0,
+      "baseline_stop_frames": 1,
+      "candidate_stop_frames": 1,
+      "baseline_stop_events": 1,
+      "candidate_stop_events": 1,
+      "frames": 272,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 92,
+          "candidate_id": 92
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_doubleT",
+      "history": "catchup",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 212,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_doubleT",
+      "history": "dither5",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 252,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_doubleT",
+      "history": "drop20",
+      "seed": 0,
+      "baseline_stop_frames": 2,
+      "candidate_stop_frames": 2,
+      "baseline_stop_events": 1,
+      "candidate_stop_events": 1,
+      "frames": 201,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 39,
+          "candidate_id": 39
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_doubleT",
+      "history": "drop40",
+      "seed": 0,
+      "baseline_stop_frames": 2,
+      "candidate_stop_frames": 2,
+      "baseline_stop_events": 1,
+      "candidate_stop_events": 1,
+      "frames": 162,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 64,
+          "candidate_id": 64
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_doubleT",
+      "history": "every",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 252,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_doubleT",
+      "history": "offset",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 198,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_pressureGate_roundT",
+      "history": "catchup",
+      "seed": 0,
+      "baseline_stop_frames": 5,
+      "candidate_stop_frames": 5,
+      "baseline_stop_events": 1,
+      "candidate_stop_events": 1,
+      "frames": 228,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 48,
+          "candidate_id": 48
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_pressureGate_roundT",
+      "history": "dither5",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 268,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_pressureGate_roundT",
+      "history": "drop20",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 215,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_pressureGate_roundT",
+      "history": "drop40",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 173,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_pressureGate_roundT",
+      "history": "every",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 268,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_pressureGate_roundT",
+      "history": "offset",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 211,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "history": "catchup",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 505,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "history": "dither5",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 545,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "history": "drop20",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 440,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "history": "drop40",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 352,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "history": "every",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 545,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "history": "offset",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 429,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "squareT_platform_squareT_switch",
+      "history": "catchup",
+      "seed": 0,
+      "baseline_stop_frames": 24,
+      "candidate_stop_frames": 24,
+      "baseline_stop_events": 4,
+      "candidate_stop_events": 4,
+      "frames": 837,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 153,
+          "candidate_id": 153
+        },
+        {
+          "baseline_id": 281,
+          "candidate_id": 281
+        },
+        {
+          "baseline_id": 289,
+          "candidate_id": 289
+        },
+        {
+          "baseline_id": 301,
+          "candidate_id": 301
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "squareT_platform_squareT_switch",
+      "history": "dither5",
+      "seed": 0,
+      "baseline_stop_frames": 38,
+      "candidate_stop_frames": 38,
+      "baseline_stop_events": 7,
+      "candidate_stop_events": 7,
+      "frames": 877,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 158,
+          "candidate_id": 158
+        },
+        {
+          "baseline_id": 159,
+          "candidate_id": 159
+        },
+        {
+          "baseline_id": 218,
+          "candidate_id": 218
+        },
+        {
+          "baseline_id": 242,
+          "candidate_id": 242
+        },
+        {
+          "baseline_id": 259,
+          "candidate_id": 259
+        },
+        {
+          "baseline_id": 285,
+          "candidate_id": 285
+        },
+        {
+          "baseline_id": 294,
+          "candidate_id": 294
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "squareT_platform_squareT_switch",
+      "history": "drop20",
+      "seed": 0,
+      "baseline_stop_frames": 25,
+      "candidate_stop_frames": 25,
+      "baseline_stop_events": 7,
+      "candidate_stop_events": 7,
+      "frames": 704,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 127,
+          "candidate_id": 127
+        },
+        {
+          "baseline_id": 165,
+          "candidate_id": 165
+        },
+        {
+          "baseline_id": 182,
+          "candidate_id": 182
+        },
+        {
+          "baseline_id": 201,
+          "candidate_id": 201
+        },
+        {
+          "baseline_id": 210,
+          "candidate_id": 210
+        },
+        {
+          "baseline_id": 214,
+          "candidate_id": 214
+        },
+        {
+          "baseline_id": 258,
+          "candidate_id": 258
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "squareT_platform_squareT_switch",
+      "history": "drop40",
+      "seed": 0,
+      "baseline_stop_frames": 6,
+      "candidate_stop_frames": 6,
+      "baseline_stop_events": 3,
+      "candidate_stop_events": 3,
+      "frames": 547,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 70,
+          "candidate_id": 70
+        },
+        {
+          "baseline_id": 186,
+          "candidate_id": 186
+        },
+        {
+          "baseline_id": 214,
+          "candidate_id": 214
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "squareT_platform_squareT_switch",
+      "history": "every",
+      "seed": 0,
+      "baseline_stop_frames": 38,
+      "candidate_stop_frames": 38,
+      "baseline_stop_events": 8,
+      "candidate_stop_events": 8,
+      "frames": 877,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 158,
+          "candidate_id": 158
+        },
+        {
+          "baseline_id": 218,
+          "candidate_id": 218
+        },
+        {
+          "baseline_id": 242,
+          "candidate_id": 242
+        },
+        {
+          "baseline_id": 271,
+          "candidate_id": 271
+        },
+        {
+          "baseline_id": 287,
+          "candidate_id": 287
+        },
+        {
+          "baseline_id": 298,
+          "candidate_id": 298
+        },
+        {
+          "baseline_id": 304,
+          "candidate_id": 304
+        },
+        {
+          "baseline_id": 314,
+          "candidate_id": 314
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "cache",
+      "bag": "squareT_platform_squareT_switch",
+      "history": "offset",
+      "seed": 0,
+      "baseline_stop_frames": 26,
+      "candidate_stop_frames": 26,
+      "baseline_stop_events": 6,
+      "candidate_stop_events": 6,
+      "frames": 690,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [
+        {
+          "baseline_id": 52,
+          "candidate_id": 52
+        },
+        {
+          "baseline_id": 98,
+          "candidate_id": 98
+        },
+        {
+          "baseline_id": 161,
+          "candidate_id": 161
+        },
+        {
+          "baseline_id": 173,
+          "candidate_id": 173
+        },
+        {
+          "baseline_id": 182,
+          "candidate_id": 182
+        },
+        {
+          "baseline_id": 185,
+          "candidate_id": 185
+        }
+      ],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "capture",
+      "bag": "roundT_doubleT",
+      "history": "failed_clear",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 233,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "capture",
+      "bag": "roundT_doubleT",
+      "history": "old_pass",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 234,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    },
+    {
+      "source": "capture",
+      "bag": "roundT_doubleT",
+      "history": "old_stock",
+      "seed": 0,
+      "baseline_stop_frames": 0,
+      "candidate_stop_frames": 0,
+      "baseline_stop_events": 0,
+      "candidate_stop_events": 0,
+      "frames": 243,
+      "new_stop_frames": [],
+      "removed_stop_frames": [],
+      "matched_events": [],
+      "new_stop_events": [],
+      "detection_payload_changes": [],
+      "passed": true
+    }
+  ]
+}

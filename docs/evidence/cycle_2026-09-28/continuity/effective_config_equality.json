@@ -1,0 +1,5 @@
+{
+  "equal": true,
+  "effective_sha256": "6a6e5d859a0c1a86adce91edf1e8a46cd35b4bee21c5876406f1071cf2eaa46f",
+  "note": "Same candidate values before/after explicit proposed defaults"
+}

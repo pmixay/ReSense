@@ -1,0 +1,20 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  28.14MB
+Step 1/4 : FROM resense:p2-demo
+ ---> 206c0e1558fb
+Step 2/4 : COPY docs/evidence/cycle_2026-09-28/evaluation/protocol.json /context-check/protocol.json
+ ---> Using cache
+ ---> 08d7168edb6e
+Step 3/4 : COPY tests/fixtures/synthetic_lidar_v1 /context-check/fixture
+ ---> Using cache
+ ---> 8dbb4bd300ce
+Step 4/4 : RUN python3 -c 'import json,pathlib; p=pathlib.Path("/context-check/fixture"); m=json.loads((p/"manifest.json").read_text()); rows=[r for name in ("clear_tunnel","rail_straddle") for r in m["scenes"][name]["frames"]]; files=[p/r["points_file"] for r in rows]+[p/v["file"] for r in rows for v in r.get("object_masks",{}).values()]; assert files and all(f.is_file() for f in files); print("protocol and",len(files),"sequence fixture arrays included; total arrays",len(list(p.rglob("*.npy"))))'
+ ---> Running in 4df6de6b1bf6
+protocol and 30 sequence fixture arrays included; total arrays 42
+ ---> Removed intermediate container 4df6de6b1bf6
+ ---> 94ffb8a4dcdf
+Successfully built 94ffb8a4dcdf
+Successfully tagged resense-cycle-context-check:latest

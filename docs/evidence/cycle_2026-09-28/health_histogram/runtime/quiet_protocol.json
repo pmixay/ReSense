@@ -1,0 +1,38 @@
+{
+  "schema": "resense-health-quiet-runtime-protocol-v1",
+  "registered_utc": "2026-09-28T19:47:26.363597+00:00",
+  "order": [
+    "baseline_positive",
+    "candidate_positive",
+    "baseline_clear",
+    "candidate_clear"
+  ],
+  "rate": 1.0,
+  "offline": true,
+  "read_ahead_messages": 10,
+  "cache_policy": "Before each pair, read/hash original DB3 completely. Warm-disk comparison, not cold-disk or target-hardware acceptance.",
+  "quiet_policy": "No full gates, raw detector replays, builds or archive compression during ROS captures; allow 30 seconds after competing work to settle.",
+  "checker": "Same dry_run.sh/check_dry_run.py for both; host python shim uses declared resense-cycle-dev dependencies.",
+  "strict_min_frames": {
+    "positive": 201,
+    "clear": 252
+  },
+  "max_dropped": 0,
+  "max_p95_decode_detect_ms": 100,
+  "freshness": "Existing contract plus separate strict fresh-current per-target coverage; do not equate processed frame count with usable results.",
+  "script_hashes": {
+    "scripts/dry_run.sh": "4e0db85c9ad18d1a3dc5d805e9b9179e509d43361fb230186841bed6f10b0063",
+    "scripts/check_dry_run.py": "bc92db36b7f9a60202045fc2eec6644c3494ff555633482118b720bcc676f8a9"
+  },
+  "image_ids": {
+    "baseline": "sha256:7701293b14b8120e8910bb5d17e6cc9b09761bf7b207803b75c65a5ca461679f",
+    "candidate": "sha256:17419f2594f9957e9c1113878bb1c34ae2d27df37a73b5bda03f6826a696d703"
+  },
+  "only_production_difference": [
+    "resense/health.py"
+  ],
+  "installed_native_sha256": "dc549d0583f92c3acd93c455bf94bab4bbedae35a9580d82ad24786473661d5c",
+  "packages_equal": true,
+  "effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+  "limitations": "Single paired local sequences are scoped to this host and workload; failures retained. Timing_ms.total still excludes health, so full node metrics are used."
+}

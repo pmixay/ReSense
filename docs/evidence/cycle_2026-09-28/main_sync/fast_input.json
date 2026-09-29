@@ -1,0 +1,39 @@
+{
+ "results": [
+  {
+   "bag": "/data/doubleT_obstacle",
+   "frames": 201,
+   "points_per_frame": 921600,
+   "identical_frames": 201,
+   "mismatched_frames": [],
+   "rclpy_deserialize": {
+    "median_ms": 7.54,
+    "p95_ms": 29.33,
+    "max_ms": 103.94
+   },
+   "fastcloud_parse": {
+    "median_ms": 0.07,
+    "p95_ms": 0.12,
+    "max_ms": 6.66
+   }
+  },
+  {
+   "bag": "/data/roundT_doubleT",
+   "frames": 252,
+   "points_per_frame": 307200,
+   "identical_frames": 252,
+   "mismatched_frames": [],
+   "rclpy_deserialize": {
+    "median_ms": 2.38,
+    "p95_ms": 3.17,
+    "max_ms": 8.06
+   },
+   "fastcloud_parse": {
+    "median_ms": 0.07,
+    "p95_ms": 0.1,
+    "max_ms": 0.23
+   }
+  }
+ ],
+ "pass": true
+}

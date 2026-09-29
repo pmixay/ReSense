@@ -141,7 +141,8 @@ def create_manifest(root: Path, baseline_path: Path, evidence_path: Path) -> dic
         "validation": {"path": _relative(root, evidence_path), "sha256": sha256(evidence_path),
                        "measured_at": evidence.get("created"), "kind": "committed full regression gate"},
         "decisions": {"candidate_B": "not shipped: one extra STOP frame at 7.1 m; keep voxel bar 10",
-                      "axis_union": "off: organizer Q1 unanswered and shape-safety review remains open"},
+                      "axis_union": "off: the organizers measure the envelope from the rail heads (answer of 29.09); "
+                                    "gauge.reference 3 keeps the bounded union"},
         "change_policy": "Blocker fixes only; review the fix, repeat affected checks and the full gate, then replace this seal.",
         "limits": ["Verification checks source and evidence integrity; it does not replay recordings.",
                    "Node, launch, Docker and documentation have separate acceptance checks.",

@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""Registered two-prefix read-only ride observer."""
+import argparse
+import gzip
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+import numpy as np
+import yaml
+
+from trace import branch, cluster, sha, simple, snapshot
+
+
+def main():
+    ap=argparse.ArgumentParser()
+    ap.add_argument('--protocol',required=True)
+    ap.add_argument('--out',required=True)
+    args=ap.parse_args()
+    p=json.loads(Path(args.protocol).read_text())
+    variant=p['candidate']
+    root=Path(variant['source_root'])
+    os.chdir(root)
+    sys.path.insert(0,str(root))
+    from scripts import eval_real
+    from scripts.cache_io import cache_file_stem, cache_files, load_cache_stamps
+    from scripts.compare_health_gate import normalized
+    from scripts.detector_freeze import source_digest, source_hashes
+    from resense import _native
+    from resense.config import DetectorConfig
+    from resense.detector import Detector
+    from resense.tracking import Tracker
+    raw=yaml.safe_load(Path(variant['config']).read_text())
+    cfg_dict=raw.get('resense',raw)
+    cfg=DetectorConfig.from_dict(cfg_dict)
+    def identity():
+        x={'commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),
+           'status':subprocess.check_output(['git','status','--porcelain'],cwd=root,text=True),
+           'source_sha256':source_digest(source_hashes(root)),
+           'config_sha256':hashlib.sha256(json.dumps(cfg.to_dict(),sort_keys=True,separators=(',',':')).encode()).hexdigest(),
+           'config_file_sha256':sha(variant['config']),
+           'native_sha256':sha(root/'resense/_resense_native.so'),
+           'native_path':str(Path(_native.LIBRARY).resolve()),'native_enabled':_native.enabled(),
+           'protocol_sha256':sha(args.protocol),'observer_sha256':sha(__file__),
+           'snapshot_helper_sha256':sha(Path(__file__).with_name('trace.py')),
+           'helper_sha256':{k:sha(root/k) for k in p['helper_sha256']}}
+        for k in ('commit','source_sha256','config_sha256','config_file_sha256'):
+            assert x[k]==variant[k],(k,x[k],variant[k])
+        assert x['native_sha256']==p['native_sha256']
+        assert x['native_path']==str(root/'resense/_resense_native.so') and x['native_enabled']
+        assert x['status']==''
+        assert x['helper_sha256']==p['helper_sha256']
+        return x
+    out=Path(args.out);out.mkdir(exist_ok=False,parents=True)
+    pre=identity();(out/'identity_pre.json').write_text(json.dumps(pre,indent=2)+'\n')
+    allfiles=cache_files(p['cache']);assert len(allfiles)==11271
+    parts=np.array_split(np.array(allfiles),p['cache_chunks'])
+    stamps=load_cache_stamps(p['cache'])
+    jobs=[];manifests=[];expected=[]
+    for spec in p['prefixes']:
+        assert sha(spec['capture'])==spec['capture_sha256']
+        with gzip.open(spec['capture'],'rt') as f:
+            captured=[json.loads(line) for line in f]
+        part=list(parts[spec['chunk']]);assert len(part)==len(captured)
+        assert all(cache_file_stem(f)==r['frame_id'] and stamps[cache_file_stem(f)]==r['stamp'] and r['frame']==i for i,(f,r) in enumerate(zip(part,captured)))
+        files=part[:spec['last_frame_inclusive']+1]
+        jobs.append(('new_data',files,cfg_dict,str(out/f"new_data_{spec['chunk']}.jsonl"),stamps,None))
+        expected.append(captured[:len(files)])
+        manifests.append({'chunk':spec['chunk'],'capture_sha256':sha(spec['capture']),
+                          'files':[{'name':Path(f).name,'sha256':sha(f),'stamp':stamps[cache_file_stem(f)]} for f in files]})
+    (out/'input_manifest.json').write_text(json.dumps(manifests,indent=2)+'\n')
+    state={'frames':[],'current':None}
+    original_process=Detector.process;original_update=Tracker.update
+    original_note=Tracker._note;original_fresh=Tracker._fresh_stop_ok
+    def process(self,frame,*pos,**kw):
+        item={'frame':frame.frame_id,'stamp':frame.stamp,'events':[]};state['current']=item
+        result=original_process(self,frame,*pos,**kw)
+        item['detections']=[{k:simple(v) for k,v in vars(d).items()} for d in result.detections]
+        item['warnings']=[{k:simple(v) for k,v in vars(d).items()} for d in result.warnings]
+        item['tracks_final']=[snapshot(self.tracker,t) for t in self.tracker.tracks]
+        state['frames'].append(item)
+        return result
+    def update(self,*pos,**kw):
+        item=state['current']
+        item['tracks_before_update']=[snapshot(self,t) for t in self.tracks]
+        item['update_input']={'clusters':[cluster(c) for c in pos[0]],'thin':[cluster(c) for c in (kw.get('thin') or [])],
+                              'far_thin':[cluster(c) for c in (kw.get('far_thin') or [])],
+                              'low_height':[cluster(c) for c in (kw.get('low_height') or [])],
+                              'scalars':{k:simple(v) for k,v in kw.items() if k not in ('thin','far_thin','low_height')}}
+        return original_update(self,*pos,**kw)
+    def note(self,track,cl,is_far,zw,source='ordinary'):
+        value=original_note(self,track,cl,is_far,zw,source)
+        state['current']['events'].append({'type':'note','source_argument':source,
+                                           'normalized_source':'off_gauge' if source=='ordinary' and cl.zone!='gauge' else source,
+                                           'track':snapshot(self,track)})
+        return value
+    def fresh(self,track):
+        before=snapshot(self,track);value=original_fresh(self,track);reason=branch(self,track)
+        assert bool(value)==(reason in ('near_exception','eligible_pass'))
+        state['current']['events'].append({'type':'fresh','return':bool(value),'branch':reason,'track':before})
+        return value
+    Detector.process=process;Tracker.update=update;Tracker._note=note;Tracker._fresh_stop_ok=fresh
+    summary={'started_unix':time.time(),'pieces':[],'diagnosis_only':True}
+    for spec,job,reference in zip(p['prefixes'],jobs,expected):
+        state['frames']=[];print('START',spec['chunk'],len(job[1]),flush=True)
+        eval_real.run_piece(job)
+        observed=[json.loads(line) for line in Path(job[3]).read_text().splitlines()]
+        with gzip.open(out/f"new_data_{spec['chunk']}_trace.json.gz",'wt') as f:
+            json.dump(state['frames'],f,separators=(',',':'))
+        assert len(reference)==len(observed)
+        diff=[]
+        for i,(a,b) in enumerate(zip(reference,observed)):
+            na=normalized(a,cfg.to_dict()['health'],i);nb=normalized(b,cfg.to_dict()['health'],i)
+            if na!=nb:
+                diff.append({'frame':i,'expected':na,'observed':nb})
+        result={'chunk':spec['chunk'],'frames':len(observed),'full_non_timing_semantic_parity':not diff,'differences':diff}
+        summary['pieces'].append(result)
+        (out/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+        print('FINISH',spec['chunk'],'parity',not diff,flush=True)
+        assert not diff
+    post=identity();assert pre==post
+    (out/'identity_post.json').write_text(json.dumps(post,indent=2)+'\n')
+    summary.update(finished_unix=time.time(),identity_unchanged=True,passed_observer_parity=True)
+    (out/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+    print(json.dumps(summary),flush=True)
+
+
+if __name__=='__main__':
+    main()

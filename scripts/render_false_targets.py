@@ -26,9 +26,17 @@ def main():
     selected = []
     for number, key in enumerate(keys, 1):
         event = by_key[key]
-        choices = [r for r in event["timeline"] if r["alarm"] and not r["misses"] and "point_snapshot" in r]
+        choices = [r for r in event["timeline"] if r["alarm"] and not r["misses"]
+                   and r["cluster"]["n_points_idx"] and "point_snapshot" in r]
         if not choices:
-            raise ValueError(f"no actual matched alarm support for {key}")
+            # A STOP can persist for one frame on a missed track. In that case show the closest
+            # observed support before/after it and mark that the displayed frame is not a STOP.
+            matched = [r for r in event["timeline"] if not r["misses"]
+                       and r["cluster"]["n_points_idx"] and "point_snapshot" in r]
+            if not matched:
+                raise ValueError(f"no current support snapshot for {key}")
+            choices = [min(matched, key=lambda r: min(abs(r["piece_frame"] - f)
+                                                     for f in event["alarm_frame_indices"]))]
         selected.append((number, event, choices[len(choices) // 2]))
     for start in range(0, len(selected), 5):
         group = selected[start:start + 5]
@@ -43,7 +51,8 @@ def main():
             ax.scatter(p[:, 0], p[:, 1], c=h, s=1, cmap="viridis", vmin=-.5, vmax=4)
             ax.scatter(p[t, 0], p[t, 1], c="red", s=10)
             ax.set(xlabel="Physical X (m)", ylabel="Physical Y (m)",
-                   title=f"{number}. {event['key']} / frame {record['piece_frame']}")
+                   title=f"{number}. {event['key']} / frame {record['piece_frame']}"
+                         + (" (matched STOP)" if record["alarm"] else " (support near missed STOP)"))
             ax = axes[row, 1]
             close = np.abs(p[:, 0] - center[0]) < 3
             ax.scatter(dy[close], h[close], c="gray", s=2)

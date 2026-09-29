@@ -79,3 +79,9 @@ check, not a visual Foxglove import.
   runbook, not a completed rehearsal.
 * The public team cards in `build_deck.py` were changed after this rebuild (P1: submission; P2:
   pitch, deck, video): the committed PPTX / PDF show the old cards until P2's next rebuild.
+
+## Experimental branch evidence
+
+The P3 and health changes integrated on the experimental branch are documented in
+[the integration record](../docs/P3_SCORE_SYNC_2026-09-28.md). The independent 61/100 judgement
+quoted here remains specific to `464f5bc`; it is not a new score for the combined branch.

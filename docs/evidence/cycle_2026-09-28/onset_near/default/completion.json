@@ -1,0 +1,55 @@
+{
+  "exit_code": 1,
+  "source_config_native_baseline_unchanged": true,
+  "elapsed_s": 635.7443766593933,
+  "finished_unix": 1790625990.2166739,
+  "gate": {
+    "baseline": "/workspace/ReSense-onset/docs/evidence/cycle_2026-09-28/health_histogram/default/gate.json",
+    "baseline_commit": "ef71c9dc4f88147327dcb41ea79358dfc690ba77",
+    "baseline_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+    "allow": [],
+    "passed": false,
+    "worse_gated": [
+      "set_F_straight.person.first_detection_median_m",
+      "set_F_straight.trolley.first_detection_median_m"
+    ],
+    "missing_gated": [],
+    "worse_allowed": [],
+    "missing_allowed": [],
+    "better": [
+      "recordings.doubleT_platform.alarm_events",
+      "recordings.squareT_platform_squareT_switch.alarm_events",
+      "recordings.squareT_platform_squareT_switch.stop_episodes",
+      "ride.alarm_events",
+      "ride.stop_episodes",
+      "set_F_straight.trolley.false_detections"
+    ],
+    "same": 192,
+    "info_changed": [
+      "recordings.squareT_platform_squareT_switch.alarm_frames",
+      "five_empty.alarm_events",
+      "five_empty.stop_episodes",
+      "five_empty.alarm_frames",
+      "ride.alarm_frames",
+      "set_F_straight.person.recall_150-200",
+      "set_F_straight.box1.0.recall_100-150",
+      "set_F_straight.trolley.recall_100-150",
+      "latency_ms.doubleT_obstacle.mean",
+      "latency_ms.doubleT_obstacle.p95",
+      "latency_ms.doubleT_platform.mean",
+      "latency_ms.doubleT_platform.p95",
+      "latency_ms.roundT_doubleT.mean",
+      "latency_ms.roundT_doubleT.p95",
+      "latency_ms.roundT_pressureGate_roundT.mean",
+      "latency_ms.roundT_pressureGate_roundT.p95",
+      "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+      "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+      "latency_ms.squareT_platform_squareT_switch.mean",
+      "latency_ms.squareT_platform_squareT_switch.p95",
+      "latency_ms.cloud_with_fake_obj.mean",
+      "latency_ms.cloud_with_fake_obj.p95",
+      "latency_ms.new_data.mean",
+      "latency_ms.new_data.p95"
+    ]
+  }
+}

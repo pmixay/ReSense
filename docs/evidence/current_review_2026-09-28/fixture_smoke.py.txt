@@ -1,0 +1,42 @@
+from pathlib import Path
+import hashlib,json,platform
+import numpy as np
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import frame_from_compact
+from resense import _native
+
+root=Path('/work');fx=root/'tests/fixtures/synthetic_lidar_v1';manifest=json.loads((fx/'manifest.json').read_text());result={
+ 'schema':'resense-current-score-fixture-smoke-v1',
+ 'code_commit':'20e82297bbf859e7d63bee35044d6c8314f746c5',
+ 'fixture_manifest_sha256':hashlib.sha256((fx/'manifest.json').read_bytes()).hexdigest(),
+ 'config':'configs/default.yaml',
+ 'runtime':{'python':platform.python_version(),'native':_native.status()},
+ 'scope':'offline Detector on committed synthetic point arrays; detector reset between scenarios',
+ 'limitations':['Fully synthetic straight stationary tunnel; no real-scene transfer claim.','The 205-frame scenario cycles 12 source clouds.','Six far-object frames repeat a single scan to allow tracker warmup; this is not a range benchmark.','No ROS execution or timing claim; this review shares CPU with other work.','This is a review smoke run; no committed test consumer existed at reviewed HEAD.'],
+ 'scenarios':{}
+}
+def run(name,sequence,target=None):
+ cfg=DetectorConfig.from_yaml(str(root/'configs/default.yaml'));detector=Detector(cfg);rows=[]
+ for i,entry in enumerate(sequence):
+  arr=np.load(fx/entry['frame_ref'],allow_pickle=False)
+  if entry.get('drop_target_returns'):
+   mask=np.unpackbits(np.load(fx/entry['mask_ref'],allow_pickle=False),bitorder='little')[:arr.size].astype(bool)
+   arr=arr[~mask]
+  frame=frame_from_compact(arr,cfg.sensor,stamp=1000.0+i*0.1,frame_id='synthetic')
+  r=detector.process(frame).to_dict()
+  hit=bool(target and any(abs(d['distance']-target[0])<=2.5 and abs(d['lateral']-target[1])<=1 for d in r['detections']))
+  rows.append({'frame':i,'obstacle':r['obstacle'],'warning':r['warning'],'target_match':hit,'drop_target_returns':entry.get('drop_target_returns',False),'n_points':r['n_points'],'detections':r['detections'],'warnings':r['warnings']})
+ summary={'frames':len(rows),'alarm_frames':[r['frame'] for r in rows if r['obstacle']],'target_hit_frames':[r['frame'] for r in rows if r['target_match']],'warning_frames':[r['frame'] for r in rows if r['warning']],'rows':rows}
+ result['scenarios'][name]=summary
+ print(name,{k:v for k,v in summary.items() if k!='rows'},flush=True)
+rail=manifest['scenes']['rail_straddle']['frames']
+for gap in manifest['scenes']['rail_straddle']['sequence']['gap_variants']:
+ sequence=[{'frame_ref':r['points_file'],'mask_ref':r['object_masks']['1']['file'],'drop_target_returns':6<=i<6+gap} for i,r in enumerate(rail)]
+ run(f'rail_gap_{gap}',sequence,(24.,.8))
+run('long_dropout_replay',manifest['scenes']['long_dropout_replay']['frames'],(24.,.8))
+run('clear_tunnel',[{'frame_ref':r['points_file']} for r in manifest['scenes']['clear_tunnel']['frames']])
+run('single_frame_transient',manifest['scenes']['single_frame_transient']['frames'],(24.,.8))
+for row in manifest['scenes']['range_edge_survey']['cases']:
+ obstacle=row['obstacle'];run(row['case']+'_six_repeated_frames',[{'frame_ref':row['points_file']}]*6,(obstacle['nearest_face_distance_m'],obstacle['lateral_offset_from_track_m']))
+output=root/'out/current_score_2026-09-28/fixture_smoke.json';output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(result,indent=2)+'\n');print('wrote',output)
