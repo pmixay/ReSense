@@ -67,16 +67,25 @@ def texture_profiles(xyz: np.ndarray, track: TrackModel, dy_all: Optional[np.nda
     x0, x1 = X_RANGE
     nb = int(round((x1 - x0) / BIN))
     X = xyz[:, 0]
+    if dy_all is not None and h_all is not None:
+        # 29.09: the side band is selected on the frame arrays first (no copy of the cloud); the same
+        # points and the same float64 bin arithmetic as below, so the counts are identical
+        sel = np.flatnonzero((X > x0) & (X < x1) & (h_all > H_BAND[0]) & (h_all < H_BAND[1]))
+        dy = dy_all[sel]
+        ady = np.abs(dy)
+        keep = (ady > DY_BAND[0]) & (ady < DY_BAND[1])
+        sel, dy = sel[keep], dy[keep]
+        b = np.clip(((X[sel].astype(np.float64) - x0) / BIN).astype(int), 0, nb - 1)
+        left = np.bincount(b[dy > 0], minlength=nb).astype(np.float64)
+        right = np.bincount(b[dy < 0], minlength=nb).astype(np.float64)
+        return left, right
     sel = (X > x0) & (X < x1)
     P = xyz[sel]
     if P.shape[0] == 0:
         return np.zeros(nb), np.zeros(nb)
     Xs = P[:, 0].astype(np.float64)
-    if dy_all is not None and h_all is not None:
-        dy, h = dy_all[sel], h_all[sel]
-    else:
-        dy = P[:, 1] - track.center_y(Xs)
-        h = P[:, 2] - track.rail_z(Xs)
+    dy = P[:, 1] - track.center_y(Xs)
+    h = P[:, 2] - track.rail_z(Xs)
     ady = np.abs(dy)
     side = (h > H_BAND[0]) & (h < H_BAND[1]) & (ady > DY_BAND[0]) & (ady < DY_BAND[1])
     b = np.clip(((Xs - x0) / BIN).astype(int), 0, nb - 1)

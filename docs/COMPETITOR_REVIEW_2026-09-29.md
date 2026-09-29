@@ -1,38 +1,32 @@
 # Competitor review, 29.09: what other LCT 2026 case 5 repositories do better, and what survives a screen
 
 > **Purpose:** which techniques of the other public case 5 (metro obstacle detection) repositories are
-> better than ours, which of them are already in ReSense, which were screened against our saved
-> detector outputs and what the screen showed, and the one that was implemented (opt-in, default off) and
-> is waiting for a gate run.
+> better than ours, how each one fared on the organizers' recordings through the full regression gate, and
+> which three are now on by default (resealed at `ee7b920`).
 > **Audience:** team, jury · **Owner:** P1 (record), P3 (candidates) · **Language:** EN
-> **Last verified:** 2026-09-29: every figure below recomputed by `scripts/screen_competitor_rules.py`
-> (`docs/evidence/results/competitor_rule_screen_2026-09-29.json`, checked by a test); repository facts read
-> from the public clones of 29.09 · **Status:** dated record
+> **Last verified:** 2026-09-29 evening: §6 from the full regression gates in
+> [`evidence/cycle_2026-09-29/competitor_rules/`](evidence/cycle_2026-09-29/competitor_rules/gate_table.md)
+> (all organizer recordings, ride and set F included); §2 from `scripts/screen_competitor_rules.py`;
+> repository facts from the public clones of 29.09 · **Status:** dated record
 
 ## Summary
 
-* **Only one idea passed the filter and was implemented, and it is off by default.** Everything else was
-  either already in ReSense, harmful on our saved outputs, or not testable without the recordings (§2, §3).
-  The implemented one is far rail evidence from single ring crossings (§4). The detector is sealed
-  ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); a change needs the full gate on the recordings, an
-  independent safety review and a reseal, and none of that can be run without the data (90 GB for the ride
-  alone). So the change is opt-in: with the flags off the detector's output is bit-identical (same SHA-256 of
-  the per-frame results over five frames against `main`), and **`detector_freeze.py verify` fails on this
-  branch until the gate has been run and the seal renewed**, by design.
-* **The result is mostly negative, and that is the useful part.** Of the two rules of the closest
-  competitor (TunnelGuard) that our outputs can test, one is harmful (`gravity`: it would cut the
-  organizers' big box from 208 to 87 STOP frames) and one is a wash (`shape`: 2 of 7 false episodes on the
-  empty recordings, paid for with 10 m of range on the low board). Promoting advisory detections to STOP
-  by an uncertainty-aware gauge would turn 325 advisory detections on the empty recordings into STOPs, for 3
-  gains, all beyond 225 m. Each of these would have cost a gate run to learn.
-* **Most of what the competitors do is already in ReSense**, usually in a form with pre-registered gate
-  evidence behind it (§2).
-* **One family of ideas is worth a gated experiment: measure more of the track beyond ~30 m.** Our
-  near rail tracker stops at 30 m (`track.rails_range` 4-30 m) and our far-rail check is off and "never
-  fires" when measured ([`archive/EXPERIMENTS_log_2026-09.md`](archive/EXPERIMENTS_log_2026-09.md) §1f, §1h);
-  two other repositories extend the measured geometry by different, physically bounded means (§3, §4). Range and
-  generalization (7/15 each, [`SCORECARD.md`](SCORECARD.md)) lose points to the short trusted axis range (the
-  person misses at 60 m); the small-object range is a point-density limit this does not touch.
+* **Three rules from other teams are on by default and resealed** (§6): TunnelGuard's ego-motion veto and
+  shell attachment, and Tactical-Inventor's "clean run after a history of fixed infrastructure". Full gate
+  against the sealed 3eeb106 result: **PASS, 7 gated metrics better, none worse**. Ride false alarms
+  32 → **26** events and 31 → **28** STOP episodes; the five empty recordings 11 → 8 events and 13 → 12
+  episodes; set F false detections 12 → 6 (1 m box) and 3 → 0 (cable). Set O, the set F first-detection
+  distances and `doubleT_obstacle` are identical, and all 1 280 tests pass.
+* **The bigger wins were not safe, and were not shipped** (§6): `lowobj.min_top` 0.08 m (ride 22 events)
+  loses the organizers' 30 × 30 × 10 cm box on a rail at 10, 25, 45 and 50 m; the clean-run rule counting the
+  range demotions (ride 18 events) costs set F 22 m of first detection; counting the shape signatures stops a
+  hanging cable from stopping; the quadratic edge margin (13 → 2 episodes on the short recordings) costs set
+  O's small cube 8 m; the team's own `fresh_stop_evidence` costs set F's trolley 16 m; far ring rails (§4)
+  reach only 34-47 m on real rails and fail the gate.
+* **Most of what the competitors do was already in ReSense** (§2), and the four best-ranked public
+  repositories (`zeezz108/LCT2026_KIWI7200`, `Kurligin/metro-obstacle`, `ObemaM/...`, `EnglishMan47/...`)
+  are no longer reachable (HTTP 404 / private, no archive snapshot), so their ideas are known only from
+  search snippets.
 
 ## 1. Scope and limits
 
@@ -97,7 +91,7 @@ first frame of each recording only (`scripts/verify_system.py`, `SELECT data FRO
 "0 false stops on all six recordings" is six frames. `CatherineLensis/NanoMetro1550`: 5.5 % false frames and 95-140 ms
 on its own ride check.
 
-## 4. Far rail evidence from ring crossings: implemented, opt-in, needs its gate
+## 4. Far rail evidence from ring crossings: implemented, opt-in; fails on real data (§6)
 
 **What it does.** Our near rail tracker stops at 30 m; our disabled far check
 (`track._check_far_rails`, replaces a wall-derived curvature that contradicts the rails) looks for a rail
@@ -171,3 +165,47 @@ giving up the suppression. It is not certain to do either on real data; that is 
   evidence in seconds.
 * **Licences:** the ring-pair finder is written from the description of item 1, not copied; none of the seven
   repositories carries a licence.
+
+## 6. Real-data round (29.09 afternoon): every candidate through the full gate
+
+**Data and reproduction.** All organizer recordings were downloaded from the organizers' links (the six
+recordings' archive checksum matches `scripts/cold_bags.sha256`; the ride through
+`scripts/cache_extended_ride.py`, which verifies the published SHA-256) and cached as int16 + zstd
+(7 GB in all). The full gate of the unchanged sealed detector on these caches reproduces the sealed 3eeb106
+result exactly (0 gated metrics changed), so every row below is comparable with it. Each gate: all six
+recordings, set O, the 20-minute ride (8 chunks) and set F straight; ~5 min on 4 vCPU.
+
+| candidate (source) | gate | 5 empty: STOP ep. / events | ride: STOP ep. / events | what else changed |
+|---|---|---|---|---|
+| sealed baseline | — | 13 / 11 | 31 / 32 | — |
+| `lowobj.min_top` 0.08 (the team's fittings measurement) | PASS | 12 / 8 | 25 / 22 | **not shipped**: the organizers' 10 cm box on a rail is measured at 0.055-0.075 m at 10, 25, 45, 50 m (its top falls between rings) and is lost there; `tests/test_envelope.py` now covers 25 and 50 m |
+| `fresh_stop_evidence` (team candidate) | FAIL | 9 / 8 | 26 / 27 | set F trolley first detection 151 → 135 m |
+| clean run after any demotion (Tactical #2) | FAIL | 10 / 8 | 18 / 22 | set F person 151 → 129 m, 1 m box 124 → 99 m: far objects start life `beyond_axis` |
+| clean run, infrastructure reasons incl. shape signatures | PASS | 12 / 10 | 29 / 29 | but the ray-cast hanging-cable and scan-line keep tests fail: shape signatures excluded |
+| ego veto, first odometry | PASS | 13 / 11 | 31 / 32 | never fired: 142 odometry restarts in 300 ride frames |
+| ego veto, robust odometry (TunnelGuard) | PASS | 13 / 9 | 30 / 27 | — |
+| shell attachment (TunnelGuard) | PASS | 13 / 11 | 29 / 31 | — |
+| quadratic edge margin 0.3 m / (100 m)² (Tactical #4, calibrated on our axis) | FAIL (quick gate) | 2 / 4 | — | set O small cube first STOP 55.8 → 47.5 m, edge cube 35 → 27.6 m; the 83 m platform end needs 0.33 m of margin, the organizers' boxes at 98-111 m need little |
+| far ring rails (§4) | FAIL (quick gate) | 9 / 9 | — | a new low STOP at 3 m on `doubleT_platform` |
+| **shipped: clean run (column, overhead, retro, shell) + shell + ego veto** | **PASS** | **12 / 8** | **28 / 26** | set F false detections 12 → 6 (box1.0), 3 → 0 (cable); nothing worse |
+
+**Why the edge-margin idea still matters.** The axis error against the track measured by the anchored set F
+placements (p75) is 0.06 / 0.17 / 0.45 / 0.91 m at 60-80 / 80-100 / 100-120 / 120-140 m, far above the
+0.15 m-per-100 m margin beyond 80 m, and 7 of the 12 station episodes of `squareT_platform_squareT_switch`
+come from one platform-end structure at 83 m that a wall-bent axis puts 0.3 m inside the envelope. The rails
+there also curve (1.3-2.4e-4 1/m against 3e-4 from the walls), so neither the rails nor a range-only margin
+removes it without costing the organizers' far objects; a per-frame axis uncertainty is the open problem.
+
+**What is left on the ride (28 episodes).** Far structures at 80-155 m that do close in at the train's speed
+(static things near the envelope edge; the ego veto correctly keeps them), station structures 4-6 m long at
+|lateral| ≈ 1.2 m and 31-48 m, low clusters 11-12 cm above the rail head near a rail (indistinguishable by
+height from the real object on the rail), and one wide flat structure across the track at 96 m.
+
+**Seal.** `ee7b920` carries the three defaults; its full gate
+([`gate.json`](evidence/cycle_2026-09-29/competitor_rules/gate.json)) is the validation of the new manifest
+[`detector_freeze_2026-09-29_competitor_rules.json`](evidence/detector_freeze_2026-09-29_competitor_rules.json);
+`python3 scripts/detector_freeze.py verify` passes. Code: `resense/tracking.py` (`explained_run`,
+`_carried_along`, `_odometry`), `resense/detector.py` (`_shell`, the veto's speed estimate),
+`resense/gauge.py` (`edge_margin_at`, the opt-in quadratic term), with tests in `tests/test_explained_run.py`,
+`tests/test_ego_veto.py`, `tests/test_shell_attachment.py`, `tests/test_edge_margin_quadratic.py`.
+

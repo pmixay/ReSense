@@ -19,6 +19,26 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
 
+### Changed — three false-alarm rules from other teams on by default (29.09 evening; resealed at `ee7b920`)
+
+- `tracking.explained_run` 5, `explained_reasons` column, overhead, retro, shell (after Tactical-Inventor's
+  gauge processor): a track with fixed infrastructure in its recent history needs 5 consecutive clean
+  strict-gauge hits before a new STOP; a blocked track stays advisory, near escalation wins.
+- `cluster.shell_min_top` 2.3 m (after TunnelGuard): a far tall floor-standing cluster that continues into the
+  lining is infrastructure (reason `shell`).
+- `tracking.ego_veto_min_speed` 4 m/s (after TunnelGuard): while the train moves, a track whose distance does
+  not fall with the travel starts no STOP; the tracker integrates the LiDAR speed estimate (median of the
+  last five, coasting through three unknown frames).
+- Full regression gate on all organizer recordings (downloaded and cached this session; the sealed gate
+  reproduced exactly): PASS, 7 gated metrics better, none worse. Ride 32 / 31 → 26 / 28 events / STOP
+  episodes, five empty recordings 11 / 13 → 8 / 12, set F false detections box1.0 12 → 6, cable 3 → 0; set O,
+  set F first detections and `doubleT_obstacle` identical. 1 280 tests pass. New seal
+  `docs/evidence/detector_freeze_2026-09-29_competitor_rules.json`.
+- Measured and not shipped ([`docs/COMPETITOR_REVIEW_2026-09-29.md`](docs/COMPETITOR_REVIEW_2026-09-29.md) §6):
+  `lowobj.min_top` 0.08 (loses the organizers' 10 cm box on a rail at 10-50 m in the ray-cast tunnel; the test now
+  covers 25 and 50 m), the clean run with range demotions or shape signatures, `fresh_stop_evidence`, a quadratic
+  edge margin (`gauge.edge_margin_per_100m2`, opt-in), far ring rails.
+
 ### Added — far rail evidence from ring crossings, opt-in (29.09; seal to be renewed after the gate)
 
 - `scripts/screen_competitor_rules.py` applies a rule ported from another team's repository as a post-filter on the
@@ -38,8 +58,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   profile `configs/experimental_far_rail_rings.yaml`; `scripts/far_rail_yield.py` measures it on the recordings).
   With the flags off the per-frame output is bit-identical to `main`. On the ray-cast tunnel it corrects a wall bend
   that the rails contradict (axis 2.7 m off at 60 m -> 0.004 m) where the slab path does not; nothing is measured on
-  real data. `detector_freeze.py verify` fails until the full gate has been run and the seal renewed
-  (`docs/COMPETITOR_REVIEW_2026-09-29.md` section 4).
+  real data at the time; measured later the same day on the recordings, it fails the gate (stations reach 34-47 m on
+  real rails; `docs/COMPETITOR_REVIEW_2026-09-29.md` sections 4 and 6) and stays off.
 
 ### Changed — health sector counts (29.09; resealed)
 
