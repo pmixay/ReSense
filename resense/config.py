@@ -279,7 +279,10 @@ class ClusterConfig:
     # tunnel infrastructure when the lining continues right above it: >= shell_min_points returns of the whole frame
     # within shell_gap above its top, over its lateral extent +- shell_lateral and along-track extent +- (1 + 1 % of X),
     # the lowest within max(shell_touch_min, shell_touch_beams vertical beam spacings) of its top (reason 'shell')
-    shell_min_top: float = 2.3            # on since 29.09 (full gate: docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)
+    shell_min_top: float = 0.0            # off again since 29.09 night (safety review: a floor-standing object reaching above the
+    #   3.0 m envelope top - a cable hanging from the vault to the rails, a pole, a standing train - read its own top as the
+    #   lining and was demoted beyond shell_min_distance; the catalogue cable_low first STOP 73.8 -> 21.0 m at 22 m/s). 2.3 = on
+    #   (the 29.09 evening seal; docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)
     shell_max_bottom: float = 0.8
     shell_min_distance: float = 40.0
     shell_gap: float = 1.2
