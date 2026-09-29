@@ -3,16 +3,17 @@
 > **Purpose:** a code review of the experimental branch, what it improves over `main`, and what
 > was fixed in the review.
 > **Audience:** team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29: branch head `75ef4e2` plus the review commits below, against
-> `main` `692820b` (merge base `059948a`) · **Status:** dated record
+> **Last verified:** 2026-09-29: the branch at `c840c9a` merged with the review commits below, against
+> `main` `692820b` (merged into the branch) · **Status:** dated record
 
 ## Verdict
 
-**No big gain over `main`.** The branch brings one small, real detection gain, one speed gain
-whose size depends on the NumPy build, stricter input validation, and a large body of evaluation
-tooling and tests. By default its node starts up less fresh than `main`'s, by design. The
-opt-in change most likely to move the scores, fresh STOP-onset evidence, is off and not
-validated.
+**No big gain over `main`.** The branch brings one small, real detection gain, one narrow
+synthetic-range gain, one speed gain whose size depends on the NumPy build, a complete timing
+contract, stricter input validation, and a large body of evaluation tooling and tests. By default
+its node starts up less fresh than `main`'s, by design. The opt-in change most likely to move the
+scores, fresh STOP-onset evidence, is off and not validated. The latest independent score of the
+branch is 65 → 65.
 
 | | `main` `692820b` | this branch |
 |---|---|---|
@@ -20,15 +21,17 @@ validated.
 | person on `doubleT_obstacle` | 61 / 61 | 61 / 61 |
 | ride false events / five empty recordings | unchanged | unchanged (full gate: 144 enforced rows unchanged, 2 better) |
 | reserved synthetic (v2), sustained positives | — | 14 / 32 float32, 13 / 32 compact16, identical for baseline and candidate |
+| set F synthetic 0.5 m box (`tracking.thin_far_min_voxels` 4 → 3) | 1 / 6 approaches detected | 2 / 6; ride STOP frames unchanged (130), 5 of 11 271 ride frames GO → CAUTION |
 | detector processing p95, team laptop, NumPy 1.26 | 105.15 ms positive, 77.33 ms clear | 76.32 ms, 60.51 ms (one warm local pair) |
 | start-up freshness (node) | first 3 s of results 38–105 ms old | every start-up frame processed (`catchup_startup_step` 0), so results are older while it catches up |
-| tests (`pytest`) | 770 passed | 1 091 passed on the branch head, 1 100 after this review |
-| reviewer scores (same rubric, paired) | — | 66 → 66 (continuation), 67 → 67.5 (health: +0.5 speed) |
+| tests (`pytest`) | 770 passed | see "Verification" |
+| reviewer scores | — | 66 → 66 (continuation), 67 → 67.5 (health: +0.5 speed), 65 → 65 (thin-far threshold); the independent judgement of `main` `464f5bc` is 61 |
 
 Sources: [`P3_SCORE_SYNC_2026-09-28.md`](P3_SCORE_SYNC_2026-09-28.md),
 [`IMPROVEMENT_CYCLE_2026-09-28.md`](IMPROVEMENT_CYCLE_2026-09-28.md),
 [health histogram evidence](evidence/cycle_2026-09-28/health_histogram/README.md),
-[`SCORECARD.md`](SCORECARD.md) "Experimental development reviews". The detection figures come from
+[thin-far threshold A/B](evidence/cycle_2026-09-29/thin_far_threshold.md),
+[`SCORECARD.md`](SCORECARD.md) «Оценки экспериментальной ветки». The detection figures come from
 the team's recorded replays; this review re-ran the test suites and the micro-benchmarks, not the
 organizers' recordings (they are not in the review container).
 
@@ -53,6 +56,12 @@ organizers' recordings (they are not in the review container).
    processed, 185–189 STOP frames instead of 190). The branch trades start-up freshness for not
    skipping obstacle frames. `0.2` remains available as an explicit launch argument.
 5. `rosbags` ≥ 0.11 for the tools image, which could not read standalone `.db3` files.
+6. **Thin far scan-line floor** `tracking.thin_far_min_voxels` 4 → 3 (29.09, full gate: 202 metrics
+   unchanged, 2 set F better; no STOP change on the ride or the empty recordings).
+7. **Time-aware sparse clearance cap** (29.09): `clear_distance` takes the nearer of the frame-based
+   and a time-based persistent-evidence cap; no detection or decision changes.
+8. **Complete detector timing**: the health latency monitor receives the previous completed
+   `process` call, health included (it used to miss the health stage).
 
 **Opt-in, off by default** (no effect on default outputs): cross-ring sparse evidence
 (`cluster.weak_min_rings`, `tracking.far_min_ring_count`), fresh STOP-onset evidence
@@ -86,7 +95,7 @@ development cache.
 
 ### Not fixed: sealed detector files
 
-`resense/`, `configs/`, `native/` and the build inputs are sealed. A change needs the full gate on
+`resense/`, `configs/`, `native/` and the build inputs are sealed (seal `f20dd9e…` after the merge). A change needs the full gate on
 the organizers' data and a reviewed reseal ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)), which this
 review could not run.
 
@@ -131,8 +140,8 @@ def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
 windowed `np.unique(axis=0)` and per-metre percentiles. Measure its cost on a dense frame before
 enabling `experimental_low_local_support.yaml`.
 
-**S3 — `timing_ms.total` excludes the health stage** (known, pre-existing; see the health evidence
-README). The node's `detect_ms` measures the whole call.
+S3 of the first draft of this review (the latency monitor missed the health stage) was fixed on the
+branch meanwhile (item 8 above).
 
 ### Design notes (no change made)
 
@@ -151,7 +160,7 @@ unblocked, without a detector change, are in [`QUESTIONS.md`](QUESTIONS.md) and
 [`DECISIONS.md`](DECISIONS.md) rows 1 and 18:
 
 * `gauge.reference` 3 stays. It never narrows the rails' envelope and widens it by at most 0.2 m
-  within 60 m on straight track, at no measured false-alarm cost. Rails-only loses the real person
+  within 60 m on straight track, at no false-alarm cost in the matched screens of 27.09. Rails-only loses the real person
   61 → 58 frames and the edge cube 35.0 → 5.2 m.
 * `gauge.axis_union` stays off.
 * Q2's box stays an obstacle.
@@ -161,9 +170,11 @@ The public deck still lists the question as a next step, and P2 needs to rebuild
 
 ## Verification
 
-* `ruff check .` clean; `scripts/sync_params.sh --check` in sync; `scripts/detector_freeze.py
-  verify` PASS (34 files, source `c0273a13…`), unchanged by the review.
+* `ruff check` clean (with CI's exclusion of the archived timing runner); `scripts/sync_params.sh
+  --check` in sync; `scripts/detector_freeze.py verify` PASS (34 files, source `f20dd9e…`),
+  unchanged by the review.
 * `pytest` (Python 3.11, NumPy 2.4, Open3D, native kernels, `RESENSE_REQUIRE_SYNTHETIC=1`):
-  `main` 770 passed; branch head 1 091 passed; after the review 1 100 passed, 6 subtests. In each
-  run, one test is deselected because it needs the ride cache.
+  `main` 770 passed; branch head `75ef4e2` 1 091 passed, with the review fixes 1 100; after merging
+  the branch's later commits 1 215 passed, 6 subtests; 8 tests are deselected because their data
+  (the ride cache, local measurement captures) is not in the review container.
 * Not re-run here: the regression gate, history stress and ROS runtime on the organizers' data.

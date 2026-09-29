@@ -8,10 +8,12 @@ from __future__ import annotations
 
 import ast
 from contextlib import contextmanager
+from dataclasses import asdict
 from functools import lru_cache
 import inspect
 import sys
 import textwrap
+from unittest.mock import patch
 
 import numpy as np
 
@@ -73,6 +75,9 @@ class TraceDetector(Detector):
         self.trace = {"target_points": len(self.target_indices), "stages": {}, "blobs": []}
         result = super().process(frame, ego_speed)
         self.trace["track"] = result.track.to_dict()
+        self.trace["model_exact"] = {k: v.tolist() if isinstance(v, np.ndarray) else v
+                                     for k, v in asdict(result.track).items()}
+        self.trace["rotation"] = self.mount_rotation.tolist()
         self.trace["mount"] = result.mount
         self.trace["hanging_stage_called"] = bool(self.trace.get("hanging_stage_called", False))
         self.trace["clusters"] = [cluster_record(c, self.target_indices) for c in result.candidates
@@ -95,7 +100,34 @@ class TraceDetector(Detector):
                 "last_reason": track.last.reason, "last_kind": track.last.kind,
                 "target_points": int(np.isin(track.last.points_idx, self.target_indices).sum()),
                 "groups": self._group_counts(track.last.points_idx),
+                "evidence_hist": list(track.evidence_hist), "stop_earned": bool(track.stop_earned),
+                "fresh_blocked": bool(track.fresh_blocked), "thin_hist": list(track.thin_hist),
+                "approach": list(track.approach), "withheld": bool(track.withheld),
+                "hit_provenance": self.trace["tracker_hits"].get(track.id),
+                "fresh_gate_calls": self.trace["fresh_gate_calls"].get(track.id, []),
             })
+        return result
+
+    def _confirm(self, *args):
+        """Capture the actual input route and gate return, not an inferred source class."""
+        hits, checks = {}, {}
+        note, check = self.tracker._note, self.tracker._fresh_stop_ok
+
+        def observe_note(t, cl, far_thin, zw, source="ordinary"):
+            before = list(t.evidence_hist)
+            result = note(t, cl, far_thin, zw, source)
+            hits[t.id] = {"input_source": source, "far_thin_argument": bool(far_thin),
+                          "evidence_before": before, "evidence_after": list(t.evidence_hist)}
+            return result
+
+        def observe_check(t):
+            result = check(t)
+            checks.setdefault(t.id, []).append(bool(result))
+            return result
+
+        with patch.object(self.tracker, "_note", observe_note), patch.object(self.tracker, "_fresh_stop_ok", observe_check):
+            result = super()._confirm(*args)
+        self.trace["tracker_hits"], self.trace["fresh_gate_calls"] = hits, checks
         return result
 
     def _candidate_record(self, cand):

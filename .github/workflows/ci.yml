@@ -17,7 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: lint (ruff, pinned)
-        run: pipx run ruff==0.15.8 check --output-format github .
+        # This archived gate runner is preserved byte-for-byte; its imports follow sys.path setup.
+        run: pipx run ruff==0.15.8 check --output-format github --exclude docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py .
       - name: the ROS package's parameter copy is in sync with configs/default.yaml
         if: ${{ !cancelled() }}
         run: ./scripts/sync_params.sh --check
@@ -183,7 +184,7 @@ jobs:
         with:
           path: ~/resense-cold-bags
           key: ${{ steps.bags.outputs.cache-primary-key }}
-      - name: original bag cold-start regression — working branch and main
+      - name: original bag cold-start and warm full-rate regression — working branch and main
         if: ${{ steps.bags.outputs.cache-hit == 'true' || steps.fetch.outcome == 'success' }}
         timeout-minutes: 15
         run: IMAGE=resense:ci DATASET_DIR="$HOME/resense-cold-bags" NO_DOWNLOAD=1 scripts/p1_cold_bag_test.sh
@@ -193,7 +194,8 @@ jobs:
           msg="original-bag cold-start regression NOT RUN: the verified bags are not cached and Google Drive refused the download"
           echo "::warning::$msg"
           echo "$msg" >> "$GITHUB_STEP_SUMMARY"
-      - name: retain original-bag cold-start evidence
+      # The whole output folder includes cold captures, byte parity and the separate warm-rate gates.
+      - name: retain original-bag cold and warm evidence
         if: ${{ always() && env.FULL == 'true' }}
         uses: actions/upload-artifact@v7
         with:

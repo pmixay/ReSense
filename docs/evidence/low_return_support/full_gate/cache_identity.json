@@ -1,0 +1,60 @@
+{
+  "cache_root": "/cycle/cache",
+  "content_hash_limit": "The verified new_data source archive SHA-256 is recorded. Per-frame content hashes for the other cached recordings were not registered; their counts, compressed byte totals and timestamp manifest hashes are recorded here.",
+  "new_data": {
+    "compressed_cache_bytes": 5258708521,
+    "duration_s": 1199.8834691047668,
+    "first_frame": "new_data_0_0000",
+    "frames": 11271,
+    "intake_manifest_sha256": "e973932d1ebc4ca9b02d500146dadb57022abe6a80649e2978d83630e38f97d1",
+    "last_frame": "new_data_220_0050",
+    "metadata_sha256": "7118a5a216d252e8b0ec6e7174e255e06b590164285649f950d8839ebfa9d91f",
+    "source_archive_sha256": "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec",
+    "splits": 221
+  },
+  "other_recording_caches": [
+    {
+      "bytes": 613351285,
+      "frames": 1510,
+      "name": "cloud_with_fake_obj",
+      "stamp_manifest_sha256": "5d0f808e30aa92462491f8142a946f9123103ba47fd0e47f12ec0f18ef801961"
+    },
+    {
+      "bytes": 186507616,
+      "frames": 201,
+      "name": "doubleT_obstacle",
+      "stamp_manifest_sha256": "44b2cf56021ad12a5ad2f5d8905ecd7d4ff52eee757fe61702d7e5e8c822607b"
+    },
+    {
+      "bytes": 139167070,
+      "frames": 345,
+      "name": "doubleT_platform",
+      "stamp_manifest_sha256": "05bf5c650c11f6c73bc678a56fae4ae110f4195fd8ca2f0b81a1546b403c5fbd"
+    },
+    {
+      "bytes": 128978029,
+      "frames": 252,
+      "name": "roundT_doubleT",
+      "stamp_manifest_sha256": "f50c52644b841f31b6f0606a4d0dd7e9d21658c46e269f22872fae555b747a60"
+    },
+    {
+      "bytes": 130153721,
+      "frames": 268,
+      "name": "roundT_pressureGate_roundT",
+      "stamp_manifest_sha256": "91541a945b42544af6b5cf23a8943e20637d6e8e72c135a008466f5afe54ebb4"
+    },
+    {
+      "bytes": 249680178,
+      "frames": 545,
+      "name": "roundT_squareT_pressureGate_squareT",
+      "stamp_manifest_sha256": "dc1bd733ed74e929dde0968a08ae08f6a3c2a2f715c858656624afa50012d6a2"
+    },
+    {
+      "bytes": 368005582,
+      "frames": 877,
+      "name": "squareT_platform_squareT_switch",
+      "stamp_manifest_sha256": "48e53cbb3465e6d4a54399c38336ac3f1c6ce1149bb5a545c4c7ece7abee704c"
+    }
+  ],
+  "schema": "resense-low-ray-cache-identity-v1"
+}

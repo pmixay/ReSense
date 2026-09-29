@@ -1,0 +1,59 @@
+{
+  "schema": "resense-ci-artifact-members-v1",
+  "run_id": 36477865858,
+  "commit": "75ef4e20e587203a394e365c4fa601c822adb164",
+  "artifact_id": 10994617486,
+  "artifact_zip_bytes": 110281,
+  "artifact_zip_sha256": "eea14fc67a026af59d09b926692354ddad39824bf681280dd5d602d22a277c53",
+  "api_digest": "sha256:eea14fc67a026af59d09b926692354ddad39824bf681280dd5d602d22a277c53",
+  "members": [
+    {
+      "name": "dry_run/node.log",
+      "bytes": 5338,
+      "sha256": "55bb300cd407186e690207bf730dc0498c9e39df6a945c33360101015c65751a",
+      "extracted": "captures/dry_run/node.log"
+    },
+    {
+      "name": "dry_run/status.jsonl",
+      "bytes": 557998,
+      "sha256": "ca9364ecdc8290a6ea70f1f70e5699d5f04920bbeb1f9dea5ebaa8e990b1c3d3",
+      "extracted": "captures/dry_run/status.jsonl"
+    },
+    {
+      "name": "fast_input.json",
+      "bytes": 704,
+      "sha256": "e7b7714a13b0142efccf67d31743a306bb2fd45af18db2dfd57b57ba3fde7ceb",
+      "extracted": "captures/fast_input.json"
+    },
+    {
+      "name": "fast_input.txt",
+      "bytes": 416,
+      "sha256": "de1ec7d6e7be13b32fd5e535ad43ca1b9e8429cfef202119f4ea831b9ba83331",
+      "extracted": "captures/fast_input.txt"
+    },
+    {
+      "name": "provenance.txt",
+      "bytes": 899,
+      "sha256": "9b9e45b5ba0366c927f770acdb38fcac2dc1411f0a39df391d4aa84f46d6f2d8",
+      "extracted": "captures/provenance.txt"
+    },
+    {
+      "name": "result.txt",
+      "bytes": 173,
+      "sha256": "fc311bdfdb47ef63ee89c35b9d1ee86c30580ca3e0315df3e341472ab16e5e16",
+      "extracted": "captures/result.txt"
+    },
+    {
+      "name": "roundT_doubleT/node.log",
+      "bytes": 4804,
+      "sha256": "993538d938662c73efab5de3057f3253712bc2e6677b117029e434ae81ef93f3",
+      "extracted": "captures/roundT_doubleT/node.log"
+    },
+    {
+      "name": "roundT_doubleT/status.jsonl",
+      "bytes": 656238,
+      "sha256": "51caced133bac9daab4d9d8d1ed3169b048fa080da8b185369fa8230ad6d197c",
+      "extracted": "captures/roundT_doubleT/status.jsonl"
+    }
+  ]
+}

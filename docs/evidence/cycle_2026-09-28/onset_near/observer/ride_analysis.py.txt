@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""Compare stored real ride captures; no detector execution or inferred provenance."""
+import collections
+import gzip
+import hashlib
+import json
+from pathlib import Path
+
+repo=Path('/home/likikikpa/ReSense-onset')
+base=repo/'docs/evidence/cycle_2026-09-28'
+out=Path(__file__).resolve().parent
+report={'schema':'resense-onset-ride-saved-diagnosis-v1','limitation':'Public captures contain reported detections/warnings and reason only. They do not contain current cluster zone, match/miss state, provenance, fresh predicate branch or evidence history. A reported reason may describe a held last cluster. No branch is inferred.','pieces':[],'removed_events':[],'removed_stop_frames':[],'lost_detection_frames':[]}
+for piece in range(8):
+ name=f'new_data_{piece}'
+ paths=[base/x/'default/captures'/(name+'.jsonl.gz') for x in ['health_histogram','onset_near']]
+ rows=[]
+ for path in paths:
+  with gzip.open(path,'rt') as f:
+   rows.append([json.loads(line) for line in f])
+ a,b=rows
+ assert len(a)==len(b)
+ assert all((x['frame'],x['frame_id'],x['stamp'])==(y['frame'],y['frame_id'],y['stamp']) for x,y in zip(a,b))
+ def events(frames):
+  d=collections.defaultdict(list)
+  for x in frames:
+   for det in x['detections']:
+    d[det['id']].append((x['frame'],det))
+  return d
+ ea,eb=events(a),events(b)
+ summary={'recording':name,'input_sha256':[hashlib.sha256(p.read_bytes()).hexdigest() for p in paths],'frames':len(a),'baseline_stop_frames':sum(bool(x['detections']) for x in a),'candidate_stop_frames':sum(bool(x['detections']) for x in b),'baseline_events':len(ea),'candidate_events':len(eb),'removed_event_ids':sorted(set(ea)-set(eb))}
+ report['pieces'].append(summary)
+ for tid in sorted(set(ea)-set(eb)):
+  old=ea[tid]
+  first,last=old[0][0],old[-1][0]
+  report['removed_events'].append({'recording':name,'track_id':tid,'baseline_stop_detections':[{'frame':n,'detection':d} for n,d in old],'context':[{'frame':x['frame'],'frame_id':x['frame_id'],'baseline':[d for d in x['detections']+x['warnings'] if d['id']==tid],'candidate':[d for d in y['detections']+y['warnings'] if d['id']==tid]} for x,y in zip(a[max(0,first-4):last+5],b[max(0,first-4):last+5])]})
+ for x,y in zip(a,b):
+  lost=[d for d in x['detections'] if not any(n['id']==d['id'] for n in y['detections'])]
+  if lost:
+   r={'recording':name,'frame':x['frame'],'frame_id':x['frame_id'],'stamp':x['stamp'],'all_stop_removed':not y['detections'],'baseline_lost_detections':lost,'candidate_same_id_warnings':[d for d in y['warnings'] if d['id'] in {v['id'] for v in lost}],'candidate_other_detections':y['detections']}
+   report['lost_detection_frames'].append(r)
+   if not y['detections']:
+    report['removed_stop_frames'].append(r)
+report['summary']={'removed_events':len(report['removed_events']),'removed_stop_frames':len(report['removed_stop_frames']),'lost_detection_frames':len(report['lost_detection_frames']),'removed_stop_frame_reason_counts':dict(collections.Counter(d['reason'] for row in report['removed_stop_frames'] for d in row['baseline_lost_detections']))}
+(out/'ride_saved_analysis.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps(report['summary']))
+for e in report['removed_events']:
+ print('EVENT',e['recording'],e['track_id'],[(r['frame'],r['detection']['distance'],r['detection']['reason'],r['detection']['kind']) for r in e['baseline_stop_detections']])
+for e in report['removed_stop_frames']:
+ print('FRAME',e['recording'],e['frame'],e['frame_id'],'OLD',[(d['id'],d['distance'],d['reason'],d['kind']) for d in e['baseline_lost_detections']],'WARN',[(d['id'],d['distance'],d['reason'],d['kind']) for d in e['candidate_same_id_warnings']])

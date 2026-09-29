@@ -183,14 +183,16 @@ class Detector:
         self.ego = EgoSpeedEstimator(acc)
         self.calib = MountCalibrator(self.cfg.calibration, self.cfg.track)
         self.health = HealthMonitor(self.cfg.health)
-        self.evidence = PersistentEvidence(self.cfg.health, self.cfg.gauge)   # 27.09 (health.clear_cap_persist)
+        self.evidence = PersistentEvidence(self.cfg.health, self.cfg.gauge, self.cfg.tracking.frame_dt)  # health.clear_cap_persist
         self.bed = BedTemplate(self.cfg.lowobj)
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
         self._frame_ring: Optional[np.ndarray] = None
         self._low_height: List[Cluster] = []  # current straddle evidence just below its clean top-height threshold
         self._prev_stamp: Optional[float] = None
+        self._previous_latency_ms: Optional[float] = None  # previous completed process interval
         self._low_frame_dt: Optional[float] = None  # actual positive stamp interval for the bounded low continuation
+        self._evidence_dt: Optional[float] = None  # validated sensor interval for sparse clear-distance evidence
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
 
     @property
@@ -212,7 +214,9 @@ class Detector:
         self._frame_ring = None
         self._low_height = []
         self._prev_stamp = None
+        self._previous_latency_ms = None
         self._low_frame_dt = None
+        self._evidence_dt = None
         self._gaps.clear()
 
     def _frame_dt(self, stamp: float) -> float:
@@ -220,11 +224,14 @@ class Detector:
         frame period (cached frames and synthetic tests carry no usable stamp)."""
         dt = self.cfg.tracking.frame_dt
         self._low_frame_dt = dt
+        self._evidence_dt = None
         if self._prev_stamp is not None:
             gap = float(stamp) - self._prev_stamp
             # The existing motion/fit timing clips long gaps below. They still consume
             # their real elapsed time from the independent low-evidence continuation cap.
             self._low_frame_dt = gap if gap > 0 else dt
+            if np.isfinite(gap) and gap > 0:
+                self._evidence_dt = gap
             lo, hi = self.cfg.accumulation.stamp_dt_range
             if lo <= gap <= hi:
                 dt = gap
@@ -243,9 +250,16 @@ class Detector:
         The stages are the methods below, in this order (docs/ALGORITHM.md has the reasoning):
         ``_fit_track`` (1, 1b), ``_corridor`` (2), ``_low_stage`` (2b), ``_speed`` (3),
         ``_accumulate`` (4), ``_cluster`` (5), ``_hanging`` (5b, 25.09), ``_confirm`` (6).
+
+        ``timing_ms.total`` runs from entry through health and result construction;
+        ``stages`` preserves the old total through tracking. The final timing writes and
+        return are outside the measured interval. Health uses the previous completed
+        call's total (one frame of delay); the first call/reset has no latency sample.
         """
-        cfg = self.cfg
         t0 = time.perf_counter()
+        cfg = self.cfg
+        previous_latency_ms = self._previous_latency_ms
+        self._previous_latency_ms = None  # a failed call must not leave an older pending sample
         frame = _finite_only(frame)
         self._frame_ring = frame.ring
         dt = self._frame_dt(frame.stamp)
@@ -277,9 +291,12 @@ class Detector:
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
-                                    (t6 - t0) * 1e3, mount, gauge[0].distance if gauge else None, cap)
+                                    previous_latency_ms, mount, gauge[0].distance if gauge else None, cap)
+        health["latency_basis"] = "previous_complete_process"
+        health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
+        t7 = time.perf_counter()
 
-        return FrameResult(
+        result = FrameResult(
             stamp=frame.stamp, obstacle=len(gauge) > 0, warning=len(warn) > 0,
             nearest_distance=gauge[0].distance if gauge else None,
             detections=gauge, warnings=warn, candidates=clusters, track=self.track,
@@ -287,12 +304,16 @@ class Detector:
             timing_ms={"track": (t1 - t0) * 1e3, "corridor": (t2 - t1) * 1e3,
                        "egomotion": (t3 - t2) * 1e3, "accumulate": (t4 - t3) * 1e3,
                        "cluster": (t5 - t4) * 1e3, "tracking": (t6 - t5) * 1e3,
-                       "total": (t6 - t0) * 1e3},
+                       "stages": (t6 - t0) * 1e3, "health": (t7 - t6) * 1e3},
             ego_speed=speed, ego_speed_source=source, n_accumulated=n_acc,
             ego_speed_estimate=None if est is None else est.speed,
             ego_speed_confidence=0.0 if est is None else est.confidence,
             health=health, mount=mount, clear_distance=health["clear_distance"], xyz=xyz,
         )
+        t8 = time.perf_counter()
+        result.timing_ms["result"] = (t8 - t7) * 1e3
+        result.timing_ms["total"] = self._previous_latency_ms = (t8 - t0) * 1e3
+        return result
 
     def _periods(self) -> int:
         """Nominal frame periods (``tracking.frame_dt``) per processed frame at the current input
@@ -727,7 +748,7 @@ class Detector:
         if hcfg.clear_cap_thin and self.cfg.tracking.stop_keep_thin > 0:
             extra.append(thin_cap_distance(self._thin, self.cfg.cluster.gauge_min_points, trust, n_acc))
         if hcfg.clear_cap_persist > 0:
-            extra.append(self.evidence.update(cand.xyz[:, 0], cand.dy, cand.h, cand.low))
+            extra.append(self.evidence.update(cand.xyz[:, 0], cand.dy, cand.h, cand.low, self._evidence_dt))
         for d in extra:
             if d is not None:
                 best = d if best is None else min(best, d)

@@ -1,0 +1,75 @@
+{
+  "schema": "resense-low-ray-support-full-gate-v1",
+  "registered_before_full_gate": true,
+  "registered_at": "2026-09-29",
+  "evaluation_scope": "Development candidate; no release, score increase, or deployment claim until full gate and independent review pass.",
+  "candidate": {
+    "branch_base": "292397833edf9db649a24f16807b2cfb15812194",
+    "source_sha256": "f7e38ec6db7043d66d03b42b4440adc106b634235e7199b915421be627cef584",
+    "patch_sha256": "262ed8bbcebfbb354175964728d284fe7f15bc75464544ec25dacd5ee3a11f62",
+    "production_files": {
+      "resense/clustering.py": "f3a511f25a2a5a905a363229fd313b31b4b3c5b72a7c3b004f643401bd588661",
+      "resense/detector.py": "8f33624833c205fb572f9b1114d47abf9e66854d331b4837dfefbb08c00e73a0"
+    },
+    "focused_test": "tests/test_low_ray_support.py",
+    "focused_test_sha256": "d5ae6182fa8ace16c00bcb046894f5e521af44ec899f2303a49a1dd64bd58dbf",
+    "effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+    "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534"
+  },
+  "development_screen_previously_run": {
+    "baseline_source": "75ef4e20e587203a394e365c4fa601c822adb164",
+    "baseline_result": "../pilot/baseline_clean75.json",
+    "baseline_result_sha256": "4aac81c78aa29cbd836f8911908ca800ca1cadf7cb9a3b73022f5985abcefb9e",
+    "candidate_result": "../pilot/candidate_clean75.json",
+    "candidate_result_sha256": "1825c99fc63f4b6faca4fc517213c609e0f207749acacbdd0fc9955c0b4c9c8e",
+    "patch_archive_sha256": "262ed8bbcebfbb354175964728d284fe7f15bc75464544ec25dacd5ee3a11f62",
+    "config_sha256": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2",
+    "cache_manifest_sha256": "e152859cb93bfe4f7656e1a5008cb9e9560680823f95c9db598775c79fad7fdb",
+    "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+    "interpretation": "Synthetic exploratory screen only; it motivated this full gate and is not held-out or acceptance evidence."
+  },
+  "focused_tests_before_full_gate": {
+    "passed": 12,
+    "skipped": 0,
+    "elapsed_s": 0.45,
+    "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+    "interpretation": "Focused unit tests only; does not replace the full regression gate."
+  },
+  "full_gate_baseline": {
+    "path": "../../cycle_2026-09-28/complete_timing/default/gate.json",
+    "sha256": "357852e788471faf270e4c31f070e39e01123e0645e396ada512496c67df969e",
+    "measured_source": "bc75abe04a0b13c29c555a7baf64b4745603c02a",
+    "source_sha256": "506a1e05d19b99bae936188bfed4f2015a0cc0d562dec0251457022f6668f194",
+    "config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+    "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+    "cache": "/cycle/cache"
+  },
+  "command": [
+    "python3", "scripts/regression_gate.py",
+    "--cache", "/cycle/cache",
+    "--config", "configs/default.yaml",
+    "--jobs", "4",
+    "--chunks", "8",
+    "--baseline", "docs/evidence/cycle_2026-09-28/complete_timing/default/gate.json",
+    "--work", "/cycle/low_return_support/full_gate/work",
+    "--out", "/cycle/low_return_support/full_gate/gate.json"
+  ],
+  "gate_policy": {
+    "allow_patterns": [],
+    "config_overrides": [],
+    "require_all_six_recordings_set_o_full_ride_and_set_f": true,
+    "require_exit_code": 0,
+    "require_no_missing_metrics_or_waivers": true,
+    "require_no_gated_metric_worse": true
+  },
+  "positive_acceptance": [
+    "No labelled hit, STOP-frame, sustained range, or first-confirmation-distance regression in the six recordings, set O, or set F.",
+    "The first STOP and all previously matched STOP frames on the real positive recording must not be lost or delayed.",
+    "Inspect all candidate per-frame outputs against the accepted baseline captures and report every lost, gained, or moved detection; aggregate pass alone is insufficient."
+  ],
+  "false_alarm_acceptance": [
+    "No rise in STOP events or STOP episodes on any of the five empty recordings or the full ride.",
+    "No additional false STOP frame or background alarm on outside objects or set F; no new unexplained STOP track."
+  ],
+  "after_gate": "Archive the gate JSON, per-frame work outputs, exact source/config/native/cache identities, and comparison summary. Obtain an independent fresh-context review of code and every changed detection before considering default acceptance."
+}

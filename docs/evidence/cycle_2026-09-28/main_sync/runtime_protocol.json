@@ -1,0 +1,39 @@
+{
+  "schema": "resense-main-sync-runtime-protocol-v1",
+  "created_utc": "2026-09-28T20:14:33.167276+00:00",
+  "commit": "75ef4e20e587203a394e365c4fa601c822adb164",
+  "files": {
+    "docker/Dockerfile": "68dc3745940e5efa7b33380984309af94e4de6b46cff0b28a0d7b7e0c7d4d3c6",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "1b9c40581c39ddecbd81097dc4da4bb9e9a9fa09d1028f58cffc6c76171422f5",
+    "ros2_ws/src/resense_ros/resense_ros/fastcloud.py": "fe211c7c8bcf729a3d7d9e771aace2452a6326556b42f3a9bdfbfa16d97cb9f5",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "76f66989011ae51d13689f2232a4690ce616d3b2f541e9316820d81f1cc2bcaa",
+    "scripts/check_fast_input.py": "5f82b278b53e006fa63c168ca09b79313a4aae0b6fcbf7937ebcfcb185b6e852",
+    "scripts/check_dry_run.py": "5249ef4457a0337c3d7f11c7d071341dfc51eea14885568ba2fb6d513ac39590",
+    "scripts/dry_run.sh": "4e0db85c9ad18d1a3dc5d805e9b9179e509d43361fb230186841bed6f10b0063",
+    "configs/default.yaml": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2"
+  },
+  "sealed_source_sha256": "c0273a13a67ab4872dab00154caa75f6b30f50416775062c591fbb47906a0fa4",
+  "image": "resense:cycle-main-health",
+  "startup_step": 0.0,
+  "warmup": true,
+  "build": "standard docker/Dockerfile WITH_TOOLS=1",
+  "checks": [
+    "actual fastcloud.decode versus reference arrays for every201positive+252clear original frame",
+    "positive/clear fullrate warmdisk offline installedimage, exactheadercoverage201/252 and unchanged rawdetections",
+    "maxprocessingp95100ms, maxsourceunprocessed0, minplaybackrate0.9, existingfreshnesscontract",
+    "strictcurrent/freshtarget recall and first/sustained onset must be reported including all source labels",
+    "retain all failures and do not promote timing improvements from unpaired run"
+  ],
+  "conditions": {
+    "rate": 1.0,
+    "read_ahead": 10,
+    "offline": true,
+    "settle_seconds": 30,
+    "no_concurrent_heavy_jobs": true
+  },
+  "limits": [
+    "Node differs from completed health-only benchmark; no relabeling of earlier results.",
+    "One local warm run per recording; no cold or target hardware claim.",
+    "Startupstep0.2 remains optin pendingpairedrecallacceptance."
+  ]
+}

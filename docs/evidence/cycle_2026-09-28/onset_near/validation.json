@@ -1,0 +1,219 @@
+{
+  "schema": "resense-onset-near-validation-v1",
+  "status": "Rejected for promotion: full default gate failed two Set F first-detection metrics; no history replays run.",
+  "protocol_commit": "1cef43d",
+  "baseline_commit": "ef71c9dc4f88147327dcb41ea79358dfc690ba77",
+  "candidate": {
+    "commit": "8983ea24c61d4be36cc502784313605551e61417",
+    "source_sha256": "15f67a0b1739716ab2e5aa182198f95f6e68a8ad9c5d08f147b3c7106c7f2a82",
+    "source_files": {
+      "configs/default.yaml": "51c254571a646f746301be9881a5b618536e5b9557900be7f155346e322b6446",
+      "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+      "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+      "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
+      "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+      "pyproject.toml": "088fb6545b1c9f7339b838cef779d0a24a3e8e24a1322a0392b5aa383c40e12a",
+      "resense/__init__.py": "fdf04a88071df1d8300d46f75d34cc00bf9fa205369be99b3cfef6db514ae306",
+      "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+      "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+      "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+      "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+      "resense/clustering.py": "4aa07b00e1e23be3a70942a4411233b73c4b3a17ae1145a09cf279c76f124f1a",
+      "resense/config.py": "902f6ddffadc07b7739484a9e37c397914415a34cf98adc8db9712060ec90fa6",
+      "resense/detector.py": "28b6ea34f9d7487c11b5c6ae2ec0c77ad7bf1fd16ff30218a64c55bc666203e7",
+      "resense/egomotion.py": "fba03d8f0657358aeeaa24956dc2ea5f224673dbeb3452d0d6eb6f5ec515a25a",
+      "resense/evidence.py": "083ee20fc8bb9fc915575bd06fa04869a5f5ddc6ca9217a6145879d3c8249853",
+      "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+      "resense/gauge.py": "0cd3b119249dc34fd36397afa3f60a5aaa22c9917d94dea4ffe6c79e4e744f35",
+      "resense/health.py": "20a046d43cbacfb11929ba4437c1a4c2618263c9fb5b558a3b7a9471bcddea00",
+      "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+      "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+      "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+      "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+      "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+      "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+      "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+      "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+      "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+      "resense/track.py": "f9e405ea1f74555e55d2bf6de9664d8078349e42077dcab4a6c3a5a3284c56ba",
+      "resense/tracking.py": "94731cb9c86ee23f34d4f79e1054dca9b447659fad651093ca2bd76f699bfefd",
+      "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+      "ros2_ws/src/resense_ros/config/detector.yaml": "51c254571a646f746301be9881a5b618536e5b9557900be7f155346e322b6446",
+      "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+      "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+    },
+    "effective_config_sha256": "8c25720bfbe082bcef41a6f69ea5916068221dec79adc628e5b4543533f065b1",
+    "baseline_effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+    "config_file_sha256": "51c254571a646f746301be9881a5b618536e5b9557900be7f155346e322b6446",
+    "ros_config_file_sha256": "51c254571a646f746301be9881a5b618536e5b9557900be7f155346e322b6446",
+    "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+    "native_status": "native (_resense_native.so)",
+    "config_difference_from_health_gate": {
+      "tracking.fresh_stop_evidence": [
+        false,
+        true
+      ]
+    },
+    "original_experiment_unchanged": true
+  },
+  "focused_runs": [
+    {
+      "log": "focused_initial.txt",
+      "passed": 134,
+      "failed": 2,
+      "seconds": 80.54,
+      "scope": [
+        "fresh_stop_evidence",
+        "near_escalation",
+        "stop_keep",
+        "far_thin",
+        "track_opinion",
+        "calibration",
+        "startup"
+      ]
+    },
+    {
+      "log": "history_initial.txt",
+      "passed": 75,
+      "failed": 1,
+      "seconds": 60.05,
+      "scope": [
+        "low_height_keep",
+        "reseed_safety",
+        "history_robustness",
+        "raw_positive_configs"
+      ]
+    },
+    {
+      "log": "focused_final.txt",
+      "passed": 74,
+      "failed": 1,
+      "seconds": 43.19,
+      "scope": [
+        "fresh_stop_evidence",
+        "stop_keep",
+        "history_robustness",
+        "shipped_defaults",
+        "tracker/config/persistence selections from modules and algorithm"
+      ]
+    },
+    {
+      "log": "final_vote_check.txt",
+      "passed": 2,
+      "failed": 0,
+      "seconds": 1.29,
+      "scope": [
+        "test_tracker_zone_is_majority_of_recent_hits[False]",
+        "test_tracker_zone_is_majority_of_recent_hits[True]"
+      ]
+    }
+  ],
+  "failure_disposition": [
+    {
+      "test": "test_thin_continues_a_stop_track_only_in_mode_1",
+      "observed": "Optional mode 2 onset delayed from frame 4 to 5 after three thin matches. Fresh evidence needs two ordinary entries.",
+      "action": "Retained explicit old-policy comparison and asserted the new delay. No production retuning."
+    },
+    {
+      "test": "test_raycast_scan_line_frames_hold_with_mode_1",
+      "observed": "With near escalation and thin continuation disabled, fresh onset loses STOP frames 15-19 in addition to the old gap at 13-14.",
+      "action": "Retained old/new counterfactual assertions. Thin mode 1 under both onset policies and actual proposed defaults retain all STOP frames after frame 3. This does not establish universal recall parity."
+    },
+    {
+      "test": "test_start_clean_waits_for_a_hit_inside_the_gauge",
+      "observed": "New default suppresses initial STOP on a current advisory after four gauge hits.",
+      "action": "Explicitly isolated historical start_clean comparison; directly asserted proposed default matches its clean-onset outcome."
+    },
+    {
+      "test": "test_tracker_zone_is_majority_of_recent_hits",
+      "observed": "New default suppresses initial STOP on current advisory after two gauge hits; historical majority-zone expectation indexed a missing report.",
+      "action": "Asserted the unchanged rule-zone vote and explicit fresh-on/fresh-off report behavior; both parameter cases pass."
+    }
+  ],
+  "preparation_failures": [
+    "Initial protocol commit lacked a configured author; repeated with the existing repository author as command-local Git configuration.",
+    "Initial config comparison resolved old sparse YAML with the new dataclass, producing no difference and triggering an assertion. Correct comparison loads the exact frozen old config module and YAML; it verifies the sole effective change fresh_stop_evidence=false -> true.",
+    "First frozen-module preflight was rejected by Git dubious ownership in the container. Repeated using command-scoped safe.directory for this exact checkout; subsequent preflight passed.",
+    "Host archive preparation could not write a derived comparison into the container-owned raw output directory. Raw artifacts were left untouched; the derived comparison is stored beside archived copies in this checkout."
+  ],
+  "lint": {
+    "passed": true,
+    "log": "lint_final.txt"
+  },
+  "native": {
+    "build_log": "native_build.txt",
+    "sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+    "local_backend": true
+  },
+  "artifact_sha256": {
+    "focused_initial.txt": "3e55c4c05c0639b15914e9410ee26a7d7ad607b4bd62b38d59eae6d75f94cb86",
+    "history_initial.txt": "57425ff3f1b39510c9df42f06f464905841757f8380abf2967362dc69b2036d2",
+    "stop_keep_failure_probe.txt": "b0b4447179b315013a4f84a2ab71dd7263fe83fbb210283edf26b4a39a431f65",
+    "focused_final.txt": "1ab00800704a0c79ddb2d97cef256580f8691f46a4a38a7ebc9380c4798d1c9b",
+    "final_vote_check.txt": "4f7685d2031e7c99fe11f2eb415e2319f98244fb5bec841cee489303dfee88d2",
+    "lint_initial.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "lint_final.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "native_build.txt": "e0507f3eea29ae828336952d5f223854ce5f52c04678d8a8523fe5f73d1736f0"
+  },
+  "pending_gate_command": "docker exec -e PYTHONPATH=/workspace/ReSense-onset -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -e MKL_NUM_THREADS=1 -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0=/workspace/ReSense-onset -w /workspace/ReSense-onset resense-cycle-dev python3 scripts/regression_gate.py --cache /cycle/cache --jobs 4 --config /workspace/ReSense-onset/configs/default.yaml --work /cycle/onset_near/default/captures --out /cycle/onset_near/default/gate.json --baseline /cycle/health_histogram/default/gate.json",
+  "pending_gate_constraints": [
+    "Parent authorization and CPU scheduling required.",
+    "Require clean source, exact source/config/native hashes and completed health baseline.",
+    "No overrides, waivers or missing/worse enforced metrics.",
+    "Full history and monitoring comparisons remain required; shared-load timing is diagnostic only."
+  ],
+  "raw_positive": {
+    "exit_code": 0,
+    "summary": "raw_positive/summary.json",
+    "field_comparison": "raw_positive/field_comparison.json",
+    "source_unchanged": true,
+    "matched_frames_per_variant": 201,
+    "candidate_vs_health": {
+      "label_changes": [],
+      "new_unmatched_detections": [],
+      "lost_label_frames": 0,
+      "gained_label_frames": 0,
+      "passed_frame_recall_and_no_new_unmatched": true
+    },
+    "person_hits_visible": [
+      61,
+      61
+    ],
+    "rail_hits_visible": [
+      128,
+      185
+    ],
+    "rail_from_frame75_hits_visible": [
+      126,
+      126
+    ],
+    "unmatched_detections": 6,
+    "timing_acceptance": false,
+    "limitation": "Known development positive only; onset makes no coverage gain on this recording. Full gate and histories remain pending.",
+    "artifacts_sha256": {
+      "summary.json": "78122a3ef002a384c1a3b9212d837e4e52594db8931ea100aff7c419364b82dc",
+      "continuation_only.jsonl.gz": "9ade7487001b0aaf4fdd9ca544e4da7dd6e7bdd410d44dc800672eaa3f880d22",
+      "both_on.jsonl.gz": "28e201d08dea2c968727285a7d812f70a01ae6165def48ba0f588ce9d99d6a99",
+      "both_off.jsonl.gz": "039a5131039c32bcc99e624f1b10b47fc488187d75be5ece483633219978832a",
+      "field_comparison.json": "ba2a75d63eb755140a3702e7e5d9070d9a6e93b2ebe7b38ad86d74eafe573a04",
+      "onset_only.jsonl.gz": "a10c3a4eef9d6548e256e3eb945de6f70fcdd3bc5708d6c572477a72e7fd02df"
+    },
+    "non_timing_top_level_fields_identical": true,
+    "monitoring_fields_identical": true,
+    "health_level_differences": "One latency-only level difference at frame 200 (p95 100.1 vs 99.8 ms); decision levels and non-latency messages identical."
+  },
+  "full_gate": {
+    "path": "default/gate.json",
+    "completion": "default/completion.json",
+    "passed": false,
+    "worse_gated": [
+      "set_F_straight.person.first_detection_median_m",
+      "set_F_straight.trolley.first_detection_median_m"
+    ],
+    "source_config_native_baseline_unchanged": true,
+    "lost_SetF_hit_frames": 9,
+    "gained_SetF_hit_frames": 0,
+    "history_replays": "not run after gate failure",
+    "diagnosis": "default/setF_failure_analysis.json"
+  }
+}

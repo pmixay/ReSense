@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "branch": "fix/cloud-padding-validation-20260928",
+  "commit": "5807b4c5a1c77f4f62682cdc4c2ecab0224f743e",
+  "base": "4296db8b61301b04abcf357048f3c62bd7d6ff3e",
+  "files": [
+    "ros2_ws/src/resense_ros/resense_ros/fastcloud.py",
+    "tests/test_fastcloud.py"
+  ],
+  "observed_regression": {
+    "layout": {
+      "height": 2,
+      "width": 1,
+      "point_step": 26,
+      "row_step": 52
+    },
+    "actual_return_x_m": [
+      10.0,
+      20.0
+    ],
+    "padding_decodes_as_return_x_m": 99.0,
+    "truncated_payload_sizes_bytes": [
+      103,
+      78,
+      52
+    ],
+    "packed_size_bytes": 52,
+    "declared_size_bytes": 104,
+    "old_decoded_x_m": [
+      10.0,
+      99.0
+    ],
+    "before_fix_test": "Failed: DID NOT RAISE ValueError (1 failed, 44 deselected)",
+    "after_fix": "ValueError before point decoding for message object and parsed CDR"
+  },
+  "changed_semantics": [
+    "Reject negative height, width, point_step and row_step.",
+    "Reject zero point_step for nonempty clouds.",
+    "Reject row_step smaller than width * point_step.",
+    "Require data byte count exactly equal to height * effective row_step, including last-row padding; reject truncated and surplus bytes."
+  ],
+  "preserved_compatibility": [
+    "Absent or zero row_step uses width * point_step as before.",
+    "Valid unpadded and single-row messages preserve object identity.",
+    "Valid organized padding, empty dimensions, both endians and generic field layouts.",
+    "bytes, bytearray, memoryview, list of octets, array.array and NumPy payload storage."
+  ],
+  "commands": [
+    {
+      "command": "docker exec -e PYTHONPATH=/workspace/ReSense-transport -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -w /workspace/ReSense-transport resense-cycle-dev python3 -m pytest -q tests/test_fastcloud.py -k truncated_padded_rows --maxfail=1",
+      "stage": "before production fix",
+      "exit_code": 1,
+      "result": "1 failed, 44 deselected; expected regression failure"
+    },
+    {
+      "command": "docker exec -e PYTHONPATH=/workspace/ReSense-transport -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -w /workspace/ReSense-transport resense-cycle-dev python3 -m pytest -q tests/test_fastcloud.py",
+      "exit_code": 0,
+      "result": "50 passed in 0.21s"
+    },
+    {
+      "command": "docker exec -e PYTHONPATH=/workspace/ReSense-transport -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -w /workspace/ReSense-transport resense-cycle-dev python3 -m pytest -q tests/test_node.py -k 'bad_bytes_fall_back or processing_exception_is_fault or stop_survives_stale_input_errors'",
+      "exit_code": 0,
+      "result": "3 passed, 50 deselected in 1.72s"
+    },
+    {
+      "command": "docker exec -w /workspace/ReSense-transport resense-cycle-dev python3 -m ruff check ros2_ws/src/resense_ros/resense_ros/fastcloud.py tests/test_fastcloud.py",
+      "exit_code": 0,
+      "result": "All checks passed!"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "No whitespace errors"
+    }
+  ],
+  "limits": [
+    "Focused old-base checks only; parent will cherry-pick after main merge and run the combined fastcloud/node regression set.",
+    "No bag replay, heavy build, full detector gate, push or merge performed.",
+    "No detector core or sealed source changes; transport entry validation only.",
+    "Main-sync reviewer owns the specific new malformed-row node-error integration test."
+  ]
+}

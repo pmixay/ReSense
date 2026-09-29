@@ -1,10 +1,10 @@
-# Dataset Notes
+# Заметки о датасете
 
-> **Purpose:** the organizers' data: the recordings, their topics, formats and point budget, the
-> labels, the frame cache, the synthetic-obstacle injector and the intake recipe for a new bag.
-> **Audience:** team, jury · **Owner:** P4 · **Language:** EN, summary RU
-> **Last verified:** 2026-09-29: links, sizes and checksums, the label files' `_meta`, the named
-> scripts, functions and options · **Status:** current
+> **Назначение:** данные организаторов: записи, их топики, форматы и бюджет точек, разметка, кэш
+> кадров, инжектор синтетических препятствий и порядок приёма нового бэга.
+> **Аудитория:** команда, жюри · **Ответственный:** P4 · **Язык:** RU
+> **Проверено:** 2026-09-29: ссылки, размеры и контрольные суммы, `_meta` файлов разметки,
+> упомянутые скрипты, функции и опции · **Статус:** актуален
 
 **Кратко.** От организаторов у нас шесть записей по 20–88 с из разных участков метро (2 488
 кадров, 250 с), 20-минутная поездка `new_data` (11 271 кадр, ~13 км, семь остановок, препятствий
@@ -15,19 +15,20 @@
 Для других дальностей и объектов мы вставляем синтетические объекты в реальные пустые кадры
 (`resense inject`, трассировка лучей по сетке самого датчика).
 
-## Downloads and unpacking
+## Загрузка и распаковка
 
-The bags are never committed (`.gitignore`). The organizers' links:
+Бэги никогда не коммитятся (`.gitignore`). Ссылки организаторов:
 
-| archive | size, checksum | holds |
+| архив | размер, контрольная сумма | содержимое |
 |---|---|---|
-| [`Датасет.zip`](https://drive.google.com/file/d/1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu/view) (Google Drive) | 3.7 GB, sha256 in `scripts/cold_bags.sha256` | the six original bags: zip → `датасет.zip` → `archive/for_hackathon.zst` (zstd tar) → `for_hackathon/<bag>/` (`metadata.yaml` + `*_0.db3`, sqlite3), ~22 GB |
-| [`new_data.zst`](https://disk.yandex.ru/d/N8IUpAyd7jyvow) (Yandex Disk folder) | 17 078 961 996 bytes, sha256 `8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec` | the 20-minute ride: one rosbag2 bag `new_data/`, 221 split files `new_data_<N>.db3` (51 frames, 408 MB each) and `metadata.yaml`, 90.1 GB |
-| [`cloud_with_fake_obj.zst`](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ) (Yandex Disk) | 1 746 145 824 bytes, sha256 `d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9` | set O: `cloud_with_fake_obj/metadata.yaml` and one 7.42 GB `.db3` |
+| [`Датасет.zip`](https://drive.google.com/file/d/1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu/view) (Google Drive) | 3,7 ГБ, sha256 в `scripts/cold_bags.sha256` | шесть исходных бэгов: zip → `датасет.zip` → `archive/for_hackathon.zst` (zstd tar) → `for_hackathon/<bag>/` (`metadata.yaml` + `*_0.db3`, sqlite3), ~22 ГБ |
+| [`new_data.zst`](https://disk.yandex.ru/d/N8IUpAyd7jyvow) (папка на Яндекс Диске) | 17 078 961 996 байт, sha256 `8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec` | 20-минутная поездка: один бэг rosbag2 `new_data/`, 221 файл разбиения `new_data_<N>.db3` (по 51 кадру, по 408 МБ) и `metadata.yaml`, 90,1 ГБ |
+| [`cloud_with_fake_obj.zst`](https://disk.yandex.ru/d/KpkG_yKoGk-vHQ) (Яндекс Диск) | 1 746 145 824 байт, sha256 `d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9` | набор O: `cloud_with_fake_obj/metadata.yaml` и один `.db3` объёмом 7,42 ГБ |
 
-`scripts/unpack_dataset.py` streams zip → zip → zstd → tar from a file or a Yandex Disk link and
-writes only the bags asked for (no 30 GB scratch copy); `$RESENSE_DATA` (default
-`/data/for_hackathon`) is where the node's scripts look (README "Where the data lives"):
+`scripts/unpack_dataset.py` потоково распаковывает zip → zip → zstd → tar из файла или по ссылке
+Яндекс Диска и записывает только запрошенные бэги (без промежуточной копии на 30 ГБ); в
+`$RESENSE_DATA` (по умолчанию `/data/for_hackathon`) ищут данные скрипты ноды (README,
+«Где лежат данные»):
 
 ```bash
 python scripts/unpack_dataset.py Датасет.zip --out /data          # /data/for_hackathon/<six bags>
@@ -36,35 +37,37 @@ python scripts/unpack_dataset.py https://disk.yandex.ru/d/N8IUpAyd7jyvow --membe
 python scripts/unpack_dataset.py https://disk.yandex.ru/d/KpkG_yKoGk-vHQ --out /data                         # /data/cloud_with_fake_obj/
 ```
 
-The `new_data` folder also holds `cloud_with_fake_obj.zst`, hence `--member`. An unpacked bag is
-an ordinary rosbag2 bag (`resense run --bag`, `ros2 bag play`); a single split file of the ride
-opens on its own. `scripts/fetch_cold_bags.sh <dir>` fetches and verifies the two bags CI plays.
+В папке `new_data` лежит и `cloud_with_fake_obj.zst`, поэтому нужен `--member`. Распакованный бэг
+— обычный бэг rosbag2 (`resense run --bag`, `ros2 bag play`); отдельный файл разбиения поездки
+открывается сам по себе. `scripts/fetch_cold_bags.sh <dir>` скачивает и проверяет два бэга,
+которые проигрывает CI.
 
-## The recordings
+## Записи
 
-| recording | duration | frames | size | topic, `frame_id`, window | scene |
+| запись | длительность | кадры | размер | топик, `frame_id`, окно | сцена |
 |---|---|---|---|---|---|
-| `doubleT_obstacle` | 20.4 s | 201 | 4.5 GB | `/sensing/lidar/hesai128/pointcloud`, `lidar_livox`, full turn | double-track tunnel, **train stationary**; the real obstacles (below); a second person walks away along the left side in frames 146–200 |
-| `doubleT_platform` | 34.4 s | 345 | 2.6 GB | `/lidar_points`, `hesai_lidar`, 120° | double-track tunnel → station platform |
-| `roundT_doubleT` | 25.1 s | 252 | 1.9 GB | same | round single-track tunnel → double-track tunnel |
-| `roundT_pressureGate_roundT` | 26.7 s | 268 | 2.0 GB | same | round tunnel through a pressure gate (гермозатвор), right-hand curve |
-| `roundT_squareT_pressureGate_squareT` | 55.4 s | 545 | 4.1 GB | same | round → rectangular tunnel, pressure gate |
-| `squareT_platform_squareT_switch` | 88.2 s | 877 | 6.6 GB | same | rectangular tunnel → platform (train stops) → switch |
-| `new_data` | 1 199.9 s | 11 271 | 90.1 GB | same | 20-minute ride, ~13 km, seven stops, no obstacles |
-| `cloud_with_fake_obj` | 150.9 s | 1 510 | 7.42 GB | same, no `ring` field | a real ride with ten objects added by the organizers' tool |
+| `doubleT_obstacle` | 20,4 с | 201 | 4,5 ГБ | `/sensing/lidar/hesai128/pointcloud`, `lidar_livox`, полный оборот | двухпутный тоннель, **поезд стоит**; реальные препятствия (ниже); второй человек уходит вдоль левой стороны в кадрах 146–200 |
+| `doubleT_platform` | 34,4 с | 345 | 2,6 ГБ | `/lidar_points`, `hesai_lidar`, 120° | двухпутный тоннель → платформа станции |
+| `roundT_doubleT` | 25,1 с | 252 | 1,9 ГБ | то же | круглый однопутный тоннель → двухпутный тоннель |
+| `roundT_pressureGate_roundT` | 26,7 с | 268 | 2,0 ГБ | то же | круглый тоннель с гермозатвором, кривая вправо |
+| `roundT_squareT_pressureGate_squareT` | 55,4 с | 545 | 4,1 ГБ | то же | круглый → прямоугольный тоннель, гермозатвор |
+| `squareT_platform_squareT_switch` | 88,2 с | 877 | 6,6 ГБ | то же | прямоугольный тоннель → платформа (поезд останавливается) → стрелка |
+| `new_data` | 1 199,9 с | 11 271 | 90,1 ГБ | то же | 20-минутная поездка, ~13 км, семь остановок, препятствий нет |
+| `cloud_with_fake_obj` | 150,9 с | 1 510 | 7,42 ГБ | то же, без поля `ring` | реальная поездка с десятью объектами, добавленными инструментом организаторов |
 
-**Real obstacles exist only in `doubleT_obstacle`:** a person crossing the track at 55–57 m
-(inside the 2.1 m envelope in frames 8–68) and an object lying on the right rail at ~56 m for the
-whole recording (pointed out by the organizers in the Q&A session); both are labelled
-([Real labels](#real-labels-set-r-labelsdoublet_obstaclejson)). Every alarm on the other five
-recordings and on `new_data` is a false alarm: the organizers confirmed that the ride holds no
-obstacles ([`organizers/answers.md`](organizers/answers.md) §2). Positives at other ranges come
-from set O (the organizers' tool) and `resense inject` (ours; [`EVALUATION.md`](EVALUATION.md) §1).
+**Реальные препятствия есть только в `doubleT_obstacle`:** человек, пересекающий путь на 55–57 м
+(внутри габарита 2,1 м в кадрах 8–68), и предмет, лежащий на правом рельсе примерно на 56 м на
+протяжении всей записи (на него указали организаторы на Q&A-сессии); оба размечены
+([Реальная разметка](#реальная-разметка-набор-r-labelsdoublet_obstaclejson)). Любая тревога на остальных
+пяти записях и на `new_data` — ложная: организаторы подтвердили, что в поездке препятствий нет
+([`organizers/answers.md`](organizers/answers.md) §2). Положительные примеры на других
+дальностях дают набор O (инструмент организаторов) и `resense inject` (наш;
+[`EVALUATION.md`](EVALUATION.md) §1).
 
-## Synthetic-obstacle recording (`cloud_with_fake_obj`, labelled)
+## Запись с синтетическими препятствиями (`cloud_with_fake_obj`, размечена)
 
-1 510 PointCloud2 messages on `/lidar_points`, frame `hesai_lidar` (120° window), over 150.851 s.
-Its fields are `x,y,z,intensity` **without a ring field**; the reader fills a zero ring. Labels:
+1 510 сообщений PointCloud2 в `/lidar_points`, frame id `hesai_lidar` (окно 120°), за 150,851 с.
+Поля — `x,y,z,intensity`, **поля ring нет**; при чтении бэга ring заполняется нулём. Разметка:
 [`labels/cloud_with_fake_obj.json`](../labels/cloud_with_fake_obj.json).
 
 ```bash
@@ -73,182 +76,198 @@ resense run --bag /data/cloud_with_fake_obj --out out/fake.jsonl --quiet
 python scripts/score_fake_objects.py out/fake.jsonl --gt labels/cloud_with_fake_obj.json   # per-object table
 ```
 
-The organizers' description (24.09): ten objects about 100 m apart, in this order.
+Описание организаторов (24.09): десять объектов примерно через 100 м друг от друга, в таком
+порядке.
 
-| # | organizers' text | label | envelope (intent) |
+| # | текст организаторов | метка | габарит (замысел) |
 |---|---|---|---|
-| 1 | посередине габарита крупный, 2х2 метра | `big_center` | inside |
-| 2 | посередине габарита мелкий 0.3х0.3 м | `small_center` | inside (floats 1.0–1.4 m above the rail head) |
-| 3 | мелкий 0.3х0.3 м стоит на рельсах | `small_on_rail` | inside (on the left rail) |
-| 4 | 0.3х0.3 м скраю габарита | `small_edge_inside` | inside (straddles the edge) |
-| 5 | 0.3х0.3 м за пределами габарита, но близко | `small_outside_near` | outside |
-| 6 | 2х2 метра скраю в пределах габарита | `big_edge_inside` | inside |
-| 7 | 2х2 за пределами габарита | `big_outside` | outside |
-| 8 | 2х2 сверху габарита | `big_above` | inside (see below) |
-| 9 | длинный низкий предмет лежит на рельсах (2х0.2) | `long_low_on_rails` | inside (across both rails) |
-| 10 | узкий длинный свисает с потолка (ширина 0.05 м) | `thin_hanging` | inside (hangs to 2.7 m above the rail head) |
+| 1 | посередине габарита крупный, 2х2 метра | `big_center` | внутри |
+| 2 | посередине габарита мелкий 0.3х0.3 м | `small_center` | внутри (висит на 1,0–1,4 м над головкой рельса) |
+| 3 | мелкий 0.3х0.3 м стоит на рельсах | `small_on_rail` | внутри (на левом рельсе) |
+| 4 | 0.3х0.3 м скраю габарита | `small_edge_inside` | внутри (пересекает границу) |
+| 5 | 0.3х0.3 м за пределами габарита, но близко | `small_outside_near` | снаружи |
+| 6 | 2х2 метра скраю в пределах габарита | `big_edge_inside` | внутри |
+| 7 | 2х2 за пределами габарита | `big_outside` | снаружи |
+| 8 | 2х2 сверху габарита | `big_above` | внутри (см. ниже) |
+| 9 | длинный низкий предмет лежит на рельсах (2х0.2) | `long_low_on_rails` | внутри (поперёк обоих рельсов) |
+| 10 | узкий длинный свисает с потолка (ширина 0.05 м) | `thin_hanging` | внутри (свисает до 2,7 м над головкой рельса) |
 
-**How the labels are made.** Each message is the organizers' real scan (no-return points kept
-as zeros, hidden returns removed) **followed by the object points, all with intensity 1**.
-`scripts/label_fake_objects.py` takes every point after the last zero as object points, splits
-them at X gaps over 8 m and links them into exactly ten tracks, in the organizers' order. Frames
-0–803 carry objects (1 206 object-frame rows), 804–1509 are the real recording alone. `distance`
-and `lateral` are measured from the detector's mount calibration and per-frame track axis (the
-independence caveat: [`EVALUATION.md`](EVALUATION.md) §1); `in_gauge` is the organizers' intent.
-Extra keys: `gauge_margin`, `h_above_rail`, `lateral_sensor` (offset from the sensor's axis),
-`n_in_envelope` (points inside the rail-measured envelope), `plausible` (inside the tunnel).
+**Как делается разметка.** Каждое сообщение — реальный скан организаторов (точки без возврата
+оставлены нулями, скрытые возвраты удалены), **за которым следуют точки объектов, все с
+intensity 1**. `scripts/label_fake_objects.py` принимает все точки после последнего нуля за точки
+объектов, разбивает их по разрывам по X больше 8 м и связывает ровно в десять треков в порядке
+организаторов. Кадры 0–803 содержат объекты (1 206 строк «объект–кадр»), 804–1509 — только
+реальная запись. `distance` и `lateral` измеряются по калибровке крепления детектора и оси пути в
+каждом кадре (оговорка о независимости: [`EVALUATION.md`](EVALUATION.md) §1); `in_gauge` —
+замысел организаторов. Дополнительные ключи: `gauge_margin`, `h_above_rail`, `lateral_sensor`
+(смещение от оси датчика), `n_in_envelope` (точек внутри габарита, измеренного по рельсам),
+`plausible` (внутри тоннеля).
 
-Three properties decide how the recording can be scored:
+Три свойства определяют, как можно оценивать эту запись:
 
-* **The objects stand still; the train drives up to them**: 1.4 m/s at frame 0, 14–20 m/s from
-  frame ~300 to ~1300, 2 m/s at the end, 2.0 km in 151 s (ICP, `scripts/speed_reference.py`);
-  each object approaches by exactly the train's displacement.
-* **The objects were placed from the sensor's axis, not from the rails** (the LiDAR is 1 075 mm
-  above the rail head on the train's centreline,
-  [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md); the detector measures
-  1.08 m here). The rails run at −0.24° to that axis (0.1 m apart at 25 m, 0.4 m at 100 m), so the
-  edge tests #4–#7 sit within ±0.1–0.4 m of the envelope edge, on either side depending on the
-  frame (#5 "outside" has points inside the rail-measured envelope in 101 of its 112 frames). The
-  sealed detector takes the union of both references within 60 m on straight track
-  ([`ALGORITHM.md`](ALGORITHM.md) §3.6). The organizers' answer of 29.09: the envelope is measured
-  from the rail heads, and the synthetic objects are placed approximately and may drift relative to
-  it along the track, which they correct for when checking
-  ([`organizers/answers.md`](organizers/answers.md) §9); `in_gauge` keeps their intent. Far out the objects follow their own path, not the tunnel (#3 is
-  4 m above the rail head at 81 m): `plausible` drops those rows.
-* **"сверху габарита" is read as the top of the envelope.** The bottom of #8 is 2.4–2.9 m above
-  the rail head, inside the 3.0 m envelope, so it is labelled `in_gauge: true`; the answer of 29.09
-  (the envelope is measured from the rail heads) confirms that reading.
+* **Объекты неподвижны; поезд подъезжает к ним**: 1,4 м/с в кадре 0, 14–20 м/с с кадра ~300 до
+  ~1300, 2 м/с в конце, 2,0 км за 151 с (ICP, `scripts/speed_reference.py`); каждый объект
+  приближается ровно на смещение поезда.
+* **Объекты расставлялись от оси датчика, а не от рельсов** (LiDAR стоит на 1 075 мм выше головки
+  рельса по оси состава,
+  [`organizers/mount_and_switch_qa.md`](organizers/mount_and_switch_qa.md); детектор здесь
+  измеряет 1,08 м). Рельсы идут под углом −0,24° к этой оси (расхождение 0,1 м на 25 м, 0,4 м на
+  100 м), поэтому граничные тесты #4–#7 лежат в пределах ±0,1–0,4 м от границы габарита, по ту или
+  иную сторону в зависимости от кадра (у #5 «снаружи» есть точки внутри габарита, измеренного по
+  рельсам, в 101 из его 112 кадров). Опечатанный детектор берёт объединение обеих привязок в
+  пределах 60 м на прямом пути ([`ALGORITHM.md`](ALGORITHM.md) §3.6). Ответ организаторов 29.09:
+  габарит отсчитывается от головки рельсов, синтетические объекты расставлены приблизительно и могут
+  «плавать» относительно габарита вдоль пути, и при проверке на это делается поправка
+  ([`organizers/answers.md`](organizers/answers.md) §9); `in_gauge` сохраняет их замысел. Вдали объекты следуют собственной
+  траектории, а не тоннелю (#3 на 81 м находится на 4 м над головкой рельса): `plausible`
+  отбрасывает такие строки.
+* **«сверху габарита» понимается как верх габарита.** Низ объекта #8 находится на 2,4–2,9 м над
+  головкой рельса, внутри габарита 3,0 м, поэтому он размечен `in_gauge: true`; ответ 29.09 (габарит
+  отсчитывается от головки рельсов) подтверждает это прочтение.
 
-Results per object: [`SCORECARD.md`](SCORECARD.md), [`EXPERIMENTS.md`](EXPERIMENTS.md).
+Результаты по объектам: [`SCORECARD.md`](SCORECARD.md), [`EXPERIMENTS.md`](EXPERIMENTS.md).
 
-## Extended dataset: `new_data` (the 20-minute ride)
+## Расширенный датасет: `new_data` (20-минутная поездка)
 
-Recorded 17.09, **no labels and no obstacles** (organizers, Q&A 22.09 and written answer 23.09:
-"В new_data препятствий нет", [`organizers/answers.md`](organizers/answers.md)). Every file was
-read once at intake; per-file rows are in [`extended_dataset_intake.json`](extended_dataset_intake.json).
+Записана 17.09, **без разметки и без препятствий** (организаторы, Q&A 22.09 и письменный ответ
+23.09: «В new_data препятствий нет», [`organizers/answers.md`](organizers/answers.md)). Каждый
+файл прочитан один раз при приёме; построчные данные по файлам — в
+[`extended_dataset_intake.json`](extended_dataset_intake.json).
 
-| what | read from the bag |
+| что | прочитано из бэга |
 |---|---|
-| topic, type, frame | `/lidar_points`, `sensor_msgs/msg/PointCloud2` (cdr), the only topic; `hesai_lidar` in every file; 11 271 messages (51 per file, `metadata.yaml` agrees) |
-| layout, points | `width 307 200`, `point_step 26`, as the five 120° bags; returns within −49.5° … +49.6°; 152 754 – 191 094 valid points per frame (median ≈ 183 k, the low values at stations) |
-| clock | bag receive time from 2026-09-17 11:02:06 UTC; `header.stamp` is the year-2000 sensor clock — use the bag time |
-| frame period | 0.100 s, continuous across split files, **except holes in the last third**: from file 156 (t ≈ 800 s) 26 files span 6–12 s instead of 5.1 s, with 1.2–7.1 s gaps (≈ 70 s without frames); the tracker's gate uses the measured frame interval |
-| the ride | from the drift of static tracks: departs from standstill, seven stops (168–209, 291–306, 439–459, 592–648, 760–775, 984–1007, 1106–1117 s), top speed 21.3 m/s at t ≈ 230 s, mean 11.5 m/s, ≈ 13 km |
-| scenes | tunnels of both kinds, curves down to R ≈ 350 m (files 129–134, 176–180), stations and a switch; files 22, 55, 113–114 and 155 have the track model unlocked (platforms, switch) |
+| топик, тип, frame id | `/lidar_points`, `sensor_msgs/msg/PointCloud2` (cdr), единственный топик; `hesai_lidar` в каждом файле; 11 271 сообщение (по 51 на файл, `metadata.yaml` совпадает) |
+| структура, точки | `width 307 200`, `point_step 26`, как в пяти бэгах с окном 120°; возвраты в пределах −49,5° … +49,6°; от 152 754 до 191 094 валидных точек на кадр (медиана ≈ 183 тыс., малые значения — на станциях) |
+| часы | время приёма в бэге начиная с 2026-09-17 11:02:06 UTC; `header.stamp` — часы датчика с эпохой 2000 года: используйте время бэга |
+| период кадров | 0,100 с, непрерывный через границы файлов разбиения, **кроме пропусков в последней трети**: начиная с файла 156 (t ≈ 800 с) 26 файлов охватывают по 6–12 с вместо 5,1 с, с разрывами 1,2–7,1 с (≈ 70 с без кадров); строб трекера использует измеренный интервал между кадрами |
+| поездка | по дрейфу неподвижных треков: трогается с места, семь остановок (168–209, 291–306, 439–459, 592–648, 760–775, 984–1007, 1106–1117 с), максимальная скорость 21,3 м/с при t ≈ 230 с, средняя 11,5 м/с, ≈ 13 км |
+| сцены | тоннели обоих видов, кривые вплоть до R ≈ 350 м (файлы 129–134, 176–180), станции и стрелка; в файлах 22, 55, 113–114 и 155 модель пути не захвачена (платформы, стрелка) |
 
-Every alarm on the ride is a false alarm (counts: [`SCORECARD.md`](SCORECARD.md),
-[`EXPERIMENTS.md`](EXPERIMENTS.md)). `labels/new_data_objects.json` lists every confirmed track of
-the v0.6.2 run (23.09, historical) with its geometry and a cause class (`scripts/mine_objects.py`).
+Любая тревога на поездке — ложная (числа: [`SCORECARD.md`](SCORECARD.md),
+[`EXPERIMENTS.md`](EXPERIMENTS.md)). `labels/new_data_objects.json` перечисляет каждый
+подтверждённый трек прогона v0.6.2 (23.09, исторический) с его геометрией и классом причины
+(`scripts/mine_objects.py`).
 
-## Topic and sensor
+## Топик и датчик
 
-* **Both (topic, frame) pairs may occur in the control data** — `/lidar_points` + `hesai_lidar`
-  and `/sensing/lidar/hesai128/pointcloud` + `lidar_livox` — and **all data were recorded with the
-  same LiDAR** (organizers, 23.09, [`organizers/answers.md`](organizers/answers.md)): the 120°
-  window and the full turn are two configurations / mounts of one Pandar128. The node
-  auto-discovers PointCloud2 topics and restarts the detector per recording (README "How a bag is
-  processed"); RViz uses the fixed frame `resense_lidar`, linked to whatever frame the input has.
-* **Full turn** (`doubleT_obstacle`): 3600 azimuth columns × 128 rings × 2 returns = 921 600
-  slots, valid returns over ~210° (−104° … +106°), ~347 k valid points. **120° window** (the other
-  recordings): 1200 columns × 128 × 2 = 307 200 slots, valid returns within ±50°, 160–190 k
-  points (fewer at platforms). Azimuth = `atan2(x, −y)` in the sensor frame.
-* `sensor_msgs/msg/PointCloud2`, ~10 Hz (80–120 ms in the bag clock), `point_step` 26. Fields:
-  `x y z` float32, `intensity` float32 (reflectivity %, median 6–7, retro-reflectors 255), `ring`
-  uint16 (0–127), `timestamp` float64 (sensor clock, **not synchronised**: year-2000 epoch).
-* **Dual-return slots.** Missing returns are stored as `(0,0,0)`, ~38 % of the slots; 96–98 % of
-  the valid points come in identical pairs (one echo stored in both return blocks, measured in all
-  seven recordings), so a 120° frame holds ~190 k valid but 85–95 k distinct points. The detector
-  counts occupied voxels, so the copies change no decision ([`SENSOR.md`](SENSOR.md) §2, §4).
-* Angular grid: azimuth step **0.1°**; 128 rings from **+14.4° to −25.1°**, **0.125° step in the
-  band +2° … −6.2°**, 0.5° outside; one 120° sweep takes 33 ms. The unit is a **Hesai Pandar128
-  (E3X)** ([`SENSOR.md`](SENSOR.md) §1).
-* Range: nothing beyond 209.2–210.0 m; walls return to ~150–200 m, the bed to ~100 m.
-* Sensor frame: **−y forward, +x left, +z up**; the package maps it to the vehicle frame X forward
-  / Y left / Z up (`sensor.forward/left/up` in `configs/default.yaml`).
+* **В контрольных данных могут встретиться обе пары (топик, frame id)** — `/lidar_points` +
+  `hesai_lidar` и `/sensing/lidar/hesai128/pointcloud` + `lidar_livox`, — и **все данные записаны
+  одним и тем же LiDAR** (организаторы, 23.09, [`organizers/answers.md`](organizers/answers.md)):
+  окно 120° и полный оборот — две конфигурации / два крепления одного Pandar128. Нода сама находит
+  топики PointCloud2 и перезапускает детектор для каждой записи (README, «Как обрабатывается
+  бэг»); RViz использует фиксированную систему координат `resense_lidar`, связанную с той системой,
+  которая есть во входных данных.
+* **Полный оборот** (`doubleT_obstacle`): 3600 столбцов по азимуту × 128 колец × 2 возврата =
+  921 600 слотов, валидные возвраты в пределах ~210° (−104° … +106°), ~347 тыс. валидных точек.
+  **Окно 120°** (остальные записи): 1200 столбцов × 128 × 2 = 307 200 слотов, валидные возвраты
+  в пределах ±50°, 160–190 тыс. точек (меньше на платформах). Азимут = `atan2(x, −y)` в системе
+  координат датчика.
+* `sensor_msgs/msg/PointCloud2`, ~10 Гц (80–120 мс по времени бэга), `point_step` 26. Поля:
+  `x y z` float32, `intensity` float32 (отражательная способность в %, медиана 6–7,
+  световозвращатели 255), `ring` uint16 (0–127), `timestamp` float64 (часы датчика,
+  **не синхронизированы**: эпоха 2000 года).
+* **Слоты с двойным возвратом.** Отсутствующие возвраты хранятся как `(0,0,0)`, это ~38 % слотов;
+  96–98 % валидных точек идут одинаковыми парами (одно эхо записано в оба блока возвратов,
+  измерено на всех семи записях), поэтому кадр с окном 120° содержит ~190 тыс. валидных, но лишь
+  85–95 тыс. различных точек. Детектор считает занятые воксели, поэтому копии не меняют ни одного
+  решения ([`SENSOR.md`](SENSOR.md) §2, §4).
+* Угловая сетка: шаг по азимуту **0,1°**; 128 колец от **+14,4° до −25,1°**, **шаг 0,125° в
+  полосе +2° … −6,2°**, 0,5° вне её; один проход окна 120° занимает 33 мс. Датчик — **Hesai
+  Pandar128 (E3X)** ([`SENSOR.md`](SENSOR.md) §1).
+* Дальность: дальше 209,2–210,0 м ничего нет; стены дают возвраты до ~150–200 м, полотно — до
+  ~100 м.
+* Система координат датчика: **−y вперёд, +x влево, +z вверх**; пакет отображает её в систему
+  координат состава X вперёд / Y влево / Z вверх (`sensor.forward/left/up` в
+  `configs/default.yaml`).
 
-## Geometry seen in the data
+## Геометрия, наблюдаемая в данных
 
-* Round tunnel: inner radius ≈ 2.5–2.7 m, crown ≈ 3.4 m above the sensor, bed ≈ 1.5 m below it
-  (≈ 2.0 m on the `doubleT_obstacle` rig). The mount is calibrated from the data: 1.12 m and
-  1.51 m above the rail head on the two rigs, against the organizers' 1 075 mm ([`SENSOR.md`](SENSOR.md) §4).
-* Track axis 0.05–0.25 m right of the sensor axis; 1.59 m between rail-head centres; rail head
-  ≈ 0.30–0.42 m above the 20th-percentile bed (a central drainage trough).
-* Contact rail with its cover ~1.6–2.0 m left of the axis, top ≈ 0.35–0.5 m above the rail head;
-  column rows ≈ 1.7 m and platform edges ≈ 1.6 m from the axis (the envelope's half-width is
-  1.05 m); a pressure gate's frame narrows the tunnel to about the structure gauge.
-* Curves R ≈ 350–3000 m: a straight corridor cuts into the wall beyond 50–100 m, hence the
-  wall-based yaw / curvature estimate ([`ALGORITHM.md`](ALGORITHM.md) §3.1).
+* Круглый тоннель: внутренний радиус ≈ 2,5–2,7 м, свод ≈ 3,4 м над датчиком, полотно ≈ 1,5 м под
+  ним (≈ 2,0 м на установке `doubleT_obstacle`). Крепление калибруется по данным: 1,12 м и 1,51 м
+  над головкой рельса на двух установках против 1 075 мм у организаторов
+  ([`SENSOR.md`](SENSOR.md) §4).
+* Ось пути на 0,05–0,25 м правее оси датчика; 1,59 м между центрами головок рельсов; головка
+  рельса ≈ на 0,30–0,42 м выше 20-го процентиля полотна (центральный водоотводный лоток).
+* Контактный рельс с кожухом ~1,6–2,0 м левее оси, верх ≈ 0,35–0,5 м над головкой рельса; ряды
+  колонн ≈ 1,7 м и края платформ ≈ 1,6 м от оси (полуширина габарита 1,05 м); рама гермозатвора
+  сужает тоннель примерно до габарита приближения строений.
+* Кривые R ≈ 350–3000 м: прямой коридор врезается в стену дальше 50–100 м, отсюда оценка
+  рыскания / кривизны по стенам ([`ALGORITHM.md`](ALGORITHM.md) §3.1).
 
-## Point budget at range (why 300 m is hard)
+## Бюджет точек по дальности (почему 300 м — это трудно)
 
-Angular resolution 0.1° × 0.125° ⇒ a target of w × h metres at range r returns roughly
-`n ≈ w·h / (r² · 3.8e-6)` points per frame (single return, normal incidence):
+Угловое разрешение 0,1° × 0,125° ⇒ цель размером w × h метров на дальности r даёт примерно
+`n ≈ w·h / (r² · 3.8e-6)` точек на кадр (одиночный возврат, нормальное падение):
 
-| target | 50 m | 100 m | 150 m | 200 m | 300 m |
+| цель | 50 м | 100 м | 150 м | 200 м | 300 м |
 |---|---|---|---|---|---|
-| 0.5 × 0.5 m box | 26 | 6.6 | 2.9 | 1.6 | 0.7 |
-| person 0.5 × 1.7 m | 90 | 22 | 10 | 5.6 | 2.5 |
-| 1 × 1 m crate | 105 | 26 | 12 | 6.6 | 2.9 |
+| коробка 0,5 × 0,5 м | 26 | 6,6 | 2,9 | 1,6 | 0,7 |
+| человек 0,5 × 1,7 м | 90 | 22 | 10 | 5,6 | 2,5 |
+| ящик 1 × 1 м | 105 | 26 | 12 | 6,6 | 2,9 |
 
-Beyond ~150 m a single frame gives a handful of points, and no recording has a return beyond
-210 m: 300 m is out of reach for this sensor ([`SENSOR.md`](SENSOR.md) §3).
+Дальше ~150 м один кадр даёт горстку точек, а ни в одной записи нет возвратов дальше 210 м: 300 м
+для этого датчика недостижимы ([`SENSOR.md`](SENSOR.md) §3).
 
-## Cached frames for fast iteration
+## Кэш кадров для быстрых итераций
 
-`resense.io.iter_bag_compact` reads bags without ROS (`rosbags`); frames are cached as `*.npy`:
+`resense.io.iter_bag_compact` читает бэги без ROS (`rosbags`); кадры кэшируются в виде `*.npy`:
 
 ```bash
 python scripts/cache_frames.py /data/for_hackathon/roundT_doubleT cache/roundT_doubleT --every 1 --int16 --stamps   # ~1.5 MB / frame
 ```
 
-`--int16` writes `resense.pointcloud.COMPACT16_DTYPE` (centimetres as int16, intensity and ring as
-uint8: 8 bytes per point; 5 mm quantisation, a quarter of the range noise).
-`compact16_dedup` can store each identical dual-return pair once (~0.75 MB per frame; the reader
-restores them). `--stamps` writes `<name>_stamps.json` (bag receive time and `frame_id` per
-frame), which `resense.io.iter_npy_frames` uses for the frame interval. The six bags take 3.6 GB,
-the ride 8.0 GB (deduplicated). The file name carries the **bag frame index**
-(`roundT_doubleT_0120.npy` = message 120, 0-based), which `resense eval --npy <dir> --gt gt.json`
-uses to find the labels. `scripts/eval_real.py --cache <dir>` runs one configuration over every
-cached recording (the ride in eight parallel pieces); `scripts/far_range_eval.py` builds set F.
+`--int16` записывает `resense.pointcloud.COMPACT16_DTYPE` (сантиметры как int16, intensity и ring
+как uint8: 8 байт на точку; квантование 5 мм — четверть шума по дальности). `compact16_dedup`
+может хранить каждую одинаковую пару двойного возврата один раз (~0,75 МБ на кадр; при чтении они
+восстанавливаются). `--stamps` записывает `<name>_stamps.json` (время приёма в бэге и `frame_id`
+для каждого кадра), который `resense.io.iter_npy_frames` использует для интервала между кадрами.
+Шесть бэгов занимают 3,6 ГБ, поездка — 8,0 ГБ (с дедупликацией). Имя файла содержит **индекс кадра
+в бэге** (`roundT_doubleT_0120.npy` = сообщение 120, отсчёт с 0), по нему
+`resense eval --npy <dir> --gt gt.json` находит разметку. `scripts/eval_real.py --cache <dir>`
+прогоняет одну конфигурацию по всем записям в кэше (поездка — в восьми параллельных частях);
+`scripts/far_range_eval.py` строит набор F.
 
-## Synthetic obstacles (`resense inject`)
+## Синтетические препятствия (`resense inject`)
 
-`resense inject` ray-casts catalogue objects into empty real frames with the sensor's own angular
-grid (occlusion-correct; range-dependent dropout beyond 120 m scaled by reflectivity). Objects
-are chosen with `--kinds` from `resense.synthetic.OBJECT_CATALOGUE`:
+`resense inject` вставляет объекты из каталога в пустые реальные кадры лучевым методом (ray
+casting) по собственной угловой сетке датчика (с корректным учётом перекрытий; выпадение точек,
+зависящее от дальности, дальше 120 м масштабируется отражательной способностью). Объекты
+выбираются опцией `--kinds` из `resense.synthetic.OBJECT_CATALOGUE`:
 
-| name | mesh | size L × W × H (m) | reflectivity (%) | stands for |
+| имя | геометрия | размер L × W × H (м) | отражательная способность (%) | что изображает |
 |---|---|---|---|---|
-| `person` / `hivis` | cylinder body + head sphere | 0.4 × 0.5 × 1.7 | 10–60 / 150–250 | person in ordinary clothing / a hi-vis vest |
-| `box0.2`, `box0.3`, `box0.5` (`box`), `box1.0` | box | cube of that edge | 20–40 (`box0.3`: 20–60) | cardboard box / crate |
-| `lowbox` | box | 0.3 × 0.3 × 0.1 | 20–60 | the organizers' minimum object |
-| `plank` | box | 2.0 × 0.25 × 0.30 | 30–60 | wooden plank / sleeper |
-| `railobj` | box | 0.4 × 0.6 × 0.31 | 15–40 | replica of the object across a rail in `doubleT_obstacle` |
-| `trolley` / `cylinder` / `sphere` | cylinder / cylinder / sphere | 0.6 × 0.6 × 1.0 / 0.4 × 0.4 × 0.9 / 0.4 × 0.4 × 0.4 | 40–120 / 30–90 / 20–60 | maintenance trolley / drum / ball-like debris |
-| `cable` / `cable_low` | thin cylinder | 0.03 × 0.03 × 3.5 / 4.3 | 10–40 | broken cable hanging to 1.0 / 0.2 m above the rail head |
-| `dog` | box | 0.6 × 0.3 × 0.45 | 10–40 | animal-sized object on the bed |
+| `person` / `hivis` | цилиндрическое тело + сфера головы | 0,4 × 0,5 × 1,7 | 10–60 / 150–250 | человек в обычной одежде / в сигнальном жилете |
+| `box0.2`, `box0.3`, `box0.5` (`box`), `box1.0` | параллелепипед | куб с таким ребром | 20–40 (`box0.3`: 20–60) | картонная коробка / ящик |
+| `lowbox` | параллелепипед | 0,3 × 0,3 × 0,1 | 20–60 | минимальный объект организаторов |
+| `plank` | параллелепипед | 2,0 × 0,25 × 0,30 | 30–60 | деревянная доска / шпала |
+| `railobj` | параллелепипед | 0,4 × 0,6 × 0,31 | 15–40 | копия предмета поперёк рельса в `doubleT_obstacle` |
+| `trolley` / `cylinder` / `sphere` | цилиндр / цилиндр / сфера | 0,6 × 0,6 × 1,0 / 0,4 × 0,4 × 0,9 / 0,4 × 0,4 × 0,4 | 40–120 / 30–90 / 20–60 | ремонтная тележка / бочка / шарообразный мусор |
+| `cable` / `cable_low` | тонкий цилиндр | 0,03 × 0,03 × 3,5 / 4,3 | 10–40 | оборванный кабель, свисающий до 1,0 / 0,2 м над головкой рельса |
+| `dog` | параллелепипед | 0,6 × 0,3 × 0,45 | 10–40 | предмет размером с животное на полотне |
 
-Reflectivity is drawn uniformly per object ([`SENSOR.md`](SENSOR.md) §2). The ranges are
-assumptions: the real labels give three observed ones (mean intensity p05 / median / p95):
-`person_crossing` 35.7 / 59.8 / 68.2, `person_walkway` 39.1 / 74.4 / 96.1, `object_on_rail`
-13.6 / 15.4 / 22.5. The intervals are kept for reproducibility; `--reflectivity V` (also in
-`scripts/far_range_eval.py`) fixes the value for a paired sensitivity run.
+Отражательная способность разыгрывается равномерно для каждого объекта
+([`SENSOR.md`](SENSOR.md) §2). Диапазоны — допущения: реальная разметка даёт три наблюдённых
+(средняя интенсивность p05 / медиана / p95): `person_crossing` 35,7 / 59,8 / 68,2,
+`person_walkway` 39,1 / 74,4 / 96,1, `object_on_rail` 13,6 / 15,4 / 22,5. Интервалы сохранены для
+воспроизводимости; `--reflectivity V` (есть и в `scripts/far_range_eval.py`) фиксирует значение
+для парного прогона на чувствительность.
 
-**Placement.** `--per-frame` objects per background, distance uniform in `--distances lo:hi`,
-lateral uniform ±0.9 m, or for the `--negative-fraction` share 2.2–3.0 m to either side (must
-**not** alarm, `in_gauge = false`), random yaw. Ground objects stand on the measured local bed, or
-0.25 m below the model's rail level where the bed has no returns; `gt.json` stores the resulting
-`base_z`. `--augment` perturbs the background (5 % dropout, 1 cm range noise, ±0.3° yaw / pitch,
-±0.2° roll, 10 % intensity jitter). `--sequence N --speed V` keeps the background and moves the
-objects by `V × 0.1 s` per step (rows carry `seq`, `seq_step`, `speed_mps`): a test of persistence
-and association, not of ego-motion; `resense eval` passes the rows' speed to the detector. Set
-F's placement modes are in [`EVALUATION.md`](EVALUATION.md) §3.
+**Размещение.** `--per-frame` объектов на каждый фон, расстояние равномерно в `--distances lo:hi`,
+боковое смещение равномерно ±0,9 м, а для доли `--negative-fraction` — 2,2–3,0 м по любую сторону
+(тревоги быть **не** должно, `in_gauge = false`), случайный угол рыскания. Наземные объекты стоят
+на измеренном локальном полотне, а там, где у полотна нет возвратов, — на 0,25 м ниже уровня
+рельсов по модели; `gt.json` сохраняет получившееся `base_z`. `--augment` возмущает фон
+(выпадение 5 %, шум по дальности 1 см, ±0,3° рыскания / тангажа, ±0,2° крена, разброс
+интенсивности 10 %). `--sequence N --speed V` сохраняет фон и смещает объекты на `V × 0.1 s` за
+шаг (строки содержат `seq`, `seq_step`, `speed_mps`): это проверка устойчивости и ассоциации, а не
+собственного движения (ego-motion); `resense eval` передаёт скорость из строк детектору. Режимы
+размещения набора F описаны в [`EVALUATION.md`](EVALUATION.md) §3.
 
-## Label format (`gt.json`)
+## Формат разметки (`gt.json`)
 
-One JSON object per bag (or injected dataset), **keyed by the bag frame index** as a zero-padded
-5-digit string. `resense inject` writes it, `resense eval` and `resense summarize --gt` read it,
-and the browser label tool (`web/`) exports it.
+Один JSON-объект на бэг (или инжектированный датасет), **ключ — индекс кадра в бэге** в виде
+строки из 5 цифр с ведущими нулями. Его пишет `resense inject`, читают `resense eval` и
+`resense summarize --gt`, а экспортирует браузерный инструмент разметки (`web/`).
 
 ```json
 {"_meta": {"bag": "doubleT_obstacle", "source": "label-tool", "coords": "vehicle"},
@@ -257,67 +276,69 @@ and the browser label tool (`web/`) exports it.
  "00043": []}
 ```
 
-| key | meaning |
+| ключ | смысл |
 |---|---|
-| frame key | bag frame index in message order, 0-based, 5 digits: the `frame` field of `resense run --out`, the index `resense info` / `iter_bag_compact` count and the number in cache file names; an injected dataset uses its own running index |
-| value | objects in that frame; **`[]` = looked at and empty** (a negative label); a frame without a key is unlabelled and counts as empty unless `--labelled-only`; keys starting with `_` (`_meta`) are ignored |
-| `kind` | geometry class (`person`, `box`, `plank`, `cylinder`, `sphere`; real labels any short class) |
-| `size` | `[L, W, H]` m: along the track, across it, height |
-| `distance` | m, **X (forward, vehicle frame) of the object's nearest point**; what `nearest_distance` reports and the match tolerance applies to |
-| `lateral` | m, offset of the object centre from the **track axis**, + left (a tool that only knows the vehicle frame may use Y: the axis is typically within 0.25 m of it, inside the 1 m match tolerance) |
-| `yaw_deg`, `reflectivity` | rotation about Z; mean intensity of the returns (0 when unknown) |
-| `label` | **one string per physical object, kept across frames**; first-detection distance is per label |
-| `in_gauge` | `true` if the object's rotated footprint intersects the strict envelope (must alarm); `false` for objects next to the track that must **not** alarm |
-| `name` | optional catalogue name or real class; the per-class recall table is keyed by it (falls back to `kind`) |
-| `n_points` | optional: ray hits; **`0` = fully occluded**, excluded from recall and counted in `occluded_gt_skipped` |
-| `bbox` | optional `[[xmin, ymin, zmin], [xmax, ymax, zmax]]` in the vehicle frame; missing `distance` / `size` / `lateral` are derived from it (raw sensor frame → vehicle: `X = −y_s`, `Y = x_s`, `Z = z_s`) |
-| `seq`, `seq_step`, `speed_mps` | written by `inject --sequence N --speed V` |
+| ключ кадра | индекс кадра в бэге в порядке сообщений, с 0, 5 цифр: поле `frame` в `resense run --out`, индекс, который считают `resense info` / `iter_bag_compact`, и число в именах файлов кэша; инжектированный датасет использует собственную сквозную нумерацию |
+| значение | объекты в этом кадре; **`[]` = просмотрен и пуст** (отрицательная метка); кадр без ключа не размечен и считается пустым, если не задан `--labelled-only`; ключи, начинающиеся с `_` (`_meta`), игнорируются |
+| `kind` | класс геометрии (`person`, `box`, `plank`, `cylinder`, `sphere`; в реальной разметке — любой короткий класс) |
+| `size` | `[L, W, H]`, м: вдоль пути, поперёк него, высота |
+| `distance` | м, **X (вперёд, система координат состава) ближайшей точки объекта**; именно это сообщает `nearest_distance`, и к этому применяется допуск сопоставления |
+| `lateral` | м, смещение центра объекта от **оси пути**, + влево (инструмент, знающий только систему координат состава, может использовать Y: ось обычно в пределах 0,25 м от неё, то есть внутри допуска сопоставления 1 м) |
+| `yaw_deg`, `reflectivity` | поворот вокруг Z; средняя интенсивность возвратов (0, если неизвестна) |
+| `label` | **одна строка на физический объект, сохраняется между кадрами**; дальность первого обнаружения считается по метке |
+| `in_gauge` | `true`, если повёрнутый контур объекта в плане пересекает строгий габарит (тревога обязательна); `false` для объектов рядом с путём, которые **не** должны вызывать тревогу |
+| `name` | необязательное имя из каталога или реальный класс; таблица полноты по классам строится по нему (если его нет — по `kind`) |
+| `n_points` | необязательное: число попаданий лучей; **`0` = полностью перекрыт**, исключается из полноты и учитывается в `occluded_gt_skipped` |
+| `bbox` | необязательное `[[xmin, ymin, zmin], [xmax, ymax, zmax]]` в системе координат состава; недостающие `distance` / `size` / `lateral` выводятся из него (исходная система датчика → система состава: `X = −y_s`, `Y = x_s`, `Z = z_s`) |
+| `seq`, `seq_step`, `speed_mps` | записываются `inject --sequence N --speed V` |
 
-Matching (`resense/metrics.py`, [`EVALUATION.md`](EVALUATION.md) §2): |Δdistance| ≤ max(2 m, 3 %
-of range) + L/2 and |Δlateral| ≤ 1 m, in the vehicle frame. Use `resense eval … --repeat 1` on
-real sequences (true frame order); static injected frames default to
-`tracking.frames_to_confirm()` repeats (5 at 10 Hz), with a tracker reset per background.
+Сопоставление (`resense/metrics.py`, [`EVALUATION.md`](EVALUATION.md) §2): |Δdistance| ≤
+max(2 м, 3 % дальности) + L/2 и |Δlateral| ≤ 1 м в системе координат состава. На реальных
+последовательностях используйте `resense eval … --repeat 1` (настоящий порядок кадров); для
+статичных инжектированных кадров по умолчанию делается `tracking.frames_to_confirm()` повторов (5
+при 10 Гц), с обнулением трекера на каждый фон.
 
-## Real labels (set R): `labels/doubleT_obstacle.json`
+## Реальная разметка (набор R): `labels/doubleT_obstacle.json`
 
-Made by P4 from the cached frames of `doubleT_obstacle` with the recipe below — **not** from the
-detector's output, but with its per-frame track model ([`EVALUATION.md`](EVALUATION.md) §1). All
-201 frames carry a label list.
+Сделана P4 по кэшированным кадрам `doubleT_obstacle` по приведённому ниже рецепту — **не** по
+выходу детектора, но с использованием его модели пути в каждом кадре
+([`EVALUATION.md`](EVALUATION.md) §1). Во всех 201 кадре есть список меток.
 
-| label | frames | where | `in_gauge` |
+| метка | кадры | где | `in_gauge` |
 |---|---|---|---|
-| `person_crossing` | 0–200 | 55.4–56.7 m ahead; lateral +1.8 m (frame 0) → −0.26 m (35–45, on the axis) → +1.5 m (70) → +2.5 m (90–115) → +2.33 m (140–200, standing at 54.65 m) | **true in frames 8–68** (61 frames) |
-| `object_on_rail` | 0–200 | ~0.45 × 0.6 × 0.3 m at X 56.1–56.6 m, lateral −0.6 … −1.2 m (on the right rail), top 0.07–0.22 m above the rail head; 19–23 points; hidden by the person in 16 frames (`n_points` 0) | true |
-| `person_walkway` | 146–200 | walks away along the left side: X 0.9 → 15.4 m, lateral +2.2 … +2.5 m, ~2.8 m/s | false (0.4–0.8 m outside) |
+| `person_crossing` | 0–200 | 55,4–56,7 м впереди; боковое смещение +1,8 м (кадр 0) → −0,26 м (35–45, на оси) → +1,5 м (70) → +2,5 м (90–115) → +2,33 м (140–200, стоит на 54,65 м) | **true в кадрах 8–68** (61 кадр) |
+| `object_on_rail` | 0–200 | ~0,45 × 0,6 × 0,3 м при X 56,1–56,6 м, боковое смещение −0,6 … −1,2 м (на правом рельсе), верх на 0,07–0,22 м над головкой рельса; 19–23 точки; скрыт человеком в 16 кадрах (`n_points` 0) | true |
+| `person_walkway` | 146–200 | уходит вдоль левой стороны: X 0,9 → 15,4 м, боковое смещение +2,2 … +2,5 м, ~2,8 м/с | false (на 0,4–0,8 м снаружи) |
 
-Recipe (package functions only, so the file can be rebuilt):
+Рецепт (только функции пакета, чтобы файл можно было пересоздать):
 
-1. Each cached frame → `resense.frame.frame_from_compact` (vehicle frame) and the per-frame
-   `resense.track.estimate_track` for the rail-head height; the lateral axis is the **median of
-   the 201 per-frame axes** (centre −0.225 m, yaw −1.25°; the train does not move).
-2. Far window X 50–62 m, |dy| ≤ 4 m, 0.1–2.3 m above the rail head → DBSCAN (0.4 m, 4); a person
-   is ≥ 15 points, ≤ 1.2 × 1.3 m, 0.6–2.0 m tall: exactly one per frame. Near window X 0.5–25 m,
-   dy 0.8–3.5 m, static background removed → DBSCAN (0.35 m, 5): the walking person, frames
-   146–200. The rail object: the points in X 55.9–56.8 m, dy −1.3 … −0.55 m, h −0.15 … +0.45 m.
-3. `distance` = X of the nearest point, `lateral` = mean dy from the median axis; `in_gauge` = the
-   nearest edge inside the 1.05 m half-width, `gauge_margin` = 1.05 − edge (the old 1.40 m polygon
-   survives only as `in_gauge_v05` / `gauge_margin_v05`). Checked by eye on renders
+1. Каждый кэшированный кадр → `resense.frame.frame_from_compact` (система координат состава) и
+   покадровый `resense.track.estimate_track` для высоты головки рельса; боковая ось — **медиана
+   201 покадровой оси** (центр −0,225 м, рыскание −1,25°; поезд не движется).
+2. Дальнее окно X 50–62 м, |dy| ≤ 4 м, 0,1–2,3 м над головкой рельса → DBSCAN (0,4 м, 4); человек
+   — это ≥ 15 точек, ≤ 1,2 × 1,3 м, высотой 0,6–2,0 м: ровно один на кадр. Ближнее окно
+   X 0,5–25 м, dy 0,8–3,5 м, статичный фон удалён → DBSCAN (0,35 м, 5): идущий человек, кадры
+   146–200. Предмет на рельсе: точки при X 55,9–56,8 м, dy −1,3 … −0,55 м, h −0,15 … +0,45 м.
+3. `distance` = X ближайшей точки, `lateral` = среднее dy от медианной оси; `in_gauge` = ближайший
+   край внутри полуширины 1,05 м, `gauge_margin` = 1,05 − край (прежний полигон 1,40 м сохранился
+   только как `in_gauge_v05` / `gauge_margin_v05`). Проверено глазами по рендерам
    (`resense run --npy … --start F --limit 1 --render out/render`, F = 0, 40, 72, 100, 165, 200).
 
-## How to check a new bag (intake recipe)
+## Как проверить новый бэг (порядок приёма)
 
-Before anything is labelled or run, `resense info <bag>` (metadata and first frame); record in
-the recordings table: **duration, frames, size, topic, `frame_id`**, the **`width`** of
-the first message (307 200 = 120° window, 921 600 = full turn), its **point count** and
-**azimuth span** (~100° of valid returns for a 120° window, ~210° for the full turn) and the
-**frame period** (≈ 0.1 s). Then:
+Прежде чем что-либо размечать или запускать, выполните `resense info <bag>` (метаданные и первый
+кадр); занесите в таблицу записей: **длительность, кадры, размер, топик, `frame_id`**, **`width`**
+первого сообщения (307 200 = окно 120°, 921 600 = полный оборот), его **число точек** и
+**азимутальный охват** (~100° валидных возвратов для окна 120°, ~210° для полного оборота) и
+**период кадров** (≈ 0,1 с). Затем:
 
-1. `resense run --bag <bag> --limit 30` — the track model must lock (`yc` stable within a few cm,
-   median `track.rail_score` 0.15–0.19; single frames can drop to 0) and an empty tunnel start
-   must not alarm; a jumping `track.center` or `n_corridor` 0 means the axis mapping
-   (`sensor.forward/left/up`) or the topic is wrong for that bag.
-2. `scripts/cache_frames.py <bag> cache/<bag> --every 10` — cached frames.
-3. If the bag holds an obstacle: label it with the tool (format above), keep it as
-   `labels/<bag>.json` and run `resense eval --bag <bag> --gt labels/<bag>.json --repeat 1 --text`.
-4. Add the table row with the scene; only what was read from the bag goes in (a value copied
-   from another bag is marked as such).
+1. `resense run --bag <bag> --limit 30` — модель пути должна захватиться (`yc` стабилен в пределах
+   нескольких сантиметров, медиана `track.rail_score` 0,15–0,19; отдельные кадры могут падать до
+   0), а пустой начальный участок тоннеля не должен вызывать тревогу; «прыгающий» `track.center`
+   или `n_corridor` 0 означает, что отображение осей (`sensor.forward/left/up`) или топик для
+   этого бэга выбраны неверно.
+2. `scripts/cache_frames.py <bag> cache/<bag> --every 10` — кэшированные кадры.
+3. Если в бэге есть препятствие: разметьте его инструментом (формат выше), сохраните как
+   `labels/<bag>.json` и запустите `resense eval --bag <bag> --gt labels/<bag>.json --repeat 1 --text`.
+4. Добавьте строку таблицы со сценой; вносится только то, что прочитано из бэга (значение,
+   скопированное из другого бэга, помечается как таковое).

@@ -1,0 +1,293 @@
+{
+  "schema": "resense-complete-timing-parity-v1",
+  "passed": true,
+  "protocol_sha256": "4a01410d121aaf14b1b724c931b094ec16c0eeea289e0851a6536733efe2f649",
+  "freeze_sha256": "d6ae9a99a52ba4bcac9215518177c2e148f2d8cd47d383c817f8128a187dfa1f",
+  "comparator_sha256": "fd7217975f8fff5576c0136a3ccddc0ce95e28ee491f3aa0861fd3cecf649a7a",
+  "candidate_commit": "bc75abe04a0b13c29c555a7baf64b4745603c02a",
+  "candidate_source_sha256": "506a1e05d19b99bae936188bfed4f2015a0cc0d562dec0251457022f6668f194",
+  "effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+  "cases": {
+    "doubleT_obstacle": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/doubleT_obstacle.jsonl.gz",
+        "sha256": "50b492a15a8b452e5ba48b5a0cf02d548f6df1d75480fb409cb8385ba587899c",
+        "frames": 201
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/doubleT_obstacle.jsonl",
+        "sha256": "2a86ba69241b3019f6e1957973d1cd9a0861f4e841fa741a354a97020127c16f",
+        "frames": 201
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 201,
+      "health_level_changed_frames": 187,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "doubleT_platform": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/doubleT_platform.jsonl.gz",
+        "sha256": "f4b6d270133daf712eb3e1a8db1d5a3321a7d2d6936470c4e0a3f9492ee876a0",
+        "frames": 345
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/doubleT_platform.jsonl",
+        "sha256": "d4cccc3f2505d0858021eecf6811fe66bed68ad7d2febdb85b5547fec6b7d229",
+        "frames": 345
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 345,
+      "health_level_changed_frames": 117,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "roundT_doubleT": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/roundT_doubleT.jsonl.gz",
+        "sha256": "15e7bde82e2a7502acff8dfdda5d09bd3b9c1389c644fe8d15fedcdff4a8c95b",
+        "frames": 252
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/roundT_doubleT.jsonl",
+        "sha256": "567f6fec3be0c2f995da484a33ad41d45e6f958ac0c4ed712dbe1a0b8140ac75",
+        "frames": 252
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 252,
+      "health_level_changed_frames": 32,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "roundT_pressureGate_roundT": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/roundT_pressureGate_roundT.jsonl.gz",
+        "sha256": "f228594f174f9e1294be159b66bc1f443f520a7961ca4c9f3097f05f83b7a97b",
+        "frames": 268
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/roundT_pressureGate_roundT.jsonl",
+        "sha256": "c4fc3bfead5abc6bc62065c987cd513b03636036b826df9630d5a7941f97924a",
+        "frames": 268
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 268,
+      "health_level_changed_frames": 113,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/roundT_squareT_pressureGate_squareT.jsonl.gz",
+        "sha256": "e4f0e3459532ec5b4f9f4fd7c07c56e80f76bab9cb9029c42034e4f650eb8642",
+        "frames": 545
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/roundT_squareT_pressureGate_squareT.jsonl",
+        "sha256": "ea27a006c85d2955271280c9590a3d7aaa92c3b4ac5582516801a8b331759e57",
+        "frames": 545
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 545,
+      "health_level_changed_frames": 160,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "squareT_platform_squareT_switch": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/squareT_platform_squareT_switch.jsonl.gz",
+        "sha256": "0b492448a6c9842465ff8643a4df87c3cf31c1e33110bfc7918faad2d1c7af0b",
+        "frames": 877
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/squareT_platform_squareT_switch.jsonl",
+        "sha256": "59d4d2855fb32a0e44caf54bae014ed8151689577caa906a6601d41c4fd6c188",
+        "frames": 877
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 877,
+      "health_level_changed_frames": 330,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "cloud_with_fake_obj": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/cloud_with_fake_obj.jsonl.gz",
+        "sha256": "d53911ecb96a4433c79e6e7109538b63d628a6d45590a0edca6a0f9ac87ad0b6",
+        "frames": 1510
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/cloud_with_fake_obj.jsonl",
+        "sha256": "c42751ae430c09e1d557750b3d2108b0fba87c4eae1138bb991a7965cd112895",
+        "frames": 1510
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1510,
+      "health_level_changed_frames": 14,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "new_data_0": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/new_data_0.jsonl.gz",
+        "sha256": "c161062ee1d976a30eaaf11d3904806a6c80d63fea1ff60f5e7c945c656ef7a5",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/new_data_0.jsonl",
+        "sha256": "44a739a7d1b5447f7a48018e69dab158aea17ac6a44d0fe29a4da6afdd8c3c0b",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 0,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "new_data_1": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/new_data_1.jsonl.gz",
+        "sha256": "9139d417ee44e458c0ab035871f7192c33a073ad43dbd9861ca781efdb7a798f",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/new_data_1.jsonl",
+        "sha256": "1c75bcbecdaa04d5d1ecfb55d42b9ae7ffb16506f7f186731e41fba944b439fc",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 46,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "new_data_2": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/new_data_2.jsonl.gz",
+        "sha256": "baeec75d2543a4d5e85b5b4f78778d8a2423b9ad2dcf6c7ca76aa87ff34a64e2",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/new_data_2.jsonl",
+        "sha256": "f494fd47e255f60393943eab7cbc1055554f5ef433d1e9e5bcbcc1eab393e5b3",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 29,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "new_data_3": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/new_data_3.jsonl.gz",
+        "sha256": "bdbef558f77dbc9d4c6df05c082dbaa8faab123ee0caf9d5194a8f657304fcc3",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/new_data_3.jsonl",
+        "sha256": "97aff1a937807e4eff82297c1a9551608156b0c3a0bceb301d5b81059cbb4a59",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 230,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "new_data_4": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/new_data_4.jsonl.gz",
+        "sha256": "0d1422b25f00d36e51bfd61e6c368ef9de6b9ef9550563cc7f9221b23b121251",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/new_data_4.jsonl",
+        "sha256": "605a204ab12197c56482789f917d07daee926f001d63999a8453e64a4007bc3f",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 301,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "new_data_5": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/new_data_5.jsonl.gz",
+        "sha256": "e56a35e41f3e175826a8df1a9dcd5c837ba6146f012e2ef5d924f3720c1329df",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/new_data_5.jsonl",
+        "sha256": "ff86a8f2c166c2ca3e27f14530b645b2586b34272a4939d17a8a7edf32101508",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 320,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "new_data_6": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/new_data_6.jsonl.gz",
+        "sha256": "14aa6c4bd2d7b6269082a52073790d8662114332d23faec15fac561e4bcb4d74",
+        "frames": 1409
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/new_data_6.jsonl",
+        "sha256": "dfedf67fec6c63668c3ddc4f4223874d911c5f4d5619c41bef7495689347c902",
+        "frames": 1409
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1409,
+      "health_level_changed_frames": 180,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    },
+    "new_data_7": {
+      "reference": {
+        "path": "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/captures/new_data_7.jsonl.gz",
+        "sha256": "cd98e4bf889029abe2781db4e3ed78bd2d7302dc7113cca595eb46d89b255256",
+        "frames": 1408
+      },
+      "candidate": {
+        "path": "/cycle/complete_timing/default/captures/new_data_7.jsonl",
+        "sha256": "f4d0bd44b15ca62d94e0ffcc06602f12af54be9d81fd8d6b1f2920bfcb6b88ee",
+        "frames": 1408
+      },
+      "changed_non_timing_frames": 0,
+      "health_timing_changed_frames": 1408,
+      "health_level_changed_frames": 213,
+      "invalid_timing_contract_frames": 0,
+      "passed": true
+    }
+  },
+  "set_F": {
+    "reference_sha256": "f229e2ef0d755ea45d52b40a666fdc6df3c938f7e29be33ffba9475e31bc0548",
+    "candidate_sha256": "5f89cb24cb08f039d8aafc682e837925670b0f3c369e92ba1220376736b3b8ff",
+    "sequences": 30,
+    "rows": 3060,
+    "wall_s": {
+      "reference": 390.9,
+      "candidate": 371.5
+    },
+    "exact_equal_except_wall_s": true
+  },
+  "artifacts": {
+    "payload_differences.jsonl.gz": {
+      "sha256": "150d2a00ec5920bfe59fe0ee83992966096ae9cde497bfdac4b01ec4bf923739",
+      "bytes": 51
+    },
+    "health_timing_differences.jsonl.gz": {
+      "sha256": "2ef8f6416484b6af3d7b21d9b27704211fa4fb982b30406c957e4029a9c5ba13",
+      "bytes": 552773
+    },
+    "contract_failures.jsonl.gz": {
+      "sha256": "d7195b06c85155a9de20dbdbc56ee78e1bf038f06344de654ec688ac4b4a33bd",
+      "bytes": 49
+    }
+  },
+  "timing_note": "Timing contract correction only. Shared-load times establish no performance gain or ROS runtime acceptance."
+}

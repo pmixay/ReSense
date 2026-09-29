@@ -1,0 +1,104 @@
+{
+  "schema": "resense-complete-timing-full-gate-protocol-v1",
+  "status": "registered before the full gate",
+  "timing_contract_protocol_commit": "c9db941a0b567db2a241ca45b33ae92e8a040f37",
+  "baseline_gate": {
+    "path": "docs/evidence/cycle_2026-09-28/health_histogram/default/gate.json",
+    "sha256": "f131829cab4ee765b8fb77868d95798ebcdcf855dd48a7ccf1abe6fe485e076d",
+    "measured_commit": "ef71c9dc4f88147327dcb41ea79358dfc690ba77"
+  },
+  "baseline_source_sha256": "c0273a13a67ab4872dab00154caa75f6b30f50416775062c591fbb47906a0fa4",
+  "candidate_source_sha256": "506a1e05d19b99bae936188bfed4f2015a0cc0d562dec0251457022f6668f194",
+  "effective_config_sha256": "22a30ff265035e06358a21696cfb8bc61b598d16e5a64aa3536abfefbc4bd5fb",
+  "config_file_sha256": "f5ee418844de1cb5a87d972bd77689b28b50fc74d833e252183446af96fa03c2",
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "reference_manifest_sha256": "47fc41610bd2dfec7ebd4bfe6a58e324a418fe1df48c5198180b2e6cf8208073",
+  "production_changes": [
+    "resense/detector.py",
+    "resense/health.py"
+  ],
+  "metric_counts": {
+    "all": 224,
+    "non_latency": 208,
+    "gated": 146
+  },
+  "reset_indices": {
+    "doubleT_obstacle": [
+      0
+    ],
+    "doubleT_platform": [
+      0
+    ],
+    "roundT_doubleT": [
+      0
+    ],
+    "roundT_pressureGate_roundT": [
+      0
+    ],
+    "roundT_squareT_pressureGate_squareT": [
+      0
+    ],
+    "squareT_platform_squareT_switch": [
+      0
+    ],
+    "cloud_with_fake_obj": [
+      0
+    ],
+    "new_data_0": [
+      0
+    ],
+    "new_data_1": [
+      0
+    ],
+    "new_data_2": [
+      0
+    ],
+    "new_data_3": [
+      0
+    ],
+    "new_data_4": [
+      0
+    ],
+    "new_data_5": [
+      0
+    ],
+    "new_data_6": [
+      0
+    ],
+    "new_data_7": [
+      0
+    ]
+  },
+  "command": [
+    "python3",
+    "scripts/regression_gate.py",
+    "--cache",
+    "/cycle/cache",
+    "--jobs",
+    "4",
+    "--chunks",
+    "8",
+    "--work",
+    "/cycle/complete_timing/default/captures",
+    "--out",
+    "/cycle/complete_timing/default/gate.json",
+    "--baseline",
+    "/workspace/ReSense-timing/docs/evidence/cycle_2026-09-28/health_histogram/default/gate.json"
+  ],
+  "acceptance": [
+    "Freeze clean source, effective config, observer files and native binary before execution; verify unchanged source and binary after completion.",
+    "Require all 224 metrics, including 208 identical non-latency metrics and 146 enforced metrics; no waivers, missing rows or worse values.",
+    "Compare every ordered frame identity in all 15 captures (15269 frames). All fields outside declared timing and validated latency-only health effects must match exactly.",
+    "Validate reference six-stage sum against its historical total; candidate six-stage sum against stages, and stages+health+result against complete total. Independent 0.01ms rounding gives sum error bounds 0.035ms and 0.020ms.",
+    "Recompute health p95 from baseline current-through-last-window stage totals and candidate preceding completed totals. Allow at most 0.055ms from total rounding (0.005ms) plus p95 rounding (0.05ms). First candidate p95 must be zero with empty history.",
+    "Require exact previous_complete_process basis and integer sample age 1, except explicit index0 with null. Each eval_real.run_piece owns one detector and has no internal reset; unexpected nulls fail.",
+    "Validate exact latency warning grammar, ten-sample warm-up, threshold and derived level before excluding only latency_p95_ms, validated latency text/level and the two declared metadata fields.",
+    "Preserve all before/after health differences and contract/semantic failures. Reject unknown health fields rather than silently dropping them.",
+    "Set F requires all 30 registered cases and exactly 3060 actual rows in the same order; semantic contents must match exactly except summary.wall_s."
+  ],
+  "limits": [
+    "Shared-load timing is diagnostic and cannot establish execution speed, ROS runtime latency or a score increase.",
+    "No new history stress is required for this instrumentation-only default-false change; both latency decision policies are covered by focused tests.",
+    "The previous full-gate evidence remains unchanged; this candidate gets its own new record."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "resense-internal-score-v1",
+  "review_date": "2026-09-29",
+  "assessed_commit": "dcaa5dbddb1dbc0ed30ccb50bed569390bca060d",
+  "previous_score": 65,
+  "score": 65,
+  "change": 0,
+  "rubric_note": "These are internal project weights; the organizer does not publish numeric criterion weights.",
+  "criteria": {
+    "functionality": {"score": 16, "max": 25},
+    "detection_range": {"score": 6, "max": 15},
+    "speed": {"score": 8, "max": 10},
+    "generalization": {"score": 6, "max": 15},
+    "technical_quality": {"score": 9, "max": 10},
+    "launch": {"score": 8, "max": 10},
+    "team_approach": {"score": 9, "max": 10},
+    "pitch": {"score": 3, "max": 5}
+  },
+  "change_assessment": "The shipped threshold improves one synthetic small-box approach, but sustained range is unchanged and there is no new independently labeled real-positive result. Ride STOP totals are unchanged, with five additional GO-to-CAUTION frames. This is too narrow to change the whole-point criterion scores.",
+  "validation": {
+    "default_regression_gate": "passed, no overrides or waivers; 202 gated metrics same, two better, none worse",
+    "monitoring_acceptance": "passed; five added ride CAUTION frames; no STOP changes on the ride or five empty recordings",
+    "history_stress": "33 histories; 204 STOP frames and 55 events; STOP-frame lists and non-ID detection fields match the threshold-4 control, with 18 ID-only differences across 12,468 rows",
+    "detector_freeze": "PASS at source digest f20dd9eff0d810483a3f9d015700c164bbd39f8e237feeee058c2826db49afc4",
+    "focused_tests": "17 passed",
+    "ruff": "passed",
+    "full_pytest": "1,206 passed; 1 real-data test failed because /data/cache/new_data/new_data_55_0013.npy is missing; 7 data-dependent tests were deselected"
+  },
+  "evidence": [
+    "docs/evidence/cycle_2026-09-29/thin_far_threshold.md",
+    "docs/evidence/cycle_2026-09-29/thin_far_threshold/default_gate.json",
+    "docs/evidence/cycle_2026-09-29/thin_far_threshold/default_acceptance.json",
+    "docs/evidence/detector_freeze_2026-09-27.json"
+  ],
+  "limits": [
+    "Set F small-box results are synthetic point injections into recorded backgrounds.",
+    "The first-detection median is over the successful sequences, whose membership changes from one to two; it is not a paired range gain.",
+    "The zero-GO-overclaim diagnostic still fails with 16 GO overclaims on Set O."
+  ]
+}

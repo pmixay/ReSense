@@ -1,0 +1,141 @@
+"""Audit exact-source CI metadata, artifact bytes and complete original-frame results."""
+from collections import Counter
+import hashlib
+import json
+import math
+from pathlib import Path
+import sys
+import zipfile
+
+ROOT = Path('/home/likikikpa/ReSense-p3-sync')
+OUT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / 'scripts'))
+from check_dry_run import load, percentile, playback_pace
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def read(name):
+    return json.loads((OUT / name).read_text())
+
+
+def distribution(values):
+    assert all(isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x) for x in values)
+    return {'count': len(values), 'mean': sum(values) / len(values), 'min': min(values), 'max': max(values),
+            **{f'p{q}': percentile(values, q) for q in (50, 90, 95, 99)}}
+
+
+run, jobs, artifact = read('run.json'), read('jobs.json'), read('artifact.json')
+commit = '75ef4e20e587203a394e365c4fa601c822adb164'
+assert run['head_sha'] == artifact['workflow_run']['head_sha'] == commit
+assert run['status'] == 'completed' and run['conclusion'] == 'success'
+assert len(jobs['jobs']) == 4 and all(j['conclusion'] == 'success' for j in jobs['jobs'])
+assert artifact['id'] == 10994617486 and not artifact['expired']
+assert (OUT / 'artifact.zip').stat().st_size == artifact['size_in_bytes'] == 110281
+assert artifact['digest'] == 'sha256:' + sha(OUT / 'artifact.zip')
+members = []
+with zipfile.ZipFile(OUT / 'artifact.zip') as archive:
+    for name in archive.namelist():
+        data = archive.read(name)
+        extracted = OUT / 'captures' / name
+        assert extracted.read_bytes() == data
+        members.append({'name': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest(),
+                        'extracted': 'captures/' + name})
+provenance = (OUT / 'captures/provenance.txt').read_text()
+assert 'commit: ' + commit in provenance and 'read_ahead_queue_size=10' in provenance
+for checksums in json.loads((OUT.parent / 'execution_plan.json').read_text())['input_sha256'].values():
+    for checksum in checksums.values():
+        assert checksum in provenance
+fast = read('captures/fast_input.json')
+assert fast['pass'] and [r['frames'] for r in fast['results']] == [201, 252]
+assert all(r['identical_frames'] == r['frames'] and not r['mismatched_frames'] for r in fast['results'])
+report = {
+    'schema': 'resense-main-sync-ci-audit-v1', 'commit': commit,
+    'run_id': run['id'], 'run_url': run['html_url'], 'run_conclusion': run['conclusion'],
+    'jobs': {j['name']: {'id': j['id'], 'conclusion': j['conclusion'], 'url': j['html_url']} for j in jobs['jobs']},
+    'artifact_id': artifact['id'], 'artifact_name': artifact['name'],
+    'artifact_zip_sha256': sha(OUT / 'artifact.zip'), 'artifact_api_digest_matched': True,
+    'artifact_bytes': artifact['size_in_bytes'], 'fast_input_identical_frames': 453,
+    'source_checker_sha256': sha(ROOT / 'scripts/check_dry_run.py'),
+    'source_fast_input_checker_sha256': sha(ROOT / 'scripts/check_fast_input.py'),
+    'source_metrics_sha256': sha(ROOT / 'resense/metrics.py'), 'runs': {},
+    'limitations': [
+        'CI cold-bag checks do not request --min-playback-rate; green CI is not full-rate cold-playback acceptance.',
+        'The positive capture retrospectively measures 0.78194x playback, below the local protocol minimum 0.9x.',
+        'No unpaired timing gain or full fresh-target recall claim.',
+        'The artifact binds commit and bag hashes, and logs native enabled, but includes no immutable CI image ID or installed-file/native-binary hashes.',
+        'The independently verified local image identity must not be relabeled as the CI image identity.',
+        'Playback pace derives from processed evaluation endpoints and is not an independent player clock.',
+    ],
+}
+for kind, folder, count in (('positive', 'dry_run', 201), ('clear', 'roundT_doubleT', 252)):
+    audit = read(f'audit/{kind}.json')
+    capture = OUT / 'captures' / folder / 'status.jsonl'
+    frames, _ = load(capture)
+    local, _ = load(OUT.parent / kind / 'status.jsonl')
+    assert audit['capture_sha256'] == sha(capture)
+    assert audit['original_frames'] == audit['captured_frames'] == count
+    assert audit['exact_header_sequence_complete'] and not audit['missing_indices']
+    assert not audit['freshness_contract_failures'] and not audit['held_stop_frames']
+    assert 'per-frame kernels: native' in (OUT / 'captures' / folder / 'node.log').read_text()
+    assert [f['stamp'] for f in frames] == [f['stamp'] for f in local]
+    clocks = [f['freshness']['evaluated_at_utc_s'] for f in frames]
+    assert all(isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x) and x > 0 for x in clocks)
+    assert all(b > a for a, b in zip(clocks, clocks[1:]))
+    pace = playback_pace(frames)
+    keep = ('captured_frames', 'original_frames', 'exact_header_sequence_complete', 'missing_indices',
+            'strict_fresh_frames', 'strict_fresh_intervals', 'invalid_reasons', 'freshness_contract_failures',
+            'last_node_counters', 'source_stamp_gaps_over_150ms', 'timing_distributions_ms',
+            'raw_current_stop_frames', 'held_stop_frames', 'decisions')
+    row = {k: audit[k] for k in keep}
+    row['playback'] = {'recording_seconds': pace[0], 'evaluation_seconds': pace[1], 'rate': pace[0] / pace[1],
+                       'meets_local_0_9x_requirement': pace[0] / pace[1] >= .9,
+                       'min_playback_rate_requested_by_ci': False,
+                       'strictly_progressing_finite_positive_evaluation_clocks': True}
+    ages = [1000 * f['freshness']['source_age_s'] for f in frames]
+    row['all_frame_end_to_end_values_ms'] = ages
+    row['timing_distributions_ms']['all_frame_end_to_end_ms'] = distribution(ages)
+    comparison = json.loads((OUT.parent / 'audit/summary.json').read_text())['raw_output_comparison'][kind]
+    fields, health_fields = comparison['fields'], comparison['health_fields']
+    diffs = []
+    for i, (before, after) in enumerate(zip(local, frames)):
+        changed = [k for k in fields if before.get(k) != after.get(k)]
+        changed += ['health.' + k for k in health_fields if before['health'].get(k) != after['health'].get(k)]
+        if changed:
+            diffs.append({'frame': i, 'fields': changed})
+    row['raw_output_comparison_to_local'] = {'compared_frames': count, 'fields': fields,
+                                            'health_fields': health_fields,
+                                            'difference_counts': dict(Counter(k for d in diffs for k in d['fields'])),
+                                            'differences': diffs,
+                                            'local_capture_sha256': sha(OUT.parent / kind / 'status.jsonl')}
+    track_diffs = {}
+    for before, after in zip(local, frames):
+        for key in set(before['track']) | set(after['track']):
+            a, b = before['track'].get(key), after['track'].get(key)
+            if a == b:
+                continue
+            values = list(zip(a, b)) if isinstance(a, list) else [(a, b)]
+            assert all(isinstance(x, (int, float)) and isinstance(y, (int, float)) for x, y in values)
+            entry = track_diffs.setdefault(key, {'differing_frames': 0, 'max_absolute_difference': 0.0})
+            entry['differing_frames'] += 1
+            entry['max_absolute_difference'] = max(entry['max_absolute_difference'], *(abs(x - y) for x, y in values))
+    row['raw_output_comparison_to_local']['track_numeric_differences'] = track_diffs
+    if 'targets' in audit:
+        row['targets'] = {name: {m: t[m] for m in ('raw', 'fresh')} for name, t in audit['targets'].items()}
+        rail = audit['targets']['object_on_rail']
+        row['rail_from_frame75'] = {m: {'hits': sum(i >= 75 for i in rail[m + '_matched_indices']),
+                                      'frames': sum(i >= 75 for i in rail['visible_indices'])} for m in ('raw', 'fresh')}
+    report['runs'][kind] = row
+report['observer_sha256'] = sha(__file__)
+report['api_files'] = {name: sha(OUT / name) for name in ('run.json', 'jobs.json', 'artifacts.json', 'artifact.json')}
+(OUT / 'artifact_manifest.json').write_text(json.dumps({
+    'schema': 'resense-ci-artifact-members-v1', 'run_id': run['id'], 'commit': commit,
+    'artifact_id': artifact['id'], 'artifact_zip_bytes': artifact['size_in_bytes'],
+    'artifact_zip_sha256': sha(OUT / 'artifact.zip'), 'api_digest': artifact['digest'], 'members': members,
+}, indent=2) + '\n')
+(OUT / 'summary.json').write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps({'raw_field_differences': {k: v['raw_output_comparison_to_local']['difference_counts']
+                                          for k, v in report['runs'].items()},
+                  'all_jobs_success': True, 'zip_digest_matches_api': True}))

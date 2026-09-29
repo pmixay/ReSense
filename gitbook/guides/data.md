@@ -41,7 +41,7 @@ resense run --bag /data/for_hackathon/<bag> --limit 30
 Модель пути должна захватиться в первых кадрах, а пустой тоннель в начале не должен давать тревоги.
 Если в выводе `track.center` скачет или `n_corridor` остаётся 0, соответствие осей сенсора
 (`sensor.forward/left/up` или параметры ноды `sensor_forward/left/up`) не подходит к бэгу. Полный
-порядок приёмки: [`docs/DATASET.md` «Как проверить новый бэг»](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md#how-to-check-a-new-bag-intake-recipe).
+порядок приёмки: [`docs/DATASET.md` «Как проверить новый бэг»](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md#как-проверить-новый-бэг-порядок-приёма).
 
 ## Монтирование данных в контейнеры
 

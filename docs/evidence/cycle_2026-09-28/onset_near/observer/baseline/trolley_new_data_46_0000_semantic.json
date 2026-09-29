@@ -1,0 +1,2769 @@
+{
+ "kind": "trolley",
+ "d0": 220.0,
+ "lateral": 0.5220869085453218,
+ "refl": 83.48999931723384,
+ "first": 156.60342737679764,
+ "fp": 0,
+ "rows": [
+  {
+   "frame": "new_data_46_0000",
+   "d": 220.0,
+   "path_d": 220.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 220.0,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.746
+   },
+   "gt_vehicle_y_m": -0.14907462444063724,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 183.7,
+   "vis": 183.7
+  },
+  {
+   "frame": "new_data_46_0001",
+   "d": 217.9,
+   "path_d": 217.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 217.85981807272222,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.592
+   },
+   "gt_vehicle_y_m": -0.5210242331954998,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 181.5,
+   "vis": 181.5
+  },
+  {
+   "frame": "new_data_46_0002",
+   "d": 215.8,
+   "path_d": 215.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 215.82536835464305,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.634
+   },
+   "gt_vehicle_y_m": -0.5970798313155138,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 183.5,
+   "vis": 183.5
+  },
+  {
+   "frame": "new_data_46_0003",
+   "d": 213.7,
+   "path_d": 213.7,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 213.71246939270995,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.68
+   },
+   "gt_vehicle_y_m": -0.4754207901015505,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 181.4,
+   "vis": 181.4
+  },
+  {
+   "frame": "new_data_46_0004",
+   "d": 211.5,
+   "path_d": 211.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 211.51726253125852,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.545
+   },
+   "gt_vehicle_y_m": -0.37421148977953167,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.8,
+   "vis": 182.8
+  },
+  {
+   "frame": "new_data_46_0005",
+   "d": 209.5,
+   "path_d": 209.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 209.47273491250294,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.484
+   },
+   "gt_vehicle_y_m": -0.45255077695563894,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 188.5,
+   "vis": 188.5
+  },
+  {
+   "frame": "new_data_46_0006",
+   "d": 207.4,
+   "path_d": 207.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 207.3984325952024,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.69
+   },
+   "gt_vehicle_y_m": -0.34934519690090093,
+   "axis_error_m": 0.0,
+   "n": 0,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 185.1,
+   "vis": 185.1
+  },
+  {
+   "frame": "new_data_46_0007",
+   "d": 205.3,
+   "path_d": 205.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 205.2762476397031,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.31
+   },
+   "gt_vehicle_y_m": -0.06190018863005842,
+   "axis_error_m": 0.0,
+   "n": 0,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 173.0,
+   "vis": 173.0
+  },
+  {
+   "frame": "new_data_46_0008",
+   "d": 203.2,
+   "path_d": 203.2,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 203.15246373800036,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.322
+   },
+   "gt_vehicle_y_m": 0.1263837765705047,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.2,
+   "vis": 182.2
+  },
+  {
+   "frame": "new_data_46_0009",
+   "d": 201.0,
+   "path_d": 201.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 201.01674574570686,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.396
+   },
+   "gt_vehicle_y_m": 0.12742715954430195,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 187.0,
+   "vis": 187.0
+  },
+  {
+   "frame": "new_data_46_0010",
+   "d": 198.9,
+   "path_d": 198.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 198.92459273246348,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.534
+   },
+   "gt_vehicle_y_m": 0.1528885061398828,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 187.4,
+   "vis": 187.4
+  },
+  {
+   "frame": "new_data_46_0011",
+   "d": 196.5,
+   "path_d": 196.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 196.53762329447773,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.496
+   },
+   "gt_vehicle_y_m": -0.04348551310332782,
+   "axis_error_m": 0.0,
+   "n": 0,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 180.0,
+   "vis": 180.0
+  },
+  {
+   "frame": "new_data_46_0012",
+   "d": 194.5,
+   "path_d": 194.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 194.5302497379756,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.294
+   },
+   "gt_vehicle_y_m": -0.044374996019316826,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 187.7,
+   "vis": 187.7
+  },
+  {
+   "frame": "new_data_46_0013",
+   "d": 192.5,
+   "path_d": 192.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 192.53450258840996,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.368
+   },
+   "gt_vehicle_y_m": -0.17506725734177053,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 191.9,
+   "vis": 191.9
+  },
+  {
+   "frame": "new_data_46_0014",
+   "d": 190.4,
+   "path_d": 190.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 190.4123579848653,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.584
+   },
+   "gt_vehicle_y_m": -0.22248568611275898,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 183.6,
+   "vis": 183.6
+  },
+  {
+   "frame": "new_data_46_0015",
+   "d": 188.3,
+   "path_d": 188.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 188.30983956326855,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.266
+   },
+   "gt_vehicle_y_m": -0.29774395143010357,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 181.5,
+   "vis": 181.5
+  },
+  {
+   "frame": "new_data_46_0016",
+   "d": 186.2,
+   "path_d": 186.2,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 186.2155680724055,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.297
+   },
+   "gt_vehicle_y_m": -0.16990408428843606,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 180.8,
+   "vis": 180.8
+  },
+  {
+   "frame": "new_data_46_0017",
+   "d": 184.1,
+   "path_d": 184.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 184.10607380664683,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.632
+   },
+   "gt_vehicle_y_m": -0.18173388211565544,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 192.7,
+   "vis": 192.7
+  },
+  {
+   "frame": "new_data_46_0018",
+   "d": 181.9,
+   "path_d": 181.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 181.91603199539193,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.341
+   },
+   "gt_vehicle_y_m": -0.13447932626858827,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 192.3,
+   "vis": 192.3
+  },
+  {
+   "frame": "new_data_46_0019",
+   "d": 179.8,
+   "path_d": 179.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 179.84093272698684,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.285
+   },
+   "gt_vehicle_y_m": -0.17472604230363376,
+   "axis_error_m": 0.0,
+   "n": 1,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 194.3,
+   "vis": 194.3
+  },
+  {
+   "frame": "new_data_46_0020",
+   "d": 177.7,
+   "path_d": 177.7,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 177.71389544893964,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.399
+   },
+   "gt_vehicle_y_m": -0.2500041563618839,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 194.2,
+   "vis": 194.2
+  },
+  {
+   "frame": "new_data_46_0021",
+   "d": 175.5,
+   "path_d": 175.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 175.50372305630358,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.489
+   },
+   "gt_vehicle_y_m": -0.12543031169865337,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 192.1,
+   "vis": 192.1
+  },
+  {
+   "frame": "new_data_46_0022",
+   "d": 173.4,
+   "path_d": 173.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 173.37616624684014,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.201
+   },
+   "gt_vehicle_y_m": -0.014497995626158278,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 190.8,
+   "vis": 190.8
+  },
+  {
+   "frame": "new_data_46_0023",
+   "d": 171.3,
+   "path_d": 171.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 171.27526694742414,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.528
+   },
+   "gt_vehicle_y_m": -0.1039404179156107,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 189.2,
+   "vis": 189.2
+  },
+  {
+   "frame": "new_data_46_0024",
+   "d": 169.2,
+   "path_d": 169.2,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 169.21513825419802,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.326
+   },
+   "gt_vehicle_y_m": -0.19244004665571035,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 191.3,
+   "vis": 191.3
+  },
+  {
+   "frame": "new_data_46_0025",
+   "d": 167.1,
+   "path_d": 167.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 167.11968142466682,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.123
+   },
+   "gt_vehicle_y_m": -0.1552052934999293,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 183.7,
+   "vis": 183.7
+  },
+  {
+   "frame": "new_data_46_0026",
+   "d": 165.0,
+   "path_d": 165.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 165.02901638975152,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.338
+   },
+   "gt_vehicle_y_m": -0.18404865433237316,
+   "axis_error_m": 0.0,
+   "n": 5,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 183.0,
+   "vis": 183.0
+  },
+  {
+   "frame": "new_data_46_0027",
+   "d": 162.8,
+   "path_d": 162.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 162.7731151444967,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.633
+   },
+   "gt_vehicle_y_m": -0.21443328286042784,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 180.7,
+   "vis": 180.7
+  },
+  {
+   "frame": "new_data_46_0028",
+   "d": 160.8,
+   "path_d": 160.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 160.8138058099893,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.097
+   },
+   "gt_vehicle_y_m": -0.2940519797884341,
+   "axis_error_m": 0.0,
+   "n": 6,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 184.8,
+   "vis": 184.8
+  },
+  {
+   "frame": "new_data_46_0029",
+   "d": 158.7,
+   "path_d": 158.7,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 158.65125881184105,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.332
+   },
+   "gt_vehicle_y_m": -0.26020378881480566,
+   "axis_error_m": 0.0,
+   "n": 2,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.7,
+   "vis": 182.7
+  },
+  {
+   "frame": "new_data_46_0030",
+   "d": 156.6,
+   "path_d": 156.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 156.60342737679764,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.328
+   },
+   "gt_vehicle_y_m": -0.3697746862548519,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 180.6,
+   "vis": 180.6
+  },
+  {
+   "frame": "new_data_46_0031",
+   "d": 154.5,
+   "path_d": 154.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 154.46025436088067,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.181
+   },
+   "gt_vehicle_y_m": -0.29377333698531716,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.6,
+   "vis": 178.6
+  },
+  {
+   "frame": "new_data_46_0032",
+   "d": 152.4,
+   "path_d": 152.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 152.35417992327947,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.298
+   },
+   "gt_vehicle_y_m": -0.2359174122295613,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 179.5,
+   "vis": 179.5
+  },
+  {
+   "frame": "new_data_46_0033",
+   "d": 150.2,
+   "path_d": 150.2,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 150.2039705352686,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.267
+   },
+   "gt_vehicle_y_m": -0.22450976792632527,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 177.3,
+   "vis": 177.3
+  },
+  {
+   "frame": "new_data_46_0034",
+   "d": 148.1,
+   "path_d": 148.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 148.1093964047456,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.037
+   },
+   "gt_vehicle_y_m": -0.16894747889910866,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 180.2,
+   "vis": 180.2
+  },
+  {
+   "frame": "new_data_46_0035",
+   "d": 146.0,
+   "path_d": 146.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 146.02216128597644,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.283
+   },
+   "gt_vehicle_y_m": -0.18941473236930662,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 194.5,
+   "vis": 194.5
+  },
+  {
+   "frame": "new_data_46_0036",
+   "d": 143.9,
+   "path_d": 143.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 143.86692303561603,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.161
+   },
+   "gt_vehicle_y_m": -0.22118489818688503,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 195.1,
+   "vis": 195.1
+  },
+  {
+   "frame": "new_data_46_0037",
+   "d": 141.7,
+   "path_d": 141.7,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 141.72901090578787,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.114
+   },
+   "gt_vehicle_y_m": -0.3255144442269121,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 191.0,
+   "vis": 191.0
+  },
+  {
+   "frame": "new_data_46_0038",
+   "d": 139.6,
+   "path_d": 139.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 139.63981871721768,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.264
+   },
+   "gt_vehicle_y_m": -0.28322372989745503,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 187.5,
+   "vis": 187.5
+  },
+  {
+   "frame": "new_data_46_0039",
+   "d": 137.6,
+   "path_d": 137.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 137.5796042760879,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.967
+   },
+   "gt_vehicle_y_m": -0.2772183158653059,
+   "axis_error_m": 0.0,
+   "n": 8,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 184.4,
+   "vis": 184.4
+  },
+  {
+   "frame": "new_data_46_0040",
+   "d": 135.4,
+   "path_d": 135.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 135.40546113496916,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.039
+   },
+   "gt_vehicle_y_m": -0.2428531793001073,
+   "axis_error_m": 0.0,
+   "n": 5,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 183.9,
+   "vis": 183.9
+  },
+  {
+   "frame": "new_data_46_0041",
+   "d": 133.3,
+   "path_d": 133.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 133.32763306563018,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.052
+   },
+   "gt_vehicle_y_m": -0.1397912225093192,
+   "axis_error_m": 0.0,
+   "n": 3,
+   "hit": true,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 182.5,
+   "vis": 182.5
+  },
+  {
+   "frame": "new_data_46_0042",
+   "d": 131.2,
+   "path_d": 131.2,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 131.18317887515272,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.942
+   },
+   "gt_vehicle_y_m": -0.008292930974063584,
+   "axis_error_m": 0.0,
+   "n": 9,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 182.5,
+   "vis": 182.5
+  },
+  {
+   "frame": "new_data_46_0043",
+   "d": 129.1,
+   "path_d": 129.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 129.10791315493466,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.671
+   },
+   "gt_vehicle_y_m": -0.022029091950098056,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 180.3,
+   "vis": 180.3
+  },
+  {
+   "frame": "new_data_46_0044",
+   "d": 127.0,
+   "path_d": 127.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 127.00494077384799,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.679
+   },
+   "gt_vehicle_y_m": -0.031150546529078893,
+   "axis_error_m": 0.0,
+   "n": 6,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.3,
+   "vis": 178.3
+  },
+  {
+   "frame": "new_data_46_0045",
+   "d": 124.8,
+   "path_d": 124.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 124.81591280545393,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -2.045
+   },
+   "gt_vehicle_y_m": -0.0003552380320298587,
+   "axis_error_m": 0.0,
+   "n": 9,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 178.9,
+   "vis": 178.9
+  },
+  {
+   "frame": "new_data_46_0046",
+   "d": 122.6,
+   "path_d": 122.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 122.57197591475588,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.591
+   },
+   "gt_vehicle_y_m": -0.10166092976775398,
+   "axis_error_m": 0.0,
+   "n": 4,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 176.7,
+   "vis": 176.7
+  },
+  {
+   "frame": "new_data_46_0047",
+   "d": 120.5,
+   "path_d": 120.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 120.5244269433951,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.823
+   },
+   "gt_vehicle_y_m": -0.07973386734325838,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 174.7,
+   "vis": 174.7
+  },
+  {
+   "frame": "new_data_46_0048",
+   "d": 118.4,
+   "path_d": 118.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 118.41974969222403,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.641
+   },
+   "gt_vehicle_y_m": -0.045417514332038555,
+   "axis_error_m": 0.0,
+   "n": 9,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 172.6,
+   "vis": 172.6
+  },
+  {
+   "frame": "new_data_46_0049",
+   "d": 116.4,
+   "path_d": 116.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 116.37058664267684,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.623
+   },
+   "gt_vehicle_y_m": -0.0859545403543619,
+   "axis_error_m": 0.0,
+   "n": 5,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 176.4,
+   "vis": 176.4
+  },
+  {
+   "frame": "new_data_46_0050",
+   "d": 114.3,
+   "path_d": 114.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 114.31416528528513,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.502
+   },
+   "gt_vehicle_y_m": -0.11513138753475782,
+   "axis_error_m": 0.0,
+   "n": 9,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 175.1,
+   "vis": 175.1
+  },
+  {
+   "frame": "new_data_47_0000",
+   "d": 112.1,
+   "path_d": 112.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 112.1460242520429,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.65
+   },
+   "gt_vehicle_y_m": -0.023230206201939385,
+   "axis_error_m": 0.0,
+   "n": 8,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 187.9,
+   "vis": 187.9
+  },
+  {
+   "frame": "new_data_47_0001",
+   "d": 110.0,
+   "path_d": 110.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 110.0127209864233,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.617
+   },
+   "gt_vehicle_y_m": -0.009734726169062458,
+   "axis_error_m": 0.0,
+   "n": 8,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 189.2,
+   "vis": 189.2
+  },
+  {
+   "frame": "new_data_47_0002",
+   "d": 108.0,
+   "path_d": 108.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 108.03792709971238,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.608
+   },
+   "gt_vehicle_y_m": 0.06059247812299795,
+   "axis_error_m": 0.0,
+   "n": 10,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 185.8,
+   "vis": 185.8
+  },
+  {
+   "frame": "new_data_47_0003",
+   "d": 106.0,
+   "path_d": 106.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 105.95263293875291,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.554
+   },
+   "gt_vehicle_y_m": 0.03073351281210096,
+   "axis_error_m": 0.0,
+   "n": 10,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 189.7,
+   "vis": 189.7
+  },
+  {
+   "frame": "new_data_47_0004",
+   "d": 103.9,
+   "path_d": 103.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 103.89083332885775,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.574
+   },
+   "gt_vehicle_y_m": 0.10879447886683813,
+   "axis_error_m": 0.0,
+   "n": 11,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 179.6,
+   "vis": 179.6
+  },
+  {
+   "frame": "new_data_47_0005",
+   "d": 101.8,
+   "path_d": 101.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 101.76724718880418,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.557
+   },
+   "gt_vehicle_y_m": 0.10864722733013682,
+   "axis_error_m": 0.0,
+   "n": 9,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 180.8,
+   "vis": 180.8
+  },
+  {
+   "frame": "new_data_47_0006",
+   "d": 99.8,
+   "path_d": 99.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 99.81898322300982,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.462
+   },
+   "gt_vehicle_y_m": 0.14529033185660767,
+   "axis_error_m": 0.0,
+   "n": 14,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 183.5,
+   "vis": 183.5
+  },
+  {
+   "frame": "new_data_47_0007",
+   "d": 97.6,
+   "path_d": 97.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 97.60073394946288,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.34
+   },
+   "gt_vehicle_y_m": 0.13164329488664572,
+   "axis_error_m": 0.0,
+   "n": 9,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 181.4,
+   "vis": 181.4
+  },
+  {
+   "frame": "new_data_47_0008",
+   "d": 95.5,
+   "path_d": 95.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 95.53814100426541,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.238
+   },
+   "gt_vehicle_y_m": 0.16974271306389555,
+   "axis_error_m": 0.0,
+   "n": 12,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 179.4,
+   "vis": 179.4
+  },
+  {
+   "frame": "new_data_47_0009",
+   "d": 93.5,
+   "path_d": 93.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 93.51554496992973,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.319
+   },
+   "gt_vehicle_y_m": 0.11244498218207988,
+   "axis_error_m": 0.0,
+   "n": 16,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 177.3,
+   "vis": 177.3
+  },
+  {
+   "frame": "new_data_47_0010",
+   "d": 91.5,
+   "path_d": 91.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 91.45550449483532,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.317
+   },
+   "gt_vehicle_y_m": 0.10192074508662691,
+   "axis_error_m": 0.0,
+   "n": 15,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 175.5,
+   "vis": 175.5
+  },
+  {
+   "frame": "new_data_47_0011",
+   "d": 89.5,
+   "path_d": 89.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 89.48281959886592,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.119
+   },
+   "gt_vehicle_y_m": 0.10134874025621732,
+   "axis_error_m": 0.0,
+   "n": 15,
+   "hit": false,
+   "fp_dets": [],
+   "cand": false,
+   "mon": 176.1,
+   "vis": 176.1
+  },
+  {
+   "frame": "new_data_47_0012",
+   "d": 87.3,
+   "path_d": 87.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 87.28644371293944,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.208
+   },
+   "gt_vehicle_y_m": 0.150041369732122,
+   "axis_error_m": 0.0,
+   "n": 10,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 174.2,
+   "vis": 174.2
+  },
+  {
+   "frame": "new_data_47_0013",
+   "d": 85.3,
+   "path_d": 85.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 85.26483318829607,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.202
+   },
+   "gt_vehicle_y_m": 0.15777591767602067,
+   "axis_error_m": 0.0,
+   "n": 18,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 182.5,
+   "vis": 182.5
+  },
+  {
+   "frame": "new_data_47_0014",
+   "d": 83.3,
+   "path_d": 83.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 83.28402276491369,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.008
+   },
+   "gt_vehicle_y_m": 0.1665901466231574,
+   "axis_error_m": 0.0,
+   "n": 17,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 169.5,
+   "vis": 169.5
+  },
+  {
+   "frame": "new_data_47_0015",
+   "d": 81.1,
+   "path_d": 81.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 81.14688093904259,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.027
+   },
+   "gt_vehicle_y_m": 0.19846826033671494,
+   "axis_error_m": 0.0,
+   "n": 20,
+   "hit": false,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.3,
+   "vis": 178.3
+  },
+  {
+   "frame": "new_data_47_0016",
+   "d": 79.1,
+   "path_d": 79.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 79.05404270138861,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.099
+   },
+   "gt_vehicle_y_m": 0.18293054497805006,
+   "axis_error_m": 0.0,
+   "n": 15,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.9,
+   "vis": 178.9
+  },
+  {
+   "frame": "new_data_47_0017",
+   "d": 76.9,
+   "path_d": 76.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 76.93622179303496,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.991
+   },
+   "gt_vehicle_y_m": 0.17435048883654264,
+   "axis_error_m": 0.0,
+   "n": 21,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 176.7,
+   "vis": 176.7
+  },
+  {
+   "frame": "new_data_47_0018",
+   "d": 74.9,
+   "path_d": 74.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 74.93978118593279,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.941
+   },
+   "gt_vehicle_y_m": 0.19395960672981516,
+   "axis_error_m": 0.0,
+   "n": 28,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 161.7,
+   "vis": 161.7
+  },
+  {
+   "frame": "new_data_47_0019",
+   "d": 72.9,
+   "path_d": 72.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 72.94506029324367,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.906
+   },
+   "gt_vehicle_y_m": 0.15572513744189304,
+   "axis_error_m": 0.0,
+   "n": 32,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 172.7,
+   "vis": 172.7
+  },
+  {
+   "frame": "new_data_47_0020",
+   "d": 70.8,
+   "path_d": 70.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 70.77615056244146,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.811
+   },
+   "gt_vehicle_y_m": 0.17722514774030484,
+   "axis_error_m": 0.0,
+   "n": 23,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.8,
+   "vis": 178.8
+  },
+  {
+   "frame": "new_data_47_0021",
+   "d": 68.7,
+   "path_d": 68.7,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 68.69640974859807,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.086
+   },
+   "gt_vehicle_y_m": 0.18708306138026576,
+   "axis_error_m": 0.0,
+   "n": 27,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 181.5,
+   "vis": 181.5
+  },
+  {
+   "frame": "new_data_47_0022",
+   "d": 66.7,
+   "path_d": 66.7,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 66.74916085778679,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.903
+   },
+   "gt_vehicle_y_m": 0.2114782826606768,
+   "axis_error_m": 0.0,
+   "n": 34,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 181.1,
+   "vis": 181.1
+  },
+  {
+   "frame": "new_data_47_0023",
+   "d": 64.6,
+   "path_d": 64.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 64.62371210441478,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.816
+   },
+   "gt_vehicle_y_m": 0.23575365017286376,
+   "axis_error_m": 0.0,
+   "n": 32,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 179.1,
+   "vis": 179.1
+  },
+  {
+   "frame": "new_data_47_0024",
+   "d": 62.6,
+   "path_d": 62.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 62.576089051443276,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.875
+   },
+   "gt_vehicle_y_m": 0.2146766690361418,
+   "axis_error_m": 0.0,
+   "n": 35,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 184.9,
+   "vis": 184.9
+  },
+  {
+   "frame": "new_data_47_0025",
+   "d": 60.5,
+   "path_d": 60.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 60.50641029155822,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.882
+   },
+   "gt_vehicle_y_m": 0.21157946261234806,
+   "axis_error_m": 0.0,
+   "n": 37,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 179.0,
+   "vis": 179.0
+  },
+  {
+   "frame": "new_data_47_0026",
+   "d": 58.5,
+   "path_d": 58.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 58.467780014528905,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.815
+   },
+   "gt_vehicle_y_m": 0.2178483728492685,
+   "axis_error_m": 0.0,
+   "n": 39,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 176.9,
+   "vis": 176.9
+  },
+  {
+   "frame": "new_data_47_0027",
+   "d": 56.4,
+   "path_d": 56.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 56.42330566502429,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.806
+   },
+   "gt_vehicle_y_m": 0.22535613140160482,
+   "axis_error_m": 0.0,
+   "n": 46,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.8,
+   "vis": 178.8
+  },
+  {
+   "frame": "new_data_47_0028",
+   "d": 54.3,
+   "path_d": 54.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 54.27552033447641,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.898
+   },
+   "gt_vehicle_y_m": 0.25217806223559674,
+   "axis_error_m": 0.0,
+   "n": 48,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 190.3,
+   "vis": 190.3
+  },
+  {
+   "frame": "new_data_47_0029",
+   "d": 52.2,
+   "path_d": 52.2,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 52.20127866471603,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.937
+   },
+   "gt_vehicle_y_m": 0.24143582930033541,
+   "axis_error_m": 0.0,
+   "n": 52,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 188.3,
+   "vis": 188.3
+  },
+  {
+   "frame": "new_data_47_0030",
+   "d": 50.2,
+   "path_d": 50.2,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 50.22159172238286,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.928
+   },
+   "gt_vehicle_y_m": 0.27304520755881845,
+   "axis_error_m": 0.0,
+   "n": 60,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 186.2,
+   "vis": 186.2
+  },
+  {
+   "frame": "new_data_47_0031",
+   "d": 48.1,
+   "path_d": 48.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 48.14385149321483,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.977
+   },
+   "gt_vehicle_y_m": 0.280552108004295,
+   "axis_error_m": 0.0,
+   "n": 62,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 184.2,
+   "vis": 184.2
+  },
+  {
+   "frame": "new_data_47_0032",
+   "d": 46.0,
+   "path_d": 46.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 45.99357282314545,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -0.983
+   },
+   "gt_vehicle_y_m": 0.25706040846524447,
+   "axis_error_m": 0.0,
+   "n": 66,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 182.2,
+   "vis": 182.2
+  },
+  {
+   "frame": "new_data_47_0033",
+   "d": 44.0,
+   "path_d": 44.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 43.97934869364582,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.06
+   },
+   "gt_vehicle_y_m": 0.27733214615922586,
+   "axis_error_m": 0.0,
+   "n": 76,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 180.1,
+   "vis": 180.1
+  },
+  {
+   "frame": "new_data_47_0034",
+   "d": 42.0,
+   "path_d": 42.0,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 41.965572971056176,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.034
+   },
+   "gt_vehicle_y_m": 0.2918118069670356,
+   "axis_error_m": 0.0,
+   "n": 95,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.0,
+   "vis": 178.0
+  },
+  {
+   "frame": "new_data_47_0035",
+   "d": 39.8,
+   "path_d": 39.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 39.81360907941297,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.098
+   },
+   "gt_vehicle_y_m": 0.3077203764729144,
+   "axis_error_m": 0.0,
+   "n": 87,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 184.5,
+   "vis": 184.5
+  },
+  {
+   "frame": "new_data_47_0036",
+   "d": 37.9,
+   "path_d": 37.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 37.85361754828031,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.114
+   },
+   "gt_vehicle_y_m": 0.32058839486460056,
+   "axis_error_m": 0.0,
+   "n": 102,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 182.4,
+   "vis": 182.4
+  },
+  {
+   "frame": "new_data_47_0037",
+   "d": 35.7,
+   "path_d": 35.7,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 35.684796513350406,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.151
+   },
+   "gt_vehicle_y_m": 0.3336038445190693,
+   "axis_error_m": 0.0,
+   "n": 120,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 180.4,
+   "vis": 180.4
+  },
+  {
+   "frame": "new_data_47_0038",
+   "d": 33.6,
+   "path_d": 33.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 33.634911715635084,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.147
+   },
+   "gt_vehicle_y_m": 0.3410629067948,
+   "axis_error_m": 0.0,
+   "n": 126,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 178.4,
+   "vis": 178.4
+  },
+  {
+   "frame": "new_data_47_0039",
+   "d": 31.6,
+   "path_d": 31.6,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 31.55838366338858,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.182
+   },
+   "gt_vehicle_y_m": 0.3622005594842934,
+   "axis_error_m": 0.0,
+   "n": 133,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 181.5,
+   "vis": 181.5
+  },
+  {
+   "frame": "new_data_47_0040",
+   "d": 29.3,
+   "path_d": 29.3,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 29.328608853990243,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.199
+   },
+   "gt_vehicle_y_m": 0.3666719653898659,
+   "axis_error_m": 0.0,
+   "n": 162,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 176.4,
+   "vis": 176.4
+  },
+  {
+   "frame": "new_data_47_0041",
+   "d": 27.5,
+   "path_d": 27.5,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 27.46405900900787,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.247
+   },
+   "gt_vehicle_y_m": 0.37417303865539986,
+   "axis_error_m": 0.0,
+   "n": 186,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 174.4,
+   "vis": 174.4
+  },
+  {
+   "frame": "new_data_47_0042",
+   "d": 25.4,
+   "path_d": 25.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 25.446986756497502,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.236
+   },
+   "gt_vehicle_y_m": 0.38453593039320666,
+   "axis_error_m": 0.0,
+   "n": 233,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 170.2,
+   "vis": 170.2
+  },
+  {
+   "frame": "new_data_47_0043",
+   "d": 23.4,
+   "path_d": 23.4,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 23.38228482055853,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.251
+   },
+   "gt_vehicle_y_m": 0.3948947823443274,
+   "axis_error_m": 0.0,
+   "n": 251,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 168.2,
+   "vis": 168.2
+  },
+  {
+   "frame": "new_data_47_0044",
+   "d": 21.2,
+   "path_d": 21.2,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 21.188067200858193,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.266
+   },
+   "gt_vehicle_y_m": 0.4047743318992575,
+   "axis_error_m": 0.0,
+   "n": 321,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 174.4,
+   "vis": 174.4
+  },
+  {
+   "frame": "new_data_47_0045",
+   "d": 19.1,
+   "path_d": 19.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 19.117422641474686,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.284
+   },
+   "gt_vehicle_y_m": 0.4036028122409875,
+   "axis_error_m": 0.0,
+   "n": 379,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 139.0,
+   "vis": 171.0
+  },
+  {
+   "frame": "new_data_47_0046",
+   "d": 17.1,
+   "path_d": 17.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 17.111471865841867,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.285
+   },
+   "gt_vehicle_y_m": 0.42243668328414963,
+   "axis_error_m": 0.0,
+   "n": 486,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 161.0,
+   "vis": 179.6
+  },
+  {
+   "frame": "new_data_47_0047",
+   "d": 15.1,
+   "path_d": 15.1,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 15.058467929950437,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.303
+   },
+   "gt_vehicle_y_m": 0.46083785354313794,
+   "axis_error_m": 0.0,
+   "n": 651,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 165.3,
+   "vis": 165.3
+  },
+  {
+   "frame": "new_data_47_0048",
+   "d": 12.8,
+   "path_d": 12.8,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 12.836468792024307,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.302
+   },
+   "gt_vehicle_y_m": 0.48109113828225103,
+   "axis_error_m": 0.0,
+   "n": 894,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 166.6,
+   "vis": 166.6
+  },
+  {
+   "frame": "new_data_47_0049",
+   "d": 10.9,
+   "path_d": 10.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 10.886386560847676,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.284
+   },
+   "gt_vehicle_y_m": 0.4773294584356854,
+   "axis_error_m": 0.0,
+   "n": 1138,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 40.0,
+   "vis": 164.5
+  },
+  {
+   "frame": "new_data_47_0050",
+   "d": 8.9,
+   "path_d": 8.9,
+   "gt": {
+    "kind": "cylinder",
+    "size": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "distance": 8.903008884716867,
+    "lateral": 0.5220869085453218,
+    "yaw_deg": 0.0,
+    "reflectivity": 83.48999931723384,
+    "label": "trolley",
+    "base_z": -1.316
+   },
+   "gt_vehicle_y_m": 0.45709852478042207,
+   "axis_error_m": 0.0,
+   "n": 1433,
+   "hit": true,
+   "fp_dets": [],
+   "cand": true,
+   "mon": 40.0,
+   "vis": 160.9
+  }
+ ],
+ "file0": "new_data_46_0000.npy.zst",
+ "placement_mode": "legacy",
+ "reference": null,
+ "perturbation": null,
+ "anchor_frame": null
+}
