@@ -3,8 +3,10 @@ import { defineConfig } from 'vitest/config';
 
 // Dev: the backend runs on :8000 (python -m resense_web --port 8000 --reload); HTTP and the live
 // WebSocket under /api are proxied to it. `vite preview` proxies the same way.
+// RESENSE_API_TARGET overrides the backend (e.g. http://127.0.0.1:8101 for a second instance).
+const apiTarget = process.env.RESENSE_API_TARGET ?? 'http://127.0.0.1:8000';
 const proxy = {
-  '/api': { target: 'http://127.0.0.1:8000', changeOrigin: true, ws: true },
+  '/api': { target: apiTarget, changeOrigin: true, ws: true },
 };
 
 export default defineConfig({
