@@ -81,6 +81,21 @@ xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e Q
 
 Без X11 — Foxglove с любого ноутбука в той же сети: [Foxglove](../visualisation/foxglove.md).
 
+## Без ROS: веб-прототип
+
+Сайт поверх того же детектора: загрузка бэга или демо-записи, решения по кадрам, оценка по
+разметке, 3D-плеер из кабины, сравнение прогонов. Нужны Python ≥ 3.10 и Node.js 20.19+ или 22.12+ (для
+сборки сайта), ROS и Docker — нет. В релиз `v1.0.0` и образ Docker он не входит.
+
+Открыть онлайн: **[resense.arbuz.lol](https://resense.arbuz.lol/)** — ничего устанавливать не нужно. Свой экземпляр:
+
+```bash
+scripts/run_webapp.sh --install    # один раз, нужен интернет: пакеты pip и npm
+scripts/run_webapp.sh              # http://localhost:8080
+```
+
+Подробно: [Веб-прототип](../visualisation/web-prototype.md).
+
 ## Где взять архив образа
 
 * Релиз GitHub `v1.0.0`: архив и его `.sha256` публикуются в Assets релиза

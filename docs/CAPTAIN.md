@@ -10,7 +10,8 @@
 > **Last verified:** 2026-09-29 night: GitHub (0 tags, 0 releases; `main` at `7532a6b`, PR #29, CI green),
 > the new seal on the documentation branch (`7464d80`, shell rule off, verify PASS), 1 279 tests passing on `7532a6b`, the VM run of
 > 28.09 and the independent judgement of 28.09 ([`SCORECARD.md`](SCORECARD.md)); the requirements map
-> [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md).
+> [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md); 2026-09-29: §4 against the remote's branches and PR #31 (open,
+> base `main` `5d6e9b5`), its web-prototype row against the branch's `webapp/` and `.github/workflows/ci.yml`.
 > **Status:** current
 
 ## 1. Role and dates
@@ -71,12 +72,12 @@ artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) �
 
 ## 4. Branches other than `main` (29.09 evening)
 
-Checked on GitHub: `main` and one other branch; no open pull request.
+Checked on GitHub: `main` and one other branch; one open pull request, #31.
 
 | branch | state | recommendation |
 |---|---|---|
-| `claude/admiring-pascal-ex9v51` | the final documentation pass (item 1) | PR to `main` tonight |
-| `claude/prototype-website-rebuild-tz31o0` | the web interface (FastAPI backend, React pages in the «Линия» design; its last commit, 29.09, says «all pages built and reviewed, integration pass interrupted»); adds `webapp/` and `scripts/run_webapp.sh`, nothing the runtime image uses; not merged into `main` | optional and outside the release (the user, 29.09 ~20:40): merge only through a PR with `main` merged in and CI green, before 23:59 if it is to be part of the upload; otherwise after it |
+| `claude/admiring-pascal-ex9v51` | the final documentation pass (item 1): merged into `main` as PR #30 (`70bc265`), deleted on the remote | nothing to do |
+| `claude/prototype-website-rebuild-tz31o0` | the web prototype ([`webapp/README.md`](../webapp/README.md): FastAPI backend, React pages in the «Линия» design, live at https://resense.arbuz.lol/, locally `scripts/run_webapp.sh` → http://localhost:8080); **[PR #31](https://github.com/pmixay/ReSense/pull/31) open**, `main` (`5d6e9b5`) merged in; all pages built, reviewed and tested (149 backend + 278 frontend + 44 browser tests), CI job `webapp` added; runs the same sealed detector; adds `webapp/` and `scripts/run_webapp.sh`, nothing the runtime image uses; not merged into `main` | optional and outside the release (the user, 29.09 ~20:40): merge only through a PR with `main` merged in and CI green, before 23:59 if it is to be part of the upload; otherwise after it |
 | `experiment/cross-ring-sparse-evidence`, `claude/funny-gates-3358a8`, `claude/amazing-fermi-t67v8g`, `gpt-score-push-20260928` | merged into `main` (PR #27, #28, #29) or deleted on the remote | nothing to do |
 
 ## 5. Release and submission

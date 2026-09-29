@@ -9,6 +9,7 @@ apt и PyPI нужна сеть), поэтому образ переноситс
 | `docker load` архива | нет |
 | нода, launch-файл, entrypoint, сервисы compose, RViz, `foxglove_bridge` | нет (DDS по UDP на интерфейсах хоста; достаточно одного loopback) |
 | веб-дашборд | нет (шрифты и `roslib` входят в комплект) |
+| [веб-прототип](../visualisation/web-prototype.md) (вне образа) | только для первой установки (`scripts/run_webapp.sh --install`: pip и npm); затем нет — шрифты и библиотеки входят в сборку |
 | настольное приложение Foxglove на ноутбуке зрителя | нет |
 
 ```mermaid

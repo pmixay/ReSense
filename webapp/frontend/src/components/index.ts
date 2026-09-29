@@ -1,0 +1,27 @@
+// Barrel of the shared UI kit (pages import from '../../components').
+export { AppShell, PageFallback } from './AppShell/AppShell';
+export { useRailSub } from './AppShell/rail';
+export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './Button/Button';
+export { Card, type CardProps, type CardVariant } from './Card/Card';
+export { Chip, type ChipProps, type ChipVariant } from './Chip/Chip';
+export { DecisionChip, DECISION_ICON, type DecisionChipProps } from './DecisionChip/DecisionChip';
+export { DecisionLegend, DecisionStrip, markerTone, type DecisionStripProps, type StripMarker, type MarkerTone } from './DecisionStrip/DecisionStrip';
+export { EmptyState, type EmptyStateProps } from './EmptyState/EmptyState';
+export { ErrorBanner, type ErrorBannerProps } from './ErrorBanner/ErrorBanner';
+export { Help, type HelpProps } from './Help/Help';
+export { Icon, ICON_NAMES, type IconName, type IconProps } from './Icon/Icon';
+export { IconButton, type IconButtonProps } from './IconButton/IconButton';
+export { GoodMark, KpiTile, StopMark, type KpiTileProps } from './KpiTile/KpiTile';
+export { LineRail } from './LineRail/LineRail';
+export { PageHeader, type PageHeaderProps } from './PageHeader/PageHeader';
+export { PIPELINE_STAGES, PipelineLine, type PipelineLineProps } from './PipelineLine/PipelineLine';
+export { ProgressBar, type ProgressBarProps } from './ProgressBar/ProgressBar';
+export { Segmented, type SegmentedOption, type SegmentedProps } from './Segmented/Segmented';
+export { Select, type SelectOption, type SelectProps } from './Select/Select';
+export { Sparkline, type SparklineProps } from './Sparkline/Sparkline';
+export { Spinner, type SpinnerProps } from './Spinner/Spinner';
+export { Stepper, type StepperProps } from './Stepper/Stepper';
+export { Field, TextInput, type FieldProps, type TextInputProps } from './TextInput/TextInput';
+export { Toggle, type ToggleProps } from './Toggle/Toggle';
+export { Logo, TopBar } from './TopBar/TopBar';
+export { Tooltip, type TooltipPlacement, type TooltipProps } from './Tooltip/Tooltip';

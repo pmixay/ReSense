@@ -12,6 +12,7 @@
 
 ## Визуализация
 
+* [Веб-прототип](visualisation/web-prototype.md)
 * [RViz](visualisation/rviz.md)
 * [Foxglove (удалённая демонстрация)](visualisation/foxglove.md)
 * [Веб-дашборд](visualisation/web-dashboard.md)

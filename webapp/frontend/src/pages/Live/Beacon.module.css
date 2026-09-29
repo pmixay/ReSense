@@ -1,0 +1,187 @@
+.beacon {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+/* ---- the signal head */
+/* the head absorbs the height the card lacks (1280 × 800): the readout never overlaps it */
+.head {
+  container-type: inline-size;
+  border-radius: 22px;
+  min-height: 56px;
+  max-height: 112px;
+  flex: 1 1 112px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 44px 0 20px;
+  position: relative;
+}
+.go {
+  background: var(--go-deep);
+  color: var(--white);
+}
+.caution {
+  background: var(--caution);
+  color: var(--ink);
+}
+.stop {
+  background: var(--stop) var(--hatch);
+  color: var(--white);
+  box-shadow: 0 0 0 4px var(--stop-tint);
+}
+.fault {
+  background: var(--fault);
+  color: var(--white);
+}
+.ink {
+  background: var(--ink);
+  color: var(--white);
+}
+.quiet {
+  background: var(--well);
+  color: var(--ink);
+}
+/* the icon and the label (the live region): the head's flex row continues inside */
+.say {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.icon {
+  flex: none;
+}
+/* sized by the head's width (container units): the label never runs under the «?» */
+.label {
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: clamp(26px, calc((100cqi - 54px) / 4.9), 46px);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  min-width: 0;
+}
+.long {
+  font-size: clamp(18px, calc((100cqi - 54px) / 9), 38px);
+}
+.state {
+  font-size: clamp(16px, calc((100cqi - 54px) / 12.5), 23px);
+  white-space: normal;
+  line-height: 1.1;
+}
+.lastChip {
+  box-shadow: 0 0 0 2px var(--white);
+}
+.help {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+/* ---- distance */
+.readout {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 6px;
+}
+.rl {
+  font-weight: 700;
+  font-size: var(--fs-label);
+}
+.big {
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: clamp(40px, min(4.3vw, 7.2vh), 72px);
+  line-height: 1;
+  margin: 6px 0 14px;
+  white-space: nowrap;
+}
+.none {
+  font-size: clamp(30px, 2.6vw, 40px);
+}
+.big small {
+  font-size: 0.42em;
+  margin-left: 8px;
+}
+.barWrap {
+  min-width: 0;
+}
+.bar {
+  position: relative;
+  height: 12px;
+  border-radius: 6px;
+  background: repeating-linear-gradient(135deg, var(--well-2) 0 5px, var(--hair) 5px 8px);
+}
+.fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 6px;
+  background: var(--ink);
+  transition: width 0.15s linear;
+}
+.fillLive {
+  background: var(--go);
+}
+.obst {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--stop) var(--hatch);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 3px var(--white);
+}
+.scale {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: var(--fs-min);
+  margin-top: 7px;
+}
+
+/* ---- freshness */
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 6px 2px;
+  border-top: 1px solid var(--hair);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.foot b {
+  font-weight: 800;
+}
+.fl {
+  font-weight: 600;
+}
+.sp {
+  flex: 1;
+}
+.lamp {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--hair-2);
+  flex: none;
+}
+.lampOk {
+  background: var(--go);
+  box-shadow: 0 0 0 3px var(--go-tint);
+}
+.lampBad {
+  background: var(--fault);
+  box-shadow: 0 0 0 3px var(--fault-tint);
+}

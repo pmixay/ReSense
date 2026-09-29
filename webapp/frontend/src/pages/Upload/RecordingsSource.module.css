@@ -1,0 +1,138 @@
+.wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.center {
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+.err {
+  flex: none;
+}
+.list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -6px;
+  padding: 2px 6px 4px;
+  scrollbar-width: thin;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 1.5px var(--hair);
+  padding: 6px 10px 6px 6px;
+}
+.row + .row {
+  margin-top: 8px;
+}
+.on {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.pick {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 4px 6px;
+  border-radius: 14px;
+}
+.ic {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--well);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.on .ic {
+  background: var(--ink);
+  color: var(--white);
+}
+.w {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.nm {
+  font-weight: 800;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mt {
+  font-weight: 600;
+  font-size: var(--fs-min);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mt b {
+  font-weight: 800;
+}
+.tag {
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 12px;
+  background: var(--well);
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+  flex: none;
+}
+.tagOn {
+  background: var(--go-tint);
+}
+.when {
+  width: 104px;
+  text-align: right;
+  font-weight: 600;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+  flex: none;
+}
+.dl {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--well);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.dl:hover {
+  background: var(--well-2);
+}
+
+@media (max-width: 1500px) {
+  .when {
+    display: none;
+  }
+}
+.emptyActs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.empty {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}

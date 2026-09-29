@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ReSense · Главная</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../shared/fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+<script>window.__ready = false;</script>
+<script type="importmap">{"imports":{"three":"../shared/vendor/three.module.js"}}</script>
+<style>
+.ov{grid-template-rows:minmax(0,262fr) minmax(0,462fr)}
+/* dropdown of «Система»: sits between the Очередь and Прогон stations */
+.dd.sys{left:34px;width:212px}
+.dd.sys::before{left:40px}
+/* CTA */
+.cta{grid-column:1/6;background:linear-gradient(135deg,#EE1420 0%,var(--red) 45%,#C3000B 100%);color:#fff;overflow:hidden;padding:28px 30px 26px;display:flex;flex-direction:column}
+.cta h2{font-size:30px;font-weight:800;position:relative;z-index:2}
+.cta .fmts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative;z-index:2;max-width:470px}
+.cta .fmt{height:28px;padding:0 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.7);display:inline-flex;align-items:center;font-weight:700;font-size:12.5px;white-space:nowrap}
+.cta .last{display:flex;align-items:center;gap:8px;margin-top:14px;font-weight:600;font-size:13px;position:relative;z-index:2;white-space:nowrap}
+.cta .last b{font-weight:800}
+.cta .last .ic{width:26px;height:26px;border-radius:9px;background:rgba(255,255,255,.18);display:grid;place-items:center}
+.cta .acts{margin-top:auto;display:flex;gap:10px;position:relative;z-index:2;padding-top:12px}
+.cta .btn.wht{color:var(--red);box-shadow:0 10px 24px -10px rgba(0,0,0,.45)}
+.cta .btn.gh{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55)}
+.cta .deco{position:absolute;right:-40px;top:0;bottom:0;width:260px;height:100%;z-index:1}
+/* player card */
+.pc{grid-column:6/9;background:#05070D;color:#fff;overflow:hidden;padding:0}
+.pc canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:28px}
+.pc .ov1{position:absolute;top:16px;right:16px;z-index:2}
+.pc .ov2{position:absolute;left:20px;right:18px;bottom:18px;display:flex;align-items:flex-end;gap:10px;z-index:2}
+.pc .ov2 h2{font-size:15px;font-weight:700;margin-bottom:9px}
+.pc .play{width:56px;height:56px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;margin-left:auto;box-shadow:0 10px 30px -8px rgba(0,0,0,.7);flex:none}
+.pc .play svg{width:24px;height:24px;margin-left:3px}
+.glass{background:rgba(10,12,20,.66);backdrop-filter:blur(8px);border-radius:14px;padding:8px 12px;font-weight:700;font-size:12.5px;white-space:nowrap;color:#fff}
+.pc .nm{font-weight:700;font-size:13px}
+/* system */
+.sys-c{grid-column:9/13;display:flex;flex-direction:column}
+.sys-c .body{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:22px;flex:1;min-height:0}
+.cpu{display:flex;flex-direction:column;min-width:0}
+.cpu .v{font-family:var(--f-head);font-weight:800;font-size:40px;line-height:1;margin-top:6px;white-space:nowrap}
+.cpu .v small{font-size:15px;font-weight:700;margin-left:6px}
+.cores{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:12px}
+.cores i{height:10px;border-radius:5px;background:var(--well-2);position:relative;overflow:hidden}
+.cores i b{position:absolute;inset:0;width:70%;background:var(--ink);border-radius:5px}
+.cpu .meta{margin-top:8px;font-weight:600;white-space:nowrap}
+.cpu .spk{margin-top:auto;display:block;width:100%}
+.srows{display:flex;flex-direction:column;min-height:0}
+.srow{display:flex;align-items:center;gap:10px;flex:1;min-height:34px;border-bottom:1px solid var(--hair)}
+.srow:last-child{border-bottom:0}
+.srow .ic{width:32px;height:32px;border-radius:11px;background:var(--well);display:grid;place-items:center;flex:none}
+.srow .ic svg{width:17px;height:17px}
+.srow .n{font-weight:700;font-size:13.5px}
+.srow .v{margin-left:auto;font-weight:800;font-size:13px;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.ldot{width:9px;height:9px;border-radius:50%;background:var(--go);box-shadow:0 0 0 4px var(--go-tint);flex:none}
+/* runs */
+.runs{grid-column:1/9;grid-row:2;padding:22px 26px 14px;display:flex;flex-direction:column}
+.rt-w{flex:1;min-height:0}
+.rt{width:100%;height:100%;border-collapse:collapse;table-layout:fixed}
+.rt th{font-weight:700;font-size:12px;text-align:left;padding:0 12px 9px 0;white-space:nowrap;height:22px;vertical-align:bottom}
+.rt th .q-wrap{vertical-align:middle;margin:-4px 0 -4px 6px}
+.rt td{border-top:1px solid var(--hair);padding:0 12px 0 0;vertical-align:middle;overflow:hidden}
+.rt td:last-child{padding-right:0}
+.rt .nm{font-weight:800;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rt .mt{font-weight:500;font-size:12.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rt td.dec > div{height:22px;width:100%}
+.rt .wh{font-weight:600;font-size:12.5px;white-space:nowrap}
+.rt .ar{width:36px;height:36px;border-radius:50%;background:var(--well);display:grid;place-items:center;margin-left:auto}
+.rt col.c-nm{width:24%}.rt col.c-st{width:26%}.rt col.c-gt{width:13%}.rt col.c-vd{width:20.5%}.rt col.c-wh{width:11.5%}.rt col.c-ar{width:5%}
+/* kpis */
+.kpis{grid-column:9/13;grid-row:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.kpi{padding:18px 20px 17px}
+.kpi .viz{height:64px;display:flex;align-items:center}
+.kpi .viz svg{display:block;width:100%;height:64px;overflow:visible}
+.kpi .k-l{margin-top:auto}
+.kpi .k-l svg.i{width:17px;height:17px}
+.kpi .k-v{font-size:36px;margin-top:8px}
+.kpi .k-f{overflow:hidden;text-overflow:ellipsis}
+.kpi.ink{background:var(--ink);color:#fff}
+.ic-st{width:20px;height:20px;border-radius:50%;background:var(--stop) var(--hatch);color:#fff;display:grid;place-items:center;flex:none}
+.ic-st svg.i{width:14px !important;height:14px !important;stroke-width:2.6}
+@media (max-width:1500px){
+  .rt col.c-wh{width:0}.rt th.c-wh-h,.rt td.wh{padding:0;visibility:hidden}
+  .rt col.c-nm{width:25%}.rt col.c-st{width:29%}.rt col.c-gt{width:15%}.rt col.c-vd{width:24%}.rt col.c-ar{width:7%}
+  .cta .last .sz{display:none}
+}
+@media (max-height:950px){
+  .kpi{padding:15px 18px 14px}.kpi .viz,.kpi .viz svg{height:46px}.kpi .k-v{font-size:32px;margin-top:4px}.kpi .k-f{margin-top:5px}
+  .cta{padding:22px 26px 20px}.cta .fmts{margin-top:12px}.cta .last{margin-top:10px}.cta h2{font-size:27px}
+  .sys-c,.runs{padding-top:18px}.sys-c .card-h,.runs .card-h{margin-bottom:10px}
+  .cpu .v{font-size:34px}
+}
+</style></head>
+<body>
+<script src="common.js"></script>
+
+<header class="top">
+  <a class="logo" href="overview.html"><svg class="logo-mark" viewBox="0 0 40 38" aria-hidden="true"><path d="M3.5 19H12" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="19" cy="19" r="7" fill="#E4000D" stroke="#fff" stroke-width="5"/><path d="M28.2 11.3A12 12 0 0 1 28.2 26.7M32 8.1A17 17 0 0 1 32 29.9" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></svg><span class="logo-word">ReSense</span></a>
+  <nav class="nav">
+    <a class="nav-pill active" href="overview.html"><svg class="i s"><use href="#i-home"/></svg>Главная</a>
+    <div class="nav-pill grp"><span class="ln">1</span>Данные<svg class="i chev"><use href="#i-chev"/></svg></div>
+    <div class="nav-pill grp"><span class="ln">2</span>Анализ<svg class="i chev"><use href="#i-chev"/></svg></div>
+    <div class="nav-pill grp open"><span class="ln">3</span>Система<svg class="i chev"><use href="#i-chev"/></svg>
+      <div class="dd sys">
+        <a class="dd-item hl" href="#"><span class="dd-ic"><svg class="i"><use href="#i-live"/></svg></span><span><div class="dd-t">Прямой эфир</div><div class="dd-s">нет узла</div></span></a>
+        <a class="dd-item" href="#"><span class="dd-ic"><svg class="i"><use href="#i-sliders"/></svg></span><span><div class="dd-t">Параметры</div><div class="dd-s">3 пресета</div></span></a>
+        <a class="dd-item" href="#"><span class="dd-ic"><svg class="i"><use href="#i-info"/></svg></span><span><div class="dd-t">О системе</div><div class="dd-s">как это работает</div></span></a>
+      </div>
+    </div>
+  </nav>
+  <div class="top-right">
+    <span class="top-chip"><span class="dot"></span>бэкенд онлайн</span>
+    <span class="top-chip">ЛЦТ 2026 · кейс 05</span>
+    <span class="avatar" title="команда «Молоток»">М</span>
+  </div>
+</header>
+
+<div class="line-band">
+  <div class="line"></div>
+  <div class="stations">
+    <a class="st home cur" href="overview.html"><span class="c"><svg class="i"><use href="#i-home"/></svg></span><span class="lbl">Главная</span></a>
+    <a class="st" href="upload.html"><span class="c"></span><span class="lbl">Загрузка</span></a>
+    <a class="st" href="upload.html#queue"><span class="c"></span><span class="lbl">Очередь</span></a>
+    <a class="st" href="runs.html"><span class="c"></span><span class="lbl">Прогоны</span></a>
+    <a class="st" href="player.html"><span class="c"></span><span class="lbl">Плеер</span></a>
+    <a class="st" href="compare.html"><span class="c"></span><span class="lbl">Сравнение</span></a>
+  </div>
+</div>
+
+<main class="page">
+  <div class="ph">
+    <span class="rd"><svg class="i"><use href="#i-home"/></svg></span>
+    <h1>Главная</h1>
+    <span class="chip out">команда «Молоток»</span>
+    <span class="chip out">детектор v1.0.0</span>
+    <span class="sp"></span>
+    <a class="btn wht" href="#"><svg class="i s"><use href="#i-live"/></svg>Прямой эфир</a>
+    <a class="btn ink" href="player.html"><svg class="i s"><use href="#i-play"/></svg>Открыть плеер</a>
+  </div>
+
+  <section class="grid ov fill">
+    <!-- CTA -->
+    <div class="card cta">
+      <svg class="deco" viewBox="0 0 260 262" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+        <path d="M-10 150 H150 a40 40 0 0 0 40 -40 V-10" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="22" stroke-linecap="round"/>
+        <circle cx="190" cy="92" r="30" fill="#fff" fill-opacity=".16" stroke="rgba(255,255,255,.55)" stroke-width="10"/>
+        <circle cx="96" cy="150" r="17" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="7"/>
+      </svg>
+      <h2>Новая запись</h2>
+      <div class="fmts"><span class="fmt">rosbag2 .zip</span><span class="fmt">.db3 + yaml</span><span class="fmt">.mcap</span><span class="fmt">.jsonl</span><span class="fmt">.npy / .npz</span></div>
+      <div class="last"><span class="ic"><svg class="i s"><use href="#i-clock"/></svg></span>последняя: <b>doubleT_obstacle</b><span class="sz">· 4,5 ГБ</span> · 14:32</div>
+      <div class="acts">
+        <a class="btn wht lg" href="upload.html"><svg class="i"><use href="#i-upload"/></svg>Загрузить запись</a>
+        <a class="btn gh lg" href="upload.html"><svg class="i"><use href="#i-spark"/></svg>Демо</a>
+      </div>
+    </div>
+
+    <!-- player quick entry -->
+    <a class="card pc" href="player.html">
+      <canvas id="pv"></canvas>
+            <div class="ov2">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px"><h2 style="margin:0">Плеер</h2><span class="glass" style="padding:5px 10px">кадр 112 / 201</span></div>
+          <div style="display:flex;align-items:center;gap:10px"><span class="dc stop"><svg class="i"><use href="#i-octa"/></svg>СТОП</span><span class="nm">doubleT_obstacle</span></div>
+        </div>
+        <span class="play"><svg class="i"><use href="#i-play"/></svg></span>
+      </div>
+    </a>
+
+    <!-- system -->
+    <div class="card sys-c">
+      <div class="card-h"><h2>Система</h2><span class="chip out" style="height:26px;font-size:12px"><span class="ldot"></span>онлайн</span><span class="sp"></span>
+        <span class="q-wrap"><button class="q">?</button><span class="tip bl">Бэкенд обрабатывает записи на этой машине; узел ROS 2 для эфира подключается отдельно.</span></span></div>
+      <div class="body">
+        <div class="cpu">
+          <div class="lab">Загрузка CPU</div>
+          <div class="v">0,7<small>ядра</small></div>
+          <div class="cores"><i><b></b></i><i></i><i></i><i></i></div>
+          <div class="meta">из 4 · детектор &lt; 1 ядра</div>
+          <svg class="spk" id="cpuspk" height="34" viewBox="0 0 190 34" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+        <div class="srows">
+          <div class="srow"><span class="ic"><svg class="i"><use href="#i-server"/></svg></span><span class="n">Бэкенд</span><span class="v"><span class="ldot"></span>3 ч 12 мин</span></div>
+          <div class="srow"><span class="ic"><svg class="i"><use href="#i-target"/></svg></span><span class="n">Детектор</span><span class="v">v1.0.0</span></div>
+          <div class="srow"><span class="ic"><svg class="i"><use href="#i-live"/></svg></span><span class="n">Эфир</span><span class="v"><span class="chip out" style="height:26px">нет узла</span></span></div>
+          <div class="srow"><span class="ic"><svg class="i"><use href="#i-folder"/></svg></span><span class="n">Записи</span><span class="v">8 · 119 ГБ</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- recent runs -->
+    <div class="card runs">
+      <div class="card-h"><h2>Последние прогоны</h2>
+        <span class="q-wrap"><button class="q">?</button><span class="tip br">Полоса — решение детектора в каждом кадре записи.</span></span>
+        <span class="sp"></span>
+        <div class="legend"><span><i class="lg-go"></i>свободно</span><span><i class="lg-caution"></i>внимание</span><span><i class="lg-stop"></i>стоп</span><span><i class="lg-fault"></i>ошибка</span></div>
+        <a class="btn sm wht" href="runs.html" style="margin-left:14px">Все прогоны<svg class="i s"><use href="#i-right"/></svg></a>
+      </div>
+      <div class="rt-w">
+      <table class="rt">
+        <colgroup><col class="c-nm"><col class="c-st"><col class="c-gt"><col class="c-vd"><col class="c-wh"><col class="c-ar"></colgroup>
+        <thead><tr><th>Запись</th><th>Решения по кадрам</th><th>Разметка</th><th>Итог<span class="q-wrap"><button class="q open">?</button><span class="tip t" style="width:auto;white-space:nowrap;margin-left:0;transform:translateX(-50%);--ax:calc(50% - 6px)">Детектор против разметки:<br><b>верно</b> — СТОП на объекте,<br><b>ложный СТОП</b> — на пустом пути.</span></span></th><th class="c-wh-h">Когда</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><div class="nm">doubleT_obstacle</div><div class="mt">201 кадр · 20,4 с</div></td><td class="dec"><div data-run="doubleT_obstacle"></div></td>
+            <td><span class="gt obj">препятствие</span></td><td><span class="vd ok"><span class="vi"><svg class="i"><use href="#i-check"/></svg></span>верно · 1 пропуск</span></td><td class="wh">сегодня 14:32</td><td><a class="ar" href="run.html"><svg class="i s"><use href="#i-right"/></svg></a></td></tr>
+          <tr><td><div class="nm">cloud_with_fake_obj</div><div class="mt">1 510 кадров · 150,9 с</div></td><td class="dec"><div data-run="cloud_with_fake_obj"></div></td>
+            <td><span class="gt obj">10 объектов</span></td><td><span class="vd ok"><span class="vi"><svg class="i"><use href="#i-check"/></svg></span>верно · 8 / 8</span></td><td class="wh">сегодня 13:05</td><td><span class="ar"><svg class="i s"><use href="#i-right"/></svg></span></td></tr>
+          <tr><td><div class="nm">new_data</div><div class="mt">11 271 кадр · 20 мин · 13 км</div></td><td class="dec"><div data-run="new_data"></div></td>
+            <td><span class="gt emp">пусто</span></td><td><span class="vd fa"><span class="vi"><svg class="i"><use href="#i-octa"/></svg></span>ложный СТОП ×30</span></td><td class="wh">сегодня 11:47</td><td><span class="ar"><svg class="i s"><use href="#i-right"/></svg></span></td></tr>
+          <tr><td><div class="nm" title="squareT_platform_squareT_switch">squareT_platform_squareT_switch</div><div class="mt">877 кадров · 88,2 с</div></td><td class="dec"><div data-run="squareT_platform_squareT_switch"></div></td>
+            <td><span class="gt emp">пусто</span></td><td><span class="vd fa"><span class="vi"><svg class="i"><use href="#i-octa"/></svg></span>ложный СТОП ×5</span></td><td class="wh">вчера 19:20</td><td><span class="ar"><svg class="i s"><use href="#i-right"/></svg></span></td></tr>
+          <tr><td><div class="nm">doubleT_platform</div><div class="mt">345 кадров · 34,4 с</div></td><td class="dec"><div data-run="doubleT_platform"></div></td>
+            <td><span class="gt emp">пусто</span></td><td><span class="vd fa"><span class="vi"><svg class="i"><use href="#i-octa"/></svg></span>ложный СТОП ×1</span></td><td class="wh">вчера 18:02</td><td><span class="ar"><svg class="i s"><use href="#i-right"/></svg></span></td></tr>
+          <tr><td><div class="nm">roundT_doubleT</div><div class="mt">252 кадра · 25,1 с</div></td><td class="dec"><div data-run="roundT_doubleT"></div></td>
+            <td><span class="gt emp">пусто</span></td><td><span class="vd ok"><span class="vi"><svg class="i"><use href="#i-check"/></svg></span>0 ложных</span></td><td class="wh">вчера 17:40</td><td><span class="ar"><svg class="i s"><use href="#i-right"/></svg></span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- KPIs: one viz slot, one label row, one value, one footer each -->
+    <div class="kpis">
+      <div class="kpi ink">
+        <div class="viz"><svg id="vz-lat" viewBox="0 0 196 56" preserveAspectRatio="none"></svg></div>
+        <div class="k-l"><svg class="i"><use href="#i-clock"/></svg>p95 задержка</div>
+        <div class="k-v">72<small>мс</small></div>
+        <div class="k-f">сквозная 81 мс · 10 Гц</div>
+      </div>
+      <div class="kpi">
+        <div class="viz"><svg id="vz-obj" viewBox="0 0 196 56" preserveAspectRatio="none"></svg></div>
+        <div class="k-l"><span class="ic-st"><svg class="i"><use href="#i-octa"/></svg></span>Объекты в габарите</div>
+        <div class="k-v">8 / 8</div>
+        <div class="k-f">cloud_with_fake_obj</div>
+      </div>
+      <div class="kpi">
+        <div class="viz"><svg id="vz-fa" viewBox="0 0 196 56" preserveAspectRatio="none"></svg></div>
+        <div class="k-l"><svg class="i"><use href="#i-rails"/></svg>Ложные СТОП
+          <span class="q-wrap"><button class="q">?</button><span class="tip t" style="width:216px;margin-left:-160px;bottom:28px;--ax:154px">Эпизоды <b>СТОП</b> без препятствий за 20 мин поездки <b>new_data</b>, делённые на её 13 км.</span></span></div>
+        <div class="k-v">2,3<small>/ км</small></div>
+        <div class="k-f">new_data · 30 эпизодов</div>
+      </div>
+      <div class="kpi">
+        <div class="viz"><svg id="vz-first" viewBox="0 0 196 56" preserveAspectRatio="none"></svg></div>
+        <div class="k-l"><span class="ic-st"><svg class="i"><use href="#i-octa"/></svg></span>Первый СТОП</div>
+        <div class="k-v">55,6<small>м</small></div>
+        <div class="k-f">doubleT_obstacle · кадр 8</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const HS = '<pattern id="hk" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#D0001B"/><rect width="2.2" height="6" fill="rgba(255,255,255,.28)"/></pattern>';
+  // strips: rendered at the real cell width once the webfonts have settled the layout
+  const strips = () => document.querySelectorAll('[data-run]').forEach(el => {
+    const q = D2.RUNS[el.dataset.run](), w = Math.round(el.clientWidth);
+    el.innerHTML = D2.strip(q, {w, h: 22, bins: q.length > w ? Math.round(w / 1.5) : 0, rx: 7}); });
+  strips(); document.fonts.ready.then(strips);
+  // CPU sparkline (last 10 min)
+  { const r = D2.rng(4); let p = [], a = 'M0 34'; for (let i = 0; i <= 38; i++){ const v = 8 + 12 * (0.5 + 0.5 * Math.sin(i / 3.2)) * (0.6 + r() * 0.5) + (i > 30 ? 4 : 0); const x = i * 5, y = 34 - v; p.push(`${x} ${y.toFixed(1)}`); }
+    document.getElementById('cpuspk').innerHTML = `<path d="M0 34 L${p.join(' L')} L190 34 Z" fill="#EDE9E4"/><path d="M${p.join(' L')}" fill="none" stroke="#16151A" stroke-width="2" stroke-linejoin="round"/><circle cx="190" cy="${p[p.length-1].split(' ')[1]}" r="3.5" fill="#16151A"/>`; }
+  // p95 latency: per-frame histogram, p95 bar highlighted
+  { const hb = [3, 9, 17, 26, 34, 38, 33, 25, 17, 11, 7, 5, 3, 2, 1.5]; const bw = 10, gp = 3.2; let s = '';
+    hb.forEach((v, i) => { const h = 6 + v / 38 * 42; s += `<rect x="${i * (bw + gp)}" y="${52 - h}" width="${bw}" height="${h}" rx="3" fill="${i === 11 ? '#fff' : 'rgba(255,255,255,.3)'}"/>`; });
+    s += `<text x="${11 * (bw + gp) + bw / 2}" y="${52 - (6 + 5 / 38 * 42) - 6}" text-anchor="middle" font-family="Montserrat" font-weight="800" font-size="10.5" fill="#fff">p95</text>`;
+    document.getElementById('vz-lat').innerHTML = s; }
+  // 10 synthetic objects: 8 inside the envelope (STOP), 2 outside
+  { let s = `<defs>${HS}</defs>`; for (let i = 0; i < 10; i++){ const x = i * 19 + (i >= 8 ? 10 : 0); s += i < 8 ? `<rect x="${x}" y="14" width="15" height="28" rx="6" fill="url(#hk)"/>` : `<rect x="${x}" y="14" width="15" height="28" rx="6" fill="#E3DDD5"/>`; }
+    document.getElementById('vz-obj').innerHTML = s; }
+  // the 13-km ride as a metro line: 7 stops, 30 false STOP episodes
+  { let s = `<defs>${HS}</defs><rect x="0" y="33" width="196" height="8" rx="4" fill="#E4000D"/>`;
+    const r = D2.rng(21); for (let i = 0; i < 30; i++){ const x = 4 + (i + 0.2 + r() * 0.6) / 30 * 188; s += `<rect x="${(x - 1.6).toFixed(1)}" y="${12 + (i % 3) * 5}" width="3.2" height="${14 - (i % 3) * 5}" rx="1.6" fill="#D0001B"/>`; }
+    for (let k = 0; k < 7; k++){ const x = 6 + k * 30.6; s += `<circle cx="${x.toFixed(1)}" cy="37" r="5.5" fill="#fff" stroke="#E4000D" stroke-width="3"/>`; }
+    s += `<text x="0" y="56" font-family="Montserrat" font-weight="700" font-size="10" fill="#16151A">0 км</text><text x="196" y="56" text-anchor="end" font-family="Montserrat" font-weight="700" font-size="10" fill="#16151A">13 км</text>`;
+    document.getElementById('vz-fa').innerHTML = s; }
+  // first STOP on a 0–210 m sensor scale
+  { const X = m => m / 210 * 196; const x = X(55.6);
+    let s = `<rect x="0" y="24" width="196" height="8" rx="4" fill="#EDE9E4"/><rect x="0" y="24" width="${x.toFixed(1)}" height="8" rx="4" fill="#12A150"/>`;
+    s += `<circle cx="${x.toFixed(1)}" cy="28" r="10" fill="#D0001B" stroke="#fff" stroke-width="3"/><path d="M${(x - 4.5).toFixed(1)} 28h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>`;
+    s += `<text x="0" y="52" font-family="Montserrat" font-weight="700" font-size="10" fill="#16151A">0</text><text x="196" y="52" text-anchor="end" font-family="Montserrat" font-weight="700" font-size="10" fill="#16151A">210 м</text>`;
+    document.getElementById('vz-first').innerHTML = s; }
+})();
+</script>
+<script type="module">
+window.__ready = false;
+import {loadFrame, createView} from './cloud.js';
+await document.fonts.ready;
+const cv = document.getElementById('pv');
+const r = cv.getBoundingClientRect();
+const d = await loadFrame();
+const C = d.result.track.center;
+const v = createView(cv, d, {width: r.width, height: r.height, preview: true, fov: 22, cam: {pos: [22, C - 1.2, 3.4], look: [57, C + 0.15, -0.9]}, pointSize: 0.045, minPx: 1.4, near: 4, fog: 0.006});
+v.render();
+requestAnimationFrame(() => { window.__ready = true; });
+</script>
+</body></html>

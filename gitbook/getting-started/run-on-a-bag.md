@@ -146,3 +146,7 @@ RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile too
 ./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT         # нода + RViz + проигрывание в одном контейнере (X11)
 ./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # то же без X11, печатает "OBSTACLE 55.7 m"
 ```
+
+Без Docker и ROS бэг обрабатывает тем же детектором [веб-прототип](../visualisation/web-prototype.md)
+(онлайн — [resense.arbuz.lol](https://resense.arbuz.lol/), свой экземпляр — `scripts/run_webapp.sh` → http://localhost:8080; вне релиза `v1.0.0`
+и образа Docker).

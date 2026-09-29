@@ -1,0 +1,25 @@
+# d2 «Линия»
+
+- Concept: the site as a metro line; red top bar, station line = breadcrumb, white bento on warm light
+- Brand: #E4000D red · #B0000A deep · #FCE6E7 tint (chrome, line, main CTA only)
+- Surfaces: bg #F5F3F0 · card #FFFFFF · wells #F5F3F0 / #EDE9E4 · hairlines #E7E2DB / #D9D3CB
+- Ink: #16151A; text = ink or white only
+- GO: #12A150 (strips, lamps) · #0B7A3B (under white text)
+- CAUTION: #FFB300 + ink text
+- STOP: #D0001B + 45° white hatch + octagon + halo / pulse
+- FAULT: #5B4E9C
+- Neutral states (progress, current pipeline stage, dash line, drop zone): ink
+- Head font: Benzin 800 — titles 32–34 · big numbers 26–80 · decisions 10.5–46
+- Head font: Benzin 700 — card / tile titles 12.5–15
+- Body font: Montserrat 500–900 — nav 14.5 · body 13–14 · labels 12–13 · tables 12.5–14.5 · tips 12.5 · min 12
+- Radius: 12 inputs · 16 selects, tips · 18–24 tiles, dropdown · 28 cards, 3D views · 999 chips, buttons, scrubber
+- Viewport: 1600×1000, fluid to 1440×900, no scroll
+- Grid: 40 side gutter · 12 cols · gap 20 (16 on run)
+- Chrome: top bar 64 · line band 84 · title row 52 + 12 · bento calc(100vh − 256)
+- Nav: logo · Главная pill · group pills 1 Данные / 2 Анализ / 3 Система with dropdowns (Система open on overview)
+- Line band: Главная → Загрузка → Очередь → Прогоны → Плеер → Сравнение; current = white station, red ring 9, underline
+- Help: «?» 20 round + ink tooltip; one open per screen
+- Player: fixed 1600×1000 cab, scaled to fit
+- Cab: 36 px canopy frame · 3 px red roof lip · curved console, tiles on its arc, outer tiles rotateY ±10° · STOP red ambient wash
+- 3D: walls dimmed ×0.5 · envelope portals 0.55 every 10 m to the obstacle · floor 0.22 · obstacle box red · fov 22
+- Files: style.css tokens + components · common.js icons, sequences, strips · cloud.js three.js scene

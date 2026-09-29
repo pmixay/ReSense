@@ -1,0 +1,54 @@
+.grid {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+/* fits 1280×800 without a page scroll (the foundation's floor is 600 px) */
+.grid:global(.fill-viewport) {
+  min-height: 540px;
+}
+.src {
+  grid-column: 1 / 8;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 22px 24px 24px;
+}
+.src > header {
+  flex: none; /* a tall source view never squeezes the card head */
+}
+.seg {
+  min-width: 0;
+}
+.cnt {
+  height: 20px;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--well-2);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 11.5px;
+  display: inline-grid;
+  place-items: center;
+}
+[aria-checked='true'] .cnt {
+  background: var(--white);
+}
+.opts {
+  grid-column: 1 / 8;
+  grid-row: 2;
+}
+.queue {
+  grid-column: 8 / 13;
+  grid-row: 1 / 3;
+}
+
+@media (max-width: 1500px) {
+  .seg :global(svg) {
+    display: none;
+  }
+}
+@media (max-height: 950px) {
+  .src {
+    padding-top: 18px;
+  }
+}

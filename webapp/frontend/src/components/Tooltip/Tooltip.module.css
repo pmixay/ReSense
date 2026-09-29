@@ -1,0 +1,56 @@
+.anchor {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+}
+
+.bubble {
+  position: fixed;
+  z-index: 1000;
+  background: var(--ink);
+  color: var(--white);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  font-family: var(--f-body);
+  font-weight: 500;
+  font-size: var(--fs-tip);
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  box-shadow: var(--shadow-pop);
+}
+.bubble[hidden] {
+  display: none;
+}
+.bubble b,
+.bubble strong {
+  font-weight: 800;
+}
+.bubble::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--ink);
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+.bubble[data-side='top']::before {
+  bottom: -5px;
+  left: calc(var(--arrow) - 6px);
+}
+.bubble[data-side='bottom']::before {
+  top: -5px;
+  left: calc(var(--arrow) - 6px);
+}
+.bubble[data-side='left']::before {
+  right: -5px;
+  top: calc(var(--arrow) - 6px);
+}
+.bubble[data-side='right']::before {
+  left: -5px;
+  top: calc(var(--arrow) - 6px);
+}

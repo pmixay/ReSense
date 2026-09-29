@@ -2,7 +2,8 @@
 
 [![ci](https://github.com/pmixay/ReSense/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pmixay/ReSense/actions/workflows/ci.yml)
 · ЛЦТ 2026, кейс 05 (Московский метрополитен) · команда «Молоток» · пакет 1.0.0 ·
-**Руководство пользователя: [resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)**
+**Руководство пользователя: [resense.gitbook.io/resense-docs](https://resense.gitbook.io/resense-docs/)** ·
+**Веб-прототип онлайн: [resense.arbuz.lol](https://resense.arbuz.lol/)**
 
 ReSense десять раз в секунду сообщает беспилотному поезду метро, находится ли внутри его габарита
 что-то, чего там быть не должно, и на каком расстоянии впереди по пути. Это нода ROS 2 Humble в
@@ -42,6 +43,10 @@ ros2 topic echo /resense/nearest_distance --field data   # 5. расстояни
 * **RViz** (нужен X11): вместо шага 2 — `xhost +local:docker && docker run --rm -it --net=host
   --ipc=host -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix resense ros2 launch resense_ros
   detector.launch.py rviz:=true freshness_mode:=replay`.
+* **Веб-прототип** (без ROS и Docker; вне образа и релиза): открыть онлайн — **[resense.arbuz.lol](https://resense.arbuz.lol/)**, ничего не
+  устанавливая; свой экземпляр — `scripts/run_webapp.sh` → http://localhost:8080 (первый запуск — `scripts/run_webapp.sh --install`, нужен интернет) — загрузка
+  записи (файл, папка на сервере или демо-запись), очередь обработки, результаты прогона, сравнение,
+  оценка по разметке, 3D-плеер из кабины и прямой эфир ноды; подробнее — [«Веб-прототип»](#веб-прототип).
 
 | `/resense/decision` | значение |
 |---|---|
@@ -194,6 +199,27 @@ resense bench --bag /data/for_hackathon/roundT_doubleT --every 5                
 RViz или Foxglove на порту 8765 с [`web/foxglove_layout.json`](web/foxglove_layout.json)
 ([`web/README.md`](web/README.md)).
 
+### Веб-прототип
+
+Онлайн: **[resense.arbuz.lol](https://resense.arbuz.lol/)** — развёрнутый экземпляр, установка не нужна. Свой экземпляр:
+
+```bash
+scripts/run_webapp.sh --install    # first run, needs the internet: pip install -e . -e webapp/backend, npm ci
+scripts/run_webapp.sh              # http://localhost:8080: the site and its API on one port
+```
+
+Многостраничный сайт для жюри с русским интерфейсом ([PR #31](https://github.com/pmixay/ReSense/pull/31)):
+Python ≥ 3.10 и Node.js 20.19+ или 22.12+ (только для сборки фронтенда), без ROS и Docker. Бэг rosbag2
+(`.db3`, `.mcap`) или кадры `.npy`/`.npz` — файлом или из папки на сервере — либо синтетическую
+демо-запись сервер обрабатывает тем же опечатанным детектором (готовый `results.jsonl` тоже открывается),
+а на сайте видны решения по кадрам с оценкой по разметке, 3D-плеер из кабины, сравнение прогонов и
+наборов параметров, прямой эфир ноды через rosbridge. Детектор прототип не меняет, в образ Docker и
+релиз `v1.0.0` не входит. Описание — [`webapp/README.md`](webapp/README.md) и GitBook
+[«Веб-прототип»](https://resense.gitbook.io/resense-docs/visualisation/web-prototype).
+
+![Плеер веб-прототипа: вид из кабины на синтетической демо-записи demo_approach, облако точек, габарит 2,1 × 3,0 м вдоль пути, препятствие на 70,0 м (СТОП) и панели решения, расстояния, задержки и исправности](docs/images/webapp-player.jpg)
+*Плеер веб-прототипа, синтетическая демо-запись `demo_approach`, кадр 60: снимок интерфейса, а не результат оценки.*
+
 ## Параметры
 
 Каждый параметр ноды — аргумент запуска (`ros2 launch resense_ros detector.launch.py <name>:=<value>`);
@@ -239,6 +265,7 @@ ROS содержит проверяемую копию): габарит `gauge.p
 | карта требований ТЗ, критериев §8 и вклада команды | [`docs/REQUIREMENTS_MAP.md`](docs/REQUIREMENTS_MAP.md) |
 | видео | [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (2:50, субтитры [`.srt`](docs/video/resense_overview.ru.srt)), клипы в [`docs/video/`](docs/video) |
 | презентация | [`docs/presentation/`](docs/presentation) (собирается `scripts/build_deck.py`; тексты — [`docs/PRESENTATION.md`](docs/PRESENTATION.md)) |
+| дополнительно: демонстрация в браузере без ROS и Docker (веб-прототип, вне образа и релиза) | онлайн [resense.arbuz.lol](https://resense.arbuz.lol/); [`webapp/README.md`](webapp/README.md), контракт HTTP [`webapp/API.md`](webapp/API.md), GitBook [«Веб-прототип»](https://resense.gitbook.io/resense-docs/visualisation/web-prototype) |
 
 Каждый документ с его назначением и ответственным: [`docs/README.md`](docs/README.md). Что
 менялось: [`CHANGELOG.md`](CHANGELOG.md).
@@ -252,6 +279,7 @@ ROS содержит проверяемую копию): габарит `gauge.p
 | [`docker/`](docker), [`scripts/`](scripts), [`.github/workflows/`](.github/workflows) | образ, инструменты (прогон dry run, экспорт, релиз, оценка), CI и релиз |
 | [`configs/default.yaml`](configs/default.yaml) | параметры детектора |
 | [`tests/`](tests), [`web/`](web) | набор тестов pytest; дашборд, раскладка Foxglove, инструмент разметки |
+| [`webapp/`](webapp) | веб-прототип для жюри (онлайн: [resense.arbuz.lol](https://resense.arbuz.lol/)): бэкенд FastAPI ([`webapp/backend`](webapp/backend)), фронтенд React ([`webapp/frontend`](webapp/frontend)), контракт API ([`webapp/API.md`](webapp/API.md)), браузерные тесты ([`webapp/e2e`](webapp/e2e)); запуск — [`scripts/run_webapp.sh`](scripts/run_webapp.sh); вне образа Docker и релиза `v1.0.0` |
 | [`docs/`](docs), [`gitbook/`](gitbook), [`labels/`](labels) | документы и evidence; руководство пользователя; метки записей организаторов |
 
 ## Команда «Молоток»

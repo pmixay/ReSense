@@ -1,0 +1,56 @@
+.chip {
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  white-space: nowrap;
+  flex: none;
+  color: var(--ink);
+}
+.sm {
+  height: 26px;
+  padding: 0 10px;
+  font-size: var(--fs-min);
+}
+.well {
+  background: var(--well);
+}
+.outline {
+  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--hair-2);
+}
+.ink {
+  background: var(--ink);
+  color: var(--white);
+}
+.red {
+  background: var(--red-tint);
+}
+.white {
+  background: var(--white);
+}
+.glass {
+  background: var(--glass);
+  color: var(--white);
+  backdrop-filter: blur(8px);
+}
+.on-red {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--white);
+}
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}

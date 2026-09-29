@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ReSense · Загрузка</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../shared/fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+<style>
+.up{grid-template-rows:minmax(0,1fr) 224px}
+.src{grid-column:1/8;display:flex;flex-direction:column;padding:22px 24px 24px;min-height:0}
+.drop{flex:1;min-height:0;border-radius:24px;border:2px dashed #16151A;background:radial-gradient(circle at 50% 58%,rgba(22,21,26,.035),rgba(22,21,26,0) 55%),#FCFBF9;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:86px 0 56px}
+.drop .big{width:96px;height:96px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;box-shadow:0 0 0 12px var(--red-tint),0 18px 30px -12px rgba(228,0,13,.7);flex:none}
+.drop .big svg{width:40px;height:40px;stroke-width:2.2}
+.prompt{display:flex;align-items:center;gap:34px}
+.drop h2{font-size:24px;font-weight:800;white-space:nowrap}
+.drop .or{display:flex;align-items:center;gap:12px;margin-top:18px;font-weight:700}
+.drop .fm{position:absolute;left:14px;right:14px;bottom:16px;display:flex;flex-wrap:wrap;row-gap:8px;gap:7px;justify-content:center;align-items:center}
+.fchip{height:34px;padding:0 12px 0 7px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--hair-2);display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:12.5px;white-space:nowrap}
+.fchip .fi{width:22px;height:22px;border-radius:8px;display:grid;place-items:center;background:var(--ink);color:#fff}
+.fchip .fi svg{width:13px;height:13px;stroke-width:2.4}
+/* selected recording: pre-flight summary the jury can check before «Обработать» */
+.sel{position:absolute;left:14px;right:14px;top:14px;background:#fff;border-radius:18px;box-shadow:0 0 0 1.5px var(--hair),0 10px 24px -16px rgba(22,21,26,.5);padding:12px 12px 12px 14px;display:flex;align-items:center;gap:14px}
+.sel .fi{width:44px;height:44px;border-radius:14px;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}
+.sel .w{flex:1;min-width:0}
+.sel .nm{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;white-space:nowrap}
+.sel .ok{height:22px;padding:0 9px 0 5px;border-radius:11px;background:var(--well-2);display:inline-flex;align-items:center;gap:5px;font-weight:800;font-size:12px}
+.sel .ok svg{width:13px;height:13px;stroke-width:3.2}
+.sel .facts{display:flex;gap:6px;margin-top:7px;flex-wrap:nowrap;overflow:hidden}
+.sel .facts span{height:24px;padding:0 9px;border-radius:12px;background:var(--well);display:inline-flex;align-items:center;font-weight:700;font-size:12px;white-space:nowrap}
+.sel .facts span b{font-weight:800;margin-left:4px}
+.sel .x{width:36px;height:36px;border-radius:50%;background:var(--well);display:grid;place-items:center;flex:none}
+.opts{grid-column:1/8;grid-row:2;padding:22px 24px}
+.opts .row{display:grid;grid-template-columns:1.25fr 1.15fr .8fr 1.1fr;gap:16px}
+.opts .foot{display:flex;align-items:center;gap:12px;margin-top:20px}
+.tgl{height:46px;border-radius:var(--r-sm);background:var(--well);display:flex;align-items:center;padding:0 8px 0 14px;gap:10px;font-weight:700;font-size:14px;white-space:nowrap}
+.tgl .toggle{margin-left:auto}
+/* queue */
+.queue{grid-column:8/13;grid-row:1/3;padding:22px 22px 20px;display:flex;flex-direction:column;min-height:0}
+.job{background:var(--well);border-radius:24px;padding:18px 20px 18px}
+.job .nm{font-weight:800;font-size:16px}
+.mt{display:flex;align-items:center;gap:6px;font-weight:600;font-size:12.5px;margin-top:3px;white-space:nowrap;overflow:hidden}
+.mt svg.i{width:15px;height:15px}
+.mt b{font-weight:800}
+/* pipeline: finished = ink, pending = outlined, current = a big ink ring with a spinning arc (no red: «габарит» must not read as breached) */
+.pl{position:relative;height:104px;margin:12px 0 4px;--in:46px}
+.pl .rail{position:absolute;left:var(--in);right:var(--in);top:48px;height:8px;border-radius:4px;background:var(--well-2)}
+.pl .rail b{position:absolute;left:0;top:0;bottom:0;width:60%;border-radius:4px;background:var(--ink)}
+.pl .s{position:absolute;top:52px;left:calc(var(--in) + (100% - 2 * var(--in)) * var(--k) / 5);transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--ink)}
+.pl .s.d{background:var(--ink);display:grid;place-items:center;color:#fff}
+.pl .s.d svg{width:12px;height:12px;stroke-width:3.4}
+.pl .s.c{width:40px;height:40px;border:9px solid var(--ink);background:#fff;box-shadow:0 0 0 5px rgba(22,21,26,.07)}
+.pl .s.c::after{content:"";position:absolute;inset:-17px;border-radius:50%;border:3px solid transparent;border-top-color:var(--ink);transform:rotate(38deg);animation:spin 1.2s linear infinite}
+@keyframes spin{from{transform:rotate(38deg)}to{transform:rotate(398deg)}}
+.pl .t{position:absolute;left:calc(var(--in) + (100% - 2 * var(--in)) * var(--k) / 5);transform:translateX(-50%);white-space:nowrap;font-weight:700;font-size:12px;line-height:16px}
+.pl .t.a{top:6px}.pl .t.b{top:82px}
+.pl .t.cur{font-weight:900;text-decoration:underline 2.5px var(--ink);text-underline-offset:4px}
+.prog{display:flex;align-items:flex-end;gap:16px;margin-top:4px}
+.prog .pc{font-family:var(--f-head);font-weight:800;font-size:40px;line-height:.9}
+.prog .pc small{font-size:18px}
+.jstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+.js{background:#fff;border-radius:16px;padding:10px 12px}
+.js .v{font-family:var(--f-head);font-weight:800;font-size:17px;white-space:nowrap}
+.js .l{font-weight:600;font-size:12px;margin-top:3px;white-space:nowrap}
+.sec{display:flex;align-items:center;gap:8px;font-family:var(--f-head);font-weight:700;font-size:12.5px;margin:16px 2px 9px}
+.sec .n{height:22px;min-width:22px;padding:0 7px;border-radius:11px;background:var(--ink);color:#fff;font-family:var(--f-body);font-weight:800;font-size:12px;display:grid;place-items:center}
+.sec .lk{margin-left:auto;display:flex;align-items:center;gap:6px;font-family:var(--f-body);font-weight:800;font-size:12.5px}
+.sec .lk .sb{width:30px;height:30px;border-radius:50%;background:var(--well);display:grid;place-items:center}
+.qrow{display:flex;align-items:center;gap:12px;border-radius:20px;box-shadow:inset 0 0 0 1.5px var(--hair);padding:10px 12px 10px 12px}
+.qrow + .qrow{margin-top:8px}
+.qrow .w{flex:1;min-width:0}
+.qrow .nm{font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qrow .mt{font-size:12px}
+.qrow .ib{width:36px;height:36px;border-radius:50%;background:var(--well);display:grid;place-items:center;flex:none}
+.qrow .strip-w{width:118px;height:18px;flex:none}
+.qrow .dc{min-width:118px;justify-content:center}
+.qrow.err{box-shadow:inset 0 0 0 1.5px #CFC9E8;background:#FBFAFE}
+.qn{width:40px;height:40px;border-radius:50%;border:2.5px dashed var(--ink);display:grid;place-items:center;font-family:var(--f-head);font-weight:800;font-size:14px;flex:none}
+.qd{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}
+.qd svg{stroke-width:3}
+.qd.f{background:var(--fault)}
+.chip .vdot{width:9px;height:9px;border-radius:50%;background:var(--fault)}
+@media (max-width:1500px){
+  .fchip .fi{display:none}.fchip{padding:0 12px}
+  .qrow .strip-w{width:96px}
+  .qrow .dc{min-width:104px}
+  .qrow .mt .sw{display:none}
+  .jstats{grid-template-columns:1.3fr 1fr 1fr}.js .l{font-size:11.5px}
+  .sel .facts span.opt{display:none}
+  .ph .chip.lim{display:none}
+}
+@media (max-height:950px){
+  .drop .big{width:76px;height:76px;box-shadow:0 0 0 10px var(--red-tint),0 14px 24px -12px rgba(228,0,13,.7)}.drop .big svg{width:32px;height:32px}
+  .drop h2{font-size:22px}.drop .or{margin-top:14px}.drop{padding:80px 0 52px}.prompt{gap:28px}
+  .sel{padding:9px 10px 9px 12px}.sel .fi{width:40px;height:40px}.sel .facts{margin-top:5px}
+  .job{padding:14px 18px}.pl{height:88px;margin:8px 0 2px}.pl .rail{top:40px}.pl .s{top:44px}.pl .t.a{top:2px}.pl .t.b{top:70px}
+  .jstats{margin-top:10px}.js{padding:7px 12px}.prog .pc{font-size:34px}
+  .sec{margin:12px 2px 7px}.qrow{padding:6px 12px}.qrow + .qrow{margin-top:6px}
+  .queue,.src{padding-top:18px}.src .card-h{margin-bottom:12px !important}
+}
+</style></head>
+<body>
+<script src="common.js"></script>
+
+<header class="top">
+  <a class="logo" href="overview.html"><svg class="logo-mark" viewBox="0 0 40 38" aria-hidden="true"><path d="M3.5 19H12" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="19" cy="19" r="7" fill="#E4000D" stroke="#fff" stroke-width="5"/><path d="M28.2 11.3A12 12 0 0 1 28.2 26.7M32 8.1A17 17 0 0 1 32 29.9" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></svg><span class="logo-word">ReSense</span></a>
+  <nav class="nav">
+    <a class="nav-pill" href="overview.html"><svg class="i s"><use href="#i-home"/></svg>Главная</a>
+    <div class="nav-pill grp active"><span class="ln">1</span>Данные<svg class="i chev"><use href="#i-chev"/></svg></div>
+    <div class="nav-pill grp"><span class="ln">2</span>Анализ<svg class="i chev"><use href="#i-chev"/></svg></div>
+    <div class="nav-pill grp"><span class="ln">3</span>Система<svg class="i chev"><use href="#i-chev"/></svg></div>
+  </nav>
+  <div class="top-right">
+    <span class="top-chip"><span class="dot"></span>бэкенд онлайн</span>
+    <span class="top-chip">ЛЦТ 2026 · кейс 05</span>
+    <span class="avatar">М</span>
+  </div>
+</header>
+
+<div class="line-band">
+  <div class="line"></div>
+  <div class="stations">
+    <a class="st home" href="overview.html"><span class="c"><svg class="i"><use href="#i-home"/></svg></span><span class="lbl">Главная</span></a>
+    <a class="st cur" href="upload.html"><span class="c"></span><span class="lbl">Загрузка</span></a>
+    <a class="st here" href="#queue"><span class="c"></span><span class="lbl">Очередь</span></a>
+    <a class="st" href="runs.html"><span class="c"></span><span class="lbl">Прогоны</span></a>
+    <a class="st" href="player.html"><span class="c"></span><span class="lbl">Плеер</span></a>
+    <a class="st" href="compare.html"><span class="c"></span><span class="lbl">Сравнение</span></a>
+  </div>
+</div>
+
+<main class="page">
+  <div class="ph">
+    <span class="rd">1</span>
+    <h1>Загрузка</h1>
+    <span class="chip out lim">файл до 20 ГБ · папка без лимита</span>
+    <span class="sp"></span>
+    <span class="chip out"><svg class="i s"><use href="#i-server"/></svg>свободно 312 ГБ</span>
+    <a class="btn wht" href="#"><svg class="i s"><use href="#i-sliders"/></svg>Пресеты</a>
+  </div>
+
+  <section class="grid up fill">
+    <div class="card src">
+      <div class="card-h" style="margin-bottom:16px">
+        <h2>Источник</h2>
+        <span class="sp"></span>
+        <div class="seg">
+          <span class="o on"><svg class="i s"><use href="#i-file"/></svg>Файл</span>
+          <span class="o"><svg class="i s"><use href="#i-server"/></svg>Папка на сервере</span>
+          <span class="o"><svg class="i s"><use href="#i-spark"/></svg>Демо-запись</span>
+        </div>
+      </div>
+      <div class="drop">
+        <div class="sel">
+          <span class="fi"><svg class="i"><use href="#i-zip"/></svg></span>
+          <div class="w">
+            <div class="nm">doubleT_platform.zip<span class="ok"><svg class="i"><use href="#i-check"/></svg>проверено</span>
+              <span class="q-wrap"><button class="q">?</button><span class="tip r" style="width:240px">Сводка прочитана из <b>metadata.yaml</b> до загрузки облаков: формат, кадры, длительность, топик.</span></span></div>
+            <div class="facts"><span>rosbag2</span><span>345 кадров</span><span>34,4 с</span><span>2,6 ГБ</span><span>топик<b>/lidar_points</b>&nbsp;· авто</span><span class="opt">кэш облаков: нет</span></div>
+          </div>
+          <span class="x" title="убрать"><svg class="i s"><use href="#i-x"/></svg></span>
+        </div>
+        <div class="prompt">
+          <span class="big"><svg class="i"><use href="#i-upload"/></svg></span>
+          <div><h2>Перетащите запись</h2>
+            <div class="or">
+              <a class="btn ink" href="#"><svg class="i s"><use href="#i-file"/></svg>Выбрать файлы</a>
+              <a class="btn wht" href="#"><svg class="i s"><use href="#i-folder"/></svg>Выбрать папку</a>
+            </div></div>
+        </div>
+        <div class="fm">
+          <span class="fchip"><span class="fi"><svg class="i"><use href="#i-zip"/></svg></span>rosbag2 · .zip</span>
+          <span class="fchip"><span class="fi"><svg class="i"><use href="#i-file"/></svg></span>.db3 + metadata.yaml</span>
+          <span class="fchip"><span class="fi"><svg class="i"><use href="#i-file"/></svg></span>.mcap</span>
+          <span class="fchip"><span class="fi"><svg class="i"><use href="#i-list"/></svg></span>результаты .jsonl</span>
+          <span class="fchip"><span class="fi"><svg class="i"><use href="#i-cube"/></svg></span>кэш .npy / .npz</span>
+          <span class="q-wrap" style="align-self:center"><button class="q">?</button><span class="tip t">Готовые результаты <b>.jsonl</b> и кэш облаков открываются сразу, без обработки.</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card opts">
+      <div class="card-h"><h2>Обработка</h2></div>
+      <div class="row">
+        <div class="field"><div class="fl">Пресет <span class="q-wrap"><button class="q">?</button><span class="tip b">Набор параметров детектора — см. «Параметры».</span></span></div>
+          <div class="select"><svg class="i s"><use href="#i-sliders"/></svg>Базовый · v1.0<svg class="i chev"><use href="#i-chev"/></svg></div></div>
+        <div class="field"><div class="fl">Топик облака</div>
+          <div class="select"><svg class="i s"><use href="#i-spark"/></svg>авто<svg class="i chev"><use href="#i-chev"/></svg></div></div>
+        <div class="field"><div class="fl">Шаг кадров <span class="q-wrap"><button class="q open">?</button><span class="tip tr" style="width:230px"><b>1</b> — каждый кадр, как на поезде. <b>2</b> и больше — быстрее, но решения реже.</span></span></div>
+          <div class="stepper"><span class="sb">−</span>1<span class="sb">+</span></div></div>
+        <div class="field"><div class="fl">Для плеера</div>
+          <div class="tgl">Облака точек<span class="toggle"></span></div></div>
+      </div>
+      <div class="foot">
+        <span class="chip"><svg class="i s"><use href="#i-clock"/></svg>оценка ≈ 1 мин</span>
+        <span class="chip">10 Гц · кадры по порядку</span>
+        <span class="chip"><svg class="i s"><use href="#i-target"/></svg>габарит 2,1 × 3,0 м</span>
+        <span class="sp" style="flex:1"></span>
+        <a class="btn red lg" href="#queue"><svg class="i"><use href="#i-play"/></svg>Обработать</a>
+      </div>
+    </div>
+
+    <div class="card queue" id="queue">
+      <div class="card-h"><h2>Очередь</h2><span class="sp"></span>
+        <span class="chip ink">1 в работе</span><span class="chip">1 ждёт</span><span class="chip">2 готово</span><span class="chip"><span class="vdot"></span>1 ошибка</span></div>
+
+      <div class="job">
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <div style="flex:1;min-width:0"><div class="nm">new_data</div><div class="mt"><svg class="i"><use href="#i-server"/></svg><b>папка на сервере</b> · 20 мин · 11 271 кадр · 90 ГБ</div></div>
+          <span class="ibtn" style="background:#fff"><svg class="i s"><use href="#i-pause"/></svg></span>
+          <span class="ibtn" style="background:#fff"><svg class="i s"><use href="#i-x"/></svg></span>
+        </div>
+        <div class="pl">
+          <div class="rail"><b></b></div>
+          <span class="s d" style="--k:0"><svg class="i"><use href="#i-check"/></svg></span>
+          <span class="s d" style="--k:1"><svg class="i"><use href="#i-check"/></svg></span>
+          <span class="s d" style="--k:2"><svg class="i"><use href="#i-check"/></svg></span>
+          <span class="s c" style="--k:3"></span>
+          <span class="s" style="--k:4"></span>
+          <span class="s" style="--k:5"></span>
+          <span class="t a" style="--k:0">декодирование</span>
+          <span class="t b" style="--k:1">калибровка</span>
+          <span class="t a" style="--k:2">модель пути</span>
+          <span class="t b cur" style="--k:3">габарит</span>
+          <span class="t a" style="--k:4">кластеризация</span>
+          <span class="t b" style="--k:5">трекинг</span>
+        </div>
+        <div class="prog">
+          <div class="pc">64<small> %</small></div>
+          <div style="flex:1;padding-bottom:4px"><div class="bar" style="height:14px;background:#fff"><span style="width:64%"></span></div></div>
+        </div>
+        <div class="jstats">
+          <div class="js"><div class="v">31 кадр/с</div><div class="l">×3 реального времени</div></div>
+          <div class="js"><div class="v">2:11</div><div class="l">осталось</div></div>
+          <div class="js"><div class="v">7 214</div><div class="l">кадр из 11 271</div></div>
+        </div>
+      </div>
+
+      <div class="sec">Ждёт <span class="n">1</span></div>
+      <div class="qrow">
+        <span class="qn">2</span>
+        <div class="w"><div class="nm">squareT_platform_squareT_switch</div><div class="mt"><svg class="i"><use href="#i-file"/></svg><b>файл</b> · 877 кадров · 88,2 с · 6,6 ГБ</div></div>
+        <span class="ib"><svg class="i s"><use href="#i-trash"/></svg></span>
+      </div>
+
+      <div class="sec">Завершено <span class="n">3</span>
+        <a class="lk" href="runs.html">все прогоны<span class="sb"><svg class="i s"><use href="#i-right"/></svg></span></a></div>
+      <div class="qrow">
+        <span class="qd"><svg class="i s"><use href="#i-check"/></svg></span>
+        <div class="w"><div class="nm">doubleT_obstacle</div><div class="mt"><svg class="i"><use href="#i-file"/></svg><b class="sw">файл ·</b> 201 кадр · за 19 с</div></div>
+        <div class="strip-w" data-run="doubleT_obstacle"></div>
+        <span class="dc stop"><svg class="i"><use href="#i-octa"/></svg>СТОП</span>
+        <a class="ib" href="run.html" style="background:var(--ink);color:#fff"><svg class="i s"><use href="#i-right"/></svg></a>
+      </div>
+      <div class="qrow">
+        <span class="qd"><svg class="i s"><use href="#i-check"/></svg></span>
+        <div class="w"><div class="nm">roundT_doubleT</div><div class="mt"><svg class="i"><use href="#i-file"/></svg><b class="sw">файл ·</b> 252 кадра · за 14 с</div></div>
+        <div class="strip-w" data-run="roundT_doubleT"></div>
+        <span class="dc go"><svg class="i"><use href="#i-go"/></svg>БЕЗ СТОП</span>
+        <a class="ib" href="#" style="background:var(--ink);color:#fff"><svg class="i s"><use href="#i-right"/></svg></a>
+      </div>
+      <div class="qrow err">
+        <span class="qd f"><svg class="i s"><use href="#i-fault"/></svg></span>
+        <div class="w"><div class="nm">roundT_pressureGate_roundT</div><div class="mt"><svg class="i"><use href="#i-file"/></svg><b>ошибка:</b> топик облака не найден</div></div>
+        <span class="dc fault"><svg class="i"><use href="#i-fault"/></svg>ОШИБКА</span>
+        <a class="ib" href="#" title="повторить" style="background:var(--fault);color:#fff"><svg class="i s"><use href="#i-loop"/></svg></a>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(function(){
+  const draw = () => document.querySelectorAll('[data-run]').forEach(el => { const w = Math.round(el.clientWidth);
+    const q = D2.RUNS[el.dataset.run]();
+    el.innerHTML = D2.strip(q, {w, h: 18, bins: q.length > w ? w : 0, rx: 6}); });
+  draw(); document.fonts.ready.then(draw);
+})();
+</script>
+</body></html>

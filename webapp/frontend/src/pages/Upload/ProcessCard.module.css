@@ -1,0 +1,90 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 24px;
+}
+.target {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.15fr) minmax(132px, 0.8fr) minmax(0, 1.1fr);
+  gap: 16px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.fl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: var(--fs-label);
+  min-height: 20px;
+  white-space: nowrap;
+}
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 18px;
+  min-width: 0;
+}
+.evalPill {
+  height: 40px;
+  padding: 0 5px 0 12px;
+  border-radius: var(--pill);
+  background: var(--well);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  white-space: nowrap;
+  flex: none;
+}
+.evalText {
+  margin-right: 2px;
+}
+.sp {
+  flex: 1;
+}
+.err {
+  margin-top: 10px;
+}
+
+.short {
+  display: none;
+}
+@media (max-width: 1500px) {
+  .row {
+    gap: 10px;
+  }
+}
+@media (max-width: 1500px) {
+  .cloudChip {
+    display: none;
+  }
+}
+@media (max-width: 1440px) {
+  .long {
+    display: none;
+  }
+  .short {
+    display: inline;
+  }
+}
+@media (max-height: 950px) {
+  .card {
+    padding: 18px 22px;
+  }
+  .foot {
+    padding-top: 12px;
+  }
+}

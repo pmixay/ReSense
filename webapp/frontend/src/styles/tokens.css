@@ -1,0 +1,86 @@
+/* «Линия» design tokens (webapp/design/mockup/style.css + README.md). Text is ink or white only. */
+:root {
+  /* brand: chrome, the metro line and the main call to action only */
+  --red: #E4000D;
+  --red-deep: #B0000A;
+  --red-tint: #FCE6E7;
+  --red-tint-2: #F8CDD0;
+
+  /* surfaces + ink */
+  --bg: #F5F3F0;
+  --card: #FFFFFF;
+  --well: #F5F3F0;
+  --well-2: #EDE9E4;
+  --well-3: #FCFBF9;
+  --ink: #16151A;
+  --white: #FFFFFF;
+  --hair: #E7E2DB;
+  --hair-2: #D9D3CB;
+
+  /* safety states: never brand red for anything but STOP */
+  --go: #12A150;
+  --go-deep: #0B7A3B;
+  --go-tint: #DDF3E5;
+  --caution: #FFB300;
+  --caution-deep: #7A4E00;
+  --caution-tint: #FFF1CC;
+  --stop: #D0001B;
+  --stop-deep: #8A0012;
+  --stop-tint: #FBE1E4;
+  --fault: #5B4E9C;
+  --fault-tint: #E8E5F5;
+  --fault-line: #CFC9E8;
+  --fault-bg: #FBFAFE;
+
+  /* dark views (3D, cab) */
+  --night: #05070D;
+  --night-2: #0B0E15;
+  --glass: rgba(10, 12, 20, 0.66);
+  --cab: #E6E0D8;
+  --cab-2: #E2DBD2;
+  --online: #3BE37F;
+
+  /* type: Benzin for titles / big numbers / decisions, Montserrat for everything else */
+  --f-head: 'Benzin', 'Montserrat', system-ui, sans-serif;
+  --f-body: 'Montserrat', system-ui, sans-serif;
+  --fs-title: 34px;
+  --fs-card-title: 15px;
+  --fs-nav: 14.5px;
+  --fs-body: 14px;
+  --fs-label: 13px;
+  --fs-meta: 12.5px;
+  --fs-tip: 12.5px;
+  --fs-min: 12px;
+
+  /* radii: 12 inputs · 16 selects, tips · 18–24 tiles, dropdown · 28 cards, 3D views · 999 pills */
+  --r-xs: 12px;
+  --r-sm: 16px;
+  --r-md: 20px;
+  --r-tile: 24px;
+  --r-lg: 28px;
+  --pill: 999px;
+
+  /* grid + chrome */
+  --gut: 20px;
+  --pad: 40px;
+  --topbar-h: 64px;
+  --rail-h: 84px;
+  --title-h: 52px;
+  --chrome-h: 256px; /* top bar + line band + 16 + title row + 12 + air below */
+
+  /* elevation */
+  --shadow: 0 1px 0 rgba(22, 21, 26, 0.03), 0 10px 30px -18px rgba(22, 21, 26, 0.28);
+  --shadow-pop: 0 2px 4px rgba(22, 21, 26, 0.06), 0 24px 48px -16px rgba(22, 21, 26, 0.35);
+  --shadow-red: 0 8px 20px -10px rgba(228, 0, 13, 0.8);
+
+  /* STOP hatch: 45° white stripes over --stop */
+  --hatch: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0) 0 7px, rgba(255, 255, 255, 0.2) 7px 11px);
+  /* labelled ground truth lane */
+  --hatch-ink: repeating-linear-gradient(135deg, var(--ink) 0 4px, #6B6870 4px 6.5px);
+
+  /* focus ring (keyboard only) */
+  --focus: 0 0 0 3px var(--white), 0 0 0 5.5px var(--ink);
+  --focus-on-red: 0 0 0 2.5px var(--red), 0 0 0 5px var(--white);
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

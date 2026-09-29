@@ -4,8 +4,9 @@ on:
 # Two stages. Stage 1, `checks` (seconds): lint, the parameter copy and the detector seal. Stage 2
 # waits for it and runs in parallel: `pytest` (the suite and the dashboard on the runner's Python),
 # `docker` (the WITH_TOOLS=1 image: the suite on the image's pinned stack, the ROS node reached
-# every way the jury can, the original-bag cold start) and `offline-build` (the jury's runtime
-# archive: loaded, rebuilt offline, bags played through it). A lint error stops a push before the
+# every way the jury can, the original-bag cold start), `offline-build` (the jury's runtime
+# archive: loaded, rebuilt offline, bags played through it) and `webapp` (the web prototype: backend,
+# frontend build and the browser suite). A lint error stops a push before the
 # ~20 runner-minutes of stage 2 start.
 jobs:
   checks:
@@ -62,6 +63,58 @@ jobs:
           import xml.etree.ElementTree as ET, sys
           bad = False
           for path in ("junit.xml", "junit-web.xml"):
+              root = ET.parse(path).getroot()
+              suites = [root] if root.tag == "testsuite" else list(root)
+              tests = sum(int(s.get("tests", 0)) for s in suites)
+              skipped = sum(int(s.get("skipped", 0)) for s in suites)
+              print(f"{path}: {tests} tests, {skipped} skipped")
+              bad = bad or bool(skipped) or tests == 0
+          sys.exit(1 if bad else 0)
+          PY
+  webapp:
+    # The web prototype (webapp/, contract webapp/API.md): the FastAPI backend suite, the React
+    # frontend's type check, unit tests and production build, then the browser suite (webapp/e2e)
+    # that drives every page against a real backend serving that build. Skips count as failures.
+    needs: checks
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            webapp/backend/pyproject.toml
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: webapp/frontend/package-lock.json
+      # open3d (synthetic bags in the backend tests) links libEGL / libGL / libgomp / libusb
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
+      - id: install
+        run: |
+          pip install -e ".[dev]" -e "webapp/backend[dev]" playwright
+          python -m playwright install --with-deps chromium
+          cd webapp/frontend && npm ci
+      - name: backend (webapp/backend)
+        run: cd webapp/backend && python -m pytest -q -rs --junitxml=../../junit-webapp-backend.xml
+      - name: frontend unit tests, type check and production build
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: cd webapp/frontend && npm test && npm run build
+      - name: browser suite against the production build (webapp/e2e)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        env:
+          WEBAPP_DIST: webapp/frontend/dist
+        run: python -m pytest -q -rs --junitxml=junit-webapp-e2e.xml webapp/e2e
+      - name: no webapp test may have been skipped
+        if: ${{ !cancelled() }}
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET, sys
+          bad = False
+          for path in ("junit-webapp-backend.xml", "junit-webapp-e2e.xml"):
               root = ET.parse(path).getroot()
               suites = [root] if root.tag == "testsuite" else list(root)
               tests = sum(int(s.get("tests", 0)) for s in suites)

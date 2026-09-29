@@ -5,12 +5,22 @@
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
 > **Last verified:** 2026-09-29: ownership (demo, video and pitch with P2), links, the CI remote-viewer
 > probe on `main` and the video's number sources checked; dashboard behaviour as reviewed on the sealed
-> 27.09 detector ([`P2_REVIEW.md`](P2_REVIEW.md)) · **Status:** current
+> 27.09 detector ([`P2_REVIEW.md`](P2_REVIEW.md)); 2026-09-29: the web prototype note against
+> [`webapp/README.md`](../webapp/README.md) and `scripts/run_webapp.sh` · **Status:** current
 
 Everything the jury sees: the RViz layout the launch file loads, a Foxglove layout for remote
 demos, a browser dashboard that works live (rosbridge) and offline (replay of `results.jsonl`),
 the scripts that verify the dashboard headlessly (CI job `pytest`), and the
 video recipes.
+
+**Web prototype.** The multi-page web site for the jury lives in [`webapp/`](../webapp/README.md)
+([PR #31](https://github.com/pmixay/ReSense/pull/31); outside the Docker image and the `v1.0.0` release):
+live at **[resense.arbuz.lol](https://resense.arbuz.lol/)**, or locally `scripts/run_webapp.sh` → http://localhost:8080. Unlike this dashboard it processes recordings itself
+(a bag or a synthetic demo recording, through the same sealed detector on its backend), keeps runs,
+and adds the score against labels, a fullscreen 3D player from the cab, run comparison and detector
+presets; it needs its Python backend and a one-time `scripts/run_webapp.sh --install` with internet.
+This dashboard stays as it is: the zero-install option, a single page with no build step, rosbridge
+live and `results.jsonl` replay.
 
 P2's deliverables, what is left and the rehearsal record: [`P2_STATUS.md`](P2_STATUS.md);
 requirement-by-requirement evidence and the repeatable checks: [`P2_REVIEW.md`](P2_REVIEW.md); the

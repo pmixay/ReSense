@@ -78,6 +78,22 @@ cat <bag>/*.db3 > /dev/null
 | файл загружается, но ничего не показывает | в нём должны быть JSON-объекты статуса, по одному на строку (`resense run --out` или запись `/resense/status`) |
 | в живом режиме баннер показывает «ДАННЫЕ УСТАРЕЛИ» | часы ноды и браузера расходятся; синхронизируйте UTC (NTP) |
 
+## Веб-прототип <a href="#webapp" id="webapp"></a>
+
+| симптом | что делать |
+|---|---|
+| онлайн-версия [resense.arbuz.lol](https://resense.arbuz.lol/) не открывается или на стенде нет интернета | запустите свой экземпляр: `scripts/run_webapp.sh` → http://localhost:8080 ([Веб-прототип](visualisation/web-prototype.md#run)) |
+| `ERROR: … lacks the backend dependencies` | один раз, с интернетом: `scripts/run_webapp.sh --install` |
+| порт 8080 занят | другой порт: `RESENSE_WEB_PORT=9000 scripts/run_webapp.sh` |
+| `WARNING: npm not found` или нет `node_modules`: работает только API, `/` объясняет, как собрать сайт | поставьте Node.js 20.19+ или 22.12+ и выполните `scripts/run_webapp.sh --install` (или `npm ci` в `webapp/frontend`) |
+| «Папка на сервере» пуста | её корень — `RESENSE_DATA` (скрипт печатает его при старте; `(missing)` — каталога нет): `RESENSE_DATA=<папка с бэгами> scripts/run_webapp.sh` |
+| кончается место на диске | демо-запись занимает ≈ 33 МБ на секунду записи; всё хранится в `RESENSE_WEB_DATA` (по умолчанию `webapp/data`). Удалите лишние записи (Загрузка → «Записи») и прогоны (Прогоны) |
+| в верхней панели «бэкенд офлайн» | сервер не отвечает: запустите `scripts/run_webapp.sh` снова (в режиме разработки — `python -m resense_web --port 8000 --reload`) |
+| задание завершилось «прервано перезапуском сервера» | сервер перезапустили во время обработки: **Повторить** в Очереди |
+| «Узел ROS 2» в Прямом эфире не подключается | rosbridge нет в образе: `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` на машине с нодой (пакет `ros-humble-rosbridge-suite`), адрес `ws://<хост>:9090` |
+
+Подробно: [Веб-прототип](visualisation/web-prototype.md).
+
 Если не помогло: в большинстве случаев проблему называют лог ноды (`docker logs <container>`)
 и `/resense/health`; о проблемах сообщайте в issues на
 [GitHub](https://github.com/pmixay/ReSense/issues).

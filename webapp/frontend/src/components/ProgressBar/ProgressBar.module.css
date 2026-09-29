@@ -1,0 +1,40 @@
+.bar {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+.well {
+  background: var(--well-2);
+}
+.white {
+  background: var(--white);
+}
+.glass {
+  background: rgba(255, 255, 255, 0.18);
+}
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  transition: width 0.4s var(--ease);
+}
+.glass .fill,
+.glass .indeterminate {
+  background: var(--white);
+}
+.indeterminate {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 35%;
+  background: var(--ink);
+  animation: slide 1.3s var(--ease) infinite;
+}
+@keyframes slide {
+  from {
+    left: -35%;
+  }
+  to {
+    left: 100%;
+  }
+}

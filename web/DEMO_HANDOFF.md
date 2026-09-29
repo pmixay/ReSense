@@ -7,7 +7,8 @@
 > · **Язык:** RU
 > **Проверено:** 2026-09-29 вечер: команды сверены с [`README.md`](../README.md) «Кратко для жюри»,
 > `docker-compose.yml` и [`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Демонстрация»; это сценарий,
-> а не пройденная репетиция · **Статус:** текущий
+> а не пройденная репетиция; 2026-09-29: необязательный показ через веб-прототип сверен с той же
+> «Демонстрацией» и [`webapp/README.md`](../webapp/README.md) · **Статус:** текущий
 
 Речь, слайды, вопросы жюри и репетиции — [`docs/PRESENTATION.md`](../docs/PRESENTATION.md); проверки
 интерфейса — [`P2_REVIEW.md`](P2_REVIEW.md).
@@ -22,7 +23,10 @@ xhost +local:docker                                      # RViz из конте�
 ```
 
 Открыть заранее: окно для демонстрации экрана, плеер с
-[`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4), именную колоду.
+[`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4), именную колоду; если капитан включил
+веб-прототип в план — его вкладку (онлайн [resense.arbuz.lol](https://resense.arbuz.lol/) или свой экземпляр `scripts/run_webapp.sh` →
+http://localhost:8080) с готовым прогоном
+`doubleT_obstacle` в плеере (подготовка — [`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Демонстрация»).
 
 ## Показ (слайд 10, ~50 с)
 

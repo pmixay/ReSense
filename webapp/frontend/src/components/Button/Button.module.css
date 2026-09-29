@@ -1,0 +1,109 @@
+.btn {
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-family: var(--f-body);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1;
+  border: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  flex: none;
+  user-select: none;
+  transition: background-color 0.15s, box-shadow 0.15s, transform 0.08s, opacity 0.15s;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn:disabled:not(.loading) {
+  cursor: not-allowed;
+  background: var(--well-2);
+  color: var(--ink);
+  box-shadow: none;
+}
+.btn.loading {
+  cursor: progress;
+}
+.label {
+  display: inline-block;
+}
+.full {
+  width: 100%;
+}
+
+.sm {
+  height: 36px;
+  padding: 0 15px;
+  font-size: 13px;
+  gap: 7px;
+}
+.md {
+  height: 44px;
+}
+.lg {
+  height: 54px;
+  padding: 0 26px;
+  font-size: 16px;
+  gap: 10px;
+}
+
+.primary {
+  background: var(--red);
+  color: var(--white);
+  box-shadow: var(--shadow-red);
+}
+.primary:hover:not(:disabled) {
+  background: #CC000C;
+}
+.dark {
+  background: var(--ink);
+  color: var(--white);
+}
+.dark:hover:not(:disabled) {
+  background: #2A2930;
+}
+.outline {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--hair-2);
+}
+.outline:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.outline:focus-visible {
+  box-shadow: inset 0 0 0 1.5px var(--hair-2), var(--focus);
+}
+.ghost {
+  background: var(--well);
+  color: var(--ink);
+}
+.ghost:hover:not(:disabled) {
+  background: var(--well-2);
+}
+/* on red / dark surfaces */
+.light {
+  background: var(--white);
+  color: var(--red);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.45);
+}
+.light:hover:not(:disabled) {
+  background: #FFF5F5;
+}
+.ghost-light {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--white);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.55);
+}
+.ghost-light:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.22);
+}
+.light:focus-visible,
+.ghost-light:focus-visible {
+  box-shadow: 0 0 0 2.5px transparent, 0 0 0 4px var(--white);
+}

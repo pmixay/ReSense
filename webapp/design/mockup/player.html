@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ReSense · Плеер</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../shared/fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+<script>window.__ready = false;</script>
+<script type="importmap">{"imports":{"three":"../shared/vendor/three.module.js"}}</script>
+<style>
+/* the 1600×1000 cab is one composition, scaled to fit any viewport */
+html,body{height:100%}
+body{background:#E2DBD2;overflow:hidden;min-height:0}
+.stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;transform:translate(-50%,-50%) scale(var(--k,1));transform-origin:center;background:#E6E0D8}
+#world{position:absolute;left:0;top:0;width:1600px;height:700px}
+.cab{position:absolute;inset:0;pointer-events:none}
+.stage:not([data-state="stop"]) #amb{display:none}
+.hud{position:absolute;inset:0}
+/* HUD in the glass */
+.olabel{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center}
+.olabel .p{background:var(--stop) var(--hatch);color:#fff;border-radius:16px;padding:7px 14px 8px;display:flex;align-items:center;gap:8px;box-shadow:0 0 0 3px rgba(255,255,255,.2),0 10px 28px -6px rgba(208,0,27,.9)}
+.olabel .p .d{font-family:var(--f-head);font-weight:800;font-size:22px;line-height:1}
+.olabel .p svg{width:20px;height:20px;stroke-width:2.6}
+.olabel .s{margin-top:5px;background:rgba(8,10,16,.74);color:#fff;border-radius:10px;padding:4px 9px;font-weight:700;font-size:12px;white-space:nowrap}
+.tick{position:absolute;transform:translate(-50%,-50%);color:#fff;font-weight:800;font-size:12px;background:rgba(8,10,16,.62);border-radius:8px;padding:2px 7px;white-space:nowrap}
+.tick.k50{background:#fff;color:var(--ink)}
+.envtag{position:absolute;transform:translate(0,-50%);height:26px;padding:0 10px;border-radius:13px;border:1.5px solid #2BD46F;color:#fff;background:rgba(8,20,12,.62);font-weight:800;font-size:12px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.envtag i{width:8px;height:8px;border-radius:50%;background:#2BD46F}
+.brk{position:absolute;pointer-events:none}
+.zoom{position:absolute;left:1296px;top:136px;width:204px;height:204px;border-radius:26px;overflow:hidden;background:#05070C;box-shadow:0 0 0 2px rgba(255,74,90,.9),0 18px 40px -10px rgba(0,0,0,.8)}
+.zoom canvas{position:absolute;inset:0;width:100%;height:100%}
+.zoom::before{content:"";position:absolute;left:0;right:0;top:0;height:46px;background:linear-gradient(#05070C 30%,rgba(5,7,12,0));z-index:1}
+.zoom .zt{position:absolute;left:14px;top:11px;right:14px;display:flex;justify-content:space-between;color:#fff;font-weight:800;font-size:12px;z-index:2}
+.zoom svg.rul{position:absolute;left:0;top:0;z-index:2}
+.hudc{position:absolute;left:112px;top:136px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.hudc .g{background:rgba(8,10,16,.62);color:#fff;border-radius:14px;padding:8px 12px;font-weight:700;font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;backdrop-filter:blur(6px)}
+.hudc .g b{font-family:var(--f-head);font-weight:800;font-size:13px}
+/* roof: overhead controls */
+.roof-l{position:absolute;left:28px;top:9px;display:flex;align-items:center;gap:10px}
+.roof-r{position:absolute;right:28px;top:9px;display:flex;align-items:center;gap:10px}
+.rbtn{width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 1px 0 rgba(0,0,0,.04),0 8px 18px -10px rgba(0,0,0,.4);color:var(--ink)}
+.rpill{height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;gap:10px;padding:0 16px 0 6px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 8px 18px -10px rgba(0,0,0,.4);font-weight:800;font-size:13.5px;white-space:nowrap}
+.rpill .pn{font-family:var(--f-head);font-weight:700;font-size:14px}
+.rpill .logo-mark{width:34px;height:32px}
+.mline{display:flex;align-items:center;position:relative;height:20px;width:118px;margin-left:4px}
+.mline::before{content:"";position:absolute;left:0;right:0;top:8px;height:4px;border-radius:2px;background:var(--red)}
+.mline i{position:relative;width:10px;height:10px;border-radius:50%;background:#fff;border:2.5px solid var(--red);margin-right:17px;box-sizing:border-box}
+.mline i:last-child{margin-right:0}
+.mline i.c{width:18px;height:18px;border-width:5px}
+.cseg{display:flex;background:#fff;border-radius:22px;padding:4px;gap:2px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 8px 18px -10px rgba(0,0,0,.4)}
+.cseg span{height:36px;padding:0 15px;border-radius:18px;display:flex;align-items:center;gap:7px;font-weight:800;font-size:13px}
+.cseg span.on{background:var(--ink);color:#fff}
+.beacon{position:absolute;left:50%;top:9px;transform:translateX(-50%);height:58px;padding:0 30px 0 10px;border-radius:29px;background:var(--stop) var(--hatch);color:#fff;display:flex;align-items:center;gap:14px;
+  box-shadow:0 0 0 5px rgba(255,255,255,.95),0 0 0 11px rgba(208,0,27,.25),0 0 0 19px rgba(208,0,27,.1),0 16px 50px 6px rgba(255,20,40,.55)}
+.beacon::after{content:"";position:absolute;inset:-5px;border-radius:34px;animation:pulse 1.6s ease-out infinite;pointer-events:none}
+.beacon .o{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--stop);display:grid;place-items:center}
+.beacon .o svg{width:26px;height:26px;stroke-width:2.6}
+.beacon .t{font-family:var(--f-head);font-weight:800;font-size:28px;letter-spacing:.03em}
+/* console tiles: glass touch screens seated on the curved console (top and skew set from the arc in JS) */
+.tile{position:absolute;top:694px;height:180px;border-radius:22px;transform-origin:50% 0;padding:15px 18px;
+  background:radial-gradient(130% 110% at 0% 0%,#fff 0%,rgba(255,255,255,0) 52%),linear-gradient(118deg,rgba(255,255,255,0) 58%,rgba(255,255,255,.75) 63%,rgba(255,255,255,0) 71%),linear-gradient(180deg,#FBFAF8,#F0ECE6);
+  box-shadow:0 0 0 1px rgba(22,21,26,.08),inset 0 1.5px 0 #fff,0 12px 20px -12px rgba(40,30,20,.55)}
+.tile .tt{display:flex;align-items:center;gap:8px;font-family:var(--f-head);font-weight:700;font-size:12.5px;letter-spacing:.01em;white-space:nowrap}
+.tile .tt svg.i{width:16px;height:16px}
+.t-map{left:38px;width:292px;background:#0B0E15;color:#fff;padding:0;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1),0 12px 20px -12px rgba(40,30,20,.6)}
+.t-map::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,0) 36%);pointer-events:none}
+.t-map .mapsvg{position:absolute;inset:0}
+.t-map .tt{position:absolute;left:18px;top:14px;right:16px;z-index:2}
+.t-map .tt .rt{margin-left:auto;font-family:var(--f-body);font-weight:700;font-size:12px}
+.t-dec{left:342px;width:230px;color:#fff;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,0) 40%),var(--hatch),var(--stop);box-shadow:0 0 0 3px #fff,0 0 0 7px rgba(208,0,27,.2),0 18px 36px -14px rgba(208,0,27,.8)}
+.t-dec .big{font-family:var(--f-head);font-weight:800;font-size:46px;line-height:1;margin-top:10px}
+.t-dec .o{width:44px;height:44px;border-radius:50%;background:#fff;color:var(--stop);display:grid;place-items:center}
+.t-dec .o svg{width:28px;height:28px;stroke-width:2.6}
+.t-dist{left:584px;width:462px}
+.t-dist .num{font-family:var(--f-head);font-weight:800;font-size:80px;line-height:.9;margin-top:10px;white-space:nowrap}
+.t-dist .num small{font-size:30px;margin-left:8px}
+.t-met{left:1058px;width:238px}
+.t-met .v{font-family:var(--f-head);font-weight:800;font-size:30px;line-height:1;white-space:nowrap}
+.t-met .v small{font-family:var(--f-body);font-weight:800;font-size:13px;margin-left:5px}
+.t-hl{left:1308px;width:254px;padding-bottom:12px}
+.lamp{width:14px;height:14px;border-radius:50%;background:#19C25C;box-shadow:0 0 0 4px rgba(18,161,80,.18),0 0 12px 2px rgba(25,194,92,.7);flex:none}
+.hrow{display:flex;align-items:center;gap:10px;height:42px;border-top:1px solid var(--hair);font-weight:700;font-size:13px;white-space:nowrap}
+.hrow:first-of-type{border-top:0}
+.hrow .v{margin-left:auto;font-family:var(--f-head);font-weight:800;font-size:13px}
+.hrow .v.w{font-family:var(--f-body);font-weight:800}
+/* scrubber: a flat touch strip in a recess at the foot of the console */
+.scrub{position:absolute;left:40px;right:40px;top:896px;height:80px;border-radius:40px;background:radial-gradient(60% 140% at 0% 0%,#fff 0%,rgba(255,255,255,0) 60%),linear-gradient(180deg,#FDFCFA,#F2EEE9);box-shadow:0 0 0 1px rgba(22,21,26,.08),inset 0 1.5px 0 #fff,0 10px 18px -12px rgba(40,30,20,.5);display:flex;align-items:center;padding:0 12px;gap:8px}
+.pbtn{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}
+.pbtn svg{width:22px;height:22px}
+.sgrp{display:flex;background:var(--well-2);border-radius:24px;padding:3px;gap:2px;flex:none}
+.sbtn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:transparent}
+.sbtn svg{width:18px;height:18px}
+.sbtn.solo{background:var(--well-2);width:44px;height:44px}
+.sbtn.on{background:var(--ink);color:#fff}
+.tlane{flex:1;position:relative;height:68px;margin:0 10px;min-width:0}
+.tlane .sw{position:absolute;left:0;right:0;top:26px;height:24px}
+.tlane .sw .strip{border-radius:12px}
+.tlane .head{position:absolute;top:20px;width:6px;height:36px;border-radius:3px;background:var(--ink);box-shadow:0 0 0 2.5px #fff;transform:translateX(-50%)}
+.tlane .lbls{position:absolute;left:0;right:0;top:53px;height:15px}
+.tlane .lbls span{position:absolute;transform:translateX(-50%);font-weight:700;font-size:12px;white-space:nowrap;line-height:15px}
+.tlane .lbls span.l0{transform:none}.tlane .lbls span.lN{transform:translateX(-100%)}
+.pin{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.pin b{height:20px;padding:0 7px;border-radius:10px;font-weight:800;font-size:12px;display:grid;place-items:center;white-space:nowrap;line-height:1}
+.pin i{width:2px;height:6px}
+.pin.stop b{background:var(--stop) var(--hatch);color:#fff}.pin.stop i{background:var(--stop)}
+.pin.go b{background:var(--go-deep);color:#fff}.pin.go i{background:var(--go-deep)}
+.pin.caution b{background:var(--caution);color:var(--ink)}.pin.caution i{background:var(--caution)}
+/* two close events: flags lean away from each other, stems stay on the frame */
+.pin.fl{transform:translateX(calc(-100% + 5px));align-items:flex-end}.pin.fl i{margin-right:4px}
+.pin.fr{transform:translateX(-5px);align-items:flex-start}.pin.fr i{margin-left:4px}
+.fc{display:flex;flex-direction:column;align-items:flex-start;width:176px;flex:none;margin-left:6px}
+.fc .a{font-family:var(--f-head);font-weight:800;font-size:17px;white-space:nowrap}
+.fc .b{font-weight:700;font-size:12px;margin-top:3px;white-space:nowrap}
+.spd{display:flex;background:var(--well-2);border-radius:24px;padding:4px;gap:2px;flex:none}
+.spd span{height:38px;min-width:44px;padding:0 9px;border-radius:19px;display:grid;place-items:center;font-weight:800;font-size:12.5px;white-space:nowrap}
+.spd span.on{background:var(--ink);color:#fff}
+</style></head>
+<body>
+<script src="common.js"></script>
+<div class="stage" id="stage" data-state="stop">
+  <canvas id="world" width="1600" height="700"></canvas>
+
+  <!-- cab interior -->
+  <svg class="cab" viewBox="0 0 1600 1000" width="1600" height="1000" aria-hidden="true">
+    <defs>
+      <path id="glass" d="M150 110 C520 76 1080 76 1450 110 Q1522 118 1530 184 C1542 310 1542 452 1524 540 Q1512 598 1446 606 C1100 650 500 650 154 606 Q88 598 76 540 C58 452 58 310 70 184 Q78 118 150 110 Z"/>
+      <clipPath id="glassClip"><use href="#glass"/></clipPath>
+      <clipPath id="outG"><path clip-rule="evenodd" d="M0 0 H1600 V1000 H0 Z M150 110 C520 76 1080 76 1450 110 Q1522 118 1530 184 C1542 310 1542 452 1524 540 Q1512 598 1446 606 C1100 650 500 650 154 606 Q88 598 76 540 C58 452 58 310 70 184 Q78 118 150 110 Z"/></clipPath>
+      <!-- ceiling + side walls: warm grey, darker towards the edges (the cab wraps round) -->
+      <linearGradient id="ceilG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D5CCC0"/><stop offset=".09" stop-color="#E1DAD1"/><stop offset=".3" stop-color="#E4DDD4"/><stop offset="1" stop-color="#DAD2C7"/></linearGradient>
+      <linearGradient id="wallV" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6A5846" stop-opacity=".3"/><stop offset=".035" stop-color="#6A5846" stop-opacity="0"/><stop offset=".965" stop-color="#6A5846" stop-opacity="0"/><stop offset="1" stop-color="#6A5846" stop-opacity=".3"/></linearGradient>
+      <linearGradient id="dashG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F8F6F2"/><stop offset="1" stop-color="#EEEAE4"/></linearGradient>
+      <linearGradient id="consG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4DDD4"/><stop offset=".3" stop-color="#E9E3DB"/><stop offset="1" stop-color="#DDD5CA"/></linearGradient>
+      <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".09"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset=".64" stop-color="#fff" stop-opacity="0"/><stop offset=".7" stop-color="#fff" stop-opacity=".045"/><stop offset=".76" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <filter id="blur28" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="28"/></filter>
+      <filter id="blur18" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
+      <filter id="blur8" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+      <filter id="blur4" x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+
+    <!-- glass: vignette, sheen, beacon glow on top, faint reflection of the console at the bottom -->
+    <g clip-path="url(#glassClip)">
+      <use href="#glass" fill="none" stroke="#000" stroke-opacity=".8" stroke-width="70" filter="url(#blur18)"/>
+      <rect x="0" y="0" width="1600" height="700" fill="url(#sheen)"/>
+      <path d="M0 110 Q800 40 1600 110" fill="none" stroke="#FF3040" stroke-opacity=".2" stroke-width="60" filter="url(#blur18)"/>
+      <path d="M120 600 C470 630 1130 630 1480 600" fill="none" stroke="#FF2A3C" stroke-opacity=".08" stroke-width="16" filter="url(#blur8)"/>
+      <ellipse cx="815" cy="648" rx="250" ry="30" fill="#FFFFFF" fill-opacity=".05" filter="url(#blur18)"/>
+    </g>
+
+    <!-- interior around the glass -->
+    <g clip-path="url(#outG)">
+      <rect width="1600" height="1000" fill="url(#ceilG)"/>
+      <rect width="1600" height="1000" fill="url(#wallV)"/>
+      <!-- canopy frame: one slim band (36 px) from the dash, up the pillars, across the roof -->
+      <use href="#glass" fill="none" stroke="#3A2E22" stroke-opacity=".32" stroke-width="96" filter="url(#blur8)"/>
+      <!-- dash top (same white shell as the frame, so the pillars grow out of it) -->
+      <path fill="url(#dashG)" d="M0 574 C34 578 62 590 92 606 L1508 606 C1538 590 1566 578 1600 574 L1600 640 Q800 720 0 640 Z"/>
+      <use href="#glass" fill="none" stroke="#F8F6F3" stroke-width="72"/>
+      <use href="#glass" fill="none" stroke="#FFFFFF" stroke-width="70" stroke-opacity=".9" transform="translate(0 -1.5)"/>
+      <use href="#glass" fill="none" stroke="#E6E0D8" stroke-width="24"/>
+      <use href="#glass" fill="none" stroke="#DCD5CB" stroke-width="12"/>
+      <!-- brand lip: 3 px Mosmetro red along the roof edge, broken for the beacon, far from the decision tiles -->
+      <linearGradient id="lipG" gradientUnits="userSpaceOnUse" x1="154" x2="1446" y1="0" y2="0"><stop offset="0" stop-color="#E4000D" stop-opacity="0"/><stop offset=".1" stop-color="#E4000D"/><stop offset=".9" stop-color="#E4000D"/><stop offset="1" stop-color="#E4000D" stop-opacity="0"/></linearGradient>
+      <path id="lip" d="M154 74 C520 40 1080 40 1446 74" fill="none" stroke="url(#lipG)" stroke-width="3" stroke-linecap="round"/>
+      <!-- distance line on the dash: 0–200 m ahead, ink, stations every 50 m; only the obstacle is red -->
+      <path id="dline" d="M190 627 Q800 687 1410 627" fill="none" stroke="#16151A" stroke-width="6" stroke-linecap="round"/>
+      <g id="dstations"></g>
+      <!-- console lip: shadow cast by the dash top, then its bright edge -->
+      <path d="M0 646 Q800 726 1600 646" fill="none" stroke="#4A3A2A" stroke-opacity=".35" stroke-width="10" filter="url(#blur4)"/>
+    </g>
+    <!-- console: a curved satin shell under the glass; tiles ride its arc -->
+    <path fill="url(#consG)" d="M0 640 Q800 720 1600 640 V1000 H0 Z"/>
+    <path d="M0 645 Q800 725 1600 645" fill="none" stroke="#4A3A2A" stroke-opacity=".22" stroke-width="12" filter="url(#blur8)"/>
+    <path d="M0 640 Q800 720 1600 640" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <!-- recess for the scrubber strip -->
+    <rect x="28" y="885" width="1544" height="102" rx="51" fill="#D3CABE"/>
+    <rect x="28" y="885" width="1544" height="102" rx="51" fill="none" stroke="#3A2E22" stroke-opacity=".25" stroke-width="8" filter="url(#blur4)" clip-path="inset(0 round 51px)"/>
+    <path d="M79 987.5 H1521" stroke="#fff" stroke-opacity=".8" stroke-width="1.5"/>
+    <!-- STOP ambient: the beacon washes the roof, the frame and the top of the dash red (only while STOP) -->
+    <g id="amb" clip-path="url(#outG)">
+      <ellipse cx="800" cy="40" rx="560" ry="70" fill="#FF2A3C" fill-opacity=".2" filter="url(#blur28)"/>
+      <path d="M154 90 C520 56 1080 56 1446 90" fill="none" stroke="#FF2A3C" stroke-opacity=".12" stroke-width="40" filter="url(#blur18)"/>
+      <ellipse cx="800" cy="664" rx="700" ry="30" fill="#FF2A3C" fill-opacity=".13" filter="url(#blur18)"/>
+      <ellipse cx="800" cy="712" rx="760" ry="34" fill="#FF2A3C" fill-opacity=".08" filter="url(#blur28)"/>
+    </g>
+    <!-- glass rim -->
+    <use href="#glass" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+    <use href="#glass" fill="none" stroke="#2A2830" stroke-opacity=".6" stroke-width="2"/>
+  </svg>
+
+  <!-- HUD inside the glass -->
+  <div class="hud" id="hud">
+    <div class="hudc">
+      <div class="g"><svg class="i s"><use href="#i-cam"/></svg>кабина · вперёд 120°</div>
+      <div class="g">облако <b>127 173</b> точек</div>
+    </div>
+    <div class="zoom"><canvas id="zoomc"></canvas><svg class="rul" id="rul" width="204" height="204"></svg><div class="zt"><span>крупно</span><span>59 точек · 1,47 м</span></div></div>
+  </div>
+
+  <!-- roof: compact nav + beacon + camera -->
+  <div class="roof-l">
+    <a class="rbtn" href="run.html" title="к прогону"><svg class="i"><use href="#i-left"/></svg></a>
+    <a class="rpill" href="overview.html">
+      <svg class="logo-mark" viewBox="0 0 40 38" aria-hidden="true"><path d="M3.5 19H12" stroke="#E4000D" stroke-width="7" stroke-linecap="round"/><circle cx="19" cy="19" r="7" fill="#fff" stroke="#E4000D" stroke-width="5"/><path d="M28.2 11.3A12 12 0 0 1 28.2 26.7M32 8.1A17 17 0 0 1 32 29.9" fill="none" stroke="#E4000D" stroke-width="2.8" stroke-linecap="round"/></svg>
+      <span class="pn">Плеер</span>
+      <span class="mline"><i></i><i></i><i></i><i class="c"></i><i></i></span>
+    </a>
+    <span class="rpill" style="padding:0 16px;font-weight:700">doubleT_obstacle</span>
+    <span class="rbtn"><svg class="i"><use href="#i-menu"/></svg></span>
+  </div>
+
+  <div class="beacon">
+    <span class="o"><svg class="i"><use href="#i-octa"/></svg></span>
+    <span class="t">СТОП</span>
+  </div>
+
+  <div class="roof-r">
+    <div class="cseg"><span class="on"><svg class="i s"><use href="#i-train"/></svg>Кабина</span><span>Сверху</span><span>Сзади</span></div>
+    <span class="rbtn" title="выйти из полноэкранного режима"><svg class="i"><use href="#i-exitfs"/></svg></span>
+  </div>
+
+  <!-- console tiles (data-ry: angled towards the driver) -->
+  <div class="tile t-map" data-ry="10"><div class="mapsvg" id="map"></div>
+    <div class="tt"><span>Схема пути</span>
+      <span class="q-wrap"><button class="q w">?</button><span class="tip t" style="margin-left:-60px;--ax:54px">Вид сверху: вдоль пути 0–200 м, поперёк растянуто ×18.</span></span>
+      <span class="rt">0–200 м</span></div>
+  </div>
+
+  <div class="tile t-dec">
+    <div style="display:flex;align-items:center;justify-content:space-between"><span class="o"><svg class="i"><use href="#i-octa"/></svg></span><span style="font-weight:800;font-size:12px;background:rgba(255,255,255,.22);border-radius:12px;padding:5px 10px">кадр 112</span></div>
+    <div class="big">СТОП</div>
+    <div style="font-weight:800;font-size:13.5px;margin-top:10px">в габарите 2,1 × 3,0 м</div>
+    <div style="font-weight:700;font-size:12.5px;margin-top:4px;display:flex;align-items:center;gap:7px">подтверждено за 0,5 с
+      <span class="q-wrap"><button class="q w">?</button><span class="tip t" style="margin-left:-150px;--ax:144px">СТОП выдаётся, когда объект держится в габарите 0,5 с — 5 кадров подряд.</span></span></div>
+  </div>
+
+  <div class="tile t-dist">
+    <div class="tt">До препятствия <span class="q-wrap"><button class="q open">?</button><span class="tip t" style="width:268px;margin-left:-134px;--ax:128px">От датчика до ближайшей точки объекта <b>в этом кадре</b>. Полоса — дальность лидара 210 м: зелёное свободно, штриховка — под контролем.</span></span></div>
+    <div class="num">54,9<small>м</small></div>
+    <svg width="426" height="42" viewBox="0 0 426 42" style="margin-top:14px;display:block">
+      <defs><pattern id="mh" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#EDE9E4"/><rect width="2.5" height="7" fill="#D6CFC6"/></pattern></defs>
+      <rect x="0" y="5" width="426" height="14" rx="7" fill="#E7E2DB"/>
+      <rect x="0" y="5" width="399.5" height="14" rx="7" fill="url(#mh)"/>
+      <rect x="0" y="5" width="111.4" height="14" rx="7" fill="#12A150"/>
+      <rect x="398" y="0" width="3" height="24" rx="1.5" fill="#16151A"/>
+      <circle cx="111.4" cy="12" r="10" fill="#D0001B" stroke="#fff" stroke-width="3"/>
+      <path d="M106.9 12h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+      <text x="0" y="39" font-family="Montserrat" font-weight="800" font-size="12" fill="#16151A">свободно</text>
+      <text x="111.4" y="39" text-anchor="middle" font-family="Montserrat" font-weight="800" font-size="12" fill="#16151A">54,9</text>
+      <text x="400" y="39" text-anchor="end" font-family="Montserrat" font-weight="800" font-size="12" fill="#16151A">контроль 197 м</text>
+    </svg>
+  </div>
+
+  <div class="tile t-met">
+    <div class="tt"><svg class="i"><use href="#i-clock"/></svg>Задержка
+      <span class="q-wrap"><button class="q">?</button><span class="tip t" style="width:236px;margin-left:-96px;--ax:90px"><b>72 мс</b> — p95 по всей записи; этот кадр обработан за <b>18 мс</b>.</span></span>
+      <span class="chip" style="height:22px;margin-left:auto;font-family:var(--f-body);font-size:12px;padding:0 9px;background:var(--well-2)">p95</span></div>
+    <div style="display:flex;align-items:flex-end;gap:10px;margin-top:10px">
+      <div class="v">72<small>мс</small></div>
+      <div id="lat" style="display:flex;align-items:flex-end;gap:2px;height:30px;margin-left:auto"></div>
+    </div>
+    <div style="height:1px;background:var(--hair);margin:16px 0 14px"></div>
+    <div class="tt"><svg class="i"><use href="#i-live"/></svg>Частота<span class="chip" style="height:22px;margin-left:auto;font-family:var(--f-body);font-size:12px;padding:0 9px;background:var(--well-2)">цель 10</span></div>
+    <div class="v" style="margin-top:10px">10,0<small>кадр/с</small></div>
+  </div>
+
+  <div class="tile t-hl" data-ry="-10">
+    <div class="tt" style="margin-bottom:4px">Исправность</div>
+    <div class="hrow"><span class="lamp"></span>Видимость
+      <span class="q-wrap"><button class="q">?</button><span class="tip l" style="width:236px">Дальность, до которой лидар ещё видит полотно пути. Дальше — оценка, не гарантия.</span></span>
+      <span class="v">197 м</span></div>
+    <div class="hrow"><span class="lamp"></span>Захват рельсов<span class="v">100 %</span></div>
+    <div class="hrow"><span class="lamp"></span>Калибровка<span class="v w">норма</span></div>
+  </div>
+
+  <!-- scrubber -->
+  <div class="scrub">
+    <span class="pbtn" title="пауза"><svg class="i"><use href="#i-pause"/></svg></span>
+    <span class="sgrp" title="на кадр назад / вперёд"><span class="sbtn"><svg class="i"><use href="#i-stepb"/></svg></span><span class="sbtn"><svg class="i"><use href="#i-stepf"/></svg></span></span>
+    <span class="sgrp" title="к предыдущему / следующему событию"><span class="sbtn"><svg class="i"><use href="#i-evb"/></svg></span><span class="sbtn"><svg class="i"><use href="#i-evf"/></svg></span></span>
+    <div class="fc"><span class="a">кадр 112 / 201</span><span class="b">11,2 с из 20,4 с</span></div>
+    <div class="tlane" id="lane"><div class="sw" id="sw"></div><div class="lbls" id="lbls"></div></div>
+    <div class="spd"><span>0,25×</span><span>0,5×</span><span class="on">1×</span><span>2×</span><span>5×</span><span>10×</span></div>
+    <span class="sbtn solo on" title="повтор"><svg class="i"><use href="#i-loop"/></svg></span>
+  </div>
+</div>
+
+<script>
+(function(){
+  // fit the 1600×1000 composition into any viewport
+  const fit = () => document.documentElement.style.setProperty('--k', Math.min(innerWidth / 1600, innerHeight / 1000));
+  fit(); addEventListener('resize', fit);
+  // tiles ride the console arc: top on the curve, skewed to its slope; the outer two turn towards the driver
+  const arcTop = x => 694 - 40 * ((x - 800) / 800) ** 2, slope = x => -80 * (x - 800) / 640000;
+  for (const el of document.querySelectorAll('.tile')){
+    const cx = parseFloat(getComputedStyle(el).left) + el.offsetWidth / 2, a = Math.atan(slope(cx)) * 180 / Math.PI;
+    el.style.top = arcTop(cx).toFixed(1) + 'px';
+    el.style.transform = (el.dataset.ry ? `perspective(1400px) rotateY(${el.dataset.ry}deg) ` : '') + `skewY(${a.toFixed(2)}deg)`;
+  }
+  const seq = D2.RUNS.doubleT_obstacle(), N = seq.length;
+  const P = f => ((f + 0.5) / N * 100).toFixed(3) + '%';          // overlays in % so they never drift from the strip
+  const lane = document.getElementById('lane');
+  const drawStrip = () => { document.getElementById('sw').innerHTML = D2.strip(seq, {w: Math.round(lane.clientWidth), h: 24, rx: 12}); };
+  drawStrip(); document.fonts.ready.then(drawStrip);
+  for (const [f, c, t] of [[8, 'stop', '8'], [111, 'go fl', '111'], [117, 'caution fr', '117'], [197, 'caution', '197']])
+    lane.insertAdjacentHTML('beforeend', `<div class="pin ${c}" style="left:${P(f)}"><b>${t}</b><i></i></div>`);
+  lane.insertAdjacentHTML('beforeend', `<div class="head" style="left:${P(112)}"></div>`);
+  let l = ''; for (const f of [0, 50, 100, 150, 200]) l += `<span class="${f === 0 ? 'l0' : f === 200 ? 'lN' : ''}" style="left:${f === 0 ? '0' : f === 200 ? '100%' : P(f)}">${f}</span>`;
+  document.getElementById('lbls').innerHTML = l;
+  // latency sparkline
+  const r = D2.rng(9); let s = '';
+  for (let i = 0; i < 14; i++){ const v = 10 + r() * 14 + (i === 10 ? 6 : 0); s += `<i style="width:4px;height:${v}px;border-radius:2px;background:${i === 13 ? '#16151A' : '#D6CFC6'}"></i>`; }
+  document.getElementById('lat').innerHTML = s;
+  // brand lip: gap behind the beacon
+  { const lip = document.getElementById('lip'), LL = lip.getTotalLength(); let a = 0, b = 0;
+    for (let q = 0; q <= LL; q += 1){ const p = lip.getPointAtLength(q); if (!a && p.x >= 664) a = q; if (!b && p.x >= 936) b = q; }
+    lip.setAttribute('stroke-dasharray', `${a.toFixed(1)} ${(b - a).toFixed(1)} ${LL.toFixed(1)}`); }
+  // dash distance line: ink stations every 50 m, the obstacle at 54,9 m is the only red mark
+  const dl = document.getElementById('dline'), DL = dl.getTotalLength(); let g = '';
+  for (let m = 0; m <= 200; m += 50){ const q = dl.getPointAtLength(DL * m / 200);
+    g += `<circle cx="${q.x.toFixed(1)}" cy="${q.y.toFixed(1)}" r="${m === 0 ? 8.5 : 6.5}" fill="#fff" stroke="#16151A" stroke-width="${m === 0 ? 4.5 : 3.5}"/>`; }
+  { const q = dl.getPointAtLength(DL * 54.9 / 200);
+    g += `<circle cx="${q.x.toFixed(1)}" cy="${q.y.toFixed(1)}" r="18" fill="#FF2A3C" fill-opacity=".18"/><circle cx="${q.x.toFixed(1)}" cy="${q.y.toFixed(1)}" r="11" fill="#D0001B" stroke="#fff" stroke-width="3"/><path d="M${(q.x - 5).toFixed(1)} ${q.y.toFixed(1)}h10" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/>`; }
+  document.getElementById('dstations').innerHTML = g;
+})();
+</script>
+<script type="module">
+window.__ready = false;
+import {loadFrame, createView} from './cloud.js';
+const d = await loadFrame();
+const res = d.result, C = res.track.center, obs = res.detections[0], oc = obs.center;
+// main view from the driver's seat: a long lens so the envelope and the obstacle lead
+const v = createView(document.getElementById('world'), d, {width: 1600, height: 700, fov: 22,
+  cam: {pos: [-1.2, C, 0.45], look: [60, C, -0.9]}, pointSize: 0.028, minPx: 1.6, fog: 0.0072, near: 12});
+v.render();
+const hud = document.getElementById('hud');
+const put = (html, p) => { hud.insertAdjacentHTML('beforeend', html.replace('STYLE', `left:${p.x.toFixed(1)}px;top:${p.y.toFixed(1)}px`)); };
+put(`<div class="olabel" style="STYLE"><div class="p"><svg class="i"><use href="#i-octa"/></svg><span class="d">54,9 м</span></div><div class="s">препятствие · 0,48 × 1,47 м</div></div>`, v.project(v.stemTop));
+// white HUD corner brackets around the obstacle box
+{ const b = v.bbox(), m = 8, x0 = b.x0 - m, y0 = b.y0 - m, x1 = b.x1 + m, y1 = b.y1 + m, k = 11;
+  const c = `M${x0} ${y0 + k}V${y0}H${x0 + k} M${x1 - k} ${y0}H${x1}V${y0 + k} M${x1} ${y1 - k}V${y1}H${x1 - k} M${x0 + k} ${y1}H${x0}V${y1 - k}`;
+  hud.insertAdjacentHTML('beforeend', `<svg class="brk" width="1600" height="700" style="left:0;top:0"><path d="${c}" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`); }
+for (const m of [10, 20, 30]){ const p = v.project([m, C + 1.75, v.railZ(m) + 0.02]); put(`<div class="tick" style="STYLE">${m} м</div>`, p); }
+{ const p = v.project([50, C + 1.75, v.railZ(50) + 0.02]); put(`<div class="tick k50" style="STYLE">50 м</div>`, p); }
+{ const p = v.project([13, C - 1.05, v.railZ(13) + 0.12]); put(`<div class="envtag" style="STYLE"><i></i>габарит 2,1 × 3,0 м</div>`, {x: p.x + 16, y: p.y}); }
+// zoom inset: the obstacle from an oblique camera (right, in front), points by intensity, a 0–2 m ruler
+const zc = document.getElementById('zoomc'), z0 = v.railZ(oc[0]) - 0.16;
+const z = createView(zc, d, {width: 204, height: 204, fov: 27, envelope: false, rails: true, crop: {x: [52.5, 60], dy: 1.8}, hotRamp: true,
+  boxFill: 0.08, stem: 0, edge: 0.01, cam: {pos: [49.8, C - 2.6, 0.55], look: [oc[0], oc[1], z0 + 1.12]}, pointSize: 0.04, minPx: 2.4, fog: 0, near: 2});
+z.render();
+{ const fz = z.floorZ(oc[0]);
+  const Y = h => z.project([oc[0], oc[1], fz + h]).y, x = 22; let s = '';
+  s += `<line x1="${x}" x2="${x}" y1="${Y(0).toFixed(1)}" y2="${Y(2).toFixed(1)}" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`;
+  for (let h = 0; h <= 2.001; h += 0.5){ const y = Y(h).toFixed(1), big = Math.abs(h % 1) < 0.01;
+    s += `<line x1="${x}" x2="${x + (big ? 10 : 6)}" y1="${y}" y2="${y}" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`;
+    if (big) s += `<text x="${x + 14}" y="${(+y + 4.2).toFixed(1)}" font-family="Montserrat" font-weight="800" font-size="12" fill="#fff">${h === 2 ? '2 м' : h}</text>`; }
+  document.getElementById('rul').innerHTML = s; }
+// minimap: schematic top view (lateral ×18)
+{
+  const MW = 292, MH = 180, x0 = 30, x1 = MW - 22, cy = 94, k = 18;
+  const X = x => x0 + x / 200 * (x1 - x0), Y = y => cy - (y - C) * k;
+  let h = `<svg width="${MW}" height="${MH}" viewBox="0 0 ${MW} ${MH}">`;
+  // tunnel walls from the real points (density)
+  const bins = new Map();
+  for (const p of d.points){ if (p[0] > 200 || p[4] || p[2] < -0.9) continue; const bx = Math.round(p[0] / 2), by = Math.round(p[1] * 4); bins.set(bx + ':' + by, (bins.get(bx + ':' + by) || 0) + 1); }
+  for (const [key, n] of bins){ const [bx, by] = key.split(':').map(Number);
+    const yy = cy - (by / 4 - C) * k - 2; if (yy < 34 || yy > MH - 34) continue;
+    h += `<rect x="${X(bx * 2).toFixed(1)}" y="${yy.toFixed(1)}" width="2.4" height="4" rx="1.2" fill="#5AB4F5" fill-opacity="${Math.min(.8, .26 + Math.log2(n) / 9).toFixed(2)}"/>`; }
+  // rails
+  for (const s2 of [-0.8, 0.8]) h += `<line x1="${X(0)}" x2="${X(197)}" y1="${Y(C + s2)}" y2="${Y(C + s2)}" stroke="#DDE9FF" stroke-opacity=".7" stroke-width="1.3"/>`;
+  // envelope: green up to the obstacle, dashed beyond
+  h += `<defs><linearGradient id="eg" x1="0" x2="1"><stop offset="0" stop-color="#2BD46F" stop-opacity=".45"/><stop offset=".8" stop-color="#2BD46F" stop-opacity=".45"/><stop offset="1" stop-color="#FF2A3C" stop-opacity=".75"/></linearGradient></defs>`;
+  h += `<rect x="${X(0)}" y="${Y(C + 1.05)}" width="${X(55) - X(0)}" height="${2.1 * k}" rx="7" fill="url(#eg)" stroke="#2BD46F" stroke-width="1.5"/>`;
+  h += `<rect x="${X(55)}" y="${Y(C + 1.05)}" width="${X(197) - X(55)}" height="${2.1 * k}" rx="7" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="1.2" stroke-dasharray="3 4"/>`;
+  // visibility
+  h += `<line x1="${X(197.2)}" x2="${X(197.2)}" y1="${cy - 46}" y2="${cy + 40}" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 4"/>`;
+  h += `<text x="${X(197.2) - 6}" y="${cy - 34}" text-anchor="end" font-family="Montserrat" font-weight="800" font-size="12" fill="#fff">видимость 197 м</text>`;
+  // train
+  h += `<rect x="4" y="${cy - 13}" width="${X(0) - 2}" height="26" rx="8" fill="#fff"/><rect x="${X(0) - 5}" y="${cy - 13}" width="5" height="26" rx="2" fill="#16151A"/>`;
+  // obstacle: marker only
+  const ox = X(oc[0]), oy = Y(oc[1]);
+  h += `<circle cx="${ox}" cy="${oy}" r="19" fill="#FF2A3C" fill-opacity=".22"/><circle cx="${ox}" cy="${oy}" r="9" fill="#D0001B" stroke="#fff" stroke-width="2.5"/><path d="M${ox - 4.5} ${oy}h9" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>`;
+  for (const m of [0, 50, 100, 150, 200]) h += `<text x="${X(m)}" y="${MH - 13}" text-anchor="${m === 200 ? 'end' : 'middle'}" font-family="Montserrat" font-weight="800" font-size="12" fill="#fff">${m}${m === 200 ? ' м' : ''}</text>`;
+  h += '</svg>';
+  document.getElementById('map').innerHTML = h;
+}
+requestAnimationFrame(() => { window.__ready = true; });
+</script>
+</body></html>

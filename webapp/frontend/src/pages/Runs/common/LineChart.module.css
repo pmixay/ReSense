@@ -1,0 +1,97 @@
+.wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  border-radius: 14px;
+  outline: none;
+}
+.wrap:focus-visible {
+  box-shadow: var(--focus);
+}
+.pick {
+  cursor: pointer;
+}
+.svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+}
+.grid {
+  stroke: var(--hair);
+  stroke-width: 1;
+}
+.axisText {
+  font-family: var(--f-body);
+  font-weight: 700;
+  font-size: 12px;
+  fill: var(--ink);
+}
+.empty {
+  fill: #f1ede8;
+}
+.emptyText {
+  font-family: var(--f-body);
+  font-weight: 700;
+  font-size: 11.5px;
+  fill: var(--ink);
+}
+.band {
+  fill: rgba(22, 21, 26, 0.08);
+}
+.bandEdge {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 4;
+}
+.pStop {
+  fill: var(--white);
+  stroke: var(--stop);
+  stroke-width: 4;
+}
+.pCaution {
+  fill: var(--caution);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.pMin {
+  fill: var(--ink);
+  stroke: var(--white);
+  stroke-width: 2;
+}
+.pLabel {
+  font-family: var(--f-body);
+  font-weight: 800;
+  font-size: 11.5px;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--white);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.cross {
+  stroke: var(--ink);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  height: 7px;
+}
+.tip {
+  position: absolute;
+  z-index: 3;
+  background: var(--ink);
+  color: var(--white);
+  border-radius: 14px;
+  padding: 9px 13px 10px;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow-pop);
+  font-weight: 800;
+  font-size: 12.5px;
+  line-height: 1.35;
+}

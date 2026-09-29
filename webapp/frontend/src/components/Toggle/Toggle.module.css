@@ -1,0 +1,66 @@
+.toggle {
+  width: 52px;
+  height: 30px;
+  border-radius: 15px;
+  background: var(--hair-2);
+  position: relative;
+  flex: none;
+  border: 0;
+  padding: 0;
+  transition: background-color 0.18s;
+}
+/* disabled: a --well-2 fill (no faded, grey-looking text) */
+.toggle:disabled {
+  cursor: not-allowed;
+  background: var(--well-2);
+  box-shadow: inset 0 0 0 1.5px var(--hair-2);
+}
+.toggle.on:disabled {
+  background: var(--ink);
+  box-shadow: none;
+}
+.knob {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--white);
+  color: transparent;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 1px 3px rgba(22, 21, 26, 0.25);
+  transition: left 0.18s var(--ease), color 0.18s;
+}
+.on {
+  background: var(--ink);
+}
+.on .knob {
+  left: 25px;
+  color: var(--ink);
+}
+.field {
+  height: 46px;
+  border-radius: var(--r-sm);
+  background: var(--well);
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 14px;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.field .toggle {
+  margin-left: auto;
+}
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.disabled {
+  cursor: not-allowed;
+  background: var(--well-2);
+}

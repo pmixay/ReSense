@@ -1,0 +1,618 @@
+/* О системе: how it works (full width) · six results · quick start, the stand, links, team. */
+.about {
+  grid-template-rows: minmax(0, 236fr) minmax(0, 142fr) minmax(0, 326fr);
+}
+.how {
+  grid-column: 1 / -1;
+}
+.results {
+  grid-column: 1 / -1;
+}
+/* the last row has its own proportions: the commands need width, links and team less */
+.bottom {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 4.6fr) minmax(0, 2.6fr) minmax(0, 2.3fr) minmax(0, 2.5fr);
+  gap: var(--gut);
+  min-height: 0;
+}
+.how,
+.ros,
+.web,
+.links,
+.team {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.sp {
+  flex: 1;
+}
+
+/* ---------------------------------------------------------------- how it works */
+.howHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.lead {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+  min-width: 0;
+}
+.facts {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+.metro {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 6px;
+}
+.line {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+  height: 138px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  position: relative;
+}
+/* the red line from a terminal cap on the left to the last station */
+.line::before {
+  content: '';
+  position: absolute;
+  top: 65px;
+  height: 10px;
+  left: 4px;
+  right: calc(100% / 14);
+  border-radius: 5px;
+  background: var(--red);
+}
+.line::after {
+  content: '';
+  position: absolute;
+  top: 56px;
+  left: 0;
+  width: 8px;
+  height: 28px;
+  border-radius: 4px;
+  background: var(--red);
+}
+.st {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.stTop {
+  position: relative;
+  flex: none;
+}
+.stHelp {
+  position: absolute;
+  top: -8px;
+  left: calc(100% - 10px);
+}
+.stIc,
+.quad {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  flex: none;
+}
+.stIc {
+  background: var(--red-tint);
+  color: var(--red);
+  display: grid;
+  place-items: center;
+}
+.quad {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--hair);
+}
+.quad i {
+  display: block;
+}
+.qGo {
+  background: var(--go);
+}
+.qCaution {
+  background: var(--caution);
+}
+.qStop {
+  background: var(--stop) var(--hatch);
+}
+.qFault {
+  background: var(--fault);
+}
+.dot {
+  margin-top: 14px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 5px solid var(--red);
+  position: relative;
+  z-index: 1;
+  flex: none;
+}
+.stEnd .dot {
+  margin-top: 6px;
+  width: 40px;
+  height: 40px;
+  border-width: 9px;
+  box-shadow: 0 0 0 6px rgba(228, 0, 13, 0.12);
+}
+.stName {
+  margin-top: 12px;
+  font-weight: 800;
+  font-size: 13.5px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.stEnd .stName {
+  margin-top: 4px;
+}
+.stVal {
+  margin-top: 4px;
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.arrow {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--well);
+  display: grid;
+  place-items: center;
+}
+.decisions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: none;
+  width: 452px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+.sig {
+  height: 58px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 0 14px;
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.sigLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sig-go {
+  background: var(--go-deep);
+  color: var(--white);
+}
+.sig-caution {
+  background: var(--caution);
+  color: var(--ink);
+}
+.sig-stop {
+  background: var(--stop) var(--hatch);
+  color: var(--white);
+  box-shadow: 0 0 0 3px var(--stop-tint);
+}
+.sig-fault {
+  background: var(--fault);
+  color: var(--white);
+}
+
+/* ---------------------------------------------------------------- results */
+.results {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) repeat(5, minmax(0, 1fr));
+  gap: var(--gut);
+  min-height: 0;
+}
+.result {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+.kpi {
+  flex: 1;
+}
+
+/* ---------------------------------------------------------------- quick start */
+.term {
+  flex: 1;
+  min-height: 0;
+  background: var(--ink);
+  color: var(--white);
+  border-radius: 20px;
+  padding: 8px 8px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  overflow: auto;
+}
+.codeLine {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  min-width: 0;
+}
+.codeLight {
+  flex: none;
+  background: var(--well);
+  color: var(--ink);
+  border-radius: 16px;
+  padding: 4px 4px 4px 14px;
+  min-height: 42px;
+}
+.step {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 12px;
+  flex: none;
+  cursor: help;
+}
+/* a command too long for the line wraps at a space (never clipped: what is shown is what is copied) */
+.cmd {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.copy {
+  flex: none;
+}
+.copied {
+  background: var(--go-deep) !important;
+  color: var(--white) !important;
+}
+.open {
+  align-self: flex-start;
+  margin-top: 10px;
+}
+.stand {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--hair);
+  min-height: 0;
+}
+.standHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.standTitle {
+  font-family: var(--f-head);
+  font-weight: 700;
+  font-size: 13px;
+}
+.standErr {
+  margin-top: 10px;
+}
+.standWait {
+  display: grid;
+  place-items: center;
+  height: 84px;
+}
+.versions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.ver {
+  background: var(--well);
+  border-radius: 16px;
+  padding: 8px 12px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.verL {
+  font-weight: 700;
+  font-size: var(--fs-min);
+}
+.verV {
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.features {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 10px;
+}
+.feat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  font-size: 12.5px;
+  white-space: nowrap;
+  min-width: 0;
+}
+.featOff {
+  text-decoration: line-through 1.5px;
+}
+.featDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- links */
+.linkList,
+.members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.linkTip {
+  display: flex;
+}
+.link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 11px 0 7px;
+  border-radius: 16px;
+  background: var(--well);
+  font-weight: 800;
+  font-size: 12.5px;
+  transition: background-color 0.15s;
+}
+.link:hover {
+  background: var(--well-2);
+}
+.linkIc {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--red);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.linkName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.linkExt {
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- team */
+.member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 6px 8px 6px 7px;
+  border-radius: 18px;
+  background: var(--well);
+  flex: none;
+}
+.badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 12px;
+  flex: none;
+}
+.captain {
+  background: var(--red);
+  box-shadow: 0 0 0 3px var(--red-tint);
+}
+.role {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-weight: 800;
+  font-size: 12.5px;
+  line-height: 1.2;
+}
+.capTag {
+  font-weight: 700;
+  font-size: var(--fs-min);
+}
+
+/* ---------------------------------------------------------------- smaller screens */
+@media (max-width: 1520px) {
+  .decisions {
+    width: 400px;
+  }
+  .sig {
+    font-size: 13.5px;
+    gap: 8px;
+  }
+  .stName {
+    font-size: 12.5px;
+  }
+  .cmd {
+    font-size: 12.5px;
+  }
+}
+
+/* 1440 × 900: the same layout, tighter */
+@media (max-height: 940px) and (min-width: 1401px) {
+  .about {
+    grid-template-rows: minmax(0, 194fr) minmax(0, 118fr) minmax(0, 292fr);
+  }
+  .how {
+    padding-top: 18px;
+    padding-bottom: 16px;
+  }
+  .lead {
+    font-size: 21px;
+  }
+  .line {
+    height: 124px;
+  }
+  .stIc,
+  .quad {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+  .line::before {
+    top: 59px;
+  }
+  .line::after {
+    top: 50px;
+  }
+  .sig {
+    height: 50px;
+  }
+  .ros,
+  .web,
+  .links,
+  .team {
+    padding: 16px 18px;
+  }
+  .term {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .codeLine {
+    min-height: 32px;
+  }
+  .open {
+    margin-top: 8px;
+  }
+  .stand {
+    padding-top: 9px;
+  }
+  .versions {
+    margin-top: 7px;
+  }
+  .ver {
+    padding: 6px 10px 7px;
+    gap: 3px;
+  }
+  .verV {
+    font-size: 16px;
+  }
+  .features {
+    margin-top: 7px;
+    gap: 5px 10px;
+  }
+  .linkList,
+  .members {
+    gap: 6px;
+  }
+  .link {
+    height: 38px;
+  }
+  .member {
+    min-height: 44px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .badge {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* below ~1400 px wide the last row does not fit in one line: the page flows and scrolls */
+@media (max-width: 1400px) {
+  .about {
+    height: auto;
+    grid-template-rows: none;
+  }
+  .results {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .kpi {
+    min-height: 124px;
+  }
+  .bottom {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ros {
+    min-height: 300px;
+  }
+  .facts {
+    display: none;
+  }
+  .metro {
+    flex-wrap: wrap;
+    row-gap: 14px;
+  }
+  .line {
+    flex-basis: 100%;
+  }
+  .arrow {
+    display: none;
+  }
+  .decisions {
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
