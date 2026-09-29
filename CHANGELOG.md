@@ -19,6 +19,28 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
 `v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
 
+### Added — far rail evidence from ring crossings, opt-in (29.09; seal to be renewed after the gate)
+
+- `scripts/screen_competitor_rules.py` applies a rule ported from another team's repository as a post-filter on the
+  sealed detector's saved STOP detections and reports the false alarms it removes against the true detections it
+  takes (empty recordings, `doubleT_obstacle`, set O with the independent judge's matcher, the ride's residual false
+  events). It first reproduces the published `setO.json` exactly and refuses to run if it does not. Tests:
+  `tests/test_screen_competitor_rules.py` (two read the committed judgement outputs and carry `realdata`).
+- Result ([`docs/COMPETITOR_REVIEW_2026-09-29.md`](docs/COMPETITOR_REVIEW_2026-09-29.md), evidence
+  `docs/evidence/results/competitor_rule_screen_2026-09-29.json`): TunnelGuard's gravity rule would cut set O's
+  `big_center` from 208 to 87 STOP frames (rejected); its shape rule removes 2 of 7 false episodes on the empty
+  recordings for 10 m of range on the low board (not adopted); promoting centred `beyond_axis` /
+  `beyond_height_ref` advisories would turn 325 advisories on the empty recordings into STOPs for 3 gains, all
+  beyond 225 m (not adopted).
+- The one idea that passed the filter is implemented and **off by default**: far rail evidence from single LiDAR ring
+  crossings (`resense/farrails.py`, an idea of another team's repository, written from its description) as the
+  evidence source of the disabled far-rail check (`track.rails_far_check_enabled` + new `track.rails_far_rings`;
+  profile `configs/experimental_far_rail_rings.yaml`; `scripts/far_rail_yield.py` measures it on the recordings).
+  With the flags off the per-frame output is bit-identical to `main`. On the ray-cast tunnel it corrects a wall bend
+  that the rails contradict (axis 2.7 m off at 60 m -> 0.004 m) where the slab path does not; nothing is measured on
+  real data. `detector_freeze.py verify` fails until the full gate has been run and the seal renewed
+  (`docs/COMPETITOR_REVIEW_2026-09-29.md` section 4).
+
 ### Changed — health sector counts (29.09; resealed)
 
 - `resense.health._sector_counts` counts `values >= edge` per edge instead of a per-value binary

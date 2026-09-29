@@ -71,6 +71,7 @@ resense:
     rails_yaw_min_slabs: 2
     rails_yaw_max_dev: 0.3         # near slab ridge tolerance; also the far-rail disagreement needed to replace a station-wall bend
     rails_far_check_enabled: false # experimental station-wall axis correction; opt-in until real-data A/B and timing
+    rails_far_rings: false         # 29.09 (experimental, off; needs rails_far_check_enabled): far rail evidence from single LiDAR ring crossings (resense/farrails.py, scripts/far_rail_yield.py; assumes sensor.roll/pitch/yaw_deg 0, the default: a configured fixed tilt smears the rings and no far evidence is found) instead of the slab profile that never finds a pair beyond rails_range[1]; opt-in until the full gate (docs/COMPETITOR_REVIEW_2026-09-29.md section 4)
     axis_max_yaw_rate: 0.003
     axis_max_curvature_rate: 0.0001
     axis_warmup_frames: 5          # v0.6: no rate limits for this many frames after a (re)seed of the track model

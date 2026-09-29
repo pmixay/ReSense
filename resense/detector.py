@@ -14,6 +14,7 @@ from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.evidence import PersistentEvidence
+from resense.farrails import ring_index
 from resense.frame import Frame
 from resense.gauge import (axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
@@ -340,7 +341,11 @@ class Detector:
         frames, then a drift check every few seconds). Returns the cloud in the corrected frame."""
         cfg = self.cfg
         xyz = self.calib.apply(xyz_cfg)
-        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods)
+        # ring identity is a property of the uncorrected frame: after the mount correction a ring is no
+        # longer a constant elevation (resense/farrails.py); only the opt-in far rail evidence needs it
+        ring = (ring_index(xyz_cfg, band=(cfg.track.rails_range[1] - 10.0, 100.0, 6.0, 0.5))
+                if cfg.track.rails_far_check_enabled and cfg.track.rails_far_rings else None)
+        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring)
         R_old = self.calib.R.copy()
         if self.calib.update(xyz_cfg, xyz, self.track, periods=periods):
             xyz = self.calib.apply(xyz_cfg)
@@ -354,7 +359,7 @@ class Detector:
                 # accumulation buffer is in track coordinates, which the rotation leaves as they are
                 self.track = rotate_track_model(self.track, dR)
             else:
-                self.track = estimate_track(xyz, cfg.track, prev=None)  # re-seed in the corrected frame
+                self.track = estimate_track(xyz, cfg.track, prev=None, ring=ring)  # re-seed in the corrected frame
                 self.buffer.clear()                                     # merged clouds are in the old frame
                 # re-review 26.09: the hold window covers at least the frames the re-seeded model
                 # has no floor-shadow reference (this one, then until its age reaches
