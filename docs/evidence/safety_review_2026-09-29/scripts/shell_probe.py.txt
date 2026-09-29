@@ -1,0 +1,21 @@
+"""Doc-audit probe (29.09 evening, not committed): a wide object taller than the envelope standing on the
+track of the ray-cast synthetic tunnel, static scene, the same frame 12 times, shell rule on (2.3) vs off (0).
+Run from the repo root: python3 <this file>"""
+import numpy as np
+from dataclasses import replace
+from resense.synthetic import synthetic_tunnel_frame, ObstacleSpec
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
+def run(dist, size, shell, n=12):
+    spec = ObstacleSpec(kind="box", size=size, distance=dist, lateral=0.0)
+    frame, _, _ = synthetic_tunnel_frame(specs=[spec], rng=np.random.default_rng(1))
+    cfg = DetectorConfig()
+    cfg = replace(cfg, cluster=replace(cfg.cluster, shell_min_top=shell), calibration=replace(cfg.calibration, enabled=False))
+    det = Detector(cfg); res = None
+    for k in range(n):
+        res = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, ring=frame.ring, stamp=k * 0.1))
+    return "STOP" if res.obstacle else ("CAUTION" if res.warning else "GO")
+for dist in (38.0, 45.0, 60.0, 90.0, 150.0):
+    for size in ((10.0, 2.6, 3.6), (10.0, 2.6, 3.1), (10.0, 2.6, 2.9), (10.0, 2.6, 2.0)):
+        print(f"{dist:6.1f} m  box {size}: shell on {run(dist, size, 2.3):7s} off {run(dist, size, 0.0)}")

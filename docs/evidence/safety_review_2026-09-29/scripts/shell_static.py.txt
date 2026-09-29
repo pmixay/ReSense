@@ -1,0 +1,45 @@
+"""Static scene: object at distance D in the ray-cast tunnel, same frame repeated (train standing).
+Compare default config (shell on, explained_run on, ego veto on) vs shell off."""
+import sys, time
+from dataclasses import replace
+import numpy as np
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
+from resense.synthetic import ObstacleSpec, catalogue_spec, synthetic_tunnel_frame
+
+def cfg_variant(shell=True, expl=True, ego=True):
+    c = DetectorConfig()
+    c = replace(c, cluster=replace(c.cluster, shell_min_top=2.3 if shell else 0.0),
+                tracking=replace(c.tracking, explained_run=5 if expl else 0, ego_veto_min_speed=4.0 if ego else 0.0))
+    return c
+
+def run(frame, cfg, n=8):
+    det = Detector(cfg); out = []
+    for k in range(n):
+        r = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k))
+        out.append(r)
+    return out
+
+def summary(rs):
+    r = rs[-1]
+    stop_frames = [i for i, x in enumerate(rs) if x.obstacle]
+    reasons = sorted({(c.reason or '-') for c in r.candidates if c.zone in ('gauge','warning') or c.reason})
+    return f"STOP frames {stop_frames}  warn={bool(r.warning)}  cand reasons={[(round(c.distance,1), c.zone, c.reason, round(c.height_min,2), round(c.height_max,2)) for c in r.candidates][:4]}"
+
+specs = []
+for D in [float(a) for a in sys.argv[1:]] or [45.0, 60.0, 80.0, 100.0]:
+    specs.append((f"cable_low lat0 D={D}", [catalogue_spec("cable_low", D, 0.0, reflectivity=25.0)]))
+    specs.append((f"cable_low lat-0.2 D={D}", [catalogue_spec("cable_low", D, -0.2, reflectivity=25.0)]))
+    # cable anchored at the vault (top at the lining: vault z=3.5, rail head z=-1.32 -> 4.82 m) down to 0.1 m
+    specs.append((f"cable_vault_to_floor D={D}", [ObstacleSpec(kind="cable", size=(0.03,0.03,4.72), distance=D, lateral=0.0, reflectivity=25.0, label="cv", base=0.1)]))
+    # 0.1 m pole / ladder rail floor to vault on the axis
+    specs.append((f"pole0.1 floor-vault D={D}", [ObstacleSpec(kind="box", size=(0.1,0.1,4.9), distance=D, lateral=0.3, reflectivity=25.0, label="pole")]))
+    # 2x2 box at the envelope top (set O #8 style), bottom 2.4
+    specs.append((f"box2x2 top bottom2.4 D={D}", [ObstacleSpec(kind="box", size=(2.0,2.0,2.0), distance=D, lateral=0.0, reflectivity=25.0, label="b", base=2.4)]))
+    # person 1.8 m with arms up ~2.35 m total (approx as 0.5 m wide 2.35 tall cylinder)
+    specs.append((f"person arms-up 2.35 D={D}", [ObstacleSpec(kind="person", size=(0.4,0.5,2.35), distance=D, lateral=0.0, reflectivity=25.0, label="p")]))
+for name, sp in specs:
+    frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(5), specs=sp)
+    a = run(frame, cfg_variant()); b = run(frame, cfg_variant(shell=False))
+    print(f"{name:34s} DEFAULT: {summary(a)}\n{'':34s} SHELL OFF: {summary(b)}", flush=True)

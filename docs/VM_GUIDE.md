@@ -9,7 +9,9 @@
 > **Last verified:** 2026-09-29: the procedure against the full VM run of 28.09
 > ([`evidence/vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md)), the node's start-up,
 > warm-up and shutdown against the launch file and the node, the image's default command against
-> `docker/Dockerfile` · **Status:** current
+> `docker/Dockerfile`; 29.09 evening: §4.4's baseline selection against `main` `7532a6b` (it picks
+> `regression_baseline_2026-09-29_competitor_rules.json`); 29.09 night: after the reseal at `7464d80`
+> (shell off) it picks `regression_baseline_2026-09-29_shell_off.json` · **Status:** current
 
 ## 0. What the VM is for
 
@@ -300,7 +302,7 @@ fallback is not real time at 360° on 4 physical cores, so there the script exit
 
 ```bash
 BASELINE=$(python3 -c "import glob, json; print(max((json.load(open(p))['created'], p) for p in glob.glob('docs/evidence/results/regression_baseline_*.json') if json.load(open(p)).get('ride', {}).get('available'))[1])")
-echo "$BASELINE"      # the newest baseline with the ride: regression_baseline_2026-09-27_quality.json for the sealed detector
+echo "$BASELINE"      # the newest baseline with the ride: regression_baseline_2026-09-29_shell_off.json for the sealed detector (7464d80, shell off)
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 4 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"

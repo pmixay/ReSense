@@ -1,0 +1,43 @@
+"""Tracker-level simulations of tracking.explained_run (default TrackingConfig; learned doubt model off; ego veto off
+so that only explained_run differs; object static, train standing -> distance constant)."""
+import numpy as np
+from resense.clustering import Cluster
+from resense.config import TrackingConfig
+from resense.tracking import Tracker
+
+def cl(x, zone="gauge", reason="", ng=40):
+    c = np.array([x, 0.0, 1.0])
+    return Cluster(points_idx=np.arange(3), n=40, n_raw=40, centroid=c, bbox_min=c - 0.2, bbox_max=c + 0.2,
+                   distance=x, lateral=0.0, height_min=0.2, height_max=1.7, intensity=10.0, n_expected=40.0,
+                   score=1.0, zone=zone, n_gauge=ng, reason=reason)
+
+def run(seq, expl, D=60.0, v=0.0):
+    """seq: string per frame: G clean gauge hit, C column (warning), S shell (warning), W warning (no reason), '.' miss."""
+    t = Tracker(TrackingConfig(doubt_extra_hits=0, ego_veto_min_speed=0.0, explained_run=expl))
+    out = []
+    for k, ch in enumerate(seq):
+        d = D - v * 0.1 * k
+        m = {"G": [cl(d)], "C": [cl(d, "warning", "column")], "S": [cl(d, "warning", "shell")],
+             "W": [cl(d, "warning", "")], "E": [cl(d, "warning", "elevated")], ".": []}[ch]
+        t.update(m, ego_shift=v * 0.1, frame_dt=0.1, far_thin=[])
+        tr = t.tracks[0] if t.tracks else None
+        out.append("S" if tr is not None and tr.reported and tr.zone == "gauge" else ("c" if tr is not None and tr.reported else "."))
+    return "".join(out)
+
+def first(s):
+    return s.find("S")
+
+cases = {
+  "person merged with a column 10 frames, then steps out": "C" * 10 + "G" * 15,
+  "person merged with a column 1 frame, then clean": "C" + "G" * 15,
+  "fresh track, 1 column hit on its 4th frame": "GGGC" + "G" * 12,
+  "tall object, shell every 3rd hit": "GGS" * 8,
+  "tall object, shell every 6th hit": "GGGGGS" * 5,
+  "explained hit then clean hits at hit rate 80% (miss every 5th)": "S" + "GGGG." * 6,
+  "explained hit then clean hits, miss every 4th": "S" + "GGG." * 8,
+  "explained hit then clean hits, miss every 3rd": "S" + "GG." * 10,
+  "no explained hit, miss every 3rd (control)": "G" + "GG." * 10,
+}
+for name, seq in cases.items():
+    a, b = run(seq, 5), run(seq, 0)
+    print(f"{name}\n   seq      {seq}\n   rule on  {a}  first STOP frame {first(a)}\n   rule off {b}  first STOP frame {first(b)}")

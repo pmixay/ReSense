@@ -1,0 +1,32 @@
+"""Wide tall floor-standing objects continuing above the 3.0 m envelope top (not columns: >= 1.0 m wide):
+a standing train's rear (2.7 m wide, bottom 0.3 m, top 3.7 m above the rail head), a 1.2 m wide maintenance
+vehicle 3.3 m tall. Train approaching at V m/s (re-rendered per frame). default vs shell off."""
+import sys
+from dataclasses import replace
+import numpy as np
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
+from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
+def cfg_variant(shell=True):
+    c = DetectorConfig(); return replace(c, cluster=replace(c.cluster, shell_min_top=2.3 if shell else 0.0))
+V = float(sys.argv[1]) if len(sys.argv) > 1 else 22.0
+objs = {
+ "train rear 2.7w bottom0.3 top3.7": lambda D: [ObstacleSpec(kind="box", size=(15.0, 2.7, 3.4), distance=D, lateral=0.0, reflectivity=30.0, label="train", base=0.3)],
+ "vehicle 1.2w bottom0.3 top3.3": lambda D: [ObstacleSpec(kind="box", size=(3.0, 1.2, 3.0), distance=D, lateral=0.0, reflectivity=30.0, label="veh", base=0.3)],
+ "vehicle 1.2w bottom0.3 top2.9 (control, below envelope top)": lambda D: [ObstacleSpec(kind="box", size=(3.0, 1.2, 2.6), distance=D, lateral=0.0, reflectivity=30.0, label="veh2", base=0.3)],
+}
+for name, f in objs.items():
+    dets = {"default": Detector(cfg_variant()), "shell_off": Detector(cfg_variant(False))}
+    s = {k: "" for k in dets}; first = {k: None for k in dets}; reasons = set()
+    D = 130.0; k = 0
+    while D > 15:
+        frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(500 + k), specs=f(D))
+        for key, det in dets.items():
+            r = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k))
+            s[key] += "S" if r.obstacle else ("c" if r.warning else ".")
+            if r.obstacle and first[key] is None: first[key] = round(D, 1)
+            if key == "default": reasons |= {c.reason for c in r.candidates if c.reason}
+        D -= V * 0.1; k += 1
+    print(f"{name} V={V}: first STOP m default {first['default']} / shell off {first['shell_off']}; reasons seen {sorted(reasons)}")
+    for key in dets: print(f"   {key:9s} {s[key]}", flush=True)

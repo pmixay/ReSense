@@ -4,8 +4,9 @@
 > `results/`, the logs, captures and bench output of each run, and the recordings' original
 > metadata. One line per file or folder: what it is, date, commit, result.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-29: every link of this index; rows added for the 28.09 team VM run
-> and the independent judgement of 28.09 evening; each file remains the record of its own date ·
+> **Last verified:** 2026-09-29 night (`fe27068`, before the merge into `main`): every link of this index; "Start
+> here" points at the seal of 29.09 night (shell off) and its gate, and at the superseded seal of
+> 29.09 evening; rows added for the 29.09 folders; each file remains the record of its own date ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
@@ -16,12 +17,15 @@ results are in [`../EXPERIMENTS.md`](../EXPERIMENTS.md) and the criteria judgeme
 [`../archive/results/`](../archive/results). `docs/extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
 
-**Start here** (the sealed detector and the runs of 28.09):
+**Start here** (the current seal and the runs of 28–29.09):
 
 | what | where |
 |---|---|
-| the detector seal and its full gate | [`detector_freeze_2026-09-27.json`](detector_freeze_2026-09-27.json), [`results/regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json) (= [the current baseline](results/regression_baseline_2026-09-27_quality.json)) |
-| the independent judgement of 28.09 evening (`464f5bc`), basis of the SCORECARD | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) |
+| the detector seal of 29.09 night (two false-alarm rules on, `shell` off after the safety review; 36 files measured at `7464d80`, committed in `fe27068`) and its full gate against the `3eeb106` gate | [`detector_freeze_2026-09-29_shell_off.json`](detector_freeze_2026-09-29_shell_off.json), [`cycle_2026-09-29/shell_off/`](cycle_2026-09-29/shell_off/README.md) (= [the current baseline](results/regression_baseline_2026-09-29_shell_off.json)) |
+| the independent safety review of the three rules of 29.09 evening: `shell` BLOCKING (switched off, `a5455b3`), `explained_run` and the ego-motion veto NON-BLOCKING with limits; synthetic numbers and scripts | [`safety_review_2026-09-29/`](safety_review_2026-09-29/README.md) |
+| the detector seal of 29.09 evening (three false-alarm rules on; `1e2ed82`, 36 files) and its full gate; superseded the same night | [`detector_freeze_2026-09-29_competitor_rules.json`](detector_freeze_2026-09-29_competitor_rules.json), [`cycle_2026-09-29/competitor_rules/`](cycle_2026-09-29/competitor_rules/gate_table.md) (= [its baseline](results/regression_baseline_2026-09-29_competitor_rules.json)) |
+| the seal of 27.09 and its full gate (the detector the judgement of 28.09 measured) | [`results/regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json), [its baseline](results/regression_baseline_2026-09-27_quality.json); the file [`detector_freeze_2026-09-27.json`](detector_freeze_2026-09-27.json) was reissued on 29.09 for `3eeb106` |
+| the independent judgement of 28.09 evening (`464f5bc`, detector of 27.09), basis of the SCORECARD | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) |
 | per-frame outputs of the sealed detector with a recount script | [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md) |
 | the full team VM run of 28.09 (`464f5bc`) | [`vm_2026-09-28/summary.md`](vm_2026-09-28/summary.md) |
 | the node's input path and end-to-end latency through ROS (28.09) | [`node_input_2026-09-28/`](node_input_2026-09-28/README.md) |
@@ -33,7 +37,10 @@ was run; "code" is the commit it records.
 
 | file | date | code | what it is, result |
 |---|---|---|---|
-| [`regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json), [`regression_baseline_2026-09-27_quality.json`](results/regression_baseline_2026-09-27_quality.json) | 27.09 | `d572807` (detector `352ca13`) | full gate of the sealed detector against `_ride_p3d`: PASS, no waivers; the current baseline |
+| [`cycle_2026-09-29/competitor_rules/`](cycle_2026-09-29/competitor_rules/gate_table.md), [`detector_freeze_2026-09-29_competitor_rules.json`](detector_freeze_2026-09-29_competitor_rules.json) | 29.09 evening | `ee7b920`, `f67e4fb`, `1e2ed82` | full gates of every rule taken from other case 5 repositories on the locally cached organizer data (the sealed gate reproduced exactly); the sealing gate of the three shipped rules: PASS, ride 32 / 31 → 26 / 28 events / STOP episodes, nothing worse; veto latency A/B `latency_ab.json` ([record](../../CHANGELOG.md)) |
+| [`regression_baseline_2026-09-29_competitor_rules.json`](results/regression_baseline_2026-09-29_competitor_rules.json) | 29.09 evening | `1e2ed82` | byte-identical copy of the sealing gate `cycle_2026-09-29/competitor_rules/gate.json`: the baseline of the 29.09 evening seal, superseded by [`regression_baseline_2026-09-29_shell_off.json`](results/regression_baseline_2026-09-29_shell_off.json) (the seal manifest names the original) |
+| [`competitor_rule_screen_2026-09-29.json`](results/competitor_rule_screen_2026-09-29.json) | 29.09 | sealed detector (`70faef90…`) | two rules of another repository screened as post-filters on the sealed detector's saved outputs (empty recordings, `doubleT_obstacle`, set O, the ride's residual false events) and one advisory-promotion screen; recomputed by `scripts/screen_competitor_rules.py` and a test ([record](../../CHANGELOG.md)): neither rule adopted |
+| [`regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json), [`regression_baseline_2026-09-27_quality.json`](results/regression_baseline_2026-09-27_quality.json) | 27.09 | `d572807` (detector `352ca13`) | full gate of the detector sealed on 27.09 against `_ride_p3d`: PASS, no waivers; the baseline until 29.09 |
 | [`quality_cycle_2026-09-27/`](results/quality_cycle_2026-09-27) | 27.09 | `352ca13` | raw material of the 27.09 cycle ([record](../archive/QUALITY_CYCLE_2026-09-27.md)): screens, review fixes, ablations, acceptance, history stress, the 72-case [plan](results/quality_cycle_2026-09-27/novel_plan.json) and [results](results/quality_cycle_2026-09-27/novel_results.json.gz), [side-symmetry check](results/quality_cycle_2026-09-27/side_person_check.json), the opinion's [cross-fitted ride](results/quality_cycle_2026-09-27/opinion_crossfit_2x_margin.json) ([zero margin](results/quality_cycle_2026-09-27/opinion_crossfit_zero_margin.json)) |
 | [`branch_integration_2026-09-27/`](results/branch_integration_2026-09-27) | 27.09 | integration head | test logs and receipts of the branch integration ([record](../archive/BRANCH_INTEGRATION_2026-09-27.md)) |
 | [`p1_p2_merge_docs_2026-09-27.json`](results/p1_p2_merge_docs_2026-09-27.json) | 27.09 | P1/P2 merge | receipt of the P1/P2 documentation merge: changes, validation, unchanged evidence |
@@ -85,6 +92,14 @@ was run; "code" is the commit it records.
 
 | folder | date | code | what ran, result |
 |---|---|---|---|
+| [`frame111_2026-09-29/`](frame111_2026-09-29/README.md) | 29.09 | `6cafb28`, `464f5bc` | the GO at `doubleT_obstacle` frame 111 re-checked: closed by `tracking.stop_keep_low_s` 0.3 (193 of 201 STOP frames, no gap), the ablation config and per-frame output |
+| [`cycle_2026-09-29/health_compare_counts/`](cycle_2026-09-29/health_compare_counts/README.md) | 29.09 | `3eeb106` | health sector counts by comparisons: full gate (207 metrics unchanged), frame parity, 33 stress histories, bench; the seal of `3eeb106` |
+| [`cycle_2026-09-29/thin_far_threshold.md`](cycle_2026-09-29/thin_far_threshold.md), [`thin_far_threshold/`](cycle_2026-09-29/thin_far_threshold) | 29.09 | `dcaa5db` | `tracking.thin_far_min_voxels` 4 → 3: full gate, 202 metrics unchanged, set F 0.5 m box 1/6 → 2/6 |
+| [`cycle_2026-09-29/timestamped_persistent_evidence/`](cycle_2026-09-29/timestamped_persistent_evidence/README.md) | 29.09 | experimental line | timestamp-aware sparse `clear_distance` cap: 146 gated metrics unchanged, no decision change; two rejected attempts kept |
+| [`node_startup_2026-09-29/`](node_startup_2026-09-29/README.md) | 29.09 | node of 29.09 vs `464f5bc` | node start-up A/B through the jury chain (with `catchup_startup_step` 0.2), raw captures |
+| [`cycle_2026-09-28/`](cycle_2026-09-28), [`current_review_2026-09-28/`](current_review_2026-09-28/README.md), [`current_review_2026-09-29/`](current_review_2026-09-29/score.json) | 28–29.09 | experimental line | reviews of the experimental line (checkpoints 0–4), complete timing, health histogram, the internal scores quoted in [`../SCORECARD.md`](../SCORECARD.md) |
+| [`low_return_support/`](low_return_support/full_gate/README.md) | 28–29.09 | experimental line | low-ray support candidate: full gate FAIL (exit 1), not integrated |
+| [`p1_p2_cold_bags_2026-09-28/`](p1_p2_cold_bags_2026-09-28/README.md) | 28.09 | `9086cd1` | CI cold-start of both original bags and the node's input path |
 | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) | 28.09 evening | `464f5bc` | the independent judgement behind [`../SCORECARD.md`](../SCORECARD.md): 11 jury-chain captures with the judge's own listener, offline per-frame outputs of all recordings, set O and the whole ride, the range test (a real person pasted into five tunnels), every script that produced and scored them |
 | [`vm_2026-09-28/`](vm_2026-09-28/summary.md) | 28.09 | `464f5bc` | the full [VM guide](../VM_GUIDE.md) on a team VM (4 physical cores, 79 MB/s disk): machine facts, data logs, 754 tests passed, `summary.md` (every run and the findings), `scripts/` |
 | [`dry_run_2026-09-28/`](dry_run_2026-09-28/e2e_vm.txt) | 28.09 | `464f5bc` | `--no-cache` build; dry runs of both original bags, cold and warm twice each; host consoles (README jury steps, stock Fast DDS at 212992, CycloneDDS at 32 MiB, shm mode); fast input identity: all PASS, 453 of 453 frames |
@@ -94,7 +109,7 @@ was run; "code" is the commit it records.
 | [`offline_2026-09-28/`](offline_2026-09-28/steps.txt) | 28.09 | `464f5bc` | offline rehearsal, nothing allowed out: pass 1 `dry_clear` FAIL after a 1.4 s storage stall, the rest PASS; `warm_bags/` (bags pre-read): all PASS |
 | [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md) | 28.09 | `806b6c4` (detector = the seal) | per-frame outputs of the sealed detector by an independent judge (six recordings, set O offline and through the node, two ride segments, set F) with `recompute.py` |
 | [`node_input_2026-09-28/`](node_input_2026-09-28/README.md) | 28.09 | before / after the node's input change | dry runs of both recordings through ROS, end-to-end latency and CPU (`e2e_all_frames.py`), the detector's input identical frame by frame (`fast_input.json`) |
-| [`detector_freeze_2026-09-27.json`](detector_freeze_2026-09-27.json) | 27.09 | `d572807` | the current detector seal ([`../DETECTOR_FREEZE.md`](../DETECTOR_FREEZE.md)) |
+| [`detector_freeze_2026-09-27.json`](detector_freeze_2026-09-27.json) | 27.09, reissued 29.09 | `3eeb106` (first `d572807`) | the previous detector seal, superseded on 29.09 evening by [`detector_freeze_2026-09-29_competitor_rules.json`](detector_freeze_2026-09-29_competitor_rules.json) ([`../DETECTOR_FREEZE.md`](../DETECTOR_FREEZE.md)) |
 | [`p1_p2_supported_playback_2026-09-27/`](p1_p2_supported_playback_2026-09-27/README.md) | 27.09 | `5a27c66`, `2f23719` | CI cold replays of both original bags at read-ahead 10: PASS; [verified-bag cache run](p1_p2_supported_playback_2026-09-27/cached_bags_run_36319767736/README.md) PASS |
 | [`p1_p2_completion_2026-09-26/`](p1_p2_completion_2026-09-26/README.md) | 26–27.09 | branch heads | the earlier CI cold-bag runs (failed, cancelled, passed) and the viewer / dashboard checks |
 | [`freeze_2026-09-26/`](freeze_2026-09-26/README.md) | 26.09 night | P3d, node `0f808fe` | node checks of the P3d freeze (cold / warm / clear / stock console), 621 tests, [hash manifest](freeze_2026-09-26/manifest.json) |

@@ -20,12 +20,12 @@ All available organizer data are now present and verified outside Git: the six o
 archive's published size and SHA-256 match the streamed bytes; every compressed cache frame and
 timestamp manifest was read and checked. The recording's 55 intervals over 0.15 s and 7.099 s
 maximum gap are preserved as recorded. Intake details, source URLs, cache paths and checksums are
-in [`p4_data_intake_2026-09-28.json`](evidence/results/p4_data_intake_2026-09-28.json); raw bags,
+in [`p4_data_intake_2026-09-28.json`](../evidence/results/p4_data_intake_2026-09-28.json); raw bags,
 archive and frame caches stay outside Git.
 
 The frozen detector at `43a0e7d` was replayed with the default config against the independent
-27.09 baseline. The [reference gate](evidence/results/p4_full_data_2026-09-28/regression_gate.json)
-and [final detector/config gate](evidence/results/p4_full_data_2026-09-28/final_regression_gate.json)
+27.09 baseline. The [reference gate](../evidence/results/p4_full_data_2026-09-28/regression_gate.json)
+and [final detector/config gate](../evidence/results/p4_full_data_2026-09-28/final_regression_gate.json)
 both pass with **146/146 enforced values unchanged** (208 unchanged rows including 62
 informational rows), no missing/worse/better gated rows, no waivers and
 no unapproved regressions. The final detector/config gate ran at commit `1ee4572`, after P4
@@ -34,7 +34,7 @@ contain 130 alarm frames, 32 track events and 31
 STOP episodes. Five empty recordings contain 40 alarm frames, 11 track events and 13 episodes.
 The full evidence packet includes compressed per-frame outputs and hashes, all run summaries,
 the effective config, and commands in
-[`p4_full_data_2026-09-28/`](evidence/results/p4_full_data_2026-09-28/README.md).
+[`p4_full_data_2026-09-28/`](../evidence/results/p4_full_data_2026-09-28/README.md).
 
 The fresh set O score is **411/801 visible object-frames for in-envelope objects**, with 8/8 in-envelope
 objects detected, 6 false STOP frames on the outside large box and no background false STOPs.
@@ -56,8 +56,8 @@ the timing-only health field and a filename suffix; all detection, warning, trac
 health and clear-distance values match. Outside-object alarms and clear-distance overclaims did
 not change. The registered later stages were not run because none passed its target condition.
 The full protocol and results are in
-[`p4_candidate_screen_protocol_2026-09-28.json`](evidence/results/p4_candidate_screen_protocol_2026-09-28.json)
-and [`p4_candidate_screen_results_2026-09-28.json`](evidence/results/p4_candidate_screen_results_2026-09-28.json).
+[`p4_candidate_screen_protocol_2026-09-28.json`](../evidence/results/p4_candidate_screen_protocol_2026-09-28.json)
+and [`p4_candidate_screen_results_2026-09-28.json`](../evidence/results/p4_candidate_screen_results_2026-09-28.json).
 The older short-signature relaxation remains rejected as documented below.
 
 The current ride false-alarm inventory groups every event by recording piece and track ID, with
@@ -66,7 +66,7 @@ clouds for all 32 current ride events were reviewed in the attached contact shee
 tunnel/station structures are visible, but no independent object labels or exact point-support
 trace establish event causes; each cause remains **uncertain**. The five empty recordings and set
 O's outside object are listed separately in
-[`p4_false_alarm_inventory_2026-09-28.json`](evidence/results/p4_false_alarm_inventory_2026-09-28.json).
+[`p4_false_alarm_inventory_2026-09-28.json`](../evidence/results/p4_false_alarm_inventory_2026-09-28.json).
 
 Startup census, recorded rate, 5 Hz, ±3° mount stress, start offsets 0/10/20/30/40, set O's
 per-object range and clear-distance scores, paired set F straight and curve/edge placement, and
@@ -75,7 +75,7 @@ long-range recall or surveyed placement truth. No detector change passed; P4 est
 reproducibility and preserves the frozen defaults.
 
 **Score disposition at the P4 packet:** the then-latest paired assessment was **66.5/100** on
-`806b6c4` ([scorecard](SCORECARD.md)). This P4 run did not change detector behavior and did not
+`806b6c4` ([scorecard](../SCORECARD.md)). This P4 run did not change detector behavior and did not
 earn detector points. A later single-review assessment of `a2f9122` gives **69/100**, crediting
 newer launch and evidence work only; it is recorded separately and does not rescore P4 as a
 detector improvement. The provisional table below is the dated 66.5 carry-forward.

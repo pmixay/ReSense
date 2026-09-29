@@ -1,0 +1,35 @@
+{
+ "what": "detect latency (Detector.process, ms per frame) with the ego veto off (tracking.ego_veto_min_speed=0) against the shipped default, native kernels on",
+ "method": "first 300 frames of each cached recording, two detectors running on the same frames and taking turns on each frame, 3 reps, first 20 frames of each rep dropped",
+ "code": "f67e4fb",
+ "frames": {
+  "doubleT_obstacle": "360 deg",
+  "squareT_platform_squareT_switch": "120 deg"
+ },
+ "results": {
+  "doubleT_obstacle": {
+   "off": {
+    "mean": 28.74,
+    "p95": 39.08
+   },
+   "on": {
+    "mean": 30.84,
+    "p95": 41.5
+   },
+   "delta_mean": 2.1,
+   "delta_p95": 2.42
+  },
+  "squareT_platform_squareT_switch": {
+   "off": {
+    "mean": 20.88,
+    "p95": 28.62
+   },
+   "on": {
+    "mean": 22.56,
+    "p95": 30.22
+   },
+   "delta_mean": 1.68,
+   "delta_p95": 1.6
+  }
+ }
+}

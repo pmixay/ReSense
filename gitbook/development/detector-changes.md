@@ -1,10 +1,15 @@
 # Изменение детектора
 
-Детектор опечатан: `docs/evidence/detector_freeze_2026-09-27.json` перечисляет по SHA256 каждый
-файл, от которого зависит его выход (`resense/`, `native/`, `configs/`, копия параметров ROS,
-обученная модель), и задание CI `checks` падает, если какой-то из них изменился без новой печати.
-Поэтому для изменения детектора нужны доказательства (evidence), что оно ничего не ухудшает.
-Печать 27.09 до сдачи не снимается; ниже — порядок для следующих изменений.
+Детектор опечатан: манифест `docs/evidence/detector_freeze_2026-09-29_shell_off.json` (печать 29.09
+ночь, 36 файлов, измерены на `7464d80`) перечисляет по SHA256 каждый файл, от
+которого зависит его выход (`resense/`, `native/`, конфигурации, копия параметров ROS, обученная
+модель, входы сборки), и задание CI `checks` падает, если какой-то из них изменился без новой
+печати (`python3 scripts/detector_freeze.py verify`). Поэтому для изменения детектора нужны
+доказательства (evidence), что оно ничего не ухудшает. 29.09 печать заменялась трижды, каждый раз
+после полного шлюза. Последняя замена — пример шага 4 ниже: независимое ревью безопасности трёх
+вечерних правил из решений других команд признало одно из них (`shell`) блокирующим — оно
+откладывало `STOP` на объектах от пола до свода, в том числе на висящем до рельсов кабеле, — и его
+выключили; два других правила ревью признало не блокирующими.
 
 ## Регрессионный гейт
 
@@ -13,9 +18,14 @@
 каждую проверяемую метрику с базовой линией (baseline) из репозитория:
 
 ```bash
-python scripts/regression_gate.py --cache /data/cache \
-    --baseline docs/evidence/results/regression_baseline_2026-09-27_quality.json
+python scripts/regression_gate.py --cache /data/cache --jobs 4 \
+    --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json \
+    --out out/gate/<change>.json
 ```
+
+Базовая линия — шлюз текущей печати (так 29.09 правила сравнивались со шлюзом прошлой печати);
+базовая линия печати 27.09 —
+`docs/evidence/results/regression_baseline_2026-09-27_quality.json`.
 
 Код выхода 0 — каждая проверяемая метрика та же или лучше. Кадры нужно один раз закешировать
 ([Офлайн-анализ без ROS](../guides/offline-analysis.md#the-real-data-report-card)); поездке и набору F
@@ -45,13 +55,16 @@ flowchart TD
    явно через `--allow` с описанием компромисса, либо изменение получает статус «пробовали, не
    внедрили» (tried, not shipped) и записывается в `docs/EXPERIMENTS.md`.
 3. Изменение, которое должно сдвинуть числа, коммитит новую базовую линию и новую печать
-   (`python scripts/detector_freeze.py create --evidence <full gate JSON> --manifest <new seal>`),
+   (`python scripts/detector_freeze.py create --baseline <базовая линия шлюза> --evidence <full gate JSON>
+   --manifest <new seal>`; `create` проверяет, что шлюз сравнивался именно с этой базовой линией),
    а документы, где приводятся числа (`docs/EXPERIMENTS.md`, README, страница
    [Результаты и ограничения](../reference/results.md)), обновляются.
 4. Изменения, влияющие на безопасность, до слияния проходят независимое ревью.
 
 Датированная история принятых и отклонённых кандидатов до печати 27.09 — полный журнал
 [`docs/archive/EXPERIMENTS_log_2026-09.md`](https://github.com/pmixay/ReSense/blob/main/docs/archive/EXPERIMENTS_log_2026-09.md);
+шлюзы всех кандидатов 29.09 —
+[`gate_table.md`](https://github.com/pmixay/ReSense/blob/main/docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md);
 печать и её проверка —
 [`docs/DETECTOR_FREEZE.md`](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md);
 краткий обзор — [Подход команды](../reference/approach.md).

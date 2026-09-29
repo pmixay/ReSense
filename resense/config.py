@@ -99,6 +99,7 @@ class TrackConfig:
     rails_yaw_min_slabs: int = 2                     # slabs with a plausible rail pair needed for a yaw estimate
     rails_yaw_max_dev: float = 0.3                   # m, a slab's rail may sit this far from the global rail position
     rails_far_check_enabled: bool = False            # experimental station-wall curvature correction; opt-in until real-data A/B and timing
+    rails_far_rings: bool = False                    # 29.09 (experimental, off; needs rails_far_check_enabled): the far rail evidence of that check comes from single LiDAR ring crossings (resense/farrails.py; assumes no fixed sensor tilt, sensor.roll/pitch/yaw_deg 0, the default: a configured tilt smears the rings and no far evidence is found) instead of the slab profile that never finds a pair beyond rails_range[1]; opt-in until the full gate
     axis_max_yaw_rate: float = 0.003                 # rad per frame (0.17 deg; a train at 15 m/s on R = 700 m yaws 0.12 deg per frame); larger changes are clipped; 0 = off
     axis_max_curvature_rate: float = 1.0e-4          # 1/m per frame, larger changes of the smoothed curvature are clipped; 0 = off
     axis_warmup_frames: int = 5                      # frames after a (re)seed of the track model during which the rate limits do not apply (v0.6)
@@ -143,6 +144,7 @@ class GaugeConfig:
     # candidates and the advisory zone are unaffected. 0 = off (v0.3 behaviour)
     edge_margin: float = 0.0
     edge_margin_per_100m: float = 0.15   # v0.6: 0.15 m per 100 m (0.3 m at 200 m) of axis uncertainty at the envelope edge
+    edge_margin_per_100m2: float = 0.0   # 29.09 (opt-in, 0 = off): + this many m per (100 m)^2: the axis error against the track measured by anchored placements grows faster than linearly beyond ~80 m (p75 0.17 / 0.45 / 0.91 m at 80-100 / 100-120 / 120-140 m); 0.3 fails set O: docs/evidence/cycle_2026-09-29/competitor_rules/candidates/q_em03.json
     no_rail_range: float = 40.0    # v0.6.2: m; in a frame without the rail pair in the near range (stations, switch caverns: the axis rests on walls alone) the corridor beyond this is advisory only; 0 = off
     # 26.09 (P3, judge A action 7; docs/evidence/results/p3_edge_axis_2026-09-26.json): the envelope also
     # measured from the SENSOR axis (the processed frame's X axis, the organizers' placement frame), as a
@@ -272,6 +274,22 @@ class ClusterConfig:
     hanging_needs_rails: bool = True   # on since 25.09, round 2 (the captain's delegate; pre-registered in p3_thin_hanging_2026-09-25.json addendum_rail_lock, both conditions held): the hanging stage runs only on frames whose track model found the rail pair in the near range (track.rail_slabs > 0): 28 of the ride's 29 hanging groups were station column tops in frames without one; set O thin_hanging keeps 15 STOP frames from 30.1 m, the combined gate identical with and without it; false = every frame
     hanging_yield_gauge_only: bool = True   # 26.09 (safety review): a hanging cluster is dropped only for an overlapping cluster of the other stages that is an obstacle (zone 'gauge', no demotion reason); an advisory one there no longer removes it (a cable hanging to 1.85-2.2 m, 0.65-0.75 m off the axis, was demoted as floating and its hanging cluster dropped: no STOP); false = any overlapping cluster
     wall_face_min_height: float = 2.0  # m, taller than a person (1.5 demoted a person standing on a 1.1 m platform edge, review 22.09); taller than this, reaching above overhead_min_height, and its part below that level hugs the corridor edge (|dy| from wall_face_min_inner to beyond wall_face_edge) = wall / portal face pulled in by the axis
+    # 29.09 (opt-in, 0 = off; after EhimenNathan/tunnelguard-lct2026 core/detector.py _shell_points): a gauge cluster at
+    # least shell_min_distance away that stands on the floor (bottom below shell_max_bottom) and reaches shell_min_top is
+    # tunnel infrastructure when the lining continues right above it: >= shell_min_points returns of the whole frame
+    # within shell_gap above its top, over its lateral extent +- shell_lateral and along-track extent +- (1 + 1 % of X),
+    # the lowest within max(shell_touch_min, shell_touch_beams vertical beam spacings) of its top (reason 'shell')
+    shell_min_top: float = 0.0            # off again since 29.09 night (safety review: a floor-standing object reaching above the
+    #   3.0 m envelope top - a cable hanging from the vault to the rails, a pole, a standing train - read its own top as the
+    #   lining and was demoted beyond shell_min_distance; the catalogue cable_low first STOP 73.8 -> 21.0 m at 22 m/s). 2.3 = on
+    #   (the 29.09 evening seal; docs/evidence/cycle_2026-09-29/competitor_rules/gate_table.md)
+    shell_max_bottom: float = 0.8
+    shell_min_distance: float = 40.0
+    shell_gap: float = 1.2
+    shell_lateral: float = 0.15
+    shell_min_points: int = 3
+    shell_touch_min: float = 0.25
+    shell_touch_beams: float = 3.0
     wall_face_min_top: float = 2.8     # m, v0.6: the face reaches above this (just under the 3.0 m envelope top; v0.5 used overhead_min_height = 2.4 under a 3.5 m top)
     wall_face_edge: float = 1.3        # m (v0.6: the advisory zone now ends at 1.40 m; 1.6 with the 1.75 m zone of v0.5)
     wall_face_min_inner: float = 0.3   # m
@@ -326,6 +344,25 @@ class TrackingConfig:
     fresh_stop_evidence: bool = False
     fresh_stop_evidence_window: int = 3  # matched hits retained for the onset provenance check
     fresh_stop_evidence_min_hits: int = 2 # eligible hits required in that bounded window
+    # 29.09 (opt-in, 0 = off; after Tactical-Inventor/LCT-2026.NIIstovye gauge/processor.py): a track that had a
+    # hit demoted with a reason (column, a shape signature, beyond_axis, ...) among its last explained_window
+    # hits may start a STOP only after explained_run consecutive clean hits (an ordinary cluster in the strict
+    # gauge, no reason); a miss breaks the run. Onset only: an earned STOP keeps the usual rules; near
+    # escalation wins; a blocked track stays a visible advisory.
+    explained_run: int = 5                # on since 29.09, infrastructure reasons only (explained_reasons)
+    explained_window: int = 10
+    explained_reasons: str = "column,overhead,retro,shell"  # comma-separated; '' = any reason. Shape signatures (floating, elevated, edge, wall_face) are left to the stop-keep / near-escalation rules (a hanging cable demoted as floating must stop); with the range demotions beyond_axis / beyond_height_ref, set F far first detection -22 m: not shipped
+    # 29.09 (opt-in, 0 = off; after EhimenNathan/tunnelguard-lct2026 core/detector.py _carried_along): while the
+    # train moves at >= ego_veto_min_speed (m/s, the LiDAR estimate of resense/egomotion.py or a given speed), a
+    # track beyond ego_veto_min_distance whose distance does not fall with the train's travel (Theil-Sen slope of
+    # distance against travel above ego_veto_max_slope over >= ego_veto_min_hits hits and >= ego_veto_min_travel m;
+    # a static object gives -1, an artefact carried with the train 0) may not start a STOP; it stays advisory.
+    # Onset only; near escalation wins; the odometry chain restarts on an unknown or implausible speed.
+    ego_veto_min_speed: float = 4.0       # on since 29.09
+    ego_veto_max_slope: float = -0.35
+    ego_veto_min_hits: int = 4
+    ego_veto_min_travel: float = 4.0
+    ego_veto_min_distance: float = 25.0
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour

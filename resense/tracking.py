@@ -102,6 +102,9 @@ class Track:
     fresh_blocked: bool = False     # opt-in: a reported advisory cannot become a STOP on this hit
     low_clean: Optional[Cluster] = None  # last clean low cluster; weak continuation cannot change this shape reference
     low_since_clean: float = 0.0  # actual elapsed time, including stamp gaps clipped for the existing motion/fit rules
+    explained_hist: List[bool] = field(default_factory=list)  # 29.09 (explained_run): last hits demoted with a reason?
+    clean_run: int = 0              # 29.09 (explained_run): consecutive clean strict-gauge hits, broken by a miss
+    odo: List[tuple] = field(default_factory=list)  # 29.09 (ego_veto_*): (odometry segment, train travel m, distance m) of the last hits
 
     @property
     def near_escalated(self) -> bool:
@@ -156,9 +159,13 @@ class Tracker:
         self.opinion = load_opinion(cfg.doubt_model) if cfg.doubt_extra_hits > 0 else None
         self.record = self.opinion is not None
         self._clock = 0.0            # 27.09: s of sensor time since the start (approach_*)
+        self._odo_x, self._odo_seg, self._odo_v = 0.0, 0, None   # 29.09 (ego_veto_*): train travel, segment, speed
+        self._odo_hist, self._odo_gap = [], 0
 
     def reset(self) -> None:
         self.tracks.clear()
+        self._odo_x, self._odo_seg, self._odo_v = 0.0, self._odo_seg + 1, None
+        self._odo_hist, self._odo_gap = [], 0
         self._next_id = 1
         self._timed = False
 
@@ -237,7 +244,7 @@ class Tracker:
                frame_dt: Optional[float] = None, low_ok: bool = True, rail_within: float = 0.0,
                thin: Optional[List[Cluster]] = None, far_thin: Optional[List[Cluster]] = None,
                low_height: Optional[List[Cluster]] = None,
-               low_frame_dt: Optional[float] = None) -> List[Track]:
+               low_frame_dt: Optional[float] = None, odo_speed: Optional[float] = None) -> List[Track]:
         """Associate ``clusters`` with the tracks. ``ego_shift`` (m) is the distance the
         vehicle travelled since the previous frame when it is known: a track seen once has no
         velocity yet and is then predicted as a static object approaching by that much.
@@ -265,6 +272,8 @@ class Tracker:
         actual positive stamp interval when ``frame_dt`` was clipped for motion/fit rules;
         it advances only the bounded low-height continuation clock."""
         c = self.cfg
+        if c.ego_veto_min_speed > 0:
+            self._odometry(odo_speed, frame_dt)
         # Weak low evidence is never a normal hit or a seed, even when supplied directly
         # by another caller. The detector normally passes it separately.
         low_height = list(low_height or []) + [cl for cl in clusters if cl.low_height_weak]
@@ -346,6 +355,7 @@ class Tracker:
                 t.centroid = t.centroid + t.velocity
                 if t.hold > 0:              # a calibration re-seed hold: this miss does not count
                     continue
+                t.clean_run = 0
                 t.confidence = max(0.0, t.confidence - c.conf_decay)
                 t.hit_hist = (t.hit_hist + [False])[-hw:]
         self.tracks = [t for t in self.tracks if t.misses <= c.max_misses or (t.hold > 0 and t.reported)]
@@ -382,6 +392,7 @@ class Tracker:
         for t in self.tracks:
             was_reported = t.reported
             earned_stop = t.stop_earned
+            was_blocked = t.fresh_blocked
             fresh_blocked = False
             t.fresh_blocked = False
             q = self._qualifies(t)
@@ -416,8 +427,24 @@ class Tracker:
                 fresh_blocked = not q
                 if fresh_blocked:
                     fresh_blocked_tracks.add(id(t))
+            if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == "gauge"
+                    and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or (
+                    q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == "gauge"
+                    and not t.near_escalated and self._carried_along(t)):
+                # 29.09 (explained_run): a history of explained (demoted) hits needs a clean run before
+                # a new STOP; the track stays a visible advisory meanwhile
+                q = False
+                fresh_blocked = explained_blocked = True
+                fresh_blocked_tracks.add(id(t))
+            else:
+                explained_blocked = False
             t.reported = (q or (t.reported and 0 < t.misses <= c.hold_misses)
-                          or (t.reported and t.hold > 0))
+                          or (t.reported and t.hold > 0) or (explained_blocked and t.misses == 0))
+            if was_blocked and not q and t.reported and t.misses > 0:
+                # 29.09: a blocked advisory held through a missed frame stays blocked; otherwise its
+                # zone vote would report it as a STOP on the very frame nothing was seen
+                fresh_blocked = True
+                fresh_blocked_tracks.add(id(t))
             if fresh_blocked and was_reported and not earned_stop and t.misses == 0:
                 # The candidate blocks an advisory-to-STOP transition, but does not make an
                 # already reported advisory track disappear on the matched frame.
@@ -628,6 +655,13 @@ class Tracker:
         continuation source supplies fresh evidence for a new STOP onset.
         """
         c = self.cfg
+        if c.ego_veto_min_speed > 0 and source in ("ordinary", "far_thin"):
+            t.odo = (t.odo + [(self._odo_seg, self._odo_x, float(cl.distance))])[-10:]
+        if c.explained_run > 0 and source == "ordinary":
+            reasons = [r.strip() for r in str(c.explained_reasons).split(",") if r.strip()]
+            explained = bool(cl.reason) and (not reasons or cl.reason in reasons)
+            t.explained_hist = (t.explained_hist + [explained])[-max(1, int(c.explained_window)):]
+            t.clean_run = t.clean_run + 1 if (cl.zone == "gauge" and not cl.reason) else 0
         if c.fresh_stop_evidence:
             n = max(1, int(c.fresh_stop_evidence_window))
             if source == "ordinary" and cl.zone != "gauge":
@@ -638,6 +672,49 @@ class Tracker:
         t.far_evidence = t.far_evidence or bool(far_thin)
         t.thin_hist = (t.thin_hist + [bool(far_thin)])[-zw:]
         t.approach = (t.approach + [(self._clock, float(cl.distance))])[-max(2, int(c.approach_hits)):]
+
+    def _odometry(self, speed: Optional[float], frame_dt: Optional[float]) -> None:
+        """29.09 (ego_veto_*): integrate the train's travel. The per-frame LiDAR estimate is noisy and
+        unknown in about a quarter of the frames, so the travel uses the median of the last five known
+        speeds and coasts through up to three unknown frames (TunnelGuard coasts on its prior); a longer
+        gap or an unusable interval starts a new segment."""
+        dt = float(frame_dt) if frame_dt is not None else self.cfg.frame_dt
+        if not 0.0 < dt <= 0.35:
+            self._odo_seg += 1
+            self._odo_hist, self._odo_v, self._odo_gap = [], None, 0
+            return
+        if speed is not None and np.isfinite(speed):
+            self._odo_hist = (self._odo_hist + [float(speed)])[-5:]
+            self._odo_gap = 0
+        else:
+            self._odo_gap += 1
+            if self._odo_gap > 3 or not self._odo_hist:
+                if self._odo_v is not None:
+                    self._odo_seg += 1
+                self._odo_hist, self._odo_v = [], None
+                return
+        self._odo_v = float(np.median(self._odo_hist))
+        self._odo_x += self._odo_v * dt
+
+    def _carried_along(self, t: Track) -> bool:
+        """29.09 (ego_veto_*, after TunnelGuard ``_carried_along``): while the train demonstrably moves,
+        a track whose distance does not fall with the travel (Theil-Sen slope of distance against
+        travel above ``ego_veto_max_slope``) is not a static object ahead; no decision without
+        enough hits and travel in the current odometry segment."""
+        c = self.cfg
+        if self._odo_v is None or self._odo_v < c.ego_veto_min_speed or t.last is None:
+            return False
+        if float(t.last.distance) < c.ego_veto_min_distance:
+            return False
+        o = np.array([(x, d) for seg, x, d in t.odo if seg == self._odo_seg], dtype=float)
+        if len(o) < max(2, int(c.ego_veto_min_hits)) or float(np.ptp(o[:, 0])) < c.ego_veto_min_travel:
+            return False
+        i, j = np.triu_indices(len(o), 1)
+        dx = o[j, 0] - o[i, 0]
+        ok = np.abs(dx) > 0.5
+        if ok.sum() < 3:
+            return False
+        return float(np.median((o[j, 1] - o[i, 1])[ok] / dx[ok])) > c.ego_veto_max_slope
 
     def _fresh_stop_ok(self, t: Track) -> bool:
         """Check bounded provenance for a new STOP onset.

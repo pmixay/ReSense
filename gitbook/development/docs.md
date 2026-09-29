@@ -10,8 +10,8 @@
 GitBook Git Sync берёт её из `gitbook/` ветки `main`: каждое слияние в `main` обновляет сайт.
 Правьте страницы только в репозитории, через pull request, — не в редакторе GitBook. Новую страницу
 добавьте в `gitbook/SUMMARY.md`, иначе её не будет в оглавлении. README репозитория ссылается на
-страницы книги по адресам (`reference/node-parameters`, `reference/topics`): не переименовывайте
-эти файлы.
+страницы книги по адресам (`reference/node-parameters`, `reference/topics`,
+`reference/configuration`): не переименовывайте эти файлы.
 
 ## Правила написания
 

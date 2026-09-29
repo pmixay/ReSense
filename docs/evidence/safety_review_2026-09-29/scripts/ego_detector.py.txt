@@ -1,0 +1,41 @@
+"""Full detector (default config, learned doubt model ON) on ray-cast tunnel frames; the LiDAR speed estimate is
+replaced by a chosen value (monkeypatched EgoSpeedEstimator.estimate; accumulation stays off as in the default).
+Person (1.7 m) on the axis; object distance per frame from the scenario."""
+import sys
+from dataclasses import replace
+import numpy as np
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.egomotion import EgoSpeedEstimate
+from resense.frame import Frame
+from resense.synthetic import catalogue_spec, synthetic_tunnel_frame
+
+def make(veto, est_speed):
+    c = DetectorConfig(); c = replace(c, tracking=replace(c.tracking, ego_veto_min_speed=4.0 if veto else 0.0))
+    d = Detector(c)
+    d.ego.estimate = lambda *a, **k: EgoSpeedEstimate(speed=est_speed, confidence=1.0, method="profile")
+    return d
+
+def scenario(name, v_train, u_obj, est, D0=130.0, D1=12.0, obj="person", stop_at=None):
+    dets = {"on": make(True, est), "off": make(False, est)}
+    s = {k: [] for k in dets}; first = {k: None for k in dets}
+    D = D0; k = 0
+    while D > D1 and k < 400:
+        frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(300 + k), specs=[catalogue_spec(obj, D, 0.0, reflectivity=30.0)])
+        for key, det in dets.items():
+            r = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k))
+            s[key].append("S" if r.obstacle else ("c" if r.warning else "."))
+            if r.obstacle and first[key] is None: first[key] = (k, round(D, 1))
+        u = u_obj if (stop_at is None or D > stop_at) else 0.0
+        D -= (v_train - u) * 0.1; k += 1
+    print(f"{name}: first STOP (frame, m) veto on {first['on']}  off {first['off']}")
+    for key in dets: print(f"   {key:3s} {''.join(s[key])}", flush=True)
+
+scenario("static person, train 22 m/s, estimate 22 (normal case)", 22, 0, 22.0)
+scenario("static person, train 8 m/s, estimate 8 (normal case)", 8, 0, 8.0, D0=110)
+scenario("static person, train 6 m/s, estimate 18 (3x over)", 6, 0, 18.0, D0=110)
+scenario("static person, train 8 m/s, estimate 24 (3x over)", 8, 0, 24.0, D0=110)
+scenario("person running away 4 m/s, train 6 m/s, estimate 6", 6, 4, 6.0, D0=110, D1=20)
+scenario("person running away 6 m/s, train 8 m/s, estimate 8", 8, 6, 8.0, D0=110, D1=20)
+scenario("vehicle receding 15 m/s, train 22 m/s, estimate 22", 22, 15, 22.0, D0=130, D1=15)
+scenario("vehicle receding 15 m/s then stops at 70 m, train 22, estimate 22", 22, 15, 22.0, D0=130, D1=15, stop_at=70.0)
