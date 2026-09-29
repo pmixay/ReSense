@@ -99,3 +99,5 @@ The same in Russian, as a user guide: **[resense.gitbook.io/resense-docs](https:
   source, current limitations and earlier assessments.
 * [Health histogram validation](evidence/cycle_2026-09-28/health_histogram/README.md): the full
   native gate, parity and runtime captures, each tied to its measured source.
+* [Branch review of 29.09](BRANCH_REVIEW_2026-09-29.md): what the branch improves over `main`
+  (no big gain), the defects fixed in the review, and the sealed-file findings left for a gated change.
