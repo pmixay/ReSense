@@ -72,6 +72,8 @@ export const RULER_MARKS: readonly number[] = [0, 0.5, 1, 1.5, 2];
 
 const LAYER_MAIN = 1;
 const LAYER_PIP = 2;
+/** Renders after a change while paused: the camera follow and the fades settle in about a second. */
+const SETTLE_FRAMES = 60;
 
 export interface ScreenPoint {
   visible: boolean;
@@ -208,6 +210,8 @@ export class PlayerScene {
   private tween = { active: false, t: 0, fromPos: new THREE.Vector3(), fromTarget: new THREE.Vector3(), fromFov: 24 };
   private placed = false;
   private sWorld = 0;
+  private sCloud = 0;
+  private settle = SETTLE_FRAMES;
   private headX = 1;
   private headY = 0;
   private readonly tmp = new THREE.Vector3();
@@ -383,13 +387,26 @@ export class PlayerScene {
       c.dampingFactor = 0.12;
       c.rotateSpeed = 0.6;
       c.zoomSpeed = 0.8;
+      c.minDistance = 2;
       c.maxDistance = 400;
+      // never under the track bed: the camera stays above the pivot's horizon
+      c.maxPolarAngle = Math.PI / 2 - 0.03;
       c.addEventListener('start', this.onControlStart);
       c.addEventListener('change', this.onControlChange);
       canvas.addEventListener('dblclick', this.onDblClick);
       this.controls = c;
     }
     this.setTrack(this.track);
+    // compile every program now (hidden boxes, the inset, the train included): the first obstacle
+    // of a run must not stall the drive while its shaders compile
+    this.renderer.compile(this.scene, this.camera);
+    if (!opts.preview) {
+      // programs are keyed by the render target too: the close-up's variants
+      this.renderer.setRenderTarget(this.rt);
+      this.renderer.compile(this.scene, this.pipCam);
+      this.renderer.setRenderTarget(null);
+      this.renderer.compile(this.quadScene, this.quadCam);
+    }
   }
 
   // ---------------------------------------------------------------- public API
@@ -410,16 +427,24 @@ export class PlayerScene {
     this.overlay.height = this.height;
     this.updatePose();
     this.layoutPip();
+    this.touch();
   }
 
   /** The inset's place in the canvas (CSS px), or null for none. */
   setPipRect(rect: PipRect | null): void {
     this.pipRect = rect;
     this.layoutPip();
+    this.touch();
+  }
+
+  /** Preallocate the point buffers for the run's cloud budget (GET /clouds `points`). */
+  reserve(points: number): void {
+    if (Number.isFinite(points) && points > this.capacity) this.grow(Math.ceil(points * 1.05));
   }
 
   /** Upload a cloud (null = schematic mode: no points). `track` is the model of the cloud's frame. */
   setCloud(cloud: DecodedCloud | null, track?: TrackModelDict | null): void {
+    this.touch();
     if (!cloud || cloud.n === 0) {
       this.pointsGeo.setDrawRange(0, 0);
       return;
@@ -445,8 +470,15 @@ export class PlayerScene {
     this.setPointTrack(track ?? this.track);
   }
 
+  /** Colour the cloud on screen along the track model of its frame (it may arrive after the cloud). */
+  setCloudTrack(track: TrackModelDict): void {
+    this.setPointTrack(track);
+    this.touch();
+  }
+
   /** The frame under the playhead: envelope along its track, boxes, the obstacle, the close-up. */
   setFrame(frame: FrameResultDict | null): void {
+    this.touch();
     this.frame = frame;
     const track = frame?.track ?? this.track;
     if (frame?.track) this.setTrack(track);
@@ -466,7 +498,9 @@ export class PlayerScene {
     sa.needsUpdate = true;
     this.stemGeo.setDrawRange(0, k * 2);
     const nearest = dets[0] ?? null;
-    this.span = envelopeSpan(nearest, frame?.clear_distance, track.axis_valid);
+    // FAULT: the input is unusable, nothing ahead is verified — the envelope is drawn as unverified
+    const unverified = !nearest && frame?.decision === 'FAULT';
+    this.span = envelopeSpan(nearest, unverified ? 0 : frame?.clear_distance, track.axis_valid);
     if (nearest) {
       fillPortal(this.portalBuf, track, this.span.near, RED_RGB, ENVELOPE_PROFILE);
       this.uploadVertices(this.portalGeo, this.portalBuf);
@@ -484,7 +518,10 @@ export class PlayerScene {
 
   /** The drive: the world (boxes) and the cloud glide back along the track by these metres. */
   setDrive(sWorld: number, sCloud: number): void {
+    if (sWorld === this.sWorld && sCloud === this.sCloud) return;
+    this.touch();
     this.sWorld = sWorld;
+    this.sCloud = sCloud;
     this.world.position.set(-sWorld * this.headX, -sWorld * this.headY, 0);
     this.points.position.set(-sCloud * this.headX, -sCloud * this.headY, 0);
     this.pipPoints.position.copy(this.points.position);
@@ -496,6 +533,7 @@ export class PlayerScene {
     this.trainBody.visible = mode !== 'cab';
     this.grid.visible = mode === 'top';
     if (changed) this.startTween(animate);
+    this.touch();
     if (this.free) {
       this.free = false;
       this.opts.onFreeChange?.(false);
@@ -508,6 +546,8 @@ export class PlayerScene {
     if (!this.free) return;
     this.free = false;
     this.startTween(true);
+    this.updatePose(); // the preset's fog / vault / walls again
+    this.touch();
     this.opts.onFreeChange?.(false);
     this.opts.onInvalidate?.();
   }
@@ -521,13 +561,20 @@ export class PlayerScene {
     return this.tween.active || this.free || !this.placed;
   }
 
+  /** Would a render draw something new (a change not yet settled, a moving camera)? */
+  needsRender(): boolean {
+    return this.settle > 0 || this.animating;
+  }
+
   render(dt: number): void {
     if (this.disposed) return;
+    if (this.settle > 0) this.settle -= 1;
     this.updateCamera(Math.min(0.1, Math.max(0, dt)));
     const pr = this.pixelRatio;
     const u = this.pointsMat.uniforms;
     u.uScale.value = ((this.height * pr) / (2 * Math.tan((this.camera.fov * Math.PI) / 360))) * this.pointSize;
-    u.uMinPx.value = this.minPx * pr;
+    // an orbited camera looks from afar: far points would shrink to specks
+    u.uMinPx.value = (this.free ? this.minPx * 1.4 : this.minPx) * pr;
     u.uMaxPx.value = 5 * pr;
     this.trackUniforms.uSpan.value.set(this.span.near - this.sWorld, this.span.far - this.sWorld, this.span.end);
 
@@ -578,13 +625,25 @@ export class PlayerScene {
     if (!this.free) {
       this.free = true;
       this.tween.active = false;
+      // pivot on the obstacle (else 30 m ahead) along the current view ray: the view does not jump,
+      // and dragging turns around what the jury wants to inspect instead of a point 60 m away
+      const d = this.frame?.detections?.[0];
+      const cam = this.camera;
+      const dist = d ? Math.hypot(d.center[0] - cam.position.x, d.center[1] - cam.position.y, d.center[2] - cam.position.z) : 30;
+      cam.getWorldDirection(this.tmp);
+      this.controls?.target.copy(cam.position).addScaledVector(this.tmp, Math.min(120, Math.max(8, dist)));
       this.opts.onFreeChange?.(true);
     }
   };
 
   private onControlChange = (): void => {
+    this.touch();
     this.opts.onInvalidate?.();
   };
+
+  private touch(): void {
+    this.settle = SETTLE_FRAMES;
+  }
 
   private onDblClick = (): void => this.resetView();
 
@@ -601,10 +660,26 @@ export class PlayerScene {
   /** A cloud larger than the buffers (a frame with many flagged points): new buffers, once. */
   private grow(capacity: number): void {
     const old = this.pointsGeo;
+    const n = Math.min(old.drawRange.count, capacity);
     this.pointsGeo = this.makePointsGeometry(capacity);
+    // the cloud on screen stays on screen
+    if (n > 0 && Number.isFinite(n)) {
+      for (const [name, k] of [
+        ['position', 3],
+        ['aInt', 1],
+        ['aFlag', 1],
+      ] as const) {
+        const from = old.getAttribute(name) as THREE.BufferAttribute;
+        const to = this.pointsGeo.getAttribute(name) as THREE.BufferAttribute;
+        (to.array as Float32Array | Uint8Array).set((from.array as Float32Array | Uint8Array).subarray(0, n * k));
+        to.needsUpdate = true;
+      }
+      this.pointsGeo.setDrawRange(0, n);
+    }
     this.points.geometry = this.pointsGeo;
     this.pipPoints.geometry = this.pointsGeo;
     old.dispose();
+    this.touch();
   }
 
   private initVertexGeometry(g: THREE.BufferGeometry, b: VertexBuffers): void {
@@ -716,6 +791,7 @@ export class PlayerScene {
     part(L - 1.2, 2.76, 0.95, 0x1c1f28, xc - 0.3, 0, 1.95); // side window band
     part(L - 0.2, 2.74, 0.2, 0xe4000d, xc, 0, 1.12); // brand stripe
     part(L - 4, 1.7, 0.3, 0xcfc8be, xc - 1, 0, 3.25); // roof equipment
+    for (const y of [1.22, -1.22]) part(L - 0.6, 0.16, 0.05, 0xe4000d, xc + 0.1, y, 3.12); // brand lines along the roof
     part(0.08, 2.3, 1.2, 0x1c1f28, -0.78, 0, 2.2); // windscreen
     part(0.08, 2.72, 0.2, 0xe4000d, -0.78, 0, 1.12); // front band
     for (const y of [0.9, -0.9]) part(0.08, 0.36, 0.16, 0xfff4d6, -0.76, y, 0.72); // headlights
@@ -779,6 +855,7 @@ export class PlayerScene {
     u.uFogD.value = this.pose.fog;
     u.uNearDim.value = this.pose.nearDim;
     u.uCeil.value = this.pose.ceil;
+    u.uWallDim.value = this.pose.wallDim;
     this.pipMat.uniforms.uCeil.value = 99;
     if (this.camera.near !== this.pose.near || this.camera.far !== this.pose.far) {
       this.camera.near = this.pose.near;
@@ -805,6 +882,12 @@ export class PlayerScene {
     if (this.free && this.controls) {
       this.controls.update();
       this.camTarget.copy(this.controls.target);
+      // above the vault the tunnel roof would hide the track: drop it, as the top / chase presets do
+      const above = cam.position.z - floorZ(this.track, cam.position.x) > 4;
+      const u = this.pointsMat.uniforms;
+      u.uCeil.value = above ? 3.6 : this.pose.ceil;
+      u.uWallDim.value = 1;
+      u.uFogD.value = Math.min(this.pose.fog, 0.004);
       return;
     }
     if (!this.placed) {

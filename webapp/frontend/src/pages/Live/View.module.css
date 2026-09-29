@@ -122,7 +122,19 @@
   stroke-width: 1.5;
 }
 .objPill {
-  fill: var(--stop);
+  stroke: var(--white);
+  stroke-width: 1.5;
+}
+.objOct {
+  fill: none;
+  stroke: var(--white);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.objBar {
+  stroke: var(--white);
+  stroke-width: 1.8;
+  stroke-linecap: round;
 }
 .objText {
   fill: var(--white);

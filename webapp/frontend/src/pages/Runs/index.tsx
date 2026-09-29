@@ -1,8 +1,8 @@
 // Прогоны (/runs): every run of the detector — search, filters (STOP / no STOP / labels / source),
 // sorting, inline rename, delete, and a floating «Сравнить (N)» when 2–4 runs are ticked.
 // Filters live in the URL (?q=&f=&kind=&sort=) so «back» from a run returns to the same list.
-import { useMemo, useState, type KeyboardEvent, type MouseEvent } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRenameRun, useRuns, useSystem } from '../../api/hooks';
 import type { Run } from '../../api/types';
 import {
@@ -38,12 +38,26 @@ import { Check, EvalChip, Skeleton } from './common/Bits';
 import { Menu } from './common/Menu';
 import { useMedia } from './common/useMedia';
 import { DeleteDialog } from './common/RunDialogs';
+import { useUrlParams } from './common/useUrlParams';
 import styles from './Runs.module.css';
 
 const FILTERS: readonly RunFilter[] = ['all', 'stop', 'nostop', 'labels'];
 const FILTER_LABEL: Record<RunFilter, string> = { all: 'Все', stop: 'Со СТОП', nostop: 'Без СТОП', labels: 'С разметкой' };
 const SORTS: readonly RunSort[] = ['date', 'name', 'frames'];
 const KINDS: readonly KindFilter[] = ['all', 'rosbag2', 'npy', 'jsonl'];
+/** the search box writes the URL this long after the last keystroke */
+const SEARCH_DEBOUNCE_MS = 250;
+/** the ticked runs survive a trip to /compare and «back» (per tab) */
+const SELECTION_KEY = 'resense.runs.selected';
+
+function loadSelection(): string[] {
+  try {
+    const v: unknown = JSON.parse(window.sessionStorage.getItem(SELECTION_KEY) ?? '[]');
+    return Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string').slice(0, MAX_COMPARE) : [];
+  } catch {
+    return [];
+  }
+}
 
 function pick<T extends string>(v: string | null, allowed: readonly T[], def: T): T {
   return allowed.includes(v as T) ? (v as T) : def;
@@ -96,25 +110,54 @@ export default function Runs() {
   const runs = useRuns({ refetchInterval: reconnect });
   const sys = useSystem();
   const navigate = useNavigate();
-  const [params, setParams] = useSearchParams();
+  const [params, update] = useUrlParams();
   const q = params.get('q') ?? '';
   const filter = pick(params.get('f'), FILTERS, 'all');
   const kind = pick(params.get('kind'), KINDS, 'all');
   const sort = pick(params.get('sort'), SORTS, 'date');
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>(loadSelection);
   const [renaming, setRenaming] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<Run | null>(null);
   const narrow = useMedia('(max-width: 1360px)');
 
-  const setParam = (key: string, value: string, def: string) => {
-    const next = new URLSearchParams(params);
-    if (value === def) next.delete(key);
-    else next.set(key, value);
-    setParams(next, { replace: true });
+  // the search box is local state (instant, never loses a keystroke); the URL follows it debounced
+  const [text, setText] = useState(q);
+  const pushed = useRef(q);
+  const timer = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    // the URL changed from outside (back / forward, «Сбросить фильтры»)
+    if (q !== pushed.current) {
+      pushed.current = q;
+      setText(q);
+    }
+  }, [q]);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+  useEffect(() => {
+    try {
+      window.sessionStorage.setItem(SELECTION_KEY, JSON.stringify(selected));
+    } catch {
+      // storage blocked: the selection just does not outlive the page
+    }
+  }, [selected]);
+  const onSearch = (value: string) => {
+    setText(value);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => {
+      pushed.current = value;
+      update((p) => (value ? p.set('q', value) : p.delete('q')));
+    }, SEARCH_DEBOUNCE_MS);
+  };
+
+  const setParam = (key: string, value: string, def: string) => update((p) => (value === def ? p.delete(key) : p.set(key, value)));
+  const resetFilters = () => {
+    window.clearTimeout(timer.current);
+    setText('');
+    pushed.current = '';
+    update((p) => ['q', 'f', 'kind'].forEach((k) => p.delete(k)));
   };
 
   const all = useMemo(() => runs.data ?? [], [runs.data]);
-  const list = useMemo(() => filterRuns(all, { q, filter, kind, sort }), [all, q, filter, kind, sort]);
+  const list = useMemo(() => filterRuns(all, { q: text, filter, kind, sort }), [all, text, filter, kind, sort]);
   const counts = useMemo(() => Object.fromEntries(FILTERS.map((f) => [f, all.filter((r) => matchesFilter(r, f)).length])) as Record<RunFilter, number>, [all]);
   const kindsPresent = useMemo(() => new Set(all.map((r) => r.source_kind)), [all]);
   // ticked runs that still exist
@@ -156,44 +199,47 @@ export default function Runs() {
           </Button>
         }
       />
-      <Card className={`fill-viewport ${styles.card}`} padding="none">
-        <div className={styles.toolbar}>
-          <TextInput
-            icon="search"
-            placeholder="Название или пресет"
-            aria-label="Поиск по названию"
-            value={q}
-            onChange={(e) => setParam('q', e.target.value, '')}
-            className={styles.search}
-          />
-          <Segmented<RunFilter>
-            label="Фильтр прогонов"
-            value={filter}
-            onChange={(v) => setParam('f', v, 'all')}
-            options={FILTERS.map((f) => ({ value: f, label: runs.data ? `${FILTER_LABEL[f]} ${counts[f]}` : FILTER_LABEL[f] }))}
-          />
-          <span className={styles.sp} />
-          <Select<KindFilter>
-            label="Источник"
-            icon="file"
-            value={kind}
-            onChange={(v) => setParam('kind', v, 'all')}
-            options={KINDS.map((k) => ({ value: k, label: k === 'all' ? 'Все источники' : KIND_LABEL[k], disabled: k !== 'all' && !kindsPresent.has(k) && kind !== k }))}
-            className={styles.select}
-          />
-          <Select<RunSort>
-            label="Сортировка"
-            icon="bars"
-            value={sort}
-            onChange={(v) => setParam('sort', v, 'date')}
-            options={[
-              { value: 'date', label: 'Сначала новые' },
-              { value: 'name', label: 'По названию' },
-              { value: 'frames', label: 'По числу кадров' },
-            ]}
-            className={styles.select}
-          />
-        </div>
+      <Card className={styles.card} padding="none">
+        {/* no filters to show before the first run */}
+        {!(runs.data && all.length === 0) && (
+          <div className={styles.toolbar}>
+            <TextInput
+              icon="search"
+              placeholder="Название или пресет"
+              aria-label="Поиск по названию"
+              value={text}
+              onChange={(e) => onSearch(e.target.value)}
+              className={styles.search}
+            />
+            <Segmented<RunFilter>
+              label="Фильтр прогонов"
+              value={filter}
+              onChange={(v) => setParam('f', v, 'all')}
+              options={FILTERS.map((f) => ({ value: f, label: runs.data ? `${FILTER_LABEL[f]} ${counts[f]}` : FILTER_LABEL[f] }))}
+            />
+            <span className={styles.sp} />
+            <Select<KindFilter>
+              label="Источник"
+              icon="file"
+              value={kind}
+              onChange={(v) => setParam('kind', v, 'all')}
+              options={KINDS.map((k) => ({ value: k, label: k === 'all' ? 'Все источники' : KIND_LABEL[k], disabled: k !== 'all' && !kindsPresent.has(k) && kind !== k }))}
+              className={styles.select}
+            />
+            <Select<RunSort>
+              label="Сортировка"
+              icon="bars"
+              value={sort}
+              onChange={(v) => setParam('sort', v, 'date')}
+              options={[
+                { value: 'date', label: 'Сначала новые' },
+                { value: 'name', label: 'По названию' },
+                { value: 'frames', label: 'По числу кадров' },
+              ]}
+              className={styles.select}
+            />
+          </div>
+        )}
 
         <div className={styles.scroll}>
           {runs.isError && !runs.data ? (
@@ -229,7 +275,7 @@ export default function Runs() {
                 icon="search"
                 title="Ничего не найдено"
                 action={
-                  <Button variant="outline" icon="x" onClick={() => setParams(new URLSearchParams(), { replace: true })}>
+                  <Button variant="outline" icon="x" onClick={resetFilters}>
                     Сбросить фильтры
                   </Button>
                 }

@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
 
-/** The content box of an element (ResizeObserver), for SVG drawn in real pixels. */
+/** The content box of an element (ResizeObserver), for SVG drawn in real pixels and for layouts that
+ *  pick a variant from their own width. [ref, width, height]; 0 × 0 until the first layout. */
 export function useSize<T extends HTMLElement>(): [RefObject<T>, number, number] {
   const ref = useRef<T>(null);
   const [size, setSize] = useState<[number, number]>([0, 0]);

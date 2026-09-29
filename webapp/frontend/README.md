@@ -32,15 +32,19 @@ src/
                           progress / abort / folders), cloud.ts (RSC1 decoder), ws.ts (live sim URL),
                           rosbridge.ts (lazy roslib subscription to /resense/status)
   lib/                    format.ts (Russian numbers / units / dates), decisions.ts, track.ts (track
-                          axis, bed, envelope from a result's track dict), nav.ts (site map)
-  pages/<Name>/index.tsx  one module per route — each page can be owned by one person / agent
+                          axis, bed, envelope from a result's track dict), nav.ts (site map),
+                          useSize.ts (ResizeObserver size of an element)
+  player/                 the 3D engine shared by the Player and the previews: scene.ts (three.js),
+                          engine / clock / motion / frameStore / cloudCache, CloudPreview.tsx (lazy)
+  pages/<Name>/index.tsx  one module per route; page-only components, hooks and tests next to it
   pages/UiGuide           /_ui: the living style guide (every component and state; not in the nav)
-screenshots/              render checks of the foundation (1600×1000)
+screenshots/              local review screenshots (git-ignored)
 ```
 
 Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/player`, `/player/:runId`
 (fullscreen) · `/compare` · `/live` · `/presets` · `/about` · `/_ui` · `*` NotFound. The Overview's
-«Демо» links to `/upload?source=demo` (the Upload page preselects the source).
+«Демо» generates a demo recording, queues it and opens `/queue`. Deep links into Загрузка:
+`/upload?source=file|server|demo|list&rec=<recordingId>&preset=<presetId>` (source, chosen recording, preset).
 
 ## Conventions
 

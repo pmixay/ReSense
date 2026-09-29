@@ -4,7 +4,7 @@
 import type { ParamSpec, ParamValue } from '../../api/types';
 import { Help, Icon, Stepper, Toggle, Tooltip, type IconName } from '../../components';
 import { fmtNum } from '../../lib/format';
-import { digitsOf, fmtRange, fmtValue, sameValue, type Group, type Values } from './model';
+import { digitsOf, fmtRange, fmtValue, sameValue, splitTail, type Group, type Values } from './model';
 import styles from './Presets.module.css';
 
 const GROUP_ICON: Record<string, IconName> = {
@@ -69,32 +69,46 @@ function ParamRow({ spec, value, readOnly, error, onChange }: ParamRowProps) {
   const changed = !sameValue(value, spec.default);
   const range = fmtRange(spec);
   const digits = spec.type === 'int' ? 0 : digitsOf(spec.step);
+  const [head, last] = splitTail(spec.label);
   const num = typeof value === 'number' ? value : Number(spec.default);
   return (
     <div className={styles.rowWrap}>
       <div className={[styles.row, changed ? styles.changed : '', error ? styles.invalid : ''].filter(Boolean).join(' ')} data-param={spec.key}>
-        <span className={styles.pl}>{spec.label}</span>
-        <Help placement="top" width={290} label={`Что такое «${spec.label}»`}>
-          {spec.help}
-          <br />
-          <br />
-          По умолчанию <b>{fmtValue(spec, spec.default)}</b>
-          {range && (
-            <>
-              {' '}
-              · диапазон <b>{range}</b>
-            </>
+        {/* the label keeps the row's width; a changed row adds «↺ default» under it */}
+        <div className={styles.pmain}>
+          <span className={styles.pl}>
+            {head}
+            {/* the «?» stays with the last word: never alone on a line */}
+            <span className={styles.plLast}>
+              {last}
+              <Help placement="top" width={290} label={`Что такое «${spec.label}»`} className={styles.ph}>
+                {spec.help}
+                <br />
+                <br />
+                По умолчанию <b>{fmtValue(spec, spec.default)}</b>
+                {range && (
+                  <>
+                    {' '}
+                    · диапазон <b>{range}</b>
+                  </>
+                )}
+              </Help>
+            </span>
+          </span>
+          {changed && !readOnly && (
+            <Tooltip content={`Сбросить к ${fmtValue(spec, spec.default)}`} width="auto" placement="bottom-start">
+              <button
+                type="button"
+                className={styles.reset}
+                onClick={() => onChange(spec.default)}
+                aria-label={`${spec.label}: сбросить к ${fmtValue(spec, spec.default)}`}
+              >
+                <Icon name="retry" size={12} strokeWidth={2.6} />
+                {fmtValue(spec, spec.default)}
+              </button>
+            </Tooltip>
           )}
-        </Help>
-        <span className={styles.sp} />
-        {changed && !readOnly && (
-          <Tooltip content={`Сбросить к ${fmtValue(spec, spec.default)}`} width="auto">
-            <button type="button" className={styles.reset} onClick={() => onChange(spec.default)} aria-label={`${spec.label}: сбросить к ${fmtValue(spec, spec.default)}`}>
-              <Icon name="retry" size={13} strokeWidth={2.6} />
-              {spec.type === 'bool' ? (spec.default ? 'да' : 'нет') : fmtNum(Number(spec.default), digits)}
-            </button>
-          </Tooltip>
-        )}
+        </div>
         <div className={styles.ctl}>
           {readOnly ? (
             <span className={styles.ro}>

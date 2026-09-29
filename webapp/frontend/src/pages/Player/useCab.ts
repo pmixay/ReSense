@@ -70,8 +70,48 @@ export interface PlayerKeys {
   escape(): void;
 }
 
-/** The player's keyboard map (layout-independent key codes, so a Russian layout works too). */
-export function usePlayerKeys(keys: PlayerKeys, enabled = true): void {
+/** A key's action, or null when this screen does not use it (the key keeps its default then). */
+export function keyAction(code: string, shift: boolean, k: Partial<PlayerKeys>): (() => void) | null {
+  const on = <A extends unknown[]>(fn: ((...a: A) => void) | undefined, ...args: A) => (fn ? () => fn(...args) : null);
+  switch (code) {
+    case 'Space':
+      return on(k.toggle);
+    case 'ArrowLeft':
+      return on(k.step, shift ? -10 : -1);
+    case 'ArrowRight':
+      return on(k.step, shift ? 10 : 1);
+    case 'BracketLeft':
+      return on(k.prevEvent);
+    case 'BracketRight':
+      return on(k.nextEvent);
+    case 'Digit1':
+    case 'Numpad1':
+      return on(k.camera, 0);
+    case 'Digit2':
+    case 'Numpad2':
+      return on(k.camera, 1);
+    case 'Digit3':
+    case 'Numpad3':
+      return on(k.camera, 2);
+    case 'KeyF':
+      return on(k.fullscreen);
+    case 'Equal':
+    case 'NumpadAdd':
+      return on(k.speed, 1);
+    case 'Minus':
+    case 'NumpadSubtract':
+      return on(k.speed, -1);
+    case 'Escape':
+      return on(k.escape);
+    default:
+      return null;
+  }
+}
+
+/** The player's keyboard map (layout-independent key codes, so a Russian layout works too). A screen
+ *  passes only the keys it uses: the others keep their default (Space on a focused button, arrows
+ *  scrolling a list). */
+export function usePlayerKeys(keys: Partial<PlayerKeys>, enabled = true): void {
   const ref = useRef(keys);
   ref.current = keys;
   useEffect(() => {
@@ -80,54 +120,10 @@ export function usePlayerKeys(keys: PlayerKeys, enabled = true): void {
       if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
       const el = e.target instanceof HTMLElement ? e.target : null;
       if (el?.closest('input, textarea, select, [contenteditable="true"]')) return;
-      const k = ref.current;
-      let handled = true;
-      switch (e.code) {
-        case 'Space':
-          k.toggle();
-          break;
-        case 'ArrowLeft':
-          k.step(e.shiftKey ? -10 : -1);
-          break;
-        case 'ArrowRight':
-          k.step(e.shiftKey ? 10 : 1);
-          break;
-        case 'BracketLeft':
-          k.prevEvent();
-          break;
-        case 'BracketRight':
-          k.nextEvent();
-          break;
-        case 'Digit1':
-        case 'Numpad1':
-          k.camera(0);
-          break;
-        case 'Digit2':
-        case 'Numpad2':
-          k.camera(1);
-          break;
-        case 'Digit3':
-        case 'Numpad3':
-          k.camera(2);
-          break;
-        case 'KeyF':
-          k.fullscreen();
-          break;
-        case 'Equal':
-        case 'NumpadAdd':
-          k.speed(1);
-          break;
-        case 'Minus':
-        case 'NumpadSubtract':
-          k.speed(-1);
-          break;
-        case 'Escape':
-          k.escape();
-          break;
-        default:
-          handled = false;
-      }
-      if (handled) e.preventDefault();
+      const act = keyAction(e.code, e.shiftKey, ref.current);
+      if (!act) return;
+      e.preventDefault();
+      act();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);

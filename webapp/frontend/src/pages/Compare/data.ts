@@ -1,6 +1,7 @@
 // The compared runs' details and chart series, fetched in parallel under the same query keys as
 // useRun / useRunSeries (api/hooks.ts), so the run page and this page share their caches.
 import { useQueries } from '@tanstack/react-query';
+import { useRef } from 'react';
 import { api, type ApiError } from '../../api/client';
 import { qk } from '../../api/hooks';
 import type { RunDetail, RunSeries } from '../../api/types';
@@ -37,7 +38,7 @@ export function useCompared(slots: readonly (string | null)[]): Compared[] {
       refetchInterval: reconnect,
     })),
   });
-  return ids.map(({ id, slot }, i) => ({
+  const next: Compared[] = ids.map(({ id, slot }, i) => ({
     id,
     slot,
     run: details[i]?.data,
@@ -46,4 +47,18 @@ export function useCompared(slots: readonly (string | null)[]): Compared[] {
     seriesError: (series[i]?.error as ApiError | null) ?? null,
     loading: !!details[i]?.isLoading,
   }));
+  // the same array while nothing changed, so charts and tables can memoize on it
+  const prev = useRef<Compared[]>([]);
+  if (!sameItems(prev.current, next)) prev.current = next;
+  return prev.current;
+}
+
+function sameItems(a: readonly Compared[], b: readonly Compared[]): boolean {
+  return (
+    a.length === b.length &&
+    a.every((x, i) => {
+      const y = b[i];
+      return x.id === y.id && x.slot === y.slot && x.run === y.run && x.series === y.series && x.error === y.error && x.seriesError === y.seriesError && x.loading === y.loading;
+    })
+  );
 }

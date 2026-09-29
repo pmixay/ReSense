@@ -14,7 +14,20 @@ function split(s: string): [string, string | undefined] {
 
 const framesWord = (n: number) => plural(n, FRAMES);
 
-export function Kpis({ r, series, labels, frameOf }: { r: RunDetail; series: RunSeries | undefined; labels: RunLabels | undefined; frameOf: (pos: number) => number }) {
+export function Kpis({
+  r,
+  series,
+  labels,
+  frameOf,
+  compact = false,
+}: {
+  r: RunDetail;
+  series: RunSeries | undefined;
+  labels: RunLabels | undefined;
+  frameOf: (pos: number) => number;
+  /** narrow tiles (≤ 1400 px): shorter labels and sub-lines, the details stay in the «?» */
+  compact?: boolean;
+}) {
   const s = r.summary;
   const ev = s.eval;
   const lanes = series?.labels_in_gauge ?? (labels?.available ? labels.in_gauge : null);
@@ -66,7 +79,7 @@ export function Kpis({ r, series, labels, frameOf }: { r: RunDetail; series: Run
           )
         }
         value={fmtNum(s.stop_episodes)}
-        sub={epFrames ? (stopEps.length > 1 ? `первый: ${epFrames}` : epFrames) : 'нет СТОП'}
+        sub={firstEp && epFrames ? (stopEps.length > 1 ? (compact ? `с кадра ${firstEp.first_frame}` : `первый: ${epFrames}`) : epFrames) : 'нет СТОП'}
       />
       <KpiTile
         className={styles.kpi}
@@ -93,11 +106,11 @@ export function Kpis({ r, series, labels, frameOf }: { r: RunDetail; series: Run
         }
         value={fs?.distance !== null && fs?.distance !== undefined ? fmtNum(fs.distance, 1) : '—'}
         unit={fs?.distance !== null && fs?.distance !== undefined ? 'м' : undefined}
-        sub={fs ? `кадр ${fs.frame} · ${delay !== null ? `задержка ${delay}` : fmtDuration(fs.t)}` : 'нет СТОП'}
+        sub={fs ? (compact ? `кадр ${fs.frame}` : `кадр ${fs.frame} · ${delay !== null ? `задержка ${delay}` : fmtDuration(fs.t)}`) : 'нет СТОП'}
       />
       <KpiTile
         className={styles.kpi}
-        label="Мин. дистанция"
+        label={compact ? 'Минимум' : 'Мин. дистанция'}
         help="Ближайшее препятствие среди кадров СТОП; по разметке — ближняя грань объекта."
         value={s.distance_min !== null ? fmtNum(s.distance_min, 1) : '—'}
         unit={s.distance_min !== null ? 'м' : undefined}
@@ -129,15 +142,20 @@ export function Kpis({ r, series, labels, frameOf }: { r: RunDetail; series: Run
         className={styles.kpi}
         variant="dark"
         label="p95 задержка"
-        help="95 % кадров детектор обработал быстрее этого времени (без чтения файла). Бюджет — 100 мс на кадр при 10 Гц."
+        help={
+          <>
+            95 % кадров детектор обработал быстрее этого времени (без чтения файла): медиана <b>{fmtMs(s.latency_ms.p50)}</b>, худший кадр{' '}
+            <b>{fmtMs(s.latency_ms.max)}</b>. Бюджет — 100 мс на кадр при 10 Гц.
+          </>
+        }
         value={fmtNum(s.latency_ms.p95, s.latency_ms.p95 < 10 ? 1 : 0)}
         unit="мс"
-        sub={`p50 ${fmtNum(s.latency_ms.p50)} · макс ${fmtMs(s.latency_ms.max)}`}
+        sub={compact ? `p50 ${fmtNum(s.latency_ms.p50)} · макс ${fmtNum(s.latency_ms.max)}` : `p50 ${fmtNum(s.latency_ms.p50)} · макс ${fmtMs(s.latency_ms.max)}`}
       />
       <KpiTile
         className={styles.kpi}
         variant={ev && ev.false_stop_episodes === 0 ? 'green' : 'light'}
-        label="Ложные тревоги"
+        label={compact ? 'Ложные СТОП' : 'Ложные тревоги'}
         help={
           ev
             ? 'Эпизоды СТОП, где по разметке в габарите пусто: поезд остановился бы без причины.'

@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { usePresetSchema, useRun, useRunClouds, useRunSeries } from '../../api/hooks';
+import type { ApiError } from '../../api/client';
 import type { RunDetail } from '../../api/types';
 import { Button, ErrorBanner, Spinner } from '../../components';
 import { decisionAt } from '../../lib/decisions';
@@ -56,6 +57,34 @@ function Stage({ children, state, rootRef }: StageProps) {
   );
 }
 
+/** The console tray while a run loads: the scrubber's shape, still. */
+function TraySkeleton() {
+  return (
+    <div className={`${styles.scrub} ${styles.scrubSkel}`} aria-hidden>
+      <i className={styles.skPlay} />
+      <i className={styles.skGrp} />
+      <i className={styles.skGrp} />
+      <i className={styles.skText} />
+      <i className={styles.skLane} />
+      <i className={styles.skSpd} />
+    </div>
+  );
+}
+
+/** The console tray when a run cannot be shown: where to go instead. */
+function TrayActions() {
+  return (
+    <div className={`${styles.scrub} ${styles.scrubPick}`}>
+      <Button variant="dark" icon="play" to="/player">
+        Выбрать прогон
+      </Button>
+      <Button variant="outline" icon="list" to="/runs">
+        Все прогоны
+      </Button>
+    </div>
+  );
+}
+
 /** Loading / error / picker: the cab with something in the glass and a quiet console. */
 function CabShell({ runId, runName, glass, console: cons }: { runId?: string; runName?: string; glass: ReactNode; console?: ReactNode }) {
   const back = useBack(runId);
@@ -75,17 +104,9 @@ function CabShell({ runId, runName, glass, console: cons }: { runId?: string; ru
   );
 }
 
+/** Without a run only F and Esc mean something; every other key keeps its default. */
 function ShellKeys({ onEscape, onFullscreen }: { onEscape: () => void; onFullscreen: () => void }) {
-  usePlayerKeys({
-    toggle: () => undefined,
-    step: () => undefined,
-    prevEvent: () => undefined,
-    nextEvent: () => undefined,
-    camera: () => undefined,
-    speed: () => undefined,
-    fullscreen: onFullscreen,
-    escape: onEscape,
-  });
+  usePlayerKeys({ fullscreen: onFullscreen, escape: onEscape });
   return null;
 }
 
@@ -105,11 +126,34 @@ export default function Player() {
 function PlayerRun({ runId }: { runId: string }) {
   const [params] = useSearchParams();
   const initial = useRef<PlayerUrlState>(parsePlayerParams(params));
-  const run = useRun(runId, { retry: false });
+  // an unreachable backend is asked again every few seconds (the banner says it reconnects itself)
+  const run = useRun(runId, { retry: false, refetchInterval: (q) => (q.state.error?.offline ? 3000 : false) });
   const series = useRunSeries(runId, { enabled: !!run.data });
   const clouds = useRunClouds(runId, { enabled: !!run.data?.has_clouds });
 
-  if (run.isLoading) {
+  // a failed background refetch keeps the cab on screen: only a run that never arrived is an error
+  if (!run.data && run.isError) {
+    const gone = run.error.status === 404;
+    return (
+      <CabShell
+        runId={runId}
+        glass={
+          <div className={styles.glassCenter}>
+            <div className={styles.glassCard}>
+              <ErrorBanner
+                error={run.error}
+                title="Прогон не открылся"
+                onRetry={gone ? undefined : () => void run.refetch()}
+                retrying={run.isFetching}
+              />
+            </div>
+          </div>
+        }
+        console={<TrayActions />}
+      />
+    );
+  }
+  if (!run.data) {
     return (
       <CabShell
         runId={runId}
@@ -118,28 +162,7 @@ function PlayerRun({ runId }: { runId: string }) {
             <Spinner size={34} tone="light" label="Загрузка прогона" />
           </div>
         }
-      />
-    );
-  }
-  if (run.isError || !run.data) {
-    return (
-      <CabShell
-        runId={runId}
-        glass={
-          <div className={styles.glassCenter}>
-            <div className={styles.glassCard}>
-              <ErrorBanner error={run.error} title="Прогон не открылся" onRetry={() => void run.refetch()} retrying={run.isFetching} />
-              <div className={styles.glassActions}>
-                <Button variant="dark" icon="play" to="/player">
-                  Выбрать прогон
-                </Button>
-                <Button variant="outline" icon="list" to="/runs">
-                  Все прогоны
-                </Button>
-              </div>
-            </div>
-          </div>
-        }
+        console={<TraySkeleton />}
       />
     );
   }
@@ -150,6 +173,8 @@ function PlayerRun({ runId }: { runId: string }) {
       seriesFrames={series.data?.frame ?? null}
       latency={series.data?.latency_ms ?? null}
       cloudFrames={clouds.data?.frames ?? null}
+      cloudBudget={clouds.data?.points ?? null}
+      cloudIndex={{ loading: clouds.isLoading, error: clouds.data ? null : clouds.error, retry: () => void clouds.refetch() }}
       initial={initial.current}
     />
   );
@@ -182,16 +207,24 @@ interface CabProps {
   seriesFrames: readonly number[] | null;
   latency: readonly number[] | null;
   cloudFrames: readonly number[] | null;
+  cloudBudget: number | null;
+  /** the run's cloud list (GET /clouds): while it loads nothing can be drawn; a failure is retried by hand */
+  cloudIndex: { loading: boolean; error: ApiError | null; retry: () => void };
   initial: PlayerUrlState;
 }
 
-function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, initial }: CabProps) {
+function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cloudIndex, initial }: CabProps) {
   const n = run.summary.n_frames;
   const hasClouds = run.has_clouds && run.cloud_frames > 0;
-  const [, setParams] = useSearchParams();
   const back = useBack(run.id);
   const schema = usePresetSchema();
   const rootRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    document.title = `${run.name} · Плеер · ReSense`;
+    return () => {
+      document.title = 'Плеер · ReSense';
+    };
+  }, [run.name]);
 
   // the engine lives as long as the run (StrictMode mounts twice: each mount gets its own)
   const [engine, setEngine] = useState<PlayerEngine | null>(null);
@@ -271,15 +304,27 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, initial }: CabP
   };
   usePlayerKeys(actions, !!engine);
 
-  // the URL follows the player (replace, no history entries): on pause, speed and camera changes
+  // the URL follows the player (replace, no history entries): once a second while playing, shortly
+  // after a pause, seek, speed or camera change — a copied link opens where the jury is looking.
+  // Written straight into the current history entry, and only while it is still this run's: a
+  // router navigation would resolve later and could land on the entry the browser's back button
+  // has just returned to (another run's position written into it).
   const urlPos = snap.playing ? -1 : pos;
   useEffect(() => {
     if (!engine) return;
-    const id = window.setTimeout(() => {
-      setParams(playerSearch({ pos: engine.clock.pos, speed: engine.clock.speed, cam: mode }), { replace: true, preventScrollReset: true });
-    }, 300);
+    const path = `/player/${encodeURIComponent(run.id)}`;
+    const write = () => {
+      if (window.location.pathname.replace(/\/+$/, '') !== path) return;
+      const q = playerSearch({ pos: engine.clock.pos, speed: engine.clock.speed, cam: mode });
+      if (window.location.search.replace(/^\?/, '') !== q) window.history.replaceState(window.history.state, '', `${path}?${q}${window.location.hash}`);
+    };
+    if (snap.playing) {
+      const id = window.setInterval(write, 1000);
+      return () => window.clearInterval(id);
+    }
+    const id = window.setTimeout(write, 300);
     return () => window.clearTimeout(id);
-  }, [engine, urlPos, snap.speed, mode, setParams]);
+  }, [engine, run.id, snap.playing, urlPos, snap.speed, mode]);
 
   // measured render rate on the root (for performance checks; no UI)
   useEffect(() => {
@@ -299,7 +344,16 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, initial }: CabP
         return (
           <>
             {engine && !webglError && (
-              <World engine={engine} mode={mode} pixelRatio={pr} onFreeChange={setFree} sink={sink} sceneRef={sceneRef} onError={setWebglError} />
+              <World
+                engine={engine}
+                mode={mode}
+                pixelRatio={pr}
+                cloudBudget={hasClouds ? cloudBudget : null}
+                onFreeChange={setFree}
+                sink={sink}
+                sceneRef={sceneRef}
+                onError={setWebglError}
+              />
             )}
             {webglError && <div className={styles.glassFill} />}
             <CabFrame className={styles.cab} stop={decision === 'STOP'} obstacleM={nearestObstacle} />
@@ -309,8 +363,11 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, initial }: CabP
               free={free}
               onResetView={() => sceneRef.current?.resetView()}
               hasClouds={hasClouds}
-              cloudLoading={snap.cloudLoading}
+              cloudLoading={snap.cloudLoading || (hasClouds && cloudIndex.loading)}
+              cloudError={snap.cloudError ?? (hasClouds ? (cloudIndex.error?.message ?? null) : null)}
+              onRetryCloud={hasClouds && cloudIndex.error ? cloudIndex.retry : null}
               buffering={snap.buffering}
+              framesFailed={snap.framesError !== null}
               motion={snap.motion}
               register={register}
             />
@@ -337,7 +394,7 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, initial }: CabP
             />
             <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />
             {decision && <DecisionTile decision={decision} frame={frame} frameNo={frameNo} confirmS={confirmS} />}
-            <DistanceTile frame={frame} />
+            <DistanceTile frame={frame} decision={decision} />
             <MetricsTile frame={frame} latency={latency} pos={pos} p95={run.summary.latency_ms?.p95 ?? null} playFps={snap.playFps} speed={snap.speed} playing={snap.playing} />
             <HealthTile frame={frame} minVisibility={minVis} />
             <Scrubber

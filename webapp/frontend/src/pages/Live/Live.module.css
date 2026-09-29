@@ -19,6 +19,15 @@
 .health {
   grid-column: 10 / 13;
 }
+/* narrower screens: the objects table takes a column from the timeline (its five columns fit) */
+@media (max-width: 1400px) {
+  .timeline {
+    grid-column: 1 / 5;
+  }
+  .dets {
+    grid-column: 5 / 10;
+  }
+}
 
 /* ---- source bar */
 .bar {
@@ -26,11 +35,11 @@
   background: var(--card);
   border-radius: var(--r-tile);
   box-shadow: var(--shadow);
-  padding: 12px 14px;
+  padding: 0 14px;
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 70px;
+  height: 70px;
   min-width: 0;
 }
 .url {
@@ -76,6 +85,10 @@
   flex: 0 1 520px;
   min-width: 0;
   margin-left: auto;
+}
+.barFull {
+  flex: 1;
+  min-width: 0;
 }
 .barCenter {
   flex: 1;

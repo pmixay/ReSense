@@ -15,6 +15,7 @@
   padding: 22px 26px 22px;
   overflow-y: auto;
   scrollbar-width: thin;
+  justify-content: space-between; /* spare height is shared between the sections */
 }
 .head {
   display: flex;
@@ -104,31 +105,38 @@
   border-radius: var(--r-sm);
   padding: 10px 12px;
   min-width: 0;
+  container-type: inline-size;
 }
 .full .js {
   padding: 14px 16px;
 }
+/* --n = characters of the value: long values shrink to the box instead of overflowing */
 .v {
   font-family: var(--f-head);
   font-weight: 800;
-  font-size: 17px;
+  font-size: min(17px, calc(100cqi / (var(--n) * 0.8)));
+  line-height: 1.25;
   white-space: nowrap;
 }
 .full .v {
-  font-size: 22px;
+  font-size: min(22px, calc(100cqi / (var(--n) * 0.8)));
 }
 .l {
   font-weight: 600;
   font-size: var(--fs-min);
+  line-height: 1.25;
   margin-top: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* the narrow column: a long label («×0,6 реального времени») wraps instead of being cut */
+.compact .l {
+  white-space: normal;
+}
 
-/* full: decisions so far + stage timings, pushed to the bottom of the card */
+/* full: decisions so far + stage timings */
 .decisions {
-  margin-top: auto;
   padding-top: 20px;
 }
 .secHead {

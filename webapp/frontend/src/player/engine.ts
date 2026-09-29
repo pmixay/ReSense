@@ -20,6 +20,8 @@ export interface EngineScene {
   setCloud(cloud: DecodedCloud | null, track?: FrameResultDict['track'] | null): void;
   setDrive(sWorld: number, sCloud: number): void;
   render(dt: number): void;
+  /** false when a new render would draw the same picture (paused, camera at rest): the loop skips it */
+  needsRender?(): boolean;
 }
 
 export interface EngineRun {
@@ -78,6 +80,7 @@ export class PlayerEngine {
   private scene: EngineScene | null = null;
   private raf = 0;
   private lastTs = 0;
+  private lastRenderTs = 0;
   private listeners = new Set<() => void>();
   private snap: EngineSnapshot;
   private dirty = true;
@@ -266,19 +269,29 @@ export class PlayerEngine {
     this.raf = requestAnimationFrame(this.loop);
     const dt = this.lastTs ? (ts - this.lastTs) / 1000 : 0;
     this.lastTs = ts;
-    if (dt > 0) this.renderFps = this.renderFps ? this.renderFps + (1 / dt - this.renderFps) * 0.05 : 1 / dt;
     this.advance(dt);
     const scene = this.scene;
     if (!scene) return;
     const d = this.drive();
     scene.setDrive(d.world, d.cloud);
+    // paused with the camera at rest: nothing moves, the last picture stays (saves the GPU)
+    if (!this.clock.playing && scene.needsRender && !scene.needsRender()) {
+      this.lastRenderTs = 0;
+      return;
+    }
+    const rdt = this.lastRenderTs ? (ts - this.lastRenderTs) / 1000 : 0;
+    this.lastRenderTs = ts;
+    if (rdt > 0 && rdt < 1) this.renderFps = this.renderFps ? this.renderFps + (1 / rdt - this.renderFps) * 0.05 : 1 / rdt;
     scene.render(dt);
   };
+
+  /** The clock may step onto a frame once its result is here (bound once: no closure per frame). */
+  private readonly canAdvance = (next: number): boolean => this.frames.has(next);
 
   /** One clock step (exposed for tests): tick, fetch what the playhead needs, update the scene. */
   advance(dt: number): void {
     const wasPlaying = this.clock.playing;
-    const res = this.clock.tick(dt, (next) => this.frames.has(next));
+    const res = this.clock.tick(dt, this.canAdvance);
     if (res.steps) {
       this.stepsAcc += res.steps;
       this.cloudsDirty = true;

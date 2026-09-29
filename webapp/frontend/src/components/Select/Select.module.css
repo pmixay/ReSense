@@ -49,6 +49,11 @@
 .select:hover {
   background: var(--well-2);
 }
-.disabled {
-  opacity: 0.55;
+/* disabled: a --well-2 fill with ink (no faded, grey-looking text) */
+.disabled .select,
+.disabled .select:hover {
+  background: var(--well-2);
+}
+.disabled .native {
+  cursor: not-allowed;
 }

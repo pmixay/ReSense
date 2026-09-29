@@ -23,6 +23,12 @@ export function playerUrl(runId: string, pos?: number | null): string {
 
 export const runUrl = (runId: string): string => `/runs/${encodeURIComponent(runId)}`;
 
+/** A run's name without the « · <preset>» suffix of default names (pages show the preset apart). */
+export function baseName(r: Pick<Run, 'name' | 'preset'>): string {
+  const suffix = ` · ${r.preset.name}`;
+  return r.name.endsWith(suffix) && r.name.length > suffix.length ? r.name.slice(0, -suffix.length) : r.name;
+}
+
 export const MAX_COMPARE = 4;
 
 export const compareUrl = (ids: readonly string[]): string =>
@@ -321,9 +327,10 @@ export const METRICS: readonly Metric[] = [
   {
     key: 'fps',
     label: 'Обработка, кадр/с',
-    help: 'Кадров в секунду при обработке записи на сервере (датчик даёт 10).',
+    help: 'Кадров в секунду при обработке записи на сервере (датчик даёт 10). У результатов .jsonl детектор не запускался.',
     better: 'max',
-    value: (r) => r.summary.processing_fps,
+    // a results .jsonl was only re-read, not processed: its rate says nothing about the detector
+    value: (r) => (r.source_kind === 'jsonl' ? null : r.summary.processing_fps),
     fmt: (v) => fmtNum(v, v !== null && v < 10 ? 1 : 0),
   },
   {

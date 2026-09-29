@@ -9,8 +9,9 @@ export const BASE_HZ = 10;
 export const SPEEDS: readonly number[] = [0.25, 0.5, 1, 2, 5, 10];
 export const MIN_SPEED = SPEEDS[0];
 export const MAX_SPEED = SPEEDS[SPEEDS.length - 1];
-/** Longest wall-clock step taken in one tick (s): a background tab must not jump the playhead. */
-export const MAX_TICK_S = 0.25;
+/** Longest wall-clock step taken in one tick (s): a background tab must not jump the playhead, while
+ *  a slow renderer (≥ 2 fps, e.g. software WebGL) still plays in real time. */
+export const MAX_TICK_S = 0.5;
 
 export const clampSpeed = (s: number): number => (Number.isFinite(s) ? Math.min(MAX_SPEED, Math.max(MIN_SPEED, s)) : 1);
 
@@ -45,6 +46,7 @@ export class PlaybackClock {
   playing = false;
   speed = 1;
   loop = false;
+  private readonly result: TickResult = { steps: 0, ended: false, holding: false };
 
   constructor(n = 0) {
     this.n = Math.max(0, Math.floor(n));
@@ -102,7 +104,11 @@ export class PlaybackClock {
    * playhead just before `next` (its data is still loading): the glide stops at a full frame.
    */
   tick(dt: number, canAdvance?: (next: number) => boolean): TickResult {
-    const out: TickResult = { steps: 0, ended: false, holding: false };
+    // one result object reused by every tick (the render loop allocates nothing)
+    const out = this.result;
+    out.steps = 0;
+    out.ended = false;
+    out.holding = false;
     if (!this.playing || this.n <= 1 || !(dt > 0)) return out;
     this.frac += Math.min(dt, MAX_TICK_S) * BASE_HZ * this.speed;
     while (this.frac >= 1) {

@@ -261,3 +261,10 @@
     display: none;
   }
 }
+
+/* a short zone (1280×800) with a card on top: the buttons stay, the heading makes room */
+@container drop (max-height: 250px) {
+  .hasTop .h {
+    display: none;
+  }
+}

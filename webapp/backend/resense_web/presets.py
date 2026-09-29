@@ -45,13 +45,13 @@ def get(db: Database, preset_id: str) -> dict | None:
 def _clean_name(db: Database, name: str | None, exclude_id: str | None = None) -> str:
     name = (name or "").strip()
     if not name:
-        raise PresetError(422, "Укажите название набора")
+        raise PresetError(422, "Укажите название пресета")
     if len(name) > MAX_NAME:
-        raise PresetError(422, f"Название набора длиннее {MAX_NAME} символов")
+        raise PresetError(422, f"Название пресета длиннее {MAX_NAME} символов")
     taken = {STANDARD["name"].lower()} | {
         r["name"].strip().lower() for r in db.query("SELECT id, name FROM presets") if r["id"] != exclude_id}
     if name.lower() in taken:
-        raise PresetError(409, "Набор с таким названием уже есть")
+        raise PresetError(409, "Пресет с таким названием уже есть")
     return name
 
 
@@ -60,7 +60,7 @@ def _clean_overrides(overrides) -> dict:
     if overrides is None:
         return {}
     if not isinstance(overrides, dict):
-        raise PresetError(422, "overrides должен быть объектом «параметр: значение»")
+        raise PresetError(422, "Параметры пресета должны быть объектом «параметр: значение»")
     try:
         return params.validate_overrides(overrides)
     except ValueError as exc:
@@ -83,10 +83,10 @@ def create(db: Database, name: str | None, description: str | None, overrides) -
 
 def update(db: Database, preset_id: str, fields: dict) -> dict:
     if preset_id == STANDARD_ID:
-        raise PresetError(403, "Встроенный набор «Стандарт 1.0» изменить нельзя")
+        raise PresetError(403, "Встроенный пресет «Стандарт 1.0» изменить нельзя — сделайте копию")
     row = db.one("SELECT * FROM presets WHERE id = ?", (preset_id,))
     if row is None:
-        raise PresetError(404, "Набор параметров не найден")
+        raise PresetError(404, "Пресет не найден")
     changes = {}
     if fields.get("name") is not None:
         changes["name"] = _clean_name(db, fields["name"], exclude_id=preset_id)
@@ -101,6 +101,6 @@ def update(db: Database, preset_id: str, fields: dict) -> dict:
 
 def delete(db: Database, preset_id: str) -> None:
     if preset_id == STANDARD_ID:
-        raise PresetError(403, "Встроенный набор «Стандарт 1.0» удалить нельзя")
+        raise PresetError(403, "Встроенный пресет «Стандарт 1.0» удалить нельзя")
     if db.execute("DELETE FROM presets WHERE id = ?", (preset_id,)) == 0:
-        raise PresetError(404, "Набор параметров не найден")
+        raise PresetError(404, "Пресет не найден")

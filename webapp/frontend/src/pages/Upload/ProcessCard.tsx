@@ -7,7 +7,7 @@ import type { Recording } from '../../api/types';
 import { Button, Card, Chip, ErrorBanner, Help, Icon, IconButton, Select, Stepper, Toggle } from '../../components';
 import { fmtBytes, fmtDuration, fmtFrames } from '../../lib/format';
 import { cloudBytes, framesToProcess, processSeconds } from './estimate';
-import { cloudTopics } from './recording';
+import { DEFAULT_PRESET, cloudTopics } from './recording';
 import styles from './ProcessCard.module.css';
 
 const AUTO = '__auto__';
@@ -21,7 +21,15 @@ function FieldLabel({ children, help }: { children: string; help?: string }) {
   );
 }
 
-export function ProcessCard({ rec, className }: { rec: Recording | null; className?: string }) {
+export interface ProcessCardProps {
+  rec: Recording | null;
+  /** the chosen preset (kept in the page URL) */
+  presetId: string;
+  onPresetChange: (id: string) => void;
+  className?: string;
+}
+
+export function ProcessCard({ rec, presetId, onPresetChange, className }: ProcessCardProps) {
   const navigate = useNavigate();
   const presets = usePresets({ retry: false });
   const createJob = useCreateJob();
@@ -29,7 +37,6 @@ export function ProcessCard({ rec, className }: { rec: Recording | null; classNa
   const delLabels = useDeleteLabels();
   const labelsInput = useRef<HTMLInputElement>(null);
 
-  const [presetId, setPresetId] = useState('standard');
   const [topic, setTopic] = useState(AUTO);
   const [every, setEvery] = useState(1);
   const [clouds, setClouds] = useState(true);
@@ -46,9 +53,10 @@ export function ProcessCard({ rec, className }: { rec: Recording | null; classNa
     putLabels.reset();
     delLabels.reset();
   }, [rec?.id]); // only when another recording is chosen
+  // a preset that does not exist (deleted, stale link) falls back to the built-in one
   useEffect(() => {
-    if (presets.data && !presets.data.some((p) => p.id === presetId)) setPresetId(presets.data[0]?.id ?? 'standard');
-  }, [presets.data, presetId]);
+    if (presets.data && !presets.data.some((p) => p.id === presetId)) onPresetChange(presets.data[0]?.id ?? DEFAULT_PRESET);
+  }, [presets.data, presetId, onPresetChange]);
 
   const frames = rec ? framesToProcess(rec.n_frames, results ? 1 : every) : null;
   const seconds = processSeconds(frames);
@@ -56,7 +64,7 @@ export function ProcessCard({ rec, className }: { rec: Recording | null; classNa
   const disabled = !rec;
 
   const presetOptions = (presets.data ?? []).map((p) => ({ value: p.id, label: p.name }));
-  if (!presetOptions.length) presetOptions.push({ value: 'standard', label: presets.isLoading ? 'загрузка…' : 'стандартный' });
+  if (!presetOptions.length) presetOptions.push({ value: DEFAULT_PRESET, label: presets.isLoading ? 'загрузка…' : 'стандартный' });
   const topicOptions = [
     { value: AUTO, label: 'авто' },
     ...topics.map((t) => ({ value: t, label: t })),
@@ -102,7 +110,7 @@ export function ProcessCard({ rec, className }: { rec: Recording | null; classNa
       <div className={styles.row}>
         <div className={styles.field}>
           <FieldLabel help="Набор параметров детектора; свои пресеты — на странице «Параметры».">Пресет</FieldLabel>
-          <Select label="Пресет" icon="sliders" options={presetOptions} value={presetId} onChange={setPresetId} disabled={!presets.data} />
+          <Select label="Пресет" icon="sliders" options={presetOptions} value={presetId} onChange={onPresetChange} disabled={!presets.data} />
         </div>
         <div className={styles.field}>
           <FieldLabel>Топик облака</FieldLabel>

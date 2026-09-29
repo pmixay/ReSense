@@ -114,6 +114,23 @@ export class LiveFeedStore {
     this.publish();
   }
 
+  /** Closes the connection and forgets everything it delivered (another source is chosen: its
+   *  predecessor's frames must not be shown as its own). */
+  reset(): void {
+    this.gen += 1;
+    this.disconnect();
+    this.source = null;
+    this.link = 'idle';
+    this.error = null;
+    this.msg = null;
+    this.lastAt = null;
+    this.count = 0;
+    this.samples = [];
+    this.paused = false;
+    this.everOpen = false;
+    this.publish();
+  }
+
   pause(): void {
     if (this.source?.kind !== 'sim' || this.link !== 'open') return;
     this.paused = true;
@@ -141,11 +158,18 @@ export class LiveFeedStore {
     if (src?.kind === 'sim' && this.link === 'open' && (!runId || runId === src.runId)) {
       this.sim?.send({ cmd: 'seek', pos: p });
       this.samples = [];
+      this.publish();
       return;
     }
     if (src?.kind === 'sim' || runId) {
       const base = src?.kind === 'sim' ? src : { kind: 'sim' as const, runId: runId ?? '', speed: 1, loop: true };
+      // a replay paused on purpose stays paused when a seek lands while it (re)connects
+      const keepPaused = this.paused && this.link === 'connecting' && src?.kind === 'sim' && (!runId || runId === src.runId);
       this.start({ ...base, runId: runId ?? base.runId, startPos: p });
+      if (keepPaused) {
+        this.paused = true;
+        this.publish();
+      }
     }
   }
 

@@ -12,6 +12,10 @@
   overflow: hidden;
   container-type: inline-size;
 }
+/* KpiTile's visual slot is 64 px high; here it takes the height of our visual (below) */
+.kpis .tile > :first-child {
+  height: auto;
+}
 .fit {
   font-size: min(1em, calc(100cqi / (var(--n) * 0.8)));
   white-space: nowrap;
@@ -40,5 +44,63 @@
   }
   .vizEmpty {
     height: 36px;
+  }
+}
+
+/* labels: a shorter form as the tile narrows (the tile's content box: ~197 px at 1600, ~170 at 1440,
+   ~143 at 1280 wide screens); the icon goes only on very narrow tiles */
+.short {
+  display: none;
+}
+.ic {
+  display: inline-flex;
+  flex: none;
+}
+@container (max-width: 185px) {
+  .long.early {
+    /* still read by screen readers (the short form is aria-hidden) */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .short.early {
+    display: inline;
+  }
+}
+@container (max-width: 150px) {
+  .long {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .short {
+    display: inline;
+  }
+}
+@container (max-width: 130px) {
+  .ic {
+    display: none;
+  }
+}
+
+/* short screens (1280×800): a lower visual and tighter padding so the sub-line stays inside */
+@media (max-height: 850px) {
+  .kpis .tile {
+    padding: 14px 18px 13px;
+  }
+  .viz {
+    height: 34px;
+  }
+  .vizEmpty {
+    height: 28px;
+  }
+  .fit {
+    font-size: min(0.84em, calc(100cqi / (var(--n) * 0.8)));
   }
 }

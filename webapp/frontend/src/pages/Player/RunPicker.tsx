@@ -4,7 +4,7 @@ import { useRuns } from '../../api/hooks';
 import type { Run } from '../../api/types';
 import { Button, Chip, DecisionChip, DecisionStrip, EmptyState, ErrorBanner, Icon, Spinner } from '../../components';
 import { worstDecision } from '../../lib/decisions';
-import { FRAMES, fmtCount, fmtDuration, fmtRelDate } from '../../lib/format';
+import { FRAMES, RUNS, fmtCount, fmtDuration, fmtRelDate } from '../../lib/format';
 import { sortRunsForPlayer } from './Roof';
 import styles from './Player.module.css';
 
@@ -84,7 +84,7 @@ export function RunPickerGlass() {
     <div className={styles.pick}>
       <div className={styles.pickHead}>
         <h1 className={styles.pickTitle}>Выберите прогон</h1>
-        <Chip variant="glass">{fmtCount(withClouds, ['прогон', 'прогона', 'прогонов'])} в 3D</Chip>
+        <Chip variant="glass">{fmtCount(withClouds, RUNS)} в 3D</Chip>
       </div>
       <div className={styles.pickGrid}>
         {list.map((r) => (
@@ -95,14 +95,20 @@ export function RunPickerGlass() {
   );
 }
 
-/** The console of the picker: the keyboard of the player and where runs come from. */
+/** The console of the picker: the keyboard of the player and where runs come from (no runs yet:
+ *  the glass offers the demo, the tray an upload). */
 export function PickerConsole() {
+  const runs = useRuns();
+  const empty = !!runs.data && runs.data.length === 0;
   const keys: [string, string][] = [
     ['пробел', 'пуск / пауза'],
     ['← →', 'кадр'],
+    ['⇧ ← →', '±10 кадров'],
     ['[ ]', 'события'],
     ['1 2 3', 'камеры'],
+    ['+ −', 'скорость'],
     ['F', 'весь экран'],
+    ['Esc', 'назад'],
   ];
   return (
     <>
@@ -118,12 +124,20 @@ export function PickerConsole() {
         </div>
       </section>
       <div className={`${styles.scrub} ${styles.scrubPick}`}>
-        <Button variant="primary" icon="sparkle" to="/upload?source=demo">
-          Сделать демо-прогон
-        </Button>
-        <Button variant="outline" icon="list" to="/runs">
-          Все прогоны
-        </Button>
+        {empty ? (
+          <Button variant="outline" icon="upload" to="/upload">
+            Загрузить запись
+          </Button>
+        ) : (
+          <>
+            <Button variant="primary" icon="sparkle" to="/upload?source=demo">
+              Сделать демо-прогон
+            </Button>
+            <Button variant="outline" icon="list" to="/runs">
+              Все прогоны
+            </Button>
+          </>
+        )}
       </div>
     </>
   );

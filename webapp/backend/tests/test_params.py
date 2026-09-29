@@ -38,6 +38,18 @@ def test_specs_shape_and_defaults_from_config_file():
     json.dumps(specs, ensure_ascii=False)
 
 
+def test_texts_use_the_ui_decision_names():
+    """Labels and help texts are plain Russian: decisions as the UI names them (СТОП, ВНИМАНИЕ,
+    ОШИБКА, СВОБОДНО), not the topic values GO / CAUTION / STOP / FAULT."""
+    latin = re.compile(r"\b(GO|CAUTION|STOP|FAULT)\b")
+    for s in params.PARAM_SPECS:
+        for k in ("group", "label", "help"):
+            assert not latin.search(s[k]), (s["key"], k, s[k])
+        assert s["help"].rstrip().endswith((".", ")")), s["key"]
+    helps = " ".join(s["help"] for s in params.PARAM_SPECS)
+    assert "СТОП" in helps and "ВНИМАНИЕ" in helps and "ОШИБКА" in helps
+
+
 def test_every_key_accepted_by_from_dict():
     for s in params.PARAM_SPECS:
         section, name = s["key"].split(".")

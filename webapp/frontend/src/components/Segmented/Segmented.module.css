@@ -33,9 +33,10 @@
 .white .o:hover:not(.on):not(:disabled) {
   background: var(--well);
 }
+/* disabled: a --well-2 fill with ink (no faded, grey-looking text) */
 .o:disabled {
-  opacity: 0.45;
-  cursor: default;
+  background: var(--well-2);
+  cursor: not-allowed;
 }
 .on {
   background: var(--ink);

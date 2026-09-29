@@ -6,7 +6,7 @@ import type { DecodedCloud } from '../../api/cloud';
 import type { Decision, FrameResultDict } from '../../api/types';
 import { DECISION_ICON, Help, Icon } from '../../components';
 import { DECISION_CHIP_LABEL } from '../../lib/decisions';
-import { DASH, fmtInt, fmtMs, fmtNum } from '../../lib/format';
+import { DASH, fmtInt, fmtMeters, fmtMs, fmtNum } from '../../lib/format';
 import { SENSOR_REACH } from '../../lib/track';
 import { decisionText, decisionWordSize, distanceModel, envelopeText, healthRows, type Tone } from './cab';
 import { MiniMap } from './MiniMap';
@@ -43,9 +43,9 @@ export function MapTile({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
       <div className={`${styles.tt} ${styles.mapTitle}`}>
         <span>Схема пути</span>
         <Help placement="top-start" tone="light" width={240}>
-          Вид сверху: вдоль пути 0–200 м, поперёк растянуто ×18. Зелёное — габарит свободен, пунктир — дальше не проверено.
+          Вид сверху: вдоль пути 0–200 м, поперёк растянуто ×18. Зелёное — габарит свободен, пунктир — дальше не проверено.
         </Help>
-        <span className={styles.rt}>0–200 м</span>
+        <span className={styles.rt}>0–200 м</span>
       </div>
     </section>
   );
@@ -81,7 +81,19 @@ export function DecisionTile({ decision, frame, frameNo, confirmS }: { decision:
 
 // ---------------------------------------------------------------- distance
 
-function DistanceBar({ free, monitored, obstacle, value }: { free: number; monitored: number | null; obstacle: boolean; value: number | null }) {
+function DistanceBar({
+  free,
+  monitored,
+  obstacle,
+  unverified,
+  value,
+}: {
+  free: number;
+  monitored: number | null;
+  obstacle: boolean;
+  unverified: boolean;
+  value: number | null;
+}) {
   const W = 426;
   const x = (m: number) => (Math.min(SENSOR_REACH, Math.max(0, m)) / SENSOR_REACH) * W;
   const mon = monitored !== null ? x(monitored) : null;
@@ -95,7 +107,7 @@ function DistanceBar({ free, monitored, obstacle, value }: { free: number; monit
           <rect width="2.5" height="7" fill="#D6CFC6" />
         </pattern>
       </defs>
-      <rect x="0" y="5" width={W} height="14" rx="7" fill="#E7E2DB" />
+      <rect x="0" y="5" width={W} height="14" rx="7" fill={unverified ? '#5B4E9C' : '#E7E2DB'} />
       {mon !== null && <rect x="0" y="5" width={Math.max(14, mon + 1.5)} height="14" rx="7" fill="url(#pl-mh)" />}
       {fx > 0.5 && <rect x="0" y="5" width={Math.max(14, fx)} height="14" rx="7" fill="#12A150" />}
       {mon !== null && <rect x={Math.max(0, mon - 1.5)} y="0" width="3" height="24" rx="1.5" fill="#16151A" />}
@@ -106,7 +118,7 @@ function DistanceBar({ free, monitored, obstacle, value }: { free: number; monit
         </g>
       )}
       <text x="0" y="39" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
-        свободно
+        {unverified ? 'не проверено' : 'свободно'}
       </text>
       {value !== null && obstacle && (
         <text x={labelX} y="39" textAnchor="middle" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
@@ -122,8 +134,8 @@ function DistanceBar({ free, monitored, obstacle, value }: { free: number; monit
   );
 }
 
-export function DistanceTile({ frame }: { frame: FrameResultDict | null }) {
-  const m = distanceModel(frame);
+export function DistanceTile({ frame, decision }: { frame: FrameResultDict | null; decision: Decision | null }) {
+  const m = distanceModel(frame, decision);
   return (
     <section className={`${styles.tile} ${styles.tDist}`} style={tileStyle(584, 462)} aria-label={m.title}>
       <div className={styles.tt}>
@@ -131,12 +143,16 @@ export function DistanceTile({ frame }: { frame: FrameResultDict | null }) {
         <Help placement="top" width={268}>
           {m.obstacle ? (
             <>
-              От датчика до ближайшей точки объекта <b>в этом кадре</b>. Полоса — дальность лидара {SENSOR_REACH} м: зелёное свободно, штриховка — под
+              От датчика до ближайшей точки объекта <b>в этом кадре</b>. Полоса — дальность лидара {fmtMeters(SENSOR_REACH, 0)}: зелёное свободно, штриховка — под
               контролем.
+            </>
+          ) : m.unverified ? (
+            <>
+              Входные данные датчика непригодны: <b>в этом кадре</b> путь не проверен, свободная дистанция не заявляется.
             </>
           ) : (
             <>
-              Габарит {envelopeText()} свободен до этой дистанции <b>в этом кадре</b>. Полоса — дальность лидара {SENSOR_REACH} м: штриховка — под
+              Габарит {envelopeText()} свободен до этой дистанции <b>в этом кадре</b>. Полоса — дальность лидара {fmtMeters(SENSOR_REACH, 0)}: штриховка — под
               контролем.
             </>
           )}
@@ -146,7 +162,7 @@ export function DistanceTile({ frame }: { frame: FrameResultDict | null }) {
         {m.value !== null ? fmtNum(m.value, 1) : DASH}
         {m.value !== null && <small>м</small>}
       </div>
-      <DistanceBar free={m.free} monitored={m.monitored} obstacle={m.obstacle} value={m.value} />
+      <DistanceBar free={m.free} monitored={m.monitored} obstacle={m.obstacle} unverified={m.unverified} value={m.value} />
     </section>
   );
 }
@@ -188,7 +204,7 @@ export function MetricsTile({
       <div className={styles.metRow}>
         <div className={styles.metV}>
           {total !== null ? fmtNum(total, total < 10 ? 1 : 0) : DASH}
-          <small>мс</small>
+          {total !== null && <small>мс</small>}
         </div>
         <div className={styles.spark} aria-hidden>
           {bars.map((v, i) => (
@@ -211,7 +227,7 @@ export function MetricsTile({
 
 // ---------------------------------------------------------------- health
 
-const LAMP: Record<Tone, string> = { ok: styles.lampOk, warn: styles.lampWarn, error: styles.lampErr };
+const LAMP: Record<Tone, string> = { ok: styles.lampOk, warn: styles.lampWarn, error: styles.lampErr, none: styles.lampNone };
 
 export function HealthTile({ frame, minVisibility }: { frame: FrameResultDict | null; minVisibility: number }) {
   const rows = healthRows(frame, minVisibility);
@@ -220,7 +236,7 @@ export function HealthTile({ frame, minVisibility }: { frame: FrameResultDict | 
       <div className={styles.tt} style={{ marginBottom: 4 }}>
         Исправность
         <Help placement="top-end" width={250}>
-          <b>Видимость</b> — докуда лидар видит полотно пути (норма от {fmtNum(minVisibility, 0)} м). <b>Захват рельсов</b> — доля последних кадров, где
+          <b>Видимость</b> — докуда лидар видит полотно пути (норма от {fmtMeters(minVisibility, 0)}). <b>Захват рельсов</b> — доля последних кадров, где
           найдена пара рельсов. <b>Калибровка</b> — установка датчика.
         </Help>
       </div>

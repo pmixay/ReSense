@@ -123,7 +123,9 @@
   min-height: 0;
   overflow-y: auto;
   margin: 0 -8px;
-  padding: 0 8px;
+  /* the fade at the bottom hints at more rows; at the end of the list it only covers padding */
+  padding: 0 8px 18px;
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
   scrollbar-width: thin;
 }
 .evr {
@@ -344,6 +346,13 @@
 .title {
   font-size: inherit;
 }
+/* long names step down before they ellipsize (the mockup's 16-character name fits at 32 px) */
+.titleL {
+  font-size: 28px;
+}
+.titleXl {
+  font-size: 24px;
+}
 .preset {
   display: inline-flex;
   align-items: center;
@@ -436,20 +445,30 @@
   }
 }
 
+@media (max-width: 1400px) {
+  /* event titles and frames wrap instead of being cut */
+  .evt,
+  .evm {
+    white-space: normal;
+  }
+}
 @media (max-width: 1320px) {
   .title {
     font-size: 26px;
+  }
+  .titleXl {
+    font-size: 22px;
   }
   .chartLegend {
     display: none;
   }
   .kpis {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: 100px repeat(7, minmax(0, 1fr));
+    gap: 8px;
   }
   .kpis > .kpi {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 11px;
+    padding-right: 11px;
   }
   .kpis > .kpi > div:first-child {
     font-size: 12px;

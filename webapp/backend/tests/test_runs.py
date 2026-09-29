@@ -12,6 +12,7 @@ import pytest
 from conftest import copy_into_server, make_client, wait_job
 
 from resense_web import clouds
+from resense_web import runs as runs_mod
 from resense_web.settings import get_settings
 
 N_FRAMES = 20
@@ -80,6 +81,11 @@ def test_run_detail_and_series(done_run):
     assert d["options"]["cloud_points"] == 6000 and d["options"]["every"] == 1 and d["overrides"] == {}
     assert d["sizes"]["results_jsonl"] > 0 and d["sizes"]["clouds"] > 0
     assert d["sizes"]["results_jsonl"] == (settings.runs_dir / job["run_id"] / "results.jsonl").stat().st_size
+    # the CSV is streamed without a length: its exact size is measured once and remembered
+    csv_bytes = client.get(f"/api/runs/{job['run_id']}/download/frames.csv").content
+    assert d["sizes"]["frames_csv"] == len(csv_bytes) > 0
+    assert (settings.runs_dir / job["run_id"] / "frames.csv.size").read_text() == str(len(csv_bytes))
+    assert client.get(f"/api/runs/{job['run_id']}").json()["sizes"]["frames_csv"] == len(csv_bytes)
     assert "options" not in client.get("/api/runs").json()[0]
     # no labels for this recording: the labels overlay is unavailable (200, not an error)
     assert client.get(f"/api/runs/{job['run_id']}/labels").json() == {
@@ -186,6 +192,8 @@ def test_rename_and_delete(done_run):
     assert client.delete(f"/api/runs/{run_id}").status_code == 204
     assert client.get(f"/api/runs/{run_id}").status_code == 404
     assert not (settings.runs_dir / run_id).exists()
+    # no size for a run whose files are gone (and its folder is not brought back)
+    assert runs_mod.frames_csv_size(settings, run_id) is None and not (settings.runs_dir / run_id).exists()
 
 
 def test_npy_folder_and_jsonl_import(client, env, synthetic_clouds):

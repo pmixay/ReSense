@@ -125,3 +125,14 @@
     display: none;
   }
 }
+.emptyActs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.empty {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}

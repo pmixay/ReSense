@@ -3,7 +3,7 @@
 // job can be cancelled; a finished one (its last snapshot) opens its run or is retried.
 import { isJobActive, useCancelJob, useRetryJob } from '../../api/hooks';
 import type { Job, Recording } from '../../api/types';
-import { Button, Chip, DecisionChip, DecisionStrip, ErrorBanner, Help, Icon, PipelineLine, ProgressBar } from '../../components';
+import { Button, Chip, DecisionChip, DecisionStrip, ErrorBanner, Help, Icon, IconButton, PipelineLine, ProgressBar } from '../../components';
 import { fmtClock, fmtDuration, fmtFps, fmtInt, fmtMeters, fmtMs, fmtNumTrim } from '../../lib/format';
 import { SOURCE_ICON, SOURCE_LABEL, recordingMeta } from '../Upload/recording';
 import { ConfirmButton } from './ConfirmButton';
@@ -58,13 +58,26 @@ function StageTimings({ stageMs }: { stageMs: Record<string, number> }) {
   );
 }
 
+/** A stat value that shrinks to its box (e.g. «10 669 кадр/с» of a results-only recording). */
+function StatValue({ text }: { text: string }) {
+  return (
+    <div className={styles.v} style={{ ['--n' as string]: Math.max(6, text.length) }}>
+      {text}
+    </div>
+  );
+}
+
 /** What can be done with a job: cancel while active, open / player when done, log / retry else. */
 export function JobActions({ job, full = true, onLog }: { job: Job; full?: boolean; onLog?: (job: Job) => void }) {
   const cancel = useCancelJob();
   const retry = useRetryJob();
+  const logButton = onLog && (
+    <IconButton icon="list" label="Журнал обработки" tooltip variant={isJobActive(job) ? 'white' : 'outline'} size={full && isJobActive(job) ? 'md' : 'sm'} onClick={() => onLog(job)} />
+  );
   if (isJobActive(job)) {
     return (
       <>
+        {logButton}
         <ConfirmButton
           icon="x"
           label="Отменить обработку"
@@ -81,6 +94,7 @@ export function JobActions({ job, full = true, onLog }: { job: Job; full?: boole
   if (job.status === 'done' && job.run_id) {
     return (
       <div className={styles.acts}>
+        {logButton}
         <Button variant="outline" size="sm" icon="cube" to={`/player/${job.run_id}`}>
           Плеер
         </Button>
@@ -168,24 +182,24 @@ export function JobCard({ job, recording, variant = 'full', onLog, headActions =
 
       <div className={styles.stats}>
         <div className={styles.js}>
-          <div className={styles.v}>{fmtFps(p.fps)}</div>
+          <StatValue text={fmtFps(p.fps)} />
           <div className={styles.l}>{rt !== null ? `×${fmtNumTrim(rt, rt < 10 ? 1 : 0)} реального времени` : 'скорость'}</div>
         </div>
         <div className={styles.js}>
           {active ? (
             <>
-              <div className={styles.v}>{p.eta_s !== null && p.stage === 'processing' ? fmtClock(p.eta_s) : '—'}</div>
+              <StatValue text={p.eta_s !== null && p.stage === 'processing' ? fmtClock(p.eta_s) : '—'} />
               <div className={styles.l}>осталось</div>
             </>
           ) : (
             <>
-              <div className={styles.v}>{took !== null ? fmtDuration(took) : '—'}</div>
+              <StatValue text={took !== null ? fmtDuration(took) : '—'} />
               <div className={styles.l}>обработка</div>
             </>
           )}
         </div>
         <div className={styles.js}>
-          <div className={styles.v}>{fmtInt(p.frames_done)}</div>
+          <StatValue text={fmtInt(p.frames_done)} />
           <div className={styles.l}>{p.frames_total !== null ? `кадр из ${fmtInt(p.frames_total)}` : 'кадров'}</div>
         </div>
       </div>

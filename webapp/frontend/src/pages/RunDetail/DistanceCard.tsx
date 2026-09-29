@@ -42,11 +42,8 @@ export function DistanceCard({
     () => (series && metric === 'nearest' && labels?.available && labels.near.length === series.t.length ? { t: series.t, lo: labels.near, hi: labels.far } : null),
     [series, metric, labels],
   );
-  // stretches without a detection: «not confirmed yet» where the labels have an object
-  const emptyLabel = useCallback(
-    (a: number, b: number) => (band && band.lo.slice(a, b + 1).some((v) => v !== null) ? 'объект не подтверждён' : 'нет объекта в габарите'),
-    [band],
-  );
+  // frames without a detection: «not confirmed yet» where the labels have an object in the gauge
+  const emptyLabel = useCallback((i: number) => (band && band.lo[i] !== null && band.lo[i] !== undefined ? 'объект не подтверждён' : 'нет объекта в габарите'), [band]);
   const bandRange = useMemo(() => {
     if (!band) return null;
     const lo = band.lo.filter((v): v is number => v !== null);

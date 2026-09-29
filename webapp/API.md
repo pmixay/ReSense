@@ -201,7 +201,7 @@ Jobs left `running` by a stopped server are marked `failed` («прервано 
 | method | path | returns |
 |---|---|---|
 | GET | `/api/runs` | `Run[]` newest first |
-| GET | `/api/runs/{id}` | `RunDetail`: `Run & {episodes: Episode[], events: Episode[] /* non-GO episodes + GO gaps inside STOP */, recording: Recording \| null, options: JobOptions \| null /* as run, defaults filled in */, overrides: Record<string, number \| boolean \| string> /* the preset's overrides at job time ({} = defaults) */, sizes: {results_jsonl: number \| null, clouds: number \| null} /* bytes of the stored results.jsonl / clouds.bin */}` |
+| GET | `/api/runs/{id}` | `RunDetail`: `Run & {episodes: Episode[], events: Episode[] /* non-GO episodes + GO gaps inside STOP */, recording: Recording \| null, options: JobOptions \| null /* as run, defaults filled in */, overrides: Record<string, number \| boolean \| string> /* the preset's overrides at job time ({} = defaults) */, sizes: {results_jsonl: number \| null, clouds: number \| null, frames_csv: number \| null} /* bytes of the stored results.jsonl / clouds.bin and of the frames.csv download (measured once, then kept as runs/<id>/frames.csv.size) */}` |
 | PATCH | `/api/runs/{id}` | body `{name}` → `Run` (422 on a blank name) |
 | DELETE | `/api/runs/{id}` | 204 |
 | GET | `/api/runs/{id}/series` | compact per-frame arrays for charts: `{frame: number[], t: number[], decisions: string, nearest: (number\|null)[], clear: number[], latency_ms: number[], n_detections: number[], n_warnings: number[], n_points: number[], visibility: (number\|null)[], labels_in_gauge: boolean[] \| null}` |
@@ -275,4 +275,4 @@ to `127.0.0.1:8000` (`python -m resense_web --port 8000 --reload`); CORS allows 
 Data dir layout: `resense_web.sqlite`; `uploads/<id>/` staging areas (stale ones > 24 h removed at
 start); `recordings/<id>/` uploaded and demo recordings, uploaded labels; `jobs/<id>/` spec.json,
 progress.json, result.json, worker.log; `runs/<id>/` results.jsonl (+ .idx), clouds.bin +
-clouds.json, series.json, summary.json, worker.log; `cache/` demo zips.
+clouds.json, series.json, summary.json, worker.log, frames.csv.size; `cache/` demo zips.

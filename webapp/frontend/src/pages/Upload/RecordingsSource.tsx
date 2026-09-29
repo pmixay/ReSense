@@ -2,7 +2,7 @@
 // download a demo bag, or delete one.
 import { downloads, useDeleteRecording, useRecordings } from '../../api/hooks';
 import type { Recording } from '../../api/types';
-import { EmptyState, ErrorBanner, Icon, Spinner } from '../../components';
+import { Button, EmptyState, ErrorBanner, Icon, Spinner } from '../../components';
 import { fmtRelDate } from '../../lib/format';
 import { ConfirmButton } from '../Queue/ConfirmButton';
 import { KIND_ICON, KIND_LABEL, SOURCE_LABEL, recordingMeta } from './recording';
@@ -12,9 +12,11 @@ export interface RecordingsSourceProps {
   currentId: string | null;
   onPick: (rec: Recording) => void;
   onDeleted: (id: string) => void;
+  /** switch to another source (the empty state's calls to action) */
+  onSource: (source: 'file' | 'demo') => void;
 }
 
-export function RecordingsSource({ currentId, onPick, onDeleted }: RecordingsSourceProps) {
+export function RecordingsSource({ currentId, onPick, onDeleted, onSource }: RecordingsSourceProps) {
   const recs = useRecordings({ retry: false });
   const del = useDeleteRecording();
 
@@ -26,7 +28,25 @@ export function RecordingsSource({ currentId, onPick, onDeleted }: RecordingsSou
       </div>
     );
   }
-  if (!recs.data?.length) return <EmptyState icon="database" title="Записей пока нет">Загрузите файл, выберите папку на сервере или создайте демо.</EmptyState>;
+  if (!recs.data?.length) {
+    return (
+      <EmptyState
+        icon="database"
+        className={styles.empty}
+        title="Записей пока нет"
+        action={
+          <div className={styles.emptyActs}>
+            <Button variant="dark" icon="sparkle" onClick={() => onSource('demo')}>
+              Создать демо
+            </Button>
+            <Button variant="outline" icon="upload" onClick={() => onSource('file')}>
+              Загрузить файл
+            </Button>
+          </div>
+        }
+      />
+    );
+  }
 
   return (
     <div className={styles.wrap}>

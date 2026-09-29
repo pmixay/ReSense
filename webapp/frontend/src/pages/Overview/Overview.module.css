@@ -1,6 +1,10 @@
 .ov {
   grid-template-rows: minmax(0, 262fr) minmax(0, 462fr);
 }
+/* fits 1280×800 without a page scroll (the foundation's floor is 600 px) */
+.ov:global(.fill-viewport) {
+  min-height: 540px;
+}
 .center {
   display: grid;
   place-items: center;
@@ -286,6 +290,7 @@ a.srow:hover .sic {
   align-items: center;
   gap: 7px;
   white-space: nowrap;
+  min-width: 0;
 }
 .ldot {
   width: 9px;
@@ -442,14 +447,36 @@ a.srow:hover .sic {
     display: none;
   }
 }
+@media (max-height: 850px) {
+  .rt tbody tr:nth-child(n + 5) {
+    display: none;
+  }
+}
 
-/* narrow / short screens: one row of format chips, smaller hero buttons */
+/* narrow / short screens: one row of smaller format chips, the decoration moved aside */
 @media (max-width: 1380px) {
   .fmts {
     flex-wrap: nowrap;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent);
-    mask-image: linear-gradient(90deg, #000 82%, transparent);
+    gap: 6px;
+  }
+  .fmt {
+    height: 26px;
+    padding: 0 9px;
+    font-size: 11.5px;
+  }
+  .deco {
+    right: -92px;
+  }
+  .decoLine {
+    display: none; /* it would cross the «последняя» line */
+  }
+  .recSz {
+    display: none; /* «Записи 3 · 1 018 МБ» would overflow the card */
+  }
+}
+@media (max-height: 850px) {
+  .spk {
+    display: none; /* no room under the core bars */
   }
 }
 @media (max-height: 850px) {
@@ -463,4 +490,9 @@ a.srow:hover .sic {
     padding-top: 20px;
     padding-bottom: 18px;
   }
+}
+
+/* a tall body (the empty state) never squeezes the card head */
+.runs > header {
+  flex: none;
 }

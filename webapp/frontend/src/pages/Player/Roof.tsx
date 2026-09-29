@@ -1,10 +1,10 @@
 // The roof of the cab: back, the «Плеер» pill with its mini metro line, the run selector, the
 // decision beacon, the camera switch and the fullscreen toggle.
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRuns } from '../../api/hooks';
 import type { Decision, Run } from '../../api/types';
-import { DECISION_ICON, DecisionChip, Icon, IconButton, Segmented, Spinner } from '../../components';
+import { DECISION_ICON, DecisionChip, ErrorBanner, Icon, IconButton, Segmented, Spinner } from '../../components';
 import { DECISION_CHIP_LABEL, worstDecision } from '../../lib/decisions';
 import { fmtDuration, fmtRelDate } from '../../lib/format';
 import type { CamMode } from '../../player/geometry';
@@ -48,6 +48,7 @@ function RunMenu({ runId, name }: { runId: string; name: string }) {
   const runs = useRuns({ enabled: open });
   const navigate = useNavigate();
   const wrap = useRef<HTMLDivElement>(null);
+  const menuId = useId();
   const list = useMemo(() => sortRunsForPlayer(runs.data ?? []).slice(0, 30), [runs.data]);
 
   useEffect(() => {
@@ -72,18 +73,25 @@ function RunMenu({ runId, name }: { runId: string; name: string }) {
 
   return (
     <div className={styles.menuWrap} ref={wrap}>
-      <button type="button" className={`${styles.rpill} ${styles.nameBtn}`} onClick={() => setOpen((v) => !v)} aria-haspopup="listbox" aria-expanded={open} title={name}>
+      <button
+        type="button"
+        className={`${styles.rpill} ${styles.nameBtn}`}
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={open ? menuId : undefined}
+        title={name}
+      >
         <span className={styles.runName}>{name}</span>
       </button>
-      <IconButton icon="menu" label="Другой прогон" variant="white" size="lg" onClick={() => setOpen((v) => !v)} aria-expanded={open} />
+      <IconButton icon="menu" label="Другой прогон" variant="white" size="lg" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-controls={open ? menuId : undefined} />
       {open && (
-        <div className={styles.menu} role="listbox" aria-label="Прогоны">
+        <nav id={menuId} className={styles.menu} aria-label="Прогоны">
           {runs.isLoading && (
             <div className={styles.menuState}>
               <Spinner size={18} />
             </div>
           )}
-          {runs.isError && <div className={styles.menuState}>{runs.error.message}</div>}
+          {runs.isError && <ErrorBanner compact error={runs.error} title="Прогоны не загрузились" onRetry={() => void runs.refetch()} retrying={runs.isFetching} />}
           {runs.data && !list.length && <div className={styles.menuState}>Прогонов пока нет</div>}
           {list.map((r) => {
             const worst: Decision = worstDecision(r.summary.decisions) ?? 'GO';
@@ -91,8 +99,7 @@ function RunMenu({ runId, name }: { runId: string; name: string }) {
               <button
                 key={r.id}
                 type="button"
-                role="option"
-                aria-selected={r.id === runId}
+                aria-current={r.id === runId ? 'page' : undefined}
                 className={`${styles.menuItem} ${r.id === runId ? styles.menuOn : ''}`}
                 onClick={() => {
                   setOpen(false);
@@ -110,9 +117,9 @@ function RunMenu({ runId, name }: { runId: string; name: string }) {
           })}
           <Link to="/player" className={styles.menuAll} onClick={() => setOpen(false)}>
             <Icon name="list" size={16} />
-            Все прогоны с облаками
+            Все прогоны
           </Link>
-        </div>
+        </nav>
       )}
     </div>
   );

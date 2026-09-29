@@ -2,6 +2,10 @@
   grid-template-rows: minmax(0, 1fr);
   gap: 16px;
 }
+/* the comparison fits 1280×800 too: the table scrolls inside its card (beats .fill-viewport's 600) */
+.grid.grid {
+  min-height: 500px;
+}
 .left {
   grid-column: 1 / 8;
   display: flex;
@@ -38,14 +42,17 @@
   display: inline-block;
 }
 
-/* ---- header chips */
+/* ---- header chips: they share what the title and «Все прогоны» leave (≈ 600 px) and shrink
+   evenly, each ellipsizing its name */
 .chips {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
+  max-width: calc(100vw - 600px);
 }
 .runChip {
+  flex: 0 1 auto;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -58,6 +65,11 @@
   font-weight: 800;
   font-size: 13px;
   min-width: 0;
+}
+/* four in the row (four runs, or three and «+ Прогон»): an equal share each, so a long name does
+   not squeeze the short ones */
+.chips:has(> :nth-child(4)) > .runChip {
+  max-width: min(250px, calc((100vw - 640px) / 4));
 }
 .runChip a:hover {
   text-decoration: underline 2px var(--red);
@@ -108,11 +120,11 @@
   height: 38px;
 }
 .stripName {
-  font-weight: 800;
   font-size: 13px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+.stripName .clamp {
+  -webkit-line-clamp: 1;
+  overflow-wrap: anywhere;
 }
 .stripCell {
   min-width: 0;
@@ -233,7 +245,7 @@
 
 /* ---- tables */
 .kpiCard {
-  flex: none;
+  flex: 0 1 auto;
   max-height: 100%;
   min-height: 0;
   display: flex;
@@ -273,7 +285,6 @@
   background: var(--card);
   z-index: 1;
   height: 44px;
-  padding-bottom: 4px;
 }
 .kt tbody tr:last-child th,
 .kt tbody tr:last-child td {
@@ -285,6 +296,14 @@
 .diff th:first-child {
   width: 50%;
 }
+/* a compared run's label: the name (two lines at most) and, when presets differ, the preset */
+.runLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  font-weight: 800;
+}
 .clamp {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -294,16 +313,27 @@
   line-height: 1.2;
   overflow-wrap: break-word;
 }
-.runTh {
-  font-weight: 800;
-  font-size: var(--fs-meta);
+.runPreset {
+  font-weight: 600;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.runHead {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-width: 0;
-  padding-left: 8px;
+.runTh {
+  font-size: var(--fs-meta);
+  vertical-align: bottom;
+}
+.kt thead th.runTh {
+  padding: 0 4px 8px 8px;
+}
+/* the run's line style above its column, as in the chart legend */
+.keyBar {
+  display: block;
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+  margin-bottom: 6px;
 }
 .rowHead {
   display: flex;
@@ -487,21 +517,27 @@
     left: 178px;
     right: 140px;
   }
-  .runChip {
-    max-width: 200px;
+}
+@media (max-width: 1360px) {
+  /* half and half: four runs need the table's width */
+  .left {
+    grid-column: 1 / 7;
+  }
+  .right {
+    grid-column: 7 / 13;
   }
 }
 
 @media (max-width: 1320px) {
   .kt th:first-child {
-    width: 42%;
+    width: 34%;
   }
   .val,
   .best {
     font-size: 12.5px;
     padding: 3px 6px;
   }
-  .runHead {
+  .kt thead th.runTh {
     padding-left: 6px;
   }
 }

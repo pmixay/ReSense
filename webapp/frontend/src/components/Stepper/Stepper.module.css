@@ -26,8 +26,10 @@
 .sb:hover:not(:disabled) {
   box-shadow: inset 0 0 0 1.5px var(--ink);
 }
+/* disabled: a --well-2 fill with ink (no faded, grey-looking text) */
 .sb:disabled {
-  opacity: 0.4;
+  background: var(--well-2);
+  cursor: not-allowed;
 }
 .val {
   display: inline-flex;
@@ -54,5 +56,9 @@
   font-size: 12.5px;
 }
 .disabled {
-  opacity: 0.6;
+  background: var(--well-2);
+  cursor: not-allowed;
+}
+.disabled .input {
+  cursor: not-allowed;
 }

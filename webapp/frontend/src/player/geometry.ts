@@ -82,6 +82,10 @@ const RAIL_X0 = 2;
 const RAIL_X1 = 196;
 const RAIL_STEP = 2;
 const nRail = Math.round((RAIL_X1 - RAIL_X0) / RAIL_STEP);
+/** The track axis: 2 m dashes every 4 m between the rails. */
+const AXIS_X0 = 4;
+const AXIS_STEP = 4;
+const nAxis = Math.floor((RAIL_X1 - AXIS_X0) / AXIS_STEP);
 
 /** Vertices needed by fillTrackLines for a profile. */
 export function trackLineCapacity(profile: readonly Vec2[] = ENVELOPE_PROFILE): number {
@@ -89,11 +93,13 @@ export function trackLineCapacity(profile: readonly Vec2[] = ENVELOPE_PROFILE): 
   const edges = nSeg * p * 2;
   const portals = portalXs().length * p * PORTAL_OFFSETS.length * 2;
   const rails = 2 * nRail * 2;
+  const axis = nAxis * 2;
   const ticks = Math.floor(TICK_MAX / TICK_STEP) * 2;
-  return edges + portals + rails + ticks;
+  return edges + portals + rails + axis + ticks;
 }
 
-/** Envelope edges, portals every 10 m, rails (dashed 2 m) and the distance ticks of a track model. */
+/** Envelope edges, portals every 10 m, rails (2 m segments), the track axis (dashed) and the
+ *  distance ticks of a track model. */
 export function fillTrackLines(b: VertexBuffers, t: TrackModelDict, profile: readonly Vec2[] = ENVELOPE_PROFILE): void {
   b.count = 0;
   const hMin = Math.min(...profile.map((q) => q[1]));
@@ -135,6 +141,14 @@ export function fillTrackLines(b: VertexBuffers, t: TrackModelDict, profile: rea
       put(b, x, centerY(t, x) + side * half, railZ(t, x), 0.87, 0.91, 1, a, KIND_PLAIN);
       put(b, x2, centerY(t, x2) + side * half, railZ(t, x2), 0.87, 0.91, 1, a, KIND_PLAIN);
     }
+  }
+  // the track axis: a faint dashed centre line at rail-head height
+  for (let i = 0; i < nAxis; i += 1) {
+    const x = AXIS_X0 + i * AXIS_STEP;
+    const x2 = x + AXIS_STEP / 2;
+    const a = 0.3 * Math.exp(-((x / 170) ** 2)) * clamp01((x - 3) / 8);
+    put(b, x, centerY(t, x), railZ(t, x), 0.87, 0.91, 1, a, KIND_PLAIN);
+    put(b, x2, centerY(t, x2), railZ(t, x2), 0.87, 0.91, 1, a, KIND_PLAIN);
   }
   // distance ticks across the bed
   for (let x = TICK_STEP; x <= TICK_MAX; x += TICK_STEP) {
@@ -267,6 +281,8 @@ export interface CamPose {
   nearDim: number;
   /** points higher than this above the bed are hidden (m; the vault in the top view) */
   ceil: number;
+  /** brightness of the tunnel walls (the cab dims them so the track and the envelope lead) */
+  wallDim: number;
   near: number;
   far: number;
 }
@@ -286,7 +302,7 @@ export function cameraPose(mode: CamMode, t: TrackModelDict, aspect: number, foc
     const h = half / (tanV * Math.max(0.5, aspect));
     const c = centerY(t, xc) + 0.07 * h;
     const r = railZ(t, xc);
-    return { pos: [xc, c - 0.02 * h, r + h], target: [xc, c, r], fov: TOP_FOV, fog: 0.0012, nearDim: 1.5, ceil: 3.3, near: 1, far: 900 };
+    return { pos: [xc, c - 0.02 * h, r + h], target: [xc, c, r], fov: TOP_FOV, fog: 0.0012, nearDim: 1.5, ceil: 3.3, wallDim: 0.9, near: 1, far: 900 };
   }
   if (mode === 'chase') {
     // behind and above the train, looking over its roof down the track (the vault hidden)
@@ -297,6 +313,7 @@ export function cameraPose(mode: CamMode, t: TrackModelDict, aspect: number, foc
       fog: 0.005,
       nearDim: 8,
       ceil: 3.6,
+      wallDim: 0.8,
       near: 0.5,
       far: 600,
     };
@@ -308,6 +325,7 @@ export function cameraPose(mode: CamMode, t: TrackModelDict, aspect: number, foc
     fog: 0.0072,
     nearDim: 12,
     ceil: 99,
+    wallDim: 0.5,
     near: 0.5,
     far: 600,
   };

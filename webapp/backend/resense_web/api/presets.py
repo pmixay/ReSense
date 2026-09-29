@@ -39,7 +39,7 @@ def preset_schema() -> list[dict]:
 def get_preset(preset_id: str, ctx: Context = Depends(get_ctx)) -> dict:
     p = presets_mod.get(ctx.db, preset_id)
     if p is None:
-        raise not_found("Набор параметров не найден")
+        raise not_found("Пресет не найден")
     return p
 
 

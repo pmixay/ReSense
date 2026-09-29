@@ -1,4 +1,8 @@
+/* fills the viewport under the chrome like .fill-viewport, but a list can get shorter than its
+   600 px floor: at 1280×800 the rows scroll inside the card instead of the page */
 .card {
+  height: calc(100vh - var(--chrome-h));
+  min-height: 420px;
   display: flex;
   flex-direction: column;
   position: relative;

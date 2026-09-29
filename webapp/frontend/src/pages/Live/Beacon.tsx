@@ -8,11 +8,12 @@ import { DECISION_CHIP_LABEL } from '../../lib/decisions';
 import { fmtInt, fmtNum } from '../../lib/format';
 import { SENSOR_REACH } from '../../lib/track';
 import type { FeedSnapshot } from './feed';
+import type { SourceKind } from './SourceBar';
 import type { LiveView } from './timeline';
 import styles from './Beacon.module.css';
 
 const STATE_LABEL: Record<Exclude<LiveView, 'live'>, string> = {
-  idle: 'НЕТ СВЯЗИ',
+  idle: 'НЕ ПОДКЛЮЧЕНО',
   connecting: 'ПОДКЛЮЧЕНИЕ',
   waiting: 'ЖДЁМ ДАННЫЕ',
   stale: 'ДАННЫЕ УСТАРЕЛИ',
@@ -30,22 +31,32 @@ export function fmtAge(ms: number | null): string {
   return `${fmtNum(s, s < 1 ? 2 : s < 10 ? 1 : 0)} с`;
 }
 
+/** The idle state names what is to be done: connect the node or start the replay. */
+export function stateLabel(view: Exclude<LiveView, 'live'>, kind: SourceKind): string {
+  if (view === 'idle' && kind === 'sim') return 'ЭФИР НЕ ЗАПУЩЕН';
+  return STATE_LABEL[view];
+}
+
 export interface BeaconProps {
   snap: FeedSnapshot;
+  kind: SourceKind;
   className?: string;
 }
 
-export function Beacon({ snap, className }: BeaconProps) {
+export function Beacon({ snap, kind, className }: BeaconProps) {
   const { view, msg } = snap;
   const live = view === 'live';
   const decision: Decision | null = msg?.decision ?? null;
   const shown = live || view === 'paused'; // the frame's values are current (a paused replay is inspected on purpose)
   const obstacle = decision === 'STOP' ? num(msg?.nearest_distance) : null;
-  const clear = num(msg?.clear_distance);
+  // ОШИБКА: the input cannot be trusted — no monitored (green) distance, whatever the frame says
+  const clear = decision === 'FAULT' ? null : num(msg?.clear_distance);
   const dist = !shown ? null : decision === 'STOP' ? obstacle : decision === 'FAULT' ? null : clear;
   const distLabel = decision === 'STOP' ? 'До препятствия' : decision === 'FAULT' ? 'Путь не контролируется' : 'Свободно впереди';
   const headTone = live && decision ? decision.toLowerCase() : view === 'idle' || view === 'connecting' || view === 'waiting' ? 'quiet' : 'ink';
   const busy = view === 'connecting' || view === 'waiting';
+  // the clock only runs while the link delivers: after the end or an error an old age would read as fresh
+  const age = view === 'live' || view === 'stale' || view === 'paused' ? snap.age : null;
 
   return (
     <Card className={[styles.beacon, className].filter(Boolean).join(' ')} padding="sm" aria-live="polite">
@@ -57,13 +68,27 @@ export function Beacon({ snap, className }: BeaconProps) {
           </>
         ) : (
           <>
-            {busy ? <Spinner size={30} tone="ink" /> : <Icon name={view === 'paused' ? 'pause' : view === 'idle' || view === 'error' ? 'wifi-off' : 'clock'} size={34} className={styles.icon} />}
-            <span className={[styles.label, styles.state].join(' ')}>{STATE_LABEL[view as Exclude<LiveView, 'live'>]}</span>
+            {busy ? (
+              <Spinner size={30} tone="ink" />
+            ) : (
+              <Icon
+                name={view === 'paused' ? 'pause' : view === 'idle' ? (kind === 'sim' ? 'play' : 'live') : view === 'error' ? 'wifi-off' : 'clock'}
+                size={34}
+                className={styles.icon}
+              />
+            )}
+            <span className={[styles.label, styles.state].join(' ')}>{stateLabel(view as Exclude<LiveView, 'live'>, kind)}</span>
             {/* a paused replay is inspected on purpose: its frame's decision; stale data shows none */}
             {decision && view === 'paused' && <DecisionChip decision={decision} size="sm" className={styles.lastChip} title="Решение кадра на паузе" />}
           </>
         )}
-        <Help placement="bottom-end" width={300} tone={headTone === 'caution' || headTone === 'quiet' ? 'dark' : 'light'} label="Правила решения" className={styles.help}>
+        <Help
+          placement="bottom-end"
+          width={300}
+          tone={headTone === 'caution' || headTone === 'quiet' ? 'dark' : 'light'}
+          label="Правила решения"
+          className={styles.help}
+        >
           <b>СТОП</b> — подтверждённое препятствие в габарите 2,1 × 3,0 м.
           <br />
           <b>ОШИБКА</b> — входу нельзя доверять.
@@ -92,7 +117,7 @@ export function Beacon({ snap, className }: BeaconProps) {
       <div className={styles.foot}>
         <span className={[styles.lamp, live ? styles.lampOk : snap.age !== null && view !== 'paused' ? styles.lampBad : ''].join(' ')} aria-hidden />
         <span className={styles.fl}>свежесть</span>
-        <b>{fmtAge(snap.age)}</b>
+        <b>{fmtAge(age)}</b>
         <span className={styles.sp} />
         <Help placement="top-end" width={280} label="Свежесть">
           Время с последнего сообщения. Узел считает результат устаревшим старше <b>0,5 с</b> (max_result_age); здесь то же правило.

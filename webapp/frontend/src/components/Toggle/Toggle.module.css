@@ -9,8 +9,15 @@
   padding: 0;
   transition: background-color 0.18s;
 }
+/* disabled: a --well-2 fill (no faded, grey-looking text) */
 .toggle:disabled {
-  opacity: 0.45;
+  cursor: not-allowed;
+  background: var(--well-2);
+  box-shadow: inset 0 0 0 1.5px var(--hair-2);
+}
+.toggle.on:disabled {
+  background: var(--ink);
+  box-shadow: none;
 }
 .knob {
   position: absolute;
@@ -54,5 +61,6 @@
   text-overflow: ellipsis;
 }
 .disabled {
-  cursor: default;
+  cursor: not-allowed;
+  background: var(--well-2);
 }

@@ -149,8 +149,8 @@ export interface RunDetail extends Run {
   options?: Required<JobOptions> | null;
   /** the preset's overrides at job time ({} = the detector defaults) */
   overrides?: Record<string, ParamValue>;
-  /** bytes of the stored results.jsonl / clouds.bin (null when absent) */
-  sizes?: { results_jsonl: number | null; clouds: number | null };
+  /** bytes of the stored results.jsonl / clouds.bin and of the frames.csv download (null when absent) */
+  sizes?: { results_jsonl: number | null; clouds: number | null; frames_csv?: number | null };
 }
 
 /** GET /api/runs/{id}/labels: the run's label file per processed frame (distance chart band). */

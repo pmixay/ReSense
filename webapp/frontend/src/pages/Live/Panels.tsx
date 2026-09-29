@@ -5,6 +5,7 @@ import { fmtInt, fmtNum, fmtPercent } from '../../lib/format';
 import type { FeedSnapshot } from './feed';
 import type { SourceKind } from './SourceBar';
 import { detectionRows, fmtLateral, fmtSize, healthLevel, healthRows, type Lamp } from './timeline';
+import { useSize } from '../../lib/useSize';
 import styles from './Panels.module.css';
 
 const num = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null);
@@ -12,11 +13,22 @@ const cx = (...c: (string | false | undefined)[]) => c.filter(Boolean).join(' ')
 
 // ---------------------------------------------------------------- node
 
-function Stat({ label, value, unit, viz }: { label: string; value: string; unit?: string; viz?: ReactNode }) {
+/** The chart between a stat's label and its value, drawn at the height the tile has left for it
+ *  (none on short tiles: it never covers the label). */
+function StatViz({ render }: { render: (height: number) => ReactNode }) {
+  const [ref, , h] = useSize<HTMLDivElement>();
+  return (
+    <div ref={ref} className={styles.statViz}>
+      {h >= 16 && render(Math.min(36, h))}
+    </div>
+  );
+}
+
+function Stat({ label, value, unit, viz }: { label: string; value: string; unit?: string; viz?: (height: number) => ReactNode }) {
   return (
     <div className={styles.stat}>
       <span className={styles.statL}>{label}</span>
-      {viz && <div className={styles.statViz}>{viz}</div>}
+      {viz ? <StatViz render={viz} /> : <span className={styles.statGap} />}
       <span className={styles.statV}>
         {value}
         {unit && value !== '—' && <small>{unit}</small>}
@@ -36,7 +48,8 @@ export interface NodeCardProps {
 
 export function NodeCard({ snap, kind, latency, latencyBudget, className }: NodeCardProps) {
   const node = snap.msg?.node;
-  const fps = num(node?.fps);
+  // a rate is only true while messages arrive: a stale, paused or ended feed has none
+  const fps = snap.view === 'live' ? num(node?.fps) : null;
   const lat = num(node?.latency_ms) ?? num(snap.msg?.timing_ms?.total);
   const frames = num(node?.frames) ?? (snap.count || null);
   const dropped = num(node?.dropped_frames);
@@ -54,19 +67,32 @@ export function NodeCard({ snap, kind, latency, latencyBudget, className }: Node
       help={
         <>
           <b>Частота</b> — сообщений в секунду, лидар даёт 10. <b>Задержка</b> — обработка кадра (у узла — декодирование + детектор), график — последние 30 с
-          (бюджет {fmtInt(latencyBudget)} мс — порог предупреждения исправности). <b>Кадров</b> — за это подключение. <b>Пропущено</b> — кадры, которые узел не получил или пропустил,
-          догоняя поток.
+          (бюджет {fmtInt(latencyBudget)} мс — порог предупреждения исправности). <b>Кадров</b> — за это подключение. <b>Пропущено</b> — кадры, которые узел не
+          получил или пропустил, догоняя поток.
         </>
       }
       helpPlacement="bottom-end"
     >
       <div className={styles.stats}>
-        <Stat label="Частота" value={fmtNum(fps, 1)} unit="кадр/с" />
+        <Stat label="Частота" value={fmtNum(fps, 1)} unit="Гц" />
         <Stat
           label="Задержка"
           value={lat === null ? '—' : fmtNum(lat, lat < 10 ? 1 : 0)}
           unit="мс"
-          viz={recent.length > 1 ? <Sparkline values={recent} min={0} max={Math.max(latencyBudget, ...recent.map((v) => v ?? 0))} height={36} dot={false} /> : undefined}
+          viz={
+            recent.length > 1
+              ? (h) => (
+                  <Sparkline
+                    values={recent}
+                    min={0}
+                    max={Math.max(latencyBudget, ...recent.map((v) => v ?? 0))}
+                    height={h}
+                    dot={false}
+                    label="Задержка за 30 с"
+                  />
+                )
+              : undefined
+          }
         />
         <Stat label="Кадров" value={fmtInt(frames)} />
         <Stat label="Пропущено" value={fmtInt(dropped)} />
@@ -136,7 +162,7 @@ export function DetectionsCard({ snap, fresh, className }: { snap: FeedSnapshot;
 
 const LEVEL: Record<'ok' | 'warn' | 'error', [string, string]> = {
   ok: ['норма', 'var(--go)'],
-  warn: ['предупреждение', 'var(--caution)'],
+  warn: ['снижена', 'var(--caution)'],
   error: ['ошибка', 'var(--fault)'],
 };
 
@@ -153,7 +179,7 @@ export function HealthCard({ snap, fresh, minVisibility, className }: { snap: Fe
     <Card
       title="Исправность"
       className={cx(styles.health, className)}
-      badges={
+      actions={
         level ? (
           <Chip size="sm" variant="outline" dot={LEVEL[level][1]}>
             {LEVEL[level][0]}
@@ -164,7 +190,7 @@ export function HealthCard({ snap, fresh, minVisibility, className }: { snap: Fe
         <>
           <b>Свежесть</b> — сообщение не старше 0,5 с (у узла — ещё и его проверка часов). <b>Видимость</b> — как далеко вдоль пути виден тоннель (норма от{' '}
           {fmtInt(minVisibility)} м). <b>Захват рельсов</b> — доля последних кадров с найденной парой рельсов. <b>Калибровка</b> — крепления лидара по рельсам.
-          Устаревшие данные гасят все лампы.
+          Значок у заголовка — общий уровень исправности кадра. Устаревшие данные гасят все лампы.
         </>
       }
       helpPlacement="bottom-end"

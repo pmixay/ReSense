@@ -15,6 +15,8 @@ export interface WorldProps {
   engine: PlayerEngine;
   mode: CamMode;
   pixelRatio: number;
+  /** points per stored cloud of the run (the buffers are preallocated for it) */
+  cloudBudget: number | null;
   onFreeChange: (free: boolean) => void;
   /** the HUD's per-render position writer */
   sink: { current: OverlaySink | null };
@@ -23,10 +25,10 @@ export interface WorldProps {
   onError: (message: string) => void;
 }
 
-export function World({ engine, mode, pixelRatio, onFreeChange, sink, sceneRef, onError }: WorldProps) {
+export function World({ engine, mode, pixelRatio, cloudBudget, onFreeChange, sink, sceneRef, onError }: WorldProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const live = useRef({ mode, pixelRatio, onFreeChange, onError });
-  live.current = { mode, pixelRatio, onFreeChange, onError };
+  const live = useRef({ mode, pixelRatio, cloudBudget, onFreeChange, onError });
+  live.current = { mode, pixelRatio, cloudBudget, onFreeChange, onError };
   const [ok, setOk] = useState(true);
 
   useEffect(() => {
@@ -51,6 +53,7 @@ export function World({ engine, mode, pixelRatio, onFreeChange, sink, sceneRef, 
       return;
     }
     scene.setSize(WORLD_W, WORLD_H, live.current.pixelRatio);
+    if (live.current.cloudBudget) scene.reserve(live.current.cloudBudget);
     scene.setPipRect(PIP_RECT);
     scene.setMode(live.current.mode, false);
     sceneRef.current = scene;
@@ -70,6 +73,10 @@ export function World({ engine, mode, pixelRatio, onFreeChange, sink, sceneRef, 
   useEffect(() => {
     sceneRef.current?.setSize(WORLD_W, WORLD_H, pixelRatio);
   }, [pixelRatio, sceneRef]);
+
+  useEffect(() => {
+    if (cloudBudget) sceneRef.current?.reserve(cloudBudget);
+  }, [cloudBudget, sceneRef]);
 
   return <div ref={wrapRef} className={styles.world} data-webgl={ok ? 'ok' : 'off'} />;
 }

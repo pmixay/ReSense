@@ -114,16 +114,18 @@ export function SystemCard() {
               </span>
               <span className={styles.sn}>Записи</span>
               <span className={styles.sv}>
-                {fmtInt(s.counts.recordings)}
-                {recBytes !== undefined && recBytes > 0 ? ` · ${fmtBytes(recBytes)}` : ''}
+                <span>
+                  {fmtInt(s.counts.recordings)}
+                  {recBytes !== undefined && recBytes > 0 && <span className={styles.recSz}> · {fmtBytes(recBytes)}</span>}
+                </span>
               </span>
             </div>
             <div className={styles.srow}>
               <span className={styles.sic}>
                 <Icon name="database" size={17} />
               </span>
-              <span className={styles.sn}>Диск</span>
-              <span className={styles.sv}>свободно {fmtBytes(s.disk_free_bytes)}</span>
+              <span className={styles.sn}>Свободно</span>
+              <span className={styles.sv}>{fmtBytes(s.disk_free_bytes)}</span>
             </div>
           </div>
         </div>

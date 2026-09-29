@@ -1,6 +1,10 @@
 .grid {
   grid-template-rows: minmax(0, 1fr);
 }
+/* fits 1280×800 without a page scroll (the foundation's floor is 600 px) */
+.grid:global(.fill-viewport) {
+  min-height: 540px;
+}
 .topErr {
   margin-bottom: 12px;
 }
@@ -69,4 +73,11 @@
   padding: 0 16px;
   font-weight: 700;
   font-size: var(--fs-label);
+}
+
+/* a tall body (the empty state) never squeezes the card heads */
+.main > header,
+.waiting > header,
+.finished > header {
+  flex: none;
 }

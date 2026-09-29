@@ -2,8 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { ServerEntry } from '../../api/types';
 import { cloudBytes, demoBytes, framesToProcess, processSeconds } from './estimate';
 import { guessKind } from './kinds';
-import { cloudTopics, recordingMeta } from './recording';
-import { isRecordingEntry } from './ServerSource';
+import { cloudTopics, isRecordingEntry, recordingMeta } from './recording';
 import { demoProgress } from './useDemo';
 
 describe('guessKind', () => {

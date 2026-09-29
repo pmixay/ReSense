@@ -2,7 +2,7 @@
 // the decision strips on one time axis, the distances overlaid, and «что изменилось» when runs of
 // one recording used different presets. The URL holds the selection (colour slots included).
 import { useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { usePresetSchema, useRuns } from '../../api/hooks';
 import { Button, Card, Chip, EmptyState, ErrorBanner, PageHeader, Segmented, Spinner } from '../../components';
 import { DECISION_CHIP_LABEL, fromLetter } from '../../lib/decisions';
@@ -10,6 +10,7 @@ import { fmtDuration, fmtMeters } from '../../lib/format';
 import { MAX_COMPARE, RUN_COLORS, RUN_LINES, addToSlots, lineSwatch, parseRunSlots, reconnect, runUrl, slotsParam } from '../Runs/common/analysis';
 import { Skeleton } from '../Runs/common/Bits';
 import { LineChart, type ChartLine } from '../Runs/common/LineChart';
+import { useUrlParams } from '../Runs/common/useUrlParams';
 import { AlignedStrips } from './AlignedStrips';
 import { useCompared, type Compared } from './data';
 import { AddRun, Chooser } from './Pickers';
@@ -28,7 +29,7 @@ function RunChip({ c, onRemove }: { c: Compared; onRemove: () => void }) {
           {c.run.name}
         </Link>
       ) : (
-        <span className={styles.ell}>{missing ? 'прогон удалён' : c.error ? 'ошибка' : '…'}</span>
+        <span className={styles.ell}>{missing ? 'прогон удалён' : c.error ? (c.error.offline ? 'нет связи' : 'ошибка') : '…'}</span>
       )}
       <button type="button" onClick={onRemove} aria-label={`Убрать из сравнения: ${c.run?.name ?? c.id}`}>
         ×
@@ -39,13 +40,18 @@ function RunChip({ c, onRemove }: { c: Compared; onRemove: () => void }) {
 
 function DistanceOverlay({ items }: { items: readonly Compared[] }) {
   const [picked, setPicked] = useState<Metric | null>(null);
-  const withSeries = items.filter((c) => c.series);
+  const withSeries = useMemo(() => items.filter((c) => c.series), [items]);
   const anyNearest = withSeries.some((c) => c.series?.nearest.some((v) => v !== null));
   const metric: Metric = picked ?? (withSeries.length && !anyNearest ? 'clear' : 'nearest');
-  const lines: ChartLine[] = withSeries.map((c) => {
-    const s = c.series!;
-    return { id: c.id, color: RUN_COLORS[c.slot], ...RUN_LINES[c.slot], t: s.t, v: metric === 'nearest' ? s.nearest : metric === 'clear' ? s.clear : s.visibility };
-  });
+  // stable between hovers: the chart rebuilds its paths only when the data or the metric change
+  const lines = useMemo<ChartLine[]>(
+    () =>
+      withSeries.map((c) => {
+        const s = c.series!;
+        return { id: c.id, color: RUN_COLORS[c.slot], ...RUN_LINES[c.slot], t: s.t, v: metric === 'nearest' ? s.nearest : metric === 'clear' ? s.clear : s.visibility };
+      }),
+    [withSeries, metric],
+  );
   return (
     <Card
       className={styles.dist}
@@ -120,27 +126,27 @@ function DistanceOverlay({ items }: { items: readonly Compared[] }) {
 }
 
 export default function Compare() {
-  const [params, setParams] = useSearchParams();
+  const [params, update] = useUrlParams();
   const slots = useMemo(() => parseRunSlots(params), [params]);
   const chosen = slots.filter((s): s is string => !!s);
   const runs = useRuns({ refetchInterval: reconnect });
   const schema = usePresetSchema({ retry: false });
   const items = useCompared(slots);
-  const ok = items.filter((c) => !c.error);
+  const ok = useMemo(() => items.filter((c) => !c.error), [items]);
   const group = presetGroup(ok);
 
-  const setSlots = (next: (string | null)[]) => {
-    const p = new URLSearchParams(params);
-    p.delete('a');
-    p.delete('b');
-    const v = slotsParam(next);
-    if (v) p.set('runs', v);
-    else p.delete('runs');
-    setParams(p, { replace: true });
-  };
-  const add = (id: string) => setSlots(addToSlots(slots, id));
-  const remove = (id: string) => setSlots(slots.map((s) => (s === id ? null : s)));
-  const toggle = (id: string) => (chosen.includes(id) ? remove(id) : add(id));
+  // each change starts from the latest requested slots (two quick removals both apply)
+  const setSlots = (change: (current: (string | null)[]) => (string | null)[]) =>
+    update((p) => {
+      const v = slotsParam(change(parseRunSlots(p)));
+      p.delete('a');
+      p.delete('b');
+      if (v) p.set('runs', v);
+      else p.delete('runs');
+    });
+  const add = (id: string) => setSlots((s) => addToSlots(s, id));
+  const remove = (id: string) => setSlots((s) => s.map((x) => (x === id ? null : x)));
+  const toggle = (id: string) => setSlots((s) => (s.includes(id) ? s.map((x) => (x === id ? null : x)) : addToSlots(s, id)));
 
   const ready = ok.length >= 2;
   // a compared run that failed for another reason than «deleted» (e.g. the backend is down)
@@ -205,8 +211,9 @@ export default function Compare() {
       ) : (
         <Card
           className={`fill-viewport ${styles.chooseCard}`}
-          title={runs.isError || failed ? 'Сравнение' : chosen.length ? 'Добавьте ещё прогон' : 'Выберите прогоны'}
-          help={`От 2 до ${MAX_COMPARE}: одна запись с разными пресетами или разные записи.`}
+          // an error needs no title of its own: the banner says it
+          title={runs.isError || failed ? undefined : chosen.length ? 'Добавьте ещё прогон' : 'Выберите прогоны'}
+          help={runs.isError || failed ? undefined : `От 2 до ${MAX_COMPARE}: одна запись с разными пресетами или разные записи.`}
           helpPlacement="bottom-start"
         >
           {runs.isError || failed ? (

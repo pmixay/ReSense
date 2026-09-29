@@ -1,25 +1,21 @@
 // «Файл»: a drop zone for files AND folders (folders are walked with webkitGetAsEntry), «Выбрать
 // файлы» / «Выбрать папку» (input webkitdirectory); the upload streams with progress (bytes, speed,
-// ETA, cancel); after finalize the detected recording becomes the chosen one.
+// ETA, cancel) and keeps going on other pages (uploadStore); after finalize the page makes the
+// detected recording the chosen one.
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
-import { useUpload, useUploadLabels } from '../../api/hooks';
+import { useUploadLabels } from '../../api/hooks';
 import type { Recording } from '../../api/types';
 import { filesFromDataTransfer, suggestName, toUploadItems, type UploadItem } from '../../api/upload';
 import { Button, Chip, ErrorBanner, Help, Icon, IconButton, ProgressBar } from '../../components';
 import { FILES, fmtBytes, fmtClock, fmtCount, fmtPercent, fmtSpeed } from '../../lib/format';
-import { ACCEPTED, guessKind, type KindGuess } from './kinds';
+import { ACCEPTED, guessKind } from './kinds';
 import { RecordingCard } from './RecordingCard';
+import { abortUpload, dismissUpload, startUpload, useUploadStore, type Picked, type UploadRun } from './uploadStore';
 import styles from './FileSource.module.css';
 
-interface Picked {
-  items: UploadItem[];
-  guess: KindGuess;
-  name: string;
-  bytes: number;
-}
-
-function UploadingCard({ picked, upload, onCancel }: { picked: Picked; upload: ReturnType<typeof useUpload>; onCancel: () => void }) {
-  const p = upload.progress;
+function UploadingCard({ run, onCancel }: { run: UploadRun; onCancel: () => void }) {
+  const { picked, progress: p } = run;
   const finalizing = p?.phase === 'finalizing' || p?.phase === 'done';
   const staging = !p || p.phase === 'staging';
   return (
@@ -74,7 +70,8 @@ export interface FileSourceProps {
 }
 
 export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
-  const upload = useUpload();
+  const qc = useQueryClient();
+  const { run } = useUploadStore();
   const labels = useUploadLabels();
   const [picked, setPicked] = useState<Picked | null>(null);
   const [drag, setDrag] = useState(false);
@@ -89,36 +86,27 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     dirRef.current?.setAttribute('directory', '');
   }, []);
 
-  const cancelled = useRef(false);
-  const start = async (p: Picked) => {
-    cancelled.current = false;
-    const rec = await upload.start(p.items, p.name || undefined);
-    if (rec || cancelled.current) {
-      setPicked(null);
-      upload.reset();
-    }
-    if (rec) onRecording(rec);
-  };
-  const cancel = () => {
-    cancelled.current = true;
-    upload.abort();
+  // the page picks the finished recording up (takeUploadResult), also after a trip elsewhere
+  const start = (p: Picked) => {
+    setPicked(null);
+    startUpload(qc, p);
   };
 
   const take = (items: UploadItem[]) => {
     if (!items.length) return;
     const guess = guessKind(items.map((i) => i.path));
     const p: Picked = { items, guess, name: suggestName(items), bytes: items.reduce((s, i) => s + i.file.size, 0) };
-    upload.reset();
     labels.reset();
-    setPicked(p);
-    if (guess.ok) void start(p);
+    dismissUpload();
+    if (guess.ok) start(p);
+    else setPicked(p); // not uploaded by itself: labels go to a recording, unknown files on request
   };
 
   const onDrop = async (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     depth.current = 0;
     setDrag(false);
-    if (upload.status === 'uploading') return;
+    if (run?.status === 'uploading') return;
     setReading(true);
     try {
       take(await filesFromDataTransfer(e.dataTransfer));
@@ -127,7 +115,7 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     }
   };
 
-  const busy = upload.status === 'uploading' || reading;
+  const busy = run?.status === 'uploading' || reading;
   const attachLabels = async (p: Picked) => {
     if (!current) return;
     const rec = await labels.mutateAsync({ id: current.id, labels: p.items[0].file }).catch(() => null);
@@ -138,12 +126,12 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
   };
 
   let top: ReactNode = null;
-  if (picked && upload.status === 'uploading') top = <UploadingCard picked={picked} upload={upload} onCancel={cancel} />;
-  else if (picked && upload.status === 'error')
+  if (run?.status === 'uploading') top = <UploadingCard run={run} onCancel={abortUpload} />;
+  else if (run?.status === 'error')
     top = (
       <div className={styles.errBox}>
-        <ErrorBanner error={upload.error} title="Запись не принята" onRetry={() => void start(picked)} />
-        <IconButton icon="x" label="Убрать" tooltip variant="white" size="sm" onClick={() => setPicked(null)} />
+        <ErrorBanner error={run.error} title="Запись не принята" onRetry={() => start(run.picked)} />
+        <IconButton icon="x" label="Убрать" tooltip variant="white" size="sm" onClick={dismissUpload} />
       </div>
     );
   else if (picked && !picked.guess.ok)
@@ -174,7 +162,7 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
             <Chip variant="well">сначала выберите запись</Chip>
           )
         ) : (
-          <Button variant="outline" size="sm" icon="upload" onClick={() => void start(picked)}>
+          <Button variant="outline" size="sm" icon="upload" onClick={() => start(picked)}>
             Всё равно загрузить
           </Button>
         )}
@@ -185,7 +173,7 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
 
   return (
     <div
-      className={[styles.drop, drag ? styles.over : ''].join(' ')}
+      className={[styles.drop, drag ? styles.over : '', top ? styles.hasTop : ''].join(' ')}
       onDragEnter={(e) => {
         e.preventDefault();
         depth.current += 1;

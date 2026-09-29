@@ -1,12 +1,19 @@
 .grid {
   grid-template-rows: minmax(0, 1fr) auto;
 }
+/* fits 1280×800 without a page scroll (the foundation's floor is 600 px) */
+.grid:global(.fill-viewport) {
+  min-height: 540px;
+}
 .src {
   grid-column: 1 / 8;
   display: flex;
   flex-direction: column;
   min-height: 0;
   padding: 22px 24px 24px;
+}
+.src > header {
+  flex: none; /* a tall source view never squeezes the card head */
 }
 .seg {
   min-width: 0;

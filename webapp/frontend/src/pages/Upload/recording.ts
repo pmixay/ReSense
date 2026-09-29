@@ -1,7 +1,10 @@
 // Recording facts in Russian (kind, source, frames, duration, size) for chips and meta lines.
 import type { IconName } from '../../components';
-import type { Recording, RecordingKind, RecordingSource } from '../../api/types';
+import type { Recording, RecordingKind, RecordingSource, ServerEntry } from '../../api/types';
 import { fmtBytes, fmtDuration, fmtFrames } from '../../lib/format';
+
+/** The built-in preset (webapp/API.md: "standard" is the read-only default). */
+export const DEFAULT_PRESET = 'standard';
 
 export const KIND_LABEL: Record<RecordingKind, string> = {
   rosbag2: 'rosbag2',
@@ -39,4 +42,12 @@ export function recordingMeta(r: Pick<Recording, 'n_frames' | 'duration_s' | 'si
 /** PointCloud2 topics of a recording (the ones a job may read). */
 export function cloudTopics(r: Pick<Recording, 'topics'>): string[] {
   return r.topics.filter((t) => /PointCloud2$/.test(t.type)).map((t) => t.name);
+}
+
+const FILE_RECORDING = /\.(jsonl|db3|mcap)$|(^|\/)metadata\.yaml$/i;
+
+/** A recording can be registered from this server entry (a bag / npy folder, a .jsonl / storage file). */
+export function isRecordingEntry(e: ServerEntry): boolean {
+  if (e.type === 'dir') return e.is_bag || e.is_npy_dir;
+  return FILE_RECORDING.test(e.name);
 }

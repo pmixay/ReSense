@@ -6,10 +6,13 @@
 }
 
 /* ---- the signal head */
+/* the head absorbs the height the card lacks (1280 × 800): the readout never overlaps it */
 .head {
+  container-type: inline-size;
   border-radius: 22px;
-  min-height: 96px;
-  flex: 0 1 112px;
+  min-height: 56px;
+  max-height: 112px;
+  flex: 1 1 112px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -44,20 +47,21 @@
 .icon {
   flex: none;
 }
+/* sized by the head's width (container units): the label never runs under the «?» */
 .label {
   font-family: var(--f-head);
   font-weight: 800;
-  font-size: clamp(30px, 2.8vw, 46px);
+  font-size: clamp(26px, calc((100cqi - 54px) / 4.9), 46px);
   letter-spacing: 0.02em;
   line-height: 1;
   white-space: nowrap;
   min-width: 0;
 }
 .long {
-  font-size: clamp(22px, 2.3vw, 38px);
+  font-size: clamp(18px, calc((100cqi - 54px) / 9), 38px);
 }
 .state {
-  font-size: clamp(17px, 1.45vw, 23px);
+  font-size: clamp(16px, calc((100cqi - 54px) / 12.5), 23px);
   white-space: normal;
   line-height: 1.1;
 }
@@ -72,8 +76,7 @@
 
 /* ---- distance */
 .readout {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -86,7 +89,7 @@
 .big {
   font-family: var(--f-head);
   font-weight: 800;
-  font-size: clamp(44px, 4.3vw, 72px);
+  font-size: clamp(40px, min(4.3vw, 7.2vh), 72px);
   line-height: 1;
   margin: 6px 0 14px;
   white-space: nowrap;

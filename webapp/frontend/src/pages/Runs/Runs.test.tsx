@@ -12,7 +12,10 @@ const RUNS = [
   makeRun('fast', 'GSSSSSSS', { name: 'demo_approach · Быстрый', preset: { id: 'p1', name: 'Быстрый' }, created_at: '2026-09-29T08:00:00Z' }),
 ];
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  window.sessionStorage.clear(); // the ticked runs persist per tab
+});
 
 describe('Прогоны', () => {
   it('lists runs with their facts, filters them and compares a selection', async () => {
@@ -74,10 +77,26 @@ describe('Прогоны', () => {
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
   });
 
+  it('keeps the ticked runs when the page is opened again (after «back» from /compare)', async () => {
+    stubFetch({ '/api/runs': RUNS, '/api/system': SYSTEM });
+    const first = renderAt(<Runs />, '/runs', '/runs');
+    await screen.findByText('demo_crossing');
+    fireEvent.click(screen.getByLabelText('Выбрать для сравнения: demo_crossing'));
+    fireEvent.click(screen.getByLabelText('Выбрать для сравнения: demo_clear'));
+    first.unmount();
+
+    renderAt(<Runs />, '/runs', '/runs');
+    await screen.findByRole('link', { name: 'demo_crossing' }); // the bar names it too
+    const bar = screen.getByRole('region', { name: 'Выбранные прогоны' });
+    expect(within(bar).getByRole('link', { name: /Сравнить \(2\)/ }).getAttribute('href')).toBe('/compare?runs=crossing,clear');
+    expect(screen.queryByText('Ничего не найдено')).toBeNull();
+  });
+
   it('shows the empty state with a way to upload', async () => {
     stubFetch({ '/api/runs': [], '/api/system': SYSTEM });
     renderAt(<Runs />, '/runs', '/runs');
     expect(await screen.findByText('Прогонов пока нет')).toBeTruthy();
+    expect(screen.queryByLabelText('Поиск по названию')).toBeNull(); // no filters before the first run
     expect(screen.getByRole('link', { name: /Загрузить запись/ }).getAttribute('href')).toBe('/upload');
   });
 

@@ -22,6 +22,12 @@ const NY = 40; // ±5 m
 
 const X = (x: number): number => X0 + (Math.min(RANGE, Math.max(0, x)) / RANGE) * (X1 - X0);
 
+/** Point density → opacity (0,26 for a single point … 0,8), in a few shades so a redraw is a few fills. */
+const ALPHA_LEVELS = 8;
+const densityAlpha = (n: number): number => Math.min(0.8, 0.26 + Math.log2(n) / 9);
+const alphaLevel = (n: number): number => Math.min(ALPHA_LEVELS - 1, Math.floor(((densityAlpha(n) - 0.26) / (0.8 - 0.26)) * ALPHA_LEVELS));
+const LEVEL_ALPHA = Array.from({ length: ALPHA_LEVELS }, (_, i) => 0.26 + ((i + 0.5) / ALPHA_LEVELS) * (0.8 - 0.26));
+
 /** Wall density bins of a cloud: counts per (2 m along, 0.25 m across) of points above the bed. */
 export function wallBins(cloud: DecodedCloud, track: TrackModelDict): Uint16Array {
   const bins = new Uint16Array(NX * NY);
@@ -60,20 +66,25 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
     const C = track?.center ?? 0;
     const Y = (y: number) => CY - (y - C) * K;
 
-    // tunnel walls from the real points
+    // tunnel walls from the real points: the density as ALPHA_LEVELS shades, one path per shade
     if (bins) {
       ctx.fillStyle = '#5AB4F5';
-      for (let bx = 0; bx < NX; bx += 1) {
-        for (let by = 0; by < NY; by += 1) {
-          const n = bins[bx * NY + by];
-          if (!n) continue;
-          const yy = CY - (by - NY / 2) * BIN_Y * K - 2;
-          if (yy < 34 || yy > MH - 34) continue;
-          ctx.globalAlpha = Math.min(0.8, 0.26 + Math.log2(n) / 9);
-          ctx.beginPath();
-          ctx.roundRect(X(bx * BIN_X), yy, 2.4, 4, 1.2);
-          ctx.fill();
+      for (let level = 0; level < ALPHA_LEVELS; level += 1) {
+        ctx.beginPath();
+        let any = false;
+        for (let bx = 0; bx < NX; bx += 1) {
+          for (let by = 0; by < NY; by += 1) {
+            const n = bins[bx * NY + by];
+            if (!n || alphaLevel(n) !== level) continue;
+            const yy = CY - (by - NY / 2) * BIN_Y * K - 2;
+            if (yy < 34 || yy > MH - 34) continue;
+            ctx.roundRect(X(bx * BIN_X), yy, 2.4, 4, 1.2);
+            any = true;
+          }
         }
+        if (!any) continue;
+        ctx.globalAlpha = LEVEL_ALPHA[level];
+        ctx.fill();
       }
       ctx.globalAlpha = 1;
     }
@@ -92,7 +103,8 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
 
     // envelope: green up to the obstacle (or the verified distance), dashed beyond
     const det = frame?.obstacle ? (frame.detections?.[0] ?? null) : null;
-    const clear = typeof frame?.clear_distance === 'number' ? frame.clear_distance : 0;
+    // FAULT: nothing is verified, no green
+    const clear = typeof frame?.clear_distance === 'number' && frame.decision !== 'FAULT' ? frame.clear_distance : 0;
     const greenTo = Math.max(0, Math.min(RANGE, det ? det.center[0] - det.size[0] / 2 : clear));
     const top = Y(C + 1.05);
     const h = 2.1 * K;

@@ -1,13 +1,13 @@
 // Прогон (/runs/:id, mockup run.html): KPIs, the decision timeline with the labels lane, the distance
 // chart, events, the 3D preview, downloads and the evaluation against labels. Rename / delete in «⋯».
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePresetSchema, useRun, useRunLabels, useRuns, useRunSeries } from '../../api/hooks';
 import type { RunDetail as RunDetailT } from '../../api/types';
 import { Button, Card, Chip, DecisionChip, EmptyState, ErrorBanner, PageHeader, useRailSub } from '../../components';
 import { decisionAt } from '../../lib/decisions';
 import { fmtBytes, fmtFrames, fmtMeters, fmtRelDate } from '../../lib/format';
-import { compareUrl, playerUrl, posOfFrame, reconnect } from '../Runs/common/analysis';
+import { baseName, compareUrl, playerUrl, posOfFrame, reconnect } from '../Runs/common/analysis';
 import { Skeleton } from '../Runs/common/Bits';
 import { Menu } from '../Runs/common/Menu';
 import { useMedia } from '../Runs/common/useMedia';
@@ -56,14 +56,24 @@ function LoadingBento() {
   );
 }
 
-export default function RunDetail() {
+/** One page per run: moving to another run (history) starts from a clean state. */
+export default function RunDetailPage() {
   const { id = '' } = useParams();
+  return <RunDetail key={id} id={id} />;
+}
+
+function RunDetail({ id }: { id: string }) {
   const navigate = useNavigate();
-  const run = useRun(id, { retry: (n, err) => err.status !== 404 && !err.offline && n < 1, refetchInterval: reconnect });
-  const r = run.data;
+  // deleted from this page: its queries are dropped, so stop reading the run while the list opens
+  // (a re-render would otherwise fetch the removed run again and log a 404)
+  const [gone, setGone] = useState(false);
+  const run = useRun(gone ? null : id, { retry: (n, err) => err.status !== 404 && !err.offline && n < 1, refetchInterval: reconnect });
+  const kept = useRef<RunDetailT | undefined>(undefined);
+  if (run.data) kept.current = run.data;
+  const r = run.data ?? (gone ? kept.current : undefined);
   // after the run itself, so a wrong id costs one 404, not two
-  const series = useRunSeries(r ? id : null, { retry: (n, err) => err.status !== 404 && n < 1 });
-  const wantLabels = !!r && (!!r.summary.eval || !!series.data?.labels_in_gauge);
+  const series = useRunSeries(r && !gone ? id : null, { retry: (n, err) => err.status !== 404 && n < 1 });
+  const wantLabels = !!r && !gone && (!!r.summary.eval || !!series.data?.labels_in_gauge);
   const labels = useRunLabels(wantLabels ? id : null);
   const schema = usePresetSchema({ retry: false });
   const runs = useRuns({ retry: false, refetchInterval: reconnect });
@@ -72,6 +82,7 @@ export default function RunDetail() {
   const [deleting, setDeleting] = useState(false);
   useRailSub(r?.name);
   const narrow = useMedia('(max-width: 1320px)');
+  const compact = useMedia('(max-width: 1400px)');
 
   const frames = series.data?.frame;
   const posOf = useCallback((frame: number) => posOfFrame(frames, frame), [frames]);
@@ -92,13 +103,16 @@ export default function RunDetail() {
   const notFound = run.error?.status === 404;
   const decisions = series.data?.decisions ?? r?.summary.decisions ?? '';
   // a default name is "<recording> · <preset>": the preset chip already says the second half
-  const suffix = r ? ` · ${r.preset.name}` : '';
-  const title = r && r.name.endsWith(suffix) && r.name.length > suffix.length ? r.name.slice(0, -suffix.length) : r?.name;
+  const title = r ? baseName(r) : undefined;
 
   return (
     <>
       <PageHeader
-        title={<span className={styles.title}>{title ?? (notFound ? 'Прогон не найден' : 'Прогон')}</span>}
+        title={
+          <span className={[styles.title, title && title.length > 24 ? styles.titleXl : title && title.length > 16 ? styles.titleL : ''].join(' ')} title={r?.name}>
+            {title ?? (notFound ? 'Прогон не найден' : 'Прогон')}
+          </span>
+        }
         docTitle={r?.name ?? 'Прогон'}
         eyebrow="Прогон"
         back={{ to: '/runs', label: 'К прогонам' }}
@@ -152,11 +166,11 @@ export default function RunDetail() {
         </div>
       ) : !r && run.isError ? (
         <ErrorBanner error={run.error} onRetry={() => void run.refetch()} retrying={run.isFetching} />
-      ) : !r ? (
+      ) : !r || gone ? (
         <LoadingBento />
       ) : (
         <section className={styles.grid}>
-          <Kpis r={r} series={series.data} labels={labels.data} frameOf={frameOf} />
+          <Kpis r={r} series={series.data} labels={labels.data} frameOf={frameOf} compact={compact} />
           <Timeline r={r} series={series.data} labelsInGauge={labelsInGauge} playhead={focusPos} frameOf={frameOf} posOf={posOf} />
           <DistanceCard
             r={r}
@@ -171,13 +185,20 @@ export default function RunDetail() {
             {r.summary.eval && <EvalCard ev={r.summary.eval} />}
           </div>
           <div className={styles.side}>
-            <PreviewCard r={r} pos={focusPos} frame={frameOf(focusPos)} decision={decisionAt(decisions, focusPos) ?? 'GO'} />
+            <PreviewCard r={r} pos={focusPos} frame={frameOf(focusPos)} decision={decisionAt(decisions, focusPos) ?? 'GO'} compact={compact} />
             <DownloadsCard r={r} />
           </div>
         </section>
       )}
       <RenameDialog run={renaming && r ? r : null} onClose={() => setRenaming(false)} />
-      <DeleteDialog run={deleting && r ? r : null} onClose={() => setDeleting(false)} onDeleted={() => navigate('/runs', { replace: true })} />
+      <DeleteDialog
+        run={deleting && r ? r : null}
+        onClose={() => setDeleting(false)}
+        onDeleted={() => {
+          setGone(true);
+          navigate('/runs', { replace: true });
+        }}
+      />
     </>
   );
 }

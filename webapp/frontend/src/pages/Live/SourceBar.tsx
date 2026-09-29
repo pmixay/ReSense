@@ -100,7 +100,7 @@ function RosControls({ snap, feed, url, onUrl }: SourceBarProps) {
 }
 
 function SimControls({ snap, feed, runs, runsLoading, runsError, onRetryRuns, run, onRun, speed, onSpeed, loop, onLoop }: SourceBarProps) {
-  if (runsError) return <ErrorBanner compact error={runsError} onRetry={onRetryRuns} className={styles.barError} />;
+  if (runsError) return <ErrorBanner compact title="Прогоны не загрузились" error={runsError} onRetry={onRetryRuns} className={styles.barFull} />;
   if (runsLoading || !runs)
     return (
       <div className={styles.barCenter}>
@@ -114,7 +114,9 @@ function SimControls({ snap, feed, runs, runsLoading, runsError, onRetryRuns, ru
           <Icon name="list" size={20} />
         </span>
         Нет обработанных прогонов
-        <Help placement="bottom-start">Симуляция проигрывает готовый прогон. Создайте демо-запись или загрузите свою — после обработки она появится здесь.</Help>
+        <Help placement="bottom-start">
+          Симуляция проигрывает готовый прогон. Создайте демо-запись или загрузите свою — после обработки она появится здесь.
+        </Help>
         <span className={styles.sp} />
         <Button variant="outline" icon="upload" to="/upload">
           Загрузить
@@ -148,14 +150,23 @@ function SimControls({ snap, feed, runs, runsLoading, runsError, onRetryRuns, ru
       {running ? (
         <>
           {snap.paused ? (
-            <IconButton icon="play" label="Продолжить" variant="dark" size="lg" tooltip onClick={() => feed.play()} />
+            <IconButton icon="play" label="Продолжить" variant="dark" size="lg" tooltip aria-keyshortcuts="Space" onClick={() => feed.play()} />
           ) : (
-            <IconButton icon="pause" label="Пауза" variant="dark" size="lg" tooltip onClick={() => feed.pause()} disabled={snap.link !== 'open'} />
+            <IconButton
+              icon="pause"
+              label="Пауза"
+              variant="dark"
+              size="lg"
+              tooltip
+              aria-keyshortcuts="Space"
+              onClick={() => feed.pause()}
+              disabled={snap.link !== 'open'}
+            />
           )}
           <IconButton icon="x" label="Остановить эфир" variant="outline" size="lg" tooltip onClick={() => feed.stop()} />
         </>
       ) : (
-        <Button variant="primary" icon="play" onClick={() => start(snap.link === 'ended' || !onThis ? 0 : (pos ?? 0))}>
+        <Button variant="primary" icon="play" aria-keyshortcuts="Space" onClick={() => start(snap.link === 'ended' || !onThis ? 0 : (pos ?? 0))}>
           Запустить
         </Button>
       )}
@@ -168,7 +179,10 @@ function SimControls({ snap, feed, runs, runsLoading, runsError, onRetryRuns, ru
           onSpeed(s);
           feed.setSpeed(s);
         }}
-        options={SPEEDS.map((s) => ({ value: String(s), label: speedLabel(s) }))}
+        options={SPEEDS.map((s) => ({
+          value: String(s),
+          label: speedLabel(s),
+        }))}
       />
       <IconButton
         icon="loop"
@@ -197,7 +211,7 @@ function SimControls({ snap, feed, runs, runsLoading, runsError, onRetryRuns, ru
       </div>
       <Help placement="bottom-end" width={300} label="Как работает симуляция">
         Бэкенд проигрывает готовый прогон как живой узел: кадр за кадром с частотой <b>10 Гц × скорость</b>, с теми же полями, что и /resense/status. Клик по
-        полосе — перемотка.
+        полосе — перемотка, <b>пробел</b> — пуск и пауза.
       </Help>
       <LinkError snap={snap} onRetry={() => start(pos ?? 0)} />
     </>

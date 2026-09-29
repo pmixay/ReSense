@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { Episode, EvalSummary, ParamSpec, Run } from '../../../api/types';
 import {
+  METRICS,
   addToSlots,
+  baseName,
   bestIndices,
   compareUrl,
   computeMisses,
@@ -195,6 +197,19 @@ describe('the runs list', () => {
 });
 
 describe('comparison', () => {
+  it('names a run without its default « · preset» suffix', () => {
+    const preset = { id: 'p1', name: 'Чувствительный' };
+    expect(baseName({ name: 'demo_crossing · Чувствительный', preset })).toBe('demo_crossing');
+    expect(baseName({ name: 'Прогон жюри', preset })).toBe('Прогон жюри');
+    expect(baseName({ name: ' · Чувствительный', preset })).toBe(' · Чувствительный'); // never empty
+  });
+
+  it('leaves the processing rate of a results .jsonl out of the comparison', () => {
+    const fps = METRICS.find((m) => m.key === 'fps');
+    expect(fps?.value(run('a', { processing_fps: 21 }))).toBe(21);
+    expect(fps?.value(run('b', { processing_fps: 9843 }, { source_kind: 'jsonl' }))).toBeNull();
+  });
+
   it('marks the best values of a row', () => {
     expect([...bestIndices([1, 3, 3, null], 'max')]).toEqual([1, 2]);
     expect([...bestIndices([5, 2, 9], 'min')]).toEqual([1]);

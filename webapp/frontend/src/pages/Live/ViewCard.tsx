@@ -14,6 +14,22 @@ const CloudPreview = lazy(() => import('../../player/CloudPreview'));
 
 type Mode = '3d' | 'scheme';
 
+let webgl: boolean | null = null;
+/** Whether this browser can create a WebGL context at all (checked once; the probe context is
+ *  released at once). Without it the replay shows the scheme instead of a broken 3D view. */
+export function webglAvailable(): boolean {
+  if (webgl !== null) return webgl;
+  try {
+    const c = document.createElement('canvas');
+    const gl = (c.getContext('webgl2') ?? c.getContext('webgl')) as WebGLRenderingContext | null;
+    webgl = !!gl;
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
+  } catch {
+    webgl = false;
+  }
+  return webgl;
+}
+
 export interface ViewCardProps {
   snap: FeedSnapshot;
   kind: SourceKind;
@@ -24,7 +40,7 @@ export interface ViewCardProps {
 
 export function ViewCard({ snap, kind, run, fresh, className }: ViewCardProps) {
   const [mode, setMode] = useState<Mode>('3d');
-  const can3d = kind === 'sim' && !!run?.has_clouds;
+  const can3d = kind === 'sim' && !!run?.has_clouds && webglAvailable();
   const show3d = can3d && mode === '3d';
   const msg = snap.msg;
   const onAir = snap.source?.kind === 'sim' && snap.source.runId === run?.id;
@@ -53,13 +69,11 @@ export function ViewCard({ snap, kind, run, fresh, className }: ViewCardProps) {
         <h2 className={styles.title}>{show3d ? '3D-вид' : 'Схема пути'}</h2>
         <Help tone="light" placement="bottom-start" width={290} label="Что на виде">
           {show3d ? (
-            <>
-              Облако точек прогона на кадре в эфире (сохранённое при обработке, ближайшее не позже). Мышь — вращение.
-            </>
+            <>Облако точек прогона на кадре в эфире (сохранённое при обработке, ближайшее не позже). Мышь — вращение.</>
           ) : (
             <>
-              Вид сверху по данным узла: ось пути и рельсы из модели пути, габарит <b>2,1 м</b> до дальности контроля, зона предупреждения <b>+0,35 м</b>, объекты —
-              красные в габарите, жёлтые рядом. Поперечный масштаб растянут.
+              Вид сверху по данным узла: ось пути и рельсы из модели пути, габарит <b>2,1 м</b> до дальности контроля, зона предупреждения <b>+0,35 м</b>,
+              объекты — красные в габарите, жёлтые рядом. Поперечный масштаб растянут.
             </>
           )}
         </Help>
@@ -82,7 +96,10 @@ export function ViewCard({ snap, kind, run, fresh, className }: ViewCardProps) {
       {show3d && (
         <div className={styles.bottom}>
           {shown && decision && (
-            <DecisionChip decision={decision} extra={decision === 'STOP' && typeof msg?.nearest_distance === 'number' ? `${fmtNum(msg.nearest_distance, 1)} м` : undefined} />
+            <DecisionChip
+              decision={decision}
+              extra={decision === 'STOP' && typeof msg?.nearest_distance === 'number' ? `${fmtNum(msg.nearest_distance, 1)} м` : undefined}
+            />
           )}
           {onAir && run && (
             <Chip variant="glass">

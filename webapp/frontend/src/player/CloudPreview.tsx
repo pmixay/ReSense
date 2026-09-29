@@ -21,6 +21,9 @@ export interface CloudPreviewProps {
   className?: string;
 }
 
+/** How long a frame / cloud that left the view stays cached (ms). */
+const PASSED_GC_MS = 5000;
+
 export default function CloudPreview({ runId, pos = 0, height = 240, interactive = false, className }: CloudPreviewProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,8 +35,9 @@ export default function CloudPreview({ runId, pos = 0, height = 240, interactive
   const index = useRunClouds(runId);
   const p = Math.max(0, Math.round(pos));
   const cpos = index.data ? (cloudAtOrBefore(index.data.frames, p) ?? index.data.frames[0] ?? null) : null;
-  const frames = useRunFrames(runId, p, 1);
-  const cloud = useRunCloud(runId, cpos);
+  // a live view moves the position at 10 Hz: frames and clouds already shown are not kept around
+  const frames = useRunFrames(runId, p, 1, { gcTime: PASSED_GC_MS });
+  const cloud = useRunCloud(runId, cpos, { gcTime: PASSED_GC_MS });
   const frame = frames.data?.frames[0] ?? null;
 
   const requestRender = () => {
@@ -45,7 +49,8 @@ export default function CloudPreview({ runId, pos = 0, height = 240, interactive
       if (!s) return;
       s.render(last ? (ts - last) / 1000 : 0.016);
       last = ts;
-      if (s.animating) rafRef.current = requestAnimationFrame(tick);
+      // keep going until the camera has settled on the frame (or while it is orbited)
+      if (s.needsRender()) rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
   };
@@ -87,6 +92,8 @@ export default function CloudPreview({ runId, pos = 0, height = 240, interactive
       rafRef.current = 0;
       sceneRef.current = null;
       scene?.dispose();
+      // a new scene (interactive toggled) gets the frame and the cloud again
+      setReady(false);
     };
   }, [interactive]);
 
@@ -94,8 +101,15 @@ export default function CloudPreview({ runId, pos = 0, height = 240, interactive
     const s = sceneRef.current;
     if (!s || !ready) return;
     s.setFrame(frame);
+    // the cloud is coloured along the frame's track (floor, axis) — also when it arrived first
+    if (frame?.track) s.setCloudTrack(frame.track);
     requestRender();
   }, [frame, ready]);
+
+  const budget = index.data?.points ?? 0;
+  useEffect(() => {
+    if (ready && budget) sceneRef.current?.reserve(budget);
+  }, [budget, ready]);
 
   useEffect(() => {
     const s = sceneRef.current;
@@ -107,7 +121,15 @@ export default function CloudPreview({ runId, pos = 0, height = 240, interactive
 
   const noClouds = index.data && index.data.frames.length === 0;
   const loading = !sceneError && (!ready || index.isLoading || frames.isLoading || (!noClouds && cpos !== null && cloud.isLoading));
-  const error = sceneError ?? (frames.isError ? frames.error.message : cloud.isError && cloud.error.status !== 404 ? cloud.error.message : null);
+  const error =
+    sceneError ??
+    (index.isError
+      ? index.error.message
+      : frames.isError
+        ? frames.error.message
+        : cloud.isError && cloud.error.status !== 404
+          ? cloud.error.message
+          : null);
 
   return (
     <div ref={wrapRef} className={[styles.root, interactive ? styles.interactive : '', className].filter(Boolean).join(' ')} style={{ height }}>

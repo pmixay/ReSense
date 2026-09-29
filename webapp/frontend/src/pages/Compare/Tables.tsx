@@ -2,25 +2,37 @@
 // that differ between runs of one recording made with different presets.
 import type { ParamSpec, RunDetail } from '../../api/types';
 import { Help } from '../../components';
-import { METRICS, RUN_COLORS, bestIndices, diffOverrides, fmtParam } from '../Runs/common/analysis';
+import { METRICS, baseName, bestIndices, diffOverrides, fmtParam, lineSwatch } from '../Runs/common/analysis';
 import type { Compared } from './data';
 import styles from './Compare.module.css';
 
-function RunHead({ c }: { c: Compared }) {
+/** Whether the compared runs used more than one preset (then run labels name the preset too). */
+export const mixedPresets = (items: readonly Compared[]): boolean => new Set(items.map((c) => c.run?.preset.id).filter(Boolean)).size > 1;
+
+/** A compared run's label: its line key (as in the chart), the name, and the preset when they differ. */
+export function RunLabel({ c, showPreset, className }: { c: Compared; showPreset: boolean; className?: string }) {
+  return (
+    <span className={[styles.runLabel, className].filter(Boolean).join(' ')} title={c.run?.name}>
+      <span className={styles.clamp}>
+        {/* let long file-like names break after "_" */}
+        {c.run ? baseName(c.run).replace(/_/g, '_\u200b') : '…'}
+      </span>
+      {showPreset && c.run && <span className={styles.runPreset}>{c.run.preset.name}</span>}
+    </span>
+  );
+}
+
+function RunHead({ c, showPreset }: { c: Compared; showPreset: boolean }) {
   return (
     <th scope="col" className={styles.runTh}>
-      <span className={styles.runHead}>
-        <span className={styles.key} style={{ background: RUN_COLORS[c.slot] }} aria-hidden />
-        <span className={styles.clamp} title={c.run?.name}>
-          {/* let long file-like names break after "_" */}
-          {c.run ? c.run.name.replace(/_/g, '_\u200b') : '…'}
-        </span>
-      </span>
+      <i className={styles.keyBar} style={{ background: lineSwatch(c.slot) }} aria-hidden />
+      <RunLabel c={c} showPreset={showPreset} />
     </th>
   );
 }
 
 export function KpiTable({ items }: { items: readonly Compared[] }) {
+  const showPreset = mixedPresets(items);
   return (
     <table className={styles.kt}>
       <thead>
@@ -29,7 +41,7 @@ export function KpiTable({ items }: { items: readonly Compared[] }) {
             <span className="sr-only">Показатель</span>
           </th>
           {items.map((c) => (
-            <RunHead key={c.id} c={c} />
+            <RunHead key={c.id} c={c} showPreset={showPreset} />
           ))}
         </tr>
       </thead>
@@ -93,11 +105,9 @@ export function PresetDiff({ group, schema }: { group: readonly Compared[]; sche
           </th>
           {group.map((c) => (
             <th key={c.id} scope="col" className={styles.runTh}>
-              <span className={styles.runHead}>
-                <span className={styles.key} style={{ background: RUN_COLORS[c.slot] }} aria-hidden />
-                <span className={styles.ell} title={c.run?.preset.name}>
-                  {c.run?.preset.name ?? '…'}
-                </span>
+              <i className={styles.keyBar} style={{ background: lineSwatch(c.slot) }} aria-hidden />
+              <span className={`${styles.runLabel} ${styles.ell}`} title={c.run?.preset.name}>
+                {c.run?.preset.name ?? '…'}
               </span>
             </th>
           ))}

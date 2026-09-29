@@ -50,7 +50,7 @@ export function QueuePanel({ className }: { className?: string }) {
               </Button>
             </SectionHead>
             {finished.length === 0 ? (
-              <EmptyState icon="list" size="sm" title="Пока пусто" />
+              <EmptyState icon="list" size="sm" title="Готовых задач нет" />
             ) : (
               finished.map((j) =>
                 j.status === 'done' ? (

@@ -179,6 +179,15 @@ export function paramOfError(message: string, keys: readonly string[]): string |
   return null;
 }
 
+/** "Запас у края на 100 м" → ["Запас у края на ", "100 м"]: the tail kept on one line with the «?»
+ *  (the last word, with the one before it when the last is a short, unit-like word). */
+export function splitTail(label: string): [string, string] {
+  const words = label.split(' ');
+  const n = words.length > 1 && words[words.length - 1].length <= 3 ? 2 : 1;
+  const k = words.length - n;
+  return [k > 0 ? words.slice(0, k).join(' ') + ' ' : '', words.slice(k).join(' ')];
+}
+
 /** A backend message about the preset's name (blank, too long, taken). */
 export function isNameError(message: string): boolean {
   return /назван/i.test(message);

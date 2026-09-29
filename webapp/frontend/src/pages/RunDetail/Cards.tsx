@@ -56,6 +56,7 @@ export function EventsCard({
                 className={[styles.evr, selected === pos ? styles.on : ''].join(' ')}
                 onMouseEnter={() => onSelect(pos)}
                 onFocus={() => onSelect(pos)}
+                onBlur={() => onSelect(null)}
                 onClick={() => navigate(playerUrl(r.id, pos))}
                 aria-label={`${info.title}, ${info.meta}: открыть в плеере`}
               >
@@ -134,7 +135,7 @@ export function EvalCard({ ev }: { ev: EvalSummary }) {
 
 // ---------------------------------------------------------------- 3D preview
 
-export function PreviewCard({ r, pos, frame, decision }: { r: RunDetail; pos: number; frame: number; decision: Decision }) {
+export function PreviewCard({ r, pos, frame, decision, compact = false }: { r: RunDetail; pos: number; frame: number; decision: Decision; compact?: boolean }) {
   return (
     <section className={styles.pv} aria-label="3D-вид кадра">
       {r.has_clouds ? (
@@ -157,7 +158,8 @@ export function PreviewCard({ r, pos, frame, decision }: { r: RunDetail; pos: nu
         </span>
       </div>
       <div className={styles.o2}>
-        <DecisionChip decision={decision} extra={`кадр ${frame}`} />
+        {/* narrow: the frame is already on the glass above */}
+        <DecisionChip decision={decision} extra={compact ? undefined : `кадр ${frame}`} />
         <span className={styles.sp} />
         <Button variant="outline" size="sm" icon="play" to={playerUrl(r.id, pos)}>
           Плеер
@@ -171,10 +173,11 @@ export function PreviewCard({ r, pos, frame, decision }: { r: RunDetail; pos: nu
 
 export function DownloadsCard({ r }: { r: RunDetail }) {
   const jsonl = r.sizes?.results_jsonl ?? null;
+  const csv = r.sizes?.frames_csv ?? null;
   const tiles = [
     { href: downloads.results(r.id), f: 'JSONL', what: 'кадры', b: jsonl !== null ? fmtBytes(jsonl) : fmtCount(r.summary.n_frames, FRAMES) },
     { href: downloads.report(r.id), f: 'JSON', what: 'отчёт', b: 'сводка' },
-    { href: downloads.csv(r.id), f: 'CSV', what: 'таблица', b: fmtCount(r.summary.n_frames, ['строка', 'строки', 'строк']) },
+    { href: downloads.csv(r.id), f: 'CSV', what: 'таблица', b: csv !== null ? fmtBytes(csv) : fmtCount(r.summary.n_frames, ['строка', 'строки', 'строк']) },
   ];
   return (
     <Card className={styles.dl} title="Скачать" headGap={10} help="Результаты по кадрам (как у resense run --out), отчёт с параметрами и сводкой, таблица для Excel." helpPlacement="top-end">

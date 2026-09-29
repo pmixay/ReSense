@@ -7,6 +7,7 @@
   padding: 10px 12px;
   min-width: 0;
   background: var(--white);
+  container-type: inline-size; /* the parts below adapt to the row, wherever it is shown */
 }
 .row + .row {
   margin-top: 8px;
@@ -104,15 +105,15 @@
   height: 36px;
 }
 
-@media (max-width: 1500px) {
+@container (max-width: 600px) {
   .strip {
-    width: 96px;
+    width: 84px;
   }
   .src {
     display: none;
   }
 }
-@media (max-width: 1380px) {
+@container (max-width: 480px) {
   .strip {
     display: none;
   }

@@ -85,14 +85,14 @@ export function Scrubber(p: ScrubberProps) {
         </span>
       </div>
       <Lane decisions={p.decisions} pos={p.pos} markers={p.markers} onSeek={p.onSeek} posLabel={p.posLabel} />
-      <div className={styles.spd} role="radiogroup" aria-label="Скорость">
+      <div className={styles.spd} role="group" aria-label="Скорость">
         {SPEEDS.map((s) => (
-          <button key={s} type="button" role="radio" aria-checked={p.speed === s} className={p.speed === s ? styles.on : ''} onClick={() => p.onSpeed(s)}>
+          <button key={s} type="button" aria-pressed={p.speed === s} className={p.speed === s ? styles.on : ''} onClick={() => p.onSpeed(s)}>
             {speedLabel(s)}
           </button>
         ))}
       </div>
-      <IconButton icon="loop" label={p.loop ? 'Повтор включён' : 'Повтор выключен'} variant="well" className={`${styles.sbtn} ${styles.solo}`} active={p.loop} onClick={p.onLoop} tooltip tooltipPlacement="top-end" />
+      <IconButton icon="loop" label="Повтор по кругу" variant="well" className={`${styles.sbtn} ${styles.solo}`} active={p.loop} onClick={p.onLoop} tooltip tooltipPlacement="top-end" />
     </div>
   );
 }

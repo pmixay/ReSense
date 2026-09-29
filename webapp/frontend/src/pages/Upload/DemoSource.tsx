@@ -1,7 +1,7 @@
 // «Демо-запись»: a synthetic rosbag2 bag made on the server (three scenes, 5–60 s) with its ground
 // truth, so the whole chain can be shown without real data. Generation is synchronous; progress
 // comes from the server while the request runs.
-import { useState } from 'react';
+import { useState, type KeyboardEvent } from 'react';
 import { useSystem } from '../../api/hooks';
 import type { DemoScenario, Recording } from '../../api/types';
 import { Button, Chip, ErrorBanner, Help, ProgressBar, Stepper } from '../../components';
@@ -36,10 +36,10 @@ function SceneGlyph({ id }: { id: DemoScenario }) {
       <path d="M22 56 L44 8 M74 56 L52 8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
       <path d="M30 44h36M35 32h26M39 22h18M42 14h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".35" />
       {id === 'approach' && (
-        <g fill="currentColor">
-          <circle cx="48" cy="9" r="3.2" />
-          <rect x="45.4" y="13" width="5.2" height="11" rx="2.4" />
-          <path d="M8 44 h10 M13 39 l5 5 -5 5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <g>
+          <circle cx="48" cy="9" r="3.2" fill="currentColor" />
+          <rect x="45.4" y="13" width="5.2" height="11" rx="2.4" fill="currentColor" />
+          <path d="M48 53 V35 M42.5 40.5 L48 35 L53.5 40.5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
         </g>
       )}
       {id === 'crossing' && (
@@ -63,11 +63,10 @@ function SceneGlyph({ id }: { id: DemoScenario }) {
 export interface DemoSourceProps {
   demo: ReturnType<typeof useDemoGenerator>;
   current: Recording | null;
-  onRecording: (rec: Recording) => void;
   onClear: () => void;
 }
 
-export function DemoSource({ demo, current, onRecording, onClear }: DemoSourceProps) {
+export function DemoSource({ demo, current, onClear }: DemoSourceProps) {
   const [scenario, setScenario] = useState<DemoScenario>('approach');
   const [seconds, setSeconds] = useState(15);
   const sys = useSystem();
@@ -76,20 +75,41 @@ export function DemoSource({ demo, current, onRecording, onClear }: DemoSourcePr
   const noSpace = free !== undefined && bytes > free;
   const busy = demo.active !== null;
 
-  const go = async () => {
-    const rec = await demo.generate({ scenario, seconds });
-    if (rec) onRecording(rec);
+  // radio group keyboard: arrows move the choice (and the focus) between the three scenes
+  const onArrows = (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+    if (!step || busy) return;
+    e.preventDefault();
+    const i = SCENARIOS.findIndex((s) => s.id === scenario);
+    const next = SCENARIOS[(i + step + SCENARIOS.length) % SCENARIOS.length].id;
+    setScenario(next);
+    e.currentTarget.querySelector<HTMLButtonElement>(`[data-scenario="${next}"]`)?.focus();
+  };
+
+  // the page picks the result up (useDemoGenerator.take), also after a trip to another page
+  const go = () => {
+    demo.dismissError();
+    void demo.generate({ scenario, seconds });
   };
 
   return (
     <div className={styles.wrap}>
       {current && !busy && <RecordingCard rec={current} onClear={onClear} />}
-      <div className={styles.cards} role="radiogroup" aria-label="Сценарий демо-записи">
+      <div className={styles.cards} role="radiogroup" aria-label="Сценарий демо-записи" onKeyDown={onArrows}>
         {SCENARIOS.map((s) => {
           const on = s.id === scenario;
           return (
             <div key={s.id} className={[styles.sc, on ? styles.on : ''].join(' ')}>
-              <button type="button" role="radio" aria-checked={on} className={styles.pick} disabled={busy} onClick={() => setScenario(s.id)}>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={on}
+                tabIndex={on ? 0 : -1}
+                data-scenario={s.id}
+                className={styles.pick}
+                disabled={busy}
+                onClick={() => setScenario(s.id)}
+              >
                 <span className={styles.glyphBox}>
                   <SceneGlyph id={s.id} />
                 </span>
@@ -110,8 +130,11 @@ export function DemoSource({ demo, current, onRecording, onClear }: DemoSourcePr
           <Stepper value={seconds} onChange={setSeconds} min={5} max={60} step={5} unit="с" label="Длительность демо-записи" disabled={busy} />
         </div>
         <div className={styles.facts}>
-          <Chip icon="database" title="Размер на диске и время создания">
-            ≈ {fmtBytes(bytes)} · {fmtDuration(demoSeconds(seconds))}
+          <Chip icon="database" title="Размер на диске">
+            ≈ {fmtBytes(bytes)}
+          </Chip>
+          <Chip icon="clock" title="Время создания на сервере" className={styles.time}>
+            ≈ {fmtDuration(Math.max(1, Math.round(demoSeconds(seconds))))}
           </Chip>
           <Chip variant="ink" icon="sparkle">
             синтетическая
@@ -122,7 +145,7 @@ export function DemoSource({ demo, current, onRecording, onClear }: DemoSourcePr
           </Help>
         </div>
         <span className={styles.sp} />
-        <Button variant="dark" icon="sparkle" onClick={() => void go()} loading={busy} disabled={noSpace}>
+        <Button variant="dark" icon="sparkle" onClick={go} loading={busy} disabled={noSpace}>
           Создать демо
         </Button>
       </div>
@@ -138,7 +161,7 @@ export function DemoSource({ demo, current, onRecording, onClear }: DemoSourcePr
         </div>
       )}
       {noSpace && !busy && <ErrorBanner error={`Нужно ≈ ${fmtBytes(bytes)}, свободно ${fmtBytes(free)}`} title="Мало места на диске" compact />}
-      {demo.error && !busy && <ErrorBanner error={demo.error} title="Демо-запись не создана" onRetry={() => void go()} compact />}
+      {demo.error && !busy && <ErrorBanner error={demo.error} title="Демо-запись не создана" onRetry={go} compact />}
     </div>
   );
 }

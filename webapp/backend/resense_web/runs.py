@@ -12,10 +12,11 @@ from resense_web.db import Database, jload
 from resense_web.presets import STANDARD_ID
 from resense_web.settings import Settings
 from resense_web.summary import SeriesBuilder, events_of, run_summary
-from resense_web.util import atomic_write_json, dumps, now_iso, read_json
+from resense_web.util import atomic_write_bytes, atomic_write_json, dumps, now_iso, read_json
 
 SUMMARY = "summary.json"
 SERIES = "series.json"
+CSV_SIZE = "frames.csv.size"     # bytes of the frames.csv download (built on the fly), kept once known
 CSV_COLUMNS = ("pos", "frame", "t", "decision", "nearest_distance", "clear_distance", "latency_ms",
                "n_detections", "n_warnings", "n_points")
 
@@ -96,8 +97,30 @@ def detail_extras(settings: Settings, run_id: str) -> dict:
     return {
         "options": options if isinstance(options, dict) else None,
         "overrides": overrides if isinstance(overrides, dict) else {},
-        "sizes": {"results_jsonl": _size(d / results.RESULTS), "clouds": _size(d / "clouds.bin")},
+        "sizes": {"results_jsonl": _size(d / results.RESULTS), "clouds": _size(d / "clouds.bin"),
+                  "frames_csv": frames_csv_size(settings, run_id)},
     }
+
+
+def frames_csv_size(settings: Settings, run_id: str) -> int | None:
+    """Bytes of the ``frames.csv`` download. The table is streamed without a length, so it is
+    measured once (from ``series.json``, which never changes) and remembered next to the run;
+    None when the run's results are gone."""
+    cache = run_dir(settings, run_id) / CSV_SIZE
+    try:
+        return int(cache.read_text(encoding="ascii"))
+    except (OSError, ValueError):
+        pass
+    try:
+        size = sum(len(chunk.encode("utf-8")) for chunk in frames_csv(settings, run_id))
+    except (FileNotFoundError, KeyError, TypeError, ValueError):
+        return None
+    if cache.parent.is_dir():                   # not while the run is being deleted
+        try:
+            atomic_write_bytes(cache, str(size).encode("ascii"))
+        except OSError:
+            pass
+    return size
 
 
 def labels_series(settings: Settings, run_id: str) -> dict:

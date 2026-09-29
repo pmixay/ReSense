@@ -11,21 +11,37 @@ import styles from './LogDialog.module.css';
 export function LogDialog({ job, onClose }: { job: Job; onClose: () => void }) {
   const titleId = useId();
   const log = useJobLog(job.id, { refetchInterval: isJobActive(job) ? 2000 : false });
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
     const prev = document.activeElement as HTMLElement | null;
-    closeRef.current?.focus();
+    // the dialog itself takes the focus (on the close button its tooltip would pop up at once)
+    panelRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
         onClose();
+      } else if (e.key === 'Tab' && panelRef.current) {
+        // keep the focus inside the dialog
+        const els = Array.from(panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'));
+        if (!els.length) return;
+        const first = els[0];
+        const last = els[els.length - 1];
+        const inside = panelRef.current.contains(document.activeElement);
+        if (e.shiftKey && (document.activeElement === first || !inside)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && (document.activeElement === last || !inside)) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
-    document.addEventListener('keydown', onKey);
+    // window + capture: before a hovered tooltip (document, capture) stops the Escape
+    window.addEventListener('keydown', onKey, true);
     return () => {
-      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('keydown', onKey, true);
       prev?.focus?.();
     };
   }, [onClose]);
@@ -38,7 +54,7 @@ export function LogDialog({ job, onClose }: { job: Job; onClose: () => void }) {
 
   return createPortal(
     <div className={styles.overlay} onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className={styles.panel} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <div ref={panelRef} className={styles.panel} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1}>
         <header className={styles.head}>
           <h2 id={titleId} className={styles.title}>
             Журнал обработки
@@ -51,7 +67,7 @@ export function LogDialog({ job, onClose }: { job: Job; onClose: () => void }) {
           </Chip>
           <span className={styles.sp} />
           <IconButton icon="retry" label="Обновить" tooltip variant="well" loading={log.isFetching} onClick={() => void log.refetch()} />
-          <IconButton ref={closeRef} icon="x" label="Закрыть" tooltip variant="dark" onClick={onClose} />
+          <IconButton icon="x" label="Закрыть" tooltip variant="dark" onClick={onClose} />
         </header>
         {job.error && <ErrorBanner error={job.error} title="Ошибка задачи" className={styles.err} />}
         {log.isError ? (

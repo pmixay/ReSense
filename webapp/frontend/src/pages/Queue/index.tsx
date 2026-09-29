@@ -14,15 +14,22 @@ import styles from './Queue.module.css';
 export default function Queue() {
   const { jobs, groups, finished, recById, runById } = useQueue();
   const clear = useClearFinishedJobs();
-  const [logJob, setLogJob] = useState<Job | null>(null);
+  const [logOf, setLogJob] = useState<Job | null>(null);
   const closeLog = useCallback(() => setLogJob(null), []);
+  // the log follows the job's live state (a running job's log refreshes until it finishes)
+  const logJob = logOf ? (jobs.data?.find((j) => j.id === logOf.id) ?? logOf) : null;
   const running = groups.running[0];
   const lastFinished = finished[0];
   const loading = jobs.isLoading;
 
-  const body = (content: ReactNode) =>
+  // the error is shown once (the main card); the side cards only say that there is no data
+  const body = (content: ReactNode, main = false) =>
     jobs.isError ? (
-      <ErrorBanner error={jobs.error} onRetry={() => void jobs.refetch()} retrying={jobs.isFetching} />
+      main ? (
+        <ErrorBanner error={jobs.error} onRetry={() => void jobs.refetch()} retrying={jobs.isFetching} />
+      ) : (
+        <div className={styles.emptyLine}>{jobs.error.offline ? 'нет связи с бэкендом' : 'нет данных'}</div>
+      )
     ) : loading ? (
       <div className={styles.center}>
         <Spinner size={24} />
@@ -59,7 +66,7 @@ export default function Queue() {
         >
           {body(
             running ? (
-              <JobCard job={running} recording={recById.get(running.recording_id)} variant="full" />
+              <JobCard job={running} recording={recById.get(running.recording_id)} variant="full" onLog={setLogJob} />
             ) : lastFinished ? (
               <JobCard job={lastFinished} recording={recById.get(lastFinished.recording_id)} variant="full" headActions={false} />
             ) : (
@@ -80,11 +87,12 @@ export default function Queue() {
                 {groups.queued.length ? 'Следующая задача запускается…' : 'Новая задача начнётся сразу.'}
               </EmptyState>
             ),
+            true,
           )}
         </Card>
 
         <div className={styles.side}>
-          <Card title="Ждут" badges={<span className={styles.n}>{groups.queued.length}</span>} className={styles.waiting}>
+          <Card title="Ждут" badges={jobs.data ? <span className={styles.n}>{groups.queued.length}</span> : undefined} className={styles.waiting}>
             {body(
               groups.queued.length ? (
                 <div className={styles.scroll}>
@@ -100,7 +108,7 @@ export default function Queue() {
 
           <Card
             title="Завершено"
-            badges={<span className={styles.n}>{finished.length}</span>}
+            badges={jobs.data ? <span className={styles.n}>{finished.length}</span> : undefined}
             help="Галочка — прогон готов; чип — итог по разметке или число СТОП. Ошибку можно повторить с теми же параметрами."
             helpPlacement="bottom"
             className={styles.finished}

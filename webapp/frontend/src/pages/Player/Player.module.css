@@ -60,6 +60,11 @@
   height: 700px;
   pointer-events: none;
 }
+/* labels that follow the 3D view: anchored at 0,0 and moved with `translate` (Hud.tsx) — no layout */
+.follow {
+  left: 0;
+  top: 0;
+}
 .hudc {
   position: absolute;
   left: 112px;
@@ -70,7 +75,7 @@
   align-items: flex-start;
 }
 .g {
-  background: rgba(8, 10, 16, 0.62);
+  background: rgba(8, 10, 16, 0.72);
   color: var(--white);
   border-radius: 14px;
   padding: 8px 12px;
@@ -80,7 +85,6 @@
   align-items: center;
   gap: 8px;
   white-space: nowrap;
-  backdrop-filter: blur(6px);
   min-height: 32px;
 }
 .g b {
@@ -92,13 +96,17 @@
   pointer-events: auto;
   margin: -4px -6px -4px 0;
 }
+.gErr {
+  background: var(--fault);
+  white-space: normal;
+  max-width: 420px;
+}
 .olabel {
   position: absolute;
   transform: translate(-50%, -100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  will-change: left, top;
 }
 .op {
   background: var(--stop) var(--hatch);
@@ -251,11 +259,6 @@
   width: 560px;
   box-shadow: var(--shadow-pop);
 }
-.glassActions {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-}
 
 /* ---------------------------------------------------------------- roof */
 .roofL {
@@ -379,7 +382,7 @@
 }
 .menuItem {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 112px 1fr;
   grid-template-rows: auto auto;
   column-gap: 10px;
   row-gap: 2px;
@@ -389,6 +392,10 @@
   background: transparent;
   border-radius: var(--r-sm);
   padding: 9px 12px;
+}
+.menuItem > :first-child {
+  justify-self: start;
+  grid-row: 1 / 3;
 }
 .menuItem:hover {
   background: var(--well);
@@ -477,8 +484,27 @@
   position: absolute;
   inset: -5px;
   border-radius: 34px;
-  animation: rs-pulse 1.6s ease-out infinite;
+  box-shadow: 0 0 0 9px rgba(208, 0, 27, 0.5);
+  animation: beacon-pulse 1.6s ease-out infinite;
   pointer-events: none;
+  will-change: transform, opacity;
+}
+/* the STOP pulse: a ring that swells and fades (transform + opacity only — no repaint) */
+@keyframes beacon-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.12, 1.45);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .b_stop::after {
+    animation: none;
+    opacity: 0;
+  }
 }
 .b_caution {
   background: var(--caution);
@@ -746,6 +772,10 @@
   background: var(--caution);
   box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.2), 0 0 12px 2px rgba(255, 179, 0, 0.7);
 }
+.lampNone {
+  background: var(--white);
+  box-shadow: inset 0 0 0 2.5px var(--ink);
+}
 .lampErr {
   background: var(--fault);
   box-shadow: 0 0 0 4px rgba(91, 78, 156, 0.2), 0 0 12px 2px rgba(91, 78, 156, 0.7);
@@ -782,15 +812,18 @@
   gap: 2px;
   flex: none;
 }
+/* keys in a well: a live key is raised white, one that has nowhere to go lies flat in the well
+   (ink icon, no fading — the site's disabled state) */
 .sgrp .sbtn {
-  background: transparent;
+  background: var(--white);
+  box-shadow: 0 1px 0 rgba(22, 21, 26, 0.05), 0 4px 10px -6px rgba(40, 30, 20, 0.45);
 }
 .sgrp .sbtn:hover:not(:disabled) {
-  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
 }
 .sgrp .sbtn:disabled {
   background: transparent;
-  opacity: 0.4;
+  box-shadow: none;
 }
 .sbtn {
   width: 40px !important;
@@ -860,10 +893,10 @@
 /* ---------------------------------------------------------------- run picker */
 .pick {
   position: absolute;
-  left: 118px;
-  right: 118px;
-  top: 116px;
-  height: 488px;
+  left: 140px;
+  right: 140px;
+  top: 136px;
+  height: 462px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -942,15 +975,17 @@
   flex: none;
 }
 .tKeys {
-  left: 470px;
-  width: 660px;
-  height: 150px;
-  top: 700px;
+  left: 800px;
+  width: auto;
+  height: auto;
+  top: 704px;
+  padding: 16px 22px 20px;
+  transform: translateX(-50%);
 }
 .keys {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 14px;
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
+  gap: 12px 26px;
   margin-top: 16px;
 }
 .key {
@@ -976,4 +1011,43 @@
 .scrubPick {
   justify-content: center;
   gap: 12px;
+}
+/* the tray while a run loads: the scrubber's shape in quiet wells */
+.scrubSkel i {
+  flex: none;
+  border-radius: var(--pill);
+  background: var(--well-2);
+  animation: sk-breathe 1.4s ease-in-out infinite alternate;
+}
+.skPlay {
+  width: 56px;
+  height: 56px;
+}
+.skGrp {
+  width: 86px;
+  height: 46px;
+}
+.skText {
+  width: 170px;
+  height: 22px;
+  margin: 0 6px;
+}
+.scrubSkel .skLane {
+  flex: 1;
+  height: 24px;
+  margin: 0 10px;
+}
+.skSpd {
+  width: 286px;
+  height: 46px;
+}
+@keyframes sk-breathe {
+  to {
+    background: var(--hair);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scrubSkel i {
+    animation: none;
+  }
 }

@@ -7,7 +7,7 @@ import type { Run } from '../../api/types';
 import { Icon, KpiTile, StopMark } from '../../components';
 import { fmtInt, fmtMs, fmtNum, fmtNumTrim, fmtPercent, plural } from '../../lib/format';
 import { falseStops, latencyHistogram, latestFirstStop, latestWithObject } from './kpis';
-import { useSize } from './useSize';
+import { useSize } from '../../lib/useSize';
 import styles from './Kpis.module.css';
 
 const RANGE_M = 210;
@@ -149,6 +149,19 @@ function Fit({ v, u }: { v: string; u?: string }) {
   );
 }
 
+/** A label with a shorter form for narrow tiles (container queries in Kpis.module.css): `early`
+ *  switches already at 1440 wide screens (a long label), else only at 1280. */
+function Label({ long, short, early }: { long: string; short: string; early?: boolean }) {
+  return (
+    <>
+      <span className={[styles.long, early ? styles.early : ''].join(' ')}>{long}</span>
+      <span className={[styles.short, early ? styles.early : ''].join(' ')} aria-hidden>
+        {short}
+      </span>
+    </>
+  );
+}
+
 const Empty = ({ dark }: { dark?: boolean }) => <div className={[styles.vizEmpty, dark ? styles.vizEmptyDark : ''].join(' ')} aria-hidden />;
 
 export function Kpis({ runs, offline }: { runs: Run[] | undefined; offline?: boolean }) {
@@ -166,8 +179,8 @@ export function Kpis({ runs, offline }: { runs: Run[] | undefined; offline?: boo
         variant="dark"
         size="lg"
         className={styles.tile}
-        icon={<Icon name="clock" size={17} />}
-        label="p95 задержка"
+        icon={<Icon name="clock" size={17} className={styles.ic} />}
+        label={<Label long="p95 задержка" short="p95" />}
         help="95 % кадров последнего прогона обработаны быстрее этого времени (весь конвейер детектора на кадр). Бюджет — 100 мс при 10 Гц."
         helpPlacement="top"
         viz={latest && series.data ? <LatencyViz latency={series.data.latency_ms} p95={latest.summary.latency_ms.p95} /> : <Empty dark />}
@@ -177,8 +190,8 @@ export function Kpis({ runs, offline }: { runs: Run[] | undefined; offline?: boo
       <KpiTile
         size="lg"
         className={styles.tile}
-        icon={<StopMark />}
-        label="Объект в габарите"
+        icon={<span className={styles.ic}><StopMark /></span>}
+        label={<Label long="Объект в габарите" short="В габарите" early />}
         help="Кадры, где по разметке в габарите объект, и сколько из них детектор ответил СТОП (последний прогон с объектом)."
         helpPlacement="top"
         viz={ev ? <ObjectsViz detected={ev.frames_detected} total={ev.frames_with_object_in_gauge} /> : <Empty />}
@@ -188,8 +201,8 @@ export function Kpis({ runs, offline }: { runs: Run[] | undefined; offline?: boo
       <KpiTile
         size="lg"
         className={styles.tile}
-        icon={<Icon name="rails" size={17} />}
-        label="Ложные СТОП"
+        icon={<Icon name="rails" size={17} className={styles.ic} />}
+        label={<Label long="Ложные СТОП" short="Ложные" />}
         help={
           fs?.perKm !== null && fs?.perKm !== undefined
             ? 'Эпизоды СТОП без объекта в габарите по разметке, на километр пути прогонов с разметкой.'
@@ -209,8 +222,8 @@ export function Kpis({ runs, offline }: { runs: Run[] | undefined; offline?: boo
       <KpiTile
         size="lg"
         className={styles.tile}
-        icon={<StopMark />}
-        label="Первый СТОП"
+        icon={<span className={styles.ic}><StopMark /></span>}
+        label={<Label long="Первый СТОП" short="1-й СТОП" />}
         help="Дистанция до препятствия в первом кадре со СТОП (последний прогон со СТОП); шкала — дальность лидара 210 м."
         helpPlacement="top"
         viz={firstStop && firstStop.distance !== null ? <FirstStopViz distance={firstStop.distance} /> : <Empty />}

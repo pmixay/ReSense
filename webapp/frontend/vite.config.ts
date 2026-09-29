@@ -20,11 +20,13 @@ export default defineConfig({
     chunkSizeWarningLimit: 800,
     rollupOptions: {
       output: {
-        // three / roslib stay in their own chunks, loaded only by the pages that import them
+        // three stays in its own chunk, loaded only by the player and the 3D previews. roslib is not
+        // a manual chunk: it has dynamic imports of its own, so a manual chunk would absorb Vite's
+        // preload helper and the entry would preload all of roslib; as a plain dynamic import it
+        // gets its own chunk anyway (api/rosbridge.ts, Прямой эфир only).
         manualChunks(id) {
           if (!id.includes('node_modules')) return undefined;
           if (id.includes('/three/')) return 'three';
-          if (id.includes('/roslib/')) return 'roslib';
           if (id.includes('/@tanstack/')) return 'query';
           if (/\/(react|react-dom|react-router|react-router-dom|scheduler|@remix-run)\//.test(id)) return 'react';
           return undefined;

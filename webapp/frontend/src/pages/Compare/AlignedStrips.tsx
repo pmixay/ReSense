@@ -8,6 +8,7 @@ import { DECISION_LABEL, decisionAt } from '../../lib/decisions';
 import { fmtDuration, fmtNumTrim } from '../../lib/format';
 import { RUN_COLORS, nearestIndex, niceTicks, playerUrl } from '../Runs/common/analysis';
 import type { Compared } from './data';
+import { RunLabel, mixedPresets } from './Tables';
 import styles from './Compare.module.css';
 
 export function AlignedStrips({ items }: { items: readonly Compared[] }) {
@@ -16,6 +17,7 @@ export function AlignedStrips({ items }: { items: readonly Compared[] }) {
   const [hover, setHover] = useState<number | null>(null);
   const tMax = Math.max(0.1, ...items.map((c) => c.series?.t[c.series.t.length - 1] ?? c.run?.summary.duration_s ?? 0));
   const ticks = niceTicks(0, tMax, 8);
+  const showPreset = mixedPresets(items);
 
   const tAt = (clientX: number) => {
     const r = area.current?.getBoundingClientRect();
@@ -40,9 +42,7 @@ export function AlignedStrips({ items }: { items: readonly Compared[] }) {
         return (
           <div key={c.id} className={styles.stripRow}>
             <span className={styles.key} style={{ background: RUN_COLORS[c.slot] }} aria-hidden />
-            <span className={styles.stripName} title={c.run?.name}>
-              {c.run?.name ?? '…'}
-            </span>
+            <RunLabel c={c} showPreset={showPreset} className={styles.stripName} />
             <div className={styles.stripCell}>
               {s ? (
                 <div style={{ width: `${Math.max(1, (Math.max(dur, 0.05) / tMax) * 100)}%` }}>

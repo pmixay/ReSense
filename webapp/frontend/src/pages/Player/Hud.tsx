@@ -6,7 +6,7 @@
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import type { DetectionDict, FrameResultDict } from '../../api/types';
 import { Icon, IconButton, Spinner } from '../../components';
-import { POINTS, fmtCount, fmtMeters, fmtNum, fmtNumTrim } from '../../lib/format';
+import { POINTS, fmtCount, fmtMeters, fmtNum, fmtNumTrim, plural } from '../../lib/format';
 import { CAMERA_HUD, envelopeText } from './cab';
 import { RULER_MARKS, type SceneOverlay } from '../../player/scene';
 import { TICK_LABELS, type CamMode } from '../../player/geometry';
@@ -20,6 +20,18 @@ const MAX_DET_LABELS = 3;
 const MAX_WARN_LABELS = 2;
 /** The inset's place in the glass (stage px, as in the mockup). */
 export const PIP_RECT = { x: 1296, y: 136, w: 204, h: 204, radius: 26 };
+
+/** Put a label at a screen point of the 3D view (hidden when the point is off screen). The
+ *  individual `translate` property moves it without a layout pass. */
+function place(el: HTMLElement | null | undefined, p: { visible: boolean; x: number; y: number } | undefined, dx = 0): void {
+  if (!el) return;
+  if (!p || !p.visible) {
+    if (el.style.visibility !== 'hidden') el.style.visibility = 'hidden';
+    return;
+  }
+  if (el.style.visibility !== 'visible') el.style.visibility = 'visible';
+  el.style.translate = `${(p.x + dx).toFixed(1)}px ${p.y.toFixed(1)}px`;
+}
 
 function nearestWarnings(w: readonly DetectionDict[], k: number): number[] {
   return w
@@ -36,13 +48,19 @@ export interface HudProps {
   onResetView: () => void;
   hasClouds: boolean;
   cloudLoading: boolean;
+  /** the backend's message when the cloud under the playhead failed (retried automatically) */
+  cloudError: string | null;
   buffering: boolean;
+  /** the frames could not be loaded (the glass shows the error banner) */
+  framesFailed: boolean;
+  /** retry a failed cloud list (null when nothing to retry) */
+  onRetryCloud: (() => void) | null;
   motion: Motion;
   /** registers the per-render position writer */
   register: (sink: OverlaySink | null) => void;
 }
 
-export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, buffering, motion, register }: HudProps) {
+export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, cloudError, buffering, framesFailed, onRetryCloud, motion, register }: HudProps) {
   const detRefs = useRef<(HTMLDivElement | null)[]>([]);
   const warnRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tickRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -57,24 +75,18 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
   const subject: DetectionDict | null = dets[0] ?? (warnIdx.length ? warns[warnIdx[0]] : null);
   const warnIdxKey = warnIdx.join(',');
 
+  const rulerMarks = useRef<SVGGElement[]>([]);
   const apply = useCallback<OverlaySink>(
     (ov) => {
-      const place = (el: HTMLElement | null | undefined, p: { visible: boolean; x: number; y: number } | undefined, dx = 0) => {
-        if (!el) return;
-        if (!p || !p.visible) {
-          el.style.visibility = 'hidden';
-          return;
-        }
-        el.style.visibility = 'visible';
-        el.style.left = `${(p.x + dx).toFixed(1)}px`;
-        el.style.top = `${p.y.toFixed(1)}px`;
-      };
-      detRefs.current.forEach((el, i) => place(el, ov.detections[i]));
-      warnRefs.current.forEach((el) => {
-        if (!el) return;
-        place(el, ov.warnings[Number(el.dataset.index)]);
-      });
-      tickRefs.current.forEach((el, i) => place(el, ov.ticks[i]));
+      const dr = detRefs.current;
+      for (let i = 0; i < dr.length; i += 1) place(dr[i], ov.detections[i]);
+      const wr = warnRefs.current;
+      for (let i = 0; i < wr.length; i += 1) {
+        const el = wr[i];
+        if (el) place(el, ov.warnings[Number(el.dataset.index)]);
+      }
+      const tr = tickRefs.current;
+      for (let i = 0; i < tr.length; i += 1) place(tr[i], ov.ticks[i]);
       place(envRef.current, ov.envTag, 16);
       const b = ov.bracket;
       const path = brkRef.current;
@@ -102,8 +114,8 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
           line.setAttribute('y1', ys[0].toFixed(1));
           line.setAttribute('y2', ys[ys.length - 1].toFixed(1));
         }
-        const marks = g.querySelectorAll<SVGGElement>('g[data-mark]');
-        marks.forEach((mk, i) => mk.setAttribute('transform', `translate(0 ${ys[i].toFixed(1)})`));
+        const marks = rulerMarks.current;
+        for (let i = 0; i < marks.length; i += 1) marks[i]?.setAttribute('transform', `translate(0 ${ys[i].toFixed(1)})`);
       }
     },
     // positions only touch the refs; the warning labels carry their index in data-index
@@ -121,7 +133,9 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
   }, [dets.length, warnIdxKey]);
 
   const nPoints = frame?.n_points;
-  const speedShown = motion.v > 0.05;
+  const framesLoading = buffering || (!frame && !framesFailed);
+  // the speed the job or the detector reported; the glide's fallback (objects' shift) is not shown as one
+  const speedShown = motion.v > 0.05 && (motion.source === 'given' || motion.source === 'estimated');
   return (
     <div className={styles.hud}>
       <div className={styles.hudc}>
@@ -133,9 +147,11 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
           )}
         </div>
         {hasClouds ? (
-          <div className={styles.g}>
-            облако <b>{nPoints !== undefined ? fmtNum(nPoints, 0) : '—'}</b> точек
-          </div>
+          nPoints !== undefined && (
+            <div className={styles.g}>
+              облако <b>{fmtNum(nPoints, 0)}</b> {plural(nPoints, POINTS)}
+            </div>
+          )
         ) : (
           <div className={styles.g}>
             <Icon name="cube" size={16} />
@@ -147,12 +163,20 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
             скорость <b>{fmtNumTrim(motion.v, 1)}</b> м/с
           </div>
         )}
-        {(cloudLoading || buffering) && (
+        {framesLoading || (!cloudError && cloudLoading) ? (
           <div className={styles.g}>
-            <Spinner size={14} tone="light" label={buffering ? 'Загрузка кадров' : 'Загрузка облака'} />
-            {buffering ? 'загрузка кадров' : 'загрузка облака'}
+            <Spinner size={14} tone="light" label={framesLoading ? 'Загрузка кадров' : 'Загрузка облака'} />
+            {framesLoading ? 'загрузка кадров' : 'загрузка облака'}
           </div>
-        )}
+        ) : cloudError ? (
+          <div className={`${styles.g} ${styles.gErr}`} role="status">
+            <Icon name="fault-circle" size={16} />
+            {cloudError}
+            {onRetryCloud && (
+              <IconButton icon="retry" label="Загрузить облако снова" size="xs" variant="glass" onClick={onRetryCloud} className={styles.gBtn} tooltip tooltipPlacement="right" />
+            )}
+          </div>
+        ) : null}
       </div>
 
       <svg className={styles.brk} width="1600" height="700" aria-hidden>
@@ -165,13 +189,13 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
           ref={(el) => {
             tickRefs.current[i] = el;
           }}
-          className={`${styles.tick} ${m === 50 ? styles.k50 : ''}`}
+          className={`${styles.tick} ${styles.follow} ${m === 50 ? styles.k50 : ''}`}
           style={{ visibility: 'hidden' }}
         >
           {m} м
         </div>
       ))}
-      <div ref={envRef} className={styles.envtag} style={{ visibility: 'hidden' }}>
+      <div ref={envRef} className={`${styles.envtag} ${styles.follow}`} style={{ visibility: 'hidden' }}>
         <i />
         габарит {envelopeText()}
       </div>
@@ -182,7 +206,7 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
           ref={(el) => {
             detRefs.current[i] = el;
           }}
-          className={styles.olabel}
+          className={`${styles.olabel} ${styles.follow}`}
         >
           <div className={styles.op}>
             <Icon name="stop-octagon" size={20} strokeWidth={2.6} />
@@ -202,7 +226,7 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
             warnRefs.current[k] = el;
           }}
           data-index={wi}
-          className={`${styles.olabel} ${styles.warnLabel}`}
+          className={`${styles.olabel} ${styles.follow} ${styles.warnLabel}`}
         >
           <div className={styles.op}>
             <Icon name="warning" size={18} strokeWidth={2.6} />
@@ -215,10 +239,15 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, b
         <svg className={styles.rul} width={PIP_RECT.w} height={PIP_RECT.h} aria-hidden>
           <g ref={rulerRef}>
             <line x1="22" x2="22" y1="0" y2="0" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-            {RULER_MARKS.map((h) => {
+            {RULER_MARKS.map((h, i) => {
               const big = Math.abs(h % 1) < 0.01;
               return (
-                <g key={h} data-mark="">
+                <g
+                  key={h}
+                  ref={(el) => {
+                    if (el) rulerMarks.current[i] = el;
+                  }}
+                >
                   <line x1="22" x2={big ? 32 : 28} y1="0" y2="0" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
                   {big && (
                     <text x="36" y="4.2" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#fff">

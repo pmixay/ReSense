@@ -48,7 +48,7 @@ export function liveView(link: LinkStatus, lastAt: number | null, now: number, p
 }
 
 export const VIEW_LABEL: Record<LiveView, string> = {
-  idle: 'нет связи',
+  idle: 'не подключено',
   connecting: 'подключение…',
   waiting: 'ждём данные',
   live: 'в эфире',
@@ -64,13 +64,15 @@ export interface Sample {
   /** ms in the feed's time basis (recording time for the sim, receive time for the node) */
   at: number;
   d: Decision;
-  /** the monitored free distance ahead (clear_distance, capped at the nearest obstacle) */
+  /** the monitored free distance ahead (clear_distance, capped at the nearest obstacle; null on FAULT) */
   free: number | null;
   latency: number | null;
 }
 
 export function sampleOf(msg: StatusMessage, at: number): Sample {
-  return { at, d: msg.decision, free: num(msg.clear_distance), latency: num(msg.node?.latency_ms) ?? num(msg.timing_ms?.total) };
+  // ОШИБКА: nothing is monitored, whatever clear_distance the frame carries
+  const free = msg.decision === 'FAULT' ? null : num(msg.clear_distance);
+  return { at, d: msg.decision, free, latency: num(msg.node?.latency_ms) ?? num(msg.timing_ms?.total) };
 }
 
 /** Drops samples older than the window before `now` (keeps the array sorted by `at`). */
@@ -88,9 +90,10 @@ export interface Slots {
   latency: (number | null)[];
 }
 
-/** Buckets the samples of the last `windowMs` into slots; a slot takes its most severe decision and
- *  the smallest free distance. A gap shorter than `holdMs` carries the previous slot forward (a
- *  10 Hz stream does not land in every 100 ms slot), a longer one stays empty: no data. */
+/** Buckets the samples of the last `windowMs` into slots; a slot takes its most severe decision, the
+ *  smallest free distance and the largest latency. A gap shorter than `holdMs` carries the previous
+ *  slot forward (a 10 Hz stream received with jitter does not land in every 100 ms slot), a longer
+ *  one stays empty: no data. */
 export function buildSlots(samples: readonly Sample[], now: number, windowMs = WINDOW_MS, slotMs = SLOT_MS, holdMs = STALE_MS): Slots {
   const n = Math.max(1, Math.round(windowMs / slotMs));
   const t0 = now - windowMs;
@@ -116,6 +119,7 @@ export function buildSlots(samples: readonly Sample[], now: number, windowMs = W
     if (i - last <= hold && last >= 0) {
       letters[i] = letters[last];
       free[i] = free[last];
+      latency[i] = latency[last];
     }
   }
   return { letters, free, latency };

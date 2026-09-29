@@ -53,6 +53,8 @@ export function Timeline({
   const navigate = useNavigate();
   const [scrub, setScrub] = useState<number | null>(null);
   const scrubRef = useRef<number | null>(null);
+  // only a press on the strip itself opens the player (not on the axis or a marker pill)
+  const pressed = useRef(false);
   const decisions = series?.decisions ?? r.summary.decisions;
   const n = decisions.length;
   const labelsCount = labelsInGauge ? labelsInGauge.filter(Boolean).length : null;
@@ -61,7 +63,8 @@ export function Timeline({
     setScrub(p);
   };
   const open = () => {
-    if (scrubRef.current !== null) navigate(playerUrl(r.id, scrubRef.current));
+    if (pressed.current && scrubRef.current !== null) navigate(playerUrl(r.id, scrubRef.current));
+    pressed.current = false;
   };
 
   return (
@@ -81,6 +84,9 @@ export function Timeline({
     >
       <div
         className={styles.stripWrap}
+        onPointerDownCapture={(e) => {
+          pressed.current = e.button === 0 && !!(e.target as Element).closest('[role="slider"]');
+        }}
         onPointerUp={open}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {

@@ -20,9 +20,12 @@ def test_standard_and_schema(client):
     for spec in schema:
         assert {"key", "group", "label", "help", "type", "default"} <= set(spec)
         assert spec["type"] in ("float", "int", "bool")
-    assert client.patch("/api/presets/standard", json={"name": "x"}).status_code == 403
+    r = client.patch("/api/presets/standard", json={"name": "x"})
+    assert r.status_code == 403 and "копию" in r.json()["detail"]
     r = client.delete("/api/presets/standard")
     assert r.status_code == 403 and "Стандарт" in r.json()["detail"]
+    r = client.get("/api/presets/nosuch")
+    assert r.status_code == 404 and r.json()["detail"] == "Пресет не найден"
 
 
 def test_crud_and_validation(client):
@@ -40,8 +43,8 @@ def test_crud_and_validation(client):
         ({"name": "A", "overrides": {"no.such_key": 1}}, 422, "Неизвестный параметр"),
         ({"name": "B", "overrides": {spec["key"]: spec["max"] + 1000}}, 422, "вне диапазона"),
         ({"name": "C", "overrides": {spec["key"]: "abc"}}, 422, "число"),
-        ({"name": "  ", "overrides": {}}, 422, "название"),
-        ({"name": "осторожный", "overrides": {}}, 409, "уже есть"),
+        ({"name": "  ", "overrides": {}}, 422, "название пресета"),
+        ({"name": "осторожный", "overrides": {}}, 409, "Пресет с таким названием уже есть"),
         ({"name": "Стандарт 1.0", "overrides": {}}, 409, "уже есть"),
         ({"overrides": {}}, 422, "name"),
     ):

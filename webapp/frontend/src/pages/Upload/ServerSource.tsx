@@ -4,18 +4,12 @@
 import { useEffect, useMemo, useState, type KeyboardEvent } from 'react';
 import { useRegisterServerRecording, useServerFiles, useSystem } from '../../api/hooks';
 import type { Recording, ServerEntry } from '../../api/types';
-import { Button, Chip, EmptyState, ErrorBanner, Help, Icon, Spinner, type IconName } from '../../components';
+import { Button, Chip, EmptyState, ErrorBanner, Help, Icon, IconButton, Spinner, type IconName } from '../../components';
 import { fmtBytes, fmtFrames, fmtInt } from '../../lib/format';
 import { RecordingCard } from './RecordingCard';
+import { isRecordingEntry } from './recording';
 import styles from './ServerSource.module.css';
 
-const FILE_RECORDING = /\.(jsonl|db3|mcap)$|(^|\/)metadata\.yaml$/i;
-
-/** A recording can be registered from this entry (a bag / npy folder, a .jsonl / storage file). */
-export function isRecordingEntry(e: ServerEntry): boolean {
-  if (e.type === 'dir') return e.is_bag || e.is_npy_dir;
-  return FILE_RECORDING.test(e.name);
-}
 
 function entryIcon(e: ServerEntry): IconName {
   if (e.is_bag) return 'zip';
@@ -39,8 +33,19 @@ export function ServerSource({ current, onRecording, onClear }: ServerSourceProp
   const root = sys.data?.server_root ?? '';
   const files = useServerFiles(path, { enabled: exists !== false, retry: false });
   const register = useRegisterServerRecording();
+  const { reset: resetRegister } = register;
+  // «Проверить снова» spins for its own request only, not for the background system polls
+  const [checking, setChecking] = useState(false);
+  const checkAgain = () => {
+    setChecking(true);
+    void sys.refetch().finally(() => setChecking(false));
+  };
 
-  useEffect(() => setSel(null), [path]);
+  // another folder: nothing selected, no stale error
+  useEffect(() => {
+    setSel(null);
+    resetRegister();
+  }, [path, resetRegister]);
 
   const crumbs = useMemo(() => {
     const parts = path ? path.split('/') : [];
@@ -81,12 +86,17 @@ export function ServerSource({ current, onRecording, onClear }: ServerSourceProp
           icon="server"
           title="Папка данных не найдена"
           action={
-            <div className={styles.missing}>
-              <code className={styles.code}>{root}</code>
-              <Help placement="top" width={270}>
-                Сервер ищет записи в этой папке. Путь задаёт переменная <b>RESENSE_DATA</b> при запуске сервера (по умолчанию <b>/data</b>). Положите туда папки
-                rosbag2 и обновите страницу.
-              </Help>
+            <div className={styles.missingCol}>
+              <div className={styles.missing}>
+                <code className={styles.code}>{root}</code>
+                <Help placement="top" width={270}>
+                  Сервер ищет записи в этой папке. Путь задаёт переменная <b>RESENSE_DATA</b> при запуске сервера (по умолчанию <b>/data</b>). Создайте её, положите
+                  туда папки rosbag2 и проверьте снова.
+                </Help>
+              </div>
+              <Button variant="dark" size="sm" icon="retry" loading={checking} onClick={checkAgain}>
+                Проверить снова
+              </Button>
             </div>
           }
         />
@@ -136,7 +146,17 @@ export function ServerSource({ current, onRecording, onClear }: ServerSourceProp
             <Spinner size={24} />
           </div>
         ) : entries.length === 0 ? (
-          <EmptyState icon="folder" size="sm" title="Папка пуста" />
+          <div className={styles.emptyDir}>
+            <span className={styles.emptyIc} aria-hidden>
+              <Icon name="folder" size={20} />
+            </span>
+            <div className={styles.emptyT}>Папка пуста</div>
+            <div className={styles.hint}>Положите сюда папку rosbag2, кэш .npy или результаты .jsonl.</div>
+            <div className={styles.missing}>
+              <code className={styles.code}>{[root.replace(/\/+$/, ''), path].filter(Boolean).join('/')}</code>
+              <IconButton icon="retry" label="Обновить" tooltip variant="white" size="sm" loading={files.isFetching} onClick={() => void files.refetch()} />
+            </div>
+          </div>
         ) : (
           <div className={styles.list} aria-label="Содержимое папки">
             {files.data?.parent !== null && files.data?.parent !== undefined && (

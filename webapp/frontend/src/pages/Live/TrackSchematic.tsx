@@ -7,13 +7,18 @@ import { DECISION_COLOR } from '../../lib/decisions';
 import { fmtInt, fmtNum } from '../../lib/format';
 import { ENVELOPE_PROFILE, RAILS_SPACING, WARNING_MARGIN, centerY, defaultTrackModel, profileBounds, samples, type TrackModelDict } from '../../lib/track';
 import { detectionRows, type StatusMessage } from './timeline';
-import { useSize } from './useSize';
+import { useSize } from '../../lib/useSize';
 import styles from './View.module.css';
 
 const X_MAX = 200;
 const LAT = 3.6; // ± metres shown across
 const PAD = { l: 58, r: 26, t: 74, b: 40 };
 const TICKS = [0, 50, 100, 150, 200];
+/** A regular octagon of radius 6,5 around (0, 0): the STOP sign of the object labels. */
+const OCTAGON = Array.from({ length: 8 }, (_, k) => {
+  const a = ((22.5 + 45 * k) * Math.PI) / 180;
+  return `${(6.5 * Math.cos(a)).toFixed(2)},${(6.5 * Math.sin(a)).toFixed(2)}`;
+}).join(' ');
 
 function trackOf(msg: StatusMessage | null): TrackModelDict {
   const t = msg?.track;
@@ -38,7 +43,9 @@ export function TrackSchematic({ msg, fresh, show = fresh }: TrackSchematicProps
   const sx = (x: number) => PAD.l + (Math.min(X_MAX, Math.max(0, x)) / X_MAX) * iw;
   const sy = (y: number) => PAD.t + ((LAT - y) / (2 * LAT)) * ih;
 
-  const clear = typeof msg?.clear_distance === 'number' && show ? Math.min(X_MAX, Math.max(3, msg.clear_distance)) : 3;
+  // ОШИБКА: the path is not monitored — no envelope in green and no range, only the objects
+  const monitored = show && msg?.decision !== 'FAULT';
+  const clear = typeof msg?.clear_distance === 'number' && monitored ? Math.min(X_MAX, Math.max(3, msg.clear_distance)) : 3;
   const band = (x0: number, x1: number, lo: number, hi: number) => {
     const xs = samples(x0, x1, 2);
     if (xs.length < 2) return '';
@@ -47,7 +54,10 @@ export function TrackSchematic({ msg, fresh, show = fresh }: TrackSchematicProps
     return `M${top.join(' L')} L${bot.join(' L')} Z`;
   };
   const line = (x0: number, x1: number, off: number) =>
-    'M' + samples(x0, x1, 2).map((x) => `${sx(x).toFixed(1)},${sy(centerY(track, x) + off).toFixed(1)}`).join(' L');
+    'M' +
+    samples(x0, x1, 2)
+      .map((x) => `${sx(x).toFixed(1)},${sy(centerY(track, x) + off).toFixed(1)}`)
+      .join(' L');
 
   const objects = show ? detectionRows(msg) : [];
   const ready = w > 0 && h > 0;
@@ -75,8 +85,8 @@ export function TrackSchematic({ msg, fresh, show = fresh }: TrackSchematicProps
           ))}
           {/* envelope: monitored part, then the rest outlined */}
           <path d={band(3, X_MAX, yMin, yMax)} className={styles.envRest} />
-          {show && <path d={band(3, clear, yMin, yMax)} className={fresh ? styles.env : styles.envPaused} />}
-          {show && (
+          {monitored && <path d={band(3, clear, yMin, yMax)} className={fresh ? styles.env : styles.envPaused} />}
+          {monitored && (
             <>
               <path d={line(3, clear, yMax + WARNING_MARGIN)} className={styles.margin} />
               <path d={line(3, clear, yMin - WARNING_MARGIN)} className={styles.margin} />
@@ -85,11 +95,17 @@ export function TrackSchematic({ msg, fresh, show = fresh }: TrackSchematicProps
           <path d={line(0, X_MAX, RAILS_SPACING / 2)} className={styles.rail} />
           <path d={line(0, X_MAX, -RAILS_SPACING / 2)} className={styles.rail} />
           <path d={line(0, X_MAX, 0)} className={styles.axis} />
-          {/* monitored range */}
-          {show && clear > 3 && (
+          {/* monitored range: the label sits in the bed under the envelope, clear of the card's
+              header (view switch) and of the object labels above the objects */}
+          {monitored && clear > 3 && (
             <g>
-              <line x1={sx(clear)} x2={sx(clear)} y1={PAD.t - 6} y2={h - PAD.b} className={styles.clearLine} />
-              <text x={Math.min(sx(clear), w - PAD.r)} y={PAD.t - 12} className={styles.clearText} textAnchor={sx(clear) > w - 120 ? 'end' : 'middle'}>
+              <line x1={sx(clear)} x2={sx(clear)} y1={PAD.t} y2={h - PAD.b} className={styles.clearLine} />
+              <text
+                x={sx(clear) > w - 140 ? sx(clear) - 8 : sx(clear) + 8}
+                y={sy(centerY(track, clear) - 2.5) - 10}
+                className={styles.clearText}
+                textAnchor={sx(clear) > w - 140 ? 'end' : 'start'}
+              >
                 контроль {fmtInt(clear)} м
               </text>
             </g>
@@ -107,7 +123,8 @@ export function TrackSchematic({ msg, fresh, show = fresh }: TrackSchematicProps
             const bw = Math.max(9, (o.size[0] / X_MAX) * iw);
             const bh = Math.max(9, (o.size[1] / (2 * LAT)) * ih);
             const gauge = o.zone === 'gauge';
-            const labelW = 58;
+            const label = `${fmtNum(o.distance, 1)} м`;
+            const labelW = 34 + 7.6 * label.length;
             return (
               <g key={o.key}>
                 <rect
@@ -120,10 +137,13 @@ export function TrackSchematic({ msg, fresh, show = fresh }: TrackSchematicProps
                   className={styles.obj}
                 />
                 {gauge && (
+                  // the STOP distance as the decision is drawn everywhere: hatched red with the octagon
                   <g transform={`translate(${Math.min(Math.max(cx - labelW / 2, 4), w - labelW - 4)}, ${cy - bh / 2 - 30})`}>
-                    <rect width={labelW} height={22} rx={11} className={styles.objPill} />
-                    <text x={labelW / 2} y={15} textAnchor="middle" className={styles.objText}>
-                      {fmtNum(o.distance, 1)} м
+                    <rect width={labelW} height={22} rx={11} fill={`url(#${hatchId})`} className={styles.objPill} />
+                    <polygon points={OCTAGON} transform="translate(12 11)" className={styles.objOct} />
+                    <line x1={8.8} x2={15.2} y1={11} y2={11} className={styles.objBar} />
+                    <text x={23} y={15} className={styles.objText}>
+                      {label}
                     </text>
                   </g>
                 )}

@@ -41,8 +41,9 @@ export interface LineChartProps {
   /** tooltip body at the hovered sample (idx = nearest index per line, −1 when a line has no data) */
   tooltip?: (t: number, idx: readonly number[]) => ReactNode;
   onPick?: (t: number, idx: readonly number[]) => void;
-  /** shade the stretches where the first line has no value, labelled (per stretch of sample indices) */
-  emptyLabel?: string | ((from: number, to: number) => string);
+  /** shade the stretches where the first line has no value, labelled (per sample index: a stretch
+   *  is split where its label changes) */
+  emptyLabel?: string | ((index: number) => string);
   /** under the x labels, aligned with the plot (e.g. a thin decision strip) */
   footer?: ReactNode;
   /** a cursor set from outside (e.g. the hovered event), in seconds */
@@ -153,17 +154,22 @@ export function LineChart({ lines, band, points, xMax, unit, minSpan = 1, toolti
     const first = lines[0];
     if (emptyLabel && first && first.v.some((v) => v !== null)) {
       const n = first.t.length;
+      const labelAt = (k: number) => (typeof emptyLabel === 'function' ? emptyLabel(k) : emptyLabel);
       let i = 0;
       while (i < n) {
         if (first.v[i] !== null) {
           i += 1;
           continue;
         }
+        const label = labelAt(i);
         let j = i;
-        while (j + 1 < n && first.v[j + 1] === null) j += 1;
+        while (j + 1 < n && first.v[j + 1] === null && labelAt(j + 1) === label) j += 1;
         const a = i === 0 ? L : (X(first.t[i - 1]) + X(first.t[i])) / 2;
         const b = j === n - 1 ? L + pw : (X(first.t[j]) + X(first.t[j + 1])) / 2;
-        if (b - a >= 6) empties.push({ x0: a, x1: b, label: typeof emptyLabel === 'function' ? emptyLabel(i, j) : emptyLabel });
+        // stretches with different labels side by side keep a hairline between them
+        const joined = empties.length > 0 && Math.abs(empties[empties.length - 1].x1 - a) < 0.5;
+        if (joined) empties[empties.length - 1].x1 -= 1;
+        if (b - a >= 6) empties.push({ x0: joined ? a + 1 : a, x1: b, label });
         i = j + 1;
       }
     }
