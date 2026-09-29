@@ -22,7 +22,7 @@ layouts and label tool: [`README.md`](README.md).
 | §8.5: robustness, tests, honest documentation | live validity contract, STOP hold, stale overlays, report schema v2, label import and numeric validation, Foxglove split-advertisement checks; browser tests cannot skip silently in CI | the organizers' stand is not available to the team |
 | §8.6: easy launch | [`README.md`](README.md): offline replay, browser validation, live Foxglove; the jury path (`scripts/play_bag.sh`, Docker CI) is P1's | — |
 | §8.7–8.8: approach, trade-offs, pitch | deck with speaker notes in the spec's order (the «увидел за 56 м» main shot on slide 9); in-sample and held-out figures labelled; misses and false alarms named; the team's approach to other teams' ideas (8 gated, 5 rejected, `shell` switched off after our safety review); no claims of arbitrary mounts, ready braking integration or unmeasured competitor accuracy | the captain: named deck, two rehearsals, the defence on 23.10 |
-| §8.1–8.4: quality, range, speed, generalization | the deck shows measured numbers and does not produce them: `GATE` in `scripts/build_deck.py` (the regression gate, provisional `r_1e2ed82` until the final gate), `N` (node and VM timings of 28.09, older dated checks), the independent judgement of 28.09 labelled as the earlier detector | final gate values into `GATE`, rebuild (coordinator) |
+| §8.1–8.4: quality, range, speed, generalization | the deck shows measured numbers and does not produce them: `GATE` in `scripts/build_deck.py` (the final regression gate `7464d80`, shell rule off), `N` (node and VM timings of 28.09, older dated checks), the independent judgement of 28.09 labelled as the earlier detector | done 29.09 night |
 
 ## Client behaviour fixed in the audit
 
@@ -67,8 +67,8 @@ check, not a visual Foxglove import.
 
 ## Rebuild of 29.09 evening (captain's pitch, agent)
 
-* `scripts/build_deck.py`: every number the regression gate measures in one `GATE` block (provisional
-  `r_1e2ed82`), `--check-gate <baseline.json>` lists the lines that differ; slides current for the rules
+* `scripts/build_deck.py`: every number the regression gate measures in one `GATE` block (the final
+  gate `7464d80`), `--check-gate <baseline.json>` lists the lines that differ; slides current for the rules
   of 29.09 (explained_run and the ego veto on, `shell` off), the «увидел за 56 м» main shot, the team's
   approach to other teams' ideas; `--team` reproduces P2's slides 2–3 with names and photos.
 * The public PPTX / PDF rebuilt, all 16 PDF pages inspected at presentation size, no overflow;

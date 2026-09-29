@@ -3,7 +3,7 @@
 > **Purpose:** what changed in ReSense, newest first, readable in two minutes; the full dated
 > history with every measurement: [`docs/archive/CHANGELOG_2026-09.md`](docs/archive/CHANGELOG_2026-09.md).
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29 night (`a5455b3`, `main` `7532a6b`): each section against the archived
+> **Last verified:** 2026-09-29 night (`fe27068`, seal `7464d80`, before the merge into `main`): each section against the archived
 > changelog, the 29.09 node change against the node source and launch file, the rules of 29.09
 > evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link ·
 > **Status:** current

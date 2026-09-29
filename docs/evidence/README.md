@@ -4,9 +4,9 @@
 > `results/`, the logs, captures and bench output of each run, and the recordings' original
 > metadata. One line per file or folder: what it is, date, commit, result.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-29 night (`a5455b3`, `main` `7532a6b`): every link of this index; "Start
-> here" points at the seal of 29.09 evening and its gate, and at the pending seal of the shell-off
-> detector; rows added for the 29.09 folders; each file remains the record of its own date ·
+> **Last verified:** 2026-09-29 night (`fe27068`, before the merge into `main`): every link of this index; "Start
+> here" points at the seal of 29.09 night (shell off) and its gate, and at the superseded seal of
+> 29.09 evening; rows added for the 29.09 folders; each file remains the record of its own date ·
 > **Status:** current
 
 Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
