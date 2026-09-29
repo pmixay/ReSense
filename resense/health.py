@@ -52,11 +52,15 @@ LEVELS = ("ok", "warn", "error")
 
 
 def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
-    """Exact unweighted histogram for the small explicit edge array used by health.
+    """Exact ``np.histogram(values, bins=edges)[0]`` for the small explicit edge array of health.
 
-    NumPy sorts chunks for explicit edges. Binary search counts the same intervals without
-    sorting the cloud. Keep unusual layouts/dtypes and subclass dispatch on the original path.
-    Working arrays are bounded to 65,536 values and at most 256 bins.
+    Counts ``values >= edge`` for every edge: vectorised comparisons, no sort (``np.histogram``
+    sorts for explicit edges, slow on NumPy 1.x without AVX-512) and no per-value binary search
+    (branchy, slower than ``np.histogram`` on NumPy 2). Values are compared in float64, as
+    ``np.histogram`` compares float32 data with float64 edges; NaN fails every comparison and
+    +-inf cancel out, as there. Unusual layouts/dtypes and subclass dispatch keep the original
+    call. 29.09: replaces the 28.09 binary search, same counts (docs/evidence/cycle_2026-09-29/
+    health_compare_counts).
     """
     floating = (np.dtype("float32"), np.dtype("float64"))
     if not (type(values) is np.ndarray and values.ndim == 1 and values.dtype in floating
@@ -64,16 +68,11 @@ def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
             and 2 <= edges.size <= 257 and np.isfinite(edges).all()
             and (edges[1:] > edges[:-1]).all()):
         return np.histogram(values, bins=edges)[0]
-    n_bins = edges.size - 1
-    counts = np.zeros(n_bins, dtype=np.intp)
-    for start in range(0, values.size, 65536):
-        block = values[start:start + 65536]
-        indices = np.searchsorted(edges, block, side="right") - 1
-        # Only the final bin includes its right edge. Keep an array operand: a scalar
-        # float64 endpoint can round to float32 during comparison on NumPy 1.x.
-        indices[block == edges[-1:]] -= 1
-        valid = (indices >= 0) & (indices < n_bins)  # also excludes NaN and +/-inf
-        counts += np.bincount(indices[valid], minlength=n_bins)
+    v = values.astype(np.float64, copy=False)
+    e = edges.astype(np.float64, copy=False).tolist()
+    at_least = np.array([np.count_nonzero(v >= x) for x in e], dtype=np.intp)
+    counts = at_least[:-1] - at_least[1:]
+    counts[-1] += at_least[-1] - np.count_nonzero(v > e[-1])   # the last bin includes its right edge
     return counts
 
 

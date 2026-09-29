@@ -133,3 +133,24 @@ def test_complete_health_state_sequence_matches_oracle(monkeypatch, latency_affe
         monkeypatch.setattr(health, "_sector_counts", optimized)
         actual = new.update(*arguments, **options)
         assert actual == expected
+
+
+@pytest.mark.parametrize("value_dtype", [np.float32, np.float64])
+@pytest.mark.parametrize("edge_dtype", [np.float32, np.float64])
+def test_randomised_clouds_with_edge_nan_and_infinite_values(value_dtype, edge_dtype):
+    """29.09 (compare counts): random azimuths of any size, salted with every edge, the next float
+    outside the range, NaN, +-inf and -0.0, against np.histogram."""
+    rng = np.random.default_rng(29)
+    for trial in range(300):
+        sector = float(rng.choice([0.1, 0.7, 1.0, 2.5, 5.0, 7.3, 10.0]))
+        edges = np.arange(-30.0, 30.0 + 1e-6, sector).astype(edge_dtype)
+        n = int(rng.integers(0, 200_000 if trial % 50 == 0 else 3_000))
+        values = rng.uniform(-40.0, 40.0, n).astype(value_dtype)
+        if n > 12:
+            k = rng.integers(0, n, 12)
+            values[k[:6]] = edges[rng.integers(0, edges.size, 6)].astype(value_dtype)
+            values[k[6:9]] = (np.nan, np.inf, -np.inf)
+            values[k[9]] = np.nextafter(value_dtype(edges[-1]), value_dtype(np.inf))
+            values[k[10]] = np.nextafter(value_dtype(edges[0]), value_dtype(-np.inf))
+            values[k[11]] = -0.0
+        assert_counts(values, edges)
