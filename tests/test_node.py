@@ -1131,6 +1131,26 @@ def test_raw_cdr_input_gives_the_same_results_as_messages(node_cls, tunnel, box_
     assert b[-1]["node"]["latency_ms"] >= b[-1]["node"]["detect_ms"] > 0
 
 
+def test_a_cloud_without_a_ring_field_reaches_the_detector_with_unknown_channels(node_cls, tunnel, monkeypatch):
+    """Both decoders fill a missing ``ring`` field with zeros. The node passes ``ring=None`` then, so
+    the cross-ring rules (``tracking.far_min_ring_count``) see unknown channels, not one known channel
+    for every point (which would drop all far sparse evidence of a sensor without that field)."""
+    node = node_cls()
+    seen = []
+    process = node.detector.process
+    monkeypatch.setattr(node.detector, "process",
+                        lambda frame, **k: (seen.append(frame.ring), process(frame, **k))[1])
+    for k, drop_ring in enumerate((False, True)):
+        msg, _ = _cloud(tunnel[0].xyz, 0.1 * k)
+        if drop_ring:
+            msg.fields = [f for f in msg.fields if f.name != "ring"]   # its bytes become padding
+        node.on_cloud(msg, "/lidar_points", {"source_timestamp": time.time_ns()})
+    assert len(seen) == 2
+    assert seen[0] is not None and seen[0].dtype == np.uint16 and seen[0].size > 0
+    assert seen[1] is None
+    assert node.published["/resense/decision"][-1].data != "FAULT"
+
+
 def test_input_is_subscribed_raw_unless_disabled_and_bad_bytes_fall_back(node_cls):
     node = node_cls()
     assert all(sub.raw is True for sub in node.subs.values())

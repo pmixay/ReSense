@@ -288,6 +288,17 @@ def test_valid_padding_and_generic_payload_storage_preserve_points(bigendian, st
     _same(pointcloud2_to_arrays(single, 0.5, 250.0), expected)
 
 
+def test_has_field_tells_a_missing_ring_from_ring_zero():
+    layout = tuple(f for f in ORGANIZERS if f[0] != "ring")
+    with_ring, _ = _cloud({"x": [10.0], "y": [0.0], "z": [0.0], "ring": [0]})
+    without, _ = _cloud({"x": [10.0], "y": [0.0], "z": [0.0]}, layout=layout)
+    assert fastcloud.has_field(with_ring, "ring") and not fastcloud.has_field(without, "ring")
+    # the decoders cannot tell them apart: both give channel 0
+    assert fastcloud.decode(with_ring, 0.5, 250.0)[2].tolist() == [0]
+    assert fastcloud.decode(without, 0.5, 250.0)[2].tolist() == [0]
+    assert not fastcloud.has_field(SimpleNamespace(), "ring")
+
+
 @pytest.mark.parametrize("row_step", [None, 0])
 def test_implicit_packed_stride_remains_supported(row_step):
     msg, _ = _cloud({"x": [10.0, 20.0], "y": [0.0, 0.0], "z": [0.0, 0.0]})

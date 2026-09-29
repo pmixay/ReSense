@@ -895,8 +895,9 @@ class DetectorNode(Node):
                 fastcloud.packed(msg), self.cfg.sensor.min_range, self.cfg.sensor.max_range)
             xyz_v = xyz_s @ self.R_vs.T.astype(np.float32)
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
-            frame = Frame(xyz=xyz_v, intensity=inten, ring=ring, stamp=stamp, frame_id=msg.header.frame_id,
-                          meta={"n_raw": n_raw, "n_near": n_near})
+            # a cloud without a ring field has unknown channels, not channel 0 for every point
+            frame = Frame(xyz=xyz_v, intensity=inten, ring=ring if fastcloud.has_field(msg, "ring") else None,
+                          stamp=stamp, frame_id=msg.header.frame_id, meta={"n_raw": n_raw, "n_near": n_near})
             self._account_frame(stamp, (topic, msg.header.frame_id))
             self.last_speed, self.last_speed_source = self.ego_speed()
             t_detect = time.perf_counter()

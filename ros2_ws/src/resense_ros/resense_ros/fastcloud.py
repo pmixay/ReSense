@@ -123,6 +123,13 @@ def parse_pointcloud2(raw, make_header=_plain_header) -> SimpleNamespace:
                            data=data, is_dense=is_dense)
 
 
+def has_field(msg, name: str) -> bool:
+    """Whether the cloud declares the point field ``name``. Both decoders fill a missing ``ring``
+    with zeros (channel 0 for every point); the detector needs ``None`` there to tell an unknown
+    channel from a known single channel (``cluster.weak_min_rings``, ``tracking.far_min_ring_count``)."""
+    return any(getattr(f, "name", None) == name for f in (getattr(msg, "fields", None) or ()))
+
+
 def _xyz_leading(msg) -> bool:
     """x, y, z are native little-endian float32 at offsets 0, 4, 8: one 12-byte block per point."""
     if msg.is_bigendian or np.little_endian is False or int(msg.point_step) < 12:
