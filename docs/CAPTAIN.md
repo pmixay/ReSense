@@ -61,7 +61,7 @@ H = only a person can do it; A = an agent can do it, the captain merges.
 
 | # | item | who |
 |---|---|---|
-| 6 | The GO at `doubleT_obstacle` frame 111: `tracking.hold_misses` 1 → 2 was measured on 28.09 on the branch `gpt-score-push-20260928` (`docs/evidence/results/p1_raw_continuity_2026-09-28/` there): it restores the three frames but fails the strict gate (ride 130 → 150 alarm frames, 32 → 34 events; five recordings 40 → 46 alarm frames; more set F false detections) — **rejected, stays a documented limitation**. The `beyond_axis` demotion at platforms and the frequent CAUTION stay documented too. | H decides; P3 |
+| 6 | The GO at `doubleT_obstacle` frame 111 — **closed 29.09**. `tracking.hold_misses` 1 → 2 (measured 28.09 on the branch `gpt-score-push-20260928`) restored the three frames but failed the strict gate (ride 130 → 150 alarm frames, 32 → 34 events; five recordings 40 → 46 alarm frames; more set F false detections) and was rejected. What reached `main` in PR #27 is the bounded `tracking.stop_keep_low_s` = 0.3: on `6cafb28` the detector gives STOP on 193 of 201 frames with no gap, offline and through the node in CI (the 27.09 detector: 190, gaps at 111 / 117 / 197; `stop_keep_low_s` = 0 brings them back) — [`evidence/frame111_2026-09-29/`](evidence/frame111_2026-09-29/README.md). It was tuned on this one recording. The `beyond_axis` demotion at platforms and the frequent CAUTION stay documented. | done; P3 |
 
 **After the upload:**
 

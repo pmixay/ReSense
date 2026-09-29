@@ -31,6 +31,13 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
   (`cluster.weak_min_rings`, `tracking.far_min_ring_count`), provenance-aware STOP onset
   (`tracking.fresh_stop_evidence`) and bed / rail low-object support (`lowobj.local_support_*`);
   their profiles are `configs/experimental_*.yaml`.
+- The single GO at `doubleT_obstacle` frame 111 (and the CAUTION at 117 and 197) is closed:
+  `tracking.stop_keep_low_s` = 0.3 continues an already reported low STOP on returns that miss the
+  height threshold by at most `lowobj.straddle_keep_height_margin` = 0.03 m, and cannot start a track.
+  STOP on 193 of 201 frames with no gap, offline on the raw recording and through the node in Docker
+  in CI; the 27.09 detector gives 190 and the three gaps, and `stop_keep_low_s` = 0 brings them back.
+  Tuned on this one recording. Evidence:
+  [`docs/evidence/frame111_2026-09-29/`](docs/evidence/frame111_2026-09-29/README.md).
 - Tests: 1,225 pass; 8 are deselected because they need data caches.
 
 ### Changed — health sector counts (29.09; resealed)
@@ -110,7 +117,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
 - CI in two stages: `checks` (ruff, parameter copy, detector seal) gates the three other jobs.
 - Russian user guide on [GitBook](https://resense.gitbook.io/resense-docs/) (source `gitbook/`).
 - Documented limitation of the sealed detector: one GO at `doubleT_obstacle` frame 111 (the rail
-  object missed two frames in a row; [ARCHITECTURE](docs/ARCHITECTURE.md)).
+  object missed two frames in a row; [ARCHITECTURE](docs/ARCHITECTURE.md)). Closed on 29.09, see
+  the merge entry above.
 
 ## 2026-09-27 — detector quality cycle; the submitted detector, sealed
 
