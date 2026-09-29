@@ -1,0 +1,58 @@
+.ib {
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ink);
+  transition: background-color 0.15s, box-shadow 0.15s, color 0.15s;
+}
+.ib:disabled {
+  cursor: not-allowed;
+  background: var(--well-2);
+  color: var(--ink);
+  box-shadow: none;
+}
+.well {
+  background: var(--well);
+}
+.well:hover:not(:disabled) {
+  background: var(--well-2);
+}
+.white {
+  background: var(--white);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 8px 18px -10px rgba(0, 0, 0, 0.4);
+}
+.outline {
+  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--hair-2);
+}
+.outline:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.dark {
+  background: var(--ink);
+  color: var(--white);
+}
+.dark:hover:not(:disabled) {
+  background: #2A2930;
+}
+.fault {
+  background: var(--fault);
+  color: var(--white);
+}
+.red {
+  background: var(--red);
+  color: var(--white);
+}
+.glass {
+  background: var(--glass);
+  color: var(--white);
+  backdrop-filter: blur(6px);
+}
+.active {
+  background: var(--ink);
+  color: var(--white);
+}

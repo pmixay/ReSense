@@ -1,0 +1,110 @@
+.cab {
+  position: fixed;
+  inset: 0;
+  background: var(--cab-2);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 9px 28px 24px;
+  gap: 18px;
+  overflow: hidden;
+}
+.roof {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  flex: none;
+}
+.rpill {
+  height: 44px;
+  border-radius: 22px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px 0 6px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 8px 18px -10px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+.mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--red);
+  display: grid;
+  place-items: center;
+}
+.mark svg {
+  width: 26px;
+  height: 25px;
+}
+.pn {
+  font-family: var(--f-head);
+  font-weight: 700;
+  font-size: 14px;
+}
+.mline {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 20px;
+  width: 118px;
+  margin-left: 4px;
+}
+.mline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--red);
+}
+.mline i {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2.5px solid var(--red);
+  margin-right: 17px;
+}
+.mline i:last-child {
+  margin-right: 0;
+}
+.mline i.c {
+  width: 18px;
+  height: 18px;
+  border-width: 5px;
+}
+.glass {
+  flex: 1;
+  min-height: 0;
+  border-radius: 64px 64px 36px 36px;
+  background: radial-gradient(120% 90% at 50% 40%, #16233a 0%, var(--night) 70%);
+  box-shadow: 0 0 0 26px #F6F2EC, 0 0 0 28px rgba(22, 21, 26, 0.08), 0 30px 60px -20px rgba(40, 30, 20, 0.6);
+  margin: 30px 30px 12px;
+  color: var(--white);
+  display: grid;
+  place-items: center;
+}
+.glass > div > span:first-child {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.04);
+}
+.console {
+  flex: none;
+  height: 84px;
+  border-radius: 42px;
+  background: var(--white);
+  box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.5), 0 12px 30px -14px rgba(40, 30, 20, 0.5);
+  display: flex;
+  align-items: center;
+  padding: 10px 40px 0;
+}
+.hint {
+  font-weight: 700;
+  font-size: 13px;
+}

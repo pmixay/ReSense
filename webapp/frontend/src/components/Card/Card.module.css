@@ -1,0 +1,53 @@
+.card {
+  background: var(--card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  position: relative;
+  min-width: 0;
+  color: var(--ink);
+}
+.pad-md {
+  padding: 22px 24px;
+}
+.pad-sm {
+  padding: 16px 18px;
+}
+.pad-none {
+  padding: 0;
+  overflow: hidden;
+}
+.dark {
+  background: var(--ink);
+  color: var(--white);
+}
+.night {
+  background: var(--night);
+  color: var(--white);
+}
+.red {
+  background: linear-gradient(135deg, #EE1420 0%, var(--red) 45%, #C3000B 100%);
+  color: var(--white);
+  overflow: hidden;
+}
+.well {
+  background: var(--well);
+  box-shadow: none;
+}
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  min-height: 28px;
+  position: relative;
+  z-index: 2;
+}
+.title {
+  font-family: var(--f-head);
+  font-size: var(--fs-card-title);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.sp {
+  flex: 1;
+}

@@ -1,0 +1,98 @@
+.pl {
+  position: relative;
+  height: 104px;
+  --in: 46px;
+}
+.rail {
+  position: absolute;
+  left: var(--in);
+  right: var(--in);
+  top: 48px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--well-2);
+}
+.rail b {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  background: var(--ink);
+  transition: width 0.4s var(--ease);
+}
+.s {
+  position: absolute;
+  top: 52px;
+  left: calc(var(--in) + (100% - 2 * var(--in)) * var(--k) / var(--n));
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 3px solid var(--ink);
+  display: grid;
+  place-items: center;
+}
+.done {
+  background: var(--ink);
+  color: var(--white);
+}
+.current {
+  width: 40px;
+  height: 40px;
+  border-width: 9px;
+  box-shadow: 0 0 0 5px rgba(22, 21, 26, 0.07);
+}
+.spin::after {
+  content: '';
+  position: absolute;
+  inset: -17px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: var(--ink);
+  animation: rs-spin 1.2s linear infinite;
+}
+.failed .current {
+  border-color: var(--fault);
+  box-shadow: 0 0 0 5px var(--fault-tint);
+}
+.t {
+  position: absolute;
+  left: calc(var(--in) + (100% - 2 * var(--in)) * var(--k) / var(--n));
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-weight: 700;
+  font-size: var(--fs-min);
+  line-height: 16px;
+}
+.above {
+  top: 6px;
+}
+.below {
+  top: 82px;
+}
+.cur {
+  font-weight: 900;
+  text-decoration: underline 2.5px var(--ink);
+  text-underline-offset: 4px;
+}
+.failed .cur {
+  text-decoration-color: var(--fault);
+}
+
+.compact {
+  height: 88px;
+}
+.compact .rail {
+  top: 40px;
+}
+.compact .s {
+  top: 44px;
+}
+.compact .above {
+  top: 2px;
+}
+.compact .below {
+  top: 70px;
+}

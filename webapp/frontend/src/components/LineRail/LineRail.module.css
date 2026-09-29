@@ -1,0 +1,209 @@
+.band {
+  height: var(--rail-h);
+  background: var(--white);
+  border-bottom: 1px solid var(--hair);
+  position: relative;
+  z-index: 10;
+  --branch-w: 490px;
+  --branch-gap: 36px;
+}
+
+.main {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pad);
+  right: var(--pad);
+  transition: right 0.35s var(--ease);
+}
+.branched .main {
+  right: calc(var(--pad) + var(--branch-w) + var(--branch-gap));
+}
+.line,
+.bline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 27px;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--red);
+}
+.line::before,
+.line::after,
+.bline::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  width: 8px;
+  height: 28px;
+  border-radius: 4px;
+  background: var(--red);
+}
+.line::before {
+  left: -4px;
+}
+.line::after,
+.bline::after {
+  right: -4px;
+}
+.stations,
+.bstations {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 70px 0 22px;
+}
+.branched .stations {
+  padding-right: 40px;
+}
+
+/* ---- stations */
+.st {
+  position: relative;
+  width: 24px;
+  height: 100%;
+  flex: none;
+  border-radius: 12px;
+}
+.st:focus-visible {
+  box-shadow: none;
+}
+.st:focus-visible .c {
+  box-shadow: var(--focus);
+}
+.c {
+  position: absolute;
+  top: 21px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 5px solid var(--red);
+  transition: transform 0.15s;
+}
+.st:hover:not(.cur) .c {
+  transform: translateX(-50%) scale(1.15);
+}
+.lbl {
+  position: absolute;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-weight: 700;
+  font-size: 13.5px;
+  line-height: 18px;
+}
+.sub {
+  display: inline-block;
+  margin-left: 6px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.home .c {
+  width: 30px;
+  height: 30px;
+  top: 17px;
+  background: var(--red);
+  border: 0;
+  display: grid;
+  place-items: center;
+  color: var(--white);
+}
+.cur .c {
+  top: 12px;
+  width: 40px;
+  height: 40px;
+  border-width: 9px;
+  box-shadow: 0 0 0 6px rgba(228, 0, 13, 0.12);
+}
+.home.cur .c {
+  background: var(--white);
+  border: 9px solid var(--red);
+}
+.cur .lbl {
+  font-weight: 900;
+  text-decoration: underline 3px var(--red);
+  text-underline-offset: 5px;
+}
+/* a station with work in progress (Очередь while jobs run) */
+.busy .c {
+  background: var(--red);
+  animation: busy 1.6s ease-out infinite;
+}
+@keyframes busy {
+  0% {
+    box-shadow: 0 0 0 0 rgba(228, 0, 13, 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(228, 0, 13, 0);
+  }
+}
+
+/* ---- the «Система» branch (pages off the line) */
+.branch {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: var(--pad);
+  width: var(--branch-w);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(24px);
+  transition: opacity 0.25s var(--ease) 0.1s, transform 0.35s var(--ease), visibility 0s linear 0.35s;
+}
+.branched .branch {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.25s var(--ease) 0.1s, transform 0.35s var(--ease), visibility 0s;
+}
+/* a walking transfer from the end of the line to the branch */
+.transfer {
+  position: absolute;
+  left: calc(-1 * var(--branch-gap) + 6px);
+  width: calc(var(--branch-gap) - 4px);
+  top: 30px;
+  height: 4px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(90deg, var(--ink) 0 5px, transparent 5px 9px);
+}
+.roundel {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 13px;
+  box-shadow: 0 0 0 4px var(--white), 0 0 0 5.5px var(--hair-2);
+  z-index: 2;
+}
+.branchName {
+  position: absolute;
+  left: 14px;
+  top: 60px;
+  transform: translateX(-50%);
+  font-weight: 800;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.bline {
+  left: 20px;
+}
+.bstations {
+  left: 20px;
+  padding: 0 44px 0 118px;
+}

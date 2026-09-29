@@ -1,0 +1,91 @@
+.kpi {
+  background: var(--card);
+  border-radius: var(--r-tile);
+  box-shadow: var(--shadow);
+  padding: 18px 20px 17px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  color: var(--ink);
+}
+.dark {
+  background: var(--ink);
+  color: var(--white);
+}
+.green {
+  background: var(--go-tint);
+}
+.viz {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: var(--fs-label);
+  min-height: 20px;
+  white-space: nowrap;
+}
+.labelLow {
+  margin-top: auto;
+}
+.labelText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.value {
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 1;
+  margin-top: auto;
+  padding-top: 10px;
+  white-space: nowrap;
+  display: flex;
+  align-items: baseline;
+}
+.labelLow + .value {
+  margin-top: 0;
+}
+.value small {
+  font-size: 0.5em;
+  font-weight: 700;
+  margin-left: 5px;
+}
+.lg .value {
+  font-size: 36px;
+}
+.sub {
+  font-weight: 600;
+  font-size: var(--fs-meta);
+  margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stopMark {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--stop) var(--hatch);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.goodMark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--go-deep);
+  color: var(--white);
+  display: inline-grid;
+  place-items: center;
+  margin-left: 10px;
+  align-self: center;
+}

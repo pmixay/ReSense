@@ -1,0 +1,217 @@
+.root {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.track {
+  position: relative;
+  width: 100%;
+  touch-action: none;
+}
+.interactive {
+  cursor: pointer;
+}
+.interactive:focus-visible {
+  box-shadow: none;
+}
+.interactive:focus-visible .canvas {
+  box-shadow: var(--focus);
+}
+.canvas {
+  display: block;
+}
+
+/* marker pills above the strip */
+.mk {
+  position: absolute;
+  top: 2px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+}
+.mk b {
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 11px;
+  font-weight: 800;
+  font-size: 11px;
+  display: grid;
+  place-items: center;
+  white-space: nowrap;
+}
+.mk i {
+  width: 2px;
+  height: 6px;
+}
+.mk.start {
+  transform: none;
+  align-items: flex-start;
+}
+.mk.start i {
+  margin-left: 11px;
+}
+.mk.end {
+  transform: translateX(-100%);
+  align-items: flex-end;
+}
+.mk.end i {
+  margin-right: 11px;
+}
+.stop b {
+  background: var(--stop) var(--hatch);
+  color: var(--white);
+}
+.stop i {
+  background: var(--stop);
+}
+.go b {
+  background: var(--go-deep);
+  color: var(--white);
+}
+.go i {
+  background: var(--go-deep);
+}
+.caution b {
+  background: var(--caution);
+  color: var(--ink);
+}
+.caution i {
+  background: var(--caution);
+}
+.fault b {
+  background: var(--fault);
+  color: var(--white);
+}
+.fault i {
+  background: var(--fault);
+}
+.ink b {
+  background: var(--ink);
+  color: var(--white);
+}
+.ink i {
+  background: var(--ink);
+}
+
+/* playhead: ink bar, white outline, a knob below */
+.playhead {
+  position: absolute;
+  width: 4px;
+  background: var(--ink);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 2px var(--white);
+  pointer-events: none;
+  z-index: 3;
+}
+.playhead::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 3px var(--white);
+}
+
+.hover {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+.hoverTip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--white);
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.axis {
+  position: relative;
+  width: 100%;
+  margin-top: 4px;
+}
+.axis span {
+  position: absolute;
+  top: 6px;
+  transform: translateX(-50%);
+  font-weight: 700;
+  font-size: var(--fs-min);
+  white-space: nowrap;
+}
+.axis span::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  width: 1.5px;
+  height: 5px;
+  background: var(--ink);
+}
+.axis span.t0 {
+  transform: none;
+}
+.axis span.t0::before {
+  left: 0;
+}
+.axis span.tN {
+  transform: translateX(-100%);
+}
+.axis span.tN::before {
+  left: auto;
+  right: 0;
+}
+
+/* legend */
+.legend {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  white-space: nowrap;
+  flex-wrap: wrap;
+}
+.legend i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+.lg-go {
+  background: var(--go);
+}
+.lg-caution {
+  background: var(--caution);
+}
+.lg-stop {
+  background: var(--stop) var(--hatch);
+}
+.lg-fault {
+  background: var(--fault);
+}
+.lg-gt {
+  background: var(--hatch-ink);
+  width: 18px !important;
+  height: 8px !important;
+  vertical-align: 1px !important;
+}
