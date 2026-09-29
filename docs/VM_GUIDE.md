@@ -10,7 +10,9 @@
 > ([`evidence/vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md)), the node's start-up,
 > warm-up and shutdown against the launch file and the node, the image's default command against
 > `docker/Dockerfile`; 29.09 evening: §4.4's baseline selection against `main` `7532a6b` (it picks
-> `regression_baseline_2026-09-29_competitor_rules.json`) · **Status:** current
+> `regression_baseline_2026-09-29_competitor_rules.json`); 29.09 night: that baseline describes the
+> detector with `shell` on, so §4.4 needs the shell-off seal's baseline once it is committed ·
+> **Status:** current
 
 ## 0. What the VM is for
 
@@ -299,9 +301,11 @@ fallback is not real time at 360° on 4 physical cores, so there the script exit
 
 ### 4.4 Regression gate with the ride
 
+<!-- GATE: baseline name in the echo comment below → the committed copy of docs/evidence/cycle_2026-09-29/shell_off/gate.json (seal <SEAL-COMMIT>) -->
+
 ```bash
 BASELINE=$(python3 -c "import glob, json; print(max((json.load(open(p))['created'], p) for p in glob.glob('docs/evidence/results/regression_baseline_*.json') if json.load(open(p)).get('ride', {}).get('available'))[1])")
-echo "$BASELINE"      # the newest baseline with the ride: regression_baseline_2026-09-29_competitor_rules.json for the sealed detector (1e2ed82)
+echo "$BASELINE"      # the newest baseline with the ride; must be the copy of the current seal's gate (shell off, 29.09 night), not regression_baseline_2026-09-29_competitor_rules.json (1e2ed82, shell on)
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 4 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"

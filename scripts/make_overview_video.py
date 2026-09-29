@@ -269,15 +269,16 @@ BLOCKS = [
               note="img/hero_ride_clean.png · поездка организаторов, реальные данные"),
      ],
      "cards": [
-         num(8.6, "≈ 200 м", "тормозной путь с 80 км/ч при замедлении 1,2 м/с² (v² / 2a)"),
+         num(8.6, "100 · 200 · 300 м", "хорошо · очень хорошо · отлично: дальность обнаружения "
+                                        "по ТЗ, §8.2"),
          num(13.2, "13 км", "20-минутная поездка организаторов; препятствий для обучения нейросети "
                             "в данных почти нет", REAL),
      ],
      "subs": [
          (0.6, 5.0, "Поезд метро без машиниста должен сам понять, свободен ли путь впереди."),
-         (5.2, 9.8, "С 80 км/ч ему нужно около 200 метров, чтобы остановиться.",
-          "С восьмидесяти километров в час ему нужно около двухсот метров, чтобы остановиться."),
-         (10.0, 13.0, "А тоннель однообразен и почти всегда пуст:"),
+         (5.2, 10.0, "Дальность по ТЗ: 100 м — хорошо, 200 — очень хорошо, 300 — отлично.",
+          "Дальность по заданию: сто метров — хорошо, двести — очень хорошо, триста — отлично."),
+         (10.2, 13.0, "А тоннель однообразен и почти всегда пуст:"),
          (13.2, 17.6, "препятствий, на которых можно учить нейросеть, в данных почти нет."),
      ]},
     {"name": "Идея", "t0": 18.0, "t1": 35.0,
@@ -314,8 +315,8 @@ BLOCKS = [
          (35.4, 40.2, "Пять шагов на кадр: калибровка, модель пути, габарит, кластеры, подтверждение."),
          (40.4, 45.6, "На выходе — GO, CAUTION, STOP или FAULT и честная оценка дальности контроля.",
           "На выходе — гоу, кошн, стоп или фолт, и честная оценка дальности контроля."),
-         (45.8, 51.6, "От кадра до решения — меньше 100 мс на четырёх ядрах, без видеокарты.",
-          "От кадра до решения — меньше ста миллисекунд на четырёх ядрах, без видеокарты."),
+         (45.8, 51.6, "От кадра до решения — около 80 мс на четырёх ядрах, без видеокарты.",
+          "От кадра до решения — около восьмидесяти миллисекунд на четырёх ядрах, без видеокарты."),
      ]},
     {"name": "Демонстрация", "t0": 52.0, "t1": 101.0,
      "shots": [
@@ -328,10 +329,8 @@ BLOCKS = [
               note="архивная запись цепочки v0.6.2 · /resense/decision: STOP"),
          shot(76.0, 86.0, "video/doubleT_obstacle_cab.mp4", at=0.0, bits=0.35,
               note=f"архивное видео v0.6.2 · doubleT_obstacle, поезд стоит; числа — {GATE_NOTE}"),
-         shot(86.0, 95.0, "video/doubleT_obstacle_cab.mp4", at=9.0, bits=0.35,
-              note=f"архивное видео v0.6.2 · предмет на рельсе; числа — {GATE_NOTE}"),
-         shot(95.0, 101.0, "video/dashboard_current.mp4", at=0.0,
-              note="video/dashboard_current.mp4 · веб-интерфейс на архивных статусах узла, 2×"),
+         shot(86.0, 101.0, "video/doubleT_obstacle_cab.mp4", at=5.0, bits=0.35,
+              note=f"архивное видео v0.6.2 · человек уходит, предмет на рельсе; числа — {GATE_NOTE}"),
      ],
      "cards": [
          steps(52.4, ["docker load", "docker run", "ros2 bag play", "/resense/decision"],
@@ -356,14 +355,16 @@ BLOCKS = [
           f"На выходе узла — стоп: человек на пути, {words(DT_SAY_M)} {M(DT_SAY_M)}."),
          (76.2, 80.6, "Вот поезд в тоннеле. Вот лидар. А вот человек на пути:"),
          (80.8, 86.0, f"алгоритм увидел его за {DT_SAY_M} {M(DT_SAY_M)}"
-                      + (", и STOP держится до конца записи." if DT_GAPLESS else "."),
+                      + (", как только он вошёл в габарит." if G["dt_first_stop_frame"] <= 8 else "."),
           f"алгоритм увидел его за {words(DT_SAY_M)} {M(DT_SAY_M)}"
-          + (", и стоп держится до конца записи." if DT_GAPLESS else ".")),
-         (86.2, 90.8, f"Кадров с человеком — {_PERSON[0]}.", f"Кадров с человеком — {_PERSON[1]}."),
+          + (", как только он вошёл в габарит." if G["dt_first_stop_frame"] <= 8 else ".")),
+         (86.2, 90.8, f"Человек на пути — {_PERSON[0]}.", f"Человек на пути — {_PERSON[1]}."),
          (91.0, 95.8, f"Он уходит, на рельсе остаётся предмет: {_RAIL[0]}.",
           f"Он уходит, на рельсе остаётся предмет: {_RAIL[1]}."),
-         (96.0, 100.6, "Тот же STOP оператор видит в веб-интерфейсе.",
-          "Тот же стоп оператор видит в веб-интерфейсе."),
+         (96.0, 100.8, f"Всего STOP — {G['dt_stop_frames']} {FR(G['dt_stop_frames'])} из {F['dt_frames']}"
+                       + (", после первой тревоги без пропусков." if DT_GAPLESS else "."),
+          f"Всего стоп — {words(G['dt_stop_frames'])} {FR(G['dt_stop_frames'])} из "
+          f"{words(F['dt_frames'], 'gen')}" + (", после первой тревоги без пропусков." if DT_GAPLESS else ".")),
      ]},
     {"name": "Результаты", "t0": 101.0, "t1": 150.0,
      "shots": [
@@ -377,7 +378,7 @@ BLOCKS = [
          num(101.4, f"{G['o_inside_stop']} из {G['o_inside']}",
              f"объектов в габарите — STOP; вне габарита ложный STOP — {G['o_outside_false']} "
              f"{FR(G['o_outside_false'])}", ORG),
-         num(106.2, f"{G['o_big_center_m']} м", "ящик 2 × 2 м: первый STOP, поезд едет к нему", ORG),
+         num(105.0, f"{G['o_big_center_m']} м", "ящик 2 × 2 м: первый STOP, поезд едет к нему", ORG),
          num(115.4, f"{dec(RIDE_PER_KM)} на км",
              f"ложного события на поездке, где подбирались правила ({G['ride_events']} за "
              f"{F['ride_km']} км); пять пустых записей — {G['empty_events']}", REAL),
@@ -386,12 +387,12 @@ BLOCKS = [
                                            "обнаружения", OURS),
      ],
      "subs": [
-         (101.4, 106.0, "Объекты организаторов — их синтетика в реальной поездке."),
-         (106.2, 111.0, f"{_O_SUB}; ящик 2 × 2 метра — за {G['o_big_center_m']} "
+         (101.4, 104.8, "Объекты организаторов — их синтетика в реальной поездке."),
+         (105.0, 110.4, f"{_O_SUB}; ящик 2 × 2 метра — за {G['o_big_center_m']} "
                         f"{M(G['o_big_center_m'])}.",
           f"{_O_SAY}; ящик два на два метра — за {words(G['o_big_center_m'])} "
           f"{M(G['o_big_center_m'])}."),
-         (111.2, 114.8, f"Кубы по 30 см — лишь с {G['o_small_on_rail_m']}–{G['o_small_center_m']} м.",
+         (110.6, 114.8, f"Кубы по 30 см — лишь с {G['o_small_on_rail_m']}–{G['o_small_center_m']} м.",
           f"Кубы по тридцать сантиметров — лишь с {words(G['o_small_on_rail_m'], 'gen')} — "
           f"{words(G['o_small_center_m'], 'gen')} метров."),
          (115.4, 121.0, f"Ложные тревоги: на поездке {F['ride_km']} км — {G['ride_events']} "
@@ -403,7 +404,7 @@ BLOCKS = [
                         f"{EV(F['ride_events_before'])}, стало {G['ride_events']}.",
           f"Правила других команд против ложных тревог: было {words(F['ride_events_before'], gender='n')} "
           f"{EV(F['ride_events_before'])}, стало {words(G['ride_events'], gender='n')}."),
-         (132.6, 138.6, f"Одно правило выключили: висящий кабель оно пропускало до {F['shell_cable_on']} м.",
+         (132.8, 138.8, f"Одно правило выключили: висящий кабель оно пропускало до {F['shell_cable_on']} м.",
           f"Одно правило мы выключили: висящий кабель оно пропускало до "
           f"{words(F['shell_cable_on'], 'gen')} метров."),
          (139.4, 144.4, f"На нашей синтетике человека на подходе видно за {G['f_person_m']} "
@@ -429,8 +430,8 @@ BLOCKS = [
          num(164.4, f"{G['o_big_center_m']} м", "ящик 2 × 2 м — первый STOP, поезд едет", ORG),
      ],
      "subs": [
-         (150.4, 155.8, "Что получилось: узел ROS 2 в Docker — без интернета и без видеокарты.",
-          "Что получилось: узел рос два в докере — без интернета и без видеокарты."),
+         (150.4, 155.8, "Что получилось: узел ROS 2 в Docker, без интернета, и экран оператора.",
+          "Что получилось: узел рос два в докере, без интернета, и экран оператора."),
          (156.2, 163.8, f"Вот поезд в тоннеле. Вот лидар. А вот человек, которого наш алгоритм увидел "
                         f"за {DT_SAY_M} {M(DT_SAY_M)}.",
           f"Вот поезд в тоннеле. Вот лидар. А вот человек, которого наш алгоритм увидел "
@@ -1529,6 +1530,31 @@ def synthesize(voice_path, out_wav, length_scale=1.0, log=sys.stderr):
 
 # ================================================================ outputs
 
+def mmss(t):
+    return f"{int(t // 60)}:{t % 60:04.1f}"
+
+
+def script_markdown():
+    """The shot list and the narration of the cut as Markdown (for docs/video/README.md)."""
+    out = ["| время | блок | кадр | источник |", "|---|---|---|---|"]
+    for b in BLOCKS:
+        for s in b["shots"]:
+            src = s["src"] + (f" с {s['at']:g} с" if s["src"].endswith(".mp4") else "")
+            out.append(f"| {mmss(s['t0'])}–{mmss(s['t1'])} | {b['name']} | `{src}` | {s['note']} |")
+    out.append(f"| {mmss(FINAL['t0'])}–{mmss(DURATION)} | {BLOCKS[-1]['name']} | финальная карточка | "
+               f"{FINAL['chain']} · {FINAL['repo']} |")
+    out += ["", "Текст за кадром (субтитры = текст; в скобках — как читает голос, если иначе):", ""]
+    for b in BLOCKS:
+        out.append(f"**{b['name']}** ({mmss(b['t0'])}–{mmss(b['t1'])})")
+        out.append("")
+        for c in b["subs"]:
+            say = spoken(c)
+            extra = f" *({say})*" if say != c[2] else ""
+            out.append(f"* `{mmss(c[0])}–{mmss(c[1])}` {c[2]}{extra}")
+        out.append("")
+    return "\n".join(out)
+
+
 def write_srt(path, renderer, span=None):
     start, end = span or (0.0, DURATION)
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
@@ -1624,11 +1650,16 @@ def main(argv=None):
     ap.add_argument("--voice-scale", type=float, default=1.0, help="Piper length_scale (< 1 = faster)")
     ap.add_argument("--voice-wav", help="also keep the narration WAV here")
     ap.add_argument("--voice-only", action="store_true", help="only synthesize the narration and report")
+    ap.add_argument("--script-md", action="store_true",
+                    help="print the shot list and the narration as Markdown (docs/video/README.md) and exit")
     args = ap.parse_args(argv)
 
     bad = check_table()
     if bad:
         sys.exit("table problems:\n  " + "\n  ".join(bad))
+    if args.script_md:
+        print(script_markdown())
+        return
     W, H = (int(v) for v in args.size.lower().split("x"))
     if min(W, H) <= 0 or W % 2 or H % 2 or abs(W / H - 16 / 9) > 0.01:
         sys.exit("--size must be 16:9")

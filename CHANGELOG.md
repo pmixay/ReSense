@@ -25,7 +25,8 @@ archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of t
 
 - `cluster.shell_min_top` 2.3 → 0 (`a5455b3`: the code default, `configs/default.yaml` and the ROS copy): the
   `shell` signature switched on in PR #29 is off again the same night. An independent safety review of the three
-  rules below (29.09 evening; its runs repeated separately) found that it reads a floor-standing cluster's own top as
+  rules below (29.09 evening; [`docs/evidence/safety_review_2026-09-29/`](docs/evidence/safety_review_2026-09-29/README.md),
+  its first rows reproduced by the coordinator) found that it reads a floor-standing cluster's own top as
   the tunnel lining whenever the object continues above the 3.0 m envelope top, which the corridor clips. Synthetic
   tunnel, ray-cast, train at 22 m/s: the catalogue hanging cable `cable_low` (0.03 m, down to 0.2 m above the rail
   head — the case the organizers called very important, [QA session](docs/organizers/QA_session.md) fact 3) got its
