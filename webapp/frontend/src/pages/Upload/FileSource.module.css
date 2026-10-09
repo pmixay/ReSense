@@ -94,6 +94,19 @@
 .line b {
   font-weight: 800;
 }
+.warn {
+  color: var(--caution-deep);
+  font-weight: 800;
+}
+.notice {
+  margin-top: 5px;
+  font-weight: 600;
+  font-size: var(--fs-min);
+  color: var(--caution-deep);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .inlineErr {
   margin-top: 8px;
 }

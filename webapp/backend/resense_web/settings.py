@@ -1,7 +1,7 @@
 """Runtime settings from the environment (webapp/API.md, «Environment») and the data dir layout.
 
     <data_dir>/resense_web.sqlite     recordings, jobs, runs, presets
-    <data_dir>/uploads/<id>/          staging areas of unfinished uploads
+    <data_dir>/uploads/<id>/          staging areas of unfinished uploads (resumable: files/ and parts/)
     <data_dir>/recordings/<id>/       uploaded / demo recordings, uploaded labels
     <data_dir>/jobs/<id>/             spec.json, progress.json, result.json, worker.log of a job
     <data_dir>/runs/<id>/             results.jsonl (+ .idx), clouds.bin, clouds.json, series.json,
@@ -62,6 +62,7 @@ class Settings:
     port: int
     repo_root: Path
     frontend_dist: Path
+    upload_ttl_s: float = 72 * 3600.0     # an unfinished upload is kept this long after its last write
 
     @property
     def db_path(self) -> Path:
@@ -116,4 +117,5 @@ def get_settings() -> Settings:
         port=_env_int("RESENSE_WEB_PORT", 8080),
         repo_root=repo,
         frontend_dist=_env_path("RESENSE_WEB_STATIC", WEBAPP_DIR / "frontend" / "dist"),
+        upload_ttl_s=max(0.1, _env_float("RESENSE_WEB_UPLOAD_TTL_H", 72.0)) * 3600.0,
     )

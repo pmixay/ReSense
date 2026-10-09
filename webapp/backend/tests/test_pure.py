@@ -152,3 +152,41 @@ def test_json_and_headers():
     assert dumps({"a": float("inf"), "b": np.float32(1.5), "c": [np.int64(3)]}) == '{"a":null,"b":1.5,"c":[3]}'
     cd = content_disposition("Прогон_1.frames.csv", "x.csv")
     assert cd.startswith('attachment; filename="') and "filename*=UTF-8''" in cd and "%D0%9F" in cd
+
+
+def test_prefetch_keeps_order_errors_and_stops_early():
+    import threading
+    import time
+
+    from resense_web.worker import prefetch
+
+    assert list(prefetch(iter(range(50)), depth=2)) == list(range(50))
+
+    def failing():
+        yield 1
+        yield 2
+        raise RuntimeError("no PointCloud2 topic in bag")
+    got = []
+    with pytest.raises(RuntimeError, match="no PointCloud2 topic"):
+        for x in prefetch(failing()):
+            got.append(x)
+    assert got == [1, 2]
+
+    closed = threading.Event()
+
+    def endless():
+        try:
+            i = 0
+            while True:
+                yield i
+                i += 1
+        finally:
+            closed.set()
+    gen = prefetch(endless(), depth=3)
+    assert [next(gen) for _ in range(5)] == [0, 1, 2, 3, 4]
+    gen.close()                                   # the consumer stops: the reader thread ends too
+    t_end = time.monotonic() + 5
+    while not closed.is_set() and time.monotonic() < t_end:
+        time.sleep(0.01)
+    assert closed.is_set()
+    assert not any(t.name == "frame-reader" and t.is_alive() for t in threading.enumerate())

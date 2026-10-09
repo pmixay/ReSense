@@ -78,6 +78,12 @@ export function Hero() {
             </span>
             загружаем <b className={styles.lastName}>{upload.picked.name}</b>
             {upload.progress?.phase === 'uploading' && <> · {fmtPercent(upload.progress.fraction)}</>}
+            {upload.progress?.phase === 'uploading' && upload.progress.state === 'paused' && <> · пауза</>}
+            {upload.progress?.phase === 'uploading' && upload.progress.state === 'waiting' && <> · нет связи</>}
+            {upload.progress?.phase === 'uploading' && upload.progress.state === 'running' && upload.progress.etaS !== null && (
+              <> · осталось {fmtClock(upload.progress.etaS)}</>
+            )}
+            {upload.progress?.phase === 'finalizing' && <> · проверка на сервере</>}
           </Link>
           <ProgressBar
             value={upload.progress?.phase === 'uploading' ? upload.progress.fraction : null}

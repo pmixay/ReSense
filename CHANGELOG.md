@@ -20,6 +20,31 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 [PR #31](https://github.com/pmixay/ReSense/pull/31), branch `claude/prototype-website-rebuild-tz31o0` with `main`
 merged in; optional, it reaches `main` only through that PR with CI green.
 
+### Changed — resumable uploads for big recordings, faster processing (`webapp/`, 09.10)
+
+- Uploads are resumable and checked ([`webapp/API.md`](webapp/API.md), «Recordings»): a file over 8 MiB goes up in
+  8 MiB chunks, four requests at a time, in any order; every chunk carries the CRC-32 of its raw bytes and is
+  flushed to disk before it counts, so a dropped connection, a closed tab or a server restart loses at most the
+  chunks in flight. `GET /api/uploads/{id}` says what is missing; after a reload the page offers the unfinished
+  upload and continues it once the same file is picked again (another file asks before replacing it).
+  Unfinished uploads are kept 72 h after their last write (`RESENSE_WEB_UPLOAD_TTL_H`).
+- Compression on the wire: chunks are gzipped in Web Workers when that is faster than the link (adaptive: off on a
+  fast LAN, re-checked as data and link change). The synthetic lidar bags deflate to ≈ 0.65 of their size: a
+  333 MB demo bag through the page over an emulated 100 Mbit/s link took 18.6 s (17.9 MB/s) where the raw bytes
+  need 26.7 s, so the 25 GB / 100 Mbit/s case goes from ≈ 36 to ≈ 25 min (real bags may deflate differently).
+- Upload card: bytes, speed, time left (10 s average), the compression saved, «докачка» when resumed; pause /
+  continue / cancel buttons; automatic retries with backoff when the connection is gone («нет связи · повтор
+  через N с», at once when the browser is online again); a full server disk pauses with its message; the
+  browser asks before the page is left mid-upload. Главная shows the same state.
+- Finalize runs in the background with its stage (unpacking a zip shows its percentage): a 25 GB zip no longer
+  holds one HTTP request for minutes; a repeated call joins the running one.
+- Processing: the worker reads and decodes the next frames in a background thread while the detector works
+  (18–21 → 23–24 frames/s on the 10 s demo bag, same results).
+- Fixed: deleting an upload while it was being finalized removed the files under the unpacking (now 409) and a
+  late file PUT could land in a finalized upload; an interrupted unpacking could be taken for input; a recording
+  could be orphaned when registering it failed; a folder of upper-case `.NPY` frames was counted but processed
+  as zero frames.
+
 ### Added — the web prototype for the jury (`webapp/`, 29.09)
 
 - A multi-page web site with a Russian UI in the «Линия» design ([`webapp/README.md`](webapp/README.md)): FastAPI

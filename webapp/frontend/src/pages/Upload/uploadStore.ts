@@ -1,10 +1,14 @@
 // A file / folder upload that outlives the Загрузка page: the transfer keeps going while the user
 // looks at other pages (Главная, Очередь), its progress shows again on return, and the finished
 // recording becomes the chosen one (takeUploadResult). One upload at a time; a new one replaces it.
+// It can be paused and resumed; the server keeps what arrived, so after a reload (or a closed tab)
+// the unfinished upload is offered again (`pending`, kept in localStorage) and continues where it
+// stopped once the user picks the same files.
 import type { QueryClient } from '@tanstack/react-query';
 import { useSyncExternalStore } from 'react';
+import { ApiError, api } from '../../api/client';
 import { qk } from '../../api/hooks';
-import type { Recording } from '../../api/types';
+import type { Recording, UploadStatus } from '../../api/types';
 import { UploadAbortedError, uploadRecording, type UploadHandle, type UploadItem, type UploadProgress } from '../../api/upload';
 import type { KindGuess } from './kinds';
 
@@ -24,16 +28,34 @@ export interface UploadRun {
   error: string | null;
 }
 
+/** An upload left unfinished by a reload: the server holds part of it, the browser no longer has
+ *  the files (it cannot reopen them by itself), so the user picks them again to continue. */
+export interface PendingUpload {
+  uploadId: string;
+  name: string;
+  files: { path: string; size: number; lastModified: number }[];
+  bytes: number;
+  /** picked as a folder (paths with "/"): «Продолжить» opens the folder picker */
+  folder: boolean;
+  savedAt: string;
+}
+
 export interface UploadStore {
   run: UploadRun | null;
   /** the recording of the last finished upload, until the page takes it */
   result: Recording | null;
+  pending: PendingUpload | null;
+  /** bytes the server holds of the pending upload (null until known) */
+  pendingReceived: number | null;
 }
 
-let store: UploadStore = { run: null, result: null };
+const STORAGE_KEY = 'resense.upload.v1';
+
+let store: UploadStore = { run: null, result: null, pending: null, pendingReceived: null };
 let handle: UploadHandle | null = null;
 /** identifies the current upload: callbacks of a replaced / aborted one are ignored */
 let current: symbol | null = null;
+let loaded = false;
 const listeners = new Set<() => void>();
 const setStore = (patch: Partial<UploadStore>) => {
   store = { ...store, ...patch };
@@ -41,21 +63,132 @@ const setStore = (patch: Partial<UploadStore>) => {
 };
 const subscribe = (l: () => void) => {
   listeners.add(l);
+  loadPending();
   return () => {
     listeners.delete(l);
   };
 };
 const snapshot = () => store;
 
-/** Uploads the picked files as one recording (an upload already running is aborted first). */
-export function startUpload(qc: QueryClient, picked: Picked): void {
+// ---------------------------------------------------------------- the persisted session
+
+function readSession(): PendingUpload | null {
+  try {
+    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+    if (!raw) return null;
+    const s = JSON.parse(raw) as PendingUpload;
+    return s && typeof s.uploadId === 'string' && Array.isArray(s.files) ? s : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeSession(s: PendingUpload | null): void {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    if (s) localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+    else localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // private mode / quota: resuming after a reload is just not offered
+  }
+}
+
+function sessionOf(uploadId: string, picked: Picked): PendingUpload {
+  return {
+    uploadId,
+    name: picked.name,
+    files: picked.items.map((i) => ({ path: i.path, size: i.file.size, lastModified: i.file.lastModified || 0 })),
+    bytes: picked.bytes,
+    folder: picked.items.some((i) => i.path.includes('/')),
+    savedAt: new Date().toISOString(),
+  };
+}
+
+/** The picked files are the pending upload's files (paths, sizes, modification times). */
+export function matchesPending(p: PendingUpload, items: UploadItem[]): boolean {
+  if (p.files.length !== items.length) return false;
+  const byPath = new Map(items.map((i) => [i.path, i.file]));
+  return p.files.every((f) => {
+    const file = byPath.get(f.path);
+    return !!file && file.size === f.size && (!f.lastModified || !file.lastModified || file.lastModified === f.lastModified);
+  });
+}
+
+/** Reads the unfinished upload of an earlier visit (once per page load: the first subscriber). */
+function loadPending(): void {
+  if (loaded) return;
+  loaded = true;
+  void restorePending();
+}
+
+/** The unfinished upload kept in localStorage becomes `pending`; the server says what it holds. */
+export async function restorePending(): Promise<void> {
+  const s = readSession();
+  if (!s || store.run) return;
+  setStore({ pending: s, pendingReceived: null });
+  await refreshPending();
+}
+
+export async function refreshPending(): Promise<void> {
+  const p = store.pending;
+  if (!p) return;
+  try {
+    const st = await api.get<UploadStatus>(`/uploads/${encodeURIComponent(p.uploadId)}`);
+    if (store.pending?.uploadId !== p.uploadId) return;
+    if (st.state === 'done') {
+      // finished while the page was away: nothing to resume
+      writeSession(null);
+      setStore({ pending: null, pendingReceived: null, result: st.recording ?? store.result });
+      return;
+    }
+    setStore({ pendingReceived: st.bytes_received });
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 404 && store.pending?.uploadId === p.uploadId) {
+      writeSession(null); // expired or removed on the server
+      setStore({ pending: null, pendingReceived: null });
+    }
+  }
+}
+
+/** Forgets the unfinished upload and removes what the server holds of it. */
+export function discardPending(): void {
+  const p = store.pending;
+  if (!p) return;
+  writeSession(null);
+  setStore({ pending: null, pendingReceived: null });
+  api.del(`/uploads/${encodeURIComponent(p.uploadId)}`).catch(() => undefined);
+}
+
+// ---------------------------------------------------------------- leaving the page
+
+const onBeforeUnload = (e: BeforeUnloadEvent) => {
+  e.preventDefault();
+  e.returnValue = ''; // the browser asks «Покинуть сайт?»; the upload can be resumed afterwards
+};
+function guardUnload(on: boolean) {
+  if (typeof window === 'undefined') return;
+  if (on) window.addEventListener('beforeunload', onBeforeUnload);
+  else window.removeEventListener('beforeunload', onBeforeUnload);
+}
+
+// ---------------------------------------------------------------- the upload
+
+/** Uploads the picked files as one recording (an upload already running is aborted first).
+ *  With `resumeId` (the pending upload's id) the server's part is kept and only the rest is sent. */
+export function startUpload(qc: QueryClient, picked: Picked, resumeId?: string | null): void {
   handle?.abort();
   const token = Symbol('upload');
   current = token;
-  setStore({ run: { picked, status: 'uploading', progress: null, error: null }, result: null });
+  if (store.pending && store.pending.uploadId !== resumeId) discardPending();
+  setStore({ run: { picked, status: 'uploading', progress: null, error: null }, result: null, pending: null, pendingReceived: null });
+  guardUnload(true);
   // (the first progress report comes synchronously, from inside uploadRecording)
   const h = uploadRecording(picked.items, {
     name: picked.name || undefined,
+    resumeId,
+    onStaged: (uploadId) => {
+      if (current === token) writeSession(sessionOf(uploadId, picked));
+    },
     onProgress: (progress) => {
       if (current === token && store.run) setStore({ run: { ...store.run, progress } });
     },
@@ -66,6 +199,8 @@ export function startUpload(qc: QueryClient, picked: Picked): void {
       if (current !== token) return;
       current = null;
       handle = null;
+      guardUnload(false);
+      writeSession(null);
       qc.setQueryData(qk.recording(rec.id), rec);
       void qc.invalidateQueries({ queryKey: qk.recordings });
       void qc.invalidateQueries({ queryKey: qk.system });
@@ -75,6 +210,8 @@ export function startUpload(qc: QueryClient, picked: Picked): void {
       if (current !== token) return;
       current = null;
       handle = null;
+      guardUnload(false);
+      writeSession(null); // a failed upload's staging area is removed (uploadRecording)
       if (err instanceof UploadAbortedError || !store.run) setStore({ run: null });
       else setStore({ run: { ...store.run, status: 'error', progress: null, error: err instanceof Error ? err.message : String(err) } });
     },
@@ -86,8 +223,20 @@ export function abortUpload(): void {
   const h = handle;
   current = null;
   handle = null;
+  guardUnload(false);
+  writeSession(null);
   h?.abort();
   setStore({ run: null });
+}
+
+/** Pauses the transfer (what arrived stays on the server). */
+export function pauseUpload(): void {
+  handle?.pause();
+}
+
+/** Continues a paused / waiting transfer at once. */
+export function resumeUpload(): void {
+  handle?.resume();
 }
 
 /** Forgets a failed upload. */

@@ -346,6 +346,39 @@ export interface UploadedFile {
   size_bytes: number;
 }
 
+/** A file sent in chunks (POST /uploads/{id}/chunked, PUT /uploads/{id}/chunked/{index}). */
+export interface ChunkedFileState {
+  path: string;
+  size_bytes: number;
+  chunk_size: number;
+  n_chunks: number;
+  received_chunks: number;
+  received_bytes: number;
+  complete: boolean;
+  /** ranges [first, last] of the chunks still to send (absent in a chunk's answer) */
+  missing?: [number, number][];
+}
+
+export type FinalizeStage = 'starting' | 'unpacking' | 'probing' | 'saving';
+
+/** GET /uploads/{id}: what the server holds of an upload. */
+export interface UploadStatus {
+  upload_id: string;
+  name: string;
+  created_at?: string | null;
+  state: 'receiving' | 'finalizing' | 'done';
+  /** finished files */
+  files: UploadedFile[];
+  /** chunked files still being received */
+  partial: ChunkedFileState[];
+  bytes_received: number;
+  finalize: { stage: FinalizeStage; fraction: number | null } | null;
+  /** the last finalize failed (the area is kept: state "receiving") */
+  error: string | null;
+  /** state "done" */
+  recording: Recording | null;
+}
+
 export interface ServerEntry {
   name: string;
   path: string;

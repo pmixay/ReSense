@@ -10,6 +10,7 @@ import re
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Callable
 
 import numpy as np
 
@@ -23,6 +24,7 @@ SKIP_DIRS = {"__MACOSX"}
 MAX_ZIP_MEMBERS = 200_000
 ZIP_BOMB_RATIO = 1000        # uncompressed / compressed of one member
 ZIP_BOMB_MIN = 64 * 1024 ** 2
+UNZIP_BUFFER = 4 * 1024 * 1024
 
 
 class ProbeError(ValueError):
@@ -333,9 +335,20 @@ def find_input(root: Path) -> tuple[Path, list[str]]:
 
 # --- zip ----------------------------------------------------------------------------------------
 
-def safe_extract_zip(zip_path: Path, dest: Path, max_total: int) -> int:
+def zip_total_size(zip_path: Path) -> int:
+    """Uncompressed bytes declared by a zip's central directory (0 when it is not readable)."""
+    try:
+        with zipfile.ZipFile(zip_path) as zf:
+            return sum(int(i.file_size) for i in zf.infolist() if not i.is_dir())
+    except (zipfile.BadZipFile, OSError):
+        return 0
+
+
+def safe_extract_zip(zip_path: Path, dest: Path, max_total: int,
+                     progress: Callable[[int], None] | None = None) -> int:
     """Unpack ``zip_path`` under ``dest`` with zip-slip, symlink and zip-bomb guards; returns the
-    bytes written. Raises ProbeError (nothing usable is left half-written on failure)."""
+    bytes written. ``progress`` is called with the bytes written so far. Raises ProbeError (the
+    caller removes ``dest`` on failure: unpack into a temporary folder and rename it)."""
     import shutil
     import stat
 
@@ -386,7 +399,7 @@ def safe_extract_zip(zip_path: Path, dest: Path, max_total: int) -> int:
             try:
                 with zf.open(info) as src, open(target, "wb") as out:
                     while True:
-                        chunk = src.read(1024 * 1024)
+                        chunk = src.read(UNZIP_BUFFER)
                         if not chunk:
                             break
                         left -= len(chunk)
@@ -394,6 +407,8 @@ def safe_extract_zip(zip_path: Path, dest: Path, max_total: int) -> int:
                         if left < 0 or written > max_total:
                             raise ProbeError("Архив повреждён: размер файла больше заявленного")
                         out.write(chunk)
+                        if progress is not None:
+                            progress(written)
             except ProbeError:
                 raise
             except (zipfile.BadZipFile, OSError, EOFError, RuntimeError, NotImplementedError) as exc:
