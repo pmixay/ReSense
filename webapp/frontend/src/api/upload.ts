@@ -91,8 +91,9 @@ const PACKED = /\.(gz|tgz|zst|zstd|xz|bz2|7z|lz4|br|rar|png|jpe?g|mp4|webm)$/i;
 /** no byte moving and no answer for this long: the connection is dead, the request is retried */
 const STALL_MS = 60_000;
 const BACKOFF_MAX_S = 30;
-/** a request failing this often (not for the network) pauses the upload with the server's message */
-const MAX_ATTEMPTS = 6;
+/** a request failing this often (not for the network) pauses the upload with the server's message:
+ *  1 + 2 + 4 + 8 + 16 + 30 + 30 s of backoff, longer than the server waits for a silent body (60 s) */
+const MAX_ATTEMPTS = 8;
 const FINALIZE_POLL_MS = 1000;
 const REPORT_MS = 100;
 
@@ -145,14 +146,29 @@ export class SpeedMeter {
   }
 }
 
-/** retry: the network or a passing server trouble; pause: needs the user (disk full); fatal: the
- *  upload cannot go on (gone, too big, not a recording). */
+/** retry: the network or a passing server state (a corrupted body, a write of a dead connection
+ *  still holding the area: 409); pause: needs the user (disk full); fatal: the upload cannot go on
+ *  (gone, too big, not a recording, the file unreadable). */
 export function classifyError(err: unknown): 'retry' | 'pause' | 'fatal' {
   if (!(err instanceof ApiError)) return 'fatal';
   const s = err.status;
   if (s === 507) return 'pause';
-  if (s === 0 || s === 400 || s === 408 || s === 425 || s === 429 || (s >= 500 && s !== 501)) return 'retry';
+  if (s === 0 || s === 400 || s === 408 || s === 409 || s === 425 || s === 429 || (s >= 500 && s !== 501)) return 'retry';
   return 'fatal';
+}
+
+/** The failure makes the server's staging area useless (it is removed); after any other failure
+ *  it is kept, so the same files picked again continue the upload. */
+export function dropsArea(err: unknown): boolean {
+  return err instanceof ApiError && (err.status === 404 || err.status === 413 || err.status === 422);
+}
+
+/** The browser could not read the file any more (moved, deleted or changed on disk). */
+export class FileReadError extends Error {
+  constructor(path: string) {
+    super(`Не удалось прочитать «${path}»: файл перемещён или изменён. Выберите его снова — загрузка продолжится с того же места`);
+    this.name = 'FileReadError';
+  }
 }
 
 class TransferAborted extends Error {}
@@ -385,6 +401,7 @@ class Uploader {
 
   /** a JSON request, retried like the transfers (network, server hiccups); others throw */
   private async retrying<T>(fn: () => Promise<T>): Promise<T> {
+    let attempts = 0;
     for (;;) {
       if (!(await this.gate())) throw this.aborted ? new UploadAbortedError() : this.failed;
       try {
@@ -395,8 +412,12 @@ class Uploader {
         if (this.aborted) throw new UploadAbortedError();
         const kind = classifyError(err);
         if (kind === 'fatal') throw err;
-        if (kind === 'pause') this.pauseWith(errorMessage(err));
-        else this.backoff(err);
+        const network = err instanceof ApiError && err.status === 0;
+        attempts += network ? 0 : 1;
+        if (kind === 'pause' || attempts >= MAX_ATTEMPTS) {
+          attempts = 0;
+          this.pauseWith(errorMessage(err));
+        } else this.backoff(err);
       }
     }
   }
@@ -568,7 +589,13 @@ class Uploader {
     const item = this.items[task.file];
     const size = task.end - task.start;
     const gzip = size >= MIN_GZIP && !PACKED.test(item.path) && this.policy.next();
-    const prepared = await this.codec.prepare(item.file, task.start, task.end, gzip);
+    let prepared: PreparedChunk;
+    try {
+      prepared = await this.codec.prepare(item.file, task.start, task.end, gzip);
+    } catch {
+      if (this.paused || this.stopped()) throw new TransferAborted();
+      throw new FileReadError(item.path);
+    }
     if (gzip) this.policy.compressed(prepared.rawSize, prepared.body.byteLength, prepared.codecMs);
     if (this.paused || this.stopped()) throw new TransferAborted();
     const id = encodeURIComponent(this.uploadId as string);
@@ -633,8 +660,8 @@ export function uploadRecording(files: Iterable<File | UploadItem> | ArrayLike<F
   const promise = up.run();
   promise
     .catch((err: unknown) => {
-      // a failed (not cancelled) upload leaves a staging area behind: drop it
-      if (!(err instanceof UploadAbortedError) && up.uploadId) api.del(`/uploads/${encodeURIComponent(up.uploadId)}`).catch(() => undefined);
+      // a staging area that cannot become a recording is dropped; any other is kept for resuming
+      if (dropsArea(err) && up.uploadId) api.del(`/uploads/${encodeURIComponent(up.uploadId)}`).catch(() => undefined);
     })
     .finally(() => {
       if (typeof window !== 'undefined') window.removeEventListener('online', online);

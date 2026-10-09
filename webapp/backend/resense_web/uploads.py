@@ -24,7 +24,7 @@ import threading
 import time
 import zlib
 from contextlib import contextmanager
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Callable, Iterator
 
@@ -144,7 +144,6 @@ class ChunkedFile:
     complete: bool = False
     created_at: str = ""
     count: int = 0                  # chunks received
-    lock: threading.Lock = field(default_factory=threading.Lock, repr=False, compare=False)
 
     @property
     def n_chunks(self) -> int:
@@ -160,6 +159,11 @@ class ChunkedFile:
         if not self.has(i):
             self.bitmap[i >> 3] |= 1 << (i & 7)
             self.count += 1
+
+    def unmark(self, i: int) -> None:
+        if self.has(i):
+            self.bitmap[i >> 3] &= ~(1 << (i & 7)) & 0xFF
+            self.count -= 1
 
     @property
     def received_bytes(self) -> int:
@@ -268,6 +272,7 @@ class UploadStore:
         self._tasks: dict[str, FinalizeTask] = {}
         self._deleted: set[str] = set()
         self._chunked: dict[tuple[str, str], ChunkedFile] = {}
+        self._file_locks: dict[tuple[str, str], threading.RLock] = {}
         self._last_cleanup = time.monotonic()
 
     # -- areas ------------------------------------------------------------------------------------
@@ -310,6 +315,18 @@ class UploadStore:
         self._used.pop(upload_id, None)
         for k in [k for k in self._chunked if k[0] == upload_id]:
             del self._chunked[k]
+        for k in [k for k in self._file_locks if k[0] == upload_id]:
+            del self._file_locks[k]
+
+    def _file_lock(self, upload_id: str, key: str) -> threading.RLock:
+        """Serialises declaring / dropping / completing one path of an area, without holding the
+        store's lock (which the event loop takes) through multi-GB unlinks."""
+        with self._lock:
+            return self._file_locks.setdefault((upload_id, key), threading.RLock())
+
+    def touch(self, upload_id: str) -> None:
+        """Mark the area as written now (the stale cleanup counts from the last write)."""
+        self._touch(upload_id)
 
     def _touch(self, upload_id: str) -> None:
         try:
@@ -472,11 +489,15 @@ class UploadStore:
     def drop_chunked(self, upload_id: str, rel: PurePosixPath) -> None:
         """Forget a chunked upload of ``rel`` (its data and its reservation, if unfinished)."""
         key = file_key(rel)
-        with self._lock:
-            cf = self._load_chunked(upload_id, key)
-            self._chunked.pop((upload_id, key), None)
-        if cf is None:
-            return
+        with self._file_lock(upload_id, key):
+            with self._lock:
+                cf = self._load_chunked(upload_id, key)
+                self._chunked.pop((upload_id, key), None)
+            if cf is None:
+                return
+            self._unlink_chunked(upload_id, key, cf)
+
+    def _unlink_chunked(self, upload_id: str, key: str, cf: ChunkedFile) -> None:
         for suffix in (".part", ".json"):
             try:
                 (self._parts(upload_id) / f"{key}{suffix}").unlink()
@@ -506,7 +527,7 @@ class UploadStore:
             raise UploadError(422, "Слишком мелкие части для такого большого файла")
         fp = (fingerprint or "")[:200]
         key = file_key(rel)
-        with self.writing(upload_id), self._lock:      # check and create at once (two tabs, one path)
+        with self.writing(upload_id), self._file_lock(upload_id, key):   # check and create at once
             dest = self.target(upload_id, rel)
             with self._lock:
                 cur = self._load_chunked(upload_id, key)
@@ -555,7 +576,8 @@ class UploadStore:
         raw = decode_body(body, encoding, cf.chunk_len(index))
         if crc is not None and zlib.crc32(raw) != crc:
             raise UploadError(400, "Контрольная сумма части не совпала — она будет отправлена снова")
-        part = self._parts(upload_id) / f"{file_key(rel)}.part"
+        key = file_key(rel)
+        part = self._parts(upload_id) / f"{key}.part"
         try:
             fd = os.open(part, os.O_WRONLY)
         except FileNotFoundError:
@@ -563,6 +585,9 @@ class UploadStore:
                 return cf.to_api(missing=False)
             raise UploadError(404, f"Файл «{rel}» не объявлен — начните его загрузку заново") from None
         try:
+            # opened first, checked second: a file declared anew after this check has a new .part,
+            # and the bytes below go to the old one (unlinked), never into the new file
+            self._check_current(upload_id, key, cf, rel)
             _pwrite_all(fd, raw, index * cf.chunk_size)
             _sync(fd)                       # on disk before the chunk counts as received
         except OSError as exc:
@@ -571,15 +596,25 @@ class UploadStore:
             raise
         finally:
             os.close(fd)
-        with cf.lock:
-            if not cf.complete:
+        with self._file_lock(upload_id, key):
+            self._check_current(upload_id, key, cf, rel)
+            if not cf.complete and not cf.has(index):
                 cf.mark(index)
-                if cf.count == cf.n_chunks:
-                    self._complete(upload_id, cf, part)
-                else:
-                    self._save_chunked(upload_id, cf)
+                try:
+                    if cf.count == cf.n_chunks:
+                        self._complete(upload_id, cf, part)
+                    else:
+                        self._save_chunked(upload_id, cf)
+                except BaseException:
+                    cf.unmark(index)        # not counted: sending it again completes the file
+                    raise
         self._touch(upload_id)
         return cf.to_api(missing=False)
+
+    def _check_current(self, upload_id: str, key: str, cf: ChunkedFile, rel: PurePosixPath) -> None:
+        with self._lock:
+            if self._chunked.get((upload_id, key)) is not cf:
+                raise UploadError(409, f"Файл «{rel}» начат заново — эта часть относится к прежней загрузке")
 
     def _complete(self, upload_id: str, cf: ChunkedFile, part: Path) -> None:
         dest = self.target(upload_id, PurePosixPath(cf.path))

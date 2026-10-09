@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { crc32, crcHex } from './chunkCodec';
-import { SpeedMeter, UploadAbortedError, classifyError, cleanPath, suggestName, toUploadItems, uploadRecording, type UploadProgress } from './upload';
+import { FileReadError, SpeedMeter, UploadAbortedError, classifyError, cleanPath, dropsArea, suggestName, toUploadItems, uploadRecording, type UploadProgress } from './upload';
+import type { Codec } from './codec';
 import { ApiError } from './client';
 
 const CHUNK = 64 * 1024;
@@ -29,6 +30,7 @@ const server = {
   hook: null as null | ((r: Req) => Answer | undefined),
   sent: [] as Req[],
   deleted: 0,
+  finalize409: 0,
 };
 
 async function inflate(body: ArrayBuffer, gzip: boolean): Promise<Uint8Array> {
@@ -115,6 +117,10 @@ function fakeFetch(url: string, init: RequestInit) {
   }
   if (p === '/api/uploads/u1/finalize') {
     expect(u.searchParams.get('wait')).toBe('false');
+    if (server.finalize409 > 0) {
+      server.finalize409 -= 1;
+      return json({ detail: 'Файлы ещё передаются — дождитесь окончания загрузки' }, 409);
+    }
     return json({ upload_id: 'u1', state: 'finalizing', finalize: { stage: 'starting', fraction: null }, error: null, recording: null }, 202);
   }
   if (p === '/api/uploads/u1' && init.method === 'GET') {
@@ -161,7 +167,7 @@ const chunkPuts = () => server.sent.filter((r) => r.url.includes('/chunked/'));
 
 let fetchMock: ReturnType<typeof vi.fn>;
 beforeEach(() => {
-  Object.assign(server, { files: new Map(), chunks: new Map(), declared: new Map(), have: [], missing: null, status: 'ok', polls: 0, hook: null, sent: [], deleted: 0 });
+  Object.assign(server, { files: new Map(), chunks: new Map(), declared: new Map(), have: [], missing: null, status: 'ok', polls: 0, hook: null, sent: [], deleted: 0, finalize409: 0 });
   FakeXHR.live.clear();
   vi.stubGlobal('XMLHttpRequest', FakeXHR);
   fetchMock = vi.fn((url: string, init: RequestInit) => Promise.resolve(fakeFetch(url, init)));
@@ -197,7 +203,11 @@ describe('upload helpers', () => {
     expect(classifyError(new ApiError('связь', 0))).toBe('retry');
     expect(classifyError(new ApiError('crc', 400))).toBe('retry');
     expect(classifyError(new ApiError('прокси', 502))).toBe('retry');
+    expect(classifyError(new ApiError('ещё передаются', 409))).toBe('retry'); // a dead connection's write
     expect(classifyError(new ApiError('диск', 507))).toBe('pause');
+    expect(dropsArea(new ApiError('не запись', 422))).toBe(true);
+    expect(dropsArea(new ApiError('ещё передаются', 409))).toBe(false);
+    expect(dropsArea(new FileReadError('a.db3'))).toBe(false);
     expect(classifyError(new ApiError('нет', 404))).toBe('fatal');
     expect(classifyError(new ApiError('много', 413))).toBe('fatal');
     expect(classifyError(new Error('?'))).toBe('fatal');
@@ -348,6 +358,34 @@ describe('uploadRecording', () => {
     server.hook = (r) => (r.url.includes('/chunked/') ? { status: 413, body: { detail: 'Превышен максимальный размер загрузки (100 ГБ)' } } : undefined);
     const h = uploadRecording([file('a.db3', cloudish(2 * CHUNK))], { chunkSize: CHUNK });
     await expect(h.promise).rejects.toThrow('Превышен максимальный размер');
+    await vi.waitFor(() => expect(server.deleted).toBe(1)); // it can never become a recording
+  });
+
+  it('a finalize refused while a dead connection still holds the area is retried, never deleted', async () => {
+    server.finalize409 = 1;
+    const seen: UploadProgress[] = [];
+    const h = uploadRecording([file('r.jsonl', 5)], { pollMs: 10, onProgress: (p) => seen.push(p) });
+    expect((await h.promise).id).toBe('r1');
+    expect(calls('POST', '/api/uploads/u1/finalize')).toHaveLength(2);
+    expect(seen.some((p) => p.state === 'waiting' && p.notice === 'Файлы ещё передаются — дождитесь окончания загрузки')).toBe(true);
+    expect(server.deleted).toBe(0);
+  }, 10_000);
+
+  it('a file the browser can no longer read stops the upload but keeps what the server holds', async () => {
+    const broken: Codec = {
+      size: 1,
+      gzip: false,
+      prepare: () => Promise.reject(new DOMException('The requested file could not be read', 'NotReadableError')),
+      fingerprint: () => Promise.resolve('fp'),
+      dispose: () => undefined,
+    };
+    const h = uploadRecording([file('a.db3', cloudish(2 * CHUNK))], { chunkSize: CHUNK, codec: broken });
+    const err = await h.promise.catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(FileReadError);
+    expect((err as Error).message).toMatch(/^Не удалось прочитать «a\.db3»/);
+    await new Promise((r) => setTimeout(r, 20));
+    expect(server.deleted).toBe(0);
+    expect(h.uploadId).toBe('u1');
   });
 
   it('rejects an empty selection in Russian', async () => {

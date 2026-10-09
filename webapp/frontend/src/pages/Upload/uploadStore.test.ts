@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ApiError } from '../../api/client';
 import type { Recording } from '../../api/types';
 import type { UploadOptions, UploadProgress } from '../../api/upload';
 import { guessKind } from './kinds';
@@ -53,6 +54,7 @@ const calls: {
   abort: ReturnType<typeof vi.fn>;
   pause: ReturnType<typeof vi.fn>;
   resume: ReturnType<typeof vi.fn>;
+  handle: { uploadId: string | null };
 }[] = [];
 vi.mock('../../api/upload', async (orig) => {
   const real = await orig<typeof import('../../api/upload')>();
@@ -68,9 +70,10 @@ vi.mock('../../api/upload', async (orig) => {
       const abort = vi.fn(() => reject(new real.UploadAbortedError()));
       const pause = vi.fn();
       const resume = vi.fn();
+      const handle = { promise, abort, pause, resume, uploadId: null as string | null };
       opts.onProgress?.({ ...BASE });
-      calls.push({ opts, resolve, reject, abort, pause, resume });
-      return { promise, abort, pause, resume, uploadId: null };
+      calls.push({ opts, resolve, reject, abort, pause, resume, handle });
+      return handle;
     },
   };
 });
@@ -86,12 +89,12 @@ const settle = () => new Promise((r) => setTimeout(r, 0));
 const fetchMock = vi.fn();
 vi.stubGlobal('fetch', fetchMock);
 
-beforeEach(() => {
+beforeEach(async () => {
   calls.length = 0;
   abortUpload();
-  discardPending();
   takeUploadResult();
   storage.clear();
+  await restorePending(); // nothing stored: no pending upload (also one another tab was sending)
   fetchMock.mockReset();
   fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
 });
@@ -233,5 +236,60 @@ describe('resumable sessions', () => {
     await restorePending();
     startUpload(qc, picked('other')); // confirmed in the page: the old one is removed
     expect(fetchMock.mock.calls.some(([u, i]) => u === '/api/uploads/u9' && i?.method === 'DELETE')).toBe(true);
+  });
+
+  it('another tab sending it: shown, but neither resumed nor deleted here; a silent tab releases it', async () => {
+    const qc = new QueryClient();
+    storage.set(SESSION, JSON.stringify(pending({ tab: 'other-tab', aliveAt: Date.now() })));
+    answer({ state: 'receiving', bytes_received: 2 });
+    await restorePending();
+    expect(useUploadStore().pending).toMatchObject({ uploadId: 'u9', elsewhere: true });
+    discardPending();
+    startUpload(qc, picked('ride'), 'u9');
+    expect(calls).toHaveLength(0);
+    expect(fetchMock.mock.calls.some(([, i]) => i?.method === 'DELETE')).toBe(false);
+    expect(storage.has(SESSION)).toBe(true);
+
+    storage.set(SESSION, JSON.stringify(pending({ tab: 'other-tab', aliveAt: Date.now() - 60_000 })));
+    answer({ state: 'receiving', bytes_received: 2 });
+    await restorePending();
+    expect(useUploadStore().pending).toMatchObject({ uploadId: 'u9', elsewhere: false });
+  });
+
+  it('this tab beats a heartbeat into the session while it sends', async () => {
+    const qc = new QueryClient();
+    startUpload(qc, picked('ride'));
+    calls[0].opts.onStaged?.('u1');
+    const s = JSON.parse(storage.get(SESSION) ?? '{}');
+    expect(typeof s.tab).toBe('string');
+    expect(Date.now() - s.aliveAt).toBeLessThan(5000);
+    expect(s.elsewhere).toBeUndefined();
+    abortUpload();
+  });
+
+  it('a failure that leaves the area usable keeps the session: «Повторить» resumes, dismissing offers it', async () => {
+    const qc = new QueryClient();
+    startUpload(qc, picked('ride'));
+    calls[0].opts.onStaged?.('u1');
+    calls[0].handle.uploadId = 'u1';
+    calls[0].reject(new Error('Не удалось прочитать «ride.jsonl»'));
+    await settle();
+    expect(useUploadStore().run).toMatchObject({ status: 'error', resumeId: 'u1' });
+    expect(JSON.parse(storage.get(SESSION) ?? '{}').uploadId).toBe('u1');
+    answer({ state: 'receiving', bytes_received: 1 });
+    dismissUpload();
+    await settle();
+    expect(useUploadStore()).toMatchObject({ run: null, pending: { uploadId: 'u1', elsewhere: false } });
+  });
+
+  it('a failure that makes the area useless forgets it', async () => {
+    const qc = new QueryClient();
+    startUpload(qc, picked('bad'));
+    calls[0].opts.onStaged?.('u1');
+    calls[0].handle.uploadId = 'u1';
+    calls[0].reject(new ApiError('В загрузке не найдено ни записи rosbag2', 422));
+    await settle();
+    expect(useUploadStore().run).toMatchObject({ status: 'error', resumeId: null });
+    expect(storage.has(SESSION)).toBe(false);
   });
 });

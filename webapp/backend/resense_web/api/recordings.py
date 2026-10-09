@@ -1,12 +1,15 @@
 """Recordings (sources): uploads, the server folder browser, demo bags, labels."""
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import shutil
 import threading
 import time
 import zipfile
+
+from typing import AsyncIterator
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse
@@ -32,6 +35,7 @@ SCENARIOS = ("approach", "crossing", "clear")
 PROGRESS_ID = r"^[A-Za-z0-9_-]{8,64}$"
 ENCODING_HEADER = "X-Content-Encoding"     # transfer encoding of an upload body: identity | gzip
 CRC_HEADER = "X-Content-CRC32"             # CRC-32 (hex) of the raw bytes of an upload body
+BODY_IDLE_S = 60.0                         # an upload body that sends nothing this long is dropped
 
 
 class UploadCreate(BaseModel):
@@ -137,6 +141,21 @@ def _crc(request: Request) -> int | None:
     return value
 
 
+async def body_chunks(request: Request, idle_s: float | None = None) -> AsyncIterator[bytes]:
+    """``request.stream()``, ended with a 408 when no byte arrives for ``idle_s``: a client whose
+    connection died without a FIN / RST (Wi-Fi gone, NAT timeout) would otherwise keep its write
+    open, and the upload area busy (finalize refused), for ever."""
+    it = request.stream().__aiter__()
+    while True:
+        try:
+            chunk = await asyncio.wait_for(it.__anext__(), BODY_IDLE_S if idle_s is None else idle_s)
+        except StopAsyncIteration:
+            return
+        except asyncio.TimeoutError:
+            raise UploadError(408, "Данные перестали поступать — запрос прерван, часть будет отправлена снова") from None
+        yield chunk
+
+
 def _declared_length(request: Request) -> int | None:
     declared = request.headers.get("content-length", "")
     return int(declared) if declared.isdigit() else None
@@ -181,7 +200,7 @@ async def put_upload_file(upload_id: str, request: Request, path: str = Query(..
         fh = open(tmp, "wb")
         try:
             buf = bytearray()
-            async for chunk in request.stream():
+            async for chunk in body_chunks(request):
                 if not chunk:
                     continue
                 for piece in decoder.feed(chunk):
@@ -214,6 +233,7 @@ async def put_upload_file(upload_id: str, request: Request, path: str = Query(..
             raise
         if existing:
             store.release(upload_id, existing)
+        store.touch(upload_id)
     return {"path": rel.as_posix(), "size_bytes": written}
 
 
@@ -246,7 +266,7 @@ async def put_upload_chunk(upload_id: str, index: int, request: Request, path: s
             raise HTTPException(413, "Часть файла больше заявленного размера части")
         body = bytearray()
         try:
-            async for chunk in request.stream():
+            async for chunk in body_chunks(request):
                 body += chunk
                 if len(body) > cap:
                     raise HTTPException(413, "Часть файла больше заявленного размера части")

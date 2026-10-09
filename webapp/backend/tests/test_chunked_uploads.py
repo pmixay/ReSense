@@ -352,3 +352,84 @@ def test_a_retried_chunk_racing_the_original_is_a_no_op(env, monkeypatch):
     monkeypatch.setattr(uploads, "decode_body", original_finishes_meanwhile)
     r = store.write_chunk(uid, rel, 1, data[CHUNK:], zlib.crc32(data[CHUNK:]))
     assert r["complete"] and (env.uploads_dir / uid / "files" / "a.bin").read_bytes() == data
+
+
+def test_a_write_of_a_file_declared_anew_is_refused_not_mixed_in(env, monkeypatch):
+    """A chunk of the old declaration still in flight when the path is declared again (another
+    size / fingerprint): its bytes must not land in the new file, nor its state on disk."""
+    from resense_web import uploads
+    env.ensure_dirs()
+    store = uploads.UploadStore(env)
+    uid = store.create("x")
+    rel = PurePosixPath("a.bin")
+    old = os.urandom(4 * CHUNK)
+    store.declare(uid, rel, len(old), CHUNK, "old")
+    new = os.urandom(2 * CHUNK)
+    real = uploads.decode_body
+
+    def redeclared_meanwhile(body, encoding, expected):
+        monkeypatch.setattr(uploads, "decode_body", real)
+        store.declare(uid, rel, len(new), CHUNK, "new")
+        return real(body, encoding, expected)
+    monkeypatch.setattr(uploads, "decode_body", redeclared_meanwhile)
+    with pytest.raises(uploads.UploadError) as err:
+        store.write_chunk(uid, rel, 1, old[CHUNK:2 * CHUNK], zlib.crc32(old[CHUNK:2 * CHUNK]))
+    assert err.value.status == 409
+    st = store.status(uid)["partial"][0]
+    assert st["size_bytes"] == len(new) and st["received_chunks"] == 0
+    for i in (0, 1):
+        store.write_chunk(uid, rel, i, new[i * CHUNK:(i + 1) * CHUNK], zlib.crc32(new[i * CHUNK:(i + 1) * CHUNK]))
+    assert (env.uploads_dir / uid / "files" / "a.bin").read_bytes() == new
+    fresh = uploads.UploadStore(env)                       # what a restarted server reads from disk
+    assert fresh.status(uid)["partial"] == [] and fresh.status(uid)["files"] == [{"path": "a.bin", "size_bytes": len(new)}]
+
+
+def test_a_failed_completion_can_be_retried(env, monkeypatch):
+    from resense_web import uploads
+    env.ensure_dirs()
+    store = uploads.UploadStore(env)
+    uid = store.create("x")
+    rel = PurePosixPath("a.bin")
+    data = os.urandom(2 * CHUNK)
+    store.declare(uid, rel, len(data), CHUNK)
+    store.write_chunk(uid, rel, 0, data[:CHUNK], None)
+    real_replace = os.replace
+    monkeypatch.setattr(uploads.os, "replace", lambda *a: (_ for _ in ()).throw(OSError("disk hiccup")))
+    with pytest.raises(OSError):
+        store.write_chunk(uid, rel, 1, data[CHUNK:], None)
+    monkeypatch.setattr(uploads.os, "replace", real_replace)
+    assert store.status(uid)["partial"][0]["missing"] == [[1, 1]]     # not counted as received
+    assert store.write_chunk(uid, rel, 1, data[CHUNK:], None)["complete"]
+    assert (env.uploads_dir / uid / "files" / "a.bin").read_bytes() == data
+
+
+def test_a_silent_body_ends_with_408():
+    """A connection that died without a FIN / RST must not keep its write (and the area) open."""
+    import asyncio
+
+    from resense_web.api.recordings import body_chunks
+    from resense_web.uploads import UploadError
+
+    class Stalled:
+        async def stream(self):
+            yield b"first"
+            await asyncio.sleep(30)
+            yield b"never"
+
+    async def read():
+        out = []
+        async for c in body_chunks(Stalled(), idle_s=0.2):
+            out.append(c)
+        return out
+    with pytest.raises(UploadError) as err:
+        asyncio.run(read())
+    assert err.value.status == 408
+
+
+def test_a_whole_file_put_counts_as_activity(client, env):
+    uid = start(client)
+    meta = env.uploads_dir / uid / "meta.json"
+    past = time.time() - 3600
+    os.utime(meta, (past, past))
+    assert client.put(f"/api/uploads/{uid}/files", params={"path": "d/x.bin"}, content=b"12").status_code == 200
+    assert time.time() - meta.stat().st_mtime < 60

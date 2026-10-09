@@ -1,6 +1,6 @@
 """A big upload over a slow link in a real browser, the 25 GB case at a small scale: chunks with
 live bytes / speed / time left, compression on the wire, pause and resume, a connection that drops
-(retried as soon as it is back), a page reload in the middle (the same file picked again continues
+(retried as soon as it is back), a second tab that keeps its hands off it, a page reload in the middle (the same file picked again continues
 where the server stopped, nothing is sent twice) and the recording at the end, byte for byte.
 
   python -m pytest -q webapp/e2e/test_upload_resume.py        (~1 min)
@@ -93,6 +93,14 @@ def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
     expect(page.get_by_text(re.compile(r"^(Нет сети — загрузка продолжится|Связь с сервером прервалась)"))).to_be_visible()
     throttle(cdp)                                             # back: the browser's «online» retries at once
     expect(page.get_by_text(re.compile(r"^осталось"))).to_be_visible(timeout=15_000)
+
+    # a second tab sees the upload running there: it offers neither to continue nor to delete it
+    other_tab = page.context.new_page()
+    other_tab.goto(backend.url + "/upload")
+    expect(other_tab.get_by_text("идёт в другой вкладке")).to_be_visible()
+    expect(other_tab.get_by_role("button", name="Удалить незавершённую загрузку")).to_have_count(0)
+    expect(other_tab.get_by_role("button", name="Выбрать файлы")).to_be_disabled()
+    other_tab.close()
 
     # a reload in the middle: the browser asks first; the server keeps every finished chunk
     wait_until(lambda: received(api, uid) >= 8 * MB, timeout=60)

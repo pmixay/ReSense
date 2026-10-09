@@ -35,7 +35,11 @@ merged in; optional, it reaches `main` only through that PR with CI green.
 - Upload card: bytes, speed, time left (10 s average), the compression saved, «докачка» when resumed; pause /
   continue / cancel buttons; automatic retries with backoff when the connection is gone («нет связи · повтор
   через N с», at once when the browser is online again); a full server disk pauses with its message; the
-  browser asks before the page is left mid-upload. Главная shows the same state.
+  browser asks before the page is left mid-upload; a second tab shows the upload as running there and offers
+  neither to continue nor to delete it. Главная shows the same state. The staging area of a failed upload is
+  removed only when it cannot become a recording; otherwise «Повторить» continues it.
+- A request body that sends nothing for 60 s ends with 408, so a connection that died without a FIN / RST
+  cannot keep an upload busy (finalize refused) for ever; the client retries 409 instead of giving up.
 - Finalize runs in the background with its stage (unpacking a zip shows its percentage): a 25 GB zip no longer
   holds one HTTP request for minutes; a repeated call joins the running one.
 - Processing: the worker reads and decodes the next frames in a background thread while the detector works

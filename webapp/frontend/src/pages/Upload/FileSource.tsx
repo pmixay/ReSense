@@ -114,6 +114,7 @@ function UploadingCard({ run }: { run: UploadRun }) {
 
 function PendingCard({ pending, received, onContinue }: { pending: PendingUpload; received: number | null; onContinue: () => void }) {
   const what = pending.folder ? 'ту же папку' : pending.files.length > 1 ? 'те же файлы' : 'тот же файл';
+  const away = !!pending.elsewhere;
   return (
     <div className={styles.card}>
       <span className={[styles.fi, styles.fiWarn].join(' ')} aria-hidden>
@@ -124,7 +125,7 @@ function PendingCard({ pending, received, onContinue }: { pending: PendingUpload
           <span className={styles.name} title={pending.name}>
             {pending.name}
           </span>
-          <span className={[styles.kind, styles.kindWarn].join(' ')}>не завершена</span>
+          <span className={[styles.kind, styles.kindWarn].join(' ')}>{away ? 'идёт в другой вкладке' : 'не завершена'}</span>
         </div>
         <ProgressBar value={received === null ? null : received / Math.max(1, pending.bytes)} height={10} label="Незавершённая загрузка" className={styles.bar} />
         <div className={styles.line}>
@@ -133,13 +134,17 @@ function PendingCard({ pending, received, onContinue }: { pending: PendingUpload
               на сервере {fmtBytes(received)} из {fmtBytes(pending.bytes)}
             </span>
           )}
-          <span>выберите {what}, чтобы продолжить</span>
+          <span>{away ? 'новую загрузку можно начать, когда она закончится' : `выберите ${what}, чтобы продолжить`}</span>
         </div>
       </div>
-      <Button variant="dark" size="sm" icon="play" onClick={onContinue}>
-        Продолжить
-      </Button>
-      <IconButton icon="trash" label="Удалить незавершённую загрузку" tooltip variant="well" size="sm" onClick={discardPending} />
+      {!away && (
+        <>
+          <Button variant="dark" size="sm" icon="play" onClick={onContinue}>
+            Продолжить
+          </Button>
+          <IconButton icon="trash" label="Удалить незавершённую загрузку" tooltip variant="well" size="sm" onClick={discardPending} />
+        </>
+      )}
     </div>
   );
 }
@@ -203,7 +208,7 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     e.preventDefault();
     depth.current = 0;
     setDrag(false);
-    if (run?.status === 'uploading') return;
+    if (busy) return;
     setReading(true);
     try {
       take(await filesFromDataTransfer(e.dataTransfer));
@@ -212,7 +217,7 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     }
   };
 
-  const busy = run?.status === 'uploading' || reading;
+  const busy = run?.status === 'uploading' || reading || !!pending?.elsewhere;
   const attachLabels = async (p: Picked) => {
     if (!current) return;
     const rec = await labels.mutateAsync({ id: current.id, labels: p.items[0].file }).catch(() => null);
@@ -227,7 +232,11 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
   else if (run?.status === 'error')
     top = (
       <div className={styles.errBox}>
-        <ErrorBanner error={run.error} title="Запись не принята" onRetry={() => start(run.picked)} />
+        <ErrorBanner
+          error={run.error}
+          title={run.resumeId ? 'Загрузка остановлена' : 'Запись не принята'}
+          onRetry={() => (run.resumeId ? startUpload(qc, run.picked, run.resumeId) : start(run.picked))}
+        />
         <IconButton icon="x" label="Убрать" tooltip variant="white" size="sm" onClick={dismissUpload} />
       </div>
     );
