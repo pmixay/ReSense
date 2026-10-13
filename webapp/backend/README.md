@@ -27,6 +27,7 @@ unless `--install`): `scripts/run_webapp.sh` — http://localhost:8080/, `RESENS
 | `RESENSE_DATA` | `/data` | server-folder root for «Папка на сервере» (read-only, sandboxed) |
 | `RESENSE_WEB_MAX_UPLOAD_GB` | `100` | per upload staging area (a zip also after unpacking) |
 | `RESENSE_WEB_UPLOAD_TTL_H` | `72` | an unfinished (resumable) upload is kept this long after its last write |
+| `RESENSE_WEB_KEEPALIVE_S` | `130` | idle connection timeout (`--timeout-keep-alive`); behind a reverse proxy keep it above the proxy's idle timeout (Caddy 2 min), else the proxy can hit a connection the backend is closing and answer 502 |
 | `RESENSE_WEB_HOST` / `RESENSE_WEB_PORT` | `0.0.0.0` / `8080` | bind |
 | `RESENSE_WEB_STATIC` | `webapp/frontend/dist` | the built frontend (optional override) |
 

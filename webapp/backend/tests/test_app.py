@@ -1,8 +1,13 @@
 """App wiring: the built frontend with SPA fallback, CORS for the Vite dev server, GZip for JSON,
-Russian error bodies."""
+Russian error bodies; the server's keep-alive (it must outlast a reverse proxy's)."""
 from __future__ import annotations
 
 import dataclasses
+import os
+import socket
+import subprocess
+import sys
+import time
 
 from conftest import make_client
 
@@ -47,3 +52,58 @@ def test_cors_gzip_and_errors(client):
     assert r.status_code == 422 and "recording_id" in r.json()["detail"] and "обязательное" in r.json()["detail"]
     r = client.put("/api/presets")
     assert r.status_code == 405 and r.json()["detail"] == "Метод не поддерживается"
+
+
+def test_keep_alive_outlasts_the_proxy(env, monkeypatch):
+    """uvicorn closes an idle connection after 5 s unless told otherwise; a reverse proxy keeps its
+    idle upstream connections longer (Caddy 2 min) and may send a request on one uvicorn is closing:
+    Caddy answers 502, a POST is never retried. The server keeps idle connections 130 s."""
+    import uvicorn
+
+    from resense_web import __main__ as main_mod
+    from resense_web.settings import get_settings
+    seen = {}
+    monkeypatch.setattr(uvicorn, "run", lambda *a, **kw: seen.update(kw))
+    assert main_mod.main([]) == 0 and seen["timeout_keep_alive"] == 130
+    assert main_mod.main(["--timeout-keep-alive", "75"]) == 0 and seen["timeout_keep_alive"] == 75
+    monkeypatch.setenv("RESENSE_WEB_KEEPALIVE_S", "200")
+    get_settings.cache_clear()
+    assert main_mod.main([]) == 0 and seen["timeout_keep_alive"] == 200
+
+
+def _get(sock: socket.socket) -> bytes:
+    sock.sendall(b"GET /api/health HTTP/1.1\r\nHost: x\r\n\r\n")
+    data = b""
+    while b"\r\n\r\n" not in data or not data.endswith(b"}"):
+        chunk = sock.recv(4096)
+        if not chunk:
+            raise ConnectionError("the server closed the kept-alive connection")
+        data += chunk
+    return data
+
+
+def test_an_idle_connection_survives_uvicorns_default(env):
+    """The real server (python -m resense_web): a connection idle for 6 s, past uvicorn's default
+    5 s keep-alive, still serves the next request."""
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        port = s.getsockname()[1]
+    proc = subprocess.Popen([sys.executable, "-m", "resense_web", "--host", "127.0.0.1", "--port", str(port),
+                             "--log-level", "warning"], env=dict(os.environ), cwd=os.getcwd(),
+                            stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    try:
+        t_end = time.monotonic() + 60
+        while True:
+            try:
+                sock = socket.create_connection(("127.0.0.1", port), timeout=10)
+                break
+            except OSError:
+                assert proc.poll() is None and time.monotonic() < t_end, "the server did not start"
+                time.sleep(0.2)
+        with sock:
+            assert b" 200 OK" in _get(sock)
+            time.sleep(6.0)
+            assert b" 200 OK" in _get(sock)
+    finally:
+        proc.terminate()
+        proc.wait(10)

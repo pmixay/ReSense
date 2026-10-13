@@ -53,6 +53,13 @@ def _env_int(name: str, default: int) -> int:
         return default
 
 
+# Behind a reverse proxy the backend must keep an idle connection open longer than the proxy does:
+# whoever closes first must be the proxy, or it may send a request on a connection uvicorn is just
+# closing and answer 502 (a POST is never retried). uvicorn's own default is 5 s; Caddy keeps idle
+# upstream connections 2 min, Traefik 90 s, nginx 60 s.
+KEEP_ALIVE_S = 130
+
+
 @dataclass(frozen=True)
 class Settings:
     data_dir: Path
@@ -63,6 +70,7 @@ class Settings:
     repo_root: Path
     frontend_dist: Path
     upload_ttl_s: float = 72 * 3600.0     # an unfinished upload is kept this long after its last write
+    keep_alive_s: int = KEEP_ALIVE_S      # an idle HTTP connection is closed after this long
 
     @property
     def db_path(self) -> Path:
@@ -118,4 +126,5 @@ def get_settings() -> Settings:
         repo_root=repo,
         frontend_dist=_env_path("RESENSE_WEB_STATIC", WEBAPP_DIR / "frontend" / "dist"),
         upload_ttl_s=max(0.1, _env_float("RESENSE_WEB_UPLOAD_TTL_H", 72.0)) * 3600.0,
+        keep_alive_s=max(1, _env_int("RESENSE_WEB_KEEPALIVE_S", KEEP_ALIVE_S)),
     )

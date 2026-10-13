@@ -44,6 +44,12 @@ merged in; optional, it reaches `main` only through that PR with CI green.
   holds one HTTP request for minutes; a repeated call joins the running one.
 - Processing: the worker reads and decodes the next frames in a background thread while the detector works
   (18–21 → 23–24 frames/s on the 10 s demo bag, same results).
+- Fixed: occasional 502 from the reverse proxy. uvicorn closed idle connections after its default 5 s while Caddy
+  keeps idle upstream connections 2 min, so a request could go out on a connection the backend was just closing
+  (the page polls every 5 s, exactly on that boundary). Caddy replays a GET that hits it, but not a POST / PUT /
+  DELETE: reproduced through Caddy 2.6.2, 19 of 150 POSTs sent at the boundary got 502 («connection reset by
+  peer», «broken pipe», «EOF»). The backend now keeps idle connections 130 s (`RESENSE_WEB_KEEPALIVE_S`,
+  `--timeout-keep-alive`), longer than the proxy, which therefore always closes first.
 - Fixed: deleting an upload while it was being finalized removed the files under the unpacking (now 409) and a
   late file PUT could land in a finalized upload; an interrupted unpacking could be taken for input; a recording
   could be orphaned when registering it failed; a folder of upper-case `.NPY` frames was counted but processed

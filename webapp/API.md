@@ -318,6 +318,7 @@ to `127.0.0.1:8000` (`python -m resense_web --port 8000 --reload`); CORS allows 
 | `RESENSE_DATA` | `/data` | server-folder root for "Папка на сервере" |
 | `RESENSE_WEB_MAX_UPLOAD_GB` | `100` | per upload staging area |
 | `RESENSE_WEB_UPLOAD_TTL_H` | `72` | an unfinished upload is kept this long after its last write (checked at start and hourly) |
+| `RESENSE_WEB_KEEPALIVE_S` | `130` | an idle HTTP connection is closed after this long (`--timeout-keep-alive`). Behind a reverse proxy it must be longer than the proxy's idle timeout for upstream connections (Caddy 2 min, Traefik 90 s, nginx 60 s): the proxy must be the one to close, or it may send a request on a connection the backend is closing and answer 502 (a POST is never retried). uvicorn's own default is 5 s |
 | `RESENSE_WEB_HOST` / `RESENSE_WEB_PORT` | `0.0.0.0` / `8080` | bind |
 | `RESENSE_WEB_STATIC` | `<repo>/webapp/frontend/dist` | the built frontend to serve |
 
