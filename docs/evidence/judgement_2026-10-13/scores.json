@@ -1,0 +1,77 @@
+{
+  "commit": "2cb0463 (branch claude/eloquent-volta-qcxq9d); detector source identical to main 317eabf and release tag v1.0.0 (5d6e9b5)",
+  "detector_fingerprint": "075a20df9fcdba6605a92e6505ae4dfdb3bf410ec09d17a8b3c79ce714db9292 (scripts/detector_freeze.py verify: PASS, 36 files)",
+  "weights_note": "The spec publishes no weights; this 100-point split is an assumption given by the caller: 8.1=25, 8.2=15, 8.3=10, 8.4=15, 8.5=10, 8.6=10, 8.7=10, 8.8=5.",
+  "total": {"max": 100, "score": 66},
+  "criteria": {
+    "8.1 Работоспособность": {
+      "max": 25, "score": 15, "confidence": "medium-high",
+      "deductions": [
+        "-4: false alarms on obstacle-free data: 36 STOP episodes / 173 STOP frames in 1430 s (13,558 frames): ~91 episodes per hour; 32 episodes on the 20-min ride (~2.5/km with the team's 13 km); 7 of them start below 40 m (emergency-brake range)",
+        "-2: CAUTION on 35-67 % of empty-tunnel frames (43 % overall): the advisory channel carries little information",
+        "-2: silent misses found by the jury's ray-cast probes: a 2.8 m x 0.3 m pole inside the envelope (on the axis or 0.7 m off it) is demoted as 'column' and never gets STOP down to 5 m; a person-size box at 82-99 m on a curve merges with a long corridor-edge blob and is dropped as oversize (GO)",
+        "-1: small objects late: organizers' 0.3 m cubes STOP only from 48-56 m (GO while inside the envelope at 60-95 m); jury 0.3 m cube 41-45 m",
+        "-1: clear_distance reports the path clear beyond a visible in-gauge object in 148 of 694 set-O object frames (90 of them with GO)",
+        "credit: real person + object on rail: STOP on 193/201 frames, every frame from the first in-gauge frame (8), distance 55.5-56.6 m; organizers' set O: 8/8 in-gauge objects get STOP, 0 STOP on the near-outside cube, no false STOP in the 706 object-free frames; crossing/appearing objects confirmed in 0.4-0.5 s",
+        "all of the above is in-sample (rules and the learned doubt model were tuned on these recordings)"
+      ]
+    },
+    "8.2 Дальность": {
+      "max": 15, "score": 9, "confidence": "medium",
+      "deductions": [
+        "credit: straight tunnel (jury ray-cast, ideal returns, object on the detector's own axis): person-size box STOP from 218 m (sustained from 222 m; 209/204 m with a range-dependent dropout model); 1 m cube 151 m (sustained 163 m); organizers' 2x2 m box from first appearance (98 m), box at envelope top 111 m, plank on rails 89 m",
+        "-3: on curved / double-track backgrounds every size is confirmed only at 41-75 m although visible earlier (beyond_axis -> CAUTION at 60-95 m in double-track; oversize merge -> GO at 80-120 m on the pressure-gate curve)",
+        "-2: small objects: 0.5 m cube first STOP 135 m but sustained only from 83 m; 0.3 m cube / 0.3x0.3x0.15 box 45-49 m; thin 5 cm hanging object 30 m (organizers), 60/43 m (jury cable)",
+        "-1: standing train at a platform: person-size box at 100 m and 150 m gets STOP in only ~32-35 % of frames (CAUTION otherwise); sustained only at 60 m"
+      ]
+    },
+    "8.3 Скорость": {
+      "max": 10, "score": 7, "confidence": "medium (4-vCPU VM, not the i7-9700E stand)",
+      "deductions": [
+        "credit: 120-degree clouds through the node in Docker: latency p50 54 / p95 84 / max 99 ms, 252/252 frames, result age p50 0.06 s, 0.44 core, 165 MB; offline decode+detect p50 49-60 / p95 72-76 ms",
+        "-2: 360-degree clouds: decode+detect p50 78-86 / p95 106-119 / max 129-212 ms offline, node p95 111 ms; with the README player flags the node fell up to 1.2 s behind (35/201 results 'current', median age 0.83 s); ~1 core, 0.5 GB",
+        "-1: with the organizers' literal `ros2 bag play <bag>` (default read-ahead) the 360-degree run processed 146/201 frames, all results stale (age 7-10 s), node RSS 3.4 GB; on 120 degrees the first ~5 s were FAULT",
+        "single-threaded CPU path, GPU not used (acceptable by the spec)"
+      ]
+    },
+    "8.4 Обобщаемость": {
+      "max": 15, "score": 8, "confidence": "medium",
+      "deductions": [
+        "credit: no map, per-frame model of the normal tunnel (rails, bed, walls), mount auto-calibration, any PointCloud2 topic auto-discovered (verified with a renamed topic in Docker); real obstacle robust to +-2 deg pitch, +2 deg roll, +3 deg yaw, 2 cm noise, 5 Hz input",
+        "-3: 333 leaf parameters; dozens of rules and thresholds justified in code/config by specific recordings or objects (set O #2/#6/#8, doubleT_platform 37-38.5 m, roundT_doubleT column at 101-149 m, doubleT_obstacle frame 111); a learned 'doubt' model trained on the ride's own tracks; every reported false-alarm rate is in-sample",
+        "-2: false alarms sensitive to small input changes: squareT_platform 3 STOP episodes -> 4-7 with +-2 deg tilt, 9 at 5 Hz, 14 with 30 % point dropout; removing duplicate dual returns changes CAUTION 51 % -> 11 % there and 4 decisions on doubleT_obstacle (contradicts the 'copies change no decision' claim); 30 % dropout loses the object-on-rail STOP in 39 frames",
+        "-2: detection range collapses on curves and double-track sections (41-75 m) and the 'column' rule is a geometry-independent blind spot for tall narrow obstacles - both transfer badly to unseen full rides through other tunnels"
+      ]
+    },
+    "8.5 Техническая проработка": {
+      "max": 10, "score": 7, "confidence": "medium-high",
+      "deductions": [
+        "credit: pytest 1284 passed (8 deselected), ruff 0.15.8 clean in CI scope, freeze verify PASS, CI on main green (5 jobs incl. Docker build, in-image tests, offline archive), clear library/node split, optional C++ kernels; documentation extensive, candid about limitations, and most claims I re-measured hold (doubleT_obstacle 193/201, set O first-STOP distances, test count, release)",
+        "-2: complexity far beyond what is needed to understand or maintain: 333 parameters, ~9.8k lines core+node, 78 scripts, ~60 dated docs/protocols; 22 disabled experimental flags still wired in the code",
+        "-1: some claims not reproduced: 'copies change no decision', 360-degree e2e p95 81-82 ms (I measured 106-119 ms offline, 111 ms in the node, other hardware); 8 tests depend on hard-coded local paths (D:/Datasets, C:/Users/...)"
+      ]
+    },
+    "8.6 Простота запуска": {
+      "max": 10, "score": 8, "confidence": "high for the archive path; the literal docker build could not be run here",
+      "deductions": [
+        "credit: GitHub release v1.0.0 has the image archive + sha256 (verified); docker load works offline; `docker run --net=host --ipc=host resense` starts the node in ~3 s in replay mode; topics auto-discovered; one-command scripts/play_bag.sh; CI builds the Dockerfile in <2 min",
+        "-1: the organizers' literal `ros2 bag play <bag>` is not enough: README requires `--read-ahead-queue-size 10` (else stale/FAULT results, see 8.3), plus a host sysctl step for CycloneDDS players",
+        "-1: `docker build` needs internet (the stand has none) so the primary path is an archive download; a non-root containerised player needs HOME set (handled in the team's scripts, not in the README one-liner); literal docker build not reproducible in this sandbox (proxy refuses plain-HTTP apt) - credited from the CI run"
+      ]
+    },
+    "8.7 Подход команды": {
+      "max": 10, "score": 8, "confidence": "low-medium (documents only)",
+      "deductions": [
+        "credit: explicit hypotheses, pre-registered candidates with a regression gate, many rejected approaches recorded with numbers, a safety review that removed an accepted rule (shell), honest 'in-sample' labelling, GPU/ML options evaluated and rejected with reasons",
+        "-2: the method is gate-driven tuning on the development set (each rule kept when the same recordings improve); no held-out real data was set aside, so the process systematically risks overfitting; process/documentation overhead is very large"
+      ]
+    },
+    "8.8 Питч": {
+      "max": 5, "score": 4, "confidence": "low (files only, delivery not observed)",
+      "deductions": [
+        "credit: 16-slide deck in the organizers' template with problem -> idea -> algorithm -> demo -> results, numbers labelled real/synthetic; 3-min overview video with subtitles and a 69 s Docker+RViz chain clip",
+        "-1: slides are text-dense; the headline range numbers (151 m person, 'from 98 m') are favourable setups and the curve/small-object limits are less visible"
+      ]
+    }
+  }
+}
