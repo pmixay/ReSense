@@ -15,6 +15,22 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
+## [Unreleased] — detector candidate `final/silent-misses` (14.10; gate PASS, not resealed)
+
+### Fixed — a pole standing in the envelope is not a column (`cluster.column_free_max_top`, 13.10 / 14.10)
+
+- The judge's silent miss 1 of 13.10 ([`judgement_2026-10-13`](docs/evidence/judgement_2026-10-13/README.md)): a
+  0.3 × 0.3 × 2.8 m pole inside the envelope was demoted as a column — CAUTION from ~70 m to 5 m on the axis, never a
+  STOP 0.7 m off it. A column continues up to the vault, an object standing in the envelope ends inside it: the column
+  signature no longer demotes a cluster at least half inside the strict envelope, its top at most 2.95 m, whose top is
+  seen free (`clustering.top_is_free`: the first ring above the top that returns has nothing at the top's range, and
+  either a ring in between returned nothing — read from the frame's channel ids, the ring table only without them — or
+  more of its returns lie beyond the top than nearer). Every other rule still applies.
+- Judge range test on A: the pole 82 → 157 STOP frames of 177 on the axis, 0 → 136 / 133 at ±0.7 m (with `--dropout`
+  67 → 143 and 11 → 133), the 0.5 m post 56 → 157 and 30 → 150; the person box unchanged frame by frame. The full
+  regression gate passes with every gate frame identical to the sealed detector (ride, five obstacle-free recordings,
+  `doubleT_obstacle`, set O); the four judge recordings and A / S with `--pitch 2` and `--drop 0.3` are unchanged.
+
 ## [Unreleased] — web prototype (PR #31; outside the `v1.0.0` release)
 
 [PR #31](https://github.com/pmixay/ReSense/pull/31), branch `claude/prototype-website-rebuild-tz31o0` with `main`

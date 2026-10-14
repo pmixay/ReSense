@@ -238,6 +238,18 @@ class ClusterConfig:
     column_width_trim: float = 0.05     # 27.09 (P4 history, on; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
     column_width_trim_min_cut: float = 0.25  # 27.09: m, the trimmed width is used only when it is at least this much narrower than the box (sparse tails: a joined fragment); a dense body keeps its width
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
+    # 13.10 (the judge's 0.3 x 0.3 x 2.8 m pole: CAUTION, never STOP 0.7 m off the axis; 0 = off): a column
+    # continues up to the vault, an object standing in the envelope ends inside it. The column signature
+    # does not demote a cluster whose top is seen free (clustering.top_is_free: the rays right above it pass
+    # over it), whose top is at most column_free_max_top and at least column_free_min_core of whose voxels
+    # are inside the strict envelope; every other rule still applies. 14.10: the ring between the top and the
+    # first ring above it that returns is read from the frame's channel ids (the ring table only without them,
+    # set O; a mount tilt moves the rings off the table). Full regression gate PASS, every gate frame identical
+    # to the sealed detector; the judge's pole 0.7 m off the axis 0 -> 136 STOP frames of 176, on the axis
+    # 82 -> 157 of 177 (configs/default.yaml)
+    column_free_max_top: float = 2.95  # m, under the 3.0 m envelope top, where the candidates are cut
+    column_free_min_core: float = 0.5  # share of the cluster's voxels inside the strict envelope (a structure at its edge, a platform or canopy edge at 0.8-1.2 m: 0.09-0.56)
+    column_free_min_returns: int = 2   # returns beyond the top on the ring above it (one ray: the recordings hold each echo twice)
     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
     floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall

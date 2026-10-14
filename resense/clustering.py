@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional
+from functools import partial
+from typing import Callable, List, Optional
 
 import numpy as np
 from scipy.sparse import coo_matrix
@@ -12,7 +13,7 @@ from scipy.spatial import cKDTree
 from resense import _native
 from resense.config import ClusterConfig, GaugeConfig
 from resense.gauge import gauge_reach_mask
-from resense.sensor import expected_points
+from resense.sensor import RING_ELEVATION_DEG, expected_points
 
 
 @dataclass
@@ -54,6 +55,7 @@ class Cluster:
 # not trusted there or the cluster is above the envelope (``Cluster.demoted``,
 # ``tracking.stop_keep_signature``)
 SHAPE_SIGNATURES = ("elevated", "floating", "edge", "wall_face")
+_RINGS = np.sort(RING_ELEVATION_DEG)       # the sensor's ring elevations, ascending (top_is_free)
 
 
 def _scaled(xyz: np.ndarray, range_scale: float) -> np.ndarray:
@@ -156,7 +158,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
                   keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
                   weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
-                  low_height_margin: float = 0.0) -> List[Cluster]:
+                  low_height_margin: float = 0.0, frame_xyz: Optional[np.ndarray] = None,
+                  frame_ring: Optional[np.ndarray] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -230,6 +233,11 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     ``cfg.weak_min_rings`` path admits ``cfg.weak_min_points_with_rings`` voxels when enough distinct
     channels support current-frame points inside the strict gauge; historical and off-gauge points
     cannot supply this support. Both weak paths still require ``weak_from`` > 0.
+
+    ``frame_xyz`` (13.10, ``cfg.column_free_max_top`` > 0): the whole current frame that ``frame_idx``
+    indexes (vehicle frame, the sensor at the origin), ``frame_ring`` its channel ids (or None); with it the
+    column signature does not demote a cluster whose top is seen free (:func:`top_is_free`). ``None`` = the
+    column rule by its shape alone.
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
@@ -257,7 +265,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         else:
             c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
                                   axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report,
-                                  weak_from, ring)
+                                  weak_from, ring, frame_xyz, frame_ring)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -338,11 +346,72 @@ def _is_infrastructure(size: np.ndarray, lateral: float, h_max: float, cfg: Clus
             and abs(lateral if lat_along is None else lat_along) > cfg.linear_min_lateral)
 
 
+def top_is_free(frame_xyz: np.ndarray, idx: np.ndarray, min_returns: int = 2,
+                frame_ring: Optional[np.ndarray] = None) -> bool:
+    """13.10 (``cluster.column_free_max_top``): the top of the cluster whose current-frame returns are
+    ``frame_xyz[idx]`` is seen free - the rays right above it pass over it. Over the cluster's azimuth span
+    plus 0.12 deg (an azimuth step and the rings' azimuth offsets) the first ring with returns above the top
+    has none at the top's range (within max(0.5 m, 2 %)): a column continues up to the vault and that ring
+    meets it there. And either a ring of the sensor lies between them that returned nothing over the span -
+    its rays passed over the top and left the sensor's range (the far field) - or at least ``min_returns``
+    of that ring's returns are beyond the top and more than those nearer (nearer: occluded from above, no
+    evidence). Nothing above within 2.5 deg is no evidence. Not told apart: a column whose face right above
+    the cluster's top returns nothing while the rays beside it reach the tunnel behind.
+    ``frame_xyz``: the whole frame in the vehicle frame, the sensor at the origin. ``frame_ring``: its
+    channel ids (0 the highest ring, as ``sensor.RING_ELEVATION_DEG``); the ring in between is read from
+    them where the top's and that ring's returns carry ids in this order, otherwise from the ring table
+    with its ring nearest to the top's put at the top (set O carries no ids; a mount tilt the calibration
+    corrects moves the rings off the table, and a tenth of a degree can put the top at the wrong ring and
+    invent an empty one: tests/test_column_free_top.py)."""
+    if idx.size < 2:
+        return False
+    p = frame_xyz[idx].astype(np.float64)
+    rh = np.hypot(p[:, 0], p[:, 1])
+    el = np.degrees(np.arctan2(p[:, 2], rh))
+    az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+    top = float(el.max())
+    r_top = float(np.median(np.hypot(rh, p[:, 2])[el >= top - 0.06]))     # the top's own ring
+    a0, a1 = float(az.min()), float(az.max())
+    X, Y = frame_xyz[:, 0], frame_xyz[:, 1]
+    t0, t1 = np.tan(np.radians(a0 - 0.12)), np.tan(np.radians(a1 + 0.12))
+    w = np.flatnonzero((X > 0) & (Y >= t0 * X) & (Y <= t1 * X))      # the azimuth window, ahead of the sensor
+    q = frame_xyz[w].astype(np.float64)
+    qh = np.hypot(q[:, 0], q[:, 1])
+    qe = np.degrees(np.arctan2(q[:, 2], qh))
+    up = (qe > top + 0.04) & (qe <= top + 2.5)   # above the top's own ring (the rings are >= 0.086 deg apart)
+    if not up.any():
+        return False
+    e1 = float(qe[up].min())
+    ring = up & (qe <= e1 + 0.05)
+    r = np.hypot(qh[ring], q[ring, 2])
+    tol = max(0.5, 0.02 * r_top)
+    if (np.abs(r - r_top) <= tol).any():
+        return False                      # the structure continues above the top: a column
+    between = None
+    if frame_ring is not None:
+        rw = frame_ring[w].astype(np.int64)
+        head, first = frame_ring[idx][el >= top - 0.06].astype(np.int64), rw[ring]
+        if head.min() >= 0 and first.min() >= 0 and first.max() < head.min():
+            rt, r1 = int(head.min()), int(first.max())
+            between = r1 < rt - 1 and not ((rw > r1) & (rw < rt)).any()
+    if between is None:
+        k = int(np.argmin(np.abs(_RINGS - top)))
+        rings = _RINGS - _RINGS[k] + top          # the sensor's rings, its ring nearest to the top's at the top
+        between = bool(((rings > top + 0.04) & (rings < e1 - 0.04)).any())
+    if between:
+        return True                       # a ring in between returned nothing over the span: its rays left the range
+    beyond, nearer = int((r > r_top + tol).sum()), int((r < r_top - tol).sum())
+    return beyond >= min_returns and beyond > nearer
+
+
 def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cfg: ClusterConfig,
-                     axis_valid: float, height_valid: Optional[float], lat_along: Optional[float] = None) -> str:
+                     axis_valid: float, height_valid: Optional[float], lat_along: Optional[float] = None,
+                     free_top: Optional[Callable[[], bool]] = None) -> str:
     """Why a cluster is advisory although it may have gauge voxels ('' = it is an obstacle):
     beyond the range where the axis or the height reference is supported, hanging entirely in
-    the top zone (cables, lamps), or a v0.5 infrastructure signature (EXPERIMENTS.md 1b)."""
+    the top zone (cables, lamps), or a v0.5 infrastructure signature (EXPERIMENTS.md 1b).
+    ``free_top`` (13.10, ``cluster.column_free_max_top``): asked only when the column shape fits, True =
+    the cluster's top is seen free (:func:`top_is_free`), so it is not a column."""
     size = b.size
     hh = h[b.idx]
     h_min, h_max = float(hh.min()), float(hh.max())
@@ -367,7 +436,7 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
         if col_w - float(hi - lo) >= cfg.column_width_trim_min_cut:
             col_w = float(hi - lo)
     if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and col_w < cfg.column_max_width \
-            and (off_centre or col_w >= cfg.column_min_width):
+            and (off_centre or col_w >= cfg.column_min_width) and not (free_top is not None and free_top()):
         return "column"                    # column, post, gate leg: taller than any listed object, narrow
     # opt-in, off by default: a cluster as short as the organizers' test objects (and near enough)
     # that the elevated or floating shape would demote stays an obstacle (the rules after them
@@ -507,11 +576,15 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
                       dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
                       keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
-                      weak_from: float = 0.0, ring: Optional[np.ndarray] = None) -> Optional[Cluster]:
+                      weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
+                      frame_xyz: Optional[np.ndarray] = None,
+                      frame_ring: Optional[np.ndarray] = None) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory. ``in_rail``: the
     strict membership from the rails only (``find_clusters``). With ``keep_thin`` a cluster flatter
-    than ``min_height`` is described with ``thin`` set instead of dropped (:func:`find_clusters`)."""
+    than ``min_height`` is described with ``thin`` set instead of dropped (:func:`find_clusters`).
+    ``frame_xyz`` / ``frame_ring``: the whole frame for the column signature's free-top test
+    (:func:`find_clusters`)."""
     if in_rail is None:
         in_rail = in_gauge
     size = b.size
@@ -580,7 +653,15 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
     wall_kept = spare and _is_infrastructure(size, lat_rules, h_max, cfg, lat_along=lat_along)
     n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
     zone = "gauge" if n_gauge >= gauge_min else "warning"
-    reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid, lat_along)
+    free_top = None
+    if (frame_xyz is not None and cfg.column_free_max_top > 0 and h_max <= cfg.column_free_max_top
+            and n_gauge >= cfg.column_free_min_core * b.n_vox):
+        # 13.10: a column-shaped cluster mostly inside the envelope, its top under the envelope top, is a
+        # column only if its top is not seen free (top_is_free; asked by the column rule alone)
+        cur = frame_idx[b.idx]
+        free_top = partial(top_is_free, frame_xyz, cur[cur >= 0], cfg.column_free_min_returns, frame_ring)
+    reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid, lat_along,
+                              free_top)
     demoted = zone == "gauge" and reason in SHAPE_SIGNATURES
     if reason:
         zone = "warning"
