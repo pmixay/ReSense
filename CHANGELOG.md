@@ -31,6 +31,22 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
   regression gate passes with every gate frame identical to the sealed detector (ride, five obstacle-free recordings,
   `doubleT_obstacle`, set O); the four judge recordings and A / S with `--pitch 2` and `--drop 0.3` are unchanged.
 
+### Fixed — an object against the wall on a curve is not dropped with it (`cluster.structure_cut_tol`, 13.10 / 14.10)
+
+- The judge's silent miss 2 of 13.10: on the curve of `roundT_pressureGate_roundT` the lagging far axis lays the tunnel
+  wall across the envelope at 70-150 m; a person-size box there touches the wall, the two make one cluster longer than
+  `max_extent`, the 25.09 split refuses it and it was dropped whole (GO at 75-87 m). A cluster the split refused is now
+  cut along the smooth surface it lies on (`clustering._off_structure_parts`: a robust fit y(x, h), not fitted without a
+  strict-gauge point, not cut along a surface steeper than 45° to the track); its points at least 0.8 m in front of the
+  surface are linked again, and parts at most 3 m long with strict-gauge points and at least 8 voxels
+  (`structure_cut_min_points`) go through every rule. A cluster whose split part was accepted keeps the split's verdict.
+- Judge range test on C, first STOP sealed → now: person 73.9 → 90.2 m (`--dropout` the same; yawed ±20° 72.5 → 93.1 /
+  88.7; lateral +0.5 69.5 → 84.3, −0.7 85.7 → 109.4), 1 m cube 73.9 → 96.1 m, 0.5 m cube 75.4 → 82.8 m; B, A and D
+  persons unchanged. Not fixed: C 100-150 m stays 0-7 / 34 STOP frames with GO at 118-150 m (the axis puts the box
+  within 0.2-0.6 m of the wall there, judge problem 4), no gain within 0.8 m of the wall. Every part carved out of wall
+  equipment on the empty recordings had 3-7 voxels; the full regression gate passes with every gated and information
+  row identical.
+
 ## [Unreleased] — web prototype (PR #31; outside the `v1.0.0` release)
 
 [PR #31](https://github.com/pmixay/ReSense/pull/31), branch `claude/prototype-website-rebuild-tz31o0` with `main`

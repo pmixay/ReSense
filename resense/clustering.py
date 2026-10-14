@@ -263,9 +263,20 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         if low is not None and low_cfg is not None and bool(low[b.idx].mean() >= 0.5):
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg, low_height_margin)
         else:
-            c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
-                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report,
-                                  weak_from, ring, frame_xyz, frame_ring)
+            rest = (dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range, axis_valid, height_valid,
+                    gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from, ring, frame_xyz, frame_ring)
+            c = _corridor_cluster(b, *rest)
+            if c is None and cfg.structure_cut_tol > 0 and cfg.oversize_split_max_length > 0 \
+                    and float(b.size.max()) > cfg.max_extent and _split_part(b, in_gauge, in_rail, inv, cfg) is None:
+                # 13.10 (cluster.structure_cut_tol): an oversize cluster that the 25.09 split refused
+                # (dropped whole) may be an object standing in front of the long surface it touches; its
+                # parts off that surface are described on their own, every rule applied
+                # (_off_structure_parts). A cluster whose split part was accepted keeps the split's
+                # verdict: the cut gives no second chance to a part the rules dropped
+                for part in _off_structure_parts(b, xyz, h, in_gauge, vox, inv, cfg):
+                    cp = _corridor_cluster(part, *rest)
+                    if cp is not None:
+                        out.append(cp)
         if c is not None:
             out.append(c)
     out.sort(key=lambda c: c.distance)
@@ -571,6 +582,128 @@ def _gauge_part(b: _Blob, in_gauge, inv, cfg: ClusterConfig) -> Optional[_Blob]:
     return part
 
 
+def _split_part(b: _Blob, in_gauge, in_rail, inv, cfg: ClusterConfig) -> Optional[_Blob]:
+    """The 25.09 oversize split of :func:`_corridor_cluster`: the part in ``in_gauge``, else the part in
+    ``in_rail`` (``None`` = ``in_gauge``). Safety review of 26.09 (gauge.axis_union): the sensor-axis
+    envelope can take in a long line at the corridor edge beside an object, so the part grows past the
+    split length; the part inside the envelope measured from the rails alone is then the object.
+    ``None`` = the split refuses the cluster."""
+    part = _gauge_part(b, in_gauge, inv, cfg)
+    if part is None and in_rail is not None and in_rail is not in_gauge:
+        part = _gauge_part(b, in_rail, inv, cfg)
+    return part
+
+
+_SURFACE_MIN_POINTS = 20    # points of a structure-cut surface fit (5 coefficients x 4)
+# 14.10: |d y_w / dx| of a structure-cut surface at most this (45 deg to the track): the cut measures
+# "in front" as the lateral residual, which overstates the distance from the surface by
+# sqrt(1 + slope^2); a face across the track seen obliquely fits y(x, h) as well, and there a few cm
+# in front of it would pass structure_cut_tol (at slope 5, 0.16 m); and a near-exact fit of a few scan
+# lines has meaningless slopes (C, 14.10: 20 points over 8 m, slope -21). The walls of C where parts
+# were cut: |slope| <= 0.25
+_SURFACE_MAX_SLOPE = 1.0
+
+
+def _off_structure_parts(b: _Blob, xyz: np.ndarray, h: np.ndarray, in_gauge: np.ndarray, vox: np.ndarray,
+                         inv: np.ndarray, cfg: ClusterConfig) -> List[_Blob]:
+    """The parts of an oversize cluster that stand in front of the smooth surface it lies on (13.10,
+    ``structure_cut_tol``; judge 13.10 problem 2).
+
+    On a curve the lagging far axis lays the tunnel wall diagonally across the envelope (70-150 m on
+    roundT_pressureGate_roundT); an object there touches the wall within the DBSCAN radius (0.2-1.1 m at
+    80-120 m: no thin bridge to cut, no gap in x or height, the strict-gauge points alone still one 23-40 m
+    cluster) and the two are one cluster longer than ``max_extent``, dropped whole. The wall is a smooth
+    surface: its lateral position is a function of the along-track distance and the height (the round
+    tunnel's profile), ``y = a + b x + c x^2 + d h + e h^2`` in the vehicle frame, fitted robustly; the
+    wall's own points stay within 0.1 m of it (robust spread 0.08-0.11 m), an object stands off it toward
+    the sensor (it occludes the wall behind it; a niche behind the wall is not in front). The points at
+    least ``structure_cut_tol`` in front of the surface are linked again at the corridor radius (their
+    links to the surface cut); the parts at most ``oversize_split_max_length`` long along the track, not
+    flatter than ``min_height`` and with points in the strict gauge are returned. Nothing is returned
+    unless the cluster is such a surface: a robust spread of at most ``structure_cut_max_spread`` with at
+    least ``structure_cut_min_fit`` of its points on it, running along the track (``_SURFACE_MAX_SLOPE``:
+    within 45 deg of it, 14.10). Equipment fixed to the wall stands up to ~1.2 m
+    in front of it, so the tolerance only separates an object well clear of the wall; nearer it the
+    object and the wall equipment look alike and both stay dropped (configs/default.yaml). A part needs
+    at least ``structure_cut_min_points`` voxels (14.10): the parts carved out of wall equipment on the
+    empty recordings had 3-7. :func:`find_clusters` calls this only for a cluster the 25.09 split
+    refused (:func:`_split_part`); a cluster without a strict-gauge point is not fitted."""
+    tol = float(cfg.structure_cut_tol)
+    # every part needs a strict-gauge point: a cluster without one is not fitted (on the ride 7 890 of the
+    # 14 141 clusters the split refused; the cut costs 0.43 ms per ride frame)
+    if tol <= 0 or b.idx.size < _SURFACE_MIN_POINTS or not in_gauge[b.idx].any():
+        return []
+    x = b.pts[:, 0].astype(np.float64)
+    y = b.pts[:, 1].astype(np.float64)
+    u = (x - x.mean()) / 10.0
+    fit = _surface_fit(u, h[b.idx].astype(np.float64), y, 0.5 * tol)
+    if fit is None:
+        return []
+    coef, res, spread, on = fit
+    if spread > cfg.structure_cut_max_spread or float(on.mean()) < cfg.structure_cut_min_fit:
+        return []
+    # the side the sensor sees the surface from: the ray to a point comes in from the side where y - y_w
+    # has the sign of (surface slope - ray slope) (the slopes of the two lines in the horizontal plane).
+    # The ray slope is the point's own: an object point near the tangent through the sensor (the
+    # surface seen at grazing incidence) may get the far side and stay merged, a point behind the
+    # surface never gets the near side
+    slope = (coef[1] + 2.0 * coef[2] * u) / 10.0
+    if float(np.abs(slope).max()) > _SURFACE_MAX_SLOPE:
+        return []
+    front = np.sign(slope - y / np.maximum(x, 1.0))
+    off = res * front > tol
+    if int(off.sum()) < cfg.min_samples or not in_gauge[b.idx[off]].any():
+        return []
+    idx = b.idx[off]
+    vi, back = np.unique(inv[idx], return_inverse=True)
+    if vi.size < max(cfg.structure_cut_min_points, cfg.min_samples):
+        return []
+    labels = dbscan_labels(_scaled(vox[vi], cfg.range_scale), cfg.eps, cfg.min_samples)[back.ravel()]
+    parts = []
+    for lab in np.unique(labels):
+        pidx = idx[labels == lab]
+        if lab < 0 or not in_gauge[pidx].any():
+            continue
+        part = _Blob.of(xyz, pidx, int(np.unique(inv[pidx]).size))
+        # 14.10 (structure_cut_min_points): a few voxels picked off a surface of hundreds are weak
+        # evidence; wall equipment gave parts of 3-7 voxels on the empty recordings, the objects 8-42
+        if part.n_vox < cfg.structure_cut_min_points:
+            continue
+        if float(part.size[0]) <= cfg.oversize_split_max_length and float(part.size[2]) >= cfg.min_height:
+            parts.append(part)
+    return parts
+
+
+def _surface_fit(u: np.ndarray, hh: np.ndarray, y: np.ndarray, band: float):
+    """The robust fit of the structure cut (:func:`_off_structure_parts`): ``y = a + b u + c u^2 + d h + e h^2``
+    by least squares, four times on the points within ``max(3 spread, band)`` of the previous fit
+    (``spread`` = 1.4826 x the median absolute residual of the points it was fitted on). Returns
+    ``(coef, res, spread, on)`` with the residuals of all points and the final inlier mask, or ``None``:
+    fewer than ``_SURFACE_MIN_POINTS`` points (or inliers), a non-finite input, or a fit that does not
+    converge. A surface that is not a function of (x, h) - a face across the track, a floor or roof
+    strip, two walls - is not refused here: it fits badly, and the caller's spread and inlier tests
+    refuse it (rank-deficient columns, e.g. a constant height, give the minimum-norm solution)."""
+    if y.size < _SURFACE_MIN_POINTS or not (np.isfinite(u).all() and np.isfinite(hh).all() and np.isfinite(y).all()):
+        return None
+    A = np.stack([np.ones_like(u), u, u * u, hh, hh * hh], axis=1)
+    on = np.ones(y.size, dtype=bool)
+    coef = res = None
+    spread = 0.0
+    for _ in range(4):
+        if int(on.sum()) < _SURFACE_MIN_POINTS:
+            return None
+        try:
+            coef = np.linalg.lstsq(A[on], y[on], rcond=None)[0]
+        except np.linalg.LinAlgError:
+            return None
+        res = y - A @ coef
+        spread = 1.4826 * float(np.median(np.abs(res[on])))
+        on = np.abs(res) <= max(3.0 * spread, band)
+    if not (np.isfinite(coef).all() and np.isfinite(spread)):
+        return None
+    return coef, res, spread, on
+
+
 def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
                       factor: float, factor_range: float, axis_valid: float,
                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
@@ -589,12 +722,7 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         in_rail = in_gauge
     size = b.size
     if size.max() > cfg.max_extent and cfg.oversize_split_max_length > 0:
-        part = _gauge_part(b, in_gauge, inv, cfg)
-        if part is None and in_rail is not in_gauge:
-            # safety review of 26.09 (gauge.axis_union): the sensor-axis envelope can take in a long
-            # line at the corridor edge beside an object, so the part grows past the split length;
-            # the part inside the envelope measured from the rails alone is then the object
-            part = _gauge_part(b, in_rail, inv, cfg)
+        part = _split_part(b, in_gauge, in_rail, inv, cfg)
         if part is None:
             return None
         b = part

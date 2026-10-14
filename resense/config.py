@@ -197,6 +197,20 @@ class ClusterConfig:
     # is re-described from that part; 0 = off (the whole cluster dropped)
     oversize_split_max_length: float = 3.0
     oversize_split_max_distance: float = 30.0  # m, ... and only when that part starts within this distance (the far corridor holds long sparse clusters with a few gauge voxels, round 1 of 25.09)
+    # 13.10 (judge 13.10 problem 2; finished 14.10 with the judge's required changes; 0 = off): a cluster
+    # larger than max_extent that the 25.09 split refused (dropped whole) is cut along the smooth surface it
+    # lies on (a tunnel wall laid across the envelope by the lagging far axis of a curve; not fitted without
+    # a strict-gauge point, not cut when steeper than 45 deg to the track): its points at least this far (m)
+    # in front of the surface, as seen from the sensor, are linked again on their own and the parts at most
+    # oversize_split_max_length long, not flatter than min_height, with points in the strict gauge and at
+    # least structure_cut_min_points voxels are described as clusters (clustering._off_structure_parts).
+    # 0.8 m: equipment fixed to the wall stands 0.8-1.2 m in front of it; 0.3 / 0.5 gave false STOP
+    # episodes on the empty recordings; no gain nearer the wall, nor at 100-150 m on C, where the lagging
+    # axis puts the judge's box within 0.2-0.6 m of the wall (configs/default.yaml has the measurements)
+    structure_cut_tol: float = 0.8
+    structure_cut_max_spread: float = 0.12  # m, ... only when the cluster is such a surface: robust spread of its points about the fit at most this
+    structure_cut_min_fit: float = 0.8      # ... and at least this fraction of its points on the surface
+    structure_cut_min_points: int = 8       # 14.10 (0 = no bar): ... and a part at least this many voxels (the accumulated near bar, min_points 5 x 1.5): the parts carved out of wall equipment on the empty recordings had 3-7, the judge's objects 8-42
     # on since 25.09 (P3): true = the distance of a cluster inside the strict gauge is that of its nearest
     # point inside the gauge, not of a point in the advisory margin it touches; false = the nearest point (v0.1).
     # Since the review of 25.09 "inside" is the envelope widened by the axis-uncertainty margin
