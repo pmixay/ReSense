@@ -7,12 +7,15 @@ boxes, the bed, a vault at a constant height above the rails and a far wall, eac
 as in the recordings."""
 from __future__ import annotations
 
+from dataclasses import replace
+
 import numpy as np
 
-from resense.clustering import find_clusters, top_is_free
+from resense.clustering import Cluster, find_clusters, top_is_free
 from resense.config import DetectorConfig
 from resense.gauge import point_in_polygon, widened_profile
 from resense.sensor import RING_ELEVATION_DEG
+from resense.tracking import Tracker
 
 H0 = 1.8          # sensor height above the rail head (m); the vehicle frame has the sensor at the origin
 
@@ -145,3 +148,103 @@ def test_column_signature_spares_a_free_standing_pole_only():
     assert _the(_clusters(cut, high), 50.0).reason == ""
     c = _the(_clusters([_pole(60.0, 1.12)]), 60.0)            # mostly outside the strict envelope (1.05 m)
     assert 0 < c.n_gauge < cfg.cluster.column_free_min_core * c.n and c.reason == "column"
+
+
+def _hit(x, kind):
+    """One hit of a track at ``x``: 'col' a cluster the column rule demoted, 'spare' the same cluster whose top
+    the free-top test saw free (Cluster.spared: zone 'gauge', no reason), 'obj' a person-size obstacle, 'adv'
+    the same advisory (beyond the trusted axis)."""
+    tall = kind in ("col", "spare")
+    return Cluster(points_idx=np.arange(3), n=12, n_raw=24, centroid=np.array([x + 0.15, 0.7, 1.3]),
+                   bbox_min=np.array([x, 0.55, 0.0]), bbox_max=np.array([x + 0.3, 0.85, 2.6 if tall else 1.8]),
+                   distance=x, lateral=0.7, height_min=0.0, height_max=2.6 if tall else 1.8, intensity=30.0,
+                   n_expected=12.0, score=1.0, zone="warning" if kind in ("col", "adv") else "gauge", n_gauge=12,
+                   reason={"col": "column", "adv": "beyond_axis"}.get(kind, ""), spared=kind == "spare")
+
+
+def _zones(kinds, **tracking):
+    """The track's reported zone after each hit (10 Hz, approaching at 1.5 m per frame)."""
+    t = Tracker(replace(DetectorConfig().tracking, **tracking))
+    out = []
+    for k, kind in enumerate(kinds):
+        t.update([_hit(60.0 - 1.5 * k, kind)], frame_dt=0.1)
+        rep = t.confirmed()
+        out.append(rep[0].zone if rep else None)
+    return out
+
+
+def test_one_spare_is_the_column_the_column_rule_made():
+    """14.10 (review of 13.10; tracking.column_free_min_spares 2): a hit the free-top test spared is believed
+    only when the track had another such hit among its last zone_window (10) hits; alone it is the column hit
+    the column rule made of it (reason 'column', zone 'warning'), so the column hold, the zone vote and
+    explained_run see what they saw before 13.10. The review's standing train (squareT_platform_squareT_switch,
+    20-30 % point dropout): a platform-edge track had one hit spared and became a STOP for 2-11 frames; a mount
+    pitch of -2 deg on roundT_doubleT did the same for one frame. The judge's pole, spared hit after hit, is
+    believed from its second spared hit."""
+    cfg = DetectorConfig().tracking
+    assert (cfg.column_hold, cfg.column_free_min_spares, cfg.zone_window) == (2, 2, 10)        # shipped 14.10
+    # one spare among column hits: as the column rule alone, held
+    assert _zones(["col", "spare"] + ["obj"] * 6)[-1] == "warning"
+    assert _zones(["col", "spare"] + ["obj"] * 6, column_free_min_spares=1)[-1] == "gauge"   # 13.10: released
+    assert _zones(["col", "spare"] + ["obj"] * 6, column_free_min_spares=0)[-1] == "gauge"
+    assert _zones(["col"] * 2 + ["obj"] * 6)[-1] == "warning"
+    # the standing train's track: in and out of the envelope, then one spared hit - the column it would have
+    # been (zone vote 2 of 5, explained_run: 5 clean hits before a STOP), not the hit that starts a STOP
+    seq = ["obj", "adv", "obj", "adv", "adv", "obj", "spare"] + ["obj"] * 3
+    z, z13 = _zones(seq), _zones(seq, column_free_min_spares=1)
+    assert z == _zones([k if k != "spare" else "col" for k in seq]) and "gauge" not in z
+    assert z13[:7] == z[:7] and z13[7:] == ["gauge"] * 3           # 13.10: the spare let a STOP start
+    # a pole: column-shaped in every hit, its top seen free in every hit - believed from its second spare
+    t = Tracker(DetectorConfig().tracking)
+    for k in range(12):
+        c = _hit(60.0 - 1.5 * k, "spare")
+        t.update([c], frame_dt=0.1)
+        assert (c.reason, c.zone) == (("column", "warning") if k == 0 else ("", "gauge")), k
+    assert t.confirmed()[0].zone == "gauge"
+    assert _zones(["spare"] * 12) == _zones(["col"] + ["obj"] * 11)
+
+
+def test_detector_hands_the_frame_and_its_channel_ids_to_the_corridor_clustering(tunnel, monkeypatch):
+    """14.10 (review): the free-top test reads the ring in between from the frame's channel ids, so the detector
+    must hand the corridor clustering the processed cloud and the frame's ids, index for index (the
+    clustering-level tests above cannot see that wiring; with ring=None every detector-level test runs the
+    ring table). A frame without ids hands over None."""
+    import resense.detector as det_mod
+    from resense.detector import Detector
+    from resense.frame import Frame
+
+    frame, _, _ = tunnel
+    seen = []
+    orig = det_mod._clusters_of
+
+    def spy(c, cfg, **kw):
+        if "frame_xyz" in kw:
+            seen.append((kw["frame_xyz"], kw["frame_ring"]))
+        return orig(c, cfg, **kw)
+
+    monkeypatch.setattr(det_mod, "_clusters_of", spy)
+    ring = (np.arange(len(frame.xyz)) % 128).astype(np.uint16)
+    Detector(DetectorConfig()).process(Frame(xyz=frame.xyz, intensity=frame.intensity, ring=ring, stamp=0.0))
+    ((fx, fr),) = seen
+    assert fx is not None and fr is not None and len(fx) == len(fr) == len(ring) and np.array_equal(fr, ring)
+    seen.clear()
+    Detector(DetectorConfig()).process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.0))
+    ((fx, fr),) = seen
+    assert fx is not None and len(fx) == len(frame.xyz) and fr is None
+
+
+def test_channel_ids_out_of_the_tables_order_are_no_empty_ring_evidence():
+    """14.10 (review): the ring table is the Pandar128's. Where the frame carries ids that are not in its order
+    (a driver numbering the rings bottom-up, another sensor) the table is not read either: the pole occluded
+    from above under a mount tilt, which the table alone reads as free, stays a column; a pole whose top is
+    seen free on the rays beyond it stays free. One id for every return (set O) is no ids: the table."""
+    beam = (40.0, 40.5, -1.0, 1.0, 2.5, 3.5)
+    n = RING_ELEVATION_DEG.size - 1
+    xyz, h, lab, ring = _cast([_pole(60.0, 0.7), beam], pitch=-0.15)
+    idx = np.flatnonzero((lab == 1) & (h <= 3.0))
+    assert top_is_free(xyz, idx)                                    # the table: an invented empty ring
+    assert not top_is_free(xyz, idx, frame_ring=(n - ring).astype(np.uint16))
+    xyz, h, lab, ring = _cast([_pole(60.0, 0.7)])
+    idx = np.flatnonzero((lab == 1) & (h <= 3.0))
+    assert top_is_free(xyz, idx, frame_ring=(n - ring).astype(np.uint16))
+    assert top_is_free(xyz, idx, frame_ring=np.zeros_like(ring)) == top_is_free(xyz, idx)

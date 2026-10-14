@@ -43,6 +43,8 @@ class Cluster:
     weak: bool = False           # 27.09 (cluster.weak_min_points): fewer voxels than min_points, kept only as far evidence for an approaching track
     ring_count: int = 0          # distinct known channels in current-frame strict-gauge points; 0 = no ring evidence
     low_height_weak: bool = False  # below the straddle top-height threshold; only bounded continuation of a low STOP
+    spared: bool = False         # 14.10: column-shaped, but not demoted as a column because its top is seen free (top_is_free; tracking.column_free_min_spares)
+    cut: bool = False            # 14.10: a part of an oversize cluster cut along its wall surface (cluster.structure_cut_tol; Detector._not_part_of_corridor_objects)
 
     @property
     def size(self) -> np.ndarray:
@@ -263,9 +265,9 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         if low is not None and low_cfg is not None and bool(low[b.idx].mean() >= 0.5):
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg, low_height_margin)
         else:
-            rest = (dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range, axis_valid, height_valid,
-                    gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from, ring, frame_xyz, frame_ring)
-            c = _corridor_cluster(b, *rest)
+            head = (dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range)
+            tail = (height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from, ring, frame_xyz, frame_ring)
+            c = _corridor_cluster(b, *head, axis_valid, *tail)
             if c is None and cfg.structure_cut_tol > 0 and cfg.oversize_split_max_length > 0 \
                     and float(b.size.max()) > cfg.max_extent and _split_part(b, in_gauge, in_rail, inv, cfg) is None:
                 # 13.10 (cluster.structure_cut_tol): an oversize cluster that the 25.09 split refused
@@ -274,8 +276,9 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                 # (_off_structure_parts). A cluster whose split part was accepted keeps the split's
                 # verdict: the cut gives no second chance to a part the rules dropped
                 for part in _off_structure_parts(b, xyz, h, in_gauge, vox, inv, cfg):
-                    cp = _corridor_cluster(part, *rest)
+                    cp = _corridor_cluster(part, *head, axis_valid, *tail)
                     if cp is not None:
+                        cp.cut = True
                         out.append(cp)
         if c is not None:
             out.append(c)
@@ -370,10 +373,14 @@ def top_is_free(frame_xyz: np.ndarray, idx: np.ndarray, min_returns: int = 2,
     the cluster's top returns nothing while the rays beside it reach the tunnel behind.
     ``frame_xyz``: the whole frame in the vehicle frame, the sensor at the origin. ``frame_ring``: its
     channel ids (0 the highest ring, as ``sensor.RING_ELEVATION_DEG``); the ring in between is read from
-    them where the top's and that ring's returns carry ids in this order, otherwise from the ring table
-    with its ring nearest to the top's put at the top (set O carries no ids; a mount tilt the calibration
-    corrects moves the rings off the table, and a tenth of a degree can put the top at the wrong ring and
-    invent an empty one: tests/test_column_free_top.py)."""
+    them where the top's and that ring's returns carry ids in this order. Without ids (None, or one id for
+    the whole window: set O carries 0 for every return) it is read from the ring table with its ring
+    nearest to the top's put at the top (a mount tilt the calibration corrects moves the rings off the
+    table, and a tenth of a degree can put the top at the wrong ring and invent an empty one:
+    tests/test_column_free_top.py). 14.10 (review): where the frame carries ids but these returns do not
+    carry them in the table's order (unknown ids, a driver numbering the rings bottom-up, another sensor)
+    the table is not read either: no empty-ring evidence, only the returns beyond the top (the table is the
+    Pandar128's: a 64-ring sensor read through it saw an empty ring above an occluded column at 30-100 m)."""
     if idx.size < 2:
         return False
     p = frame_xyz[idx].astype(np.float64)
@@ -399,9 +406,10 @@ def top_is_free(frame_xyz: np.ndarray, idx: np.ndarray, min_returns: int = 2,
     if (np.abs(r - r_top) <= tol).any():
         return False                      # the structure continues above the top: a column
     between = None
-    if frame_ring is not None:
-        rw = frame_ring[w].astype(np.int64)
+    rw = None if frame_ring is None else frame_ring[w].astype(np.int64)
+    if rw is not None and rw.min() < rw.max():      # one id for the whole window (set O: all 0) = no ids
         head, first = frame_ring[idx][el >= top - 0.06].astype(np.int64), rw[ring]
+        between = False                   # 14.10: ids out of the table's order are no empty-ring evidence
         if head.min() >= 0 and first.min() >= 0 and first.max() < head.min():
             rt, r1 = int(head.min()), int(first.max())
             between = r1 < rt - 1 and not ((rw > r1) & (rw < rt)).any()
@@ -624,10 +632,13 @@ def _off_structure_parts(b: _Blob, xyz: np.ndarray, h: np.ndarray, in_gauge: np.
     least ``structure_cut_min_fit`` of its points on it, running along the track (``_SURFACE_MAX_SLOPE``:
     within 45 deg of it, 14.10). Equipment fixed to the wall stands up to ~1.2 m
     in front of it, so the tolerance only separates an object well clear of the wall; nearer it the
-    object and the wall equipment look alike and both stay dropped (configs/default.yaml). A part needs
-    at least ``structure_cut_min_points`` voxels (14.10): the parts carved out of wall equipment on the
-    empty recordings had 3-7. :func:`find_clusters` calls this only for a cluster the 25.09 split
-    refused (:func:`_split_part`); a cluster without a strict-gauge point is not fitted."""
+    object and the wall equipment look alike and both stay dropped (configs/default.yaml). 14.10 (review):
+    the tolerance is also more than the wall stands outside the strict envelope (C: 2.2-2.35 m from the
+    axis, 1.05 m half width) - an object nearer the wall than that is outside the envelope, and where the
+    far axis lags it was placed inside it. A part needs at least ``structure_cut_min_points`` voxels
+    (14.10): the parts carved out of wall equipment on the empty recordings had 3-7. :func:`find_clusters`
+    calls this only for a cluster the 25.09 split refused (:func:`_split_part`); a cluster without a
+    strict-gauge point is not fitted."""
     tol = float(cfg.structure_cut_tol)
     # every part needs a strict-gauge point: a cluster without one is not fitted (on the ride 7 890 of the
     # 14 141 clusters the split refused; the cut costs 0.43 ms per ride frame)
@@ -782,12 +793,19 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
     n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
     zone = "gauge" if n_gauge >= gauge_min else "warning"
     free_top = None
+    seen_free: List[bool] = []
     if (frame_xyz is not None and cfg.column_free_max_top > 0 and h_max <= cfg.column_free_max_top
             and n_gauge >= cfg.column_free_min_core * b.n_vox):
         # 13.10: a column-shaped cluster mostly inside the envelope, its top under the envelope top, is a
-        # column only if its top is not seen free (top_is_free; asked by the column rule alone)
+        # column only if its top is not seen free (top_is_free; asked by the column rule alone). 14.10: the
+        # answer is kept (Cluster.spared): the tracker does not let one such hit release a column hold
+        # (tracking.column_free_min_spares)
         cur = frame_idx[b.idx]
-        free_top = partial(top_is_free, frame_xyz, cur[cur >= 0], cfg.column_free_min_returns, frame_ring)
+        ask = partial(top_is_free, frame_xyz, cur[cur >= 0], cfg.column_free_min_returns, frame_ring)
+
+        def free_top() -> bool:
+            seen_free.append(bool(ask()))
+            return seen_free[-1]
     reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid, lat_along,
                               free_top)
     demoted = zone == "gauge" and reason in SHAPE_SIGNATURES
@@ -822,5 +840,5 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
         n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
         wall_kept=wall_kept, demoted=demoted and not retro, thin=thin, weak=weak,
-        ring_count=ring_count,
+        ring_count=ring_count, spared=bool(seen_free and seen_free[-1]),
     )

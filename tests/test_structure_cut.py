@@ -6,16 +6,19 @@ bridge, no gap in x or height), the two form one cluster longer than ``max_exten
 split refuses it (its strict-gauge part is 23-40 m long and starts beyond 30 m): the whole cluster was
 dropped, decision GO. The cut fits the smooth surface the cluster lies on (``y = a + b x + c x^2 + d h + e h^2``,
 robust) and describes on their own the compact parts standing at least ``structure_cut_tol`` in front of
-it as seen from the sensor. The tolerance is above the depth of the equipment fixed to the wall on the
-recordings (cabinets and brackets 0.9-1.2 m in front of the fitted wall become single-frame gauge parts
-at 0.8 m but never confirm; at 0.3 / 0.5 m they gave false STOP episodes), so an object nearer the wall
-than that stays merged and dropped as before.
+it as seen from the sensor.
 
 The judge's required changes of 13.10 (14.10): a part needs ``structure_cut_min_points`` (8) voxels (every
 false part on the empty recordings had 3-7); the cut runs only for a cluster the 25.09 split refused (a
 part the split accepted and the rules then dropped gets no second chance); a cluster without a
 strict-gauge point is not fitted; a degenerate fit (too few points, non-finite input) or a surface steeper
 than 45 deg to the track cuts nothing.
+
+The review of 14.10: at 0.8 m an object standing 0.95-1.2 m in front of the outer wall of C - outside the
+envelope, in its advisory band, where the detector's trusted near axis puts it - was carved out and placed in the
+envelope by the lagging axis (false STOPs at 70-100 m). The tolerance is 1.3 m: more than the wall equipment
+(0.8-1.2 m) and more than C's wall stands outside the strict envelope (2.2-2.35 m from the axis, 1.05 m half
+width).
 """
 from __future__ import annotations
 
@@ -57,29 +60,55 @@ def _clusters(pts: np.ndarray, cfg: ClusterConfig):
 
 
 def test_structure_cut_shipped():
-    """On in the shipped configuration, identical in the three sources: 0.8 m in front of a surface with a
-    robust spread of at most 0.12 m holding at least 80 % of the cluster, parts of at least 8 voxels."""
+    """On in the shipped configuration, identical in the three sources: 1.3 m (14.10; 0.8 m on 13.10) in front of
+    a surface with a robust spread of at most 0.12 m holding at least 80 % of the cluster, parts of at least 8
+    voxels."""
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         c = cfg.cluster
         assert (c.structure_cut_tol, c.structure_cut_max_spread, c.structure_cut_min_fit,
-                c.structure_cut_min_points) == (0.8, 0.12, 0.8, 8)
+                c.structure_cut_min_points) == (1.3, 0.12, 0.8, 8)
+
+
+def _wall_y(x: float, h: float, y100: float = 1.0, slope: float = -0.09) -> float:
+    """The lateral of :func:`_wall` at ``x``, ``h``."""
+    return y100 + slope * (x - 100.0) + 0.4 * h - 0.15 * h * h
 
 
 def test_object_in_front_of_wall_is_cut_out():
-    """A person-size face 1.0-1.8 m in front of the diagonal wall at 100 m: one cluster with the wall
-    (dropped whole) without the cut; with it the face alone, a gauge obstacle at 100 m."""
+    """A person-size box face 0.6 m wide standing 1.0-1.6 m in front of the diagonal wall at 95 m and at 100 m
+    (where the wall itself crosses into the strict envelope): one cluster with the wall (dropped whole) without
+    the cut; with it the part of the face at least 1.3 m in front, a gauge obstacle."""
     on = ClusterConfig()
     off = replace(on, structure_cut_tol=0.0)
-    scene = np.concatenate([_wall(), _face(100.0, -0.5)])
+    scene = np.concatenate([_wall(), _face(95.0, _wall_y(95.0, 0.5) - 1.6, width=0.6)])
     assert _clusters(scene, off) == []
     (c,) = _clusters(scene, on)
-    assert c.zone == "gauge" and not c.reason and abs(c.distance - 100.0) < 0.05
+    assert c.cut and c.zone == "gauge" and not c.reason and abs(c.distance - 95.0) < 0.05
     assert c.size[0] < 0.05 and 1.5 < c.size[2] < 1.8 and c.n_gauge >= on.gauge_min_points
     # the cut is independent of the surface's side of the axis and of the direction it crosses
-    mirror = np.concatenate([_wall(), _face(100.0, -0.5)]) * np.array([1.0, -1.0, 1.0])
-    (c,) = _clusters(mirror, on)
-    assert c.zone == "gauge" and abs(c.distance - 100.0) < 0.05
+    (c,) = _clusters(scene * np.array([1.0, -1.0, 1.0]), on)
+    assert c.cut and c.zone == "gauge" and abs(c.distance - 95.0) < 0.05
+    at100 = np.concatenate([_wall(), _face(100.0, _wall_y(100.0, 0.5) - 1.6, width=0.6)])
+    assert _clusters(at100, off) == []
+    (c,) = _clusters(at100, on)
+    assert c.cut and c.zone == "gauge" and not c.reason and abs(c.distance - 100.0) < 0.05
+
+
+def test_object_in_the_advisory_band_of_the_wall_stays_dropped():
+    """The review of 14.10 (roundT_pressureGate_roundT, wall-anchored ray-cast boxes): a 0.5 m deep box whose
+    face nearest the track stands 1.0-1.2 m in front of the wall stands outside the envelope (C's wall is 2.2-2.35 m
+    from the axis where the axis is trusted), yet where the far axis lags it lies inside it. At 0.8 m (13.10)
+    the cut carved it out as a gauge obstacle (false STOPs at 70-100 m: a person-size box 0 -> 21 frames, a sign
+    post 0 -> 7, a mast 0 -> 9); at the shipped 1.3 m it stays dropped with the wall; 1.5 m in front it is cut out."""
+    on = ClusterConfig()
+    for d in (1.0, 1.1, 1.2):
+        scene = np.concatenate([_wall(), _face(95.0, _wall_y(95.0, 0.5) - d)])
+        assert _clusters(scene, on) == [], d
+        (c,) = _clusters(scene, replace(on, structure_cut_tol=0.8))
+        assert c.cut and c.zone == "gauge" and not c.reason, d
+    (c,) = _clusters(np.concatenate([_wall(), _face(95.0, _wall_y(95.0, 0.5) - 1.5)]), on)
+    assert c.cut and c.zone == "gauge" and not c.reason
 
 
 def test_structure_alone_and_what_stays_dropped():
@@ -90,11 +119,15 @@ def test_structure_alone_and_what_stays_dropped():
     on = ClusterConfig()
     tol = on.structure_cut_tol
     assert _clusters(_wall(), on) == []
-    # a 0.4 x 0.8 m cabinet on the wall at 100 m, protruding tol - 0.3 .. tol - 0.1 m from the fitted wall
-    yw = 1.0 + 0.4 * 0.5 - 0.15 * 0.25                                  # the wall at 100 m, 0.5 m up
-    fixture = _face(100.0, yw - (tol - 0.1), width=0.2, height=0.8)
+    # a 0.5 x 1.2 m cabinet on the wall at 100 m, protruding tol - 0.6 .. tol - 0.1 m from the fitted wall: 28
+    # voxels, well above structure_cut_min_points, so the tolerance keeps it with the wall, not the part bar
+    # (14.10, review: the 13.10 fixture had 4 voxels and passed at any tolerance)
+    fixture = _face(100.0, _wall_y(100.0, 0.5) - (tol - 0.1), width=0.5, height=1.5)
     fixture = fixture[fixture[:, 2] >= 0.3]
-    assert _clusters(np.concatenate([_wall(), fixture]), on) == []
+    scene = np.concatenate([_wall(), fixture])
+    assert _clusters(scene, on) == [] and _clusters(scene, replace(on, structure_cut_min_points=0)) == []
+    (c,) = _clusters(scene, replace(on, structure_cut_tol=tol - 0.7))       # all of it in front: carved out
+    assert c.cut and c.n >= 3 * on.structure_cut_min_points
     # behind the wall: the wall at -0.8 m at 100 m (it falls to the right with x, so the sensor sees its
     # -y side), a box 1.0-1.5 m on its +y side, in the strict gauge
     behind = np.concatenate([_wall(y100=-0.8), _face(100.0, 0.3)])
@@ -111,19 +144,21 @@ def _column(x: float, y: float, k: int):
 
 
 def test_small_part_in_front_of_wall_stays_dropped():
-    """3-7 voxels about 1 m in front of the diagonal wall at 105 m, in the strict gauge, beyond far_range
-    (3 voxels pass the point-count bar there): without the part-size bar each is carved out as a gauge
-    obstacle; with structure_cut_min_points 8 they stay dropped with the wall, and 8 voxels pass."""
+    """3-7 voxels 1.4 m in front of a wall along the track at 1.9 m, at 120 m (the DBSCAN radius links them to
+    it there), in the strict gauge, beyond far_range (3 voxels pass the point-count bar there): without the
+    part-size bar each is carved out as a gauge obstacle; with structure_cut_min_points 8 they stay dropped with
+    the wall, and 8 voxels pass."""
     on = ClusterConfig()
     assert on.structure_cut_min_points == 8 and on.min_points_far <= 3
     nobar = replace(on, structure_cut_min_points=0)
+    wall = _straight_wall(y=1.9, x0=105.0, x1=150.0)
     for k in range(3, 8):
-        scene = np.concatenate([_wall(), _column(105.0, -0.3, k)])
-        assert _clusters(scene, on) == [], k
+        scene = np.concatenate([wall, _column(120.0, 0.5, k)])
+        assert _clusters(scene, on) == [] and _clusters(scene, replace(on, structure_cut_tol=0.0)) == [], k
         (c,) = _clusters(scene, nobar)
-        assert c.n == k and c.zone == "gauge" and not c.reason and abs(c.distance - 105.0) < 0.05
-    (c,) = _clusters(np.concatenate([_wall(), _column(105.0, -0.3, 8)]), on)
-    assert c.n == 8 and c.zone == "gauge" and not c.reason
+        assert c.cut and c.n == k and c.zone == "gauge" and not c.reason and abs(c.distance - 120.0) < 0.05
+    (c,) = _clusters(np.concatenate([wall, _column(120.0, 0.5, 8)]), on)
+    assert c.cut and c.n == 8 and c.zone == "gauge" and not c.reason
 
 
 def _straight_wall(y: float = 2.6, x0: float = 10.0, x1: float = 40.0):
@@ -191,8 +226,9 @@ def test_degenerate_surface_fits():
 def test_no_cut_along_a_face_across_the_track(monkeypatch):
     """A plane face seen obliquely across the track (79 deg to it: y = 5 (x - 100), 10 m wide, through the
     envelope at 100 m) fits y(x, h) exactly, but its lateral residual overstates the distance in front of
-    it five times: a 0.5 x 1.75 m face 0.25-0.35 m in front of it would pass the 0.8 m tolerance. A surface
-    steeper than _SURFACE_MAX_SLOPE (45 deg) is not cut; without that bound the face would be carved out."""
+    it five times: a 0.5 x 1.75 m face 0.25-0.35 m in front of it (lateral residual 1.25-1.75 m) would pass the
+    1.3 m tolerance. A surface steeper than _SURFACE_MAX_SLOPE (45 deg) is not cut; without that bound the face
+    would be carved out."""
     Y, H = np.meshgrid(np.arange(-5.0, 5.01, 0.1), np.arange(0.1, 2.95, 0.2), indexing="ij")
     oblique = np.stack([100.0 + Y.ravel() / 5.0, Y.ravel(), H.ravel()], 1)
     Yo, Ho = np.meshgrid(np.arange(-0.25, 0.26, 0.1), np.arange(0.1, 1.76, 0.15), indexing="ij")
@@ -204,3 +240,61 @@ def test_no_cut_along_a_face_across_the_track(monkeypatch):
     monkeypatch.setattr(clustering, "_SURFACE_MAX_SLOPE", 1e9)
     (c,) = _clusters(scene, on)
     assert c.zone == "gauge" and abs(c.distance - 99.7) < 0.05
+
+
+def _post(x: float, y0: float, width: float = 0.3, top: float = 2.6):
+    """The front face of a post standing on the rail-head plane, ``width`` across the track."""
+    Y, H = np.meshgrid(np.arange(y0, y0 + width + 1e-6, 0.1), np.arange(0.1, top + 1e-6, 0.15), indexing="ij")
+    return np.stack([np.full(Y.size, x), Y.ravel(), H.ravel()], 1)
+
+
+def test_a_cut_part_meets_the_column_rule_and_its_free_top_test(monkeypatch):
+    """14.10 (review): a cut part goes through the same rules as any corridor cluster, the column signature's
+    free-top test included (the frame's cloud is handed on to the parts). A 0.3 m post, 2.6 m tall, 0.8-1.1 m
+    in front of a straight wall at 1.7 m at 60 m (one oversize cluster with it, the split refuses it beyond
+    30 m): its part is asked whether its top is seen free - free, an obstacle; not free, a column."""
+    cfg = replace(ClusterConfig(), structure_cut_tol=0.8)
+    scene = np.concatenate([_straight_wall(y=1.7, x0=50.0, x1=72.0), _post(60.0, 0.6)]).astype(np.float32)
+    dy, h = scene[:, 1].astype(np.float64), scene[:, 2].astype(np.float64)
+    strict = (np.abs(dy) < 1.05) & (h > 0.0) & (h < 3.0)
+
+    def run(answer, c=cfg):
+        calls = []
+        monkeypatch.setattr(clustering, "top_is_free", lambda *a, **k: calls.append(1) or answer)
+        out = find_clusters(scene, np.full(len(scene), 10.0, np.float32), dy, h, strict, c, frame_xyz=scene)
+        return out, calls
+
+    (c,), calls = run(True)
+    assert calls == [1] and c.cut and c.spared and (c.zone, c.reason) == ("gauge", "") and abs(c.distance - 60.0) < 0.05
+    (c,), calls = run(False)
+    assert calls == [1] and c.cut and not c.spared and (c.zone, c.reason) == ("warning", "column")
+    assert run(True, replace(cfg, structure_cut_tol=0.0)) == ([], [])          # no cut: dropped with the wall
+
+
+def test_a_demoted_cut_part_does_not_remove_a_low_object():
+    """14.10 (review): a low cluster overlapping a corridor cluster is that object's lower part and is dropped
+    (one detection) - but a part the structure cut carved out of an oversize cluster counts only when it is
+    itself an obstacle, as a straddling or a wall-kept cluster (the sealed detector dropped the oversize
+    cluster whole and removed nothing). A low box on the bed at 40 m under a demoted cut part stays."""
+    from resense.clustering import Cluster
+    from resense.detector import Candidates, Detector
+
+    def corridor(cut: bool, reason: str):
+        c = np.array([40.15, 0.3, 0.9])
+        return Cluster(points_idx=np.arange(3), n=12, n_raw=24, centroid=c, bbox_min=c - [0.15, 0.2, 0.9],
+                       bbox_max=c + [0.15, 0.2, 0.9], distance=40.0, lateral=0.3, height_min=0.0, height_max=1.8,
+                       intensity=10.0, n_expected=12.0, score=1.0, zone="warning" if reason else "gauge",
+                       n_gauge=12, reason=reason, cut=cut)
+
+    c = np.array([40.15, 0.3, 0.1])
+    low = Cluster(points_idx=np.arange(3), n=8, n_raw=12, centroid=c, bbox_min=c - [0.15, 0.15, 0.05],
+                  bbox_max=c + [0.15, 0.15, 0.05], distance=40.0, lateral=0.3, height_min=0.05, height_max=0.15,
+                  intensity=10.0, n_expected=8.0, score=1.0, zone="gauge", n_gauge=8, kind="low")
+    det = Detector(DetectorConfig())
+    empty = Candidates(xyz=np.zeros((0, 3), np.float32), dy=np.zeros(0), h=np.zeros(0),
+                       in_gauge=np.zeros(0, bool), intensity=np.zeros(0, np.float32),
+                       idx=np.zeros(0, np.int64), low=np.zeros(0, bool))
+    for reason in ("beyond_axis", "floating", "column"):
+        assert det._not_part_of_corridor_objects([low], [], [corridor(True, reason)], empty) == [low], reason
+        assert det._not_part_of_corridor_objects([low], [], [corridor(False, reason)], empty) == [], reason
+    assert det._not_part_of_corridor_objects([low], [], [corridor(True, "")], empty) == []

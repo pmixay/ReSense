@@ -250,9 +250,11 @@ def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
 def test_free_standing_post_is_a_stop(tunnel):
     """13.10 (cluster.column_free_max_top; the judge's 0.3 x 0.3 x 2.8 m pole): the post of the column-hold
     test 0.7 m off the axis, ending in the envelope - the tunnel's rays above its top reach the lining - is a
-    STOP on the frame that confirms it at 40-80 m; with the free-top test off it is advisory ``column`` (the
-    behaviour before). A column up to the vault stays a column (the hanging stage off: it takes a 0.3 m column
-    this near the axis, through the envelope top, for a hanging object)."""
+    STOP one frame after the frame that confirms it at 40-80 m (14.10, tracking.column_free_min_spares: its
+    first spared hit is the column the column rule made of it, explained_run counts the clean hits after it;
+    with every spare believed, 13.10, on the confirming frame); with the free-top test off it is advisory
+    ``column`` (the behaviour before). A column up to the vault stays a column (the hanging stage off: it
+    takes a 0.3 m column this near the axis, through the envelope top, for a hanging object)."""
     frame, _, _ = tunnel
     cfg = DetectorConfig()
     cfg.gauge = replace(cfg.gauge, reference=0)
@@ -262,10 +264,14 @@ def test_free_standing_post_is_a_stop(tunnel):
     unhung = DetectorConfig()
     unhung.gauge = replace(unhung.gauge, reference=0)
     unhung.cluster = replace(unhung.cluster, hanging_enabled=False)
+    believe_all = DetectorConfig()
+    believe_all.gauge = replace(believe_all.gauge, reference=0)
+    believe_all.tracking = replace(believe_all.tracking, column_free_min_spares=1)
     confirm = cfg.tracking.frames_to_confirm() - 1
     for dist in (40.0, 60.0, 80.0):
         post = _box_surface(dist, 0.3, 0.7, 0.0, 2.8, 0.3)
-        assert _first_stop(frame, [post] * 8, cfg) == confirm, dist
+        assert _first_stop(frame, [post] * 8, cfg) == confirm + 1, dist
+        assert _first_stop(frame, [post] * 8, believe_all) == confirm, dist
         assert _first_stop(frame, [post] * 8, off) is None, dist
         column = _box_surface(dist, 0.3, 0.7, 0.0, VAULT_H, 0.3)
         assert _first_stop(frame, [column] * 8, unhung) is None, dist

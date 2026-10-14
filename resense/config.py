@@ -204,10 +204,12 @@ class ClusterConfig:
     # in front of the surface, as seen from the sensor, are linked again on their own and the parts at most
     # oversize_split_max_length long, not flatter than min_height, with points in the strict gauge and at
     # least structure_cut_min_points voxels are described as clusters (clustering._off_structure_parts).
-    # 0.8 m: equipment fixed to the wall stands 0.8-1.2 m in front of it; 0.3 / 0.5 gave false STOP
-    # episodes on the empty recordings; no gain nearer the wall, nor at 100-150 m on C, where the lagging
-    # axis puts the judge's box within 0.2-0.6 m of the wall (configs/default.yaml has the measurements)
-    structure_cut_tol: float = 0.8
+    # 14.10 (review): 1.3 m (0.8 on 13.10), more than the equipment fixed to the wall (0.8-1.2 m) and more
+    # than C's wall stands outside the strict envelope (2.2-2.35 m from the axis): at 0.8 an object 0.95-1.2 m
+    # in front of the wall, outside the envelope, was placed inside it by the lagging axis (false STOPs); no
+    # gain nearer the wall, nor at 100-150 m on C, where the lagging axis puts the judge's box within 0.2-0.6 m
+    # of the wall (configs/default.yaml has the measurements)
+    structure_cut_tol: float = 1.3
     structure_cut_max_spread: float = 0.12  # m, ... only when the cluster is such a surface: robust spread of its points about the fit at most this
     structure_cut_min_fit: float = 0.8      # ... and at least this fraction of its points on the surface
     structure_cut_min_points: int = 8       # 14.10 (0 = no bar): ... and a part at least this many voxels (the accumulated near bar, min_points 5 x 1.5): the parts carved out of wall equipment on the empty recordings had 3-7, the judge's objects 8-42
@@ -390,6 +392,14 @@ class TrackingConfig:
     ego_veto_min_travel: float = 4.0
     ego_veto_min_distance: float = 25.0
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
+    # 14.10 (review of the 13.10 free-top test; 0 / 1 = off, every spare believed): a cluster the column rule
+    # fits but cluster.column_free_max_top spares (its top seen free; Cluster.spared) is believed only when the
+    # track it continues had at least this many - 1 such hits among its last zone_window hits; alone it is the
+    # column the column rule made of it (reason column, zone warning: the column hold, the zone vote and
+    # explained_run see what they saw before 13.10). One spare of a noisy frame turned column tracks into
+    # STOPs (the standing train with 20-30 % point dropout, roundT_doubleT pitched -2 deg); the judge's pole,
+    # spared hit after hit, is believed from its second spared hit (configs/default.yaml has the measurements)
+    column_free_min_spares: int = 2
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
     stop_keep_low_s: float = 0.3  # seconds since a clean low hit during which matching current straddle returns may continue an existing low STOP; 0 = off

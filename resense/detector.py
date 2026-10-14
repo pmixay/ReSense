@@ -694,8 +694,10 @@ class Detector:
             # 26.09 (safety review): a blob kept only by the wall keep (cluster.wall_keep_gauge_voxels)
             # counts only as an obstacle, as for a straddling cluster: demoted (a column), it must not
             # remove a low object beside it
+            # 14.10 (review): so does a part the structure cut carved out of an oversize cluster
+            # (Cluster.cut): the sealed detector dropped that cluster whole, it removed nothing
             dup = any(_overlap(c, k) for k in clusters
-                      if not (strad or k.wall_kept) or (k.zone == "gauge" and not k.reason))
+                      if not (strad or k.wall_kept or k.cut) or (k.zone == "gauge" and not k.reason))
             if not dup:
                 keep.append(c)
         return keep
@@ -854,8 +856,7 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
             continue
         if (t.hits if t is not None else 1) < hcfg.clear_cap_min_hits:
             continue
-        if hcfg.clear_cap_skip_columns and (c.reason == "column" or (
-                t is not None and t.column_hold > 0 and sum(t.column_hist) >= t.column_hold)):
+        if hcfg.clear_cap_skip_columns and (c.reason == "column" or (t is not None and t.column_held)):
             continue
         touch = c.n_gauge >= hcfg.clear_cap_min_gauge
         if not touch and poly is not None and c.points_idx.size:
@@ -871,8 +872,7 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
                 continue
             if t.last.n_gauge < hcfg.clear_cap_min_gauge:
                 continue
-            if hcfg.clear_cap_skip_columns and (t.last.reason == "column" or (
-                    t.column_hold > 0 and sum(t.column_hist) >= t.column_hold)):
+            if hcfg.clear_cap_skip_columns and (t.last.reason == "column" or t.column_held):
                 continue
             d = float(t.last.distance + (t.centroid[0] - t.last.centroid[0]))
             best = d if best is None else min(best, d)
