@@ -1,0 +1,115 @@
+"""Observation-only instrumentation of the combined detector (final/silent-misses): which corridor clusters
+are new structure-cut parts, which are column-shaped, which reach the column rule, and what the free-top test
+answers for them. No decision change: the wrappers call the original functions with the same arguments and
+return their result; the extra calls (_advisory_reason without free_top, the column-shape test) are pure.
+
+STATE["k"]: the frame counter (Detector.process). STATE["records"]: per frame, cleared by the driver.
+A record is written for every corridor cluster that is a cut part, or column-shaped (the geometric condition of
+_advisory_reason's column rule, whatever rule fires first), or for which top_is_free was asked."""
+import time
+
+import numpy as np
+
+import resense.clustering as C
+import resense.detector as D
+
+ORIG_CUT = C._off_structure_parts
+ORIG_CC = C._corridor_cluster
+ORIG_AR = C._advisory_reason
+ORIG_TF = C.top_is_free
+ORIG_PROC = D.Detector.process
+
+STATE = {"k": -1, "records": [], "cut_ids": set(), "ctx": None, "tf": None,
+         "n": {"frames": 0, "cut_calls": 0, "cut_parts": 0, "tf_calls": 0, "tf_free": 0, "tf_ms": 0.0}}
+
+
+def _column_shape(b, lateral, dy, cfg):
+    size = b.size
+    off_centre = abs(lateral) > cfg.signature_min_lateral
+    col_w = float(size[1])
+    if cfg.column_width_trim > 0 and col_w >= cfg.column_max_width and b.idx.size >= 3:
+        q = float(cfg.column_width_trim)
+        lo, hi = np.quantile(b.pts[:, 1], (q, 1.0 - q))
+        if col_w - float(hi - lo) >= cfg.column_width_trim_min_cut:
+            col_w = float(hi - lo)
+    return bool(cfg.column_min_height > 0 and size[2] > cfg.column_min_height and col_w < cfg.column_max_width
+                and (off_centre or col_w >= cfg.column_min_width)), round(col_w, 2)
+
+
+def cut(b, xyz, h, in_gauge, vox, inv, cfg):
+    parts = ORIG_CUT(b, xyz, h, in_gauge, vox, inv, cfg)
+    STATE["n"]["cut_calls"] += 1
+    STATE["n"]["cut_parts"] += len(parts)
+    STATE.setdefault("alive", []).extend(parts)        # keep them alive: ids stay unique within the frame
+    for p in parts:
+        STATE["cut_ids"].add(id(p))
+        STATE.setdefault("cut_parent", {})[id(p)] = (round(float(b.bmin[0]), 1), round(float(b.bmax[0]), 1),
+                                                     int(b.n_vox))
+    return parts
+
+
+def top_is_free(frame_xyz, idx, min_returns=2, frame_ring=None):
+    t = time.perf_counter()
+    res = ORIG_TF(frame_xyz, idx, min_returns, frame_ring)
+    STATE["n"]["tf_ms"] += (time.perf_counter() - t) * 1e3
+    STATE["n"]["tf_calls"] += 1
+    STATE["n"]["tf_free"] += int(res)
+    STATE["tf"] = bool(res)
+    return res
+
+
+def advisory(b, dist, lateral, zone, dy, h, cfg, axis_valid, height_valid, lat_along=None, free_top=None):
+    STATE["tf"] = None
+    r = ORIG_AR(b, dist, lateral, zone, dy, h, cfg, axis_valid, height_valid, lat_along, free_top)
+    ctx = STATE["ctx"]
+    if ctx is not None:
+        shape, col_w = _column_shape(b, lateral, dy, cfg)
+        r0 = ORIG_AR(b, dist, lateral, zone, dy, h, cfg, axis_valid, height_valid, lat_along, None) \
+            if free_top is not None else r
+        hh = h[b.idx]
+        ctx.update(shape=shape, col_w=col_w, r_shape_only=r0, r=r, ft_avail=free_top is not None, ft=STATE["tf"],
+                   dist=round(float(dist), 1), lat=round(float(lateral), 2), zone_in=zone,
+                   size=[round(float(v), 2) for v in b.size], h_max=round(float(hh.max()), 2),
+                   h_min=round(float(hh.min()), 2), n_vox=int(b.n_vox), axis_valid=round(float(axis_valid), 1))
+    return r
+
+
+def cc(b, *rest, **kw):
+    is_cut = id(b) in STATE["cut_ids"]
+    STATE["cut_ids"].discard(id(b))
+    ctx = {"cut": is_cut}
+    if is_cut:
+        ctx["parent"] = STATE["cut_parent"].get(id(b))
+    prev = STATE["ctx"]
+    STATE["ctx"] = ctx
+    try:
+        c = ORIG_CC(b, *rest, **kw)
+    finally:
+        STATE["ctx"] = prev
+    if "r" in ctx and (is_cut or ctx["shape"] or ctx["ft_avail"] and ctx["ft"] is not None):
+        ctx["out"] = None if c is None else {"zone": c.zone, "reason": c.reason, "demoted": bool(c.demoted),
+                                             "n_gauge": int(c.n_gauge), "d": round(float(c.distance), 1)}
+        ctx["k"] = STATE["k"]
+        STATE["records"].append(ctx)
+    elif is_cut:
+        ctx["out"] = None if c is None else {"zone": c.zone, "reason": c.reason}
+        ctx["k"] = STATE["k"]
+        STATE["records"].append(ctx)
+    return c
+
+
+def process(self, frame, *a, **kw):
+    STATE["k"] += 1
+    STATE["n"]["frames"] += 1
+    STATE["cut_ids"] = set()
+    STATE["cut_parent"] = {}
+    STATE["alive"] = []
+    return ORIG_PROC(self, frame, *a, **kw)
+
+
+def install():
+    C._off_structure_parts = cut
+    C._corridor_cluster = cc
+    C._advisory_reason = advisory
+    C.top_is_free = top_is_free
+    D.Detector.process = process

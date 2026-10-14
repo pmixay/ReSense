@@ -1,0 +1,363 @@
+{
+ "A_plain": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/roundT_squareT_pressureGate_squareT.jsonl",
+  "new": "replay/A_plain.jsonl",
+  "frames": 545,
+  "frames_base": 545,
+  "frames_new": 545,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 191,
+   "GO": 354
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 191,
+   "GO": 354
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "B_plain": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/roundT_doubleT.jsonl",
+  "new": "replay/B_plain.jsonl",
+  "frames": 252,
+  "frames_base": 252,
+  "frames_new": 252,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 169,
+   "GO": 83
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 169,
+   "GO": 83
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "C_plain": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/roundT_pressureGate_roundT.jsonl",
+  "new": "replay/C_plain.jsonl",
+  "frames": 268,
+  "frames_base": 268,
+  "frames_new": 268,
+  "base_stats": {
+   "STOP": 2,
+   "episodes": 1,
+   "CAUTION": 116,
+   "GO": 150
+  },
+  "new_stats": {
+   "STOP": 2,
+   "episodes": 1,
+   "CAUTION": 116,
+   "GO": 150
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "S_plain": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/squareT_platform_squareT_switch.jsonl",
+  "new": "replay/S_plain.jsonl",
+  "frames": 877,
+  "frames_base": 877,
+  "frames_new": 877,
+  "base_stats": {
+   "STOP": 11,
+   "episodes": 3,
+   "CAUTION": 446,
+   "GO": 420
+  },
+  "new_stats": {
+   "STOP": 11,
+   "episodes": 3,
+   "CAUTION": 446,
+   "GO": 420
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "A_pitch2": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/probe/roundT_squareT_pressureGate_squareT__pitch+2.jsonl",
+  "new": "replay/A_pitch2.jsonl",
+  "frames": 545,
+  "frames_base": 545,
+  "frames_new": 545,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 193,
+   "GO": 352
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 193,
+   "GO": 352
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "A_drop30": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/probe/roundT_squareT_pressureGate_squareT__drop30.jsonl",
+  "new": "replay/A_drop30.jsonl",
+  "frames": 545,
+  "frames_base": 545,
+  "frames_new": 545,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 172,
+   "GO": 373
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 172,
+   "GO": 373
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "A_dedup": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/probe/roundT_squareT_pressureGate_squareT__dedup.jsonl",
+  "new": "replay/A_dedup.jsonl",
+  "frames": 545,
+  "frames_base": 545,
+  "frames_new": 545,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 200,
+   "GO": 345
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 200,
+   "GO": 345
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "A_5Hz": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/probe/roundT_squareT_pressureGate_squareT__5Hz.jsonl",
+  "new": "replay/A_5Hz.jsonl",
+  "frames": 273,
+  "frames_base": 273,
+  "frames_new": 273,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 114,
+   "GO": 159
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 114,
+   "GO": 159
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "A_base_probe": {
+  "base": "/tmp/claude-0/judge_data/baseline_out/probe/roundT_squareT_pressureGate_squareT__base.jsonl",
+  "new": "replay/A_plain.jsonl",
+  "frames": 545,
+  "frames_base": 545,
+  "frames_new": 545,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 191,
+   "GO": 354
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 191,
+   "GO": 354
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "C_pitch2": {
+  "base": "/tmp/claude-0/fixwork/final_oversize/probes/base_C_pitch2.jsonl",
+  "new": "replay/C_pitch2.jsonl",
+  "frames": 268,
+  "frames_base": 268,
+  "frames_new": 268,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 114,
+   "GO": 154
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 114,
+   "GO": 154
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "C_drop30": {
+  "base": "/tmp/claude-0/fixwork/final_oversize/probes/base_C_drop30.jsonl",
+  "new": "replay/C_drop30.jsonl",
+  "frames": 268,
+  "frames_base": 268,
+  "frames_new": 268,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 99,
+   "GO": 169
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 99,
+   "GO": 169
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 1,
+  "detail_changed_frames": [
+   {
+    "i": 68,
+    "clear": [
+     144.0,
+     100.2
+    ]
+   }
+  ]
+ },
+ "C_dedup": {
+  "base": "replay/base_C_dedup.jsonl",
+  "new": "replay/C_dedup.jsonl",
+  "frames": 268,
+  "frames_base": 268,
+  "frames_new": 268,
+  "base_stats": {
+   "STOP": 2,
+   "episodes": 1,
+   "CAUTION": 100,
+   "GO": 166
+  },
+  "new_stats": {
+   "STOP": 2,
+   "episodes": 1,
+   "CAUTION": 100,
+   "GO": 166
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "C_5Hz": {
+  "base": "replay/base_C_5Hz.jsonl",
+  "new": "replay/C_5Hz.jsonl",
+  "frames": 134,
+  "frames_base": 134,
+  "frames_new": 134,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 60,
+   "GO": 74
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 60,
+   "GO": 74
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 1,
+  "detail_changed_frames": [
+   {
+    "i": 62,
+    "clear": [
+     151.0,
+     110.0
+    ]
+   }
+  ]
+ },
+ "C_drop30_vs_oversize": {
+  "base": "/tmp/claude-0/fixwork/final_oversize/probes/fin_C_drop30.jsonl",
+  "new": "replay/C_drop30.jsonl",
+  "frames": 268,
+  "frames_base": 268,
+  "frames_new": 268,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 99,
+   "GO": 169
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 99,
+   "GO": 169
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ },
+ "C_pitch2_vs_oversize": {
+  "base": "/tmp/claude-0/fixwork/final_oversize/probes/fin_C_pitch2.jsonl",
+  "new": "replay/C_pitch2.jsonl",
+  "frames": 268,
+  "frames_base": 268,
+  "frames_new": 268,
+  "base_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 114,
+   "GO": 154
+  },
+  "new_stats": {
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 114,
+   "GO": 154
+  },
+  "decision_changed": 0,
+  "decision_changed_frames": [],
+  "detail_changed": 0,
+  "detail_changed_frames": []
+ }
+}

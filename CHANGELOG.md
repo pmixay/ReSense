@@ -17,6 +17,11 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 
 ## [Unreleased] — detector candidate `final/silent-misses` (14.10; gate PASS, not resealed)
 
+The two fixes below together: [`silent_misses_2026-10-14`](docs/evidence/silent_misses_2026-10-14/README.md). The full
+regression gate of the combined code passes with every gate frame identical to the sealed detector. All 27 judge range
+probes keep each fix's gain frame by frame; the C pole on the axis gains from the two together (43 → 56 STOP frames,
+held from 93.1 m). No structure-cut part reached the column rule on the ride, the judge recordings or the probes.
+
 ### Fixed — a pole standing in the envelope is not a column (`cluster.column_free_max_top`, 13.10 / 14.10)
 
 - The judge's silent miss 1 of 13.10 ([`judgement_2026-10-13`](docs/evidence/judgement_2026-10-13/README.md)): a
