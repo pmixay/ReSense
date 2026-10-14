@@ -1,0 +1,26 @@
+"""Debug: per-frame tracks near a window of a jrep-style replay (S with dropout)."""
+import json, os, sys, glob
+import numpy as np
+WT = os.environ["WT"]; sys.path.insert(0, WT); sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hooks  # noqa
+sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+from judge_runner import NodeReplica, node_decision  # noqa
+from range_test import run_frame  # noqa
+cache, drop, seed, k0, k1 = sys.argv[1], float(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5])
+meta = json.load(open(os.path.join(cache, "meta.json"))); files = sorted(glob.glob(os.path.join(cache, "f_*.npz")))
+rep = NodeReplica(); rng = np.random.default_rng(seed)
+for k, (m, f) in enumerate(zip(meta, files)):
+    if k > k1:
+        break
+    d = np.load(f); xyz, inten, ring = d["xyz"], d["inten"], d["ring"]
+    keep = rng.random(len(xyz)) >= drop; xyz, inten, ring = xyz[keep], inten[keep], ring[keep]
+    hooks.STATS["k"] = k
+    res = run_frame(rep, xyz, inten, ring, m, k)
+    if k >= k0:
+        print(k, node_decision(res))
+        for t in rep.detector.tracker.tracks:
+            if t.last is not None and 78 < t.last.distance < 90 and t.misses == 0:
+                print("   id", t.id, "d", round(t.last.distance, 1), "lat", round(t.last.lateral, 2), "zone", t.zone, "rep", t.reported,
+                      "col", "".join("C" if v else "." for v in t.column_hist), "spr", "".join("S" if v else "." for v in t.spare_hist),
+                      "zh", "".join("g" if v else "." for v in t.zone_hist), "reason", t.last.reason, "spared", t.last.spared,
+                      "size", [round(float(v), 2) for v in t.last.size])

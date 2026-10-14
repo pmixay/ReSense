@@ -1,0 +1,25 @@
+import json
+d = json.load(open("out/review_sweep.json"))
+J = d["judge"]; W = d["wallbox"]
+lab = {"person": "C person", "cube1": "C 1 m cube", "cube05": "C 0.5 m cube", "person_p05": "C person +0.5 m",
+       "person_m05": "C person −0.5 m", "person_m07": "C person −0.7 m"}
+sealed = {"person": "73.9 · 49", "cube1": "73.9 · 49", "cube05": "75.4 · 50", "person_p05": "69.5 · 46", "person_m05": "193.5 (held 91.6) · 57", "person_m07": "85.7 · 57"}
+print("| probe: first STOP m · STOP frames | sealed | 0.8 (13.10) | 1.0 | 1.2 | **1.3** | 1.3 + option (a) |")
+print("|---|---|---|---|---|---|---|")
+for k in ("person", "cube1", "cube05", "person_p05", "person_m05", "person_m07"):
+    def c(t):
+        x = J[k].get(t)
+        if not x: return "–"
+        fs = x["first_stop_X"]
+        if k == "person_m05": return f"held {x['held_from_X']:.1f} · {x['stop_frames']}"
+        return f"{fs:.1f} · {x['stop_frames']}"
+    s = sealed[k] if k != "person_m05" else "held 91.6 · 57"
+    print(f"| {lab[k]} | {s} | {c('t0.8')} | {c('t1.0')} | {c('t1.2')} | **{c('t1.3')}** | {c('cap1.3')} |")
+labw = {"person10": "box 1.0 m proud", "person11": "box 1.1 m proud", "mast10": "mast 1.0 m proud", "signpost095": "sign post 0.95 m proud",
+        "col10": "column 1.0 m proud", "mast12": "mast 1.2 m proud (envelope edge)"}
+for k in ("person10", "person11", "mast10", "signpost095", "col10", "mast12"):
+    def c(t):
+        x = W[k].get(t)
+        if not x: return "–"
+        return f"{x['obj_stop_frames']} STOP ({x['hooks']['cut_parts']} parts)"
+    print(f"| {labw[k]}: STOP frames (cut parts) | 0 | {c('t0.8')} | {c('t1.0')} | {c('t1.2')} | **{c('t1.3')}** | {c('cap1.3')} |")

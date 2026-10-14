@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+"""Compare two decision jsonl files frame by frame. usage: cmp.py base.jsonl new.jsonl [label]"""
+import json, sys
+def load(p):
+    return {r["i"]: r for r in map(json.loads, open(p))}
+a, b = load(sys.argv[1]), load(sys.argv[2])
+keys = sorted(set(a) & set(b))
+def eps(rows):
+    n = 0; prev = False
+    for r in rows:
+        s = r["decision"] == "STOP"
+        n += s and not prev; prev = s
+    return n
+ra = [a[k] for k in keys]; rb = [b[k] for k in keys]
+diff = [(k, a[k]["decision"], b[k]["decision"]) for k in keys if a[k]["decision"] != b[k]["decision"]]
+fd = [k for k in keys if a[k].get("dets") != b[k].get("dets") or a[k].get("warns") != b[k].get("warns")]
+print(sys.argv[3] if len(sys.argv) > 3 else "", "frames", len(keys),
+      "STOP", sum(r["decision"] == "STOP" for r in ra), "->", sum(r["decision"] == "STOP" for r in rb),
+      "episodes", eps(ra), "->", eps(rb),
+      "CAUTION", sum(r["decision"] == "CAUTION" for r in ra), "->", sum(r["decision"] == "CAUTION" for r in rb),
+      "decision diffs", len(diff), "det/warn diffs", len(fd))
+for k, x, y in diff[:40]:
+    db = b[k].get("dets") or []
+    print("   ", k, x, "->", y, [(d["d"], d["lat"], d["size"], d["reason"]) for d in db][:3])

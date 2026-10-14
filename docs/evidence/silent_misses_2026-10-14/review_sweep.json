@@ -1,0 +1,867 @@
+{
+ "note": "structure_cut_tol sweep on roundT_pressureGate_roundT (14.10, fixer): judge range_test probes on the detector's axis (first STOP m / held from m / STOP frames of visible / decisions while visible) and the review's wall-anchored ray-cast boxes (STOP frames attributable to the object). Code: 5fce816 (13.10 combined) with cluster.structure_cut_tol overridden (hooks.py CFG), one run at a time; 'cap' rows: the review's option (a), parts cut beyond where the wall surface itself enters the strict envelope described with the axis trusted only to there (beyond_axis), on the code with the tracker rule; rejected.",
+ "judge": {
+  "person": {
+   "t0.8": {
+    "first_stop_X": 90.15,
+    "held_from_X": 99.04,
+    "stop_frames": 60,
+    "visible": 153,
+    "bin_60_100": "21/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 40,
+     "CAUTION": 53,
+     "STOP": 60,
+     "FAULT": 0
+    }
+   },
+   "t1.3": {
+    "first_stop_X": 82.77,
+    "held_from_X": 91.63,
+    "stop_frames": 55,
+    "visible": 153,
+    "bin_60_100": "16/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 42,
+     "CAUTION": 56,
+     "STOP": 55,
+     "FAULT": 0
+    }
+   },
+   "t1.2": {
+    "first_stop_X": 84.25,
+    "held_from_X": 93.11,
+    "stop_frames": 56,
+    "visible": 153,
+    "bin_60_100": "17/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 42,
+     "CAUTION": 55,
+     "STOP": 56,
+     "FAULT": 0
+    }
+   },
+   "t1.0": {
+    "first_stop_X": 87.2,
+    "held_from_X": 96.07,
+    "stop_frames": 58,
+    "visible": 153,
+    "bin_60_100": "19/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 40,
+     "CAUTION": 55,
+     "STOP": 58,
+     "FAULT": 0
+    }
+   },
+   "cap1.3": {
+    "first_stop_X": 71.0,
+    "held_from_X": 78.36,
+    "stop_frames": 47,
+    "visible": 153,
+    "bin_60_100": "8/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 42,
+     "CAUTION": 64,
+     "STOP": 47,
+     "FAULT": 0
+    }
+   },
+   "cap0.8": {
+    "first_stop_X": 71.0,
+    "held_from_X": 78.36,
+    "stop_frames": 47,
+    "visible": 153,
+    "bin_60_100": "8/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 40,
+     "CAUTION": 66,
+     "STOP": 47,
+     "FAULT": 0
+    }
+   }
+  },
+  "cube1": {
+   "t0.8": {
+    "first_stop_X": 96.07,
+    "held_from_X": 106.47,
+    "stop_frames": 64,
+    "visible": 153,
+    "bin_60_100": "25/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 46,
+     "CAUTION": 43,
+     "STOP": 64,
+     "FAULT": 0
+    }
+   },
+   "t1.3": {
+    "first_stop_X": 85.72,
+    "held_from_X": 94.58,
+    "stop_frames": 57,
+    "visible": 153,
+    "bin_60_100": "18/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 46,
+     "CAUTION": 50,
+     "STOP": 57,
+     "FAULT": 0
+    }
+   },
+   "t1.2": {
+    "first_stop_X": 85.72,
+    "held_from_X": 94.58,
+    "stop_frames": 57,
+    "visible": 153,
+    "bin_60_100": "18/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 46,
+     "CAUTION": 50,
+     "STOP": 57,
+     "FAULT": 0
+    }
+   },
+   "t1.0": {
+    "first_stop_X": 90.15,
+    "held_from_X": 99.04,
+    "stop_frames": 60,
+    "visible": 153,
+    "bin_60_100": "21/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 46,
+     "CAUTION": 47,
+     "STOP": 60,
+     "FAULT": 0
+    }
+   },
+   "cap1.3": {
+    "first_stop_X": 72.47,
+    "held_from_X": 79.83,
+    "stop_frames": 48,
+    "visible": 153,
+    "bin_60_100": "9/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 46,
+     "CAUTION": 59,
+     "STOP": 48,
+     "FAULT": 0
+    }
+   }
+  },
+  "cube05": {
+   "t0.8": {
+    "first_stop_X": 82.77,
+    "held_from_X": 91.63,
+    "stop_frames": 55,
+    "visible": 151,
+    "bin_60_100": "16/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 50,
+     "CAUTION": 46,
+     "STOP": 55,
+     "FAULT": 0
+    }
+   },
+   "t1.3": {
+    "first_stop_X": 75.42,
+    "held_from_X": 82.77,
+    "stop_frames": 50,
+    "visible": 151,
+    "bin_60_100": "11/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 55,
+     "CAUTION": 46,
+     "STOP": 50,
+     "FAULT": 0
+    }
+   },
+   "t1.2": {
+    "first_stop_X": 75.42,
+    "held_from_X": 82.77,
+    "stop_frames": 50,
+    "visible": 151,
+    "bin_60_100": "11/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 55,
+     "CAUTION": 46,
+     "STOP": 50,
+     "FAULT": 0
+    }
+   },
+   "t1.0": {
+    "first_stop_X": 78.36,
+    "held_from_X": 85.72,
+    "stop_frames": 52,
+    "visible": 151,
+    "bin_60_100": "13/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 53,
+     "CAUTION": 46,
+     "STOP": 52,
+     "FAULT": 0
+    }
+   }
+  },
+  "person_m05": {
+   "t0.8": {
+    "first_stop_X": 193.5,
+    "held_from_X": 112.41,
+    "stop_frames": 70,
+    "visible": 153,
+    "bin_60_100": "27/27",
+    "bin_100_150": "2/34",
+    "decisions_while_visible": {
+     "GO": 39,
+     "CAUTION": 44,
+     "STOP": 70,
+     "FAULT": 0
+    }
+   },
+   "t1.3": {
+    "first_stop_X": 193.5,
+    "held_from_X": 99.04,
+    "stop_frames": 62,
+    "visible": 153,
+    "bin_60_100": "21/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 39,
+     "CAUTION": 52,
+     "STOP": 62,
+     "FAULT": 0
+    }
+   },
+   "t1.2": {
+    "first_stop_X": 193.5,
+    "held_from_X": 104.98,
+    "stop_frames": 65,
+    "visible": 153,
+    "bin_60_100": "24/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 39,
+     "CAUTION": 49,
+     "STOP": 65,
+     "FAULT": 0
+    }
+   },
+   "t1.0": {
+    "first_stop_X": 193.5,
+    "held_from_X": 109.44,
+    "stop_frames": 68,
+    "visible": 153,
+    "bin_60_100": "27/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 39,
+     "CAUTION": 46,
+     "STOP": 68,
+     "FAULT": 0
+    }
+   },
+   "cap1.3": {
+    "first_stop_X": 193.5,
+    "held_from_X": 90.15,
+    "stop_frames": 56,
+    "visible": 153,
+    "bin_60_100": "15/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 39,
+     "CAUTION": 58,
+     "STOP": 56,
+     "FAULT": 0
+    }
+   }
+  },
+  "person_p05": {
+   "t0.8": {
+    "first_stop_X": 84.25,
+    "held_from_X": 93.11,
+    "stop_frames": 56,
+    "visible": 153,
+    "bin_60_100": "17/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 39,
+     "CAUTION": 58,
+     "STOP": 56,
+     "FAULT": 0
+    }
+   },
+   "t1.3": {
+    "first_stop_X": 72.47,
+    "held_from_X": 79.83,
+    "stop_frames": 48,
+    "visible": 153,
+    "bin_60_100": "9/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 45,
+     "CAUTION": 60,
+     "STOP": 48,
+     "FAULT": 0
+    }
+   },
+   "t1.2": {
+    "first_stop_X": 72.47,
+    "held_from_X": 79.83,
+    "stop_frames": 48,
+    "visible": 153,
+    "bin_60_100": "9/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 45,
+     "CAUTION": 60,
+     "STOP": 48,
+     "FAULT": 0
+    }
+   },
+   "t1.0": {
+    "first_stop_X": 75.42,
+    "held_from_X": 82.77,
+    "stop_frames": 50,
+    "visible": 153,
+    "bin_60_100": "11/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 43,
+     "CAUTION": 60,
+     "STOP": 50,
+     "FAULT": 0
+    }
+   },
+   "cap1.3": {
+    "first_stop_X": 72.47,
+    "held_from_X": 79.83,
+    "stop_frames": 48,
+    "visible": 153,
+    "bin_60_100": "9/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 45,
+     "CAUTION": 60,
+     "STOP": 48,
+     "FAULT": 0
+    }
+   }
+  },
+  "person_m07": {
+   "t0.8": {
+    "first_stop_X": 109.44,
+    "held_from_X": 121.34,
+    "stop_frames": 73,
+    "visible": 153,
+    "bin_60_100": "27/27",
+    "bin_100_150": "7/34",
+    "decisions_while_visible": {
+     "GO": 38,
+     "CAUTION": 42,
+     "STOP": 73,
+     "FAULT": 0
+    }
+   },
+   "t1.3": {
+    "first_stop_X": 96.07,
+    "held_from_X": 106.47,
+    "stop_frames": 64,
+    "visible": 153,
+    "bin_60_100": "25/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 38,
+     "CAUTION": 51,
+     "STOP": 64,
+     "FAULT": 0
+    }
+   },
+   "t1.2": {
+    "first_stop_X": 99.04,
+    "held_from_X": 109.44,
+    "stop_frames": 66,
+    "visible": 153,
+    "bin_60_100": "27/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 38,
+     "CAUTION": 49,
+     "STOP": 66,
+     "FAULT": 0
+    }
+   },
+   "t1.0": {
+    "first_stop_X": 102.01,
+    "held_from_X": 112.41,
+    "stop_frames": 68,
+    "visible": 153,
+    "bin_60_100": "27/27",
+    "bin_100_150": "2/34",
+    "decisions_while_visible": {
+     "GO": 38,
+     "CAUTION": 47,
+     "STOP": 68,
+     "FAULT": 0
+    }
+   },
+   "cap1.3": {
+    "first_stop_X": 84.25,
+    "held_from_X": 93.11,
+    "stop_frames": 56,
+    "visible": 153,
+    "bin_60_100": "17/27",
+    "bin_100_150": "0/34",
+    "decisions_while_visible": {
+     "GO": 38,
+     "CAUTION": 59,
+     "STOP": 56,
+     "FAULT": 0
+    }
+   }
+  }
+ },
+ "wallbox": {
+  "person10": {
+   "t0.8": {
+    "obj_stop_frames": 21,
+    "first_stop_X": 100.53,
+    "bin_60_100": "20/27",
+    "all_frames": {
+     "GO": 117,
+     "CAUTION": 128,
+     "STOP": 23,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 16
+    }
+   },
+   "t1.3": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 124,
+     "CAUTION": 142,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.2": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 124,
+     "CAUTION": 142,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.0": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 121,
+     "CAUTION": 145,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 1
+    }
+   },
+   "cap1.3": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 124,
+     "CAUTION": 142,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   }
+  },
+  "person11": {
+   "t0.8": {
+    "obj_stop_frames": 15,
+    "first_stop_X": 102.01,
+    "bin_60_100": "13/27",
+    "all_frames": {
+     "GO": 124,
+     "CAUTION": 127,
+     "STOP": 17,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 19
+    }
+   },
+   "t1.3": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 124,
+     "CAUTION": 142,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.2": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 124,
+     "CAUTION": 142,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.0": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 124,
+     "CAUTION": 142,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 2
+    }
+   }
+  },
+  "mast10": {
+   "t0.8": {
+    "obj_stop_frames": 9,
+    "first_stop_X": 90.15,
+    "bin_60_100": "9/27",
+    "all_frames": {
+     "GO": 153,
+     "CAUTION": 104,
+     "STOP": 11,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 12
+    }
+   },
+   "t1.3": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 154,
+     "CAUTION": 112,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.2": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 154,
+     "CAUTION": 112,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.0": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 154,
+     "CAUTION": 112,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 2
+    }
+   }
+  },
+  "mast12": {
+   "t0.8": {
+    "obj_stop_frames": 27,
+    "first_stop_X": 102.01,
+    "bin_60_100": "25/27",
+    "all_frames": {
+     "GO": 135,
+     "CAUTION": 104,
+     "STOP": 29,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 1,
+     "tf_free": 1,
+     "cut_parts": 26
+    }
+   },
+   "t1.3": {
+    "obj_stop_frames": 3,
+    "first_stop_X": 68.06,
+    "bin_60_100": "3/27",
+    "all_frames": {
+     "GO": 141,
+     "CAUTION": 122,
+     "STOP": 5,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 1,
+     "tf_free": 1,
+     "cut_parts": 4
+    }
+   },
+   "t1.2": {
+    "obj_stop_frames": 8,
+    "first_stop_X": 73.94,
+    "bin_60_100": "8/27",
+    "all_frames": {
+     "GO": 139,
+     "CAUTION": 119,
+     "STOP": 10,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 1,
+     "tf_free": 1,
+     "cut_parts": 5
+    }
+   },
+   "t1.0": {
+    "obj_stop_frames": 19,
+    "first_stop_X": 90.15,
+    "bin_60_100": "19/27",
+    "all_frames": {
+     "GO": 135,
+     "CAUTION": 112,
+     "STOP": 21,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 1,
+     "tf_free": 1,
+     "cut_parts": 17
+    }
+   },
+   "cap1.3": {
+    "obj_stop_frames": 1,
+    "first_stop_X": 68.06,
+    "bin_60_100": "1/27",
+    "all_frames": {
+     "GO": 141,
+     "CAUTION": 124,
+     "STOP": 3,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 1,
+     "tf_free": 1,
+     "cut_parts": 4
+    }
+   }
+  },
+  "signpost095": {
+   "t0.8": {
+    "obj_stop_frames": 5,
+    "first_stop_X": 84.25,
+    "bin_60_100": "5/20",
+    "all_frames": {
+     "GO": 140,
+     "CAUTION": 119,
+     "STOP": 9,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 7
+    }
+   },
+   "t1.3": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/20",
+    "all_frames": {
+     "GO": 146,
+     "CAUTION": 120,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.2": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/20",
+    "all_frames": {
+     "GO": 146,
+     "CAUTION": 120,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.0": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/20",
+    "all_frames": {
+     "GO": 146,
+     "CAUTION": 120,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 3
+    }
+   }
+  },
+  "col10": {
+   "t0.8": {
+    "obj_stop_frames": 8,
+    "first_stop_X": 94.58,
+    "bin_60_100": "8/27",
+    "all_frames": {
+     "GO": 164,
+     "CAUTION": 95,
+     "STOP": 9,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 12
+    }
+   },
+   "t1.3": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 167,
+     "CAUTION": 100,
+     "STOP": 1,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.2": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 167,
+     "CAUTION": 100,
+     "STOP": 1,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   },
+   "t1.0": {
+    "obj_stop_frames": 0,
+    "first_stop_X": null,
+    "bin_60_100": "0/27",
+    "all_frames": {
+     "GO": 167,
+     "CAUTION": 100,
+     "STOP": 1,
+     "FAULT": 0
+    },
+    "hooks": {
+     "tf_calls": 0,
+     "tf_free": 0,
+     "cut_parts": 0
+    }
+   }
+  }
+ }
+}

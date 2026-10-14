@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Gate-cache replay (scratch): a fresh Detector with WT's default config over a piece (piece:K/N, gate-faithful:
+no reset) or stem prefixes (reset on >1 s stamp holes like the node / instr_gate.py), with perturbations.
+usage: grun.py <cache_dir> <out_prefix> (piece:K/N | prefix ...) [--drop P] [--ring-drop P] [--pitch D] [--seed S]
+       [--every N] [--from I --to I] ; env DARKBAND (hooks.py)
+Frame index: new_data_<split>_<j> -> split*51+j (as instr_gate.py), else the file order."""
+import argparse, json, os, sys
+import numpy as np
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hooks  # noqa
+sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+from judge_runner import node_decision, det_dict  # noqa
+from resense.config import DetectorConfig  # noqa
+from resense.detector import Detector  # noqa
+from resense.frame import frame_from_compact, Frame  # noqa
+from scripts.cache_io import cache_files, cache_file_stem, load_cache_array, load_cache_stamps  # noqa
+from probe import rot  # noqa
+
+ap = argparse.ArgumentParser()
+ap.add_argument("cache"); ap.add_argument("out"); ap.add_argument("sel", nargs="+")
+ap.add_argument("--drop", type=float, default=0.0); ap.add_argument("--ring-drop", type=float, default=0.0)
+ap.add_argument("--pitch", type=float, default=0.0); ap.add_argument("--seed", type=int, default=7)
+ap.add_argument("--every", type=int, default=1)
+ap.add_argument("--from", dest="i0", type=int, default=-1); ap.add_argument("--to", dest="i1", type=int, default=10 ** 9)
+a = ap.parse_args()
+files = cache_files(a.cache)
+faithful = a.sel[0].startswith("piece:")
+if faithful:
+    k, n = (int(v) for v in a.sel[0][6:].split("/"))
+    files = [str(f) for f in np.array_split(np.array([str(f) for f in files]), n)[k]]
+else:
+    files = [f for p in a.sel for f in files if cache_file_stem(f).startswith(p)]
+stamps = load_cache_stamps(a.cache)
+cfg = DetectorConfig.from_yaml(os.path.join(WT, "configs/default.yaml"))
+det = Detector(cfg)
+rng = np.random.default_rng(a.seed)
+Rt = rot(0.0, a.pitch, 0.0)
+prev = None
+n = 0
+with open(a.out + ".jsonl", "w") as fh:
+    for i, f in enumerate(files):
+        stem = cache_file_stem(f)
+        parts = stem.split("_")
+        gi = int(parts[-2]) * 51 + int(parts[-1]) if stem.startswith("new_data_") else i
+        if gi < a.i0 or gi > a.i1 or (i % a.every):
+            continue
+        st = stamps.get(stem, i * 0.1)
+        if not faithful and prev is not None and (st - prev > 1.0 or st < prev - 0.5):
+            det.reset()
+        prev = st
+        fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=st, frame_id=stem)
+        xyz, inten, ring = fr.xyz, fr.intensity, fr.ring
+        if a.drop > 0:
+            keep = rng.random(len(xyz)) >= a.drop
+            xyz, inten, ring = xyz[keep], inten[keep], (None if ring is None else ring[keep])
+        if a.ring_drop > 0 and ring is not None:
+            rr = np.unique(ring); gone = rr[rng.random(rr.size) < a.ring_drop]
+            keep = ~np.isin(ring, gone); xyz, inten, ring = xyz[keep], inten[keep], ring[keep]
+        if a.pitch:
+            xyz = (xyz.astype(np.float64) @ Rt.T).astype(np.float32)
+        fr = Frame(xyz=xyz, intensity=inten, ring=ring, stamp=fr.stamp, frame_id=fr.frame_id, meta=fr.meta)
+        hooks.STATS["k"] = gi
+        res = det.process(fr)
+        fh.write(json.dumps({"i": gi, "decision": node_decision(res), "dets": [det_dict(x) for x in res.detections],
+                             "warns": [det_dict(x) for x in res.warnings]}) + "\n")
+        n += 1
+hooks.dump(a.out + ".hooks.json")
+print(a.out, "frames", n, "tf", hooks.STATS["tf_calls"], "free", hooks.STATS["tf_free"], "cut", hooks.STATS["cut_parts"])

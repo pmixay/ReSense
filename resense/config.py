@@ -205,7 +205,7 @@ class ClusterConfig:
     # oversize_split_max_length long, not flatter than min_height, with points in the strict gauge and at
     # least structure_cut_min_points voxels are described as clusters (clustering._off_structure_parts).
     # 14.10 (review): 1.3 m (0.8 on 13.10), more than the equipment fixed to the wall (0.8-1.2 m) and more
-    # than C's wall stands outside the strict envelope (2.2-2.35 m from the axis): at 0.8 an object 0.95-1.2 m
+    # than C's wall stands outside the strict envelope (2.25-2.3 m from the axis): at 0.8 an object 0.95-1.2 m
     # in front of the wall, outside the envelope, was placed inside it by the lagging axis (false STOPs); no
     # gain nearer the wall, nor at 100-150 m on C, where the lagging axis puts the judge's box within 0.2-0.6 m
     # of the wall (configs/default.yaml has the measurements)

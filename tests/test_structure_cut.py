@@ -17,7 +17,7 @@ than 45 deg to the track cuts nothing.
 The review of 14.10: at 0.8 m an object standing 0.95-1.2 m in front of the outer wall of C - outside the
 envelope, in its advisory band, where the detector's trusted near axis puts it - was carved out and placed in the
 envelope by the lagging axis (false STOPs at 70-100 m). The tolerance is 1.3 m: more than the wall equipment
-(0.8-1.2 m) and more than C's wall stands outside the strict envelope (2.2-2.35 m from the axis, 1.05 m half
+(0.8-1.2 m) and more than C's wall stands outside the strict envelope (2.25-2.3 m from the axis, 1.05 m half
 width).
 """
 from __future__ import annotations
@@ -97,7 +97,7 @@ def test_object_in_front_of_wall_is_cut_out():
 
 def test_object_in_the_advisory_band_of_the_wall_stays_dropped():
     """The review of 14.10 (roundT_pressureGate_roundT, wall-anchored ray-cast boxes): a 0.5 m deep box whose
-    face nearest the track stands 1.0-1.2 m in front of the wall stands outside the envelope (C's wall is 2.2-2.35 m
+    face nearest the track stands 1.0-1.2 m in front of the wall stands outside the envelope (C's wall is 2.25-2.3 m
     from the axis where the axis is trusted), yet where the far axis lags it lies inside it. At 0.8 m (13.10)
     the cut carved it out as a gauge obstacle (false STOPs at 70-100 m: a person-size box 0 -> 21 frames, a sign
     post 0 -> 7, a mast 0 -> 9); at the shipped 1.3 m it stays dropped with the wall; 1.5 m in front it is cut out."""

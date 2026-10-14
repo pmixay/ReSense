@@ -1,0 +1,32 @@
+import json, re
+L = open("out/spare_fin.txt").read().splitlines()
+rows = {}
+for l in L:
+    m = re.match(r"^(\S+) (sealed|13\.10)->fin frames (\d+) STOP (\d+) -> (\d+) episodes (\d+) -> (\d+) CAUTION (\d+) -> (\d+) decision diffs (\d+) det/warn diffs (\d+)", l)
+    if m:
+        n, base = m.group(1), m.group(2)
+        r = rows.setdefault(n, {"frames": int(m.group(3))})
+        if base == "sealed":
+            r.update(sealed_stop=int(m.group(4)), now_stop=int(m.group(5)), sealed_ep=int(m.group(6)), now_ep=int(m.group(7)),
+                     decision_diffs_vs_sealed=int(m.group(10)), detwarn_diffs_vs_sealed=int(m.group(11)))
+        else:
+            r.update(w_stop=int(m.group(4)), w_ep=int(m.group(6)), decision_diffs_vs_13_10=int(m.group(10)))
+    m = re.match(r"^out/(\S+)_fin frames (\d+) tf (\d+) free (\d+) cut (\d+)", l)
+    if m:
+        rows[m.group(1)].update(tf_calls=int(m.group(3)), tf_free=int(m.group(4)), cut_parts=int(m.group(5)))
+lab = lambda n: (n.replace("S_", "S ").replace("B_", "B ").replace("drop", "dropout ").replace("_s", " %, seed ")
+                 .replace("pitchm2", "pitch −2°").replace("slow3", "×3 slower, 20 % dropout").replace("  ", " "))
+out = {"_note": "the review's seeded whole-recording replays (jrep.py: the judge's node replica, the same seeds for both codes); "
+       "sealed and 13.10 = the review's runs (safety_review/out/*_s.jsonl, *_w.jsonl), now = 14f83dd (code_fin snapshot); "
+       "tf = free-top tests asked / spared (before the tracker's corroboration)", "runs": rows}
+json.dump(out, open("out/review_replays_spare.json", "w"), indent=1)
+print("| replay | frames | STOP frames sealed → 13.10 → now | STOP episodes sealed → 13.10 → now | decisions differing from sealed | free-top tests (spared) |")
+print("|---|---:|---|---|---:|---|")
+for n, r in rows.items():
+    name = n
+    m = re.match(r"(S|B)_(drop(\d+)_s(\d+)|pitchm2|slow3_s(\d+))", n)
+    if n.startswith("S_drop") or n.startswith("B_drop"):
+        p, s = re.findall(r"drop(\d+)_s(\d+)", n)[0]; name = f"{n[0]} {p} % dropout, seed {s}"
+    elif "pitchm2" in n: name = f"{n[0]} pitch −2°"
+    elif "slow3" in n: name = f"{n[0]} ×3 slower, 20 % dropout, seed {n[-1]}"
+    print(f"| {name} | {r['frames']} | {r['sealed_stop']} → {r['w_stop']} → **{r['now_stop']}** | {r['sealed_ep']} → {r['w_ep']} → **{r['now_ep']}** | {r['decision_diffs_vs_sealed']} | {r['tf_calls']} ({r['tf_free']}) |")

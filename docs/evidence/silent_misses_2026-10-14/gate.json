@@ -1,8 +1,8 @@
 {
  "schema": "resense-regression-gate-v1",
- "created": "2026-10-14T06:12:56+00:00",
+ "created": "2026-10-14T10:23:37+00:00",
  "code": {
-  "commit": "5fce816c69a0c320dc37419102aaad4ba4a5f91a",
+  "commit": "14f83dd63736f86855d704d4edaf0cdbea819071",
   "branch": "final/silent-misses",
   "version": "1.0.0",
   "uncommitted_detector_changes": []
@@ -10,8 +10,8 @@
  "config": {
   "path": "configs/default.yaml",
   "set": [],
-  "sha256": "d3044f9bff1bba2e73fecd1575e0b2ebd950475bc547eaf066e7ee903094682b",
-  "file_sha256": "803b738a7d8c0e4d74a0f976c563315584f08c257bf2b803fab51c7d892f51e0"
+  "sha256": "d5441cd9d410e2bbdc13d349cbbc807bb7e69a204f7b6fdd8ac07d7844ea46a6",
+  "file_sha256": "7dd4f0fa542d0351aa39d474eeb2b23caf0888a0e7eb4d55ebfcf0d8f55750f9"
  },
  "native": {
   "path": "native",
@@ -21,7 +21,7 @@
   "cache": "/tmp/claude-0/fixdata/cache",
   "jobs": 2,
   "nominal_stamps": false,
-  "wall_s": 613.7,
+  "wall_s": 656.9,
   "machine": {
    "cpus": 4,
    "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
@@ -176,8 +176,8 @@
    155.4
   ],
   "health": {
-   "ok": 11079,
-   "warn": 192,
+   "ok": 11074,
+   "warn": 197,
    "error": 0
   },
   "monitored_range_median": 127.6
@@ -961,44 +961,44 @@
  "latency_ms": {
   "note": "timing_ms.total per frame; informational, never gated: the workers run in parallel on a shared machine (clean timing: EXPERIMENTS §3)",
   "doubleT_obstacle": {
-   "mean_ms": 43.2,
-   "p95_ms": 59.4,
-   "max_ms": 102.4
+   "mean_ms": 44.7,
+   "p95_ms": 59.1,
+   "max_ms": 242.7
   },
   "doubleT_platform": {
-   "mean_ms": 39.0,
-   "p95_ms": 59.8,
-   "max_ms": 148.7
+   "mean_ms": 41.0,
+   "p95_ms": 60.6,
+   "max_ms": 181.7
   },
   "roundT_doubleT": {
-   "mean_ms": 36.4,
-   "p95_ms": 52.2,
-   "max_ms": 66.4
+   "mean_ms": 38.5,
+   "p95_ms": 56.7,
+   "max_ms": 76.2
   },
   "roundT_pressureGate_roundT": {
-   "mean_ms": 29.3,
-   "p95_ms": 40.7,
-   "max_ms": 58.3
+   "mean_ms": 32.2,
+   "p95_ms": 42.2,
+   "max_ms": 63.1
   },
   "roundT_squareT_pressureGate_squareT": {
-   "mean_ms": 29.7,
-   "p95_ms": 40.2,
-   "max_ms": 68.4
+   "mean_ms": 30.9,
+   "p95_ms": 41.0,
+   "max_ms": 62.3
   },
   "squareT_platform_squareT_switch": {
-   "mean_ms": 29.8,
-   "p95_ms": 41.8,
-   "max_ms": 76.9
+   "mean_ms": 33.4,
+   "p95_ms": 45.2,
+   "max_ms": 78.1
   },
   "cloud_with_fake_obj": {
-   "mean_ms": 30.1,
-   "p95_ms": 42.1,
-   "max_ms": 118.4
+   "mean_ms": 30.9,
+   "p95_ms": 43.2,
+   "max_ms": 96.4
   },
   "new_data": {
-   "mean_ms": 33.6,
-   "p95_ms": 49.3,
-   "max_ms": 170.7
+   "mean_ms": 34.5,
+   "p95_ms": 49.8,
+   "max_ms": 158.1
   }
  },
  "gate": {
@@ -1012,8 +1012,9 @@
   "worse_allowed": [],
   "missing_allowed": [],
   "better": [],
-  "same": 209,
+  "same": 208,
   "info_changed": [
+   "latency_ms.doubleT_obstacle.mean",
    "latency_ms.doubleT_obstacle.p95",
    "latency_ms.doubleT_platform.mean",
    "latency_ms.doubleT_platform.p95",

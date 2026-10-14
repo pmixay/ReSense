@@ -633,7 +633,7 @@ def _off_structure_parts(b: _Blob, xyz: np.ndarray, h: np.ndarray, in_gauge: np.
     within 45 deg of it, 14.10). Equipment fixed to the wall stands up to ~1.2 m
     in front of it, so the tolerance only separates an object well clear of the wall; nearer it the
     object and the wall equipment look alike and both stay dropped (configs/default.yaml). 14.10 (review):
-    the tolerance is also more than the wall stands outside the strict envelope (C: 2.2-2.35 m from the
+    the tolerance is also more than the wall stands outside the strict envelope (C: 2.25-2.3 m from the
     axis, 1.05 m half width) - an object nearer the wall than that is outside the envelope, and where the
     far axis lags it was placed inside it. A part needs at least ``structure_cut_min_points`` voxels
     (14.10): the parts carved out of wall equipment on the empty recordings had 3-7. :func:`find_clusters`
