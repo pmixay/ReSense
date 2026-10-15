@@ -9,9 +9,9 @@
 > **Last verified:** 2026-09-29: the procedure against the full VM run of 28.09
 > ([`evidence/vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md)), the node's start-up,
 > warm-up and shutdown against the launch file and the node, the image's default command against
-> `docker/Dockerfile`; 29.09 evening: §4.4's baseline selection against `main` `7532a6b` (it picks
-> `regression_baseline_2026-09-29_competitor_rules.json`); 29.09 night: after the reseal at `7464d80`
-> (shell off) it picks `regression_baseline_2026-09-29_shell_off.json` · **Status:** current
+> `docker/Dockerfile`; D1 15.10: current baseline selection is
+> `regression_baseline_2026-09-29_shell_off.json` (v1.0.0); latest independent judgement is 13.10
+> ([`SCORECARD.md`](SCORECARD.md)), not a new team-VM run · **Status:** current
 
 ## 0. What the VM is for
 
