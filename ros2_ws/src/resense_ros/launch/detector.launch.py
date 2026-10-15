@@ -56,6 +56,9 @@ PARAMS = {
     "stale_timeout": ("0.5", float, "s without an input frame before the decision becomes FAULT"),
     "startup_grace": ("2.0", float, "s after start before 'no LiDAR frame received yet' is published as FAULT"),
     "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),
+    "decision_policy": ("v1", str, "shared decision policy: v1 compatibility default; v2 opt-in for measurement"),
+    "caution_distance_m": ("80.0", float, "v2: maximum distance for margin-advisory CAUTION, inclusive"),
+    "caution_compact_max_size_m": ("3.0", float, "v2: maximum box extent for compact range advisories, inclusive"),
     # v0.6.1: several recordings / topic names through one running node
     "input_switch_timeout": ("1.0", float, "s the active input topic must be silent before another topic is taken"),
     "new_input_gap": ("30.0", float, "s of forward header-stamp jump taken as a new recording (detector restarted)"),

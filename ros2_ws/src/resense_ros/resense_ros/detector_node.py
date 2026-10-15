@@ -68,10 +68,18 @@ Freshness: ``freshness_mode`` defaults to ``live`` (acquisition header versus sy
 Historical playback explicitly selects ``replay`` (DDS publisher UTC; acquisition age unknown).
 Source age and Python residence must be <= ``max_result_age`` (0.5 s), future skew <=
 ``future_tolerance`` (0.05 s). A first/resumed/jumped epoch needs progression before GO.
-Queued older frames cannot allow GO; invalid/unknown/stale clocks give FAULT, current clocks
-in catch-up give CAUTION, and STOP has priority. JSON ``freshness`` explains validity and
+Queued frames at most one estimated input period behind are current after source, residence,
+epoch and health guards pass; larger catch-up lag gives CAUTION (FAULT above ``max_result_age``).
+Invalid/unknown/stale clocks give FAULT, and STOP has priority. JSON ``freshness`` explains validity and
 ``go_allowed``. Exposed monitored range is zero while invalid; ``detector_clear_distance``
 retains the raw estimate. ``snapshot_kind`` separates frames from watchdog/error snapshots.
+
+Decision policy is shared with offline consumers (``resense_ros.decision_policy``).
+``decision_policy`` defaults to compatibility ``v1``; ``v2`` is opt-in for measurement, with
+``caution_distance_m`` 80 m and ``caution_compact_max_size_m`` 3 m. Status adds the selected
+``decision_policy`` and a sorted, deduplicated ``caution_reason`` array, empty off CAUTION.
+Policy is evaluated after freshness health projection and the STOP latch; raw detector warnings
+remain available even when the selected policy suppresses their CAUTION.
 
 Sensor mount (v0.6): ``sensor_forward`` / ``sensor_left`` / ``sensor_up`` override the axis
 mapping of the parameter file, ``mount_roll_deg`` / ``mount_pitch_deg`` / ``mount_yaw_deg`` a
@@ -162,6 +170,7 @@ from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
 
 from resense_ros import fastcloud
+from resense_ros.decision_policy import DecisionPolicy, decision as policy_decision, evaluate_decision
 
 
 UNSET = -999.0   # sentinel of the mount_*_deg parameters: keep the value of the parameter file
@@ -222,6 +231,9 @@ class DetectorNode(Node):
         self.declare_parameter("stale_timeout", 0.5)    # s without an input frame before FAULT / STALE
         self.declare_parameter("startup_grace", 2.0)    # s after start before "no input yet" is a FAULT
         self.declare_parameter("max_consecutive_errors", 5)   # processing exceptions in a row before the detector is reset
+        self.declare_parameter("decision_policy", "v1")     # v2 remains an opt-in proposal
+        self.declare_parameter("caution_distance_m", 80.0)
+        self.declare_parameter("caution_compact_max_size_m", 3.0)
         # --- v0.6.1: several recordings / topic names through one running node
         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
         self.declare_parameter("new_input_gap", 30.0)         # s of forward stamp jump that means a new recording (full reset)
@@ -254,6 +266,10 @@ class DetectorNode(Node):
         # (rclpy's conversion: 12.5 ms median, 32 ms p95 per 24 MB cloud); false = rclpy's messages
         self.declare_parameter("raw_input", True)
 
+        self.decision_policy = DecisionPolicy(
+            version=self.get_parameter("decision_policy").get_parameter_value().string_value,
+            caution_distance_m=self.get_parameter("caution_distance_m").get_parameter_value().double_value,
+            compact_max_size_m=self.get_parameter("caution_compact_max_size_m").get_parameter_value().double_value)
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
         for axis in ("forward", "left", "up"):
@@ -1041,9 +1057,9 @@ class DetectorNode(Node):
             reason = "queue_stale"
         elif self.epoch_reason:
             reason = self.epoch_reason
-        elif (getattr(res, "health", {}) or {}).get("level") == "error":
+        elif any((getattr(res, "health", {}) or {}).get(k) == "error" for k in ("level", "decision_level")):
             reason = "detector_error"
-        elif self.frame_in_catchup or self.current_queue_lag > 1e-6:
+        elif self.current_queue_lag > self.input_period + 1e-6:
             reason = "catchup"
         valid = not reason
         return {"mode": self.freshness_mode, "evaluated_at_utc_s": wall,
@@ -1111,6 +1127,8 @@ class DetectorNode(Node):
             "mount": {},
             "clear_distance": 0.0,
             "decision": decision,
+            "decision_policy": self.decision_policy.version,
+            "caution_reason": [],
             "detector_clear_distance": None,
             "stop_held": held,
             "snapshot_kind": "processing_error" if level_name == "ERROR" else "watchdog",
@@ -1167,20 +1185,9 @@ class DetectorNode(Node):
             self.publish_fault(Header(frame_id=self.active_frame_id or ""), message, "STALE")
 
     @staticmethod
-    def decision(res: FrameResult) -> str:
-        """STOP > FAULT (health ``level`` error) > CAUTION (an advisory object, or a warning in
-        the health ``decision_level``) > GO. ``decision_level`` (26.09) is ``level`` without the
-        latency warning unless ``health.latency_affects_decision``; a result without it (older
-        core) uses ``level``."""
-        h = getattr(res, "health", {}) or {}
-        level = h.get("level", "ok")
-        if res.obstacle:
-            return "STOP"
-        if level == "error":
-            return "FAULT"
-        if res.warning or h.get("decision_level", level) == "warn":
-            return "CAUTION"
-        return "GO"
+    def decision(res: FrameResult, policy: DecisionPolicy | str = "v1") -> str:
+        """Compatibility word-only API; freshness and STOP projection belong to the caller."""
+        return policy_decision(res, policy)
 
     def health_msg(self, hdr: Header, res: FrameResult) -> DiagnosticArray:
         h = getattr(res, "health", {}) or {}
@@ -1234,7 +1241,8 @@ class DetectorNode(Node):
                           detections=self.stop_latch["detections"],
                           stop_source_stamp=self.stop_latch["stamp"],
                           stop_source_frame_id=self.stop_latch["frame_id"])
-        decision = self.decision(res)
+        answer = evaluate_decision(res, self.decision_policy)
+        decision = answer.decision
         freshness["go_allowed"] = freshness["valid"] and decision == "GO"
         # the answer first (28.09): flag, distance and decision before the JSON and the visualisation
         self.pub_flag.publish(Bool(data=bool(res.obstacle)))
@@ -1250,6 +1258,7 @@ class DetectorNode(Node):
         status.update(node=self.node_stats(), decision=decision, snapshot_kind="frame", freshness=freshness,
                       stop_held=held, detector_obstacle=raw_obstacle, detector_clear_distance=raw_range,
                       clear_distance=float(res.clear_distance), health=res.health)
+        status.update(answer.to_dict())
         self.pub_status.publish(String(data=json.dumps(status)))
         self.pub_health.publish(self.health_msg(hdr, res))
         # vehicle frame of the detector (after the mount calibration) -> sensor frame
@@ -1349,7 +1358,7 @@ class DetectorNode(Node):
         status.pose.position.x, status.pose.position.y, status.pose.position.z = map(float, p_s)
         status.pose.orientation.w = 1.0
         status.scale.z = 1.2
-        decision = self.decision(res)             # the same word as /resense/decision
+        decision = self.decision(res, self.decision_policy)  # the same policy as /resense/decision
         clear = float(getattr(res, "clear_distance", -1.0))
         if res.obstacle:
             status.text = f"STOP: OBSTACLE  {res.nearest_distance:.1f} m"

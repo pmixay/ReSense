@@ -59,7 +59,7 @@ class _Param:
         return types.SimpleNamespace(string_value=v if isinstance(v, str) else "",
                                      bool_value=v if isinstance(v, bool) else False,
                                      double_value=float(v) if num else 0.0,
-                                     integer_value=int(v) if num else 0)
+                                     integer_value=v if isinstance(v, int) and not isinstance(v, bool) else 0)
 
 
 class _Logger:
@@ -375,6 +375,35 @@ def test_decision_levels(node_cls):
     assert d(ns(obstacle=True, warning=False, health=lat)) == "STOP"
     assert d(ns(obstacle=False, warning=False, health={"level": "warn", "decision_level": "warn"})) == "CAUTION"
     assert d(ns(obstacle=False, warning=False, health={"level": "error", "decision_level": "error"})) == "FAULT"
+
+
+def test_node_policy_defaults_overrides_and_static_compatibility(node_cls):
+    node = node_cls()
+    assert node.decision_policy.version == node._params["decision_policy"] == "v1"
+    assert node.decision_policy.caution_distance_m == node._params["caution_distance_m"] == 80.0
+    assert node.decision_policy.compact_max_size_m == node._params["caution_compact_max_size_m"] == 3.0
+    res = types.SimpleNamespace(obstacle=False, warning=True, health={"level": "ok"},
+                                warnings=[types.SimpleNamespace(reason="column")])
+    assert node_cls.decision(res) == "CAUTION"
+    assert node_cls.decision(res, "v1") == "CAUTION"
+    assert node_cls.decision(res, "v2") == "GO"
+    _Node.overrides = {"decision_policy": "v2", "caution_distance_m": 60.0,
+                       "caution_compact_max_size_m": 2.0}
+    selected = node_cls()
+    assert selected.decision_policy.version == "v2"
+    assert selected.decision_policy.caution_distance_m == 60.0
+    assert selected.decision_policy.compact_max_size_m == 2.0
+    assert node_cls.decision(res, selected.decision_policy) == "GO"
+
+
+@pytest.mark.parametrize("overrides", [{"decision_policy": "v3"}, {"caution_distance_m": 0.0},
+                                      {"caution_distance_m": float("inf")},
+                                      {"caution_compact_max_size_m": float("nan")},
+                                      {"caution_compact_max_size_m": -1.0}])
+def test_node_rejects_invalid_policy_parameters(node_cls, overrides):
+    _Node.overrides = overrides
+    with pytest.raises(ValueError):
+        node_cls()
 
 
 def _latency_config(tmp_path, affects: bool) -> str:
@@ -869,7 +898,7 @@ def test_rviz_shows_the_played_clouds():
 
 
 @pytest.fixture
-def freshness_driver(node_cls, monkeypatch):
+def freshness_driver(node_cls, monkeypatch, request):
     """Exercise the real node queue/output policy with a deterministic detector and clocks."""
     from resense.detector import FrameResult
     from resense.track import TrackModel
@@ -878,13 +907,16 @@ def freshness_driver(node_cls, monkeypatch):
     monkeypatch.setattr(module.time, "time", lambda: clock["wall"])
     monkeypatch.setattr(module.time, "perf_counter", lambda: clock["mono"])
     def detect(self, frame, **kwargs):
-        return FrameResult(stamp=frame.stamp, obstacle=clock["obstacle"], warning=False,
-                           nearest_distance=40.0 if clock["obstacle"] else None,
-                           detections=[], warnings=[], candidates=[], track=TrackModel(np.array([0.0]), (0.0, 100.0), 0.0, 0.0, 0.0),
-                           corridor_idx=np.array([], dtype=int), n_points=len(frame.xyz),
-                           health={"level": "ok", "decision_level": "ok", "messages": [],
-                                   "clear_distance": 100.0, "monitored_range": 100.0}, clear_distance=100.0)
+        warnings = list(clock.get("warnings", []))
+        return FrameResult(stamp=frame.stamp, obstacle=clock["obstacle"], warning=bool(warnings),
+                            nearest_distance=40.0 if clock["obstacle"] else None,
+                            detections=[], warnings=warnings, candidates=[], track=TrackModel(np.array([0.0]), (0.0, 100.0), 0.0, 0.0, 0.0),
+                            corridor_idx=np.array([], dtype=int), n_points=len(frame.xyz),
+                            health={"level": "ok", "decision_level": "ok", "messages": [],
+                                    "clear_distance": 100.0, "monitored_range": 100.0,
+                                    **clock.get("health", {})}, clear_distance=100.0)
     monkeypatch.setattr(module.Detector, "process", detect)
+    _Node.overrides.update(getattr(request, "param", {}))
     node = node_cls()
     def send(stamp=None, *, age=0.1, dt=0.1, info=True, topic="/lidar_points", frame_id="lidar"):
         clock["wall"] += dt
@@ -895,6 +927,157 @@ def freshness_driver(node_cls, monkeypatch):
         node.on_cloud(msg, topic, metadata)
         return json.loads(node.published["/resense/status"][-1].data)
     return node, clock, send
+
+
+def _advisory(reason, distance=40.0):
+    from resense.detector import Detection
+    return Detection(id=1, distance=distance, lateral=0.9, center=np.array([distance, 0.9, 0.5]),
+                     size=np.array([0.5, 0.5, 1.0]), n_points=10, confidence=0.9, age=5,
+                     zone="warning", height_min=0.0, intensity=30.0, reason=reason)
+
+
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v1"}, {"decision_policy": "v2"}], indirect=True)
+def test_node_selected_policy_keeps_raw_column_warning_and_marker_matches(freshness_driver):
+    node, clock, send = freshness_driver
+    clock["warnings"] = [_advisory("column")]
+    assert send(20.0)["decision"] == "FAULT"  # suppression cannot bypass epoch confirmation
+    result = send(20.1)
+    version = node.decision_policy.version
+    expected = "CAUTION" if version == "v1" else "GO"
+    assert result["decision"] == node.published["/resense/decision"][-1].data == expected
+    assert result["decision_policy"] == version
+    assert result["caution_reason"] == (["advisory_object"] if version == "v1" else [])
+    assert result["warning"] is node.published["/resense/warning"][-1].data is True
+    assert result["warnings"] == [clock["warnings"][0].to_dict()]
+    assert len(node.published["/resense/detections"][-1].detections) == 1
+    assert result["freshness"]["valid"] and result["clear_distance"] == 100.0
+    assert result["freshness"]["go_allowed"] is (version == "v2")
+    assert node.published["/resense/markers"][-1].markers[-1].text.startswith(expected)
+
+
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v2", "caution_distance_m": 60.0,
+    "caution_compact_max_size_m": 2.0}], indirect=True)
+def test_published_v2_uses_configured_distance_and_compactness(freshness_driver):
+    node, clock, send = freshness_driver
+    clock["warnings"] = [_advisory("", 70.0)]
+    send(20.0)
+    assert send(20.1)["decision"] == "GO"
+    clock["warnings"] = [_advisory("", 60.0)]
+    margin = send(20.2)
+    assert margin["decision"] == "CAUTION" and margin["caution_reason"] == ["margin_object"]
+    clock["warnings"] = [_advisory("beyond_axis")]
+    clock["warnings"][0].size = np.array([0.5, 0.5, 2.1])
+    assert send(20.3)["decision"] == "GO"
+    clock["warnings"][0].size[2] = 2.0
+    compact = send(20.4)
+    assert compact["decision"] == "CAUTION" and compact["caution_reason"] == ["compact_range_object"]
+    assert node.published["/resense/markers"][-1].markers[-1].text.startswith("CAUTION")
+
+
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v1"}, {"decision_policy": "v2"}], indirect=True)
+def test_node_caution_reasons_are_sorted_unique_and_empty_off_caution(freshness_driver):
+    node, clock, send = freshness_driver
+    clock["warnings"] = [_advisory(r) for r in ("doubt", "column", "doubt", "", "beyond_axis")]
+    clock["health"] = {"level": "warn", "decision_level": "warn"}
+    first = send(20.0)
+    assert first["decision"] == "FAULT" and first["caution_reason"] == []
+    result = send(20.1)
+    assert result["decision"] == "CAUTION"
+    assert result["caution_reason"] == (["advisory_object", "health_warning"]
+        if node.decision_policy.version == "v1" else
+        ["compact_range_object", "doubt", "health_warning", "margin_object"])
+    clock["obstacle"] = True
+    stop = send(20.2)
+    assert stop["decision"] == "STOP" and stop["caution_reason"] == []
+    clock.update(obstacle=False, warnings=[], health={})
+    go = send(20.3)
+    assert go["decision"] == "GO" and go["caution_reason"] == []
+
+
+def _queued_freshness_result(node, clock, lag, *, age=0.1, residence=0.0, info=True):
+    """Real short live queue, with an already-active catch-up to test its last two links."""
+    node.startup_catchup_active = False
+    node.catchup = [0, 0.0, clock["mono"]]
+    clock["wall"] += 0.1
+    clock["mono"] += 0.1
+    for i, stamp in enumerate((20.2, 20.2 + lag)):
+        msg, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), stamp, frame_id="lidar")
+        metadata = {"source_timestamp": int((clock["wall"] - age + i * 0.0001) * 1e9)} if info else None
+        node.remember_arrival(msg, metadata)
+        arrival, source = node.arrivals[id(msg)]
+        node.arrivals[id(msg)] = arrival - residence, source
+        node.pending.append(("/lidar_points", msg))
+    node.process_next()
+    return _frames(node)[-1]
+
+
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v1"}, {"decision_policy": "v2"}], indirect=True)
+@pytest.mark.parametrize("lag, expected", [(0.1, "GO"), (0.1000005, "GO"),
+                                          (0.10001, "CAUTION"), (0.2, "CAUTION")])
+def test_one_input_period_queue_lag_is_current_but_just_over_is_not(freshness_driver, lag, expected):
+    node, clock, send = freshness_driver
+    send(20.0)
+    assert send(20.1)["decision"] == "GO"
+    result = _queued_freshness_result(node, clock, lag)
+    assert result["node"]["catchup"] is True
+    assert result["freshness"]["queue_lag_s"] == pytest.approx(lag, abs=1e-8)
+    assert result["decision"] == expected
+    current = expected == "GO"
+    assert result["freshness"]["valid"] is current
+    assert result["freshness"]["go_allowed"] is current
+    assert result["freshness"]["reason"] == ("current" if current else "catchup")
+    assert result["caution_reason"] == ([] if current else ["health_warning"])
+    assert result["clear_distance"] == (100.0 if current else 0.0)
+
+
+@pytest.mark.parametrize("guard, expected", [("source_stale", "source_stale"),
+    ("source_future", "source_clock_future"), ("source_unknown", "source_clock_unknown"),
+    ("residence", "residence_stale"), ("epoch", "epoch_unconfirmed"),
+    ("health", "detector_error"), ("decision_health", "detector_error"), ("queue_age", "queue_stale")])
+def test_one_period_allowance_cannot_bypass_freshness_or_health_guards(freshness_driver, guard, expected):
+    node, clock, send = freshness_driver
+    send(20.0)
+    send(20.1)
+    kwargs = {}
+    lag = 0.1
+    if guard == "source_stale": kwargs["age"] = 0.501
+    if guard == "source_future": kwargs["age"] = -0.051
+    if guard == "source_unknown": kwargs["info"] = False
+    if guard == "residence": kwargs["residence"] = 0.501
+    if guard == "epoch": node.freshness_previous = None
+    if guard == "health": clock["health"] = {"level": "error"}
+    if guard == "decision_health": clock["health"] = {"decision_level": "error"}
+    if guard == "queue_age":
+        node.input_period = 1.0         # even a long input period cannot bypass max_result_age
+        lag = 0.501
+    result = _queued_freshness_result(node, clock, lag, **kwargs)
+    assert result["freshness"]["reason"] == expected
+    assert result["decision"] == "FAULT" and result["caution_reason"] == []
+    assert not result["freshness"]["valid"] and not result["freshness"]["go_allowed"]
+    assert result["clear_distance"] == 0.0
+
+
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v1"}, {"decision_policy": "v2"}], indirect=True)
+def test_fault_and_watchdog_snapshots_report_selected_policy_with_empty_reasons(freshness_driver):
+    node, clock, send = freshness_driver
+    node.t_node_start -= 5.0
+    node.on_watchdog()
+    no_input = _frames(node)[-1]
+    send(20.0)
+    send(20.1)
+    clock["wall"] += 0.6
+    clock["mono"] += 0.6
+    node.on_watchdog()
+    stale = _frames(node)[-1]
+    node.on_processing_error(_Msg(frame_id="lidar", stamp=_Msg(sec=21, nanosec=0)), RuntimeError("broken"))
+    error = _frames(node)[-1]
+    for snapshot in (no_input, stale, error):
+        assert snapshot["decision"] == "FAULT"
+        assert snapshot["decision_policy"] == node.decision_policy.version
+        assert snapshot["caution_reason"] == []
+        assert "node" not in snapshot and not snapshot["freshness"]["go_allowed"]
+    assert no_input["snapshot_kind"] == stale["snapshot_kind"] == "watchdog"
+    assert error["snapshot_kind"] == "processing_error"
 
 
 def test_live_default_and_explicit_replay_are_not_inferred_from_header(node_cls, monkeypatch):
@@ -1158,6 +1341,7 @@ def test_startup_and_later_backlogs_and_residence_are_not_actionable(freshness_d
     assert slow["decision"] == "FAULT" and slow["freshness"]["reason"] == "residence_stale"
 
 
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v1"}, {"decision_policy": "v2"}], indirect=True)
 def test_stop_survives_stale_input_errors_and_invalid_clear_then_fresh_recovery(freshness_driver):
     node, clock, send = freshness_driver
     clock["obstacle"] = True
@@ -1182,6 +1366,26 @@ def test_stop_survives_stale_input_errors_and_invalid_clear_then_fresh_recovery(
     recovered = send(20.3)
     assert recovered["decision"] == "GO" and not recovered["stop_held"]
     assert node.published["/resense/obstacle_detected"][-1].data is False
+    for snapshot in (stop, watchdog, fault, stale_clear, recovered):
+        assert snapshot["decision_policy"] == node.decision_policy.version
+        assert snapshot["caution_reason"] == []
+
+
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v1"}, {"decision_policy": "v2"}], indirect=True)
+@pytest.mark.parametrize("bad_health", [{"level": "error"}, {"decision_level": "error"}])
+def test_one_period_current_queue_cannot_release_stop_on_bad_health(freshness_driver, bad_health):
+    node, clock, send = freshness_driver
+    clock["obstacle"] = True
+    send(20.0)
+    send(20.1)
+    clock.update(obstacle=False, health=bad_health, warnings=[_advisory("column")])
+    held = _queued_freshness_result(node, clock, 0.1)
+    assert held["decision"] == "STOP" and held["stop_held"]
+    assert held["detector_obstacle"] is False
+    assert held["freshness"]["reason"] == "detector_error" and not held["freshness"]["valid"]
+    assert held["decision_policy"] == node.decision_policy.version and held["caution_reason"] == []
+    assert held["clear_distance"] == 0.0
+    assert node.published["/resense/markers"][-1].markers[-1].text.startswith("STOP HELD")
 
 
 def test_humble_executor_preserves_first_and_drained_source_info(node_cls):
