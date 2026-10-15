@@ -9,7 +9,7 @@
 > (v1.0.0 detector) by four read-only researchers and one critic; numbers recounted from the judge's
 > per-frame outputs (`docs/evidence/judgement_2026-10-13/out/`, `raw.tar.xz`). Line numbers in
 > `resense/` shift after the 1.1.0 reseal (§2): search for the named function.
-> **Status:** current; §2a hands the session's unfinished work over (15.10)
+> **Status:** current; §2a hands the session's unfinished work over, §5 distributes all of it per role (15.10)
 
 ## 1. How to use it
 
@@ -18,8 +18,8 @@
   docs, the detector seal, the pitch since 29.09) · **P2** frontend / visualization (`web/`, RViz,
   deck visuals, video) · **P3** CV engineer (`resense/` detector modules, `native/`, config values)
   · **P4** data / evaluation (datasets, metrics, eval scripts, regression gate, labels, tests;
-  standing duties dropped 25.09, so P4-lane items run as agents under P1). Assign a person to each
-  role before handing out cards.
+  standing duties dropped 25.09: if nobody takes the role, P1 runs P4's items with agents). Assign a
+  person to each role before handing out cards; §5 says who does what and where to start.
 * **Mode:** **H** needs a human (organizers, a tag push, hardware, rehearsal); **A** an agent can do
   it and a human merges; **H+A** both. **Size:** S < 0.5 day, M 1–2 days, L 3+ days.
 * **Points** are the judge's own deductions (`docs/evidence/judgement_2026-10-13/scores.json`)
@@ -60,14 +60,15 @@ All branches are on `origin`. The session's test harness (wall-anchored probes, 
 dropout / pitch / dark-band batteries, axis hooks, wall observations on C) is in
 `docs/evidence/silent_misses_2026-10-14/harness/` on `final/silent-misses` (README there).
 
-| step | branch | what to do | done when |
-|---|---|---|---|
-| H1 | `r3/column` (WIP `42108ac`, on top of `final/silent-misses` `a188a2d`) | finish the measurements (S/B batteries, the dark-band what-if on ride pieces 1 and 3, pole / post probes), write the evidence README, full gate; ship only if the dark band improves at no cost; otherwise drop the branch | gate exit 0 on the committed code; pole on the axis still 157 STOP frames (A); battery identical to sealed |
-| H2 | new from `final/silent-misses` | structure-cut evidence bar: a cut part must span ≥ 2 azimuth columns / enough rings (or a cut-part-only track needs more hits); keep the C gains (person first STOP 82.8 m, 55 STOP frames) | the wall-anchored battery gives no STOP the seal does not (mast 1.2 m proud is now 0 → 2); C under 30 % dropout and 5 Hz has no gauge cut part at or above the bar; gate exit 0 |
-| H3 | `final/silent-misses` | integrate `r3/axis` (`a9347a8`, `972edd2`) and H1 / H2 if they passed; full gate on the committed code; diff every gate frame against the seal | gate exit 0, frame diff explained |
-| H4 | `final/silent-misses` | **independent** safety review (DETECTOR_FREEZE step 3) and correctness review of `707ea9c..HEAD`: the 14.10 review fixes (`14f83dd`) and `r3/axis` were never reviewed independently | no confirmed medium-or-worse finding left |
-| H5 | `final/silent-misses` | bump 1.0.0 → 1.1.0 in `pyproject.toml`, `resense/__init__.py`, `ros2_ws/src/resense_ros/package.xml`, `ros2_ws/src/resense_ros/setup.py` **before** the final gate (they are sealed files); final gate; `python scripts/detector_freeze.py create --manifest docs/evidence/detector_freeze_<date>.json --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --evidence <committed gate JSON>`; `DEFAULT_MANIFEST` in `scripts/detector_freeze.py`; DETECTOR_FREEZE "Что опечатано", CHANGELOG release section, README "пакет 1.1.0" | `detector_freeze.py verify` PASS; `pytest -q`; `python scripts/release_meta.py version` prints 1.1.0 |
-| H6 | → `main` | merge, then card E1 (tag `v1.1.0` by a human, release verification); update §2 of this file with the final numbers and shrink K2 if the axis changed | release workflow green |
+| step | owner | branch | what to do | done when |
+|---|---|---|---|---|
+| H0 | P4 | — | data and caches on the team VM, baseline gate on `707ea9c` reproduces the 29.09 baseline (§5 "Where each person starts") | every non-latency gate row equals the baseline; cache paths shared |
+| H1 | P3 | `r3/column` (WIP `42108ac`, on top of `final/silent-misses` `a188a2d`) | finish the measurements (S/B batteries, the dark-band what-if on ride pieces 1 and 3, pole / post probes), write the evidence README, full gate; ship only if the dark band improves at no cost; otherwise drop the branch | gate exit 0 on the committed code; pole on the axis still 157 STOP frames (A); battery identical to sealed |
+| H2 | P3 | new from `final/silent-misses` | structure-cut evidence bar: a cut part must span ≥ 2 azimuth columns / enough rings (or a cut-part-only track needs more hits); keep the C gains (person first STOP 82.8 m, 55 STOP frames) | the wall-anchored battery gives no STOP the seal does not (mast 1.2 m proud is now 0 → 2); C under 30 % dropout and 5 Hz has no gauge cut part at or above the bar; gate exit 0 |
+| H3 | P1 | `final/silent-misses` | integrate `r3/axis` (`a9347a8`, `972edd2`) and H1 / H2 if they passed; full gate on the committed code; diff every gate frame against the seal | gate exit 0, frame diff explained |
+| H4 | P4 (agents that wrote none of it) | `final/silent-misses` | **independent** safety review (DETECTOR_FREEZE step 3) and correctness review of `707ea9c..HEAD`: the 14.10 review fixes (`14f83dd`) and `r3/axis` were never reviewed independently | no confirmed medium-or-worse finding left |
+| H5 | P1 | `final/silent-misses` | bump 1.0.0 → 1.1.0 in `pyproject.toml`, `resense/__init__.py`, `ros2_ws/src/resense_ros/package.xml`, `ros2_ws/src/resense_ros/setup.py` **before** the final gate (they are sealed files); final gate; `python scripts/detector_freeze.py create --manifest docs/evidence/detector_freeze_<date>.json --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --evidence <committed gate JSON>`; `DEFAULT_MANIFEST` in `scripts/detector_freeze.py`; DETECTOR_FREEZE "Что опечатано", CHANGELOG release section, README "пакет 1.1.0" | `detector_freeze.py verify` PASS; `pytest -q`; `python scripts/release_meta.py version` prints 1.1.0 |
+| H6 | P1 | → `main` | merge, then card E1 (tag `v1.1.0` by a human, release verification); update §2 of this file with the final numbers and shrink K2 if the axis changed | release workflow green |
 
 ## 3. Starting point and summary
 
@@ -81,25 +82,32 @@ Whether anything after v1.0.0 can still count is the organizers' answer (card O1
 
 | id | item | criteria | owner | mode | size | points | when |
 |---|---|---|---|---|---|---|---|
+| H0 | Data and caches on the team VM (six bags, set O, ride; judge node-decoded caches of the backgrounds A/B/C/S, doubleT_obstacle and set O); baseline gate on `707ea9c` reproduces the 29.09 baseline; share the cache path | enabler for all detector work | P4 | H+A | S | enabler | 15–16.10 |
+| H1 | Finish `r3/column` (free-top hardening WIP): measurements, evidence README, full gate; ship or drop | 8.1, 8.4 | P3 | A | S | protects #1 fix | 15–17.10 |
+| H2 | Structure-cut evidence bar (≥ 2 azimuth columns / rings for a cut part) | 8.1 | P3 | A | S | protects #2 fix | 15–17.10 |
+| H3 | Integrate `r3/axis` + passing H1 / H2 into `final/silent-misses`; full gate with frame diff | 8.1, 8.2 | P1 | A | S | enabler | 17.10 |
+| H4 | Independent safety + correctness review of `707ea9c..final/silent-misses` | 8.1 (DETECTOR_FREEZE step 3) | P4 | A | S | enabler | 17–18.10 |
+| H5 | Version 1.1.0 committed before the final gate; final gate; reseal; docs | 8.6 | P1 | A | S | enabler | 18.10 |
+| H6 | Merge to `main` → card E1 (tag `v1.1.0`, release) | 8.6 | P1 | H | S | enabler | 18.10 |
 | O1 | Ask the organizers: pitch format, whether v1.1.x may be shown or re-run, results before 23.10 | 8.8 (gates 8.1–8.6) | P1 | H | S | decides ~3–6 | 15.10 |
-| E1 | Ship 1.1.0: PR to `main`, tag `v1.1.0`, verify the release, fix the jury block; repeat as v1.2.0 | 8.6 (enabler) | P1 | H+A | S | +0.25 | 16–17.10, 20.10 |
+| E1 | Ship 1.1.0: PR to `main`, tag `v1.1.0`, verify the release, fix the jury block; repeat as v1.2.0 | 8.6 (enabler) | P1 | H+A | S | +0.25 | 18.10, 20.10 |
 | S1 | Freshness-first start-up catch-up and a memory bound: the literal `ros2 bag play <bag>` gives current results | 8.3, 8.6 | P1 | A | M | ~+2 | 15–17.10 |
 | E2 | Offline rebuild from the release archive; non-root player without `-e HOME` | 8.6 | P1 | A | S | +0.5 | 15–17.10 |
 | C1 | CAUTION policy: one shared decision function, CAUTION only where it carries information | 8.1 | P1 | H+A | M | +1 | 15–18.10 |
-| C2 | `clear_distance` consistent with the advisory output; publish the overclaim scorer | 8.1 | P3 | H+A | S | +0.5 | 17–19.10 |
-| X1 | Range attribution harness: which rule or tracker hold costs each late frame | 8.2 (enabler) | P4 lane | A | S | enabler | 16–17.10 |
-| X3 | Robustness battery as a standing acceptance check next to the gate | 8.4, 8.7 | P4 lane | A | S | +0.5 | 15–17.10 |
-| G3 | Pre-registered held-out test battery: spec now, one run on the final seal | 8.7, 8.4 | P4 lane | A | M | up to +1.5 | spec 15.10, run 21.10 |
-| J1 | Re-judge the shipped seal with the judge's tools; one table against 13.10 | evidence for all | P1 | A | M | protects 8.2, +0.5 8.5, +0.5 8.8 | 16.10, 21.10 |
-| K1 | Standing train: far axis jitter → STOP flicker at 100–150 m and perturbation-sensitive platform false STOPs | 8.2, 8.4, 8.1 | P3 | A | M | +1 to +1.75 | 17–19.10 |
-| R1 | 0.3 m objects confirmed only from ~45 m (hardware rule, low stage ends at 60 m) | 8.2, 8.1 | P3 | A | M | ~+0.5 | 17–19.10 |
-| R2 | Sparse far objects: the point bar leaves an 80–100 m hole (0.5 m cube, set O small_center) | 8.2, 8.1 | P3 | A | M | +0.5 to +1 | 17–19.10 |
-| R3 | Thin cables: hanging 5 cm object STOP only from 30 m, standing 5 cm cable from 60 m | 8.1, 8.2 | P3 | A | M | ~+0.5 | 18–19.10 |
-| F1 | Near-field low-object false STOPs at the rail-head plane (5 of 6 ride episodes below 40 m) | 8.1, 8.4 | P3 | A | M | +0.5 to +1 | 17–19.10 |
-| S2 | 360° per-frame cost: native single-pass decode, per-stage profile | 8.3 | P3 + P1 | A | M | +0.5 to +1 | 17–19.10 |
-| S3 | Cap the orientation-search cost while the configured mount has not passed | 8.3, 8.4 | P3 | A | S | protects ~1 | 17–18.10 |
-| S5 | 8-core stand-in bench of the final node incl. the literal player | 8.3 | P1 | H | S | ~+0.5 | 21.10 |
-| D1 | Fix ~28 stale or contradictory statements in 13 docs; SCORECARD and ownership map current | 8.5, 8.8 | P1 | A | S | ~+0.5 | 15.10, 21.10 |
+| C2 | `clear_distance` consistent with the advisory output; publish the overclaim scorer | 8.1 | P3 | H+A | S | +0.5 | 19–20.10 |
+| X1 | Range attribution harness: which rule or tracker hold costs each late frame | 8.2 (enabler) | P4 | A | S | enabler | 16–18.10 |
+| X3 | Robustness battery as a standing acceptance check next to the gate | 8.4, 8.7 | P4 | A | S | +0.5 | 16–17.10 |
+| G3 | Pre-registered held-out test battery: spec now, one run on the final seal | 8.7, 8.4 | P4 | A | M | up to +1.5 | spec 16.10, run 21.10 |
+| J1 | Re-judge the shipped seal with the judge's tools; one table against 13.10 | evidence for all | P4 (P1 reads `delta.md`) | A | M | protects 8.2, +0.5 8.5, +0.5 8.8 | 18–19.10, 21.10 |
+| K1 | Standing train: far axis jitter → STOP flicker at 100–150 m and perturbation-sensitive platform false STOPs | 8.2, 8.4, 8.1 | P3 | A | M | +1 to +1.75 | 18–20.10 |
+| R1 | 0.3 m objects confirmed only from ~45 m (hardware rule, low stage ends at 60 m) | 8.2, 8.1 | P3 | A | M | ~+0.5 | screen 16–17.10, ship 18–20.10 |
+| R2 | Sparse far objects: the point bar leaves an 80–100 m hole (0.5 m cube, set O small_center) | 8.2, 8.1 | P3 | A | M | +0.5 to +1 | screen 16–17.10, ship 18–20.10 |
+| R3 | Thin cables: hanging 5 cm object STOP only from 30 m, standing 5 cm cable from 60 m | 8.1, 8.2 | P3 | A | M | ~+0.5 | 19–20.10 if time |
+| F1 | Near-field low-object false STOPs at the rail-head plane (5 of 6 ride episodes below 40 m) | 8.1, 8.4 | P3 | A | M | +0.5 to +1 | 18–20.10 |
+| S2 | 360° per-frame cost: native single-pass decode, per-stage profile | 8.3 | P3 + P1 | A | M | +0.5 to +1 | 19–20.10 if time |
+| S3 | Cap the orientation-search cost while the configured mount has not passed | 8.3, 8.4 | P3 | A | S | protects ~1 | 18–19.10 |
+| S5 | 8-core stand-in bench of the final node incl. the literal player | 8.3 | P2 (or whoever has ≥ 8 cores) | H | S | ~+0.5 | 21.10 |
+| D1 | Fix ~28 stale or contradictory statements in 13 docs; SCORECARD and ownership map current | 8.5, 8.8 | P2 (agent; P1 approves the PR) | A | S | ~+0.5 | 15–16.10, 21.10 |
 | PT1 | Pitch content for the shipped seal: lighter deck, honest range by track shape, node-path numbers | 8.8 | P1 | H+A | M | up to +1 | 18–21.10 |
 | PT2 | Live demo on the shipped image and two timed rehearsals with a fallback | 8.8 | P1 | H | M | protects 1–2 | 19.10, 22.10 |
 | X2 | False-STOP ledger with pass-by ground truth and a fast window replay | 8.1, 8.7 (enabler) | P4 lane | H+A | M | +0.25 | after 23.10 |
@@ -109,7 +117,7 @@ Whether anything after v1.0.0 can still count is the organizers' answer (card O1
 | G1 | Rule provenance: ablate every rule justified by a named recording | 8.4, 8.7 | P3 | A | M | up to +1.5 | after 23.10 |
 | G2 | Doubt model: cross-fit on the current detector, keep only if it earns its place | 8.4 | P3 | A | M | ~+0.5 | after 23.10 |
 | T1 | Next seal: remove dead switches, code-only parameters into the YAML, decision function into `resense/` | 8.5, 8.4 | P3 | A | M | +0.75 to +1.25 | after 23.10 |
-| D2 | Archive the 28.09 experiment layer: 20 process notes, personal-path tests, orphan scripts | 8.5, 8.7 | P1 | A | S | ~+0.75 | after D1 |
+| D2 | Archive the 28.09 experiment layer: 20 process notes, personal-path tests, orphan scripts | 8.5, 8.7 | P2 (agent; P1 approves) | A | S | ~+0.75 | after 23.10 |
 
 ## 4. Order up to the defence (23.10)
 
@@ -117,35 +125,72 @@ The bottleneck is CPU for ride replays and full gates: run them on the team VM. 
 into **one bundle** (`det/1.2.0` from the 1.1.0 seal) with one combined gate, one safety review
 and one reseal; items that miss the cut-off do not ship.
 
-* **15.10 (D0):** O1 first (its answer is the branch point). Agents start what needs no seal and
-  little CPU: S1, E2, C1 (rescore on saved outputs + the policy module), D1 pass 1, the G3 spec
-  (must be committed before any new tuning, or it is not held-out), X3.
-* **16–17.10:** once the session's 1.1.0 lands: E1 (PR, CI green, tag `v1.1.0`, release verified);
-  J1 run 1 on v1.1.0 (its range table feeds the deck early); X1 on 1.1.0 and on `707ea9c`. Open
-  `det/1.2.0`, cheapest first: R2 and R1 config variants through `--set` (hours) → F1 → S3 → K1
-  (after X1) → R3 (after X1) → C2 (after C1) → S2.
-* **18–19.10:** measure each bundle item on its own; only passing items join `det/1.2.0`. P1
-  restructures the deck (PT1); rehearsal 1 (PT2) on v1.1.0 by 19.10.
-* **20.10, noon cut-off:** combined gate on `det/1.2.0`, independent safety review, reseal with the
-  version bump, tag `v1.2.0`, release. S1, C1 and E2 ship in the same tag (a tag needs a version
-  bump in sealed files anyway).
-* **21.10:** J1 run 2 on the final seal, G3 run once by a fresh agent, D1 pass 2, final numbers in
-  the deck and video cards, S5 if an 8-core machine is available.
-* **22.10:** rehearsal 2 on the final image with the fallback and Q&A drills.
+The session handed its unfinished work over on 15.10 (§2a), so v1.1.0 lands on 18.10, not
+16–17.10, and the 1.2.0 bundle has 18–20.10: keep its priority order and let the tail slip.
+
+* **15–16.10:** P1 sends O1 first (its answer is the branch point) and sets the C1 semantics; P1's
+  agents start S1, E2 and the C1 policy module (node lane, no seal). P4 builds the data and caches
+  on the team VM and reproduces the baseline gate (H0), commits the G3 spec (before anyone tunes,
+  or it is not held-out), then X3. P3 starts H1 and H2 in two worktrees and screens the R2 / R1
+  config variants with `--set` on `final/silent-misses` (re-checked after the 1.1.0 rebase). P2 runs
+  D1 pass 1 and starts PT1's slide cuts (no numbers needed yet).
+* **17.10:** P1 integrates (H3: `r3/axis` + H1 / H2 if they passed, full gate); P4 starts the
+  independent review (H4) as soon as H3's gate passes.
+* **18.10:** review fixes (P3), then P1: H5 (bump to 1.1.0, final gate, reseal) and H6 / E1 (PR,
+  CI green, tag `v1.1.0`, release verified). P4: J1 run 1 on v1.1.0 (its range table feeds the deck)
+  and X1 on 1.1.0 and on `707ea9c`. P3 opens `det/1.2.0` from the 1.1.0 seal, cheapest first:
+  the R2 / R1 variant that passed screening → K1 (after X1) → F1 → S3 → C2 (after C1) → R3 → S2.
+* **19.10:** each bundle item measured on its own; only passing items join `det/1.2.0`. P1 + P2
+  put J1's numbers into the deck (PT1); rehearsal 1 (PT2) on v1.1.0.
+* **20.10, noon cut-off:** P3 combined gate on `det/1.2.0`; P4 independent safety review; P1
+  reseals with the version bump, tags `v1.2.0`, releases. S1, C1 and E2 ship in the same tag.
+* **21.10:** P4: J1 run 2 on the final seal and the G3 run (a fresh agent). P2: D1 pass 2, S5 on an
+  8-core machine, final video cards. P1: final numbers in the deck and the speech.
+* **22.10:** rehearsal 2 on the final image with the fallback and Q&A drills (P3, P4 as mock jury).
 * **After 23.10** (or earlier only if O1 says updates count and CPU allows): K2 unless round 3 (B)
   shipped, X2 then F2, S4, G1 and G2 then T1, D2, J1's raw-path gate mode.
 * **If O1 says v1.0.0 only:** keep O1, E1, J1, D1, PT1, PT2 and S1/E2/C1 (they improve the live
   demo and the Q&A); shrink the detector bundle to the evidence the Q&A needs (K1, R1/R2
   measurements); everything else moves after the defence.
 
-## 5. Load per role
+## 5. Who does what, and where to start
 
-| role | items before 23.10 | load | notes |
-|---|---|---|---|
-| **P1** | O1, E1 (twice), S1, E2, C1, J1 (twice), D1, PT1, PT2, S5; orchestrates the P4-lane agent items X1, X3, G3 | human ~4 of the 8 days: O1 0.5 h, two tags with verification ~3 h, the C1 semantics decision 1 h, two reseal sign-offs with the safety-review read ~3 h (CAPTAIN §3 item 8, the human read of the 29.09 review, is still open), J1 reading 2 h, deck and speech 1.5 days, rehearsals 1.5 days | overloaded: delegate S5 and the deck visuals; keep the tags, reseals and the pitch |
-| **P2** | PT1 (range chart from J1, slide trims in `scripts/build_deck.py`, video cards via `scripts/make_overview_video.py`), PT2 (fallback clip, second demo device), C1 (`caution_reason` in RViz and the web view; `scripts/hero_view.py`), X2 snapshots (after 23.10) | ~2–3 days | D1 must fix the CAPTAIN §8 map so the deck / video lane matches the pitch owner |
-| **P3** | the 1.2.0 bundle: K1, R1, R2, R3, F1, C2, S2, S3 (~8–10 agent-days; fits 16–20.10 with 3–4 agents in parallel if CPU allows; if short: K1 > R2/R1 variants > F1 > S3 > C2 > R3 > S2); after 23.10: K2, F2, S4, G1, G2, T1 | human: validate X1's attribution, read the safety reviews, classify G1's rules | since the freeze detector changes are agent-executed and captain-merged; confirm whether the P3 person is available, else an independent agent reviews and P1 decides |
-| **P4** | X1, X3, G3 (spec now, run on the final seal), J1 runs; X2 after 23.10 | agents under P1 | the person, if available: confirm X2's ambiguous classes (< 1 h), review the G3 spec, mock jury in rehearsal 2 |
+The repo names roles; write the person next to each role before handing this out. Rules that shaped
+the split: the detector lane (P3) writes detector changes; the evaluation lane (P4) prepares the data
+and reviews them **independently** (an agent that wrote a change never reviews it); the captain (P1)
+integrates, reseals, tags and owns the pitch; P2 takes the docs and the bench off the captain.
+If a person is unavailable, P1 runs that role's items with agents in the same order.
+
+| role | queue before 23.10, in order | load |
+|---|---|---|
+| **P1** captain | O1 → C1 semantics → H3 → H5 → H6 / E1 (v1.1.0) → PT1 speech and deck → PT2 rehearsal 1 → reseal + tag v1.2.0 → PT2 rehearsal 2; agents on S1, E2, C1 code from 15.10 | human ~3.5 of 8 days (O1 0.5 h, C1 decision 1 h, two integrations / reseals / tags with the review reads ~6 h, J1 reading 2 h, deck and speech 1.5 days, rehearsals 1.5 days); CAPTAIN §3 item 8 (the human read of the 29.09 safety review) is still open |
+| **P2** frontend / visuals | D1 pass 1 → PT1 slide cuts → C1 display (`caution_reason` in RViz and the web view) once C1's contract lands → PT1 range chart from J1 → PT2 fallback clip on v1.1.0 and the second demo device → D1 pass 2, S5, video cards (21.10) | ~3 days |
+| **P3** detector | H1 + H2 (parallel) + R2 / R1 screening → review fixes after H4 → `det/1.2.0`: R2 / R1 → K1 → F1 → S3 → C2 → R3 → S2 (as many as pass by 20.10 noon) → combined gate | ~10 agent-days in ~5 days: needs 3–4 agents in parallel and the team VM's CPU; the person validates X1's attribution and reads the reviews |
+| **P4** data / evaluation | H0 → G3 spec → X3 → H4 (independent review of `final/silent-misses`) → J1 run 1 + X1 → independent review of `det/1.2.0` (20.10) → J1 run 2 + G3 run (21.10) → mock jury | ~3 days, mostly agent time on the team VM |
+
+**Where each person starts (15.10):**
+
+* **P1:** send the O1 message (the three questions in card O1) and write the CAUTION semantics for
+  C1 in one paragraph (card C1, task 1). Then start agents on S1 and E2 (node and Docker, not
+  sealed) on a branch from `final/silent-misses`. H3 waits for P3's H1 / H2 results.
+* **P2:** branch from `claude/eloquent-volta-qcxq9d` and give an agent card D1 (its `grep` checks are
+  the acceptance); P1 approves the PR. Next, PT1 task 2: count the words per slide of
+  `docs/presentation/ReSense_LCT2026.pptx` (card PT1 acceptance) and cut every slide to ≤ 80 words
+  with the detail moved to the notes; numbers are filled in after J1.
+* **P3:** `git fetch origin`, then two worktrees: `git worktree add ../rs-h1 r3/column` (H1) and
+  `git worktree add -b h2/cut-bar ../rs-h2 origin/final/silent-misses` (H2); build the native module
+  in each (`scripts/build_native.sh`); read `docs/evidence/silent_misses_2026-10-14/README.md` and its
+  `harness/README.md` on `final/silent-misses`, and `docs/evidence/column_hardening_2026-10-15/` on
+  `r3/column`. Run with `PYTHONPATH` and `RESENSE_REPO` set to the worktree. The probes and the gate
+  need P4's caches (H0); until they are there, read the code and set up the agents.
+* **P4:** on the team VM follow [`VM_GUIDE.md`](VM_GUIDE.md) §2 (six bags, set O, the ride via
+  `scripts/cache_extended_ride.py` with `--reserve-gib 3`); build node-decoded caches with
+  `docs/evidence/judgement_2026-10-13/scripts/cache_decoded.py <bag dir> <out dir>` for
+  roundT_squareT_pressureGate_squareT, roundT_pressureGate_roundT, roundT_doubleT,
+  squareT_platform_squareT_switch, doubleT_obstacle and cloud_with_fake_obj; run
+  `python scripts/regression_gate.py --cache <cache> --jobs 4 --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json`
+  on `707ea9c`: every non-latency row must match (it did in the session); post the cache paths to the
+  team. Then commit the G3 spec.
 
 Rough gain if the pre-defence items land and count (judge's estimates): 8.1 +2 to +3, 8.2 +1 to +2,
 8.3 +1.5 to +2.5, 8.4 +0.5 to +1, 8.5 +1, 8.6 +1 to +1.5, 8.7 +1, 8.8 +1.
@@ -286,8 +331,8 @@ protects ~1 if the control data uses another mount or starts without a rail pair
   identical rows.
 
 #### S5 · 8-core stand-in bench of the final node incl. the literal player
-**Criteria** 8.3 · **Owner** P1 (a teammate with an 8-core machine runs it; an agent writes the
-summary) · **Mode** H · **Size** S · **Points** ~+0.5 through confidence · **Depends on** S1, S2,
+**Criteria** 8.3 · **Owner** P2, or whoever has an 8-core machine (an agent writes the summary;
+P1 quotes it) · **Mode** H · **Size** S · **Points** ~+0.5 through confidence · **Depends on** S1, S2,
 the final image
 * **Evidence:** the judge timed on 4 vCPU only (8.3 confidence "medium"); the stand is an
   i7-9700E with 8 cores; the team VM of 28.09 (4C/8T) gave 360° node mean 52.9 / p95 62.8 ms against
@@ -422,8 +467,8 @@ P3 reviews the misses) · **Mode** A · **Size** M · **Points** 8.7 up to +1 ("
   and the misses; the run log shows `detector_freeze.py verify` PASS.
 
 #### J1 · Re-judge the shipped seal with the judge's tools; one table against 13.10
-**Criteria** evidence for 8.1–8.8 (8.2 confidence, 8.5 claims, 8.8 honest numbers) · **Owner** P1
-orchestrates (a fresh-context agent runs and scores; P2 turns the table into the deck chart) ·
+**Criteria** evidence for 8.1–8.8 (8.2 confidence, 8.5 claims, 8.8 honest numbers) · **Owner** P4
+(a fresh-context agent runs and scores; P1 reads `delta.md`; P2 turns the table into the deck chart) ·
 **Mode** A · **Size** M · **Points** protects the 8.2 credit, ~+0.5 8.5, ~+0.5 8.8 · **Depends on**
 E1; second run after the 1.2.0 reseal; X3; CPU (ride on the team VM)
 * **Evidence:** the judge credited only what it reproduced. The same v1.0.0 detector differs between
@@ -739,7 +784,8 @@ feeds T1; after 23.10 unless O1 allows
   finds nothing; `pytest -q` passes.
 
 #### D1 · Fix ~28 stale or contradictory statements in 13 docs; SCORECARD and the ownership map current
-**Criteria** 8.5 (claims), 8.8 (credibility) · **Owner** P1 (agent) · **Mode** A · **Size** S ·
+**Criteria** 8.5 (claims), 8.8 (credibility) · **Owner** P2 (an agent edits; the docs are P1's lane, P1
+approves the PR) · **Mode** A · **Size** S ·
 **Points** ~+0.5 on 8.5; stops jurors catching stale claims in the Q&A · **Depends on** nothing for
 the v1.0.0 facts; second pass after the 1.1.0 and final seals and J1
 * **Evidence:** (1) CAPTAIN and EVALUATION command the gate baseline `…_competitor_rules.json`; the
@@ -760,8 +806,8 @@ the v1.0.0 facts; second pass after the 1.1.0 and final seals and J1
   VM_GUIDE; the SENSOR sentence is gone; the first 20 lines of SCORECARD name 13.10 66/100.
 
 #### D2 · Archive the 28.09 experiment layer: process notes, personal-path tests, orphan scripts
-**Criteria** 8.5, 8.7 · **Owner** P1 (docs; tests and scripts are the P4 lane, run by the captain
-since 25.09) · **Mode** A · **Size** S · **Points** ~+0.5 on 8.5, ~+0.25 on 8.7 · **Depends on**
+**Criteria** 8.5, 8.7 · **Owner** P2 (an agent; docs are P1's lane and tests / scripts P4's, so P1
+approves) · **Mode** A · **Size** S · **Points** ~+0.5 on 8.5, ~+0.25 on 8.7 · **Depends on**
 after the session's and D1's doc commits (conflicts in `docs/evidence/README.md`, CHANGELOG)
 * **Evidence:** `docs/` has 37 top-level `.md` files, 20 of them dated process notes (12
   `*_2026-09-28*`, 8 `EXPERIMENT_*`). Personal paths: `git grep -nE 'D:/Datasets|C:/Users' -- tests
