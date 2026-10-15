@@ -1,0 +1,72 @@
+{
+  "p1_sealed_plain": {
+    "frames": 1409,
+    "STOP": 14,
+    "episodes": 3,
+    "CAUTION": 887,
+    "code_commit": "3fdc87957f5d09ff32573eabe6637924b91ea376"
+  },
+  "p1_14.10_plain": {
+    "frames": 1409,
+    "STOP": 14,
+    "episodes": 3,
+    "CAUTION": 887,
+    "code_commit": "264f5b29304fd685f4042ded9eb382070da90563"
+  },
+  "p1_14.10_dark": {
+    "frames": 1409,
+    "STOP": 30,
+    "episodes": 6,
+    "CAUTION": 871,
+    "code_commit": "264f5b29304fd685f4042ded9eb382070da90563"
+  },
+  "p1_H1_plain": {
+    "frames": 1409,
+    "STOP": 14,
+    "episodes": 3,
+    "CAUTION": 887,
+    "code_commit": "a2660aff4009fe51529df13c48f1fde939187b4a"
+  },
+  "p1_H1_dark": {
+    "frames": 1409,
+    "STOP": 23,
+    "episodes": 5,
+    "CAUTION": 878,
+    "code_commit": "a2660aff4009fe51529df13c48f1fde939187b4a"
+  },
+  "p3_sealed_plain": {
+    "frames": 1409,
+    "STOP": 2,
+    "episodes": 1,
+    "CAUTION": 849,
+    "code_commit": "3fdc87957f5d09ff32573eabe6637924b91ea376"
+  },
+  "p3_14.10_plain": {
+    "frames": 1409,
+    "STOP": 2,
+    "episodes": 1,
+    "CAUTION": 849,
+    "code_commit": "264f5b29304fd685f4042ded9eb382070da90563"
+  },
+  "p3_14.10_dark": {
+    "frames": 1409,
+    "STOP": 13,
+    "episodes": 3,
+    "CAUTION": 838,
+    "code_commit": "264f5b29304fd685f4042ded9eb382070da90563"
+  },
+  "p3_H1_plain": {
+    "frames": 1409,
+    "STOP": 2,
+    "episodes": 1,
+    "CAUTION": 849,
+    "code_commit": "a2660aff4009fe51529df13c48f1fde939187b4a"
+  },
+  "p3_H1_dark": {
+    "frames": 1409,
+    "STOP": 7,
+    "episodes": 3,
+    "CAUTION": 844,
+    "code_commit": "a2660aff4009fe51529df13c48f1fde939187b4a"
+  }
+}
