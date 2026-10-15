@@ -1,0 +1,188 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+{
+  "HOME": "/",
+  "ROS_HOME": "/tmp/.ros",
+  "ROS_LOG_DIR": "/tmp/.ros/log"
+}
+[INFO] [1792093860.647272596] [rosbag2_storage]: Opened database '/tmp/resense-e2-8v059tz5/bag/bag_0.db3' for READ_WRITE.
+Arguments (pass arguments as '<name>:=<value>'):
+
+    'input_topic':
+        comma-separated candidate input topics
+        (default: '/lidar_points,/sensing/lidar/hesai128/pointcloud')
+
+    'auto_discover':
+        also subscribe to PointCloud2 topics found on the graph
+        (default: 'true')
+
+    'discover_period':
+        s between discovery scans while the input is silent
+        (default: '2.0')
+
+    'publish_markers':
+        RViz MarkerArray
+        (default: 'true')
+
+    'publish_corridor_cloud':
+        points inside the corridor, for debugging
+        (default: 'true')
+
+    'marker_x_max':
+        m, how far the corridor outline is drawn
+        (default: '250.0')
+
+    'output_frame':
+        frame_id of the published markers/detections; empty = the input's
+        (default: '')
+
+    'stats_period':
+        s between fps / latency log lines
+        (default: '2.0')
+
+    'ego_speed_mps':
+        train speed in m/s for multi-frame accumulation; < 0 = unknown (speed_topic / odom_topic; none = single-frame path, no accumulation)
+        (default: '-1.0')
+
+    'speed_topic':
+        std_msgs/Float32 topic carrying the train speed in m/s (optional)
+        (default: '')
+
+    'odom_topic':
+        nav_msgs/Odometry topic; twist.linear.x is taken as the train speed (optional)
+        (default: '')
+
+    'speed_timeout':
+        s after which a speed message no longer counts
+        (default: '1.0')
+
+    'publish_tf':
+        broadcast a static identity TF tf_parent_frame -> input frame id
+        (default: 'true')
+
+    'tf_parent_frame':
+        fixed frame used by the RViz / Foxglove layouts
+        (default: 'resense_lidar')
+
+    'sensor_forward':
+        sensor axis pointing forward, e.g. -y (hackathon mount) or +x; empty = config file
+        (default: '')
+
+    'sensor_left':
+        sensor axis pointing left; empty = config file
+        (default: '')
+
+    'sensor_up':
+        sensor axis pointing up; empty = config file
+        (default: '')
+
+    'mount_roll_deg':
+        fixed roll correction in deg (-999 = config file)
+        (default: '-999.0')
+
+    'mount_pitch_deg':
+        fixed pitch correction in deg (-999 = config file)
+        (default: '-999.0')
+
+    'mount_yaw_deg':
+        fixed yaw correction in deg (-999 = config file)
+        (default: '-999.0')
+
+    'auto_calibrate':
+        find the sensor orientation / roll / pitch from rails and bed in the first frames
+        (default: 'true')
+
+    'freshness_mode':
+        live = acquisition UTC; explicitly choose replay for historical bags (DDS publisher UTC)
+        (default: 'live')
+
+    'max_result_age':
+        s: maximum source age, Python residence and recording queue lag
+        (default: '0.5')
+
+    'future_tolerance':
+        s: tolerated future source-clock skew
+        (default: '0.05')
+
+    'stale_timeout':
+        s without an input frame before the decision becomes FAULT
+        (default: '0.5')
+
+    'startup_grace':
+        s after start before 'no LiDAR frame received yet' is published as FAULT
+        (default: '2.0')
+
+    'max_consecutive_errors':
+        processing exceptions in a row before the detector is reset
+        (default: '5')
+
+    'input_switch_timeout':
+        s the active input topic must be silent before another topic is taken
+        (default: '1.0')
+
+    'new_input_gap':
+        s of forward header-stamp jump taken as a new recording (detector restarted)
+        (default: '30.0')
+
+    'hole_reset_gap':
+        s of forward header-stamp jump that resets the scene state (calibration kept)
+        (default: '1.0')
+
+    'input_queue_depth':
+        frames the input subscription may hold between two processed frames
+        (default: '40')
+
+    'catchup_step':
+        s of recording between processed frames while frames wait (a burst from the player); 0 = always process the newest frame only
+        (default: '0.3')
+
+    'catchup_max_lag':
+        s: waiting frames older than the newest by more than this are dropped
+        (default: '5.0')
+
+    'catchup_startup_max_lag':
+        s: backlog allowed for a new recording's first catch-up; later stalls use catchup_max_lag
+        (default: '20.0')
+
+    'catchup_startup_step':
+        s of recording between processed frames of a new recording's first backlog; experimental default 0 keeps every frame; 0.2 opts into 5 Hz
+        (default: '0.0')
+
+    'warmup':
+        run the decode and a throwaway detector on synthetic frames before listening
+        (default: 'true')
+
+    'input_reliability':
+        input QoS: auto = match the publishers (reliable for ros2 bag play of the organizers' recordings), reliable, best_effort
+        (default: 'auto')
+
+    'raw_input':
+        read the input clouds from their serialized bytes (rclpy's conversion: 12.5 ms median, 32 ms p95 per 24 MB 360-degree cloud); false = rclpy's message conversion
+        (default: 'true')
+
+    'config_file':
+        no description given
+        (default: '/opt/resense/ros2_ws/install/resense_ros/share/resense_ros/config/detector.yaml')
+
+    'rviz':
+        no description given
+        (default: 'false')
+
+    'bag':
+        optional bag to play
+        (default: '')
+
+    'rate':
+        no description given
+        (default: '1.0')
+
+    'loop':
+        replay the bag forever
+        (default: 'false')
+
+    'delay':
+        s the player waits before the first message (DDS discovery)
+        (default: '3.0')
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792093861.683199170] [rosbag2_storage]: Opened database '/tmp/resense-e2-8v059tz5/bag/bag_0.db3' for READ_ONLY.
+[INFO] [1792093861.683324767] [rosbag2_player]: Set rate to 1
+[INFO] [1792093861.689708170] [rosbag2_storage]: Opened database '/tmp/resense-e2-8v059tz5/bag/bag_0.db3' for READ_ONLY.
+PASS: uid 1000 launch resolution and synthetic bag playback, no HOME override

@@ -11,7 +11,8 @@ name: release
 #
 # The job: the tag's unit tests; two dataset-free smoke bags; the runtime image built from the tag
 # and exported; the image and the build cache removed; the archive loaded back (sha256, docker load,
-# a --network none run, same layers); the bags played through the LOADED image with no internet
+# a --network none run, same layers); source rebuilt with --network none on the exact loaded tag;
+# the bags played through the LOADED image with no internet
 # (--internal network, player uid 1000 in its own container) and in the jury's form (--net=host
 # --ipc=host, a stock Fast DDS player and listener as uid 1000); then the release with the archive,
 # its .sha256 and SHA256SUMS, and the published archive downloaded again and its sum checked.
@@ -136,6 +137,27 @@ jobs:
           docker run --rm --network none -w / "resense:$TAG" \
             python3 -c 'from resense import _native as n; assert n.AVAILABLE and n.enabled(), n.status(); print(n.status())'
           echo "resense:$TAG loaded from the archive: the built layers, tag $TAG, commit $COMMIT"
+      - name: rebuild source offline on the exact loaded release image (no pull, no build network)
+        id: offline
+        run: |
+          mkdir -p out/release_offline
+          ORIGINAL_ID="$(docker image inspect -f '{{.Id}}' "resense:$TAG")"
+          START="$SECONDS"
+          docker build --network none --pull=false --progress=plain \
+            --build-arg "RELEASE_IMAGE=resense:$TAG" \
+            -f docker/Dockerfile.offline -t resense:release-offline-check . 2>&1 | tee out/release_offline/build.log
+          echo "seconds=$((SECONDS - START))" | tee -a "$GITHUB_OUTPUT" out/release_offline/timing.txt
+          docker run --rm --network none -w / resense:release-offline-check \
+            python3 /opt/resense/scripts/check_offline_image.py | tee out/release_offline/installed.log
+          # Real changed-source test: a new native symbol, Python modules and launch/config data.
+          # An old wheel or setuptools/colcon cache must not make this check pass.
+          python3 scripts/offline_rebuild_test.py --base-image "resense:$TAG" \
+            --image resense:release-offline-mutation-check --out out/release_offline/mutation
+          for IMAGE in "resense:$TAG" resense:release-offline-check; do
+            docker run --rm --network none --user 1000:1000 -w / "$IMAGE" \
+              python3 /opt/resense/scripts/check_nonroot_player.py 2>&1 | tee "out/release_offline/nonroot-${IMAGE##*:}.log"
+          done
+          test "$(docker image inspect -f '{{.Id}}' "resense:$TAG")" = "$ORIGINAL_ID"
       - name: no internet - the loaded image, node and a uid-1000 player in separate containers on an --internal network
         run: IMAGE="resense:$TAG" OUT=out/release_internal scripts/internal_net_test.sh "$BAGS/smoke_bag" "$BAGS/smoke_bag2"
       - name: the jury's form - the loaded image with --net=host --ipc=host, a stock Fast DDS player and listener as uid 1000
@@ -171,6 +193,7 @@ jobs:
           PRERELEASE: ${{ steps.meta.outputs.prerelease }}
           COMMIT: ${{ steps.meta.outputs.commit }}
           OUTCOME: ${{ job.status }}
+          OFFLINE_SECONDS: ${{ steps.offline.outputs.seconds }}
         run: |
           {
             echo "## ReSense $TAG: $OUTCOME"
@@ -180,6 +203,7 @@ jobs:
             echo "| commit | \`${COMMIT:-?}\` |"
             echo "| pre-release | ${PRERELEASE:-?} |"
             echo "| archive | \`resense-image-$TAG.tar.gz\`, ${BYTES:-?} bytes |"
+            echo "| offline source rebuild | ${OFFLINE_SECONDS:-?} seconds (network none, exact loaded release tag) |"
             echo "| sha256 | \`${SHA256:-?}\` |"
             echo "| release | $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/$TAG |"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -191,6 +215,7 @@ jobs:
           path: |
             out/release_internal
             out/release_console
+            out/release_offline
             dist/release-notes-*.md
             dist/*.sha256
             dist/SHA256SUMS

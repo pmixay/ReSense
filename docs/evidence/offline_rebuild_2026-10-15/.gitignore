@@ -1,0 +1,2 @@
+# Retain this E2 run's small command logs despite the repository-wide *.log ignore.
+!*.log

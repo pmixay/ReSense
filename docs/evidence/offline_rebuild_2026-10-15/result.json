@@ -1,0 +1,186 @@
+{
+  "result": "PASS",
+  "base_commit": "d0d17bb5dcc2b5b23f9ddd96744a8fd0424e0b5d",
+  "images": {
+    "resense:p1-e2-check": "sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e",
+    "resense:p1-e2-offline-check": "sha256:37292b1370f15a344fd43986b85cb76c170dd22a61b8bd15b57d6f42cdd2b381",
+    "resense:p1-e2-mutation-check": "sha256:5bf5a3fba99d6a0dd8469b768ceae32752ea38db2b7a5c407a5860880260f697"
+  },
+  "archive_layers_unchanged": true,
+  "entrypoint_cmd_env_unchanged": true,
+  "commands": [
+    {
+      "name": "docker-version",
+      "command": [
+        "docker",
+        "version"
+      ],
+      "seconds": 0.563,
+      "exit": 0
+    },
+    {
+      "name": "runtime-build",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "-t",
+        "resense:p1-e2-check",
+        "-f",
+        "docker/Dockerfile",
+        "."
+      ],
+      "seconds": 6.828,
+      "exit": 0
+    },
+    {
+      "name": "archive-save",
+      "command": [
+        "docker",
+        "save",
+        "-o",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-e2-archive-mk74skm8\\runtime.tar",
+        "resense:p1-e2-check"
+      ],
+      "seconds": 21.985,
+      "exit": 0
+    },
+    {
+      "name": "archive-load",
+      "command": [
+        "docker",
+        "load",
+        "-i",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-e2-archive-mk74skm8\\runtime.tar"
+      ],
+      "seconds": 24.125,
+      "exit": 0
+    },
+    {
+      "name": "inherited-caches",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "resense:p1-e2-check",
+        "python3",
+        "-c",
+        "import json, os, sys; from pathlib import Path; import resense; root=Path(\"/opt/resense\"); files=list((root/\"build\").rglob(\"*.so\"))+list((root/\"build\").rglob(\"*.o\")); print(json.dumps({\"package\":resense.__file__, \"PYTHONPATH\":os.getenv(\"PYTHONPATH\"), \"sys_path\":sys.path, \"inherited_build_artifacts\":[{\"path\":str(p), \"mtime\":p.stat().st_mtime} for p in files]}, indent=2))"
+      ],
+      "seconds": 2.547,
+      "exit": 0
+    },
+    {
+      "name": "offline-build",
+      "command": [
+        "docker",
+        "build",
+        "--network",
+        "none",
+        "--pull=false",
+        "--no-cache",
+        "--progress=plain",
+        "--build-arg",
+        "RELEASE_IMAGE=resense:p1-e2-check",
+        "-f",
+        "docker/Dockerfile.offline",
+        "-t",
+        "resense:p1-e2-offline-check",
+        "."
+      ],
+      "seconds": 18.609,
+      "exit": 0
+    },
+    {
+      "name": "runtime-installed",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "resense:p1-e2-check",
+        "python3",
+        "/opt/resense/scripts/check_offline_image.py"
+      ],
+      "seconds": 3.766,
+      "exit": 0
+    },
+    {
+      "name": "runtime-nonroot",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "-w",
+        "/",
+        "resense:p1-e2-check",
+        "python3",
+        "/opt/resense/scripts/check_nonroot_player.py"
+      ],
+      "seconds": 3.469,
+      "exit": 0
+    },
+    {
+      "name": "offline-installed",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "resense:p1-e2-offline-check",
+        "python3",
+        "/opt/resense/scripts/check_offline_image.py"
+      ],
+      "seconds": 2.5,
+      "exit": 0
+    },
+    {
+      "name": "offline-nonroot",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "-w",
+        "/",
+        "resense:p1-e2-offline-check",
+        "python3",
+        "/opt/resense/scripts/check_nonroot_player.py"
+      ],
+      "seconds": 3.25,
+      "exit": 0
+    },
+    {
+      "name": "mutation",
+      "command": [
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-venv\\Scripts\\python.exe",
+        "scripts/offline_rebuild_test.py",
+        "--base-image",
+        "resense:p1-e2-check",
+        "--image",
+        "resense:p1-e2-mutation-check",
+        "--out",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p1-offline\\docs\\evidence\\offline_rebuild_2026-10-15\\mutation"
+      ],
+      "seconds": 24.11,
+      "exit": 0
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+{
+  "version": "1.0.0",
+  "package": "/usr/local/lib/python3.10/dist-packages/resense",
+  "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+  "native_library": "/usr/local/lib/python3.10/dist-packages/resense/_resense_native.cpython-310-x86_64-linux-gnu.so",
+  "native_sha256": "dc549d0583f92c3acd93c455bf94bab4bbedae35a9580d82ad24786473661d5c",
+  "native_source_sha256": "9b4bd2c5669e03cec4d577c1174a36306a575f638866a8c0c4ede114314cbde9",
+  "ros_node": "/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+  "share": "/opt/resense/ros2_ws/install/resense_ros/share/resense_ros",
+  "launch_sha256": "1e22b22af2df5401276c40a55ca2459ab5ed55b43802db7687663ecb02d962ad",
+  "config_sha256": "d41052adfbcdfb54a7e4836f9a0ca0fbfd2a9320dc99ca85fc83643103714a28",
+  "sys_path": [
+    "/opt/resense/scripts",
+    "/opt/resense/ros2_ws/build/resense_ros",
+    "/opt/resense/ros2_ws/install/resense_ros/lib/python3.10/site-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages",
+    "/usr/lib/python310.zip",
+    "/usr/lib/python3.10",
+    "/usr/lib/python3.10/lib-dynload",
+    "/usr/local/lib/python3.10/dist-packages",
+    "/usr/lib/python3/dist-packages"
+  ]
+}
