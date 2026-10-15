@@ -1,0 +1,43 @@
+{
+  "archives_checked_here": [
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\dataset.zip",
+      "bytes": 3940746006,
+      "source": "https://drive.google.com/file/d/1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu/view",
+      "expected_sha256": "e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be",
+      "actual_sha256": "e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be",
+      "passed": true
+    },
+    {
+      "path": "D:\\Datasets\\ReSense\\cloud_with_fake_obj.zst",
+      "bytes": 1746145824,
+      "source": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
+      "expected_sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9",
+      "actual_sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9",
+      "passed": true
+    }
+  ],
+  "ride_archive_intake_reused": {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-range-screen\\docs\\evidence\\p3_start_2026-10-15\\ride_intake.json",
+    "sha256": "cd13ef745f03d1382554d4f06063362aad627aac9d0c817d8e30f82e639c6856",
+    "source_commit": "527a76c",
+    "archive_hash_repeated_here": false
+  },
+  "tools": {
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resource.py": "a5632e3932863f970a6eda2da265fac0aba978d6b1e85ce76b75da80e013f947",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-build-native.cmd": "4bdbfa63916415d7d432bd74335db73e46334009a99f6e3e47e2ef10bd283281",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-measure.py": "2cb3b0f2409697e8ce744c77e49fc188668c879c76a5f546a51f22220da1e9ba"
+  },
+  "native_build": {
+    "cwd": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+    "command": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-build-native.cmd",
+    "exit": 0,
+    "compiler": "MSVC x64 /O2 /std:c++17 /fp:strict"
+  },
+  "docker": {
+    "exit": 0,
+    "stdout": "{\"Client\":{\"Version\":\"29.2.0\",\"ApiVersion\":\"1.53\",\"DefaultAPIVersion\":\"1.53\",\"GitCommit\":\"0b9d198\",\"GoVersion\":\"go1.25.6\",\"Os\":\"windows\",\"Arch\":\"amd64\",\"BuildTime\":\"Mon Jan 26 19:28:56 2026\",\"Context\":\"desktop-linux\"},\"Server\":{\"Platform\":{\"Name\":\"Docker Desktop 4.60.1 (218372)\"},\"Version\":\"29.2.0\",\"ApiVersion\":\"1.53\",\"MinAPIVersion\":\"1.44\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"Components\":[{\"Name\":\"Engine\",\"Version\":\"29.2.0\",\"Details\":{\"ApiVersion\":\"1.53\",\"Arch\":\"amd64\",\"BuildTime\":\"Mon Jan 26 19:26:07 2026\",\"Experimental\":\"false\",\"GitCommit\":\"9c62384\",\"GoVersion\":\"go1.25.6\",\"KernelVersion\":\"6.6.87.2-microsoft-standard-WSL2\",\"MinAPIVersion\":\"1.44\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.2.1\",\"Details\":{\"GitCommit\":\"dea7da592f5d1d2b7755e3a161be07f43fad8f75\"}},{\"Name\":\"runc\",\"Version\":\"1.3.4\",\"Details\":{\"GitCommit\":\"v1.3.4-0-gd6d73eb8\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"GitCommit\":\"9c62384\",\"GoVersion\":\"go1.25.6\",\"KernelVersion\":\"6.6.87.2-microsoft-standard-WSL2\",\"BuildTime\":\"2026-01-26T19:26:07.000000000+00:00\"}}\n",
+    "stderr": "",
+    "role": "availability only; measurements use Windows native Python, no container/SSH VM"
+  }
+}

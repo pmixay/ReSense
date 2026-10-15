@@ -1,0 +1,116 @@
+[
+  {
+    "name": "intake",
+    "argv": [
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-venv\\Scripts\\python.exe",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-eval\\scripts\\p4_data_intake.py",
+      "--repo",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+      "--data",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data",
+      "--set-o",
+      "D:/Datasets/ReSense/cloud_with_fake_obj",
+      "--ride",
+      "D:/Datasets/ReSense/new_data",
+      "--out",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\intake.json",
+      "--resource-adapter",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode"
+    ],
+    "cwd": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+    "env": {
+      "PYTHONPATH": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c;C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode",
+      "RESENSE_REPO": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "started_epoch": 1792093499.2377772,
+    "wall_s": 956.06,
+    "exit": 0,
+    "log": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\intake.log"
+  },
+  {
+    "name": "freeze_verify",
+    "argv": [
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-venv\\Scripts\\python.exe",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c\\scripts\\detector_freeze.py",
+      "verify"
+    ],
+    "cwd": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+    "env": {
+      "PYTHONPATH": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c;C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode",
+      "RESENSE_REPO": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "started_epoch": 1792094455.3053558,
+    "wall_s": 0.22,
+    "exit": 1,
+    "log": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\freeze_verify.log"
+  },
+  {
+    "name": "gate_707ea9c",
+    "argv": [
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-venv\\Scripts\\python.exe",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c\\scripts\\regression_gate.py",
+      "--cache",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache",
+      "--jobs",
+      "2",
+      "--baseline",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c\\docs\\evidence\\results\\regression_baseline_2026-09-29_shell_off.json",
+      "--work",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work",
+      "--out",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_707ea9c.json"
+    ],
+    "cwd": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+    "env": {
+      "PYTHONPATH": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c;C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode",
+      "RESENSE_REPO": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "started_epoch": 1792094455.5278814,
+    "wall_s": 778.05,
+    "exit": 0,
+    "log": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_707ea9c.log"
+  },
+  {
+    "name": "battery_707ea9c",
+    "argv": [
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-venv\\Scripts\\python.exe",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-eval\\scripts\\robustness_battery.py",
+      "--repo",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+      "--cache",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded",
+      "--out",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.json",
+      "-j",
+      "2",
+      "--judge-reference",
+      "--resource-adapter",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode"
+    ],
+    "cwd": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+    "env": {
+      "PYTHONPATH": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c;C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode",
+      "RESENSE_REPO": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p4-baseline-707ea9c",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "started_epoch": 1792095234.6815543,
+    "wall_s": 1096.2,
+    "exit": 0,
+    "log": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.log"
+  }
+]

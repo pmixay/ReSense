@@ -1,0 +1,942 @@
+[
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.json",
+    "bytes": 638960,
+    "sha256": "0fdce284634021f40630654d46678cf1ad8ef5d82cfd65e69c76c4f6d734c639"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.log",
+    "bytes": 1759,
+    "sha256": "fd116765ae8e352d699fad1cabba70e8632ac8bd3ce361bce27ee22e80fe06ff"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\dedup\\job.json",
+    "bytes": 400,
+    "sha256": "7b2464f16e9965858ee390baa85a350ddeb838c83504ea294230941a1488a699"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\dedup\\probe.complete.json",
+    "bytes": 3456,
+    "sha256": "9d63231549f0dd12a961911a1a3691c98434375825b199bf384e17697e8f485e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\dedup\\probe.jsonl",
+    "bytes": 915625,
+    "sha256": "bf5560d684862b69bef27f876540883d3c49314a5985c9a46a6683470b87d532"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\dedup\\process.log",
+    "bytes": 139,
+    "sha256": "8fbd099b7a007869b73a85f2b76d2b44a65ac11000abba43183235c3579d9e7d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_judge7\\job.json",
+    "bytes": 419,
+    "sha256": "086926d1ffb3c90530c4fecc4accf1cdfcd0b81723f3c562579e7dc4538b4359"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_judge7\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "469db2412cbcd254c6c5f2bdf61c96bf7ce8f12efb3e5f25c78c98a09286650e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_judge7\\probe.jsonl",
+    "bytes": 896377,
+    "sha256": "a6911890e6c765efdd119bb9a2f543a75291f9d805ac3857a3ff35432fefecfb"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_judge7\\process.log",
+    "bytes": 147,
+    "sha256": "9887bace732c881df3d0759ce0fd5ce13ccfc234cc0285d6777650b56cde4cea"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s1\\job.json",
+    "bytes": 415,
+    "sha256": "72fb28366e8d0683d698dc1d187a287ce6064a0a7c8a6e074b3bf1ef2479c200"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s1\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "464c1460cb4e5a2a82600029f7080ee2b47737ad2d00defa1c736a61204ac42d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s1\\probe.jsonl",
+    "bytes": 907529,
+    "sha256": "ff45e6adae3f06f0ad51797a0612861310e78456bde9822ea11e64b77caa258e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s1\\process.log",
+    "bytes": 143,
+    "sha256": "ca23a1ab99cb24057cefac566e790e488425af964925c42ee285545f5d6a057f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s2\\job.json",
+    "bytes": 415,
+    "sha256": "e7538660febe7a1801c5cd5aef96489a417ad3cebdf4e8798350a253952a026e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s2\\probe.complete.json",
+    "bytes": 3444,
+    "sha256": "a6a3d81c399a9fcd89c7cae2e60709058ae42c21b1c5a0fa7ea0b7a732589a3e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s2\\probe.jsonl",
+    "bytes": 904336,
+    "sha256": "1e161feaf7278bd61c7dc7d55c19e225b364b4227e39918f2312f0696b5b0552"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s2\\process.log",
+    "bytes": 143,
+    "sha256": "9ba292778b0aa25bf57e12e387ac1cd54188f56150f78f19ab61869858246fb0"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s3\\job.json",
+    "bytes": 415,
+    "sha256": "09716f1de52ef505ebf309151427c53e5ebd86087769859e5560b2f78b94f8da"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s3\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "9e00595a5c8a026d82f6103ea29f8b7b29da97595996683682f39d01966e927c"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s3\\probe.jsonl",
+    "bytes": 890861,
+    "sha256": "9e7e310311b37b461b97eee754a19ad2876267eeecc91c9a9431957cc18d1e04"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\drop30_s3\\process.log",
+    "bytes": 143,
+    "sha256": "347da631fd76e6314b2dc6ad4ea0558b185fd6c9e8cc4b812aa50d4dc4ac5d74"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\hz5\\job.json",
+    "bytes": 408,
+    "sha256": "72e70041d75b8b23875eead22e6dfb7152e29c8bb602d7ac218b55cb800291ed"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\hz5\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "052d60b41c143a185ec2ebbb6dc4780dac5e60584d05c732baa6d73dc9c03b9d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\hz5\\probe.jsonl",
+    "bytes": 467432,
+    "sha256": "36f9e3d205e77e72e51826f1c0441a7c9138fdfd725f0994a0c3f8516f7fb88c"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\hz5\\process.log",
+    "bytes": 137,
+    "sha256": "15b174b6d9df0bfa7f1d1fc35c0a7d0672b517f98cff918fa139ec4a10587f99"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\nominal\\job.json",
+    "bytes": 383,
+    "sha256": "eb4561293bf43c9af3bad40cf10ef845e9185c8e089c19fd35ee837f9f7a8bda"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\nominal\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "8197ddb4e951216d8ee0674ff53b9c90c8413a3506fa0624aa4d323e2fd3db9f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\nominal\\probe.jsonl",
+    "bytes": 918768,
+    "sha256": "f556dc60a15579bed9bbef3ad44848a3a323486dd866f72f9314195964e59a3e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\nominal\\process.log",
+    "bytes": 141,
+    "sha256": "390dee7cb631a75aa38205ea9163995025a914146c41c1f97d7bc2689823bc5d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\pitch_m2\\job.json",
+    "bytes": 414,
+    "sha256": "d50b1ae41e87826cc66fb4f728ecf219c1f647570bb3c13eb34c0fe5315e599c"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\pitch_m2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "d4d26df41898361981d081e0f366f6cb45b39952fb6bbc67965b03680b72f09f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\pitch_m2\\probe.jsonl",
+    "bytes": 910410,
+    "sha256": "76be328c70f09d9212fbf2ddf913e2c5c515675308fa50ebd26f469cc0e8ec5e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\pitch_m2\\process.log",
+    "bytes": 142,
+    "sha256": "35a71d7380e06a6dba0ddcc3ea994d6c9d8c094fe73d277fbf428ab202252b34"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\pitch_p2\\job.json",
+    "bytes": 413,
+    "sha256": "29e09b0c30209275558b7d043cdd7beb8b308b535d60e771ef5193aabf3d6633"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\pitch_p2\\probe.complete.json",
+    "bytes": 3444,
+    "sha256": "a7122a394805192b7bb1582fa3436e568738a889f0bea8b8a830aaec2db7d7e6"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\pitch_p2\\probe.jsonl",
+    "bytes": 910695,
+    "sha256": "0c2926b51031a5ad6d6103c040f69f0e17e054afce5ed25c6fc6a1dd7758b1b4"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\pitch_p2\\process.log",
+    "bytes": 142,
+    "sha256": "ccdee894ae4b3e5992caef6d1be97ed8b3163918d1ebd9a8077e8047ab3a20e1"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\roll_p2\\job.json",
+    "bytes": 411,
+    "sha256": "500962566ac310bd9f76c80427d9496b0c3a648dd893a255bcda83a9f9d4c355"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\roll_p2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "9f9c4dd025b63504954da7e5e4223be96a57a9ced655e2f9ceb22d2bacfb3603"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\roll_p2\\probe.jsonl",
+    "bytes": 899572,
+    "sha256": "ca997c0512c31c9c19fd95953a03f591cc33bdd2d1afe8ca7842aca72a52aa47"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\cloud_with_fake_obj\\roll_p2\\process.log",
+    "bytes": 141,
+    "sha256": "9f6e44fd52b9fbf6d81bd1dfe9ac0be6671858aa9a731b5a7024149c86ff1a30"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\dedup\\job.json",
+    "bytes": 394,
+    "sha256": "74367b61dadfa1de72f99e7d92b1e82032dc1514790814ed56977ac421b58cca"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\dedup\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "d8842320c432dfb30a82368e649285ddc4f3cf881e6f11f1f0676baf52a2d0ce"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\dedup\\probe.jsonl",
+    "bytes": 152730,
+    "sha256": "0a2dbbf80f9f286d8cb07f079643027145834952a94aaf3edf743ace924f1928"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\dedup\\process.log",
+    "bytes": 136,
+    "sha256": "703a59810a698f37008ba12ce4b371bb9306f244038c9d20426bdbf9bce74fd2"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_judge7\\job.json",
+    "bytes": 413,
+    "sha256": "b1bc2b12ef0deb84cb70ae01852dc98ce68f4ddc831c193d6ea07edba00be212"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_judge7\\probe.complete.json",
+    "bytes": 3458,
+    "sha256": "0d20c1183e161215dae4044698539d06eeea255191fa1a2ea29d524bf6672e5c"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_judge7\\probe.jsonl",
+    "bytes": 135021,
+    "sha256": "7d4704c8195a3f517e34e3f0bb0c0cf9f0faba95e797e9ca5ae894590113d191"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_judge7\\process.log",
+    "bytes": 144,
+    "sha256": "64f9b7011c62ff13e46b46f7142ccc2e52de921cb38dc9a185a98542532b1aae"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s1\\job.json",
+    "bytes": 409,
+    "sha256": "6ef5e1e4cf6db13b49d609f7a2909ce9f9dbcb382694fa57a69b14ccb8273619"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s1\\probe.complete.json",
+    "bytes": 3458,
+    "sha256": "73ad255ed587a3db64b5147d17a6ba5b6427052cd26ec261f9d59307be23e128"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s1\\probe.jsonl",
+    "bytes": 137870,
+    "sha256": "8a79f98abae840517ade6c8365cfb46ae64fb7e6944f2b882c673039d2ee98d3"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s1\\process.log",
+    "bytes": 140,
+    "sha256": "ecde009403e54c8388ece1593668686eea2027392eb218aafee0facb44743717"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s2\\job.json",
+    "bytes": 409,
+    "sha256": "86aabd75f9aaf4a802b6a98c687dd73ed08a54462375704926d3cc35445092e3"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s2\\probe.complete.json",
+    "bytes": 3458,
+    "sha256": "7584621cb51c71eceb1dcb1b773cd543d5b0419902344fa6916798ace401eeab"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s2\\probe.jsonl",
+    "bytes": 137780,
+    "sha256": "4f1f624413677360ec433e9e1d6a4f504c6abc690c1ebefdb0e0acbf247058e6"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s2\\process.log",
+    "bytes": 140,
+    "sha256": "29e79d320a67c7fb74ba12a6b84f322586d39817a86c009af98f98d91e7f9088"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s3\\job.json",
+    "bytes": 409,
+    "sha256": "c816893ce6e4b3977a4d0e287ea367b4bbc036ccecd4d8bf948ccaf6a752e02a"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s3\\probe.complete.json",
+    "bytes": 3446,
+    "sha256": "2701fd7eb62ff310f256b5785e3ed8f1da030f25e11335a184c57646621a481f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s3\\probe.jsonl",
+    "bytes": 141678,
+    "sha256": "6321957ebc26ac670bf08444bb115c4720016a6a54b9373c5858b7131c21c173"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\drop30_s3\\process.log",
+    "bytes": 140,
+    "sha256": "d198bf3bd21537c67ef40a68e1942dbb1efa6562324cf113d8299c3d79e59817"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\hz5\\job.json",
+    "bytes": 402,
+    "sha256": "409d8a05f294fbb6f4bcc93bc6c384cebb12cc2bcb0f43d5691d145ffedef3c2"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\hz5\\probe.complete.json",
+    "bytes": 3456,
+    "sha256": "fe3eb78408abb86740ebb4cdc565be84cc9e623fd94abe6fa65067201557a64e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\hz5\\probe.jsonl",
+    "bytes": 70050,
+    "sha256": "b5b6102dc32bfb0c42a6f81b469d421c62e75d0b0e94c839f55ecdba80f0e1d4"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\hz5\\process.log",
+    "bytes": 134,
+    "sha256": "4a7896a4515afe9e3b7091ec31288f16d7c2ee8b1b4c5c838a302081d71a529a"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\nominal\\job.json",
+    "bytes": 377,
+    "sha256": "8d5ebca5235242f4a7dc3f0fe68fdf058c2affeb8588da08647299859aa49d86"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\nominal\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "f7ea92e334c7b34b18130a15590e40cd485801c138ddd863084d59d58ec0a932"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\nominal\\probe.jsonl",
+    "bytes": 141181,
+    "sha256": "a481776a48899ade5437ee58e7aada0922c1b748f8b739ed0ebb1f5dce2567fe"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\nominal\\process.log",
+    "bytes": 138,
+    "sha256": "e4d250ac9219946ea39dd46bb5698c44a87c3dec1cd95a317df9c217102a12b4"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\pitch_m2\\job.json",
+    "bytes": 408,
+    "sha256": "d22353e6e0894d36420eecb36109385d87e0c941d645f246969928bfabe83a90"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\pitch_m2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "9b343d6ffbc069e4e156c93d0bb6704a3d270a24619244194563d02aeb24e661"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\pitch_m2\\probe.jsonl",
+    "bytes": 147930,
+    "sha256": "f16eb6815453c341dbf50db2284a5a4f4b6716fc2cb4298ac7b12c18a17c6859"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\pitch_m2\\process.log",
+    "bytes": 139,
+    "sha256": "d71c6bcd40e82f92ff08d24cfcfa8d068c28470c3c74fccf2c1c2f68f6672492"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\pitch_p2\\job.json",
+    "bytes": 407,
+    "sha256": "bf617a33ba587f9b06cf157bd87dccf812e3b84a9865916e1ef2a5a6eff999d3"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\pitch_p2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "f56a97ba444c4e40a2b8c2357ac6566b9e6049c2fc2f9f1ce34acf7a122ef0f5"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\pitch_p2\\probe.jsonl",
+    "bytes": 157217,
+    "sha256": "51e79d40db90d2853a28ddfb03ee5e7067ce59770b3e937a47dcb143466f7f2a"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\pitch_p2\\process.log",
+    "bytes": 139,
+    "sha256": "51fa4a9c6cf930887d46459cac8f91700170abb114738254c7bb76e30f5b40ef"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\roll_p2\\job.json",
+    "bytes": 405,
+    "sha256": "fd73ca5a878b51174595e6ea4f8d92f89ef25c0b5d5cd56fd2406cc527ff8876"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\roll_p2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "b0e9cd528fca3589554bb26e072f42e1b61097e11e75b6e483f4fda3498d7c6f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\roll_p2\\probe.jsonl",
+    "bytes": 146424,
+    "sha256": "d6c2cd41f4d9e47c2b109d61bb3e68da413d00a451197cc83912ca693cae8c7f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\doubleT_obstacle\\roll_p2\\process.log",
+    "bytes": 138,
+    "sha256": "97c68149120809616b0d973d5281c8958e92fc4f23620fe0e5710d25e0517c29"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\dedup\\job.json",
+    "bytes": 432,
+    "sha256": "802eff888a667e30bd950814352b6e2a5f12915ba15c61696188a0a30c3aee7f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\dedup\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "8e42d38aab60377859874103e752219eb2069e1deda6e8bec95f476ac6da16db"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\dedup\\probe.jsonl",
+    "bytes": 307918,
+    "sha256": "af6cb192e3a1d2c1797401c42828b970eb4519298bbac4dc2930261383621585"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\dedup\\process.log",
+    "bytes": 184,
+    "sha256": "1871aadcb8db3f7dfc20dd3d54158309bb41002fc52facf199bb01dacd634218"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_judge7\\job.json",
+    "bytes": 451,
+    "sha256": "5ba477fb5a30e6c51bf7ebc380e669d7504d94f73e250737e02a6b3f47aea543"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_judge7\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "42377cb2813196e55f766e0826bd388624fc62dd04d593b6476867c623ff82b6"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_judge7\\probe.jsonl",
+    "bytes": 300603,
+    "sha256": "e9d9b92aa43b5456b0bbb55f7a4f4f921ae367a7a7bc817d1a5840103edc0079"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_judge7\\process.log",
+    "bytes": 192,
+    "sha256": "aedec462b4431b490ef05459314aab2df7fc4e743ca927ac0392acc2b7904548"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s1\\job.json",
+    "bytes": 447,
+    "sha256": "27740bb000113cc434b80a065265632f75d5b058a8b198f4cda1dc33974723c6"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s1\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "4e434f7ce3abd788afac62f70a6483a5ff3295ef514617f8f85e3d7c271c384a"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s1\\probe.jsonl",
+    "bytes": 301522,
+    "sha256": "0789b93fedb9b84789a7c2f5c4b598611e7c30171dc55356694fec15d698083a"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s1\\process.log",
+    "bytes": 188,
+    "sha256": "939c871623e27185cc58892c76ea83924c8856506710a713c888b2417847532c"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s2\\job.json",
+    "bytes": 447,
+    "sha256": "219d7911ef0cad6c52f658b7b49a8109aee02f3abca0ae48b112895d4505d63d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s2\\probe.complete.json",
+    "bytes": 3458,
+    "sha256": "dd2da908e9c1ad7f26b4e70e93f4598cf45ecb5fa9f4d55ff283e7e27162595c"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s2\\probe.jsonl",
+    "bytes": 295667,
+    "sha256": "2948c661a0009b721071ce53d5beccc36258f3ba936512f2babf5d1e5197dae8"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s2\\process.log",
+    "bytes": 188,
+    "sha256": "991bb4d1306fac70a4f0ccdea6834b8602d7dbd72907177fbc2d31692d7fb39e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s3\\job.json",
+    "bytes": 447,
+    "sha256": "54220acc6bb54b948b2bce66ed971fba79973d81aafc23b6cf8c8b4028bdef97"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s3\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "585b1b0c5f25b5020a4dfa514c0eed99d8a7aadafa46a8afbb0f3dfbd094c932"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s3\\probe.jsonl",
+    "bytes": 302404,
+    "sha256": "bbd4a646ed0869dc50563ee23061b2ca7225e778e465d6fa0297321e79775e90"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\drop30_s3\\process.log",
+    "bytes": 188,
+    "sha256": "6c3eb13dbc2d612b173b9897bec1e3ec0a21ef91994248349e52a5664050b0ad"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\hz5\\job.json",
+    "bytes": 440,
+    "sha256": "295f7bead833bda72d1ab8d4a35e61325f2c1f1d6acbe7cbc57d1faccb973a61"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\hz5\\probe.complete.json",
+    "bytes": 3458,
+    "sha256": "226d31a9dd56fa6c534cf8af63561940d1a2a1f6df92b1e0730bd73a0d6e8a75"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\hz5\\probe.jsonl",
+    "bytes": 164246,
+    "sha256": "ecaed3be8063e90d4dfa890e6b64bb95ea66e09d405764420e1671cd5c8dd601"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\hz5\\process.log",
+    "bytes": 182,
+    "sha256": "0a3a844047ae36c11eb71622bba1319aebd00ad4389d7e41e2451b799eec9849"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\nominal\\job.json",
+    "bytes": 415,
+    "sha256": "a0dbc75d1568b159e529feaf03a6f54e466d704566841b3cae8dbef2c4b59f5f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\nominal\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "bce89c3a36d9557005f7d5baec5d5796d5f5a427611377298b780181ff6349fc"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\nominal\\probe.jsonl",
+    "bytes": 314894,
+    "sha256": "5b03072a079939a0a8cef760c9fe308a3dea3b133fd4a55e0ad5904098b19953"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\nominal\\process.log",
+    "bytes": 186,
+    "sha256": "29d4264a5a5034974450c49689f9322b420ea4fa633d6be1a01edae4146708e5"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\pitch_m2\\job.json",
+    "bytes": 446,
+    "sha256": "653919c992edf22043378d907fa9c4fb8ecfea67f65cf314b32e131cf6f6d66b"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\pitch_m2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "e578ed538d64a074406b6eefee8488f075a2d51417d449165136068b15476964"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\pitch_m2\\probe.jsonl",
+    "bytes": 310631,
+    "sha256": "cf593dc50844d8c5a6907ac9a0924fddc06365ea83b25568baaa3a6a6aa36450"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\pitch_m2\\process.log",
+    "bytes": 187,
+    "sha256": "efa924c4f2dd625f75dc4c7e1009f419d08e02e1c56f8d7d59ed774e2cc3d3b1"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\pitch_p2\\job.json",
+    "bytes": 445,
+    "sha256": "f3d5d11994ba9607b11e6aac1f22a9030164502a5d27a61b8565fd49a7ae7d30"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\pitch_p2\\probe.complete.json",
+    "bytes": 3446,
+    "sha256": "dfb42383a4770dc5373092de990983c4e3f2c845363354a3477f1ffb26cf84d5"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\pitch_p2\\probe.jsonl",
+    "bytes": 314265,
+    "sha256": "21bcef62a9e98a92b3de5ea1bc65e446630a7c62c0209ec9fd541cb5c6f7f5da"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\pitch_p2\\process.log",
+    "bytes": 187,
+    "sha256": "ce46911ffd765a17614b608d61ee32ed05ad029a0f72293623c353a180d3c730"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\roll_p2\\job.json",
+    "bytes": 443,
+    "sha256": "9de1764e6aacf7916b0129cf05be03de4fdd9a449cfa70be7bcbf0831f9328cb"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\roll_p2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "f2316a26b301e4dc0ecfd92ad21083a9401f4963e92a8a2f8a2735d642ffc54f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\roll_p2\\probe.jsonl",
+    "bytes": 307246,
+    "sha256": "ffc4257598bedab157155737afab90cbe441329068ae2cd1dc02fbb174c26b12"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\roundT_squareT_pressureGate_squareT\\roll_p2\\process.log",
+    "bytes": 186,
+    "sha256": "cf1ff4e9e220a6cd925caf41544fac7eb7cfcb309d490e340adc2eb6838a0371"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\dedup\\job.json",
+    "bytes": 424,
+    "sha256": "7b94dbbe48a6523d46bfce736427f799cf2eaf7b33433c91cbacb3500b0b93d1"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\dedup\\probe.complete.json",
+    "bytes": 3458,
+    "sha256": "9796ede2d0142fb1e70c995398542003ea134f9d72e95b4991811cf4b9791d0d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\dedup\\probe.jsonl",
+    "bytes": 455350,
+    "sha256": "d0489f3b8a495ae8d868080a72dd7651b3c677912c41c5cefdae06be0f6070d6"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\dedup\\process.log",
+    "bytes": 151,
+    "sha256": "f6c1848cbf545ffaaa3fbf9341eaea9ae4d8dd2a3dc2af76755845ea0f13ecbd"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_judge7\\job.json",
+    "bytes": 443,
+    "sha256": "0588282b13867cd2e9ebd652415fa73c032ecde4ae39b42ce06f8c042527d2c5"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_judge7\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "86b88f2a6d6a1224cd1888002e35875eb0fd24a7c9dff0249ed03db493ae3c2b"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_judge7\\probe.jsonl",
+    "bytes": 562426,
+    "sha256": "43b66f2506bffc6f4f5eb1eebf17d7a8cf46dcefb062c195148adfd42d3b8c64"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_judge7\\process.log",
+    "bytes": 159,
+    "sha256": "fb2a20d76640f6dbbea60aeb7a9957cc7e320392c360d37e370b2d8d9681aaf1"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s1\\job.json",
+    "bytes": 439,
+    "sha256": "469f5a9e363a1faf063cd1daeb1247e6a30023b044eb4bbb7449c7e24d27f1fd"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s1\\probe.complete.json",
+    "bytes": 3446,
+    "sha256": "da0444dcc66d60e70cc5a5722bb7858892a7c7c1a60f8c429613a92d0a7478b9"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s1\\probe.jsonl",
+    "bytes": 580440,
+    "sha256": "fbbbfe6f445054e14d21af5305f12bc033739ad277b2e7f87078b5692e626f75"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s1\\process.log",
+    "bytes": 155,
+    "sha256": "700099e3b1c93decc587b3f91e58d2b863a480b4693d7759c85c9322a1145996"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s2\\job.json",
+    "bytes": 439,
+    "sha256": "928389301faec78c975ae73423b9305e69e3c24ba95e1b648a1f8db378007f71"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "a4a376871a46567d6f1f8bbc16edca5503f54b1b99dcb2586851ec9bf434ef6f"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s2\\probe.jsonl",
+    "bytes": 586549,
+    "sha256": "82a4d55a8473afbdfd9d593f3c7e48bf1b5a912c92b649fc4e588bf40ce2e78a"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s2\\process.log",
+    "bytes": 155,
+    "sha256": "bd5357ca6c94a908a3462b063927ed91e45312ebacf26be2b0aa591b04f9468d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s3\\job.json",
+    "bytes": 439,
+    "sha256": "5c47adabc43dbafe202a5e9bbc03846bd2c6bfb348f2663270c0da63af61632d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s3\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "f55867abf2997a6c425b3e8d23e0b0359a646daa58cf0db6b3ea8e062a437d68"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s3\\probe.jsonl",
+    "bytes": 574493,
+    "sha256": "010b91e61f399b75e0665494d19dabf32b598df9fd2ed45704ad571914ed4d66"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\drop30_s3\\process.log",
+    "bytes": 155,
+    "sha256": "4b3804f4367d3400af988bb83c32f64337661154be8ecc71e60e6836eeb2eeb7"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\hz5\\job.json",
+    "bytes": 432,
+    "sha256": "e86bba92cc40f55d1ebaadb4d95fb57a1850160b6ecd7914fbb3db0607e78197"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\hz5\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "023ac3da4959b72bd2903340f618effc7ef136d7cd5d50e2826964668494dfde"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\hz5\\probe.jsonl",
+    "bytes": 317928,
+    "sha256": "470cb1685aef2bb9d39746a1a28154908b03c2d8a150b5f53e9f1493c7d5606d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\hz5\\process.log",
+    "bytes": 149,
+    "sha256": "5181bdb2b2c31542000cd735c736433998fdf44d9534068fae10064a7587cce1"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\nominal\\job.json",
+    "bytes": 407,
+    "sha256": "a2468598c14cbeae87833b1520acd1e6f8456b8bbd3924b934df27807fad17c3"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\nominal\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "9b4b64c7a5fe6f63c29adf3fc18dcc5f8379959a0e3951e40e22006992d53846"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\nominal\\probe.jsonl",
+    "bytes": 633870,
+    "sha256": "756db528813450e9cfb38048e78c2c19303ae029c37622a5cfe0241b62a61f86"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\nominal\\process.log",
+    "bytes": 153,
+    "sha256": "f86cb5b1d5e0ab39e88e29d45d98a63fa8e0cb5bbe7358ce167966a2b64e583e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\pitch_m2\\job.json",
+    "bytes": 438,
+    "sha256": "44a096e6799e078f746fc843c3ff30143372c874861e62db7aac9ed34097cc96"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\pitch_m2\\probe.complete.json",
+    "bytes": 3444,
+    "sha256": "0e226425865f8bc514508e12fae3ef0536f8d077b13a97e4fdf3b0709bf8c255"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\pitch_m2\\probe.jsonl",
+    "bytes": 588073,
+    "sha256": "c0462a0c6f6c957ae69988e77a3ef0a501cad449825747e16993192092c04439"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\pitch_m2\\process.log",
+    "bytes": 154,
+    "sha256": "8c93f7b5be27b527e6df9efe093cc099dcb193f3f3c4a0324ab5cf27a7a63b84"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\pitch_p2\\job.json",
+    "bytes": 437,
+    "sha256": "5264a17619f4feb36a8d22d52038819a758483b9fc29559321ca0788d89db7e2"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\pitch_p2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "49b5e07756e8962a122256de1ae2b4df7b5b35d3df49ea6048c8e80c3b5949bb"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\pitch_p2\\probe.jsonl",
+    "bytes": 586360,
+    "sha256": "e8e17246013ee0915c43eab4055acf3912b14cac550e79bcb6066ce1b787f88a"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\pitch_p2\\process.log",
+    "bytes": 154,
+    "sha256": "677746a0d5475412fd61d033b0dc452fdee3381cd1372f2de2ef34f20143a2dd"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\roll_p2\\job.json",
+    "bytes": 435,
+    "sha256": "ad7673328613f79fe150487a86ffee54c280878c239113fa923865855b64a9d1"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\roll_p2\\probe.complete.json",
+    "bytes": 3457,
+    "sha256": "a7cf603bf5e6ad437a9e8f98ec0d570171570af9b19790b6cd3a47b35e429bea"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\roll_p2\\probe.jsonl",
+    "bytes": 640534,
+    "sha256": "5127e71681fd4f80a7e3808060788a1e51dacf9c63a1be48cf4e6be575785176"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\battery_707ea9c.raw\\squareT_platform_squareT_switch\\roll_p2\\process.log",
+    "bytes": 153,
+    "sha256": "0a54ba84a00dbdef6e9e7f93cfbde29377d9c820c78bf54bfcfe964149764611"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\build_cloud_with_fake_obj.log",
+    "bytes": 143,
+    "sha256": "0e0c682eef5af491aafe3046b629a5d72bc90390fdce237794897d3d9197ab5c"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\commands.json",
+    "bytes": 5319,
+    "sha256": "0d38a491a2fb9c358c7f25c224ba3caea79b0b473e6b5f7bcf66f9dcd7ea77b0"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\freeze_verify.log",
+    "bytes": 2095,
+    "sha256": "b03dce3c3fa2fe862d2fc2d2744e397e90b75db3cbc29263bc6366365b82e109"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_707ea9c.json",
+    "bytes": 21073,
+    "sha256": "61b374c5bae75200cd920f5ee7d9064f1e1cc0e5a143f46fcd3c143c1c8fa685"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_707ea9c.log",
+    "bytes": 26438,
+    "sha256": "8d58505c94205dbc0d4f5d55ed1cfae726531e15ad94cbd5a691a276bf2e1967"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_strict_comparison.json",
+    "bytes": 46471,
+    "sha256": "e3f53289d1c6c1a61a4e43dedcd7480d217749c21e18419e551cd7e2baba6d45"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\cloud_with_fake_obj.jsonl",
+    "bytes": 2687375,
+    "sha256": "4698cc3575c7ee0a1881e9dfc80b82b029e1d739520c1aeea7b63b2ffbc9a2f3"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\config.yaml",
+    "bytes": 9306,
+    "sha256": "cd9fdedc5e023be6e0f643907ac379fbbcd8e828ae62cc60d0fd539a8ab8f215"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\doubleT_obstacle.jsonl",
+    "bytes": 405995,
+    "sha256": "905737cdb90e81753575139a6cf7f55c86b919bf22ccf48abde65720bf38d194"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\doubleT_platform.jsonl",
+    "bytes": 614082,
+    "sha256": "a402aedf6728ad9bccdec311f0898b77314bed06d1f5f4bd50254f89877cde54"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\new_data_0.jsonl",
+    "bytes": 2486173,
+    "sha256": "a3d50e3dd7d42703130506d60ba8b250c35292f3bd78ffd9dd2809bff7ab4c8d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\new_data_1.jsonl",
+    "bytes": 2755923,
+    "sha256": "6bf5b828396d8643e98f68ad57dbb9ee28ad15f653f1cc040ff306df2ea0adb5"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\new_data_2.jsonl",
+    "bytes": 2546123,
+    "sha256": "e4c0e4a67e92a59e3f52eca5e178323b130275d5992ea9198390bf937c8925b9"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\new_data_3.jsonl",
+    "bytes": 2617671,
+    "sha256": "aa19fa2b29cf6e950adb81d7dbc9504f37666a6e6e9b00fcc0a8f69aae7c2b5e"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\new_data_4.jsonl",
+    "bytes": 2585924,
+    "sha256": "4b3ca31b5f65c2d4009d0063547d8b8bc8e339eb54b9ede140f367236f75efff"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\new_data_5.jsonl",
+    "bytes": 2406874,
+    "sha256": "056befcff2f9582a7bd9321b30498e9fce7f2b8415ca20f0fbd62577e8b5ab4d"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\new_data_6.jsonl",
+    "bytes": 2430329,
+    "sha256": "0a916cdc503d838cdb7eb5300c66077d2b18d69e4ecdba8fc176f9acb355df1c"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\new_data_7.jsonl",
+    "bytes": 2333092,
+    "sha256": "07285c338fb6e623c30cde532530188f5788e1df421009d6a3ba14e588fcdeae"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\roundT_doubleT.jsonl",
+    "bytes": 466371,
+    "sha256": "8eb72a31e32d84cabdd6e83baf52ad1a65e989dd7e4d5db13020363426a10f65"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\roundT_pressureGate_roundT.jsonl",
+    "bytes": 467407,
+    "sha256": "383212ddde9ca987f1fda7aedf52a5d33314eaa1361a143802a750b7d00e9d83"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\roundT_squareT_pressureGate_squareT.jsonl",
+    "bytes": 935576,
+    "sha256": "b2e5d21130a0298e6d5dfe0c0f6e12646550dea5f875688723cd68c1c92c7525"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\setF_straight.json",
+    "bytes": 1904185,
+    "sha256": "45149125fb7db5e882cbe98a8b26d218290ccc6810ec80cba9d346b61928ffa2"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\gate_work\\squareT_platform_squareT_switch.jsonl",
+    "bytes": 1673656,
+    "sha256": "cf0c77b1796c5e52e152006ea0196029bfb31b95fafd0554604486c049fc1a86"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\intake.json",
+    "bytes": 718837,
+    "sha256": "6d954f095cd9e4de9ba1b477245ba73f7447b3545ed1029255c802e57a139ff4"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\intake.log",
+    "bytes": 995,
+    "sha256": "1c35f402086f70699df4861f319a1be431634007680aad84c431deb3ad6171bd"
+  },
+  {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p4-runs-2026-10-15\\provenance.json",
+    "bytes": 3337,
+    "sha256": "ecccb2787e7d0d5905f61ff97cf6e99d1f5b9aae17ccb0c73773e4e2c090e7c5"
+  }
+]
