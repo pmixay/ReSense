@@ -107,21 +107,42 @@ def verify_bags(folder, expected):
     return {"verified": True, "inventory_digest": inventory_digest(actual), "bags": identity(actual)}
 
 
-def container_job(docker, image, root, volume, mode, run_id, source=None, *, host_api):
+def prefetch_bag(folder, expected, bag):
+    """Read one whole verified bag into the guest page cache without writing data."""
+    started = time.monotonic()
+    if bag not in expected:
+        raise ValueError("Prefetch bag is absent from the verified original inventory")
+    read_bytes = 0
+    for name, info in [("metadata.yaml", {"sha256": expected[bag]["metadata_sha256"]}),
+                       *[(f["name"], f) for f in expected[bag]["files"]]]:
+        path = folder / bag / name
+        if file_sha256(path) != info["sha256"] or ("bytes" in info and path.stat().st_size != info["bytes"]):
+            raise ValueError("Prefetch full-file identity differs")
+        read_bytes += path.stat().st_size
+    return {"prefetched": True, "read_only": True, "bag": bag, "read_bytes": read_bytes,
+            "wall_s": time.monotonic() - started, "inventory_digest": inventory_digest(expected)}
+
+
+def container_job(docker, image, root, volume, mode, run_id, source=None, *, host_api, bag=None, memory="512m"):
     """Bounded, networkless copy/verification; verification mount is always read-only."""
     s1 = host_api
 
     name = "rs-s1-volume-" + mode + "-" + uuid.uuid4().hex[:12]
-    args = ["run", "-d", "--name", name, "--network", "none", "--cpus", "4", "--memory", "512m",
+    read_only = mode != "copy"
+    args = ["run", "-d", "--name", name, "--network", "none", "--cpus", "4", "--memory", memory,
+            "--memory-swap", memory,
             "--label", f"resense.startup.run={run_id}", "--entrypoint", "python3", "--mount",
             f"type=bind,src={root},dst=/job,readonly", "--mount",
-            f"type=volume,src={volume},dst=/data,volume-nocopy" + (",readonly" if mode == "verify" else "")]
+            f"type=volume,src={volume},dst=/data,volume-nocopy" + (",readonly" if read_only else "")]
     if source is not None:
         args += ["--mount", f"type=bind,src={source},dst=/source,readonly"]
     args += [image, "/job/bags_volume.py", mode, "--expected", "/job/volume_expected.json", "--data", "/data"]
     if source is not None:
         args += ["--source", "/source"]
-    receipt = {"name": name, "mode": mode, "volume": volume, "read_only": mode == "verify"}
+    if bag:
+        args += ["--bag", bag]
+    receipt = {"name": name, "mode": mode, "volume": volume, "read_only": read_only,
+               "memory_limit": memory, "swap": "disabled", "cpus": 4}
     try:
         docker.call(*args, timeout=45)
         s1.wait_until(lambda: not docker.state(name)["State"]["Running"], 1800, f"Volume {mode} timeout")
@@ -186,7 +207,7 @@ def stage(args):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("mode", choices=("stage", "copy", "verify"))
+    ap.add_argument("mode", choices=("stage", "copy", "verify", "prefetch"))
     ap.add_argument("--image")
     ap.add_argument("--volume")
     ap.add_argument("--bags")
@@ -195,6 +216,7 @@ def main():
     ap.add_argument("--expected", type=Path)
     ap.add_argument("--data", type=Path)
     ap.add_argument("--source", type=Path)
+    ap.add_argument("--bag")
     a = ap.parse_args()
     if a.mode == "stage":
         if not all((a.image, a.volume, a.bags, a.out)):
@@ -202,7 +224,12 @@ def main():
         stage(a)
     else:
         expected = json.loads(a.expected.read_text(encoding="utf-8"))
-        result = copy_bags(a.source, a.data, expected) if a.mode == "copy" else verify_bags(a.data.resolve(), expected)
+        if a.mode == "copy":
+            result = copy_bags(a.source, a.data, expected)
+        elif a.mode == "prefetch":
+            result = prefetch_bag(a.data.resolve(), expected, a.bag)
+        else:
+            result = verify_bags(a.data.resolve(), expected)
         print(json.dumps(result, allow_nan=False))
 
 

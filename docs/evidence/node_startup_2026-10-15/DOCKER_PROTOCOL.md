@@ -433,3 +433,43 @@ Pre-measurement verification: **109 parser/launcher/volume/publication tests pas
 5.94 s**, no skips; Ruff passes. New cases exercise full-byte preservation, corrupt or
 partial volume rejection, exact topics/header stamps/counts, no non-data markers, native
 read-only mount arguments, missing-volume refusal, and saved provenance/mount tampering.
+
+### Preserved first volume diagnostic and explicit cache-policy follow-up
+
+The first diagnostic on source `9247354`, image `resense:p1-s1-volume-9247354-20261016`
+(Docker ID `df8013ef6f87ec60ac32e5207e804283731336603edc4b385de7fa6656e9be24`), is
+preserved as `attempt06_linux_volume_diagnostic`. Data verification matched the original
+Windows manifest exactly. The diagnostic subset correctly reports no acceptance PASS:
+
+| README condition | Player wall s | Starvation warnings | Fresh / original frames | I/O gate |
+|---|---:|---:|---:|---|
+| obstacle | 55.914 | 38 | 170/201 | not met (duration + 13 s) |
+| clear | 29.751 | 0 | 236/252 | met |
+
+The obstacle's initial read/delivery stalls mean the registered near-real-time gate has
+not yet been met; no full matrix is inferred from these results. Clear also had one extra
+decision message in the unchanged listener stream; strict completeness remains false.
+Neither observation is suppressed or reclassified to manufacture a PASS.
+
+The user permits I/O-environment improvement. One further explicitly labelled **warm-cache**
+storage diagnostic is therefore preregistered: `--bags-prefetch` performs a full-file SHA-256
+read of the selected bag **immediately before each playback**, after node/listener readiness.
+It runs in a temporary networkless, read-only volume container with the same 6 GiB bound
+and no swap; that helper is removed before the player starts. It reads only original data,
+compares the full hashes again, and creates no files in the data volume. Its exact receipt,
+mount, bag, inventory digest, byte count and duration are retained and checked on reanalysis.
+This is page-cache warming, not a RAM-disk copy, data rewrite, ROS argument or node change.
+
+The full-volume verification remains mandatory before any replay. The warm-cache helper
+does not enter the node-container memory gate, and its duration is separately recorded,
+not hidden inside the player wall time. CPU means over the whole node lifetime include
+this extra idle/setup interval. Reports must name the cache policy explicitly.
+
+Use a new source-labelled runtime image rebuilt from the current committed harness HEAD
+(runtime node/launch/policy/core still identical to `9247354`), and a fresh
+`attempt06b_linux_volume_warm_diagnostic` for both README conditions ×1. The same I/O gate
+(bag duration + 13 s) and all existing S1 numeric bounds remain unchanged. If both bags are
+near real time, run the complete four-condition ×3 `attempt07_linux_volume_warm_matrix`
+with `--bags-volume ... --bags-prefetch`, including this same prefetch for every repetition.
+If I/O remains unresolved, retain/report the diagnostic and do not claim a completed
+registered matrix. No further environment or numerical tuning is planned in this lane.

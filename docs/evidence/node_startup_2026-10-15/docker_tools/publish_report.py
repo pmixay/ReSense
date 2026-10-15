@@ -70,6 +70,8 @@ def publish(raw, attempts, out, stage=None):
         receipts[label] = receipt
         play_log = Path(str(base) + ".player.log").read_text(encoding="utf-8")
         observations.append({"label": label, "play_wall_s": receipt["t_end"] - receipt["t_play"],
+                             "prefetch_wall_s": receipt.get("prefetch", {}).get("result", {}).get("wall_s"),
+                             "prefetch_read_bytes": receipt.get("prefetch", {}).get("result", {}).get("read_bytes"),
                              "player_queue_starvation_warnings": play_log.count("Message queue starved"),
                              "strict_errors": run["metrics"]["errors"]})
 
@@ -183,6 +185,9 @@ def publish(raw, attempts, out, stage=None):
             "Native Linux Docker volume, mounted read-only, with full database/metadata hashes and original cloud inventories verified before any replay. "
             f"Inventory digest: `{storage['inventory_digest']}`." if storage["kind"] == "docker_volume" else
             "Windows host bind mount, read-only."),
+        "- Cache policy: " + ("explicit read-only full-bag hash prefetch immediately before every playback; "
+                              "warm-cache measurements, with separate prefetch receipts/times."
+                              if storage.get("prefetch") else "no explicit per-bag prefetch; filesystem cache state uncontrolled."),
         f"- Final raw root: `{raw}`.",
         "- Exact judge listener/analyzer copies are retained; separate strict host analysis supplies the unrounded gate values.", "",
         "## Median acceptance checks", "",
@@ -273,6 +278,7 @@ def publish(raw, attempts, out, stage=None):
                   "--image", image["reference"], "--detector-commit", image["detector_commit"], "--bags",
                   "'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/for_hackathon'",
                   *( ["--bags-volume", storage["source"]] if storage["kind"] == "docker_volume" else []),
+                  *(["--bags-prefetch"] if storage.get("prefetch") else []),
                   "--repeats 3 --cpus 4 --memory 6g --player-timeout 600"]),
               f"& $python scripts/startup_acceptance.py --analyze '{raw}'",
               "& $python -m pytest -q tests/test_startup_acceptance.py",

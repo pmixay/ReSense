@@ -232,6 +232,18 @@ def verify_volume(docker, root, image, name, inventories, run_id):
     return storage
 
 
+def validate_prefetch_receipt(receipt, storage, bag):
+    result = receipt.get("result", {})
+    mounts = [m for m in receipt.get("mounts", []) if m.get("Destination") == "/data"]
+    if (result.get("prefetched") is not True or result.get("bag") != bag or result.get("read_only") is not True or
+            result.get("inventory_digest") != storage["inventory_digest"] or receipt.get("read_only") is not True or
+            receipt.get("cleanup_ok") is not True or receipt.get("state", {}).get("ExitCode") != 0 or
+            receipt.get("state", {}).get("OOMKilled") is not False or len(mounts) != 1 or
+            mounts[0].get("Type") != "volume" or mounts[0].get("Name") != storage["source"] or
+            mounts[0].get("RW") is not False):
+        raise ValueError("Read-only per-bag prefetch incomplete or mismatched")
+
+
 def summarize_run(rows, meta, samples, inventory):
     """Strict, unrounded S1 analysis of the unchanged judge listener's schema.
 
@@ -639,6 +651,18 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
         wait_until(listener_ready, args.ready_timeout, "listener not ready")
         meta["listener_ready"] = True
         time.sleep(4)  # Original judge discovery allowance, after positive graph readiness.
+        if args.bags_prefetch:
+            job_root = root / "prefetch" / label
+            job_root.mkdir(parents=True)
+            write_json(job_root / "volume_expected.json", manifest["bags"])
+            shutil.copyfile(TOOLS / "bags_volume.py", job_root / "bags_volume.py")
+            prefetch = volume_tools().container_job(
+                docker, image["id"], job_root, args.bags_volume, "prefetch", manifest["run_id"],
+                host_api=sys.modules[__name__], bag=bag, memory=args.memory)
+            validate_prefetch_receipt(prefetch, manifest["data_storage"], bag)
+            meta["prefetch"] = {"bag": bag, "receipt": str((job_root / "prefetch.receipt.json").relative_to(root)),
+                                "sha256": sha256_file(job_root / "prefetch.receipt.json"),
+                                "result": prefetch["result"]}
         meta["t_play"] = time.time()
         start("player", ["--user", "1000:1000", "--mount", player_data_mount(args)],
               ["ros2", "bag", "play", f"/data/{bag}", *flags])
@@ -748,6 +772,12 @@ def validate_receipt(meta, manifest, image, condition, repetition, domain):
                 mounts[0].get("Type") != expected_type or mounts[0].get("RW") is not False or
                 (expected_type == "volume" and mounts[0].get("Name") != storage["source"])):
             raise ValueError("Player data mount differs from verified read-only storage provenance")
+        if storage.get("prefetch"):
+            p = meta.get("prefetch", {})
+            if (p.get("bag") != bag or p.get("result", {}).get("prefetched") is not True or
+                    p["result"].get("inventory_digest") != storage["inventory_digest"] or
+                    not p.get("sha256") or not p.get("receipt")):
+                raise ValueError("Missing/incorrect warm-cache prefetch receipt")
 
 
 def analyze_directory(root):
@@ -783,6 +813,12 @@ def analyze_directory(root):
                     meta = read_json(receipt_path if receipt_path.exists() else str(base) + ".meta")
                     validate_receipt(meta, manifest, image, condition, repetition,
                                      manifest["domain_base"] + slot)
+                    if manifest.get("data_storage", {}).get("prefetch"):
+                        p = meta["prefetch"]
+                        receipt = read_json(root / p["receipt"])
+                        validate_prefetch_receipt(receipt, manifest["data_storage"], CONDITIONS[condition][0])
+                        if sha256_file(root / p["receipt"]) != p["sha256"] or receipt["result"] != p["result"]:
+                            raise ValueError("Prefetch receipt hash/result differs")
                     original_summary = read_json(str(base) + ".summary.json")
                     if original_summary.get("label") != label:
                         raise ValueError("Missing/invalid exact judge analysis")
@@ -812,7 +848,7 @@ def analyze_directory(root):
         try:
             if storage["kind"] == "docker_volume":
                 validate_volume_storage(storage, manifest["bags"])
-                if read_json(root / "bags_volume_verification.json") != storage:
+                if read_json(root / "bags_volume_verification.json") != {k: v for k, v in storage.items() if k != "prefetch"}:
                     raise ValueError("Volume verification receipt differs from manifest")
             elif storage["kind"] != "host_bind":
                 raise ValueError("Unknown data storage kind")
@@ -839,6 +875,7 @@ def parser():
     ap.add_argument("--baseline-detector-commit")
     ap.add_argument("--bags", help="Original for_hackathon directory, mounted read-only")
     ap.add_argument("--bags-volume", help="Existing verified native Docker volume for playback; --bags remains host identity source")
+    ap.add_argument("--bags-prefetch", action="store_true", help="Explicit read-only per-bag hash prefetch for warm-cache volume playback")
     ap.add_argument("--out", type=Path, help="NEW output directory; refuses an existing path")
     ap.add_argument("--repeats", type=int, default=3)
     ap.add_argument("--cpus", type=float, default=4)
@@ -866,6 +903,8 @@ def main(argv=None):
             ap.error(f"--{name.replace('_', '-')} is required")
     if bool(args.baseline_image) != bool(args.baseline_detector_commit):
         ap.error("--baseline-image and --baseline-detector-commit must be supplied together")
+    if args.bags_prefetch and not args.bags_volume:
+        ap.error("--bags-prefetch requires --bags-volume")
     if (args.repeats < 1 or args.repeats > 3 or not finite(args.cpus) or args.cpus <= 0 or
             len(set(args.conditions)) != len(args.conditions) or
             any(not finite(t) or t <= 0 for t in (args.ready_timeout, args.player_timeout, args.drain_timeout))):
@@ -913,6 +952,8 @@ def main(argv=None):
         run_id = uuid.uuid4().hex
         storage = (verify_volume(docker, root, images[-1]["id"], args.bags_volume, inventories, run_id)
                    if args.bags_volume else {"kind": "host_bind", "source": str(Path(args.bags).resolve())})
+        if args.bags_prefetch:
+            storage["prefetch"] = True
         info = strict_json(docker.call("info", "--format", "{{json .}}").stdout)
         # Host provenance excludes registry/proxy configuration and credentials.
         info_keys = ("ServerVersion", "OperatingSystem", "OSType", "Architecture", "NCPU", "MemTotal",

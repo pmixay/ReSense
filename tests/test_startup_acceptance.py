@@ -772,3 +772,43 @@ def test_saved_volume_requires_matching_readonly_player_mount_and_verification(t
     receipt["containers"]["player"]["mounts"][0]["RW"] = True
     bad_receipt.write_text(json.dumps(receipt))
     assert not s1.analyze_directory(root)["passed"]
+
+
+def test_per_bag_prefetch_reads_exact_bytes_and_never_writes_data(original_volume_bags):
+    source, volume, expected = original_volume_bags
+    tool = s1.volume_tools()
+    tool.copy_bags(source, volume, expected)
+    before = {p.relative_to(volume).as_posix(): s1.sha256_file(p) for p in volume.rglob("*") if p.is_file()}
+    bag = "doubleT_obstacle"
+    result = tool.prefetch_bag(volume, expected, bag)
+    assert result["prefetched"] and result["bag"] == bag and result["read_only"]
+    assert result["read_bytes"] == sum(p.stat().st_size for p in (volume / bag).iterdir())
+    assert result["inventory_digest"] == tool.inventory_digest(expected)
+    assert before == {p.relative_to(volume).as_posix(): s1.sha256_file(p) for p in volume.rglob("*") if p.is_file()}
+    metadata = volume / bag / "metadata.yaml"
+    metadata.chmod(0o666)
+    metadata.write_bytes(b"wrong bytes")
+    with pytest.raises(ValueError, match="full-file identity differs"):
+        tool.prefetch_bag(volume, expected, bag)
+
+
+@pytest.mark.parametrize("changed", ["bag", "digest", "readonly", "mount", "cleanup"])
+def test_warm_cache_receipt_cannot_claim_wrong_or_writable_data(original_volume_bags, changed):
+    storage = verified_volume_storage(original_volume_bags)
+    expected = original_volume_bags[2]
+    bag = "doubleT_obstacle"
+    receipt = deepcopy(storage["verification"])
+    receipt["result"] = s1.volume_tools().prefetch_bag(original_volume_bags[1], expected, bag)
+    s1.validate_prefetch_receipt(receipt, storage, bag)
+    if changed == "bag":
+        receipt["result"]["bag"] = "roundT_doubleT"
+    elif changed == "digest":
+        receipt["result"]["inventory_digest"] = "0" * 64
+    elif changed == "readonly":
+        receipt["read_only"] = False
+    elif changed == "mount":
+        receipt["mounts"][0]["RW"] = True
+    else:
+        receipt["cleanup_ok"] = False
+    with pytest.raises(ValueError, match="prefetch incomplete or mismatched"):
+        s1.validate_prefetch_receipt(receipt, storage, bag)
