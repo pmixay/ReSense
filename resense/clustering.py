@@ -13,7 +13,7 @@ from scipy.spatial import cKDTree
 from resense import _native
 from resense.config import ClusterConfig, GaugeConfig
 from resense.gauge import gauge_reach_mask
-from resense.sensor import RING_ELEVATION_DEG, expected_points
+from resense.sensor import AZIMUTH_STEP_DEG, RING_ELEVATION_DEG, expected_points
 
 
 @dataclass
@@ -638,7 +638,8 @@ def _off_structure_parts(b: _Blob, xyz: np.ndarray, h: np.ndarray, in_gauge: np.
     far axis lags it was placed inside it. A part needs at least ``structure_cut_min_points`` voxels
     (14.10): the parts carved out of wall equipment on the empty recordings had 3-7. :func:`find_clusters`
     calls this only for a cluster the 25.09 split refused (:func:`_split_part`); a cluster without a
-    strict-gauge point is not fitted."""
+    strict-gauge point is not fitted. H2 (15.10): the part must also span one full sensor azimuth
+    step (two resolved columns); vertically stacked voxels on one ray column are not a resolved body."""
     tol = float(cfg.structure_cut_tol)
     # every part needs a strict-gauge point: a cluster without one is not fitted (on the ride 7 890 of the
     # 14 141 clusters the split refused; the cut costs 0.43 ms per ride frame)
@@ -679,6 +680,11 @@ def _off_structure_parts(b: _Blob, xyz: np.ndarray, h: np.ndarray, in_gauge: np.
         # 14.10 (structure_cut_min_points): a few voxels picked off a surface of hundreds are weak
         # evidence; wall equipment gave parts of 3-7 voxels on the empty recordings, the objects 8-42
         if part.n_vox < cfg.structure_cut_min_points:
+            continue
+        # Physical horizontal support, independent of duplicate echoes and voxel
+        # placement. A single vertical scan column can fill the voxel bar by itself.
+        azimuth = np.arctan2(part.pts[:, 1].astype(np.float64), part.pts[:, 0].astype(np.float64))
+        if float(np.ptp(azimuth)) < np.radians(AZIMUTH_STEP_DEG):
             continue
         if float(part.size[0]) <= cfg.oversize_split_max_length and float(part.size[2]) >= cfg.min_height:
             parts.append(part)
