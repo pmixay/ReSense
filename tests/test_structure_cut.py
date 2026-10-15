@@ -181,14 +181,14 @@ def test_eight_voxels_on_one_azimuth_column_are_not_a_resolved_cut_body():
 def test_resolved_cut_face_keeps_its_corridor_verdict_with_duplicate_echoes():
     """H2: a face with horizontal and vertical support retains its gauge verdict."""
     cfg = ClusterConfig()
-    wall = _straight_wall(y=2.2, x0=105.0, x1=150.0)
-    face = _face(120.0, 0.3, width=0.5, height=1.75)
+    wall = _wall()
+    face = _face(95.0, _wall_y(95.0, 0.5) - 1.6, width=0.6)
     for echoes in (1, 2):
         scene = np.concatenate([wall, np.repeat(face, echoes, axis=0)])
         for sign in (-1, 1):
             (c,) = _clusters(scene * np.array([1.0, sign, 1.0]), cfg)
             assert c.cut and c.zone == "gauge" and not c.reason
-            assert abs(c.distance - 120.0) < 0.05
+            assert abs(c.distance - 95.0) < 0.05
 
 
 def _straight_wall(y: float = 2.6, x0: float = 10.0, x1: float = 40.0):
