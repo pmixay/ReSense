@@ -167,6 +167,12 @@ def test_no_overwrite_and_worker_cap(tmp_path):
     assert out.read_text(encoding="utf-8") == "user evidence"
     with pytest.raises(SystemExit):
         battery.main(["--out", str(tmp_path / "new.json"), "-j", "3"])
+    plan = tmp_path / "job.json"
+    plan.write_text(json.dumps({"prefix": str(out.with_suffix(""))}), encoding="utf-8")
+    out.with_suffix(".jsonl").write_text("retained raw", encoding="utf-8")
+    with pytest.raises(FileExistsError):
+        battery.worker(plan)
+    assert out.with_suffix(".jsonl").read_text(encoding="utf-8") == "retained raw"
 
 
 def test_actual_judge_transforms_deterministic_aligned_and_sensor_mapped(tmp_path, monkeypatch):

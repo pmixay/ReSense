@@ -131,6 +131,8 @@ def identity(repo):
 
 def worker(job_path):
     job = read_json(job_path)
+    if any(Path(job["prefix"] + suffix).exists() for suffix in (".jsonl", ".complete.json")):
+        raise FileExistsError("worker raw output already exists")
     repo = Path(job["repo"]).resolve()
     # Script directory is scripts/, so explicitly put the selected detector first.
     sys.path.insert(0, str(repo))
