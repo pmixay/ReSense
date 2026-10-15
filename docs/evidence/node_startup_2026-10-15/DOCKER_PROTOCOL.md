@@ -340,3 +340,96 @@ outside Git. Report hashes are exact publication bytes; raw hashes retain the or
 external bytes. Candidate source stayed at `1eed357`; harness repair commit is `e110fe9`.
 Selected log excerpts normalize trailing line spaces for Git whitespace checks; their
 headers and the external raw index continue to bind the untouched full source-log bytes.
+
+## Registered Linux-volume follow-up — 2026-10-16
+
+The user authorized a storage-environment correction after the Windows-bind matrix:
+20-second obstacle recordings took 225–339 s with hundreds of player starvation warnings,
+and 25-second clear recordings took 92–98 s. Such delivery gaps are directly relevant to
+the existing 0.5-second freshness/silence policy. **The earlier matrix remains FAIL and
+incomplete, with every raw artifact and published byte retained.**
+
+The follow-up measures the current combined source (node correction `1f2dab7`, C1 packaging
+`0caf5c2`, Docker fixture commit `9173a00`, plus this harness commit). A fresh uniquely
+tagged runtime image will be built from the captured committed HEAD with the existing
+offline Dockerfile and existing E2 base. Node, launch, policy, core and Dockerfiles are
+not edited in this lane. Runtime verification now hashes node, launch, shared policy and
+ROS setup source against the declared commit. Old source images are not reused as the
+new measured candidate. Helper scripts remain external mounts.
+
+### Data copy and pre-replay verification
+
+`docker_tools/bags_volume.py stage` creates a **new uniquely named, labelled native local
+Docker volume**. It refuses existing volumes and nonempty copy destinations. The Windows
+source is mounted read-only; the only writes inside the volume are the original two bag
+directories, their `.db3` files and byte-identical `metadata.yaml` files (files made 0444).
+There are no helper/verification marker files in the data volume. Evidence lives separately
+under the external run parent. No host metadata or bag bytes are changed.
+
+The stage helper compares fresh host inventory to the earlier published Windows manifest
+with `--reference-manifest`, copies the files, then uses a separate **read-only** Docker
+mount to compare full database and metadata SHA-256, file sizes, original topics, all header
+stamps, and exact cloud counts (**201 / 252**). It rejects extra files/directories and partial
+copies. A canonical full-file inventory digest binds the volume label and stage receipt.
+
+The driver accepts `--bags-volume <existing-name>` in addition to mandatory `--bags`.
+`--bags` continues to supply the host original-file inventory; only playback changes to
+`type=volume,...,readonly,volume-nocopy`. The driver first inspects the volume (no implicit
+creation), rejects driver/bind options, and **repeats the complete read-only in-container
+hash/header/count verification before any replay in each new run directory**. A cached
+"verified" flag is insufficient for reuse. The manifest and final receipts distinguish
+`docker_volume` from `host_bind`; actual Docker inspect mount type/name/read-only flags
+are checked on reanalysis. New provenance errors cannot produce acceptance PASS.
+
+### Preregistered execution sequence and scope
+
+1. Finish this harness/protocol commit and its parser/volume tests before timed runs.
+2. Wait until the parent's full-Linux-suite guard and all other active containers have
+   finished. Check `docker ps` immediately before diagnostics and the full matrix; do not
+   stop another agent's container. Volume preparation and image build are untimed setup.
+3. Capture committed HEAD, build a unique runtime image offline, and retain build command,
+   source revision, image identity and log in the new external evidence area.
+4. Stage/verify the exact two bags in the new Linux volume, comparing the original Windows
+   publication. Reuse requires fresh full verification, never an overwrite of partial data.
+5. Run `attempt06_linux_volume_diagnostic`: README playback of both bags, one repetition
+   each, unchanged registered flags. A subset is **never acceptance PASS**. Proceed to the
+   full matrix if replay is near real time: wall time no greater than original bag duration
+   + 13 s (README delay 3 s plus 10 s CLI/startup allowance). Record starvation warnings and
+   freshness; freshness numeric success is not used to select or tune subsequent runs.
+6. If I/O is resolved, run **all four conditions × three repetitions** in a fresh
+   `attempt07_linux_volume_matrix`, default node policy, four-core per-container quotas,
+   `--memory 6g --memory-swap 6g`, one BLAS thread. **All existing S1 numeric thresholds,
+   expected frame counts, strict parser checks and frame-only/watchdog distinction remain.**
+   Finish every repetition even if numeric targets fail; make no further numeric tuning.
+7. Publish compact results in a new `docker/linux_volume_2026-10-16/` subdirectory, including
+   exact source/image identity, storage verification, per-run/median metrics, selected
+   receipts/logs, cleanup and hashes. Preserve the earlier Windows report unchanged.
+
+The runtime is still the user-selected Docker Desktop/WSL2 daemon with 12 logical CPUs,
+not an exact four-vCPU host. This is candidate-only; source revision and storage both differ
+from the Windows run, so no isolated node-improvement/storage-only causal claim is made.
+The labelled volume is retained for verified read-only reuse; only owned copy/verification/
+playback containers are removed, and unrelated resources are not changed.
+
+Example setup and diagnostic commands (substitute the actual captured HEAD, unique image,
+new volume name and new output directory; parent must already exist):
+
+```powershell
+$python = 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-venv/Scripts/python.exe'
+$bags = 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/for_hackathon'
+$parent = 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15'
+Test-Path -LiteralPath $parent
+$source = git rev-parse HEAD
+docker ps --format '{{.Names}} {{.Status}}'
+docker build --network none --pull=false --build-arg RELEASE_IMAGE=resense:p1-e2-check --label "org.opencontainers.image.revision=$source" -f docker/Dockerfile.offline -t <unique-runtime-image> .
+& $python docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py stage --image <unique-runtime-image> --volume <new-labelled-volume> --bags $bags --reference-manifest docs/evidence/node_startup_2026-10-15/docker/manifest.json --out "$parent/volume_stage06"
+docker ps --format '{{.Names}} {{.Status}}'
+& $python scripts/startup_acceptance.py --image <unique-runtime-image> --detector-commit $source --bags $bags --bags-volume <new-labelled-volume> --out "$parent/attempt06_linux_volume_diagnostic" --conditions obstacle_readme clear_readme --repeats 1 --cpus 4 --memory 6g --player-timeout 600
+# After confirming near-real-time playback, use launch_matrix.py with NEW --out,
+# --bags-volume and the same image/source; omit --conditions and use --repeats 3.
+```
+
+Pre-measurement verification: **109 parser/launcher/volume/publication tests passed in
+5.94 s**, no skips; Ruff passes. New cases exercise full-byte preservation, corrupt or
+partial volume rejection, exact topics/header stamps/counts, no non-data markers, native
+read-only mount arguments, missing-volume refusal, and saved provenance/mount tampering.

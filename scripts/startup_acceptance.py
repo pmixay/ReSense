@@ -10,6 +10,7 @@ import argparse
 from collections import Counter
 from datetime import datetime, timezone
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -42,7 +43,9 @@ DECISIONS = ("GO", "CAUTION", "STOP", "FAULT")
 THREAD_ENV = {k: "1" for k in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
                               "NUMEXPR_NUM_THREADS", "VECLIB_MAXIMUM_THREADS")}
 SOURCE_PATHS = ("ros2_ws/src/resense_ros/resense_ros/detector_node.py",
-                "ros2_ws/src/resense_ros/launch/detector.launch.py")
+                "ros2_ws/src/resense_ros/launch/detector.launch.py",
+                "ros2_ws/src/resense_ros/resense_ros/decision_policy.py",
+                "ros2_ws/src/resense_ros/setup.py")
 PUBLISHED_COMPARISON = {
     "source": "docs/BACKLOG.md S1; judgement_2026-10-13",
     "runtime": "Published judge, DIFFERENT runtime/host; not a same-runtime A/B baseline",
@@ -177,6 +180,56 @@ def memory_limit_bytes(text):
     if value <= 0:
         raise ValueError("--memory must be positive")
     return value
+
+
+def volume_tools():
+    spec = importlib.util.spec_from_file_location("s1_bags_volume", TOOLS / "bags_volume.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def player_data_mount(args):
+    if args.bags_volume:
+        return f"type=volume,src={args.bags_volume},dst=/data,readonly,volume-nocopy"
+    return f"type=bind,src={Path(args.bags).resolve()},dst=/data,readonly"
+
+
+def storage_identity(storage):
+    return {k: storage[k] for k in ("kind", "source", "inventory_digest") if k in storage}
+
+
+def validate_volume_storage(storage, inventories):
+    tool = volume_tools()
+    verification = storage.get("verification", {})
+    result = verification.get("result", {})
+    mounts = [m for m in verification.get("mounts", []) if m.get("Destination") == "/data"]
+    if (storage.get("kind") != "docker_volume" or not storage.get("source") or
+            storage.get("inventory_digest") != tool.inventory_digest(inventories) or
+            result.get("verified") is not True or result.get("inventory_digest") != storage["inventory_digest"] or
+            result.get("bags") != tool.identity(inventories) or verification.get("read_only") is not True or
+            verification.get("cleanup_ok") is not True or verification.get("state", {}).get("ExitCode") != 0 or
+            verification.get("state", {}).get("OOMKilled") is not False or len(mounts) != 1 or
+            mounts[0].get("Type") != "volume" or mounts[0].get("Name") != storage["source"] or
+            mounts[0].get("RW") is not False):
+        raise ValueError("Docker-volume full-file identity / read-only verification incomplete or mismatched")
+
+
+def verify_volume(docker, root, image, name, inventories, run_id):
+    inspected = strict_json(docker.call("volume", "inspect", name).stdout)[0]
+    if inspected.get("Name") != name or inspected.get("Driver") != "local" or inspected.get("Options"):
+        raise ValueError("Playback requires an existing native local Docker volume, without bind/driver options")
+    tool = volume_tools()
+    write_json(root / "volume_expected.json", inventories)
+    shutil.copyfile(TOOLS / "bags_volume.py", root / "bags_volume.py")
+    verification = tool.container_job(docker, image, root, name, "verify", run_id, host_api=sys.modules[__name__])
+    storage = {"kind": "docker_volume", "source": name,
+               "host_inventory_source": {bag: v["path"] for bag, v in inventories.items()},
+               "inventory_digest": tool.inventory_digest(inventories), "volume_inspect": inspected,
+               "verification": verification}
+    validate_volume_storage(storage, inventories)
+    write_json(root / "bags_volume_verification.json", storage)
+    return storage
 
 
 def summarize_run(rows, meta, samples, inventory):
@@ -498,6 +551,8 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
             "domain": domain, "container_names": names, "cpus": args.cpus,
             "memory_limit": args.memory, "play_args": " ".join(CONDITIONS[condition][2]),
             "node_args": args.node_arg, "t_start": time.time()}
+    if manifest.get("data_storage"):
+        meta["data_storage"] = storage_identity(manifest["data_storage"])
     created, monitor = [], None
     stop, stat_errors = threading.Event(), []
     bag, _, flags = CONDITIONS[condition]
@@ -542,7 +597,8 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
             "pid_mode": inspected["HostConfig"].get("PidMode", ""),
             "network_mode": inspected["HostConfig"].get("NetworkMode"),
             "ros_localhost_only": dict(e.split("=", 1) for e in inspected["Config"].get("Env", [])
-                                       if "=" in e).get("ROS_LOCALHOST_ONLY"),
+                                        if "=" in e).get("ROS_LOCALHOST_ONLY"),
+            "mounts": inspected.get("Mounts", []),
         }
         if inspected["Image"] != image["id"] or inspected["HostConfig"]["NanoCpus"] != int(args.cpus * 1e9):
             raise RuntimeError("Docker did not apply the requested immutable image / CPU limit")
@@ -584,8 +640,7 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
         meta["listener_ready"] = True
         time.sleep(4)  # Original judge discovery allowance, after positive graph readiness.
         meta["t_play"] = time.time()
-        start("player", ["--user", "1000:1000", "--mount",
-                         f"type=bind,src={Path(args.bags).resolve()},dst=/data,readonly"],
+        start("player", ["--user", "1000:1000", "--mount", player_data_mount(args)],
               ["ros2", "bag", "play", f"/data/{bag}", *flags])
         wait_until(lambda: not docker.state(names["player"])["State"]["Running"],
                    args.player_timeout, "player timeout")
@@ -685,6 +740,14 @@ def validate_receipt(meta, manifest, image, condition, repetition, domain):
             raise ValueError(f"Missing/unclean {role} final process state")
     if meta["containers"]["player"].get("cmd") != ["ros2", "bag", "play", f"/data/{bag}", *flags]:
         raise ValueError("Actual player command is not the registered literal/README command")
+    if manifest.get("data_storage"):
+        storage = manifest["data_storage"]
+        mounts = [m for m in meta["containers"]["player"].get("mounts", []) if m.get("Destination") == "/data"]
+        expected_type = "volume" if storage["kind"] == "docker_volume" else "bind"
+        if (meta.get("data_storage") != storage_identity(storage) or len(mounts) != 1 or
+                mounts[0].get("Type") != expected_type or mounts[0].get("RW") is not False or
+                (expected_type == "volume" and mounts[0].get("Name") != storage["source"])):
+            raise ValueError("Player data mount differs from verified read-only storage provenance")
 
 
 def analyze_directory(root):
@@ -744,6 +807,17 @@ def analyze_directory(root):
         protocol_errors.append("immutable image/commit provenance missing")
     if len({i["id"] for i in manifest["images"]}) != len(manifest["images"]):
         protocol_errors.append("baseline and candidate must have different image IDs")
+    storage = manifest.get("data_storage")
+    if storage:
+        try:
+            if storage["kind"] == "docker_volume":
+                validate_volume_storage(storage, manifest["bags"])
+                if read_json(root / "bags_volume_verification.json") != storage:
+                    raise ValueError("Volume verification receipt differs from manifest")
+            elif storage["kind"] != "host_bind":
+                raise ValueError("Unknown data storage kind")
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
+            protocol_errors.append(f"Invalid storage provenance: {e}")
     complete = all(r["metrics"]["complete"] for rows in results.values() for r in rows)
     same_runtime = "baseline" in results
     # Baseline need not pass S1, but its telemetry must be complete before any comparison.
@@ -764,6 +838,7 @@ def parser():
     ap.add_argument("--baseline-image", help="Optional existing baseline image, measured first")
     ap.add_argument("--baseline-detector-commit")
     ap.add_argument("--bags", help="Original for_hackathon directory, mounted read-only")
+    ap.add_argument("--bags-volume", help="Existing verified native Docker volume for playback; --bags remains host identity source")
     ap.add_argument("--out", type=Path, help="NEW output directory; refuses an existing path")
     ap.add_argument("--repeats", type=int, default=3)
     ap.add_argument("--cpus", type=float, default=4)
@@ -808,7 +883,8 @@ def main(argv=None):
     for name in ("listener.py", "analyze_chain.py", "chain.sh"):
         if (TOOLS / name).read_text() != (JUDGE / name).read_text():
             ap.error(f"Judge copy differs (LF-normalized): {name}")
-    bag_counts = {CONDITIONS[c][0]: CONDITIONS[c][1] for c in args.conditions}
+    inventory_conditions = CONDITIONS if args.bags_volume else args.conditions
+    bag_counts = {CONDITIONS[c][0]: CONDITIONS[c][1] for c in inventory_conditions}
     try:
         inventories = {bag: bag_inventory(Path(args.bags) / bag, count) for bag, count in bag_counts.items()}
     except (OSError, ValueError, sqlite3.Error) as e:
@@ -835,6 +911,8 @@ def main(argv=None):
         if len({i["id"] for i in images}) != len(images):
             raise ValueError("Baseline and candidate resolve to the same immutable image")
         run_id = uuid.uuid4().hex
+        storage = (verify_volume(docker, root, images[-1]["id"], args.bags_volume, inventories, run_id)
+                   if args.bags_volume else {"kind": "host_bind", "source": str(Path(args.bags).resolve())})
         info = strict_json(docker.call("info", "--format", "{{json .}}").stdout)
         # Host provenance excludes registry/proxy configuration and credentials.
         info_keys = ("ServerVersion", "OperatingSystem", "OSType", "Architecture", "NCPU", "MemTotal",
@@ -846,6 +924,7 @@ def main(argv=None):
             "images": images, "conditions": args.conditions, "repeats": args.repeats,
             "cpus": args.cpus, "memory_limit": args.memory, "swap": "disabled",
             "node_args": args.node_arg, "bags": inventories,
+            "data_storage": storage,
             "domain_base": 20 + int(run_id[:4], 16) % 50,
             "tools_sha256": {p.name: sha256_file(p) for p in (root / "tools").iterdir() if p.is_file()},
             "host": {"platform": platform.platform(), "python": sys.version,

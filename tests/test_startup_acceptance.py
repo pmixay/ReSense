@@ -474,7 +474,8 @@ def test_same_runtime_baseline_may_fail_targets_but_must_be_measured(tmp_path, r
 
 @pytest.mark.parametrize("condition", ["obstacle_literal", "clear_readme"])
 @pytest.mark.parametrize("player_exit", [0, 2])
-def test_driver_player_contract_and_cleanup_for_success_and_failure(tmp_path, monkeypatch, condition, player_exit):
+@pytest.mark.parametrize("bags_volume", [None, "native-test-bags"])
+def test_driver_player_contract_and_cleanup_for_success_and_failure(tmp_path, monkeypatch, condition, player_exit, bags_volume):
     """Exercise real orchestration with a fake CLI; no container/process is started."""
     manifest = {"run_id": "a" * 32, "cpus": 4, "memory_limit": "4g", "node_args": []}
     image = {"role": "candidate", "id": "sha256:" + "c" * 64, "detector_commit": "d" * 40,
@@ -492,6 +493,11 @@ def test_driver_player_contract_and_cleanup_for_success_and_failure(tmp_path, mo
                 labels = dict(args[i + 1].split("=", 1) for i, arg in enumerate(args) if arg == "--label")
                 cmd = list(args[args.index(image["id"]) + 1:])
                 role = name.rsplit("-", 1)[1]
+                if role == "player":
+                    data_mounts = [v for v in args if isinstance(v, str) and "dst=/data" in v]
+                    assert len(data_mounts) == 1 and "readonly" in data_mounts[0]
+                    assert (f"type=volume,src={bags_volume}" in data_mounts[0]) if bags_volume else (
+                        "type=bind" in data_mounts[0])
                 if role != "node":
                     assert args[args.index("--pid") + 1].endswith("-node")
                 assert "ROS_LOCALHOST_ONLY=0" in args
@@ -545,7 +551,7 @@ def test_driver_player_contract_and_cleanup_for_success_and_failure(tmp_path, mo
     monkeypatch.setattr(s1.threading, "Thread", NoBackgroundThread)
     monkeypatch.setattr(s1.time, "sleep", lambda _: None)
     monkeypatch.setattr(s1, "drained", lambda *a: True)
-    args = s1.parser().parse_args(["--bags", str(tmp_path)])
+    args = s1.parser().parse_args(["--bags", str(tmp_path)] + (["--bags-volume", bags_volume] if bags_volume else []))
     meta = s1.run_one(FakeDocker(), tmp_path, manifest, image, condition, 1, 20, args)
     assert set(removed) == set(meta["container_names"].values())
     assert meta["cleanup_ok"]
@@ -612,7 +618,7 @@ def test_manual_cleanup_refuses_a_mismatched_container_owner(tmp_path, monkeypat
     assert not any(args[1] in ("stop", "rm") for args in calls)
 
 
-@pytest.mark.parametrize("changed", ["publication", "raw", "launch"])
+@pytest.mark.parametrize("changed", ["publication", "raw", "launch", "staging"])
 def test_publication_verifier_detects_tampered_report_raw_and_launch_artifacts(tmp_path, capsys, changed):
     spec = importlib.util.spec_from_file_location("s1_report_publisher", s1.TOOLS / "publish_report.py")
     publisher = importlib.util.module_from_spec(spec)
@@ -621,15 +627,148 @@ def test_publication_verifier_detects_tampered_report_raw_and_launch_artifacts(t
     out.mkdir()
     raw.mkdir()
     report_file, raw_file, launch_file = out / "summary.json", raw / "status.jsonl", tmp_path / "raw.launch.json"
-    for path in (report_file, raw_file, launch_file):
+    staging_file = tmp_path / "stage.json"
+    for path in (report_file, raw_file, launch_file, staging_file):
         path.write_text("original\n")
     s1.write_json(out / "raw_hash_index.json", {"attempts": [{
         "raw_root": str(raw), "files": [publisher.indexed(raw_file, raw)],
-        "sibling_files": [publisher.indexed(launch_file, tmp_path)]}]})
+        "sibling_files": [publisher.indexed(launch_file, tmp_path)]}],
+        "staging": {"raw_root": str(tmp_path), "files": [publisher.indexed(staging_file, tmp_path)]}})
     s1.write_json(out / "publication_hash_index.json", {
         "files": [publisher.indexed(p, out) for p in sorted(out.iterdir())]})
     publisher.verify(out)
     assert json.loads(capsys.readouterr().out)["verified"]
-    {"publication": report_file, "raw": raw_file, "launch": launch_file}[changed].write_text("altered\n")
+    {"publication": report_file, "raw": raw_file, "launch": launch_file, "staging": staging_file}[changed].write_text("altered\n")
     with pytest.raises(ValueError, match="hash mismatch"):
         publisher.verify(out)
+
+
+@pytest.fixture
+def original_volume_bags(tmp_path):
+    source, volume = tmp_path / "windows_bags", tmp_path / "linux_volume"
+    source.mkdir()
+    volume.mkdir()
+    expected = {}
+    for bag, count in {v[0]: v[1] for v in s1.CONDITIONS.values()}.items():
+        folder = source / bag
+        folder.mkdir()
+        (folder / "metadata.yaml").write_bytes(("unchanged original " + bag + "\r\n").encode())
+        db = folder / (bag + "_0.db3")
+        with sqlite3.connect(db) as con:
+            con.executescript("CREATE TABLE topics (id INTEGER, name TEXT, type TEXT); "
+                              "CREATE TABLE messages (id INTEGER, topic_id INTEGER, timestamp INTEGER, data BLOB);")
+            con.execute("INSERT INTO topics VALUES (1, '/points', 'sensor_msgs/msg/PointCloud2')")
+            for i in range(count):
+                cdr = b"\x00\x01\x00\x00" + struct.pack("<iI", 1_700_000_000 + i // 10, (i % 10) * 100_000_000) + b"cloud"
+                con.execute("INSERT INTO messages VALUES (?, 1, ?, ?)", (i, i * 100_000_000, cdr))
+        expected[bag] = s1.bag_inventory(folder, count)
+    return source, volume, expected
+
+
+def test_volume_copy_and_read_only_inventory_preserve_full_original_bytes(original_volume_bags):
+    source, volume, expected = original_volume_bags
+    tool = s1.volume_tools()
+    before = {p.relative_to(source).as_posix(): s1.sha256_file(p) for p in source.rglob("*") if p.is_file()}
+    copied = tool.copy_bags(source, volume, expected)
+    assert copied["copied"] and len(copied["files"]) == 4
+    verified = tool.verify_bags(volume, expected)
+    assert verified["verified"] and verified["inventory_digest"] == tool.inventory_digest(expected)
+    after = {p.relative_to(source).as_posix(): s1.sha256_file(p) for p in source.rglob("*") if p.is_file()}
+    assert before == after == {p.relative_to(volume).as_posix(): s1.sha256_file(p)
+                              for p in volume.rglob("*") if p.is_file()}
+    with pytest.raises(ValueError, match="nonempty"):
+        tool.copy_bags(source, volume, expected)
+
+
+@pytest.mark.parametrize("corruption", ["database", "metadata", "extra_file", "extra_directory", "frames", "stamps", "size"])
+def test_volume_reuse_rejects_corrupt_partial_or_wrong_inventory(original_volume_bags, corruption):
+    source, volume, expected = original_volume_bags
+    tool = s1.volume_tools()
+    tool.copy_bags(source, volume, expected)
+    bag = next(iter(expected))
+    if corruption in ("database", "metadata"):
+        target = volume / bag / (expected[bag]["files"][0]["name"] if corruption == "database" else "metadata.yaml")
+        target.chmod(0o666)
+        with target.open("ab") as f:
+            f.write(b"changed bytes")
+    elif corruption == "extra_file":
+        (volume / "helper-marker.txt").write_text("forbidden non-data file")
+    elif corruption == "extra_directory":
+        (volume / bag / "extra").mkdir()
+    elif corruption == "frames":
+        expected[bag]["expected_frames"] -= 1
+    elif corruption == "stamps":
+        expected[bag]["stamps"][0] += 0.01
+    else:
+        expected[bag]["files"][0]["bytes"] -= 1
+    with pytest.raises(ValueError):
+        tool.verify_bags(volume, expected)
+
+
+def verified_volume_storage(original_volume_bags):
+    source, volume, expected = original_volume_bags
+    tool = s1.volume_tools()
+    tool.copy_bags(source, volume, expected)
+    return {"kind": "docker_volume", "source": "native-bags", "inventory_digest": tool.inventory_digest(expected),
+            "verification": {"result": tool.verify_bags(volume, expected), "read_only": True,
+                             "cleanup_ok": True, "state": {"ExitCode": 0, "OOMKilled": False},
+                             "mounts": [{"Type": "volume", "Name": "native-bags", "Destination": "/data", "RW": False}]}}
+
+
+@pytest.mark.parametrize("changed", ["digest", "metadata_digest", "mount_rw", "name", "cleanup", "verified"])
+def test_volume_provenance_cannot_claim_unverified_or_writable_data(original_volume_bags, changed):
+    storage = verified_volume_storage(original_volume_bags)
+    expected = original_volume_bags[2]
+    s1.validate_volume_storage(storage, expected)
+    if changed == "digest":
+        storage["inventory_digest"] = "0" * 64
+    elif changed == "metadata_digest":
+        storage["verification"]["result"]["bags"][next(iter(expected))]["metadata_sha256"] = "0" * 64
+    elif changed == "mount_rw":
+        storage["verification"]["mounts"][0]["RW"] = True
+    elif changed == "name":
+        storage["source"] = "wrong-volume"
+    elif changed == "cleanup":
+        storage["verification"]["cleanup_ok"] = False
+    else:
+        storage["verification"]["result"]["verified"] = False
+    with pytest.raises(ValueError, match="verification incomplete or mismatched"):
+        s1.validate_volume_storage(storage, expected)
+
+
+def test_missing_volume_is_not_implicitly_created(tmp_path):
+    class MissingVolumeDocker:
+        def __init__(self):
+            self.calls = []
+
+        def call(self, *args, **kwargs):
+            self.calls.append(args)
+            raise RuntimeError("No such volume")
+
+    docker = MissingVolumeDocker()
+    with pytest.raises(RuntimeError, match="No such volume"):
+        s1.verify_volume(docker, tmp_path, "image", "absent", {}, "run")
+    assert docker.calls == [("volume", "inspect", "absent")]
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_saved_volume_requires_matching_readonly_player_mount_and_verification(tmp_path, recording, original_volume_bags):
+    root = saved_matrix(tmp_path, recording)
+    storage = verified_volume_storage(original_volume_bags)
+    manifest_path = root / "manifest.json"
+    manifest = s1.read_json(manifest_path)
+    manifest.update(data_storage=storage, bags=original_volume_bags[2])
+    manifest_path.write_text(json.dumps(manifest))
+    s1.write_json(root / "bags_volume_verification.json", storage)
+    for receipt_path in (root / "out/docker").glob("*.meta"):
+        receipt = s1.read_json(receipt_path)
+        receipt["data_storage"] = s1.storage_identity(storage)
+        receipt["containers"]["player"]["mounts"] = [{"Type": "volume", "Name": storage["source"],
+                                                      "Destination": "/data", "RW": False}]
+        receipt_path.write_text(json.dumps(receipt))
+    assert s1.analyze_directory(root)["passed"]
+    bad_receipt = root / "out/docker/candidate_obstacle_literal_r1.meta"
+    receipt = s1.read_json(bad_receipt)
+    receipt["containers"]["player"]["mounts"][0]["RW"] = True
+    bad_receipt.write_text(json.dumps(receipt))
+    assert not s1.analyze_directory(root)["passed"]

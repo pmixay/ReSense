@@ -22,7 +22,9 @@ def provenance():
     import resense._native as native
 
     paths = ["ros2_ws/src/resense_ros/resense_ros/detector_node.py",
-             "ros2_ws/src/resense_ros/launch/detector.launch.py"]
+             "ros2_ws/src/resense_ros/launch/detector.launch.py",
+             "ros2_ws/src/resense_ros/resense_ros/decision_policy.py",
+             "ros2_ws/src/resense_ros/setup.py"]
     return {
         "python": sys.version, "platform": platform.platform(), "nproc": os.cpu_count(),
         "lscpu": subprocess.check_output(["lscpu"], text=True),

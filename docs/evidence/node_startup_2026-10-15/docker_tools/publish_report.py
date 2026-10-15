@@ -45,7 +45,7 @@ def excerpt(source, target):
         f.write("\n".join(line.rstrip() for line in chosen) + "\n")
 
 
-def publish(raw, attempts, out):
+def publish(raw, attempts, out, stage=None):
     manifest = s1.read_json(raw / "manifest.json")
     summary = s1.read_json(raw / "summary.json")
     recomputed = s1.analyze_directory(raw)
@@ -56,6 +56,7 @@ def publish(raw, attempts, out):
     if summary["comparison_mode"] != "published_judge_different_runtime" or summary["improvement_claim_allowed"]:
         raise ValueError("This report is explicitly candidate-only")
     image = manifest["images"][0]
+    storage = manifest.get("data_storage", {"kind": "host_bind", "source": "original Windows bag directory"})
     observations, receipts = [], {}
     for slot, run in enumerate(summary["runs"]["candidate"]):
         label = run["label"]
@@ -84,9 +85,29 @@ def publish(raw, attempts, out):
         if remaining:
             raise ValueError(f"Owned containers remain for {root}: {remaining}")
     cleanup["clean"] = True
+    staging = None
+    if stage:
+        stage = stage.resolve()
+        staged = s1.read_json(stage / "stage.json")
+        if (staged.get("verified") is not True or staged.get("volume_name") != storage.get("source") or
+                staged.get("inventory_digest") != storage.get("inventory_digest")):
+            raise ValueError("Staged volume identity differs from the measured volume")
+        remaining = s1.command(["docker", "ps", "-aq", "--filter",
+                                f"label=resense.startup.run={staged['run_id']}"]).stdout.split()
+        if remaining:
+            raise ValueError("Staging containers remain")
+        cleanup["staging"] = {"run_id": staged["run_id"], "remaining_container_ids": remaining,
+                              "volume_retained_read_only_for_reuse": staged["volume_name"]}
+        staging = {"raw_root": str(stage), "volume_name": staged["volume_name"],
+                   "inventory_digest": staged["inventory_digest"],
+                   "files": [indexed(p, stage) for p in sorted(stage.rglob("*")) if p.is_file()]}
     out.mkdir()
     for name in ("summary.json", "manifest.json"):
         copy_new(raw / name, out / name)
+    if storage["kind"] == "docker_volume":
+        copy_new(raw / "bags_volume_verification.json", out / "bags_volume_verification.json")
+    if stage:
+        copy_new(stage / "stage.json", out / "volume_stage.json")
     launch = Path(str(raw) + ".launch.json")
     if launch.exists():
         copy_new(launch, out / "launch.json")
@@ -117,6 +138,8 @@ def publish(raw, attempts, out):
         old_manifest = s1.read_json(root / "manifest.json")
         old_summary = s1.analyze_directory(root)
         record = {"raw_root": str(root), "run_id": old_manifest["run_id"],
+                  "source_commit": old_manifest["images"][0]["detector_commit"],
+                  "data_storage": old_manifest.get("data_storage", {"kind": "host_bind"}),
                   "included_in_final_medians": root == raw,
                   "saved_summary_exists": (root / "summary.json").exists(),
                   "strict_complete": old_summary["complete"], "passed": old_summary["passed"],
@@ -129,6 +152,7 @@ def publish(raw, attempts, out):
     s1.write_json(out / "raw_hash_index.json", {
         "hash": "SHA256 over exact bytes", "external_raw_parent": str(raw.parent),
         "final_raw_root": str(raw), "attempts": attempt_index,
+        "staging": staging,
         "note": "Only the final raw root supplies median measurements; failed/interrupted roots are preserved."})
 
     checks = summary["evaluations"]["candidate"]["conditions"]
@@ -137,7 +161,7 @@ def publish(raw, attempts, out):
     host = manifest["host"]
     info = host["docker_info"]
     lines = [
-        "# S1 real-Docker candidate measurements — 2026-10-15", "",
+        f"# S1 real-Docker candidate measurements — {manifest['created_utc'][:10]}", "",
         f"**Acceptance: {'PASS' if summary['passed'] else 'FAIL'}** · **12/12 playback executions finished cleanly** · "
         f"strict evidence complete: **{str(summary['complete']).lower()}**.", "",
         "This is the user-selected Docker Desktop / WSL2 runtime, **not an exact four-vCPU host**. "
@@ -155,6 +179,10 @@ def publish(raw, attempts, out):
         "- Original read-only bags: **201** `doubleT_obstacle` clouds and **252** `roundT_doubleT` clouds. "
         "Bag SHA-256, all original header stamps, expected topics/counts and tool identities are in `manifest.json`.",
         f"- Driver SHA-256: `{manifest.get('driver_sha256')}`; exact snapshot is external `host_driver.py`.",
+        f"- Playback storage: **{storage['kind']}**, `{storage['source']}`. " + (
+            "Native Linux Docker volume, mounted read-only, with full database/metadata hashes and original cloud inventories verified before any replay. "
+            f"Inventory digest: `{storage['inventory_digest']}`." if storage["kind"] == "docker_volume" else
+            "Windows host bind mount, read-only."),
         f"- Final raw root: `{raw}`.",
         "- Exact judge listener/analyzer copies are retained; separate strict host analysis supplies the unrounded gate values.", "",
         "## Median acceptance checks", "",
@@ -224,35 +252,39 @@ def publish(raw, attempts, out):
                      f"{fmt(m['source_age_p50_s'])} / {fmt(m['source_age_max_s'])} | "
                      f"{fmt(m['first_stop_after_first_result_s'])} / {fmt(m['first_stop_dist'])} | {fmt(m['memory_gate_mb'])} |")
     lines += ["",
-              "## Infrastructure attempts (excluded from final medians)", "",
-              "1. `attempt01_diagnostic`: graph-only readiness, original PID/localhost-only settings; literal player deadline (180 s), no data; cleanup SIGKILL, Docker OOM false.",
-              "2. `attempt02_diagnostic`: same transport; clear README player exit 0, no data, drain timeout.",
-              "3. `attempt03_transport_diagnostic`: repaired shared PID/UDP settings and actual-data readiness delivered frames; exact analyzer then exposed missing pre-analysis `.meta` input. Preserved incomplete.",
-              "4. `attempt04_matrix`: seven clean receipts, terminal killed host process at 2,400 s during run eight. Explicit label-verified manual cleanup recorded; excluded in full.",
-              "5. `attempt05_matrix`: fresh detached full matrix; these twelve repetitions alone supply every median above.", "",
+              "## Prior attempts / diagnostic (excluded from these medians)", ""]
+    for record in attempt_index:
+        if not record["included_in_final_medians"]:
+            lines.append(f"- `{Path(record['raw_root']).name}`: source `{record['source_commit'][:7]}`, "
+                         f"storage `{record['data_storage']['kind']}`, strict complete `{record['strict_complete']}`, "
+                         f"passed `{record['passed']}`. Original artifacts remain at the indexed external root.")
+    lines += [f"- **`{raw.name}` alone supplies all twelve repetitions and every median in this report.**", "",
               "Repairs are harness-only: transport/process identity and actual-data readiness, pre-analysis immutable `.meta` "
               "+ final `.receipt.json`, actual nullable watchdog-counter schema, explicit SIGKILL/OOM attribution, and detached execution. "
+              "The Linux-volume follow-up changes storage and verifies its full data identity without changing registered counts or thresholds. "
               "No failed numeric target was tuned around. Filesystem caches were not cleared; no cold-cache or exact judge-host claim is made.", "",
-              "Windows bind-mounted playback shows long preload/play wall times and queue-starvation warnings (table above). "
-              "These are measured runtime observations, not evidence of isolated detector causality. A different-runtime historical "
-              "judge table cannot establish a same-runtime improvement or regression caused by the node change.", "",
+              "The earlier Windows-bind matrix remains FAIL/incomplete and is not replaced or relabelled. Playback wall times and "
+              "starvation counts are reported for this actual storage path. Source revision and storage both differ across the follow-up; "
+              "comparisons do not isolate algorithm or storage causality. No baseline was measured.", "",
               "## Exact commands", "", "```powershell",
               "$python = 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-venv/Scripts/python.exe'",
               "# From C:/Users/alikh/AppData/Local/Temp/opencode/rs-p1-start; choose another NEW --out to reproduce.",
               "& $python " + " ".join(["docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py", "--out", f"'{raw}'", "--",
                   "--image", image["reference"], "--detector-commit", image["detector_commit"], "--bags",
                   "'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/for_hackathon'",
+                  *( ["--bags-volume", storage["source"]] if storage["kind"] == "docker_volume" else []),
                   "--repeats 3 --cpus 4 --memory 6g --player-timeout 600"]),
               f"& $python scripts/startup_acceptance.py --analyze '{raw}'",
               "& $python -m pytest -q tests/test_startup_acceptance.py",
               "& 'C:/Users/alikh/AppData/Local/Programs/Python/Python311/Scripts/ruff.exe' check scripts/startup_acceptance.py tests/test_startup_acceptance.py docs/evidence/node_startup_2026-10-15/docker_tools",
               "```", "",
-              "The launcher returning successfully is not acceptance; strict reanalysis exits 1 for this failed matrix. "
+              f"The launcher returning successfully is not acceptance; strict reanalysis exits {0 if summary['passed'] else 1} for this matrix. "
               "`launch.json` retains the exact actually launched argument vector and driver hash.", "",
               "## Retained evidence / cleanup", "",
               "- `summary.json`: exact full strict result and all per-run metrics; `manifest.json`: exact runtime/image/bag/source provenance.",
               "- `selected/`: first repetition's full receipt per condition plus explicitly marked node/player/listener log excerpts, each identifying full source path and hash.",
               "- `runtime_observations.json`: every repetition's wall time, starvation warnings and strict errors.",
+              "- Volume runs also retain `bags_volume_verification.json` and, when supplied, `volume_stage.json`; full staging artifacts are externally hash-indexed.",
               "- `condition_medians.json`: descriptive median of each numeric metric over all three repetitions per condition.",
               "- `raw_hash_index.json`: SHA-256/size/path of every external attempt artifact and detached-launch sibling; failed and interrupted attempts are preserved.",
               "- `publication_hash_index.json`: exact-byte hashes for the compact committed report artifacts (excluding itself).",
@@ -261,8 +293,9 @@ def publish(raw, attempts, out):
               "Full raw paths and hashes are retained; review the raw files locally before external archival/removal.", "",
               "## Outcome and remaining work", "",
               "This measurement answers S1 only on the selected runtime and the source/image named above. "
-              "The failed targets remain open. Any later policy/runtime work needs separately authorized changes and a fresh registered matrix; "
-              "the present result does not grant S1 completion or replace combined CI/release approval.", ""]
+              + ("Registered S1 checks pass on this selected runtime. This is not an exact judge-host reproduction and does not replace combined CI/release approval."
+                 if summary["passed"] else "The failed targets remain open. Any later policy/runtime work needs separately authorized changes and a fresh registered matrix; "
+                 "the present result does not grant S1 completion or replace combined CI/release approval."), ""]
     with (out / "README.md").open("x", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(lines))
     s1.write_json(out / "publication_hash_index.json", {
@@ -293,6 +326,13 @@ def verify(out):
             if path.stat().st_size != item["bytes"] or s1.sha256_file(path) != item["sha256"]:
                 raise ValueError(f"Launch sibling hash mismatch: {path}")
             checked += 1
+    if raw_index.get("staging"):
+        stage = raw_index["staging"]
+        for item in stage["files"]:
+            path = Path(stage["raw_root"]) / item["path"]
+            if path.stat().st_size != item["bytes"] or s1.sha256_file(path) != item["sha256"]:
+                raise ValueError(f"Staging hash mismatch: {path}")
+            checked += 1
     print(json.dumps({"verified": True, "publication_files": len(index["files"]), "external_files": checked}))
 
 
@@ -302,11 +342,12 @@ def main():
     ap.add_argument("--attempts", type=Path, nargs="*", default=[])
     ap.add_argument("--out", type=Path)
     ap.add_argument("--verify", type=Path)
+    ap.add_argument("--stage", type=Path, help="External Linux-volume staging evidence")
     a = ap.parse_args()
     if a.verify:
         verify(a.verify.resolve())
     elif a.raw and a.out:
-        publish(a.raw.resolve(), a.attempts, a.out.resolve())
+        publish(a.raw.resolve(), a.attempts, a.out.resolve(), a.stage)
     else:
         ap.error("use --raw --out [--attempts ...] or --verify")
 
