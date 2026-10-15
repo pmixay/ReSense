@@ -24,6 +24,7 @@ import platform
 import subprocess
 import sys
 import time
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
 JUDGE = ROOT / "docs/evidence/judgement_2026-10-13/scripts"
@@ -68,7 +69,7 @@ def git(repo, *args):
 def protocol():
     return {"schema": SCHEMA, "variants": VARIANTS, "seed_rule": "s1=1,s2=2,s3=3,otherwise=7",
             "episodes": "STOP transitions in processed order, including the first processed frame",
-            "matching": "judge score_objects: plausible nonzero labels, distance + lateral bbox match",
+            "matching": "judge score_objects distance + lateral bbox; plausible nonzero labels; row-wise inside/outside intent",
             "acceptance": {"extra_false_stop_episodes": 1, "lost_positive_stop_rows": 2},
             "scripts": {n: sha256(JUDGE / n) for n in
                         ("probe.py", "judge_runner.py", "range_test.py", "score_objects.py")},
@@ -135,16 +136,23 @@ def worker(job_path):
     sys.path.insert(0, str(repo))
     ident = identity(repo)
     probe = load_probe()
-    original_rng = probe.np.random.default_rng
+    original_numpy = probe.np
     # probe.py has a fixed seed 7. Only substitute that RNG construction, leaving
     # the judge's transforms, float32 arithmetic, metadata and decision rule intact.
-    probe.np.random.default_rng = lambda seed=7: original_rng(job["seed"])
+    class SeededNumpy:
+        random = SimpleNamespace(default_rng=lambda seed=7: original_numpy.random.default_rng(job["seed"]))
+
+        def __getattr__(self, name):
+            return getattr(original_numpy, name)
+
+    # A module-local proxy avoids changing numpy's RNG for detector code.
+    probe.np = SeededNumpy()
     sys.argv = [str(JUDGE / "probe.py"), job["cache"], job["prefix"], *job["args"]]
     t0 = time.monotonic()
     try:
         probe.main()
     finally:
-        probe.np.random.default_rng = original_rng
+        probe.np = original_numpy
     write_new(job["prefix"] + ".complete.json", {"identity": ident, "wall_s": time.monotonic() - t0})
 
 
@@ -210,7 +218,7 @@ def summarize(rows, labels=None):
     if labels is None:
         out["false_stop_episodes"] = out["stop_episodes"]
         return out
-    objects, outside, unmatched, hit_indices = {}, [], [], {}
+    objects, outside, unmatched, outside_indices = {}, [], [], {}
     for r in rows:
         used, outside_hit = set(), False
         for o in labels.get(f"{r['i']:05d}", []):
@@ -222,20 +230,24 @@ def summarize(rows, labels=None):
                 continue
             name = o.get("label", o.get("name"))
             p = objects.setdefault(name, {"in_gauge": bool(o["in_gauge"]), "visible_rows": 0,
-                                          "stop_rows": 0, "first_stop_m": None, "first_stop_frame": None})
-            if p["in_gauge"] != bool(o["in_gauge"]):
-                raise ValueError(f"label intent changes: {name}")
+                                          "stop_rows": 0, "first_stop_m": None, "first_stop_frame": None,
+                                          "inside_visible_rows": 0, "inside_stop_rows": 0,
+                                          "outside_visible_rows": 0, "outside_stop_rows": 0})
+            p["in_gauge"] |= bool(o["in_gauge"])
             p["visible_rows"] += 1
             p["stop_rows"] += bool(hit)
-            if hit:
-                hit_indices.setdefault(name, set()).add(r["i"])
+            intent = "inside" if o["in_gauge"] else "outside"
+            p[f"{intent}_visible_rows"] += 1
+            p[f"{intent}_stop_rows"] += bool(hit)
+            if hit and not o["in_gauge"]:
+                outside_indices.setdefault(name, set()).add(r["i"])
             if hit and p["first_stop_frame"] is None:
                 p.update(first_stop_frame=r["i"], first_stop_m=o["distance"])
             outside_hit |= bool(hit) and not o["in_gauge"]
         outside.append(outside_hit)
         unmatched.append(r["obstacle"] and bool(r["dets"]) and not used)
     for name, p in objects.items():
-        p["stop_episodes"] = episodes(r["i"] in hit_indices.get(name, set()) for r in rows)
+        p["outside_stop_episodes"] = episodes(r["i"] in outside_indices.get(name, set()) for r in rows)
     out.update(objects=objects, outside_false_stop_frames=sum(outside),
                outside_false_stop_episodes=episodes(outside), unmatched_stop_frames=sum(unmatched),
                unmatched_stop_episodes=episodes(unmatched))
@@ -264,12 +276,13 @@ def compare_metrics(base, current):
             add("positive_recording.stop_frames", base["stop_frames"], current["stop_frames"], -1, 2)
         for name, b in base["objects"].items():
             c = current["objects"][name]
-            if b["in_gauge"] != c["in_gauge"] or b["visible_rows"] != c["visible_rows"]:
+            if (b["in_gauge"] != c["in_gauge"] or any(b[k] != c[k] for k in
+                    ("visible_rows", "inside_visible_rows", "outside_visible_rows"))):
                 raise ValueError("reference/current label denominator or intent differs")
             if b["in_gauge"]:
-                add(f"objects.{name}.stop_rows", b["stop_rows"], c["stop_rows"], -1, 2)
-            else:
-                add(f"objects.{name}.false_stop_episodes", b["stop_episodes"], c["stop_episodes"], 1, 1)
+                add(f"objects.{name}.inside_stop_rows", b["inside_stop_rows"], c["inside_stop_rows"], -1, 2)
+            if b["outside_visible_rows"]:
+                add(f"objects.{name}.outside_stop_episodes", b["outside_stop_episodes"], c["outside_stop_episodes"], 1, 1)
         for key in ("outside_false_stop_episodes", "unmatched_stop_episodes"):
             add(key, base[key], current[key], 1, 1)
     return rows

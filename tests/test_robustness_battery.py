@@ -101,12 +101,13 @@ def test_directional_worse_not_absolute_difference():
 
 def test_positive_object_loss_cannot_hide_in_total_stop_count():
     base = battery.summarize([row(m, True) for m in meta()], {})
-    base["objects"] = {"person": {"in_gauge": True, "visible_rows": 20, "stop_rows": 10}}
+    base["objects"] = {"person": {"in_gauge": True, "visible_rows": 20, "inside_stop_rows": 10,
+                                  "inside_visible_rows": 20, "outside_visible_rows": 0}}
     changed = copy.deepcopy(base)
-    changed["objects"]["person"]["stop_rows"] = 7
+    changed["objects"]["person"]["inside_stop_rows"] = 7
     comparison = battery.compare_metrics(base, changed)
-    assert not next(r for r in comparison if r["metric"] == "objects.person.stop_rows")["passed"]
-    changed["objects"]["person"]["stop_rows"] = 8
+    assert not next(r for r in comparison if r["metric"] == "objects.person.inside_stop_rows")["passed"]
+    changed["objects"]["person"]["inside_stop_rows"] = 8
     assert all(r["passed"] for r in battery.compare_metrics(base, changed))
     changed["objects"]["person"]["visible_rows"] = 19
     with pytest.raises(ValueError, match="denominator"):
@@ -119,6 +120,43 @@ def test_incomplete_reference_and_cache_rejected(tmp_path):
     (tmp_path / "meta.json").write_text(json.dumps(meta()), encoding="utf-8")
     with pytest.raises(ValueError, match="incomplete or extra"):
         battery.cache_meta(tmp_path, 3)
+
+
+def test_crossing_label_scored_by_each_rows_intent():
+    rs = [row(m, True) for m in meta()]
+    outside = {"label": "crossing", "in_gauge": False, "distance": 50., "lateral": 0.}
+    inside = dict(outside, in_gauge=True)
+    labels = {"00000": [outside], "00001": [inside], "00002": [outside]}
+    result = battery.summarize(rs, labels)
+    obj = result["objects"]["crossing"]
+    assert obj["inside_stop_rows"] == obj["inside_visible_rows"] == 1
+    assert obj["outside_stop_rows"] == obj["outside_visible_rows"] == 2
+    assert obj["outside_stop_episodes"] == 2
+    assert obj["in_gauge"]
+    assert all(r["passed"] for r in battery.compare_metrics(result, result))
+
+
+def test_zero_exit_worker_with_truncated_raw_is_error_not_pass(tmp_path, monkeypatch):
+    monkeypatch.setattr(battery, "BAGS", {"sample": 3})
+    monkeypatch.setattr(battery, "VARIANTS", {"nominal": []})
+    monkeypatch.setattr(battery, "source_info", lambda *a: {})
+    monkeypatch.setattr(battery, "cache_meta", lambda *a: (meta(), []))
+    monkeypatch.setattr(battery, "git", lambda *a: "testcommit")
+
+    def fake_worker(argv, **kwargs):
+        job = battery.read_json(argv[-1])
+        prefix = job["prefix"]
+        with open(prefix + ".jsonl", "w", encoding="utf-8") as f:
+            f.write(json.dumps(row(meta()[0])) + "\n")
+        battery.write_new(prefix + ".complete.json", {"wall_s": 1., "identity": {}})
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(battery.subprocess, "run", fake_worker)
+    out = tmp_path / "bad.json"
+    assert battery.main(["--out", str(out), "--cache", str(tmp_path)]) == 2
+    report = battery.read_json(out)
+    assert report["status"] == "ERROR" and report["errors"]
+    assert not report["entries"]
 
 
 def test_no_overwrite_and_worker_cap(tmp_path):

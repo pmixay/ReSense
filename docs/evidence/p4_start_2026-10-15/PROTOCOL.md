@@ -79,6 +79,10 @@ matching STOP rows and first STOP range/frame; outside-object false STOPs
 and unmatched STOPs are reported separately. Matching follows judge
 `score_objects.py`: distance tolerance max(2 m, 3% distance) + half length,
 lateral tolerance 1 m + half width using the labelled bbox centre.
+For a crossing label, intent is evaluated **per row**: inside visible / matched
+STOP rows and outside visible / matched false STOP rows/episodes are separate.
+An outside hit cannot compensate for a lost inside hit. This clarification
+was committed after inspecting label schema, before X3 measurement.
 First distances are descriptive because a tilt changes geometry relative to
 unrotated labels; this does not make false outside detections positive hits.
 
