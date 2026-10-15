@@ -103,8 +103,9 @@ one sensor period, capped at 0.3 s. The initial lag cutoff may jump into a recor
 links use the bounded step rather than introducing scene-reset-sized holes. DDS keeps 12 frames
 per subscription (``input_queue_depth``); Python keeps at most ``max_pending_frames`` (12) across
 all inputs, pruning on every take. Overflow evicts oldest frames and counts every eviction.
-Arrival metadata and skip credits belong only to retained messages, so bookkeeping is bounded
-too. Explicit ``catchup_startup_step: 0`` preserves every observed input-period frame within the
+Arrival metadata and queued skip credits belong only to retained messages. One active-epoch
+counter retains credits across ignored inputs, so bookkeeping is bounded too.
+Explicit ``catchup_startup_step: 0`` preserves every observed input-period frame within the
 configured lag and memory bounds (raise those bounds for the old every-frame experiment).
 Start-up ends when its first catch-up drains, or after 1 s without one starting. Later stalls
 use ``catchup_step`` / ``catchup_max_lag``; short live backlogs are processed in full.
@@ -148,6 +149,7 @@ import os
 import resource
 import time
 import traceback
+from collections.abc import Mapping
 from types import SimpleNamespace
 
 import numpy as np
@@ -345,6 +347,7 @@ class DetectorNode(Node):
         self.skipped = {}              # retained message id -> preceding skips already counted as drops
         self.pending_epochs = {}       # retained head id -> original stamp of a queued header epoch
         self.current_skipped = 0       # skip credit for the frame currently being processed
+        self.active_skip_credit = 0   # active-epoch cap evictions with no same-input successor
         self.frame_in_catchup = False  # the frame being processed is a link of a catch-up (status "catchup")
         self.pending_gc = self.create_guard_condition(self.on_pending)
         rel = self.get_parameter("input_reliability").get_parameter_value().string_value.strip().lower()
@@ -622,9 +625,12 @@ class DetectorNode(Node):
     # ------------------------------------------------------------------
     def _account_frame(self, stamp: float, key=None) -> None:
         """Estimate dropped frames from the gap between consecutive input stamps; the frames of
-        the gap already counted by ``prune`` are credited to their retained successor. Counting
-        on eviction also accounts for frames before the first result or an abandoned input."""
+        the gap already counted by ``prune`` are credited to their retained successor or the
+        active epoch's orphan counter. Counting on eviction also accounts for frames before
+        the first result or an abandoned input."""
         last = self.last_stamp
+        skipped = self.current_skipped + self.active_skip_credit
+        self.active_skip_credit = 0
         if last is not None:
             gap = stamp - last
             if 0.0 < gap < 1.6 * self.input_period:
@@ -632,7 +638,7 @@ class DetectorNode(Node):
                 self.input_period = 0.9 * self.input_period + 0.1 * gap
             elif gap >= 1.6 * self.input_period:
                 missing = int(round(gap / self.input_period)) - 1
-                self.dropped += max(0, missing - self.current_skipped)
+                self.dropped += max(0, missing - skipped)
             # gap <= 0: a bag loop / restart, not a drop
         self.last_stamp = stamp
 
@@ -685,6 +691,7 @@ class DetectorNode(Node):
             self.consecutive_errors = 0
             self.mount_logged = ""
         self.last_stamp = None
+        self.active_skip_credit = 0
         self.freshness_previous = None
         self.pending_last = None
         self.catchup = None
@@ -893,6 +900,13 @@ class DetectorNode(Node):
                 self.skipped[msg_id] = self.skipped.get(msg_id, 0) + credit
                 if epoch is not None:
                     self.pending_epochs[msg_id] = epoch
+            elif (epoch is None and item[0] == self.active_topic
+                    and item[1].header.frame_id == self.active_frame_id and self.last_stamp is not None
+                    and 0 < self._stamp(item[1]) - self.last_stamp <= new_gap):
+                # The cap removes a prefix, so these credits precede the next retained frame
+                # of the active epoch. Keep them even if intervening inputs are ignored.
+                # A single counter is consumed on accounting or cleared on an epoch change.
+                self.active_skip_credit += credit
         self.pending = retained[excess:]
         topic, first = self.pending[0]
         stamps = [self._stamp(first)]
@@ -1031,7 +1045,28 @@ class DetectorNode(Node):
         self.epoch_reason = reason
         self.freshness_previous = (stamp, source, now, wall)
 
-    def result_freshness(self, res):
+    @staticmethod
+    def raw_result_state(res):
+        """Strict flags and health validity before any freshness/latch projection.
+
+        Validate independently through shared v1: a true raw STOP must not hide malformed
+        health/warning, and v2 advisory suppression must not be mistaken for validation.
+        """
+        flags = {name: getattr(res, name, False) for name in ("obstacle", "warning")}
+        # numpy 2 names its boolean scalar "bool" rather than "bool_". Normalize only
+        # actual numpy booleans for the shared API; integers/strings remain invalid.
+        for name, value in flags.items():
+            if isinstance(value, np.bool_):
+                flags[name] = bool(value)
+        obstacle = evaluate_decision({"obstacle": flags["obstacle"]}, "v1")
+        warning = evaluate_decision({"warning": flags["warning"]}, "v1")
+        health = evaluate_decision({"health": getattr(res, "health", None)}, "v1")
+        valid = all(answer.decision != "FAULT" for answer in (obstacle, warning, health))
+        return obstacle.decision == "STOP", warning.decision == "CAUTION", valid
+
+    def result_freshness(self, res, *, raw_valid=None):
+        if raw_valid is None:
+            _, _, raw_valid = self.raw_result_state(res)
         now, wall = time.perf_counter(), time.time()
         arrival = self.current_arrival
         source = self.freshness_previous[1] if self.freshness_previous is not None else None
@@ -1057,7 +1092,7 @@ class DetectorNode(Node):
             reason = "queue_stale"
         elif self.epoch_reason:
             reason = self.epoch_reason
-        elif any((getattr(res, "health", {}) or {}).get(k) == "error" for k in ("level", "decision_level")):
+        elif not raw_valid:
             reason = "detector_error"
         elif self.current_queue_lag > self.input_period + 1e-6:
             reason = "catchup"
@@ -1211,9 +1246,13 @@ class DetectorNode(Node):
     def publish(self, header: Header, frame: Frame, res: FrameResult) -> None:
         out_frame = self.get_parameter("output_frame").get_parameter_value().string_value or header.frame_id
         hdr = Header(stamp=header.stamp, frame_id=out_frame)
-        freshness = self.result_freshness(res)
+        raw_obstacle, raw_warning, raw_valid = self.raw_result_state(res)
+        freshness = self.result_freshness(res, raw_valid=raw_valid)
         raw_range = float(getattr(res, "clear_distance", 0.0))
-        raw_obstacle = bool(res.obstacle)
+        # Normalize only the copy: arbitrary truthy values must not acquire a STOP latch,
+        # reach boolean ROS topics, or be coerced by FrameResult.to_dict before validation.
+        res = copy.copy(res)
+        res.obstacle, res.warning = raw_obstacle, raw_warning
         status = res.to_dict()
         if raw_obstacle:
             self.stop_latch = {"nearest_distance": res.nearest_distance, "detections": status["detections"],
@@ -1222,8 +1261,8 @@ class DetectorNode(Node):
             self.stop_latch, self.stop_ros = None, None
         held = not raw_obstacle and self.stop_latch is not None
         # Do not mutate the detector's FrameResult or health dictionary.
-        res = copy.copy(res)
-        res.health = copy.deepcopy(getattr(res, "health", {}) or {})
+        health = getattr(res, "health", None)
+        res.health = copy.deepcopy(dict(health)) if isinstance(health, Mapping) else {}
         if not freshness["valid"]:
             level = "warn" if freshness["reason"] == "catchup" else "error"
             res.health.update(level=level, decision_level=level)

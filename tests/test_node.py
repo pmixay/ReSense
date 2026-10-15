@@ -1388,6 +1388,144 @@ def test_one_period_current_queue_cannot_release_stop_on_bad_health(freshness_dr
     assert node.published["/resense/markers"][-1].markers[-1].text.startswith("STOP HELD")
 
 
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v1"}, {"decision_policy": "v2"}], indirect=True)
+@pytest.mark.parametrize("previous_stop", [False, True])
+@pytest.mark.parametrize("lag", [0.0, 0.2])
+@pytest.mark.parametrize("malformed", [
+    {"health": {"level": "INVALID", "decision_level": "ok"}},
+    {"health": {"level": "ok", "decision_level": "INVALID"}},
+    {"health": ["ok"]}, {"health": []}, {"obstacle": "false"},
+    {"obstacle": 1}, {"warning": "false"},
+])
+def test_malformed_raw_result_cannot_release_stop_or_become_catchup_caution(
+        freshness_driver, monkeypatch, previous_stop, lag, malformed):
+    node, clock, send = freshness_driver
+    clock["obstacle"] = previous_stop
+    send(20.0)
+    send(20.1)
+    clock["obstacle"] = False
+    detect = node.detector.process
+    raw_results = []
+
+    def malformed_detect(frame, **kwargs):
+        res = detect(frame, **kwargs)
+        for name, value in malformed.items():
+            setattr(res, name, value)
+        raw_results.append(res)
+        return res
+
+    monkeypatch.setattr(node.detector, "process", malformed_detect)
+    result = _queued_freshness_result(node, clock, lag) if lag else send(20.2)
+    expected = "STOP" if previous_stop else "FAULT"
+    assert result["snapshot_kind"] == "frame" and node.n_frames == 3
+    assert result["decision"] == node.published["/resense/decision"][-1].data == expected
+    assert result["freshness"]["reason"] == "detector_error"
+    assert not result["freshness"]["valid"] and not result["freshness"]["go_allowed"]
+    assert result["clear_distance"] == node.published["/resense/clear_distance"][-1].data == 0.0
+    assert result["health"]["clear_distance"] == result["health"]["monitored_range"] == 0.0
+    assert result["health"]["level"] == result["health"]["decision_level"] == "error"
+    assert result["caution_reason"] == [] and result["decision_policy"] == node.decision_policy.version
+    assert result["obstacle"] is node.published["/resense/obstacle_detected"][-1].data is previous_stop
+    assert result["stop_held"] is previous_stop
+    assert node.published["/resense/markers"][-1].markers[-1].text.startswith(expected)
+    for name, value in malformed.items():
+        assert getattr(raw_results[-1], name) == value  # projection must not repair/mutate the detector result
+    monkeypatch.setattr(node.detector, "process", detect)
+    while node.pending:
+        node.on_pending()
+    recovered = send(20.5)
+    assert recovered["decision"] == "GO" and recovered["freshness"]["valid"]
+    assert not recovered["stop_held"]
+
+
+@pytest.mark.parametrize("freshness_driver", [{"decision_policy": "v1"}, {"decision_policy": "v2"}], indirect=True)
+@pytest.mark.parametrize("raw_stop", [True, np.bool_(True)])
+def test_strict_raw_stop_wins_even_with_malformed_warning_and_health(freshness_driver, monkeypatch, raw_stop):
+    node, clock, send = freshness_driver
+    send(20.0)
+    send(20.1)
+    detect = node.detector.process
+
+    def broken_stop(frame, **kwargs):
+        res = detect(frame, **kwargs)
+        res.obstacle, res.warning, res.health = raw_stop, "false", ["invalid"]
+        res.nearest_distance = 40.0
+        return res
+
+    monkeypatch.setattr(node.detector, "process", broken_stop)
+    result = _queued_freshness_result(node, clock, 0.2)
+    assert result["snapshot_kind"] == "frame" and result["decision"] == "STOP"
+    assert result["detector_obstacle"] is True and not result["stop_held"]
+    assert not result["freshness"]["valid"] and not result["freshness"]["go_allowed"]
+    assert result["clear_distance"] == 0.0 and result["caution_reason"] == []
+    assert node.stop_latch["nearest_distance"] == 40.0
+
+
+def _evict_active_frame_behind_other_input(node, clock):
+    """A.1 is evicted by twelve retained B frames, all taken through the real DDS adapter."""
+    active, frame_id = node.active_topic, node.active_frame_id
+    other = next(t for t in node.subs if t != active)
+    xyz = np.array([[5.0, 0, 0]], np.float32)
+    first, _ = _cloud(xyz, node.last_stamp + 0.1, frame_id=frame_id)
+    metadata = {"source_timestamp": int(clock["wall"] * 1e9)}
+    node.remember_arrival(first, metadata)
+    node.pending.append((active, first))
+    queue = [_cloud(xyz, 0.2 * k, frame_id="other-lidar")[0] for k in range(12)]
+
+    class Handle:
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def take_message(self, *a):
+            assert max(len(node.pending), len(node.arrivals), len(node.skipped), len(node.pending_epochs)) <= 12
+            return (queue.pop(0), metadata) if queue else None
+
+    sub = node.subs[other]
+    sub.handle, sub.msg_type, sub.raw = Handle(), object, False
+    before = node.dropped, node.dropped_skipped, node.pending_overflow
+    node.take_waiting(other)
+    assert len(node.pending) == 12 and all(t == other for t, _ in node.pending)
+    assert (node.dropped, node.dropped_skipped, node.pending_overflow) == tuple(n + 1 for n in before)
+    while node.pending:
+        node.on_pending()                  # B is ignored while A is live
+    assert node.active_topic == active and node.active_frame_id == frame_id
+    assert not node.arrivals and not node.skipped and not node.pending_epochs
+
+
+def test_cross_input_cap_skip_is_counted_once_when_active_input_resumes(freshness_driver):
+    node, clock, send = freshness_driver
+    send(0.0)
+    _evict_active_frame_behind_other_input(node, clock)
+    assert node.n_frames == 1
+    resumed = send(0.2)
+    assert resumed["node"]["dropped_frames"] == resumed["node"]["catchup_skipped"] == 1
+    assert node.active_skip_credit == 0
+    send(0.4)                            # .3 never reached the node; the old credit must be consumed
+    assert node.dropped == 2 and node.dropped_skipped == 1
+
+
+@pytest.mark.parametrize("epoch_end", ["loop", "frame", "topic", "forward"])
+def test_cross_input_skip_credit_is_bounded_and_cleared_at_each_epoch(freshness_driver, epoch_end):
+    node, clock, send = freshness_driver
+    stamp, topic = 100.0, "/lidar_points"
+    for epoch in range(24):
+        frame_id = f"lidar-{epoch}" if epoch_end == "frame" else "lidar"
+        send(stamp, topic=topic, frame_id=frame_id, dt=1.1 if epoch_end == "topic" else 0.1)
+        assert node.n_inputs == epoch + 1 and node.active_skip_credit == 0
+        _evict_active_frame_behind_other_input(node, clock)
+        assert node.active_skip_credit == 1
+        if epoch % 2:
+            send(stamp + 0.2, topic=topic, frame_id=frame_id)
+            assert node.active_skip_credit == 0
+        assert node.dropped == node.dropped_skipped == epoch + 1
+        assert not node.pending and not node.arrivals and not node.skipped and not node.pending_epochs
+        if epoch_end == "loop":
+            stamp -= 1.0
+        elif epoch_end == "forward":
+            stamp += 40.0
+        elif epoch_end == "topic":
+            topic = next(t for t in node.subs if t != topic)
+
+
 def test_humble_executor_preserves_first_and_drained_source_info(node_cls):
     import asyncio
     module = sys.modules[node_cls.__module__]
