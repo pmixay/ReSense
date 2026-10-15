@@ -47,7 +47,17 @@ the sealed numbers frame by frame.
   identical. Cost: the ride's range is capped in 13.8 % of its frames (median 94 m; 3.8 % of the range), C 50 %
   (its two curve entries), A 20 %, S 5 %, B 3 %, `doubleT_platform` and `doubleT_obstacle` none. Capping the corridor
   there too (`beyond_axis`, CAUTION) was measured and not taken: C's person 55 → 43 STOP frames, first STOP 82.8 →
-  65.1 m.
+  65.1 m. The full regression gate passes on this code: every decision of every gate frame is the sealed detector's;
+  only `monitored_range` / `clear_distance` / `wall_drift` differ (2 321 of 15 269 frames; and in 2 ride frames the
+  latency warning of the machine's timing, not a decision input).
+- Not shipped — the axis itself (15.10; local branch `r3/axis-B-trial`). Weighting the two walls also by how far each
+  is seen continuously (span ratio ** 4, gaps up to 16 m) puts C's axis on the wall-referenced track (100 m: median
+  1.39 → 0.42-0.56 m, max 2.41 → 0.71-1.05 m) and the judge's person placed on that track goes 47 → 64-74 STOP frames
+  (first STOP 71.0 → 96-111 m). Three versions failed the full gate: on every two-wall frame (ride 27 → 33 events, a
+  false STOP on `roundT_doubleT` from its double-track tunnel's far wall), only for two near walls with the farther
+  one curving more (ride 27 → 36, the station +1), and only after a frame with a wall drift as well (ride 27 → 34, C
+  +1 event at 56 m). Each moves the axis on frames the false-alarm rules were screened with; not tuned further on the
+  same recordings.
 
 ### Fixed — the review of 14.10 (`14f83dd`)
 
