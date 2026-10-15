@@ -70,6 +70,14 @@ COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json ./docs/evidence/
 # Committed residual-inventory fixtures keep the dataset-free tests runnable in the image.
 COPY docs/evidence/results/residual_events_2026-09-28.json ./docs/evidence/results/residual_events_2026-09-28.json
 COPY docs/RESIDUAL_EVENTS_2026-09-28.md ./docs/RESIDUAL_EVENTS_2026-09-28.md
+# Pure dataset-free test fixtures (also useful in a runtime-image unit check). Copy exact files:
+# neither the web server/frontend nor recorded judge/startup outputs belong in this image.
+# BEGIN pure test fixtures (the context regression builds these exact COPY instructions)
+COPY webapp/backend/resense_web/__init__.py webapp/backend/resense_web/decision.py ./webapp/backend/resense_web/
+COPY docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh docs/evidence/judgement_2026-10-13/scripts/docker/listener.py ./docs/evidence/judgement_2026-10-13/scripts/docker/
+COPY docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py docs/evidence/node_startup_2026-10-15/docker_tools/listener.py docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py ./docs/evidence/node_startup_2026-10-15/docker_tools/
+COPY docs/evidence/offline_rebuild_2026-10-15/verify.py ./docs/evidence/offline_rebuild_2026-10-15/verify.py
+# END pure test fixtures
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
         pip3 install "rosbags==0.11.5" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2"; \
     fi

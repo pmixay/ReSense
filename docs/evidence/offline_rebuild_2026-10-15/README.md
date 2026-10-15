@@ -9,7 +9,7 @@ its tagged GitHub Actions run remains an integration check for the next release.
 
 Docker Desktop became available during this task: Engine 29.2.0, Linux containers,
 WSL2 x86-64, 12 logical CPUs and about 6.7 GiB Docker memory. See `docker-version.log`.
-The runtime image was built from this worktree with `WITH_TOOLS=0`.
+The original runtime image was built from the E2 worktree with `WITH_TOOLS=0`.
 
 | Check | Result / evidence |
 |---|---|
@@ -84,12 +84,22 @@ workflow explicitly passes `resense:$TAG` immediately after reload, records the 
 duration, runs the changed-source regression and non-root checks, and retains their logs.
 Its existing original-release acceptance steps continue to use `resense:$TAG`.
 
-Reproduce the complete local evidence with
-`python docs/evidence/offline_rebuild_2026-10-15/verify.py` in this exclusive worktree.
-The verifier owns the two `p1-e2-*-check` tags above; the mutation test refuses to overwrite an
-existing mutation tag, so choose a new `--image` when rerunning that test independently.
-Run `python docs/evidence/offline_rebuild_2026-10-15/verify.py --supplemental` for the
-additional lint, host-network player and Linux unit checks.
+After the combined node/policy changes settle, reproduce with fresh tags and a fresh output
+directory. PowerShell 5.1, from the combined worktree:
+
+```powershell
+$run = [guid]::NewGuid().ToString('N')
+$py = 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-venv/Scripts/python.exe'
+$out = "$env:TEMP/opencode/e2-reproduce-$run"
+& $py docs/evidence/offline_rebuild_2026-10-15/verify.py --base-image "resense:e2-runtime-$run" --offline-image "resense:e2-offline-$run" --mutation-image "resense:e2-mutation-$run" --out $out
+& $py docs/evidence/offline_rebuild_2026-10-15/verify.py --supplemental --base-image "resense:e2-runtime-$run" --offline-image "resense:e2-offline-$run" --out $out
+```
+
+`--mutation-image` is configurable; when omitted it receives a fresh UUID tag instead of the
+retained `resense:p1-e2-mutation-check`. The underlying mutation test still refuses to overwrite
+an existing image. The explicit fresh runtime/offline tags and `--out` above also preserve the
+earlier images and evidence. New verifier results record the source commit and working-tree
+status at the start/end instead of hard-coding the original detector base commit.
 
 The Windows host's complete release unit run initially reported 19 passed / 34 failed because
 its `bash` resolves to WSL without `/bin/bash`. All 53 passed in a disposable Linux runtime
@@ -108,3 +118,67 @@ supplementary pytest installs are separate from the network-none build/run evide
 * Next release: publish/reload the new archive and run the updated release workflow. Local
   save/load did not remove unrelated daemon images or caches; the offline build used
   `--no-cache` instead. The release runner retains its existing archive/cache-removal check.
+
+## Independent-review packaging follow-up in the combined worktree
+
+Implemented in `C:/Users/alikh/AppData/Local/Temp/opencode/rs-p1-start`, branch
+`p1/start-2026-10-15`. Node and C1 agents were editing that worktree concurrently. The focused
+Docker check therefore used an immutable `git archive` of **`4e4d5a9`**, with only the E2
+Dockerfile, ignore rules, verifier and new fixture unit tests overlaid. Their byte hashes,
+the frozen source commit, commands, timings and image IDs are in `packaging_review/result.json`.
+This is packaging evidence, not final integrated tools-image or S1-matrix acceptance.
+
+### File coverage and measured state
+
+The runtime/tools Dockerfile now copies exactly thirteen small pure files, **56,308 bytes**
+in the measured snapshot, in addition to its existing fixtures:
+
+* `webapp/backend/resense_web/{__init__,decision}.py` for shared-policy consumer imports;
+* `docs/evidence/judgement_2026-10-13/scripts/docker/{analyze_chain.py,chain.sh,listener.py}`;
+* the seven files in `docs/evidence/node_startup_2026-10-15/docker_tools/`
+  (`analyze_chain.py`, `chain.sh`, `launch_matrix.py`, `listener.py`, `observe_listener.py`,
+  `publish_report.py`, `runtime_probe.py`);
+* this folder's `verify.py`, used by `tests/test_docker_fixtures.py` to exercise reproduction options.
+
+These are exact COPY inputs and exact `.dockerignore` exceptions. The Docker check builds
+the production fixture COPY block verbatim and also inspects the actual filtered context.
+It confirms that no frontend, other backend application modules, or recorded judge/startup
+output directories enter that context. The tiny fixtures are available in both runtime and
+tools images, matching the existing unconditional dataset-free fixture copies.
+
+| Focused check | Measured result |
+|---|---|
+| Host new fixture/verifier unit cases | **18 passed**; fresh UUID mutation tags, explicit image/output options, distinct-tag validation, redirected supplemental output, readable fixture inventory |
+| Actual Docker context/COPY and ROS overlay rebuild | PASS, **12.360 s**, `--network none --pull=false --no-cache`; `packaging_review/build.log` |
+| Fixture inventory + policy consumers + S1 evidence units | **151 passed, no skips**; `packaging_review/packaging-units.log` |
+| Same set plus frozen node units | **237 passed, 18 skipped**; Open3D is absent from this runtime-only fixture image; `packaging_review/linux-units.log` |
+| Focused Ruff and owned-file whitespace | PASS |
+
+No apt/pip install or recorded-bag playback was needed. The focused subset explicitly imports
+the installed detector before adding `/opt/resense` for `scripts.*` imports, rather than relying
+on full-suite collection order. Node and C1 source/test changes made after `4e4d5a9` are not part
+of these counts. The parent still needs the settled `WITH_TOOLS=1` full suite with its no-skip guard.
+
+Reusable fixture-test image: `resense:p1-e2-fixtures-review-20261015-v4`, ID
+`sha256:fbe257da5c4e26914868a556d7e3deb5db1acc0ae5dddc73e4dd48662a978184`.
+It is a test fixture overlay on the original loaded `resense:p1-e2-check`, not a release image.
+The original base ID and retained `resense:p1-e2-mutation-check` ID are unchanged. All containers
+used `--rm`; only this follow-up's superseded fixture-test tags were removed.
+
+Re-run the frozen packaging proof with a fresh tag and output path (PowerShell):
+
+```powershell
+$run = [guid]::NewGuid().ToString('N')
+$py = 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-venv/Scripts/python.exe'
+& $py docs/evidence/offline_rebuild_2026-10-15/context_check.py --source-ref 4e4d5a9 --base-image resense:p1-e2-check --image "resense:e2-fixtures-$run" --out "$env:TEMP/opencode/e2-fixtures-$run"
+```
+
+After all agents settle, the parent can build and run the full combined tools suite from a clean
+checkout, using a fresh tag and recording its exact commit:
+
+```powershell
+$commit = git rev-parse HEAD
+$image = "resense:p1-combined-tools-$($commit.Substring(0,12))"
+docker build --build-arg WITH_TOOLS=1 --label "org.opencontainers.image.revision=$commit" -f docker/Dockerfile -t $image .
+docker run --rm --network none -w / -e RESENSE_REQUIRE_SYNTHETIC=1 -e PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 $image python3 -c "import resense, sys, pytest; assert not resense.__file__.startswith('/opt/resense/'); sys.path.insert(0, '/opt/resense'); sys.exit(pytest.main(['-q', '-rs', '/opt/resense/tests']))"
+```
