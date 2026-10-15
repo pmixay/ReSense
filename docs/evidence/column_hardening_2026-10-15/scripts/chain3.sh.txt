@@ -1,0 +1,12 @@
+#!/bin/bash
+# after chain2: the remaining ride gate pieces plain on the new code with the r3 hooks (free-top tests, spares, cost)
+cd /tmp/claude-0/fixwork/r3_column
+until grep -q "CHAIN2 DONE" out/timing_${V:-v7}.txt 2>/dev/null; do sleep 20; done
+. ./env.sh
+V=${V:-v7}
+NEW=/tmp/claude-0/fixwork/r3_column/code_$V
+for p in 0 2 4 5 6 7; do
+  [ -f out/p${p}_plain_$V.jsonl ] || WT=$NEW RESENSE_REPO=$NEW PYTHONPATH=$NEW nice -n 10 python grun.py $G/new_data out/p${p}_plain_$V piece:$p/8 > out/p${p}_plain_$V.log 2>&1
+  tail -1 out/p${p}_plain_$V.log >> out/pieces_$V.txt
+done
+echo CHAIN3 DONE >> out/pieces_$V.txt

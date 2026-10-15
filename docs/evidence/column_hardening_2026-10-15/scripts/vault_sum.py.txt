@@ -1,0 +1,28 @@
+"""Summarise vault_*.json: per recording, the lowest overhead return above the envelope (|dy| <= 1.05, h > 3.0) and
+the crown (highest return over |dy| <= 0.5) per X range, as percentiles over the sampled frames' 10 m bins."""
+import glob
+import json
+import os
+
+import numpy as np
+
+out = {}
+for p in sorted(glob.glob("/tmp/claude-0/fixwork/r3_column/out/vault_*.json")):
+    name = os.path.basename(p)[6:-5]
+    rows = json.load(open(p))
+    res = {}
+    for lo, hi in ((10, 50), (50, 100), (100, 160)):
+        lows = [v[0] for r in rows for b, v in r["bins"].items() if lo <= int(b) < hi]
+        p1 = [v[5] for r in rows for b, v in r["bins"].items() if lo <= int(b) < hi and v[5] > 0]
+        cr = [v[2] for r in rows for b, v in r["bins"].items() if lo <= int(b) < hi and v[2] > 0]
+        if not lows:
+            continue
+        res[f"{lo}-{hi}"] = {"n": len(lows), "low_min": min(lows),
+                             "low_p5/p25/p50": [round(float(np.percentile(lows, q)), 2) for q in (5, 25, 50)],
+                             "bin_p1_p5/p50": [round(float(np.percentile(p1, q)), 2) for q in (5, 50)] if p1 else None,
+                             "crown_p5/p50": [round(float(np.percentile(cr, q)), 2) for q in (5, 50)] if cr else None}
+    out[name] = res
+    print(name)
+    for k, v in res.items():
+        print("   ", k, v)
+json.dump(out, open("/tmp/claude-0/fixwork/r3_column/out/vault_summary.json", "w"), indent=1)

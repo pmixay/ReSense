@@ -1,0 +1,40 @@
+#!/bin/bash
+# Judge range probes (column set + P4 tall poles + C person) on the code at $CODE, one at a time, under nice, the r3
+# hooks installed. usage: run_probes.sh <outdir> <case...> | column | all
+cd /tmp/claude-0/fixwork/r3_column
+. ./env.sh
+O=$1; shift; case $O in /*) ;; *) O=$R3/$O;; esac; mkdir -p $O
+A="$J/roundT_squareT_pressureGate_squareT $ICP/icp_roundT_squareT_pressureGate_squareT.json"
+B="$J/roundT_doubleT $ICP/icp_roundT_doubleT.json"
+C="$J/roundT_pressureGate_roundT $ICP/icp_roundT_pressureGate_roundT.json"
+S="$J/squareT_platform_squareT_switch $ICP/icp_squareT_platform_squareT_switch.json"
+AW="--start 150 --d0 230 --end 340"; CW="--start 0 --d0 230"
+P="--obj 0.5,0.5,1.75"; POLE="--obj 0.3,0.3,2.8"; POST="--obj 0.5,0.5,2.5"
+COL="pole_c pole_side pole_sideN post_c post_side pole_c_drop pole_side_drop A_person S_pole_side60 S_pole_side100
+     B_pole_c B_pole_side C_pole_c C_pole_side C_person"
+TALL="pole32_c pole32_side pole36_c pole36_side pole32_sideN pole36_sideN"
+cases="$*"; [ "$cases" = column ] && cases="$COL"; [ "$cases" = tall ] && cases="$TALL"; [ "$cases" = all ] && cases="$COL $TALL"
+cd $W/docs/evidence/judgement_2026-10-13 || exit 9
+for c in $cases; do
+  case $c in
+    pole_c) args="$A $POLE $AW";; pole_side) args="$A $POLE $AW --lat 0.7";; pole_sideN) args="$A $POLE $AW --lat -0.7";;
+    post_c) args="$A $POST $AW";; post_side) args="$A $POST $AW --lat 0.7";;
+    pole_c_drop) args="$A $POLE $AW --dropout";; pole_side_drop) args="$A $POLE $AW --lat 0.7 --dropout";;
+    A_person) args="$A $P $AW";;
+    S_pole_side60) args="$S $POLE --start 360 --d0 60 --end 620 --lat 0.7";;
+    S_pole_side100) args="$S $POLE --start 360 --d0 100 --end 620 --lat 0.7";;
+    B_pole_c) args="$B $POLE --start 50 --d0 230";; B_pole_side) args="$B $POLE --start 50 --d0 230 --lat 0.7";;
+    C_pole_c) args="$C $POLE $CW";; C_pole_side) args="$C $POLE $CW --lat 0.7";;
+    C_person) args="$C $P $CW";;
+    pole32_c) args="$A --obj 0.3,0.3,3.2 $AW";; pole32_side) args="$A --obj 0.3,0.3,3.2 $AW --lat 0.7";;
+    pole32_sideN) args="$A --obj 0.3,0.3,3.2 $AW --lat -0.7";;
+    pole36_c) args="$A --obj 0.3,0.3,3.6 $AW";; pole36_side) args="$A --obj 0.3,0.3,3.6 $AW --lat 0.7";;
+    pole36_sideN) args="$A --obj 0.3,0.3,3.6 $AW --lat -0.7";;
+    *) echo "unknown $c"; continue;;
+  esac
+  [ -f $O/$c.json ] && continue
+  set -- $args; cache=$1; icp=$2; shift 2
+  WT=$W RESENSE_REPO=$W PYTHONPATH=$W nice -n 10 python $R3/rtw2.py $cache $icp $O/$c "$@" > $O/$c.log 2>&1
+  echo "$c rc $? $(date +%T) $(tail -1 $O/$c.log)"
+done
+echo PROBES_DONE $(date +%T)

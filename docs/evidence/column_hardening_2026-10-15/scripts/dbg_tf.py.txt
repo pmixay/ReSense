@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""Debug top_is_free on real frames: replay gate-cache frames [from, to] (fresh detector), and at the frames listed
+in --at dump, for every top_is_free call, the window internals (with the DARKBAND what-if applied if set).
+usage: dbg_tf.py <cache> <from> <to> --at K,K"""
+import argparse
+import os
+import sys
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hooks  # noqa
+import resense.clustering as C  # noqa
+from resense.config import DetectorConfig  # noqa
+from resense.detector import Detector  # noqa
+from resense.frame import frame_from_compact  # noqa
+from scripts.cache_io import cache_files, cache_file_stem, load_cache_array, load_cache_stamps  # noqa
+
+ap = argparse.ArgumentParser()
+ap.add_argument("cache"); ap.add_argument("i0", type=int); ap.add_argument("i1", type=int)
+ap.add_argument("--at", default="")
+ap.add_argument("--piece", default="")
+a = ap.parse_args()
+AT = {int(v) for v in a.at.split(",") if v}
+files = [str(f) for f in cache_files(a.cache)]
+if a.piece:
+    k_, n_ = (int(v) for v in a.piece.split("/"))
+    files = [str(f) for f in np.array_split(np.array(files), n_)[k_]]
+stamps = load_cache_stamps(a.cache)
+cfg = DetectorConfig.from_yaml(os.path.join(WT, "configs/default.yaml"))
+det = Detector(cfg)
+inner = hooks._tf
+
+
+def dump(rays, idx, min_returns=2, frame_ring=None, window=0.0, vault_margin=0.15, tall_gap=0.0):
+    v = inner(rays, idx, min_returns, frame_ring, window=window, vault_margin=vault_margin, tall_gap=tall_gap)
+    if hooks.STATS["k"] not in AT:
+        return v
+    p = rays.xyz[idx].astype(np.float64)
+    rh = np.hypot(p[:, 0], p[:, 1]); el = np.degrees(np.arctan2(p[:, 2], rh)); az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+    top = el.max(); head = el >= top - 0.06; r_top = float(np.median(np.hypot(rh, p[:, 2])[head]))
+    a0, a1 = az.min(), az.max()
+    w = rays.window(a0 - 0.12, a1 + 0.12)
+    q = rays.xyz[w].astype(np.float64); qh = np.hypot(q[:, 0], q[:, 1]); qe = np.degrees(np.arctan2(q[:, 2], qh))
+    qr = np.hypot(qh, q[:, 2]); tol = max(0.5, 0.02 * r_top); same = np.abs(qr - r_top) <= tol
+    h_top = float(rays.h[idx].max())
+    vault = C._local_vault(rays, idx, h_top, w[same])
+    print(f"k {hooks.STATS['k']} free {v} tall {tall_gap > 0} n {idx.size} x {np.median(p[:, 0]):.1f} y {np.median(p[:, 1]):.2f} "
+          f"dy {np.median(rays.dy[idx]):.2f} top_el {top:.3f} h_top {h_top:.2f} r_top {r_top:.1f} az {a0:.2f}..{a1:.2f} "
+          f"vault {vault} rings {None if rays.ring is None else sorted(set(rays.ring[idx][head].tolist()))}")
+    X, H, D = rays.xyz[:, 0], rays.h, rays.dy
+    px = p[:, 0]; x0, x1 = px.min(), px.max()
+    for lo_, hi_ in ((0.0, 0.5), (0.0, 1.05)):
+        m = (X >= 0.8 * x0) & (X <= 1.3 * x1) & (np.abs(D) >= lo_) & (np.abs(D) <= hi_) & (H > h_top + 0.1)
+        if m.any():
+            hh = np.sort(H[m])
+            print(f"   centre vault |dy| {lo_}-{hi_}: n {m.sum()} min {hh[0]:.2f} p5 {np.percentile(hh, 5):.2f} p50 {np.median(hh):.2f}")
+    up = (qe > top + 0.04) & (qe <= top + 3.0)
+    order = np.argsort(qe[up])
+    rows = []
+    for j in np.flatnonzero(up)[order][:80]:
+        rows.append(f"{qe[j]:.3f}/{qr[j]:.1f}/{rays.h[w[j]]:.2f}/{'S' if same[j] else ('B' if qr[j] > r_top + tol else 'N')}"
+                    f"/{'' if rays.ring is None else rays.ring[w[j]]}")
+    print("   above (el/range/h/S|B|N/ring):", " ".join(rows))
+    return v
+
+
+hooks._tf = dump
+sel = []
+for i, f in enumerate(files):
+    stem = cache_file_stem(f)
+    parts = stem.split("_")
+    gi = int(parts[-2]) * 51 + int(parts[-1]) if stem.startswith("new_data_") else i
+    if a.i0 <= gi <= a.i1:
+        sel.append((gi, i, f, stem))
+print("selected", len(sel), sorted(sel)[0][3], sorted(sel)[-1][3])
+for gi, i, f, stem in sorted(sel):
+    hooks.STATS["k"] = gi
+    fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
+    res = det.process(fr)
+    if gi in AT:
+        print("calls so far", hooks.STATS["tf_calls"])
+        print("FRAME", gi, "dets", [(round(d.distance, 1), round(d.lateral, 2), d.reason, d.zone) for d in res.detections][:5],
+              "cands", [(round(c.distance, 1), round(c.lateral, 2), c.reason, c.zone, [round(float(v), 2) for v in c.size])
+                        for c in res.candidates if 25 < c.distance < 60], "axis_valid", round(float(res.track.axis_valid), 1),
+              "mount", res.mount)

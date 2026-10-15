@@ -1,0 +1,46 @@
+"""How often a real frame's azimuth window (as top_is_free reads it) carries ids that _ids_in_elevation_order rejects:
+random windows 0.3-1.0 deg wide within +-15 deg of the axis, on frames spread over a gate-cache recording."""
+import os
+import sys
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import resense  # noqa
+assert resense.__file__.startswith(WT)
+from resense.clustering import FrameRays, _ids_in_elevation_order  # noqa
+from resense.config import DetectorConfig  # noqa
+from resense.frame import frame_from_compact  # noqa
+from scripts.cache_io import cache_files, load_cache_array  # noqa
+
+cfg = DetectorConfig()
+rng = np.random.default_rng(1)
+tot = bad = 0
+examples = []
+for cache in sys.argv[1:]:
+    files = [str(f) for f in cache_files(cache)]
+    for f in files[:: max(1, len(files) // 25)]:
+        fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=0.0, frame_id="x")
+        if fr.ring is None:
+            continue
+        rays = FrameRays(fr.xyz, fr.ring)
+        for _ in range(40):
+            a0 = float(rng.uniform(-15, 15))
+            w = rays.window(a0, a0 + float(rng.uniform(0.3, 1.0)))
+            if w.size < 10:
+                continue
+            q = fr.xyz[w].astype(np.float64)
+            qe = np.degrees(np.arctan2(q[:, 2], np.hypot(q[:, 0], q[:, 1])))
+            rw = fr.ring[w].astype(np.int64)
+            if rw.min() == rw.max():
+                continue
+            tot += 1
+            if not _ids_in_elevation_order(rw, qe):
+                bad += 1
+                if len(examples) < 5:
+                    ids, inv = np.unique(rw, return_inverse=True)
+                    mean = np.bincount(inv, weights=qe) / np.bincount(inv)
+                    j = int(np.argmax(np.diff(mean)))
+                    examples.append((os.path.basename(f), a0, ids[j], ids[j + 1], mean[j], mean[j + 1]))
+print("windows", tot, "rejected", bad, examples)

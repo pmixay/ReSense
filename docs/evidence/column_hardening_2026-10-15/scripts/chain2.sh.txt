@@ -1,0 +1,23 @@
+#!/bin/bash
+# after chain_v5: the candidate's plain ride pieces with the r3 hooks (timing base), the 29.09 moving-train battery
+# (sealed / 14.10 / new, 22 and 10 m/s), the K-tests-per-frame timing (14.10 / new interleaved, 3 rounds)
+cd /tmp/claude-0/fixwork/r3_column
+. ./env.sh
+V=${V:-v5}
+NEW=/tmp/claude-0/fixwork/r3_column/code_$V
+for p in 1 3; do
+  [ -f out/p${p}_plain_cand.jsonl ] || run_c grun.py $G/new_data out/p${p}_plain_cand piece:$p/8 > out/p${p}_plain_cand.log 2>&1
+done
+for spd in 22 10; do
+  echo "== sealed $spd" >> out/moving_$V.txt; run_s sr_moving.py $spd >> out/moving_$V.txt 2>&1
+  echo "== 14.10 $spd" >> out/moving_$V.txt; run_c sr_moving.py $spd >> out/moving_$V.txt 2>&1
+  echo "== new $spd" >> out/moving_$V.txt; WT=$NEW RESENSE_REPO=$NEW PYTHONPATH=$NEW nice -n 10 python sr_moving.py $spd >> out/moving_$V.txt 2>&1
+done
+for r in 1 2 3; do
+  for f in 2775 5083 9000; do
+    echo "== 14.10 round $r" >> out/timing_$V.txt; run_c timing_scale.py $G/new_data $f >> out/timing_$V.txt 2>&1
+    echo "== new round $r" >> out/timing_$V.txt
+    WT=$NEW RESENSE_REPO=$NEW PYTHONPATH=$NEW nice -n 10 python timing_scale.py $G/new_data $f >> out/timing_$V.txt 2>&1
+  done
+done
+echo CHAIN2 DONE >> out/timing_$V.txt

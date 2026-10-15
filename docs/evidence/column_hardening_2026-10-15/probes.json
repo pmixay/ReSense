@@ -1,0 +1,1385 @@
+{
+ "pole_c": {
+  "sealed": {
+   "first_stop": 218.38,
+   "held_from": null,
+   "stop": 82,
+   "visible": 177,
+   "GO": 5,
+   "CAUTION": 90,
+   "STOP": 82,
+   "bins": {
+    "3-30": "0/18",
+    "30-60": "0/21",
+    "60-100": "16/27",
+    "100-150": "20/39",
+    "150-200": "35/42",
+    "200-260": "11/30"
+   }
+  },
+  "14.10": {
+   "first_stop": 218.38,
+   "held_from": 225.9,
+   "stop": 157,
+   "visible": 177,
+   "GO": 5,
+   "CAUTION": 15,
+   "STOP": 157,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "41/42",
+    "200-260": "11/30"
+   }
+  },
+  "new": {
+   "first_stop": 218.38,
+   "held_from": 225.9,
+   "stop": 157,
+   "visible": 177,
+   "GO": 5,
+   "CAUTION": 15,
+   "STOP": 157,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "41/42",
+    "200-260": "11/30"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/judge_data/baseline_out/range2/E5_pole_c.json"
+ },
+ "pole_side": {
+  "sealed": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 170,
+   "STOP": 0,
+   "bins": {
+    "3-30": "0/18",
+    "30-60": "0/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/44",
+    "200-260": "0/27"
+   }
+  },
+  "14.10": {
+   "first_stop": 190.14,
+   "held_from": 191.16,
+   "stop": 128,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 42,
+   "STOP": 128,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "23/44",
+    "200-260": "0/27"
+   }
+  },
+  "new": {
+   "first_stop": 190.14,
+   "held_from": 191.16,
+   "stop": 128,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 42,
+   "STOP": 128,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "23/44",
+    "200-260": "0/27"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/judge_data/baseline_out/range2/E5_pole_side.json"
+ },
+ "pole_sideN": {
+  "sealed": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 181,
+   "GO": 4,
+   "CAUTION": 177,
+   "STOP": 0,
+   "bins": {
+    "3-30": "0/18",
+    "30-60": "0/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/45",
+    "200-260": "0/31"
+   }
+  },
+  "14.10": {
+   "first_stop": 192.18,
+   "held_from": 195.2,
+   "stop": 132,
+   "visible": 181,
+   "GO": 4,
+   "CAUTION": 45,
+   "STOP": 132,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "29/39",
+    "150-200": "37/45",
+    "200-260": "0/31"
+   }
+  },
+  "new": {
+   "first_stop": 192.18,
+   "held_from": 195.2,
+   "stop": 132,
+   "visible": 181,
+   "GO": 4,
+   "CAUTION": 45,
+   "STOP": 132,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "29/39",
+    "150-200": "37/45",
+    "200-260": "0/31"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/investigate_column/out/pole_sideN.json"
+ },
+ "post_c": {
+  "sealed": {
+   "first_stop": 218.38,
+   "held_from": null,
+   "stop": 56,
+   "visible": 185,
+   "GO": 5,
+   "CAUTION": 124,
+   "STOP": 56,
+   "bins": {
+    "3-30": "0/18",
+    "30-60": "0/21",
+    "60-100": "0/27",
+    "100-150": "9/39",
+    "150-200": "39/45",
+    "200-260": "8/35"
+   }
+  },
+  "14.10": {
+   "first_stop": 218.38,
+   "held_from": 220.93,
+   "stop": 157,
+   "visible": 185,
+   "GO": 5,
+   "CAUTION": 23,
+   "STOP": 157,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "44/45",
+    "200-260": "8/35"
+   }
+  },
+  "new": {
+   "first_stop": 218.38,
+   "held_from": 220.93,
+   "stop": 157,
+   "visible": 185,
+   "GO": 5,
+   "CAUTION": 23,
+   "STOP": 157,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "44/45",
+    "200-260": "8/35"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/investigate_column/out/post_c.json"
+ },
+ "post_side": {
+  "sealed": {
+   "first_stop": 184.93,
+   "held_from": null,
+   "stop": 30,
+   "visible": 185,
+   "GO": 4,
+   "CAUTION": 151,
+   "STOP": 30,
+   "bins": {
+    "3-30": "0/18",
+    "30-60": "0/21",
+    "60-100": "0/27",
+    "100-150": "4/39",
+    "150-200": "26/45",
+    "200-260": "0/35"
+   }
+  },
+  "14.10": {
+   "first_stop": 192.18,
+   "held_from": 202.07,
+   "stop": 138,
+   "visible": 185,
+   "GO": 4,
+   "CAUTION": 43,
+   "STOP": 138,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "33/45",
+    "200-260": "0/35"
+   }
+  },
+  "new": {
+   "first_stop": 192.18,
+   "held_from": 202.07,
+   "stop": 138,
+   "visible": 185,
+   "GO": 4,
+   "CAUTION": 43,
+   "STOP": 138,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "33/45",
+    "200-260": "0/35"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/investigate_column/out/post_side.json"
+ },
+ "pole_c_drop": {
+  "sealed": {
+   "first_stop": 196.19,
+   "held_from": null,
+   "stop": 67,
+   "visible": 176,
+   "GO": 19,
+   "CAUTION": 90,
+   "STOP": 67,
+   "bins": {
+    "3-30": "0/18",
+    "30-60": "0/21",
+    "60-100": "16/27",
+    "100-150": "18/39",
+    "150-200": "33/42",
+    "200-260": "0/29"
+   }
+  },
+  "14.10": {
+   "first_stop": 196.19,
+   "held_from": 209.63,
+   "stop": 143,
+   "visible": 176,
+   "GO": 19,
+   "CAUTION": 14,
+   "STOP": 143,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "38/42",
+    "200-260": "0/29"
+   }
+  },
+  "new": {
+   "first_stop": 196.19,
+   "held_from": 209.63,
+   "stop": 143,
+   "visible": 176,
+   "GO": 19,
+   "CAUTION": 14,
+   "STOP": 143,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "38/42",
+    "200-260": "0/29"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/final_column/probes/base/pole_c_drop.json"
+ },
+ "pole_side_drop": {
+  "sealed": {
+   "first_stop": 196.19,
+   "held_from": null,
+   "stop": 11,
+   "visible": 175,
+   "GO": 17,
+   "CAUTION": 147,
+   "STOP": 11,
+   "bins": {
+    "3-30": "0/18",
+    "30-60": "0/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "11/44",
+    "200-260": "0/26"
+   }
+  },
+  "14.10": {
+   "first_stop": 196.19,
+   "held_from": 175.27,
+   "stop": 126,
+   "visible": 175,
+   "GO": 17,
+   "CAUTION": 32,
+   "STOP": 126,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "21/44",
+    "200-260": "0/26"
+   }
+  },
+  "new": {
+   "first_stop": 196.19,
+   "held_from": 175.27,
+   "stop": 126,
+   "visible": 175,
+   "GO": 17,
+   "CAUTION": 32,
+   "STOP": 126,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "21/44",
+    "200-260": "0/26"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/column_track/probes/extra/A_pole_side_drop_sealed.json"
+ },
+ "A_person": {
+  "sealed": {
+   "first_stop": 218.38,
+   "held_from": 221.78,
+   "stop": 158,
+   "visible": 185,
+   "GO": 5,
+   "CAUTION": 22,
+   "STOP": 158,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "44/45",
+    "200-260": "9/35"
+   }
+  },
+  "14.10": {
+   "first_stop": 218.38,
+   "held_from": 221.78,
+   "stop": 158,
+   "visible": 185,
+   "GO": 5,
+   "CAUTION": 22,
+   "STOP": 158,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "44/45",
+    "200-260": "9/35"
+   }
+  },
+  "new": {
+   "first_stop": 218.38,
+   "held_from": 221.78,
+   "stop": 158,
+   "visible": 185,
+   "GO": 5,
+   "CAUTION": 22,
+   "STOP": 158,
+   "bins": {
+    "3-30": "18/18",
+    "30-60": "21/21",
+    "60-100": "27/27",
+    "100-150": "39/39",
+    "150-200": "44/45",
+    "200-260": "9/35"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/judge_data/baseline_out/range/A_person.json"
+ },
+ "S_pole_side60": {
+  "sealed": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 260,
+   "GO": 0,
+   "CAUTION": 252,
+   "STOP": 8,
+   "bins": {
+    "30-60": "0/97",
+    "60-100": "0/163"
+   }
+  },
+  "14.10": {
+   "first_stop": 60.0,
+   "held_from": 60.0,
+   "stop": 255,
+   "visible": 260,
+   "GO": 0,
+   "CAUTION": 5,
+   "STOP": 255,
+   "bins": {
+    "30-60": "97/97",
+    "60-100": "158/163"
+   }
+  },
+  "new": {
+   "first_stop": 60.0,
+   "held_from": 60.0,
+   "stop": 255,
+   "visible": 260,
+   "GO": 0,
+   "CAUTION": 5,
+   "STOP": 255,
+   "bins": {
+    "30-60": "97/97",
+    "60-100": "158/163"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/column_geom/out/base_S_pole_side60.json"
+ },
+ "S_pole_side100": {
+  "sealed": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 260,
+   "GO": 18,
+   "CAUTION": 240,
+   "STOP": 2,
+   "bins": {
+    "60-100": "0/97",
+    "100-150": "0/163"
+   }
+  },
+  "14.10": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 260,
+   "GO": 18,
+   "CAUTION": 240,
+   "STOP": 2,
+   "bins": {
+    "60-100": "0/97",
+    "100-150": "0/163"
+   }
+  },
+  "new": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 260,
+   "GO": 18,
+   "CAUTION": 240,
+   "STOP": 2,
+   "bins": {
+    "60-100": "0/97",
+    "100-150": "0/163"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/final_column/probes/base/S_pole_side100.json"
+ },
+ "B_pole_c": {
+  "sealed": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 111,
+   "GO": 9,
+   "CAUTION": 102,
+   "STOP": 0,
+   "bins": {
+    "3-30": "0/15",
+    "30-60": "0/17",
+    "60-100": "0/23",
+    "100-150": "0/23",
+    "150-200": "0/19",
+    "200-260": "0/14"
+   }
+  },
+  "14.10": {
+   "first_stop": 51.8,
+   "held_from": 57.11,
+   "stop": 28,
+   "visible": 111,
+   "GO": 9,
+   "CAUTION": 74,
+   "STOP": 28,
+   "bins": {
+    "3-30": "15/15",
+    "30-60": "13/17",
+    "60-100": "0/23",
+    "100-150": "0/23",
+    "150-200": "0/19",
+    "200-260": "0/14"
+   }
+  },
+  "new": {
+   "first_stop": 51.8,
+   "held_from": 57.11,
+   "stop": 28,
+   "visible": 111,
+   "GO": 9,
+   "CAUTION": 74,
+   "STOP": 28,
+   "bins": {
+    "3-30": "15/15",
+    "30-60": "13/17",
+    "60-100": "0/23",
+    "100-150": "0/23",
+    "150-200": "0/19",
+    "200-260": "0/14"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/column_geom/out/base_B_pole_c.json"
+ },
+ "B_pole_side": {
+  "sealed": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 119,
+   "GO": 5,
+   "CAUTION": 114,
+   "STOP": 0,
+   "bins": {
+    "3-30": "0/15",
+    "30-60": "0/17",
+    "60-100": "0/23",
+    "100-150": "0/26",
+    "150-200": "0/26",
+    "200-260": "0/12"
+   }
+  },
+  "14.10": {
+   "first_stop": 48.26,
+   "held_from": 51.8,
+   "stop": 26,
+   "visible": 119,
+   "GO": 5,
+   "CAUTION": 88,
+   "STOP": 26,
+   "bins": {
+    "3-30": "15/15",
+    "30-60": "11/17",
+    "60-100": "0/23",
+    "100-150": "0/26",
+    "150-200": "0/26",
+    "200-260": "0/12"
+   }
+  },
+  "new": {
+   "first_stop": 48.26,
+   "held_from": 51.8,
+   "stop": 26,
+   "visible": 119,
+   "GO": 5,
+   "CAUTION": 88,
+   "STOP": 26,
+   "bins": {
+    "3-30": "15/15",
+    "30-60": "11/17",
+    "60-100": "0/23",
+    "100-150": "0/26",
+    "150-200": "0/26",
+    "200-260": "0/12"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/column_geom/out/base_B_pole_side.json"
+ },
+ "C_pole_c": {
+  "sealed": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 150,
+   "GO": 45,
+   "CAUTION": 105,
+   "STOP": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/31",
+    "200-260": "0/19"
+   }
+  },
+  "14.10": {
+   "first_stop": 78.36,
+   "held_from": 82.77,
+   "stop": 50,
+   "visible": 150,
+   "GO": 38,
+   "CAUTION": 62,
+   "STOP": 50,
+   "bins": {
+    "3-30": "17/19",
+    "30-60": "20/20",
+    "60-100": "13/27",
+    "100-150": "0/34",
+    "150-200": "0/31",
+    "200-260": "0/19"
+   }
+  },
+  "new": {
+   "first_stop": 78.36,
+   "held_from": 82.77,
+   "stop": 50,
+   "visible": 150,
+   "GO": 38,
+   "CAUTION": 62,
+   "STOP": 50,
+   "bins": {
+    "3-30": "17/19",
+    "30-60": "20/20",
+    "60-100": "13/27",
+    "100-150": "0/34",
+    "150-200": "0/31",
+    "200-260": "0/19"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/column_track/probes/extra/C_pole_c_sealed.json"
+ },
+ "C_pole_side": {
+  "sealed": {
+   "first_stop": null,
+   "held_from": null,
+   "stop": 0,
+   "visible": 151,
+   "GO": 51,
+   "CAUTION": 100,
+   "STOP": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/18"
+   }
+  },
+  "14.10": {
+   "first_stop": 63.63,
+   "held_from": 66.58,
+   "stop": 40,
+   "visible": 151,
+   "GO": 51,
+   "CAUTION": 60,
+   "STOP": 40,
+   "bins": {
+    "3-30": "17/19",
+    "30-60": "20/20",
+    "60-100": "3/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/18"
+   }
+  },
+  "new": {
+   "first_stop": 63.63,
+   "held_from": 66.58,
+   "stop": 40,
+   "visible": 151,
+   "GO": 51,
+   "CAUTION": 60,
+   "STOP": 40,
+   "bins": {
+    "3-30": "17/19",
+    "30-60": "20/20",
+    "60-100": "3/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/18"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/column_track/probes/extra/C_pole_side_sealed.json"
+ },
+ "C_person": {
+  "sealed": {
+   "first_stop": 73.94,
+   "held_from": 81.3,
+   "stop": 49,
+   "visible": 153,
+   "GO": 46,
+   "CAUTION": 58,
+   "STOP": 49,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "10/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "14.10": {
+   "first_stop": 82.77,
+   "held_from": 91.63,
+   "stop": 55,
+   "visible": 153,
+   "GO": 42,
+   "CAUTION": 56,
+   "STOP": 55,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "16/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "new": {
+   "first_stop": 82.77,
+   "held_from": 91.63,
+   "stop": 55,
+   "visible": 153,
+   "GO": 42,
+   "CAUTION": 56,
+   "STOP": 55,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "16/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "/tmp/claude-0/fixwork/judge_oversize/base_C_person.json"
+ },
+ "pole32_c": {
+  "sealed": {
+   "first_stop": 218.38,
+   "held_from": null,
+   "stop": 98,
+   "visible": 177,
+   "GO": 7,
+   "CAUTION": 72,
+   "STOP": 98,
+   "bins": {
+    "3-30": "11/18",
+    "30-60": "3/21",
+    "60-100": "16/27",
+    "100-150": "21/39",
+    "150-200": "35/42",
+    "200-260": "12/30"
+   }
+  },
+  "14.10": {
+   "first_stop": 218.38,
+   "held_from": null,
+   "stop": 98,
+   "visible": 177,
+   "GO": 7,
+   "CAUTION": 72,
+   "STOP": 98,
+   "bins": {
+    "3-30": "11/18",
+    "30-60": "3/21",
+    "60-100": "16/27",
+    "100-150": "21/39",
+    "150-200": "35/42",
+    "200-260": "12/30"
+   }
+  },
+  "new": {
+   "first_stop": 218.38,
+   "held_from": null,
+   "stop": 98,
+   "visible": 177,
+   "GO": 7,
+   "CAUTION": 72,
+   "STOP": 98,
+   "bins": {
+    "3-30": "11/18",
+    "30-60": "3/21",
+    "60-100": "16/27",
+    "100-150": "21/39",
+    "150-200": "35/42",
+    "200-260": "12/30"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "out/probes_cand/pole32_c.json"
+ },
+ "pole32_side": {
+  "sealed": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 24,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 146,
+   "STOP": 24,
+   "bins": {
+    "3-30": "12/18",
+    "30-60": "12/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/44",
+    "200-260": "0/27"
+   }
+  },
+  "14.10": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 24,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 146,
+   "STOP": 24,
+   "bins": {
+    "3-30": "12/18",
+    "30-60": "12/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/44",
+    "200-260": "0/27"
+   }
+  },
+  "new": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 24,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 146,
+   "STOP": 24,
+   "bins": {
+    "3-30": "12/18",
+    "30-60": "12/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/44",
+    "200-260": "0/27"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "out/probes_cand/pole32_side.json"
+ },
+ "pole32_sideN": {
+  "sealed": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 28,
+   "visible": 181,
+   "GO": 5,
+   "CAUTION": 148,
+   "STOP": 28,
+   "bins": {
+    "3-30": "15/18",
+    "30-60": "13/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/45",
+    "200-260": "0/31"
+   }
+  },
+  "14.10": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 28,
+   "visible": 181,
+   "GO": 5,
+   "CAUTION": 148,
+   "STOP": 28,
+   "bins": {
+    "3-30": "15/18",
+    "30-60": "13/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/45",
+    "200-260": "0/31"
+   }
+  },
+  "new": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 28,
+   "visible": 181,
+   "GO": 5,
+   "CAUTION": 148,
+   "STOP": 28,
+   "bins": {
+    "3-30": "15/18",
+    "30-60": "13/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/45",
+    "200-260": "0/31"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "out/probes_cand/pole32_sideN.json"
+ },
+ "pole36_c": {
+  "sealed": {
+   "first_stop": 218.38,
+   "held_from": 41.89,
+   "stop": 105,
+   "visible": 177,
+   "GO": 7,
+   "CAUTION": 65,
+   "STOP": 105,
+   "bins": {
+    "3-30": "16/18",
+    "30-60": "9/21",
+    "60-100": "16/27",
+    "100-150": "17/39",
+    "150-200": "35/42",
+    "200-260": "12/30"
+   }
+  },
+  "14.10": {
+   "first_stop": 218.38,
+   "held_from": 41.89,
+   "stop": 105,
+   "visible": 177,
+   "GO": 7,
+   "CAUTION": 65,
+   "STOP": 105,
+   "bins": {
+    "3-30": "16/18",
+    "30-60": "9/21",
+    "60-100": "16/27",
+    "100-150": "17/39",
+    "150-200": "35/42",
+    "200-260": "12/30"
+   }
+  },
+  "new": {
+   "first_stop": 218.38,
+   "held_from": 41.89,
+   "stop": 105,
+   "visible": 177,
+   "GO": 7,
+   "CAUTION": 65,
+   "STOP": 105,
+   "bins": {
+    "3-30": "16/18",
+    "30-60": "9/21",
+    "60-100": "16/27",
+    "100-150": "17/39",
+    "150-200": "35/42",
+    "200-260": "12/30"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "out/probes_cand/pole36_c.json"
+ },
+ "pole36_side": {
+  "sealed": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 31,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 139,
+   "STOP": 31,
+   "bins": {
+    "3-30": "14/18",
+    "30-60": "17/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/44",
+    "200-260": "0/27"
+   }
+  },
+  "14.10": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 31,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 139,
+   "STOP": 31,
+   "bins": {
+    "3-30": "14/18",
+    "30-60": "17/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/44",
+    "200-260": "0/27"
+   }
+  },
+  "new": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 31,
+   "visible": 176,
+   "GO": 6,
+   "CAUTION": 139,
+   "STOP": 31,
+   "bins": {
+    "3-30": "14/18",
+    "30-60": "17/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/44",
+    "200-260": "0/27"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "out/probes_cand/pole36_side.json"
+ },
+ "pole36_sideN": {
+  "sealed": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 31,
+   "visible": 181,
+   "GO": 5,
+   "CAUTION": 145,
+   "STOP": 31,
+   "bins": {
+    "3-30": "14/18",
+    "30-60": "17/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/45",
+    "200-260": "0/31"
+   }
+  },
+  "14.10": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 31,
+   "visible": 181,
+   "GO": 5,
+   "CAUTION": 145,
+   "STOP": 31,
+   "bins": {
+    "3-30": "14/18",
+    "30-60": "17/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/45",
+    "200-260": "0/31"
+   }
+  },
+  "new": {
+   "first_stop": 53.8,
+   "held_from": null,
+   "stop": 31,
+   "visible": 181,
+   "GO": 5,
+   "CAUTION": 145,
+   "STOP": 31,
+   "bins": {
+    "3-30": "14/18",
+    "30-60": "17/21",
+    "60-100": "0/27",
+    "100-150": "0/39",
+    "150-200": "0/45",
+    "200-260": "0/31"
+   }
+  },
+  "new_vs_sealed_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "new_vs_14.10_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "14.10_vs_new_worse": {
+   "lost_stop": 0,
+   "new_go": 0
+  },
+  "frames_differ_14.10": 0,
+  "base": "out/probes_cand/pole36_sideN.json"
+ }
+}

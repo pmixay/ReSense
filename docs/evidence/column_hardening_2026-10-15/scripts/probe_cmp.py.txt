@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+"""Probe table (r3 column, 15.10): sealed base, the 14.10 candidate (14f83dd, fix_review probes_fin), this code.
+Per case: first STOP / held from / STOP frames of visible / G-C-S while visible; frames worse than sealed and than
+14.10 (a STOP lost, a new GO while visible). usage: probe_cmp.py <new_dir> [--cand DIR] [--json OUT]"""
+import json
+import os
+import sys
+
+sys.path.insert(0, "/tmp/claude-0/fixwork/fix_review")
+from probe_cmp import BASE, load, worse  # noqa
+
+FIN = "/tmp/claude-0/fixwork/fix_review/out/probes_fin"
+CASES = ["pole_c", "pole_side", "pole_sideN", "post_c", "post_side", "pole_c_drop", "pole_side_drop", "A_person",
+         "S_pole_side60", "S_pole_side100", "B_pole_c", "B_pole_side", "C_pole_c", "C_pole_side", "C_person",
+         "pole32_c", "pole32_side", "pole32_sideN", "pole36_c", "pole36_side", "pole36_sideN"]
+
+
+def main():
+    new = sys.argv[1]
+    cand = sys.argv[sys.argv.index("--cand") + 1] if "--cand" in sys.argv else FIN
+    out = {}
+    f = lambda s: f"{s['first_stop']} / {s['held_from']} - {s['stop']}/{s['visible']}"
+    for case in CASES:
+        pn = f"{new}/{case}.json"
+        pc = f"{cand}/{case}.json" if os.path.exists(f"{cand}/{case}.json") else f"{FIN}/{case}.json"
+        if not os.path.exists(pn) or not os.path.exists(pc):
+            continue
+        rn, sn = load(pn)
+        rc, sc = load(pc)
+        rb, sb = load(BASE[case]) if case in BASE else (rc, sc)      # tall poles: the candidate never asks = sealed
+        out[case] = {"sealed": sb, "14.10": sc, "new": sn, "new_vs_sealed_worse": worse(rb, rn),
+                     "new_vs_14.10_worse": worse(rc, rn), "14.10_vs_new_worse": worse(rn, rc),
+                     "frames_differ_14.10": sum(1 for k in rn if k in rc and rn[k]["decision"] != rc[k]["decision"]),
+                     "base": BASE.get(case, pc)}
+        print(f"{case:15s} sealed {f(sb):26s} 14.10 {f(sc):26s} new {f(sn):26s} GCS {sn['GO']}/{sn['CAUTION']}/{sn['STOP']}"
+              f" diff14 {out[case]['frames_differ_14.10']} worse-vs-sealed {out[case]['new_vs_sealed_worse']}"
+              f" worse-vs-14.10 {out[case]['new_vs_14.10_worse']}")
+    if "--json" in sys.argv:
+        json.dump(out, open(sys.argv[sys.argv.index("--json") + 1], "w"), indent=1)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,43 @@
+"""29.09 safety-review constraints re-run on the code at WT (shipped defaults): train approaching a static object
+at V m/s on the ray-cast synthetic tunnel (as docs/evidence/safety_review_2026-09-29/scripts/shell_moving.py.txt)."""
+import os, sys
+W = os.environ["WT"]; sys.path.insert(0, W)
+import numpy as np
+import resense; assert resense.__file__.startswith(W)
+from resense.config import DetectorConfig
+from resense.detector import Detector
+from resense.frame import Frame
+from resense.synthetic import ObstacleSpec, catalogue_spec, synthetic_tunnel_frame
+V = float(sys.argv[1]) if len(sys.argv) > 1 else 22.0
+D0, D1 = 120.0, 8.0
+objs = {
+  "cable_low lat0": lambda D: [catalogue_spec("cable_low", D, 0.0, reflectivity=25.0)],
+  "cable_low lat-0.2": lambda D: [catalogue_spec("cable_low", D, -0.2, reflectivity=25.0)],
+  "cable vault->0.1m lat0.3": lambda D: [ObstacleSpec(kind="cable", size=(0.03, 0.03, 4.72), distance=D, lateral=0.3, reflectivity=25.0, label="cv", base=0.1)],
+  "pole 0.1 floor->vault lat0.3": lambda D: [ObstacleSpec(kind="box", size=(0.1, 0.1, 4.9), distance=D, lateral=0.3, reflectivity=25.0, label="pole")],
+  "post 0.3 h2.8 lat0.7": lambda D: [ObstacleSpec(kind="box", size=(0.3, 0.3, 2.8), distance=D, lateral=0.7, reflectivity=25.0, label="post")],
+  "column 0.6 floor->vault lat0.7": lambda D: [ObstacleSpec(kind="box", size=(0.6, 0.6, 4.9), distance=D, lateral=0.7, reflectivity=25.0, label="col")],
+  "column 0.6 floor->vault lat1.1 (edge)": lambda D: [ObstacleSpec(kind="box", size=(0.6, 0.6, 4.9), distance=D, lateral=1.1, reflectivity=25.0, label="col")],
+  "pole 0.3 h3.2 lat0.7": lambda D: [ObstacleSpec(kind="box", size=(0.3, 0.3, 3.2), distance=D, lateral=0.7, reflectivity=25.0, label="p32")],
+  "pole 0.3 h3.6 lat0.7": lambda D: [ObstacleSpec(kind="box", size=(0.3, 0.3, 3.6), distance=D, lateral=0.7, reflectivity=25.0, label="p36")],
+  "pole 0.3 h3.6 lat0": lambda D: [ObstacleSpec(kind="box", size=(0.3, 0.3, 3.6), distance=D, lateral=0.0, reflectivity=25.0, label="p36c")],
+  "ladder 0.5x0.1 h3.4 lat0.6": lambda D: [ObstacleSpec(kind="box", size=(0.1, 0.5, 3.4), distance=D, lateral=0.6, reflectivity=25.0, label="lad")],
+  "column 0.4 floor->vault lat0.9": lambda D: [ObstacleSpec(kind="box", size=(0.4, 0.4, 4.9), distance=D, lateral=0.9, reflectivity=25.0, label="col4")],
+  "mast 0.3 h2.6 lat1.25 (margin)": lambda D: [ObstacleSpec(kind="box", size=(0.3, 0.3, 2.6), distance=D, lateral=1.25, reflectivity=25.0, label="mast")],
+  "mast 0.3 h2.6 lat1.45 (outside)": lambda D: [ObstacleSpec(kind="box", size=(0.3, 0.3, 2.6), distance=D, lateral=1.45, reflectivity=25.0, label="mast")],
+}
+names = sys.argv[2:] or list(objs)
+cfg = DetectorConfig.from_yaml(os.path.join(W, "configs/default.yaml"))
+for name in names:
+    det = Detector(cfg)
+    first = None; status = []
+    k = 0; D = D0
+    while D > D1:
+        frame, _, _ = synthetic_tunnel_frame(rng=np.random.default_rng(100 + k), specs=objs[name](D))
+        r = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.1 * k))
+        s = "S" if r.obstacle else ("c" if r.warning else ".")
+        status.append(s)
+        if r.obstacle and first is None:
+            first = round(D, 1)
+        k += 1; D -= V * 0.1
+    print(f"{name:40s} V={V} firstSTOP {first}  STOP {status.count('S')}/{len(status)}  {''.join(status)}", flush=True)

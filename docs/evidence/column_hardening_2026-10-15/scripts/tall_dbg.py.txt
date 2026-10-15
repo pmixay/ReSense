@@ -1,0 +1,46 @@
+"""Step through the P4 (tall) path of top_is_free on dumped calls (hooks DUMP_TALL)."""
+import glob
+import json
+import os
+import sys
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import resense.clustering as C  # noqa
+
+for f in sorted(glob.glob(sys.argv[1] + "/tall_*.npz")):
+    d = np.load(f, allow_pickle=True)
+    kw = json.loads(str(d["kw"]))
+    rays = C.FrameRays(d["xyz"], d["ring"], d["h"], d["dy"])
+    idx = d["idx"]
+    p = rays.xyz[idx].astype(np.float64)
+    rh = np.hypot(p[:, 0], p[:, 1]); el = np.degrees(np.arctan2(p[:, 2], rh)); az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+    top = float(el.max()); head = el >= top - 0.06; r_top = float(np.median(np.hypot(rh, p[:, 2])[head]))
+    a0, a1 = float(az.min()), float(az.max())
+    w = rays.window(a0 - 0.12, a1 + 0.12)
+    q = rays.xyz[w].astype(np.float64); qh = np.hypot(q[:, 0], q[:, 1]); qe = np.degrees(np.arctan2(q[:, 2], qh))
+    qr = np.hypot(qh, q[:, 2]); tol = max(0.5, 0.02 * r_top); same = np.abs(qr - r_top) <= tol
+    qz = rays.h[w]; h_top = float(rays.h[idx].max())
+    vault = C._local_vault(rays, idx, h_top, w[same])
+    top2, hT, last = C._follow(qe, same, qz, top, h_top)
+    res = C.top_is_free(rays, idx, 2, window=kw["window"], vault_margin=kw["vault_margin"], tall_gap=kw["tall_gap"])
+    line = f"{os.path.basename(f)} x {np.median(p[:, 0]):.1f} h_top {h_top:.2f} vault {vault} follow h {hT:.2f} free {res}"
+    if vault is not None and hT <= vault - kw["tall_gap"]:
+        lim = vault - kw["vault_margin"]
+        up = (qe > top2 + 0.04) & (qe <= top2 + 2.5)
+        e1 = qe[up].min(); ring = up & (qe <= e1 + 0.05)
+        cont = (same & up & (qz <= lim)).any()
+        r = qr[ring]
+        beyond, nearer = int((r > r_top + tol).sum()), int((r < r_top - tol).sum())
+        qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+        s0, s1 = (float(az[head].min()), float(az[head].max())) if last is None else (float(qa[last].min()), float(qa[last].max()))
+        rail = float(np.median(p[:, 2] - rays.h[idx]))
+        e_lim = float(np.degrees(np.arctan2(lim + rail, float(np.median(rh[head])))))
+        above = up & (qe <= e_lim)
+        own = above & (qa >= s0 - 0.06) & (qa <= s1 + 0.06)
+        line += (f" lim {lim:.2f} cont {cont} first-ring beyond {beyond} nearer {nearer} span {s0:.2f}..{s1:.2f} "
+                 f"e {top2:.3f}..{e_lim:.3f} own-ish returns: " +
+                 " ".join(f"{qe[j]:.2f}/{qa[j]:.2f}/{qr[j]:.0f}" for j in np.flatnonzero(own)[np.argsort(qe[own])][:30]))
+    print(line)
