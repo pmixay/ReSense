@@ -1,8 +1,10 @@
 # S1 real-Docker acceptance protocol — 2026-10-15
 
-**Status:** reusable driver and dataset-free parser/unit checks implemented. Real Docker
-acceptance is **pending the final committed node image**. No performance improvement is
-claimed by implementing or testing this driver.
+**Status:** real candidate-only 4-condition × 3 matrix executed on the user-selected
+runtime; **S1 FAIL**, with strict completeness **false**. All twelve playback executions
+finished and cleaned up. See [`docker/README.md`](docker/README.md) for every repetition,
+median check, provenance, infrastructure attempts and external raw/hash indexes. No
+same-runtime causal improvement is claimed.
 
 Source of acceptance bounds: main checkout `docs/BACKLOG.md`, S1, lines 263–290 read
 2026-10-15. Run from branch `p1/start-2026-10-15` in the shared `rs-p1-start` worktree.
@@ -302,3 +304,39 @@ The launcher returns immediately; completion is established only by the final sa
 remaining owned containers, preserves their final states/logs, and refuses unrelated owners.
 Launcher and ownership-refusal tests bring the harness suite to **85 passed in 4.05 s**;
 Ruff passes. This launcher is orchestration only and does not alter measured player args.
+
+### Final selected-runtime result
+
+`attempt05_matrix` completed all twelve executions on 15 October UTC. All player,
+listener and exact analyzer exits were 0; each owned node stopped cleanly (143), every
+receipt has `cleanup_ok: true`, and Docker reported no OOM. The label-scoped final query
+found no remaining containers for any of the five attempts.
+
+The strict result is `passed: false`, `complete: false`: six runs lack the last expected
+original bag-frame result; obstacle README repetition 1 also contains a recorded ~0.9 ms
+backward wall-arrival-time step (original JSONL lines 940–941, parser row index 940).
+Those observations remain failures; no timing tolerance, expected-count reduction or
+policy change was introduced to turn them into passing evidence. All twelve per-run
+metrics and all three values per median remain published without favorable selection.
+
+Descriptive medians: obstacle literal fresh **0/201**, source-age p50 **1.110989 s**,
+memory gate **797.756621 MB**, first STOP **55.63 m**; obstacle README fresh **0/201**,
+source-age max **1.449263 s**, **190 STOP**, first STOP lag **2.571050 s**; clear literal
+**31 frame FAULT**; clear README fresh **227/252**. Seven numeric checks fail. The
+incomplete evidence means numerically passing individual checks do not grant S1 PASS.
+
+Compact publication is generated and verified with the owned stdlib helper:
+
+```powershell
+# Publication --out must not already exist; the executed result is already in docker/.
+& $python docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py --raw 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15/attempt05_matrix' --attempts 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15/attempt01_diagnostic' 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15/attempt02_diagnostic' 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15/attempt03_transport_diagnostic' 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15/attempt04_matrix' --out docs/evidence/node_startup_2026-10-15/docker
+& $python docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py --verify docs/evidence/node_startup_2026-10-15/docker
+```
+
+Verification passed for **24 compact publication files and 312 external files**, including
+the failed/interrupted attempts and launch siblings. Parser/launcher/publication-integrity
+suite: **88 passed in 4.03 s**, no skips; Ruff passes. Large bag and raw JSONL streams stay
+outside Git. Report hashes are exact publication bytes; raw hashes retain the original
+external bytes. Candidate source stayed at `1eed357`; harness repair commit is `e110fe9`.
+Selected log excerpts normalize trailing line spaces for Git whitespace checks; their
+headers and the external raw index continue to bind the untouched full source-log bytes.

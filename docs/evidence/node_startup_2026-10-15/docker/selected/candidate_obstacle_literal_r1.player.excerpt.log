@@ -1,0 +1,13 @@
+Source: C:\Users\alikh\AppData\Local\Temp\opencode\resense-p1-runs-2026-10-15\attempt05_matrix\out\docker\candidate_obstacle_literal_r1.player.log
+SHA256: 6509edacee30c0149936295908d514cec4ed6305131e9d7955c72ebc474bef0e
+Full source lines: 9
+
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792101345.932708390] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+[INFO] [1792101345.932854714] [rosbag2_player]: Set rate to 1
+[INFO] [1792101345.942652236] [rosbag2_player]: Adding keyboard callbacks.
+[INFO] [1792101345.942786968] [rosbag2_player]: Press SPACE for Pause/Resume
+[INFO] [1792101345.942808981] [rosbag2_player]: Press CURSOR_RIGHT for Play Next Message
+[INFO] [1792101345.942819952] [rosbag2_player]: Press CURSOR_UP for Increase Rate 10%
+[INFO] [1792101345.942829170] [rosbag2_player]: Press CURSOR_DOWN for Decrease Rate 10%
+[INFO] [1792101345.952169585] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.

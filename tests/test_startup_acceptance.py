@@ -610,3 +610,26 @@ def test_manual_cleanup_refuses_a_mismatched_container_owner(tmp_path, monkeypat
     with pytest.raises(RuntimeError, match="another run"):
         launcher.cleanup(tmp_path)
     assert not any(args[1] in ("stop", "rm") for args in calls)
+
+
+@pytest.mark.parametrize("changed", ["publication", "raw", "launch"])
+def test_publication_verifier_detects_tampered_report_raw_and_launch_artifacts(tmp_path, capsys, changed):
+    spec = importlib.util.spec_from_file_location("s1_report_publisher", s1.TOOLS / "publish_report.py")
+    publisher = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(publisher)
+    out, raw = tmp_path / "report", tmp_path / "raw"
+    out.mkdir()
+    raw.mkdir()
+    report_file, raw_file, launch_file = out / "summary.json", raw / "status.jsonl", tmp_path / "raw.launch.json"
+    for path in (report_file, raw_file, launch_file):
+        path.write_text("original\n")
+    s1.write_json(out / "raw_hash_index.json", {"attempts": [{
+        "raw_root": str(raw), "files": [publisher.indexed(raw_file, raw)],
+        "sibling_files": [publisher.indexed(launch_file, tmp_path)]}]})
+    s1.write_json(out / "publication_hash_index.json", {
+        "files": [publisher.indexed(p, out) for p in sorted(out.iterdir())]})
+    publisher.verify(out)
+    assert json.loads(capsys.readouterr().out)["verified"]
+    {"publication": report_file, "raw": raw_file, "launch": launch_file}[changed].write_text("altered\n")
+    with pytest.raises(ValueError, match="hash mismatch"):
+        publisher.verify(out)

@@ -1,0 +1,125 @@
+{
+  "hash": "SHA256 over exact bytes; index excludes itself",
+  "files": [
+    {
+      "path": "cleanup.json",
+      "bytes": 1199,
+      "sha256": "16df05b32347b74c6e3ad173d340ec2b1caf98cd56a2b01eb76933c985edf10b"
+    },
+    {
+      "path": "condition_medians.json",
+      "bytes": 4310,
+      "sha256": "b28a46409e38ae67b2b8e706abe2a2c4d58008d718e5b1065ef39c262f0e4f0e"
+    },
+    {
+      "path": "launch.json",
+      "bytes": 1102,
+      "sha256": "230f9321681efd5a83abc1f41ebfbd21a3d0dc73acf9bbd45ac97cbd0c839434"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 18361,
+      "sha256": "0635bcc82e61f6b1da55f74e0e3132bc07d6a86e30a827b5c1ef7bfd2a4fb8bf"
+    },
+    {
+      "path": "raw_hash_index.json",
+      "bytes": 64595,
+      "sha256": "dcbfd83fd9db05240c648807c6792c7b0e7e30b556712ce705c4f0807fafce66"
+    },
+    {
+      "path": "README.md",
+      "bytes": 13552,
+      "sha256": "da6e8aafab35606be4a34b8503a570c0703a81a0adc827d94dc9e7fbc04e4b5a"
+    },
+    {
+      "path": "runtime_observations.json",
+      "bytes": 2350,
+      "sha256": "a92bcc2bf7647f98f864ee8a3276e966c2eec63648f3c1ec1d78a69bbcc1cefa"
+    },
+    {
+      "path": "selected/candidate_clear_literal_r1.listener.excerpt.log",
+      "bytes": 382,
+      "sha256": "a7bf6dbfe5db063fbc6eb11b45480b4dafc96bf65fe3108a50cf9dd05a0cf5e9"
+    },
+    {
+      "path": "selected/candidate_clear_literal_r1.node.excerpt.log",
+      "bytes": 3837,
+      "sha256": "c09977a5f0130bc605c5d01e94c34d59300928cbb43e37eb5be734041afbca74"
+    },
+    {
+      "path": "selected/candidate_clear_literal_r1.player.excerpt.log",
+      "bytes": 1146,
+      "sha256": "a59c6588ad4619ad814f1137e56b68a71e91d1c0de400a9ece20caee2f80729e"
+    },
+    {
+      "path": "selected/candidate_clear_literal_r1.receipt.json",
+      "bytes": 10972,
+      "sha256": "0f297e283c5c2160ae78a85c4afbe69f20f461cfb064bacf79bf38ac0d06b2bc"
+    },
+    {
+      "path": "selected/candidate_clear_readme_r1.listener.excerpt.log",
+      "bytes": 381,
+      "sha256": "5de6d1f67bd5d0f94d722c31ba0866277e001abc72eb6f3445a45b156baee202"
+    },
+    {
+      "path": "selected/candidate_clear_readme_r1.node.excerpt.log",
+      "bytes": 6424,
+      "sha256": "015f1b57e8c055e4d528f6033daa7af115756d56edcc9e3b0d4fadd62af985a5"
+    },
+    {
+      "path": "selected/candidate_clear_readme_r1.player.excerpt.log",
+      "bytes": 4346,
+      "sha256": "96d2a0a3c32620860e63a5c793ba272e62f25fd9149495d3df01bf3439eb83ce"
+    },
+    {
+      "path": "selected/candidate_clear_readme_r1.receipt.json",
+      "bytes": 11174,
+      "sha256": "f25a9209438cb9bd0edce53416a2dfd8f23e98b4829f5bcbd1a251f96238b690"
+    },
+    {
+      "path": "selected/candidate_obstacle_literal_r1.listener.excerpt.log",
+      "bytes": 385,
+      "sha256": "eacdda6f1a75ead21cb3135f6196c67f1388dde010c832e7014c7eafe7585467"
+    },
+    {
+      "path": "selected/candidate_obstacle_literal_r1.node.excerpt.log",
+      "bytes": 3879,
+      "sha256": "6e16e3e80b64554b44f4d06ab0479880bea16c4c01053c509084c781e043d7ae"
+    },
+    {
+      "path": "selected/candidate_obstacle_literal_r1.player.excerpt.log",
+      "bytes": 1157,
+      "sha256": "a010aae46373287192d814af6182783d87ef4eace887e1292ad2e1391b528936"
+    },
+    {
+      "path": "selected/candidate_obstacle_literal_r1.receipt.json",
+      "bytes": 11006,
+      "sha256": "cf088d86efbe795690d16d417214a3af897724f3aa1c357ee76e2896e4548984"
+    },
+    {
+      "path": "selected/candidate_obstacle_readme_r1.listener.excerpt.log",
+      "bytes": 384,
+      "sha256": "83a5ca74a6da684642cc8e42a073e38f5a705f357b97af91fa63002963a6aa45"
+    },
+    {
+      "path": "selected/candidate_obstacle_readme_r1.node.excerpt.log",
+      "bytes": 6588,
+      "sha256": "22fd366196747657725b9e79394762714824187c65c2c524881741d6cbc8ad6b"
+    },
+    {
+      "path": "selected/candidate_obstacle_readme_r1.player.excerpt.log",
+      "bytes": 4359,
+      "sha256": "5d00955a00f8fda1bc52e1e101a4b22ef2a8c904ab552414129cd587ebfbc273"
+    },
+    {
+      "path": "selected/candidate_obstacle_readme_r1.receipt.json",
+      "bytes": 11209,
+      "sha256": "61bcbc4f421b925c127c56d629f236b07a0d582ec3f4d42855ac26edbe4689c2"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 25755,
+      "sha256": "38b2c370ff262317fdc62ed6f5474ee89a839c9aab8700c02e9f3cad1da78928"
+    }
+  ]
+}

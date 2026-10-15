@@ -1,0 +1,31 @@
+{
+  "checked_at_utc": "2026-10-15T22:43:03.811093+00:00",
+  "runs": [
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt01_diagnostic",
+      "run_id": "0c14685fe4dd4e53a57b926940b8cd44",
+      "remaining_container_ids": []
+    },
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt02_diagnostic",
+      "run_id": "a05645c3335642fab95c1c928489304d",
+      "remaining_container_ids": []
+    },
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt03_transport_diagnostic",
+      "run_id": "cbc1e1bcd0724360a65f484d247faa9c",
+      "remaining_container_ids": []
+    },
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt04_matrix",
+      "run_id": "cb8487e9358d48f296a171666181cbd8",
+      "remaining_container_ids": []
+    },
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt05_matrix",
+      "run_id": "e627f1c3b5194c60a0d1e39cb5a47f7c",
+      "remaining_container_ids": []
+    }
+  ],
+  "clean": true
+}
