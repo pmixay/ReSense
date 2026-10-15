@@ -22,6 +22,11 @@ import sys
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+from decision_policy_import import load_policy  # noqa: E402
+
+POLICY = load_policy(ROOT)
+decision = POLICY.decision
 DETECTOR_ROOT = Path(os.environ.get("RESENSE_DETECTOR_ROOT", ROOT)).resolve()
 if not (DETECTOR_ROOT / "resense/__init__.py").is_file():
     raise ValueError(f"RESENSE_DETECTOR_ROOT has no resense package: {DETECTOR_ROOT}")
@@ -38,12 +43,6 @@ from resense.detector import Detector  # noqa: E402
 from resense.frame import axis_matrix, frame_from_compact  # noqa: E402
 from resense.pointcloud import COMPACT_DTYPE, compact_to_compact16  # noqa: E402
 from resense.sensor import RING_ELEVATION_DEG  # noqa: E402
-try:
-    from resense_ros.decision_policy import decision
-except ModuleNotFoundError as exc:
-    if exc.name != "resense_ros":
-        raise
-    from ros2_ws.src.resense_ros.resense_ros.decision_policy import decision
 
 _OBSERVER = None
 
@@ -95,7 +94,9 @@ def source_identity(source_commit=None):
     if not commit:
         raise ValueError("Git metadata unavailable in this mount; pass --source-commit from the host checkout")
     return {"commit": commit, "commit_origin": "git" if result.returncode == 0 else "supplied by caller",
-            "detector_source_sha256": json_hash(hashes), "files": hashes}
+            "detector_source_sha256": json_hash(hashes), "files": hashes,
+            "decision_policy": {"version": "v1", "path": str(Path(POLICY.__file__).resolve()),
+                                "sha256": file_hash(POLICY.__file__), "origin": "observer checkout"}}
 
 
 def sequence_cases(protocol, split):

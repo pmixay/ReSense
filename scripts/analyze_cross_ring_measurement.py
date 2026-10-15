@@ -8,12 +8,10 @@ from statistics import median
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-try:
-    from resense_ros.decision_policy import decision as decision_word
-except ModuleNotFoundError as exc:
-    if exc.name != "resense_ros":
-        raise
-    from ros2_ws.src.resense_ros.resense_ros.decision_policy import decision as decision_word
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from decision_policy_import import load_policy  # noqa: E402
+
+decision_word = load_policy(Path(__file__).resolve().parents[1]).decision
 
 
 def load_rows(directory, bag):

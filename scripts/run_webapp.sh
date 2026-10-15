@@ -10,7 +10,7 @@
 # Installs nothing unless --install is given. Builds webapp/frontend/dist when it is missing or
 # older than the sources (or with --build) and npm and node_modules are there; without a build the API still works and "/"
 # explains how to build. Options:
-#   --install   pip install -e . -e webapp/backend, npm ci in webapp/frontend (needs the internet)
+#   --install   pip install root + ros2_ws/src/resense_ros + backend, npm ci (needs the internet)
 #   --build     rebuild the frontend even if dist exists
 #   other arguments are passed to `python -m resense_web` (--host, --reload, --log-level ...)
 # Environment:
@@ -45,15 +45,15 @@ fi
 command -v "$PY" >/dev/null 2>&1 || { echo "ERROR: python interpreter '$PY' not found (set PYTHON=...)" >&2; exit 2; }
 
 if [ "$INSTALL" = 1 ]; then
-  echo "== pip install -e . -e webapp/backend ($PY)"
-  "$PY" -m pip install -e "$REPO" -e "$REPO/webapp/backend"
+  echo "== pip install -e . -e ros2_ws/src/resense_ros -e webapp/backend ($PY)"
+  "$PY" -m pip install -e "$REPO" -e "$REPO/ros2_ws/src/resense_ros" -e "$REPO/webapp/backend"
 fi
 
 # resense_web runs from the checkout even when it is not pip-installed (its worker does the same)
 export PYTHONPATH="$REPO/webapp/backend${PYTHONPATH:+:$PYTHONPATH}"
-if ! "$PY" -c 'import resense, fastapi, uvicorn, rosbags, resense_web' 2>/dev/null; then
-  echo "ERROR: $PY lacks the backend dependencies (resense, fastapi, uvicorn, rosbags)." >&2
-  echo "       Run once with internet: $0 --install   (or: $PY -m pip install -e . -e webapp/backend)" >&2
+if ! "$PY" -c 'import resense, fastapi, uvicorn, rosbags, resense_web; from resense_ros.decision_policy import decision' 2>/dev/null; then
+  echo "ERROR: $PY lacks the backend dependencies (resense, resense-ros, fastapi, uvicorn, rosbags)." >&2
+  echo "       Run once with internet: $0 --install   (or: $PY -m pip install -e . -e ros2_ws/src/resense_ros -e webapp/backend)" >&2
   exit 2
 fi
 

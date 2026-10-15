@@ -85,6 +85,7 @@ jobs:
           cache: pip
           cache-dependency-path: |
             pyproject.toml
+            ros2_ws/src/resense_ros/setup.py
             webapp/backend/pyproject.toml
       - uses: actions/setup-node@v7
         with:
@@ -95,9 +96,11 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
       - id: install
         run: |
-          pip install -e ".[dev]" -e "webapp/backend[dev]" playwright
+          pip install -e ".[dev]" -e ros2_ws/src/resense_ros -e "webapp/backend[dev]" playwright wheel
           python -m playwright install --with-deps chromium
           cd webapp/frontend && npm ci
+      - name: backend and policy wheels outside the checkout, without ROS
+        run: python scripts/check_webapp_wheels.py
       - name: backend (webapp/backend)
         run: cd webapp/backend && python -m pytest -q -rs --junitxml=../../junit-webapp-backend.xml
       - name: frontend unit tests, type check and production build

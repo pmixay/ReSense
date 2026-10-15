@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import os
+from pathlib import Path
 import sys
 
 import numpy as np
@@ -22,12 +23,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from resense.config import DetectorConfig  # noqa: E402
 from resense.detector import Detector  # noqa: E402
 from resense.io import iter_npy_frames  # noqa: E402
-try:
-    from resense_ros.decision_policy import decision
-except ModuleNotFoundError as exc:
-    if exc.name != "resense_ros":
-        raise
-    from ros2_ws.src.resense_ros.resense_ros.decision_policy import decision
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from decision_policy_import import load_policy  # noqa: E402
+
+decision = load_policy(Path(__file__).resolve().parents[1]).decision
 
 BG = "#16091f"
 PINK = "#FF0053"

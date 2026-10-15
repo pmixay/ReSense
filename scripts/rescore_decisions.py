@@ -24,12 +24,11 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-try:
-    from resense_ros.decision_policy import DECISIONS, DecisionPolicy, evaluate_decision
-except ModuleNotFoundError as exc:
-    if exc.name != "resense_ros":
-        raise
-    from ros2_ws.src.resense_ros.resense_ros.decision_policy import DECISIONS, DecisionPolicy, evaluate_decision
+sys.path.insert(0, str(ROOT / "scripts"))
+from decision_policy_import import load_policy  # noqa: E402
+
+POLICY = load_policy(ROOT)
+DECISIONS, DecisionPolicy, evaluate_decision = POLICY.DECISIONS, POLICY.DecisionPolicy, POLICY.evaluate_decision
 
 EMPTY_BAGS = {"doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT",
               "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch"}

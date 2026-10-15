@@ -22,11 +22,20 @@ word-only API also accepts `"v1"` / `"v2"`. Unknown versions and non-positive or
 non-finite configuration raise configuration errors; they never silently select
 another version.
 
-Scripts try the installed `resense_ros.decision_policy` first, then the source-tree
-namespace `ros2_ws.src.resense_ros.resense_ros.decision_policy`. The backend uses
-the same pattern. A standalone installed backend needs the ROS Python package
-(which contains this pure module) available; source use needs the repository root
-on `PYTHONPATH`. No dependency on a sourced ROS runtime is needed for this module.
+Source observers load their own checkout's policy by absolute path through
+`scripts/decision_policy_import.py`, independently of the selected detector or an
+older installed ROS overlay. An already imported node module is never replaced.
+The synthetic evaluator records the observer policy path/hash separately from
+the selected detector hashes. If no source policy exists, the helper uses the
+installed `resense_ros.decision_policy`.
+
+The backend imports the installed policy first, with an explicit local-source
+fallback for checkout use (including older overlays missing the policy module).
+Its wheel declares `resense-ros>=1.0.0`; the existing ROS Python distribution must
+be provided alongside root/backend wheels. The local launcher and CI install all
+three projects. No sourced ROS runtime / `rclpy` is needed for pure policy use.
+See `webapp/backend/README.md` for local wheel installation and the isolated
+`scripts/check_webapp_wheels.py` verification.
 
 ## Semantics
 

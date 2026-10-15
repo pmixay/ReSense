@@ -1,5 +1,6 @@
 """Policy behavior on production object/JSON shapes and source/installed consumers."""
 from copy import deepcopy
+import hashlib
 import itertools
 import json
 import os
@@ -185,6 +186,81 @@ def test_pure_policy_import_and_consumers_in_both_layouts(tmp_path, installed):
             f"sys.path.insert(0, {str(ROOT / 'webapp/backend')!r}); "
             "from resense_web.decision import decision_of; assert decision_of is decision; "
             f"import runpy; ns = runpy.run_path({str(ROOT / 'scripts/score_clear_distance.py')!r}); "
-            "assert ns['decision'] is decision")
+            f"from pathlib import Path; assert Path(ns['decision'].__code__.co_filename).resolve() == "
+            f"Path({str(ROOT / 'ros2_ws/src/resense_ros/resense_ros/decision_policy.py')!r}).resolve(); "
+            "assert ns['decision']({'warning': True}) == decision({'warning': True})")
+    result = subprocess.run([sys.executable, "-c", code], cwd=tmp_path, env=env, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+
+
+@pytest.mark.parametrize("preloaded", [False, True])
+def test_observer_policy_is_local_with_historical_detector_and_old_installed_overlay(tmp_path, preloaded):
+    """Both ROS import names can be shadowed; detector choice and node identity must survive."""
+    detector = tmp_path / "historical"
+    shutil.copytree(ROOT / "resense", detector / "resense", ignore=shutil.ignore_patterns("__pycache__", "*.so", "*.pyd"))
+    for checkout in (tmp_path / "old-observer", detector):
+        package = checkout / "ros2_ws/src/resense_ros/resense_ros"
+        package.mkdir(parents=True)
+        (package / "__init__.py").write_text("# old regular ROS package, without decision_policy\n")
+    observer = tmp_path / "old-observer"
+    (observer / "scripts").mkdir()
+    # The observer policy is new; the surrounding ROS package and selected detector are old.
+    shutil.copyfile(ROOT / "ros2_ws/src/resense_ros/resense_ros/decision_policy.py",
+                    observer / "ros2_ws/src/resense_ros/resense_ros/decision_policy.py")
+    shutil.copyfile(ROOT / "scripts/decision_policy_import.py", observer / "scripts/decision_policy_import.py")
+    shutil.copyfile(ROOT / "scripts/synthetic_sensitivity.py", observer / "scripts/synthetic_sensitivity.py")
+    if preloaded:
+        # Also cover a detector copy that has its own incompatible policy.
+        (detector / "ros2_ws/src/resense_ros/resense_ros/decision_policy.py").write_text(
+            "raise RuntimeError('selected detector policy must not be imported')\n")
+    overlay = tmp_path / "old-overlay/resense_ros"
+    overlay.mkdir(parents=True)
+    (overlay / "__init__.py").write_text("# installed older overlay with no policy submodule\n")
+    env = {**os.environ, "PYTHONPATH": str(overlay.parent), "RESENSE_DETECTOR_ROOT": str(detector),
+           "OPENBLAS_NUM_THREADS": "1", "OMP_NUM_THREADS": "1"}
+    code = "import json, runpy, sys, resense_ros; old_ros = resense_ros; "
+    if preloaded:
+        # Simulate a node already using a different, valid installed policy. Do not replace it.
+        (overlay / "decision_policy.py").write_text("class DecisionPolicy: pass\ndef decision(res): return 'OLD'\n")
+        code += "import resense_ros.decision_policy as node_policy; old_class = node_policy.DecisionPolicy; "
+    code += (f"ns = runpy.run_path({str(observer / 'scripts/synthetic_sensitivity.py')!r}, run_name='observer'); "
+             "ns['validate_source_origin'](); import resense; "
+             "assert sys.modules['resense_ros'] is old_ros; "
+             "assert ns['decision']({'warning': True}) == 'CAUTION'; "
+             "identity = ns['source_identity']('a' * 40)['decision_policy']; "
+             f"assert identity['sha256'] == {hashlib.sha256((ROOT / 'ros2_ws/src/resense_ros/resense_ros/decision_policy.py').read_bytes()).hexdigest()!r}; "
+             "print(json.dumps({'detector':resense.__file__, 'policy':identity}))")
+    if preloaded:
+        code += "; assert node_policy.DecisionPolicy is old_class and node_policy.decision({}) == 'OLD'"
+    result = subprocess.run([sys.executable, "-c", code], cwd=tmp_path, env=env, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    identity = json.loads(result.stdout)
+    assert Path(identity["detector"]).resolve() == detector / "resense/__init__.py"
+    assert Path(identity["policy"]["path"]) == observer / "ros2_ws/src/resense_ros/resense_ros/decision_policy.py"
+
+
+def test_other_source_consumers_survive_old_ros_overlay_and_namespace_shadow(tmp_path):
+    overlay = tmp_path / "resense_ros"
+    overlay.mkdir()
+    (overlay / "__init__.py").write_text("# old installed ROS package\n")
+    # A regular ros2_ws package blocks the old namespace fallback entirely.
+    namespace = tmp_path / "ros2_ws"
+    namespace.mkdir()
+    (namespace / "__init__.py").write_text("# unrelated regular package\n")
+    env = {**os.environ, "PYTHONPATH": os.pathsep.join((str(tmp_path), str(ROOT))),
+           "OPENBLAS_NUM_THREADS": "1", "OMP_NUM_THREADS": "1"}
+    env.pop("RESENSE_DETECTOR_ROOT", None)
+    scripts = ["score_clear_distance", "hero_view", "analyze_cross_ring_measurement", "rescore_decisions"]
+    code = "import runpy, sys, resense_ros, ros2_ws; old = resense_ros; "
+    for name in scripts:
+        word = "decision_word" if name == "analyze_cross_ring_measurement" else "decision"
+        if name == "rescore_decisions":
+            word = "POLICY"
+        code += f"ns = runpy.run_path({str(ROOT / 'scripts' / (name + '.py'))!r}); "
+        expression = f"ns[{word!r}].decision" if word == "POLICY" else f"ns[{word!r}]"
+        code += f"assert {expression}({{'warning': True}}) == 'CAUTION'; "
+    code += (f"sys.path.insert(0, {str(ROOT / 'webapp/backend')!r}); "
+             "from resense_web.decision import decision_of; assert decision_of({'warning': True}) == 'CAUTION'; "
+             "assert sys.modules['resense_ros'] is old")
     result = subprocess.run([sys.executable, "-c", code], cwd=tmp_path, env=env, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
