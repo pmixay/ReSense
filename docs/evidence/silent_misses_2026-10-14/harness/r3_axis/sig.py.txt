@@ -1,0 +1,87 @@
+"""Offline wall-drift signal from obs records (scratch). For each frame: per side the walls-stage bins,
+inliers of the side's robust fit (recomputed as _fit_side), their lateral against the FINAL axis, the near
+offset w0 (bins <= 30 m), and the first X beyond 30 m where the followed wall is nearer the axis than
+w0 - delta in `persist` consecutive inlier bins.
+usage: sig.py <obs.json> [delta] [persist] [k0 k1]"""
+import json, sys
+import numpy as np
+
+TA = {r["k"]: r for r in json.load(open("/tmp/claude-0/fixwork/investigate_oversize/C_true_axis_full.json"))}
+
+
+def inliers(x, y, t_fixed, maxres=0.4, minb=6):
+    def quad(xb, yb):
+        if t_fixed is None:
+            c = np.polyfit(xb, yb, 2)
+            return c[2], c[1], 2 * c[0]
+        A = np.stack([np.ones_like(xb), 0.5 * xb * xb], 1)
+        s, *_ = np.linalg.lstsq(A, yb - t_fixed * xb, rcond=None)
+        return s[0], t_fixed, s[1]
+    keep = np.ones(x.size, bool)
+    a, t, k = quad(x, y)
+    for _ in range(2):
+        res = y - (a + t * x + 0.5 * k * x * x)
+        keep = np.abs(res) < maxres
+        if keep.sum() < minb:
+            return None
+        a, t, k = quad(x[keep], y[keep])
+    res = y - (a + t * x + 0.5 * k * x * x)
+    return np.abs(res) < maxres
+
+
+def frame_signal(c, delta, persist, near_max=30.0, use_inliers=True):
+    o = c["out"]
+    tt = np.tan(o["yaw"])
+    out = []
+    for s in c.get("side_in", []):
+        x = np.array(s["x"]); y = np.array(s["y"])
+        if s["fit"] is None:
+            continue
+        m = inliers(x, y, c.get("t_fixed")) if use_inliers else np.ones(x.size, bool)
+        if m is None:
+            continue
+        x, y = x[m], y[m]
+        dy = y - (o["center"] + tt * x + 0.5 * o["curv"] * x * x)
+        sgn = np.sign(np.median(dy[x <= near_max])) if (x <= near_max).sum() >= 3 else 0
+        if sgn == 0:
+            out.append(None); continue
+        ady = sgn * dy
+        w0 = float(np.median(ady[x <= near_max]))
+        run = 0
+        cap = None
+        for xi, di in zip(x, ady):
+            if xi <= near_max:
+                continue
+            if di < w0 - delta:
+                run += 1
+                if run >= persist:
+                    cap = float(xi_first)
+                    break
+                if run == 1:
+                    xi_first = xi
+            else:
+                run = 0
+        out.append((int(sgn), round(w0, 2), cap))
+    return out
+
+
+if __name__ == "__main__":
+    recs = json.load(open(sys.argv[1]))
+    delta = float(sys.argv[2]) if len(sys.argv) > 2 else 0.6
+    persist = int(sys.argv[3]) if len(sys.argv) > 3 else 2
+    k0, k1 = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (0, 10 ** 9)
+    for r in recs:
+        if not (k0 <= r["k"] <= k1):
+            continue
+        c = r["calls"][-1]
+        sig = frame_signal(c, delta, persist)
+        caps = [v[2] for v in sig if v and v[2] is not None]
+        cap = min(caps) if caps else None
+        ta = TA.get(r["k"], {})
+        err = ""
+        if cap is not None and ta.get("ok"):
+            c2, c1, c0 = ta["coef"]
+            o = c["out"]
+            X = cap
+            err = "true err at cap %.2f" % (o["center"] + np.tan(o["yaw"]) * X + 0.5 * o["curv"] * X * X - (c0 - ta["off"] + c1 * X + c2 * X * X))
+        print(r["k"], "av %.0f clear %.0f curv %.5f" % (r["axis_valid"], r["clear"], r["curv"]), sig, "CAP", cap, err)

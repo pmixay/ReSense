@@ -1,0 +1,14 @@
+#!/bin/bash
+# r3: the A battery on a snapshot, then the axis_valid-capped variant (CAPV) on the C probes
+# usage: run_capv.sh <snapshot> <outdir_A> <outdir_capv>
+R3=/tmp/claude-0/fixwork/r3axis
+SNAP=$1; OA=$2; OC=$3
+WT=$SNAP $R3/rt_batt.sh $OA core
+mkdir -p $OC
+C=/tmp/claude-0/judge_data/cache/roundT_pressureGate_roundT
+I=$SNAP/docs/evidence/judgement_2026-10-13/out/icp_roundT_pressureGate_roundT.json
+for spec in C_person:0.5,0.5,1.75 C_cube1:1.0,1.0,1.0 C_cube05:0.5,0.5,0.5; do
+  n=${spec%%:*}; o=${spec#*:}
+  CAPV=1 WT=$SNAP $R3/py.sh $R3/rt_clear.py $C $I $OC/$n --obj $o --start 0 --d0 230 > $OC/$n.log 2>&1
+done
+echo CAPV_DONE

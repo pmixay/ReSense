@@ -1,0 +1,68 @@
+"""Single-frame counterfactuals of the wall curvature on obs records (scratch): sealed average vs
+(i) the right/left side cut at the first gap > G m from the near field, (ii) equal weights, (iii) the
+side whose near-field-continuous run reaches farthest. Prints raw curvature per variant and the true
+curvature proxy (left-wall-based true axis second derivative at 60-100 m)."""
+import json, sys
+import numpy as np
+
+
+def fit_side(x, y, t, maxres=0.4, minb=6, maxrms=0.35):
+    def quad(xb, yb):
+        A = np.stack([np.ones_like(xb), 0.5 * xb * xb], 1)
+        s, *_ = np.linalg.lstsq(A, yb - t * xb, rcond=None)
+        return s[0], s[1]
+    if x.size < minb:
+        return None
+    a, k = quad(x, y)
+    xb, yb = x, y
+    for _ in range(2):
+        res = yb - (a + t * xb + 0.5 * k * xb * xb)
+        keep = np.abs(res) < maxres
+        if keep.sum() < minb:
+            return None
+        xb, yb = xb[keep], yb[keep]
+        a, k = quad(xb, yb)
+    res = yb - (a + t * xb + 0.5 * k * xb * xb)
+    rms = float(np.sqrt(np.mean(res ** 2)))
+    if rms > maxrms:
+        return None
+    return k, rms, float(xb.max())
+
+
+def cut_gap(x, y, G):
+    keep = [0]
+    for i in range(1, x.size):
+        if x[i] - x[keep[-1]] > G:
+            break
+        keep.append(i)
+    return x[keep], y[keep]
+
+
+def combine(fits, eq=False):
+    fits = [f for f in fits if f is not None]
+    if not fits:
+        return None
+    w = np.array([1.0 if eq else 1.0 / (f[1] ** 2 + 1e-4) for f in fits])
+    return float(np.sum(w * [f[0] for f in fits]) / w.sum())
+
+
+recs = json.load(open(sys.argv[1]))
+k0, k1 = int(sys.argv[2]), int(sys.argv[3])
+TA = {r["k"]: r for r in json.load(open("/tmp/claude-0/fixwork/investigate_oversize/C_true_axis_full.json"))}
+for r in recs:
+    if not (k0 <= r["k"] <= k1):
+        continue
+    c = r["calls"][-1]
+    t = c["t_fixed"]
+    if t is None or len(c.get("side_in", [])) < 2:
+        continue
+    S = [(np.array(s["x"]), np.array(s["y"])) for s in c["side_in"]]
+    base = [fit_side(x, y, t) for x, y in S]
+    g12 = [fit_side(*cut_gap(x, y, 12.0), t) for x, y in S]
+    ta = TA.get(r["k"], {})
+    kt = 2 * ta["coef"][0] if ta.get("ok") else float("nan")
+    fmt = lambda v: "  None " if v is None else "%.5f" % v
+    print(r["k"], "out %.5f" % c["out"]["curv"], "| base", fmt(combine(base)), "eq", fmt(combine(base, True)),
+          "| L", fmt(base[0][0] if base[0] else None), "R", fmt(base[1][0] if base[1] else None),
+          "| gap12", fmt(combine(g12)), "R12", fmt(g12[1][0] if g12[1] else None), "xR12", g12[1][2] if g12[1] else None,
+          "| ta k %.5f" % kt)

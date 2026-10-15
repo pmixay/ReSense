@@ -1,0 +1,8 @@
+#!/bin/bash
+# run python from the venv with the worktree on the path (r3 axis scratch)
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+export WT=${WT:-/home/user/ReSense/.claude/worktrees/wf_fad4ed48-27b-2}
+export RESENSE_REPO=$WT PYTHONPATH=$WT
+export J=/tmp/claude-0/judge_data/cache
+export R3=/tmp/claude-0/fixwork/r3axis
+exec nice -n 10 /tmp/claude-0/venv/bin/python "$@"

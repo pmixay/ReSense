@@ -1,0 +1,31 @@
+"""Drift cap (sig2 variants) on judge obs records with the true-axis error at the cap (scratch).
+usage: sig3.py <obs.json> <true_axis.json> k0 k1 [sig2 args]"""
+import json, sys
+import numpy as np
+from sig2 import frame_cap, parse
+
+recs = json.load(open(sys.argv[1]))
+TA = {r["k"]: r for r in json.load(open(sys.argv[2]))}
+k0, k1 = int(sys.argv[3]), int(sys.argv[4])
+kw = parse(sys.argv[5:])
+errs = []
+for rec in recs:
+    if not (k0 <= rec["k"] <= k1):
+        continue
+    c = rec["calls"][-1]
+    o = c["out"]
+    r = {"c": o["center"], "yaw": o["yaw"], "curv": o["curv"],
+         "sides": [(s["x"], s["y"], s["fit"] is not None) for s in c.get("side_in", [])]}
+    cap = frame_cap(r, **kw)
+    ta = TA.get(rec["k"], {})
+    e = ""
+    if cap is not None and ta.get("ok"):
+        c2, c1, c0 = ta["coef"]
+        X = cap + 2.0
+        v = o["center"] + np.tan(o["yaw"]) * X + 0.5 * o["curv"] * X * X - (c0 - ta["off"] + c1 * X + c2 * X * X)
+        e = "%.2f" % v
+        if X <= ta["wall_xmax"] + 15:
+            errs.append(abs(v))
+    print(rec["k"], "av %.0f curv %.5f cap %s err %s" % (rec["axis_valid"], o["curv"], cap, e))
+if errs:
+    print("|err at cap| q10/50/90", np.round(np.percentile(errs, [10, 50, 90]), 2), "n", len(errs))

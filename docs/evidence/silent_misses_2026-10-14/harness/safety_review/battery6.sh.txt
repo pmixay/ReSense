@@ -1,0 +1,18 @@
+#!/bin/bash
+cd /tmp/claude-0/fixwork/safety_review; source env.sh
+pair() { name=$1; cache=$2; shift 2
+  [ -f out/${name}_s.jsonl ] || run_s jrep.py $J/$cache out/${name}_s "$@" > out/${name}_s.log 2>&1
+  [ -f out/${name}_w.jsonl ] || run_w jrep.py $J/$cache out/${name}_w "$@" > out/${name}_w.log 2>&1
+  python3 cmp.py out/${name}_s.jsonl out/${name}_w.jsonl $name >> out/battery6.txt
+  tail -1 out/${name}_w.log >> out/battery6.txt
+}
+B=roundT_doubleT; S=squareT_platform_squareT_switch; C=roundT_pressureGate_roundT
+pair B_pitchm1 $B --pitch -1
+pair B_pitchm3 $B --pitch -3
+pair B_pitchp1 $B --pitch 1
+pair B_rollp1 $B --roll 1
+pair B_rollm1 $B --roll -1
+pair C_rollp1 $C --roll 1
+pair S_rollp1 $S --roll 1
+pair S_rollm1 $S --roll -1
+echo BATTERY6 DONE >> out/battery6.txt

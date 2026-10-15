@@ -1,0 +1,26 @@
+"""Effect of removing the misassigned far bins (gap > 12 m) on C: inner side k and combined k (scratch)."""
+import json, sys
+import numpy as np
+from cflib import fit_side, cut_gap
+
+recs = json.load(open(sys.argv[1]))
+rows = []
+for r in recs:
+    if not (57 <= r["k"] <= 117):
+        continue
+    c = r["calls"][-1]
+    t = c["t_fixed"]
+    if t is None or len(c.get("side_in", [])) < 2:
+        continue
+    S = [(np.array(s["x"]), np.array(s["y"])) for s in c["side_in"]]
+    base = [fit_side(x, y, t) for x, y in S]
+    cut = [fit_side(*cut_gap(x, y, 12.0), t) for x, y in S]
+    if None in base or None in cut:
+        continue
+    comb = lambda f: sum(v[0] / (v[1] ** 2 + 1e-4) for v in f) / sum(1 / (v[1] ** 2 + 1e-4) for v in f)
+    rows.append((r["k"], cut[1][0] - base[1][0], comb(cut) - comb(base), base[1][0], base[0][0], comb(base)))
+a = np.array(rows)
+for lo, hi in ((57, 90), (91, 117)):
+    m = (a[:, 0] >= lo) & (a[:, 0] <= hi)
+    print("frames %d-%d: inner k change max %.1e, combined change max %.1e (combined k %.5f..%.5f, outer k %.5f..%.5f)" % (
+        lo, hi, np.abs(a[m, 1]).max(), np.abs(a[m, 2]).max(), a[m, 5].max(), a[m, 5].min(), a[m, 4].max(), a[m, 4].min()))

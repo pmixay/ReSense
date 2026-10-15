@@ -1,0 +1,18 @@
+import os, sys
+sys.path.insert(0, os.environ["WT"])
+sys.path.insert(0, os.path.join(os.environ["WT"], "tests"))
+import numpy as np
+import resense.track as T
+from resense.config import TrackConfig
+from test_wall_reach import _entry_scene, _settle
+xyz, yt = _entry_scene(j=0.0)
+k = 1 / 800.0
+xyz[:, 1] += (0.5 * k * xyz[:, 0].astype(np.float64) ** 2).astype(np.float32)
+cfg = TrackConfig()
+m = _settle(xyz, cfg)
+b = {}
+T.estimate_axis_from_walls(xyz, m, cfg, float(np.tan(m.yaw)), boundaries=b)
+for n, (x, y) in b.items():
+    print(n, x.min(), x.max(), "gaps>16:", x[1:][np.diff(x) > 16], "n", x.size)
+for x in (60, 100, 140):
+    print(x, float(m.center_y(x)) - (-0.1 + 0.5 * k * x * x))

@@ -1,0 +1,39 @@
+"""Env R3_OVR="section.key=value,..." -> config overrides for judge_runner.NodeReplica and for
+DetectorConfig.from_yaml (scratch, r3). Import after judge_runner / resense.config are importable."""
+import os
+
+from resense.config import DetectorConfig
+
+
+def parse():
+    out = {}
+    for item in filter(None, os.environ.get("R3_OVR", "").split(",")):
+        k, v = item.split("=")
+        v = v.strip()
+        if v.lower() in ("true", "false"):
+            val = v.lower() == "true"
+        else:
+            try:
+                val = int(v)
+            except ValueError:
+                val = float(v)
+        out[k.strip()] = val
+    return out
+
+
+OVR = parse()
+_orig_from_yaml = DetectorConfig.from_yaml.__func__
+
+
+def _from_yaml(cls, path, *a, **kw):
+    cfg = _orig_from_yaml(cls, path, *a, **kw)
+    for k, v in OVR.items():
+        sec, key = k.split(".", 1)
+        assert hasattr(getattr(cfg, sec), key), k
+        setattr(getattr(cfg, sec), key, v)
+    return cfg
+
+
+if OVR:
+    DetectorConfig.from_yaml = classmethod(_from_yaml)
+    print("R3_OVR", OVR, flush=True)

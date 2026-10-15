@@ -1,0 +1,13 @@
+"""Silent GO frames of rt_clear outputs by distance band and frame range (scratch).
+usage: silent.py <json> [<json> ...]"""
+import json, sys
+for p in sys.argv[1:]:
+    d = json.load(open(p))
+    vis = [r for r in d["rows"] if r.get("X") is not None and r["X"] > 3 and r.get("n_obj", 0) > 0]
+    sil = [r for r in vis if r["decision"] == "GO" and r["clear"] >= r["X"]]
+    go = [r for r in vis if r["decision"] == "GO"]
+    b = lambda rs, lo, hi: sum(1 for r in rs if lo <= r["X"] < hi)
+    ent = [r for r in sil if 57 <= r["k"] <= 117]
+    print("%-60s visible %3d GO %3d silent %3d | X<100 %2d 100-150 %2d >=150 %2d | in C entry frames 57-117: %2d  STOP %d" % (
+        p.split("/")[-2] + "/" + p.split("/")[-1], len(vis), len(go), len(sil), b(sil, 0, 100), b(sil, 100, 150),
+        b(sil, 150, 999), len(ent), sum(1 for r in vis if r["hit"])))

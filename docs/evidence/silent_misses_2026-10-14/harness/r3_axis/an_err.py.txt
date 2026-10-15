@@ -1,0 +1,32 @@
+"""Final-axis error vs a true-axis json on obs records (dynamic run), per frame range (scratch).
+usage: an_err.py <obs.json> <true_axis.json> k0 k1 [verbose]"""
+import json, sys
+import numpy as np
+
+recs = json.load(open(sys.argv[1]))
+TA = {r["k"]: r for r in json.load(open(sys.argv[2]))}
+k0, k1 = int(sys.argv[3]), int(sys.argv[4])
+verbose = len(sys.argv) > 5
+XS = (40, 60, 80, 100, 120)
+errs = []
+for r in recs:
+    if not (k0 <= r["k"] <= k1):
+        continue
+    ta = TA.get(r["k"], {})
+    if not ta.get("ok"):
+        continue
+    c2, c1, c0 = ta["coef"]
+    e = []
+    for X in XS:
+        if X > ta["wall_xmax"] + 15:
+            e.append(np.nan)
+            continue
+        e.append(r["center"] + np.tan(r["yaw"]) * X + 0.5 * r["curv"] * X * X - (c0 - ta["off"] + c1 * X + c2 * X * X))
+    errs.append(e)
+    if verbose:
+        print(r["k"], "curv %.5f av %.0f clear %.0f" % (r["curv"], r["axis_valid"], r["clear"]), " ".join("%+.2f" % v for v in e))
+a = np.abs(np.array(errs))
+print("frames", len(errs), "|err| at", XS)
+print("  median", np.round(np.nanmedian(a, 0), 2))
+print("  p90   ", np.round(np.nanpercentile(a, 90, 0), 2))
+print("  max   ", np.round(np.nanmax(a, 0), 2))

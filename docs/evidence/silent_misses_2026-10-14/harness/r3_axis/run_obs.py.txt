@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""Replay a judge cache (no object) through the NodeReplica with axhooks; write per-frame axis records
+(JSON) and the band points of frames [d0, d1] (npz) for offline analysis.
+usage: run_obs.py <cache> <out_prefix> [d0 d1]"""
+import json, os, sys, glob
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import numpy as np
+import resense
+assert resense.__file__.startswith(WT), resense.__file__
+import axhooks as H  # noqa
+import ovr  # noqa
+sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+import range_test as rt  # noqa
+from judge_runner import NodeReplica, node_decision  # noqa
+
+cache, out = sys.argv[1], sys.argv[2]
+d0, d1 = (int(sys.argv[3]), int(sys.argv[4])) if len(sys.argv) > 4 else (-1, -1)
+meta, files = rt.load_cache(cache)
+rep = NodeReplica()
+recs = []
+pts = {}
+for k, (m, f) in enumerate(zip(meta, files)):
+    H.DUMP["on"] = d0 <= k <= d1
+    n0 = len(H.REC["frames"])
+    d = np.load(f)
+    res = rt.run_frame(rep, d["xyz"], d["inten"], d["ring"], m, k)
+    fr = H.REC["frames"][n0:]
+    for r in fr:
+        if "pts" in r:
+            pts[f"k{k}"] = r.pop("pts")
+    t = res.track
+    recs.append({"k": k, "calls": fr, "decision": node_decision(res), "clear": float(res.clear_distance),
+                 "axis_valid": float(t.axis_valid), "curv": float(t.curvature), "yaw": float(t.yaw),
+                 "center": float(t.center), "sides": int(t.axis_sides),
+                 "R": np.asarray(rep.detector.mount_rotation).tolist(),
+                 "cands": [{"d": round(float(c.distance), 1), "lat": round(float(c.lateral), 2), "zone": c.zone,
+                            "reason": c.reason, "ng": int(c.n_gauge), "size": [round(float(v), 2) for v in c.size]}
+                           for c in res.candidates]})
+json.dump(recs, open(out + ".json", "w"))
+if pts:
+    np.savez_compressed(out + "_pts.npz", **pts)
+print("frames", len(recs))

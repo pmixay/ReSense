@@ -1,0 +1,28 @@
+"""Occluded-from-above cases done right: the occluder's bottom edge is below the sight line to the object's
+cluster top, so no ray passes between; a real column to the vault, a beam / narrow lamp nearer."""
+import os, sys
+import numpy as np
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from tf_adv import cast, free, col, H0
+out = []
+for x in (30.0, 60.0, 100.0, 140.0):
+    for lat in (0.0, 0.7):
+        r = {"x": x, "lat": lat}
+        for name, hcol in (("col_to_vault", 4.2),):
+            # the sight line to height 2.85 at x; the occluder at 0.6 x, from 0.1 m below it, 0.4 m tall
+            xl = 0.6 * x
+            hl = H0 + (2.85 - H0) * xl / x
+            beam = (xl, xl + 0.2, -2.0, 2.0, hl - 0.1, hl + 0.3, "r")
+            w_az = 0.4 / x  # column angular half-width ~ 0.2/x rad
+            lamp = (xl, xl + 0.2, lat * 0.6 - 0.12 * xl / x * 1.0, lat * 0.6 + 0.12 * xl / x * 1.0, hl - 0.1, hl + 0.3, "r")
+            for tag, occ in (("beam", beam), ("lamp_narrow", lamp)):
+                b = [col(x, lat, h1=hcol), occ]
+                r[f"{name}+{tag}"] = free(b)
+                r[f"{name}+{tag}_noids"] = free(b, ids=False)
+                el64 = np.linspace(-16.0, 5.0, 64)
+                r[f"{name}+{tag}_S64_noids"] = free(b, ids=False, elev=el64)
+                r[f"{name}+{tag}_S64_ids_up"] = free(b, ids=True, elev=el64, ring_ids=np.arange(64))
+                r[f"{name}+{tag}_S64_ids_down"] = free(b, ids=True, elev=el64, ring_ids=np.arange(64)[::-1].copy())
+        out.append(r)
+for r in out:
+    print(r)

@@ -1,0 +1,60 @@
+"""Observation-only hooks on the track model (scratch, r3 axis lag). Records per frame what
+estimate_axis_from_walls saw: per side the boundary bins, the fit, the winner; and what
+estimate_track did with it (EMA, rate limit). No decision change."""
+import numpy as np
+import resense.track as T
+import resense.detector as D
+
+REC = {"cur": None, "frames": []}
+DUMP = {"on": False}
+
+_orig_walls = T.estimate_axis_from_walls
+_orig_fit_side = T._fit_side
+_orig_est = D.estimate_track
+
+
+def _fit_side(xb, yb, cfg, mean_abs_dy=0.0, t_fixed=None):
+    r = _orig_fit_side(xb, yb, cfg, mean_abs_dy, t_fixed)
+    cur = REC["cur"]
+    if cur is not None:
+        cur.setdefault("side_in", []).append({"x": np.asarray(xb).round(2).tolist(), "y": np.asarray(yb).round(3).tolist(),
+                                              "mad": float(mean_abs_dy),
+                                              "fit": None if r is None else [float(v) for v in r]})
+    return r
+
+
+def walls(xyz, model, cfg, t_fixed=None, floor_z_all=None, far_support_run=0, **kw):
+    cur = REC["cur"]
+    if cur is not None:
+        cur["walls_model"] = {"center": float(model.center), "yaw": float(model.yaw), "curv": float(model.curvature)}
+        cur["t_fixed"] = None if t_fixed is None else float(t_fixed)
+        if DUMP["on"]:
+            X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
+            zf = model.floor_z(X) if floor_z_all is None else floor_z_all
+            h = Z - (zf + model.rail_offset)
+            m = (X > 0) & (X < 200) & (h > -0.5) & (h < 3.2)
+            cur["pts"] = np.stack([X[m], Y[m], h[m]], 1).astype(np.float32)
+    r = _orig_walls(xyz, model, cfg, t_fixed, floor_z_all, far_support_run, **kw)
+    if cur is not None:
+        cur["walls_out"] = None if r is None else [float(v) for v in r]
+    return r
+
+
+def est(xyz, cfg, prev=None, periods=1, ring=None):
+    cur = REC["cur"] = {}
+    if prev is not None:
+        cur["prev"] = {"center": float(prev.center), "yaw": float(prev.yaw), "curv": float(prev.curvature),
+                       "axis_valid": float(prev.axis_valid)}
+    m = _orig_est(xyz, cfg, prev=prev, periods=periods, ring=ring)
+    cur["out"] = {"center": float(m.center), "yaw": float(m.yaw), "curv": float(m.curvature),
+                  "axis_valid": float(m.axis_valid), "sides": int(m.axis_sides), "q": float(m.wall_quality),
+                  "rail_slabs": int(m.rail_slabs), "floor_coef": [float(v) for v in m.floor_coef],
+                  "floor_range": [float(v) for v in m.floor_range], "rail_offset": float(m.rail_offset)}
+    REC["frames"].append(cur)
+    REC["cur"] = None
+    return m
+
+
+T._fit_side = _fit_side
+T.estimate_axis_from_walls = walls
+D.estimate_track = est
