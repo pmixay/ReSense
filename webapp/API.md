@@ -165,9 +165,17 @@ interface ParamSpec {              // one tunable detector parameter
 | method | path | body / query | returns |
 |---|---|---|---|
 | POST | `/api/uploads` | `{name?: string}` (≤ 200 chars) | `{upload_id}` (200) — a staging area |
-| PUT | `/api/uploads/{upload_id}/files?path=<relative path>` | raw bytes (streamed, `application/octet-stream`); `path` may contain `/` for folder uploads (`webkitRelativePath`); sanitized (no `..`, no absolute) | `{path, size_bytes}`. 422 unsafe path, 409 path conflicts with an uploaded file / folder, 413 over `RESENSE_WEB_MAX_UPLOAD_GB` for the area, 507 disk full (checked when `Content-Length` is sent), 404 unknown area |
-| POST | `/api/uploads/{upload_id}/finalize` | — | `Recording` (201). Detects: a `.zip` (unpacked safely: no zip-slip, no symlinks, size- and ratio-checked, no encrypted members) holding a rosbag2 folder (`metadata.yaml` + `.db3`/`.mcap`) or `.npy/.npz` frames or a `.jsonl`; loose `metadata.yaml` + `.db3`/`.mcap` (or a lone `.db3`/`.mcap`); a folder of `.npy/.npz`; a results `.jsonl` (`resense run --out` format, one FrameResult per line). 422 with a Russian message when nothing usable is found — the staging area is kept so files can be added and finalize retried; 409 while the same area is being finalized. **Synchronous**: unpacking a large zip takes a while (a 0.27 GB zip ≈ 4 s), clients must not time out. |
-| DELETE | `/api/uploads/{upload_id}` | — | 204 (abort staging) |
+| GET | `/api/uploads/{upload_id}` | — | `UploadStatus` (below): what the server holds — finished files, chunked files still being received with their missing chunks, the finalize stage, the last finalize error, or (`state == "done"`, for 30 min) the recording it became. 404 unknown / removed / expired area. Used to resume an upload after a reload |
+| PUT | `/api/uploads/{upload_id}/files?path=<relative path>[&size=<raw bytes>]` | the whole file (streamed, `application/octet-stream`); optional `X-Content-Encoding: gzip` (the body is gzip, inflated while it streams), `X-Content-CRC32: <8 hex>` (CRC-32 of the raw bytes); `path` may contain `/` for folder uploads (`webkitRelativePath`); sanitized (no `..`, no absolute) | `{path, size_bytes}`. **400** the body does not match `size` / the CRC / is not valid gzip (nothing is kept: send it again), 422 unsafe path or unknown encoding, 409 path conflicts with an uploaded file / folder, the same path is being sent, or the area is being finalized, 413 over `RESENSE_WEB_MAX_UPLOAD_GB` for the area, 507 disk full (checked when the size is known), 404 unknown area. Replaces a file of the same path |
+| POST | `/api/uploads/{upload_id}/chunked` | `{path, size_bytes, chunk_size /* 64 KiB..64 MiB */, fingerprint?: string /* ≤ 200 chars, the client's identity of the content */}` | `ChunkedFile` with `missing` — declares (or resumes) a file sent in chunks: the same path, size, chunk size and fingerprint answer what is already there; anything else starts the file over (a finished file at that path is replaced). The space is reserved up front: 413 over the area limit, 507 not enough disk, 422 bad sizes / path, 409 path conflict or the area is being finalized. A 0-byte file is complete at once |
+| PUT | `/api/uploads/{upload_id}/chunked/{index}?path=<relative path>` | chunk `index` (0-based) of a declared file: `chunk_size` bytes (the last one shorter), raw or with `X-Content-Encoding: gzip`; `X-Content-CRC32` of the raw bytes (recommended) | `ChunkedFile` without `missing`. Chunks go in any order and in parallel; each is written in place and flushed to disk before it counts (a server restart keeps it); the last one moves the file into the area. Sending a stored chunk again is a no-op (200). **400** wrong length / CRC / gzip (send it again), 413 body bigger than the chunk, 422 index outside the file, 404 not declared, 409 area being finalized, 507 disk full |
+| POST | `/api/uploads/{upload_id}/finalize[?wait=false]` | — | `Recording` (201). Runs in a background thread: `wait=true` (default) answers when it is done; `wait=false` answers **202** at once with the `UploadStatus` (`state: "finalizing"`, `finalize.stage`) — follow `GET /api/uploads/{id}` until `state == "done"` (`recording`) or `error` is set (the area is kept, `state: "receiving"`). A second call while it runs joins it (also after it is done: the same recording). Detects: a `.zip` (unpacked safely: no zip-slip, no symlinks, size- and ratio-checked, no encrypted members; into a hidden folder renamed when complete, so an interrupted unpacking is never taken for input) holding a rosbag2 folder (`metadata.yaml` + `.db3`/`.mcap`) or `.npy/.npz` frames or a `.jsonl`; loose `metadata.yaml` + `.db3`/`.mcap` (or a lone `.db3`/`.mcap`); a folder of `.npy/.npz`; a results `.jsonl` (`resense run --out` format, one FrameResult per line). 422 with a Russian message when nothing usable is found — the staging area is kept so files can be added and finalize retried; 409 while a write is still running or a chunked file is incomplete (the message names it). Unpacking a large zip takes a while (a 0.27 GB zip ≈ 4 s, 25 GB ≈ minutes): use `wait=false` |
+| DELETE | `/api/uploads/{upload_id}` | — | 204 (abort staging; a write still running is swept when it ends). 409 while it is being finalized |
+
+An upload body (both PUTs) that sends nothing for 60 s ends with **408**: a connection that died
+without a FIN / RST would otherwise keep its write open, and the area busy (finalize answers 409
+«Файлы ещё передаются» while a write runs), for ever. A chunk of a file declared anew meanwhile is
+refused with 409 and never mixed into the new file.
 | GET | `/api/server-files?path=<relative>` | browse `server_root` (env `RESENSE_DATA`, default `/data`), sandboxed: dot entries and symlinks leading out of the root are hidden | `{path, parent, entries: [{name, path, type: "dir" \| "file", size_bytes, is_bag, is_npy_dir, n_frames?}], truncated}` (dirs first; at most 2000 entries, `truncated` = more exist). 400 bad / absolute / `..` path or a file, 403 outside the root, 404 not found (or no root) |
 | POST | `/api/recordings/from-server` | `{path}` (relative to server_root; a bag folder, its `metadata.yaml` / storage file, an npy folder or a `.jsonl`) | `Recording` (registered in place, not copied): 201, or 200 with the existing Recording when the same resolved path is already registered. 403 outside the root, 422 not a recording |
 | POST | `/api/recordings/demo` | `{scenario?: "approach" \| "crossing" \| "clear" (default approach), seconds?: number (5..60, default 15), seed?: number (0..2^31-1, default 0), progress_id?: string (8..64 of A-Za-z0-9_-, chosen by the client)}` | `Recording` (201) — a real rosbag2 bag (sqlite3, `/lidar_points`, 10 Hz) of synthetic tunnel frames written to the data dir, with its `ground_truth.json` (labels.source = `builtin`). **Synchronous**: ≈ 0.65 s per simulated second (60 s ≈ 40 s); ≈ 33 MB per second of recording. With `progress_id` the generation can be followed with the endpoint below (409 while a generation with the same id is running). Scenes: `approach` — the train brakes to a stop ~25 m before a person standing on the track; `crossing` — the train stands, a person crosses the track at ~55 m (GO → CAUTION → STOP → GO); `clear` — trackside equipment beside the envelope, no obstacle (GO / CAUTION, no STOP) |
@@ -178,6 +186,46 @@ interface ParamSpec {              // one tunable detector parameter
 | GET | `/api/recordings/{id}/download` | — | the demo bag as a `.zip` (demo recordings only, else 403); built on the first request (≈ 35 MB of bag per second: a 15 s demo ≈ 15 s, a 60 s demo ≈ 1 min before the first byte), then cached |
 | PUT | `/api/recordings/{id}/labels` | raw JSON body in the `labels/*.json` format (`{"_meta": {...}, "00042": [{...}], ...}`), ≤ 64 MB | `Recording` (labels.source = `upload`, name = `_meta.bag`); 422 when it is not a label file, 413 when too big |
 | DELETE | `/api/recordings/{id}/labels` | — | `Recording` (falls back to a bundled `ground_truth.json` or built-in labels matched by name, if any) |
+
+```ts
+interface ChunkedFile {
+  path: string
+  size_bytes: number
+  chunk_size: number
+  n_chunks: number
+  received_chunks: number
+  received_bytes: number
+  complete: boolean
+  missing?: [number, number][]     // ranges [first, last] of the chunks still to send
+}
+
+interface UploadStatus {
+  upload_id: string
+  name: string
+  created_at?: string
+  state: "receiving" | "finalizing" | "done"
+  files: { path: string, size_bytes: number }[]   // finished files
+  partial: ChunkedFile[]           // chunked files still being received
+  bytes_received: number
+  finalize: { stage: "starting" | "unpacking" | "probing" | "saving", fraction: number | null } | null
+  error: string | null             // the last finalize failed (Russian); the area is kept
+  recording: Recording | null      // state == "done"
+}
+```
+
+How the web client uploads (`webapp/frontend/src/api/upload.ts`): files up to 8 MiB in one PUT,
+bigger ones declared and sent in 8 MiB chunks, 4 requests at a time; every body with its CRC-32,
+gzipped in Web Workers when that is faster than the link (the synthetic lidar bags deflate to ~0.65:
+a 333 MB bag over an emulated 100 Mbit/s link took 18.6 s instead of the 26.7 s the raw bytes need,
+so a 25 GB bag goes up in ~25 min instead of ~36); network errors and 5xx are retried with
+backoff (offline: as soon as the browser is online again; 400 / 408 / 409 / 5xx at most 8 times in a
+row, then it pauses with the server's message), 507 pauses, pause / resume / cancel are the user's.
+The client removes a staging area only when it cannot become a recording (404, 413, 422) or on
+cancel; after any other failure it is kept for «Повторить». The tab sending an upload beats a
+heartbeat into its stored session, and another tab shows it as running there instead of offering
+to resume or delete it. The upload id is kept in `localStorage`: after a reload the same files picked again
+continue from `GET /api/uploads/{id}`. Unfinished areas are removed `RESENSE_WEB_UPLOAD_TTL_H`
+after their last write.
 
 ## Jobs (queue)
 
@@ -269,10 +317,12 @@ to `127.0.0.1:8000` (`python -m resense_web --port 8000 --reload`); CORS allows 
 | `RESENSE_WEB_DATA` | `<repo>/webapp/data` | database, uploads, recordings, runs |
 | `RESENSE_DATA` | `/data` | server-folder root for "Папка на сервере" |
 | `RESENSE_WEB_MAX_UPLOAD_GB` | `100` | per upload staging area |
+| `RESENSE_WEB_UPLOAD_TTL_H` | `72` | an unfinished upload is kept this long after its last write (checked at start and hourly) |
+| `RESENSE_WEB_KEEPALIVE_S` | `130` | an idle HTTP connection is closed after this long (`--timeout-keep-alive`). Behind a reverse proxy it must be longer than the proxy's idle timeout for upstream connections (Caddy 2 min, Traefik 90 s, nginx 60 s): the proxy must be the one to close, or it may send a request on a connection the backend is closing and answer 502 (a POST is never retried). uvicorn's own default is 5 s |
 | `RESENSE_WEB_HOST` / `RESENSE_WEB_PORT` | `0.0.0.0` / `8080` | bind |
 | `RESENSE_WEB_STATIC` | `<repo>/webapp/frontend/dist` | the built frontend to serve |
 
-Data dir layout: `resense_web.sqlite`; `uploads/<id>/` staging areas (stale ones > 24 h removed at
-start); `recordings/<id>/` uploaded and demo recordings, uploaded labels; `jobs/<id>/` spec.json,
+Data dir layout: `resense_web.sqlite`; `uploads/<id>/` staging areas (`files/` finished files,
+`parts/` chunked files in progress; removed `RESENSE_WEB_UPLOAD_TTL_H` after their last write); `recordings/<id>/` uploaded and demo recordings, uploaded labels; `jobs/<id>/` spec.json,
 progress.json, result.json, worker.log; `runs/<id>/` results.jsonl (+ .idx), clouds.bin +
 clouds.json, series.json, summary.json, worker.log, frames.csv.size; `cache/` demo zips.

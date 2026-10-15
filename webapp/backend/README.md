@@ -26,6 +26,8 @@ unless `--install`): `scripts/run_webapp.sh` — http://localhost:8080/, `RESENS
 | `RESENSE_WEB_DATA` | `<repo>/webapp/data` | database, uploads, recordings, runs |
 | `RESENSE_DATA` | `/data` | server-folder root for «Папка на сервере» (read-only, sandboxed) |
 | `RESENSE_WEB_MAX_UPLOAD_GB` | `100` | per upload staging area (a zip also after unpacking) |
+| `RESENSE_WEB_UPLOAD_TTL_H` | `72` | an unfinished (resumable) upload is kept this long after its last write |
+| `RESENSE_WEB_KEEPALIVE_S` | `130` | idle connection timeout (`--timeout-keep-alive`); behind a reverse proxy keep it above the proxy's idle timeout (Caddy 2 min), else the proxy can hit a connection the backend is closing and answer 502 |
 | `RESENSE_WEB_HOST` / `RESENSE_WEB_PORT` | `0.0.0.0` / `8080` | bind |
 | `RESENSE_WEB_STATIC` | `webapp/frontend/dist` | the built frontend (optional override) |
 
@@ -33,7 +35,9 @@ unless `--install`): `scripts/run_webapp.sh` — http://localhost:8080/, `RESENS
 
 ```
 resense_web.sqlite          recordings, jobs, runs, presets (sqlite3, WAL)
-uploads/<id>/files/...      staging areas of unfinished uploads (removed after 24 h)
+uploads/<id>/files/...      staging areas of unfinished uploads: finished files ...
+uploads/<id>/parts/...      ... and chunked files in progress (<key>.part written in place, <key>.json
+                            the received-chunk bitmap); removed RESENSE_WEB_UPLOAD_TTL_H after the last write
 recordings/<id>/            uploaded and demo recordings, uploaded labels.json (a demo bag carries its
                             ground_truth.json, which is used as labels wherever the bag goes)
 jobs/<id>/                  spec.json (from the manager), progress.json, result.json, worker.log
@@ -58,7 +62,13 @@ cache/                      generated demo bag zips
   events, RunSummary), `clouds.py` (RSC1, point flags and sampling), `results.py` (line index).
 - `probe.py` / `uploads.py` / `serverfiles.py` — input detection (rosbags for sqlite3 and mcap,
   `.npy/.npz` folders, results `.jsonl`), safe zip extraction (zip-slip, symlink, size and
-  compression-ratio guards), path sanitizing and the sandboxed folder browser.
+  compression-ratio guards), path sanitizing and the sandboxed folder browser. Uploads are
+  resumable: big files arrive in chunks (any order, in parallel, CRC-32 checked, optionally gzip,
+  each flushed to disk before it counts), `GET /api/uploads/{id}` says what is missing, and
+  finalize (unpacking, detection, the move into `recordings/`) runs in a background thread with
+  its stage; writes, finalize and delete of one area exclude each other.
+- The worker reads frames one step ahead in a background thread (`worker.prefetch`): reading the
+  bag and decoding the clouds overlap with the detector (~20-30 % more frames per second).
 - `demo.py`, `params.py`, `evaluation.py`, `live.py` — synthetic demo bags, the tunable parameter
   schema, scoring against labels, the live replay (see their docstrings).
 - Tests: unit tests per module, the worker end to end on small real bags (`test_runs.py`), and

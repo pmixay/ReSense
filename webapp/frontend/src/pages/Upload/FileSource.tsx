@@ -1,27 +1,90 @@
 // «Файл»: a drop zone for files AND folders (folders are walked with webkitGetAsEntry), «Выбрать
-// файлы» / «Выбрать папку» (input webkitdirectory); the upload streams with progress (bytes, speed,
-// ETA, cancel) and keeps going on other pages (uploadStore); after finalize the page makes the
-// detected recording the chosen one.
+// файлы» / «Выбрать папку» (input webkitdirectory). The upload is resumable (api/upload.ts): bytes,
+// speed, time left, the compression saved, pause / resume / cancel, automatic retries while the
+// connection is gone, the server's unpacking progress; it keeps going on other pages
+// (uploadStore) and, after a reload, continues where it stopped once the same files are picked
+// again. After finalize the page makes the detected recording the chosen one.
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import { useUploadLabels } from '../../api/hooks';
-import type { Recording } from '../../api/types';
-import { filesFromDataTransfer, suggestName, toUploadItems, type UploadItem } from '../../api/upload';
+import type { FinalizeStage, Recording } from '../../api/types';
+import { filesFromDataTransfer, suggestName, toUploadItems, type UploadItem, type UploadProgress } from '../../api/upload';
 import { Button, Chip, ErrorBanner, Help, Icon, IconButton, ProgressBar } from '../../components';
 import { FILES, fmtBytes, fmtClock, fmtCount, fmtPercent, fmtSpeed } from '../../lib/format';
 import { ACCEPTED, guessKind } from './kinds';
 import { RecordingCard } from './RecordingCard';
-import { abortUpload, dismissUpload, startUpload, useUploadStore, type Picked, type UploadRun } from './uploadStore';
+import {
+  abortUpload,
+  discardPending,
+  dismissUpload,
+  matchesPending,
+  pauseUpload,
+  resumeUpload,
+  startUpload,
+  useUploadStore,
+  type PendingUpload,
+  type Picked,
+  type UploadRun,
+} from './uploadStore';
 import styles from './FileSource.module.css';
 
-function UploadingCard({ run, onCancel }: { run: UploadRun; onCancel: () => void }) {
+const STAGE: Record<FinalizeStage, string> = {
+  starting: 'проверяем запись на сервере…',
+  unpacking: 'распаковываем архив на сервере',
+  probing: 'проверяем запись на сервере…',
+  saving: 'сохраняем запись…',
+};
+
+function finalizeText(p: UploadProgress): ReactNode {
+  const f = p.finalize;
+  if (f?.stage === 'unpacking' && f.fraction !== null)
+    return (
+      <>
+        <b>{STAGE.unpacking}</b>
+        <span>{fmtPercent(f.fraction)}</span>
+      </>
+    );
+  return <b>{f ? STAGE[f.stage] : STAGE.starting}</b>;
+}
+
+function TransferLine({ p }: { p: UploadProgress }) {
+  const saved = p.compression !== null ? 1 - p.compression : null;
+  return (
+    <>
+      <b>{fmtPercent(p.fraction)}</b>
+      <span>
+        {fmtBytes(p.loaded)} из {fmtBytes(p.total)}
+      </span>
+      {p.state === 'paused' && <span className={styles.warn}>пауза</span>}
+      {p.state === 'waiting' && (
+        <span className={styles.warn} title={p.notice ?? undefined}>
+          нет связи · повтор через {p.retryInS ?? 1} с
+        </span>
+      )}
+      {p.state === 'running' && p.bytesPerSec !== null && <span>{fmtSpeed(p.bytesPerSec)}</span>}
+      {p.state === 'running' && p.etaS !== null && <span>осталось {fmtClock(p.etaS)}</span>}
+      {saved !== null && saved >= 0.01 && <span title="Сжатие при передаче: столько байт не пришлось отправлять">сжатие −{fmtPercent(saved)}</span>}
+      {p.resumed > 0 && <span title={`${fmtBytes(p.resumed)} уже были на сервере`}>докачка</span>}
+      {p.fileCount > 1 && (
+        <span>
+          файл {p.fileIndex + 1} из {p.fileCount}
+        </span>
+      )}
+    </>
+  );
+}
+
+function UploadingCard({ run }: { run: UploadRun }) {
   const { picked, progress: p } = run;
   const finalizing = p?.phase === 'finalizing' || p?.phase === 'done';
   const staging = !p || p.phase === 'staging';
+  const paused = p?.state === 'paused';
+  const waiting = p?.state === 'waiting';
+  const bar = finalizing ? (p?.finalize?.stage === 'unpacking' ? p.finalize.fraction : null) : staging ? null : p.fraction;
   return (
     <div className={styles.card}>
-      <span className={styles.fi} aria-hidden>
-        <Icon name={picked.guess.icon} size={20} />
+      <span className={[styles.fi, paused || waiting ? styles.fiWarn : ''].join(' ')} aria-hidden>
+        <Icon name={paused ? 'pause' : waiting ? 'wifi-off' : picked.guess.icon} size={20} />
       </span>
       <div className={styles.w}>
         <div className={styles.nm}>
@@ -30,35 +93,58 @@ function UploadingCard({ run, onCancel }: { run: UploadRun; onCancel: () => void
           </span>
           <span className={styles.kind}>{picked.guess.label}</span>
         </div>
-        <ProgressBar
-          value={finalizing || staging ? null : p.fraction}
-          height={10}
-          label="Загрузка записи"
-          className={styles.bar}
-        />
+        <ProgressBar value={bar} height={10} label="Загрузка записи" className={styles.bar} />
+        <div className={styles.line} aria-live="polite">
+          {finalizing && p ? finalizeText(p) : staging ? <b>подготовка…</b> : <TransferLine p={p} />}
+        </div>
+        {(paused || waiting) && p?.notice && <div className={styles.notice}>{p.notice}</div>}
+      </div>
+      {!finalizing &&
+        (paused ? (
+          <IconButton icon="play" label="Продолжить загрузку" tooltip variant="dark" size="sm" onClick={resumeUpload} />
+        ) : waiting ? (
+          <IconButton icon="retry" label="Повторить сейчас" tooltip variant="well" size="sm" onClick={resumeUpload} />
+        ) : (
+          <IconButton icon="pause" label="Приостановить загрузку" tooltip variant="well" size="sm" onClick={pauseUpload} disabled={staging} />
+        ))}
+      <IconButton icon="x" label="Отменить загрузку" tooltip variant="well" size="sm" onClick={abortUpload} disabled={finalizing} />
+    </div>
+  );
+}
+
+function PendingCard({ pending, received, onContinue }: { pending: PendingUpload; received: number | null; onContinue: () => void }) {
+  const what = pending.folder ? 'ту же папку' : pending.files.length > 1 ? 'те же файлы' : 'тот же файл';
+  const away = !!pending.elsewhere;
+  return (
+    <div className={styles.card}>
+      <span className={[styles.fi, styles.fiWarn].join(' ')} aria-hidden>
+        <Icon name="pause" size={20} />
+      </span>
+      <div className={styles.w}>
+        <div className={styles.nm}>
+          <span className={styles.name} title={pending.name}>
+            {pending.name}
+          </span>
+          <span className={[styles.kind, styles.kindWarn].join(' ')}>{away ? 'идёт в другой вкладке' : 'не завершена'}</span>
+        </div>
+        <ProgressBar value={received === null ? null : received / Math.max(1, pending.bytes)} height={10} label="Незавершённая загрузка" className={styles.bar} />
         <div className={styles.line}>
-          {finalizing ? (
-            <b>проверяем запись на сервере…</b>
-          ) : staging ? (
-            <b>подготовка…</b>
-          ) : (
-            <>
-              <b>{fmtPercent(p.fraction)}</b>
-              <span>
-                {fmtBytes(p.loaded)} из {fmtBytes(p.total)}
-              </span>
-              {p.bytesPerSec !== null && <span>{fmtSpeed(p.bytesPerSec)}</span>}
-              {p.etaS !== null && <span>осталось {fmtClock(p.etaS)}</span>}
-              {p.fileCount > 1 && (
-                <span>
-                  файл {p.fileIndex + 1} из {p.fileCount}
-                </span>
-              )}
-            </>
+          {received !== null && (
+            <span>
+              на сервере {fmtBytes(received)} из {fmtBytes(pending.bytes)}
+            </span>
           )}
+          <span>{away ? 'новую загрузку можно начать, когда она закончится' : `выберите ${what}, чтобы продолжить`}</span>
         </div>
       </div>
-      <IconButton icon="x" label="Отменить загрузку" tooltip variant="well" size="sm" onClick={onCancel} disabled={finalizing} />
+      {!away && (
+        <>
+          <Button variant="dark" size="sm" icon="play" onClick={onContinue}>
+            Продолжить
+          </Button>
+          <IconButton icon="trash" label="Удалить незавершённую загрузку" tooltip variant="well" size="sm" onClick={discardPending} />
+        </>
+      )}
     </div>
   );
 }
@@ -71,9 +157,11 @@ export interface FileSourceProps {
 
 export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
   const qc = useQueryClient();
-  const { run } = useUploadStore();
+  const { run, pending, pendingReceived } = useUploadStore();
   const labels = useUploadLabels();
   const [picked, setPicked] = useState<Picked | null>(null);
+  /** files picked while another upload is unfinished: start over only when the user confirms */
+  const [replacing, setReplacing] = useState<Picked | null>(null);
   const [drag, setDrag] = useState(false);
   const [reading, setReading] = useState(false);
   const filesRef = useRef<HTMLInputElement>(null);
@@ -89,7 +177,20 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
   // the page picks the finished recording up (takeUploadResult), also after a trip elsewhere
   const start = (p: Picked) => {
     setPicked(null);
+    setReplacing(null);
     startUpload(qc, p);
+  };
+
+  // the same files as the unfinished upload continue it; other files replace it once confirmed
+  const begin = (p: Picked) => {
+    if (pending && matchesPending(pending, p.items)) {
+      setPicked(null);
+      setReplacing(null);
+      startUpload(qc, { ...p, name: pending.name || p.name }, pending.uploadId);
+    } else if (pending) {
+      setPicked(null);
+      setReplacing(p);
+    } else start(p);
   };
 
   const take = (items: UploadItem[]) => {
@@ -98,7 +199,8 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     const p: Picked = { items, guess, name: suggestName(items), bytes: items.reduce((s, i) => s + i.file.size, 0) };
     labels.reset();
     dismissUpload();
-    if (guess.ok) start(p);
+    setReplacing(null);
+    if (guess.ok) begin(p);
     else setPicked(p); // not uploaded by itself: labels go to a recording, unknown files on request
   };
 
@@ -106,7 +208,7 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     e.preventDefault();
     depth.current = 0;
     setDrag(false);
-    if (run?.status === 'uploading') return;
+    if (busy) return;
     setReading(true);
     try {
       take(await filesFromDataTransfer(e.dataTransfer));
@@ -115,7 +217,7 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
     }
   };
 
-  const busy = run?.status === 'uploading' || reading;
+  const busy = run?.status === 'uploading' || reading || !!pending?.elsewhere;
   const attachLabels = async (p: Picked) => {
     if (!current) return;
     const rec = await labels.mutateAsync({ id: current.id, labels: p.items[0].file }).catch(() => null);
@@ -126,11 +228,15 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
   };
 
   let top: ReactNode = null;
-  if (run?.status === 'uploading') top = <UploadingCard run={run} onCancel={abortUpload} />;
+  if (run?.status === 'uploading') top = <UploadingCard run={run} />;
   else if (run?.status === 'error')
     top = (
       <div className={styles.errBox}>
-        <ErrorBanner error={run.error} title="Запись не принята" onRetry={() => start(run.picked)} />
+        <ErrorBanner
+          error={run.error}
+          title={run.resumeId ? 'Загрузка остановлена' : 'Запись не принята'}
+          onRetry={() => (run.resumeId ? startUpload(qc, run.picked, run.resumeId) : start(run.picked))}
+        />
         <IconButton icon="x" label="Убрать" tooltip variant="white" size="sm" onClick={dismissUpload} />
       </div>
     );
@@ -162,13 +268,40 @@ export function FileSource({ current, onRecording, onClear }: FileSourceProps) {
             <Chip variant="well">сначала выберите запись</Chip>
           )
         ) : (
-          <Button variant="outline" size="sm" icon="upload" onClick={() => start(picked)}>
+          <Button variant="outline" size="sm" icon="upload" onClick={() => begin(picked)}>
             Всё равно загрузить
           </Button>
         )}
         <IconButton icon="x" label="Убрать" tooltip variant="well" size="sm" onClick={() => setPicked(null)} />
       </div>
     );
+  else if (replacing && pending)
+    top = (
+      <div className={styles.card}>
+        <span className={[styles.fi, styles.fiWarn].join(' ')} aria-hidden>
+          <Icon name="warning" size={20} />
+        </span>
+        <div className={styles.w}>
+          <div className={styles.nm}>
+            <span className={styles.name} title={replacing.name}>
+              {replacing.name}
+            </span>
+            <span className={styles.kind}>{replacing.guess.label}</span>
+          </div>
+          <div className={styles.line}>
+            <span>
+              это не файлы незавершённой загрузки «{pending.name}» — она будет удалена{pendingReceived ? ` (${fmtBytes(pendingReceived)} на сервере)` : ''}
+            </span>
+          </div>
+        </div>
+        <Button variant="outline" size="sm" icon="upload" onClick={() => start(replacing)}>
+          Начать новую
+        </Button>
+        <IconButton icon="x" label="Отмена" tooltip variant="well" size="sm" onClick={() => setReplacing(null)} />
+      </div>
+    );
+  else if (pending)
+    top = <PendingCard pending={pending} received={pendingReceived} onContinue={() => (pending.folder ? dirRef : filesRef).current?.click()} />;
   else if (current) top = <RecordingCard rec={current} onClear={onClear} />;
 
   return (

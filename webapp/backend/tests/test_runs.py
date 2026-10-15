@@ -296,3 +296,22 @@ def test_npz_and_plain_array_frames(client, env, synthetic_clouds):
     assert all(f["n_points"] > 20000 for f in page["frames"])
     xyz, _inten, _flags = clouds.unpack_rsc1(client.get(f"/api/runs/{job['run_id']}/clouds/5").content)
     assert len(xyz) >= 5000
+
+
+def test_upper_case_npy_frames_are_processed(client, env, synthetic_clouds):
+    """The probe counts ``.NPY`` files; the worker reads the same listing (it used to glob "*.npy"
+    and fail with «Не прочитано ни одного кадра»)."""
+    from resense.pointcloud import COMPACT_DTYPE
+    frames = env.server_root / "CAPS"
+    frames.mkdir()
+    for i, (xyz, inten, ring) in enumerate(synthetic_clouds[:3]):
+        a = np.zeros(len(xyz), COMPACT_DTYPE)
+        a["x"], a["y"], a["z"], a["intensity"], a["ring"] = xyz[:, 0], xyz[:, 1], xyz[:, 2], inten, ring
+        np.save(frames / f"F_{i:04d}.npy", a)
+        (frames / f"F_{i:04d}.npy").rename(frames / f"F_{i:04d}.NPY")
+    rec = client.post("/api/recordings/from-server", json={"path": "CAPS"}).json()
+    assert rec["kind"] == "npy" and rec["n_frames"] == 3
+    job = wait_job(client, client.post("/api/jobs", json={"recording_id": rec["id"],
+                                                          "options": {"clouds": False}}).json()["id"])
+    assert job["status"] == "done", job["error"]
+    assert client.get(f"/api/runs/{job['run_id']}").json()["summary"]["n_frames"] == 3

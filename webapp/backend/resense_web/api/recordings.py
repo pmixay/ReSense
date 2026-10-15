@@ -1,12 +1,15 @@
 """Recordings (sources): uploads, the server folder browser, demo bags, labels."""
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import shutil
 import threading
 import time
 import zipfile
+
+from typing import AsyncIterator
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse
@@ -18,7 +21,8 @@ from resense_web import recordings as rec_mod
 from resense_web import serverfiles
 from resense_web.api.deps import Context, get_ctx, not_found
 from resense_web.probe import probe_path
-from resense_web.uploads import disk_free, unlink_quiet
+from resense_web.uploads import (ENCODINGS, GZIP_SLACK, MAX_CHUNK, MIN_CHUNK, StreamDecoder, UploadError, disk_free,
+                                 unlink_quiet)
 from resense_web.util import (UnsafePath, atomic_write_json, download_filename, is_within, new_id,
                               sanitize_relpath)
 
@@ -29,10 +33,20 @@ DISK_MARGIN = 256 * 1024 ** 2
 MAX_LABELS_BYTES = 64 * 1024 ** 2
 SCENARIOS = ("approach", "crossing", "clear")
 PROGRESS_ID = r"^[A-Za-z0-9_-]{8,64}$"
+ENCODING_HEADER = "X-Content-Encoding"     # transfer encoding of an upload body: identity | gzip
+CRC_HEADER = "X-Content-CRC32"             # CRC-32 (hex) of the raw bytes of an upload body
+BODY_IDLE_S = 60.0                         # an upload body that sends nothing this long is dropped
 
 
 class UploadCreate(BaseModel):
     name: str | None = Field(default=None, max_length=200)
+
+
+class ChunkedCreate(BaseModel):
+    path: str = Field(max_length=4096)
+    size_bytes: int = Field(ge=0, le=2 ** 50)
+    chunk_size: int = Field(ge=MIN_CHUNK, le=MAX_CHUNK)
+    fingerprint: str | None = Field(default=None, max_length=200)
 
 
 class FromServer(BaseModel):
@@ -107,70 +121,179 @@ def _recording_or_404(ctx: Context, rec_id: str) -> dict:
 
 # --- uploads ------------------------------------------------------------------------------------
 
+def _encoding(request: Request) -> str:
+    enc = (request.headers.get(ENCODING_HEADER) or "identity").strip().lower()
+    if enc not in ENCODINGS:
+        raise HTTPException(422, "Неизвестное сжатие передачи (нужно identity или gzip)")
+    return enc
+
+
+def _crc(request: Request) -> int | None:
+    raw = (request.headers.get(CRC_HEADER) or "").strip()
+    if not raw:
+        return None
+    try:
+        value = int(raw, 16)
+    except ValueError:
+        value = -1
+    if not 0 <= value <= 0xFFFFFFFF or len(raw) > 8:
+        raise HTTPException(422, f"Заголовок {CRC_HEADER} должен быть CRC-32 в шестнадцатеричном виде")
+    return value
+
+
+async def body_chunks(request: Request, idle_s: float | None = None) -> AsyncIterator[bytes]:
+    """``request.stream()``, ended with a 408 when no byte arrives for ``idle_s``: a client whose
+    connection died without a FIN / RST (Wi-Fi gone, NAT timeout) would otherwise keep its write
+    open, and the upload area busy (finalize refused), for ever."""
+    it = request.stream().__aiter__()
+    while True:
+        try:
+            chunk = await asyncio.wait_for(it.__anext__(), BODY_IDLE_S if idle_s is None else idle_s)
+        except StopAsyncIteration:
+            return
+        except asyncio.TimeoutError:
+            raise UploadError(408, "Данные перестали поступать — запрос прерван, часть будет отправлена снова") from None
+        yield chunk
+
+
+def _declared_length(request: Request) -> int | None:
+    declared = request.headers.get("content-length", "")
+    return int(declared) if declared.isdigit() else None
+
+
 @router.post("/uploads")
 def create_upload(body: UploadCreate | None = Body(default=None), ctx: Context = Depends(get_ctx)) -> dict:
     return {"upload_id": ctx.uploads.create(body.name if body else None)}
 
 
+@router.get("/uploads/{upload_id}")
+def upload_status(upload_id: str, ctx: Context = Depends(get_ctx)) -> dict:
+    return ctx.uploads.status(upload_id)
+
+
 @router.put("/uploads/{upload_id}/files")
 async def put_upload_file(upload_id: str, request: Request, path: str = Query(..., max_length=4096),
-                          ctx: Context = Depends(get_ctx)) -> dict:
+                          size: int | None = Query(default=None, ge=0), ctx: Context = Depends(get_ctx)) -> dict:
+    """A whole file in one streamed request; optional gzip transfer encoding, CRC-32 and size of
+    the raw bytes (a mismatch is a 400 the client answers by sending the file again)."""
     store = ctx.uploads
     try:
         rel = sanitize_relpath(path)
     except UnsafePath as exc:
         raise HTTPException(422, str(exc)) from None
-    dest = store.target(upload_id, rel)
-    declared = request.headers.get("content-length", "")
-    if declared.isdigit():
-        n = int(declared)
-        if n > ctx.settings.max_upload_bytes:
-            gb = ctx.settings.max_upload_bytes / 1024 ** 3
-            raise HTTPException(413, f"Превышен максимальный размер загрузки ({gb:g} ГБ)")
-        if n > disk_free(ctx.settings.uploads_dir) - DISK_MARGIN:
-            raise HTTPException(507, "Недостаточно места на диске сервера")
-    existing = dest.stat().st_size if dest.is_file() else 0
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    tmp = dest.with_name(f".{dest.name}.part-{new_id(6)}")
-    reserved = written = 0
-    fh = open(tmp, "wb")
-    try:
-        buf = bytearray()
-        async for chunk in request.stream():
-            if not chunk:
-                continue
-            store.reserve(upload_id, len(chunk))
-            reserved += len(chunk)
-            buf += chunk
-            if len(buf) >= WRITE_CHUNK:
-                data, buf = bytes(buf), bytearray()
-                await run_in_threadpool(fh.write, data)
-                written += len(data)
-        if buf:
-            await run_in_threadpool(fh.write, bytes(buf))
-            written += len(buf)
-        fh.close()
-        os.replace(tmp, dest)
-    except ClientDisconnect:
-        fh.close()
-        unlink_quiet(tmp)
-        store.release(upload_id, reserved)
-        return Response(status_code=400)
-    except BaseException:
-        fh.close()
-        unlink_quiet(tmp)
-        store.release(upload_id, reserved)
-        raise
-    if existing:
-        store.release(upload_id, existing)
+    encoding, crc = _encoding(request), _crc(request)
+    with store.writing(upload_id, rel.as_posix()):
+        dest = store.target(upload_id, rel)
+        expect = size if size is not None else (_declared_length(request) if encoding == "identity" else None)
+        if expect is not None:
+            if expect > ctx.settings.max_upload_bytes:
+                gb = ctx.settings.max_upload_bytes / 1024 ** 3
+                raise HTTPException(413, f"Превышен максимальный размер загрузки ({gb:g} ГБ)")
+            if expect > disk_free(ctx.settings.uploads_dir) - DISK_MARGIN:
+                raise HTTPException(507, "Недостаточно места на диске сервера")
+        await run_in_threadpool(store.drop_chunked, upload_id, rel)     # a chunked upload of this path is superseded
+        existing = dest.stat().st_size if dest.is_file() else 0
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        tmp = dest.with_name(f".{dest.name}.part-{new_id(6)}")
+        decoder = StreamDecoder(encoding, size)
+        reserved = written = 0
+        fh = open(tmp, "wb")
+        try:
+            buf = bytearray()
+            async for chunk in body_chunks(request):
+                if not chunk:
+                    continue
+                for piece in decoder.feed(chunk):
+                    store.reserve(upload_id, len(piece))
+                    reserved += len(piece)
+                    buf += piece
+                    if len(buf) >= WRITE_CHUNK:
+                        data, buf = bytes(buf), bytearray()
+                        await run_in_threadpool(fh.write, data)
+                        written += len(data)
+            decoder.finish()
+            if buf:
+                await run_in_threadpool(fh.write, bytes(buf))
+                written += len(buf)
+            fh.close()
+            if size is not None and written != size:
+                raise UploadError(400, f"Файл пришёл не полностью ({written} из {size} байт) — он будет отправлен снова")
+            if crc is not None and decoder.crc != crc:
+                raise UploadError(400, "Контрольная сумма файла не совпала — он будет отправлен снова")
+            os.replace(tmp, dest)
+        except ClientDisconnect:
+            fh.close()
+            unlink_quiet(tmp)
+            store.release(upload_id, reserved)
+            return Response(status_code=400)
+        except BaseException:
+            fh.close()
+            unlink_quiet(tmp)
+            store.release(upload_id, reserved)
+            raise
+        if existing:
+            store.release(upload_id, existing)
+        store.touch(upload_id)
     return {"path": rel.as_posix(), "size_bytes": written}
 
 
+@router.post("/uploads/{upload_id}/chunked")
+def declare_chunked(upload_id: str, body: ChunkedCreate, ctx: Context = Depends(get_ctx)) -> dict:
+    try:
+        rel = sanitize_relpath(body.path)
+    except UnsafePath as exc:
+        raise HTTPException(422, str(exc)) from None
+    return ctx.uploads.declare(upload_id, rel, body.size_bytes, body.chunk_size, body.fingerprint)
+
+
+@router.put("/uploads/{upload_id}/chunked/{index}")
+async def put_upload_chunk(upload_id: str, index: int, request: Request, path: str = Query(..., max_length=4096),
+                           ctx: Context = Depends(get_ctx)) -> dict:
+    """One chunk of a declared file (raw bytes or gzip; ``X-Content-CRC32`` of the raw bytes)."""
+    store = ctx.uploads
+    try:
+        rel = sanitize_relpath(path)
+    except UnsafePath as exc:
+        raise HTTPException(422, str(exc)) from None
+    encoding, crc = _encoding(request), _crc(request)
+    with store.writing(upload_id):
+        cf = await run_in_threadpool(store.chunked_file, upload_id, rel)
+        if not 0 <= index < cf.n_chunks:
+            raise HTTPException(422, f"Номер части {index} вне файла (частей: {cf.n_chunks})")
+        cap = cf.chunk_len(index) + (GZIP_SLACK if encoding == "gzip" else 0)
+        declared = _declared_length(request)
+        if declared is not None and declared > cap:
+            raise HTTPException(413, "Часть файла больше заявленного размера части")
+        body = bytearray()
+        try:
+            async for chunk in body_chunks(request):
+                body += chunk
+                if len(body) > cap:
+                    raise HTTPException(413, "Часть файла больше заявленного размера части")
+        except ClientDisconnect:
+            return Response(status_code=400)
+        return await run_in_threadpool(store.write_chunk, upload_id, rel, index, body, crc, encoding)
+
+
 @router.post("/uploads/{upload_id}/finalize", status_code=201)
-def finalize_upload(upload_id: str, ctx: Context = Depends(get_ctx)) -> dict:
-    probe, name, warnings, rec_dir = ctx.uploads.finalize(upload_id)
-    row = rec_mod.insert(ctx.db, probe, name=name, source="upload", rec_id=rec_dir.name, extra_warnings=warnings)
-    return rec_mod.to_api(ctx.settings, row)
+async def finalize_upload(upload_id: str, response: Response, wait: bool = Query(default=True),
+                          ctx: Context = Depends(get_ctx)) -> dict:
+    """Unpack / detect / register the recording in a background thread. ``wait=true`` answers
+    with the Recording when it is done; ``wait=false`` answers 202 at once with the upload's status
+    (``GET /uploads/{id}`` follows the stage until ``state == "done"``)."""
+    def register(probe, name, warnings, rec_dir):
+        row = rec_mod.insert(ctx.db, probe, name=name, source="upload", rec_id=rec_dir.name, extra_warnings=warnings)
+        return rec_mod.to_api(ctx.settings, row)
+
+    store = ctx.uploads
+    task = await run_in_threadpool(store.start_finalize, upload_id, register)
+    if not wait:
+        response.status_code = 202
+        return await run_in_threadpool(store.status, upload_id)
+    await run_in_threadpool(task.done.wait)
+    if task.state != "done":
+        raise UploadError(task.status or 500, task.error or "Не удалось обработать загрузку")
+    return task.recording
 
 
 @router.delete("/uploads/{upload_id}", status_code=204)

@@ -48,6 +48,9 @@ sealed, so moving those needs the captain to unfreeze it (§3, item 6).
 
 ## 3. Work to do
 
+**Since 15.10 the remaining work after the judgement of 13.10 is in [`BACKLOG.md`](BACKLOG.md)**
+(cards with owners, acceptance checks and the order up to 23.10); the tables below are the state of 29.09.
+
 H = only a person can do it; A = an agent can do it, the captain merges. The full requirement →
 artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) §4–§5.
 
