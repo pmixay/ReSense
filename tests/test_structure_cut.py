@@ -161,6 +161,36 @@ def test_small_part_in_front_of_wall_stays_dropped():
     assert c.cut and c.n == 8 and c.zone == "gauge" and not c.reason
 
 
+def test_eight_voxels_on_one_azimuth_column_are_not_a_resolved_cut_body():
+    """H2: voxel count alone cannot corroborate a single vertical scan line.
+
+    Reflection, input order and duplicate echoes must not manufacture a second
+    azimuth column. This is a cut-only guard; a resolved face must still pass.
+    """
+    cfg = ClusterConfig()
+    wall = _straight_wall(y=1.9, x0=105.0, x1=150.0)
+    line = _column(120.0, 0.5, 8)
+    for echoes in (1, 2):
+        scene = np.concatenate([wall, np.repeat(line, echoes, axis=0)])
+        for sign in (-1, 1):
+            reflected = scene * np.array([1.0, sign, 1.0])
+            assert _clusters(reflected, cfg) == [], (echoes, sign)
+            assert _clusters(reflected[::-1].copy(), cfg) == [], (echoes, sign, "reversed")
+
+
+def test_resolved_cut_face_keeps_its_corridor_verdict_with_duplicate_echoes():
+    """H2: a face with horizontal and vertical support retains its gauge verdict."""
+    cfg = ClusterConfig()
+    wall = _straight_wall(y=2.2, x0=105.0, x1=150.0)
+    face = _face(120.0, 0.3, width=0.5, height=1.75)
+    for echoes in (1, 2):
+        scene = np.concatenate([wall, np.repeat(face, echoes, axis=0)])
+        for sign in (-1, 1):
+            (c,) = _clusters(scene * np.array([1.0, sign, 1.0]), cfg)
+            assert c.cut and c.zone == "gauge" and not c.reason
+            assert abs(c.distance - 120.0) < 0.05
+
+
 def _straight_wall(y: float = 2.6, x0: float = 10.0, x1: float = 40.0):
     """A vertical wall along the track at lateral ``y``, outside the strict gauge, sampled 0.25 x 0.2 m."""
     X, H = np.meshgrid(np.arange(x0, x1, 0.25), np.arange(0.1, 2.95, 0.2), indexing="ij")
