@@ -9,7 +9,7 @@
 > (v1.0.0 detector) by four read-only researchers and one critic; numbers recounted from the judge's
 > per-frame outputs (`docs/evidence/judgement_2026-10-13/out/`, `raw.tar.xz`). Line numbers in
 > `resense/` shift after the 1.1.0 reseal (§2): search for the named function.
-> **Status:** current
+> **Status:** current; §2a hands the session's unfinished work over (15.10)
 
 ## 1. How to use it
 
@@ -47,8 +47,27 @@
 |---|---|---|
 | Column free-top test: a tall narrow object whose top is seen free is no longer demoted as `column` (pole 0.3 × 0.3 × 2.8 m on the axis 82 → 157 STOP frames, 0.7 m off the axis 0 → 128); a single "free" frame cannot release a real column's hold (`tracking.column_free_min_spares` 2) | #1 critical | integrated on branch `final/silent-misses`, gate PASS frame-identical to the seal |
 | Structure-surface cut of oversize clusters on curves (person-size box on C first STOP 73.9 → 82.8 m; wall equipment 1.0–1.1 m proud of the wall stays quiet at `structure_cut_tol` 1.3 m) | #2 high | same branch; the GO band at 118–150 m on C is axis lag → card K2 |
-| Round 3 (running): free-top test robust to a non-returning band above the top, ring-table fallback checked against the data, per-frame azimuth cache, objects taller than the 3.0 m cut (only if safe), a physical evidence bar for cut parts, an honest monitored range where a wall crosses the corridor at curve entry (`clear_distance` capped), a curve-entry axis fix (stretch, may not ship) | #2, part of #4 | running; final numbers in `docs/evidence/silent_misses_2026-10-14/README.md`, which lands with the 1.1.0 reseal |
-| Version 1.1.0 inside the reseal, new seal, push to `claude/eloquent-volta-qcxq9d` (authorized by the captain 15.10) | — | after round 3; **not** done by the session: the PR to `main` and the `v1.1.0` tag (card E1) |
+| Round 3: honest monitored range where a wall crosses the corridor at curve entry (`track.axis_wall_drift`: `clear_distance` capped; C probes "GO with range past the object" 26 → 10) | #2, part of #4 | branch `r3/axis`, gated (every decision unchanged), **not reviewed, not integrated** |
+| Round 3: curve-entry axis fix (walls weighted by how far each is seen) | #4 | branch `r3/axis-B-trial`: C axis error at 100 m 1.39 → 0.42–0.56 m, but three versions **failed the gate** (ride +6 / +9 / +7 events) → card K2 starts here |
+| Round 3: free-top test robust to a non-returning band above the top, ring-table check, per-frame azimuth cache, objects taller than the 3.0 m cut | #1 hardening | branch `r3/column`, **WIP commit, not gated**: dark-band what-if on ride piece 1 sealed 14 / 1.1.0 candidate 30 / WIP 23 STOP frames |
+| Round 3: physical evidence bar for structure-cut parts | #2 hardening | not started |
+| Version 1.1.0 inside the reseal, new seal | — | **handed over 15.10, not done** (§2a) |
+
+### 2a. Handoff of the session's unfinished work (15.10)
+
+The session stopped on the captain's request; the rest goes to the team's agents, in this order.
+All branches are on `origin`. The session's test harness (wall-anchored probes, the
+dropout / pitch / dark-band batteries, axis hooks, wall observations on C) is in
+`docs/evidence/silent_misses_2026-10-14/harness/` on `final/silent-misses` (README there).
+
+| step | branch | what to do | done when |
+|---|---|---|---|
+| H1 | `r3/column` (WIP `42108ac`, on top of `final/silent-misses` `a188a2d`) | finish the measurements (S/B batteries, the dark-band what-if on ride pieces 1 and 3, pole / post probes), write the evidence README, full gate; ship only if the dark band improves at no cost; otherwise drop the branch | gate exit 0 on the committed code; pole on the axis still 157 STOP frames (A); battery identical to sealed |
+| H2 | new from `final/silent-misses` | structure-cut evidence bar: a cut part must span ≥ 2 azimuth columns / enough rings (or a cut-part-only track needs more hits); keep the C gains (person first STOP 82.8 m, 55 STOP frames) | the wall-anchored battery gives no STOP the seal does not (mast 1.2 m proud is now 0 → 2); C under 30 % dropout and 5 Hz has no gauge cut part at or above the bar; gate exit 0 |
+| H3 | `final/silent-misses` | integrate `r3/axis` (`a9347a8`, `972edd2`) and H1 / H2 if they passed; full gate on the committed code; diff every gate frame against the seal | gate exit 0, frame diff explained |
+| H4 | `final/silent-misses` | **independent** safety review (DETECTOR_FREEZE step 3) and correctness review of `707ea9c..HEAD`: the 14.10 review fixes (`14f83dd`) and `r3/axis` were never reviewed independently | no confirmed medium-or-worse finding left |
+| H5 | `final/silent-misses` | bump 1.0.0 → 1.1.0 in `pyproject.toml`, `resense/__init__.py`, `ros2_ws/src/resense_ros/package.xml`, `ros2_ws/src/resense_ros/setup.py` **before** the final gate (they are sealed files); final gate; `python scripts/detector_freeze.py create --manifest docs/evidence/detector_freeze_<date>.json --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --evidence <committed gate JSON>`; `DEFAULT_MANIFEST` in `scripts/detector_freeze.py`; DETECTOR_FREEZE "Что опечатано", CHANGELOG release section, README "пакет 1.1.0" | `detector_freeze.py verify` PASS; `pytest -q`; `python scripts/release_meta.py version` prints 1.1.0 |
+| H6 | → `main` | merge, then card E1 (tag `v1.1.0` by a human, release verification); update §2 of this file with the final numbers and shrink K2 if the axis changed | release workflow green |
 
 ## 3. Starting point and summary
 
