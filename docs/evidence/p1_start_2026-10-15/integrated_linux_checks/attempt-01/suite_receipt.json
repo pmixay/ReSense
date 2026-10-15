@@ -1,0 +1,59 @@
+{
+  "pytest_exit": 0,
+  "pytest_seconds": 186.759,
+  "deselected": [
+    {
+      "nodeid": "tests/test_evidence_coherence.py::test_measured_remaining_inventory_is_133_track_frames",
+      "realdata_path": "D:/Datasets/ReSense/cross_ring_2026-09-28_measurement",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_evidence_coherence.py::test_interval_rule_is_not_a_single_false_history_separator",
+      "realdata_path": "D:/Datasets/ReSense/cross_ring_2026-09-28_measurement",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_evidence_coherence.py::test_293_fields_and_reference_change_are_not_identity_evidence",
+      "realdata_path": "D:/Datasets/ReSense/cross_ring_2026-09-28_measurement",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_evidence_coherence.py::test_association_residuals_do_not_prove_wrong_association",
+      "realdata_path": "D:/Datasets/ReSense/cross_ring_2026-09-28_measurement",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_evidence_coherence.py::test_sparse_edge_positive_rows_are_unchanged_by_fresh_onset_replay",
+      "realdata_path": "C:/Users/alikh/AppData/Local/Temp/opencode/fresh-stop-positive-stress",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_evidence_coherence.py::test_all_saved_stop_rows_validate_against_base_and_source",
+      "realdata_path": "D:/Datasets/ReSense/cross_ring_2026-09-28_measurement",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_fresh_support_analysis.py::test_direct_fresh_selected_events_and_positive_counterexample_when_capture_available",
+      "realdata_path": "C:/Users/alikh/AppData/Local/Temp/opencode/direct-fresh-support-all",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop",
+      "realdata_path": "/data/cache/new_data",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_screen_competitor_rules.py::test_harness_reproduces_the_published_set_o_rows",
+      "realdata_path": "/opt/resense/docs/evidence/judgement_2026-09-28/raw/offline",
+      "allowed_missing_realdata": true
+    },
+    {
+      "nodeid": "tests/test_screen_competitor_rules.py::test_committed_screen_matches_a_fresh_run",
+      "realdata_path": "/opt/resense/docs/evidence/judgement_2026-09-28/raw/offline",
+      "allowed_missing_realdata": true
+    }
+  ],
+  "only_missing_realdata_deselected": true,
+  "skipped": [],
+  "failed": []
+}
