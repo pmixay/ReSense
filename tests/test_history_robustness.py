@@ -140,7 +140,7 @@ def _axis_sequence(monkeypatch, cfg: TrackConfig, sides):
     real = track_mod.estimate_axis_from_walls
     state = {"n": 2}
 
-    def fake(xyz, model, c, t_fixed, floor_z_all=None, far_support_run=0):
+    def fake(xyz, model, c, t_fixed, floor_z_all=None, far_support_run=0, boundaries=None):
         r = real(xyz, model, c, t_fixed, floor_z_all=floor_z_all, far_support_run=far_support_run)
         tan_yaw, curv, q, _x, _n, _dis, _xm, run = r if r is not None else (0.0, 0.0, 0.0, 0, 0, 0.0, 0, 0)
         n = state["n"]

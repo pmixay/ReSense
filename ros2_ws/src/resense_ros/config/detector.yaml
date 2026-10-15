@@ -81,6 +81,9 @@ resense:
     axis_disagree_range: 60.0
     axis_one_side_range: 120.0
     axis_disagree_hold: 0          # 27.09 (P4 history, off; 0 = off): nominal frame periods the axis_disagree_range cap outlives the last frame with two disagreeing boundaries, on frames with one boundary (two agreeing end it): losing the contradicting boundary does not raise the trusted range at once (clear-run STOP of 26.09, mechanism 1)
+    axis_wall_drift: 0.8           # 15.10 (judge 13.10 problem 4, on; 0 = off): m; the monitored range (health monitored_range / clear_distance; not the corridor, no decision) ends where a near tunnel boundary, followed outward from the rail range, has come this much nearer the axis than it runs there (track.wall_drift_range): at a curve entry the quadratic axis lags the transition and the outer wall crosses the corridor; there the axis is 0.7-1.1 m off the wall-referenced track (roundT_pressureGate_roundT). Judge C probes: GO with the range past the object 26 -> 10 frames (person on the axis; on the wall-referenced track 26 -> 4), none left within 142 m; STOP unchanged. Cost: the ride's range capped in 13.8 % of frames (median at 94 m, 3.8 % of the range); also capping the corridor (beyond_axis) cost C's person 55 -> 43 STOP frames: not taken
+    axis_wall_drift_max_offset: 3.5  # 15.10: m, only a boundary at most this far from the axis in the rail range is a reference (a single-track tube's wall; a double-track tunnel's far wall or a hall need not be parallel)
+    axis_wall_drift_bins: 2        # 15.10: consecutive populated boundary bins (walls_bin) that must lie axis_wall_drift nearer
     floor_verify_enabled: true
     floor_verify_band:
     - 1.6
