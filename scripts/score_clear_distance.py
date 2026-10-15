@@ -38,20 +38,12 @@ import numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from resense.metrics import gt_meta, load_gt  # noqa: E402
-
-
-def decision(r: dict) -> str:
-    """The node's decision word for a result row (DetectorNode.decision; the health warning it
-    reads is ``decision_level``, 26.09: without the latency warning, and ``level`` in older rows)."""
-    h = r.get("health") or {}
-    level = h.get("level", "ok")
-    if r.get("obstacle"):
-        return "STOP"
-    if level == "error":
-        return "FAULT"
-    if r.get("warning") or h.get("decision_level", level) == "warn":
-        return "CAUTION"
-    return "GO"
+try:  # colcon-installed package; namespace fallback for a source checkout without ROS
+    from resense_ros.decision_policy import decision
+except ModuleNotFoundError as exc:
+    if exc.name != "resense_ros":
+        raise
+    from ros2_ws.src.resense_ros.resense_ros.decision_policy import decision
 
 
 def read(paths):

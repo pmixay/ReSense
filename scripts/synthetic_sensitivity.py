@@ -38,6 +38,12 @@ from resense.detector import Detector  # noqa: E402
 from resense.frame import axis_matrix, frame_from_compact  # noqa: E402
 from resense.pointcloud import COMPACT_DTYPE, compact_to_compact16  # noqa: E402
 from resense.sensor import RING_ELEVATION_DEG  # noqa: E402
+try:
+    from resense_ros.decision_policy import decision
+except ModuleNotFoundError as exc:
+    if exc.name != "resense_ros":
+        raise
+    from ros2_ws.src.resense_ros.resense_ros.decision_policy import decision
 
 _OBSERVER = None
 
@@ -245,9 +251,6 @@ def target_matches(detection, case, matching):
 
 def observation(result, case, returns, index, stamp, matching):
     matched = [target_matches(d, case, matching) for d in result.detections]
-    level = result.health.get("level", "ok")
-    decision = ("STOP" if result.obstacle else "FAULT" if level == "error" else "CAUTION"
-                if result.warning or result.health.get("decision_level", level) == "warn" else "GO")
     return {"frame": index, "stamp_s": stamp, "target_returns": returns,
             "visible": bool(case["positive"] and returns > 0), "stop": bool(result.obstacle),
             "matched_stop": any(matched), "unmatched_stop": any(not m for m in matched),
@@ -255,7 +258,7 @@ def observation(result, case, returns, index, stamp, matching):
             "detections": [{"id": int(d.id), "distance": float(d.distance),
                             "center": np.asarray(d.center).tolist(), "size": np.asarray(d.size).tolist(),
                             "kind": d.kind, "reason": d.reason} for d in result.detections],
-            "health": result.health, "decision": decision,
+            "health": result.health, "decision": decision(result),
             "decision_scope": "offline detector policy; no ROS freshness/watchdog evaluation",
             "clear_distance_m": float(result.clear_distance),
             "clear_overclaim": bool(case["positive"] and returns > 0 and result.clear_distance > case["distance_m"] + 1.0),

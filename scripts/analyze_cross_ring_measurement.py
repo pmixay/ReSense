@@ -5,6 +5,15 @@ import json
 import math
 from pathlib import Path
 from statistics import median
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+try:
+    from resense_ros.decision_policy import decision as decision_word
+except ModuleNotFoundError as exc:
+    if exc.name != "resense_ros":
+        raise
+    from ros2_ws.src.resense_ros.resense_ros.decision_policy import decision as decision_word
 
 
 def load_rows(directory, bag):
@@ -30,6 +39,7 @@ def clean_detection(item):
 
 def decision(row):
     return {
+        "decision": decision_word(row),
         "obstacle": row.get("obstacle"),
         "warning": row.get("warning"),
         "nearest_distance": row.get("nearest_distance"),

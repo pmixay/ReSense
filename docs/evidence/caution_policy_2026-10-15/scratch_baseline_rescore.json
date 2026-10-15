@@ -1,0 +1,1351 @@
+{
+  "schema": "resense.decision_rescore.v1",
+  "policy": {
+    "version": "v2",
+    "caution_distance_m": 80.0,
+    "compact_max_size_m": 3.0
+  },
+  "implementation": {
+    "rescorer_sha256": "92a56ad56b9955dd70610e308374fa24f81ce8d4b34190c0a70c45811ef958e5",
+    "policy_path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p1-policy\\ros2_ws\\src\\resense_ros\\resense_ros\\decision_policy.py",
+    "policy_sha256": "e49d4c9cc39d6f1682d6902dc95ba531543ab3cb26340d6543f5088e32d22425"
+  },
+  "scope": "saved base decisions only; no node freshness, watchdog or STOP-latch replay",
+  "groups": {
+    "empty": {
+      "frames": 13558,
+      "v1": {
+        "GO": 7683,
+        "CAUTION": 5710,
+        "STOP": 165,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 9263,
+        "CAUTION": 4130,
+        "STOP": 165,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.30461720017701727
+    },
+    "objects": {
+      "frames": 1510,
+      "v1": {
+        "GO": 737,
+        "CAUTION": 324,
+        "STOP": 447,
+        "FAULT": 2
+      },
+      "selected": {
+        "GO": 812,
+        "CAUTION": 249,
+        "STOP": 447,
+        "FAULT": 2
+      },
+      "selected_caution_fraction": 0.16490066225165562,
+      "in_gauge_object_frames": {
+        "frames": 801,
+        "v1_caution_or_stop": 619,
+        "selected_caution_or_stop": 600,
+        "lost_v1_alerts": 19,
+        "gained_alerts": 0,
+        "v1_alert_retention": 0.9693053311793215
+      },
+      "measured_envelope_object_frames": {
+        "frames": 505,
+        "v1_caution_or_stop": 434,
+        "selected_caution_or_stop": 433,
+        "lost_v1_alerts": 1,
+        "gained_alerts": 0,
+        "v1_alert_retention": 0.9976958525345622
+      },
+      "in_gauge_frames": {
+        "frames": 694,
+        "v1_caution_or_stop": 529,
+        "selected_caution_or_stop": 510,
+        "lost_v1_alerts": 19,
+        "gained_alerts": 0,
+        "v1_alert_retention": 0.9640831758034026
+      }
+    },
+    "range": {
+      "frames": 0,
+      "v1": {
+        "GO": 0,
+        "CAUTION": 0,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 0,
+        "CAUTION": 0,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": null
+    },
+    "unclassified": {
+      "frames": 0,
+      "v1": {
+        "GO": 0,
+        "CAUTION": 0,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 0,
+        "CAUTION": 0,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": null
+    }
+  },
+  "checks": {
+    "empty_caution_le_25pct": "fail",
+    "in_gauge_object_alert_retention": "fail",
+    "range_visible_alert_retention": "not_measured"
+  },
+  "sources": [
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\doubleT_platform.jsonl",
+      "sha256": "79d3a2ebc52e960f5fc38797ec1054727074751378ba51039d372d773232315f",
+      "role": "empty",
+      "frames": 345,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 150,
+        "CAUTION": 193,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 186,
+        "CAUTION": 157,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.45507246376811594,
+      "transitions": {
+        "CAUTION->CAUTION": 157,
+        "CAUTION->GO": 36,
+        "GO->GO": 150,
+        "STOP->STOP": 2
+      },
+      "caution_reason_frames": {
+        "advisory_object": 2,
+        "compact_range_object": 41,
+        "health_warning": 23,
+        "margin_object": 105
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\roundT_doubleT.jsonl",
+      "sha256": "a31d8488fee7c37e5dc5fdd045af9a05c39e80710866df03a0eb342d4e5c5b13",
+      "role": "empty",
+      "frames": 252,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 79,
+        "CAUTION": 173,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 189,
+        "CAUTION": 63,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.25,
+      "transitions": {
+        "CAUTION->CAUTION": 63,
+        "CAUTION->GO": 110,
+        "GO->GO": 79
+      },
+      "caution_reason_frames": {
+        "advisory_object": 4,
+        "compact_range_object": 39,
+        "margin_object": 31
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\roundT_pressureGate_roundT.jsonl",
+      "sha256": "86e1c7c256362f6078753c5229e70f74eaff92b35f449ea0c6105091830b15e4",
+      "role": "empty",
+      "frames": 268,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 161,
+        "CAUTION": 107,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 179,
+        "CAUTION": 89,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.332089552238806,
+      "transitions": {
+        "CAUTION->CAUTION": 89,
+        "CAUTION->GO": 18,
+        "GO->GO": 161
+      },
+      "caution_reason_frames": {
+        "advisory_object": 2,
+        "compact_range_object": 3,
+        "margin_object": 84
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\roundT_squareT_pressureGate_squareT.jsonl",
+      "sha256": "a827136ff93733a24807b7f7058aeb41e4a62f29ccf5e4adb88cef1c814aa2d9",
+      "role": "empty",
+      "frames": 545,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 399,
+        "CAUTION": 146,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 427,
+        "CAUTION": 118,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.21651376146788992,
+      "transitions": {
+        "CAUTION->CAUTION": 118,
+        "CAUTION->GO": 28,
+        "GO->GO": 399
+      },
+      "caution_reason_frames": {
+        "compact_range_object": 16,
+        "incomplete_advisory": 1,
+        "margin_object": 106
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\squareT_platform_squareT_switch.jsonl",
+      "sha256": "df6f86e2c119cc80f136f2e64058e05b22b827a20c1c7940993ede98f43ef266",
+      "role": "empty",
+      "frames": 877,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 454,
+        "CAUTION": 386,
+        "STOP": 37,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 552,
+        "CAUTION": 288,
+        "STOP": 37,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.32839224629418473,
+      "transitions": {
+        "CAUTION->CAUTION": 288,
+        "CAUTION->GO": 98,
+        "GO->GO": 454,
+        "STOP->STOP": 37
+      },
+      "caution_reason_frames": {
+        "advisory_object": 122,
+        "compact_range_object": 112,
+        "doubt": 16,
+        "incomplete_advisory": 2,
+        "margin_object": 162
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\new_data_0.jsonl",
+      "sha256": "fc9cb928c339d55a12db15d863471733122cff0af6749421e12971f80051d60d",
+      "role": "empty",
+      "frames": 1409,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 762,
+        "CAUTION": 635,
+        "STOP": 12,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 1059,
+        "CAUTION": 338,
+        "STOP": 12,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.23988644428672817,
+      "transitions": {
+        "CAUTION->CAUTION": 338,
+        "CAUTION->GO": 297,
+        "GO->GO": 762,
+        "STOP->STOP": 12
+      },
+      "caution_reason_frames": {
+        "advisory_object": 4,
+        "compact_range_object": 159,
+        "doubt": 10,
+        "margin_object": 178
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\new_data_1.jsonl",
+      "sha256": "752a2c1d4a91562c6a70f603a8cd2d9e611a84dc6140f2e6d1537ce2d8d2d11a",
+      "role": "empty",
+      "frames": 1409,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 508,
+        "CAUTION": 887,
+        "STOP": 14,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 579,
+        "CAUTION": 816,
+        "STOP": 14,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.5791341376863024,
+      "transitions": {
+        "CAUTION->CAUTION": 816,
+        "CAUTION->GO": 71,
+        "GO->GO": 508,
+        "STOP->STOP": 14
+      },
+      "caution_reason_frames": {
+        "advisory_object": 2,
+        "compact_range_object": 761,
+        "doubt": 6,
+        "health_warning": 32,
+        "incomplete_advisory": 1,
+        "margin_object": 56
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\new_data_2.jsonl",
+      "sha256": "104ced45d0dae61b9bab44e3d5466d4b15981d9f03323e77db9d4a86f5a502d4",
+      "role": "empty",
+      "frames": 1409,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 746,
+        "CAUTION": 657,
+        "STOP": 6,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 904,
+        "CAUTION": 499,
+        "STOP": 6,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.35415188076650106,
+      "transitions": {
+        "CAUTION->CAUTION": 499,
+        "CAUTION->GO": 158,
+        "GO->GO": 746,
+        "STOP->STOP": 6
+      },
+      "caution_reason_frames": {
+        "advisory_object": 15,
+        "compact_range_object": 272,
+        "doubt": 14,
+        "margin_object": 242
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\new_data_3.jsonl",
+      "sha256": "67dfb2509121376364e6f882c39059add05322e92c0d2d3b41635b4b1a40bcca",
+      "role": "empty",
+      "frames": 1409,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 558,
+        "CAUTION": 849,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 869,
+        "CAUTION": 538,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.38183108587650816,
+      "transitions": {
+        "CAUTION->CAUTION": 538,
+        "CAUTION->GO": 311,
+        "GO->GO": 558,
+        "STOP->STOP": 2
+      },
+      "caution_reason_frames": {
+        "advisory_object": 5,
+        "compact_range_object": 443,
+        "margin_object": 138
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\new_data_4.jsonl",
+      "sha256": "48102bbaf5819c1be28882aebf34b9c1cf954b59fb807e5b7dbde73a77d68fdc",
+      "role": "empty",
+      "frames": 1409,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 630,
+        "CAUTION": 759,
+        "STOP": 20,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 708,
+        "CAUTION": 681,
+        "STOP": 20,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.48332150461320084,
+      "transitions": {
+        "CAUTION->CAUTION": 681,
+        "CAUTION->GO": 78,
+        "GO->GO": 630,
+        "STOP->STOP": 20
+      },
+      "caution_reason_frames": {
+        "advisory_object": 4,
+        "compact_range_object": 227,
+        "doubt": 5,
+        "health_warning": 137,
+        "margin_object": 459
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\new_data_5.jsonl",
+      "sha256": "018f3ee50a5e60506b0540a7c8a6fc770e68b3532e063b4eafb49eb117d0b4fc",
+      "role": "empty",
+      "frames": 1409,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 1053,
+        "CAUTION": 320,
+        "STOP": 36,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 1176,
+        "CAUTION": 197,
+        "STOP": 36,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.13981547196593327,
+      "transitions": {
+        "CAUTION->CAUTION": 197,
+        "CAUTION->GO": 123,
+        "GO->GO": 1053,
+        "STOP->STOP": 36
+      },
+      "caution_reason_frames": {
+        "advisory_object": 5,
+        "compact_range_object": 43,
+        "doubt": 9,
+        "margin_object": 150
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\new_data_6.jsonl",
+      "sha256": "78230e8f56cc749df57021a278741c6521cc748d028e2d3df9b886e5ca04ecd0",
+      "role": "empty",
+      "frames": 1409,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 971,
+        "CAUTION": 411,
+        "STOP": 27,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 1117,
+        "CAUTION": 265,
+        "STOP": 27,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.1880766501064585,
+      "transitions": {
+        "CAUTION->CAUTION": 265,
+        "CAUTION->GO": 146,
+        "GO->GO": 971,
+        "STOP->STOP": 27
+      },
+      "caution_reason_frames": {
+        "advisory_object": 5,
+        "compact_range_object": 87,
+        "doubt": 2,
+        "margin_object": 172
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\new_data_7.jsonl",
+      "sha256": "1f12306c48e360822eba99d9e6eb981c84bdd788c2f378c9b174de4b071579f5",
+      "role": "empty",
+      "frames": 1408,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 1212,
+        "CAUTION": 187,
+        "STOP": 9,
+        "FAULT": 0
+      },
+      "selected": {
+        "GO": 1318,
+        "CAUTION": 81,
+        "STOP": 9,
+        "FAULT": 0
+      },
+      "selected_caution_fraction": 0.05752840909090909,
+      "transitions": {
+        "CAUTION->CAUTION": 81,
+        "CAUTION->GO": 106,
+        "GO->GO": 1212,
+        "STOP->STOP": 9
+      },
+      "caution_reason_frames": {
+        "advisory_object": 1,
+        "compact_range_object": 50,
+        "doubt": 2,
+        "margin_object": 28
+      }
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs\\gates\\baseline_work\\cloud_with_fake_obj.jsonl",
+      "sha256": "8a9a6e771f046bbf60716976d6ec065dcc23c89ec6e0d37ebde1b74c7cdc97ca",
+      "role": "objects",
+      "frames": 1510,
+      "skipped_snapshots": 0,
+      "v1": {
+        "GO": 737,
+        "CAUTION": 324,
+        "STOP": 447,
+        "FAULT": 2
+      },
+      "selected": {
+        "GO": 812,
+        "CAUTION": 249,
+        "STOP": 447,
+        "FAULT": 2
+      },
+      "selected_caution_fraction": 0.16490066225165562,
+      "transitions": {
+        "CAUTION->CAUTION": 249,
+        "CAUTION->GO": 75,
+        "FAULT->FAULT": 2,
+        "GO->GO": 737,
+        "STOP->STOP": 447
+      },
+      "caution_reason_frames": {
+        "advisory_object": 6,
+        "compact_range_object": 27,
+        "doubt": 1,
+        "incomplete_advisory": 13,
+        "margin_object": 223
+      },
+      "in_gauge_object_frames": {
+        "frames": 801,
+        "v1_caution_or_stop": 619,
+        "selected_caution_or_stop": 600,
+        "lost_v1_alerts": 19,
+        "gained_alerts": 0,
+        "v1_alert_retention": 0.9693053311793215
+      },
+      "measured_envelope_object_frames": {
+        "frames": 505,
+        "v1_caution_or_stop": 434,
+        "selected_caution_or_stop": 433,
+        "lost_v1_alerts": 1,
+        "gained_alerts": 0,
+        "v1_alert_retention": 0.9976958525345622
+      },
+      "in_gauge_frames": {
+        "frames": 694,
+        "v1_caution_or_stop": 529,
+        "selected_caution_or_stop": 510,
+        "lost_v1_alerts": 19,
+        "gained_alerts": 0,
+        "v1_alert_retention": 0.9640831758034026
+      },
+      "per_label": {
+        "big_center": {
+          "frames": 213,
+          "v1_caution_or_stop": 208,
+          "selected_caution_or_stop": 208,
+          "lost_v1_alerts": 0,
+          "gained_alerts": 0,
+          "v1_alert_retention": 1.0
+        },
+        "small_on_rail": {
+          "frames": 49,
+          "v1_caution_or_stop": 34,
+          "selected_caution_or_stop": 30,
+          "lost_v1_alerts": 4,
+          "gained_alerts": 0,
+          "v1_alert_retention": 0.8823529411764706
+        },
+        "small_center": {
+          "frames": 79,
+          "v1_caution_or_stop": 34,
+          "selected_caution_or_stop": 32,
+          "lost_v1_alerts": 2,
+          "gained_alerts": 0,
+          "v1_alert_retention": 0.9411764705882353
+        },
+        "small_edge_inside": {
+          "frames": 83,
+          "v1_caution_or_stop": 50,
+          "selected_caution_or_stop": 50,
+          "lost_v1_alerts": 0,
+          "gained_alerts": 0,
+          "v1_alert_retention": 1.0
+        },
+        "big_edge_inside": {
+          "frames": 125,
+          "v1_caution_or_stop": 89,
+          "selected_caution_or_stop": 89,
+          "lost_v1_alerts": 0,
+          "gained_alerts": 0,
+          "v1_alert_retention": 1.0
+        },
+        "big_above": {
+          "frames": 124,
+          "v1_caution_or_stop": 111,
+          "selected_caution_or_stop": 100,
+          "lost_v1_alerts": 11,
+          "gained_alerts": 0,
+          "v1_alert_retention": 0.9009009009009009
+        },
+        "long_low_on_rails": {
+          "frames": 86,
+          "v1_caution_or_stop": 68,
+          "selected_caution_or_stop": 68,
+          "lost_v1_alerts": 0,
+          "gained_alerts": 0,
+          "v1_alert_retention": 1.0
+        },
+        "thin_hanging": {
+          "frames": 42,
+          "v1_caution_or_stop": 25,
+          "selected_caution_or_stop": 23,
+          "lost_v1_alerts": 2,
+          "gained_alerts": 0,
+          "v1_alert_retention": 0.92
+        }
+      },
+      "loss_examples": [
+        {
+          "frame": 292,
+          "labels": [
+            "small_center"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 92,
+              "zone": "warning",
+              "distance": 121.98,
+              "lateral": 1.34,
+              "center": [
+                122.03,
+                -9.49,
+                1.3
+              ],
+              "size": [
+                0.09,
+                0.08,
+                1.06
+              ],
+              "n_points": 4,
+              "confidence": 1.0,
+              "age": 5,
+              "height_min": 0.68,
+              "intensity": 4.5,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 293,
+          "labels": [
+            "small_center"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 92,
+              "zone": "warning",
+              "distance": 120.61,
+              "lateral": 1.34,
+              "center": [
+                120.66,
+                -9.29,
+                1.42
+              ],
+              "size": [
+                0.09,
+                0.08,
+                1.06
+              ],
+              "n_points": 4,
+              "confidence": 0.75,
+              "age": 6,
+              "height_min": 0.68,
+              "intensity": 4.5,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 380,
+          "labels": [
+            "small_on_rail"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 120,
+              "zone": "warning",
+              "distance": 152.34,
+              "lateral": -1.27,
+              "center": [
+                152.4,
+                -5.0,
+                -1.1
+              ],
+              "size": [
+                0.16,
+                0.16,
+                1.01
+              ],
+              "n_points": 4,
+              "confidence": 1.0,
+              "age": 11,
+              "height_min": 0.3,
+              "intensity": 52.0,
+              "reason": "",
+              "kind": ""
+            },
+            {
+              "id": 122,
+              "zone": "warning",
+              "distance": 173.93,
+              "lateral": -1.12,
+              "center": [
+                175.33,
+                -5.55,
+                -0.51
+              ],
+              "size": [
+                3.07,
+                0.33,
+                2.74
+              ],
+              "n_points": 8,
+              "confidence": 1.0,
+              "age": 10,
+              "height_min": 0.17,
+              "intensity": 11.0,
+              "reason": "beyond_height_ref",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 381,
+          "labels": [
+            "small_on_rail"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 120,
+              "zone": "warning",
+              "distance": 150.63,
+              "lateral": -1.27,
+              "center": [
+                150.7,
+                -4.74,
+                -1.23
+              ],
+              "size": [
+                0.16,
+                0.16,
+                1.01
+              ],
+              "n_points": 4,
+              "confidence": 0.75,
+              "age": 12,
+              "height_min": 0.3,
+              "intensity": 52.0,
+              "reason": "",
+              "kind": ""
+            },
+            {
+              "id": 122,
+              "zone": "warning",
+              "distance": 172.4,
+              "lateral": -1.12,
+              "center": [
+                173.8,
+                -5.24,
+                -0.42
+              ],
+              "size": [
+                3.07,
+                0.33,
+                2.74
+              ],
+              "n_points": 8,
+              "confidence": 0.75,
+              "age": 11,
+              "height_min": 0.17,
+              "intensity": 11.0,
+              "reason": "beyond_height_ref",
+              "kind": ""
+            },
+            {
+              "id": 123,
+              "zone": "warning",
+              "distance": 201.51,
+              "lateral": -1.15,
+              "center": [
+                203.33,
+                -5.99,
+                -0.67
+              ],
+              "size": [
+                5.42,
+                0.46,
+                1.64
+              ],
+              "n_points": 4,
+              "confidence": 0.7,
+              "age": 5,
+              "height_min": 0.43,
+              "intensity": 26.8,
+              "reason": "beyond_height_ref",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 384,
+          "labels": [
+            "small_on_rail"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 123,
+              "zone": "warning",
+              "distance": 196.31,
+              "lateral": -1.23,
+              "center": [
+                196.32,
+                -5.0,
+                -1.05
+              ],
+              "size": [
+                0.04,
+                0.06,
+                0.81
+              ],
+              "n_points": 3,
+              "confidence": 1.0,
+              "age": 8,
+              "height_min": 0.47,
+              "intensity": 65.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 385,
+          "labels": [
+            "small_on_rail"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 123,
+              "zone": "warning",
+              "distance": 194.56,
+              "lateral": -1.23,
+              "center": [
+                194.57,
+                -4.73,
+                -1.14
+              ],
+              "size": [
+                0.04,
+                0.06,
+                0.81
+              ],
+              "n_points": 3,
+              "confidence": 0.75,
+              "age": 9,
+              "height_min": 0.47,
+              "intensity": 65.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 584,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 100.74,
+              "lateral": -1.1,
+              "center": [
+                100.95,
+                -1.59,
+                -0.02
+              ],
+              "size": [
+                2.88,
+                0.51,
+                1.78
+              ],
+              "n_points": 28,
+              "confidence": 1.0,
+              "age": 39,
+              "height_min": 0.64,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 585,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 98.76,
+              "lateral": -1.13,
+              "center": [
+                99.02,
+                -1.55,
+                0.0
+              ],
+              "size": [
+                1.52,
+                0.49,
+                1.74
+              ],
+              "n_points": 27,
+              "confidence": 1.0,
+              "age": 40,
+              "height_min": 0.67,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 586,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 96.98,
+              "lateral": -1.14,
+              "center": [
+                97.15,
+                -1.52,
+                0.0
+              ],
+              "size": [
+                1.75,
+                0.49,
+                1.72
+              ],
+              "n_points": 27,
+              "confidence": 1.0,
+              "age": 41,
+              "height_min": 0.68,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 587,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 94.42,
+              "lateral": -1.23,
+              "center": [
+                94.96,
+                -1.61,
+                0.0
+              ],
+              "size": [
+                1.09,
+                0.23,
+                1.66
+              ],
+              "n_points": 18,
+              "confidence": 1.0,
+              "age": 42,
+              "height_min": 0.73,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 588,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 92.76,
+              "lateral": -1.11,
+              "center": [
+                93.3,
+                -1.59,
+                -0.1
+              ],
+              "size": [
+                1.09,
+                0.23,
+                1.84
+              ],
+              "n_points": 20,
+              "confidence": 1.0,
+              "age": 43,
+              "height_min": 0.53,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 589,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 90.99,
+              "lateral": -1.1,
+              "center": [
+                91.52,
+                -1.56,
+                -0.1
+              ],
+              "size": [
+                1.07,
+                0.23,
+                1.8
+              ],
+              "n_points": 20,
+              "confidence": 1.0,
+              "age": 44,
+              "height_min": 0.56,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 590,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 89.04,
+              "lateral": -1.08,
+              "center": [
+                89.56,
+                -1.52,
+                -0.1
+              ],
+              "size": [
+                1.05,
+                0.22,
+                1.77
+              ],
+              "n_points": 20,
+              "confidence": 1.0,
+              "age": 45,
+              "height_min": 0.6,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 591,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 86.31,
+              "lateral": -1.17,
+              "center": [
+                87.06,
+                -1.59,
+                -0.1
+              ],
+              "size": [
+                1.64,
+                0.43,
+                1.73
+              ],
+              "n_points": 30,
+              "confidence": 1.0,
+              "age": 46,
+              "height_min": 0.58,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 592,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 84.89,
+              "lateral": -1.14,
+              "center": [
+                84.96,
+                -1.57,
+                -0.1
+              ],
+              "size": [
+                2.91,
+                0.47,
+                1.69
+              ],
+              "n_points": 31,
+              "confidence": 1.0,
+              "age": 47,
+              "height_min": 0.53,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 593,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 82.85,
+              "lateral": -1.12,
+              "center": [
+                82.99,
+                -1.52,
+                0.0
+              ],
+              "size": [
+                1.55,
+                0.41,
+                1.82
+              ],
+              "n_points": 33,
+              "confidence": 1.0,
+              "age": 48,
+              "height_min": 0.59,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 594,
+          "labels": [
+            "big_above"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 202,
+              "zone": "warning",
+              "distance": 80.25,
+              "lateral": -1.16,
+              "center": [
+                81.08,
+                -1.49,
+                0.0
+              ],
+              "size": [
+                1.71,
+                0.39,
+                1.78
+              ],
+              "n_points": 33,
+              "confidence": 1.0,
+              "age": 49,
+              "height_min": 0.62,
+              "intensity": 1.0,
+              "reason": "",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 763,
+          "labels": [
+            "thin_hanging"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 322,
+              "zone": "warning",
+              "distance": 196.5,
+              "lateral": 0.73,
+              "center": [
+                199.64,
+                -0.07,
+                -2.37
+              ],
+              "size": [
+                6.4,
+                0.7,
+                1.37
+              ],
+              "n_points": 4,
+              "confidence": 0.85,
+              "age": 6,
+              "height_min": 0.45,
+              "intensity": 4.2,
+              "reason": "beyond_height_ref",
+              "kind": ""
+            }
+          ]
+        },
+        {
+          "frame": 764,
+          "labels": [
+            "thin_hanging"
+          ],
+          "v1": "CAUTION",
+          "selected": "GO",
+          "warnings": [
+            {
+              "id": 322,
+              "zone": "warning",
+              "distance": 194.3,
+              "lateral": 0.73,
+              "center": [
+                197.44,
+                -0.07,
+                -2.32
+              ],
+              "size": [
+                6.4,
+                0.7,
+                1.37
+              ],
+              "n_points": 4,
+              "confidence": 0.6,
+              "age": 7,
+              "height_min": 0.45,
+              "intensity": 4.2,
+              "reason": "beyond_height_ref",
+              "kind": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "acceptance": "not_accepted: requires complete final-1.1.0 judge-path evidence, node integration and captain review",
+  "labels": {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p1-policy\\labels\\cloud_with_fake_obj.json",
+    "sha256": "d8657adaacd6ea79b56c28379e5fca14c86c1f5f7161e1c957eec593e5d536ad"
+  }
+}
