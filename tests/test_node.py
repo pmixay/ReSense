@@ -534,17 +534,16 @@ def test_status_marker_says_the_decision_and_publishing_errors_are_contained(nod
 
 def test_input_queue_depth(node_cls):
     node = node_cls()
-    assert node.subs["/lidar_points"].qos["depth"] == 40       # a burst of the player waits for the catch-up
+    assert node.subs["/lidar_points"].qos["depth"] == 12
+    assert node.max_pending_frames == 12 and node.catchup_startup_max_lag == 2.5
     assert node.subs["/lidar_points"].qos["history"] == 1      # keep last
     _Node.overrides = {"input_queue_depth": 3}
     assert node_cls().subs["/lidar_points"].qos["depth"] == 3
 
 
-def test_first_backlog_preserves_every_frame_by_default_and_supports_opt_in_thinning(node_cls):
-    """Experimental preserves all 201 startup frames by default. Explicit startup_step=0.2
-    enables main's 5 Hz chain; catchup_step=0 remains newest-only. Later live bursts still use
-    the configured catch-up step."""
-    assert node_cls().catchup_startup_step == 0.0
+def test_first_backlog_is_bounded_by_default_and_supports_explicit_every_frame_compatibility(node_cls):
+    """The old every-frame experiment needs explicit step, lag and memory overrides."""
+    assert node_cls().catchup_startup_step == 0.2
     plan = node_cls.catchup_plan
     assert plan([5.0], 4.9, 0.3, 5.0) == [0]
     t = [0.1 * k for k in range(41)]
@@ -556,12 +555,15 @@ def test_first_backlog_preserves_every_frame_by_default_and_supports_opt_in_thin
     assert plan([2.0, 2.1], 0.0, 0.3, 5.0) == [0, 1]             # a hole in the data: the next frame
 
     def stamp_msg(s):
-        return _Msg(header=_Msg(frame_id="lidar_livox", stamp=_Msg(sec=int(s), nanosec=int(round((s % 1) * 1e9)))))
+        return _Msg(width=1, height=1, header=_Msg(frame_id="lidar_livox",
+                    stamp=_Msg(sec=int(s), nanosec=int(round((s % 1) * 1e9)))))
 
     every_frame = [round(0.1 * k, 1) for k in range(201)]
     five_hz = [round(0.2 * k, 1) for k in range(101)]
-    for overrides, expect in (({}, every_frame),
-                              ({"catchup_step": 0.3, "catchup_startup_step": 0.2}, five_hz),
+    compat = {"catchup_startup_max_lag": 20.1, "max_pending_frames": 256}
+    for overrides, expect in (({}, five_hz[-12:]),
+                              ({**compat, "catchup_startup_step": 0.0}, every_frame),
+                              ({**compat, "catchup_startup_step": 0.2}, five_hz),
                               ({"catchup_step": 0.0}, [20.0])):
         _Node.overrides = overrides
         node = node_cls()
@@ -586,18 +588,15 @@ def test_first_backlog_preserves_every_frame_by_default_and_supports_opt_in_thin
         seen = []
 
         def process(msg, t, node=node):
-            if node.active_topic is None:
-                node.active_frame_id = msg.header.frame_id
-                node.startup_catchup_active = True
-                node.startup_catchup_until = time.perf_counter() + 1.0
-            node.active_topic = t
             seen.append(round(node._stamp(msg), 1))
         node.process_cloud = process
         node.on_cloud(stamp_msg(0.0), topic)
         while node.pending:
             node.on_pending()
         assert seen == expect
-        assert max(held) <= len(expect) + 1                     # bounded by the retained startup chain
+        assert max(held) <= node.max_pending_frames
+        assert node.dropped == node.dropped_skipped == 201 - len(expect)
+        assert not node.arrivals and not node.skipped
         assert not node.pending and node.pending_gc.triggered == len(expect) - 1
 
 
@@ -605,7 +604,8 @@ def test_first_backlog_preserves_every_frame_by_default_and_supports_opt_in_thin
 def test_catchup_skips_are_reported_apart_from_frames_never_received(node_cls, monkeypatch, startup_step):
     """Frames the start-up catch-up skips on purpose (every other one with explicit 0.2 s) are
     ``catchup_skipped``; a later live gap still counts missing recording messages separately."""
-    _Node.overrides = {"catchup_startup_step": startup_step}
+    _Node.overrides = {"catchup_startup_step": startup_step,
+                       "catchup_startup_max_lag": 5.0, "max_pending_frames": 64}
     node = node_cls()
     topic = "/sensing/lidar/hesai128/pointcloud"
     xyz = np.random.default_rng(0).uniform(5.0, 30.0, (64, 3)).astype(np.float32)
@@ -698,10 +698,9 @@ def _catchup_stream(node, monkeypatch, now, topic="/lidar_points", frame_id="hes
                     stamp=_Msg(sec=sec, nanosec=int(round((stamp - sec) * 1e9)))))
 
     def process(msg, source):
-        if node.check_continuity(source, msg):
-            node.last_frame_wall = now[0]
-            node._account_frame(node._stamp(msg), (source, msg.header.frame_id))
-            seen.append(node._stamp(msg))
+        node.last_frame_wall = now[0]
+        node._account_frame(node._stamp(msg), (source, msg.header.frame_id))
+        seen.append(node._stamp(msg))
 
     node.process_cloud = process
     return queue, seen, cloud
@@ -711,13 +710,9 @@ def _catchup_stream(node, monkeypatch, now, topic="/lidar_points", frame_id="hes
 @pytest.mark.parametrize("startup_step", [0.0, 0.2])
 def test_cold_recording_burst_keeps_a_continuous_startup_chain(
         node_cls, monkeypatch, startup_lag, expect_resets, startup_step):
-    """Replay the failure's arrival pattern: each callback gets another 1.5 s of recording.
-
-    The old 5 s cutoff repeatedly jumps over a second of scene history. The startup allowance
-    keeps the default every-frame chain or the explicit 5 Hz chain even after its one-second
-    entry window has elapsed, and closes when caught up. Later live backlogs use the normal bound.
-    """
-    _Node.overrides = {"catchup_startup_max_lag": startup_lag, "catchup_startup_step": startup_step}
+    """Explicit legacy lag/memory settings still reproduce the old chain experiment."""
+    _Node.overrides = {"catchup_startup_max_lag": startup_lag, "catchup_startup_step": startup_step,
+                       "max_pending_frames": 256}
     node = node_cls()
     now = [100.0]
     queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
@@ -746,9 +741,11 @@ def test_cold_recording_burst_keeps_a_continuous_startup_chain(
     assert 30.0 <= seen[-1] <= 30.3
 
 
-@pytest.mark.parametrize("startup_step", [0.0, 0.2])
-def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch, startup_step):
-    _Node.overrides = {"catchup_startup_step": startup_step}
+@pytest.mark.parametrize("compatibility", [False, True])
+def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch, compatibility):
+    if compatibility:
+        _Node.overrides = {"catchup_startup_step": 0.0, "catchup_startup_max_lag": 20.0,
+                           "max_pending_frames": 256}
     node = node_cls()
     now = [100.0]
     queue, seen, cloud = _catchup_stream(node, monkeypatch, now)
@@ -758,9 +755,13 @@ def test_startup_burst_can_follow_an_isolated_first_cloud(node_cls, monkeypatch,
     node.on_cloud(cloud(0.1), "/lidar_points")
     while node.pending:
         node.on_pending()
-    step = max(0.1, startup_step)
-    assert seen[:3] == pytest.approx([0.0, step, 2 * step])
-    assert max(np.diff(seen)) <= step + 1e-6
+    if compatibility:
+        assert seen[:3] == pytest.approx([0.0, 0.1, 0.2])
+        assert max(np.diff(seen)) <= 0.100001
+    else:
+        assert 12.5 <= seen[1] <= 13.0       # one initial jump, followed by a bounded chain
+        assert max(np.diff(seen[1:])) <= 0.200001
+        assert node.dropped == node.dropped_skipped == 151 - len(seen)
     assert seen[-1] == 15.0 and not node.startup_catchup_active
 
 
@@ -787,7 +788,7 @@ def test_live_input_without_startup_backlog_expires_the_extra_allowance(node_cls
     now[0] += 2.0
     queue.extend(cloud(k / 10) for k in range(2, 151))
     node.on_cloud(cloud(0.1), "/lidar_points")
-    assert seen[0] == 0.0 and 10.0 <= seen[1] <= 10.3
+    assert seen[0] == 0.0 and 10.0 <= seen[1] <= 12.0  # the hard cap can be tighter than live max lag
     assert not node.startup_catchup_active
 
 
@@ -811,7 +812,7 @@ def test_each_new_recording_gets_its_own_startup_allowance(node_cls, monkeypatch
     queue, seen, cloud = _catchup_stream(node, monkeypatch, now, next_topic, next_frame)
     queue.extend(cloud(next_start + k / 10) for k in range(1, 151))
     node.on_cloud(cloud(next_start), next_topic)
-    assert seen[0] == pytest.approx(next_start)
+    assert next_start + 12.5 <= seen[0] <= next_start + 13.0
     while node.pending:
         node.on_pending()
     assert max(np.diff(seen)) <= 0.300001 and node.n_inputs == 2
@@ -909,6 +910,163 @@ def test_live_default_and_explicit_replay_are_not_inferred_from_header(node_cls,
         monkeypatch.setattr(_Node, "declare_parameter", lambda self, n, v: self._params.update(
             {n: "auto" if n == "freshness_mode" else v}))
         node_cls()
+
+
+def test_ten_second_startup_burst_at_ten_x_is_fresh_and_bounded(freshness_driver, monkeypatch):
+    """Real take/prune/process/publish, simulated DDS arrival times and 90 ms detector work.
+
+    Headers cover ten recording seconds in one wall second, then continue at 10 Hz. Source
+    metadata uses the actual scheduled publication time, never the later Python take time.
+    """
+    node, clock, _ = freshness_driver
+    topic = "/lidar_points"
+    mono0, wall0 = clock["mono"], clock["wall"]
+    burst_end = mono0 + 1.0
+    schedule = [(mono0 + k * 0.01, 20.0 + k * 0.1) for k in range(101)]
+    schedule += [(burst_end + k * 0.1, 30.0 + k * 0.1) for k in range(1, 31)]
+    scene_resets, held = [], []
+    monkeypatch.setattr(node.detector, "reset", lambda: scene_resets.append(clock["mono"]))
+    detect = node.detector.process
+
+    def work(frame, **kwargs):
+        clock["mono"] += 0.09
+        clock["wall"] += 0.09
+        return detect(frame, **kwargs)
+
+    monkeypatch.setattr(node.detector, "process", work)
+
+    class Handle:
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def take_message(self, *a):
+            held.append((len(node.pending), len(node.arrivals), len(node.skipped)))
+            if not schedule or schedule[0][0] > clock["mono"] + 1e-8:
+                return None
+            due, stamp = schedule.pop(0)
+            msg, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), stamp, frame_id="lidar")
+            return msg, {"source_timestamp": round((wall0 + due - mono0) * 1e9)}
+
+    sub = node.subs[topic]
+    sub.handle, sub.msg_type, sub.raw = Handle(), object, False
+    while schedule or node.pending:
+        if node.pending:
+            node.on_pending()
+        else:
+            if schedule[0][0] > clock["mono"]:
+                dt = schedule[0][0] - clock["mono"]
+                clock["mono"] += dt
+                clock["wall"] += dt
+            msg, info = sub.handle.take_message()
+            node.on_cloud(msg, topic, info)
+    results = _frames(node)
+    recovered = [s for s in results if burst_end <= mono0 + s["freshness"]["evaluated_at_utc_s"] - wall0
+                 <= burst_end + 3 and s["freshness"]["valid"]
+                 and max(s["freshness"][k] for k in ("source_age_s", "residence_age_s", "queue_lag_s")) <= 0.5]
+    assert recovered, [(s["stamp"], s["freshness"]) for s in results]
+    assert max(max(sizes) for sizes in held) <= 12
+    assert max(s["node"]["catchup_step_s"] for s in results) == pytest.approx(0.3)
+    assert max(np.diff([s["stamp"] for s in results])) <= 1.000001
+    assert not scene_resets and node.n_inputs == 1
+    assert node.n_frames + node.dropped_skipped == 131
+    assert node.dropped == node.dropped_skipped
+    assert not node.pending and not node.arrivals and not node.skipped and not node.pending_epochs
+    print("S1 burst:", json.dumps({
+        "processed": node.n_frames, "skipped": node.dropped_skipped,
+        "max_pending": max(s[0] for s in held),
+        "max_chain_gap_s": float(max(np.diff([s["stamp"] for s in results]))),
+        "fresh_after_burst_s": recovered[0]["freshness"]["evaluated_at_utc_s"] - wall0 - 1,
+        "recovered_age_s": max(recovered[0]["freshness"][k]
+                               for k in ("source_age_s", "residence_age_s", "queue_lag_s")),
+        "scene_resets": len(scene_resets)}))
+
+
+def test_overflow_behind_another_input_counts_every_skip_with_bounded_metadata(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0)
+    send(20.1)
+    node.catchup_startup_step = 0.0
+    node.catchup_startup_max_lag = 0.0
+    node.catchup_max_lag = 0.0
+    # Keep a different input at the head while take_waiting drains a long new epoch.
+    old, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), 20.2, frame_id="lidar")
+    node.remember_arrival(old, {"source_timestamp": int(clock["wall"] * 1e9)})
+    node.pending.append(("/lidar_points", old))
+    queue = [_cloud(np.array([[5.0, 0, 0]], np.float32), k * 0.1, frame_id="other")[0]
+             for k in range(2001)]
+    held = []
+    class Handle:
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def take_message(self, *a):
+            held.append((len(node.pending), len(node.arrivals), len(node.skipped), len(node.pending_epochs)))
+            return (queue.pop(0), {"source_timestamp": int(clock["wall"] * 1e9)}) if queue else None
+    topic = "/sensing/lidar/hesai128/pointcloud"
+    sub = node.subs[topic]
+    sub.handle, sub.msg_type, sub.raw = Handle(), object, False
+    node.take_waiting(topic)
+    assert max(max(sizes) for sizes in held) <= 12
+    assert len(node.pending) == 12 and node.pending_overflow > 0
+    assert node.dropped_skipped == node.dropped == 2002 - 12
+    # Let this input become active; its first result starts a new epoch, not an old catch-up.
+    clock["mono"] += 2.0
+    clock["wall"] += 2.0
+    while node.pending:
+        node.on_pending()
+    assert node.n_inputs == 2
+    assert node.n_frames == 14
+    assert node.dropped == node.dropped_skipped == 1990
+    assert not node.arrivals and not node.skipped and not node.pending_epochs
+    send(200.3, topic=topic, frame_id="other")       # 200.1 and 200.2 never reached Python
+    assert node.dropped == 1992 and node.dropped_skipped == 1990
+
+
+@pytest.mark.parametrize("cost, expected_step", [(0.0799, 0.2), (0.08, 0.3), (0.09, 0.3), (0.5, 0.3)])
+def test_startup_pressure_uses_measured_work_at_the_point_eight_boundary(
+        freshness_driver, monkeypatch, cost, expected_step):
+    node, clock, send = freshness_driver
+    detect = node.detector.process
+    def work(frame, **kwargs):
+        clock["wall"] += cost
+        clock["mono"] += cost
+        return detect(frame, **kwargs)
+    monkeypatch.setattr(node.detector, "process", work)
+    send(20.0)
+    queue = [_cloud(np.array([[5.0, 0, 0]], np.float32), 20.1 + k * 0.1, frame_id="lidar")[0]
+             for k in range(8)]
+    class Handle:
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def take_message(self, *a):
+            return (queue.pop(0), {"source_timestamp": int(clock["wall"] * 1e9)}) if queue else None
+    sub = node.subs["/lidar_points"]
+    sub.handle, sub.msg_type, sub.raw = Handle(), object, False
+    first = queue.pop(0)
+    node.on_cloud(first, "/lidar_points", {"source_timestamp": int(clock["wall"] * 1e9)})
+    assert _frames(node)[-1]["node"]["catchup_step_s"] == pytest.approx(expected_step)
+    while node.pending:
+        node.on_pending()
+
+
+@pytest.mark.parametrize("jump", [-5.0, 40.0])
+def test_thinning_cannot_hide_a_new_header_epoch(freshness_driver, jump):
+    node, clock, send = freshness_driver
+    send(20.0)
+    send(20.1)
+    # A backwards restart's retained tail can be newer than the old last header. Keep its
+    # original epoch boundary even when pruning removes the backwards first message.
+    for k in range(101):
+        msg, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), 20.1 + jump + k * 0.1, frame_id="lidar")
+        node.remember_arrival(msg, {"source_timestamp": int((clock["wall"] - 0.1 + k * 0.0001) * 1e9)})
+        node.pending.append(("/lidar_points", msg))
+        node.prune()
+    node.process_next()
+    result = _frames(node)[-1]
+    assert node.n_inputs == 2
+    assert result["freshness"]["reason"] in ("queue_stale", "epoch_unconfirmed")
+    assert not result["freshness"]["valid"]
+    while node.pending:
+        node.process_next()
+    assert node.n_inputs == 2 and not node.pending_epochs
 
 
 def test_freshness_live_acquisition_and_replay_publication_clocks(freshness_driver):

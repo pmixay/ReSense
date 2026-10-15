@@ -36,7 +36,10 @@ meanwhile, a backlog is worked through ``catchup_step`` s of recording apart, se
 frame can also be lost in transport or be missing from the recording itself; the input's
 reliability follows the publishers, ``input_reliability``). ``catchup_skipped`` (25.09) is the
 part of ``dropped_frames`` the node received and skipped on purpose (the catch-up plan), so
-``dropped_frames - catchup_skipped`` never reached the node. ``catchup`` is true while the node
+``dropped_frames - catchup_skipped`` never reached the node. Skips count immediately, including
+frames evicted before the first result or from an abandoned queued epoch. Queue telemetry adds
+``pending_frames``, ``max_pending_frames``, ``pending_overflow`` (hard-cap evictions), and
+``catchup_step_s`` (the effective step for this frame). ``catchup`` is true while the node
 works through a backlog (more than ``catchup_step`` s of recording waiting), false again from the
 frame on which it is back on the newest one: ``scripts/check_dry_run.py`` counts drops after the
 start-up catch-up from there.
@@ -85,19 +88,19 @@ bags use different mounts) do not carry over. A shorter forward gap above ``hole
 (a hole in the recording) resets the scene but keeps the calibration. While the input is
 silent, topic discovery keeps running, so a bag with a topic name nobody listed is still found.
 
-Backlog (v0.6.4): ``ros2 bag play`` (Humble) reads up to 1000 messages before its first publish
-while its clock runs, then sends the overdue first seconds of the recording back to back. The
-input queue holds ``input_queue_depth`` frames and every frame waiting is taken; one frame waiting
-is processed at once. Short backlogs spanning at most ``catchup_step`` are processed in full;
-longer live backlogs are worked through ``catchup_step`` s of recording apart (the ones in between
-skipped, none older than ``catchup_max_lag`` s behind the newest). On the first backlog of a new
-recording (the player's start-up burst, ~0.7 s of recording with ``--read-ahead-queue-size 10``,
-the whole recording from a cold disk) the experimental branch preserves every observed
-input-period frame by default (``catchup_startup_step: 0``), within the start-up lag allowance
-(``catchup_startup_max_lag``). An explicit ``catchup_startup_step: 0.2`` enables the main branch's
-5 Hz start-up thinning; its A/B improved latency but skipped some obstacle frames. The start-up
-allowance closes when that first catch-up drains, or after 1 s without a catch-up starting; later
-stalls retain the normal 5 s limit. ``catchup_step: 0`` keeps the newest-only behavior.
+Backlog (S1, 15.10): ``ros2 bag play`` can send overdue seconds back to back. Start-up prefers
+fresh results: ``catchup_startup_step`` defaults to 0.2 s, ``catchup_startup_max_lag`` to 2.5 s.
+At measured decode/detect/publish cost >= 0.8 of the sensor period the start-up step widens by
+one sensor period, capped at 0.3 s. The initial lag cutoff may jump into a recording; subsequent
+links use the bounded step rather than introducing scene-reset-sized holes. DDS keeps 12 frames
+per subscription (``input_queue_depth``); Python keeps at most ``max_pending_frames`` (12) across
+all inputs, pruning on every take. Overflow evicts oldest frames and counts every eviction.
+Arrival metadata and skip credits belong only to retained messages, so bookkeeping is bounded
+too. Explicit ``catchup_startup_step: 0`` preserves every observed input-period frame within the
+configured lag and memory bounds (raise those bounds for the old every-frame experiment).
+Start-up ends when its first catch-up drains, or after 1 s without one starting. Later stalls
+use ``catchup_step`` / ``catchup_max_lag``; short live backlogs are processed in full.
+``catchup_step: 0`` selects newest-only behavior.
 
 Warm-up (29.09, ``warmup``): before it logs "listening", the node runs the decode and a
 throwaway detector on three synthetic frames, so the first real frame does not pay first-call
@@ -231,17 +234,13 @@ class DetectorNode(Node):
         # frames wait, the node works through them catchup_step s of recording apart (the frames in
         # between are skipped) until it is back on the newest. A frame that waits alone is processed
         # at once: a node slower than the sensor still skips, never lags (EXPERIMENTS.md section 3b).
-        # 40 frames ride out a transport stall inside the burst (20 lost 1.7 s once in 3 runs); the
-        # reader keeps what it once held: ~0.4 GB more resident memory with 10 MB clouds
-        self.declare_parameter("input_queue_depth", 40)       # frames the input subscription may hold between two frames
+        self.declare_parameter("input_queue_depth", 12)       # DDS keep-last bound, per subscription
+        self.declare_parameter("max_pending_frames", 12)      # hard Python queue bound, across all inputs
         self.declare_parameter("catchup_step", 0.3)           # s of recording between processed frames while frames wait;
                                                               # 0 = always the newest (the v0.6.3 behaviour)
         self.declare_parameter("catchup_max_lag", 5.0)        # s: waiting frames older than the newest by more are dropped
-        self.declare_parameter("catchup_startup_max_lag", 20.0)  # s: extra allowance for a recording's initial burst
-        # --- 29.09 main integration: experimental keeps every input-period frame by default.
-        # Explicit 0.2 s enables main's 5 Hz start-up thinning, which lowers start-up latency but
-        # has not passed the branch's paired target-coverage acceptance (see P3_SCORE_SYNC_2026-09-28).
-        self.declare_parameter("catchup_startup_step", 0.0)
+        self.declare_parameter("catchup_startup_max_lag", 2.5)  # s: freshness-first bound for the initial burst
+        self.declare_parameter("catchup_startup_step", 0.2)     # 0 = input-period compatibility, still memory bounded
         # --- 29.09: run the decode and a throwaway detector on synthetic frames before listening, so the
         # first real frame does not pay the first-call costs (imports, allocations: +55 ms measured)
         self.declare_parameter("warmup", True)
@@ -293,6 +292,7 @@ class DetectorNode(Node):
         self.tf_frames_sent = set()
 
         self.qos_depth = max(1, self.get_parameter("input_queue_depth").get_parameter_value().integer_value)
+        self.max_pending_frames = max(1, self.get_parameter("max_pending_frames").get_parameter_value().integer_value)
         self.raw_input = self.get_parameter("raw_input").get_parameter_value().bool_value
         self.raw_fallbacks = 0          # raw clouds that needed rclpy's conversion (logged once)
         self.catchup_step = self.get_parameter("catchup_step").get_parameter_value().double_value
@@ -303,6 +303,9 @@ class DetectorNode(Node):
         self.startup_catchup_active = False
         self.startup_catchup_until = 0.0  # first cloud may arrive alone just before the preload burst
         self.pending = []              # (topic, msg) taken from the input queues, not processed yet, oldest first
+        self.pending_overflow = 0      # received frames evicted specifically by the hard cap
+        self.processing_time = 0.0     # s, EMA of decode + detect + publish, for start-up pressure
+        self.effective_catchup_step = self.catchup_startup_step
         self.arrivals = {}             # message id -> (first Python arrival monotonic, DDS source UTC)
         self.current_arrival = None
         self.current_queue_lag = 0.0
@@ -323,7 +326,9 @@ class DetectorNode(Node):
         self.pending_last = None       # (topic, frame_id, stamp) of the last frame handed to processing
         self.catchup = None            # [frames processed, max s behind, start time] of the current catch-up
         self.catchup_skipped = 0       # frames skipped since the current catch-up started (its log line)
-        self.skipped = []              # ((topic, frame_id), stamp) of skipped frames not yet accounted
+        self.skipped = {}              # retained message id -> preceding skips already counted as drops
+        self.pending_epochs = {}       # retained head id -> original stamp of a queued header epoch
+        self.current_skipped = 0       # skip credit for the frame currently being processed
         self.frame_in_catchup = False  # the frame being processed is a link of a catch-up (status "catchup")
         self.pending_gc = self.create_guard_condition(self.on_pending)
         rel = self.get_parameter("input_reliability").get_parameter_value().string_value.strip().lower()
@@ -601,17 +606,9 @@ class DetectorNode(Node):
     # ------------------------------------------------------------------
     def _account_frame(self, stamp: float, key=None) -> None:
         """Estimate dropped frames from the gap between consecutive input stamps; the frames of
-        the gap that the node received and skipped itself (``prune``) also go to
-        ``dropped_skipped``. ``key``: (topic, frame_id) of the frame, as in ``skipped``."""
-        last, skipped = self.last_stamp, 0
-        if self.skipped:
-            keep = []
-            for k, s in self.skipped:
-                if k == key and s < stamp:           # accounted now (or older than the input's start)
-                    skipped += int(last is not None and s > last)
-                else:
-                    keep.append((k, s))
-            self.skipped = keep
+        the gap already counted by ``prune`` are credited to their retained successor. Counting
+        on eviction also accounts for frames before the first result or an abandoned input."""
+        last = self.last_stamp
         if last is not None:
             gap = stamp - last
             if 0.0 < gap < 1.6 * self.input_period:
@@ -619,8 +616,7 @@ class DetectorNode(Node):
                 self.input_period = 0.9 * self.input_period + 0.1 * gap
             elif gap >= 1.6 * self.input_period:
                 missing = int(round(gap / self.input_period)) - 1
-                self.dropped += missing
-                self.dropped_skipped += min(missing, skipped)
+                self.dropped += max(0, missing - self.current_skipped)
             # gap <= 0: a bag loop / restart, not a drop
         self.last_stamp = stamp
 
@@ -647,6 +643,9 @@ class DetectorNode(Node):
         return {"latency_ms": round(self.last_latency_ms, 2), "fps": round(self.fps, 2),
                 "frames": self.n_frames, "dropped_frames": self.dropped,
                 "catchup_skipped": self.dropped_skipped, "catchup": bool(self.frame_in_catchup),
+                "pending_frames": len(self.pending), "max_pending_frames": self.max_pending_frames,
+                "pending_overflow": self.pending_overflow,
+                "catchup_step_s": self.effective_catchup_step,
                 "input_period_ms": round(self.input_period * 1e3, 1),
                 "ego_speed_mps": None if self.last_speed is None else round(float(self.last_speed), 2),
                 "ego_speed_source": self.last_speed_source,
@@ -671,6 +670,8 @@ class DetectorNode(Node):
             self.mount_logged = ""
         self.last_stamp = None
         self.freshness_previous = None
+        self.pending_last = None
+        self.catchup = None
         self.startup_catchup_active = True
         self.startup_catchup_until = time.perf_counter() + 1.0
         self.get_logger().info(
@@ -761,6 +762,7 @@ class DetectorNode(Node):
             return
         self.remember_arrival(msg, info)
         self.pending.append((topic, msg))
+        self.prune()
         self.take_waiting(topic)
         self.process_next()
 
@@ -788,72 +790,131 @@ class DetectorNode(Node):
                     continue
                 self.remember_arrival(cloud, got[1])
                 self.pending.append((topic, cloud))
-                if len(self.pending) > 2:
-                    self.prune()                # hold the chain's frames only, not the whole burst
+                self.prune()                    # enforce the global cap on every take, even behind another input
         except Exception as e:  # noqa: BLE001 - never lose the input over the queue peek
             self.get_logger().warn(f"could not take the waiting frames of {topic}: {e!r}")
 
     def prune(self):
-        """Drop the waiting frames the catch-up will skip; returns the stamps of the frames of
-        one input at the head of ``pending`` that are left (the next to process first)."""
-        topic0, m0 = self.pending[0]
-        stamps = [self._stamp(m0)]
-        for t, m in self.pending[1:]:           # the frames of one input at the head of the queue
-            s = self._stamp(m)
-            if t != topic0 or m.header.frame_id != m0.header.frame_id or s < stamps[-1]:
-                break
-            stamps.append(s)
-        last = self.pending_last
+        """Thin every contiguous input epoch, then enforce the global frame cap.
+
+        Skip credits follow retained successors, including when a successor is evicted later.
+        No list of discarded stamps or message references survives pruning.
+        """
+        if not self.pending:
+            return []
         new_gap = self.get_parameter("new_input_gap").get_parameter_value().double_value
-        last = (last[2] if last is not None and last[:2] == (topic0, m0.header.frame_id)
-                and -0.5 <= stamps[0] - last[2] <= new_gap else None)
-        n = len(stamps)
-        # A whole-recording cold-start burst otherwise keeps moving the 5 s cutoff ahead of
-        # processing. Its artificial 1+ s gaps reset the scene before a track can confirm.
-        # The extra allowance belongs only to a new recording and its first catch-up. A
-        # one-second window also catches a first cloud delivered just ahead of that burst.
         if (self.startup_catchup_active and self.catchup is None
                 and time.perf_counter() >= self.startup_catchup_until):
             self.startup_catchup_active = False
-        max_lag = self.catchup_max_lag
-        if (last is None or self.startup_catchup_active) and 0 < max_lag < self.catchup_startup_max_lag:
-            max_lag = self.catchup_startup_max_lag
-        step = self.catchup_step
-        startup = last is None or self.startup_catchup_active
-        if step > 0 and startup:
-            # Preserve the observed input period unless startup thinning was explicitly enabled.
-            # The running period may still describe a previous recording with a different rate.
-            observed = min((b - a for a, b in zip(stamps, stamps[1:]) if b > a),
-                           default=self.input_period)
-            step = min(step, max(min(self.input_period, observed), self.catchup_startup_step))
-        plan = self.catchup_plan(stamps, last, step, max_lag,
-                                 thin_short=startup and self.catchup_startup_step > 0)
-        if len(plan) < n:
-            run, self.pending = self.pending[:n], self.pending[n:]
-            self.pending[:0] = [run[i] for i in plan]
-            self.catchup_skipped += n - len(plan)
-            key, kept = (topic0, m0.header.frame_id), set(plan)
-            self.skipped.extend((key, stamps[i]) for i in range(n) if i not in kept)
-            for i in range(n):
-                if i not in kept:
-                    self.arrivals.pop(id(run[i][1]), None)
-            if len(self.skipped) > 4 * self.qos_depth + 100:     # entries of an input that never came
-                del self.skipped[:len(self.skipped) - 4 * self.qos_depth - 100]
-        return [stamps[i] for i in plan]
+        runs, run = [], []
+        for item in self.pending:
+            t, m = item
+            if run:
+                pt, pm = run[-1]
+                gap = self._stamp(m) - self._stamp(pm)
+                if (t != pt or m.header.frame_id != pm.header.frame_id or gap < 0 or gap > new_gap
+                        or id(m) in self.pending_epochs):
+                    runs.append(run)
+                    run = []
+            run.append(item)
+        runs.append(run)
+        retained = []
+        for index, run in enumerate(runs):
+            topic, first = run[0]
+            stamps = [self._stamp(m) for _, m in run]
+            epoch = self.pending_epochs.pop(id(first), None)
+            previous = self.pending_last
+            boundary = runs[index - 1][-1] if index else None
+            prior = ((boundary[0], boundary[1].header.frame_id, self._stamp(boundary[1]))
+                     if boundary else previous)
+            if (epoch is None and prior is not None and prior[:2] == (topic, first.header.frame_id)
+                    and (stamps[0] - prior[2] < -0.5 or stamps[0] - prior[2] > new_gap)):
+                epoch = stamps[0]
+            last = (previous[2] if epoch is None and previous is not None
+                    and previous[:2] == (topic, first.header.frame_id)
+                    and -0.5 <= stamps[0] - previous[2] <= new_gap else None)
+            startup = last is None or self.startup_catchup_active
+            step = self.catchup_step
+            if startup and step > 0:
+                period = min(self.input_period, min((b - a for a, b in zip(stamps, stamps[1:])
+                                                    if b > a), default=self.input_period))
+                step = min(step, max(period, self.catchup_startup_step))
+                if (self.catchup_startup_step > 0
+                        and self.processing_time + 1e-9 >= 0.8 * max(period, 1e-6)):
+                    step = min(0.3, step + period)
+            if not retained:
+                self.effective_catchup_step = step
+            lag = self.catchup_startup_max_lag if startup else self.catchup_max_lag
+            plan = set(self.catchup_plan(stamps, last, step, lag,
+                                        thin_short=startup and self.catchup_startup_step > 0))
+            credit = 0
+            head = True
+            for i, item in enumerate(run):
+                msg_id = id(item[1])
+                credit += self.skipped.pop(msg_id, 0)
+                if i in plan:
+                    if head and epoch is not None:
+                        self.pending_epochs[msg_id] = epoch
+                    head = False
+                    if credit:
+                        self.skipped[msg_id] = credit
+                    credit = 0
+                    retained.append(item)
+                else:
+                    self._skip_pending(item)
+                    credit += 1
+        excess = max(0, len(retained) - self.max_pending_frames)
+        for i in range(excess):
+            item, successor = retained[i], retained[i + 1]
+            credit = self.skipped.pop(id(item[1]), 0) + 1
+            epoch = self.pending_epochs.pop(id(item[1]), None)
+            self._skip_pending(item)
+            self.pending_overflow += 1
+            if (item[0] == successor[0] and item[1].header.frame_id == successor[1].header.frame_id
+                    and id(successor[1]) not in self.pending_epochs
+                    and 0 <= self._stamp(successor[1]) - self._stamp(item[1]) <= new_gap):
+                msg_id = id(successor[1])
+                self.skipped[msg_id] = self.skipped.get(msg_id, 0) + credit
+                if epoch is not None:
+                    self.pending_epochs[msg_id] = epoch
+        self.pending = retained[excess:]
+        topic, first = self.pending[0]
+        stamps = [self._stamp(first)]
+        for t, m in self.pending[1:]:
+            s = self._stamp(m)
+            if (t != topic or m.header.frame_id != first.header.frame_id
+                    or id(m) in self.pending_epochs
+                    or not 0 <= s - stamps[-1] <= new_gap):
+                break
+            stamps.append(s)
+        return stamps
+
+    def _skip_pending(self, item):
+        self.arrivals.pop(id(item[1]), None)
+        self.catchup_skipped += 1
+        self.dropped_skipped += 1
+        self.dropped += 1
 
     def process_next(self) -> None:
         """Process one waiting frame: the only one, or the next link of the catch-up chain."""
         if not self.pending:
             return
         stamps = self.prune()
-        self.track_catchup(stamps[-1] - stamps[0], len(stamps))
         topic, msg = self.pending.pop(0)
         self.current_queue_lag = max(0.0, stamps[-1] - stamps[0])
         self.current_arrival = self.arrivals.pop(id(msg), None)
+        self.current_skipped = self.skipped.pop(id(msg), 0)
+        epoch = self.pending_epochs.pop(id(msg), None)
         try:
-            self.process_cloud(msg, topic)
+            if (epoch is not None and topic == self.active_topic
+                    and msg.header.frame_id == self.active_frame_id):
+                self.start_new_input(topic, msg, f"queued header epoch started at {epoch:g} s")
+            if self.check_continuity(topic, msg):
+                self.track_catchup(stamps[-1] - stamps[0], len(stamps))
+                self.process_cloud(msg, topic)
         finally:
             self.current_arrival = None
+            self.current_skipped = 0
             self.frame_in_catchup = False
             if topic == self.active_topic:
                 self.pending_last = (topic, msg.header.frame_id, self._stamp(msg))
@@ -884,8 +945,6 @@ class DetectorNode(Node):
             self.frame_in_catchup = True
 
     def process_cloud(self, msg: PointCloud2, topic: str = "") -> None:
-        if not self.check_continuity(topic, msg):
-            return
         self.send_static_tf(msg.header.frame_id)
         t0 = time.perf_counter()
         self.begin_freshness(msg, t0)
@@ -923,6 +982,8 @@ class DetectorNode(Node):
         self.n_frames += 1
         self.win_frames += 1
         latency_ms = (time.perf_counter() - t0) * 1e3               # + publishing, goes to /resense/latency_ms
+        cost = latency_ms * 1e-3
+        self.processing_time = cost if self.processing_time == 0 else 0.8 * self.processing_time + 0.2 * cost
         self.win_latency.append(latency_ms)
         self.pub_latency.publish(Float32(data=float(latency_ms)))
         self.last_status += (f"; axis y={res.track.center:+.2f} "
