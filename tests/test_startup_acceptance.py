@@ -1,5 +1,6 @@
 """S1 evidence integrity and pre-registered acceptance bounds; no Docker required."""
 from copy import deepcopy
+import importlib.util
 import json
 import sqlite3
 import struct
@@ -66,6 +67,20 @@ def test_watchdog_stop_is_never_a_frame_or_first_stop(recording):
     assert m["frame_results"]["STOP"] == 193
     assert m["first_stop_dist"] == 56
     assert m["first_stop_after_first_result_s"] == pytest.approx(0.8)
+
+
+def test_actual_node_watchdogs_omit_frame_counters_without_becoming_frames(recording):
+    rows, meta, samples, inventory = recording
+    rows[-1]["frames"] = None
+    metrics = s1.summarize_run(rows, meta, samples, inventory)
+    assert metrics["complete"], metrics["errors"]
+    assert metrics["frames_processed"] == 201
+    assert metrics["frame_results"]["FAULT"] == 8
+    assert metrics["watchdog_results"] == {"FAULT": 1}
+    del rows[-5:-2]  # Nullable watchdogs cannot conceal a missing final input frame.
+    metrics = s1.summarize_run(rows, meta, samples, inventory)
+    assert not metrics["complete"]
+    assert any("last expected bag frame missing" in e for e in metrics["errors"])
 
 
 def test_skipped_frames_stay_in_denominator(recording):
@@ -351,6 +366,7 @@ def test_partial_container_creation_is_cleaned_up_without_docker(tmp_path, monke
     run = next(c for c in fake.calls if c[0] == "run")
     assert "--cpus" in run and "--memory" in run
     assert "ROS_DOMAIN_ID=70" in run
+    assert "ROS_LOCALHOST_ONLY=0" in run
     assert not any("docker.sock" in str(arg) for arg in run)
 
 
@@ -476,6 +492,9 @@ def test_driver_player_contract_and_cleanup_for_success_and_failure(tmp_path, mo
                 labels = dict(args[i + 1].split("=", 1) for i, arg in enumerate(args) if arg == "--label")
                 cmd = list(args[args.index(image["id"]) + 1:])
                 role = name.rsplit("-", 1)[1]
+                if role != "node":
+                    assert args[args.index("--pid") + 1].endswith("-node")
+                assert "ROS_LOCALHOST_ONLY=0" in args
                 states[name] = {
                     "Id": name, "Image": image["id"],
                     "Config": {"Cmd": cmd, "Labels": labels},
@@ -496,6 +515,11 @@ def test_driver_player_contract_and_cleanup_for_success_and_failure(tmp_path, mo
                                       "thread_env": s1.THREAD_ENV})
                 elif args[-1] == "memory":
                     out = json.dumps({"bytes": 900_000_000, "source": "/sys/fs/cgroup/memory.peak"})
+                elif "/tools/analyze_chain.py" in args:
+                    original_meta = s1.read_json(str(base) + ".meta")
+                    assert original_meta["t_end"] >= original_meta["t_play"]
+                    assert original_meta["play_args"] == " ".join(s1.CONDITIONS[condition][2])
+                    assert not s1.Path(str(base) + ".receipt.json").exists()
             elif args[0] == "stop":
                 states[args[-1]]["State"]["Running"] = False
             elif args[0] == "rm":
@@ -533,4 +557,56 @@ def test_driver_player_contract_and_cleanup_for_success_and_failure(tmp_path, mo
     else:
         assert meta["errors"] == []
         assert meta["player_exit"] == meta["listener_exit"] == meta["judge_analysis_exit"] == 0
+        receipt = s1.read_json(str(base) + ".receipt.json")
+        assert receipt["cleanup_ok"] and "judge_analysis_exit" not in s1.read_json(str(base) + ".meta")
         s1.validate_receipt(meta, manifest, image, condition, 1, 20)
+
+
+def load_launcher():
+    spec = importlib.util.spec_from_file_location("s1_matrix_launcher", s1.TOOLS / "launch_matrix.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_detached_launcher_captures_exclusive_logs_and_does_not_wait(tmp_path, monkeypatch, capsys):
+    launcher = load_launcher()
+    root = tmp_path / "long_matrix"
+    launched = []
+
+    def popen(cmd, **kwargs):
+        launched.append((cmd, kwargs))
+        return SimpleNamespace(pid=12345)
+
+    monkeypatch.setattr(launcher.subprocess, "Popen", popen)
+    monkeypatch.setattr(launcher.sys, "argv", ["launch_matrix.py", "--out", str(root), "--",
+                                              "--image", "candidate", "--memory", "6g"])
+    launcher.main()
+    receipt = json.loads(capsys.readouterr().out)
+    assert receipt["pid"] == 12345
+    assert launched[0][0][-4:] == ["--image", "candidate", "--memory", "6g"]
+    assert launched[0][1]["stdin"] == launcher.subprocess.DEVNULL
+    assert s1.Path(receipt["stdout"]).exists() and s1.Path(receipt["stderr"]).exists()
+    assert s1.read_json(str(root) + ".launch.json")["driver_sha256"] == s1.sha256_file(s1.REPO / "scripts/startup_acceptance.py")
+    with pytest.raises(SystemExit):
+        launcher.main()
+    assert len(launched) == 1
+
+
+def test_manual_cleanup_refuses_a_mismatched_container_owner(tmp_path, monkeypatch):
+    launcher = load_launcher()
+    s1.write_json(tmp_path / "manifest.json", {"run_id": "owned"})
+    calls = []
+
+    def command(args, **kwargs):
+        calls.append(args)
+        if args[1] == "ps":
+            out = "candidate-id\n"
+        else:
+            out = json.dumps([{"Config": {"Labels": {"resense.startup.run": "someone-else"}}}])
+        return SimpleNamespace(stdout=out, stderr="", returncode=0)
+
+    monkeypatch.setattr(s1, "command", command)
+    with pytest.raises(RuntimeError, match="another run"):
+        launcher.cleanup(tmp_path)
+    assert not any(args[1] in ("stop", "rm") for args in calls)

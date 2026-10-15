@@ -33,11 +33,14 @@ def main():
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
     witness = open(a.base + ".observer.jsonl", "x", buffering=1)
+    received_status = False
 
     def status(msg):
+        nonlocal received_status
         s = json.loads(msg.data)
         witness.write(json.dumps({"t": time.time(), "snapshot": s.get("snapshot_kind"),
                                   "frames": (s.get("node") or {}).get("frames")}) + "\n")
+        received_status = True
 
     node.create_subscription(String, "/resense/status", status, 50)
     ready = False
@@ -47,14 +50,14 @@ def main():
             rclpy.spin_once(node, timeout_sec=0.1)
             if not ready:
                 topics = ("/resense/status", "/resense/decision", "/resense/latency_ms")
-                ready = all(
+                ready = received_status and all(
                     any(s.node_name == "jury_listener" for s in node.get_subscriptions_info_by_topic(t))
                     and node.count_publishers(t) > 0 for t in topics)
                 if ready:
                     Path(a.base + ".ready").write_text(str(time.time()))
                     print("S1_LISTENER_READY", flush=True)
                 elif time.monotonic() > deadline:
-                    raise RuntimeError("Judge listener / three publishers not discovered")
+                    raise RuntimeError("Judge listener / publishers / actual status data not ready")
         if not stopping:
             raise RuntimeError(f"Judge listener exited early: {child.returncode}")
     finally:

@@ -51,7 +51,10 @@ Missing bag results are explicitly `expected_frames - frames_processed`. Deliber
 skips may cause missing results; they still remain in the fresh denominator. The parser
 requires unique progressing original header stamps, the final expected bag header, contiguous
 zero-based `node.frames` on processed frames, matching decision/status sequences, exactly
-one latency message per processed frame, and a post-player watchdog with the final counter.
+one latency message per processed frame, and a post-player watchdog confirming expired
+monitoring. The actual node intentionally omits counters on watchdog snapshots (`null`
+in the exact listener); such snapshots never become frames or provide an invented counter.
+If watchdog counters are supplied, they must be consistent with received frame counters.
 Missing status/decision/latency counts/deltas and node dropped/skipped counters are reported.
 An empty result stream cannot pass the clear-literal FAULT bound.
 
@@ -66,12 +69,15 @@ and hardcoded evidence directory.
 The exact `listener.py` records the acceptance stream. `observe_listener.py` starts it as
 a child and adds a separate flushed, lightweight status witness for readiness/draining.
 This witness is control-plane evidence, never a substitute source of acceptance metrics.
-It verifies all three `jury_listener` subscriptions and their publishers via the ROS graph,
+It verifies all three `jury_listener` subscriptions and their publishers via the ROS graph
+**and receipt of actual status data**,
 then the driver retains the judge's additional four-second discovery allowance. The wrapper
 forwards termination and requires the original listener to flush/exit cleanly.
 
 The exact `analyze_chain.py` runs in the image (where NumPy already exists). Its historical
-`.summary.json` is retained beside strict host results. Its rounded ages, all-status first
+`.summary.json` is retained beside strict host results. Its required `.meta` playback
+snapshot is written before analysis; the immutable final cleanup receipt is a separate
+`.receipt.json`. Its rounded ages, all-status first
 STOP and historical memory-unit labels **do not drive S1 thresholds**. Its regex expects
 `rs_node`; only the compatibility `.stats` text uses that token. The parallel raw
 `.samples.jsonl` retains the actual unique container name and Docker JSON.
@@ -91,7 +97,10 @@ the host has only four CPUs or that the entire chain shares one four-core cgroup
 four-vCPU host is still the registered comparison environment; physical/logical host and
 Docker VM CPU counts and container `lscpu` are captured to expose differences.
 
-Docker host networking, UDP DDS and `ROS_LOCALHOST_ONLY=1` are used. Docker Desktop must
+Docker host networking, UDP DDS and `ROS_LOCALHOST_ONLY=0` are used. Listener and player
+join the node container's PID namespace (`--pid container:<node>`), preserving unique
+process identities for Fast DDS participants on the shared host network. Their cgroups
+and CPU/memory quotas remain separate. Docker Desktop must
 support/enable host networking; a failure to discover the node/listener is an incomplete
 run, not a networking fallback. Each sequential repetition gets a deterministic domain
 slot: `20 + int(run_id[:4],16) % 50 + slot`, at most 92 for the 24-run A/B matrix. Active
@@ -206,7 +215,7 @@ not the existing top-level verdict):
 * `manifest.json`: frozen plan, image/commit/host provenance, bag identity and tool hashes;
 * `tools/`: LF-normalized copies of the exact judge tools and new helpers;
 * `docker_commands.jsonl`: executed Docker argument vectors and exit codes;
-* `out/docker/<role>_<condition>_r<N>.{jsonl,meta,stats,samples.jsonl,summary.json}`;
+* `out/docker/<role>_<condition>_r<N>.{jsonl,meta,receipt.json,stats,samples.jsonl,summary.json}`;
 * same prefix `.node.log`, `.player.log`, `.listener.log`, `.analysis.log`,
   `.observer.jsonl`, `.ready`;
 * top-level `summary.json`: strict verdict, per-run frame/CPU/memory/age/missing-message
@@ -242,3 +251,54 @@ Verified 2026-10-15 in `rs-p1-start`: **82 passed in 2.78 s**, no skips; standal
 **all checks passed**. Git no-index whitespace checks for the new driver, test and protocol
 passed (only the checkout's LF-to-CRLF notice). Docker inspection showed no running
 containers; no images were built and no acceptance containers/matrix were started here.
+
+### Execution handoff and infrastructure repairs (15 October)
+
+The parent subsequently authorized real candidate-only measurements on the selected
+Docker Desktop / WSL2 runtime: **12 logical CPUs, 7,192,399,872 bytes daemon RAM**,
+four-core **per-container** quotas and `--memory 6g --memory-swap 6g`. This is not an
+exact four-vCPU-host reproduction. The registered 201/252 frame counts and numeric
+acceptance thresholds are unchanged. The image is `resense:p1-start-2026-10-15`, with
+node/launch source checked against `1eed357`; no detector/launch/policy tuning is allowed.
+
+Initial external attempts remain under
+`C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15/`:
+
+1. `attempt01_diagnostic`: original transport settings, literal player deadline after
+   180 s, no observed status/frame data; player SIGKILL was cleanup, **not Docker OOM**.
+2. `attempt02_diagnostic`: original transport, clear README player exited normally but
+   no observed data; drain timeout. ROS graph discovery alone had falsely implied readiness.
+3. `attempt03_transport_diagnostic`: repaired transport delivered real frames and drained;
+   exact judge analyzer failed because `.meta` had previously been deferred until cleanup.
+   This attempt is preserved as incomplete, not retroactively repaired into acceptance.
+
+The host driver now writes analyzer input metadata before running the exact analyzer,
+writes the final receipt once after cleanup, permits the actual nullable watchdog-counter
+schema, and distinguishes Docker OOM from cleanup SIGKILL. Tests include the real null
+watchdog schema, PID/transport CLI contract, and analyzer-input-before-final-receipt order:
+**83 passed in 2.75 s; Ruff all checks passed**. Fresh matrix directories are required
+after repairs. An explicit `--player-timeout 600` accommodates slow Windows bind-mounted
+bag preload/queue starvation; it does not alter playback arguments, expected frame counts,
+node policy, or numeric thresholds. Matrix outcomes and exact commands belong in `docker/`.
+
+4. `attempt04_matrix`: seven repetitions completed; the terminal's 2,400-second limit
+   killed the host driver during repetition eight. Finished receipts remain unchanged.
+   `manual_cleanup.json` records removal of the three remaining attempt-owned containers.
+   This interrupted matrix is excluded from final median measurements.
+5. `attempt05_matrix`: fresh full matrix launched independently of terminal deadlines with
+   the stdlib `docker_tools/launch_matrix.py`; sibling `.launch.json`, `.stdout.log` and
+   `.stderr.log` preserve the exact command, PID and output. The driver snapshot and its
+   SHA-256 are captured in the raw directory/manifest. No numeric policy is changed.
+
+For long runs on this host (the direct foreground invocation can exceed terminal limits):
+
+```powershell
+& $python docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py --out 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15/NEW_MATRIX_DIRECTORY' -- --image resense:p1-start-2026-10-15 --detector-commit 1eed357 --bags 'C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/for_hackathon' --repeats 3 --cpus 4 --memory 6g --player-timeout 600
+```
+
+The launcher returns immediately; completion is established only by the final saved
+`summary.json` plus all twelve clean receipts, not by successful launch. Its optional
+`--cleanup <interrupted-raw-root>` verifies exact run labels before stopping/removing any
+remaining owned containers, preserves their final states/logs, and refuses unrelated owners.
+Launcher and ownership-refusal tests bring the harness suite to **85 passed in 4.05 s**;
+Ruff passes. This launcher is orchestration only and does not alter measured player args.

@@ -261,9 +261,9 @@ def summarize_run(rows, meta, samples, inventory):
     watchdogs = [r for r in statuses if r.get("snapshot") == "watchdog"]
     final_watchdogs = [r for r in watchdogs if finite(r.get("t")) and
                        finite(meta.get("t_end")) and r["t"] >= meta["t_end"] and
-                       r.get("frames") == len(frames)]
+                       r.get("frames") in (None, len(frames))]
     if not final_watchdogs:
-        errors.append("no post-player watchdog confirming final frame counter")
+        errors.append("no post-player watchdog confirming expired monitoring")
     decision_delta = len(statuses) - len(decisions)
     latency_delta = len(frames) - len(latencies)
     if decision_delta or decisions != [r.get("decision") for r in statuses]:
@@ -303,7 +303,8 @@ def summarize_run(rows, meta, samples, inventory):
     # Frame counters are zero-based; watchdog counters are the completed-result total.
     counter_end = max(max((c + 1 for c in counters if integer(c)), default=0),
                       max((r["frames"] for r in watchdogs if integer(r.get("frames"))), default=0))
-    if counter_end != len(frames) or any(not integer(r.get("frames")) for r in watchdogs):
+    if counter_end != len(frames) or any(r.get("frames") is not None and
+                                       not integer(r["frames"]) for r in watchdogs):
         errors.append("missing/invalid status messages according to completed-result counter")
     return {
         "complete": not errors, "errors": errors, "expected_frames": expected,
@@ -517,12 +518,16 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
                    "--label", f"resense.startup.args={json.dumps(cmd)}",
                    "--label", f"resense.startup.cpus={args.cpus}",
                    "--label", f"resense.startup.memory={args.memory}",
-                   "--env", f"ROS_DOMAIN_ID={domain}", "--env", "ROS_LOCALHOST_ONLY=1",
+                   "--env", f"ROS_DOMAIN_ID={domain}", "--env", "ROS_LOCALHOST_ONLY=0",
                    "--env", "PYTHONUNBUFFERED=1", "--env", "HOME=/tmp",
                    "--env", "RESENSE_DDS=udp", "--env", "ROS_HOME=/tmp/.ros",
                    "--env", "ROS_LOG_DIR=/tmp/.ros/log"]
         for k, v in THREAD_ENV.items():
             options += ["--env", f"{k}={v}"]
+        # Fast DDS uses process identity in participant GUIDs. Separate PID namespaces
+        # can give the witness and player the same PID on the same host network.
+        if role != "node":
+            options += ["--pid", "container:" + names["node"]]
         options += extra + [image["id"]] + cmd
         # Register intended name first: a CLI timeout can occur after Docker created it.
         created.append(names[role])
@@ -534,6 +539,10 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
             "Memory": inspected["HostConfig"]["Memory"],
             "MemorySwap": inspected["HostConfig"]["MemorySwap"],
             "cmd": inspected["Config"]["Cmd"], "labels": inspected["Config"].get("Labels"),
+            "pid_mode": inspected["HostConfig"].get("PidMode", ""),
+            "network_mode": inspected["HostConfig"].get("NetworkMode"),
+            "ros_localhost_only": dict(e.split("=", 1) for e in inspected["Config"].get("Env", [])
+                                       if "=" in e).get("ROS_LOCALHOST_ONLY"),
         }
         if inspected["Image"] != image["id"] or inspected["HostConfig"]["NanoCpus"] != int(args.cpus * 1e9):
             raise RuntimeError("Docker did not apply the requested immutable image / CPU limit")
@@ -590,10 +599,15 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
         meta["drained"] = True
         docker.call("stop", "--time", "12", names["listener"], timeout=20)
         meta["listener_exit"] = docker.state(names["listener"])["State"]["ExitCode"]
+        # The exact judge analyzer reads <label>.meta. Preserve this immutable
+        # playback-time snapshot, then write final cleanup evidence separately.
+        write_json(str(base) + ".meta", meta)
         analyzer = docker.call("exec", "--workdir", "/evidence", names["node"], "python3",
                                "/tools/analyze_chain.py", label, check=False)
         meta["judge_analysis_exit"] = analyzer.returncode
         Path(str(base) + ".analysis.log").write_text(analyzer.stdout + analyzer.stderr, encoding="utf-8")
+        if analyzer.returncode:
+            raise RuntimeError(f"Exact judge analysis failed: {analyzer.stdout}{analyzer.stderr}")
     except (Exception, KeyboardInterrupt) as e:
         meta["errors"].append(f"{type(e).__name__}: {e}")
     finally:
@@ -621,8 +635,10 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
                 docker.call("stop", "--time", "12", name, timeout=20)
                 state = docker.state(name)["State"]
                 meta.setdefault("final_states", {})[role] = state
-                if state.get("OOMKilled") or state["ExitCode"] == 137:
-                    meta["errors"].append(f"{role} OOM/SIGKILL")
+                if state.get("OOMKilled"):
+                    meta["errors"].append(f"{role} OOMKilled")
+                elif state["ExitCode"] == 137:
+                    meta["errors"].append(f"{role} SIGKILL (OOMKilled=false)")
                 if role == "node" and state["ExitCode"] not in (0, 143):
                     meta["errors"].append(f"unexpected node exit: {state['ExitCode']}")
                 logs = docker.call("logs", name, check=False)
@@ -633,7 +649,7 @@ def run_one(docker, root, manifest, image, condition, repetition, domain, args):
                 meta["errors"].append(f"cleanup {name}: {e}")
                 docker.call("rm", "--force", name, check=False)
         meta["cleanup_ok"] = cleanup_ok
-        write_json(str(base) + ".meta", meta)
+        write_json(str(base) + ".receipt.json", meta)
     return meta
 
 
@@ -698,7 +714,10 @@ def analyze_directory(root):
                 label = f"{image['role']}_{condition}_r{repetition}"
                 base = root / "out/docker" / label
                 try:
-                    meta = read_json(str(base) + ".meta")
+                    receipt_path = Path(str(base) + ".receipt.json")
+                    # Preserve the ability to inspect attempts made by v1 before
+                    # the analyzer-order repair; these lack final receipt files.
+                    meta = read_json(receipt_path if receipt_path.exists() else str(base) + ".meta")
                     validate_receipt(meta, manifest, image, condition, repetition,
                                      manifest["domain_base"] + slot)
                     original_summary = read_json(str(base) + ".summary.json")
@@ -798,6 +817,7 @@ def main(argv=None):
     root.mkdir()
     (root / "out/docker").mkdir(parents=True)
     shutil.copytree(TOOLS, root / "tools", ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    shutil.copyfile(__file__, root / "host_driver.py")
     # Normalize text with Python, so Windows CRLF checkouts need no shell rewriting.
     for path in (root / "tools").iterdir():
         if path.suffix in (".py", ".sh"):
@@ -821,6 +841,7 @@ def main(argv=None):
                      "CgroupDriver", "CgroupVersion", "Driver", "KernelVersion", "Name")
         manifest = {
             "schema": "resense.s1.docker.v1", "run_id": run_id,
+            "driver_sha256": sha256_file(root / "host_driver.py"),
             "created_utc": datetime.now(timezone.utc).isoformat(), "argv": sys.argv if argv is None else argv,
             "images": images, "conditions": args.conditions, "repeats": args.repeats,
             "cpus": args.cpus, "memory_limit": args.memory, "swap": "disabled",
