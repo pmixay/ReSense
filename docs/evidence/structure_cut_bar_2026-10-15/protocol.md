@@ -27,6 +27,12 @@ Measure raw cut-part azimuth spans, distinct ring support where available,
 voxel counts and matching STOP frames before choosing a threshold. Do not
 select a threshold solely because it clears a particular bad frame.
 
+First physical candidate: horizontal angular span at least one sensor azimuth
+step (`sensor.AZIMUTH_STEP_DEG`, 0.1 degrees), i.e. two resolved columns.
+Use raw part coordinates, not voxel centers or raw point multiplicity. The
+existing voxel, height, length and corridor rules remain required. This is a
+sensor-resolution threshold registered before replay, not a fitted distance.
+
 ## Recorded-data acceptance
 
 1. Run the wall-anchored battery in
