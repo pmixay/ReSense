@@ -1,0 +1,55 @@
+"""Prepare the six organizer bags and both cache formats for the P3 handoff."""
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parent / "resense-p3-data"
+REPO = Path(__file__).resolve().parent / "rs-h2"
+URL = "https://drive.usercontent.google.com/download?id=1WTlR2wDSuEHTOARGK_gZeXDTZ9RZpswu&export=download&confirm=t"
+SIX = {
+    "doubleT_obstacle": 201, "doubleT_platform": 345, "roundT_doubleT": 252,
+    "roundT_pressureGate_roundT": 268, "roundT_squareT_pressureGate_squareT": 545,
+    "squareT_platform_squareT_switch": 877,
+}
+
+
+def run(*args):
+    print(time.strftime("%H:%M:%S"), *map(str, args), flush=True)
+    subprocess.run(list(map(str, args)), cwd=REPO, check=True)
+
+
+def main():
+    ROOT.mkdir(exist_ok=True)
+    os.environ["RESENSE_REPO"] = str(REPO)
+    os.environ["PYTHONPATH"] = os.pathsep.join((str(REPO), str(ROOT.parent)))
+    os.environ.update(OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1", PYTHONUNBUFFERED="1")
+    archive = ROOT / "dataset.zip"
+    if not (ROOT / "unpacked.json").exists():
+        run("curl.exe", "--fail", "--location", "--silent", "--show-error", "--retry", "5",
+            "--continue-at", "-", "--output", archive, URL)
+        if archive.stat().st_size != 3940746006:
+            raise RuntimeError("unexpected organizer archive length")
+        run(sys.executable, "scripts/unpack_dataset.py", archive, "--out", ROOT)
+        (ROOT / "unpacked.json").write_text(json.dumps({"url": URL, "bytes": archive.stat().st_size}), encoding="utf-8")
+    for bag, count in SIX.items():
+        cache = ROOT / "cache" / bag
+        stamp = cache / f"{bag}_stamps.json"
+        if not stamp.exists():
+            run(sys.executable, "scripts/cache_frames.py", ROOT / "for_hackathon" / bag,
+                cache, "--every", "1", "--int16", "--stamps")
+        data = json.loads(stamp.read_text(encoding="utf-8"))
+        assert data["frames"] == count, (bag, data["frames"], count)
+        decoded = ROOT / "decoded" / bag
+        meta = decoded / "meta.json"
+        if not meta.exists():
+            run(sys.executable, "docs/evidence/judgement_2026-10-13/scripts/cache_decoded.py",
+                ROOT / "for_hackathon" / bag, decoded)
+        assert len(json.loads(meta.read_text(encoding="utf-8"))) == count, bag
+    print("INTAKE COMPLETE", ROOT, flush=True)
+
+
+if __name__ == "__main__":
+    main()

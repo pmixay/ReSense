@@ -1,0 +1,16 @@
+"""Windows-only RSS adapter for the judge's Unix resource import.
+
+No detection or decision behavior is changed. psutil's peak_wset is bytes;
+the original judge reports Linux ru_maxrss in KiB.
+"""
+from types import SimpleNamespace
+
+import psutil
+
+RUSAGE_SELF = 0
+
+
+def getrusage(who):
+    if who != RUSAGE_SELF:
+        raise NotImplementedError("only current-process peak RSS is supported")
+    return SimpleNamespace(ru_maxrss=psutil.Process().memory_info().peak_wset / 1024)

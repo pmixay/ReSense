@@ -1,0 +1,80 @@
+"""Make compressed, split-named views of existing compact16 caches.
+
+The source caches stay unchanged. Ride split names are validated against the
+original DB3 timestamps, rather than inferred from directory ordering alone.
+"""
+import hashlib
+import json
+import os
+from pathlib import Path
+import sqlite3
+import sys
+
+import numpy as np
+
+BASE = Path(__file__).resolve().parent
+REPO = BASE / "rs-range-screen"
+sys.path.insert(0, str(REPO))
+from scripts.cache_frames import _atomic_json, _atomic_save
+from scripts.cache_io import cache_files, cache_file_stem, load_cache_stamps, validate_extended_ride_cache
+from resense.pointcloud import COMPACT16_DTYPE
+
+SOURCE = Path("D:/Datasets/ReSense")
+TARGET = BASE / "resense-p3-data/cache"
+
+
+def main():
+    source = SOURCE / "new_data"
+    files = cache_files(str(source))
+    stamps = load_cache_stamps(str(source))
+    assert len(files) == len(stamps) == 11271
+    out = TARGET / "new_data"
+    out.mkdir(parents=True, exist_ok=True)
+    digest = hashlib.sha256()
+    for split in range(221):
+        db3 = source / f"new_data_{split}.db3"
+        with sqlite3.connect(f"{db3.as_uri()}?mode=ro", uri=True) as con:
+            raw_stamps = [row[0] / 1e9 for row in con.execute(
+                "SELECT timestamp FROM messages WHERE topic_id IN "
+                "(SELECT id FROM topics WHERE type='sensor_msgs/msg/PointCloud2') ORDER BY timestamp, id")]
+        assert len(raw_stamps) == 51, (split, len(raw_stamps))
+        stamp_values = {}
+        for local, raw_stamp in enumerate(raw_stamps):
+            global_idx = split * 51 + local
+            path = Path(files[global_idx])
+            assert path.stem == f"new_data_{global_idx:04d}", path
+            stamp = stamps[path.stem]
+            assert abs(stamp - raw_stamp) < 1e-6, (split, local, stamp, raw_stamp)
+            name = f"new_data_{split}_{local:04d}"
+            dest = out / f"{name}.npy.zst"
+            if not dest.exists():
+                arr = np.load(path, allow_pickle=False)
+                assert arr.dtype == COMPACT16_DTYPE and arr.ndim == 1
+                _atomic_save(str(dest), arr, zstd_level=3)
+            digest.update(f"{path.name} -> {dest.name} {stamp:.9f}\n".encode())
+            stamp_values[f"{local:04d}"] = stamp
+        _atomic_json(str(out / f"new_data_{split}_stamps.json"),
+                     {"bag": f"new_data_{split}", "frames": 51, "stamps": stamp_values})
+        print("ride split", split, "complete", flush=True)
+    report = validate_extended_ride_cache(str(out))
+    report.update(source=str(source), naming="flat global index to split/local; every raw DB3 timestamp checked",
+                  mapping_sha256=digest.hexdigest(), archive_intake_verified=False)
+    _atomic_json(str(out / "view_provenance.json"), report)
+    source = SOURCE / "cloud_with_fake_obj"
+    out = TARGET / "cloud_with_fake_obj"
+    out.mkdir(parents=True, exist_ok=True)
+    files = cache_files(str(source))
+    assert len(files) == 1510
+    for path in files:
+        dest = out / f"{cache_file_stem(path)}.npy.zst"
+        if not dest.exists():
+            arr = np.load(path, allow_pickle=False)
+            assert arr.dtype == COMPACT16_DTYPE
+            _atomic_save(str(dest), arr, zstd_level=3)
+    sidecar = source / "cloud_with_fake_obj_stamps.json"
+    _atomic_json(str(out / sidecar.name), json.loads(sidecar.read_text(encoding="utf-8")))
+    print("CACHE VIEWS COMPLETE", TARGET, flush=True)
+
+
+if __name__ == "__main__":
+    main()

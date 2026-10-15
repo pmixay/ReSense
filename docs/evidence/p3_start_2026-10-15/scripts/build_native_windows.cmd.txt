@@ -1,0 +1,5 @@
+@echo off
+call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64
+if errorlevel 1 exit /b 1
+cl /nologo /O2 /std:c++17 /fp:strict /EHsc /LD native\resense_native.cpp /Fo:"%~dp0build\resense-native.obj" /link /OUT:resense\_resense_native.pyd /IMPLIB:"%~dp0build\resense-native.lib" /EXPORT:rs_abi_version /EXPORT:rs_bin_percentile /EXPORT:rs_floor_z /EXPORT:rs_center_y /EXPORT:rs_corridor_coordinates /EXPORT:rs_visibility /EXPORT:rs_floor_band /EXPORT:rs_rails_band /EXPORT:rs_walls_band /EXPORT:rs_verify_profile /EXPORT:rs_select
+exit /b %errorlevel%

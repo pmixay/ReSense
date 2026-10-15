@@ -1,0 +1,306 @@
+{
+  "baseline_cube05": {
+    "set": [],
+    "summary": {
+      "cache": "roundT_squareT_pressureGate_squareT",
+      "obj": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 150,
+      "d0": 230.0,
+      "first_visible_X": 230.0,
+      "first_stop_X": 135.06,
+      "held_from_X": 83.37,
+      "visible_frames": 180,
+      "stop_frames": 66,
+      "bins": {
+        "3-30": "18/18",
+        "30-60": "21/21",
+        "60-100": "12/27",
+        "100-150": "15/38",
+        "150-200": "0/42",
+        "200-260": "0/34"
+      },
+      "decisions_while_visible": {
+        "GO": 97,
+        "CAUTION": 17,
+        "STOP": 66,
+        "FAULT": 0
+      },
+      "go_within_60m": 0,
+      "n_obj_at": {
+        "200": 1,
+        "150": 4,
+        "100": 6,
+        "60": 20,
+        "30": 80
+      }
+    }
+  },
+  "baseline_cube03": {
+    "set": [],
+    "summary": {
+      "cache": "roundT_squareT_pressureGate_squareT",
+      "obj": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 150,
+      "d0": 230.0,
+      "first_visible_X": 228.36,
+      "first_stop_X": 44.86,
+      "held_from_X": 49.32,
+      "visible_frames": 157,
+      "stop_frames": 29,
+      "bins": {
+        "3-30": "18/18",
+        "30-60": "11/21",
+        "60-100": "0/27",
+        "100-150": "0/35",
+        "150-200": "0/36",
+        "200-260": "0/20"
+      },
+      "decisions_while_visible": {
+        "GO": 113,
+        "CAUTION": 15,
+        "STOP": 29,
+        "FAULT": 0
+      },
+      "go_within_60m": 6,
+      "n_obj_at": {
+        "200": 1,
+        "150": 2,
+        "100": 4,
+        "60": 6,
+        "30": 30
+      }
+    }
+  },
+  "R2a": {
+    "set": [
+      "cluster.weak_min_points=3"
+    ],
+    "summary": {
+      "cache": "roundT_squareT_pressureGate_squareT",
+      "obj": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 150,
+      "d0": 230.0,
+      "first_visible_X": 230.0,
+      "first_stop_X": 135.06,
+      "held_from_X": 87.69,
+      "visible_frames": 180,
+      "stop_frames": 69,
+      "bins": {
+        "3-30": "18/18",
+        "30-60": "21/21",
+        "60-100": "15/27",
+        "100-150": "15/38",
+        "150-200": "0/42",
+        "200-260": "0/34"
+      },
+      "decisions_while_visible": {
+        "GO": 94,
+        "CAUTION": 17,
+        "STOP": 69,
+        "FAULT": 0
+      },
+      "go_within_60m": 0,
+      "n_obj_at": {
+        "200": 1,
+        "150": 4,
+        "100": 6,
+        "60": 20,
+        "30": 80
+      }
+    }
+  },
+  "R2b": {
+    "set": [
+      "cluster.far_range=60"
+    ],
+    "summary": {
+      "cache": "roundT_squareT_pressureGate_squareT",
+      "obj": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 150,
+      "d0": 230.0,
+      "first_visible_X": 230.0,
+      "first_stop_X": 135.06,
+      "held_from_X": 87.69,
+      "visible_frames": 180,
+      "stop_frames": 69,
+      "bins": {
+        "3-30": "18/18",
+        "30-60": "21/21",
+        "60-100": "15/27",
+        "100-150": "15/38",
+        "150-200": "0/42",
+        "200-260": "0/34"
+      },
+      "decisions_while_visible": {
+        "GO": 94,
+        "CAUTION": 17,
+        "STOP": 69,
+        "FAULT": 0
+      },
+      "go_within_60m": 0,
+      "n_obj_at": {
+        "200": 1,
+        "150": 4,
+        "100": 6,
+        "60": 20,
+        "30": 80
+      }
+    }
+  },
+  "R1a": {
+    "set": [
+      "tracking.low_confirm_hits=3"
+    ],
+    "summary": {
+      "cache": "roundT_squareT_pressureGate_squareT",
+      "obj": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 150,
+      "d0": 230.0,
+      "first_visible_X": 228.36,
+      "first_stop_X": 44.86,
+      "held_from_X": 49.32,
+      "visible_frames": 157,
+      "stop_frames": 29,
+      "bins": {
+        "3-30": "18/18",
+        "30-60": "11/21",
+        "60-100": "0/27",
+        "100-150": "0/35",
+        "150-200": "0/36",
+        "200-260": "0/20"
+      },
+      "decisions_while_visible": {
+        "GO": 113,
+        "CAUTION": 15,
+        "STOP": 29,
+        "FAULT": 0
+      },
+      "go_within_60m": 6,
+      "n_obj_at": {
+        "200": 1,
+        "150": 2,
+        "100": 4,
+        "60": 6,
+        "30": 30
+      }
+    }
+  },
+  "R1b": {
+    "set": [
+      "lowobj.straddle_min_width=0.25"
+    ],
+    "summary": {
+      "cache": "roundT_squareT_pressureGate_squareT",
+      "obj": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 150,
+      "d0": 230.0,
+      "first_visible_X": 228.36,
+      "first_stop_X": 44.86,
+      "held_from_X": 49.32,
+      "visible_frames": 157,
+      "stop_frames": 29,
+      "bins": {
+        "3-30": "18/18",
+        "30-60": "11/21",
+        "60-100": "0/27",
+        "100-150": "0/35",
+        "150-200": "0/36",
+        "200-260": "0/20"
+      },
+      "decisions_while_visible": {
+        "GO": 113,
+        "CAUTION": 15,
+        "STOP": 29,
+        "FAULT": 0
+      },
+      "go_within_60m": 6,
+      "n_obj_at": {
+        "200": 1,
+        "150": 2,
+        "100": 4,
+        "60": 6,
+        "30": 30
+      }
+    }
+  },
+  "R1c": {
+    "set": [
+      "lowobj.range_max=75"
+    ],
+    "summary": {
+      "cache": "roundT_squareT_pressureGate_squareT",
+      "obj": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 150,
+      "d0": 230.0,
+      "first_visible_X": 228.36,
+      "first_stop_X": 44.86,
+      "held_from_X": 49.32,
+      "visible_frames": 157,
+      "stop_frames": 29,
+      "bins": {
+        "3-30": "18/18",
+        "30-60": "11/21",
+        "60-100": "0/27",
+        "100-150": "0/35",
+        "150-200": "0/36",
+        "200-260": "0/20"
+      },
+      "decisions_while_visible": {
+        "GO": 113,
+        "CAUTION": 15,
+        "STOP": 29,
+        "FAULT": 0
+      },
+      "go_within_60m": 6,
+      "n_obj_at": {
+        "200": 1,
+        "150": 2,
+        "100": 4,
+        "60": 6,
+        "30": 30
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+"""Re-run the complete registered H1 S/B battery against the sealed code."""
+from concurrent.futures import ThreadPoolExecutor
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+BASE = Path(__file__).resolve().parent
+DATA = BASE / "resense-p3-data"
+OUT = BASE / "resense-p3-runs/h1-battery"
+REPOS = {"sealed": Path("C:/Users/alikh/OneDrive/Desktop/projects/ReSense"), "H1": BASE / "rs-h1"}
+S = "squareT_platform_squareT_switch"
+B = "roundT_doubleT"
+
+
+def cases():
+    result = [(f"S_drop30_s{s}", S, ["--drop", "0.3", "--seed", str(s)]) for s in (2, 3, 5, 1, 4, 6)]
+    result += [(f"S_drop20_s{s}", S, ["--drop", "0.2", "--seed", str(s)]) for s in (3, 1, 2, 4)]
+    result += [(f"S_drop10_s{s}", S, ["--drop", "0.1", "--seed", str(s)]) for s in (1, 2, 3, 4)]
+    result += [("B_pitchm2", B, ["--pitch", "-2"])]
+    result += [(f"B_drop30_s{s}", B, ["--drop", "0.3", "--seed", str(s)]) for s in (1, 2, 3)]
+    result += [(f"B_slow3_s{s}", B, ["--repeat", "3", "--rdrop", "0.2", "--seed", str(s)]) for s in (1, 2)]
+    return result
+
+
+def run(job):
+    tag, name, bag, args = job
+    repo = REPOS[tag]
+    prefix = OUT / f"{name}_{tag}"
+    log_path = Path(str(prefix) + ".log")
+    if log_path.exists():
+        previous = log_path.read_text()
+        if "Traceback" not in previous and "frames" in previous and "resets" in previous:
+            print(name, tag, "reuse completed replay", flush=True)
+            return
+    env = dict(os.environ, PYTHONPATH=os.pathsep.join((str(repo), str(BASE))), RESENSE_REPO=str(repo), WT=str(repo),
+               OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1", DARKBAND="0")
+    driver = BASE / "rs-h1/docs/evidence/column_hardening_2026-10-15/scripts/jrep.py.txt"
+    cmd = [sys.executable, str(BASE / "resense-p3-run-script.py"), str(repo), str(driver),
+           str(DATA / "decoded" / bag), str(prefix)] + args
+    with open(str(prefix) + ".log", "w") as log:
+        result = subprocess.run(cmd, cwd=repo, env=env, stdout=log, stderr=subprocess.STDOUT)
+    print(name, tag, result.returncode, flush=True)
+    if result.returncode:
+        raise RuntimeError(f"{name} {tag}")
+
+
+def load(prefix):
+    return [json.loads(line) for line in prefix.with_suffix(".jsonl").read_text().splitlines()]
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    while not (DATA / "decoded" / S / "meta.json").exists():
+        time.sleep(5)
+    jobs = [(tag, name, bag, args) for name, bag, args in cases() for tag in REPOS]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        list(pool.map(run, jobs))
+    summary = {}
+    for name, _, _ in cases():
+        a, b = (load(OUT / f"{name}_{tag}") for tag in REPOS)
+        assert [r["i"] for r in a] == [r["i"] for r in b], name
+        summary[name] = {"frames": len(a),
+                         "decision_diffs": sum(x["decision"] != y["decision"] for x, y in zip(a, b)),
+                         "det_warn_diffs": sum(x["dets"] != y["dets"] or x["warns"] != y["warns"] for x, y in zip(a, b)),
+                         "sealed_stop": sum(x["decision"] == "STOP" for x in a),
+                         "H1_stop": sum(x["decision"] == "STOP" for x in b)}
+    (OUT / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    print("BATTERY COMPLETE", json.dumps(summary), flush=True)
+
+
+if __name__ == "__main__":
+    main()

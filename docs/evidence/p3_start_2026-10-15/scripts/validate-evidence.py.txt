@@ -1,0 +1,57 @@
+"""Validate the collected evidence and the claims/links used by the P3 handoff."""
+import json
+from pathlib import Path
+import re
+import sys
+
+BASE = Path(__file__).resolve().parent
+REPO = BASE / "rs-range-screen"
+sys.path[:0] = [str(REPO), str(REPO / "scripts")]
+from scripts import regression_gate as gate
+
+
+def load(path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def main():
+    original = load(REPO / "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json")
+    for name in ("baseline", "H1", "H2"):
+        report = load(BASE / "resense-p3-runs/gates" / f"{name}.json")
+        assert not any(row["fails"] for row in gate.compare(original, report)), name
+        assert report["ride"]["frames"] == 11271 and report["ride"]["chunks"] == 8
+        assert report["set_O"]["frames"] == 1510 and report["set_F_straight"]["available"]
+        assert sum(r["frames"] for r in report["recordings"].values()) == 2488
+        assert not report["config"]["set"] and not report["code"]["uncommitted_detector_changes"]
+    for name, count in {"R2a": 2, "R2b": 5, "R1a": 1, "R1b": 1, "R1c": 2}.items():
+        report = load(BASE / "resense-p3-runs/variant-gates" / f"{name}.json")
+        assert sum(row["fails"] for row in gate.compare(original, report)) == count, name
+    for name in ("H1", "H2"):
+        diff = load(BASE / "resense-p3-runs/gates" / f"{name}_frame_diff.json")
+        assert len(diff) == 15 and sum(r["frames"] for r in diff.values()) == 15269
+        assert all(not r["changed_fields"] for r in diff.values())
+    battery = load(BASE / "resense-p3-runs/h1-battery/summary.json")
+    assert len(battery) == 20 and all(r["decision_diffs"] == 0 for r in battery.values())
+    assert sum(r["det_warn_diffs"] for r in battery.values()) == 3
+    for folder, count in (("h1-probes", 15), ("h1-tall-probes", 6)):
+        probes = load(BASE / "resense-p3-runs" / folder / "summary.json")
+        assert len(probes) == count and all(r["lost_stop"] == r["new_go"] == 0 for r in probes.values())
+    wall = load(BASE / "resense-p3-runs/h2-wall-battery/summary.json")
+    assert len(wall) == 20 and all(r["new_wall_stop_frames"] == r["lost_axis_stop_frames"] == 0 for r in wall.values())
+    roots = [BASE / "rs-h1/docs/evidence/column_hardening_2026-10-15",
+             BASE / "rs-h2/docs/evidence/structure_cut_bar_2026-10-15",
+             REPO / "docs/evidence/range_screen_2026-10-15", REPO / "docs/evidence/p3_start_2026-10-15"]
+    json_count = 0
+    for root in roots:
+        for path in root.rglob("*.json"):
+            load(path)
+            json_count += 1
+        for path in root.rglob("*.md"):
+            for target in re.findall(r"\]\(([^)]+)\)", path.read_text(encoding="utf-8")):
+                if not target.startswith(("https://", "http://", "#")):
+                    assert (path.parent / target.split("#", 1)[0]).exists(), (path, target)
+    print(f"Evidence PASS: 3 complete passing gates, 5 expected rejections, 15269-frame diffs, batteries/probes, {json_count} JSON files and local markdown links")
+
+
+if __name__ == "__main__":
+    main()
