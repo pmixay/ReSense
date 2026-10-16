@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-16T14:05:16.713952+00:00",
+  "deleted_bytes": 7301353966,
+  "deleted_count": 14,
+  "disk_free_bytes": 5797285888,
+  "errors": [
+    {
+      "error": "Disk reserve: insufficient space for another retained ZIP",
+      "id": 10913468780
+    }
+  ],
+  "protected_missing_ids": [],
+  "protected_original_count": 61,
+  "quota_note": "Deletion verified; quota availability not verified. GitHub recalculation may take 6-12 hours.",
+  "release_v1_0_0_unchanged": true,
+  "remaining_artifact_count": 132,
+  "remaining_image_bytes": 37831800986,
+  "remaining_image_count": 72,
+  "reserve_bytes": 5368709120,
+  "verified_zip_bytes": 7301353966,
+  "verified_zip_count": 14
+}
