@@ -1,0 +1,88 @@
+{
+  "frames": 1409,
+  "replay_matches_measured_candidate": true,
+  "mismatches": 0,
+  "spare_observations": [
+    {
+      "row": 1348,
+      "before": {
+        "reason": "",
+        "zone": "gauge",
+        "spared": true,
+        "prior_spare_hist": [
+          false
+        ],
+        "required_spares": 2
+      },
+      "after": {
+        "reason": "column",
+        "zone": "warning",
+        "spared": true
+      }
+    },
+    {
+      "row": 1349,
+      "before": {
+        "reason": "",
+        "zone": "gauge",
+        "spared": true,
+        "prior_spare_hist": [
+          false,
+          false
+        ],
+        "required_spares": 2
+      },
+      "after": {
+        "reason": "column",
+        "zone": "warning",
+        "spared": true
+      }
+    },
+    {
+      "row": 1354,
+      "before": {
+        "reason": "",
+        "zone": "gauge",
+        "spared": true,
+        "prior_spare_hist": [
+          false,
+          false,
+          true,
+          false
+        ],
+        "required_spares": 2
+      },
+      "after": {
+        "reason": "",
+        "zone": "gauge",
+        "spared": true
+      }
+    },
+    {
+      "row": 1361,
+      "before": {
+        "reason": "",
+        "zone": "gauge",
+        "spared": true,
+        "prior_spare_hist": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "required_spares": 2
+      },
+      "after": {
+        "reason": "column",
+        "zone": "warning",
+        "spared": true
+      }
+    }
+  ]
+}

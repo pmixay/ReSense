@@ -1,0 +1,2146 @@
+{
+  "comparison_scope": "Every raw and serialized captured result field outside the same registered timing normalization; fresh detector from the original eight-piece boundary, original stamps and native backend.",
+  "frames": 1409,
+  "measured_commit": "f8c088dc4f3243fbd15a3aae9be0459e8a0aa941",
+  "mismatches": [],
+  "piece": "new_data_1",
+  "replay_matches_measured_candidate": true,
+  "spare_observations": [
+    {
+      "after": {
+        "reason": "column",
+        "spared": true,
+        "zone": "warning"
+      },
+      "before": {
+        "prior_spare_hist": [
+          false
+        ],
+        "reason": "",
+        "required_spares": 2,
+        "spared": true,
+        "zone": "gauge"
+      },
+      "row": 1348
+    },
+    {
+      "after": {
+        "reason": "column",
+        "spared": true,
+        "zone": "warning"
+      },
+      "before": {
+        "prior_spare_hist": [
+          false,
+          false
+        ],
+        "reason": "",
+        "required_spares": 2,
+        "spared": true,
+        "zone": "gauge"
+      },
+      "row": 1349
+    },
+    {
+      "after": {
+        "reason": "",
+        "spared": true,
+        "zone": "gauge"
+      },
+      "before": {
+        "prior_spare_hist": [
+          false,
+          false,
+          true,
+          false
+        ],
+        "reason": "",
+        "required_spares": 2,
+        "spared": true,
+        "zone": "gauge"
+      },
+      "row": 1354
+    },
+    {
+      "after": {
+        "reason": "column",
+        "spared": true,
+        "zone": "warning"
+      },
+      "before": {
+        "prior_spare_hist": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "reason": "",
+        "required_spares": 2,
+        "spared": true,
+        "zone": "gauge"
+      },
+      "row": 1361
+    }
+  ],
+  "trace": [
+    {
+      "candidates": [
+        {
+          "candidate": {
+            "bbox_max": [
+              50.68000030517578,
+              1.6699999570846558,
+              1.6799999475479126
+            ],
+            "bbox_min": [
+              48.93000030517578,
+              1.0399999618530273,
+              -1.059999942779541
+            ],
+            "centroid": [
+              49.518157958984375,
+              1.5914939641952515,
+              0.2266666144132614
+            ],
+            "cut": false,
+            "demoted": false,
+            "distance": 48.93000030517578,
+            "height_max": 2.9060510406133235,
+            "height_min": 0.16300339668485941,
+            "intensity": 2.1379311084747314,
+            "kind": "",
+            "lateral": 0.6936759559325514,
+            "low_height_weak": false,
+            "n": 48,
+            "n_expected": 184.68853348511547,
+            "n_gauge": 48,
+            "n_raw": 87,
+            "points_idx": [
+              68803,
+              68811,
+              68819,
+              68827,
+              68899,
+              68915,
+              68923,
+              68996,
+              69011,
+              69019,
+              69091,
+              69106,
+              69974,
+              70260,
+              72978,
+              72986,
+              72993,
+              73081,
+              73088,
+              73169,
+              73177,
+              73264,
+              73272,
+              73279,
+              77099,
+              77107,
+              77114,
+              77194,
+              77202,
+              77209,
+              77290,
+              77305,
+              77385,
+              77393,
+              77400,
+              81207,
+              81214,
+              81221,
+              81298,
+              81305,
+              81312,
+              81397,
+              81488,
+              85220,
+              85227,
+              85234,
+              85242,
+              85311,
+              85318,
+              85325,
+              85333,
+              85410,
+              85425,
+              85500,
+              85507,
+              85515,
+              86156,
+              86248,
+              86434,
+              89194,
+              89202,
+              89209,
+              89285,
+              89293,
+              89385,
+              89392,
+              89474,
+              89481,
+              93144,
+              93151,
+              93158,
+              93234,
+              93241,
+              93248,
+              93329,
+              93336,
+              93416,
+              93423,
+              97027,
+              97034,
+              97041,
+              97115,
+              97122,
+              97129,
+              97207,
+              97297,
+              97303
+            ],
+            "rail_line": false,
+            "reason": "column",
+            "retro": false,
+            "ring_count": 26,
+            "score": 1.0,
+            "spared": true,
+            "thin": false,
+            "wall_kept": false,
+            "weak": false,
+            "zone": "warning"
+          },
+          "index": 0,
+          "matched_tracks": [
+            {
+              "clean_run": 0,
+              "column_held": false,
+              "column_hist": [
+                false,
+                true
+              ],
+              "column_hold": 2,
+              "confidence": 0.44999999999999996,
+              "explained_hist": [
+                false,
+                true
+              ],
+              "hits": 2,
+              "id": 424,
+              "misses": 0,
+              "reported": false,
+              "rule_zone": "warning",
+              "seen_reported": false,
+              "spare_hist": [
+                false,
+                true
+              ],
+              "vote_zone": "warning",
+              "zone": "warning",
+              "zone_hist": [
+                false,
+                false
+              ]
+            }
+          ]
+        }
+      ],
+      "clear": 36.9,
+      "detections": [],
+      "frame_id": "new_data_54_0003",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 36.9,
+        "clear_distance": 36.9,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 67.0,
+        "near_fraction": 0.005,
+        "points": 162688,
+        "rail_lock": 1.0,
+        "visibility": 91.7
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1348,
+      "warning": false,
+      "warnings": []
+    },
+    {
+      "candidates": [
+        {
+          "candidate": {
+            "bbox_max": [
+              80.9000015258789,
+              1.6200000047683716,
+              2.059999942779541
+            ],
+            "bbox_min": [
+              77.94999694824219,
+              1.209999918937683,
+              -0.5799999833106995
+            ],
+            "centroid": [
+              79.93000030517578,
+              1.4594593048095703,
+              0.5956756472587585
+            ],
+            "cut": false,
+            "demoted": false,
+            "distance": 77.94999694824219,
+            "height_max": 2.8292838725791283,
+            "height_min": 0.2294704428992429,
+            "intensity": 5.567567348480225,
+            "kind": "",
+            "lateral": -0.6975439116906015,
+            "low_height_weak": false,
+            "n": 18,
+            "n_expected": 44.476910133807074,
+            "n_gauge": 18,
+            "n_raw": 37,
+            "points_idx": [
+              63793,
+              63889,
+              63978,
+              64071,
+              71869,
+              72055,
+              72147,
+              72240,
+              72333,
+              72426,
+              72521,
+              76280,
+              76288,
+              76372,
+              76380,
+              80109,
+              80197,
+              80280,
+              80370,
+              84009,
+              84098,
+              84184,
+              84192,
+              84272,
+              84280,
+              87857,
+              87945,
+              88028,
+              88036,
+              88117,
+              88125,
+              91788,
+              91878,
+              91964,
+              91972,
+              92057,
+              92065
+            ],
+            "rail_line": false,
+            "reason": "column",
+            "retro": false,
+            "ring_count": 13,
+            "score": 1.0,
+            "spared": true,
+            "thin": false,
+            "wall_kept": false,
+            "weak": false,
+            "zone": "warning"
+          },
+          "index": 8,
+          "matched_tracks": [
+            {
+              "clean_run": 0,
+              "column_held": true,
+              "column_hist": [
+                true,
+                false,
+                true
+              ],
+              "column_hold": 2,
+              "confidence": 0.7,
+              "explained_hist": [
+                true,
+                false,
+                true
+              ],
+              "hits": 3,
+              "id": 422,
+              "misses": 0,
+              "reported": false,
+              "rule_zone": "warning",
+              "seen_reported": false,
+              "spare_hist": [
+                false,
+                false,
+                true
+              ],
+              "vote_zone": "warning",
+              "zone": "warning",
+              "zone_hist": [
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        }
+      ],
+      "clear": 46.4,
+      "detections": [],
+      "frame_id": "new_data_54_0004",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 46.4,
+        "clear_distance": 46.4,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 91.0,
+        "near_fraction": 0.009,
+        "points": 156004,
+        "rail_lock": 1.0,
+        "visibility": 91.0
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1349,
+      "warning": false,
+      "warnings": []
+    },
+    {
+      "candidates": [],
+      "clear": 40.0,
+      "detections": [],
+      "frame_id": "new_data_54_0006",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 44.6,
+        "clear_distance": 40.0,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 40.0,
+        "near_fraction": 0.005,
+        "points": 169747,
+        "rail_lock": 1.0,
+        "visibility": 99.1
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1351,
+      "warning": true,
+      "warnings": [
+        {
+          "age": 6,
+          "center": [
+            46.87,
+            1.61,
+            0.24
+          ],
+          "confidence": 1.0,
+          "distance": 46.27,
+          "height_min": 0.15,
+          "id": 424,
+          "intensity": 2.1,
+          "kind": "",
+          "lateral": 0.82,
+          "n_points": 52,
+          "reason": "beyond_axis",
+          "size": [
+            1.77,
+            0.65,
+            2.65
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 7,
+          "center": [
+            50.46,
+            1.59,
+            0.28
+          ],
+          "confidence": 1.0,
+          "distance": 49.77,
+          "height_min": 0.2,
+          "id": 419,
+          "intensity": 2.1,
+          "kind": "",
+          "lateral": 0.69,
+          "n_points": 34,
+          "reason": "beyond_axis",
+          "size": [
+            2.19,
+            0.57,
+            2.55
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 7,
+          "center": [
+            54.45,
+            1.61,
+            0.53
+          ],
+          "confidence": 1.0,
+          "distance": 54.26,
+          "height_min": 0.17,
+          "id": 420,
+          "intensity": 1.7,
+          "kind": "",
+          "lateral": 0.58,
+          "n_points": 33,
+          "reason": "beyond_axis",
+          "size": [
+            1.64,
+            0.14,
+            2.79
+          ],
+          "zone": "warning"
+        }
+      ]
+    },
+    {
+      "candidates": [],
+      "clear": 40.0,
+      "detections": [],
+      "frame_id": "new_data_54_0007",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 57.4,
+        "clear_distance": 40.0,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 40.0,
+        "near_fraction": 0.006,
+        "points": 169012,
+        "rail_lock": 1.0,
+        "visibility": 97.0
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1352,
+      "warning": true,
+      "warnings": [
+        {
+          "age": 7,
+          "center": [
+            45.77,
+            1.62,
+            0.28
+          ],
+          "confidence": 1.0,
+          "distance": 45.4,
+          "height_min": 0.14,
+          "id": 424,
+          "intensity": 2.4,
+          "kind": "",
+          "lateral": 0.84,
+          "n_points": 54,
+          "reason": "beyond_axis",
+          "size": [
+            1.76,
+            0.66,
+            2.55
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 8,
+          "center": [
+            49.79,
+            1.61,
+            0.33
+          ],
+          "confidence": 1.0,
+          "distance": 49.41,
+          "height_min": 0.15,
+          "id": 419,
+          "intensity": 1.7,
+          "kind": "",
+          "lateral": 0.72,
+          "n_points": 39,
+          "reason": "beyond_axis",
+          "size": [
+            1.94,
+            0.53,
+            2.65
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 8,
+          "center": [
+            53.6,
+            1.6,
+            0.49
+          ],
+          "confidence": 1.0,
+          "distance": 53.4,
+          "height_min": 0.17,
+          "id": 420,
+          "intensity": 2.1,
+          "kind": "",
+          "lateral": 0.59,
+          "n_points": 29,
+          "reason": "beyond_axis",
+          "size": [
+            1.6,
+            0.14,
+            2.75
+          ],
+          "zone": "warning"
+        }
+      ]
+    },
+    {
+      "candidates": [],
+      "clear": 40.0,
+      "detections": [],
+      "frame_id": "new_data_54_0008",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 56.5,
+        "clear_distance": 40.0,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 40.0,
+        "near_fraction": 0.009,
+        "points": 155341,
+        "rail_lock": 1.0,
+        "visibility": 137.6
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1353,
+      "warning": true,
+      "warnings": [
+        {
+          "age": 8,
+          "center": [
+            45.04,
+            1.62,
+            0.27
+          ],
+          "confidence": 1.0,
+          "distance": 44.54,
+          "height_min": 0.13,
+          "id": 424,
+          "intensity": 2.5,
+          "kind": "",
+          "lateral": 0.87,
+          "n_points": 46,
+          "reason": "beyond_axis",
+          "size": [
+            1.73,
+            0.61,
+            2.49
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 9,
+          "center": [
+            48.88,
+            1.61,
+            0.28
+          ],
+          "confidence": 1.0,
+          "distance": 48.04,
+          "height_min": 0.17,
+          "id": 419,
+          "intensity": 1.8,
+          "kind": "",
+          "lateral": 0.75,
+          "n_points": 38,
+          "reason": "beyond_axis",
+          "size": [
+            2.18,
+            0.53,
+            2.57
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 9,
+          "center": [
+            52.69,
+            1.61,
+            0.5
+          ],
+          "confidence": 1.0,
+          "distance": 52.51,
+          "height_min": 0.13,
+          "id": 420,
+          "intensity": 1.4,
+          "kind": "",
+          "lateral": 0.65,
+          "n_points": 37,
+          "reason": "beyond_axis",
+          "size": [
+            1.23,
+            0.47,
+            2.72
+          ],
+          "zone": "warning"
+        }
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "candidate": {
+            "bbox_max": [
+              76.25999450683594,
+              1.659999966621399,
+              2.0899999141693115
+            ],
+            "bbox_min": [
+              73.55999755859375,
+              1.2699999809265137,
+              -0.550000011920929
+            ],
+            "centroid": [
+              75.40693664550781,
+              1.5114284753799438,
+              0.5434694290161133
+            ],
+            "cut": false,
+            "demoted": false,
+            "distance": 73.55999755859375,
+            "height_max": 2.7459693933711486,
+            "height_min": 0.13031013912933676,
+            "intensity": 5.755102157592773,
+            "kind": "",
+            "lateral": -0.1383347559154351,
+            "low_height_weak": false,
+            "n": 25,
+            "n_expected": 47.53178733489585,
+            "n_gauge": 25,
+            "n_raw": 49,
+            "points_idx": [
+              63630,
+              63725,
+              63810,
+              63818,
+              63905,
+              63913,
+              67775,
+              67868,
+              67953,
+              67961,
+              68047,
+              68055,
+              71687,
+              71859,
+              71867,
+              71875,
+              71952,
+              71960,
+              71968,
+              72057,
+              72147,
+              72241,
+              72336,
+              75898,
+              75905,
+              75992,
+              75999,
+              76085,
+              76092,
+              76177,
+              76184,
+              79910,
+              80002,
+              80086,
+              80177,
+              84046,
+              84054,
+              84136,
+              84144,
+              87726,
+              87813,
+              87892,
+              87899,
+              87981,
+              87988,
+              91758,
+              91765,
+              91848,
+              91855
+            ],
+            "rail_line": false,
+            "reason": "",
+            "retro": false,
+            "ring_count": 17,
+            "score": 1.0,
+            "spared": true,
+            "thin": false,
+            "wall_kept": false,
+            "weak": false,
+            "zone": "gauge"
+          },
+          "index": 8,
+          "matched_tracks": [
+            {
+              "clean_run": 1,
+              "column_held": true,
+              "column_hist": [
+                true,
+                false,
+                true,
+                false,
+                false
+              ],
+              "column_hold": 2,
+              "confidence": 0.7,
+              "explained_hist": [
+                true,
+                false,
+                true,
+                false,
+                false
+              ],
+              "hits": 5,
+              "id": 422,
+              "misses": 0,
+              "reported": false,
+              "rule_zone": "warning",
+              "seen_reported": false,
+              "spare_hist": [
+                false,
+                false,
+                true,
+                false,
+                true
+              ],
+              "vote_zone": "warning",
+              "zone": "warning",
+              "zone_hist": [
+                false,
+                false,
+                false,
+                false,
+                true
+              ]
+            }
+          ]
+        }
+      ],
+      "clear": 44.6,
+      "detections": [],
+      "frame_id": "new_data_54_0009",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 44.6,
+        "clear_distance": 44.6,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 119.0,
+        "near_fraction": 0.009,
+        "points": 155629,
+        "rail_lock": 1.0,
+        "visibility": 144.2
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1354,
+      "warning": true,
+      "warnings": [
+        {
+          "age": 9,
+          "center": [
+            44.11,
+            1.63,
+            0.24
+          ],
+          "confidence": 1.0,
+          "distance": 43.66,
+          "height_min": 0.12,
+          "id": 424,
+          "intensity": 2.4,
+          "kind": "",
+          "lateral": 0.86,
+          "n_points": 64,
+          "reason": "column",
+          "size": [
+            1.8,
+            0.63,
+            2.83
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 10,
+          "center": [
+            47.98,
+            1.61,
+            0.35
+          ],
+          "confidence": 1.0,
+          "distance": 47.18,
+          "height_min": 0.12,
+          "id": 419,
+          "intensity": 1.9,
+          "kind": "",
+          "lateral": 0.74,
+          "n_points": 48,
+          "reason": "column",
+          "size": [
+            2.44,
+            0.59,
+            2.58
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 10,
+          "center": [
+            52.01,
+            1.62,
+            0.55
+          ],
+          "confidence": 1.0,
+          "distance": 51.65,
+          "height_min": 0.14,
+          "id": 420,
+          "intensity": 1.9,
+          "kind": "",
+          "lateral": 0.64,
+          "n_points": 35,
+          "reason": "column",
+          "size": [
+            1.65,
+            0.13,
+            2.66
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 6,
+          "center": [
+            55.88,
+            1.59,
+            0.51
+          ],
+          "confidence": 1.0,
+          "distance": 55.68,
+          "height_min": 0.19,
+          "id": 426,
+          "intensity": 1.2,
+          "kind": "",
+          "lateral": 0.51,
+          "n_points": 27,
+          "reason": "",
+          "size": [
+            1.13,
+            0.13,
+            2.71
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 10,
+          "center": [
+            59.81,
+            1.51,
+            0.79
+          ],
+          "confidence": 1.0,
+          "distance": 59.66,
+          "height_min": 0.2,
+          "id": 421,
+          "intensity": 13.7,
+          "kind": "",
+          "lateral": 0.32,
+          "n_points": 34,
+          "reason": "column",
+          "size": [
+            0.26,
+            0.36,
+            2.77
+          ],
+          "zone": "warning"
+        }
+      ]
+    },
+    {
+      "candidates": [],
+      "clear": 40.0,
+      "detections": [],
+      "frame_id": "new_data_54_0010",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 54.8,
+        "clear_distance": 40.0,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 40.0,
+        "near_fraction": 0.009,
+        "points": 162260,
+        "rail_lock": 1.0,
+        "visibility": 150.2
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1355,
+      "warning": true,
+      "warnings": [
+        {
+          "age": 10,
+          "center": [
+            43.21,
+            1.64,
+            0.22
+          ],
+          "confidence": 0.75,
+          "distance": 42.76,
+          "height_min": 0.12,
+          "id": 424,
+          "intensity": 2.4,
+          "kind": "",
+          "lateral": 0.86,
+          "n_points": 64,
+          "reason": "column",
+          "size": [
+            1.8,
+            0.63,
+            2.83
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 11,
+          "center": [
+            47.29,
+            1.63,
+            0.31
+          ],
+          "confidence": 1.0,
+          "distance": 46.82,
+          "height_min": 0.14,
+          "id": 419,
+          "intensity": 2.0,
+          "kind": "",
+          "lateral": 0.75,
+          "n_points": 38,
+          "reason": "beyond_axis",
+          "size": [
+            1.7,
+            0.15,
+            2.5
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 11,
+          "center": [
+            51.03,
+            1.62,
+            0.45
+          ],
+          "confidence": 1.0,
+          "distance": 50.81,
+          "height_min": 0.14,
+          "id": 420,
+          "intensity": 2.2,
+          "kind": "",
+          "lateral": 0.64,
+          "n_points": 31,
+          "reason": "beyond_axis",
+          "size": [
+            1.67,
+            0.14,
+            2.61
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 7,
+          "center": [
+            55.05,
+            1.61,
+            0.61
+          ],
+          "confidence": 1.0,
+          "distance": 54.81,
+          "height_min": 0.18,
+          "id": 426,
+          "intensity": 1.1,
+          "kind": "",
+          "lateral": 0.54,
+          "n_points": 32,
+          "reason": "beyond_axis",
+          "size": [
+            1.42,
+            0.14,
+            2.7
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 11,
+          "center": [
+            58.97,
+            1.51,
+            0.71
+          ],
+          "confidence": 1.0,
+          "distance": 58.84,
+          "height_min": 0.18,
+          "id": 421,
+          "intensity": 12.5,
+          "kind": "",
+          "lateral": 0.34,
+          "n_points": 38,
+          "reason": "beyond_axis",
+          "size": [
+            0.29,
+            0.34,
+            2.74
+          ],
+          "zone": "warning"
+        }
+      ]
+    },
+    {
+      "candidates": [],
+      "clear": 24.3,
+      "detections": [],
+      "frame_id": "new_data_54_0011",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 24.3,
+        "clear_distance": 24.3,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 40.0,
+        "near_fraction": 0.005,
+        "points": 169501,
+        "rail_lock": 1.0,
+        "visibility": 145.8
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1356,
+      "warning": true,
+      "warnings": [
+        {
+          "age": 12,
+          "center": [
+            46.43,
+            1.63,
+            0.38
+          ],
+          "confidence": 1.0,
+          "distance": 45.97,
+          "height_min": 0.18,
+          "id": 419,
+          "intensity": 1.9,
+          "kind": "",
+          "lateral": 0.87,
+          "n_points": 48,
+          "reason": "beyond_axis",
+          "size": [
+            1.74,
+            0.13,
+            2.44
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 12,
+          "center": [
+            50.19,
+            1.62,
+            0.42
+          ],
+          "confidence": 1.0,
+          "distance": 49.97,
+          "height_min": 0.14,
+          "id": 420,
+          "intensity": 1.9,
+          "kind": "",
+          "lateral": 0.78,
+          "n_points": 37,
+          "reason": "beyond_axis",
+          "size": [
+            1.74,
+            0.15,
+            2.58
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 8,
+          "center": [
+            54.32,
+            1.6,
+            0.44
+          ],
+          "confidence": 1.0,
+          "distance": 53.96,
+          "height_min": 0.15,
+          "id": 426,
+          "intensity": 1.8,
+          "kind": "",
+          "lateral": 0.65,
+          "n_points": 33,
+          "reason": "beyond_axis",
+          "size": [
+            1.76,
+            0.13,
+            2.69
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 12,
+          "center": [
+            58.13,
+            1.51,
+            0.71
+          ],
+          "confidence": 1.0,
+          "distance": 57.95,
+          "height_min": 0.17,
+          "id": 421,
+          "intensity": 12.3,
+          "kind": "",
+          "lateral": 0.46,
+          "n_points": 43,
+          "reason": "beyond_axis",
+          "size": [
+            0.49,
+            0.35,
+            2.69
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 6,
+          "center": [
+            62.08,
+            1.56,
+            -0.12
+          ],
+          "confidence": 1.0,
+          "distance": 61.97,
+          "height_min": 0.19,
+          "id": 429,
+          "intensity": 0.8,
+          "kind": "",
+          "lateral": 0.4,
+          "n_points": 9,
+          "reason": "beyond_axis",
+          "size": [
+            0.29,
+            0.14,
+            0.97
+          ],
+          "zone": "warning"
+        }
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "candidate": {
+            "bbox_max": [
+              74.5,
+              1.649999976158142,
+              2.3899998664855957
+            ],
+            "bbox_min": [
+              72.15999603271484,
+              1.4199999570846558,
+              -0.38999998569488525
+            ],
+            "centroid": [
+              73.35298919677734,
+              1.5220003128051758,
+              0.9239999055862427
+            ],
+            "cut": false,
+            "demoted": false,
+            "distance": 72.15999603271484,
+            "height_max": 2.9634367558770403,
+            "height_min": 0.20850750125132034,
+            "intensity": 1.0,
+            "kind": "",
+            "lateral": 0.07788107777619067,
+            "low_height_weak": false,
+            "n": 20,
+            "n_expected": 31.190076230592584,
+            "n_gauge": 20,
+            "n_raw": 40,
+            "points_idx": [
+              77008,
+              77016,
+              77024,
+              77104,
+              77112,
+              77120,
+              77199,
+              77207,
+              77293,
+              77301,
+              80976,
+              81069,
+              81148,
+              81162,
+              81239,
+              81253,
+              85219,
+              85313,
+              85399,
+              85493,
+              89287,
+              89378,
+              89469,
+              89562,
+              93145,
+              93237,
+              93325,
+              93419,
+              97530,
+              97538,
+              97623,
+              97631,
+              101310,
+              101398,
+              101479,
+              101568,
+              105212,
+              105219,
+              105304,
+              105311
+            ],
+            "rail_line": false,
+            "reason": "beyond_axis",
+            "retro": false,
+            "ring_count": 16,
+            "score": 1.0,
+            "spared": false,
+            "thin": false,
+            "wall_kept": false,
+            "weak": false,
+            "zone": "warning"
+          },
+          "index": 8,
+          "matched_tracks": [
+            {
+              "clean_run": 0,
+              "column_held": true,
+              "column_hist": [
+                true,
+                false,
+                true,
+                false,
+                false,
+                false
+              ],
+              "column_hold": 2,
+              "confidence": 0.5499999999999999,
+              "explained_hist": [
+                true,
+                false,
+                true,
+                false,
+                false,
+                false
+              ],
+              "hits": 6,
+              "id": 422,
+              "misses": 0,
+              "reported": false,
+              "rule_zone": "warning",
+              "seen_reported": false,
+              "spare_hist": [
+                false,
+                false,
+                true,
+                false,
+                true,
+                false
+              ],
+              "vote_zone": "warning",
+              "zone": "warning",
+              "zone_hist": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false
+              ]
+            }
+          ]
+        }
+      ],
+      "clear": 40.0,
+      "detections": [],
+      "frame_id": "new_data_54_0012",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 44.6,
+        "clear_distance": 40.0,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 40.0,
+        "near_fraction": 0.005,
+        "points": 169208,
+        "rail_lock": 1.0,
+        "visibility": 164.9
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1357,
+      "warning": true,
+      "warnings": [
+        {
+          "age": 12,
+          "center": [
+            41.61,
+            1.62,
+            0.19
+          ],
+          "confidence": 0.85,
+          "distance": 41.13,
+          "height_min": 0.14,
+          "id": 424,
+          "intensity": 2.8,
+          "kind": "",
+          "lateral": 0.93,
+          "n_points": 64,
+          "reason": "beyond_axis",
+          "size": [
+            1.79,
+            0.65,
+            2.75
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 13,
+          "center": [
+            45.47,
+            1.62,
+            0.29
+          ],
+          "confidence": 1.0,
+          "distance": 44.67,
+          "height_min": 0.12,
+          "id": 419,
+          "intensity": 2.5,
+          "kind": "",
+          "lateral": 0.84,
+          "n_points": 46,
+          "reason": "beyond_axis",
+          "size": [
+            2.17,
+            0.61,
+            2.51
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 13,
+          "center": [
+            49.44,
+            1.63,
+            0.44
+          ],
+          "confidence": 1.0,
+          "distance": 49.12,
+          "height_min": 0.13,
+          "id": 420,
+          "intensity": 2.3,
+          "kind": "",
+          "lateral": 0.75,
+          "n_points": 35,
+          "reason": "beyond_axis",
+          "size": [
+            1.74,
+            0.12,
+            2.6
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 9,
+          "center": [
+            53.4,
+            1.6,
+            0.51
+          ],
+          "confidence": 1.0,
+          "distance": 53.13,
+          "height_min": 0.21,
+          "id": 426,
+          "intensity": 1.5,
+          "kind": "",
+          "lateral": 0.63,
+          "n_points": 34,
+          "reason": "beyond_axis",
+          "size": [
+            1.72,
+            0.18,
+            2.58
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 13,
+          "center": [
+            57.27,
+            1.5,
+            0.75
+          ],
+          "confidence": 1.0,
+          "distance": 57.13,
+          "height_min": 0.21,
+          "id": 421,
+          "intensity": 14.3,
+          "kind": "",
+          "lateral": 0.44,
+          "n_points": 43,
+          "reason": "beyond_axis",
+          "size": [
+            0.23,
+            0.35,
+            2.66
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 7,
+          "center": [
+            61.2,
+            1.59,
+            -0.11
+          ],
+          "confidence": 1.0,
+          "distance": 61.13,
+          "height_min": 0.22,
+          "id": 429,
+          "intensity": 0.7,
+          "kind": "",
+          "lateral": 0.44,
+          "n_points": 10,
+          "reason": "beyond_axis",
+          "size": [
+            0.29,
+            0.13,
+            0.96
+          ],
+          "zone": "warning"
+        }
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "candidate": {
+            "bbox_max": [
+              55.44999694824219,
+              1.649999976158142,
+              1.899999976158142
+            ],
+            "bbox_min": [
+              53.84000015258789,
+              1.3199999332427979,
+              -0.7599999904632568
+            ],
+            "centroid": [
+              54.04536056518555,
+              1.5080801248550415,
+              0.728888750076294
+            ],
+            "cut": false,
+            "demoted": false,
+            "distance": 53.84000015258789,
+            "height_max": 2.840316001703471,
+            "height_min": 0.19149032756274353,
+            "intensity": 14.848484992980957,
+            "kind": "",
+            "lateral": 0.540982663747171,
+            "low_height_weak": false,
+            "n": 47,
+            "n_expected": 78.84916650795518,
+            "n_gauge": 47,
+            "n_raw": 99,
+            "points_idx": [
+              76065,
+              76073,
+              76081,
+              76169,
+              76177,
+              76258,
+              76266,
+              76274,
+              76354,
+              76362,
+              76370,
+              76457,
+              76552,
+              76648,
+              76743,
+              80229,
+              80236,
+              80323,
+              80330,
+              80411,
+              80419,
+              80506,
+              80514,
+              80521,
+              80608,
+              80702,
+              80886,
+              84327,
+              84335,
+              84342,
+              84420,
+              84428,
+              84516,
+              84524,
+              84610,
+              84618,
+              84709,
+              84801,
+              84895,
+              84990,
+              88419,
+              88426,
+              88510,
+              88517,
+              88603,
+              88616,
+              88695,
+              88708,
+              88786,
+              88879,
+              88974,
+              89067,
+              92488,
+              92496,
+              92503,
+              92582,
+              92590,
+              92597,
+              92683,
+              92767,
+              92773,
+              92863,
+              92955,
+              93046,
+              93136,
+              96589,
+              96596,
+              96690,
+              96770,
+              96778,
+              96862,
+              96870,
+              96953,
+              97047,
+              97055,
+              97141,
+              97234,
+              97242,
+              100641,
+              100732,
+              100815,
+              100822,
+              100829,
+              100905,
+              100912,
+              100919,
+              100997,
+              101090,
+              101180,
+              101267,
+              104608,
+              104615,
+              104704,
+              104788,
+              104878,
+              104968,
+              105059,
+              105148,
+              105235
+            ],
+            "rail_line": false,
+            "reason": "column",
+            "retro": false,
+            "ring_count": 23,
+            "score": 1.0,
+            "spared": true,
+            "thin": false,
+            "wall_kept": false,
+            "weak": false,
+            "zone": "warning"
+          },
+          "index": 5,
+          "matched_tracks": [
+            {
+              "clean_run": 0,
+              "column_held": true,
+              "column_hist": [
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true
+              ],
+              "column_hold": 2,
+              "confidence": 1.0,
+              "explained_hist": [
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                true
+              ],
+              "hits": 13,
+              "id": 421,
+              "misses": 0,
+              "reported": true,
+              "rule_zone": "warning",
+              "seen_reported": true,
+              "spare_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ],
+              "vote_zone": "warning",
+              "zone": "warning",
+              "zone_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "bbox_max": [
+              70.93999481201172,
+              1.5999999046325684,
+              2.119999885559082
+            ],
+            "bbox_min": [
+              67.72999572753906,
+              1.2899999618530273,
+              -0.6699999570846558
+            ],
+            "centroid": [
+              69.57290649414062,
+              1.4980645179748535,
+              0.5112901926040649
+            ],
+            "cut": false,
+            "demoted": false,
+            "distance": 67.72999572753906,
+            "height_max": 2.8931499062079373,
+            "height_min": 0.13928794730597382,
+            "intensity": 6.838709831237793,
+            "kind": "",
+            "lateral": 0.36036209441059125,
+            "low_height_weak": false,
+            "n": 30,
+            "n_expected": 46.902501761853514,
+            "n_gauge": 30,
+            "n_raw": 62,
+            "points_idx": [
+              76843,
+              76937,
+              77026,
+              77034,
+              77122,
+              77130,
+              80983,
+              81075,
+              81154,
+              81162,
+              81169,
+              81247,
+              81255,
+              81262,
+              81339,
+              81430,
+              85076,
+              85084,
+              85091,
+              85169,
+              85177,
+              85184,
+              85263,
+              85271,
+              85278,
+              85357,
+              85365,
+              85372,
+              85465,
+              85558,
+              89164,
+              89257,
+              89346,
+              89352,
+              89438,
+              89444,
+              93234,
+              93326,
+              93413,
+              93421,
+              93509,
+              93517,
+              97340,
+              97431,
+              97510,
+              97518,
+              97525,
+              97604,
+              97612,
+              97619,
+              97712,
+              97806,
+              101361,
+              101450,
+              101535,
+              101543,
+              101629,
+              101637,
+              105507,
+              105514,
+              105601,
+              105608
+            ],
+            "rail_line": false,
+            "reason": "column",
+            "retro": false,
+            "ring_count": 19,
+            "score": 1.0,
+            "spared": false,
+            "thin": false,
+            "wall_kept": false,
+            "weak": false,
+            "zone": "warning"
+          },
+          "index": 8,
+          "matched_tracks": [
+            {
+              "clean_run": 0,
+              "column_held": false,
+              "column_hist": [
+                true
+              ],
+              "column_hold": 2,
+              "confidence": 0.35,
+              "explained_hist": [
+                true
+              ],
+              "hits": 1,
+              "id": 443,
+              "misses": 0,
+              "reported": false,
+              "rule_zone": "warning",
+              "seen_reported": false,
+              "spare_hist": [
+                false
+              ],
+              "vote_zone": "warning",
+              "zone": "warning",
+              "zone_hist": [
+                false
+              ]
+            }
+          ]
+        }
+      ],
+      "clear": 46.2,
+      "detections": [],
+      "frame_id": "new_data_54_0016",
+      "health": {
+        "blocked_sectors": 0,
+        "candidate_distance": 46.2,
+        "clear_distance": 46.2,
+        "decision_level": "ok",
+        "floor_held_frames": 0,
+        "floor_released_frames": 0,
+        "floor_shadow_frames": 0,
+        "level": "ok",
+        "messages": [],
+        "monitored_range": 120.0,
+        "near_fraction": 0.005,
+        "points": 169418,
+        "rail_lock": 0.95,
+        "visibility": 204.7
+      },
+      "nearest": null,
+      "obstacle": false,
+      "row": 1361,
+      "warning": true,
+      "warnings": [
+        {
+          "age": 16,
+          "center": [
+            38.36,
+            1.63,
+            0.2
+          ],
+          "confidence": 1.0,
+          "distance": 37.83,
+          "height_min": 0.12,
+          "id": 424,
+          "intensity": 2.9,
+          "kind": "",
+          "lateral": 0.93,
+          "n_points": 87,
+          "reason": "column",
+          "size": [
+            1.78,
+            0.59,
+            2.6
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 17,
+          "center": [
+            42.26,
+            1.62,
+            0.21
+          ],
+          "confidence": 1.0,
+          "distance": 41.38,
+          "height_min": 0.17,
+          "id": 419,
+          "intensity": 2.0,
+          "kind": "",
+          "lateral": 0.84,
+          "n_points": 63,
+          "reason": "column",
+          "size": [
+            2.19,
+            0.57,
+            2.68
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 17,
+          "center": [
+            46.25,
+            1.62,
+            0.41
+          ],
+          "confidence": 1.0,
+          "distance": 45.82,
+          "height_min": 0.13,
+          "id": 420,
+          "intensity": 1.9,
+          "kind": "",
+          "lateral": 0.77,
+          "n_points": 45,
+          "reason": "column",
+          "size": [
+            1.69,
+            0.15,
+            2.84
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 13,
+          "center": [
+            50.2,
+            1.6,
+            0.4
+          ],
+          "confidence": 1.0,
+          "distance": 49.83,
+          "height_min": 0.14,
+          "id": 426,
+          "intensity": 1.8,
+          "kind": "",
+          "lateral": 0.68,
+          "n_points": 41,
+          "reason": "column",
+          "size": [
+            1.71,
+            0.16,
+            2.57
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 17,
+          "center": [
+            54.05,
+            1.51,
+            0.73
+          ],
+          "confidence": 1.0,
+          "distance": 53.84,
+          "height_min": 0.19,
+          "id": 421,
+          "intensity": 14.8,
+          "kind": "",
+          "lateral": 0.54,
+          "n_points": 47,
+          "reason": "column",
+          "size": [
+            1.61,
+            0.33,
+            2.66
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 11,
+          "center": [
+            57.94,
+            1.55,
+            -0.14
+          ],
+          "confidence": 1.0,
+          "distance": 57.84,
+          "height_min": 0.22,
+          "id": 429,
+          "intensity": 1.4,
+          "kind": "",
+          "lateral": 0.53,
+          "n_points": 13,
+          "reason": "",
+          "size": [
+            0.36,
+            0.13,
+            1.14
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 7,
+          "center": [
+            58.03,
+            1.52,
+            1.82
+          ],
+          "confidence": 0.75,
+          "distance": 57.88,
+          "height_min": 2.52,
+          "id": 433,
+          "intensity": 1.8,
+          "kind": "",
+          "lateral": 0.46,
+          "n_points": 6,
+          "reason": "",
+          "size": [
+            1.37,
+            0.1,
+            0.38
+          ],
+          "zone": "warning"
+        },
+        {
+          "age": 8,
+          "center": [
+            80.05,
+            1.27,
+            2.11
+          ],
+          "confidence": 1.0,
+          "distance": 78.12,
+          "height_min": 2.49,
+          "id": 432,
+          "intensity": 2.1,
+          "kind": "",
+          "lateral": 0.06,
+          "n_points": 9,
+          "reason": "floating",
+          "size": [
+            5.33,
+            0.44,
+            0.49
+          ],
+          "zone": "warning"
+        }
+      ]
+    }
+  ]
+}

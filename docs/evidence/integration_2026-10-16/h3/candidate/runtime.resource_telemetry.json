@@ -1,0 +1,707 @@
+[
+  {
+    "docker_stats": {
+      "BlockIO": "2.61MB / 45.1kB",
+      "CPUPerc": "9.90%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "0.51%",
+      "MemUsage": "23.3MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "2"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:34:14.530188+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "8.44%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.12%",
+      "MemUsage": "51.59MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:34:37.636234+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "12.19%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.27%",
+      "MemUsage": "58.47MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:35:00.800378+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "12.22%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.28%",
+      "MemUsage": "59.16MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:35:23.294926+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "12.36%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.32%",
+      "MemUsage": "60.79MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:35:45.836900+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "12.50%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.34%",
+      "MemUsage": "61.74MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:36:10.254092+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "12.29%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.36%",
+      "MemUsage": "62.86MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:36:32.794246+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "12.94%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.40%",
+      "MemUsage": "64.32MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:36:55.500174+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "11.80%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.39%",
+      "MemUsage": "64.12MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:37:18.937862+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "12.21%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "1.42%",
+      "MemUsage": "65.39MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "1"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:37:41.877980+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 278MB",
+      "CPUPerc": "164.56%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "4.33%",
+      "MemUsage": "199.3MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:38:04.946321+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "154.10%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "5.39%",
+      "MemUsage": "248.3MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:38:27.951125+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "163.81%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.23%",
+      "MemUsage": "287MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:38:51.062051+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "163.30%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.25%",
+      "MemUsage": "288MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:39:13.868124+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "162.49%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.29%",
+      "MemUsage": "289.8MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:39:36.866188+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "160.99%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.76%",
+      "MemUsage": "311.3MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:40:01.089608+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "163.57%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.84%",
+      "MemUsage": "315.2MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:40:24.259809+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "147.75%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.84%",
+      "MemUsage": "315.3MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:40:47.698153+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "162.75%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.86%",
+      "MemUsage": "316.1MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:41:11.230302+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "165.31%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.87%",
+      "MemUsage": "316.4MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:41:33.956188+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "177.56%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "6.78%",
+      "MemUsage": "312.6MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:41:56.715181+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "166.20%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.02%",
+      "MemUsage": "323.7MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:42:20.934729+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "168.43%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.02%",
+      "MemUsage": "323.6MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:42:44.407764+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "161.45%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.06%",
+      "MemUsage": "325.5MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:43:07.375342+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "158.70%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.07%",
+      "MemUsage": "325.7MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:43:30.182601+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "159.48%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.07%",
+      "MemUsage": "325.6MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:43:52.846958+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "162.50%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.08%",
+      "MemUsage": "326.1MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:44:16.148178+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "158.91%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.08%",
+      "MemUsage": "326.1MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:44:38.903006+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "165.05%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.08%",
+      "MemUsage": "326.1MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:45:01.304038+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "149.33%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.09%",
+      "MemUsage": "326.8MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:45:25.453825+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "152.44%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.08%",
+      "MemUsage": "326.3MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:45:47.980740+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "151.05%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.09%",
+      "MemUsage": "326.8MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:46:10.492495+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "124.82%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.08%",
+      "MemUsage": "326.3MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:46:33.592571+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "143.56%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.09%",
+      "MemUsage": "326.7MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:46:56.219884+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "137.60%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "7.56%",
+      "MemUsage": "348.4MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "6"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:47:18.708518+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "200.22%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "15.04%",
+      "MemUsage": "693MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:47:41.195305+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "204.74%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "15.74%",
+      "MemUsage": "725.4MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:48:04.877047+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "200.94%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "16.12%",
+      "MemUsage": "742.9MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:48:27.491614+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "200.07%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "16.45%",
+      "MemUsage": "758.2MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:48:49.991351+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "196.50%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "16.17%",
+      "MemUsage": "745MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:49:12.440342+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "199.98%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "16.94%",
+      "MemUsage": "780.7MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:49:36.302068+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "198.69%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "16.93%",
+      "MemUsage": "780MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:49:58.768905+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "199.15%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "17.04%",
+      "MemUsage": "785.4MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:50:21.181019+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "197.70%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "17.18%",
+      "MemUsage": "791.9MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:50:44.916477+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "200.07%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "17.31%",
+      "MemUsage": "797.5MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:51:07.500403+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "201.18%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "17.38%",
+      "MemUsage": "801.1MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:51:29.924577+00:00"
+  },
+  {
+    "docker_stats": {
+      "BlockIO": "27.4MB / 279MB",
+      "CPUPerc": "202.26%",
+      "Container": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "ID": "61ae5d8cccf6",
+      "MemPerc": "17.51%",
+      "MemUsage": "806.9MiB / 4.5GiB",
+      "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55",
+      "NetIO": "0B / 0B",
+      "PIDs": "33"
+    },
+    "error": null,
+    "utc": "2026-10-16T07:51:52.418467+00:00"
+  }
+]

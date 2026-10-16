@@ -1,0 +1,12 @@
+{
+  "baseline_run": "baseline-707ea9cda051-20261016T060147Z-68fb3429",
+  "candidate_run": "candidate-f8c088dc4f32-20261016T073403Z-4b64ec55",
+  "candidate_source_sha256": "a34cb1612f3f212d063370ebe0ad8648657aa15b62d751a69964eb1c825d3618",
+  "compact_package_budget_bytes": 3000000,
+  "external_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs",
+  "gate_exit": 0,
+  "measured_commit": "f8c088dc4f3243fbd15a3aae9be0459e8a0aa941",
+  "parent_head_at_copy": "d4850c5905d942812e90e39a7f56ebfe776c85f4",
+  "raw_frames_external": true,
+  "sealed_control_commit": "707ea9cda051369326fb9407c42488c1033dad76"
+}

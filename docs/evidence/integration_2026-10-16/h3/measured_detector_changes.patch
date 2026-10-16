@@ -1,0 +1,1159 @@
+diff --git a/configs/default.yaml b/configs/default.yaml
+index 4cc4fc6..64f1c1c 100644
+--- a/configs/default.yaml
++++ b/configs/default.yaml
+@@ -81,6 +81,9 @@ resense:
+     axis_disagree_range: 60.0
+     axis_one_side_range: 120.0
+     axis_disagree_hold: 0          # 27.09 (P4 history, off; 0 = off): nominal frame periods the axis_disagree_range cap outlives the last frame with two disagreeing boundaries, on frames with one boundary (two agreeing end it): losing the contradicting boundary does not raise the trusted range at once (clear-run STOP of 26.09, mechanism 1)
++    axis_wall_drift: 0.8           # 15.10 (judge 13.10 problem 4, on; 0 = off): m; the monitored range (health monitored_range / clear_distance; not the corridor, no decision) ends where a near tunnel boundary, followed outward from the rail range, has come this much nearer the axis than it runs there (track.wall_drift_range): at a curve entry the quadratic axis lags the transition and the outer wall crosses the corridor; there the axis is 0.7-1.1 m off the wall-referenced track (roundT_pressureGate_roundT). Judge C probes: GO with the range past the object 26 -> 10 frames (person on the axis; on the wall-referenced track 26 -> 4), none left within 142 m; STOP unchanged. Cost: the ride's range capped in 13.8 % of frames (median at 94 m, 3.8 % of the range); also capping the corridor (beyond_axis) cost C's person 55 -> 43 STOP frames: not taken
++    axis_wall_drift_max_offset: 3.5  # 15.10: m, only a boundary at most this far from the axis in the rail range is a reference (a single-track tube's wall; a double-track tunnel's far wall or a hall need not be parallel)
++    axis_wall_drift_bins: 2        # 15.10: consecutive populated boundary bins (walls_bin) that must lie axis_wall_drift nearer
+     floor_verify_enabled: true
+     floor_verify_band:
+     - 1.6
+@@ -133,6 +136,10 @@ resense:
+     max_extent: 8.0
+     oversize_split_max_length: 3.0 # on since 25.09 (P3; 0 = off): a cluster larger than max_extent keeps its part inside the strict gauge when that part is at most this long (an object touching a line at the corridor edge)
+     oversize_split_max_distance: 30.0 # 25.09 (P3): ... and starts within this distance (m; beyond, long sparse far clusters gave a false alarm)
++    structure_cut_tol: 1.3         # 13.10 (judge 13.10 problem 2; finished 14.10 with the judge's required changes; 14.10 review: 0.8 -> 1.3; 0 = off): a cluster larger than max_extent that the 25.09 split refused (dropped whole) is cut along the smooth surface it lies on (y = a + b x + c x^2 + d h + e h^2 in the vehicle frame, robust fit; not fitted without a strict-gauge point; not cut when the surface is steeper than 45 deg to the track): its points at least this far (m) in front of the surface as seen from the sensor are linked again on their own, and the parts at most oversize_split_max_length long, not thinner than min_height, with strict-gauge points and at least structure_cut_min_points voxels are described as clusters, every rule applied (clustering._off_structure_parts). A cluster whose split part was accepted keeps the split's verdict. On roundT_pressureGate_roundT the lagging far axis lays the tunnel wall across the envelope at 70-150 m; the judge's person-size box placed on that axis touches it and the 36-55 m cluster was dropped: GO / unrelated CAUTION at 82-120 m. The box stands 0.2-0.3 m in front of the fitted wall at 120 m, 0.6 at 109 m, 0.8 at 100 m, 1.2 at 92 m, 1.6-1.8 at 83-86 m. 14.10 review: at 0.8 m (13.10) objects standing 0.95-1.2 m in front of the outer wall - outside the envelope, in its advisory band, where the trusted near axis puts them (C's wall 2.25-2.3 m from the axis at 56-70 m) - were carved out and placed inside it by the lagging axis: wall-anchored ray-cast boxes yawed with the wall, STOP frames attributable to the object sealed -> 0.8 -> 1.3: person-size box 1.0 m from the wall 0 -> 21 -> 0 (with --dropout the same), 1.1 m 0 -> 15 -> 0, 2.6 m mast 1.0 m 0 -> 9 -> 0, sign post 0.95 m 0 -> 5 -> 0, column to the vault 1.0 m 0 -> 8 -> 0 (its face above 2.6 m dark: 0 -> 7 -> 0), cabinets 0.85-1.0 m 0 -> 0 -> 0; the mast 1.2 m off (at the envelope edge: lateral 1.03-1.11 at 60-68 m) 0 -> 27 -> 2. 1.3 m is more than the wall equipment (0.8-1.2 m) and more than C's wall stands outside the strict envelope (1.05 m); 1.2: the same 0s, mast 1.2 m 8; 1.0: 0 STOP frames but 1-3 single-frame parts per object, mast 1.2 m 19. Judge ray-cast on C (the box on the detector's axis), first STOP / held from (m) / STOP frames of 153, sealed -> 0.8 -> 1.3: person 73.9 / 81.3 / 49 -> 90.2 / 99.0 / 60 -> 82.8 / 91.6 / 55, 1 m cube 73.9 / 81.3 / 49 -> 96.1 / 106.5 / 64 -> 85.7 / 94.6 / 57, 0.5 m cube 75.4 / 82.8 / 50 -> 82.8 / 91.6 / 55 -> 75.4 / 82.8 / 50, lateral +0.5 69.5 / 76.9 / 46 -> 84.2 / 93.1 / 56 -> 72.5 / 79.8 / 48, -0.5 held 91.6 / 57 -> 112.4 / 70 -> 99.0 / 62, -0.7 85.7 / 94.6 / 57 -> 109.4 / 121.3 / 73 -> 96.1 / 106.5 / 64; no probe frame worse than sealed. Not taken: the review's option (a), parts cut beyond where the wall itself enters the strict envelope made advisory (beyond_axis): their advisory hits enter the object's track and its zone vote, person 73.9 / 49 sealed -> 71.0 / 47 (worse than sealed), 1 m cube 72.5 / 48. Blind spots: no gain nearer the wall than this (lateral +0.7, the wall side); none for an edge line plus a face beyond 30 m; C 100-150 m stays 0 / 34 STOP frames with GO at 118-150 m: there the lagging axis puts the box within 0.2-0.8 m of the wall (judge problem 4, the axis, not the split); a wall standing more than 2.35 m from the axis on a curve where the far axis lags could still have an object 1.3 m in front of it, outside the envelope, placed inside it
++    structure_cut_max_spread: 0.12 # 13.10: m, ... only when the cluster is such a surface: the robust spread (1.4826 MAD) of its points about the fit at most this (the round wall of C: 0.08-0.11 m)
++    structure_cut_min_fit: 0.8     # 13.10: ... and at least this fraction of its points within max(3 spread, tol / 2) of it (0.86-1.0 with the box on the wall of C)
++    structure_cut_min_points: 8    # 14.10 (judge 13.10, required change 1; 0 = no bar): ... and a part at least this many voxels: its points are current-frame points (an oversize cluster falls back to them), 8 = the accumulated near bar (min_points 5 x 1.5). Every part carved out of wall equipment on the empty data at 0.8 m had 3-7 (alarm-capable ones: C 5, B 1, the ride 8, one detector; all removed, none left), the judge's objects 8-42; with 30 % dropout C gave one 11-voxel single-frame gauge part at 0.8 m (100 m, lateral 0.98, never confirmed)
+     gauge_distance: true           # on since 25.09 (P3; false = off): a gauge cluster's distance is its nearest point inside the envelope, not a margin point it touches; since the review of 25.09 the envelope widened by the axis-uncertainty margin (edge_margin_per_100m), so never farther than where the object enters it
+     min_height: 0.08
+     thin_min_length: 3.0
+@@ -157,6 +164,12 @@ resense:
+     column_width_trim: 0.05         # 27.09 (P4 history, on; 0 = the box width): the column rule's width between these quantiles of the cluster's lateral point positions (a few returns joined at the DBSCAN radius do not widen a column past column_max_width)
+     column_width_trim_min_cut: 0.25 # 27.09: m, the trimmed width counts only when it is at least this much narrower than the box width (sparse tails, a joined fragment of a few returns); a dense 1.0-1.1 m body keeps its width
+     column_min_width: 0.25         # v0.6: near the axis only clusters this wide are columns (a hanging cable is thinner)
++    column_free_max_top: 2.95      # 13.10 (the judge's 0.3 x 0.3 x 2.8 m pole: CAUTION from 70 m to 5 m on the axis, never STOP 0.7 m off it; 0 = off): a column continues up to the vault, an object standing in the envelope ends inside it - the column signature does not demote a cluster whose top is seen free (clustering.top_is_free: the first ring with returns above its top, over its azimuth span, has none at the top's range, and either a ring of the sensor in between returned nothing - its rays passed over the top out of range; 14.10: that ring is read from the frame's channel ids, the ring table only where the frame carries none (set O), since a mount tilt the calibration corrects moves the rings off the table and 0.1 deg of it can invent an empty ring; 15.10: ids only where they number the rings in elevation order, otherwise a ring the frame itself shows beside the object, no table (a 64-ring sensor read through the Pandar128's table saw an empty ring above an occluded column) - or more of its returns are beyond the top than nearer, at least column_free_min_returns), whose top is at most this high (m; under the 3.0 m envelope top, where the candidates are cut) and ...
++    column_free_min_core: 0.5      # ... at least this share of whose voxels are inside the strict envelope (structure at its edge, platform / canopy edges at 0.8-1.2 m: 0.09-0.56); every other rule still applies; a rail pair is not required (with it the pole 0.7 m off the axis, which itself breaks the pair at 10-17 m, lost 4-5 of its 18 STOP frames at 3-30 m). Measured (final/column, 14.10): full regression gate PASS against the 29.09 baseline (208 rows the same, only latency differs), every frame of the 15 gate outputs (the five obstacle-free recordings, the ride's 8 pieces, doubleT_obstacle, doubleT_platform, set O) identical to the sealed detector, the four judge recordings and A / S with --pitch 2 and --drop 0.3 too; the judge's ray-cast pole on the axis 82 -> 157 STOP frames of 177 (the column rule off: 157), 0.7 m off 0 -> 136 of 176 (off: 146), -0.7 m 0 -> 133 of 181, with --dropout 67 -> 143 / 11 -> 133, a 0.5 x 0.5 x 2.5 m post 56 -> 157 / 30 -> 150; the person box unchanged
++    column_free_min_returns: 2     # returns beyond the top on that ring (one ray: the recordings hold each echo twice)
++    column_free_window: 1.2        # 15.10 (review round 3, P1; 0 = the first ring with returns above the top only, as 14.10): any return at the top's range over the cluster's azimuth window, within its top ring's lateral extent +- 0.15 m, up to this many m above its top is continuation - a column whose face right above the cluster's top returns nothing (dark paint, glass, a sign) read as free on 14.10 - but never up to the local vault (clustering._local_vault: the lowest return over the axis +- 0.5 m standing over free space, 15 % before to 15 % beyond the object, measured in the frame, whose far-field heights drift with the rail level) less column_free_vault_margin; no vault seen, no window. The recordings' vault over the envelope at 10-50 m (p5): round tunnels 3.79-3.81 m (crown 4.1-4.3), square 3.55-3.77, the ride 3.59-4.02, stations / switches down to 3.0; 0.3-0.7 m lower at 110-150 m. The review's dark-band what-if (0.6 deg above every free-top cluster's top): ride pieces 1 / 3 STOP frames sealed 14 / 2 -> 14.10 30 / 13 -> 23 / 7, R4 49 (sealed); what remains is at 107-141 m, where the band spans 1.1-1.5 m and reaches the vault margin. Every judge probe and the plain ride pieces as 14.10, frame for frame
++    column_free_vault_margin: 0.3  # 15.10: m under the local vault (read over the axis; a round vault is 0.2-0.3 m lower over the envelope edge)
++    column_free_tall_gap: 0.0      # 15.10 (P4, opt-in, NOT shipped; 0 = off): a column-shaped cluster reaching the candidates' cut (its top above column_free_max_top) is followed above it along its own returns at its range to its true top, which must lie at least this far (m) under the local vault, every one of its own rays above it (two rings at least) passing beyond it. Measured at 0.3: no gain on the judge's 3.2 / 3.6 m poles on A (ceiling 3.8-4.0 m), the 3.2 m pole 0.7 m off the axis 24 -> 23 STOP frames (one ring: 24 -> 18, worse than sealed); under the dark-band what-if one spare of a real ride column added a 9-frame STOP episode (one ring)
+     elevated_min_height: 1.2
+     elevated_min_width: 2.0
+     floating_min_height: 0.7
+@@ -213,6 +226,7 @@ resense:
+     gate_along_only: true         # 27.09 (P4 history, on): the approach allowance (ego_speed_max x measured interval) widens the association gate along the track only, not across it
+     start_clean: false             # 27.09 (P4 history, off): a track not reported in the previous frame is confirmed only on a hit whose own cluster is inside the strict gauge
+     column_hold: 2                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m is a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0 (4 column hits in its window); pre-registered 3 / 2 / 1, the highest passing: 3 fails the gate (ride STOP episodes 39 -> 40), 2 PASS: five bags 60 / 14 / 17 -> 58 / 13 / 16, ride 197 / 46 / 39 -> 187 / 46 / 39 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (docs/evidence/results/column_hold_2026-09-25.json)
++    column_free_min_spares: 2      # 14.10 (review of the 13.10 free-top test; 0 / 1 = off, every spare believed): a cluster the column rule fits but cluster.column_free_max_top spares (its top seen free; Cluster.spared) is believed only when the track it continues had at least this many - 1 such hits among its last zone_window hits; alone it is the column the column rule made of it (reason column, zone warning: column_hold, the zone vote and explained_run see what they saw before 13.10). With every spare believed one spare of a noisy frame turned a column track into a STOP: squareT_platform_squareT_switch (standing train, platform edge 82.6-85 m) with 20 / 30 % random point dropout, sealed -> 13.10 -> 14.10 STOP frames: seed 3 (20 %) 44 -> 48 -> 44, seeds 2 / 3 / 5 (30 %) 55 / 51 / 84 -> 66 / 53 / 89 -> 55 / 51 / 84 (+1 STOP episode in three of them, now none); roundT_doubleT pitched -2 deg 0 -> 1 -> 0; every other S / B dropout seed identical. Cost (judge ray-cast on A, the pole 0.3 x 0.3 x 2.8 m, STOP frames sealed -> 13.10 -> 14.10): on the axis 82 -> 157 -> 157, +0.7 m 0 -> 136 -> 128, -0.7 m 0 -> 133 -> 132, the post 0.5 x 0.5 x 2.5 m on the axis 56 -> 157 -> 157, +0.7 m 30 -> 150 -> 138, with --dropout on the axis 67 -> 143 -> 143, +0.7 m 11 -> 133 -> 126: all at 160-200 m (the first spared hit and explained_run), none within 150 m; a fresh pole confirms one frame later
+     reseed_hold: 5                 # 26.09 (safety review, re-review): after a mount-calibration change the tracks follow the rotation and a STOP (reported in zone gauge) stays reported for a fixed window of 5 frames from the change (the change frame the first), matched or not (a match does not end it), 6 at 10 Hz when the change re-seeds the track model (until its warm-up gives it a floor-shadow reference again); above 1 deg only STOPs are kept (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
+     low_min_seen_distance: 0.0     # tried 26.09 (P3 start-up, candidate c), NOT shipped (0 = off): a low (bed-level) track reported only once matched at or beyond this distance (m); 4 m removed a fresh start's 2.9-3.1 m STOP on the rail heads ahead of a standing train (ride 187 / 46 / 39 -> 183 / 45 / 38, gate PASS) but never STOPs for a 30 x 30 x 10 cm object or an object lying across a rail 3.0-3.9 m ahead of a standing or slow train, or one that falls there: a blind zone; a safety fix wins over a false-alarm gain (docs/evidence/results/p3_startup_2026-09-26.json, addendum_blind_zone)
+     near_escalate_voxels: 10       # 26.09 (P3 near escalation, judge B action 6; 0 = off): a track whose last near_escalate_hits hits were each a corridor cluster with >= this many voxels inside the strict envelope within near_escalate_distance is a STOP whatever demoted it (elevated, floating, the zone vote), a column or a beyond_axis / beyond_height_ref demotion never (safety review 26.09) and the column hold first; candidate A of the pre-registration, gate PASS: set O inside STOP frames 337 -> 349 (box at the envelope top 12 -> 22, from 23.9 m; cube at the edge 0 -> 2), #5 / #7 / background, the ride, the five bags, doubleT_obstacle and set F identical (docs/evidence/results/p3_near_escalation_2026-09-26.json)
+diff --git a/resense/clustering.py b/resense/clustering.py
+index cd699f8..d0488b9 100644
+--- a/resense/clustering.py
++++ b/resense/clustering.py
+@@ -2,7 +2,8 @@
+ from __future__ import annotations
+ 
+ from dataclasses import dataclass
+-from typing import List, Optional
++from functools import partial
++from typing import Callable, List, Optional
+ 
+ import numpy as np
+ from scipy.sparse import coo_matrix
+@@ -12,7 +13,7 @@ from scipy.spatial import cKDTree
+ from resense import _native
+ from resense.config import ClusterConfig, GaugeConfig
+ from resense.gauge import gauge_reach_mask
+-from resense.sensor import expected_points
++from resense.sensor import AZIMUTH_STEP_DEG, expected_points
+ 
+ 
+ @dataclass
+@@ -42,6 +43,8 @@ class Cluster:
+     weak: bool = False           # 27.09 (cluster.weak_min_points): fewer voxels than min_points, kept only as far evidence for an approaching track
+     ring_count: int = 0          # distinct known channels in current-frame strict-gauge points; 0 = no ring evidence
+     low_height_weak: bool = False  # below the straddle top-height threshold; only bounded continuation of a low STOP
++    spared: bool = False         # 14.10: column-shaped, but not demoted as a column because its top is seen free (top_is_free; tracking.column_free_min_spares)
++    cut: bool = False            # 14.10: a part of an oversize cluster cut along its wall surface (cluster.structure_cut_tol; Detector._not_part_of_corridor_objects)
+ 
+     @property
+     def size(self) -> np.ndarray:
+@@ -156,7 +159,9 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
+                   dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
+                   keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
+                   weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
+-                  low_height_margin: float = 0.0) -> List[Cluster]:
++                  low_height_margin: float = 0.0, frame_xyz: Optional[np.ndarray] = None,
++                  frame_ring: Optional[np.ndarray] = None, frame_h: Optional[np.ndarray] = None,
++                  frame_dy: Optional[np.ndarray] = None) -> List[Cluster]:
+     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
+ 
+     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
+@@ -230,12 +235,21 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
+     ``cfg.weak_min_rings`` path admits ``cfg.weak_min_points_with_rings`` voxels when enough distinct
+     channels support current-frame points inside the strict gauge; historical and off-gauge points
+     cannot supply this support. Both weak paths still require ``weak_from`` > 0.
++
++    ``frame_xyz`` (13.10, ``cfg.column_free_max_top`` > 0): the whole current frame that ``frame_idx``
++    indexes (vehicle frame, the sensor at the origin), ``frame_ring`` its channel ids (or None); with it the
++    column signature does not demote a cluster whose top is seen free (:func:`top_is_free`). ``None`` = the
++    column rule by its shape alone. ``frame_h`` / ``frame_dy`` (15.10): the frame's heights above the rail head
++    and laterals (the detector's corridor coordinates of every return); without them the test reads only the
++    first ring above the top (``cfg.column_free_window`` and ``cfg.column_free_tall_gap`` need them). The frame
++    is indexed by azimuth once per call, on the first test (:class:`FrameRays`).
+     """
+     out: List[Cluster] = []
+     if xyz.shape[0] == 0:
+         return out
+     if frame_idx is None:
+         frame_idx = np.arange(xyz.shape[0])
++    rays = None if frame_xyz is None else FrameRays(frame_xyz, frame_ring, frame_h, frame_dy)
+     vox, inv = voxelize(xyz, cfg)
+     vlabels = cluster_labels(vox, cfg)
+     labels = vlabels[inv]                       # raw point labels
+@@ -255,9 +269,21 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
+         if low is not None and low_cfg is not None and bool(low[b.idx].mean() >= 0.5):
+             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg, low_height_margin)
+         else:
+-            c = _corridor_cluster(b, dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range,
+-                                  axis_valid, height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report,
+-                                  weak_from, ring)
++            head = (dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range)
++            tail = (height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from, ring, rays)
++            c = _corridor_cluster(b, *head, axis_valid, *tail)
++            if c is None and cfg.structure_cut_tol > 0 and cfg.oversize_split_max_length > 0 \
++                    and float(b.size.max()) > cfg.max_extent and _split_part(b, in_gauge, in_rail, inv, cfg) is None:
++                # 13.10 (cluster.structure_cut_tol): an oversize cluster that the 25.09 split refused
++                # (dropped whole) may be an object standing in front of the long surface it touches; its
++                # parts off that surface are described on their own, every rule applied
++                # (_off_structure_parts). A cluster whose split part was accepted keeps the split's
++                # verdict: the cut gives no second chance to a part the rules dropped
++                for part in _off_structure_parts(b, xyz, h, in_gauge, vox, inv, cfg):
++                    cp = _corridor_cluster(part, *head, axis_valid, *tail)
++                    if cp is not None:
++                        cp.cut = True
++                        out.append(cp)
+         if c is not None:
+             out.append(c)
+     out.sort(key=lambda c: c.distance)
+@@ -338,11 +364,279 @@ def _is_infrastructure(size: np.ndarray, lateral: float, h_max: float, cfg: Clus
+             and abs(lateral if lat_along is None else lat_along) > cfg.linear_min_lateral)
+ 
+ 
++class FrameRays:
++    """15.10: the current frame as the column free-top test (:func:`top_is_free`) reads it - the corrected cloud
++    (vehicle frame, the sensor at the origin), its channel ids, and from the detector every return's height
++    above the rail head (``h``) and lateral offset from the axis (``dy``); ``None`` where not known. The
++    returns' azimuths are cached on the first :meth:`window` call as a uint8 bucket of tan(azimuth) per return
++    (0.55 deg wide at the axis, 255 behind the sensor; ~0.7 ms on a 189 k return ride frame), and a window
++    reads the returns of its buckets (~0.1-0.3 ms) before the exact test: 14.10 tested every return of the
++    frame in floats in every test (~1.4 ms), a cost that grew with the column-shaped clusters of a frame. (A
++    radix-sorted index on top of the buckets, measured: +0.6 ms a frame, its reads no faster.) The returns over
++    the track axis that the local vault is read from are cached the same way (:meth:`axis_band`).
++    :func:`find_clusters` makes one per call (once a frame in the detector), so the cache lives one frame."""
++
++    SCALE, MID = 105.0, 127.0         # bucket = SCALE tan(azimuth) + MID: +-50 deg (the sensor's field) in 2-252
++
++    def __init__(self, xyz: np.ndarray, ring: Optional[np.ndarray] = None, h: Optional[np.ndarray] = None,
++                 dy: Optional[np.ndarray] = None):
++        self.xyz, self.ring, self.h, self.dy = xyz, ring, h, dy
++        self._keys: Optional[np.ndarray] = None
++        self._band: Optional[tuple] = None
++
++    def _bucket(self, t: float) -> int:
++        return int(min(max(float(np.floor(t * self.SCALE + self.MID)), 0.0), 254.0))
++
++    def window(self, a0: float, a1: float) -> np.ndarray:
++        """Indices (ascending) of the returns ahead of the sensor (X > 0) with azimuth in [a0, a1] deg, compared
++        as Y >= tan(a0) X and Y <= tan(a1) X (the frame scan of 13.10, return for return)."""
++        t0, t1 = np.tan(np.radians(a0)), np.tan(np.radians(a1))
++        if self._keys is None:
++            X, Y = self.xyz[:, 0], self.xyz[:, 1]
++            with np.errstate(divide="ignore", invalid="ignore"):
++                s = Y / X
++            s *= self.SCALE
++            s += self.MID
++            np.clip(s, 0.0, 254.0, out=s)               # beyond the field: the end buckets
++            np.copyto(s, 255.0, where=~(X > 0))         # behind the sensor (and X = 0)
++            self._keys = s.astype(np.uint8)
++        # one bucket of slack on either side: the key's float32 quotient and the bounds' products may round apart
++        b0, b1 = max(self._bucket(t0) - 1, 0), min(self._bucket(t1) + 1, 254)
++        c = np.flatnonzero((self._keys >= b0) & (self._keys <= b1))
++        X, Y = self.xyz[c, 0], self.xyz[c, 1]
++        return c[(X > 0) & (Y >= t0 * X) & (Y <= t1 * X)]
++
++    def axis_band(self):
++        """The returns over the track axis (|dy| <= ``_VAULT_BAND``) above 0.5 m, cached on first use, sorted
++        along the track: (frame indices, X, h, cell of 1 m along x 0.25 m across) for :func:`_local_vault`; None
++        without heights or laterals."""
++        if self.h is None or self.dy is None:
++            return None
++        if self._band is None:
++            b = np.flatnonzero((np.abs(self.dy) <= _VAULT_BAND) & (self.h > 0.5))
++            X = self.xyz[b, 0].astype(np.float64)
++            o = np.argsort(X, kind="stable")
++            b, X = b[o], X[o]
++            cell = np.floor(X).astype(np.int64) * 8 + np.floor((self.dy[b] + _VAULT_BAND) / 0.25).astype(np.int64)
++            self._band = (b, X, self.h[b], cell)
++        return self._band
++
++
++_VAULT_BAND = 0.5      # m either side of the track axis over which the local vault is read (_local_vault)
++
++
++def _local_vault(rays: FrameRays, idx: np.ndarray, h_top: float, face: np.ndarray) -> Optional[float]:
++    """15.10: the lowest height above the rail head of what is over the track at the object - the returns within
++    ``_VAULT_BAND`` of the axis, from max(1 m, 15 %) before the object to max(5 m, 15 %) beyond it (the rings
++    above 2 deg are 0.5 deg apart: at 60 m a flat ceiling is hit at 56 and 70 m only), higher than its top
++    (``h_top``) + 0.1 m - its own face above its top (``face``: the returns of its azimuth window at its range) left
++    out. The vault, the ceiling, a beam or a lintel over the track, measured in the frame itself: the heights of
++    the far field drift with the rail level (0.3-0.7 m low at 110-150 m on the recordings), the vault's and the
++    object's alike. Over the axis, not beside the object: a colonnade at the platform edge (the ride, columns 4 m
++    apart at 0.9-1.0 m) puts its neighbours' faces beside each column at its range. Only what stands over free
++    space counts: a cell of 1 m along the track x 0.25 m across with returns between 0.5 m and the object's top
++    holds something standing (a post, a column, a wall the far axis lays across the track, an object) and is left
++    out (the ride's crossover: posts over the far axis at 124-155 m read as a 3.0-3.1 m vault). A round vault is
++    lower over the envelope's edge than over the axis (0.2-0.3 m: cluster.column_free_vault_margin). ``None`` when
++    nothing is seen there (or no heights). The returns over the axis are the frame's cached :meth:`FrameRays.axis_band`."""
++    band = rays.axis_band()
++    if band is None:
++        return None
++    ib, xb, hb, cb = band
++    x = rays.xyz[idx, 0]
++    x0, x1 = float(x.min()), float(x.max())
++    i0 = int(np.searchsorted(xb, x0 - max(1.0, 0.15 * x0), "left"))
++    i1 = int(np.searchsorted(xb, x1 + max(5.0, 0.15 * x0), "right"))
++    keep = ~np.isin(ib[i0:i1], face)
++    H, cell = hb[i0:i1][keep], cb[i0:i1][keep]
++    over = H > h_top + 0.1
++    standing = np.unique(cell[~over])                       # every return here is above 0.5 m
++    over &= ~np.isin(cell, standing)
++    return float(H[over].min()) if over.any() else None
++
++
++def _ids_in_elevation_order(rw: np.ndarray, qe: np.ndarray) -> bool:
++    """15.10 (P2): the window's channel ids number its rings from the highest down, as the Pandar128's
++    (``sensor.RING_ELEVATION_DEG``): the mean elevation of each id's returns falls as the id rises (0.02 deg
++    slack), over at least three ids. A driver numbering bottom-up, another sensor's interleaved order or unknown
++    ids are not read as ring order."""
++    ok = rw >= 0
++    ids, inv = np.unique(rw[ok], return_inverse=True)
++    if ids.size < 3:
++        return False
++    mean = np.bincount(inv, weights=qe[ok]) / np.bincount(inv)
++    return bool((np.diff(mean) <= 0.02).all())
++
++
++def _ring_between(rays: FrameRays, w: np.ndarray, head: np.ndarray, ring: np.ndarray, qe: np.ndarray,
++                  top: float, e1: float, a0: float, a1: float) -> bool:
++    """The empty-ring evidence of :func:`top_is_free`: a ring of the sensor lies between the top's ring and the
++    first ring above it that returns over the window (``ring``), and it returned nothing there - its rays
++    passed over the top and left the sensor's range. Read from the channel ids where the window carries them in
++    elevation order (``_ids_in_elevation_order``; the top's ring ``head``). 15.10 (P2): otherwise only where the
++    frame itself shows such a ring beside the object - at least 6 returns (3 rays, each echo twice) at least
++    15 m away (nearer, a return's elevation scatters by up to 0.05 deg) within 1.5 deg of its azimuth span,
++    between the two rings with 0.04 deg to spare (the rings are >= 0.086 deg apart; a roll of 1 deg tilts a ring
++    by 0.026 deg over 1.5 deg). 13.10 / 14.10 read the Pandar128's ring table there, its ring nearest to the top
++    put at the top: a 64-ring sensor read through it saw an empty ring above a column occluded from above at
++    30-100 m (the safety review of 14.10), and a mount tilt put the top at the wrong ring."""
++    rw = None if rays.ring is None else rays.ring[w].astype(np.int64)
++    if rw is not None and rw.min() < rw.max() and _ids_in_elevation_order(rw, qe):  # set O: one id (0) = none
++        hd, first = rays.ring[head].astype(np.int64), rw[ring]
++        if hd.min() >= 0 and first.min() >= 0 and first.max() < hd.min():
++            rt, r1 = int(hd.min()), int(first.max())
++            return r1 < rt - 1 and not ((rw > r1) & (rw < rt)).any()
++        return False
++    b = rays.window(a0 - 1.5, a1 + 1.5)
++    s = rays.xyz[b].astype(np.float64)
++    sh = np.hypot(s[:, 0], s[:, 1])
++    se = np.degrees(np.arctan2(s[:, 2], sh))
++    return int(((se > top + 0.04) & (se < e1 - 0.04) & (np.hypot(sh, s[:, 2]) >= 15.0)).sum()) >= 6
++
++
++def _follow(qe: np.ndarray, same: np.ndarray, qh: np.ndarray, top: float, h_top: float):
++    """15.10 (P4, ``cluster.column_free_tall_gap``): the object's own returns above the candidates' cut,
++    followed ring by ring over the window: while the next ring with returns above the top has one at the
++    top's range (``same``), the top moves up to it. Returns the top's elevation, its height above the rail
++    head (``qh``: the window's heights) and the window's returns of the top ring at the top's range (None: not
++    moved)."""
++    last = None
++    while True:
++        up = qe > top + 0.04
++        if not up.any():
++            return top, h_top, last
++        lev = up & (qe <= float(qe[up].min()) + 0.05)
++        s = lev & same
++        if not s.any():
++            return top, h_top, last
++        top, h_top, last = float(qe[lev].max()), max(h_top, float(qh[s].max())), s
++
++
++def top_is_free(frame_xyz, idx: np.ndarray, min_returns: int = 2, frame_ring: Optional[np.ndarray] = None,
++                window: float = 0.0, vault_margin: float = 0.3, tall_gap: float = 0.0) -> bool:
++    """13.10 (``cluster.column_free_max_top``): the top of the cluster whose current-frame returns are
++    ``frame_xyz[idx]`` is seen free - the rays right above it pass over it. Over the cluster's azimuth span
++    plus 0.12 deg (an azimuth step and the rings' azimuth offsets) the first ring with returns above the top
++    has none at the top's range (within max(0.5 m, 2 %)): a column continues up to the vault and that ring
++    meets it there. And either a ring of the sensor lies between them that returned nothing over the span -
++    its rays passed over the top and left the sensor's range (the far field; :func:`_ring_between`) - or at
++    least ``min_returns`` of that ring's returns are beyond the top and more than those nearer (nearer:
++    occluded from above, no evidence). Nothing above within 2.5 deg is no evidence.
++    ``frame_xyz``: a :class:`FrameRays` (the detector's: with heights and laterals), or the whole frame in the
++    vehicle frame, the sensor at the origin, with ``frame_ring`` its channel ids (0 the highest ring).
++
++    15.10 (P1, ``window`` = ``cluster.column_free_window`` > 0; needs the heights): a column whose face right
++    above the cluster's top returns nothing (dark paint, glass, a black sign) while the rays beside it reach the
++    tunnel behind read as free on 14.10, whose continuation was the first ring with returns only. Now any
++    return at the top's range over the window above the top up to ``window`` m over it, within the top ring's
++    lateral extent +- 0.15 m (its own face; the round lining beside it at its range is not), is continuation -
++    but never up to the local vault (:func:`_local_vault`; ``vault_margin`` under it): the vault, a ceiling or a
++    beam over the object meets the rays above a free top at the object's range too. No vault seen: no window.
++
++    15.10 (P4, ``tall_gap`` = ``cluster.column_free_tall_gap`` > 0; for a cluster reaching the candidates' cut
++    under the envelope top): the object's own returns at its range are followed above the cut to its true top
++    (:func:`_follow`), which must lie at least ``tall_gap`` under the local vault (seen), with no return of its
++    own face above it up to ``vault_margin`` under the vault, the first ring above it passing it as above, and
++    every one of its own rays (the top ring's azimuth span) above it up to there returning beyond it
++    (:func:`_own_rays_pass`): a column whose face above the cut is dark returns nothing on its own rays."""
++    rays = frame_xyz if isinstance(frame_xyz, FrameRays) else FrameRays(frame_xyz, frame_ring)
++    if idx.size < 2 or (tall_gap > 0 and rays.h is None):
++        return False                      # a cluster at the cut is followed only with the frame's heights
++    p = rays.xyz[idx].astype(np.float64)
++    rh = np.hypot(p[:, 0], p[:, 1])
++    el = np.degrees(np.arctan2(p[:, 2], rh))
++    az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
++    top = float(el.max())
++    head = el >= top - 0.06                                         # the top's own ring
++    r_top = float(np.median(np.hypot(rh, p[:, 2])[head]))
++    a0, a1 = float(az.min()), float(az.max())
++    w = rays.window(a0 - 0.12, a1 + 0.12)                           # the azimuth window, ahead of the sensor
++    q = rays.xyz[w].astype(np.float64)
++    qh = np.hypot(q[:, 0], q[:, 1])
++    qe = np.degrees(np.arctan2(q[:, 2], qh))
++    qr = np.hypot(qh, q[:, 2])
++    tol = max(0.5, 0.02 * r_top)
++    same = np.abs(qr - r_top) <= tol                                # at the top's range
++    tall = tall_gap > 0
++    lim = None
++    if rays.h is not None and (window > 0 or tall):
++        qz = rays.h[w]
++        h_top = float(rays.h[idx].max())
++        vault = _local_vault(rays, idx, h_top, w[same])
++        if tall:
++            top, h_top, last = _follow(qe, same, qz, top, h_top)
++            if vault is None or h_top > vault - tall_gap:
++                return False              # not clearly under the vault (a column meets it), or no vault seen
++            lim = vault - vault_margin
++        else:
++            # no vault seen (the far field: what is over the track there lies beyond the sensor's range): no
++            # window, as 14.10 - it could reach the vault at the object's range unseen
++            lim = None if vault is None else min(h_top + window, vault - vault_margin)
++    up = (qe > top + 0.04) & (qe <= top + 2.5)   # above the top's own ring (the rings are >= 0.086 deg apart)
++    if not up.any():
++        return False
++    e1 = float(qe[up].min())
++    ring = up & (qe <= e1 + 0.05)
++    if (same & ring).any():
++        return False                      # the structure continues above the top: a column
++    if lim is not None:
++        # 15.10: its own face continues above a band that returns nothing - at its range and over its top ring's
++        # lateral extent (+- 0.15 m; the round lining beside it at its range is not its face): a column
++        d = rays.dy[idx][head]
++        qd = rays.dy[w]
++        if (same & up & (qz <= lim) & (qd >= float(d.min()) - 0.15) & (qd <= float(d.max()) + 0.15)).any():
++            return False
++    r = qr[ring]
++    beyond, nearer = int((r > r_top + tol).sum()), int((r < r_top - tol).sum())
++    free = _ring_between(rays, w, idx[head], ring, qe, top, e1, a0, a1) or (beyond >= min_returns
++                                                                             and beyond > nearer)
++    if free and tall:
++        # the object's own rays over its true top - within the azimuth span of its top ring's returns, under the
++        # vault margin's sight line at its range - every one of them returns beyond it
++        qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
++        s0, s1 = (float(az[head].min()), float(az[head].max())) if last is None else \
++            (float(qa[last].min()), float(qa[last].max()))
++        rail = float(np.median(p[:, 2] - rays.h[idx]))
++        e_lim = float(np.degrees(np.arctan2(lim + rail, float(np.median(rh[head])))))
++        free = _own_rays_pass(qa, qe, qr > r_top + tol, up & (qe <= e_lim), s0, s1)
++    return free
++
++
++def _own_rays_pass(qa: np.ndarray, qe: np.ndarray, beyond: np.ndarray, above: np.ndarray, s0: float,
++                   s1: float) -> bool:
++    """15.10 (P4): the object's own rays over its true top pass beyond it - on at least two rings over the window's
++    returns ``above`` the top, each ring's rays inside the top's azimuth span [``s0``, ``s1``] (on the ring's own
++    0.1 deg grid, its phase read from its returns over the window) each have a return within 0.03 deg, and every
++    such return is ``beyond`` the top. A ray without a return, at the top's range or nearer fails it: a column whose
++    face above the candidates' cut returns nothing (dark), or a narrower shaft above a wider top whose own rays meet
++    it while the rays beside it pass (a ray grazing it passes too: the span's own rays are all asked). Rings without
++    a ray inside the span are not counted."""
++    rings = 0
++    rest = above.copy()
++    while rest.any():
++        lev = rest & (qe <= float(qe[rest].min()) + 0.05)
++        rest &= ~lev
++        a = qa[lev]
++        phase = float(np.angle(np.exp(2j * np.pi * a / 0.1).mean()) / (2 * np.pi) * 0.1) % 0.1   # circular mean
++        k0, k1 = int(np.ceil((s0 - 0.005 - phase) / 0.1)), int(np.floor((s1 + 0.005 - phase) / 0.1))
++        if k1 < k0:
++            continue
++        for g in phase + 0.1 * np.arange(k0, k1 + 1):
++            near = np.abs(a - g) <= 0.03
++            if not near.any() or not beyond[lev][near].all():
++                return False
++        rings += 1
++    return rings >= 2
++
++
+ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cfg: ClusterConfig,
+-                     axis_valid: float, height_valid: Optional[float], lat_along: Optional[float] = None) -> str:
++                     axis_valid: float, height_valid: Optional[float], lat_along: Optional[float] = None,
++                     free_top: Optional[Callable[[], bool]] = None) -> str:
+     """Why a cluster is advisory although it may have gauge voxels ('' = it is an obstacle):
+     beyond the range where the axis or the height reference is supported, hanging entirely in
+-    the top zone (cables, lamps), or a v0.5 infrastructure signature (EXPERIMENTS.md 1b)."""
++    the top zone (cables, lamps), or a v0.5 infrastructure signature (EXPERIMENTS.md 1b).
++    ``free_top`` (13.10, ``cluster.column_free_max_top``): asked only when the column shape fits, True =
++    the cluster's top is seen free (:func:`top_is_free`), so it is not a column."""
+     size = b.size
+     hh = h[b.idx]
+     h_min, h_max = float(hh.min()), float(hh.max())
+@@ -367,7 +661,7 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
+         if col_w - float(hi - lo) >= cfg.column_width_trim_min_cut:
+             col_w = float(hi - lo)
+     if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and col_w < cfg.column_max_width \
+-            and (off_centre or col_w >= cfg.column_min_width):
++            and (off_centre or col_w >= cfg.column_min_width) and not (free_top is not None and free_top()):
+         return "column"                    # column, post, gate leg: taller than any listed object, narrow
+     # opt-in, off by default: a cluster as short as the organizers' test objects (and near enough)
+     # that the elevated or floating shape would demote stays an obstacle (the rules after them
+@@ -502,26 +796,154 @@ def _gauge_part(b: _Blob, in_gauge, inv, cfg: ClusterConfig) -> Optional[_Blob]:
+     return part
+ 
+ 
++def _split_part(b: _Blob, in_gauge, in_rail, inv, cfg: ClusterConfig) -> Optional[_Blob]:
++    """The 25.09 oversize split of :func:`_corridor_cluster`: the part in ``in_gauge``, else the part in
++    ``in_rail`` (``None`` = ``in_gauge``). Safety review of 26.09 (gauge.axis_union): the sensor-axis
++    envelope can take in a long line at the corridor edge beside an object, so the part grows past the
++    split length; the part inside the envelope measured from the rails alone is then the object.
++    ``None`` = the split refuses the cluster."""
++    part = _gauge_part(b, in_gauge, inv, cfg)
++    if part is None and in_rail is not None and in_rail is not in_gauge:
++        part = _gauge_part(b, in_rail, inv, cfg)
++    return part
++
++
++_SURFACE_MIN_POINTS = 20    # points of a structure-cut surface fit (5 coefficients x 4)
++# 14.10: |d y_w / dx| of a structure-cut surface at most this (45 deg to the track): the cut measures
++# "in front" as the lateral residual, which overstates the distance from the surface by
++# sqrt(1 + slope^2); a face across the track seen obliquely fits y(x, h) as well, and there a few cm
++# in front of it would pass structure_cut_tol (at slope 5, 0.16 m); and a near-exact fit of a few scan
++# lines has meaningless slopes (C, 14.10: 20 points over 8 m, slope -21). The walls of C where parts
++# were cut: |slope| <= 0.25
++_SURFACE_MAX_SLOPE = 1.0
++
++
++def _off_structure_parts(b: _Blob, xyz: np.ndarray, h: np.ndarray, in_gauge: np.ndarray, vox: np.ndarray,
++                         inv: np.ndarray, cfg: ClusterConfig) -> List[_Blob]:
++    """The parts of an oversize cluster that stand in front of the smooth surface it lies on (13.10,
++    ``structure_cut_tol``; judge 13.10 problem 2).
++
++    On a curve the lagging far axis lays the tunnel wall diagonally across the envelope (70-150 m on
++    roundT_pressureGate_roundT); an object there touches the wall within the DBSCAN radius (0.2-1.1 m at
++    80-120 m: no thin bridge to cut, no gap in x or height, the strict-gauge points alone still one 23-40 m
++    cluster) and the two are one cluster longer than ``max_extent``, dropped whole. The wall is a smooth
++    surface: its lateral position is a function of the along-track distance and the height (the round
++    tunnel's profile), ``y = a + b x + c x^2 + d h + e h^2`` in the vehicle frame, fitted robustly; the
++    wall's own points stay within 0.1 m of it (robust spread 0.08-0.11 m), an object stands off it toward
++    the sensor (it occludes the wall behind it; a niche behind the wall is not in front). The points at
++    least ``structure_cut_tol`` in front of the surface are linked again at the corridor radius (their
++    links to the surface cut); the parts at most ``oversize_split_max_length`` long along the track, not
++    flatter than ``min_height`` and with points in the strict gauge are returned. Nothing is returned
++    unless the cluster is such a surface: a robust spread of at most ``structure_cut_max_spread`` with at
++    least ``structure_cut_min_fit`` of its points on it, running along the track (``_SURFACE_MAX_SLOPE``:
++    within 45 deg of it, 14.10). Equipment fixed to the wall stands up to ~1.2 m
++    in front of it, so the tolerance only separates an object well clear of the wall; nearer it the
++    object and the wall equipment look alike and both stay dropped (configs/default.yaml). 14.10 (review):
++    the tolerance is also more than the wall stands outside the strict envelope (C: 2.25-2.3 m from the
++    axis, 1.05 m half width) - an object nearer the wall than that is outside the envelope, and where the
++    far axis lags it was placed inside it. A part needs at least ``structure_cut_min_points`` voxels
++    (14.10): the parts carved out of wall equipment on the empty recordings had 3-7. :func:`find_clusters`
++    calls this only for a cluster the 25.09 split refused (:func:`_split_part`); a cluster without a
++    strict-gauge point is not fitted. H2 (15.10): the part must also span one full sensor azimuth
++    step (two resolved columns); vertically stacked voxels on one ray column are not a resolved body."""
++    tol = float(cfg.structure_cut_tol)
++    # every part needs a strict-gauge point: a cluster without one is not fitted (on the ride 7 890 of the
++    # 14 141 clusters the split refused; the cut costs 0.43 ms per ride frame)
++    if tol <= 0 or b.idx.size < _SURFACE_MIN_POINTS or not in_gauge[b.idx].any():
++        return []
++    x = b.pts[:, 0].astype(np.float64)
++    y = b.pts[:, 1].astype(np.float64)
++    u = (x - x.mean()) / 10.0
++    fit = _surface_fit(u, h[b.idx].astype(np.float64), y, 0.5 * tol)
++    if fit is None:
++        return []
++    coef, res, spread, on = fit
++    if spread > cfg.structure_cut_max_spread or float(on.mean()) < cfg.structure_cut_min_fit:
++        return []
++    # the side the sensor sees the surface from: the ray to a point comes in from the side where y - y_w
++    # has the sign of (surface slope - ray slope) (the slopes of the two lines in the horizontal plane).
++    # The ray slope is the point's own: an object point near the tangent through the sensor (the
++    # surface seen at grazing incidence) may get the far side and stay merged, a point behind the
++    # surface never gets the near side
++    slope = (coef[1] + 2.0 * coef[2] * u) / 10.0
++    if float(np.abs(slope).max()) > _SURFACE_MAX_SLOPE:
++        return []
++    front = np.sign(slope - y / np.maximum(x, 1.0))
++    off = res * front > tol
++    if int(off.sum()) < cfg.min_samples or not in_gauge[b.idx[off]].any():
++        return []
++    idx = b.idx[off]
++    vi, back = np.unique(inv[idx], return_inverse=True)
++    if vi.size < max(cfg.structure_cut_min_points, cfg.min_samples):
++        return []
++    labels = dbscan_labels(_scaled(vox[vi], cfg.range_scale), cfg.eps, cfg.min_samples)[back.ravel()]
++    parts = []
++    for lab in np.unique(labels):
++        pidx = idx[labels == lab]
++        if lab < 0 or not in_gauge[pidx].any():
++            continue
++        part = _Blob.of(xyz, pidx, int(np.unique(inv[pidx]).size))
++        # 14.10 (structure_cut_min_points): a few voxels picked off a surface of hundreds are weak
++        # evidence; wall equipment gave parts of 3-7 voxels on the empty recordings, the objects 8-42
++        if part.n_vox < cfg.structure_cut_min_points:
++            continue
++        # Physical horizontal support, independent of duplicate echoes and voxel
++        # placement. A single vertical scan column can fill the voxel bar by itself.
++        azimuth = np.arctan2(part.pts[:, 1].astype(np.float64), part.pts[:, 0].astype(np.float64))
++        if float(np.ptp(azimuth)) < np.radians(AZIMUTH_STEP_DEG):
++            continue
++        if float(part.size[0]) <= cfg.oversize_split_max_length and float(part.size[2]) >= cfg.min_height:
++            parts.append(part)
++    return parts
++
++
++def _surface_fit(u: np.ndarray, hh: np.ndarray, y: np.ndarray, band: float):
++    """The robust fit of the structure cut (:func:`_off_structure_parts`): ``y = a + b u + c u^2 + d h + e h^2``
++    by least squares, four times on the points within ``max(3 spread, band)`` of the previous fit
++    (``spread`` = 1.4826 x the median absolute residual of the points it was fitted on). Returns
++    ``(coef, res, spread, on)`` with the residuals of all points and the final inlier mask, or ``None``:
++    fewer than ``_SURFACE_MIN_POINTS`` points (or inliers), a non-finite input, or a fit that does not
++    converge. A surface that is not a function of (x, h) - a face across the track, a floor or roof
++    strip, two walls - is not refused here: it fits badly, and the caller's spread and inlier tests
++    refuse it (rank-deficient columns, e.g. a constant height, give the minimum-norm solution)."""
++    if y.size < _SURFACE_MIN_POINTS or not (np.isfinite(u).all() and np.isfinite(hh).all() and np.isfinite(y).all()):
++        return None
++    A = np.stack([np.ones_like(u), u, u * u, hh, hh * hh], axis=1)
++    on = np.ones(y.size, dtype=bool)
++    coef = res = None
++    spread = 0.0
++    for _ in range(4):
++        if int(on.sum()) < _SURFACE_MIN_POINTS:
++            return None
++        try:
++            coef = np.linalg.lstsq(A[on], y[on], rcond=None)[0]
++        except np.linalg.LinAlgError:
++            return None
++        res = y - A @ coef
++        spread = 1.4826 * float(np.median(np.abs(res[on])))
++        on = np.abs(res) <= max(3.0 * spread, band)
++    if not (np.isfinite(coef).all() and np.isfinite(spread)):
++        return None
++    return coef, res, spread, on
++
++
+ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
+                       factor: float, factor_range: float, axis_valid: float,
+                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
+                       dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
+                       keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
+-                      weak_from: float = 0.0, ring: Optional[np.ndarray] = None) -> Optional[Cluster]:
++                      weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
++                      rays: Optional[FrameRays] = None) -> Optional[Cluster]:
+     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
+     (enough voxels in the strict gauge) and the reason that demotes it to advisory. ``in_rail``: the
+     strict membership from the rails only (``find_clusters``). With ``keep_thin`` a cluster flatter
+-    than ``min_height`` is described with ``thin`` set instead of dropped (:func:`find_clusters`)."""
++    than ``min_height`` is described with ``thin`` set instead of dropped (:func:`find_clusters`).
++    ``rays``: the whole frame for the column signature's free-top test (:func:`find_clusters`)."""
+     if in_rail is None:
+         in_rail = in_gauge
+     size = b.size
+     if size.max() > cfg.max_extent and cfg.oversize_split_max_length > 0:
+-        part = _gauge_part(b, in_gauge, inv, cfg)
+-        if part is None and in_rail is not in_gauge:
+-            # safety review of 26.09 (gauge.axis_union): the sensor-axis envelope can take in a long
+-            # line at the corridor edge beside an object, so the part grows past the split length;
+-            # the part inside the envelope measured from the rails alone is then the object
+-            part = _gauge_part(b, in_rail, inv, cfg)
++        part = _split_part(b, in_gauge, in_rail, inv, cfg)
+         if part is None:
+             return None
+         b = part
+@@ -580,7 +1002,27 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
+     wall_kept = spare and _is_infrastructure(size, lat_rules, h_max, cfg, lat_along=lat_along)
+     n_gauge = int(np.unique(inv[b.idx][in_gauge[b.idx]]).size)
+     zone = "gauge" if n_gauge >= gauge_min else "warning"
+-    reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid, lat_along)
++    free_top = None
++    seen_free: List[bool] = []
++    tall = cfg.column_free_tall_gap > 0 and h_max > cfg.column_free_max_top
++    if (rays is not None and cfg.column_free_max_top > 0 and (h_max <= cfg.column_free_max_top or tall)
++            and n_gauge >= cfg.column_free_min_core * b.n_vox):
++        # 13.10: a column-shaped cluster mostly inside the envelope, its top under the envelope top, is a
++        # column only if its top is not seen free (top_is_free; asked by the column rule alone). 14.10: the
++        # answer is kept (Cluster.spared): the tracker does not let one such hit release a column hold
++        # (tracking.column_free_min_spares). 15.10: the continuation over a window above the top
++        # (column_free_window), and a cluster reaching the candidates' cut followed to its true top
++        # (column_free_tall_gap)
++        cur = frame_idx[b.idx]
++        ask = partial(top_is_free, rays, cur[cur >= 0], cfg.column_free_min_returns,
++                      window=cfg.column_free_window, vault_margin=cfg.column_free_vault_margin,
++                      tall_gap=cfg.column_free_tall_gap if tall else 0.0)
++
++        def free_top() -> bool:
++            seen_free.append(bool(ask()))
++            return seen_free[-1]
++    reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid, lat_along,
++                              free_top)
+     demoted = zone == "gauge" and reason in SHAPE_SIGNATURES
+     if reason:
+         zone = "warning"
+@@ -613,5 +1055,5 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
+         intensity=float(intensity[b.idx].mean()) if intensity is not None else 0.0,
+         n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
+         wall_kept=wall_kept, demoted=demoted and not retro, thin=thin, weak=weak,
+-        ring_count=ring_count,
++        ring_count=ring_count, spared=bool(seen_free and seen_free[-1]),
+     )
+diff --git a/resense/config.py b/resense/config.py
+index 3700a67..4e9e96a 100644
+--- a/resense/config.py
++++ b/resense/config.py
+@@ -109,6 +109,9 @@ class TrackConfig:
+     axis_disagree_range: float = 60.0                # m, trusted range of the axis when the two boundaries disagree
+     axis_one_side_range: float = 120.0               # m, trusted range when only one boundary was fitted (it cannot tell a parallel wall from a diverging one); 0 = no cap
+     axis_disagree_hold: int = 0                      # 27.09 (P4 history, off; 0 = off): nominal frame periods for which the axis_disagree_range cap outlives the last frame whose two boundaries disagreed, on the frames that fit only one boundary (two agreeing boundaries end it): losing the contradicting boundary does not raise the trusted range 60 -> 120 m at once (the clear-run STOP of 26.09 at 53 m, mechanism 1); T1 (held until two agree, unbounded) cut the ride's range, this is bounded
++    axis_wall_drift: float = 0.8                     # 15.10 (judge 13.10 problem 4, on; 0 = off): m; the monitored range (health monitored_range / clear_distance; not the corridor, no decision) ends where a near tunnel boundary, followed outward from the rail range, has come this much nearer the axis than it runs there (track.wall_drift_range): the axis is off the track by about that much (a curve entry: the quadratic lags the transition and the outer wall crosses the corridor diagonally)
++    axis_wall_drift_max_offset: float = 3.5          # 15.10: m, only a boundary at most this far from the axis in the rail range is a reference (a single-track tube's wall; the far wall of a double-track tunnel or a hall need not be parallel)
++    axis_wall_drift_bins: int = 2                    # 15.10: consecutive populated boundary bins (walls_bin) that must lie axis_wall_drift nearer
+     # --- verification of the extrapolated bed beyond its fitted range (second height anchor) ---
+     floor_verify_enabled: bool = True                # confirm the extrapolated bed with the base of the side structures
+     floor_verify_band: Tuple[float, float] = (1.6, 3.5)  # m, |dy| band of walls / benches / ducts (outside the advisory corridor)
+@@ -197,6 +200,22 @@ class ClusterConfig:
+     # is re-described from that part; 0 = off (the whole cluster dropped)
+     oversize_split_max_length: float = 3.0
+     oversize_split_max_distance: float = 30.0  # m, ... and only when that part starts within this distance (the far corridor holds long sparse clusters with a few gauge voxels, round 1 of 25.09)
++    # 13.10 (judge 13.10 problem 2; finished 14.10 with the judge's required changes; 0 = off): a cluster
++    # larger than max_extent that the 25.09 split refused (dropped whole) is cut along the smooth surface it
++    # lies on (a tunnel wall laid across the envelope by the lagging far axis of a curve; not fitted without
++    # a strict-gauge point, not cut when steeper than 45 deg to the track): its points at least this far (m)
++    # in front of the surface, as seen from the sensor, are linked again on their own and the parts at most
++    # oversize_split_max_length long, not flatter than min_height, with points in the strict gauge and at
++    # least structure_cut_min_points voxels are described as clusters (clustering._off_structure_parts).
++    # 14.10 (review): 1.3 m (0.8 on 13.10), more than the equipment fixed to the wall (0.8-1.2 m) and more
++    # than C's wall stands outside the strict envelope (2.25-2.3 m from the axis): at 0.8 an object 0.95-1.2 m
++    # in front of the wall, outside the envelope, was placed inside it by the lagging axis (false STOPs); no
++    # gain nearer the wall, nor at 100-150 m on C, where the lagging axis puts the judge's box within 0.2-0.6 m
++    # of the wall (configs/default.yaml has the measurements)
++    structure_cut_tol: float = 1.3
++    structure_cut_max_spread: float = 0.12  # m, ... only when the cluster is such a surface: robust spread of its points about the fit at most this
++    structure_cut_min_fit: float = 0.8      # ... and at least this fraction of its points on the surface
++    structure_cut_min_points: int = 8       # 14.10 (0 = no bar): ... and a part at least this many voxels (the accumulated near bar, min_points 5 x 1.5): the parts carved out of wall equipment on the empty recordings had 3-7, the judge's objects 8-42
+     # on since 25.09 (P3): true = the distance of a cluster inside the strict gauge is that of its nearest
+     # point inside the gauge, not of a point in the advisory margin it touches; false = the nearest point (v0.1).
+     # Since the review of 25.09 "inside" is the envelope widened by the axis-uncertainty margin
+@@ -238,6 +257,43 @@ class ClusterConfig:
+     column_width_trim: float = 0.05     # 27.09 (P4 history, on; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
+     column_width_trim_min_cut: float = 0.25  # 27.09: m, the trimmed width is used only when it is at least this much narrower than the box (sparse tails: a joined fragment); a dense body keeps its width
+     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
++    # 13.10 (the judge's 0.3 x 0.3 x 2.8 m pole: CAUTION, never STOP 0.7 m off the axis; 0 = off): a column
++    # continues up to the vault, an object standing in the envelope ends inside it. The column signature
++    # does not demote a cluster whose top is seen free (clustering.top_is_free: the rays right above it pass
++    # over it), whose top is at most column_free_max_top and at least column_free_min_core of whose voxels
++    # are inside the strict envelope; every other rule still applies. 14.10: the ring between the top and the
++    # first ring above it that returns is read from the frame's channel ids (the ring table only without them,
++    # set O; a mount tilt moves the rings off the table); 15.10: ids only where they number the rings in elevation
++    # order, otherwise a ring the frame itself shows beside the object - no table (clustering._ring_between: a
++    # 64-ring sensor read through the Pandar128's table saw an empty ring above an occluded column). Full
++    # regression gate PASS, every gate frame identical
++    # to the sealed detector; the judge's pole 0.7 m off the axis 0 -> 136 STOP frames of 176, on the axis
++    # 82 -> 157 of 177 (configs/default.yaml)
++    column_free_max_top: float = 2.95  # m, under the 3.0 m envelope top, where the candidates are cut
++    column_free_min_core: float = 0.5  # share of the cluster's voxels inside the strict envelope (a structure at its edge, a platform or canopy edge at 0.8-1.2 m: 0.09-0.56)
++    column_free_min_returns: int = 2   # returns beyond the top on the ring above it (one ray: the recordings hold each echo twice)
++    # 15.10 (review round 3, P1; 0 = the first ring with returns above the top only, as 14.10): any return at the
++    # top's range over the cluster's azimuth window, within its top ring's lateral extent +- 0.15 m, up to this many m
++    # above its top is continuation (a column whose face right above the top returns nothing - dark paint, glass, a
++    # sign - read as free on 14.10), but never up to the local vault (clustering._local_vault: the lowest return over
++    # the axis +- 0.5 m standing over free space, 15 % before to 15 % beyond the object, measured in the frame: the
++    # far field's heights drift with the rail level) less column_free_vault_margin; no vault seen, no window. The
++    # recordings' vault over the envelope in the near field (10-50 m, p5): round tunnels 3.79-3.81 m (crown 4.1-4.3),
++    # square 3.55-3.77, the ride 3.59-4.02, stations / switches down to 3.0 (structures over the track); 0.3-0.7 m
++    # lower at 110-150 m (the drift). The review's dark-band what-if (0.6 deg above every free-top cluster's top):
++    # ride piece 1 / 3 STOP frames sealed 14 / 2 -> 14.10 30 / 13 -> 23 / 7, R4 49 (sealed); what remains is at
++    # 107-141 m, where the band spans 1.1-1.5 m and reaches the vault margin. Every judge probe and the plain ride
++    # pieces as 14.10, frame for frame
++    column_free_window: float = 1.2
++    column_free_vault_margin: float = 0.3   # m under the local vault (read over the axis: a round vault is 0.2-0.3 m lower over the envelope edge; a ray meeting it 2 % beyond the object sits 0.05 m under it there)
++    # 15.10 (P4, opt-in, NOT shipped: 0 = off): a column-shaped cluster reaching the candidates' cut (top above
++    # column_free_max_top) is followed above it along its own returns at its range to its true top (top_is_free),
++    # which must lie at least this far (m) under the local vault, every one of its own rays above it (two rings at
++    # least) passing beyond it (a column with a dark face returns nothing on them). Measured at 0.3 m: no gain on the
++    # judge's 3.2 / 3.6 m poles on A (square tunnel, ceiling 3.8-4.0 m: little room for the rays above the pole), the
++    # 3.2 m pole 0.7 m off the axis 24 -> 23 STOP frames (one ring: 24 -> 18, worse than sealed), and under the
++    # review's dark-band what-if one spare of a real ride column added a 9-frame STOP episode (one ring)
++    column_free_tall_gap: float = 0.0
+     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
+     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
+     floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall
+@@ -364,6 +420,14 @@ class TrackingConfig:
+     ego_veto_min_travel: float = 4.0
+     ego_veto_min_distance: float = 25.0
+     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
++    # 14.10 (review of the 13.10 free-top test; 0 / 1 = off, every spare believed): a cluster the column rule
++    # fits but cluster.column_free_max_top spares (its top seen free; Cluster.spared) is believed only when the
++    # track it continues had at least this many - 1 such hits among its last zone_window hits; alone it is the
++    # column the column rule made of it (reason column, zone warning: the column hold, the zone vote and
++    # explained_run see what they saw before 13.10). One spare of a noisy frame turned column tracks into
++    # STOPs (the standing train with 20-30 % point dropout, roundT_doubleT pitched -2 deg); the judge's pole,
++    # spared hit after hit, is believed from its second spared hit (configs/default.yaml has the measurements)
++    column_free_min_spares: int = 2
+     max_misses: int = 3            # frames a track survives without a match
+     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
+     stop_keep_low_s: float = 0.3  # seconds since a clean low hit during which matching current straddle returns may continue an existing low STOP; 0 = off
+diff --git a/resense/detector.py b/resense/detector.py
+index 966099d..8a91665 100644
+--- a/resense/detector.py
++++ b/resense/detector.py
+@@ -189,6 +189,8 @@ class Detector:
+         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
+         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
+         self._frame_ring: Optional[np.ndarray] = None
++        self._frame_xyz: Optional[np.ndarray] = None  # 13.10: this frame's cloud for the column free-top test (cluster.column_free_max_top)
++        self._frame_hd: Optional[tuple] = None  # 15.10: its heights above the rail head and laterals (dy_all, h_all) for that test
+         self._low_height: List[Cluster] = []  # current straddle evidence just below its clean top-height threshold
+         self._prev_stamp: Optional[float] = None
+         self._previous_latency_ms: Optional[float] = None  # previous completed process interval
+@@ -213,6 +215,8 @@ class Detector:
+         self.bed.reset()
+         self._thin = []
+         self._frame_ring = None
++        self._frame_xyz = None
++        self._frame_hd = None
+         self._low_height = []
+         self._prev_stamp = None
+         self._previous_latency_ms = None
+@@ -265,8 +269,10 @@ class Detector:
+         self._frame_ring = frame.ring
+         dt = self._frame_dt(frame.stamp)
+         xyz = self._fit_track(frame.xyz, self._periods())
++        self._frame_xyz = xyz
+         t1 = time.perf_counter()
+         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
++        self._frame_hd = (dy_all, h_all)
+         trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
+         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
+         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
+@@ -299,8 +305,10 @@ class Detector:
+         cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
+         t6 = time.perf_counter()
+         mount = self.calib.state.to_dict()
++        drift = self.track.wall_drift
+         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
+-                                    previous_latency_ms, mount, gauge[0].distance if gauge else None, cap)
++                                    previous_latency_ms, mount, gauge[0].distance if gauge else None, cap,
++                                    wall_drift=drift if drift < 1e9 else None)
+         health["latency_basis"] = "previous_complete_process"
+         health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
+         t7 = time.perf_counter()
+@@ -562,7 +570,8 @@ class Detector:
+         """Voxelise, cluster, describe and filter: the corridor candidates (count thresholds
+         scaled for merged frames), the low candidates on their own with a tighter radius, the
+         straddle candidates; then the low clusters that are the foot or the lower part of a
+-        corridor object are dropped."""
++        corridor object are dropped. The corridor clustering gets this frame's cloud for the column
++        signature's free-top test (13.10, ``cluster.column_free_max_top``)."""
+         cfg = self.cfg
+         acc = cfg.accumulation
+         self._low_height = []
+@@ -575,6 +584,7 @@ class Detector:
+             if reg is not None:
+                 dy_alt = corr.dy + reg[1]
+         keep_thin = cfg.tracking.stop_keep_thin > 0 or cfg.tracking.thin_far_min_distance > 0
++        hd = self._frame_hd or (None, None)
+         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
+                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
+                                 min_points_factor=factor, factor_range=acc.min_range,
+@@ -582,7 +592,9 @@ class Detector:
+                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
+                                 dy_alt=dy_alt, keep_thin=keep_thin,
+                                 weak_from=cfg.tracking.thin_far_min_distance
+-                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0)
++                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
++                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0 else None,
++                                frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1])
+         if keep_thin:
+             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
+             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
+@@ -688,8 +700,10 @@ class Detector:
+             # 26.09 (safety review): a blob kept only by the wall keep (cluster.wall_keep_gauge_voxels)
+             # counts only as an obstacle, as for a straddling cluster: demoted (a column), it must not
+             # remove a low object beside it
++            # 14.10 (review): so does a part the structure cut carved out of an oversize cluster
++            # (Cluster.cut): the sealed detector dropped that cluster whole, it removed nothing
+             dup = any(_overlap(c, k) for k in clusters
+-                      if not (strad or k.wall_kept) or (k.zone == "gauge" and not k.reason))
++                      if not (strad or k.wall_kept or k.cut) or (k.zone == "gauge" and not k.reason))
+             if not dup:
+                 keep.append(c)
+         return keep
+@@ -848,8 +862,7 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
+             continue
+         if (t.hits if t is not None else 1) < hcfg.clear_cap_min_hits:
+             continue
+-        if hcfg.clear_cap_skip_columns and (c.reason == "column" or (
+-                t is not None and t.column_hold > 0 and sum(t.column_hist) >= t.column_hold)):
++        if hcfg.clear_cap_skip_columns and (c.reason == "column" or (t is not None and t.column_held)):
+             continue
+         touch = c.n_gauge >= hcfg.clear_cap_min_gauge
+         if not touch and poly is not None and c.points_idx.size:
+@@ -865,8 +878,7 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
+                 continue
+             if t.last.n_gauge < hcfg.clear_cap_min_gauge:
+                 continue
+-            if hcfg.clear_cap_skip_columns and (t.last.reason == "column" or (
+-                    t.column_hold > 0 and sum(t.column_hist) >= t.column_hold)):
++            if hcfg.clear_cap_skip_columns and (t.last.reason == "column" or t.column_held):
+                 continue
+             d = float(t.last.distance + (t.centroid[0] - t.last.centroid[0]))
+             best = d if best is None else min(best, d)
+diff --git a/resense/health.py b/resense/health.py
+index 56f1357..0913487 100644
+--- a/resense/health.py
++++ b/resense/health.py
+@@ -23,7 +23,9 @@ per frame and without touching any detection:
+   (``track.floor_shadow_height``) found the shadow of a large near object, held the previous bed,
+   or was released after ``track.floor_shadow_max_hold`` held frames in a row: counters only;
+ * ``monitored_range`` - an estimate based on visibility and the supported model this frame:
+-  ``min(visibility, trusted axis range, trusted height-reference range, gauge range)``; and
++  ``min(visibility, trusted axis range, trusted height-reference range, gauge range)``, since 15.10
++  also no farther than where the axis contradicts a near tunnel wall (``wall_drift``,
++  ``track.axis_wall_drift``: the curve entry whose lagging axis leaves the track); and
+   ``clear_distance`` - the nearest confirmed obstacle, or ``monitored_range`` when there is
+   none; with ``clear_cap`` (on since 25.09, round 2) also no farther than the nearest unconfirmed
+   or advisory candidate touching the envelope (``candidate_distance``, from the detector).
+@@ -131,9 +133,14 @@ class HealthMonitor:
+ 
+     def update(self, xyz: np.ndarray, meta: dict, track, gauge: GaugeConfig, trusted_range: float,
+                rails_min_score: float, latency_ms: Optional[float], calibration: Optional[dict] = None,
+-               obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None) -> dict:
++               obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None,
++               wall_drift: Optional[float] = None) -> dict:
+         """Update scene health once; append a supplied latency sample, or none for ``None``.
+ 
++        ``wall_drift`` (15.10, ``track.axis_wall_drift``): the X from which the axis contradicts a
++        near tunnel boundary (``TrackModel.wall_drift``); the monitored range ends there and the
++        output carries it as ``wall_drift`` (only when given).
++
+         Numeric callers retain their existing supplied-interval semantics. The detector
+         supplies its previous completed call so timing includes the health update itself.
+         The latency warning still requires ten samples in the configured window.
+@@ -204,6 +211,8 @@ class HealthMonitor:
+                 flag(1, calibration["message"])
+ 
+         monitored = float(max(0.0, min(vis, trusted_range, gauge.range_max)))
++        if wall_drift is not None:              # 15.10: the corridor beyond is not where the track is
++            monitored = float(max(0.0, min(monitored, wall_drift)))
+         if level >= 2:
+             monitored = 0.0                     # an input fault: nothing is verified
+         clear = monitored if obstacle_distance is None else float(min(obstacle_distance, monitored))
+@@ -219,4 +228,6 @@ class HealthMonitor:
+         }
+         if cfg.clear_cap:
+             out["candidate_distance"] = None if candidate_distance is None else round(float(candidate_distance), 1)
++        if wall_drift is not None:
++            out["wall_drift"] = round(float(wall_drift), 1)
+         return out
+diff --git a/resense/track.py b/resense/track.py
+index 7559479..a50c7f9 100644
+--- a/resense/track.py
++++ b/resense/track.py
+@@ -49,6 +49,7 @@ class TrackModel:
+     disagree_left: int = 0           # 27.09 (axis_disagree_hold): nominal frame periods the disagreement cap still applies to one-boundary frames (not reported)
+     axis_valid_both: float = 1e9     # 25.09: X up to which BOTH fitted boundaries support the axis (= axis_valid with one or none); read only with cluster.far_axis_both_sides 1, not serialised
+     axis_valid_bent: float = 1e9     # 25.09: the same without the straight bonus, on a bent axis with two boundaries only (1e9 otherwise); cluster.far_axis_both_sides 2, not serialised
++    wall_drift: float = 1e9          # 15.10 (axis_wall_drift): X where a near tunnel boundary has come axis_wall_drift nearer the axis than in the rail range (1e9 = none): the monitored range ends there
+ 
+     def floor_z(self, X) -> np.ndarray:
+         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
+@@ -102,6 +103,8 @@ class TrackModel:
+             **({"floor_shadow": round(float(self.floor_shadow), 1), "floor_held": bool(self.floor_held),
+                 "floor_hold_run": int(self.floor_hold_run)}
+                if self.floor_shadow > 0 else {}),
++            # 15.10 (additive, only in a frame with a wall drift)
++            **({"wall_drift": round(float(self.wall_drift), 1)} if self.wall_drift < 1e9 else {}),
+         }
+ 
+ 
+@@ -391,7 +394,7 @@ def _far_supported_side(sides: dict, cfg: TrackConfig) -> Optional[str]:
+ 
+ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
+                              t_fixed: Optional[float] = None, floor_z_all: Optional[np.ndarray] = None,
+-                             far_support_run: int = 0):
++                             far_support_run: int = 0, boundaries: Optional[dict] = None):
+     """Yaw (tan) and curvature of the track from the left/right tunnel boundaries.
+ 
+     Walls, column rows and cable ducts run parallel to the track, so their curvature is the
+@@ -404,7 +407,9 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
+     when both were fitted; ``x_valid`` / ``x_valid_min`` are the last observed bin of the longer
+     / shorter side kept; ``run`` counts the consecutive frames (``far_support_run`` of the
+     previous frame + 1, or 0) in which the ``walls_min_far_support`` condition held: the rule
+-    applies from the ``walls_far_support_frames``-th.
++    applies from the ``walls_far_support_frames``-th. ``boundaries`` (15.10, ``axis_wall_drift``):
++    a dict that receives per side the boundary bins as ``(centres, absolute Y)``, populated bins
++    only, nearest first, whether or not the side's fit succeeded (:func:`wall_drift_range`).
+     """
+     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
+     x0, x1 = cfg.walls_range
+@@ -438,6 +443,8 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
+         ok = np.isfinite(q)
+         if not ok.any():
+             continue
++        if boundaries is not None:
++            boundaries[name] = (centres[ok], yq[ok])
+         fit = _fit_side(centres[ok], yq[ok], cfg, float(np.mean(q[ok])), t_fixed)
+         if fit is not None:
+             sides[name] = fit
+@@ -474,6 +481,70 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
+     return c1, c2, quality, x_valid, n_sides, disagreement, x_valid_min, run
+ 
+ 
++_DRIFT_GAP_BINS = 3        # 15.10 (axis_wall_drift): a boundary is followed outward while its populated bins are at most this many walls_bin apart
++_DRIFT_NEAR_MAD = 0.25     # m, the boundary's offset in the rail range must be this consistent (median absolute deviation) to be the reference
++_DRIFT_NEAR_SLOPE = 0.02   # and run this parallel to the rails there (|slope| of a line through its offsets: 0.4 m over 20 m)
++_DRIFT_MAX_CURVATURE = 2e-3  # 1/m (R 500 m): a curvature error this large moves a boundary by at most this x X x dX between bins at X; a faster change is a structure edge
++
++
++def wall_drift_range(boundaries: dict, model: TrackModel, cfg: TrackConfig) -> float:
++    """The X from which the fitted axis contradicts a near tunnel boundary (15.10, ``axis_wall_drift``),
++    or 1e9.
++
++    A boundary within ``axis_wall_drift_max_offset`` of the axis in the rail range (the wall of a
++    single-track tube, a column row: structures the gauge keeps parallel to the track) runs at the same
++    offset along the whole track. Its median offset from ``model``'s axis over the bins within
++    ``rails_range[1]``, where the rails fix the axis, is the reference (at least three bins, median
++    absolute deviation at most ``_DRIFT_NEAR_MAD``, a line through the ones within that of the
++    reference sloping at most ``_DRIFT_NEAR_SLOPE``: parallel to the rails; a boundary closing in
++    already there is a structure crossing, not a wall). The boundary is then followed outward while its
++    populated bins are at most ``_DRIFT_GAP_BINS`` bins apart. A change between two followed bins faster
++    than a curvature error of ``_DRIFT_MAX_CURVATURE`` can move it is a structure edge (a gate, a
++    platform screen, a niche): the reference moves with it. Where the boundary is more than
++    ``axis_wall_drift`` nearer the axis than the reference in ``axis_wall_drift_bins`` consecutive bins,
++    the axis there is off the track by about that much, or the boundary is not parallel to it: either
++    way the corridor beyond is not where the track is. The near edge of the first of those bins is
++    returned (the smallest over the sides). At the entry of a curve the quadratic axis lags the track
++    (the curvature of a transition grows with the distance, the fit's does not), the outer wall runs
++    diagonally across the corridor and an object on the track beyond the crossing is outside the
++    corridor (roundT_pressureGate_roundT frames 57-117: 1.0-2.4 m at 100 m; at the returned X the
++    axis is 0.7-1.1 m off the wall-referenced track). ``boundaries`` is
++    :func:`estimate_axis_from_walls`'s; a boundary that moves away from the axis says nothing (a
++    niche, a hall, a diverging tunnel)."""
++    best = 1e9
++    near_max = cfg.rails_range[1]
++    c, t, k2 = model.center_coefs()
++    for x, y in boundaries.values():
++        x = np.asarray(x, dtype=np.float64)
++        dy = np.asarray(y, dtype=np.float64) - (c + t * x + k2 * x * x)
++        near = x <= near_max
++        if int(near.sum()) < 3:
++            continue
++        a = dy * np.sign(np.median(dy[near]))          # offset from the axis, positive towards the boundary
++        ref = float(np.median(a[near]))
++        if ref <= 0.0 or ref > cfg.axis_wall_drift_max_offset or float(np.median(np.abs(a[near] - ref))) > _DRIFT_NEAR_MAD:
++            continue
++        inl = near & (np.abs(a - ref) <= _DRIFT_NEAR_MAD)  # the slope without the odd near bin (a structure at 6-10 m)
++        if int(inl.sum()) < 3 or abs(float(np.polyfit(x[inl], a[inl], 1)[0])) > _DRIFT_NEAR_SLOPE:
++            continue
++        prev, prev_a, run, first = float(x[near][-1]), float(a[near][-1]), 0, 0.0
++        for xi, ai in zip(x[~near], a[~near]):
++            if xi - prev > _DRIFT_GAP_BINS * cfg.walls_bin:
++                break                                   # the boundary is lost (occluded): no evidence beyond
++            if abs(ai - prev_a) > _DRIFT_MAX_CURVATURE * xi * (xi - prev):
++                ref += ai - prev_a                      # a structure edge, not the axis drifting
++            prev, prev_a = float(xi), float(ai)
++            if ai < ref - cfg.axis_wall_drift:
++                run += 1
++                first = first if run > 1 else float(xi) - 0.5 * cfg.walls_bin
++                if run >= cfg.axis_wall_drift_bins:
++                    best = min(best, first)
++                    break
++            else:
++                run = 0
++    return best
++
++
+ def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
+                                floor_z_all: Optional[np.ndarray] = None) -> float:
+     """X up to which the linearly extrapolated bed is confirmed by the base of the side
+@@ -880,8 +951,10 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
+             model.rail_offset = a_r * prior.rail_offset + (1 - a_r) * rails.rail_offset
+             if cfg.rails_yaw_enabled and rails.tan_yaw is not None:
+                 t_fixed = float(np.clip(rails.tan_yaw, -cfg.walls_max_yaw, cfg.walls_max_yaw))
++    bounds: Optional[dict] = {} if cfg.walls_enabled and cfg.axis_wall_drift > 0 else None
+     if cfg.walls_enabled:
+-        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf, far_support_run=prior.far_support_run)
++        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf, far_support_run=prior.far_support_run,
++                                       boundaries=bounds)
+         if est is not None:
+             tan_yaw, curv, q, x_valid, n_sides, disagreement, x_valid_min, model.far_support_run = est
+             model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(tan_yaw)
+@@ -943,5 +1016,8 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
+             model.curvature = float(np.clip(model.curvature, prev.curvature - r, prev.curvature + r))
+     if cfg.rails_far_check_enabled and rails is not None and cfg.walls_enabled:
+         _check_far_rails(xyz, model, cfg, rails, ring)
++    if bounds:
++        # 15.10: against the final axis (smoothed, rate-limited), the one the corridor uses
++        model.wall_drift = wall_drift_range(bounds, model, cfg)
+     model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)
+     return model
+diff --git a/resense/tracking.py b/resense/tracking.py
+index 1c21a70..202cb06 100644
+--- a/resense/tracking.py
++++ b/resense/tracking.py
+@@ -82,6 +82,7 @@ class Track:
+     reported: bool = False          # reported as an obstacle / advisory after the last update
+     column_hist: List[bool] = field(default_factory=list)  # last zone_window hits: demoted as a column?
+     column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
++    spare_hist: List[bool] = field(default_factory=list)  # 14.10: last zone_window hits: column-shaped, the top seen free (Cluster.spared)?
+     hold: int = 0                   # 26.09: frames left of a calibration re-seed hold window (Tracker.reseed)
+     seen_reported: bool = False     # 26.09: reported in the frame of its last match (health.clear_cap_lost)
+     kept: bool = False              # 26.09 (stop_keep_*): the last hit kept a reported obstacle only by the keep rules
+@@ -308,6 +309,7 @@ class Tracker:
+                     break
+                 i, j = np.unravel_index(np.argmin(d), d.shape)
+                 t, cl = self.tracks[i], clusters[j]
++                self._uncorroborated_spare(cl, t.spare_hist)
+                 t.since_clean = 0.0 if cl.zone == "gauge" else t.since_clean + kdt
+                 keep = self._keeps(t, cl)
+                 t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid) if t.hits > 1 else (cl.centroid - t.centroid)
+@@ -328,6 +330,7 @@ class Tracker:
+                 t.gauge_hits += int(g)
+                 t.zone_hist = (t.zone_hist + [g])[-zw:]
+                 t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
++                t.spare_hist = (t.spare_hist + [cl.spared])[-zw:]
+                 t.hit_hist = (t.hit_hist + [True])[-hw:]
+                 if nk:
+                     t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
+@@ -362,12 +365,14 @@ class Tracker:
+         # new tracks
+         for j, cl in enumerate(clusters):
+             if not matched_c[j]:
++                self._uncorroborated_spare(cl, [])
+                 self.tracks.append(Track(
+                     id=self._next_id, centroid=cl.centroid, velocity=np.zeros(3),
+                     confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
+                     gauge_hits=int(cl.zone == "gauge"), zone_hist=[cl.zone == "gauge"], hit_hist=[True],
+                     span_s=dt, zone_min_fraction=c.zone_min_fraction, zone_min_votes=int(c.zone_min_votes),
+                     column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
++                    spare_hist=[cl.spared],
+                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
+                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
+                     obs=[observation(cl)] if self.record else [],
+@@ -380,7 +385,8 @@ class Tracker:
+                       confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
+                       gauge_hits=1, zone_hist=[True], hit_hist=[True], span_s=dt,
+                       zone_min_fraction=c.zone_min_fraction, column_hist=[False],
+-                      column_hold=int(c.column_hold), near_hist=[False] if nk else [], near_hits=nk,
++                      column_hold=int(c.column_hold), spare_hist=[False],
++                      near_hist=[False] if nk else [], near_hits=nk,
+                       since_clean=float("inf"))
+             self._note(t, cl, True, zw, "far_thin")
+             self.tracks.append(t)
+@@ -521,6 +527,7 @@ class Tracker:
+             t.gauge_hits += 1
+             t.zone_hist = (t.zone_hist + [True])[-zw:]
+             t.column_hist = (t.column_hist + [False])[-zw:]
++            t.spare_hist = (t.spare_hist + [False])[-zw:]
+             t.hit_hist = (t.hit_hist + [True])[-hw:]
+             if nk:
+                 t.near_hist = (t.near_hist + [False])[-nk:]
+@@ -635,6 +642,7 @@ class Tracker:
+             t.gauge_hits += 1
+             t.zone_hist = (t.zone_hist + [True])[-zw:]
+             t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
++            t.spare_hist = (t.spare_hist + [cl.spared])[-zw:]
+             t.hit_hist = (t.hit_hist + [True])[-hw:]
+             if nk:
+                 t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
+@@ -646,6 +654,18 @@ class Tracker:
+             d[:, b] = np.inf
+         return used
+ 
++    def _uncorroborated_spare(self, cl: Cluster, spare_hist: List[bool]) -> None:
++        """14.10 (``tracking.column_free_min_spares``, review of the 13.10 free-top test): a cluster the column
++        rule fits but the free-top test spared (``Cluster.spared``) is believed only when the track it continues
++        had at least ``column_free_min_spares`` - 1 such hits among its last ``zone_window`` hits; otherwise it is
++        the column the column rule made of it (reason ``column``, zone ``warning``: the column hold, the zone
++        vote and ``explained_run`` see what they saw before 13.10). One spare of a noisy frame does not turn a
++        column track into a STOP (point dropout at the standing train, a mount pitch on roundT_doubleT); the
++        judge's pole, spared hit after hit, is believed from its second spared hit."""
++        n = int(self.cfg.column_free_min_spares)
++        if cl.spared and n > 1 and sum(spare_hist) < n - 1:
++            cl.reason, cl.zone, cl.demoted = "column", "warning", False
++
+     def _note(self, t: Track, cl: Cluster, far_thin: bool, zw: int, source: str = "ordinary") -> None:
+         """Record hit provenance and the existing far-evidence approach history.
+ 
+@@ -817,6 +837,7 @@ class Tracker:
+             t.gauge_hits += 1
+             t.zone_hist = (t.zone_hist + [True])[-zw:]
+             t.column_hist = (t.column_hist + [False])[-zw:]
++            t.spare_hist = (t.spare_hist + [False])[-zw:]
+             t.hit_hist = (t.hit_hist + [True])[-hw:]
+             if nk:
+                 t.near_hist = (t.near_hist + [False])[-nk:]
+diff --git a/ros2_ws/src/resense_ros/config/detector.yaml b/ros2_ws/src/resense_ros/config/detector.yaml
+index 4cc4fc6..64f1c1c 100644
+--- a/ros2_ws/src/resense_ros/config/detector.yaml
++++ b/ros2_ws/src/resense_ros/config/detector.yaml
+@@ -81,6 +81,9 @@ resense:
+     axis_disagree_range: 60.0
+     axis_one_side_range: 120.0
+     axis_disagree_hold: 0          # 27.09 (P4 history, off; 0 = off): nominal frame periods the axis_disagree_range cap outlives the last frame with two disagreeing boundaries, on frames with one boundary (two agreeing end it): losing the contradicting boundary does not raise the trusted range at once (clear-run STOP of 26.09, mechanism 1)
++    axis_wall_drift: 0.8           # 15.10 (judge 13.10 problem 4, on; 0 = off): m; the monitored range (health monitored_range / clear_distance; not the corridor, no decision) ends where a near tunnel boundary, followed outward from the rail range, has come this much nearer the axis than it runs there (track.wall_drift_range): at a curve entry the quadratic axis lags the transition and the outer wall crosses the corridor; there the axis is 0.7-1.1 m off the wall-referenced track (roundT_pressureGate_roundT). Judge C probes: GO with the range past the object 26 -> 10 frames (person on the axis; on the wall-referenced track 26 -> 4), none left within 142 m; STOP unchanged. Cost: the ride's range capped in 13.8 % of frames (median at 94 m, 3.8 % of the range); also capping the corridor (beyond_axis) cost C's person 55 -> 43 STOP frames: not taken
++    axis_wall_drift_max_offset: 3.5  # 15.10: m, only a boundary at most this far from the axis in the rail range is a reference (a single-track tube's wall; a double-track tunnel's far wall or a hall need not be parallel)
++    axis_wall_drift_bins: 2        # 15.10: consecutive populated boundary bins (walls_bin) that must lie axis_wall_drift nearer
+     floor_verify_enabled: true
+     floor_verify_band:
+     - 1.6
+@@ -133,6 +136,10 @@ resense:
+     max_extent: 8.0
+     oversize_split_max_length: 3.0 # on since 25.09 (P3; 0 = off): a cluster larger than max_extent keeps its part inside the strict gauge when that part is at most this long (an object touching a line at the corridor edge)
+     oversize_split_max_distance: 30.0 # 25.09 (P3): ... and starts within this distance (m; beyond, long sparse far clusters gave a false alarm)
++    structure_cut_tol: 1.3         # 13.10 (judge 13.10 problem 2; finished 14.10 with the judge's required changes; 14.10 review: 0.8 -> 1.3; 0 = off): a cluster larger than max_extent that the 25.09 split refused (dropped whole) is cut along the smooth surface it lies on (y = a + b x + c x^2 + d h + e h^2 in the vehicle frame, robust fit; not fitted without a strict-gauge point; not cut when the surface is steeper than 45 deg to the track): its points at least this far (m) in front of the surface as seen from the sensor are linked again on their own, and the parts at most oversize_split_max_length long, not thinner than min_height, with strict-gauge points and at least structure_cut_min_points voxels are described as clusters, every rule applied (clustering._off_structure_parts). A cluster whose split part was accepted keeps the split's verdict. On roundT_pressureGate_roundT the lagging far axis lays the tunnel wall across the envelope at 70-150 m; the judge's person-size box placed on that axis touches it and the 36-55 m cluster was dropped: GO / unrelated CAUTION at 82-120 m. The box stands 0.2-0.3 m in front of the fitted wall at 120 m, 0.6 at 109 m, 0.8 at 100 m, 1.2 at 92 m, 1.6-1.8 at 83-86 m. 14.10 review: at 0.8 m (13.10) objects standing 0.95-1.2 m in front of the outer wall - outside the envelope, in its advisory band, where the trusted near axis puts them (C's wall 2.25-2.3 m from the axis at 56-70 m) - were carved out and placed inside it by the lagging axis: wall-anchored ray-cast boxes yawed with the wall, STOP frames attributable to the object sealed -> 0.8 -> 1.3: person-size box 1.0 m from the wall 0 -> 21 -> 0 (with --dropout the same), 1.1 m 0 -> 15 -> 0, 2.6 m mast 1.0 m 0 -> 9 -> 0, sign post 0.95 m 0 -> 5 -> 0, column to the vault 1.0 m 0 -> 8 -> 0 (its face above 2.6 m dark: 0 -> 7 -> 0), cabinets 0.85-1.0 m 0 -> 0 -> 0; the mast 1.2 m off (at the envelope edge: lateral 1.03-1.11 at 60-68 m) 0 -> 27 -> 2. 1.3 m is more than the wall equipment (0.8-1.2 m) and more than C's wall stands outside the strict envelope (1.05 m); 1.2: the same 0s, mast 1.2 m 8; 1.0: 0 STOP frames but 1-3 single-frame parts per object, mast 1.2 m 19. Judge ray-cast on C (the box on the detector's axis), first STOP / held from (m) / STOP frames of 153, sealed -> 0.8 -> 1.3: person 73.9 / 81.3 / 49 -> 90.2 / 99.0 / 60 -> 82.8 / 91.6 / 55, 1 m cube 73.9 / 81.3 / 49 -> 96.1 / 106.5 / 64 -> 85.7 / 94.6 / 57, 0.5 m cube 75.4 / 82.8 / 50 -> 82.8 / 91.6 / 55 -> 75.4 / 82.8 / 50, lateral +0.5 69.5 / 76.9 / 46 -> 84.2 / 93.1 / 56 -> 72.5 / 79.8 / 48, -0.5 held 91.6 / 57 -> 112.4 / 70 -> 99.0 / 62, -0.7 85.7 / 94.6 / 57 -> 109.4 / 121.3 / 73 -> 96.1 / 106.5 / 64; no probe frame worse than sealed. Not taken: the review's option (a), parts cut beyond where the wall itself enters the strict envelope made advisory (beyond_axis): their advisory hits enter the object's track and its zone vote, person 73.9 / 49 sealed -> 71.0 / 47 (worse than sealed), 1 m cube 72.5 / 48. Blind spots: no gain nearer the wall than this (lateral +0.7, the wall side); none for an edge line plus a face beyond 30 m; C 100-150 m stays 0 / 34 STOP frames with GO at 118-150 m: there the lagging axis puts the box within 0.2-0.8 m of the wall (judge problem 4, the axis, not the split); a wall standing more than 2.35 m from the axis on a curve where the far axis lags could still have an object 1.3 m in front of it, outside the envelope, placed inside it
++    structure_cut_max_spread: 0.12 # 13.10: m, ... only when the cluster is such a surface: the robust spread (1.4826 MAD) of its points about the fit at most this (the round wall of C: 0.08-0.11 m)
++    structure_cut_min_fit: 0.8     # 13.10: ... and at least this fraction of its points within max(3 spread, tol / 2) of it (0.86-1.0 with the box on the wall of C)
++    structure_cut_min_points: 8    # 14.10 (judge 13.10, required change 1; 0 = no bar): ... and a part at least this many voxels: its points are current-frame points (an oversize cluster falls back to them), 8 = the accumulated near bar (min_points 5 x 1.5). Every part carved out of wall equipment on the empty data at 0.8 m had 3-7 (alarm-capable ones: C 5, B 1, the ride 8, one detector; all removed, none left), the judge's objects 8-42; with 30 % dropout C gave one 11-voxel single-frame gauge part at 0.8 m (100 m, lateral 0.98, never confirmed)
+     gauge_distance: true           # on since 25.09 (P3; false = off): a gauge cluster's distance is its nearest point inside the envelope, not a margin point it touches; since the review of 25.09 the envelope widened by the axis-uncertainty margin (edge_margin_per_100m), so never farther than where the object enters it
+     min_height: 0.08
+     thin_min_length: 3.0
+@@ -157,6 +164,12 @@ resense:
+     column_width_trim: 0.05         # 27.09 (P4 history, on; 0 = the box width): the column rule's width between these quantiles of the cluster's lateral point positions (a few returns joined at the DBSCAN radius do not widen a column past column_max_width)
+     column_width_trim_min_cut: 0.25 # 27.09: m, the trimmed width counts only when it is at least this much narrower than the box width (sparse tails, a joined fragment of a few returns); a dense 1.0-1.1 m body keeps its width
+     column_min_width: 0.25         # v0.6: near the axis only clusters this wide are columns (a hanging cable is thinner)
++    column_free_max_top: 2.95      # 13.10 (the judge's 0.3 x 0.3 x 2.8 m pole: CAUTION from 70 m to 5 m on the axis, never STOP 0.7 m off it; 0 = off): a column continues up to the vault, an object standing in the envelope ends inside it - the column signature does not demote a cluster whose top is seen free (clustering.top_is_free: the first ring with returns above its top, over its azimuth span, has none at the top's range, and either a ring of the sensor in between returned nothing - its rays passed over the top out of range; 14.10: that ring is read from the frame's channel ids, the ring table only where the frame carries none (set O), since a mount tilt the calibration corrects moves the rings off the table and 0.1 deg of it can invent an empty ring; 15.10: ids only where they number the rings in elevation order, otherwise a ring the frame itself shows beside the object, no table (a 64-ring sensor read through the Pandar128's table saw an empty ring above an occluded column) - or more of its returns are beyond the top than nearer, at least column_free_min_returns), whose top is at most this high (m; under the 3.0 m envelope top, where the candidates are cut) and ...
++    column_free_min_core: 0.5      # ... at least this share of whose voxels are inside the strict envelope (structure at its edge, platform / canopy edges at 0.8-1.2 m: 0.09-0.56); every other rule still applies; a rail pair is not required (with it the pole 0.7 m off the axis, which itself breaks the pair at 10-17 m, lost 4-5 of its 18 STOP frames at 3-30 m). Measured (final/column, 14.10): full regression gate PASS against the 29.09 baseline (208 rows the same, only latency differs), every frame of the 15 gate outputs (the five obstacle-free recordings, the ride's 8 pieces, doubleT_obstacle, doubleT_platform, set O) identical to the sealed detector, the four judge recordings and A / S with --pitch 2 and --drop 0.3 too; the judge's ray-cast pole on the axis 82 -> 157 STOP frames of 177 (the column rule off: 157), 0.7 m off 0 -> 136 of 176 (off: 146), -0.7 m 0 -> 133 of 181, with --dropout 67 -> 143 / 11 -> 133, a 0.5 x 0.5 x 2.5 m post 56 -> 157 / 30 -> 150; the person box unchanged
++    column_free_min_returns: 2     # returns beyond the top on that ring (one ray: the recordings hold each echo twice)
++    column_free_window: 1.2        # 15.10 (review round 3, P1; 0 = the first ring with returns above the top only, as 14.10): any return at the top's range over the cluster's azimuth window, within its top ring's lateral extent +- 0.15 m, up to this many m above its top is continuation - a column whose face right above the cluster's top returns nothing (dark paint, glass, a sign) read as free on 14.10 - but never up to the local vault (clustering._local_vault: the lowest return over the axis +- 0.5 m standing over free space, 15 % before to 15 % beyond the object, measured in the frame, whose far-field heights drift with the rail level) less column_free_vault_margin; no vault seen, no window. The recordings' vault over the envelope at 10-50 m (p5): round tunnels 3.79-3.81 m (crown 4.1-4.3), square 3.55-3.77, the ride 3.59-4.02, stations / switches down to 3.0; 0.3-0.7 m lower at 110-150 m. The review's dark-band what-if (0.6 deg above every free-top cluster's top): ride pieces 1 / 3 STOP frames sealed 14 / 2 -> 14.10 30 / 13 -> 23 / 7, R4 49 (sealed); what remains is at 107-141 m, where the band spans 1.1-1.5 m and reaches the vault margin. Every judge probe and the plain ride pieces as 14.10, frame for frame
++    column_free_vault_margin: 0.3  # 15.10: m under the local vault (read over the axis; a round vault is 0.2-0.3 m lower over the envelope edge)
++    column_free_tall_gap: 0.0      # 15.10 (P4, opt-in, NOT shipped; 0 = off): a column-shaped cluster reaching the candidates' cut (its top above column_free_max_top) is followed above it along its own returns at its range to its true top, which must lie at least this far (m) under the local vault, every one of its own rays above it (two rings at least) passing beyond it. Measured at 0.3: no gain on the judge's 3.2 / 3.6 m poles on A (ceiling 3.8-4.0 m), the 3.2 m pole 0.7 m off the axis 24 -> 23 STOP frames (one ring: 24 -> 18, worse than sealed); under the dark-band what-if one spare of a real ride column added a 9-frame STOP episode (one ring)
+     elevated_min_height: 1.2
+     elevated_min_width: 2.0
+     floating_min_height: 0.7
+@@ -213,6 +226,7 @@ resense:
+     gate_along_only: true         # 27.09 (P4 history, on): the approach allowance (ego_speed_max x measured interval) widens the association gate along the track only, not across it
+     start_clean: false             # 27.09 (P4 history, off): a track not reported in the previous frame is confirmed only on a hit whose own cluster is inside the strict gauge
+     column_hold: 2                 # 25.09 (0 = off): a track demoted as a column in >= this many of its last zone_window hits stays advisory; roundT_doubleT's column at 101-149 m is a column in some frames and 1.6-2.2 m of it in others: 3 alarm frames at 111-115 m through ROS (original bag), 2 at 128-130 m from the cache -> 0 (4 column hits in its window); pre-registered 3 / 2 / 1, the highest passing: 3 fails the gate (ride STOP episodes 39 -> 40), 2 PASS: five bags 60 / 14 / 17 -> 58 / 13 / 16, ride 197 / 46 / 39 -> 187 / 46 / 39 alarm frames / events / STOP episodes, doubleT_obstacle, set O and set F detections identical (docs/evidence/results/column_hold_2026-09-25.json)
++    column_free_min_spares: 2      # 14.10 (review of the 13.10 free-top test; 0 / 1 = off, every spare believed): a cluster the column rule fits but cluster.column_free_max_top spares (its top seen free; Cluster.spared) is believed only when the track it continues had at least this many - 1 such hits among its last zone_window hits; alone it is the column the column rule made of it (reason column, zone warning: column_hold, the zone vote and explained_run see what they saw before 13.10). With every spare believed one spare of a noisy frame turned a column track into a STOP: squareT_platform_squareT_switch (standing train, platform edge 82.6-85 m) with 20 / 30 % random point dropout, sealed -> 13.10 -> 14.10 STOP frames: seed 3 (20 %) 44 -> 48 -> 44, seeds 2 / 3 / 5 (30 %) 55 / 51 / 84 -> 66 / 53 / 89 -> 55 / 51 / 84 (+1 STOP episode in three of them, now none); roundT_doubleT pitched -2 deg 0 -> 1 -> 0; every other S / B dropout seed identical. Cost (judge ray-cast on A, the pole 0.3 x 0.3 x 2.8 m, STOP frames sealed -> 13.10 -> 14.10): on the axis 82 -> 157 -> 157, +0.7 m 0 -> 136 -> 128, -0.7 m 0 -> 133 -> 132, the post 0.5 x 0.5 x 2.5 m on the axis 56 -> 157 -> 157, +0.7 m 30 -> 150 -> 138, with --dropout on the axis 67 -> 143 -> 143, +0.7 m 11 -> 133 -> 126: all at 160-200 m (the first spared hit and explained_run), none within 150 m; a fresh pole confirms one frame later
+     reseed_hold: 5                 # 26.09 (safety review, re-review): after a mount-calibration change the tracks follow the rotation and a STOP (reported in zone gauge) stays reported for a fixed window of 5 frames from the change (the change frame the first), matched or not (a match does not end it), 6 at 10 Hz when the change re-seeds the track model (until its warm-up gives it a floor-shadow reference again); above 1 deg only STOPs are kept (the geometry re-seed must not drop a confirmed STOP); 0 = reset the tracker above 1 deg, hold nothing
+     low_min_seen_distance: 0.0     # tried 26.09 (P3 start-up, candidate c), NOT shipped (0 = off): a low (bed-level) track reported only once matched at or beyond this distance (m); 4 m removed a fresh start's 2.9-3.1 m STOP on the rail heads ahead of a standing train (ride 187 / 46 / 39 -> 183 / 45 / 38, gate PASS) but never STOPs for a 30 x 30 x 10 cm object or an object lying across a rail 3.0-3.9 m ahead of a standing or slow train, or one that falls there: a blind zone; a safety fix wins over a false-alarm gain (docs/evidence/results/p3_startup_2026-09-26.json, addendum_blind_zone)
+     near_escalate_voxels: 10       # 26.09 (P3 near escalation, judge B action 6; 0 = off): a track whose last near_escalate_hits hits were each a corridor cluster with >= this many voxels inside the strict envelope within near_escalate_distance is a STOP whatever demoted it (elevated, floating, the zone vote), a column or a beyond_axis / beyond_height_ref demotion never (safety review 26.09) and the column hold first; candidate A of the pre-registration, gate PASS: set O inside STOP frames 337 -> 349 (box at the envelope top 12 -> 22, from 23.9 m; cube at the edge 0 -> 2), #5 / #7 / background, the ride, the five bags, doubleT_obstacle and set F identical (docs/evidence/results/p3_near_escalation_2026-09-26.json)
