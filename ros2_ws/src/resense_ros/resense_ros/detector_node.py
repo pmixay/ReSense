@@ -347,7 +347,7 @@ class DetectorNode(Node):
         self.skipped = {}              # retained message id -> preceding skips already counted as drops
         self.pending_epochs = {}       # retained head id -> original stamp of a queued header epoch
         self.current_skipped = 0       # skip credit for the frame currently being processed
-        self.active_skip_credit = 0   # active-epoch cap evictions with no same-input successor
+        self.active_skip_credit = 0   # active-epoch credits without a successor or not yet accounted
         self.frame_in_catchup = False  # the frame being processed is a link of a catch-up (status "catchup")
         self.pending_gc = self.create_guard_condition(self.on_pending)
         rel = self.get_parameter("input_reliability").get_parameter_value().string_value.strip().lower()
@@ -630,6 +630,7 @@ class DetectorNode(Node):
         the first result or an abandoned input."""
         last = self.last_stamp
         skipped = self.current_skipped + self.active_skip_credit
+        self.current_skipped = 0       # consumed here, not merely when the callback finishes
         self.active_skip_credit = 0
         if last is not None:
             gap = stamp - last
@@ -935,14 +936,24 @@ class DetectorNode(Node):
         self.current_arrival = self.arrivals.pop(id(msg), None)
         self.current_skipped = self.skipped.pop(id(msg), 0)
         epoch = self.pending_epochs.pop(id(msg), None)
+        accepted_input = None
         try:
             if (epoch is not None and topic == self.active_topic
                     and msg.header.frame_id == self.active_frame_id):
                 self.start_new_input(topic, msg, f"queued header epoch started at {epoch:g} s")
             if self.check_continuity(topic, msg):
+                accepted_input = (self.n_inputs, topic, msg.header.frame_id)
                 self.track_catchup(stamps[-1] - stamps[0], len(stamps))
                 self.process_cloud(msg, topic)
         finally:
+            if (self.current_skipped and accepted_input == (self.n_inputs, self.active_topic, self.active_frame_id)
+                    and self.last_stamp is not None and math.isfinite(self.last_stamp)
+                    and math.isfinite(stamps[0]) and 0 < stamps[0] - self.last_stamp
+                    <= self.get_parameter("new_input_gap").get_parameter_value().double_value):
+                # Decode can fail before _account_frame consumes this successor's credits.
+                # Preserve only forward, same-epoch credits with an accounting anchor;
+                # ignored inputs, epoch changes and invalid headers cannot donate credits.
+                self.active_skip_credit += self.current_skipped
             self.current_arrival = None
             self.current_skipped = 0
             self.frame_in_catchup = False

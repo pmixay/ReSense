@@ -1526,6 +1526,141 @@ def test_cross_input_skip_credit_is_bounded_and_cleared_at_each_epoch(freshness_
             topic = next(t for t in node.subs if t != topic)
 
 
+def _take_startup_queue(node, clock, count=4):
+    """Take real clouds after the last accounted frame; invalid x layout fails inside decode."""
+    topic, frame_id, start = node.active_topic, node.active_frame_id, node.last_stamp
+    clock["wall"] += 0.1
+    clock["mono"] += 0.1
+    messages = [_cloud(np.array([[5.0, 0, 0]], np.float32), start + k * 0.1, frame_id=frame_id)[0]
+                for k in range(1, count + 1)]
+    messages[1].fields[0].offset = messages[1].point_step
+    queue = [(m, {"source_timestamp": int((clock["wall"] - 0.1 + k * 0.001) * 1e9)})
+             for k, m in enumerate(messages)]
+
+    class Handle:
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def take_message(self, *a):
+            assert max(len(node.pending), len(node.arrivals), len(node.skipped), len(node.pending_epochs)) <= 12
+            return queue.pop(0) if queue else None
+
+    sub = node.subs[topic]
+    sub.handle, sub.msg_type, sub.raw = Handle(), object, False
+    node.take_waiting(topic)
+    assert [node._stamp(m) for _, m in node.pending] == pytest.approx(
+        [start + k * 0.1 for k in range(2, count + 1, 2)])
+    return messages
+
+
+@pytest.mark.parametrize("failure_stage", ["decode", "detect", "publish"])
+def test_startup_skip_credit_survives_only_a_failure_before_accounting(
+        freshness_driver, monkeypatch, failure_stage):
+    node, clock, send = freshness_driver
+    send(0.0)
+    messages = _take_startup_queue(node, clock)
+    module = sys.modules[type(node).__module__]
+    decode, detect, publish = module.fastcloud.decode, node.detector.process, node.publish
+    decoded, detected = [], []
+    if failure_stage != "decode":
+        messages[1].fields[0].offset = 0      # later-stage failures decode the retained .2 successfully
+
+    def decode_recording(msg, *args):
+        decoded.append(node._stamp(msg))
+        return decode(msg, *args)
+
+    def detect_recording(frame, **kwargs):
+        detected.append(frame.stamp)
+        if failure_stage == "detect" and frame.stamp == pytest.approx(0.2):
+            raise RuntimeError("failed after accounting")
+        return detect(frame, **kwargs)
+
+    def publish_recording(header, frame, res):
+        if failure_stage == "publish" and frame.stamp == pytest.approx(0.2):
+            raise RuntimeError("failed after accounting")
+        return publish(header, frame, res)
+
+    monkeypatch.setattr(module.fastcloud, "decode", decode_recording)
+    monkeypatch.setattr(node.detector, "process", detect_recording)
+    monkeypatch.setattr(node, "publish", publish_recording)
+    node.on_pending()
+    failed = _frames(node)[-1]
+    assert failed["snapshot_kind"] == "processing_error" and failed["decision"] == "FAULT"
+    assert node.last_stamp == pytest.approx(0.0 if failure_stage == "decode" else 0.2)
+    assert node.active_skip_credit == (1 if failure_stage == "decode" else 0)
+    assert node.current_skipped == 0 and node.dropped == node.dropped_skipped == 2
+    assert decoded == pytest.approx([0.2])
+    assert detected == pytest.approx([] if failure_stage == "decode" else [0.2])
+    node.on_pending()
+    recovered = _frames(node)[-1]
+    expected = 3 if failure_stage == "decode" else 2
+    assert recovered["snapshot_kind"] == "frame" and recovered["stamp"] == pytest.approx(0.4)
+    assert recovered["node"]["dropped_frames"] == expected
+    assert recovered["node"]["catchup_skipped"] == 2
+    assert node.active_skip_credit == node.current_skipped == 0
+    assert not node.pending and not node.arrivals and not node.skipped and not node.pending_epochs
+    assert send(0.5)["decision"] == "GO"       # freshness recovery is still required after an error
+    send(0.7)                               # .6 is genuinely missing, not covered by spent credits
+    assert node.dropped == expected + 1 and node.dropped_skipped == 2
+
+
+def test_consecutive_decode_failures_accumulate_only_unconsumed_skip_credits(freshness_driver):
+    node, clock, send = freshness_driver
+    send(0.0)
+    messages = _take_startup_queue(node, clock, count=6)
+    messages[3].fields[0].offset = messages[3].point_step
+    for credits in (1, 2):
+        node.on_pending()
+        assert _frames(node)[-1]["snapshot_kind"] == "processing_error"
+        assert node.active_skip_credit == credits and node.current_skipped == 0
+        assert node.last_stamp == 0.0
+    node.on_pending()
+    assert node.last_stamp == pytest.approx(0.6) and node.n_frames == 2
+    assert node.dropped == 5 and node.dropped_skipped == 3
+    assert node.active_skip_credit == node.current_skipped == 0
+    assert not node.pending and not node.arrivals and not node.skipped and not node.pending_epochs
+
+
+@pytest.mark.parametrize("epoch_end", ["loop", "forward", "frame", "topic"])
+def test_decode_failure_skip_credit_does_not_cross_a_new_input_epoch(freshness_driver, epoch_end):
+    node, clock, send = freshness_driver
+    send(100.0)
+    _take_startup_queue(node, clock, count=2)
+    node.on_pending()
+    assert node.active_skip_credit == 1 and node.last_stamp == 100.0
+    assert not node.pending and node.dropped == node.dropped_skipped == 1
+    topic = "/sensing/lidar/hesai128/pointcloud" if epoch_end == "topic" else "/lidar_points"
+    frame_id = "new-lidar" if epoch_end == "frame" else "lidar"
+    stamp = {"loop": 50.0, "forward": 140.0, "frame": 100.3, "topic": 100.3}[epoch_end]
+    clock["wall"] += 1.1
+    clock["mono"] += 1.1
+    msg, _ = _cloud(np.array([[5.0, 0, 0]], np.float32), stamp, frame_id=frame_id)
+    msg.fields[0].offset = msg.point_step     # the first frame of the new epoch also fails decode
+    node.on_cloud(msg, topic, {"source_timestamp": int((clock["wall"] - 0.1) * 1e9)})
+    assert _frames(node)[-1]["snapshot_kind"] == "processing_error"
+    assert node.n_inputs == 2 and node.last_stamp is None
+    assert node.active_skip_credit == node.current_skipped == 0
+    send(stamp + 0.1, topic=topic, frame_id=frame_id)
+    send(stamp + 0.3, topic=topic, frame_id=frame_id)  # new epoch's .2 never arrived
+    assert node.dropped == 2 and node.dropped_skipped == 1
+    assert node.active_skip_credit == node.current_skipped == 0
+    assert not node.arrivals and not node.skipped and not node.pending_epochs
+
+
+@pytest.mark.parametrize("bad_stamp", [float("nan"), -0.1])
+def test_decode_failure_with_invalid_or_nonprogressing_header_does_not_bank_credit(freshness_driver, bad_stamp):
+    node, clock, send = freshness_driver
+    send(0.0)
+    messages = _take_startup_queue(node, clock, count=2)
+    # Corrupt the retained header after take, before dispatch. Its successor credit must
+    # not be promoted to an active-epoch credit based solely on the matching topic/frame.
+    messages[1].header.stamp.sec, messages[1].header.stamp.nanosec = bad_stamp, 0
+    node.on_pending()
+    assert _frames(node)[-1]["snapshot_kind"] == "processing_error"
+    assert node.last_stamp == 0.0 and node.active_skip_credit == node.current_skipped == 0
+    assert node.dropped == node.dropped_skipped == 1
+    assert not node.pending and not node.arrivals and not node.skipped and not node.pending_epochs
+
+
 def test_humble_executor_preserves_first_and_drained_source_info(node_cls):
     import asyncio
     module = sys.modules[node_cls.__module__]
