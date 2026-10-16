@@ -4,7 +4,7 @@
 `final/silent-misses` `d0d17bb`. **P4 branch:** `p4/eval-start-2026-10-15`, from
 `main` `3fdc879`. The user selected this computer and authorized parallel agents.
 
-Calendar source: [`BACKLOG.md` on main](https://github.com/pmixay/ReSense/blob/main/docs/BACKLOG.md),
+Calendar source: [`BACKLOG.md` on original main `3fdc879`](https://github.com/pmixay/ReSense/blob/3fdc87957f5d09ff32573eabe6637924b91ea376/docs/BACKLOG.md),
 §4–§5. This checkpoint records implemented work and measured failures separately.
 
 ## P1: outcomes against the calendar
@@ -62,7 +62,7 @@ not an independent real dataset. The registration discloses incidental legacy-su
 text exposure; its author neither wrote/tuned the detector nor ran these cases. Geometry-only
 scene preparation and the single final-seal run belong to the later G3 execution stage.
 
-P4 report: [`p4/eval-start-2026-10-15`](https://github.com/pmixay/ReSense/blob/p4/eval-start-2026-10-15/docs/evidence/p4_start_2026-10-15/README.md).
+P4 report: [`p4/eval-start-2026-10-15`](https://github.com/pmixay/ReSense/blob/ab295b144c67d9ea5a63ef9fa75fd7d72346073a/docs/evidence/p4_start_2026-10-15/README.md).
 Data root: `C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/`.
 
 ## Verification and independent review

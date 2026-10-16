@@ -7,13 +7,55 @@
 > changelog, the 29.09 node change against the node source and launch file, the rules of 29.09
 > evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link;
 > 2026-09-29: the web prototype entry against `webapp/`, `scripts/run_webapp.sh` and `.github/workflows/ci.yml` of PR #31 ·
-> **Status:** current
+> **Updated:** 2026-10-16: selected-scope H3/withdrawal/independent H4 at `c9aea87` below;
+> H5/H6 remain pending. **Status:** current
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
 are team labels, the package is 1.0.0 since 25.09. Figures are the team's, measured when a change
 landed (detector figures on the 1 cm frame cache). Current results: [`README.md`](README.md),
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
+
+## [1.1.0] — planned, unreleased integration (16.10)
+
+**Measured/reviewed source `c9aea87`; replacement H3, withdrawal probes and independent H4
+complete. Parent-owned H5/H6 PENDING:** version 1.1.0, final committed gate/seal, CI/main.
+[Integration checkpoint](docs/evidence/integration_2026-10-16/README.md) links the committed
+reports and preserves the old H3 PASS / original H4 BLOCKED verdicts.
+
+- Retained: structure-surface cut with H2's physical 0.1° azimuth bar; monitored/clear-range
+  cap at wall drift; shared C1 v1 with strict raw flag/health validation; E2 offline rebuild;
+  P4 evaluation tools/evidence and P2 docs/pitch preparation.
+- H1 **DROP after H4**: `cluster.column_free_max_top=0` in class/YAML/ROS defaults (`795a243`).
+  Original H1 left 9+5 dark excess STOP frames and an inherited tall miss; the zero-dark author
+  attempt lost A-axis 157 → 139/177 and other positives. No column fix or 157-frame shipping
+  gain is claimed. [Measured withdrawal](docs/evidence/integration_2026-10-16/h4_fixes/columns/WITHDRAWAL_RESULTS.md)
+  (`829b243`, source `c9aea87`): A-axis **82/177**, exact sealed scored frame set; C-person
+  **82.77 m / 55 STOP frames** retained. Entire dark pieces 1/3: **14/2 STOP frames**, zero
+  extra/lost STOPs and zero free-top/observer calls. Author units **260 passed**, **6 existing
+  external-data deselections**, no failures/errors/skips; inherited High tall miss **OPEN, 8.1**.
+- [Replacement H3](docs/evidence/integration_2026-10-16/h3_selected/README.md) (`5282d6f`):
+  exact committed `c9aea87`, clean Linux/native full gate **PASS**, exit 0, no overrides/waivers;
+  **208/208 non-latency rows identical**, **146 gated rows passed**. All **18,329 raw/serialized
+  frames** compared to same-runtime sealed `707ea9c`; no unexplained change or gated gain.
+  Only the range cap/additive fields and registered timing telemetry differ.
+- [Fresh independent H4](docs/evidence/integration_2026-10-16/h4_selected/README.md) (`70072f1`):
+  revised difference `707ea9c..c9aea87` **ACCEPTED**, no supported **NEW medium-or-higher** finding.
+  **306 passed**, zero failures/skips/deselections; **36 H2 angular/voxel boundary cases**,
+  **1,344 paired Tracker updates per source**. Inherited High 8.1 remains OPEN; the original
+  enabled-H1 H4 remains BLOCKED and attempt 08 remains rejected.
+- S1 **FAIL, runtime removed**: queue 40, startup step 0, lag 20 s, original freshness retained.
+  C1 runtime accepts only v1; v2 is **offline experimental, FAIL** (30.46% CAUTION, 19 lost
+  labelled object-frame alerts).
+- E2 local clean offline rebuild **PASS**; new release-workflow check awaits a new tag.
+  H0 baseline **PASS**; X3 **40-case v1.0.0 baseline**, not new-candidate acceptance;
+  G3 **spec only**, no held-out result.
+- O1 prepared, **not dispatched**, no organizer reply. J1 and PT1 numerical claims remain
+  explicitly v1.0.0. Verified branch archive is prepared; main merge/retirement remain pending.
+- Documentation consolidated after P1/P2 merge conflicts; one exact duplicate 09.10 upload
+  entry removed; DECISIONS retains the historical rows and records the 16.10 scope/dispositions.
+  P4 intake aliases corrected with a dated note (**B = roundT_doubleT**, **C = roundT_pressureGate_roundT**),
+  full names/data unchanged; original handoff publication links pinned to commit SHAs.
 
 ## [Unreleased] — P2 documentation and pitch preparation (15.10)
 
@@ -25,7 +67,12 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
   Final range-by-geometry graph, release numbers, video cards and P1 sign-off wait for O1/J1;
   C1 display, PT2 and S5 dependencies are tracked in [`web/P2_STATUS.md`](web/P2_STATUS.md).
 
-## [Unreleased] — detector candidate `final/silent-misses` (14.10; gate PASS, not resealed)
+## Historical unreleased detector candidate `final/silent-misses` (14–15.10; not resealed)
+
+**Historical measurements below, not the selected 1.1.0 shipping claim.** H4 later blocked
+the column/free-top path; it is disabled by `795a243`. H2 and the range cap remain selected,
+with replacement H3/probes and revised-scope H4 complete at `c9aea87` (H5/H6 pending).
+See the [16.10 checkpoint](docs/evidence/integration_2026-10-16/README.md).
 
 The two fixes below together, and the fixes of the review of 14.10 evening:
 [`silent_misses_2026-10-14`](docs/evidence/silent_misses_2026-10-14/README.md). The full regression gate of the current
@@ -158,41 +205,6 @@ and outside the runtime image and release v1.0.0.
   could be orphaned when registering it failed; a folder of upper-case `.NPY` frames was counted but processed
   as zero frames.
 
-### Changed — resumable uploads for big recordings, faster processing (`webapp/`, 09.10)
-
-- Uploads are resumable and checked ([`webapp/API.md`](webapp/API.md), «Recordings»): a file over 8 MiB goes up in
-  8 MiB chunks, four requests at a time, in any order; every chunk carries the CRC-32 of its raw bytes and is
-  flushed to disk before it counts, so a dropped connection, a closed tab or a server restart loses at most the
-  chunks in flight. `GET /api/uploads/{id}` says what is missing; after a reload the page offers the unfinished
-  upload and continues it once the same file is picked again (another file asks before replacing it).
-  Unfinished uploads are kept 72 h after their last write (`RESENSE_WEB_UPLOAD_TTL_H`).
-- Compression on the wire: chunks are gzipped in Web Workers when that is faster than the link (adaptive: off on a
-  fast LAN, re-checked as data and link change). The synthetic lidar bags deflate to ≈ 0.65 of their size: a
-  333 MB demo bag through the page over an emulated 100 Mbit/s link took 18.6 s (17.9 MB/s) where the raw bytes
-  need 26.7 s, so the 25 GB / 100 Mbit/s case goes from ≈ 36 to ≈ 25 min (real bags may deflate differently).
-- Upload card: bytes, speed, time left (10 s average), the compression saved, «докачка» when resumed; pause /
-  continue / cancel buttons; automatic retries with backoff when the connection is gone («нет связи · повтор
-  через N с», at once when the browser is online again); a full server disk pauses with its message; the
-  browser asks before the page is left mid-upload; a second tab shows the upload as running there and offers
-  neither to continue nor to delete it. Главная shows the same state. The staging area of a failed upload is
-  removed only when it cannot become a recording; otherwise «Повторить» continues it.
-- A request body that sends nothing for 60 s ends with 408, so a connection that died without a FIN / RST
-  cannot keep an upload busy (finalize refused) for ever; the client retries 409 instead of giving up.
-- Finalize runs in the background with its stage (unpacking a zip shows its percentage): a 25 GB zip no longer
-  holds one HTTP request for minutes; a repeated call joins the running one.
-- Processing: the worker reads and decodes the next frames in a background thread while the detector works
-  (18–21 → 23–24 frames/s on the 10 s demo bag, same results).
-- Fixed: occasional 502 from the reverse proxy. uvicorn closed idle connections after its default 5 s while Caddy
-  keeps idle upstream connections 2 min, so a request could go out on a connection the backend was just closing
-  (the page polls every 5 s, exactly on that boundary). Caddy replays a GET that hits it, but not a POST / PUT /
-  DELETE: reproduced through Caddy 2.6.2, 19 of 150 POSTs sent at the boundary got 502 («connection reset by
-  peer», «broken pipe», «EOF»). The backend now keeps idle connections 130 s (`RESENSE_WEB_KEEPALIVE_S`,
-  `--timeout-keep-alive`), longer than the proxy, which therefore always closes first.
-- Fixed: deleting an upload while it was being finalized removed the files under the unpacking (now 409) and a
-  late file PUT could land in a finalized upload; an interrupted unpacking could be taken for input; a recording
-  could be orphaned when registering it failed; a folder of upper-case `.NPY` frames was counted but processed
-  as zero frames.
-
 ### Added — the web prototype for the jury (`webapp/`, 29.09)
 
 - A multi-page web site with a Russian UI in the «Линия» design ([`webapp/README.md`](webapp/README.md)): FastAPI
@@ -218,12 +230,12 @@ and outside the runtime image and release v1.0.0.
 - Known limits: 60 fps playback not measured (headless SwiftShader only); the live mode tested against a
   rosbridge stand-in only; no authentication and one server process — a local stand.
 
-## [Unreleased] — package 1.0.0
+## [1.0.0] — released 29.09
 
-**Release status:** no git tag and no GitHub release exist yet. When the tag `v1.0.0` is pushed,
-[`.github/workflows/release.yml`](.github/workflows/release.yml) builds and proves the runtime image
-archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
-`v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
+**Release status:** [v1.0.0](https://github.com/pmixay/ReSense/releases/tag/v1.0.0) points to
+`5d6e9b5`; archive `resense-image-v1.0.0.tar.gz` (477,449,541 bytes), `.sha256` and
+`SHA256SUMS` published. The judge verified checksum/offline launch on 13.10. The entries
+below retain the dated development measurements that led to this release.
 
 ### Changed — shell rule off after the safety review (29.09 night; resealed at `fe27068`)
 

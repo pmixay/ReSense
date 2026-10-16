@@ -14,7 +14,7 @@ a disposable Linux container (read-only checkout, `--no-cache`); G3's detector-f
 have no delta from `origin/main` on this evaluation branch.
 
 P1's parallel results are in
-[`p1/start-2026-10-15`](https://github.com/pmixay/ReSense/blob/p1/start-2026-10-15/docs/evidence/p1_start_2026-10-15/README.md):
+[`p1/start-2026-10-15`](https://github.com/pmixay/ReSense/blob/01e1f669d8b558755cf0c8ebd680c7641d59becf/docs/evidence/p1_start_2026-10-15/README.md):
 O1 prepared/pending dispatch, E2 locally passing, S1 implemented but failed numeric
 acceptance, shared C1 v1 integrated with v2 still unaccepted. That node/tool review
 is separate from the later independent H4 detector review.
@@ -68,13 +68,18 @@ C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/
 |---|---:|---:|
 | doubleT_obstacle | 201 | 201 |
 | doubleT_platform | 345 | 345 |
-| roundT_doubleT (C) | 252 | 252 |
-| roundT_pressureGate_roundT (B) | 268 | 268 |
+| roundT_doubleT (B) | 252 | 252 |
+| roundT_pressureGate_roundT (C) | 268 | 268 |
 | roundT_squareT_pressureGate_squareT (A) | 545 | 545 |
 | squareT_platform_squareT_switch (S) | 877 | 877 |
 | cloud_with_fake_obj (Set O) | 1,510 | 1,510 |
 | new_data (ride) | 11,271 | not needed by X3 |
 | total | **15,269** | **3,998** |
+
+**Correction, 16 October 2026 (documentation reconciliation):** the original table swapped
+only the B/C aliases. The judge's [range-matrix wrapper](../judgement_2026-10-13/scripts/run_range_matrix.sh)
+defines **B = roundT_doubleT**, **C = roundT_pressureGate_roundT**. The full recording names
+were correct; frame counts, cache paths, measured data and results are unchanged.
 
 Each recording is a subdirectory under `cache/` or `decoded/`. The missing
 `decoded/cloud_with_fake_obj` was built here with exact baseline judge
