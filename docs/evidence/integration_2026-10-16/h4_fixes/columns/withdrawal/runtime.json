@@ -1,0 +1,965 @@
+{
+  "image": {
+    "Id": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+    "Os": "linux",
+    "Architecture": "amd64",
+    "RepoDigests": [
+      "resense@sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19"
+    ],
+    "Created": "2026-10-16T02:11:48.595235703Z"
+  },
+  "runs": {
+    "red-fc89ad2": {
+      "id": "c8c9e122807b9aa42e8e80ee3fada3ca2f89238d45692e575bad317c3004bb4b",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 1,
+        "Error": "",
+        "StartedAt": "2026-10-16T10:04:10.443300225Z",
+        "FinishedAt": "2026-10-16T10:04:31.241909226Z"
+      },
+      "command": [
+        "/author/worker.py",
+        "tests",
+        "--mode",
+        "shipping"
+      ],
+      "environment": [
+        "H4_OUT=/out/results",
+        "WITHDRAWAL_HEAD=fc89ad2cddf3717051dc8bd8c9d83723d7367693",
+        "WITHDRAWAL_SEALED=0",
+        "RESENSE_NATIVE=1",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "OMP_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "RESENSE_REPO=/source/repo",
+        "OPENBLAS_NUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "PYTHONHASHSEED=0",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PYTHONPATH=/source/repo",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8",
+        "ROS_DISTRO=humble",
+        "DEBIAN_FRONTEND=noninteractive",
+        "PIP_NO_CACHE_DIR=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTHONUNBUFFERED=1",
+        "ROS_HOME=/tmp/.ros",
+        "ROS_LOG_DIR=/tmp/.ros/log",
+        "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+      ],
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/OneDrive/Desktop/projects/ReSense/.git",
+          "Destination": "/source.git",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_safety",
+          "Destination": "/review",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/red-fc89ad2",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout",
+          "Source": "/var/lib/docker/volumes/rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout/_data",
+          "Destination": "/reference",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": false,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/cache",
+          "Destination": "/data/cache",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/odometry",
+          "Destination": "/data/odometry",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/red-fc89ad2/author-code",
+          "Destination": "/author",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/decoded",
+          "Destination": "/data/decoded",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-integration-20261016-runs",
+          "Destination": "/h3",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-h4-withdrawal-red-fc89ad2-source",
+          "Source": "/var/lib/docker/volumes/rs-h4-withdrawal-red-fc89ad2-source/_data",
+          "Destination": "/source",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "network": "none"
+    },
+    "green-795a243": {
+      "id": "c73d9098523f092d923ff86db798e461ea07b568cf500de6bffb1ff073c4b2de",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 1,
+        "Error": "",
+        "StartedAt": "2026-10-16T10:07:14.084868191Z",
+        "FinishedAt": "2026-10-16T10:08:25.637894756Z"
+      },
+      "command": [
+        "/author/worker.py",
+        "tests",
+        "--mode",
+        "all"
+      ],
+      "environment": [
+        "RESENSE_NATIVE=1",
+        "OMP_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PYTHONPATH=/source/repo",
+        "WITHDRAWAL_SEALED=0",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "OPENBLAS_NUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "PYTHONHASHSEED=0",
+        "RESENSE_REPO=/source/repo",
+        "H4_OUT=/out/results",
+        "WITHDRAWAL_HEAD=795a243149725d39faba980840bb3e8443ebbc40",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8",
+        "ROS_DISTRO=humble",
+        "DEBIAN_FRONTEND=noninteractive",
+        "PIP_NO_CACHE_DIR=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTHONUNBUFFERED=1",
+        "ROS_HOME=/tmp/.ros",
+        "ROS_LOG_DIR=/tmp/.ros/log",
+        "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+      ],
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-integration-20261016-runs",
+          "Destination": "/h3",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-h4-withdrawal-green-795a243-source",
+          "Source": "/var/lib/docker/volumes/rs-h4-withdrawal-green-795a243-source/_data",
+          "Destination": "/source",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/OneDrive/Desktop/projects/ReSense/.git",
+          "Destination": "/source.git",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/green-795a243",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout",
+          "Source": "/var/lib/docker/volumes/rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout/_data",
+          "Destination": "/reference",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": false,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/green-795a243/author-code",
+          "Destination": "/author",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_safety",
+          "Destination": "/review",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/cache",
+          "Destination": "/data/cache",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/decoded",
+          "Destination": "/data/decoded",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/odometry",
+          "Destination": "/data/odometry",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        }
+      ],
+      "network": "none"
+    },
+    "tests-c9aea87-20261016a": {
+      "id": "f129a22c040faef2f62e15adf29a250c56f6000ad3832f405f5747ccb5675e65",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-16T10:13:30.397543452Z",
+        "FinishedAt": "2026-10-16T10:15:37.638321108Z"
+      },
+      "command": [
+        "/author/worker.py",
+        "tests",
+        "--mode",
+        "all"
+      ],
+      "environment": [
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "PYTHONHASHSEED=0",
+        "WITHDRAWAL_HEAD=c9aea87cb5322092070158cd8987115ee44833c9",
+        "WITHDRAWAL_SEALED=0",
+        "RESENSE_NATIVE=1",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PYTHONPATH=/source/repo",
+        "RESENSE_REPO=/source/repo",
+        "H4_OUT=/out/results",
+        "OMP_NUM_THREADS=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8",
+        "ROS_DISTRO=humble",
+        "DEBIAN_FRONTEND=noninteractive",
+        "PIP_NO_CACHE_DIR=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTHONUNBUFFERED=1",
+        "ROS_HOME=/tmp/.ros",
+        "ROS_LOG_DIR=/tmp/.ros/log",
+        "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+      ],
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/odometry",
+          "Destination": "/data/odometry",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/tests-c9aea87-20261016a/author-code",
+          "Destination": "/author",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_safety",
+          "Destination": "/review",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/cache",
+          "Destination": "/data/cache",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-integration-20261016-runs",
+          "Destination": "/h3",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-h4-withdrawal-tests-c9aea87-20261016a-source",
+          "Source": "/var/lib/docker/volumes/rs-h4-withdrawal-tests-c9aea87-20261016a-source/_data",
+          "Destination": "/source",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/OneDrive/Desktop/projects/ReSense/.git",
+          "Destination": "/source.git",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/tests-c9aea87-20261016a",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout",
+          "Source": "/var/lib/docker/volumes/rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout/_data",
+          "Destination": "/reference",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": false,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/decoded",
+          "Destination": "/data/decoded",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        }
+      ],
+      "network": "none"
+    },
+    "probes-c9aea87-20261016a": {
+      "id": "17aef30825a3c5dcd69056237038a25e15d1cdfbd7d2f41eca1c347c6118f380",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-16T10:15:50.534950151Z",
+        "FinishedAt": "2026-10-16T10:17:23.286334311Z"
+      },
+      "command": [
+        "/author/worker.py",
+        "probes",
+        "--mode",
+        "all"
+      ],
+      "environment": [
+        "WITHDRAWAL_SEALED=0",
+        "OMP_NUM_THREADS=1",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "PYTHONHASHSEED=0",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PYTHONPATH=/source/repo",
+        "RESENSE_REPO=/source/repo",
+        "H4_OUT=/out/results",
+        "WITHDRAWAL_HEAD=c9aea87cb5322092070158cd8987115ee44833c9",
+        "RESENSE_NATIVE=1",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8",
+        "ROS_DISTRO=humble",
+        "DEBIAN_FRONTEND=noninteractive",
+        "PIP_NO_CACHE_DIR=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTHONUNBUFFERED=1",
+        "ROS_HOME=/tmp/.ros",
+        "ROS_LOG_DIR=/tmp/.ros/log",
+        "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+      ],
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/OneDrive/Desktop/projects/ReSense/.git",
+          "Destination": "/source.git",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/probes-c9aea87-20261016a/author-code",
+          "Destination": "/author",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_safety",
+          "Destination": "/review",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/probes-c9aea87-20261016a",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout",
+          "Source": "/var/lib/docker/volumes/rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout/_data",
+          "Destination": "/reference",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": false,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/odometry",
+          "Destination": "/data/odometry",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-h4-withdrawal-probes-c9aea87-20261016a-source",
+          "Source": "/var/lib/docker/volumes/rs-h4-withdrawal-probes-c9aea87-20261016a-source/_data",
+          "Destination": "/source",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/cache",
+          "Destination": "/data/cache",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/decoded",
+          "Destination": "/data/decoded",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-integration-20261016-runs",
+          "Destination": "/h3",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        }
+      ],
+      "network": "none"
+    },
+    "dark-c9aea87-20261016a": {
+      "id": "29ba4b0ee2719089bd7bd38ef2b9326220ddae3b8d8a88dedb346035a0689bc0",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-16T10:13:30.378729723Z",
+        "FinishedAt": "2026-10-16T10:18:19.687818655Z"
+      },
+      "command": [
+        "/author/worker.py",
+        "dark",
+        "--mode",
+        "all"
+      ],
+      "environment": [
+        "PYTHONPATH=/source/repo",
+        "WITHDRAWAL_HEAD=c9aea87cb5322092070158cd8987115ee44833c9",
+        "WITHDRAWAL_SEALED=0",
+        "RESENSE_NATIVE=1",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "PYTHONHASHSEED=0",
+        "RESENSE_REPO=/source/repo",
+        "H4_OUT=/out/results",
+        "OMP_NUM_THREADS=1",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8",
+        "ROS_DISTRO=humble",
+        "DEBIAN_FRONTEND=noninteractive",
+        "PIP_NO_CACHE_DIR=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTHONUNBUFFERED=1",
+        "ROS_HOME=/tmp/.ros",
+        "ROS_LOG_DIR=/tmp/.ros/log",
+        "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+      ],
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/cache",
+          "Destination": "/data/cache",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/odometry",
+          "Destination": "/data/odometry",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-integration-20261016-runs",
+          "Destination": "/h3",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/OneDrive/Desktop/projects/ReSense/.git",
+          "Destination": "/source.git",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/dark-c9aea87-20261016a/author-code",
+          "Destination": "/author",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_safety",
+          "Destination": "/review",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/decoded",
+          "Destination": "/data/decoded",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-h4-withdrawal-dark-c9aea87-20261016a-source",
+          "Source": "/var/lib/docker/volumes/rs-h4-withdrawal-dark-c9aea87-20261016a-source/_data",
+          "Destination": "/source",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/dark-c9aea87-20261016a",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout",
+          "Source": "/var/lib/docker/volumes/rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout/_data",
+          "Destination": "/reference",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": false,
+          "Propagation": ""
+        }
+      ],
+      "network": "none"
+    },
+    "experimental-c9aea87-20261016a": {
+      "id": "808fc561499084ded7eae7a88d7a536dd38187c5b5ed6e3988256ab04d0e988e",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-16T10:17:35.760097832Z",
+        "FinishedAt": "2026-10-16T10:17:58.109109109Z"
+      },
+      "command": [
+        "/author/worker.py",
+        "experimental",
+        "--mode",
+        "all"
+      ],
+      "environment": [
+        "OMP_NUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PYTHONPATH=/source/repo",
+        "H4_OUT=/out/results",
+        "WITHDRAWAL_SEALED=0",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "PYTHONHASHSEED=0",
+        "RESENSE_REPO=/source/repo",
+        "WITHDRAWAL_HEAD=c9aea87cb5322092070158cd8987115ee44833c9",
+        "RESENSE_NATIVE=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8",
+        "ROS_DISTRO=humble",
+        "DEBIAN_FRONTEND=noninteractive",
+        "PIP_NO_CACHE_DIR=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTHONUNBUFFERED=1",
+        "ROS_HOME=/tmp/.ros",
+        "ROS_LOG_DIR=/tmp/.ros/log",
+        "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+      ],
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "rs-h4-withdrawal-experimental-c9aea87-20261016a-source",
+          "Source": "/var/lib/docker/volumes/rs-h4-withdrawal-experimental-c9aea87-20261016a-source/_data",
+          "Destination": "/source",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/OneDrive/Desktop/projects/ReSense/.git",
+          "Destination": "/source.git",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/experimental-c9aea87-20261016a/author-code",
+          "Destination": "/author",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_safety",
+          "Destination": "/review",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout",
+          "Source": "/var/lib/docker/volumes/rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout/_data",
+          "Destination": "/reference",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": false,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/experimental-c9aea87-20261016a",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/cache",
+          "Destination": "/data/cache",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/decoded",
+          "Destination": "/data/decoded",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/odometry",
+          "Destination": "/data/odometry",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-integration-20261016-runs",
+          "Destination": "/h3",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        }
+      ],
+      "network": "none"
+    },
+    "probes-sealed-707ea9c-20261016a": {
+      "id": "b3c3465e2c9b12668eecd1bd43f82a155433337bca2fccd3e905f3ab358703d9",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-16T10:18:29.763090737Z",
+        "FinishedAt": "2026-10-16T10:20:01.420798129Z"
+      },
+      "command": [
+        "/author/worker.py",
+        "probes",
+        "--mode",
+        "all"
+      ],
+      "environment": [
+        "WITHDRAWAL_HEAD=707ea9cda051369326fb9407c42488c1033dad76",
+        "RESENSE_NATIVE=1",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "MKL_NUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "RESENSE_REPO=/source/repo",
+        "WITHDRAWAL_SEALED=1",
+        "OMP_NUM_THREADS=1",
+        "OPENBLAS_NUM_THREADS=1",
+        "PYTHONHASHSEED=0",
+        "PYTHONPATH=/source/repo",
+        "H4_OUT=/out/results",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8",
+        "ROS_DISTRO=humble",
+        "DEBIAN_FRONTEND=noninteractive",
+        "PIP_NO_CACHE_DIR=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTHONUNBUFFERED=1",
+        "ROS_HOME=/tmp/.ros",
+        "ROS_LOG_DIR=/tmp/.ros/log",
+        "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+      ],
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_safety",
+          "Destination": "/review",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/decoded",
+          "Destination": "/data/decoded",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-h4-withdrawal-probes-sealed-707ea9c-20261016a-source",
+          "Source": "/var/lib/docker/volumes/rs-h4-withdrawal-probes-sealed-707ea9c-20261016a-source/_data",
+          "Destination": "/source",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/probes-sealed-707ea9c-20261016a",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout",
+          "Source": "/var/lib/docker/volumes/rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout/_data",
+          "Destination": "/reference",
+          "Driver": "local",
+          "Mode": "z",
+          "RW": false,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/cache",
+          "Destination": "/data/cache",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/odometry",
+          "Destination": "/data/odometry",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-integration-20261016-runs",
+          "Destination": "/h3",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/OneDrive/Desktop/projects/ReSense/.git",
+          "Destination": "/source.git",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-h4-column-withdrawal-20261016/probes-sealed-707ea9c-20261016a/author-code",
+          "Destination": "/author",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        }
+      ],
+      "network": "none"
+    }
+  }
+}

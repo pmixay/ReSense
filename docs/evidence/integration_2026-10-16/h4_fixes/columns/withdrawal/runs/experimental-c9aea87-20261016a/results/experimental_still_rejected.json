@@ -1,0 +1,28 @@
+{
+  "explicit_opt_in": 2.95,
+  "shipping_default": 0.0,
+  "accepted": false,
+  "cases": [
+    {
+      "case": "case45_tall_miss",
+      "xyz_sha256": "680878ed4f0b233cec517f999ca8648b1193522c929b7ce0f9df9fad7d545a20",
+      "zone": "warning",
+      "reason": "column",
+      "spared": false,
+      "n_gauge": 80,
+      "rings": 20,
+      "height_max": 2.9396133422851562
+    },
+    {
+      "case": "absorbing_continuation_false_free_evidence",
+      "xyz_sha256": "eaa2b763fa69212f617c8299cc96187c7bcd4994dd5d5ad7ca7476b01812ec5f",
+      "zone": "gauge",
+      "reason": "",
+      "spared": true,
+      "n_gauge": 68,
+      "rings": 17,
+      "height_max": 2.5188069343566895
+    }
+  ],
+  "note": "Known unmet withdrawn-feature criteria; these observations are not an H4 safety PASS."
+}

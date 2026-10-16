@@ -1,0 +1,23 @@
+Cloning into '/source/repo'...
+done.
+Updating files:  20% (716/3462)Updating files:  21% (728/3462)Updating files:  21% (730/3462)Updating files:  22% (762/3462)Updating files:  23% (797/3462)Updating files:  24% (831/3462)Updating files:  25% (866/3462)Updating files:  26% (901/3462)Updating files:  27% (935/3462)Updating files:  28% (970/3462)Updating files:  29% (1004/3462)Updating files:  30% (1039/3462)Updating files:  31% (1074/3462)Updating files:  32% (1108/3462)Updating files:  33% (1143/3462)Updating files:  34% (1178/3462)Updating files:  35% (1212/3462)Updating files:  36% (1247/3462)Updating files:  37% (1281/3462)Updating files:  38% (1316/3462)Updating files:  39% (1351/3462)Updating files:  40% (1385/3462)Updating files:  41% (1420/3462)Updating files:  42% (1455/3462)Updating files:  43% (1489/3462)Updating files:  44% (1524/3462)Updating files:  45% (1558/3462)Updating files:  46% (1593/3462)Updating files:  47% (1628/3462)Updating files:  48% (1662/3462)Updating files:  48% (1672/3462)Updating files:  49% (1697/3462)Updating files:  50% (1731/3462)Updating files:  51% (1766/3462)Updating files:  52% (1801/3462)Updating files:  53% (1835/3462)Updating files:  54% (1870/3462)Updating files:  55% (1905/3462)Updating files:  56% (1939/3462)Updating files:  57% (1974/3462)Updating files:  58% (2008/3462)Updating files:  59% (2043/3462)Updating files:  60% (2078/3462)Updating files:  60% (2101/3462)Updating files:  61% (2112/3462)Updating files:  62% (2147/3462)Updating files:  63% (2182/3462)Updating files:  64% (2216/3462)Updating files:  65% (2251/3462)Updating files:  65% (2255/3462)Updating files:  66% (2285/3462)Updating files:  67% (2320/3462)Updating files:  68% (2355/3462)Updating files:  69% (2389/3462)Updating files:  70% (2424/3462)Updating files:  71% (2459/3462)Updating files:  72% (2493/3462)Updating files:  73% (2528/3462)Updating files:  74% (2562/3462)Updating files:  75% (2597/3462)Updating files:  76% (2632/3462)Updating files:  77% (2666/3462)Updating files:  78% (2701/3462)Updating files:  79% (2735/3462)Updating files:  80% (2770/3462)Updating files:  80% (2791/3462)Updating files:  80% (2793/3462)Updating files:  81% (2805/3462)Updating files:  82% (2839/3462)Updating files:  83% (2874/3462)Updating files:  84% (2909/3462)Updating files:  85% (2943/3462)Updating files:  86% (2978/3462)Updating files:  86% (2993/3462)Updating files:  86% (2995/3462)Updating files:  87% (3012/3462)Updating files:  88% (3047/3462)Updating files:  88% (3060/3462)Updating files:  89% (3082/3462)Updating files:  90% (3116/3462)Updating files:  91% (3151/3462)Updating files:  92% (3186/3462)Updating files:  93% (3220/3462)Updating files:  94% (3255/3462)Updating files:  95% (3289/3462)Updating files:  96% (3324/3462)Updating files:  97% (3359/3462)Updating files:  98% (3393/3462)Updating files:  99% (3428/3462)Updating files: 100% (3462/3462)Updating files: 100% (3462/3462), done.
+HEAD is now at c9aea87 Clarify withdrawn feature routing and retain explicit opt-in control
+HEAD is now at c9aea87 Clarify withdrawn feature routing and retain explicit opt-in control
+ride_1 0 new_data_27_0032
+ride_1 200 new_data_31_0028
+ride_1 400 new_data_35_0024
+ride_1 600 new_data_39_0020
+ride_1 800 new_data_43_0016
+ride_1 1000 new_data_47_0012
+ride_1 1200 new_data_51_0008
+ride_1 1400 new_data_55_0004
+ride_1 1409 STOP 14 H3 mismatch 0
+ride_3 0 new_data_82_0045
+ride_3 200 new_data_86_0041
+ride_3 400 new_data_90_0037
+ride_3 600 new_data_94_0033
+ride_3 800 new_data_98_0029
+ride_3 1000 new_data_102_0025
+ride_3 1200 new_data_106_0021
+ride_3 1400 new_data_110_0017
+ride_3 1409 STOP 2 H3 mismatch 0

@@ -1,0 +1,57 @@
+Cloning into '/source/repo'...
+done.
+Updating files:  56% (1967/3462)Updating files:  57% (1974/3462)Updating files:  58% (2008/3462)Updating files:  59% (2043/3462)Updating files:  60% (2078/3462)Updating files:  61% (2112/3462)Updating files:  62% (2147/3462)Updating files:  63% (2182/3462)Updating files:  64% (2216/3462)Updating files:  65% (2251/3462)Updating files:  66% (2285/3462)Updating files:  67% (2320/3462)Updating files:  68% (2355/3462)Updating files:  69% (2389/3462)Updating files:  70% (2424/3462)Updating files:  71% (2459/3462)Updating files:  71% (2473/3462)Updating files:  72% (2493/3462)Updating files:  73% (2528/3462)Updating files:  74% (2562/3462)Updating files:  75% (2597/3462)Updating files:  76% (2632/3462)Updating files:  77% (2666/3462)Updating files:  78% (2701/3462)Updating files:  79% (2735/3462)Updating files:  80% (2770/3462)Updating files:  80% (2790/3462)Updating files:  81% (2805/3462)Updating files:  82% (2839/3462)Updating files:  83% (2874/3462)Updating files:  83% (2880/3462)Updating files:  84% (2909/3462)Updating files:  85% (2943/3462)Updating files:  86% (2978/3462)Updating files:  87% (3012/3462)Updating files:  88% (3047/3462)Updating files:  89% (3082/3462)Updating files:  90% (3116/3462)Updating files:  91% (3151/3462)Updating files:  92% (3186/3462)Updating files:  92% (3188/3462)Updating files:  93% (3220/3462)Updating files:  94% (3255/3462)Updating files:  95% (3289/3462)Updating files:  96% (3324/3462)Updating files:  97% (3359/3462)Updating files:  98% (3393/3462)Updating files:  99% (3428/3462)Updating files: 100% (3462/3462)Updating files: 100% (3462/3462), done.
+HEAD is now at 795a243 Withdraw unaccepted column free-top from shipping defaults
+HEAD is now at 795a243 Withdraw unaccepted column free-top from shipping defaults
+........................................................................ [ 27%]
+........................................................................ [ 55%]
+...................F.................................................... [ 83%]
+............................................                             [100%]
+=================================== FAILURES ===================================
+_________ test_a_cut_part_meets_the_column_rule_and_its_free_top_test __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x70f75b8bc1f0>
+
+    def test_a_cut_part_meets_the_column_rule_and_its_free_top_test(monkeypatch):
+        """14.10 (review): a cut part goes through the same rules as any corridor cluster, the column signature's
+        free-top test included (the frame's cloud is handed on to the parts). A 0.3 m post, 2.6 m tall, 0.8-1.1 m
+        in front of a straight wall at 1.7 m at 60 m (one oversize cluster with it, the split refuses it beyond
+        30 m): its part is asked whether its top is seen free - free, an obstacle; not free, a column."""
+        cfg = replace(ClusterConfig(), structure_cut_tol=0.8)
+        scene = np.concatenate([_straight_wall(y=1.7, x0=50.0, x1=72.0), _post(60.0, 0.6)]).astype(np.float32)
+        dy, h = scene[:, 1].astype(np.float64), scene[:, 2].astype(np.float64)
+        strict = (np.abs(dy) < 1.05) & (h > 0.0) & (h < 3.0)
+    
+        def run(answer, c=cfg):
+            calls = []
+            monkeypatch.setattr(clustering, "top_is_free", lambda *a, **k: calls.append(1) or answer)
+            out = find_clusters(scene, np.full(len(scene), 10.0, np.float32), dy, h, strict, c, frame_xyz=scene)
+            return out, calls
+    
+        (c,), calls = run(True)
+>       assert calls == [1] and c.cut and c.spared and (c.zone, c.reason) == ("gauge", "") and abs(c.distance - 60.0) < 0.05
+E       assert ([] == [1]
+E         
+E         Right contains one more item: 1
+E         Use -v to get more diff)
+
+tests/test_structure_cut.py:302: AssertionError
+----------------- generated xml file: /out/results/pytest.xml ------------------
+--------- 6 test(s) deselected: their recorded data cache is not here ----------
+  tests/test_evidence_coherence.py::test_measured_remaining_inventory_is_133_track_frames (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_interval_rule_is_not_a_single_false_history_separator (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_293_fields_and_reference_change_are_not_identity_evidence (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_association_residuals_do_not_prove_wrong_association (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_sparse_edge_positive_rows_are_unchanged_by_fresh_onset_replay (no C:/Users/alikh/AppData/Local/Temp/opencode/fresh-stop-positive-stress)
+  tests/test_evidence_coherence.py::test_all_saved_stop_rows_validate_against_base_and_source (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+1 failed, 259 passed, 6 deselected in 56.47s
+Traceback (most recent call last):
+  File "/author/worker.py", line 154, in <module>
+    main()
+  File "/author/worker.py", line 127, in main
+    command(["python3", "-m", "pytest", "-q", "-rs", *tests, "--junitxml=/out/results/pytest.xml"], cwd=ROOT)
+  File "/author/worker.py", line 20, in command
+    return subprocess.run(args, check=True, stdout=sys.stdout, stderr=subprocess.STDOUT, **kwargs)
+  File "/usr/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['python3', '-m', 'pytest', '-q', '-rs', 'tests/test_column_shipping.py', 'tests/test_column_free_top.py', 'tests/test_late_candidates.py', 'tests/test_h4_spare_rearm.py', 'tests/test_stop_keep.py', 'tests/test_near_escalation.py', 'tests/test_explained_run.py', 'tests/test_fresh_stop_evidence.py', 'tests/test_thin_monitoring.py', 'tests/test_evidence_coherence.py', 'tests/test_ego_veto.py', 'tests/test_structure_cut.py', 'tests/test_far_structure.py', 'tests/test_wall_drift.py', 'tests/test_native.py', 'tests/test_synthetic_sensitivity.py', 'tests/test_synthetic_diagnosis.py', 'tests/test_cli.py', 'tests/test_shipped_defaults.py', '--junitxml=/out/results/pytest.xml']' returned non-zero exit status 1.

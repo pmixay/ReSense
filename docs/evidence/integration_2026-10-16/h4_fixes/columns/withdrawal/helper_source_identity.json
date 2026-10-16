@@ -1,0 +1,17 @@
+{
+  "docs/evidence/judgement_2026-10-13/scripts/range_test.py": "f5c8779736c93ad9589d4a49b5f39bbcd5580d0dcfe2a88012d474fbbb32d263",
+  "docs/evidence/judgement_2026-10-13/scripts/judge_runner.py": "5bc9121acb36b573053664090f62e687bc7af3d3acc12077e69eb79e660a871a",
+  "scripts/cache_io.py": "6368aa168712a11e07562bbc71f39fffb373e60bbacec54ef7907a5080165793",
+  "tests/conftest.py": "d8f6dc1cfbd558a7c54dcefbdaf64a33f0ad69f3989e5d8091596138c0636a2e",
+  "tests/test_column_shipping.py": "cd72def3eae87aab4a7af09a9bc23e09d04bc7a5b038158957b7f2581d687db4",
+  "protocol": {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016\\docs\\evidence\\integration_2026-10-16\\h4_fixes\\columns\\WITHDRAWAL.md",
+    "bytes": 4251,
+    "sha256": "fba70ed6055093fabff982977ec8b340a1fa6f4b90092023701279218ee92ea1"
+  },
+  "ride_intake": {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\intake_manifest.json",
+    "bytes": 944,
+    "sha256": "cd13ef745f03d1382554d4f06063362aad627aac9d0c817d8e30f82e639c6856"
+  }
+}

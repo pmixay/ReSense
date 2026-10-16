@@ -1,0 +1,10 @@
+{
+  "disabled_by_effective_config": true,
+  "free_top_calls": 0,
+  "frames": 608,
+  "candidates": 1032,
+  "spared_candidates": 0,
+  "provisional_tracks": 0,
+  "spare_history_tracks": 0,
+  "free_top_implementation_present": false
+}

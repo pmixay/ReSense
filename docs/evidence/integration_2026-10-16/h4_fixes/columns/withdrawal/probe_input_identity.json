@@ -1,0 +1,3088 @@
+{
+  "pole_c": {
+    "method": "Post-run raw-byte inventory of shared readonly inputs; existing stored baseline reused",
+    "root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT",
+    "processed_frames": 340,
+    "files": [
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00000.npz",
+        "bytes": 1107901,
+        "sha256": "13053eaf395bf8e70df693722b4984e97dfafb5024ea234fa6ed90a71e1064f4"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00001.npz",
+        "bytes": 1128951,
+        "sha256": "869e53fe0707a95ed1d53245cd074bde7488e5fbd7ca8676cf968b8601b91309"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00002.npz",
+        "bytes": 1128563,
+        "sha256": "12f41f79010f7825e23724cf926696c89bab0d2af797ccb7f7f1ff8d9c3c134b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00003.npz",
+        "bytes": 1128340,
+        "sha256": "c1eff27d0312ab6cbe61c07db4a9028fccbaafc3803d96f1a9436114f67c96d6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00004.npz",
+        "bytes": 1125794,
+        "sha256": "0a36f0d277833f2f34f393155d20589a148b8c948859aec23ead4d8e45be2821"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00005.npz",
+        "bytes": 1128504,
+        "sha256": "45d6af36896ded6ea34059a54035d5e57020c797037fb4f6ea6e8813d99572a2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00006.npz",
+        "bytes": 1129003,
+        "sha256": "0eabe8d289f7cf5370cfe6394703de381e7b06de3f21906e176c30c1b24e06de"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00007.npz",
+        "bytes": 1131227,
+        "sha256": "46da230751bf86f42c447adb65ab9e3843883a435743d4569533f56bbfc6a03b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00008.npz",
+        "bytes": 1131779,
+        "sha256": "8e318846d2fd6b7d0d4de6d52ab816679e7372f4a7b5d1840381ae90f697b78e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00009.npz",
+        "bytes": 1130880,
+        "sha256": "5ad0ca5aee4d11d4a0f440e4c024cfe5c2dc3785c091f7f8d546e7d1e411fdb0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00010.npz",
+        "bytes": 1132704,
+        "sha256": "bc0a6ca397fb2087422313dddacfdae0ce87dfa0fff8b9766a9939437b6ce695"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00011.npz",
+        "bytes": 1130722,
+        "sha256": "606480cece0d082d01bb9d48e9ab31b08d6053d77ca4ff2ca71b03f3bac7a79d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00012.npz",
+        "bytes": 1132843,
+        "sha256": "2c8437b5c3f66546181edc1e78557a439aaf5bd9a7a75133480b1067970aea9c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00013.npz",
+        "bytes": 1131360,
+        "sha256": "05cd002583a7cf1e17f6f4b1cdbbb38512e86129ae1a47eda8d464766be649a6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00014.npz",
+        "bytes": 1131646,
+        "sha256": "4b3696a072837111ec3cfef17ebc9ed1adf570b65c897eb82569569c7c7550ed"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00015.npz",
+        "bytes": 1130990,
+        "sha256": "f345b124d49c7712a5ed3747c550aadc2f32d2e411a052381627f8a1f3014a32"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00016.npz",
+        "bytes": 1132399,
+        "sha256": "0d2d1b4db1180a2b7603f5e04c6ea3b9d9caf9ab37d3a816f42fd039a9b0e483"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00017.npz",
+        "bytes": 1130261,
+        "sha256": "4b41448f6f4d2e8d055d43391552b396a8ad90bb4df9b0dee8649743eff27b30"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00018.npz",
+        "bytes": 1131802,
+        "sha256": "3ac9b0687c85c8f8317df87c5648ea98794e893be9b7afc0b33c4a15367c38b4"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00019.npz",
+        "bytes": 1127768,
+        "sha256": "58664477fd958282e7302513a89fc3f5211d0c7d4eec3cb897e2fef1ce3a5bac"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00020.npz",
+        "bytes": 1129482,
+        "sha256": "5c4e7e40d84c2e69ab3b87f9e2a223155c2cedd894f6940ed760924b38d0993f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00021.npz",
+        "bytes": 1131467,
+        "sha256": "fc1ba526906a58d5aa8715362a832c861b809486e4f619a0a5226fe93b5c5479"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00022.npz",
+        "bytes": 1132465,
+        "sha256": "ef71b314ba6dddcb96a85d8f1a3f9a846b0499a7832ad8c73908a817368e6ded"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00023.npz",
+        "bytes": 1130091,
+        "sha256": "1ed39ceadfe23e9001a62d1deed8fbc0282a39834bd7d91088e7a175ff04c854"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00024.npz",
+        "bytes": 1130090,
+        "sha256": "dc837c9340eae1a70dce21dff2cd93cc6448fbf0260358e3c971086844658cb5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00025.npz",
+        "bytes": 1130392,
+        "sha256": "24a3c20a84b530c67e9dcb60eedbf00fbf52e4008eac9e0e201c97b16e20d449"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00026.npz",
+        "bytes": 1129871,
+        "sha256": "2a04d91fbc0ded075d5e1a29fa195805759b1e4fff29ff48fc831a174bd7f525"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00027.npz",
+        "bytes": 1131166,
+        "sha256": "80da3ce342339964834265bacb35a8cc2be89c58193d3b4786b1a89ed441c933"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00028.npz",
+        "bytes": 1129086,
+        "sha256": "ffc4c7f089ef73e4a02dde49c718f30b4e811320f3c2c30ef5625b2d9e05773b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00029.npz",
+        "bytes": 1129054,
+        "sha256": "be53d30fa4879ca54daa069a61961b2625a45aa406ece1bad6cb6a9c6ef8c7fa"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00030.npz",
+        "bytes": 1125131,
+        "sha256": "ecfe5571d7b89ba978bf68ff9bbc12193529db1d93ede5faa8efa40597d879de"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00031.npz",
+        "bytes": 1133425,
+        "sha256": "4c531804d5f1e5cb673b07417a742b0ebb14c2e4d1cca1cad376aa0807402d66"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00032.npz",
+        "bytes": 1131326,
+        "sha256": "0a64f0d88f436329e3c1a97bf5b669a9df07e9514d057feaad4798fe8209f90a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00033.npz",
+        "bytes": 1136195,
+        "sha256": "3f5c367139dcfdb54cc7e621b653ad96aeda7054e79abe586831bfc603cf1518"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00034.npz",
+        "bytes": 1076456,
+        "sha256": "71d230f13551bbb6a885cedc08850957c86711d5edaccfaf3d3b35b1a8a5a5da"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00035.npz",
+        "bytes": 1133026,
+        "sha256": "92bf49aaf3e0b6109599c13a33d44be51ebf208ba9ed54978036ef1f46b31813"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00036.npz",
+        "bytes": 1129413,
+        "sha256": "2e277add152d5d6d655a738ce603cc30a31057ce2912cf1ad769446b0c5f429b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00037.npz",
+        "bytes": 1131119,
+        "sha256": "9e2a181e27e76e88d6f602e01d7f7bbeab3ee554bb1fdba3ef73fa5e13ac6e08"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00038.npz",
+        "bytes": 1129662,
+        "sha256": "3c60c22b85b3d6700c34998048d7cc1557c417a7ea7d1b6c15508b87a18aa7db"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00039.npz",
+        "bytes": 1132209,
+        "sha256": "f08f9b716cbb2ffd96e88710e582c538b811b2302409886e19bf19df629f83f9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00040.npz",
+        "bytes": 1130652,
+        "sha256": "ca66ad649ede809f2eca744dbff27067adf370f765ea09860275a86120049b3f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00041.npz",
+        "bytes": 1133076,
+        "sha256": "5ffe8048b3d3ceca23c8810e6d628c5a910a11061a09ca2646e9e9e1cccd20ca"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00042.npz",
+        "bytes": 1129337,
+        "sha256": "dffc1b4a71175407f5c1d3c7c8accd69809a3d0cfdd690e77f2340dcf1b87077"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00043.npz",
+        "bytes": 1135872,
+        "sha256": "db904058b5279023eb63cfe143cfa8ad59edd295b4c800e4a9311e715799c1ae"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00044.npz",
+        "bytes": 1138651,
+        "sha256": "840f189e49d32dc573710c8d76de86df4d1dc803c5d32988e354884dcbe2f701"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00045.npz",
+        "bytes": 1099276,
+        "sha256": "7fb2d2046475deba8ff94955d146f10539dcc752071be570cf886990a155912b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00046.npz",
+        "bytes": 1135844,
+        "sha256": "b07fb8e44ed03e1dfe0ca50c359d888461c07f4342eafd53e5148c7bded9a690"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00047.npz",
+        "bytes": 1135713,
+        "sha256": "265aa3f737045e7b95fc5a6f36ad8851b443036002a326bdf86f62348d714613"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00048.npz",
+        "bytes": 1138789,
+        "sha256": "0dbbbc4a4bed35dc0f5aaf87a27c0dd194894290e15b6a3923455fca240bef5b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00049.npz",
+        "bytes": 1137890,
+        "sha256": "0741798bc33b164e818d36108dea08c1ed2a2a19b6022d9f613518c68a14ab92"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00050.npz",
+        "bytes": 1125668,
+        "sha256": "fb35fc381286cb36a5fe998e01665886d71f4b01f992e91e9ba806b2d4feeb06"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00051.npz",
+        "bytes": 1132320,
+        "sha256": "a0229993a7b776a338e439af6f6310db5037e67e880561681686c5487ddfd2eb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00052.npz",
+        "bytes": 1133311,
+        "sha256": "321ab51c8e0c2a99eb6c4d91012002e313f483fa71674bc0762fb52372eb9437"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00053.npz",
+        "bytes": 1134687,
+        "sha256": "3d6cdf367e04b3239b01d22d847de43d8cabdd1548eda3d6cf517b2c0899354c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00054.npz",
+        "bytes": 1133230,
+        "sha256": "51c450160df4ad5a3093488f381404cd384b9693322de89a695865adbf05e4db"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00055.npz",
+        "bytes": 1086008,
+        "sha256": "c0dedb6176fab58711ecd15cf911ba68c17287728362e2390b7cec5f606e71e8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00056.npz",
+        "bytes": 1111692,
+        "sha256": "bd8fc592587d064f4fc0bda8d16b8d56728e441fac67ab84028bb2ec63ceae60"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00057.npz",
+        "bytes": 1102401,
+        "sha256": "009e27f69ff38e5c7c1e338a7a5c07a4369e257baa33aa623fb91830f9e82245"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00058.npz",
+        "bytes": 1082557,
+        "sha256": "d424810a6d823da356e63f66cd8b4892b24b54a7e6d92adef610d7b4d36458db"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00059.npz",
+        "bytes": 1129905,
+        "sha256": "da11b1095497159f93566daf099ef0075994d68e7b6771ddd312bad49eaa714d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00060.npz",
+        "bytes": 1131863,
+        "sha256": "7f0f103af8243550c9fdd630c01f8ae4af02148ab4c193ca2a2ff1aa0a05bbcc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00061.npz",
+        "bytes": 1128454,
+        "sha256": "f0ebb2009cd9c062bd6b83bbbfa34bcb6654dda42ccb357c7974f67d1f8ac791"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00062.npz",
+        "bytes": 1128668,
+        "sha256": "98bbbd6de0441a054c344908b81ab04016dfeb41c7d701cae9ac118e74690ecc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00063.npz",
+        "bytes": 1125305,
+        "sha256": "aa9cf7267dadae82d91d87b1840daebdbdc9ecf44baca1242852c9cbf0f47cc9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00064.npz",
+        "bytes": 1126707,
+        "sha256": "d5974fabe32698328ea6f31fe89ba0d3dbe3128304fc358fa2b4a268b8325472"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00065.npz",
+        "bytes": 1118151,
+        "sha256": "ebda337e38dcd427ab53f386649eb34857eb872acaf71eb644a74da82cb12b95"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00066.npz",
+        "bytes": 1110499,
+        "sha256": "cee60384e68102b6be1994237f7e3771c4b2446d7fefb4c29d44d16cbc612dc9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00067.npz",
+        "bytes": 1126195,
+        "sha256": "84811a1fcd2e376c413b389a8b994a5cd59ac343ceca4f23c9d82c53be6ecfb8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00068.npz",
+        "bytes": 1125946,
+        "sha256": "c1a8c21c47cd7b5afa9678b983c5ef631aea0d61c3ab67049a10db7784f338b6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00069.npz",
+        "bytes": 1131646,
+        "sha256": "26095ad8e0755924f24681a7c3d4f5cd96134a3ba8a06499f786760e9c277e89"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00070.npz",
+        "bytes": 1135318,
+        "sha256": "ffdcdf021cd8986f311f3814a5a0c450215b29161c15999490bff56408e9da12"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00071.npz",
+        "bytes": 1141361,
+        "sha256": "2cf502bfb893499a88462e6bd4e8837a310634bc8ef1ca9a1fc134559d0ca446"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00072.npz",
+        "bytes": 1100532,
+        "sha256": "ad3401a001d15888b22ca1c139cec766396cb38fbbeb5af1b23a07722331526b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00073.npz",
+        "bytes": 1080557,
+        "sha256": "2aa156e4c436dac6c3f89db6eb9f3e68a09dc09bb1677dcd826e89176db51930"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00074.npz",
+        "bytes": 1092083,
+        "sha256": "9f279fec7d3cc9cbb32acebb85f7a3767b2d2a32687965c5d38fa69aba466781"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00075.npz",
+        "bytes": 1037579,
+        "sha256": "e27bb4646b2c4f9585fee8713d5a06b2a37cfddf57a1c25e7a5b26bbd6002e37"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00076.npz",
+        "bytes": 1130693,
+        "sha256": "a0243ab11689a9006e7b97ebccf7996fd6d8856a9f156bc334940934cbe07b70"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00077.npz",
+        "bytes": 1064141,
+        "sha256": "18c4f7a0733ecc1b38681b8d5f25fa4322e251db1b8e1a3de79f5db339987186"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00078.npz",
+        "bytes": 1125014,
+        "sha256": "9bff863359fc8e927497afca38a2120a4bfdc8de53713b596dc21c1ac34b888f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00079.npz",
+        "bytes": 1077772,
+        "sha256": "ee06e1c6514fe7b2580f16109f103e9ba0bd5b68dca24db8dc4532ddfbb92cdc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00080.npz",
+        "bytes": 1121883,
+        "sha256": "1545ba4fbc13b4c338fdf685a4c05533acc8e0ec5a3ba4dfeb565f776b141b34"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00081.npz",
+        "bytes": 1123624,
+        "sha256": "ba84bab6373062854e27f2b9ac2696ad51e6dcbea7ce43d212320b7ee4974704"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00082.npz",
+        "bytes": 1123448,
+        "sha256": "93171c8aed4a0337393563f08003ce67c96f4fa755c2b28d02ca1996b402a066"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00083.npz",
+        "bytes": 1123296,
+        "sha256": "b29a5bfe222376bdca85a0b6eaf6ff6b855afc324c8e8177ef2a750650532296"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00084.npz",
+        "bytes": 1124954,
+        "sha256": "01dab88cd6a09eab46457d49ac3a6b51eb7e6b2e20b447259e8884385e9b11b8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00085.npz",
+        "bytes": 1123893,
+        "sha256": "e04e3f9c9b4f16e12b9275fa2999b8d3063c4b3d97654d96286918ec58910303"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00086.npz",
+        "bytes": 1127284,
+        "sha256": "ceda2defb9ad0efed3ae9a95fdf6af969792153f3f51a56297e71e66efa43002"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00087.npz",
+        "bytes": 1127864,
+        "sha256": "ff7dff4821b57d1c69d5596876086c6a63028c6de1b18591d7b069dc395d0073"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00088.npz",
+        "bytes": 1125248,
+        "sha256": "02cbb2766a6f63f6f960ed4877530eca0c486e6d5b20991d16401cb2c393c23d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00089.npz",
+        "bytes": 1129146,
+        "sha256": "d1000fbcf36813eacd82a4fd56ad43fd38219fd78e02315369ed19403fa74029"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00090.npz",
+        "bytes": 1128188,
+        "sha256": "2e96ae40ba8f9241debaac8ec6b8fa67f05fa46540f9738fd2b16890dc125527"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00091.npz",
+        "bytes": 1124684,
+        "sha256": "b94f4e5f140ca7549a364d7b52edc6865daa19792d44c25e28e69163622c861b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00092.npz",
+        "bytes": 1126665,
+        "sha256": "af494a6732d369fc2a14e32dece219d114cca32f0cb6f7b6917e793e8914c880"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00093.npz",
+        "bytes": 1124302,
+        "sha256": "a63ee73c8495ff35ce3d7562eb12de7d9c26fc86b7aaca1741b8606a5717f5e7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00094.npz",
+        "bytes": 1126888,
+        "sha256": "beda256af339ebbbb5caf05d587f503a815d12eef80f4eaa17fe4314f349d5be"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00095.npz",
+        "bytes": 1124301,
+        "sha256": "9cdf29bcb76f2f57fd6a8758ecf1e4ff014356230999c34ae46521159195ed8c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00096.npz",
+        "bytes": 1124542,
+        "sha256": "a637ca5fd2e7a80fe8307e0e559ae9ffed4b5463b69bb38061d81864f842d8c1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00097.npz",
+        "bytes": 1126520,
+        "sha256": "ba160691f901cba7658747af722ac300e921f5b9a18a10cf5fae88be279b99b4"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00098.npz",
+        "bytes": 1125313,
+        "sha256": "9f33ff97cad35db85f68d69ef8eb7942b7d6472da5a9c3214c072f336a896b00"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00099.npz",
+        "bytes": 1129512,
+        "sha256": "372462d5adf2ea5d2569316ec26ad0df9b6fdac30f0fe0681c40356c2bea84d3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00100.npz",
+        "bytes": 1125828,
+        "sha256": "b9fcbfb235cb364d9c90f2b8a9fa0ad533d8808bf61e52632b11f32b5d0f9630"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00101.npz",
+        "bytes": 1125782,
+        "sha256": "664e850186792ebffa724a61d24855a22ba76e49f8534288f161d579ee3a002f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00102.npz",
+        "bytes": 1125919,
+        "sha256": "1797461a2f82511d7c95f258b9f1aafaed9e54007785b6014ff418ce8ffbc56e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00103.npz",
+        "bytes": 1124933,
+        "sha256": "b08824faa260ecce06e3398d64f2250fdf2058b73680b0764d59531be5682267"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00104.npz",
+        "bytes": 1123791,
+        "sha256": "7b9587a2e3fb38690169a44f6be6455b01facc0ff16306c7be4b0ab2eff2deed"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00105.npz",
+        "bytes": 1124651,
+        "sha256": "4a1a0e8c7e76008f5ddc41a205f4f0e67bc8f8672ad77531c9476eff93013247"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00106.npz",
+        "bytes": 1124854,
+        "sha256": "48f0ab596f485823428256f64a4e1d3738c6f6a1ad374150555130b6d71e8071"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00107.npz",
+        "bytes": 1118381,
+        "sha256": "cc44bb512283073b2ca643a66497ffbbd0733ebab4395290cbb4f3b916b13f3a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00108.npz",
+        "bytes": 1118100,
+        "sha256": "916b8c41881997b451ab7a30a5e40c0ec00989b8f9efe367b7c66e6184deb74b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00109.npz",
+        "bytes": 1117722,
+        "sha256": "ee5f57321c7eb21ce15b45a983a2777447cf138f9528ebb13eb0b2f33caf3494"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00110.npz",
+        "bytes": 1119262,
+        "sha256": "f4028bd887b102ce6e526351bc5d1693aaed75922462897306e58ab99a94c949"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00111.npz",
+        "bytes": 1121327,
+        "sha256": "66cdabfcc3586bd7b09a4c318a527404ce7d8524503e146a68aafb1e152589cd"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00112.npz",
+        "bytes": 1119783,
+        "sha256": "ba86d67c6873949ff93ae7a8e43c18f15408edb085d15a69e8ab6b538a858797"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00113.npz",
+        "bytes": 1118814,
+        "sha256": "055fbbdd3c1bf6a61b0318a881290ebcf10e13fac4ebb75fb22a12e87715e377"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00114.npz",
+        "bytes": 1119583,
+        "sha256": "dac501022dd7502ba724501299c06015bae6e86c12de1594705643fef6275428"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00115.npz",
+        "bytes": 1122020,
+        "sha256": "3532fb1beaec4f2ee4f744f3a0a4976f75508ce5fe7d5434ae5947a738f132c8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00116.npz",
+        "bytes": 1126298,
+        "sha256": "bf63e381a4bd55e3d7119baba5cdf0e00cf9a78e5a1fcd114f7c7595264e6a78"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00117.npz",
+        "bytes": 1066071,
+        "sha256": "ee62b90592cd276f6633d9e3c032c029014cfb2e2ef63f37302dfdbe2fd80480"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00118.npz",
+        "bytes": 1120815,
+        "sha256": "8a48fca66baca1de00025e565be70c4eb3e3cff41c438f57be676c82874efca5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00119.npz",
+        "bytes": 1117244,
+        "sha256": "f5bc9a89a23888d81b5478773e5d0e0d3b91d334d58e0b065476e82bf263e06c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00120.npz",
+        "bytes": 1120797,
+        "sha256": "2ed5ff8f2d37c0a026960db9ef1196ffbb784fdd955274fa2e7a31e56ae157f7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00121.npz",
+        "bytes": 1119614,
+        "sha256": "d0ebbd3235af052daf9871f67b294df7b2069198ad79d3cbdba7b06094341e05"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00122.npz",
+        "bytes": 1125016,
+        "sha256": "b5b22dd133890a7449b3182cfe553ec3746bd039ab39414d82e2699f2214c8c2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00123.npz",
+        "bytes": 1122520,
+        "sha256": "638c42792086dbfea743be28c9963628e0a8c57dd225fe67aa5965809d8f9a8b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00124.npz",
+        "bytes": 1126887,
+        "sha256": "5f82b7704696d42a890b451c52677cf068b6f9dcdfd61b3b17964c27a3a9da91"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00125.npz",
+        "bytes": 1128824,
+        "sha256": "b536fd39e52c528f86920b8e65bb9176b19e22727aefbeb42b1e4e72e652dda3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00126.npz",
+        "bytes": 1128900,
+        "sha256": "ade36c3b075ad01fa498e8aca249e763f6891a84a1ad2a6acefe6cb6bf932ee7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00127.npz",
+        "bytes": 1131489,
+        "sha256": "2dac3520e2ca7519b7c55be5f00721c72899550b4a8751634cb4438060c1b893"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00128.npz",
+        "bytes": 1131950,
+        "sha256": "c89e87f0e39547308f7ff06e211fa02a5673657019f4cd83287eef45ac1fe02f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00129.npz",
+        "bytes": 1129635,
+        "sha256": "8350527d81cf91a965c999838b494caf9c956cbdcbfa1573717da9a98d0b9ef0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00130.npz",
+        "bytes": 1129615,
+        "sha256": "b83e00462a4e39530fe111cfe73f714794848f56bed447a245fc8d790634549f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00131.npz",
+        "bytes": 1131107,
+        "sha256": "474f9d2d29ed6d7826fa13a26ad408dc0349317505708042aec077eb67ee57f5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00132.npz",
+        "bytes": 1133596,
+        "sha256": "7149dd16978cab78857ab2cd2ebed6b7e9ad0a9867127090cd168e1a1797a35b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00133.npz",
+        "bytes": 1134987,
+        "sha256": "4ffce621deedb05d3d6e9415cc8b538f12e4eaa770882e5c622d026a4417e6df"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00134.npz",
+        "bytes": 1136650,
+        "sha256": "4950e0b57631eaf52c45b2b2e8e597391d8460d23db95685bd280d59d4051453"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00135.npz",
+        "bytes": 1135670,
+        "sha256": "96a85b8cc0896c5876975a9b43bddbd030e9b3a70fa5dd3bc49b26e83bcf33d4"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00136.npz",
+        "bytes": 1137318,
+        "sha256": "b72914d49a94a4011addfae84ae5ccf4bfb3a07902dba4bf929bbcd1cbfa319c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00137.npz",
+        "bytes": 1134283,
+        "sha256": "75112d7c75aaf507d28220e0117ebee843aa0df6d87956b4291fe741de39444a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00138.npz",
+        "bytes": 1136845,
+        "sha256": "9964ddc7266e6236f73ec601e1fce257d9109cda47fb8af43673350c1da21050"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00139.npz",
+        "bytes": 1137823,
+        "sha256": "278e1c598f0e2ac0d0942d07d0ec30f51b3a4b49bc66be1cd2def74b5112f486"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00140.npz",
+        "bytes": 1136621,
+        "sha256": "69bf35c958734db8acdf29cf7640ebd10959834ac93ced70057dffec277df616"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00141.npz",
+        "bytes": 1139166,
+        "sha256": "d13d0d30eb9033ec48250324d32ce1b6736a7fb4e996347698a49f122e24ec33"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00142.npz",
+        "bytes": 1107483,
+        "sha256": "cf8e075939e37c84cb3a49da1f776637b677f611bec646635fca228116bf7ef3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00143.npz",
+        "bytes": 1075840,
+        "sha256": "c6bdae067c30ac697d4e03c54b638765ddbcc750eab1eba11e283a965c874713"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00144.npz",
+        "bytes": 1137379,
+        "sha256": "b7c8897533e3808f5afecd60bf026cdc08cfa97a1d640b830b784ced45c59ce9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00145.npz",
+        "bytes": 1136669,
+        "sha256": "daa8dbf924690a0b9eb70ccef9091788fae9dd57e0952433ea77a035b73c9525"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00146.npz",
+        "bytes": 1133152,
+        "sha256": "a19c2c8492752909cbb9e6d99fe0cb0d3e3cbbfb5262ec50fb883505d1f5767b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00147.npz",
+        "bytes": 1131136,
+        "sha256": "3f65cf8cdc009f2a033315dc7479dc0c9652d8d7ad7c533fb41533672c5f0740"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00148.npz",
+        "bytes": 1129583,
+        "sha256": "07fb19528909556e87054bcc42b9ac7bd3c1795157a69ff8f3db1fcaf3f29c98"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00149.npz",
+        "bytes": 1121435,
+        "sha256": "781792e0a87f0f2ce6cde97b1ab5001cede8a2256eff2ed864738538f1632068"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00150.npz",
+        "bytes": 1117148,
+        "sha256": "dc2914a8f654a3a96ffd6f218e8ff8e3d333f22b5faa5bbfd84b10686cfe1be0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00151.npz",
+        "bytes": 1095795,
+        "sha256": "5c3a793519fdba29cf1b925ebec08e83fa03e0dbc1ccceed8f12b665c13e8c23"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00152.npz",
+        "bytes": 1099201,
+        "sha256": "7d2cd942e11cee27dd6644a58201b751730d0d99063ae0d15fb61e3dcd25e3b5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00153.npz",
+        "bytes": 1105658,
+        "sha256": "f12b187ac6a155332ebab75ff4c03f599a4af570df0508657c5155664579b584"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00154.npz",
+        "bytes": 1102798,
+        "sha256": "77129d934520fba16c13be7107126947af5ed965396343f014c8fdf25bbab127"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00155.npz",
+        "bytes": 1100661,
+        "sha256": "29e4f7119d94ca76392b7c9ae28fd258a94e0fe0f4f0ab7958e2ff840f3c5ba7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00156.npz",
+        "bytes": 1097948,
+        "sha256": "018a9817e73b244ab577fdd400f1db61ffec2108e9f2739d52fb0ac9dc3d53f2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00157.npz",
+        "bytes": 1098335,
+        "sha256": "5f588ec0aa76452cdb2151e91fcae7e4f6fecbcd9f0208104a1e547970fb6722"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00158.npz",
+        "bytes": 1096091,
+        "sha256": "5b28b15c51d1241ee7f036354c1bd098c1bff9e34d8bb98b71c057130f4c68a4"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00159.npz",
+        "bytes": 1097170,
+        "sha256": "2d0dbb2c39be0b752da9e799b36825d24cbe2d282a89803100c11c14570aab78"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00160.npz",
+        "bytes": 1095680,
+        "sha256": "eafdc240826780156b421d35290a7f1bee3f15d45f6f9c149488c7f1d1574218"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00161.npz",
+        "bytes": 1099249,
+        "sha256": "b71afa28f2d8001e9b08f741467043600f83747c8a4b28b87148dfead9774862"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00162.npz",
+        "bytes": 1103163,
+        "sha256": "f3246193ba58fdcb9ecf1b229bf3c3a74a747053c6b5040a116850f4355704d1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00163.npz",
+        "bytes": 1107709,
+        "sha256": "51f10af85e437efdc512a89d29808d1ba23c66b1190334da48157794403ee1ea"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00164.npz",
+        "bytes": 1106221,
+        "sha256": "cb435e7cb367aa8a79d97b4addc3bf616584da3de52a7f2412f2799a0ff5cb98"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00165.npz",
+        "bytes": 1134351,
+        "sha256": "e0783d8588d966b19b8f3e6b838c4909446286c29aca6507663607c43f5cfbfa"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00166.npz",
+        "bytes": 1133920,
+        "sha256": "02cd9f667282b6bb16ff8c542b6835f9e9d74fdbfea5fc2bd7040fad28fde327"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00167.npz",
+        "bytes": 1130766,
+        "sha256": "0508265ad726e3adde519a8721e5f516f935ea669a62ab1a537d767acbbf920e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00168.npz",
+        "bytes": 1047174,
+        "sha256": "ec1fea98fc4e4d1a98b35574254b49c3f01e2832a0c903d3ad8b52253df5b42f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00169.npz",
+        "bytes": 1079960,
+        "sha256": "d6ed8b7903bab69f9fcf15f8b3b5dc616246c553298db15390bd0086d824e17b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00170.npz",
+        "bytes": 1130599,
+        "sha256": "b088fe331b8efba0f935bb8b7374a9db0c40ab8d8b540557cb73703814c628fd"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00171.npz",
+        "bytes": 1107763,
+        "sha256": "908439a1b3a11191649da5f0e6b581a0ab9a623a0aea3d016e3cce32aec6a666"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00172.npz",
+        "bytes": 1106081,
+        "sha256": "177333aeaa8daa73fd888416561cf18f089c0468acb9ef4c53c4a5f5a20a111b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00173.npz",
+        "bytes": 1105780,
+        "sha256": "db80cb15b78f7f125fb9878708982dd1ed6f77322d3f36b6312e9b507d2e3c45"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00174.npz",
+        "bytes": 1107112,
+        "sha256": "59f65dbb7f6ef19e1fca9a57f5c32f1fd7cc5e8c87ce7e9ca2e9cf65703f0705"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00175.npz",
+        "bytes": 1098045,
+        "sha256": "e3ffa725a82ae729381ebbc5f9f14951a86e0ade1be5b733d8e98b48a4a45959"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00176.npz",
+        "bytes": 1111146,
+        "sha256": "ae7a5c7ea316a65b7466669e48156922baefa1b23c23387b702227106f22a934"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00177.npz",
+        "bytes": 1101401,
+        "sha256": "b6f5969da3845cd4cbd13aaed8ab79ff223320e0c116a6c6ea3bc0905e9b8c1e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00178.npz",
+        "bytes": 1095496,
+        "sha256": "db8e6e7b6f0cc91f935a5d10f9ae80f9f844203cfaa4358bd921ef7235e7b108"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00179.npz",
+        "bytes": 1093883,
+        "sha256": "66ca91a205c6557ca339971a3122616a194bdb84af8bd0635ba930169fd527cb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00180.npz",
+        "bytes": 1130187,
+        "sha256": "10c1cafbd970674ed02a1a31eac6e65c4711a90ac9caa8b9344cc6d5804054ff"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00181.npz",
+        "bytes": 1127685,
+        "sha256": "27541a0afe256b407279b633957f6b0aa7c68f04f48e9fd2b55c3b13491c3bb6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00182.npz",
+        "bytes": 1099936,
+        "sha256": "9fa70e8ca88882bc94bdef000a5a7ad42c6c24d1fe37b0d51ab8f8f923265a78"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00183.npz",
+        "bytes": 1097037,
+        "sha256": "dd60992ba5e30e7aba51a28355c21b59feb91bfa3a85cc78c13d66657385fcac"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00184.npz",
+        "bytes": 1086854,
+        "sha256": "04df37c8e2a45f38e28c5f76d679bb843fc791ebea844d01e91a46b731c78678"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00185.npz",
+        "bytes": 1085353,
+        "sha256": "d4092e188e84bbac5023d3fe87d0ce1cc06e6112fdc80e9fa3f605a280b908ae"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00186.npz",
+        "bytes": 1085018,
+        "sha256": "5542947d15873e661b1e5010bbafe49ad114044e7f978ed98595f469fad03081"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00187.npz",
+        "bytes": 1079922,
+        "sha256": "af34591f20d21ab1384e5ca20b16cc530c10fc1c7efe53f35ed33bd32044170a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00188.npz",
+        "bytes": 1084408,
+        "sha256": "826dc500b04b37907153a9061f39d8b0ccfe11f54627f1a089e8c0a5671a156d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00189.npz",
+        "bytes": 1082120,
+        "sha256": "fd54cd71821a558f70197b98dbf72427ad2fda389e8c7647840154f8ec19c3a5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00190.npz",
+        "bytes": 1088703,
+        "sha256": "6bcdb0a23dfb5bce980457401accb6914139164a2b6c604f90d211e553cd9f6d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00191.npz",
+        "bytes": 1090501,
+        "sha256": "042b0f6b43ae6f547bddeb890f5219890a4c1ca22c5954ffa8b68486f8d0b5ae"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00192.npz",
+        "bytes": 1092568,
+        "sha256": "6cc165e78f44b079f5ef1f659eff327ec34b63aab94a13b48538915a467a101a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00193.npz",
+        "bytes": 1081166,
+        "sha256": "a904d9906bf0fee449e022533ae798797376416eb08c8fa234feeccc330ddfc9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00194.npz",
+        "bytes": 1053075,
+        "sha256": "a8580be20aa6a4f5cca8509ea2b6f32b334ecb2b78adfa180881e530cefc95f6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00195.npz",
+        "bytes": 1083894,
+        "sha256": "d1ac10a359e10373a798582c4f50277eeaa1ec076a89144b660dfa13223a6d21"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00196.npz",
+        "bytes": 1083444,
+        "sha256": "cdd36c110874b333408d3cf4469adc4015e69b5bdd59c11d82e9ebcbe6fb3100"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00197.npz",
+        "bytes": 1084083,
+        "sha256": "0c90fcd040776f4e9e868bd67c17e546bdb43e591178a228b33e8a9c3318706d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00198.npz",
+        "bytes": 1088111,
+        "sha256": "36236b8d4296db288f8b3a54147054d767ffdb24b3cb01910bd33d89f3e267ea"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00199.npz",
+        "bytes": 1086919,
+        "sha256": "1d1808697cafdbb4d2674b2fe7f38432d66981677e1facd217c00761f2d9878a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00200.npz",
+        "bytes": 1089698,
+        "sha256": "d880a3319507ab6a9dbd2f86701aca0021990c04e7e43b0f0a130eb86dc0e5e2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00201.npz",
+        "bytes": 1088559,
+        "sha256": "84f9cae26360e414247d57deef8388f078e49a1cad2561b8895b374273ebd89d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00202.npz",
+        "bytes": 1084042,
+        "sha256": "e87d94a26ef38345ea8fe4d214bfe7d8b8b3f68f93aa837554755a1a56ddba4c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00203.npz",
+        "bytes": 1082275,
+        "sha256": "b2ee677b6236fc4259cfd93d90dc38c806d38648317014d6d649bf537b066a51"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00204.npz",
+        "bytes": 1082237,
+        "sha256": "a8d3a03f79dd9f47ad06add498dcf33d7166ac4137565830e7b32b30d23a67ad"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00205.npz",
+        "bytes": 1076585,
+        "sha256": "45745a9103c8543a3c84a9559b83f3923a19f81cc96a09d8fc77b966f7da6425"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00206.npz",
+        "bytes": 1075119,
+        "sha256": "b39419f61c261d9f6bec0cf009e470b744787a9e62e2ccb7866b2716f7fca8bc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00207.npz",
+        "bytes": 1085480,
+        "sha256": "f47b28303f2a4466c3009a97debbc79b4b8e00fe0f9e139178a979cfae638517"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00208.npz",
+        "bytes": 1084434,
+        "sha256": "bc1aef6f83e5a2a9e186e85728c2bd89739fa31bec3df6c455a352608d6ce5ad"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00209.npz",
+        "bytes": 1083835,
+        "sha256": "29523c111dc795b936a3a52fa6d815721f9d7f544b6c35af08594d2f071afaba"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00210.npz",
+        "bytes": 1090495,
+        "sha256": "1e16b6e30ac36b2e62fff7751a32c8a19cc87822c76127f484571bb60ded01a0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00211.npz",
+        "bytes": 1087704,
+        "sha256": "01cf71c12430ca6215975648bbd9db3c0f2a64fe92ff3a28c34531a94f30e324"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00212.npz",
+        "bytes": 1093744,
+        "sha256": "26a2113e1f188376846943d9cb235f66b011bec26ff5ac3ba972ea5abe6e86d2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00213.npz",
+        "bytes": 1087529,
+        "sha256": "97a0ca9244918bca29ba37a0893680a2ed7ab56db66b6ab0df3b4e92b5cff532"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00214.npz",
+        "bytes": 1020667,
+        "sha256": "9e7121d34eba274019306a6bdfb9cc624e9338517290bcc4af49fcf81803e0d4"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00215.npz",
+        "bytes": 1092382,
+        "sha256": "6975a852a03ec37d1c90fdf5fcf2fb92fd7d8f79bcc401f3bc77f3d11f606595"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00216.npz",
+        "bytes": 1087894,
+        "sha256": "75d7075f3b950bf095ca26d18f52c567f186420737813f5d66e7c50b44bee04d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00217.npz",
+        "bytes": 1098536,
+        "sha256": "b37dda0dd4ede53e6b8cc705c500b64c928c5649833721537e28805414b9888f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00218.npz",
+        "bytes": 1090909,
+        "sha256": "32468cd04e79b1a81809afccf554ab21bb4473b2bbac860ee87a6a02bbcb0720"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00219.npz",
+        "bytes": 1088917,
+        "sha256": "0fd8c1904daa4c21e6128a1131e2f77289dc0402591525ab73ffb13f470f4c9c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00220.npz",
+        "bytes": 1025345,
+        "sha256": "b3e431277f8af2c84f4da016c130298e1ff92a2d73a84dbabb251713f3b9ce7b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00221.npz",
+        "bytes": 1058317,
+        "sha256": "d2d9eaba2a2f1a98f5ee7b8d6caad36553ebe1d1142cc2d23aa4e9ce6ce69122"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00222.npz",
+        "bytes": 1087272,
+        "sha256": "3dea13a2c298eaed981595a4a76f2f962288a371880d6797eb26747d6378d5b3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00223.npz",
+        "bytes": 1087451,
+        "sha256": "92f9bfa17475d91a1363cd86c9b2ee3f6de22f23c8e07d5ad436ae4867a07c20"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00224.npz",
+        "bytes": 1089659,
+        "sha256": "ce3ebad04e9e56a8099b857dbc9e91ca904562afdc47c826097fc46428436084"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00225.npz",
+        "bytes": 1089422,
+        "sha256": "42c56784ef7c0b51fc6cb727efac7da3c332eb0cf76b34ac5ccbde60aff2e9db"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00226.npz",
+        "bytes": 1101551,
+        "sha256": "d0d813f1052714670c59cb68237be8fce2cb3f2e31c8b952e0f9475282f4ce53"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00227.npz",
+        "bytes": 1095716,
+        "sha256": "3e192c155cce62244e81dfdc9dfcbbbf5d8851e41b3562b70bec2f10f5014676"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00228.npz",
+        "bytes": 1054744,
+        "sha256": "5e641e04f96d11ad045a767e500a7d76de1a6b0872bfa096f6d9d218491aba9e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00229.npz",
+        "bytes": 1079528,
+        "sha256": "e4277da0fe8938fd5343bb7cd4cc86473924b49901283162682fca7d5f829624"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00230.npz",
+        "bytes": 1083369,
+        "sha256": "35c52346449a08587f82e82fb4912f11c151d073cd8fde752af0a8082076e9d8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00231.npz",
+        "bytes": 1049997,
+        "sha256": "b2c2e3df1d236f3a2ce8e3c6ccf3d15f4e1dc8942c153747b1b439d80159ea64"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00232.npz",
+        "bytes": 1100589,
+        "sha256": "6a31efbda40ea1c0fda26bf15945f9079c5900a991aab2b7d87ea420ba18491c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00233.npz",
+        "bytes": 1109616,
+        "sha256": "f7cbf9cf255a3f1c09ad6e5c5bfa6a201753a4909bb708b08d9d539846fb4a97"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00234.npz",
+        "bytes": 1099699,
+        "sha256": "258478ea8f47c24f46497b844f2bde1dd2a11f393800514e92ae1515f849f26c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00235.npz",
+        "bytes": 1083374,
+        "sha256": "818411c38b3f5433be3495c714526440df922acbc74294bc36c38583a13cec1b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00236.npz",
+        "bytes": 1092212,
+        "sha256": "5de5078774902f9a696bf7a11d1ad089ba30dc28263324946a17079eb1332455"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00237.npz",
+        "bytes": 1095592,
+        "sha256": "9e3ad3b018b52912c4181a8c35fd8619eaf1e5c3e7f00cb1d512617feb6cf3e6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00238.npz",
+        "bytes": 1059204,
+        "sha256": "084e86ed647b4ff79dba0e9ffc63f75f74faa3c248f2f63a75957a597e6dfa46"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00239.npz",
+        "bytes": 1079460,
+        "sha256": "b6a4a63753561521335e36447c8b9d44fc8c06b83b137fb6c0045f772443a0e0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00240.npz",
+        "bytes": 1089392,
+        "sha256": "7883c3adb228f850c9fe7291ff8cd85d741594f63ca8f00f99672386f72024f1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00241.npz",
+        "bytes": 1097700,
+        "sha256": "95ad9629e5c7bfa2c23eba528384d7b7e472db227361b9ad1ae106c7b4d7ef6a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00242.npz",
+        "bytes": 1106414,
+        "sha256": "12ac96d16f63910d9fe13b96e289ac4dbbd8879dfedb311f4faf6374f08df7cc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00243.npz",
+        "bytes": 1045189,
+        "sha256": "d58d3266ca87a0cd5bce9fb88c99dda90f1f98819a3c910841f4f01a7f427f1b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00244.npz",
+        "bytes": 1097720,
+        "sha256": "7efe4ce62339afbdd69a00ba4597c1d18c1495b9a4ae547e397e856cd69eaeb5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00245.npz",
+        "bytes": 1093461,
+        "sha256": "a6f580353b22e939b317cba365b2ffb10abf76aa078bf8be7ba6678a3d72a258"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00246.npz",
+        "bytes": 1100811,
+        "sha256": "853487ec3ba758dfe8b673e15910ecd20e088e22ee53d70888f39b3b31e4b86f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00247.npz",
+        "bytes": 1090461,
+        "sha256": "e59de40b964a62dd13f3d05c50334ef98c387b1f247b28a82dd26d51035271dc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00248.npz",
+        "bytes": 1095318,
+        "sha256": "6ca95e78c07b8fddbf3828118d12c84924454364958e6ccd697e88e3461a663b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00249.npz",
+        "bytes": 1091287,
+        "sha256": "c144879589191e5409911a6a53af92cb19561f90975b41a60a65da3c12d91e88"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00250.npz",
+        "bytes": 1093234,
+        "sha256": "57a88953979cee0e398d0615ce4a0a2d11ece899a6d8770f1a1a70499669b59d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00251.npz",
+        "bytes": 1093897,
+        "sha256": "fe5ac3cbe178faabbdcfb2aa782de75698f7cb7b2e35518d8e10222e970111ca"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00252.npz",
+        "bytes": 1085119,
+        "sha256": "b3c967d8f8a525901f1c30c466bb43dda40892c0f1b4574dc3d41852c64b636e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00253.npz",
+        "bytes": 1085381,
+        "sha256": "b8136349dcd71a882376b675994dccaf163adfbf9ff9c6be22858952acdabdb1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00254.npz",
+        "bytes": 1088334,
+        "sha256": "9cf056c0c58fd1b8abab456e3e0a2a46f9405b4c4d8364529004f0a9e693e27e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00255.npz",
+        "bytes": 1088800,
+        "sha256": "52e0f12fc07f7ba0e79bce76c994c607ac08a6b55e9f6e944314d22c382fee61"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00256.npz",
+        "bytes": 1095801,
+        "sha256": "00bf1657774db1cd6feadd84cdf98a8bbe9760b08df551b2ec29be107157e8e7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00257.npz",
+        "bytes": 1090223,
+        "sha256": "4cc062021112ea4c7578a0b3ad296dec9219abd362e0bc8c3df39ed8d2e4d206"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00258.npz",
+        "bytes": 1089363,
+        "sha256": "fa76e25f4abacfeaf887000a022aa7ff55457f67ccd642623bbf919d909af84a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00259.npz",
+        "bytes": 1091691,
+        "sha256": "589b07501c69c32ee1196ec92d2acd475e93a67c77908832e83ead9a00a4413a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00260.npz",
+        "bytes": 1086033,
+        "sha256": "e5b56639e2c303697904adc33f69102c24bc8eb2585b71333e713a70abef5ad0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00261.npz",
+        "bytes": 1097194,
+        "sha256": "8c77cee9f4e95746fe3456562fec0ca79983f50402b787bd5a23d639de93fc7a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00262.npz",
+        "bytes": 1123819,
+        "sha256": "49f26e37b8ed2fd1e55242c8ff9c634fad8ae2f1d5841b8ae23801b426b5e549"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00263.npz",
+        "bytes": 1142906,
+        "sha256": "767d3aedf8facaa11e92f923a3c5547e620bd79578803f7f781a384110612130"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00264.npz",
+        "bytes": 1142505,
+        "sha256": "216b01d4f82e7b1d323cd94c470d00d78797f58171c105a5396fb10ee22a3358"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00265.npz",
+        "bytes": 1136619,
+        "sha256": "feb38893cea52f7e363fab42f3f873016c39192d013ed2512b688500aa32b6c9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00266.npz",
+        "bytes": 1135837,
+        "sha256": "f1ee348115331b181320e4c155db21794af9e4536db3540cd28161eeee35dfcd"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00267.npz",
+        "bytes": 1130921,
+        "sha256": "e75c613bc9b0d4c5dbed7807d87da400b738489174932f7e10e8c45724aab1d7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00268.npz",
+        "bytes": 1126745,
+        "sha256": "365ba9fcee936eb9c94d72b0b541ba5fa1468e9b5d212abe1fa087cc2cb5fbed"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00269.npz",
+        "bytes": 1130181,
+        "sha256": "31d2bd97381300d914835df18f68d8705a24ada57e77b88938765bc23ab02365"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00270.npz",
+        "bytes": 1130792,
+        "sha256": "238d20d1e3eee9e936d497046fda6f06aedf7bf4ec7fc0b25c47ee78408450cb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00271.npz",
+        "bytes": 1087373,
+        "sha256": "23f4f803076be5a79fc919bcac5eefcc3cc964be7d5185db5f7e49d3d68c1295"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00272.npz",
+        "bytes": 1084839,
+        "sha256": "f8b1483d44fc49afef0980df02e93d05b3b90859b1721f0ee4682be20bd9c4cb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00273.npz",
+        "bytes": 1091012,
+        "sha256": "1ac64b0d55bf74782292a9f27b1210bfbfdd18400c8e4c5052986548db3e74c6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00274.npz",
+        "bytes": 1083949,
+        "sha256": "250e856d0615cd71accc2106d639251c43a226eada2180dd1984bb5f8704a804"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00275.npz",
+        "bytes": 1090642,
+        "sha256": "cc92b722d5b50751856944b182587f3c63abedbb5d787cd77c7d4ec48764b553"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00276.npz",
+        "bytes": 1066903,
+        "sha256": "a5dc64bac695f568afa7df49bac9e4abcf59394a576a67b1d4f48873f277e1de"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00277.npz",
+        "bytes": 1086010,
+        "sha256": "f526c848fe898df1479435ed3c0156f3265c7223f866337e2860ba8f5f5d1e52"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00278.npz",
+        "bytes": 1090650,
+        "sha256": "75e74cab21f684a9dfae2135a10cc1baec518a5e5f395122b23fff83238027c6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00279.npz",
+        "bytes": 1096765,
+        "sha256": "5c6206df5c60bcec04a05b98d3a98589264aff50b47a5fba760d5d15e0f6d6fc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00280.npz",
+        "bytes": 1095104,
+        "sha256": "2f4c6d6bdce4dc8537e85596ff99048054df74ab0800aa256f3e21fe36e16b0b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00281.npz",
+        "bytes": 1091079,
+        "sha256": "50653c584d2fb2e7269832e4dd0fa6bda38e70ac5928b7ae7a591f8acd9d64d9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00282.npz",
+        "bytes": 1092508,
+        "sha256": "9d895e59eb14527f9158024aca8b7bb46be069c41aa9150f238bdfe796af935b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00283.npz",
+        "bytes": 1090058,
+        "sha256": "a906456e6ee5985a127407e58b78847bd02e45436c482f2b2b2d0f4c5ae576f7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00284.npz",
+        "bytes": 1089991,
+        "sha256": "9cce5327ff024e971f76a156d615b2009cd6ed039f28a8684c6ea2ea3f344ddc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00285.npz",
+        "bytes": 1090048,
+        "sha256": "edc933103c4ad3187823de75391d4934f870c9d67f3e8d86155c5c922d2542de"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00286.npz",
+        "bytes": 1094074,
+        "sha256": "d18a8b107aa19fc28a2f875c89ebefb25bde0a04791eed0c120b41ad35e6c896"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00287.npz",
+        "bytes": 1089768,
+        "sha256": "a7dce63f42ced887fa4d1e9e1ed7e7226253add1ad69b2d6ab106012f65eb4b1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00288.npz",
+        "bytes": 1093049,
+        "sha256": "6b2d4d1bf83f9144efceb72cf54338b98faba9c8d8b22113da26668c17fd634e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00289.npz",
+        "bytes": 1093018,
+        "sha256": "15b8a9880144b1924d9bd08c1a857b12fb200a98b1dcc164885933404a6ac901"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00290.npz",
+        "bytes": 1050648,
+        "sha256": "d5a130b91a08adbfad94aa83d2cb2f498c925f25ca13e1a82d8bce754b208e4e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00291.npz",
+        "bytes": 1086137,
+        "sha256": "68ef1fa86240aa8de4b90a4aa8e3c3962bed0a8205429f1f489185eb3f415c69"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00292.npz",
+        "bytes": 1084894,
+        "sha256": "d84f89969086bcacfff68c586fc3d271ed122c2fa89e2c3c2348cfa49005cb02"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00293.npz",
+        "bytes": 1090730,
+        "sha256": "41671b61edc36ddce08da7a6e322276c618d501ea672c351432866f56437480d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00294.npz",
+        "bytes": 1084958,
+        "sha256": "ecb316b396a75c5c8e11a05d42c8a3357e416a47378d20af65f6502ed3f73c64"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00295.npz",
+        "bytes": 1092320,
+        "sha256": "5351e36ed8387c0423bbb264249db294fe2452730697b99469aa29f006adb9f1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00296.npz",
+        "bytes": 1087136,
+        "sha256": "f70ee50317123e8cc534e9a61726f1d7e3ec63126f2818ceb37a4931e716aa3a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00297.npz",
+        "bytes": 1098275,
+        "sha256": "72afc8cbdbd151a9ad667f030635d39347c61300273d9618f490c561085bf4aa"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00298.npz",
+        "bytes": 1083245,
+        "sha256": "4ad852e9e1f335317a21dbda19a192d3a2bf9c753d60204c07e1e04f2b6e3962"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00299.npz",
+        "bytes": 1078294,
+        "sha256": "9f13bdd399c5f4e84179ce33b04c88f9a5e7ad3efd12fd4d7c51fccb6fada1fe"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00300.npz",
+        "bytes": 1078082,
+        "sha256": "4fe8eff644ba4cc6f5365abc748d4457f1397ad8e13e712bd8c443f4beb90666"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00301.npz",
+        "bytes": 1086220,
+        "sha256": "4e21eb7eea78d739874c5cd90195d1254f31947b7311bc21940032e8f362b0a6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00302.npz",
+        "bytes": 1083605,
+        "sha256": "b3064c42ab43c6e1ed079fcba083df65490abce45c390e579bfd31b2de8e599f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00303.npz",
+        "bytes": 1044384,
+        "sha256": "bf2d1a3feb1e3d6eda80fb71241d608b50a2ce61cbb62c1d591185af630090fe"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00304.npz",
+        "bytes": 1075777,
+        "sha256": "def59f3fceec6099f2868a648b0ed48e72339f2422d12281dde31a0a0aec8c0b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00305.npz",
+        "bytes": 1085459,
+        "sha256": "4d1d12df41770929386d6548969f220be80efff752640b66e7d2576704e67329"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00306.npz",
+        "bytes": 1084115,
+        "sha256": "91763eb9e717942cd294e511e967655d21384056add675867fe2b2c3ec8a9409"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00307.npz",
+        "bytes": 1110616,
+        "sha256": "e67961d7ed15790277ae782e35649235a420c3b3bfb18cccfa40ebaaf539a973"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00308.npz",
+        "bytes": 1121037,
+        "sha256": "39f58c82a6d31022fae54d8b0720ad9f665a833dd399f3bb4f25e37a7ffa8f26"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00309.npz",
+        "bytes": 1137287,
+        "sha256": "588f50630d62020f76509d9709515d0056c87c7b3ccff5f2dd53625823d19032"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00310.npz",
+        "bytes": 1134557,
+        "sha256": "b7cd9286066a55ef84e57fafd3ad92d678cd4dea397e3cc5141ddcf94368b874"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00311.npz",
+        "bytes": 1094016,
+        "sha256": "c1f285b80aa31c20bf6039fe9d200800e176d741b099e59b5033cb55508e1105"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00312.npz",
+        "bytes": 1085813,
+        "sha256": "e029586a052400ce163a83af5c0b10e2454c1c0c23f397d14df12a1f14408cc0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00313.npz",
+        "bytes": 1065129,
+        "sha256": "77a1dbd733057f2b3f545aca80ecc3b5b57c2421a82d17c13347e7063d1e186e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00314.npz",
+        "bytes": 1066222,
+        "sha256": "e0a29f9ba0d23079f7058d334f3c00b2b03d49f303358b8f866995e0094e75d7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00315.npz",
+        "bytes": 1054106,
+        "sha256": "4836bd67c441bd770f309ca5df78f6f6cdc2934a24112365468dd13832f3a06b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00316.npz",
+        "bytes": 1014236,
+        "sha256": "dec8934523758999e63997ea8d0761d4a2af9d61965977092b225a4f7f216f77"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00317.npz",
+        "bytes": 1076970,
+        "sha256": "32e76beaa8fc7a9c4dd5f25f3493924cfc59ec6ba8e22ec2e4689dee28c191db"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00318.npz",
+        "bytes": 1144928,
+        "sha256": "efeea068fbfcb4074731f7b2844209112ba908c46f6a206deee4f68f1e98c6da"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00319.npz",
+        "bytes": 1139680,
+        "sha256": "6e66d05499a0a5e9894f671b01274c1218c1c846515f134c7012cdf4648ac0fe"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00320.npz",
+        "bytes": 1138670,
+        "sha256": "5959dbb19dd02fd02c107f7b7c2f084896cf2ba3c37f1783db3fc86f73144740"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00321.npz",
+        "bytes": 1135963,
+        "sha256": "230f88d5c7746541e01d0b386079709722c3f72dd9ef44aeaa91a144c6f524ba"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00322.npz",
+        "bytes": 1134845,
+        "sha256": "234295352836a4288a8d121b5b28b75ace523706b93842d49bb09fd7fb377d3e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00323.npz",
+        "bytes": 1133511,
+        "sha256": "467c183200e6547218c48c6042e80918c56dd9b9f97be0f971c45042b892e212"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00324.npz",
+        "bytes": 1098718,
+        "sha256": "8b6f785010e0e014670cb9e3e91ca4247d7c3fc5c26059b6e544d506deb790e6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00325.npz",
+        "bytes": 1137106,
+        "sha256": "f9bcbfb094fccb86502066d215485f190073042d9b164378fc70953c8e58e765"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00326.npz",
+        "bytes": 1163294,
+        "sha256": "e5dda67a7fc9564fc7f6480cd8eb0c2ac15f9dd707d36c5750cec9cf6f693026"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00327.npz",
+        "bytes": 1136452,
+        "sha256": "158fba4fcc85f2c7bf43c2847bfb9e5f592fb49d2866475c1e6d7f6ea93701f5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00328.npz",
+        "bytes": 1135623,
+        "sha256": "c62fd7f350dbc9d56dc2f245612c7295a95092d96c72463524c7a6871393db02"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00329.npz",
+        "bytes": 1119452,
+        "sha256": "9e894c49ea8f66e4f4bfcd581c1489dfb63ab171515a0028d060b4ea9d7f319e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00330.npz",
+        "bytes": 1100047,
+        "sha256": "04088f3e1b5cc20590d90cadb81b9b7af042c9fd34156928934994c5023c5252"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00331.npz",
+        "bytes": 1087897,
+        "sha256": "e11fa265294dfb0dda476e1d93bc9ef5f9171a3b4a63ee0f987ce8ef97846c7c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00332.npz",
+        "bytes": 1094035,
+        "sha256": "e06387660a14cc09e2782ef06cc579ef8fe8e3b8949ccb5a16940e2aa989838d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00333.npz",
+        "bytes": 1078958,
+        "sha256": "5e058b6e4ab91294c1ce41e65b7aafeacf194cece5d4301334228d84545bb2cf"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00334.npz",
+        "bytes": 1088964,
+        "sha256": "599ced0828c8b077e78ebdc30fe8df6be22eda65c5b9eeaa8d4e95f8ed1a8987"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00335.npz",
+        "bytes": 1091708,
+        "sha256": "ac37088f7f8d80e3021a3b51906980e3124648134b5e42cc1e4ce9f8cf2a3d4f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00336.npz",
+        "bytes": 1098196,
+        "sha256": "782a2e57d88646359e980d46f13a20dae924a27d46b8d7674b3c4046e585db51"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00337.npz",
+        "bytes": 1096758,
+        "sha256": "2ea3b37c95a8c7da80f06f4a6dc0614d5851def043f9aa388bb9dceff537fc97"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00338.npz",
+        "bytes": 1099770,
+        "sha256": "6340bb6e9441c8715968c1aee4f073fc391c18db3f6e787d0105faf5781bea5c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\f_00339.npz",
+        "bytes": 1102305,
+        "sha256": "86891f2c048a03ec7398e2b67983ee74d51e392d29eedf464d6ca0df08896f06"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT\\meta.json",
+        "bytes": 92868,
+        "sha256": "ad930fe594c02da7e26260d66e53c19bd9d864abbfe8e6784e4f15f0aa4b7438"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_squareT_pressureGate_squareT_baseline.json",
+        "bytes": 185624,
+        "sha256": "d3beaf2df087a998f81468f815a564e7f102fd53fd951ab26e2de3131aa728a0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\odometry\\icp_roundT_squareT_pressureGate_squareT.json",
+        "bytes": 47891,
+        "sha256": "e552decb4a4b773284c39d9c4f64f4332bba14d05f7436384e1f9a4163f7a104"
+      }
+    ],
+    "inventory_sha256": "3f895d51d5ed4a4ff588aeb8401ce08f61c9145544c7b3e9ac7ee1c5a8900e6f"
+  },
+  "C_person": {
+    "method": "Post-run raw-byte inventory of shared readonly inputs; existing stored baseline reused",
+    "root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT",
+    "processed_frames": 268,
+    "files": [
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00000.npz",
+        "bytes": 1147864,
+        "sha256": "288b4389233bb369375c3577d8e34aa172b98adc36998e9c8d96fb5531f61638"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00001.npz",
+        "bytes": 1147042,
+        "sha256": "6a35599e23ab69727ddd7dfb36b23ae3b2a27376f1e5eff7704507c6d7cb43d7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00002.npz",
+        "bytes": 1127239,
+        "sha256": "3b0535cf4ddf881a9df61a4acb91d8a6de9a577ff8a76bd5399582bd9e0994e7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00003.npz",
+        "bytes": 1148766,
+        "sha256": "3e6268afc7ef7713df3b2d12032d55d0a6b4c182c338f8e0b958f679f433e49b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00004.npz",
+        "bytes": 1150331,
+        "sha256": "93b66d889c19dd4a14309dfe54217fb7b5b93e27d923881949621643fecf02f7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00005.npz",
+        "bytes": 1142691,
+        "sha256": "e043e3a8963787ca24394e8c8b6b3a81a83e0f52770e9d92c39a7dfc15f6af31"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00006.npz",
+        "bytes": 1111365,
+        "sha256": "80f9e801a85ef054c7d1d5fa4bfe2bc9403cbc9f20e98f2111046167136b94a6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00007.npz",
+        "bytes": 1148104,
+        "sha256": "4980b7666a1163b7f01e7e514e77168062144f7d6d04bb3e160a612bb2b67fc1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00008.npz",
+        "bytes": 1120644,
+        "sha256": "2adb858b678a4f46a98a305b361cc5d24ac0bb85214029a27e01aceb4cd0f8f8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00009.npz",
+        "bytes": 1146079,
+        "sha256": "377a5f35e6551b872a24288fda2392425f6b95e8b93c2684e0f2d0ff774c8748"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00010.npz",
+        "bytes": 1149229,
+        "sha256": "192cd14aad7d02c6e794ac39c083d1f51a82863953f599a01bbf702d5a9b733f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00011.npz",
+        "bytes": 1150358,
+        "sha256": "4bc4f3ed8bc55fb95eba3652eb05effd944694cff787a3c1ec07dfdaa4dd5efb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00012.npz",
+        "bytes": 1144826,
+        "sha256": "e63ea4238311d51a6163e0fb34b4ae468dc2be7a9fa4b5c68fad788b6b43a824"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00013.npz",
+        "bytes": 1145745,
+        "sha256": "b28d18e6165b73ade9bf37e6e4cbb23d95699ad328a848701846ed8b2ffc5566"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00014.npz",
+        "bytes": 1148086,
+        "sha256": "92929771ea59ef541c34b0c36553b3e18024cc837e221ee0d4eb12f3849e5408"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00015.npz",
+        "bytes": 1129674,
+        "sha256": "ed5bcc4423fafd22b96e4f0d4798012bfbb19d437722194acc75f24cf1a40a9d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00016.npz",
+        "bytes": 1126947,
+        "sha256": "f3fce4a73734ae2ffc98d047c8f2f6da98617e67057974251415b2566f51c131"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00017.npz",
+        "bytes": 1123431,
+        "sha256": "ef5d04ad8093e50a31476b96fdcbce4c1c2185355f7ac260146240f17bb3827b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00018.npz",
+        "bytes": 1100493,
+        "sha256": "1bb9369d0a7e8a0be593f7017e3a5ad509c0afdcb4940b1e86d2374fdd9b9421"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00019.npz",
+        "bytes": 1141571,
+        "sha256": "05690e9f1ef20d98af311a1b007e50d4a813bd73d962cdf54cd7bb1dcf88a8aa"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00020.npz",
+        "bytes": 1138769,
+        "sha256": "ca0234cd71e47b628019eb1f4721c0e86f89a333c18f6bd200867ca75df75bbb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00021.npz",
+        "bytes": 1137193,
+        "sha256": "2e5fadc98b51900bbb69ae2e7f5ac5f837c1d1ac586d4524b9e1fe7062a184a8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00022.npz",
+        "bytes": 1134103,
+        "sha256": "7f5ed0f6e9d37686e13dd6ffb40161841ebaa21eb3defa7c035e5d7776f5fbb3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00023.npz",
+        "bytes": 1126836,
+        "sha256": "6265600459638fdca86909e1d6f02b5bc679ff0c317b985fbeb29a1d5bea55ec"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00024.npz",
+        "bytes": 1129031,
+        "sha256": "8cd58721e7e973c22ebcd6b0251b2177e5dd2c2aaf250c1989144b26cb5c3e6d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00025.npz",
+        "bytes": 1125511,
+        "sha256": "2a839af095470b02dc9d9133da0ceb1956ab3e94c4543a470af37d6441202c70"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00026.npz",
+        "bytes": 1129465,
+        "sha256": "daedecd93898090d3acc555b80fbf3003c3d252415d2b0fa0686456de0546df8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00027.npz",
+        "bytes": 1130244,
+        "sha256": "d5d38d0ff441371a786e2f2f23ca9c52914a051ffb21063ef71421bf128ea8b3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00028.npz",
+        "bytes": 1095172,
+        "sha256": "9c5207c7b21a24766017ff24b049b9c5df5f1a1a8a5c500de9e28ea9541995f7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00029.npz",
+        "bytes": 1101113,
+        "sha256": "d9f26c467b97da209fe9395d3fb1e0c87bbedfb7591aec05b03ff7e81ee5506b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00030.npz",
+        "bytes": 1097076,
+        "sha256": "179556d844c6e8de6a02bb8a862f12f5dca3bbf29b9a21acf0f38298b2872fa3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00031.npz",
+        "bytes": 1093947,
+        "sha256": "33805ff49068be6759449d9bea1691225849a0224825ca63c4520955b59e98e6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00032.npz",
+        "bytes": 1095651,
+        "sha256": "4811c093810a6eb6b120295ed90bffb14c6bd94cb4f0150b78111cfe3b95789e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00033.npz",
+        "bytes": 1072003,
+        "sha256": "31ca5174b28a41166c0a20e44643d9c1ffbd526ea32eef61d0d5491b462a209f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00034.npz",
+        "bytes": 1107529,
+        "sha256": "27f0921538e3e3cc9029141ed9876880ae299a3859dc47786a8f539337cefaab"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00035.npz",
+        "bytes": 1104944,
+        "sha256": "7bd8019fd50c087f2d96c3a0b4090305e35abcc7dbbf4862329c1cfb88310833"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00036.npz",
+        "bytes": 1111320,
+        "sha256": "498e441abaa5f602b32d176f76bc5ffa818601d2e83248b8acb8b396f8ae7907"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00037.npz",
+        "bytes": 1105201,
+        "sha256": "ecdd6a4d541454b5742a25625c2f82d63d60c1d853f04295cfecf72fa2d32617"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00038.npz",
+        "bytes": 1099605,
+        "sha256": "64701d12bc980dc520b4beaf18a8e23106790c7dce3623f562f088d0171aac7b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00039.npz",
+        "bytes": 1098712,
+        "sha256": "bc9d7c2bf309fadc2f3cc3e56ba4b26509c46a10bf40d71538b117b188b38ebb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00040.npz",
+        "bytes": 1098359,
+        "sha256": "19fb7f298f553e126acdf4da16e2e431ab22f93123becc21cf3494e7cde4724b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00041.npz",
+        "bytes": 1097364,
+        "sha256": "1241f52d5a415093ecb076f61058979d552f3c00af954961e3a15f7fd2303127"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00042.npz",
+        "bytes": 1095305,
+        "sha256": "12d17e4303aa28a300c1374a830ed89c46e517704c79c4f03209de94ce34e569"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00043.npz",
+        "bytes": 1091724,
+        "sha256": "4a8a28fb9dac556dba81b2d73718b0f376b121489279c4c2642824982edc6a66"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00044.npz",
+        "bytes": 1098728,
+        "sha256": "0a99dbc034947acb4720d86468e6948442177f4539431a1f7b786605d03706b7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00045.npz",
+        "bytes": 1098708,
+        "sha256": "1f3068bba4933aac95786d794f808e132128a563582bbc4b72484259356dc4f5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00046.npz",
+        "bytes": 1096954,
+        "sha256": "c9d027ba77f615f01bcbee92d6289e6ea3f7f9802b9b43be4e504a5df4948adf"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00047.npz",
+        "bytes": 1101254,
+        "sha256": "8b856189887ed794969b7ba7de4943de7d056e339ee7a222cb47e55ffbdfbcb5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00048.npz",
+        "bytes": 1137125,
+        "sha256": "95ad024613dbfb434e3fa190584780cb949330d0b16ca1111c3365c2f4e25216"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00049.npz",
+        "bytes": 1108163,
+        "sha256": "91ba5f0102e4109bbcc8851ddb7edee97a43e2ffd4ba62d8f837efce9e20872e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00050.npz",
+        "bytes": 1075552,
+        "sha256": "8dc6ae4e40cabd9165be9381c1997f39dbf032ab6cfcba418e00ce85708a90c1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00051.npz",
+        "bytes": 1104107,
+        "sha256": "4cb82691f46d9e3f9ab39e5fc0a2f7b361833f5838a3c0a5138d34d27319547c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00052.npz",
+        "bytes": 1141169,
+        "sha256": "a5ed1a72b8d3fe8c1a432a8f02217c28c06b33047b8c4642df3c037cac0d2bb6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00053.npz",
+        "bytes": 1102717,
+        "sha256": "fcf3e457b8b80b24c286cb960e1cb8eb5202cd6466ac304c9ee61496a092aff8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00054.npz",
+        "bytes": 1117544,
+        "sha256": "19f4289c5e20bd6bb5d6239713f12ad4e83fa4f717aea09221de0899c82a4548"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00055.npz",
+        "bytes": 1115496,
+        "sha256": "c977200a940569d998e8f43af7df2efa94e46c59cba334d64199a529ee74fece"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00056.npz",
+        "bytes": 1127135,
+        "sha256": "9259189488a2898cf856a37f72b6fe2f3476b73ca52c484b37b16c213c0804b9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00057.npz",
+        "bytes": 1137091,
+        "sha256": "22a57eea45dfe6040be811524d7fb869d9ff05e821c68bbf3f069c702826ca90"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00058.npz",
+        "bytes": 1133545,
+        "sha256": "27b14419818a676f613c838a0bd3c175935183593f1eda7603938aa6e2e25068"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00059.npz",
+        "bytes": 1164955,
+        "sha256": "93e0a098308e63d19dd957e17aa1cf5a38fe4b451c07467e3a0252af971b9ee8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00060.npz",
+        "bytes": 1149320,
+        "sha256": "e4ebf2c5cc87a84bc543ed2fa5d0f704164a95b4604b83d26f0bfa70794a9e80"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00061.npz",
+        "bytes": 1148956,
+        "sha256": "3dc7f186227dc567e2979d4182949bd99c818de124e3aba9bb185358f8019958"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00062.npz",
+        "bytes": 1146855,
+        "sha256": "d8266a40f4933b3e382b804ccda80e6b5d43dba62bb777dc15061609c0a4eb69"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00063.npz",
+        "bytes": 1088741,
+        "sha256": "d9442f83e983dc0bf9d8a65a59c8aad0a747f9f519406ea934ef19d789e62796"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00064.npz",
+        "bytes": 1080822,
+        "sha256": "5ac405aae44515d9c6a25923234b4d0ea8a84ed2d29a298b4a206d1ac5ba6f3c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00065.npz",
+        "bytes": 1114487,
+        "sha256": "5018ae0eb85cfa768801b76d8acfe9bf063baa67ef7b776a0e27801bfddbb0d9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00066.npz",
+        "bytes": 984809,
+        "sha256": "bf24c7f875263aa645467bdb5e829ad25affd5aec429755ed869e7a3d11ce453"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00067.npz",
+        "bytes": 1154608,
+        "sha256": "20c0248129ea2c5b8c85ee4955fda2455afd97647e722a54d275e26e2fe50aac"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00068.npz",
+        "bytes": 1154884,
+        "sha256": "6629fc753c5c58aeb7eedf73a8628618d2b2f8f69fde2ec31543c85496329155"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00069.npz",
+        "bytes": 1150986,
+        "sha256": "2b54361c0627a4450a5caa6cb83c05364819c5ea619039aac1d8082441f16eee"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00070.npz",
+        "bytes": 1148846,
+        "sha256": "dddace0929a6b71c0a635d5e993918be098e7a031ee9aa45e065e6cd4e858355"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00071.npz",
+        "bytes": 1152634,
+        "sha256": "eb962a451a5162b611837a6c651aa047816edd1f78371b6051703ab2f5b67b56"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00072.npz",
+        "bytes": 1154143,
+        "sha256": "e7bf2fd93727fce8dacbfc40817a8f581c2c7f355be180073c8827cbe3bd10bf"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00073.npz",
+        "bytes": 1124794,
+        "sha256": "a60c66714b3a75a41d17482157a41a0aceae95321100a551aca52d9ddb70dd4f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00074.npz",
+        "bytes": 1113515,
+        "sha256": "65b44b184e65cf0e847f35bacf61cfc4618eff70155f575297dbfe40dd45b394"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00075.npz",
+        "bytes": 1127238,
+        "sha256": "059664973ada722c9f5224984f4fa53d497fbde2ee7ece793e46906e46e5dcac"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00076.npz",
+        "bytes": 1144844,
+        "sha256": "1d7fb8812419d63b295ebfa567bd90e4a37b10a50ad817f01fb1d5c4b96f0e3d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00077.npz",
+        "bytes": 1144292,
+        "sha256": "be6270de51029f494c9ff8e2971a0d353fff91848b3abef1e88d27bb241eef56"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00078.npz",
+        "bytes": 1144811,
+        "sha256": "05c96e515c6a6d56b6b00934d67faecd3905d3650694a2ba4941a83d55421af0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00079.npz",
+        "bytes": 1120824,
+        "sha256": "c4fb8c05e8c21702b8fcca6625d8031e3e53233239fc43901a79bc8c0ef684c5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00080.npz",
+        "bytes": 1143822,
+        "sha256": "d5c6f2876103b1b63e78f34c3f4faba5e84379a62640267c067181cd9af46fc9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00081.npz",
+        "bytes": 1146405,
+        "sha256": "7443141797b36969e289590df065b35b52a3a830181d727f7fa15645827175a2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00082.npz",
+        "bytes": 1145973,
+        "sha256": "b00df6fbdcde075a0d7be52c9507fdb140fbac46b1557f45f3b5037f5a376775"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00083.npz",
+        "bytes": 1145666,
+        "sha256": "0a6d3b3c56330b0aa2ec5cdfa433989e11063f68db534aa123a7952a9db46429"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00084.npz",
+        "bytes": 1145056,
+        "sha256": "caa7baa7cc0a4b912de5f78af62705b321fa757a4981df4522e673756b78b7a7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00085.npz",
+        "bytes": 1146461,
+        "sha256": "7e55c6e4a8b3a009bb486aaf24bf7411f2b865b0f68f37c11786c6669bde1187"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00086.npz",
+        "bytes": 1146276,
+        "sha256": "613f6ab79b5a6f18cc0fde6e75c5b4f36cf9439fa35d06758639a35838d8e893"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00087.npz",
+        "bytes": 1144500,
+        "sha256": "83d13b0ca20e718dd76cd1dd68f909dcae6e0ef4d31ad9a93436b8fd25fe4cb5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00088.npz",
+        "bytes": 1147341,
+        "sha256": "0c1dfed38bd4115d63132f3671f4b824f6e2465af5dcc0b08481c7e87ed58a74"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00089.npz",
+        "bytes": 1144395,
+        "sha256": "f296eb005c3977a1ac74b1b7598ee0fe5199e6b5d8fa829e485543f26d7700d9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00090.npz",
+        "bytes": 1147883,
+        "sha256": "5d1e15369164e9964512292110eea1cef44f6a777a6d58375b2ab819e18e6706"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00091.npz",
+        "bytes": 1148008,
+        "sha256": "36c0bdd409f778e7eca1bb0f111bca0ddcdc4cd13a97c84ba2f38abe43efe243"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00092.npz",
+        "bytes": 1145630,
+        "sha256": "ae60a6b8d4d1dfa7b4cd2ad7029c4ef041f2c7409658341ae418aacf303d7fd0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00093.npz",
+        "bytes": 1149581,
+        "sha256": "70f76efad4fddd9cb692de4e44c447d65cd7d9206248281d19403b7315a4c37e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00094.npz",
+        "bytes": 1145014,
+        "sha256": "df801d97b061ae73da36599788146def9a77b553d9f27a77fd03f2a055a591d5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00095.npz",
+        "bytes": 1150583,
+        "sha256": "7a90bd74f3fe7f925f957d31e68a4be53bd40f2f954b824b4e89a111a44d1577"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00096.npz",
+        "bytes": 1152820,
+        "sha256": "b76017a440c2bf8b4089acc43e02e99e2612a6b1d51c5f3f1b2d96e40101d28b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00097.npz",
+        "bytes": 1153779,
+        "sha256": "799ad0499ee2417aac2be0abe72241975b6173d641723c789370c531da4937c3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00098.npz",
+        "bytes": 1156120,
+        "sha256": "84272031c4830f7cc4d278f02d6fab9239b065ad599b3b9338eae296957fb234"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00099.npz",
+        "bytes": 1148692,
+        "sha256": "02e6e005407f26d0d0ac77c8e5245be569396b1669414fdc65956f8bb4ac3906"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00100.npz",
+        "bytes": 1132276,
+        "sha256": "39cd68591fc33398f91f7750e3b007e4d9ef2c8e95f5d33f72a0686e4583c057"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00101.npz",
+        "bytes": 1133913,
+        "sha256": "3ffde1273eb7bc0dc45febcaed44ef33e7d5c4767d59270c9e446f8d750ce6c3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00102.npz",
+        "bytes": 1147303,
+        "sha256": "5f77bb9d383f950055da855a48183a21fe56269132d1533b9b163656a09a6a75"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00103.npz",
+        "bytes": 1148873,
+        "sha256": "9dd808e68878578c76f76dbdb400363e1a317f7f30700aa82bdb7aea524e4bfb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00104.npz",
+        "bytes": 1148192,
+        "sha256": "5ee111b89f2fd676f6cb987609f9094a027b9bc063f33b8059d32212e3611306"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00105.npz",
+        "bytes": 1148985,
+        "sha256": "cc45c0faa499fa51580437593b74e8e84a47a2a23ea2e2604dc9e3a5d9a01c5c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00106.npz",
+        "bytes": 1147500,
+        "sha256": "27df57ae40bcb334d8d2b4f2dbf744f6baadf916b7b77743444002edaa87b4de"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00107.npz",
+        "bytes": 1142050,
+        "sha256": "437c7edd6290348c8f19219d3d1a124ca47a54f660022ed2b5757b40874bf781"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00108.npz",
+        "bytes": 1148600,
+        "sha256": "19c285613b9f7059fb9d12e9a93287e046a64ed0acaefccbedbf34fcf31773ae"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00109.npz",
+        "bytes": 1149680,
+        "sha256": "88d6fc45f4265f80aa66a648628bd005bfa3dc2cb7c24423906dff0926eecf6a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00110.npz",
+        "bytes": 1150695,
+        "sha256": "105f45a12cadb13dddf75413696821411c269f2950acd4624dd5dbb0d182282f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00111.npz",
+        "bytes": 1114625,
+        "sha256": "f1ec02f3201b1123b8b7a8fd113a577d7c31af8ecf20af79dac7d91819a86f31"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00112.npz",
+        "bytes": 1145815,
+        "sha256": "baca32c7ef84c6919f6afea641bb77013e748714ef212c849e52b1cebfa933a5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00113.npz",
+        "bytes": 1148419,
+        "sha256": "6479fa1f2f8c386888781cff45d74d79c614fd02c03faae27b4af4e38f0f2927"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00114.npz",
+        "bytes": 1133588,
+        "sha256": "0ccc3d5c42b84a34ca410b79aa438b0769338abbce2992a52338ab6159783072"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00115.npz",
+        "bytes": 1146130,
+        "sha256": "4dc081293ef41a17f955844433e5298cd59d806f3e42f6ab052660715ad8030a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00116.npz",
+        "bytes": 1145016,
+        "sha256": "f1e9a843d3201d72d14fc5ae04893a1fb2d93b34ce12afb8f1242cd536131635"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00117.npz",
+        "bytes": 1143810,
+        "sha256": "4da48d821912503b0a464ce1df3c7d4ee5f6c2bab0222e787be2d4d399827956"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00118.npz",
+        "bytes": 1146063,
+        "sha256": "428a2f51fcc09917a0702215ea847deb8f59edb664f750e99b9a55aa27311dc2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00119.npz",
+        "bytes": 1143980,
+        "sha256": "5214b06dc47ede0b48154bc003007fc46cb9563225ee9626c370df716c9e40d0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00120.npz",
+        "bytes": 1145361,
+        "sha256": "b779a6656faefb865a315ada2be1d39707bf7f96c5f0a83fd87405145c457ba5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00121.npz",
+        "bytes": 1144282,
+        "sha256": "9cdc78a7733f2df7aa89b291dc4771b05419c5f0ee3f9864500f75cfa4efb441"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00122.npz",
+        "bytes": 1146370,
+        "sha256": "2b066f8d790e4b9ad6450cecf1ca03064959f40d74cfff9f4eda3cf54817f516"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00123.npz",
+        "bytes": 1146658,
+        "sha256": "7afefc4d49279312e1fdc6112cb9a4dc07d35aca2daf01eb1e3b84db5e06e93c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00124.npz",
+        "bytes": 1146119,
+        "sha256": "d7944d1972f77f30f64999d6063679cacce4363bd673df59ef2053452c73f15d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00125.npz",
+        "bytes": 1147351,
+        "sha256": "e8321e1c06ae853f34cfe8d1de05fbb04a615585d12615311342711abced01bf"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00126.npz",
+        "bytes": 1145663,
+        "sha256": "8ee639961b8801fff1b71f0a482e1a9ecf89633c7a68e6c0050c88c1f18ab042"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00127.npz",
+        "bytes": 1148672,
+        "sha256": "305e3b8edfd607b59405fa1038d799762c0fa9149ce441580e3266f9eb572982"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00128.npz",
+        "bytes": 1148752,
+        "sha256": "49d2b1c63e39a01e96509075633b71116efd4798e1a36ec2be37629b607107e3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00129.npz",
+        "bytes": 1149782,
+        "sha256": "e0f138c87d05829d6eb715241e6b22ec421bb431322e7793494b2a27a45f605c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00130.npz",
+        "bytes": 1153480,
+        "sha256": "19df680141ce52f3530fd39573e64db72b30bbede396b39f3e3e414e6157fa33"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00131.npz",
+        "bytes": 1088428,
+        "sha256": "1bc909ff021da87986089578c06fe447a7499e522f3ceac2c551cf433c6a1c89"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00132.npz",
+        "bytes": 1145702,
+        "sha256": "7e68d63fd6a86fda106b5fff15076123b8d89422504b8d71e9a2338e11df6765"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00133.npz",
+        "bytes": 1143794,
+        "sha256": "cb76fc46e10f8c8753766988f99273d3d3527a9695a684bab07849f78d90ccda"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00134.npz",
+        "bytes": 1142314,
+        "sha256": "13cf9cd9bf7155757fb390bc357eb2dbc3c8c1a89f4f0a26f3a9c65eb6cdf37e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00135.npz",
+        "bytes": 1129961,
+        "sha256": "9d9542d2d8cdb773b39eb7d434d53cac0fbaee8e8b8e91803d9c9cc0b4155dd4"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00136.npz",
+        "bytes": 1092745,
+        "sha256": "e07510dcf71f6eb5dc895ad7ccc9d7cf510c768d16ff779603fff8abbd2d8c18"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00137.npz",
+        "bytes": 1141237,
+        "sha256": "838f0b419d7fdf8de1a3268d7dbd370fe22352b9c383676c1a8d7d1b3afee501"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00138.npz",
+        "bytes": 1140599,
+        "sha256": "fdb23f36d1f5e439ce9b11b720b474c68003d91f59dd444f0b6bcfecdd385be7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00139.npz",
+        "bytes": 1143128,
+        "sha256": "2d67eb52fd50992bf746cc80dcebd85ef35ef8a361bd60c60ea8fb1cf21b9e45"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00140.npz",
+        "bytes": 1138628,
+        "sha256": "e6bee84f0305ac30f661605e9fae97ab6548993d7a5f285c3d481aa1884ca618"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00141.npz",
+        "bytes": 1141560,
+        "sha256": "9cbc808522146886f2ee0dcf9e908f70ea8896280563a12d4686e86d4a8995e3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00142.npz",
+        "bytes": 1144124,
+        "sha256": "c7ae83840b516a6761c8f6c04e2b68fa5a48f536f578db6d94785eae6b960cbf"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00143.npz",
+        "bytes": 1140135,
+        "sha256": "6b1834f88fbccdf1dfd4f6b651781e56543fc06a92796af0ab4573fd7a40a803"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00144.npz",
+        "bytes": 1144125,
+        "sha256": "74867b96c5e525c9f4480f201c39b007d8fb56f5dfb2809f3d453415cb0d59d6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00145.npz",
+        "bytes": 1138478,
+        "sha256": "b75115346807c79bcccfbfa788e771dd756c3372512d3c11a3549a32ec77f644"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00146.npz",
+        "bytes": 1143231,
+        "sha256": "6573f285f9e898958f7e99883ee8e07660bbb50b2220b5f1f4a47cf6b866f327"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00147.npz",
+        "bytes": 1144090,
+        "sha256": "71d25fc33b46028c68082cd86f22d4da3cace464bd08adfc355f91ef9ae61f50"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00148.npz",
+        "bytes": 1143453,
+        "sha256": "ce2bdfd12fd3456eb40292d4224f2cb9103a0831f58bfa611c429a27440290b9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00149.npz",
+        "bytes": 1144558,
+        "sha256": "307c7e9dc6d838c1f9eb25dbcf901ecc795e2c7b6aa8ee55fc16e2457c14649a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00150.npz",
+        "bytes": 1145029,
+        "sha256": "7e4dbf4f07f8f7ce1613281d1e82223c1fdf93f58b7fc7bd4b8dd022ca52a737"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00151.npz",
+        "bytes": 1144119,
+        "sha256": "c31ac96f3a67f9f12fe983d730c1b0c236705a6647ebcca54dea4c15c360056f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00152.npz",
+        "bytes": 1145761,
+        "sha256": "ca75e14b333f87f86b09f1dffb26e964e63c5b57ca7f42c61e7311736bf9b584"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00153.npz",
+        "bytes": 1144652,
+        "sha256": "9c9b3ac8ab81e40b283321089327a0dd888adba7443d5d0cddafdd51a75b9473"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00154.npz",
+        "bytes": 1147561,
+        "sha256": "c8190fee4b1fb6c43107638ad490a15e967365f7a2c0d0f26023c4e97bed3cc2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00155.npz",
+        "bytes": 1145872,
+        "sha256": "084397a94131334c28778f8b0f68ed8e200a84780e801c39821c33259a6b83db"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00156.npz",
+        "bytes": 1148838,
+        "sha256": "2201a99ad50b658dcff3412c9169c6022788272d08cd967e8187f03ad4b876ab"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00157.npz",
+        "bytes": 1151315,
+        "sha256": "67f7ea3eeb9fa88fca81dfa789c4c9d386ad45a77d5422995d8f9a0a2b63a2a8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00158.npz",
+        "bytes": 1139466,
+        "sha256": "3632e8ac2df3821ec39b7ffc6317411b072ea5132484cd8837fa09a0289fb544"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00159.npz",
+        "bytes": 1143387,
+        "sha256": "2e6d549b8b768fc63b894f264d0fc1fcd21f11dbc1bb759670c6ccd24f3de087"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00160.npz",
+        "bytes": 1143588,
+        "sha256": "201d93b3801eb197c6824badfbdb64b3b7f34d7aa0c4b838691ab9306ad72144"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00161.npz",
+        "bytes": 1145482,
+        "sha256": "3bf513f2d42b3161688e28d1ae3665941a5979f59dccc16cf45ad97e1d71ee86"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00162.npz",
+        "bytes": 1144204,
+        "sha256": "df5119c3c7d31d6640d76bddd2b1baff7f6baa827b7dfab2e1f8686d577d6161"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00163.npz",
+        "bytes": 1144529,
+        "sha256": "e223ced2b4f7c5755cc9410419d90d8715158f359b2b7cb629639243deb428c3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00164.npz",
+        "bytes": 1146940,
+        "sha256": "bd9a444f5aa4b4bbcddb0a077651702c30496061ff13c618cd59673a451b8e18"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00165.npz",
+        "bytes": 1145510,
+        "sha256": "6cceae64888bb60a9c9efc0b262a087412412b3093eadcf67d6b2c98a4bc70ec"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00166.npz",
+        "bytes": 1147538,
+        "sha256": "259c509be1b52f7d1ee3948b5a051d60164ba7cf4fb7bb7911702194a45b534e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00167.npz",
+        "bytes": 1147388,
+        "sha256": "8919f005bd3c6db28f25f044742f3791764ec938cd63734c51202d80d74e4784"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00168.npz",
+        "bytes": 1147161,
+        "sha256": "7ac1761a532705b11cc927a808f54516ad69c1f282ba1d5280a3a2afa2073252"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00169.npz",
+        "bytes": 1147242,
+        "sha256": "cf24b7ce28cb0240cc13537464cc554717896aebeefa00f9231bc5a0759607a0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00170.npz",
+        "bytes": 1146616,
+        "sha256": "f50b35fea8ce0ed5c4e83157b3383b45f08ffb7404fae10790195b870129c4c0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00171.npz",
+        "bytes": 1147213,
+        "sha256": "dc5efc0cf373d4c9ed6fddb30a290319ccd373b5da7b1ccdb12a2b4f3f123813"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00172.npz",
+        "bytes": 1148858,
+        "sha256": "ebfff9fdd46bc04fe1f5b49eb77c4f3fc26d3a891d7680125d185d952bbfde99"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00173.npz",
+        "bytes": 1147873,
+        "sha256": "33bbd9e0a2ea0cae04ee278ac7f773969c2ac8032e427249f0d94a2ba68f5a14"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00174.npz",
+        "bytes": 1147571,
+        "sha256": "9ac41475a84cb123efaaaeafcdabe6dd5080c901b2b135e0e74a5f86caa25d1e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00175.npz",
+        "bytes": 1146390,
+        "sha256": "38369b1935d3e09d42e336a1226181ea325d4e60d50d81992e22569373ede884"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00176.npz",
+        "bytes": 1148456,
+        "sha256": "3e08fb7a9ae21f465de69036d63ec3575d0962481341c636a21f9eec6a518a2f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00177.npz",
+        "bytes": 1147860,
+        "sha256": "4ab3dd0d3f92870db43577e014187cba85e0238fdd78a9911f9e9596d6304e35"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00178.npz",
+        "bytes": 1148810,
+        "sha256": "e073b68d7e0a68fc9aab1bb205bac6251761197694e8241664e6d2e80b645197"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00179.npz",
+        "bytes": 1148598,
+        "sha256": "9736f640432ea4142bf0a5bc2f550ac10335fac3d2b3154fb6cf46da8d6cf1b3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00180.npz",
+        "bytes": 1150439,
+        "sha256": "c8d94b78423d32170cdc3b69dd7bdc7fe34f3d66bc4e36b645c5d2dca10e8b28"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00181.npz",
+        "bytes": 1152131,
+        "sha256": "580f2da50b68bf9e3eadf42c6ffce123ff67ec00724cd92aa327d8b1aa0c67f9"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00182.npz",
+        "bytes": 1150919,
+        "sha256": "421329227493407b6152bfa099e64fc9d4c9bccc5fc2e666a215ed22336babc7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00183.npz",
+        "bytes": 1154577,
+        "sha256": "c0e0216932e185ec02e1dce3965968de62032f2c70ce20ed2562cd794493e463"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00184.npz",
+        "bytes": 1157087,
+        "sha256": "4fb417097bbc0cf3f1b3a2d6b6b8482b9f005454ed703a3a336991d735e0d291"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00185.npz",
+        "bytes": 1127255,
+        "sha256": "2005230bee716c8dedcf7434c7b73308865063e37beb0e27aa85f79e6e17f5e8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00186.npz",
+        "bytes": 1147330,
+        "sha256": "e1b4b34c2576ac691fea799d62504c9e6a77fe1bdb4859938ef72190314a0578"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00187.npz",
+        "bytes": 1149937,
+        "sha256": "140dc4a71a0a75eae07d9f15d0605e12866e9b6841f7e46a95b26d97efb8bed0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00188.npz",
+        "bytes": 1150585,
+        "sha256": "7cb548a39290252a30a4feb469d3e980880b06125696ef2b2162f1eea4e16fd5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00189.npz",
+        "bytes": 1153797,
+        "sha256": "6df9bc75fae8558bad4aa813c257ff2da3f5098e88a8fced4e6770953896804b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00190.npz",
+        "bytes": 1150871,
+        "sha256": "4b9990321e3f55cc995dd1c2c8c2ed3577d26283b0b28c9716b8c2b2906082b4"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00191.npz",
+        "bytes": 1152584,
+        "sha256": "a319f8f609d59f9bd5efe4f52afdf9b5aec84ca689c99f81bb2024df9e1d3ffb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00192.npz",
+        "bytes": 1156098,
+        "sha256": "25a0c2cf1638237c89f4346c2ae48c9cc6a058edb6c2d5ed81478d32a44b4ec2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00193.npz",
+        "bytes": 1152536,
+        "sha256": "984591f0cbbd09feebc1e90036f645a5612f34ef38f202d352a4ea88559f0d02"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00194.npz",
+        "bytes": 1156327,
+        "sha256": "d6d4badbfecf8a49e52d2460fac6e0ada65e5d56481ccfe1bbb5ddedf35ebed1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00195.npz",
+        "bytes": 1132867,
+        "sha256": "32ceee1eae31a372672509b25fa1b64086869e8d2f9662c182d93ad73d724504"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00196.npz",
+        "bytes": 1072559,
+        "sha256": "6d64be28fa96ce3cea311e10cf83cbba2c444072dfbacbc007d714ce703a1eef"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00197.npz",
+        "bytes": 1148762,
+        "sha256": "7adbd4cb373fcbd86b7a310163e297580aa1bea656f2d22b5a368bfdd50aeb51"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00198.npz",
+        "bytes": 1147975,
+        "sha256": "b08652e0b831c71e6f3e0abaace9ae6a46c586b5fb18d12adc0892da1d1b4071"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00199.npz",
+        "bytes": 1150347,
+        "sha256": "956ec4d1861f1722daea2f003ca686ebc32fd62d3bfe492eed402dbf06795d6e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00200.npz",
+        "bytes": 1147819,
+        "sha256": "51e0b583e5ef42ead5f00d61c289196cc82dd1d6eac050e03e02b8d590b927aa"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00201.npz",
+        "bytes": 1133040,
+        "sha256": "47e1cecacb5a3c5f8edc4aa2c9270c62d31118b5eca0229af2d648774949c8e6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00202.npz",
+        "bytes": 1143920,
+        "sha256": "cf4a2dd489719d3a86470318e83ae4337de983187b3e25abed650f0f5acc420e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00203.npz",
+        "bytes": 1146242,
+        "sha256": "19486bf32ed8f95e5a3e2d6615810f6fcd793c26386f76df09e9aa968bb76f6e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00204.npz",
+        "bytes": 1147601,
+        "sha256": "254371a7f6201124a7600c47f0524ef431fe91b4aeccf43eb05d76f9b8bed225"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00205.npz",
+        "bytes": 1145235,
+        "sha256": "f7e53a29cd6a383069763f5847335c8f33fd7dde00cd898fc7b6afb835914316"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00206.npz",
+        "bytes": 1146731,
+        "sha256": "9555fe197541f50f42acb8ff89bddf2617bb200178961aaffaa566b7ace564d3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00207.npz",
+        "bytes": 1146823,
+        "sha256": "0ab31fd8bca9c928b66366c2ec54436f8a27f4a0bdd5477587dd2ddf6acfa94e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00208.npz",
+        "bytes": 1147627,
+        "sha256": "193d53eddc6be2c4923145d38802ddd1de7a054b4eb3d8e40c5bb108610dfb11"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00209.npz",
+        "bytes": 1150243,
+        "sha256": "0ac0762ae54968553a8daa820ef18c53720273d3e3fa100b57156073f54831f6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00210.npz",
+        "bytes": 1151986,
+        "sha256": "c44cb4e3664e9791817a611b8d79218fc68a07955973b38db7dd36edb6983729"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00211.npz",
+        "bytes": 1135469,
+        "sha256": "1a9ceb6db02256087a04a72df5d8c60f12cda1b8bdfc73190568d7a7382b7a20"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00212.npz",
+        "bytes": 1134911,
+        "sha256": "157e48216cd6b74d045dc7f3bffa0b53e35d0c589c6df23336fedf7c8baf3b67"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00213.npz",
+        "bytes": 1145382,
+        "sha256": "61f69c66124ca3221394d7e857db8d2d214d73377a537cdff27278fc5daa6354"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00214.npz",
+        "bytes": 1146856,
+        "sha256": "433e0b73404afc6025357aa4d3284374d7f3ab7e026aa3082f7c4e0855479281"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00215.npz",
+        "bytes": 1145110,
+        "sha256": "bf7f62a28afb7d687a98031b938d9bdf1781b3902036d2fb2a9495a7d6986503"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00216.npz",
+        "bytes": 1146549,
+        "sha256": "8cbbeda2332b19644a1a926a149348a8724a5db41e951ac8f576e32376ef38fc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00217.npz",
+        "bytes": 1146265,
+        "sha256": "5c5565e3a81298780e1d00bd421f94b1ed0139e5c6282685b4d287ea38491331"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00218.npz",
+        "bytes": 1143129,
+        "sha256": "e314b42b17eb59cfd7fbbcdd76e75377530893513d1f8b9338b3f273718477e6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00219.npz",
+        "bytes": 1147534,
+        "sha256": "64725baaef3ba7bfebfebc34b277f6b8087839baae52daf00f8d34d583bc7d0b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00220.npz",
+        "bytes": 1146935,
+        "sha256": "af9be5b8eceacf65efe2f2d3f1c5b80e0223503323bf1428fa82136969729d73"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00221.npz",
+        "bytes": 1146912,
+        "sha256": "67bed2441e344153e2804ce7a72579a0fbac33212db2e4edf222dd7dc83b51cb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00222.npz",
+        "bytes": 1148830,
+        "sha256": "41d6229a8ca29a91dc1051c16d168345a53d3db89fcc952e4086f6478a5fca4b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00223.npz",
+        "bytes": 1145444,
+        "sha256": "b05acd79b1ee47e34e04f6d3e7e9f599a6597db6d2af885f0d7cc71d9482fd29"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00224.npz",
+        "bytes": 1145645,
+        "sha256": "cf084cee2a12f8c4fb440defe61c78937ce4fb0a21c4281e5b3f8f92570c0f74"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00225.npz",
+        "bytes": 1144377,
+        "sha256": "52fe76409b4261f29e0d5e8ec05943f29c80acc8612807e533eb839f6b026b47"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00226.npz",
+        "bytes": 1144436,
+        "sha256": "42260427be81783f32de45cfa4fba37230ebd2214a61bb1ad945a7a5572a74cc"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00227.npz",
+        "bytes": 1147177,
+        "sha256": "6260da3c689d3a81143c0d60407c2525572cd58e2aa6ec92c25f334622901ab5"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00228.npz",
+        "bytes": 1143865,
+        "sha256": "26cebec94180dd52f709777b57a206a25d9f85222e6ad01688dbf25df022c452"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00229.npz",
+        "bytes": 1144966,
+        "sha256": "8aa1c56f3de9342c39d33958add5b3322b2421c74d207eb5a47d46bce2ec19ac"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00230.npz",
+        "bytes": 1146182,
+        "sha256": "1ddbb36f9e530a8b06cf6897886c19c13b70a142e5fe96602eaaf71ee8c11b24"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00231.npz",
+        "bytes": 1144742,
+        "sha256": "70052f8e0e0d75a4f7e0943409a2380b44a70ee749a9e79d23264ff70a09844e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00232.npz",
+        "bytes": 1145783,
+        "sha256": "5d81697ab95b76ec395494170843deb9b1c634619fd25b9d0784937e75695146"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00233.npz",
+        "bytes": 1147106,
+        "sha256": "102f3eeeb5fc7bf53fda5873f232738bd2a4fb974cd3d8fb5d46caebdb7acdac"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00234.npz",
+        "bytes": 1147951,
+        "sha256": "22242ef2243f4d074618b5fd37746a1dfd16aaa153541eaf7bca36cfdc0421e0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00235.npz",
+        "bytes": 1113168,
+        "sha256": "8c3a1971dfac2bd62a9a38000d5f161b2bda78f8ecc9ac8172eaebbf3e10b479"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00236.npz",
+        "bytes": 1151736,
+        "sha256": "e622dce835c122743f94097095ac2998cda6633cac8f5ad8cb83ab6793e3c8a2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00237.npz",
+        "bytes": 1151224,
+        "sha256": "bb5e8a64760e68f8bec0b638662cf4025d5de62907afee88f19730e95d1e8cfa"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00238.npz",
+        "bytes": 1076837,
+        "sha256": "35cbbfe1651baf9cea801932bde59dee7970606c39b5711639eba541437ddc37"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00239.npz",
+        "bytes": 1146978,
+        "sha256": "a63b16771d971abebda67039bae8ab41d9b20951dbeb399d752a4ccc9df2c1ce"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00240.npz",
+        "bytes": 1148171,
+        "sha256": "d00b407d36bbcd4bb72b29f15db59965932d240ed2c4f0cd94cb0c8ef2e2d113"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00241.npz",
+        "bytes": 1146923,
+        "sha256": "29272233d2637c8af653338109f1d03d3b9157c473787bb67657a9569ad9f539"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00242.npz",
+        "bytes": 1148209,
+        "sha256": "bfe2e01fad56060dfaeb4e7d8b8b5718d8c9860a72ad972dbcd408a2094d1e7b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00243.npz",
+        "bytes": 1147846,
+        "sha256": "b38617c27edb452a761504c89ec6b795ce38b698ec73b4a8042f31b396a1bec1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00244.npz",
+        "bytes": 1146018,
+        "sha256": "bd22f96f8a92bf46cb20bf24711487be367f385c37975fd74d20d124cf558cf8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00245.npz",
+        "bytes": 1149014,
+        "sha256": "d8389d14a03d61cc925dbcdf95cdbfad646ae118659e457703b7c18d776aac65"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00246.npz",
+        "bytes": 1148823,
+        "sha256": "07cc1bd89dd5914dec568a959f857e5b7882ce21f1293f1a1590779464fd4150"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00247.npz",
+        "bytes": 1148505,
+        "sha256": "fdb0d9363bdfef8fc9a4166380e1137f175f2305a0fa2212d102ab1c4eb14157"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00248.npz",
+        "bytes": 1148286,
+        "sha256": "6b1ae2c999be2098a211bf89b7bc5aff190703fcf58226bfe982dc2dea6b9c57"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00249.npz",
+        "bytes": 1147864,
+        "sha256": "53f496555c82106cbd8e96f3be56b758517f905603a3213227699a96ca35a1b6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00250.npz",
+        "bytes": 1149960,
+        "sha256": "9fb8ba94facfd405b0781ed1eed5d64ee2c0ea59468ff0964d0ecae860069fc1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00251.npz",
+        "bytes": 1151119,
+        "sha256": "bb4fab1d107f2be68d18881921c8820ca1220b9507b7b3604a6941286d26605c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00252.npz",
+        "bytes": 1151605,
+        "sha256": "39a2afef2fb9971bdc1ec683d2f8be147c4d2bfad1dcf5c7b73a87c76512043f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00253.npz",
+        "bytes": 1152060,
+        "sha256": "f9951ebc8e6398ec78e99d3ef2ad66678aec31ec4e4b47d68d74723f81bed7f2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00254.npz",
+        "bytes": 1140308,
+        "sha256": "3b5095ac56069aea631544904ab2e0b382cfaecabfcd17e6bb35175d38256a24"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00255.npz",
+        "bytes": 1136560,
+        "sha256": "8d53732fa22d663f77955be6ee7b03b51d53494ed14477d6e40c81d7c360a68a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00256.npz",
+        "bytes": 1147438,
+        "sha256": "a1d8a5d8402795e4028e4b1985f903bbccbe4d89c2d5f135382e69b6bc242f8a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00257.npz",
+        "bytes": 1145521,
+        "sha256": "a3a5de5aeecf5969a0a8067fb3de808fb26fab48437ad273b0c0e4b179e40c2f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00258.npz",
+        "bytes": 1149001,
+        "sha256": "de8a9ec0bd807f4f693c6bb52f0ebd58e608bbceb802024c436f632da2d56c40"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00259.npz",
+        "bytes": 1150384,
+        "sha256": "eb3f890b49077da026e802dd28ee7c853b05b02b27b9beecce0022798e19474c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00260.npz",
+        "bytes": 1150526,
+        "sha256": "7cf66478f8a1c2f1024242f28d566e2921b5d1c888b461571de8d9bbdf0cac97"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00261.npz",
+        "bytes": 1149126,
+        "sha256": "f7d786d42ada19187a2f407d6cf25fe4e6bc615d6b638cc3141bf487870af3c1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00262.npz",
+        "bytes": 1150553,
+        "sha256": "ecb55a3fdb825977cb9e6aeb5a3a400298b1577646fc5f60b946e4e5c0541f88"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00263.npz",
+        "bytes": 1151044,
+        "sha256": "78663c28ad450ccd75d166826f1966bbd19ea784aded13b849c5b1cc1b683570"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00264.npz",
+        "bytes": 1043764,
+        "sha256": "eb6d5c1100e751fcb0d7167c218ef884f377770aafdcabcb454dc23b8988772f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00265.npz",
+        "bytes": 1146759,
+        "sha256": "21a02db652d65a3957ec74608019e502095533e33769ccc4adc888edb17c85b0"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00266.npz",
+        "bytes": 1146302,
+        "sha256": "fad708dd903e70274e959bb86e0666d8d4b52b6aafad3cb3c83e2eb3e990bbfb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\f_00267.npz",
+        "bytes": 1143860,
+        "sha256": "a92c97c401f78d6ab66f6d574666b617751d662f56d4eb153d4d0fd019dedfd3"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT\\meta.json",
+        "bytes": 45636,
+        "sha256": "4f039fb28c8148096caa14e80002b627c9d674691a1209a6dfb6b846d328e41f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded\\roundT_pressureGate_roundT_baseline.json",
+        "bytes": 91674,
+        "sha256": "1548c89d0efec463a73437f2223126aab021af092ac190e2d3367c4029fe34a1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\odometry\\icp_roundT_pressureGate_roundT.json",
+        "bytes": 23435,
+        "sha256": "b704b0d655dccac8fd025e81ea243ee99c44e9d8eda97196414f973f035b4ee8"
+      }
+    ],
+    "inventory_sha256": "99b4d1f150a00b73c7e94c5daef3473d5133accb3b207f2c4ddcd2b117c4330b"
+  }
+}

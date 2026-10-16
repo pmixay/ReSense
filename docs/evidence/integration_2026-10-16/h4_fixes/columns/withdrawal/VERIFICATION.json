@@ -1,0 +1,21 @@
+{
+  "verified_at_utc": "2026-10-16T10:31:25.097526+00:00",
+  "measured_head": "c9aea87cb5322092070158cd8987115ee44833c9",
+  "sealed_head": "707ea9cda051369326fb9407c42488c1033dad76",
+  "author_shipping_selection": "registered measurements satisfied",
+  "independent_H4_clearance": false,
+  "new_measurements_launched": 0,
+  "unit_failures": 0,
+  "unit_errors": 0,
+  "unit_skips": 0,
+  "unit_deselections": 6,
+  "exact_registered_probe_frame_sets_equal": true,
+  "exact_dark_stop_frames_equal": true,
+  "exact_dark_centers_equal": true,
+  "free_top_calls": 0,
+  "observer_calls": 0,
+  "source_sha256": "a73bc44642eb7d022e1433a763761f0f7e62bd0c5dfd93b4ad6db13660234aaf",
+  "config_sha256": "bcb17deab69ec0eba0b030c9c8386743a962c0b77d46345bccc8b59c92481b92",
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "scope": "WITHDRAWAL.md author selection only; criterion 8.1 remains OPEN; parent owns full gates/re-review"
+}
