@@ -12,14 +12,19 @@ jobs:
   checks:
     # ruff: pyflakes + the pycodestyle error classes (ruff's default rule set) over the package, the
     # ROS node, the scripts and the tests; the version is pinned so a ruff release cannot turn CI
-    # red. configs/default.yaml is the single source of truth; the ROS package carries a copy. Each
-    # step runs even when an earlier one failed, so one run reports all three.
+    # red. configs/default.yaml is the single source of truth; the ROS package carries a copy.
+    # Parameter sync and the detector seal run even after a lint/integrity failure.
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v7
-      - name: lint (ruff, pinned)
-        # This archived gate runner is preserved byte-for-byte; its imports follow sys.path setup.
-        run: pipx run ruff==0.15.8 check --output-format github --exclude docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py .
+      - name: immutable archived helper integrity
+        # Exact package/Git-blob locks preserve measured author bytes; no snapshot code executes.
+        run: python3 scripts/check_archived_lint.py
+      - name: lint (ruff, pinned; exact verified snapshots only)
+        # Isolated pipx tool environment; the wrapper verifies locks again before any exclusions.
+        run: |
+          pipx install --suffix=-ci ruff==0.15.8
+          python3 scripts/check_archived_lint.py --lint --ruff ruff-ci
       - name: the ROS package's parameter copy is in sync with configs/default.yaml
         if: ${{ !cancelled() }}
         run: ./scripts/sync_params.sh --check
