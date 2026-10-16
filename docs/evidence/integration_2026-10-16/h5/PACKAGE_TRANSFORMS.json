@@ -1,0 +1,92 @@
+[
+  {
+    "compact_sha256": "317395612ebc9630709313dca1c639d945ff62ddf803a1e07666a9f0cfdf84e3",
+    "original_sha256": "60bfb903fdc3c6861ac11454445281b374aec8bf99ec2aa167ef50e2419bf4c1",
+    "path": "analysis/final_identity_comparison.stdout.txt",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "edf5447a3a222e8082706330885a6fca8fd97a147a433d5232b74c538a5b332d",
+    "original_sha256": "3ed64c91ce6ddef088009a0bcfb26970d762742da916e8dbbe71dd599df37704",
+    "path": "analysis/frame_explanation.stdout.txt",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "3462883c9ec99ac02bec5d4893b60dd604ef5f15476edf8a1c698f78c0921505",
+    "original_sha256": "f49831c5b5be57aae6b2fa9e86a27ebd4cf9b8d786f367b5e409358ba68b0bbe",
+    "path": "baseline/runtime.container-final.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "7e5edc1956c3e9040778e06d7134183945cee92c8acb42c3e1d0d9e48d964a67",
+    "original_sha256": "1e505e25e684431c29d30b1e0cd57a85949cdd2a9523bc99641b895dc6610473",
+    "path": "baseline/runtime.finalization.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "4e3e9ed4d415a057f207d5b83c96641c7a0aee434e396daac9bb45fb424b650b",
+    "original_sha256": "cb08413aada275cfc3e9e8cf9fd034a5b3b6742d0f02a71a037be00db8e418f3",
+    "path": "baseline/runtime.infrastructure_tests.txt",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "593f9e48889c45e33bbdc8ae4c54d4cf9f8f0ae51e7069e39b41c9c6073951e8",
+    "original_sha256": "5bbb0ba1abaaeb26895b1a17ce32adf3cf1b559001f568c077d8f7b776bdd2e8",
+    "path": "baseline/runtime.launch.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "bb828b02faa01a1a1123f42fbf1412f4d42e6551fa1adb6865eceb7211a42bf5",
+    "original_sha256": "24a2df57997875765d717bd42a3a8012af04b8b8c03856fdc6e02732bf3db8b0",
+    "path": "candidate/runtime.container-final.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "708b772c94dcf7d08bbf8b385b724f24bd61a7f356e0da83b61db8749255b38c",
+    "original_sha256": "ffa697cace69ed0c8796b18aeec7e3899619d272985cd154337ca7796a851b94",
+    "path": "candidate/runtime.finalization.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "97d7050f95cc4bbb2c3e835e458976cf037d823952f10300a95f446a701c5dc6",
+    "original_sha256": "64820573cee3f611b6c6c35ccc442566e39fe254665392c510e21e491959b3c6",
+    "path": "candidate/runtime.infrastructure_tests.txt",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "e01af47ce5d3dd4ae710709840d6fd7dbdcef90b3b34d7adb726f193c0b46440",
+    "original_sha256": "3c61e56a293f0481bd84198833ba15936e87112226ba4e81c8b466f6c4fc04b8",
+    "path": "candidate/runtime.launch.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "c1325da2833f3172c322310cc798cbb332b3652add8ae7804a7d38fe94a3ddbb",
+    "original_sha256": "0791135ed25f9907bd7d4eab72a2f0f7c712d4e9592274ff39ed88de239130ef",
+    "path": "frame_diff/setF_report_changes.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "da1645bde1542c312002549a74596036ded7e168add11ea808cb22246fda7731",
+    "original_sha256": "1c83a52672c760b7f26de0d52ed204393f19084edaf7aeadb82fd1858b10fc0b",
+    "path": "frame_diff/summary.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "85ef07d506621e37c084a84fd8339451cf9e3124eadacb18c2d61a0bf91fc70b",
+    "original_sha256": "949a17c1e86402f8d88c3299d7b4dc7b7b22aad652c90925a0d948e8c60303a7",
+    "path": "frame_diff/SUMMARY.md",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "956110e2f14e6cfe712ca78f7c62f85f6e8808aea7922f596d493f4748eb705b",
+    "original_sha256": "9eaf9b7f4b11c2e84e2478c2ceb0e4f48f4ba88565bcfc832b3bce49847dda6d",
+    "path": "baseline/compiler.txt",
+    "transformation": "remove one terminal empty compiler-banner line only"
+  },
+  {
+    "compact_sha256": "956110e2f14e6cfe712ca78f7c62f85f6e8808aea7922f596d493f4748eb705b",
+    "original_sha256": "9eaf9b7f4b11c2e84e2478c2ceb0e4f48f4ba88565bcfc832b3bce49847dda6d",
+    "path": "candidate/compiler.txt",
+    "transformation": "remove one terminal empty compiler-banner line only"
+  }
+]

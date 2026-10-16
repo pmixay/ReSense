@@ -1,0 +1,1810 @@
+{
+  "added_cluster_flag_true_examples": {
+    "cut": [],
+    "spared": []
+  },
+  "added_cluster_flags": {
+    "cut": {
+      "false": 25706
+    },
+    "spared": {
+      "false": 25706
+    }
+  },
+  "arithmetic_scope": "Exact comparison covers the captured preexisting raw numeric result fields, including candidate descriptors and point indices. Health/mount may already be rounded inside the detector. This is not a claim that every internal intermediate, cloud array, or arithmetic operation is bit-identical.",
+  "cap_examples": {
+    "SetF": [
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          94.4,
+          94.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "new_data_169_0015",
+          "index": 66,
+          "row": 66,
+          "sequence": {
+            "d0": 220.0,
+            "file0": "new_data_168_0000.npy.zst",
+            "kind": "box0.5",
+            "lateral": -0.05959276002085567,
+            "place": "bed",
+            "placement_mode": "legacy",
+            "reflectivity": 23.00558933789678,
+            "seed": 960991915
+          },
+          "sequence_file": "setF_box0.5_new_data_168_14576dea2df148c0f682.jsonl"
+        },
+        "monitored": [
+          145.5,
+          94.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 94.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          145.5,
+          90.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "new_data_169_0016",
+          "index": 67,
+          "row": 67,
+          "sequence": {
+            "d0": 220.0,
+            "file0": "new_data_168_0000.npy.zst",
+            "kind": "box0.5",
+            "lateral": -0.05959276002085567,
+            "place": "bed",
+            "placement_mode": "legacy",
+            "reflectivity": 23.00558933789678,
+            "seed": 960991915
+          },
+          "sequence_file": "setF_box0.5_new_data_168_14576dea2df148c0f682.jsonl"
+        },
+        "monitored": [
+          145.5,
+          90.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 90.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          145.7,
+          90.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "new_data_169_0017",
+          "index": 68,
+          "row": 68,
+          "sequence": {
+            "d0": 220.0,
+            "file0": "new_data_168_0000.npy.zst",
+            "kind": "box0.5",
+            "lateral": -0.05959276002085567,
+            "place": "bed",
+            "placement_mode": "legacy",
+            "reflectivity": 23.00558933789678,
+            "seed": 960991915
+          },
+          "sequence_file": "setF_box0.5_new_data_168_14576dea2df148c0f682.jsonl"
+        },
+        "monitored": [
+          145.7,
+          90.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 90.0,
+        "warning": [
+          true,
+          true
+        ],
+        "warnings_unchanged": true
+      }
+    ],
+    "cloud_with_fake_obj": [
+      {
+        "candidates": [
+          2,
+          2
+        ],
+        "clear": [
+          95.1,
+          94.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "cloud_with_fake_obj_0024",
+          "index": 24,
+          "piece": "cloud_with_fake_obj",
+          "recording": "cloud_with_fake_obj",
+          "row": 24,
+          "sequence_file": "cloud_with_fake_obj.jsonl"
+        },
+        "monitored": [
+          158.5,
+          94.0
+        ],
+        "nearest": [
+          95.08,
+          95.08
+        ],
+        "obstacle": [
+          true,
+          true
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 94.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          2,
+          2
+        ],
+        "clear": [
+          91.1,
+          90.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "cloud_with_fake_obj_0048",
+          "index": 48,
+          "piece": "cloud_with_fake_obj",
+          "recording": "cloud_with_fake_obj",
+          "row": 48,
+          "sequence_file": "cloud_with_fake_obj.jsonl"
+        },
+        "monitored": [
+          154.7,
+          90.0
+        ],
+        "nearest": [
+          91.12,
+          91.12
+        ],
+        "obstacle": [
+          true,
+          true
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 90.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          3,
+          3
+        ],
+        "clear": [
+          91.0,
+          90.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "cloud_with_fake_obj_0049",
+          "index": 49,
+          "piece": "cloud_with_fake_obj",
+          "recording": "cloud_with_fake_obj",
+          "row": 49,
+          "sequence_file": "cloud_with_fake_obj.jsonl"
+        },
+        "monitored": [
+          161.4,
+          90.0
+        ],
+        "nearest": [
+          90.96,
+          90.96
+        ],
+        "obstacle": [
+          true,
+          true
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 90.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      }
+    ],
+    "new_data": [
+      {
+        "candidates": [
+          0,
+          0
+        ],
+        "clear": [
+          155.0,
+          134.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "new_data_3_0000",
+          "index": 153,
+          "piece": "new_data_0",
+          "recording": "new_data",
+          "row": 153,
+          "sequence_file": "new_data_0.jsonl"
+        },
+        "monitored": [
+          155.0,
+          134.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 134.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          151.0,
+          134.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "new_data_3_0001",
+          "index": 154,
+          "piece": "new_data_0",
+          "recording": "new_data",
+          "row": 154,
+          "sequence_file": "new_data_0.jsonl"
+        },
+        "monitored": [
+          151.0,
+          134.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 134.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          2,
+          2
+        ],
+        "clear": [
+          143.0,
+          130.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "new_data_3_0004",
+          "index": 157,
+          "piece": "new_data_0",
+          "recording": "new_data",
+          "row": 157,
+          "sequence_file": "new_data_0.jsonl"
+        },
+        "monitored": [
+          143.0,
+          130.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 130.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      }
+    ],
+    "roundT_doubleT": [
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          159.8,
+          82.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_doubleT_0057",
+          "index": 57,
+          "piece": "roundT_doubleT",
+          "recording": "roundT_doubleT",
+          "row": 57,
+          "sequence_file": "roundT_doubleT.jsonl"
+        },
+        "monitored": [
+          159.8,
+          82.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 82.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          150.8,
+          58.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_doubleT_0070",
+          "index": 70,
+          "piece": "roundT_doubleT",
+          "recording": "roundT_doubleT",
+          "row": 70,
+          "sequence_file": "roundT_doubleT.jsonl"
+        },
+        "monitored": [
+          150.8,
+          58.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 58.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          133.6,
+          66.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_doubleT_0092",
+          "index": 92,
+          "piece": "roundT_doubleT",
+          "recording": "roundT_doubleT",
+          "row": 92,
+          "sequence_file": "roundT_doubleT.jsonl"
+        },
+        "monitored": [
+          133.6,
+          66.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 66.0,
+        "warning": [
+          true,
+          true
+        ],
+        "warnings_unchanged": true
+      }
+    ],
+    "roundT_pressureGate_roundT": [
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          170.2,
+          62.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_pressureGate_roundT_0013",
+          "index": 13,
+          "piece": "roundT_pressureGate_roundT",
+          "recording": "roundT_pressureGate_roundT",
+          "row": 13,
+          "sequence_file": "roundT_pressureGate_roundT.jsonl"
+        },
+        "monitored": [
+          170.2,
+          62.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 62.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          2,
+          2
+        ],
+        "clear": [
+          151.0,
+          138.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_pressureGate_roundT_0043",
+          "index": 43,
+          "piece": "roundT_pressureGate_roundT",
+          "recording": "roundT_pressureGate_roundT",
+          "row": 43,
+          "sequence_file": "roundT_pressureGate_roundT.jsonl"
+        },
+        "monitored": [
+          151.0,
+          138.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 138.0,
+        "warning": [
+          true,
+          true
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          155.0,
+          138.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_pressureGate_roundT_0044",
+          "index": 44,
+          "piece": "roundT_pressureGate_roundT",
+          "recording": "roundT_pressureGate_roundT",
+          "row": 44,
+          "sequence_file": "roundT_pressureGate_roundT.jsonl"
+        },
+        "monitored": [
+          155.0,
+          138.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 138.0,
+        "warning": [
+          true,
+          true
+        ],
+        "warnings_unchanged": true
+      }
+    ],
+    "roundT_squareT_pressureGate_squareT": [
+      {
+        "candidates": [
+          3,
+          3
+        ],
+        "clear": [
+          181.3,
+          102.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_squareT_pressureGate_squareT_0060",
+          "index": 60,
+          "piece": "roundT_squareT_pressureGate_squareT",
+          "recording": "roundT_squareT_pressureGate_squareT",
+          "row": 60,
+          "sequence_file": "roundT_squareT_pressureGate_squareT.jsonl"
+        },
+        "monitored": [
+          181.3,
+          102.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 102.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          169.9,
+          98.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_squareT_pressureGate_squareT_0066",
+          "index": 66,
+          "piece": "roundT_squareT_pressureGate_squareT",
+          "recording": "roundT_squareT_pressureGate_squareT",
+          "row": 66,
+          "sequence_file": "roundT_squareT_pressureGate_squareT.jsonl"
+        },
+        "monitored": [
+          169.9,
+          98.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 98.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          3,
+          3
+        ],
+        "clear": [
+          172.3,
+          98.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "roundT_squareT_pressureGate_squareT_0067",
+          "index": 67,
+          "piece": "roundT_squareT_pressureGate_squareT",
+          "recording": "roundT_squareT_pressureGate_squareT",
+          "row": 67,
+          "sequence_file": "roundT_squareT_pressureGate_squareT.jsonl"
+        },
+        "monitored": [
+          172.3,
+          98.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 98.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      }
+    ],
+    "squareT_platform_squareT_switch": [
+      {
+        "candidates": [
+          1,
+          1
+        ],
+        "clear": [
+          131.4,
+          90.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "squareT_platform_squareT_switch_0023",
+          "index": 23,
+          "piece": "squareT_platform_squareT_switch",
+          "recording": "squareT_platform_squareT_switch",
+          "row": 23,
+          "sequence_file": "squareT_platform_squareT_switch.jsonl"
+        },
+        "monitored": [
+          131.4,
+          90.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 90.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          0,
+          0
+        ],
+        "clear": [
+          130.8,
+          90.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "squareT_platform_squareT_switch_0025",
+          "index": 25,
+          "piece": "squareT_platform_squareT_switch",
+          "recording": "squareT_platform_squareT_switch",
+          "row": 25,
+          "sequence_file": "squareT_platform_squareT_switch.jsonl"
+        },
+        "monitored": [
+          130.8,
+          90.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 90.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      },
+      {
+        "candidates": [
+          0,
+          0
+        ],
+        "clear": [
+          145.7,
+          86.0
+        ],
+        "corridor_membership_unchanged": true,
+        "detections_unchanged": true,
+        "frame": {
+          "frame_id": "squareT_platform_squareT_switch_0026",
+          "index": 26,
+          "piece": "squareT_platform_squareT_switch",
+          "recording": "squareT_platform_squareT_switch",
+          "row": 26,
+          "sequence_file": "squareT_platform_squareT_switch.jsonl"
+        },
+        "monitored": [
+          145.7,
+          86.0
+        ],
+        "nearest": [
+          null,
+          null
+        ],
+        "obstacle": [
+          false,
+          false
+        ],
+        "track_geometry_unchanged": true,
+        "wall_drift": 86.0,
+        "warning": [
+          false,
+          false
+        ],
+        "warnings_unchanged": true
+      }
+    ]
+  },
+  "categories": {
+    "added_cluster_metadata": {
+      "changes": 51412,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0000",
+            "index": 0,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 0,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0000",
+            "index": 0,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 0,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0001",
+            "index": 1,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 1,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 12781
+    },
+    "added_wall_drift_metadata": {
+      "changes": 25595,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0000",
+            "index": 0,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 0,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0001",
+            "index": 1,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 1,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0002",
+            "index": 2,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 2,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 18329
+    },
+    "monitored_clear_range": {
+      "changes": 11598,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "raw.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "raw.health.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 158.5,
+          "candidate": 94.0,
+          "field": "raw.health.monitored_range",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 2131
+    }
+  },
+  "causal_scope": "The wall-drift min-cap equation is checked independently on every frame for monitored range and both health/result clear distance. All other changed fields remain listed; new cut/spared flags are measured metadata and are not assumed false.",
+  "changed_frames_by_explicit_result_group": {
+    "detections": 0,
+    "ego_motion": 0,
+    "mount": 0,
+    "n_candidates": 0,
+    "n_corridor": 0,
+    "n_points": 0,
+    "nearest_distance": 0,
+    "non_range_non_latency_health": 0,
+    "obstacle": 0,
+    "preexisting_raw_candidates": 0,
+    "preexisting_track_fields": 0,
+    "raw_corridor_membership": 0,
+    "warning": 0,
+    "warnings": 0
+  },
+  "common_captured_raw_numeric_values": {
+    "common_numeric_values_changed": 5799,
+    "common_numeric_values_compared": 2432861,
+    "other_values_changed": 0,
+    "range_values_changed": 5799
+  },
+  "controls": {
+    "baseline_commit": "707ea9cda051369326fb9407c42488c1033dad76",
+    "cache": {
+      "bytes": 9659917289,
+      "files": 15499,
+      "sha256": "87ad4712a99a3aeef62230388baec9ffd2e86c24c5a2036d6899fdd295761d9c"
+    },
+    "candidate_commit": "52115654417a660669b8dddfce447692c1d782cc",
+    "candidate_gate_exit": 0,
+    "candidate_gate_passed": true,
+    "changed_evaluation_files": [
+      "scripts/analyze_cross_ring_measurement.py",
+      "scripts/build_deck.py",
+      "scripts/check_nonroot_player.py",
+      "scripts/check_offline_image.py",
+      "scripts/check_webapp_wheels.py",
+      "scripts/decision_policy_import.py",
+      "scripts/hero_view.py",
+      "scripts/offline_rebuild_test.py",
+      "scripts/p4_data_intake.py",
+      "scripts/rescore_decisions.py",
+      "scripts/robustness_battery.py",
+      "scripts/score_clear_distance.py",
+      "scripts/startup_acceptance.py",
+      "scripts/synthetic_sensitivity.py"
+    ],
+    "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+    "observer_sha256": "183cf3bf791a1221d79ff4aec4de5400f4232aa65da0dfea97512003ab1122b7",
+    "packages": {
+      "PyYAML": "6.0.2",
+      "numpy": "1.26.4",
+      "open3d": "0.19.0",
+      "rosbags": "0.11.5",
+      "scikit-learn": "1.5.2",
+      "scipy": "1.13.1",
+      "zstandard": "0.25.0"
+    }
+  },
+  "datasets": {
+    "SetF": {
+      "added_cluster_metadata_frames": 2161,
+      "added_wall_drift_metadata_frames": 3060,
+      "frames": 3060,
+      "health.clear_distance_changed_frames": 33,
+      "health.monitored_range_changed_frames": 90,
+      "monitored_clear_range_frames": 90,
+      "result.clear_distance_changed_frames": 33
+    },
+    "cloud_with_fake_obj": {
+      "added_cluster_metadata_frames": 1162,
+      "added_wall_drift_metadata_frames": 1510,
+      "frames": 1510,
+      "health.clear_distance_changed_frames": 159,
+      "health.monitored_range_changed_frames": 193,
+      "monitored_clear_range_frames": 193,
+      "result.clear_distance_changed_frames": 159
+    },
+    "doubleT_obstacle": {
+      "added_cluster_metadata_frames": 199,
+      "added_wall_drift_metadata_frames": 201,
+      "frames": 201
+    },
+    "doubleT_platform": {
+      "added_cluster_metadata_frames": 288,
+      "added_wall_drift_metadata_frames": 345,
+      "frames": 345
+    },
+    "new_data": {
+      "added_cluster_metadata_frames": 7562,
+      "added_wall_drift_metadata_frames": 11271,
+      "frames": 11271,
+      "health.clear_distance_changed_frames": 1348,
+      "health.monitored_range_changed_frames": 1550,
+      "monitored_clear_range_frames": 1550,
+      "result.clear_distance_changed_frames": 1348
+    },
+    "roundT_doubleT": {
+      "added_cluster_metadata_frames": 207,
+      "added_wall_drift_metadata_frames": 252,
+      "frames": 252,
+      "health.clear_distance_changed_frames": 8,
+      "health.monitored_range_changed_frames": 8,
+      "monitored_clear_range_frames": 8,
+      "result.clear_distance_changed_frames": 8
+    },
+    "roundT_pressureGate_roundT": {
+      "added_cluster_metadata_frames": 182,
+      "added_wall_drift_metadata_frames": 268,
+      "frames": 268,
+      "health.clear_distance_changed_frames": 131,
+      "health.monitored_range_changed_frames": 134,
+      "monitored_clear_range_frames": 134,
+      "result.clear_distance_changed_frames": 131
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "added_cluster_metadata_frames": 371,
+      "added_wall_drift_metadata_frames": 545,
+      "frames": 545,
+      "health.clear_distance_changed_frames": 110,
+      "health.monitored_range_changed_frames": 110,
+      "monitored_clear_range_frames": 110,
+      "result.clear_distance_changed_frames": 110
+    },
+    "squareT_platform_squareT_switch": {
+      "added_cluster_metadata_frames": 649,
+      "added_wall_drift_metadata_frames": 877,
+      "frames": 877,
+      "health.clear_distance_changed_frames": 45,
+      "health.monitored_range_changed_frames": 46,
+      "monitored_clear_range_frames": 46,
+      "result.clear_distance_changed_frames": 45
+    }
+  },
+  "exact_checks": {
+    "finite_wall_drift_frames": 2422,
+    "frames": 18329,
+    "health.clear_distance_formula_checked": 18329,
+    "health.clear_distance_increased_frames": 0,
+    "health.monitored_range_formula_checked": 18329,
+    "health.monitored_range_increased_frames": 0,
+    "result.clear_distance_formula_checked": 18329,
+    "result.clear_distance_increased_frames": 0
+  },
+  "fields": {
+    "raw.candidates[].cut": {
+      "changes": 25706,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0000",
+            "index": 0,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 0,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0001",
+            "index": 1,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 1,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0002",
+            "index": 2,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 2,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 12781
+    },
+    "raw.candidates[].spared": {
+      "changes": 25706,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0000",
+            "index": 0,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 0,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0001",
+            "index": 1,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 1,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0002",
+            "index": 2,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 2,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 12781
+    },
+    "raw.clear_distance": {
+      "changes": 1834,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "raw.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "raw.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "raw.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 1834
+    },
+    "raw.health.clear_distance": {
+      "changes": 1834,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "raw.health.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "raw.health.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "raw.health.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 1834
+    },
+    "raw.health.monitored_range": {
+      "changes": 2131,
+      "examples": [
+        {
+          "baseline": 158.5,
+          "candidate": 94.0,
+          "field": "raw.health.monitored_range",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 154.7,
+          "candidate": 90.0,
+          "field": "raw.health.monitored_range",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 161.4,
+          "candidate": 90.0,
+          "field": "raw.health.monitored_range",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 2131
+    },
+    "raw.health.wall_drift": {
+      "changes": 2422,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 94.0,
+          "field": "raw.health.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "raw.health.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "raw.health.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 2422
+    },
+    "raw.track.wall_drift": {
+      "changes": 18329,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0000",
+            "index": 0,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 0,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0001",
+            "index": 1,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 1,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0002",
+            "index": 2,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 2,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 18329
+    },
+    "serialized.clear_distance": {
+      "changes": 1834,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "serialized.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "serialized.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "serialized.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 1834
+    },
+    "serialized.health.clear_distance": {
+      "changes": 1834,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "serialized.health.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "serialized.health.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "serialized.health.clear_distance",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 1834
+    },
+    "serialized.health.monitored_range": {
+      "changes": 2131,
+      "examples": [
+        {
+          "baseline": 158.5,
+          "candidate": 94.0,
+          "field": "serialized.health.monitored_range",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 154.7,
+          "candidate": 90.0,
+          "field": "serialized.health.monitored_range",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": 161.4,
+          "candidate": 90.0,
+          "field": "serialized.health.monitored_range",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 2131
+    },
+    "serialized.health.wall_drift": {
+      "changes": 2422,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 94.0,
+          "field": "serialized.health.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.health.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.health.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 2422
+    },
+    "serialized.track.wall_drift": {
+      "changes": 2422,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 94.0,
+          "field": "serialized.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0024",
+            "index": 24,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 24,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0048",
+            "index": 48,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 48,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.track.wall_drift",
+          "frame": {
+            "frame_id": "cloud_with_fake_obj_0049",
+            "index": 49,
+            "piece": "cloud_with_fake_obj",
+            "recording": "cloud_with_fake_obj",
+            "row": 49,
+            "sequence_file": "cloud_with_fake_obj.jsonl"
+          }
+        }
+      ],
+      "frames": 2422
+    }
+  },
+  "groups": {
+    "candidates": {
+      "changes": 51412,
+      "frames": 12781
+    },
+    "detections_warnings": {
+      "changes": 0,
+      "frames": 0
+    },
+    "ego_motion": {
+      "changes": 0,
+      "frames": 0
+    },
+    "health": {
+      "changes": 12774,
+      "frames": 2422
+    },
+    "mount": {
+      "changes": 0,
+      "frames": 0
+    },
+    "nearest_clear": {
+      "changes": 3668,
+      "frames": 1834
+    },
+    "obstacle_warning": {
+      "changes": 0,
+      "frames": 0
+    },
+    "other_result_fields": {
+      "changes": 0,
+      "frames": 0
+    },
+    "track": {
+      "changes": 20751,
+      "frames": 18329
+    }
+  },
+  "other_or_unexplained_changes": [],
+  "range_reductions": {
+    "health.clear_distance": {
+      "frames": 1834,
+      "maximum": 131.5,
+      "median": 37.8,
+      "minimum": 0.09999999999999432
+    },
+    "health.monitored_range": {
+      "frames": 2131,
+      "maximum": 160.3,
+      "median": 40.400000000000006,
+      "minimum": 0.20000000000000284
+    },
+    "result.clear_distance": {
+      "frames": 1834,
+      "maximum": 131.5,
+      "median": 37.8,
+      "minimum": 0.09999999999999432
+    }
+  },
+  "schema": "resense-h3-explained-frame-diff-v1",
+  "setF_scoring_report_changed_fields": {
+    "sequences[].rows[].mon": 90
+  }
+}
