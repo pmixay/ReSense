@@ -37,7 +37,7 @@ def physical_column(distance=67.0, lateral=0.68, width=0.46, top=3.22,
     boxes = [([distance - width / 2, lateral - width / 2, -1.83],
               [distance + width / 2, lateral + width / 2, top - 1.83])]
     if beam:
-        boxes.append(([distance - width / 2 - 4, -1.2, 3.05 - 1.83],
+        boxes.append(([distance - width / 2 - 4, -1.2, 2.65 - 1.83],
                       [distance - width / 2 - 3.7, 1.2, 3.25 - 1.83]))
     for label, (lo, hi) in enumerate(boxes, 1):
         with np.errstate(divide="ignore", invalid="ignore"):
@@ -115,3 +115,26 @@ def test_h4_short_physical_pole_retains_positive_evidence(distance):
     xyz, ring, labels = physical_column(distance=distance, top=2.72)
     c = object_cluster(xyz, ring, labels)
     assert (c.zone, c.reason, c.spared) == ("gauge", "", True)
+
+
+@pytest.mark.parametrize("distance", [109.0, 137.0])
+def test_h4_exact_inherited_observer_mask_does_not_invent_sight(distance):
+    xyz, ring, labels = physical_column(distance=distance, top=4.12)
+    c = object_cluster(xyz, ring, labels)
+    idx = c.points_idx
+    p, q = xyz[idx].astype(float), xyz.astype(float)
+    el = np.degrees(np.arctan2(p[:, 2], np.hypot(p[:, 0], p[:, 1])))
+    az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+    top = float(el.max())
+    rt = float(np.median(np.linalg.norm(p[el >= top - .06], axis=1)))
+    qe = np.degrees(np.arctan2(q[:, 2], np.hypot(q[:, 0], q[:, 1])))
+    qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+    remove = (np.abs(np.linalg.norm(q, axis=1) - rt) <= max(.5, .02 * rt) + .5)
+    remove &= (qe > top + .04) & (qe <= top + .6) & (q[:, 0] > 0)
+    remove &= (qa >= az.min() - .02) & (qa <= az.max() + .02)
+    remove[idx] = False  # observer only: candidate points and fitted coordinates are unchanged
+    assert remove.any()
+    keep = ~remove
+    remap = np.cumsum(keep) - 1
+    rays = FrameRays(xyz[keep], ring[keep], xyz[keep, 2] + 1.83, xyz[keep, 1])
+    assert not top_is_free(rays, remap[idx], window=1.2)

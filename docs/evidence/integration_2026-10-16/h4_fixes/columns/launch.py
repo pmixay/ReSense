@@ -19,6 +19,10 @@ out = TEMP / "resense-h4-columns-author-20261016"
 out.mkdir(exist_ok=True)
 run = out / a.run
 run.mkdir(exist_ok=False)
+code = run / "author-code"
+code.mkdir()
+for p in P.glob("*.py"):
+    (code / p.name).write_bytes(p.read_bytes().replace(b"\r\n", b"\n"))
 head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
 name = "rs-h4-columns-" + a.run
 volume = name + "-source"
@@ -28,11 +32,13 @@ cmd = ["docker", "run", "--detach", "--name", name, "--network", "none", "--cpus
        "--mount", f"type=volume,source={volume},target=/source",
        "--mount", r"type=bind,source=C:\Users\alikh\OneDrive\Desktop\projects\ReSense\.git,target=/source.git,readonly",
        "--mount", f"type=bind,source={ROOT},target=/integration,readonly",
-       "--mount", f"type=bind,source={P},target=/author,readonly",
+       "--mount", f"type=bind,source={code},target=/author,readonly",
        "--mount", f"type=bind,source={ROOT / 'docs/evidence/integration_2026-10-16/h4_safety'},target=/review,readonly",
        "--mount", f"type=bind,source={run},target=/out",
        "--mount", "type=volume,source=rs-gate-candidate-f8c088dc4f32-20261016t073403z-4b64ec55-checkout,target=/reference,readonly",
        "--mount", r"type=bind,source=C:\Users\alikh\AppData\Local\Temp\opencode\resense-p3-data\cache,target=/data/cache,readonly",
+       "--mount", r"type=bind,source=C:\Users\alikh\AppData\Local\Temp\opencode\resense-p3-data\decoded,target=/data/decoded,readonly",
+       "--mount", r"type=bind,source=C:\Users\alikh\AppData\Local\Temp\opencode\resense-p3-data\odometry,target=/data/odometry,readonly",
        "--mount", r"type=bind,source=C:\Users\alikh\AppData\Local\Temp\opencode\resense-integration-20261016-runs,target=/h3,readonly"]
 env = dict(PYTHONPATH="/source/repo", RESENSE_REPO="/source/repo", H4_OUT="/out/results",
            AUTHOR_HEAD=head, AUTHOR_OVERLAY="0" if a.parent else "1", RESENSE_NATIVE="1",

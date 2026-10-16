@@ -33,6 +33,13 @@ def identity():
     assert _native.enabled(), _native.status()
     manifest = json.loads((ROOT / "docs/evidence/detector_freeze_2026-09-29_shell_off.json").read_text())
     files = {p: sha((ROOT / p).read_bytes()) for p in sorted(manifest["files"])}
+    differing = []
+    for p, digest in files.items():
+        assert b"\r\n" not in (ROOT / p).read_bytes(), p
+        committed = subprocess.check_output(["git", "show", os.environ["AUTHOR_HEAD"] + ":" + p], cwd=ROOT)
+        if sha(committed) != digest:
+            assert p in OWNED, p
+            differing.append(p)
     cfg = DetectorConfig.from_dict(yaml.safe_load((ROOT / "configs/default.yaml").read_text())["resense"])
     so = {p.name: sha(p.read_bytes()) for p in (ROOT / "resense").glob("*.so")}
     assert list(so.values()) == ["b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534"]
@@ -44,6 +51,8 @@ def identity():
     data = dict(author=True, head=os.environ["AUTHOR_HEAD"], imported=resense.__file__,
                 files=files, source_sha256=sha(json.dumps(files, sort_keys=True, separators=(",", ":")).encode()),
                 native=so, native_status=_native.status(), config=cfg.to_dict(), reviewer_sources=review,
+                files_differing_from_commit=differing,
+                adapter_files={p.name: sha(p.read_bytes()) for p in Path("/author").glob("*.py")},
                 environment={k: v for k, v in os.environ.items() if k.endswith("NUM_THREADS") or k.startswith("AUTHOR_")})
     (OUT / "results/identity.json").write_text(json.dumps(data, indent=2) + "\n")
     return cfg
