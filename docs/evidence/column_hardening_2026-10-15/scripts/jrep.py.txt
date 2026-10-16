@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+"""Whole judge-cache replay through the node replica (as probe.py) with perturbations, hooks installed.
+usage: jrep.py <cache> <out_prefix> [--pitch D] [--drop P --seed S] [--dedup] [--every N] [--dead-ring R,..]
+       [--repeat N --rdrop P] [--start K --end K]
+--repeat N: every frame is processed N times (stamps re-spaced at the original period / N... see code),
+            each copy with its own --rdrop random point dropout: a slower train sees each scene N times."""
+import argparse, json, os, sys
+import numpy as np
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hooks  # noqa
+sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+from judge_runner import NodeReplica, record  # noqa
+from range_test import run_frame  # noqa
+from probe import rot  # noqa
+import glob
+
+ap = argparse.ArgumentParser()
+ap.add_argument("cache"); ap.add_argument("out")
+ap.add_argument("--pitch", type=float, default=0.0)
+ap.add_argument("--roll", type=float, default=0.0)
+ap.add_argument("--drop", type=float, default=0.0)
+ap.add_argument("--seed", type=int, default=7)
+ap.add_argument("--dedup", action="store_true")
+ap.add_argument("--every", type=int, default=1)
+ap.add_argument("--dead-ring", default="")
+ap.add_argument("--ring-drop", type=float, default=0.0, help="per frame, each channel dropped with this probability")
+ap.add_argument("--noise", type=float, default=0.0)
+ap.add_argument("--repeat", type=int, default=1)
+ap.add_argument("--rdrop", type=float, default=0.0)
+ap.add_argument("--start", type=int, default=0)
+ap.add_argument("--end", type=int, default=10 ** 9)
+a = ap.parse_args()
+meta = json.load(open(os.path.join(a.cache, "meta.json")))
+files = sorted(glob.glob(os.path.join(a.cache, "f_*.npz")))
+rep = NodeReplica()
+Rvs = rep.R_vs.astype(np.float64)
+Rt = rot(a.roll, a.pitch, 0.0)
+rng = np.random.default_rng(a.seed)
+dead = [int(v) for v in a.dead_ring.split(",") if v.strip()]
+n_out = 0
+with open(a.out + ".jsonl", "w") as fj:
+    for k, (m, f) in enumerate(zip(meta, files)):
+        if k < a.start or k >= a.end or k % a.every:
+            continue
+        d = np.load(f)
+        xyz, inten, ring = d["xyz"], d["inten"], d["ring"]
+        if a.dedup:
+            _, first = np.unique(xyz, axis=0, return_index=True)
+            keep = np.sort(first); xyz, inten, ring = xyz[keep], inten[keep], ring[keep]
+        if dead:
+            keep = ~np.isin(ring, dead); xyz, inten, ring = xyz[keep], inten[keep], ring[keep]
+        if a.drop > 0:
+            keep = rng.random(len(xyz)) >= a.drop; xyz, inten, ring = xyz[keep], inten[keep], ring[keep]
+        if a.ring_drop > 0:
+            rr = np.unique(ring)
+            gone = rr[rng.random(rr.size) < a.ring_drop]
+            keep = ~np.isin(ring, gone); xyz, inten, ring = xyz[keep], inten[keep], ring[keep]
+        if a.pitch or a.roll:
+            v = (xyz.astype(np.float64) @ Rvs.T) @ Rt.T
+            xyz = (v @ Rvs).astype(np.float32)
+        if a.noise > 0:
+            xyz = (xyz + rng.normal(0, a.noise, xyz.shape)).astype(np.float32)
+        for j in range(a.repeat):
+            x2, i2, r2 = xyz, inten, ring
+            if a.repeat > 1 and a.rdrop > 0:
+                keep = rng.random(len(xyz)) >= a.rdrop; x2, i2, r2 = xyz[keep], inten[keep], ring[keep]
+            mm = m
+            if a.repeat > 1:
+                # the original stamps spread over N copies at the original period: the scene advances 1/N per frame
+                t0 = meta[0]["stamp"]
+                mm = dict(m, stamp=t0 + (k * a.repeat + j) * 0.1, bag_t=m["bag_t"])
+            hooks.STATS["k"] = k * a.repeat + j if a.repeat > 1 else k
+            res = run_frame(rep, x2, i2, r2, mm, k)
+            fj.write(json.dumps(record(hooks.STATS["k"], mm["bag_t"], mm["stamp"], res, 0.0, 0.0, mm["frame_id"], mm["topic"])) + "\n")
+            n_out += 1
+hooks.dump(a.out + ".hooks.json")
+print(a.out, "frames", n_out, "tf", hooks.STATS["tf_calls"], "free", hooks.STATS["tf_free"], "cut", hooks.STATS["cut_parts"], "resets", rep.resets[:5])

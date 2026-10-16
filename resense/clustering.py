@@ -13,7 +13,7 @@ from scipy.spatial import cKDTree
 from resense import _native
 from resense.config import ClusterConfig, GaugeConfig
 from resense.gauge import gauge_reach_mask
-from resense.sensor import RING_ELEVATION_DEG, expected_points
+from resense.sensor import expected_points
 
 
 @dataclass
@@ -57,7 +57,6 @@ class Cluster:
 # not trusted there or the cluster is above the envelope (``Cluster.demoted``,
 # ``tracking.stop_keep_signature``)
 SHAPE_SIGNATURES = ("elevated", "floating", "edge", "wall_face")
-_RINGS = np.sort(RING_ELEVATION_DEG)       # the sensor's ring elevations, ascending (top_is_free)
 
 
 def _scaled(xyz: np.ndarray, range_scale: float) -> np.ndarray:
@@ -161,7 +160,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
                   weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
                   low_height_margin: float = 0.0, frame_xyz: Optional[np.ndarray] = None,
-                  frame_ring: Optional[np.ndarray] = None) -> List[Cluster]:
+                  frame_ring: Optional[np.ndarray] = None, frame_h: Optional[np.ndarray] = None,
+                  frame_dy: Optional[np.ndarray] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -239,13 +239,17 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
     ``frame_xyz`` (13.10, ``cfg.column_free_max_top`` > 0): the whole current frame that ``frame_idx``
     indexes (vehicle frame, the sensor at the origin), ``frame_ring`` its channel ids (or None); with it the
     column signature does not demote a cluster whose top is seen free (:func:`top_is_free`). ``None`` = the
-    column rule by its shape alone.
+    column rule by its shape alone. ``frame_h`` / ``frame_dy`` (15.10): the frame's heights above the rail head
+    and laterals (the detector's corridor coordinates of every return); without them the test reads only the
+    first ring above the top (``cfg.column_free_window`` and ``cfg.column_free_tall_gap`` need them). The frame
+    is indexed by azimuth once per call, on the first test (:class:`FrameRays`).
     """
     out: List[Cluster] = []
     if xyz.shape[0] == 0:
         return out
     if frame_idx is None:
         frame_idx = np.arange(xyz.shape[0])
+    rays = None if frame_xyz is None else FrameRays(frame_xyz, frame_ring, frame_h, frame_dy)
     vox, inv = voxelize(xyz, cfg)
     vlabels = cluster_labels(vox, cfg)
     labels = vlabels[inv]                       # raw point labels
@@ -266,7 +270,7 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
             c = _low_cluster(b, dy, h, intensity, frame_idx, cfg, low_cfg, low_height_margin)
         else:
             head = (dy, h, in_gauge, intensity, inv, frame_idx, cfg, factor, factor_range)
-            tail = (height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from, ring, frame_xyz, frame_ring)
+            tail = (height_valid, gauge, dy_alt, in_rail, keep_thin, dy_report, weak_from, ring, rays)
             c = _corridor_cluster(b, *head, axis_valid, *tail)
             if c is None and cfg.structure_cut_tol > 0 and cfg.oversize_split_max_length > 0 \
                     and float(b.size.max()) > cfg.max_extent and _split_part(b, in_gauge, in_rail, inv, cfg) is None:
@@ -360,67 +364,269 @@ def _is_infrastructure(size: np.ndarray, lateral: float, h_max: float, cfg: Clus
             and abs(lateral if lat_along is None else lat_along) > cfg.linear_min_lateral)
 
 
-def top_is_free(frame_xyz: np.ndarray, idx: np.ndarray, min_returns: int = 2,
-                frame_ring: Optional[np.ndarray] = None) -> bool:
+class FrameRays:
+    """15.10: the current frame as the column free-top test (:func:`top_is_free`) reads it - the corrected cloud
+    (vehicle frame, the sensor at the origin), its channel ids, and from the detector every return's height
+    above the rail head (``h``) and lateral offset from the axis (``dy``); ``None`` where not known. The
+    returns' azimuths are cached on the first :meth:`window` call as a uint8 bucket of tan(azimuth) per return
+    (0.55 deg wide at the axis, 255 behind the sensor; ~0.7 ms on a 189 k return ride frame), and a window
+    reads the returns of its buckets (~0.1-0.3 ms) before the exact test: 14.10 tested every return of the
+    frame in floats in every test (~1.4 ms), a cost that grew with the column-shaped clusters of a frame. (A
+    radix-sorted index on top of the buckets, measured: +0.6 ms a frame, its reads no faster.) The returns over
+    the track axis that the local vault is read from are cached the same way (:meth:`axis_band`).
+    :func:`find_clusters` makes one per call (once a frame in the detector), so the cache lives one frame."""
+
+    SCALE, MID = 105.0, 127.0         # bucket = SCALE tan(azimuth) + MID: +-50 deg (the sensor's field) in 2-252
+
+    def __init__(self, xyz: np.ndarray, ring: Optional[np.ndarray] = None, h: Optional[np.ndarray] = None,
+                 dy: Optional[np.ndarray] = None):
+        self.xyz, self.ring, self.h, self.dy = xyz, ring, h, dy
+        self._keys: Optional[np.ndarray] = None
+        self._band: Optional[tuple] = None
+
+    def _bucket(self, t: float) -> int:
+        return int(min(max(float(np.floor(t * self.SCALE + self.MID)), 0.0), 254.0))
+
+    def window(self, a0: float, a1: float) -> np.ndarray:
+        """Indices (ascending) of the returns ahead of the sensor (X > 0) with azimuth in [a0, a1] deg, compared
+        as Y >= tan(a0) X and Y <= tan(a1) X (the frame scan of 13.10, return for return)."""
+        t0, t1 = np.tan(np.radians(a0)), np.tan(np.radians(a1))
+        if self._keys is None:
+            X, Y = self.xyz[:, 0], self.xyz[:, 1]
+            with np.errstate(divide="ignore", invalid="ignore"):
+                s = Y / X
+            s *= self.SCALE
+            s += self.MID
+            np.clip(s, 0.0, 254.0, out=s)               # beyond the field: the end buckets
+            np.copyto(s, 255.0, where=~(X > 0))         # behind the sensor (and X = 0)
+            self._keys = s.astype(np.uint8)
+        # one bucket of slack on either side: the key's float32 quotient and the bounds' products may round apart
+        b0, b1 = max(self._bucket(t0) - 1, 0), min(self._bucket(t1) + 1, 254)
+        c = np.flatnonzero((self._keys >= b0) & (self._keys <= b1))
+        X, Y = self.xyz[c, 0], self.xyz[c, 1]
+        return c[(X > 0) & (Y >= t0 * X) & (Y <= t1 * X)]
+
+    def axis_band(self):
+        """The returns over the track axis (|dy| <= ``_VAULT_BAND``) above 0.5 m, cached on first use, sorted
+        along the track: (frame indices, X, h, cell of 1 m along x 0.25 m across) for :func:`_local_vault`; None
+        without heights or laterals."""
+        if self.h is None or self.dy is None:
+            return None
+        if self._band is None:
+            b = np.flatnonzero((np.abs(self.dy) <= _VAULT_BAND) & (self.h > 0.5))
+            X = self.xyz[b, 0].astype(np.float64)
+            o = np.argsort(X, kind="stable")
+            b, X = b[o], X[o]
+            cell = np.floor(X).astype(np.int64) * 8 + np.floor((self.dy[b] + _VAULT_BAND) / 0.25).astype(np.int64)
+            self._band = (b, X, self.h[b], cell)
+        return self._band
+
+
+_VAULT_BAND = 0.5      # m either side of the track axis over which the local vault is read (_local_vault)
+
+
+def _local_vault(rays: FrameRays, idx: np.ndarray, h_top: float, face: np.ndarray) -> Optional[float]:
+    """15.10: the lowest height above the rail head of what is over the track at the object - the returns within
+    ``_VAULT_BAND`` of the axis, from max(1 m, 15 %) before the object to max(5 m, 15 %) beyond it (the rings
+    above 2 deg are 0.5 deg apart: at 60 m a flat ceiling is hit at 56 and 70 m only), higher than its top
+    (``h_top``) + 0.1 m - its own face above its top (``face``: the returns of its azimuth window at its range) left
+    out. The vault, the ceiling, a beam or a lintel over the track, measured in the frame itself: the heights of
+    the far field drift with the rail level (0.3-0.7 m low at 110-150 m on the recordings), the vault's and the
+    object's alike. Over the axis, not beside the object: a colonnade at the platform edge (the ride, columns 4 m
+    apart at 0.9-1.0 m) puts its neighbours' faces beside each column at its range. Only what stands over free
+    space counts: a cell of 1 m along the track x 0.25 m across with returns between 0.5 m and the object's top
+    holds something standing (a post, a column, a wall the far axis lays across the track, an object) and is left
+    out (the ride's crossover: posts over the far axis at 124-155 m read as a 3.0-3.1 m vault). A round vault is
+    lower over the envelope's edge than over the axis (0.2-0.3 m: cluster.column_free_vault_margin). ``None`` when
+    nothing is seen there (or no heights). The returns over the axis are the frame's cached :meth:`FrameRays.axis_band`."""
+    band = rays.axis_band()
+    if band is None:
+        return None
+    ib, xb, hb, cb = band
+    x = rays.xyz[idx, 0]
+    x0, x1 = float(x.min()), float(x.max())
+    i0 = int(np.searchsorted(xb, x0 - max(1.0, 0.15 * x0), "left"))
+    i1 = int(np.searchsorted(xb, x1 + max(5.0, 0.15 * x0), "right"))
+    keep = ~np.isin(ib[i0:i1], face)
+    H, cell = hb[i0:i1][keep], cb[i0:i1][keep]
+    over = H > h_top + 0.1
+    standing = np.unique(cell[~over])                       # every return here is above 0.5 m
+    over &= ~np.isin(cell, standing)
+    return float(H[over].min()) if over.any() else None
+
+
+def _ids_in_elevation_order(rw: np.ndarray, qe: np.ndarray) -> bool:
+    """15.10 (P2): the window's channel ids number its rings from the highest down, as the Pandar128's
+    (``sensor.RING_ELEVATION_DEG``): the mean elevation of each id's returns falls as the id rises (0.02 deg
+    slack), over at least three ids. A driver numbering bottom-up, another sensor's interleaved order or unknown
+    ids are not read as ring order."""
+    ok = rw >= 0
+    ids, inv = np.unique(rw[ok], return_inverse=True)
+    if ids.size < 3:
+        return False
+    mean = np.bincount(inv, weights=qe[ok]) / np.bincount(inv)
+    return bool((np.diff(mean) <= 0.02).all())
+
+
+def _ring_between(rays: FrameRays, w: np.ndarray, head: np.ndarray, ring: np.ndarray, qe: np.ndarray,
+                  top: float, e1: float, a0: float, a1: float) -> bool:
+    """The empty-ring evidence of :func:`top_is_free`: a ring of the sensor lies between the top's ring and the
+    first ring above it that returns over the window (``ring``), and it returned nothing there - its rays
+    passed over the top and left the sensor's range. Read from the channel ids where the window carries them in
+    elevation order (``_ids_in_elevation_order``; the top's ring ``head``). 15.10 (P2): otherwise only where the
+    frame itself shows such a ring beside the object - at least 6 returns (3 rays, each echo twice) at least
+    15 m away (nearer, a return's elevation scatters by up to 0.05 deg) within 1.5 deg of its azimuth span,
+    between the two rings with 0.04 deg to spare (the rings are >= 0.086 deg apart; a roll of 1 deg tilts a ring
+    by 0.026 deg over 1.5 deg). 13.10 / 14.10 read the Pandar128's ring table there, its ring nearest to the top
+    put at the top: a 64-ring sensor read through it saw an empty ring above a column occluded from above at
+    30-100 m (the safety review of 14.10), and a mount tilt put the top at the wrong ring."""
+    rw = None if rays.ring is None else rays.ring[w].astype(np.int64)
+    if rw is not None and rw.min() < rw.max() and _ids_in_elevation_order(rw, qe):  # set O: one id (0) = none
+        hd, first = rays.ring[head].astype(np.int64), rw[ring]
+        if hd.min() >= 0 and first.min() >= 0 and first.max() < hd.min():
+            rt, r1 = int(hd.min()), int(first.max())
+            return r1 < rt - 1 and not ((rw > r1) & (rw < rt)).any()
+        return False
+    b = rays.window(a0 - 1.5, a1 + 1.5)
+    s = rays.xyz[b].astype(np.float64)
+    sh = np.hypot(s[:, 0], s[:, 1])
+    se = np.degrees(np.arctan2(s[:, 2], sh))
+    return int(((se > top + 0.04) & (se < e1 - 0.04) & (np.hypot(sh, s[:, 2]) >= 15.0)).sum()) >= 6
+
+
+def _follow(qe: np.ndarray, same: np.ndarray, qh: np.ndarray, top: float, h_top: float):
+    """15.10 (P4, ``cluster.column_free_tall_gap``): the object's own returns above the candidates' cut,
+    followed ring by ring over the window: while the next ring with returns above the top has one at the
+    top's range (``same``), the top moves up to it. Returns the top's elevation, its height above the rail
+    head (``qh``: the window's heights) and the window's returns of the top ring at the top's range (None: not
+    moved)."""
+    last = None
+    while True:
+        up = qe > top + 0.04
+        if not up.any():
+            return top, h_top, last
+        lev = up & (qe <= float(qe[up].min()) + 0.05)
+        s = lev & same
+        if not s.any():
+            return top, h_top, last
+        top, h_top, last = float(qe[lev].max()), max(h_top, float(qh[s].max())), s
+
+
+def top_is_free(frame_xyz, idx: np.ndarray, min_returns: int = 2, frame_ring: Optional[np.ndarray] = None,
+                window: float = 0.0, vault_margin: float = 0.3, tall_gap: float = 0.0) -> bool:
     """13.10 (``cluster.column_free_max_top``): the top of the cluster whose current-frame returns are
     ``frame_xyz[idx]`` is seen free - the rays right above it pass over it. Over the cluster's azimuth span
     plus 0.12 deg (an azimuth step and the rings' azimuth offsets) the first ring with returns above the top
     has none at the top's range (within max(0.5 m, 2 %)): a column continues up to the vault and that ring
     meets it there. And either a ring of the sensor lies between them that returned nothing over the span -
-    its rays passed over the top and left the sensor's range (the far field) - or at least ``min_returns``
-    of that ring's returns are beyond the top and more than those nearer (nearer: occluded from above, no
-    evidence). Nothing above within 2.5 deg is no evidence. Not told apart: a column whose face right above
-    the cluster's top returns nothing while the rays beside it reach the tunnel behind.
-    ``frame_xyz``: the whole frame in the vehicle frame, the sensor at the origin. ``frame_ring``: its
-    channel ids (0 the highest ring, as ``sensor.RING_ELEVATION_DEG``); the ring in between is read from
-    them where the top's and that ring's returns carry ids in this order. Without ids (None, or one id for
-    the whole window: set O carries 0 for every return) it is read from the ring table with its ring
-    nearest to the top's put at the top (a mount tilt the calibration corrects moves the rings off the
-    table, and a tenth of a degree can put the top at the wrong ring and invent an empty one:
-    tests/test_column_free_top.py). 14.10 (review): where the frame carries ids but these returns do not
-    carry them in the table's order (unknown ids, a driver numbering the rings bottom-up, another sensor)
-    the table is not read either: no empty-ring evidence, only the returns beyond the top (the table is the
-    Pandar128's: a 64-ring sensor read through it saw an empty ring above an occluded column at 30-100 m)."""
-    if idx.size < 2:
-        return False
-    p = frame_xyz[idx].astype(np.float64)
+    its rays passed over the top and left the sensor's range (the far field; :func:`_ring_between`) - or at
+    least ``min_returns`` of that ring's returns are beyond the top and more than those nearer (nearer:
+    occluded from above, no evidence). Nothing above within 2.5 deg is no evidence.
+    ``frame_xyz``: a :class:`FrameRays` (the detector's: with heights and laterals), or the whole frame in the
+    vehicle frame, the sensor at the origin, with ``frame_ring`` its channel ids (0 the highest ring).
+
+    15.10 (P1, ``window`` = ``cluster.column_free_window`` > 0; needs the heights): a column whose face right
+    above the cluster's top returns nothing (dark paint, glass, a black sign) while the rays beside it reach the
+    tunnel behind read as free on 14.10, whose continuation was the first ring with returns only. Now any
+    return at the top's range over the window above the top up to ``window`` m over it, within the top ring's
+    lateral extent +- 0.15 m (its own face; the round lining beside it at its range is not), is continuation -
+    but never up to the local vault (:func:`_local_vault`; ``vault_margin`` under it): the vault, a ceiling or a
+    beam over the object meets the rays above a free top at the object's range too. No vault seen: no window.
+
+    15.10 (P4, ``tall_gap`` = ``cluster.column_free_tall_gap`` > 0; for a cluster reaching the candidates' cut
+    under the envelope top): the object's own returns at its range are followed above the cut to its true top
+    (:func:`_follow`), which must lie at least ``tall_gap`` under the local vault (seen), with no return of its
+    own face above it up to ``vault_margin`` under the vault, the first ring above it passing it as above, and
+    every one of its own rays (the top ring's azimuth span) above it up to there returning beyond it
+    (:func:`_own_rays_pass`): a column whose face above the cut is dark returns nothing on its own rays."""
+    rays = frame_xyz if isinstance(frame_xyz, FrameRays) else FrameRays(frame_xyz, frame_ring)
+    if idx.size < 2 or (tall_gap > 0 and rays.h is None):
+        return False                      # a cluster at the cut is followed only with the frame's heights
+    p = rays.xyz[idx].astype(np.float64)
     rh = np.hypot(p[:, 0], p[:, 1])
     el = np.degrees(np.arctan2(p[:, 2], rh))
     az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
     top = float(el.max())
-    r_top = float(np.median(np.hypot(rh, p[:, 2])[el >= top - 0.06]))     # the top's own ring
+    head = el >= top - 0.06                                         # the top's own ring
+    r_top = float(np.median(np.hypot(rh, p[:, 2])[head]))
     a0, a1 = float(az.min()), float(az.max())
-    X, Y = frame_xyz[:, 0], frame_xyz[:, 1]
-    t0, t1 = np.tan(np.radians(a0 - 0.12)), np.tan(np.radians(a1 + 0.12))
-    w = np.flatnonzero((X > 0) & (Y >= t0 * X) & (Y <= t1 * X))      # the azimuth window, ahead of the sensor
-    q = frame_xyz[w].astype(np.float64)
+    w = rays.window(a0 - 0.12, a1 + 0.12)                           # the azimuth window, ahead of the sensor
+    q = rays.xyz[w].astype(np.float64)
     qh = np.hypot(q[:, 0], q[:, 1])
     qe = np.degrees(np.arctan2(q[:, 2], qh))
+    qr = np.hypot(qh, q[:, 2])
+    tol = max(0.5, 0.02 * r_top)
+    same = np.abs(qr - r_top) <= tol                                # at the top's range
+    tall = tall_gap > 0
+    lim = None
+    if rays.h is not None and (window > 0 or tall):
+        qz = rays.h[w]
+        h_top = float(rays.h[idx].max())
+        vault = _local_vault(rays, idx, h_top, w[same])
+        if tall:
+            top, h_top, last = _follow(qe, same, qz, top, h_top)
+            if vault is None or h_top > vault - tall_gap:
+                return False              # not clearly under the vault (a column meets it), or no vault seen
+            lim = vault - vault_margin
+        else:
+            # no vault seen (the far field: what is over the track there lies beyond the sensor's range): no
+            # window, as 14.10 - it could reach the vault at the object's range unseen
+            lim = None if vault is None else min(h_top + window, vault - vault_margin)
     up = (qe > top + 0.04) & (qe <= top + 2.5)   # above the top's own ring (the rings are >= 0.086 deg apart)
     if not up.any():
         return False
     e1 = float(qe[up].min())
     ring = up & (qe <= e1 + 0.05)
-    r = np.hypot(qh[ring], q[ring, 2])
-    tol = max(0.5, 0.02 * r_top)
-    if (np.abs(r - r_top) <= tol).any():
+    if (same & ring).any():
         return False                      # the structure continues above the top: a column
-    between = None
-    rw = None if frame_ring is None else frame_ring[w].astype(np.int64)
-    if rw is not None and rw.min() < rw.max():      # one id for the whole window (set O: all 0) = no ids
-        head, first = frame_ring[idx][el >= top - 0.06].astype(np.int64), rw[ring]
-        between = False                   # 14.10: ids out of the table's order are no empty-ring evidence
-        if head.min() >= 0 and first.min() >= 0 and first.max() < head.min():
-            rt, r1 = int(head.min()), int(first.max())
-            between = r1 < rt - 1 and not ((rw > r1) & (rw < rt)).any()
-    if between is None:
-        k = int(np.argmin(np.abs(_RINGS - top)))
-        rings = _RINGS - _RINGS[k] + top          # the sensor's rings, its ring nearest to the top's at the top
-        between = bool(((rings > top + 0.04) & (rings < e1 - 0.04)).any())
-    if between:
-        return True                       # a ring in between returned nothing over the span: its rays left the range
+    if lim is not None:
+        # 15.10: its own face continues above a band that returns nothing - at its range and over its top ring's
+        # lateral extent (+- 0.15 m; the round lining beside it at its range is not its face): a column
+        d = rays.dy[idx][head]
+        qd = rays.dy[w]
+        if (same & up & (qz <= lim) & (qd >= float(d.min()) - 0.15) & (qd <= float(d.max()) + 0.15)).any():
+            return False
+    r = qr[ring]
     beyond, nearer = int((r > r_top + tol).sum()), int((r < r_top - tol).sum())
-    return beyond >= min_returns and beyond > nearer
+    free = _ring_between(rays, w, idx[head], ring, qe, top, e1, a0, a1) or (beyond >= min_returns
+                                                                             and beyond > nearer)
+    if free and tall:
+        # the object's own rays over its true top - within the azimuth span of its top ring's returns, under the
+        # vault margin's sight line at its range - every one of them returns beyond it
+        qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+        s0, s1 = (float(az[head].min()), float(az[head].max())) if last is None else \
+            (float(qa[last].min()), float(qa[last].max()))
+        rail = float(np.median(p[:, 2] - rays.h[idx]))
+        e_lim = float(np.degrees(np.arctan2(lim + rail, float(np.median(rh[head])))))
+        free = _own_rays_pass(qa, qe, qr > r_top + tol, up & (qe <= e_lim), s0, s1)
+    return free
+
+
+def _own_rays_pass(qa: np.ndarray, qe: np.ndarray, beyond: np.ndarray, above: np.ndarray, s0: float,
+                   s1: float) -> bool:
+    """15.10 (P4): the object's own rays over its true top pass beyond it - on at least two rings over the window's
+    returns ``above`` the top, each ring's rays inside the top's azimuth span [``s0``, ``s1``] (on the ring's own
+    0.1 deg grid, its phase read from its returns over the window) each have a return within 0.03 deg, and every
+    such return is ``beyond`` the top. A ray without a return, at the top's range or nearer fails it: a column whose
+    face above the candidates' cut returns nothing (dark), or a narrower shaft above a wider top whose own rays meet
+    it while the rays beside it pass (a ray grazing it passes too: the span's own rays are all asked). Rings without
+    a ray inside the span are not counted."""
+    rings = 0
+    rest = above.copy()
+    while rest.any():
+        lev = rest & (qe <= float(qe[rest].min()) + 0.05)
+        rest &= ~lev
+        a = qa[lev]
+        phase = float(np.angle(np.exp(2j * np.pi * a / 0.1).mean()) / (2 * np.pi) * 0.1) % 0.1   # circular mean
+        k0, k1 = int(np.ceil((s0 - 0.005 - phase) / 0.1)), int(np.floor((s1 + 0.005 - phase) / 0.1))
+        if k1 < k0:
+            continue
+        for g in phase + 0.1 * np.arange(k0, k1 + 1):
+            near = np.abs(a - g) <= 0.03
+            if not near.any() or not beyond[lev][near].all():
+                return False
+        rings += 1
+    return rings >= 2
 
 
 def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cfg: ClusterConfig,
@@ -721,14 +927,12 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
                       dy_alt: Optional[np.ndarray] = None, in_rail: Optional[np.ndarray] = None,
                       keep_thin: bool = False, dy_report: Optional[np.ndarray] = None,
                       weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
-                      frame_xyz: Optional[np.ndarray] = None,
-                      frame_ring: Optional[np.ndarray] = None) -> Optional[Cluster]:
+                      rays: Optional[FrameRays] = None) -> Optional[Cluster]:
     """A corridor cluster: size and point-count bars, the infrastructure shapes, then the zone
     (enough voxels in the strict gauge) and the reason that demotes it to advisory. ``in_rail``: the
     strict membership from the rails only (``find_clusters``). With ``keep_thin`` a cluster flatter
     than ``min_height`` is described with ``thin`` set instead of dropped (:func:`find_clusters`).
-    ``frame_xyz`` / ``frame_ring``: the whole frame for the column signature's free-top test
-    (:func:`find_clusters`)."""
+    ``rays``: the whole frame for the column signature's free-top test (:func:`find_clusters`)."""
     if in_rail is None:
         in_rail = in_gauge
     size = b.size
@@ -794,14 +998,19 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
     zone = "gauge" if n_gauge >= gauge_min else "warning"
     free_top = None
     seen_free: List[bool] = []
-    if (frame_xyz is not None and cfg.column_free_max_top > 0 and h_max <= cfg.column_free_max_top
+    tall = cfg.column_free_tall_gap > 0 and h_max > cfg.column_free_max_top
+    if (rays is not None and cfg.column_free_max_top > 0 and (h_max <= cfg.column_free_max_top or tall)
             and n_gauge >= cfg.column_free_min_core * b.n_vox):
         # 13.10: a column-shaped cluster mostly inside the envelope, its top under the envelope top, is a
         # column only if its top is not seen free (top_is_free; asked by the column rule alone). 14.10: the
         # answer is kept (Cluster.spared): the tracker does not let one such hit release a column hold
-        # (tracking.column_free_min_spares)
+        # (tracking.column_free_min_spares). 15.10: the continuation over a window above the top
+        # (column_free_window), and a cluster reaching the candidates' cut followed to its true top
+        # (column_free_tall_gap)
         cur = frame_idx[b.idx]
-        ask = partial(top_is_free, frame_xyz, cur[cur >= 0], cfg.column_free_min_returns, frame_ring)
+        ask = partial(top_is_free, rays, cur[cur >= 0], cfg.column_free_min_returns,
+                      window=cfg.column_free_window, vault_margin=cfg.column_free_vault_margin,
+                      tall_gap=cfg.column_free_tall_gap if tall else 0.0)
 
         def free_top() -> bool:
             seen_free.append(bool(ask()))

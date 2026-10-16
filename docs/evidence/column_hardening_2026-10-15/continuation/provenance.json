@@ -1,0 +1,25 @@
+{
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9",
+  "packages": {
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "open3d": "0.20.0",
+    "rosbags": "0.11.5",
+    "pytest": "9.0.3"
+  },
+  "native": "MSVC x64 /O2 /std:c++17 /fp:strict, all exported C ABI symbols; native parity tests passed",
+  "code": {
+    "H1": "a2660aff4009fe51529df13c48f1fde939187b4a",
+    "H2": "eba97619e20fc3dd7e7bbfd6d3e538f00eca25ca",
+    "screen": "264f5b29304fd685f4042ded9eb382070da90563"
+  },
+  "sealed_git_blob_differences": [],
+  "raw_output_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-runs",
+  "cache_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache",
+  "node_decoded_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\decoded",
+  "gate_commands": "scripts/regression_gate.py --cache <cache> --jobs 3 (H1/H2/baseline), --jobs 2 (variants), --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --out <json> --work <work>; variants add their registered --set only; no --allow",
+  "unix_resource_adapter": "On Windows only, resource.getrusage(RUSAGE_SELF).ru_maxrss uses psutil peak_wset / 1024; detection/decision logic unchanged",
+  "freeze_verify_on_windows": "Raw verify fails for CRLF checkout bytes and the generated .pyd artifact; the 36 committed baseline source blobs match the seal. Candidate source changes are intentionally unsealed; H4/H5 remain outstanding.",
+  "independent_review": "not performed in this P3 session; assigned to P4 (H4)"
+}

@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+"""Vault / overhead height above the rail head per recording (scratch, r3 column P1/P4 window bound).
+Runs the detector frame by frame on a gate cache (or a slice), and every --every-th frame takes the corrected
+cloud's corridor coordinates (dy, h). Per 10 m X bin within the trusted height reference (X <= floor_valid and
+X <= axis_valid), over the returns above the envelope region (|dy| <= 1.2 m, h > 3.0 m):
+  low  = the lowest overhead return (min h)  -> what a window above an object's top could meet first
+  p05  = 5th percentile of h
+  crown = the highest return over |dy| <= 0.5 (the vault crown)
+usage: vault.py <cache_dir> <out.json> [--prefix P ...] [--piece K/N] [--every N] [--from I --to I]"""
+import argparse
+import json
+import os
+import sys
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import resense  # noqa
+assert resense.__file__.startswith(WT)
+from resense.config import DetectorConfig  # noqa
+from resense.detector import Detector  # noqa
+from resense.frame import frame_from_compact  # noqa
+from resense.gauge import corridor_coordinates  # noqa
+from scripts.cache_io import cache_files, cache_file_stem, load_cache_array, load_cache_stamps  # noqa
+
+ap = argparse.ArgumentParser()
+ap.add_argument("cache"); ap.add_argument("out")
+ap.add_argument("--prefix", nargs="*", default=[])
+ap.add_argument("--piece", default="")
+ap.add_argument("--every", type=int, default=5)
+ap.add_argument("--from", dest="i0", type=int, default=0)
+ap.add_argument("--to", dest="i1", type=int, default=10 ** 9)
+a = ap.parse_args()
+files = [str(f) for f in cache_files(a.cache)]
+if a.piece:
+    k, n = (int(v) for v in a.piece.split("/"))
+    files = [str(f) for f in np.array_split(np.array(files), n)[k]]
+if a.prefix:
+    files = [f for f in files if any(cache_file_stem(f).startswith(p) for p in a.prefix)]
+files = files[a.i0:a.i1]
+stamps = load_cache_stamps(a.cache)
+cfg = DetectorConfig.from_yaml(os.path.join(WT, "configs/default.yaml"))
+det = Detector(cfg)
+bins = np.arange(10.0, 160.0, 10.0)
+rows = []
+prev = None
+for i, f in enumerate(files):
+    stem = cache_file_stem(f)
+    st = stamps.get(stem, i * 0.1)
+    if prev is not None and (st - prev > 1.0 or st < prev - 0.5):
+        det.reset()
+    prev = st
+    fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=st, frame_id=stem)
+    res = det.process(fr)
+    if i % a.every:
+        continue
+    tr = det.track
+    xyz = res.xyz
+    dy, h = corridor_coordinates(xyz, tr)
+    X = xyz[:, 0]
+    trust = min(float(tr.axis_valid), max(float(tr.floor_range[1]) + cfg.track.floor_valid_margin,
+                                          float(tr.floor_verified)))
+    row = {"k": i, "stem": stem, "trust": round(trust, 1), "rails": int(tr.rail_slabs), "bins": {}}
+    for b0 in bins:
+        if b0 + 10.0 > trust:
+            break
+        m = (X >= b0) & (X < b0 + 10.0)
+        over = m & (np.abs(dy) <= 1.05) & (h > 3.0)
+        crown = m & (np.abs(dy) <= 0.5)
+        if over.sum() < 3:
+            continue
+        hh = h[over]
+        row["bins"][int(b0)] = [round(float(hh.min()), 2), round(float(np.percentile(hh, 5)), 2),
+                                round(float(h[crown].max()) if crown.any() else -1.0, 2), int(over.sum()),
+                                int((m & (np.abs(dy) <= 1.05) & (h > 3.0) & (h < 3.9)).sum()),
+                                round(float(np.percentile(hh, 1)), 2) if hh.size >= 20 else -1.0]
+    rows.append(row)
+json.dump(rows, open(a.out, "w"))
+lows = [v[0] for r in rows for v in r["bins"].values()]
+crowns = [v[2] for r in rows for v in r["bins"].values() if v[2] > 0]
+print(a.out, "frames", len(rows), "bins", len(lows),
+      "low min/p1/p5/p50", [round(float(np.percentile(lows, q)), 2) for q in (0, 1, 5, 50)] if lows else None,
+      "crown p5/p50/p95", [round(float(np.percentile(crowns, q)), 2) for q in (5, 50, 95)] if crowns else None)

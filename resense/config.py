@@ -260,12 +260,37 @@ class ClusterConfig:
     # over it), whose top is at most column_free_max_top and at least column_free_min_core of whose voxels
     # are inside the strict envelope; every other rule still applies. 14.10: the ring between the top and the
     # first ring above it that returns is read from the frame's channel ids (the ring table only without them,
-    # set O; a mount tilt moves the rings off the table). Full regression gate PASS, every gate frame identical
+    # set O; a mount tilt moves the rings off the table); 15.10: ids only where they number the rings in elevation
+    # order, otherwise a ring the frame itself shows beside the object - no table (clustering._ring_between: a
+    # 64-ring sensor read through the Pandar128's table saw an empty ring above an occluded column). Full
+    # regression gate PASS, every gate frame identical
     # to the sealed detector; the judge's pole 0.7 m off the axis 0 -> 136 STOP frames of 176, on the axis
     # 82 -> 157 of 177 (configs/default.yaml)
     column_free_max_top: float = 2.95  # m, under the 3.0 m envelope top, where the candidates are cut
     column_free_min_core: float = 0.5  # share of the cluster's voxels inside the strict envelope (a structure at its edge, a platform or canopy edge at 0.8-1.2 m: 0.09-0.56)
     column_free_min_returns: int = 2   # returns beyond the top on the ring above it (one ray: the recordings hold each echo twice)
+    # 15.10 (review round 3, P1; 0 = the first ring with returns above the top only, as 14.10): any return at the
+    # top's range over the cluster's azimuth window, within its top ring's lateral extent +- 0.15 m, up to this many m
+    # above its top is continuation (a column whose face right above the top returns nothing - dark paint, glass, a
+    # sign - read as free on 14.10), but never up to the local vault (clustering._local_vault: the lowest return over
+    # the axis +- 0.5 m standing over free space, 15 % before to 15 % beyond the object, measured in the frame: the
+    # far field's heights drift with the rail level) less column_free_vault_margin; no vault seen, no window. The
+    # recordings' vault over the envelope in the near field (10-50 m, p5): round tunnels 3.79-3.81 m (crown 4.1-4.3),
+    # square 3.55-3.77, the ride 3.59-4.02, stations / switches down to 3.0 (structures over the track); 0.3-0.7 m
+    # lower at 110-150 m (the drift). The review's dark-band what-if (0.6 deg above every free-top cluster's top):
+    # ride piece 1 / 3 STOP frames sealed 14 / 2 -> 14.10 30 / 13 -> 23 / 7, R4 49 (sealed); what remains is at
+    # 107-141 m, where the band spans 1.1-1.5 m and reaches the vault margin. Every judge probe and the plain ride
+    # pieces as 14.10, frame for frame
+    column_free_window: float = 1.2
+    column_free_vault_margin: float = 0.3   # m under the local vault (read over the axis: a round vault is 0.2-0.3 m lower over the envelope edge; a ray meeting it 2 % beyond the object sits 0.05 m under it there)
+    # 15.10 (P4, opt-in, NOT shipped: 0 = off): a column-shaped cluster reaching the candidates' cut (top above
+    # column_free_max_top) is followed above it along its own returns at its range to its true top (top_is_free),
+    # which must lie at least this far (m) under the local vault, every one of its own rays above it (two rings at
+    # least) passing beyond it (a column with a dark face returns nothing on them). Measured at 0.3 m: no gain on the
+    # judge's 3.2 / 3.6 m poles on A (square tunnel, ceiling 3.8-4.0 m: little room for the rays above the pole), the
+    # 3.2 m pole 0.7 m off the axis 24 -> 23 STOP frames (one ring: 24 -> 18, worse than sealed), and under the
+    # review's dark-band what-if one spare of a real ride column added a 9-frame STOP episode (one ring)
+    column_free_tall_gap: float = 0.0
     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
     floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall

@@ -1,0 +1,44 @@
+{
+  "S_drop20_s2": [
+    {
+      "frame": 344,
+      "sealed_decision": "CAUTION",
+      "H1_decision": "CAUTION",
+      "diff": [
+        {
+          "field": ".warns[0].reason",
+          "sealed": "column",
+          "H1": ""
+        }
+      ]
+    }
+  ],
+  "B_drop30_s3": [
+    {
+      "frame": 168,
+      "sealed_decision": "CAUTION",
+      "H1_decision": "CAUTION",
+      "diff": [
+        {
+          "field": ".warns[1].reason",
+          "sealed": "column",
+          "H1": ""
+        }
+      ]
+    }
+  ],
+  "B_slow3_s1": [
+    {
+      "frame": 482,
+      "sealed_decision": "CAUTION",
+      "H1_decision": "CAUTION",
+      "diff": [
+        {
+          "field": ".warns[0].reason",
+          "sealed": "column",
+          "H1": ""
+        }
+      ]
+    }
+  ]
+}

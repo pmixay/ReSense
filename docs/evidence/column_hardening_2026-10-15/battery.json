@@ -1,0 +1,722 @@
+{
+ "S_drop30_s2": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 55,
+   "episodes": 10,
+   "CAUTION": 375
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 55,
+   "episodes": 10,
+   "CAUTION": 375
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 55,
+   "episodes": 10,
+   "CAUTION": 375
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 4,
+   "spared": 1,
+   "frames_with_tests": 4,
+   "test_ms_total": 10.1
+  }
+ },
+ "S_drop30_s3": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 51,
+   "episodes": 13,
+   "CAUTION": 394
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 51,
+   "episodes": 13,
+   "CAUTION": 394
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 51,
+   "episodes": 13,
+   "CAUTION": 394
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 4,
+   "spared": 1,
+   "frames_with_tests": 4,
+   "test_ms_total": 10.2
+  }
+ },
+ "S_drop30_s5": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 84,
+   "episodes": 20,
+   "CAUTION": 324
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 84,
+   "episodes": 20,
+   "CAUTION": 324
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 84,
+   "episodes": 20,
+   "CAUTION": 324
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 1,
+   "spared": 1,
+   "frames_with_tests": 1,
+   "test_ms_total": 3.3
+  }
+ },
+ "S_drop20_s3": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 44,
+   "episodes": 11,
+   "CAUTION": 406
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 44,
+   "episodes": 11,
+   "CAUTION": 406
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 44,
+   "episodes": 11,
+   "CAUTION": 406
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 3,
+   "spared": 1,
+   "frames_with_tests": 3,
+   "test_ms_total": 9.9
+  }
+ },
+ "B_pitchm2": {
+  "sealed": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 155
+  },
+  "14.10": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 155
+  },
+  "new": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 155
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 61,
+   "spared": 1,
+   "frames_with_tests": 57,
+   "test_ms_total": 221.5
+  }
+ },
+ "B_drop30_s1": {
+  "sealed": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 178
+  },
+  "14.10": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 178
+  },
+  "new": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 178
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 78,
+   "spared": 1,
+   "frames_with_tests": 69,
+   "test_ms_total": 217.4
+  }
+ },
+ "B_drop30_s2": {
+  "sealed": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 168
+  },
+  "14.10": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 168
+  },
+  "new": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 168
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 76,
+   "spared": 3,
+   "frames_with_tests": 67,
+   "test_ms_total": 219.9
+  }
+ },
+ "B_drop30_s3": {
+  "sealed": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 171
+  },
+  "14.10": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 171
+  },
+  "new": {
+   "frames": 252,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 171
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 1,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 83,
+   "spared": 5,
+   "frames_with_tests": 75,
+   "test_ms_total": 216.2
+  }
+ },
+ "S_drop30_s1": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 56,
+   "episodes": 12,
+   "CAUTION": 403
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 56,
+   "episodes": 12,
+   "CAUTION": 403
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 56,
+   "episodes": 12,
+   "CAUTION": 403
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 3,
+   "spared": 0,
+   "frames_with_tests": 3,
+   "test_ms_total": 6.3
+  }
+ },
+ "S_drop30_s4": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 48,
+   "episodes": 14,
+   "CAUTION": 397
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 48,
+   "episodes": 14,
+   "CAUTION": 397
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 48,
+   "episodes": 14,
+   "CAUTION": 397
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 3,
+   "spared": 0,
+   "frames_with_tests": 3,
+   "test_ms_total": 6.2
+  }
+ },
+ "S_drop30_s6": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 39,
+   "episodes": 14,
+   "CAUTION": 392
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 39,
+   "episodes": 14,
+   "CAUTION": 392
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 39,
+   "episodes": 14,
+   "CAUTION": 392
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 3,
+   "spared": 1,
+   "frames_with_tests": 3,
+   "test_ms_total": 7.2
+  }
+ },
+ "S_drop20_s1": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 37,
+   "episodes": 8,
+   "CAUTION": 413
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 37,
+   "episodes": 8,
+   "CAUTION": 413
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 37,
+   "episodes": 8,
+   "CAUTION": 413
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 2,
+   "spared": 0,
+   "frames_with_tests": 2,
+   "test_ms_total": 6.1
+  }
+ },
+ "S_drop20_s2": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 51,
+   "episodes": 13,
+   "CAUTION": 404
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 51,
+   "episodes": 13,
+   "CAUTION": 404
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 51,
+   "episodes": 13,
+   "CAUTION": 404
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 1,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 5,
+   "spared": 2,
+   "frames_with_tests": 4,
+   "test_ms_total": 11.3
+  }
+ },
+ "S_drop20_s4": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 30,
+   "episodes": 6,
+   "CAUTION": 446
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 30,
+   "episodes": 6,
+   "CAUTION": 446
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 30,
+   "episodes": 6,
+   "CAUTION": 446
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 1,
+   "spared": 0,
+   "frames_with_tests": 1,
+   "test_ms_total": 3.5
+  }
+ },
+ "S_drop10_s1": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 40,
+   "episodes": 11,
+   "CAUTION": 404
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 40,
+   "episodes": 11,
+   "CAUTION": 404
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 40,
+   "episodes": 11,
+   "CAUTION": 404
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 1,
+   "spared": 0,
+   "frames_with_tests": 1,
+   "test_ms_total": 3.5
+  }
+ },
+ "S_drop10_s2": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 64,
+   "episodes": 8,
+   "CAUTION": 383
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 64,
+   "episodes": 8,
+   "CAUTION": 383
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 64,
+   "episodes": 8,
+   "CAUTION": 383
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 6,
+   "spared": 1,
+   "frames_with_tests": 5,
+   "test_ms_total": 15.9
+  }
+ },
+ "S_drop10_s3": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 48,
+   "episodes": 10,
+   "CAUTION": 419
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 48,
+   "episodes": 10,
+   "CAUTION": 419
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 48,
+   "episodes": 10,
+   "CAUTION": 419
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 1,
+   "spared": 0,
+   "frames_with_tests": 1,
+   "test_ms_total": 3.3
+  }
+ },
+ "S_drop10_s4": {
+  "sealed": {
+   "frames": 877,
+   "STOP": 42,
+   "episodes": 9,
+   "CAUTION": 415
+  },
+  "14.10": {
+   "frames": 877,
+   "STOP": 42,
+   "episodes": 9,
+   "CAUTION": 415
+  },
+  "new": {
+   "frames": 877,
+   "STOP": 42,
+   "episodes": 9,
+   "CAUTION": 415
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 2,
+   "spared": 1,
+   "frames_with_tests": 2,
+   "test_ms_total": 9.4
+  }
+ },
+ "B_slow3_s1": {
+  "sealed": {
+   "frames": 756,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 561
+  },
+  "14.10": {
+   "frames": 756,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 561
+  },
+  "new": {
+   "frames": 756,
+   "STOP": 0,
+   "episodes": 0,
+   "CAUTION": 561
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 1,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 218,
+   "spared": 2,
+   "frames_with_tests": 206,
+   "test_ms_total": 620.2
+  }
+ },
+ "B_slow3_s2": {
+  "sealed": {
+   "frames": 756,
+   "STOP": 2,
+   "episodes": 1,
+   "CAUTION": 539
+  },
+  "14.10": {
+   "frames": 756,
+   "STOP": 2,
+   "episodes": 1,
+   "CAUTION": 539
+  },
+  "new": {
+   "frames": 756,
+   "STOP": 2,
+   "episodes": 1,
+   "CAUTION": 539
+  },
+  "new_vs_sealed": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_vs_14.10": {
+   "decision_diffs": 0,
+   "det_warn_diffs": 0,
+   "frames_changed": []
+  },
+  "new_hooks": {
+   "free_top_tests": 180,
+   "spared": 2,
+   "frames_with_tests": 175,
+   "test_ms_total": 498.2
+  }
+ }
+}

@@ -1,0 +1,25 @@
+#!/bin/bash
+# ride pieces (gate cache) plain and with the DARKBAND what-if, on the code at $CODE (default the worktree), compared
+# with the safety review's sealed runs and the 14.10 candidate's (fix_review *_fin). One run at a time, under nice.
+cd /tmp/claude-0/fixwork/r3_column
+. ./env.sh
+SR=/tmp/claude-0/fixwork/safety_review/out
+FX=/tmp/claude-0/fixwork/fix_review/out
+T=${TAG:-r3}
+OUT=out/batch_ride_$T.txt
+gp() { name=$1; base=$2; dark=$3; cache=$4; shift 4
+  [ -f out/${name}_$T.jsonl ] || DARKBAND=$dark run_w grun.py $G/$cache out/${name}_$T "$@" > out/${name}_$T.log 2>&1
+  python3 cmp.py $SR/${base}_s.jsonl out/${name}_$T.jsonl "$name sealed->$T" >> $OUT
+  [ -f $FX/${name}_fin.jsonl ] && python3 cmp.py $FX/${name}_fin.jsonl out/${name}_$T.jsonl "$name 14.10->$T" | head -1 >> $OUT
+  tail -1 out/${name}_$T.log >> $OUT
+}
+R4="new_data_52_ new_data_54_ new_data_55_"
+gp p1_dark p1_plain 0.6 new_data piece:1/8
+gp p3_dark p3_plain 0.6 new_data piece:3/8
+gp R4_dark R4_plain 0.6 new_data $R4
+gp p4_dark p4_plain 0.6 new_data piece:4/8
+gp P_dark P_plain 0.6 doubleT_platform piece:0/1
+gp p1_plain p1_plain 0 new_data piece:1/8
+gp p3_plain p3_plain 0 new_data piece:3/8
+gp R4_plain R4_plain 0 new_data $R4
+echo BATCH_RIDE DONE >> $OUT

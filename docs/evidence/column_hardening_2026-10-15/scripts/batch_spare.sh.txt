@@ -1,0 +1,27 @@
+#!/bin/bash
+# The previous review's S / B dropout + pitch battery (same seeds) on the code at $CODE, against the safety review's
+# sealed runs and the 14.10 candidate's (fix_review *_fin). One replay at a time, under nice.
+cd /tmp/claude-0/fixwork/r3_column
+. ./env.sh
+SR=/tmp/claude-0/fixwork/safety_review/out
+FX=/tmp/claude-0/fixwork/fix_review/out
+T=${TAG:-r3}
+OUT=out/batch_spare_$T.txt
+pair() { name=$1; cache=$2; shift 2
+  [ -f out/${name}_$T.jsonl ] || run_w jrep.py $J/$cache out/${name}_$T "$@" > out/${name}_$T.log 2>&1
+  python3 cmp.py $SR/${name}_s.jsonl out/${name}_$T.jsonl "$name sealed->$T" >> $OUT
+  python3 cmp.py $FX/${name}_fin.jsonl out/${name}_$T.jsonl "$name 14.10->$T" | head -1 >> $OUT
+  tail -1 out/${name}_$T.log >> $OUT
+}
+S=squareT_platform_squareT_switch; B=roundT_doubleT
+pair S_drop30_s2 $S --drop 0.3 --seed 2
+pair S_drop30_s3 $S --drop 0.3 --seed 3
+pair S_drop30_s5 $S --drop 0.3 --seed 5
+pair S_drop20_s3 $S --drop 0.2 --seed 3
+pair B_pitchm2 $B --pitch -2
+for sd in 1 2 3; do pair B_drop30_s$sd $B --drop 0.3 --seed $sd; done
+for sd in 1 4 6; do pair S_drop30_s$sd $S --drop 0.3 --seed $sd; done
+for sd in 1 2 4; do pair S_drop20_s$sd $S --drop 0.2 --seed $sd; done
+for sd in 1 2 3 4; do pair S_drop10_s$sd $S --drop 0.1 --seed $sd; done
+for sd in 1 2; do pair B_slow3_s$sd $B --repeat 3 --rdrop 0.2 --seed $sd; done
+echo BATCH_SPARE DONE >> $OUT

@@ -190,6 +190,7 @@ class Detector:
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
         self._frame_ring: Optional[np.ndarray] = None
         self._frame_xyz: Optional[np.ndarray] = None  # 13.10: this frame's cloud for the column free-top test (cluster.column_free_max_top)
+        self._frame_hd: Optional[tuple] = None  # 15.10: its heights above the rail head and laterals (dy_all, h_all) for that test
         self._low_height: List[Cluster] = []  # current straddle evidence just below its clean top-height threshold
         self._prev_stamp: Optional[float] = None
         self._previous_latency_ms: Optional[float] = None  # previous completed process interval
@@ -215,6 +216,7 @@ class Detector:
         self._thin = []
         self._frame_ring = None
         self._frame_xyz = None
+        self._frame_hd = None
         self._low_height = []
         self._prev_stamp = None
         self._previous_latency_ms = None
@@ -270,6 +272,7 @@ class Detector:
         self._frame_xyz = xyz
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
+        self._frame_hd = (dy_all, h_all)
         trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
@@ -579,6 +582,7 @@ class Detector:
             if reg is not None:
                 dy_alt = corr.dy + reg[1]
         keep_thin = cfg.tracking.stop_keep_thin > 0 or cfg.tracking.thin_far_min_distance > 0
+        hd = self._frame_hd or (None, None)
         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
@@ -588,7 +592,7 @@ class Detector:
                                 weak_from=cfg.tracking.thin_far_min_distance
                                 if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
                                 frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0 else None,
-                                frame_ring=self._frame_ring)
+                                frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1])
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them

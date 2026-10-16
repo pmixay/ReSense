@@ -1,0 +1,37 @@
+"""Step through the P1 window of top_is_free on dumped calls (hooks DUMP_TALL + DUMP_ANY): the same-range returns
+above the top in the window, their heights, azimuths and whether they fall under the window limit."""
+import glob
+import json
+import os
+import sys
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import resense.clustering as C  # noqa
+
+for f in sorted(glob.glob(sys.argv[1] + "/tall_*.npz")):
+    d = np.load(f, allow_pickle=True)
+    kw = json.loads(str(d["kw"]))
+    rays = C.FrameRays(d["xyz"], d["ring"], d["h"], d["dy"])
+    idx = d["idx"]
+    p = rays.xyz[idx].astype(np.float64)
+    rh = np.hypot(p[:, 0], p[:, 1]); el = np.degrees(np.arctan2(p[:, 2], rh)); az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+    top = float(el.max()); head = el >= top - 0.06; r_top = float(np.median(np.hypot(rh, p[:, 2])[head]))
+    a0, a1 = float(az.min()), float(az.max())
+    w = rays.window(a0 - 0.12, a1 + 0.12)
+    q = rays.xyz[w].astype(np.float64); qh = np.hypot(q[:, 0], q[:, 1]); qe = np.degrees(np.arctan2(q[:, 2], qh))
+    qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+    qr = np.hypot(qh, q[:, 2]); tol = max(0.5, 0.02 * r_top); same = np.abs(qr - r_top) <= tol
+    qz = rays.h[w]; h_top = float(rays.h[idx].max())
+    vault = C._local_vault(rays, idx, h_top, w[same])
+    res = C.top_is_free(rays, idx, 2, window=kw["window"], vault_margin=kw["vault_margin"], tall_gap=kw["tall_gap"])
+    res0 = C.top_is_free(rays, idx, 2)
+    lim = None if vault is None else min(h_top + kw["window"], vault - kw["vault_margin"])
+    up = (qe > top + 0.04) & (qe <= top + 2.5)
+    s = same & up
+    print(f"{os.path.basename(f)} x {np.median(p[:, 0]):.1f} y {np.median(p[:, 1]):.2f} dy {np.median(rays.dy[idx]):.2f} "
+          f"h_top {h_top:.2f} r_top {r_top:.1f} az {a0:.2f}..{a1:.2f} vault {vault} lim {lim} free {res} (14.10-like {res0})")
+    print("    same-range above (el/az/h/dy):", " ".join(f"{qe[j]:.2f}/{qa[j]:.2f}/{qz[j]:.2f}/{rays.dy[w[j]]:.2f}"
+                                                         for j in np.flatnonzero(s)[np.argsort(qe[s])][:24]))

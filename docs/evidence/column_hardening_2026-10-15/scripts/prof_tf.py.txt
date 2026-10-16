@@ -1,0 +1,81 @@
+"""Profile top_is_free on real ride clusters: replay a gate piece to frame K, collect the calls' arguments of that
+frame (and the next few), then time and profile them in isolation. usage: prof_tf.py <cache> <piece K/N> <upto gi>"""
+import cProfile
+import os
+import pstats
+import sys
+import time
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import resense  # noqa
+assert resense.__file__.startswith(WT)
+import resense.clustering as C  # noqa
+from resense.config import DetectorConfig  # noqa
+from resense.detector import Detector  # noqa
+from resense.frame import frame_from_compact  # noqa
+from scripts.cache_io import cache_files, cache_file_stem, load_cache_array, load_cache_stamps  # noqa
+
+cache, piece, upto = sys.argv[1], sys.argv[2], int(sys.argv[3])
+files = [str(f) for f in cache_files(cache)]
+k_, n_ = (int(v) for v in piece.split("/"))
+files = [str(f) for f in np.array_split(np.array(files), n_)[k_]]
+stamps = load_cache_stamps(cache)
+cfg = DetectorConfig.from_yaml(os.path.join(WT, "configs/default.yaml"))
+det = Detector(cfg)
+calls = []
+orig = C.top_is_free
+
+
+def rec(*a, **kw):
+    calls.append((a, kw))
+    return orig(*a, **kw)
+
+
+C.top_is_free = rec
+for i, f in enumerate(files):
+    stem = cache_file_stem(f)
+    parts = stem.split("_")
+    gi = int(parts[-2]) * 51 + int(parts[-1])
+    if gi > upto:
+        break
+    if gi < upto - 40:
+        calls.clear()
+    det.process(frame_from_compact(load_cache_array(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem))
+print("calls collected", len(calls))
+new = hasattr(C, "FrameRays")
+
+
+def run():
+    for a, kw in calls:
+        if new:
+            r = a[0]
+            a = (C.FrameRays(r.xyz, r.ring, r.h, r.dy),) + tuple(a[1:])   # a fresh index per call: the worst case
+        orig(*a, **kw)
+
+
+t0 = time.perf_counter()
+run()
+t = (time.perf_counter() - t0) * 1e3
+print(f"{len(calls)} calls, {t:.1f} ms, {t / max(1, len(calls)):.3f} ms per call (fresh index each)")
+if new:
+    rr = calls[0][0][0]
+    t0 = time.perf_counter()
+    for _ in range(10):
+        C.FrameRays(rr.xyz).window(0.0, 0.1)
+    print(f"index build {(time.perf_counter() - t0) * 100:.3f} ms")
+    t0 = time.perf_counter()
+    shared = C.FrameRays(rr.xyz, rr.ring, rr.h, rr.dy)
+    shared.window(0.0, 0.1)
+    for a, kw in calls:
+        r = a[0]
+        if r.xyz is rr.xyz:
+            orig(shared, *a[1:], **kw)
+    print(f"same-frame calls with a shared index {(time.perf_counter() - t0) * 1e3:.2f} ms")
+pr = cProfile.Profile()
+pr.enable()
+run()
+pr.disable()
+pstats.Stats(pr).sort_stats("cumulative").print_stats(18)

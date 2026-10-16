@@ -1,0 +1,6 @@
+#!/bin/bash
+# py.sh <code root> <script> args... : run a scratch python script against the given code root, under nice
+C=$1; shift
+cd /tmp/claude-0/fixwork/r3_column
+export WT=$C RESENSE_REPO=$C PYTHONPATH=$C OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+exec nice -n 10 /tmp/claude-0/venv/bin/python "$@"

@@ -1,0 +1,17 @@
+#!/bin/bash
+# after chain3: the dark-band what-if with a 0.3 deg band (half the review's) on ride pieces 1 and 3, 14.10 and new
+cd /tmp/claude-0/fixwork/r3_column
+V=${V:-v7}
+until grep -q "CHAIN3 DONE" out/pieces_$V.txt 2>/dev/null; do sleep 20; done
+. ./env.sh
+NEW=/tmp/claude-0/fixwork/r3_column/code_$V
+SR=/tmp/claude-0/fixwork/safety_review/out
+for p in 1 3; do
+  [ -f out/p${p}_dark03_cand.jsonl ] || DARKBAND=0.3 run_c grun.py $G/new_data out/p${p}_dark03_cand piece:$p/8 > out/p${p}_dark03_cand.log 2>&1
+  [ -f out/p${p}_dark03_$V.jsonl ] || DARKBAND=0.3 WT=$NEW RESENSE_REPO=$NEW PYTHONPATH=$NEW nice -n 10 python grun.py $G/new_data out/p${p}_dark03_$V piece:$p/8 > out/p${p}_dark03_$V.log 2>&1
+  python3 cmp.py $SR/p${p}_plain_s.jsonl out/p${p}_dark03_cand.jsonl "p${p} dark0.3 sealed->14.10" >> out/dark03_$V.txt
+  tail -1 out/p${p}_dark03_cand.log >> out/dark03_$V.txt
+  python3 cmp.py $SR/p${p}_plain_s.jsonl out/p${p}_dark03_$V.jsonl "p${p} dark0.3 sealed->$V" >> out/dark03_$V.txt
+  tail -1 out/p${p}_dark03_$V.log >> out/dark03_$V.txt
+done
+echo CHAIN4 DONE >> out/dark03_$V.txt
