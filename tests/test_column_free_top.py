@@ -1,4 +1,6 @@
-"""13.10 (``cluster.column_free_max_top``): the column signature does not demote a column-shaped cluster
+"""Experimental, explicitly opted-in free-top algorithm checks (withdrawn from shipping defaults).
+
+13.10 (``cluster.column_free_max_top``): the column signature does not demote a column-shaped cluster
 standing in the envelope whose top is seen free - the ring above its top passes over it - while a column
 that continues up to the vault, a top occluded from above, a top at the envelope top and a structure at
 the envelope edge stay columns (the judge's 0.3 x 0.3 x 2.8 m pole of 13.10: never a STOP 0.7 m off the
@@ -10,6 +12,7 @@ from __future__ import annotations
 from dataclasses import replace
 
 import numpy as np
+import pytest
 
 from resense.clustering import Cluster, FrameRays, _ids_in_elevation_order, _local_vault, find_clusters, top_is_free
 from resense.config import DetectorConfig
@@ -18,6 +21,14 @@ from resense.sensor import RING_ELEVATION_DEG
 from resense.tracking import Tracker
 
 H0 = 1.8          # sensor height above the rail head (m); the vehicle frame has the sensor at the origin
+
+
+@pytest.fixture
+def experimental_free_top_config():
+    """Development-only 2.95 m opt-in; known H4 tall/dark limits are not accepted."""
+    cfg = DetectorConfig()
+    cfg.cluster.column_free_max_top = 2.95
+    return cfg
 
 
 def _cast(boxes, vault=4.2, grade=0.0, wall=220.0, az=(-3.0, 3.0), max_range=210.0, pitch=0.0, side=None,
@@ -77,10 +88,9 @@ def _free(boxes, ids=False, heights=False, window=0.0, tall_gap=0.0, **kw):
     return top_is_free(xyz, idx, frame_ring=ring if ids else None)
 
 
-def _clusters(boxes, cfg=None, with_frame=True, heights=False, **kw):
+def _clusters(boxes, cfg, with_frame=True, heights=False, **kw):
     """The corridor clusters of the cast; ``heights``: the frame's channel ids, heights and laterals handed over
     too, as the detector does (15.10)."""
-    cfg = cfg or DetectorConfig()
     xyz, h, _, ring = _cast(boxes, **kw)
     dy = xyz[:, 1].astype(np.float64)
     idx = np.flatnonzero(point_in_polygon(dy, h, widened_profile(cfg.gauge, cfg.gauge.warning_margin)))
@@ -144,22 +154,23 @@ def test_channel_ids_find_the_ring_in_between_under_a_mount_tilt():
     assert top_is_free(xyz, idx, frame_ring=np.zeros_like(ring)) == top_is_free(xyz, idx)   # one id = no ids
 
 
-def test_column_signature_spares_a_free_standing_pole_only():
-    cfg = DetectorConfig()
+def test_column_signature_spares_a_free_standing_pole_only(experimental_free_top_config):
+    assert DetectorConfig().cluster.column_free_max_top == 0.0  # shipping withdrawal
+    cfg = experimental_free_top_config
     assert (cfg.cluster.column_free_max_top, cfg.cluster.column_free_min_core,
-            cfg.cluster.column_free_min_returns) == (2.95, 0.5, 2)          # shipped 13.10
+            cfg.cluster.column_free_min_returns) == (2.95, 0.5, 2)          # explicit experimental opt-in
     pole = [_pole(60.0, 0.7)]
-    c = _the(_clusters(pole), 60.0)
+    c = _the(_clusters(pole, cfg), 60.0)
     assert c.size[2] > cfg.cluster.column_min_height and abs(c.lateral) > cfg.cluster.signature_min_lateral
     assert (c.reason, c.zone) == ("", "gauge")                 # the column shape, a free top: an obstacle
-    assert _the(_clusters(pole, with_frame=False), 60.0).reason == "column"   # no frame: the shape alone
+    assert _the(_clusters(pole, cfg, with_frame=False), 60.0).reason == "column"   # no frame: the shape alone
     off = DetectorConfig()
     off.cluster.column_free_max_top = 0.0
     assert _the(_clusters(pole, off), 60.0).reason == "column"                # 0 = off
-    assert _the(_clusters([_pole(60.0, 0.7, top=4.2)]), 60.0).reason == "column"   # continues to the vault
+    assert _the(_clusters([_pole(60.0, 0.7, top=4.2)], cfg), 60.0).reason == "column"   # continues to the vault
     # reaching the envelope top: at 50 m a ring meets the 3.05 m post at 2.956 m, the next passes over it
     cut = [_pole(50.0, 0.7, top=3.05)]
-    c = _the(_clusters(cut), 50.0)
+    c = _the(_clusters(cut, cfg), 50.0)
     assert c.height_max > cfg.cluster.column_free_max_top and c.reason == "column"
     high = DetectorConfig()
     high.cluster.column_free_max_top = 3.0
@@ -167,11 +178,12 @@ def test_column_signature_spares_a_free_standing_pole_only():
     # 15.10 (cluster.column_free_tall_gap, opt-in): with the frame's heights the post is followed above the cut to
     # its true top, 1.15 m under the vault, its own rays above it passing beyond it: an obstacle; 0 (shipped) = off
     tall_on = DetectorConfig()
+    tall_on.cluster.column_free_max_top = 2.95
     tall_on.cluster.column_free_tall_gap = 0.3
     assert _the(_clusters(cut, tall_on, heights=True), 50.0).reason == ""
-    assert _the(_clusters(cut, heights=True), 50.0).reason == "column"
+    assert _the(_clusters(cut, cfg, heights=True), 50.0).reason == "column"
     assert _the(_clusters([_pole(50.0, 0.7, top=4.2)], tall_on, heights=True), 50.0).reason == "column"
-    c = _the(_clusters([_pole(60.0, 1.12)]), 60.0)            # mostly outside the strict envelope (1.05 m)
+    c = _the(_clusters([_pole(60.0, 1.12)], cfg), 60.0)            # mostly outside the strict envelope (1.05 m)
     assert 0 < c.n_gauge < cfg.cluster.column_free_min_core * c.n and c.reason == "column"
 
 
@@ -229,7 +241,8 @@ def test_one_spare_is_the_column_the_column_rule_made():
     assert _zones(["spare"] * 12) == _zones(["col"] + ["obj"] * 11)
 
 
-def test_detector_hands_the_frame_and_its_channel_ids_to_the_corridor_clustering(tunnel, monkeypatch):
+def test_detector_hands_the_frame_and_its_channel_ids_to_the_corridor_clustering(
+        tunnel, monkeypatch, experimental_free_top_config):
     """14.10 (review): the free-top test reads the ring in between from the frame's channel ids, so the detector
     must hand the corridor clustering the processed cloud and the frame's ids, index for index (the
     clustering-level tests above cannot see that wiring; with ring=None every detector-level test runs the
@@ -249,13 +262,13 @@ def test_detector_hands_the_frame_and_its_channel_ids_to_the_corridor_clustering
 
     monkeypatch.setattr(det_mod, "_clusters_of", spy)
     ring = (np.arange(len(frame.xyz)) % 128).astype(np.uint16)
-    Detector(DetectorConfig()).process(Frame(xyz=frame.xyz, intensity=frame.intensity, ring=ring, stamp=0.0))
+    Detector(experimental_free_top_config).process(Frame(xyz=frame.xyz, intensity=frame.intensity, ring=ring, stamp=0.0))
     ((fx, fr, fh, fd),) = seen
     assert fx is not None and fr is not None and len(fx) == len(fr) == len(ring) and np.array_equal(fr, ring)
     # 15.10: and every return's height above the rail head and lateral, index for index (the corridor's)
     assert fh is not None and fd is not None and len(fh) == len(fd) == len(fx)
     from resense.gauge import corridor_coordinates
-    det = Detector(DetectorConfig())
+    det = Detector(experimental_free_top_config)
     seen.clear()
     res = det.process(Frame(xyz=frame.xyz, intensity=frame.intensity, stamp=0.0))
     ((fx, fr, fh, fd),) = seen
@@ -366,7 +379,7 @@ def test_a_64_ring_sensor_reads_no_invented_empty_ring():
             assert top_is_free(xyz, idx, frame_ring=None if ids is None else ring), (x, ids)
 
 
-def test_frame_rays_index_the_frame_once_and_read_the_window_of_the_scan():
+def test_frame_rays_index_the_frame_once_and_read_the_window_of_the_scan(experimental_free_top_config):
     """15.10 (review round 3, P3): 14.10 tested every return of the frame (~184 k) in floats in every test.
     FrameRays caches a bucket of each return's azimuth on its first window and reads each window through its
     buckets - the same returns as the scan, in the same order - and find_clusters makes one per call (once a
@@ -398,10 +411,10 @@ def test_frame_rays_index_the_frame_once_and_read_the_window_of_the_scan():
         calls.append(self._keys is None)
         return orig(self, a0, a1)
 
-    import pytest
     with pytest.MonkeyPatch.context() as mp:
         mp.setattr(FrameRays, "window", count)
-        cl = _clusters([_pole(40.0, 0.7), _pole(60.0, -0.7), _pole(80.0, 0.7)], heights=True)
+        cl = _clusters([_pole(40.0, 0.7), _pole(60.0, -0.7), _pole(80.0, 0.7)],
+                       experimental_free_top_config, heights=True)
     assert sum(c.reason == "" and c.size[2] > 2.2 for c in cl) == 3
     assert len(calls) >= 3 and calls[0] and not any(calls[1:])  # one index for the three tests of the frame
 
