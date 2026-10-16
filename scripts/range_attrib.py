@@ -38,6 +38,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
 JUDGE = ROOT / "docs/evidence/judgement_2026-10-13/scripts"
@@ -54,6 +55,11 @@ TRACK_FIELDS = ("id", "hits", "misses", "age", "confidence", "reported", "column
 BLOB_LOCALS = ("thin", "keep_thin", "size", "min_pts", "weak_height", "dist", "ordinary", "cross_ring", "weak",
                "h_max", "lat_rules", "spare", "lateral", "spare_wall", "lat_along", "factor")
 # the lines of Tracker.update that withhold or hold a STOP (matched on their source text, both versions)
+CFG_KEYS = ("max_extent", "oversize_split_max_length", "min_height", "gauge_min_points", "thin_min_length",
+            "thin_max_width", "thin_max_height", "hardware_max_top", "hardware_max_width", "hardware_max_height",
+            "wall_min_height", "wall_min_lateral", "wall_segment_min_length", "wall_segment_max_width",
+            "linear_min_aspect", "linear_max_height", "linear_min_lateral")
+LOW_KEYS = ("min_length", "max_length", "max_width", "min_height", "min_points", "min_width", "min_top")
 GATES = ("q = False", "q = self._fresh_stop_ok(t)", "fresh_blocked = True", "fresh_blocked = explained_blocked = True",
          "t.reported = False", "t.reported = True")
 
@@ -263,6 +269,11 @@ class Recorder:
                     keep["n_vox"] = int(loc["b"].n_vox)
                 if "part" in loc:
                     keep["part_is_none"] = loc["part"] is None
+                # the config object this call used (the low-object stages pass their own cluster / low configs)
+                if "cfg" in loc:
+                    keep["cfg"] = {k: plain(getattr(loc["cfg"], k)) for k in CFG_KEYS if hasattr(loc["cfg"], k)}
+                if "low_cfg" in loc:
+                    keep["low_cfg"] = {k: plain(getattr(loc["low_cfg"], k, 0.0)) for k in LOW_KEYS}
                 events.append((self.codes[frame.f_code], frame.f_code, frame.f_lineno, arg, keep))
             return prof
 
@@ -627,6 +638,11 @@ def recheck(row, snap, cfg):
         e = b.get("evidence", {})
         cc, ic, lc = e.get("_corridor_cluster", {}), e.get("_is_infrastructure", {}), e.get("_low_cluster", {})
         ev.update(blob={k: b[k] for k in ("x0", "x1", "y", "n_vox", "size")}, locals=e)
+        # re-evaluate with the configuration the call itself used (recorded), not the detector default
+        used = e.get(b["fn"], {})
+        cl = SimpleNamespace(**dict(vars(cl), **used.get("cfg", {}), **ic.get("cfg", {})))
+        low = SimpleNamespace(**dict({k: getattr(low, k, 0.0) for k in LOW_KEYS}, **lc.get("low_cfg", {})))
+        ev["stage_config_differs"] = any(getattr(cfg.cluster, k, None) != v for k, v in used.get("cfg", {}).items())
         if rule == "oversize_split_refused":
             ok = bool(cc.get("part_is_none")) and max(cc["size"]) > cl.max_extent and cl.oversize_split_max_length > 0
         elif rule == "oversize":
@@ -665,8 +681,10 @@ def recheck(row, snap, cfg):
         return ok, dict(ev, side=[x for _, x in side])
     if c == "post_cluster_drop":
         return not on_c and any("out" in b for b in on_b), ev
-    # tracker causes: the matched track's state after the update (snapshot, not the branch trace)
-    ts = [tracks[k] for k in clean if k in tracks]
+    # tracker causes: the matched track's state after the update (snapshot, not the branch trace); as in
+    # cause(), a clean cluster's track first, else a reported track continued by a thin / weak cluster
+    ts = [tracks[k] for k in clean if k in tracks] or [
+        tracks[k] for k, x in on_c.items() if not x["final"] and k in tracks and tracks[k]["reported"]]
     if not ts:
         return False, dict(ev, why="no track matched to a clean cluster on the object")
     t = ts[0]
