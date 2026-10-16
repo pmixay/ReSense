@@ -1,5 +1,24 @@
 # P4 H0 and X3: 15–16 October start
 
+**Combined P4 handoff, 16.10:** this branch now also contains the separate agent's
+[G3 pre-registration](../heldout_2026-10-15/README.md), cherry-picked as `5d6e2dc`
+from original registration `9f6a54e`. It fixes four windows, eight classes and
+84 cases × 11 variants (924 future replays). Metadata/schema/determinism validation
+was re-run with eight invalid-spec mutations rejected; no G3 detector case was run.
+Geometry-only preparation and the single final-seal execution remain scheduled work.
+Its holdout claim and incidental legacy-summary exposure are disclosed in that README.
+
+Final handoff checks: the exact CI diagnostic scope passes with **Ruff 0.15.8** in
+a disposable Linux container (read-only checkout, `--no-cache`); G3's detector-free
+`validate.py --self-test --check-inputs` passes. Sealed source/build/config inputs
+have no delta from `origin/main` on this evaluation branch.
+
+P1's parallel results are in
+[`p1/start-2026-10-15`](https://github.com/pmixay/ReSense/blob/p1/start-2026-10-15/docs/evidence/p1_start_2026-10-15/README.md):
+O1 prepared/pending dispatch, E2 locally passing, S1 implemented but failed numeric
+acceptance, shared C1 v1 integrated with v2 still unaccepted. That node/tool review
+is separate from the later independent H4 detector review.
+
 ## Identity and H0 result
 
 **H0 local reproduction: PASS.** The complete gate on exact
