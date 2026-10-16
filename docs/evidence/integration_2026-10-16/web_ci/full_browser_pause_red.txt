@@ -1,0 +1,168 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /src
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 46 items
+
+webapp/e2e/test_analysis.py::test_empty_states PASSED                    [  2%]
+webapp/e2e/test_analysis.py::test_runs_list_search_filters_sort_and_back PASSED [  4%]
+webapp/e2e/test_analysis.py::test_runs_selection_opens_compare PASSED    [  6%]
+webapp/e2e/test_analysis.py::test_runs_rename_and_delete_with_errors PASSED [  8%]
+webapp/e2e/test_analysis.py::test_run_page_timeline_chart_events_and_downloads PASSED [ 10%]
+webapp/e2e/test_analysis.py::test_run_page_preset_rename_and_delete PASSED [ 13%]
+webapp/e2e/test_analysis.py::test_run_page_loading_offline_and_retry PASSED [ 15%]
+webapp/e2e/test_analysis.py::test_compare_deep_link_table_strips_chart_and_diff PASSED [ 17%]
+webapp/e2e/test_analysis.py::test_compare_edit_selection PASSED          [ 19%]
+webapp/e2e/test_analysis.py::test_analysis_pages_fit_the_viewport[size0] PASSED [ 21%]
+webapp/e2e/test_analysis.py::test_analysis_pages_fit_the_viewport[size1] PASSED [ 23%]
+webapp/e2e/test_analysis.py::test_analysis_pages_fit_the_viewport[size2] PASSED [ 26%]
+webapp/e2e/test_analysis.py::test_analysis_pages_fit_the_viewport[size3] PASSED [ 28%]
+webapp/e2e/test_data.py::test_queue_reload_with_a_pending_nonblocking_resource PASSED [ 30%]
+webapp/e2e/test_data.py::test_empty_states PASSED                        [ 32%]
+webapp/e2e/test_data.py::test_overview_demo_to_queue_and_run PASSED      [ 34%]
+webapp/e2e/test_data.py::test_upload_files_labels_and_process PASSED     [ 36%]
+webapp/e2e/test_data.py::test_server_folder_preset_and_options PASSED    [ 39%]
+webapp/e2e/test_data.py::test_demo_source_survives_navigation PASSED     [ 41%]
+webapp/e2e/test_data.py::test_folder_upload_and_drop PASSED              [ 43%]
+webapp/e2e/test_data.py::test_queue_cancel_retry_log_and_clear PASSED    [ 45%]
+webapp/e2e/test_data.py::test_recordings_list_deep_links_and_errors PASSED [ 47%]
+webapp/e2e/test_data.py::test_pages_fit_the_viewport[size0] PASSED       [ 50%]
+webapp/e2e/test_data.py::test_pages_fit_the_viewport[size1] PASSED       [ 52%]
+webapp/e2e/test_data.py::test_pages_fit_the_viewport[size2] PASSED       [ 54%]
+webapp/e2e/test_player.py::test_empty_picker_and_unknown_run PASSED      [ 56%]
+webapp/e2e/test_player.py::test_picker_lists_runs_with_clouds_first PASSED [ 58%]
+webapp/e2e/test_player.py::test_autoplay_keyboard_and_url PASSED         [ 60%]
+webapp/e2e/test_player.py::test_events_scrubber_loop_and_end PASSED      [ 63%]
+webapp/e2e/test_player.py::test_deep_link_shows_real_values PASSED       [ 65%]
+webapp/e2e/test_player.py::test_paused_steps_bring_their_clouds PASSED   [ 67%]
+webapp/e2e/test_player.py::test_run_menu_switch_and_browser_back PASSED  [ 69%]
+webapp/e2e/test_player.py::test_schematic_and_fault_runs PASSED          [ 71%]
+webapp/e2e/test_player.py::test_loading_and_backend_errors PASSED        [ 73%]
+webapp/e2e/test_player.py::test_lost_3d_view_keeps_the_console PASSED    [ 76%]
+webapp/e2e/test_player.py::test_fullscreen_orbit_and_back PASSED         [ 78%]
+webapp/e2e/test_player.py::test_cab_fits_small_viewports PASSED          [ 80%]
+webapp/e2e/test_system.py::test_fresh_stand_empty_states PASSED          [ 82%]
+webapp/e2e/test_system.py::test_live_simulation_transport PASSED         [ 84%]
+webapp/e2e/test_system.py::test_live_seek_before_start_uses_the_chosen_transport PASSED [ 86%]
+webapp/e2e/test_system.py::test_live_simulation_errors_and_loading PASSED [ 89%]
+webapp/e2e/test_system.py::test_live_ros_node PASSED                     [ 91%]
+webapp/e2e/test_system.py::test_presets_editor PASSED                    [ 93%]
+webapp/e2e/test_system.py::test_presets_errors_and_deep_link PASSED      [ 95%]
+webapp/e2e/test_system.py::test_about_page PASSED                        [ 97%]
+webapp/e2e/test_upload_resume.py::test_big_upload_pause_drop_reload_resume FAILED [100%]
+
+=================================== FAILURES ===================================
+___________________ test_big_upload_pause_drop_reload_resume ___________________
+
+app = App(page=<Page url='http://127.0.0.1:43717/upload'>, base='http://127.0.0.1:43717', errors=[])
+backend = Backend(url='http://127.0.0.1:43717', data_dir=PosixPath('/tmp/pytest-of-root/pytest-8/webapp4/data'), server_root=Pos...rver'), log=PosixPath('/tmp/pytest-of-root/pytest-8/webapp4/backend.log'), api=<conftest.Api object at 0x74239dc82800>)
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-8/test_big_upload_pause_drop_rel0')
+
+    def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
+        page, api = app.page, backend.api
+        ride = tmp_path / "long_ride.jsonl"
+        results_with_padding(ride, 40 * MB)
+        cdp = page.context.new_cdp_session(page)
+        cdp.send("Network.enable")
+        throttle(cdp)
+        app.goto("/upload")
+        # A throughput limit alone is not a synchronization barrier: four concurrent, compressed
+        # chunks can finish while the assertions / second tab are running. Keep a strict subset
+        # on the real server until reload, without changing the file size or upload concurrency.
+        cutoff, offline = 2, False
+        held_routes = []
+        chunks = api_route(backend.url, r"/uploads/[^/]+/chunked/\d+\?")
+
+        def gate(route):
+            index = int(re.search(r"/chunked/(\d+)", route.request.url)[1])
+            if offline or index < cutoff:
+                route.continue_()  # offline failures must still come from Chromium's real network
+            else:
+                held_routes.append(route)
+
+        page.route(chunks, gate)
+        files = page.locator('input[type=file][accept^=".zip"]')
+        # Routed Blob PUTs need not emit intermediate progress before their first response.
+        # Observe a real chunk acknowledgement before checking the speed/compression metrics.
+        with page.expect_response(lambda r: r.request.method == "PUT" and chunks.search(r.url)) as first_chunk:
+            files.set_input_files(str(ride))
+        assert first_chunk.value.status == 200
+
+        # live progress: bytes, speed, time left, the compression saved on the wire
+        expect(page.get_by_text(re.compile(r"из\s40\sМБ"))).to_be_visible()
+        expect(page.get_by_text(re.compile(r"^осталось \d+:\d\d$"))).to_be_visible()
+        expect(page.get_by_text(re.compile(r"^сжатие −\d+\s%$"))).to_be_visible(timeout=20_000)
+        uid = upload_id(page)
+
+        # pause: the transfer stops (nothing more arrives), what arrived stays on the server
+        page.get_by_role("button", name="Приостановить загрузку").click()
+        expect(page.get_by_text("пауза", exact=True)).to_be_visible()
+        held = received(api, uid)
+        time.sleep(1.5)
+>       assert received(api, uid) == held
+E       AssertionError: assert 16777216 == 8388608
+E        +  where 16777216 = received(<conftest.Api object at 0x74239dc82800>, 'nfzkoes58m')
+
+webapp/e2e/test_upload_resume.py:106: AssertionError
+---------------------------- Captured log teardown -----------------------------
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+-------------- generated xml file: /tmp/web-ci-final/browser.xml ---------------
+=================== 1 failed, 45 passed in 837.03s (0:13:57) ===================

@@ -1,0 +1,101 @@
+
+> resense-web-frontend@0.1.0 build
+> tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 346 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                              0.67 kB │ gzip:   0.36 kB
+dist/assets/codec.worker-Beje-Ruz.js                         1.83 kB
+dist/assets/Benzin-ExtraBold-ByXK-LEI.woff2                 37.08 kB
+dist/assets/Benzin-Regular-xgQu4e0Y.woff2                   37.75 kB
+dist/assets/Benzin-Semibold-BWr6y9eY.woff2                  39.41 kB
+dist/assets/Benzin-Medium-MysbLeMM.woff2                    39.43 kB
+dist/assets/Benzin-Bold-CnT4BMky.woff2                      39.56 kB
+dist/assets/Montserrat-Black-Daa58OZS.woff2                 96.71 kB
+dist/assets/Montserrat-Regular-6BG7h0jr.woff2               98.42 kB
+dist/assets/Montserrat-Medium-SDR9oIHn.woff2                99.06 kB
+dist/assets/Montserrat-SemiBold-BDssn8D-.woff2             100.61 kB
+dist/assets/Montserrat-Bold-CyBgGhQy.woff2                 101.42 kB
+dist/assets/Montserrat-ExtraBold-Dz8gbE-8.woff2            102.27 kB
+dist/assets/Sparkline-DUO4u2YY.css                           0.49 kB │ gzip:   0.27 kB
+dist/assets/ProgressBar-Cm5m1yVf.css                         0.57 kB │ gzip:   0.29 kB
+dist/assets/CloudPreview-CqQn76-z.css                        0.60 kB │ gzip:   0.32 kB
+dist/assets/EmptyState-CJ0InnCw.css                          0.77 kB │ gzip:   0.38 kB
+dist/assets/Card-b5Dy2qof.css                                0.80 kB │ gzip:   0.43 kB
+dist/assets/Chip-B6KkXHGB.css                                0.81 kB │ gzip:   0.39 kB
+dist/assets/Select-BNPynE0A.css                              0.87 kB │ gzip:   0.43 kB
+dist/assets/Segmented-D1hbLv72.css                           0.88 kB │ gzip:   0.39 kB
+dist/assets/verdict-CaDC_nRd.css                             1.12 kB │ gzip:   0.48 kB
+dist/assets/DecisionChip-QjS0awnp.css                        1.24 kB │ gzip:   0.48 kB
+dist/assets/RunDialogs-Dl8yh32L.css                          1.38 kB │ gzip:   0.55 kB
+dist/assets/PageHeader-Du4wq7yY.css                          1.40 kB │ gzip:   0.55 kB
+dist/assets/LineChart-BCO3jiHE.css                           1.40 kB │ gzip:   0.58 kB
+dist/assets/KpiTile-BwfDKHvb.css                             1.41 kB │ gzip:   0.56 kB
+dist/assets/PipelineLine-Dg_OZWVy.css                        1.65 kB │ gzip:   0.64 kB
+dist/assets/Toggle-Bj-bpu7K.css                              2.07 kB │ gzip:   0.73 kB
+dist/assets/index-Cv0nU-0m.css                               2.10 kB │ gzip:   0.84 kB
+dist/assets/Bits-C9X4QK9r.css                                2.40 kB │ gzip:   0.87 kB
+dist/assets/TextInput-C5zWbruc.css                           2.69 kB │ gzip:   0.88 kB
+dist/assets/DecisionStrip-DGsb7gbo.css                       3.27 kB │ gzip:   0.96 kB
+dist/assets/index-CosR-VGj.css                               3.51 kB │ gzip:   1.04 kB
+dist/assets/index-3zD9SpjQ.css                               4.04 kB │ gzip:   1.34 kB
+dist/assets/useQueue-C5uwplhD.css                            6.36 kB │ gzip:   1.69 kB
+dist/assets/index-wyIPALpT.css                               6.43 kB │ gzip:   1.76 kB
+dist/assets/index-BOtS_E5a.css                               6.95 kB │ gzip:   1.90 kB
+dist/assets/index-BczTYPz5.css                               7.92 kB │ gzip:   2.16 kB
+dist/assets/index-0oPuq82g.css                               8.00 kB │ gzip:   2.22 kB
+dist/assets/index-BK1LI8d2.css                               8.51 kB │ gzip:   2.19 kB
+dist/assets/index-aXPnuOXl.css                              10.58 kB │ gzip:   2.87 kB
+dist/assets/index-B5LLnF-3.css                              15.99 kB │ gzip:   3.47 kB
+dist/assets/index-DOAhplF1.css                              16.72 kB │ gzip:   4.53 kB
+dist/assets/index-CBIhx_2B.css                              17.45 kB │ gzip:   4.22 kB
+dist/assets/useUrlParams-CawyWeuo.js                         0.34 kB │ gzip:   0.27 kB
+dist/assets/useSize-C0w4MeoS.js                              0.43 kB │ gzip:   0.31 kB
+dist/assets/browser-GPZGrHqN.js                              0.62 kB │ gzip:   0.43 kB
+dist/assets/EmptyState-DRgWzHsx.js                           0.65 kB │ gzip:   0.38 kB
+dist/assets/index-bicKd3Lp.js                                0.66 kB │ gzip:   0.45 kB
+dist/assets/Chip-CkGHqHja.js                                 0.78 kB │ gzip:   0.47 kB
+dist/assets/ProgressBar-CEdrjYW9.js                          0.79 kB │ gzip:   0.49 kB
+dist/assets/NativeWebSocketTransport-CF_ebnyS-BU1E-dnD.js    0.80 kB │ gzip:   0.38 kB
+dist/assets/WsWebSocketTransport-6-v9C0gj-CQ28IQhT.js        0.85 kB │ gzip:   0.40 kB
+dist/assets/track-C-wXEsUu.js                                0.97 kB │ gzip:   0.50 kB
+dist/assets/Card-DxhYMjRD.js                                 1.02 kB │ gzip:   0.59 kB
+dist/assets/Select-BiI_LTmZ.js                               1.07 kB │ gzip:   0.56 kB
+dist/assets/Segmented-B2naJI1b.js                            1.17 kB │ gzip:   0.69 kB
+dist/assets/PageHeader-DXbKo2dz.js                           1.30 kB │ gzip:   0.65 kB
+dist/assets/PipelineLine-xdUPC9B3.js                         1.47 kB │ gzip:   0.89 kB
+dist/assets/Sparkline-Da0BBXoR.js                            1.61 kB │ gzip:   0.86 kB
+dist/assets/motion-KdY1enVP.js                               1.65 kB │ gzip:   0.77 kB
+dist/assets/KpiTile-D5LJLaDS.js                              1.74 kB │ gzip:   0.79 kB
+dist/assets/verdict-DmIBP8LL.js                              1.79 kB │ gzip:   0.96 kB
+dist/assets/DecisionChip-D9J0YSTp.js                         2.32 kB │ gzip:   1.27 kB
+dist/assets/TextInput-DhzJ7164.js                            2.47 kB │ gzip:   1.20 kB
+dist/assets/Toggle-DzqwPHxT.js                               2.65 kB │ gzip:   1.30 kB
+dist/assets/CloudPreview-DBZuSP-B.js                         2.97 kB │ gzip:   1.58 kB
+dist/assets/RunDialogs-DNDc__ys.js                           5.52 kB │ gzip:   2.38 kB
+dist/assets/LineChart-fqlHow9K.js                            6.33 kB │ gzip:   3.05 kB
+dist/assets/index-fhmTWuGz.js                                6.49 kB │ gzip:   2.89 kB
+dist/assets/DecisionStrip-fLgI4MM7.js                        6.55 kB │ gzip:   3.04 kB
+dist/assets/Bits-DJEZesd_.js                                10.69 kB │ gzip:   4.64 kB
+dist/assets/index-BuQ4wiir.js                               11.14 kB │ gzip:   4.58 kB
+dist/assets/useQueue-B6Y_YSJn.js                            15.07 kB │ gzip:   5.53 kB
+dist/assets/index-DCc51JuV.js                               16.59 kB │ gzip:   6.60 kB
+dist/assets/index-CzqC2LMS.js                               17.10 kB │ gzip:   5.89 kB
+dist/assets/index-Bj-U2Jcg.js                               17.36 kB │ gzip:   6.60 kB
+dist/assets/useDemo-BwKXF-eO.js                             20.70 kB │ gzip:   7.81 kB
+dist/assets/index-DgUoAKqR.js                               21.97 kB │ gzip:   8.35 kB
+dist/assets/index-CZBWD1_q.js                               24.23 kB │ gzip:   8.76 kB
+dist/assets/index-CEg5BUbi.js                               24.41 kB │ gzip:   9.03 kB
+dist/assets/scene-0RAMVkim.js                               29.76 kB │ gzip:  10.65 kB
+dist/assets/index-BKyVSfIM.js                               38.15 kB │ gzip:  12.98 kB
+dist/assets/query-DmGpMVs-.js                               38.59 kB │ gzip:  11.38 kB
+dist/assets/index-OxRkHyzX.js                               41.31 kB │ gzip:  15.48 kB
+dist/assets/index-fmcjmrsk.js                               46.69 kB │ gzip:  17.52 kB
+dist/assets/index-D1hhjvDA.js                               65.66 kB │ gzip:  22.52 kB
+dist/assets/react-D9yj0YSZ.js                              207.55 kB │ gzip:  67.88 kB
+dist/assets/RosLib-DB4orbcr.js                             249.12 kB │ gzip:  79.98 kB
+dist/assets/three-DA45srQX.js                              540.65 kB │ gzip: 134.45 kB
+✓ built in 5.70s

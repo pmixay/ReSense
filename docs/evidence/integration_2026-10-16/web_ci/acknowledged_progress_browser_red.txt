@@ -1,0 +1,215 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /src
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 1 item
+
+webapp/e2e/test_upload_resume.py::test_big_upload_pause_drop_reload_resume FAILED [100%]
+
+=================================== FAILURES ===================================
+___________________ test_big_upload_pause_drop_reload_resume ___________________
+
+app = App(page=<Page url='http://127.0.0.1:40767/upload'>, base='http://127.0.0.1:40767', errors=[])
+backend = Backend(url='http://127.0.0.1:40767', data_dir=PosixPath('/tmp/pytest-of-root/pytest-9/webapp0/data'), server_root=Pos...rver'), log=PosixPath('/tmp/pytest-of-root/pytest-9/webapp0/backend.log'), api=<conftest.Api object at 0x72083039e1a0>)
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-9/test_big_upload_pause_drop_rel0')
+
+    def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
+        page, api = app.page, backend.api
+        ride = tmp_path / "long_ride.jsonl"
+        results_with_padding(ride, 40 * MB)
+        cdp = page.context.new_cdp_session(page)
+        cdp.send("Network.enable")
+        throttle(cdp)
+        app.goto("/upload")
+        # A throughput limit alone is not a synchronization barrier: four concurrent, compressed
+        # chunks can finish while the assertions / second tab are running. Keep a strict subset
+        # on the real server until reload, without changing the file size or upload concurrency.
+        cutoff, offline = 2, False
+        held_routes = []
+        chunks = api_route(backend.url, r"/uploads/[^/]+/chunked/\d+\?")
+
+        def gate(route):
+            index = int(re.search(r"/chunked/(\d+)", route.request.url)[1])
+            if offline or index < cutoff:
+                route.continue_()  # offline failures must still come from Chromium's real network
+            else:
+                held_routes.append(route)
+
+        page.route(chunks, gate)
+        files = page.locator('input[type=file][accept^=".zip"]')
+        # Routed Blob PUTs need not emit intermediate progress before their first response.
+        # Observe a real chunk acknowledgement before checking the speed/compression metrics.
+        with page.expect_response(lambda r: r.request.method == "PUT" and chunks.search(r.url)) as first_chunk:
+            files.set_input_files(str(ride))
+        assert first_chunk.value.status == 200
+
+        # live progress: bytes, speed, time left, the compression saved on the wire
+        expect(page.get_by_text(re.compile(r"из\s40\sМБ"))).to_be_visible()
+        expect(page.get_by_text(re.compile(r"^осталось \d+:\d\d$"))).to_be_visible()
+>       expect(page.get_by_text(re.compile(r"^сжатие −\d+\s%$"))).to_be_visible(timeout=20_000)
+E       AssertionError: Locator expected to be visible
+E       Actual value: None
+E       Error: element(s) not found
+E       Call log:
+E         - Expect "to_be_visible" get_by_text(re.compile(r"^сжатие −\d+\s%$")) with timeout 20000ms
+E         - waiting for get_by_text(re.compile(r"^сжатие −\d+\s%$"))
+E
+E       Aria snapshot:
+E       - link "К содержимому":
+E         - /url: "#main"
+E       - banner:
+E         - link "ReSense — на главную":
+E           - /url: /
+E           - text: ReSense
+E         - navigation "Разделы":
+E           - link "Главная":
+E             - /url: /
+E           - button "1 Данные"
+E           - button "2 Анализ"
+E           - button "3 Система"
+E         - status: бэкенд онлайн
+E         - text: ЛЦТ 2026 · кейс 05 М
+E       - 'navigation "Линия: путь работы с записью"':
+E         - link "Главная":
+E           - /url: /
+E         - link "Загрузка":
+E           - /url: /upload
+E         - link "Очередь":
+E           - /url: /queue
+E         - link "Прогоны":
+E           - /url: /runs
+E         - link "Плеер":
+E           - /url: /player
+E         - link "Сравнение":
+E           - /url: /compare
+E       - main:
+E         - heading "Загрузка" [level=1]
+E         - text: 0 записей на сервере свободно 891 ГБ
+E         - link "Пресеты":
+E           - /url: /presets
+E         - heading "Источник" [level=2]
+E         - radiogroup "Источник записи":
+E           - radio "Файл" [checked]
+E           - radio "Папка на сервере"
+E           - radio "Демо-запись"
+E           - radio "Записи на сервере": Записи
+E         - text: long_ride результаты .jsonl
+E         - progressbar "Загрузка записи"
+E         - text: 40 % 16 МБ из 40 МБ 2,5 МБ/с осталось 0:10
+E         - button "Приостановить загрузку"
+E         - button "Отменить загрузку"
+E         - heading "Перетащите запись" [level=2]
+E         - button "Выбрать файлы" [disabled]
+E         - button "Выбрать папку" [disabled]
+E         - text: rosbag2 · .zip .db3 + metadata.yaml .mcap результаты .jsonl кэш .npy / .npz
+E         - button "Подсказка": "?"
+E         - heading "Обработка" [level=2]
+E         - text: запись не выбрана Пресет
+E         - button "Подсказка": "?"
+E         - text: Пресет
+E         - combobox "Пресет":
+E           - option "Стандарт 1.0" [selected]
+E         - text: Топик облака Топик облака
+E         - combobox "Топик облака":
+E           - option "авто" [selected]
+E         - text: Шаг кадров
+E         - button "Подсказка": "?"
+E         - 'button "Шаг кадров: меньше" [disabled]'
+E         - spinbutton "Шаг кадров": "1"
+E         - 'button "Шаг кадров: больше"'
+E         - text: Для плеера
+E         - button "Подсказка": "?"
+E         - text: Облака точек
+E         - switch "Облака точек" [checked]
+E         - button "Обработать" [disabled]
+E         - heading "Очередь" [level=2]
+E         - text: 0 в работе 0 ждёт 0 готово Детектор свободен
+E         - link "Открыть очередь":
+E           - /url: /queue
+E         - text: Завершено 0
+E         - link "вся очередь":
+E           - /url: /queue
+E         - text: Готовых задач нет
+
+webapp/e2e/test_upload_resume.py:98: AssertionError
+---------------------------- Captured log teardown -----------------------------
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+-------------- generated xml file: /tmp/web-ci-final/upload-1.xml --------------
+============================== 1 failed in 33.28s ==============================

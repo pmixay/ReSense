@@ -1,0 +1,7 @@
+FROM node:22.22.0-bullseye-slim AS node
+FROM resense:p1-combined-tools-7d3d5a05c258
+COPY --from=node /usr/local/ /usr/local/
+RUN python3 -m pip install playwright==1.64.0 pytest==9.1.1 'fastapi>=0.110' 'uvicorn[standard]>=0.27' 'python-multipart>=0.0.9' 'httpx>=0.27' \
+    && python3 -m playwright install --with-deps chromium
+ENTRYPOINT []
+WORKDIR /src

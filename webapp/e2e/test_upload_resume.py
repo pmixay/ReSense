@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 
 import pytest
-from e2e_helpers import real_errors, wait_until
+from e2e_helpers import api_route, real_errors, wait_until
 
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
@@ -70,8 +70,31 @@ def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
     cdp.send("Network.enable")
     throttle(cdp)
     app.goto("/upload")
+    # A throughput limit alone is not a synchronization barrier: four concurrent, compressed
+    # chunks can finish while the assertions / second tab are running. Keep a strict subset
+    # on the real server until reload, without changing the file size or upload concurrency.
+    cutoff, offline = 2, False
+    held_routes = []
+    chunks = api_route(backend.url, r"/uploads/[^/]+/chunked/\d+\?")
+
+    def gate(route):
+        index = int(re.search(r"/chunked/(\d+)", route.request.url)[1])
+        if offline or index < cutoff:
+            route.continue_()  # offline failures must still come from Chromium's real network
+        else:
+            held_routes.append(route)
+
+    page.route(chunks, gate)
     files = page.locator('input[type=file][accept^=".zip"]')
-    files.set_input_files(str(ride))
+    # Routed Blob PUTs need not emit intermediate progress before their responses. Observe
+    # both permitted acknowledgements before checking metrics / taking the pause snapshot:
+    # abort cannot undo a complete body the server is already committing.
+    with (
+        page.expect_response(lambda r: r.request.method == "PUT" and chunks.search(r.url) and "/chunked/0?" in r.url) as first_chunk,
+        page.expect_response(lambda r: r.request.method == "PUT" and chunks.search(r.url) and "/chunked/1?" in r.url) as second_chunk,
+    ):
+        files.set_input_files(str(ride))
+    assert [first_chunk.value.status, second_chunk.value.status] == [200, 200]
 
     # live progress: bytes, speed, time left, the compression saved on the wire
     expect(page.get_by_text(re.compile(r"из\s40\sМБ"))).to_be_visible()
@@ -87,10 +110,12 @@ def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
     assert received(api, uid) == held
 
     # the connection is gone when the transfer resumes: it waits and retries by itself
+    offline = True
     throttle(cdp, offline=True)
     page.get_by_role("button", name="Продолжить загрузку").click()
     expect(page.get_by_text(re.compile(r"нет связи · повтор через \d+ с"))).to_be_visible()
     expect(page.get_by_text(re.compile(r"^(Нет сети — загрузка продолжится|Связь с сервером прервалась)"))).to_be_visible()
+    cutoff, offline = 3, False  # one more real chunk moves after recovery; the rest wait for reload
     throttle(cdp)                                             # back: the browser's «online» retries at once
     expect(page.get_by_text(re.compile(r"^осталось"))).to_be_visible(timeout=15_000)
 
@@ -104,8 +129,22 @@ def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
 
     # a reload in the middle: the browser asks first; the server keeps every finished chunk
     wait_until(lambda: received(api, uid) >= 8 * MB, timeout=60)
-    page.on("dialog", lambda d: d.accept())
+    assert api.get(f"/uploads/{uid}")["state"] == "receiving"
+    dialogs = []
+
+    def leave(d):
+        dialogs.append(d.type)
+        d.accept()
+
+    page.once("dialog", leave)
     page.reload()
+    assert dialogs == ["beforeunload"]
+    for route in held_routes:
+        try:
+            route.abort()
+        except pw.Error:  # the old document cancelled it on pause / reload
+            pass
+    page.unroute(chunks, gate)
     expect(page.get_by_text("не завершена")).to_be_visible()
     expect(page.get_by_text("выберите тот же файл, чтобы продолжить")).to_be_visible()
     expect(page.get_by_text(re.compile(r"на сервере .+ из\s40\sМБ"))).to_be_visible()
