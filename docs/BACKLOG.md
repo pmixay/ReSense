@@ -12,7 +12,9 @@
 > **Updated:** 2026-10-16: selected scope `c9aea87`, H1 DROP; replacement H3/probes and fresh
 > independent H4 complete; H5 DONE at `5211565`, 1.1.0 sealed 16.10. Inherited High 8.1 OPEN;
 > H6/CI/main and E1 PENDING.
-> **Status:** current; §2/§2a are the integration ledger, later dates are conditional planning targets.
+> **Status:** current; §2/§2a are the integration ledger, later dates are conditional planning targets;
+> §2a hands the session's unfinished work over, §5 distributes all of it per role (15.10);
+> §7 (16.10) attaches the competitor survey and the experts' message of 16.10 (cards N1–N4)
 
 ## 1. How to use it
 
@@ -920,3 +922,33 @@ and swap the day before
 * **Done when:** two dated entries in `web/P2_STATUS.md` "Rehearsals": total ≤ 5:00 (or O1's length),
   STOP at ~56 m within 30 s of `ros2 bag play`, fallback switch ≤ 30 s in rehearsal 2; the checklist
   in PRESENTATION is fully ticked.
+
+## 7. Inputs of 16.10: the competitor survey and the experts' message
+
+Two documents were added on 16.10; neither changes a card above, they attach evidence and add work.
+
+* **[`COMPETITOR_SURVEY_2026-10.md`](COMPETITOR_SURVEY_2026-10.md)** (34 other teams' repositories, read-only): the
+  filtered shortlist, to test offline before any detector change (the seal rules in §1 apply). Where each idea goes:
+
+| survey idea | card | what to do with it |
+|---|---|---|
+| 1 context tests on the compact far target (opacity, front-lift, attachment, depth edge) | F2, F1 | compute per episode on the X2 ledger first; CAUTION or delayed start only |
+| 2 per-return structure peeling before the shape tests | H2, F2 | hypothesis for the judge's silent GO on curves (the merge with an edge blob), next to the evidence bar of H2 |
+| 3 graded trust beyond the axis range instead of the hard `beyond_axis` cut | K2, K1 | the range lever; re-fit on anchored placements; largest false-alarm risk, so last |
+| 4 inner-wall sight-line model on curves | K2 task (1) | matches K2's cause ("the inner wall is hidden by the curve beyond 56–96 m"); about 100 lines |
+| 5 along-track continuation, collinear clusters, persistent low lines | F1, F2 | per-return evidence for CAUTION or `explained_run`; keep the collision-volume exception |
+| 6 pooled carried-along test for short tracks | F2 | extension of `ego_veto`; replay on the ride's residual events |
+| 7 switch / turnout branch hypotheses | X2, F2 | classify the ride and switch episodes first: how many are turnouts |
+| 8 frame-context features for the doubt model | G2 | only after 1 works |
+| evaluation items (label-free axis error, rays-hit next to detected, mirror replay, ambiguous-trial marking, leave-one-recording-out, false-alarm-per-hour bound) | X1, X2, X3, G3, K2 | see the survey's section 4 |
+
+* **[`FINALS_BRIEF_2026-10-16.md`](FINALS_BRIEF_2026-10-16.md)** (the experts' criteria, new data, launch requests):
+  the experts name the gauge's range and stability as criteria of their own, and ask for dust, a second lidar and
+  an interactive launch. New cards, same format: **N1** the gauge as a stable, honest box in RViz (P2 with P1, no
+  seal), **N2** second lidar: axis directions, channels, fields (P3 + P4), **N3** dust / suspension (P4 + P3),
+  **N4** interactive launch: pause, slow, switch bags, graphics (P1, no seal). Suggested order: N4 and N1, then N2's
+  battery, then N3 when the organizers' dust sample arrives.
+* **[`evidence/axis_profile_2026-10-16/`](evidence/axis_profile_2026-10-16/README.md)** with
+  `scripts/axis_error_profile.py`: the axis error, per-frame jitter and point counts by range from the organizers'
+  synthetic objects (label-only, reproducible). Input for K1 / K2 and for N1's acceptance numbers.
+
