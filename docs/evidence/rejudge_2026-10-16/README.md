@@ -45,7 +45,7 @@ The `.jsonl` records stay external (container `/home/user/rs-data/j1/`), indexed
 ## Pre-built for release day (16.10)
 
 The judge's 37 range jobs ran on both versions: 707ea9c reproduces the 13.10 range table; 1.1.0 changes 2 jobs
-(recording C, later STOP becomes earlier: person 73.9 → 82.8 m, 1 m cube 73.9 → 85.7 m). What is left on
+(recording C, STOP now starts farther away: person 73.9 → 82.8 m, 1 m cube 73.9 → 85.7 m). What is left on
 release day and how: [RELEASE_DAY.md](RELEASE_DAY.md).
 
 ## Remaining J1 work (after H6/E1)

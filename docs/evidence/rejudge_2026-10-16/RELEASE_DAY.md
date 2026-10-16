@@ -9,7 +9,7 @@ Use one runtime throughout and pin `OPENBLAS_CORETYPE=Haswell`
 | J1 deliverable | state | how |
 |---|---|---|
 | identity: release tag / commit / image = sealed tree `db3f588d…`; `detector_freeze.py verify` PASS in the run log | **left** | `git ls-tree -r <tag> -- resense native configs setup.py pyproject.toml ros2_ws/src/resense_ros/config` must equal the measured tree; image ID and archive SHA-256 from the release |
-| 8 per-recording CSVs: six bags | **pre-built** (pre-release) on `492e407` | [dryrun/](dryrun/README.md): 0 decisions differ from 707ea9c; the 707ea9c dry run reproduces the judge |
+| 8 per-recording CSVs: six bags | **pre-built** (pre-release) on `492e407` | [dryrun/dryrun.json](dryrun/dryrun.json): 0 decisions differ from 707ea9c; the 707ea9c dry run reproduces the judge |
 | 8 per-recording CSVs: Set O | **left** (cheap) | `judge_runner.py --bag <cloud_with_fake_obj> --out …` (~1,510 frames), then `score_objects.py`. The X3 nominal Set O metrics are already identical between versions |
 | 8 per-recording CSVs: ride `new_data` | **left** (~1–2 h, ~14 GB peak disk) | `stream_new_data.py` streams the 17 GB archive from Yandex Disk |
 | range summaries | **pre-built**: all 37 jobs of `run_range_matrix.sh` + `run_range_extra.sh`, both versions | [prebuild/range_table.md](prebuild/range_table.md), `prebuild_range.py`; re-run on the release checkout only if the identity check fails |
