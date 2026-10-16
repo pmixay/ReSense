@@ -48,11 +48,12 @@ docker load -i resense-image-<version>.tar.gz        # теги resense:<version
   `SKIP_BUILD=1 SOURCE_IMAGE=resense:latest scripts/export_image.sh` вместо сборки сохраняет уже
   имеющийся образ.
 
-* **Релиз GitHub `v1.0.0`** — архив, его `.sha256` и `SHA256SUMS` публикуются в *Assets* релиза
+* **[Релиз GitHub `v1.0.0`](https://github.com/pmixay/ReSense/releases/tag/v1.0.0)** опубликован
+  29.09, фактический тег — `5d6e9b5`: архив 477 449 541 байт, его `.sha256` и `SHA256SUMS` в *Assets*.
+  Сборку и публикацию выполняет
   заданием [`release.yml`](https://github.com/pmixay/ReSense/blob/main/.github/workflows/release.yml),
-  когда запушен тег; `scripts/verify_release.sh v1.0.0` скачивает архив в `dist/` и проверяет его.
-  Есть ли релиз — на странице [Releases](https://github.com/pmixay/ReSense/releases); пока его нет,
-  берите артефакт CI или экспортируйте архив сами.
+  при пуше тега; `scripts/verify_release.sh v1.0.0` скачивает архив в `dist/` и проверяет его.
+  Судья проверил sha256 и офлайн-запуск 13.10; D1 15.10 проверил наличие ассетов по API.
 
 ## 2. Собрать (нужен интернет)
 
@@ -61,8 +62,9 @@ docker build -t resense -f docker/Dockerfile .    # или ./scripts/build.sh
 ```
 
 Сборка скачивает `ros:humble-ros-base-jammy`, ставит пакеты ROS через apt и Python-пакеты точно
-зафиксированных версий через pip, а также компилирует необязательные ядра на C++: около 1,5 мин,
-если базовый образ уже есть, и около 9 мин с нуля (`--no-cache` на 4-ядерной ВМ). Полезные варианты:
+зафиксированных версий через pip, а также компилирует необязательные ядра на C++.
+В CI, проверенном судьёй 13.10, сборка заняла 1:43; исторический `--no-cache` на ВМ — около 9 мин.
+Время зависит от кэша и сети; на стенде без сети нужен готовый архив. Полезные варианты:
 
 ```bash
 PULL=1 ./scripts/build.sh          # сначала обновить базовый ros:humble (старый из кэша ломает apt-get update)

@@ -17,7 +17,7 @@ results are in [`../EXPERIMENTS.md`](../EXPERIMENTS.md) and the criteria judgeme
 [`../archive/results/`](../archive/results). `docs/extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
 
-**Start here** (the current seal and the runs of 28–29.09):
+**Start here** (the current seal, independent judgement and dated work evidence):
 
 | what | where |
 |---|---|
@@ -25,8 +25,9 @@ per-file speeds and intake events) stays in `docs/` because scripts read it.
 | the independent safety review of the three rules of 29.09 evening: `shell` BLOCKING (switched off, `a5455b3`), `explained_run` and the ego-motion veto NON-BLOCKING with limits; synthetic numbers and scripts | [`safety_review_2026-09-29/`](safety_review_2026-09-29/README.md) |
 | the detector seal of 29.09 evening (three false-alarm rules on; `1e2ed82`, 36 files) and its full gate; superseded the same night | [`detector_freeze_2026-09-29_competitor_rules.json`](detector_freeze_2026-09-29_competitor_rules.json), [`cycle_2026-09-29/competitor_rules/`](cycle_2026-09-29/competitor_rules/gate_table.md) (= [its baseline](results/regression_baseline_2026-09-29_competitor_rules.json)) |
 | the seal of 27.09 and its full gate (the detector the judgement of 28.09 measured) | [`results/regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json), [its baseline](results/regression_baseline_2026-09-27_quality.json); the file [`detector_freeze_2026-09-27.json`](detector_freeze_2026-09-27.json) was reissued on 29.09 for `3eeb106` |
-| the independent judgement of 28.09 evening (`464f5bc`, detector of 27.09), basis of the SCORECARD | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) |
+| the historical independent judgement of 28.09 evening (`464f5bc`, detector of 27.09); superseded as the SCORECARD headline by 13.10 | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) |
 | the independent judgement of 13.10 (`2cb0463`, the sealed detector of 29.09 = `v1.0.0`): 66/100, every frame of the organizers' data (15 279) incl. the whole ride, range by ray-cast on real backgrounds, the release image through the node; per-frame CSVs and scripts | [`judgement_2026-10-13/`](judgement_2026-10-13/README.md) |
+| P2, 15.10: D1 documentation corrections and PT1 slide cuts, word audit, checks and remaining dependencies | [`p2_2026-10-15/`](p2_2026-10-15/README.md) |
 | per-frame outputs of the sealed detector with a recount script | [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md) |
 | the full team VM run of 28.09 (`464f5bc`) | [`vm_2026-09-28/summary.md`](vm_2026-09-28/summary.md) |
 | the node's input path and end-to-end latency through ROS (28.09) | [`node_input_2026-09-28/`](node_input_2026-09-28/README.md) |

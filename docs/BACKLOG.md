@@ -805,6 +805,10 @@ the v1.0.0 facts; second pass after the 1.1.0 and final seals and J1
   matches only dated history rows; `competitor_rules.json` in no command of CAPTAIN / EVALUATION /
   VM_GUIDE; the SENSOR sentence is gone; the first 20 lines of SCORECARD name 13.10 66/100.
 
+**Progress 15.10:** P2 delivered pass 1 on `p2/docs-and-pitch-20261015`; fact/source audit and
+checks: [`evidence/p2_2026-10-15/`](evidence/p2_2026-10-15/README.md). P1 review/merge remains;
+pass 2 still follows the released seals and J1. Queue state: [`web/P2_STATUS.md`](../web/P2_STATUS.md).
+
 #### D2 · Archive the 28.09 experiment layer: process notes, personal-path tests, orphan scripts
 **Criteria** 8.5, 8.7 · **Owner** P2 (an agent; docs are P1's lane and tests / scripts P4's, so P1
 approves) · **Mode** A · **Size** S · **Points** ~+0.5 on 8.5, ~+0.25 on 8.7 · **Depends on**
@@ -848,6 +852,10 @@ D1 (same claims)
 * **Done when:** `python scripts/build_deck.py --check-gate <final baseline json>` prints no differing
   row; `pytest -q web/demo` passes; slide text total ≤ 1,100 words and max ≤ 90 per slide; the range
   slide shows ≥ 3 track geometries; P1 signs off the PDF in `web/P2_STATUS.md`.
+
+**Progress 15.10:** P2 task 2 (slide cuts) delivered: named PPTX/PDF, detail in notes and enforced
+≤80 words per slide / ≤1,100 total. This is preparation, not closure of PT1: the range-by-geometry
+chart and final numbers still require J1/O1; P1's PDF sign-off is pending (same evidence as D1).
 
 #### PT2 · Live demo on the shipped image and two timed rehearsals with a fallback
 **Criteria** 8.8 · **Owner** P1 (P2: second device with RViz / Foxglove, fallback clip; P3 + P4 as

@@ -15,10 +15,20 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
+## [Unreleased] — P2 documentation and pitch preparation (15.10)
+
+- D1 pass 1: current SCORECARD and captain table now cite the 13.10 v1.0.0 judgement (66/100),
+  with earlier reviews dated; release/tag, merged prototype, current shell-off baseline, ownership,
+  dual-return sensitivity and cache-vs-node range claims corrected. Decision-log rows preserved.
+- PT1 pass 1: rebuilt the 16-slide named PPTX and PDF, moved detail into speaker notes, added
+  `build_deck.py --audit` and a build-time word budget (≤80/slide, ≤1,100 total, including chart labels).
+  Final range-by-geometry graph, release numbers, video cards and P1 sign-off wait for O1/J1;
+  C1 display, PT2 and S5 dependencies are tracked in [`web/P2_STATUS.md`](web/P2_STATUS.md).
+
 ## [Unreleased] — web prototype (PR #31; outside the `v1.0.0` release)
 
-[PR #31](https://github.com/pmixay/ReSense/pull/31), branch `claude/prototype-website-rebuild-tz31o0` with `main`
-merged in; optional, it reaches `main` only through that PR with CI green.
+[PR #31](https://github.com/pmixay/ReSense/pull/31) merged as `317eabf`; the prototype is in `main`
+and outside the runtime image and release v1.0.0.
 
 ### Changed — resumable uploads for big recordings, faster processing (`webapp/`, 09.10)
 
