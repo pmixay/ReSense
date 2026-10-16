@@ -1,0 +1,14 @@
+{
+  "status": "VERIFIED",
+  "complete_cases": 40,
+  "processed_frames": 29765,
+  "raw_rows_revalidated": true,
+  "reference_validation_path_exercised": true,
+  "self_comparison_rows": 260,
+  "measurement_files_hashed": 188,
+  "all_measurement_hashes_match": true,
+  "driver_hash_matches_measurement": true,
+  "intake_and_battery_sources_match": true,
+  "strict_gate_equal_rows": 208,
+  "note": "Evidence integrity and driver self-comparison only; not candidate acceptance or a 1.1.0 baseline."
+}

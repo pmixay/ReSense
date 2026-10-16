@@ -192,6 +192,17 @@ If a person is unavailable, P1 runs that role's items with agents in the same or
   on `707ea9c`: every non-latency row must match (it did in the session); post the cache paths to the
   team. Then commit the G3 spec.
 
+**P4 execution, 15–16.10:** the user designated the Windows computer as the team runtime.
+H0's local intake is verified: six gate bags + Set O 1,510 + ride 11,271, all receive stamps
+checked against raw DB3; node-decoded float32 A/B/C/S, doubleT_obstacle and Set O are ready.
+The exact detached `707ea9c` full gate exits 0 without waivers, with **208/208 non-latency
+rows identical** to the 29.09 baseline. Shared root:
+`C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/{for_hackathon,cache,decoded,odometry}`.
+See [P4 evidence and X3 report](evidence/p4_start_2026-10-15/README.md) for exact identities,
+paths and commands. This is Windows-native local replay, not Linux VM/node timing; the raw
+Windows checkout freeze check fails on CRLF/generated `.pyd`, while all 36 committed seal
+blobs match. The 1.1.0 standing baseline remains future H5/X3 work.
+
 Rough gain if the pre-defence items land and count (judge's estimates): 8.1 +2 to +3, 8.2 +1 to +2,
 8.3 +1.5 to +2.5, 8.4 +0.5 to +1, 8.5 +1, 8.6 +1 to +1.5, 8.7 +1, 8.8 +1.
 
