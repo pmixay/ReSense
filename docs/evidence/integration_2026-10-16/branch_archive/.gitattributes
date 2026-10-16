@@ -1,0 +1,5 @@
+*.bundle -text -diff -merge
+.gitattributes text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
