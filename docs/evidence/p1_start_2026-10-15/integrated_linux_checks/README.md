@@ -1,5 +1,9 @@
 # Combined Linux tools-image suite after independent-review fixes
 
+> **Latest source:** [Final exact-source checks](FINAL_SOURCE.md) verify the `5e002e5` node and
+> current volume driver: **1,601 passed, 0 skipped, 10 data-local deselections**. The original
+> `0caf5c2` full-build record below is retained as historical evidence.
+
 **PASS on the first attempt: 1,562 passed, 0 failed, 0 errors, 0 skipped.**
 The repository deselected exactly **10** cases marked `realdata` whose local recording/cache
 directories were absent. No `-k`, `-m`, extra exclusion, or failure-specific deselection was used.

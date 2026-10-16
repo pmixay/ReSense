@@ -1,0 +1,157 @@
+2026/10/16 05:08:37 http2: server: error reading preface from client //./pipe/dockerDesktopLinuxEngine: file has already been closed
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.incremental
+#1 transferring dockerfile: 5.16kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/resense:p1-combined-tools-0caf5c227b68
+#2 DONE 0.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 1.87kB done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [ 1/26] FROM docker.io/library/resense:p1-combined-tools-0caf5c227b68@sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a
+#5 resolve docker.io/library/resense:p1-combined-tools-0caf5c227b68@sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a
+#5 resolve docker.io/library/resense:p1-combined-tools-0caf5c227b68@sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a 0.1s done
+#5 DONE 0.5s
+
+#6 [ 2/26] WORKDIR /opt/resense
+#6 DONE 0.2s
+
+#4 [internal] load build context
+#4 transferring context: 29.24MB 3.4s done
+#4 DONE 3.4s
+
+#7 [ 3/26] RUN (cd / && pip3 uninstall -y resense         && python3 -c "import importlib.util as u; assert u.find_spec('resense') is None, 'old resense install survived uninstall'")     && rm -rf resense native configs build resense.egg-info ros2_ws
+#7 2.504 Found existing installation: resense 1.0.0
+#7 2.521 Uninstalling resense-1.0.0:
+#7 2.628   Successfully uninstalled resense-1.0.0
+#7 2.633 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#7 DONE 3.0s
+
+#8 [ 4/26] COPY pyproject.toml setup.py README.md ./
+#8 DONE 0.1s
+
+#9 [ 5/26] COPY resense ./resense
+#9 DONE 0.1s
+
+#10 [ 6/26] COPY native ./native
+#10 DONE 0.0s
+
+#11 [ 7/26] COPY configs ./configs
+#11 DONE 0.0s
+
+#12 [ 8/26] RUN rm -rf build *.egg-info     && find resense -type f ( -name '_resense_native*.so' -o -name '_resense_native*.pyd' -o -name '*.pyc' ) -delete     && PIP_NO_INDEX=1 pip3 install --no-deps --no-build-isolation .     && cd / && python3 -c "import resense, resense.detector, resense._native as n; assert not resense.__file__.startswith('/opt/resense/'), resense.__file__; assert n.AVAILABLE and n.enabled(), n.status(); print('resense', resense.__version__, resense.__file__, n.status())"
+#12 0.581 Processing ./.
+#12 0.583   Preparing metadata (pyproject.toml): started
+#12 1.059   Preparing metadata (pyproject.toml): finished with status 'done'
+#12 1.066 Building wheels for collected packages: resense
+#12 1.070   Building wheel for resense (pyproject.toml): started
+#12 2.554   Building wheel for resense (pyproject.toml): finished with status 'done'
+#12 2.556   Created wheel for resense: filename=resense-1.0.0-cp310-cp310-linux_x86_64.whl size=210079 sha256=64924d29ba92b30593386e4c1ea644cc7c9f82130e3b1911fa93954bef2756b0
+#12 2.556   Stored in directory: /tmp/pip-ephem-wheel-cache-7p4w1l_0/wheels/31/af/f2/b23fb9c6260190af3c7acec185d72bb6e9652784d861e70930
+#12 2.562 Successfully built resense
+#12 2.585 Installing collected packages: resense
+#12 2.722 Successfully installed resense-1.0.0
+#12 2.722 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#12 3.312 resense 1.0.0 /usr/local/lib/python3.10/dist-packages/resense/__init__.py native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+#12 DONE 3.4s
+
+#13 [ 9/26] COPY ros2_ws/src /opt/resense/ros2_ws/src
+#13 DONE 0.1s
+
+#14 [10/26] COPY configs/default.yaml /opt/resense/ros2_ws/src/resense_ros/config/detector.yaml
+#14 DONE 0.0s
+
+#15 [11/26] RUN find ros2_ws/src -type d ( -name build -o -name install -o -name log -o -name '*.egg-info' -o -name __pycache__ ) -prune -exec rm -rf {} +     && unset AMENT_PREFIX_PATH COLCON_PREFIX_PATH CMAKE_PREFIX_PATH PYTHONPATH     && . /opt/ros/humble/setup.sh     && cd /opt/resense/ros2_ws && colcon build --symlink-install
+#15 1.054 Starting >>> resense_ros
+#15 3.436 Finished <<< resense_ros [2.38s]
+#15 3.438
+#15 3.438 Summary: 1 package finished [2.60s]
+#15 DONE 3.9s
+
+#16 [12/26] COPY scripts/check_offline_image.py /opt/resense/scripts/check_offline_image.py
+#16 DONE 0.1s
+
+#17 [13/26] RUN . /opt/ros/humble/setup.sh && . /opt/resense/ros2_ws/install/setup.sh     && cd / && python3 /opt/resense/scripts/check_offline_image.py     && ros2 launch resense_ros detector.launch.py --show-args >/dev/null     && rm -rf /tmp/.ros
+#17 1.194 {
+#17 1.194   "version": "1.0.0",
+#17 1.194   "package": "/usr/local/lib/python3.10/dist-packages/resense",
+#17 1.194   "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+#17 1.194   "native_library": "/usr/local/lib/python3.10/dist-packages/resense/_resense_native.cpython-310-x86_64-linux-gnu.so",
+#17 1.194   "native_sha256": "dc549d0583f92c3acd93c455bf94bab4bbedae35a9580d82ad24786473661d5c",
+#17 1.194   "native_source_sha256": "9b4bd2c5669e03cec4d577c1174a36306a575f638866a8c0c4ede114314cbde9",
+#17 1.194   "ros_node": "/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+#17 1.194   "share": "/opt/resense/ros2_ws/install/resense_ros/share/resense_ros",
+#17 1.194   "launch_sha256": "6f247d2979aedc775a89fa3c4e71b8cb3e0532e6161b8db3b13c6c6dea50524d",
+#17 1.194   "config_sha256": "d41052adfbcdfb54a7e4836f9a0ca0fbfd2a9320dc99ca85fc83643103714a28",
+#17 1.194   "sys_path": [
+#17 1.194     "/opt/resense/scripts",
+#17 1.194     "/opt/resense/ros2_ws/build/resense_ros",
+#17 1.194     "/opt/resense/ros2_ws/install/resense_ros/lib/python3.10/site-packages",
+#17 1.194     "/opt/ros/humble/lib/python3.10/site-packages",
+#17 1.194     "/opt/ros/humble/local/lib/python3.10/dist-packages",
+#17 1.194     "/usr/lib/python310.zip",
+#17 1.194     "/usr/lib/python3.10",
+#17 1.194     "/usr/lib/python3.10/lib-dynload",
+#17 1.194     "/usr/local/lib/python3.10/dist-packages",
+#17 1.194     "/usr/lib/python3/dist-packages"
+#17 1.194   ]
+#17 1.194 }
+#17 DONE 1.9s
+
+#18 [14/26] RUN rm -rf /opt/resense/tests /opt/resense/scripts /opt/resense/webapp /opt/resense/docs /opt/resense/labels
+#18 DONE 0.2s
+
+#19 [15/26] COPY tests ./tests
+#19 DONE 0.1s
+
+#20 [16/26] COPY scripts ./scripts
+#20 DONE 0.1s
+
+#21 [17/26] COPY docs/evidence/cycle_2026-09-28/evaluation/protocol.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol.json
+#21 DONE 0.0s
+
+#22 [18/26] COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
+#22 DONE 0.0s
+
+#23 [19/26] COPY docs/evidence/results/residual_events_2026-09-28.json ./docs/evidence/results/residual_events_2026-09-28.json
+#23 DONE 0.0s
+
+#24 [20/26] COPY docs/RESIDUAL_EVENTS_2026-09-28.md ./docs/RESIDUAL_EVENTS_2026-09-28.md
+#24 DONE 0.0s
+
+#25 [21/26] COPY webapp/backend/resense_web/__init__.py webapp/backend/resense_web/decision.py ./webapp/backend/resense_web/
+#25 DONE 0.1s
+
+#26 [22/26] COPY docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh docs/evidence/judgement_2026-10-13/scripts/docker/listener.py ./docs/evidence/judgement_2026-10-13/scripts/docker/
+#26 DONE 0.1s
+
+#27 [23/26] COPY docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py docs/evidence/node_startup_2026-10-15/docker_tools/listener.py docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py ./docs/evidence/node_startup_2026-10-15/docker_tools/
+#27 DONE 0.1s
+
+#28 [24/26] COPY docs/evidence/offline_rebuild_2026-10-15/verify.py ./docs/evidence/offline_rebuild_2026-10-15/verify.py
+#28 DONE 0.0s
+
+#29 [25/26] COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
+#29 DONE 0.0s
+
+#30 [26/26] RUN find scripts -type f -name '*.sh' -exec sed -i 's/\r$//' {} +
+#30 DONE 0.1s
+
+#31 exporting to image
+#31 exporting layers
+#31 exporting layers 1.6s done
+#31 exporting manifest sha256:1176116fd9802375d0a922e3a30c65c24ce31b8c46fd7437ffaad0cfe53a5e51 0.0s done
+#31 exporting config sha256:3942072fed0b915c7c81dbc0d295ee66056d9333bfd522c0c9babca36e17d2a5 0.0s done
+#31 exporting attestation manifest sha256:3199cc5a7e82f53691ce85052ca063b0fd3a34585188ca123c63e098fb57b9cb 0.0s done
+#31 exporting manifest list sha256:c40f9b8ca405b696ae266cb420070ab36410025d650cb2f2eda49496c9922099 0.0s done
+#31 naming to docker.io/library/resense:p1-combined-tools-e5640d947cd6 done
+#31 unpacking to docker.io/library/resense:p1-combined-tools-e5640d947cd6
+#31 unpacking to docker.io/library/resense:p1-combined-tools-e5640d947cd6 0.9s done
+#31 DONE 2.8s
