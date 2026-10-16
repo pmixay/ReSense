@@ -1,0 +1,10 @@
+{
+ "frames": 252,
+ "wall_s": 14.3,
+ "cpu_s": 11.3,
+ "rss_peak_mb": 125.8,
+ "resets": [],
+ "bags": [
+  "/home/user/rs-data/raw/for_hackathon/roundT_doubleT"
+ ]
+}

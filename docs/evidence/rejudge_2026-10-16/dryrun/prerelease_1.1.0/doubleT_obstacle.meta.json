@@ -1,0 +1,10 @@
+{
+ "frames": 201,
+ "wall_s": 39.7,
+ "cpu_s": 19.9,
+ "rss_peak_mb": 238.7,
+ "resets": [],
+ "bags": [
+  "/home/user/rs-data/raw/for_hackathon/doubleT_obstacle"
+ ]
+}
