@@ -1,0 +1,2 @@
+FROZEN: 36 files; source db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751
+Validation: docs/evidence/integration_2026-10-16/h5/candidate/gate.json (measured 2026-10-16T11:19:41+00:00)

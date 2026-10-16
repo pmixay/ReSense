@@ -8,10 +8,30 @@ accepted at `70072f1300d922d7542a6b45688084e7a426d7c7`, then all four version de
 committed at 1.1.0 in `5211565`, then this full committed gate. The selected numerical core
 is unchanged from reviewed `c9aea87cb5322092070158cd8987115ee44833c9`.
 
-The passing gate evidence is committed before creating the new seal from a separate clean LF
-Linux checkout containing this exact evidence. The new manifest path is
-`docs/evidence/detector_freeze_2026-10-16_1.1.0.json`; seal-session provenance is added after
-actual creation/verification. The parent owns the default-manifest pointer and release docs.
+The passing gate evidence was committed first at
+`21e1d6195eda438056fb51c3bab886e420d19ee2`. The new seal was then created and explicitly
+verified **PASS** in a separate clean LF Linux checkout of that commit containing this exact
+evidence. The manifest path is `docs/evidence/detector_freeze_2026-10-16_1.1.0.json`.
+The parent owns the default-manifest pointer and release docs.
+
+## Created seal identity
+
+| Field | Actual value |
+|---|---|
+| `measured_commit` | `52115654417a660669b8dddfce447692c1d782cc` |
+| `source_commit` / evidence-containing creation HEAD | `21e1d6195eda438056fb51c3bab886e420d19ee2` |
+| Frozen source files / digest | **36** / `db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751` |
+| New manifest SHA-256 / bytes | `523b5eefaed42882c6a9c6974f3ac16ebd791472d7c831da245ad2827d8cc648` / **5,273** |
+| Committed validation gate SHA-256 | `e0b2c76f61d6b65b1f6d3901af91c96d6370e76c125b5192735399b889a5547a` |
+| Explicit manifest verification after creation | **PASS** |
+| Host copy vs generated Linux manifest | **Byte-identical** |
+
+Creation session: `seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d`.
+Its source/native/evidence preflight, exact create/verify argv, logs, before/after inventories,
+container/image identity and copy check are in `seal_create/` and remain external as indexed.
+The manifest is the unedited standard-script output, with the explicit 29 September shell-off
+baseline and the committed H5 gate path. All frozen bytes and four release declarations match
+the measured commit, configs are synchronized, and generated native `.so` stays ignored.
 
 ## Gate acceptance and all-frame comparison
 

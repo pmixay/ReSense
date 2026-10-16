@@ -1570,6 +1570,76 @@
       "bytes": 2569,
       "path": "candidate-52115654417a-20261016T110150Z-d9084fe4.verification.log",
       "sha256": "7315c78c420c95ec0706bafd32409a559f10a9c450c273714d294a2691646b38"
+    },
+    {
+      "bytes": 75,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/checkout.log",
+      "sha256": "6647aa7f963bb621e67ffc720d97bdb07c29937a83e525366e7da713b245f855"
+    },
+    {
+      "bytes": 96,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/clone.log",
+      "sha256": "8c7a75804ce1a0b460485605a072991a485c9c7c06ca72bcebddc93711ea7acb"
+    },
+    {
+      "bytes": 1889,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/commands.json",
+      "sha256": "53a5f032fa2ae6eea29e8f2d9a037a5190a953a9179fb626919a5c53b5e02334"
+    },
+    {
+      "bytes": 1030,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/completion.json",
+      "sha256": "22de620e21eedb4197e9eb5dd5ff42de893e09e94f72447158b97e5f50081125"
+    },
+    {
+      "bytes": 199,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/create.log",
+      "sha256": "1c4fe11c584a9803f8b45b681a020420d421e3be2a3272cfa0f1378d3448b542"
+    },
+    {
+      "bytes": 5273,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/generated_manifest.json",
+      "sha256": "523b5eefaed42882c6a9c6974f3ac16ebd791472d7c831da245ad2827d8cc648"
+    },
+    {
+      "bytes": 28,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/native_build.log",
+      "sha256": "e0507f3eea29ae828336952d5f223854ce5f52c04678d8a8523fe5f73d1736f0"
+    },
+    {
+      "bytes": 4837,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/preflight.json",
+      "sha256": "4d6d91b7fff71783b63e0b713ac1ef859a287d762094e0a83d4bc4c3fc432bdb"
+    },
+    {
+      "bytes": 4114,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/source_after.json",
+      "sha256": "5b7404413b03f1c8b78231edd916f783c32bc4caaf91f7ede99ce07e8978e020"
+    },
+    {
+      "bytes": 150,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/verify_after_native_or_create.log",
+      "sha256": "f582ee0d66ae55480e9dab95c8df4f4fd75faf475bcd4280421c33bf7c3a1703"
+    },
+    {
+      "bytes": 10560,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.container-final.json",
+      "sha256": "60988b5cbef23539210312d72e1158d5a55d15bcf533cae8dc2ba9fc47e99298"
+    },
+    {
+      "bytes": 1900,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.container.log",
+      "sha256": "198519eaa5c289200f9da32a66b6382d6da141dbdff9f03ee45564241c2c4e4e"
+    },
+    {
+      "bytes": 1942,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.launch.json",
+      "sha256": "dd7334951e21d121bf8b77121742ea6b96b7b18ce76738f9c00d168d7efd58fd"
+    },
+    {
+      "bytes": 1965,
+      "path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.result.json",
+      "sha256": "7050abfb46b7daa6ac1617db882e7854697dd8c80b5676345d4b85ff9f722872"
     }
   ]
 }

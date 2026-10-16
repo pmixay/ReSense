@@ -1,0 +1,76 @@
+[
+  {
+    "argv": [
+      "git",
+      "-c",
+      "safe.directory=/source.git",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      "-c",
+      "core.autocrlf=false",
+      "-c",
+      "core.eol=lf",
+      "/source.git",
+      "/evalworkspace/seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d"
+    ],
+    "cwd": null,
+    "exit": 0,
+    "log": "clone.log",
+    "wall_s": 0.3526885509490967
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.autocrlf=false",
+      "checkout",
+      "--detach",
+      "21e1d6195eda438056fb51c3bab886e420d19ee2"
+    ],
+    "cwd": "/evalworkspace/seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d",
+    "exit": 0,
+    "log": "checkout.log",
+    "wall_s": 13.785163640975952
+  },
+  {
+    "argv": [
+      "bash",
+      "scripts/build_native.sh"
+    ],
+    "cwd": "/evalworkspace/seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d",
+    "exit": 0,
+    "log": "native_build.log",
+    "wall_s": 1.0669379234313965
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/detector_freeze.py",
+      "create",
+      "--manifest",
+      "docs/evidence/detector_freeze_2026-10-16_1.1.0.json",
+      "--baseline",
+      "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+      "--evidence",
+      "docs/evidence/integration_2026-10-16/h5/candidate/gate.json"
+    ],
+    "cwd": "/evalworkspace/seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d",
+    "exit": 0,
+    "log": "create.log",
+    "wall_s": 1.8148481845855713
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/detector_freeze.py",
+      "verify",
+      "--manifest",
+      "docs/evidence/detector_freeze_2026-10-16_1.1.0.json"
+    ],
+    "cwd": "/evalworkspace/seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d",
+    "exit": 0,
+    "log": "verify_after_native_or_create.log",
+    "wall_s": 0.05377769470214844
+  }
+]

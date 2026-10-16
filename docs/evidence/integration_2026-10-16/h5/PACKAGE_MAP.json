@@ -413,5 +413,75 @@
     "external_path": "helpers/verify_final_commit.py",
     "mode": "byte-identical copy",
     "package_path": "helpers/verify_final_commit.py"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/checkout.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/checkout.txt"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/clone.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/clone.txt"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/commands.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/commands.json"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/completion.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/completion.json"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/create.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/create.txt"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/generated_manifest.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/generated_manifest.json"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/native_build.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/native_build.txt"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/preflight.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/preflight.json"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/source_after.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/source_after.json"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d/verify_after_native_or_create.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/verify_after_native_or_create.txt"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.container-final.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/runtime.container-final.json"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.container.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/runtime.container.txt"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.launch.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/runtime.launch.json"
+  },
+  {
+    "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.result.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_create/runtime.result.json"
   }
 ]
