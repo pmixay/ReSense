@@ -108,3 +108,36 @@ def test_row_cause_precedence():
     assert RA.cause(_snap([clean, col]), X, Y, L, W, CFG) == "track:no_track"
     tr = _track(last=9, hits=1)
     assert RA.cause(_snap([clean, col], tracks=[tr]), X, Y, L, W, CFG) == "track:confirm_hits"
+
+
+def _q(**kw):
+    q = dict(value=False, line=1, guard="", hits=5, need_hits=3, confidence=1.0, conf_threshold=0.6, misses=0,
+             span_s=0.5, need_span=0.5, hit_fraction=1.0, min_hit_fraction=0.6)
+    q.update(kw)
+    return q
+
+
+def test_traced_cause_reads_the_recorded_branches():
+    assert RA.qualifies_failure(_q(span_s=0.5 - 1e-6)) == "confirm_time"
+    assert RA.qualifies_failure(_q(hits=2)) == "confirm_hits"
+    assert RA.qualifies_failure(_q()) == "qualifies_mismatch"        # every clause true but the code said False
+    unrep = _track(branch={"qualifies": _q(hits=1)})
+    assert RA.traced_track_cause(unrep) == "track:confirm_hits"
+    gate = {"line": 9, "text": "q = False", "guard": "if (q and c.explained_run > 0 and not earned_stop"}
+    blocked = _track(branch={"qualifies": _q(value=True), "gates": [gate]})
+    assert RA.traced_track_cause(blocked) == "track:explained_run"
+    blocked["branch"]["carried"] = True
+    assert RA.traced_track_cause(blocked) == "track:ego_veto"
+    rz = {"value": "warning", "guard": "if not self.zone_hist or self.column_held or self.approach_block:",
+          "zone_hist": 3, "column_held": True}
+    z = {"value": "warning", "guard": ""}
+    held = _track(reported=True, branch={"zone_eval": {"zone": z, "rule_zone": rz}})
+    assert RA.traced_track_cause(held) == "track:column_hold"
+    assert RA.traced_track_cause(_track(reported=True, branch={})) == "unclassified:no_zone_trace"
+
+
+def test_tracker_trace_records_gates_only_inside_update():
+    import resense.tracking as T
+    tr = RA.TrackerTrace(T)
+    texts = {text for (code, _), (text, _) in tr.guards.items() if code is T.Tracker.update.__code__}
+    assert texts and texts <= set(RA.GATES)
