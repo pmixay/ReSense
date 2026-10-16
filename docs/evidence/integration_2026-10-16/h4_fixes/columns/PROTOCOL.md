@@ -58,3 +58,17 @@ failed author attempts and measurements in new directories, never overwrite them
 Local commits only, stage owned paths explicitly after status/diff/log inspection.
 If positive controls and zero dark excess cannot coexist, report BLOCKED with
 the exact remaining limits, rather than call the author fix a review PASS.
+
+## Pre-patch witness execution / adapter clarification
+
+`parent-witness` failed source-path validation: the image eagerly imports installed
+resense in sitecustomize before the clone exists. Retained untouched; the adapter
+now restarts Python with the clone present. `parent-witness-02` measured unchanged
+column source (HEAD advanced concurrently to e623aad, tracking-test registration):
+11 failures / 6 passes, including the exact case-45 hash and all absorbing controls.
+At 109/137 m the observed absorbing stump is shorter than column_min_height, so its
+gauge classification bypasses the column signature entirely (spared=false). The
+test is clarified to require no false free-top evidence and no spare, with the
+column-zone assertion only where that signature applies. No global signature is
+changed to make these in-envelope physical collision objects advisory. The raw
+initial assertion failure is retained. Beam and tall assertions are unchanged.

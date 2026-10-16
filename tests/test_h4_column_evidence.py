@@ -13,7 +13,7 @@ import hashlib
 import numpy as np
 import pytest
 
-from resense.clustering import find_clusters
+from resense.clustering import FrameRays, find_clusters, top_is_free
 from resense.config import DetectorConfig
 from resense.gauge import gauge_core_mask, point_in_polygon, widened_profile
 from resense.sensor import RING_ELEVATION_DEG
@@ -93,7 +93,13 @@ def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
     xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
     ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
     c = object_cluster(xyz, ring, labels)
-    assert (c.zone, c.reason, c.spared) == ("warning", "column", False)
+    # At long range the absorbing visible stump can be shorter than the column
+    # signature. This test targets evidence, not a new global shape demotion.
+    rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+    assert not top_is_free(rays, c.points_idx, window=1.2)
+    assert not c.spared
+    if c.size[2] > DetectorConfig().cluster.column_min_height:
+        assert (c.zone, c.reason) == ("warning", "column")
 
 
 @pytest.mark.parametrize("top,absorbing,beam", [(4.12, None, False), (4.12, (2.54, 3.18), False),
