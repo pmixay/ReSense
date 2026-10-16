@@ -1,0 +1,13 @@
+Source: C:\Users\alikh\AppData\Local\Temp\opencode\resense-p1-runs-2026-10-15\attempt07_linux_volume_warm_matrix\out\docker\candidate_clear_literal_r1.player.log
+SHA256: 9bcc733a45bba482e832c5f2fbeaa3994c6bdfeddd641872cc98765fcde1a06d
+Full source lines: 9
+
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792108125.873736535] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+[INFO] [1792108125.873910124] [rosbag2_player]: Set rate to 1
+[INFO] [1792108125.895453427] [rosbag2_player]: Adding keyboard callbacks.
+[INFO] [1792108125.895534575] [rosbag2_player]: Press SPACE for Pause/Resume
+[INFO] [1792108125.895547029] [rosbag2_player]: Press CURSOR_RIGHT for Play Next Message
+[INFO] [1792108125.895553952] [rosbag2_player]: Press CURSOR_UP for Increase Rate 10%
+[INFO] [1792108125.895561236] [rosbag2_player]: Press CURSOR_DOWN for Decrease Rate 10%
+[INFO] [1792108125.896201262] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.

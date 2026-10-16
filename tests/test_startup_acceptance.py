@@ -618,7 +618,7 @@ def test_manual_cleanup_refuses_a_mismatched_container_owner(tmp_path, monkeypat
     assert not any(args[1] in ("stop", "rm") for args in calls)
 
 
-@pytest.mark.parametrize("changed", ["publication", "raw", "launch", "staging"])
+@pytest.mark.parametrize("changed", ["publication", "raw", "launch", "staging", "setup"])
 def test_publication_verifier_detects_tampered_report_raw_and_launch_artifacts(tmp_path, capsys, changed):
     spec = importlib.util.spec_from_file_location("s1_report_publisher", s1.TOOLS / "publish_report.py")
     publisher = importlib.util.module_from_spec(spec)
@@ -628,17 +628,20 @@ def test_publication_verifier_detects_tampered_report_raw_and_launch_artifacts(t
     raw.mkdir()
     report_file, raw_file, launch_file = out / "summary.json", raw / "status.jsonl", tmp_path / "raw.launch.json"
     staging_file = tmp_path / "stage.json"
-    for path in (report_file, raw_file, launch_file, staging_file):
+    setup_file = tmp_path / "build.json"
+    for path in (report_file, raw_file, launch_file, staging_file, setup_file):
         path.write_text("original\n")
     s1.write_json(out / "raw_hash_index.json", {"attempts": [{
         "raw_root": str(raw), "files": [publisher.indexed(raw_file, raw)],
         "sibling_files": [publisher.indexed(launch_file, tmp_path)]}],
-        "staging": {"raw_root": str(tmp_path), "files": [publisher.indexed(staging_file, tmp_path)]}})
+        "staging": {"raw_root": str(tmp_path), "files": [publisher.indexed(staging_file, tmp_path)]},
+        "setup": [{"raw_root": str(tmp_path), "files": [publisher.indexed(setup_file, tmp_path)]}]})
     s1.write_json(out / "publication_hash_index.json", {
         "files": [publisher.indexed(p, out) for p in sorted(out.iterdir())]})
     publisher.verify(out)
     assert json.loads(capsys.readouterr().out)["verified"]
-    {"publication": report_file, "raw": raw_file, "launch": launch_file, "staging": staging_file}[changed].write_text("altered\n")
+    {"publication": report_file, "raw": raw_file, "launch": launch_file, "staging": staging_file,
+     "setup": setup_file}[changed].write_text("altered\n")
     with pytest.raises(ValueError, match="hash mismatch"):
         publisher.verify(out)
 

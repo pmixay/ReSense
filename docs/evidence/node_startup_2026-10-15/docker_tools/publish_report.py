@@ -45,7 +45,7 @@ def excerpt(source, target):
         f.write("\n".join(line.rstrip() for line in chosen) + "\n")
 
 
-def publish(raw, attempts, out, stage=None):
+def publish(raw, attempts, out, stage=None, setup=()):
     manifest = s1.read_json(raw / "manifest.json")
     summary = s1.read_json(raw / "summary.json")
     recomputed = s1.analyze_directory(raw)
@@ -103,6 +103,9 @@ def publish(raw, attempts, out, stage=None):
         staging = {"raw_root": str(stage), "volume_name": staged["volume_name"],
                    "inventory_digest": staged["inventory_digest"],
                    "files": [indexed(p, stage) for p in sorted(stage.rglob("*")) if p.is_file()]}
+    setup_index = [{"raw_root": str(folder.resolve()),
+                    "files": [indexed(p, folder.resolve()) for p in sorted(folder.resolve().rglob("*")) if p.is_file()]}
+                   for folder in setup]
     out.mkdir()
     for name in ("summary.json", "manifest.json"):
         copy_new(raw / name, out / name)
@@ -110,6 +113,10 @@ def publish(raw, attempts, out, stage=None):
         copy_new(raw / "bags_volume_verification.json", out / "bags_volume_verification.json")
     if stage:
         copy_new(stage / "stage.json", out / "volume_stage.json")
+    for folder in setup:
+        target = out / "builds" / folder.name
+        copy_new(folder / "build.json", target / "build.json")
+        excerpt(folder / "build.stderr.log", target / "build.excerpt.log")
     launch = Path(str(raw) + ".launch.json")
     if launch.exists():
         copy_new(launch, out / "launch.json")
@@ -132,6 +139,8 @@ def publish(raw, attempts, out, stage=None):
         label = f"candidate_{condition}_r1"
         base = raw / "out/docker" / label
         copy_new(Path(str(base) + ".receipt.json"), out / "selected" / (label + ".receipt.json"))
+        if receipts[label].get("prefetch"):
+            copy_new(raw / receipts[label]["prefetch"]["receipt"], out / "selected" / (label + ".prefetch.receipt.json"))
         for role in ("node", "player", "listener"):
             excerpt(Path(str(base) + f".{role}.log"), out / "selected" / (label + f".{role}.excerpt.log"))
 
@@ -155,6 +164,7 @@ def publish(raw, attempts, out, stage=None):
         "hash": "SHA256 over exact bytes", "external_raw_parent": str(raw.parent),
         "final_raw_root": str(raw), "attempts": attempt_index,
         "staging": staging,
+        "setup": setup_index,
         "note": "Only the final raw root supplies median measurements; failed/interrupted roots are preserved."})
 
     checks = summary["evaluations"]["candidate"]["conditions"]
@@ -238,6 +248,15 @@ def publish(raw, attempts, out, stage=None):
                      f"{fmt(m['docker_cpu_cores_mean'])} / {fmt(m['docker_cpu_cores_max'])} | {fmt(m['node_rss_peak_mb'])} | "
                      f"{fmt(m['container_cgroup_peak_mb'])} | {fmt(m['docker_working_set_peak_mb'])} | {fmt(m['memory_gate_mb'])} | "
                      f"{fmt(obs['play_wall_s'])} | {obs['player_queue_starvation_warnings']} |")
+    if storage.get("prefetch"):
+        lines += ["", "### Explicit read-only prefetch (outside player wall time)", "",
+                  "The native-volume page cache was warmed with a full-file hash read before **every** repetition. "
+                  "The separate helper had a 6 GiB limit and no swap, was removed before playback, and is not part "
+                  "of the node-container memory gate. Its time is not hidden in player timing.", "",
+                  "| Condition / repeat | Prefetch bytes | Prefetch wall s |", "|---|---:|---:|"]
+        for r in summary["runs"]["candidate"]:
+            obs = by_label[r["label"]]
+            lines.append(f"| {r['condition']} / {r['repetition']} | {obs['prefetch_read_bytes']} | {fmt(obs['prefetch_wall_s'])} |")
     lines += ["", "### Message loss", "",
               "| Condition / repeat | Missing status | Decision delta (status − decision) | Latency delta (frames − latency) | Node dropped / skipped |",
               "|---|---:|---:|---:|---:|"]
@@ -339,6 +358,12 @@ def verify(out):
             if path.stat().st_size != item["bytes"] or s1.sha256_file(path) != item["sha256"]:
                 raise ValueError(f"Staging hash mismatch: {path}")
             checked += 1
+    for setup in raw_index.get("setup", []):
+        for item in setup["files"]:
+            path = Path(setup["raw_root"]) / item["path"]
+            if path.stat().st_size != item["bytes"] or s1.sha256_file(path) != item["sha256"]:
+                raise ValueError(f"Setup hash mismatch: {path}")
+            checked += 1
     print(json.dumps({"verified": True, "publication_files": len(index["files"]), "external_files": checked}))
 
 
@@ -349,11 +374,12 @@ def main():
     ap.add_argument("--out", type=Path)
     ap.add_argument("--verify", type=Path)
     ap.add_argument("--stage", type=Path, help="External Linux-volume staging evidence")
+    ap.add_argument("--setup", type=Path, nargs="*", default=[], help="External source-labelled runtime build evidence directories")
     a = ap.parse_args()
     if a.verify:
         verify(a.verify.resolve())
     elif a.raw and a.out:
-        publish(a.raw.resolve(), a.attempts, a.out.resolve(), a.stage)
+        publish(a.raw.resolve(), a.attempts, a.out.resolve(), a.stage, a.setup)
     else:
         ap.error("use --raw --out [--attempts ...] or --verify")
 

@@ -1,10 +1,12 @@
 # S1 real-Docker acceptance protocol — 2026-10-15
 
-**Status:** real candidate-only 4-condition × 3 matrix executed on the user-selected
-runtime; **S1 FAIL**, with strict completeness **false**. All twelve playback executions
-finished and cleaned up. See [`docker/README.md`](docker/README.md) for every repetition,
-median check, provenance, infrastructure attempts and external raw/hash indexes. No
-same-runtime causal improvement is claimed.
+**Status:** both the Windows-bind matrix and the subsequent verified Linux-volume,
+explicit warm-cache 4-condition × 3 matrix executed on the selected runtime: **S1 FAIL**,
+strict completeness **false**. Each matrix finished all twelve executions and cleanup.
+Latest: [`docker/linux_volume_2026-10-16/README.md`](docker/linux_volume_2026-10-16/README.md).
+The earlier [`Windows report`](docker/README.md) remains unchanged. Both reports retain
+every repetition, median check, source/runtime identity and raw/hash indexes; neither
+supports a same-runtime causal improvement claim.
 
 Source of acceptance bounds: main checkout `docs/BACKLOG.md`, S1, lines 263–290 read
 2026-10-15. Run from branch `p1/start-2026-10-15` in the shared `rs-p1-start` worktree.
@@ -473,3 +475,68 @@ near real time, run the complete four-condition ×3 `attempt07_linux_volume_warm
 with `--bags-volume ... --bags-prefetch`, including this same prefetch for every repetition.
 If I/O remains unresolved, retain/report the diagnostic and do not claim a completed
 registered matrix. No further environment or numerical tuning is planned in this lane.
+
+### Completed Linux-volume warm-cache matrix
+
+Harness/cache policy was committed as `62d055f92a1628a3e8c1da8798887d9bb147b93d`
+before warm measurements. A unique offline runtime image was built from exactly that HEAD:
+`resense:p1-s1-volume-62d055f-20261016`, Docker immutable ID/repo digest
+`sha256:4672efcc4505b274f2110ca2075ac048c8e0524d98311f693ddb9ea58f62fdbf`.
+Its node, launch, policy and ROS setup hashes were checked against this source before
+every replay; runtime node/policy/core/Dockerfile source stayed identical to `9247354`.
+
+The read-only volume is `rs-s1-original-bags-20261016-72a601b`, canonical original-data
+inventory digest `51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6`.
+Full database/metadata hashes matched the published Windows manifest; both topics, all
+header stamps and original 201/252 cloud counts matched. Volume copy and verification
+receipts, the full replay-time verification and every prefetch are retained externally.
+The volume contains only the original two bag folders and four files; helpers/evidence
+are outside it. No original Windows file was modified.
+
+The explicit warm-cache diagnostic (`attempt06b_linux_volume_warm_diagnostic`) met the
+unchanged I/O qualification gate, independently of failed numerical freshness checks:
+
+| README condition | Prefetch s (separate) | Player wall s | Starvation warnings | Fresh / original | I/O gate |
+|---|---:|---:|---:|---:|---|
+| obstacle | 13.141 | 26.089 | 12 | 43/201 | met |
+| clear | 4.159 | 30.015 | 0 | 231/252 | met |
+
+The fresh `attempt07_linux_volume_warm_matrix` then completed all four conditions ×3,
+without stopping at numeric failures or changing any threshold/count/policy. All twelve
+player, listener and exact-analyzer exits were 0; each node stopped cleanly (143), no OOM
+was recorded, every final receipt confirms cleanup, and no attempt-owned container remains.
+The parent full-suite/guard had finished before either timed diagnostic or matrix; Docker
+was checked idle at each start. The labelled original-data volume is intentionally retained
+for future full-digest-verified read-only reuse.
+
+**Final strict JSON:** `passed: false`, `complete: false`, no protocol errors. Four runs
+fail strict completeness: obstacle literal repeat 1 has one extra decision message; all
+three clear README runs lack the final expected bag-frame result, and repeats 2/3 also
+have one extra decision message. These checks were not relaxed or filtered into PASS.
+Eight numeric comparisons fail; medians below include all three measured runs per condition:
+
+| Condition | Median results | Median fresh | STOP | FAULT | Source age p50 / max s | First STOP lag s / m | Memory gate MB |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| obstacle literal | 49/201 | 1/201 | 47 | 5 | 1.190454 / 2.272193 | 1.708568 / 55.54 | 784.916480 |
+| obstacle README | 153/201 | 85/201 | 147 | 5 | 0.200155 / 1.940879 | 2.162709 / 55.54 | 724.985446 |
+| clear literal | 201/252 | 171/252 | 0 | 16 | 0.047668 / 0.563739 | none | 347.471872 |
+| clear README | 249/252 | 235/252 | 0 | 1 | 0.046754 / 0.402405 | none | 186.744832 |
+
+These are descriptive medians where completeness fails, not certified passing evidence.
+Literal obstacle memory and distance numeric checks pass; every other registered numeric
+comparison fails. Read-only cache warming improved the I/O qualification, but did not
+establish S1 acceptance. Source revision and storage/cache policy differ from the earlier
+Windows run, so no isolated algorithm/storage causal gain is asserted.
+
+The latest compact report preserves exact summary/manifest JSON, all per-run/median
+metrics, selected final/prefetch receipts and log excerpts, staging and both runtime build
+identities/log excerpts, and external SHA-256 indexes. The raw root is
+`C:/Users/alikh/AppData/Local/Temp/opencode/resense-p1-runs-2026-10-15/attempt07_linux_volume_warm_matrix`.
+Full parser/volume/cache/publication suite: **116 passed in 4.44 s**, no skips; Ruff passes.
+Original Windows evidence is neither overwritten nor relabelled.
+Exact-byte verification passed for **34 new compact publication files and 475 external
+files**, including both diagnostics, staging, both build directories and final raw runs.
+The original Windows publication independently still verifies **24 files / 312 external
+files** unchanged. Full-matrix player wall times were 25.246–31.523 s across all conditions,
+with **zero player queue-starvation warnings in every final repetition**; separate prefetch
+times and byte counts are published rather than hidden in those player timings.

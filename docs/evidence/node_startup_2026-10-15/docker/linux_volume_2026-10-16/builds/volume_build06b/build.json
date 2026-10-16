@@ -1,0 +1,16 @@
+{
+  "source_commit": "62d055f92a1628a3e8c1da8798887d9bb147b93d",
+  "harness_volume_commit": "72a601bcf2f05fef79f7c4797f027e5a071ef5af",
+  "harness_warm_cache_commit": "62d055f92a1628a3e8c1da8798887d9bb147b93d",
+  "image_reference": "resense:p1-s1-volume-62d055f-20261016",
+  "docker_image_id_and_repo_digest": "sha256:4672efcc4505b274f2110ca2075ac048c8e0524d98311f693ddb9ea58f62fdbf",
+  "platform_manifest": "sha256:b8199dc8118c3c7674554befdf6cd9a14b5c85db7a9b982e191617f1fb18035f",
+  "config_digest": "sha256:8f98276a4d89d5cc14060ca620c4bf7a16548fcce835bb62f4135eff7d653e87",
+  "base": "resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e",
+  "argv": ["docker", "build", "--network", "none", "--pull=false", "--build-arg", "RELEASE_IMAGE=resense:p1-e2-check", "--label", "org.opencontainers.image.revision=62d055f92a1628a3e8c1da8798887d9bb147b93d", "-f", "docker/Dockerfile.offline", "-t", "resense:p1-s1-volume-62d055f-20261016", "."],
+  "exit_code": 0,
+  "stdout": "build.stdout.log",
+  "stderr": "build.stderr.log",
+  "concurrency": "docker ps empty before build, warm diagnostic and full matrix. Parent's full-suite/guard containers were finished.",
+  "scope": "Explicit per-bag read-only cache prefetch, full original-file hashes unchanged. Runtime node/launch/policy/core/Dockerfiles unchanged from 9247354. No S1 algorithm, parameter, expected-count or threshold tuning."
+}
