@@ -11,6 +11,7 @@ PY=${PY:-python}
 OUT=$D/x1/$TAG; CACHE=$OUT/cache; ICP=$D/x1/icp
 mkdir -p "$CACHE"
 export RESENSE_REPO=$R PYTHONPATH=$R:$R/ros2_ws/src/resense_ros OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+export OPENBLAS_CORETYPE=${OPENBLAS_CORETYPE:-Haswell}   # PROTOCOL amendment 1
 A=roundT_squareT_pressureGate_squareT; B=roundT_doubleT; C=roundT_pressureGate_roundT; S=squareT_platform_squareT_switch
 for b in $A $B $C $S; do ln -sfn "$D/decoded/$b" "$CACHE/$b"; done
 J=$H/docs/evidence/judgement_2026-10-13/scripts
