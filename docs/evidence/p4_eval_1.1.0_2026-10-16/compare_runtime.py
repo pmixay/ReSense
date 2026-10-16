@@ -4,8 +4,8 @@
     compare_runtime.py <windows battery.json> <linux battery.json> <out.json>
 
 Every metric of every entry must be equal; paths, hashes and timing are not metrics. Also checks that
-both ran the same evaluated commit, driver and protocol (judge script bytes may differ only by CRLF,
-which is checked against the committed LF scripts). Exit 0 equal, 1 different.
+both ran the same evaluated commit, driver and protocol (judge script and label bytes may differ only by
+CRLF, which is checked against the committed LF files). Exit 0 equal, 1 different.
 """
 import hashlib
 import json
@@ -38,7 +38,10 @@ def main(win_path, lin_path, out_path):
         "same_driver": win["protocol"]["driver_sha256"] == lin["protocol"]["driver_sha256"],
         "judge_scripts_equal_modulo_crlf": crlf == win["protocol"]["scripts"]
         and {n: hashlib.sha256((JUDGE / n).read_bytes()).hexdigest() for n in crlf} == lin["protocol"]["scripts"],
-        "same_labels": win["labels"] == lin["labels"],
+        "same_labels": lin["labels"] == {b: hashlib.sha256((ROOT / f"labels/{b}.json").read_bytes()).hexdigest()
+                                         for b in win["labels"]}
+        and win["labels"] == {b: hashlib.sha256((ROOT / f"labels/{b}.json").read_bytes().replace(b"\n", b"\r\n"))
+                              .hexdigest() for b in win["labels"]},
         "source_meta_equal": {b: win["sources"][b]["meta_sha256"] == lin["sources"][b]["meta_sha256"]
                               for b in win["sources"]},
         "entries": len(lin["entries"]),

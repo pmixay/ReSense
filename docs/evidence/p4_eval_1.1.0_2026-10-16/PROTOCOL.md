@@ -99,3 +99,24 @@ for H6/E1. Current 66/100 remains v1.0.0. Set O and the ride are not part of the
 Commit this protocol and the intake tool first; then immutable summaries, hash indexes,
 commands and reports. Raw outputs too large for Git stay in the container and are indexed by
 SHA-256; this container is ephemeral, so the index — not the raw bytes — is the durable record.
+
+## Amendment 1 — BLAS kernel (before any 1.1.0 measurement)
+
+The first Linux control (707ea9c, default environment) equalled the Windows baseline on **every
+nominal row** but differed on **11 / 40** perturbed entries (pitch / roll / dedup / two dropout
+seeds), with byte-identical inputs on three of the four recordings. Its judge reproduction failed
+one row (doubleT_obstacle dedup 191 vs 189). Cause: numpy's bundled OpenBLAS 0.3.23 identifies this
+VM's Xeon as **"Prescott"** and uses generic SSE3 kernels; float matrix products then differ in the
+last bits, which some perturbed frames turn into different decisions. With `OPENBLAS_CORETYPE` =
+`Haswell` or `SkylakeX`, the battery worker reproduces **all 11 differing entries and the nominal
+checks exactly** (every metric equal to the Windows baseline,
+[blas_calibration/](blas_calibration/)). Kernel selection was calibrated on the v1.0.0 control
+only; no 1.1.0 output existed or was read.
+
+From here **all** detector replays in this evaluation (X3 control, X3 1.1.0, X1 both versions) set
+`OPENBLAS_CORETYPE=Haswell` (the kernel numpy's build names as its base target). The full Linux
+control is re-run under it; comparability with Windows is decided on that re-run. The first
+(Prescott) control is kept as evidence of the environment sensitivity, not used as a reference.
+The aborted Prescott X1 run (stopped after 5 cases, before any table) is discarded.
+Consequence for readers: X3 perturbation rows are sensitive to BLAS kernel selection at the level
+of a few STOP frames / one episode on these recordings, independent of the detector version.
