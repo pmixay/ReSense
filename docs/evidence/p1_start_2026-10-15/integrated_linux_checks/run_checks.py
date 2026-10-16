@@ -138,7 +138,11 @@ def main():
                 report['source_manifest_files'] = len(paths)
                 changed = subprocess.check_output(['git', 'diff', '--name-only', base_revision, commit], cwd=ROOT, text=True)
                 python_paths = [name for name in changed.splitlines() if name.endswith('.py') and (context / name).is_file()]
-                run('ruff-focused', ['ruff', 'check', *python_paths], cwd=context, timeout=30)
+                lint = run('ruff-focused', ['ruff', 'check', *python_paths], cwd=context, check=False, timeout=30)
+                report['ruff_focused_exit'] = lint.returncode
+                report['static_checks_passed'] = lint.returncode == 0
+                if lint.returncode:
+                    report['remaining_concerns'] = ['Focused Ruff failed; preserve ruff-focused.log separately from the full-suite result']
                 run('yaml-parse', [sys.executable, '-c',
                                   "from pathlib import Path; import yaml; paths=sorted(Path('.github/workflows').glob('*.yml')); "
                                   "[yaml.safe_load(p.read_text(encoding='utf-8')) for p in paths]; "
