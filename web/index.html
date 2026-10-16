@@ -220,6 +220,8 @@ function decisionOf(res) {
   if (res.obstacle || decision === 'STOP') return 'STOP';
   if (res.freshness?.valid === false) return res.freshness.reason === 'catchup' ? 'CAUTION' : 'FAULT';
   if (decision === 'FAULT' || h.level === 'error' || dl === 'error') return 'FAULT';
+  if (dl === 'warn') return 'CAUTION';
+  if (VALID_DECISIONS.has(decision)) return decision;
   if (decision === 'CAUTION' || res.warning || dl === 'warn') return 'CAUTION';
   if (VALID_DECISIONS.has(decision)) return decision;
   return 'GO';
@@ -382,7 +384,7 @@ function drawCab(res) {
   // decision chip, as the node publishes it on /resense/decision
   let dec = decisionOf(r); if (dec === '—') dec = 'GO';
   const sub = dec === 'STOP' ? (r.stop_held ? 'СТОП сохранён; актуальные данные отсутствуют' : r.nearest_distance != null ? `препятствие ${r.nearest_distance.toFixed(1)} м` : 'препятствие в габарите')
-    : dec === 'CAUTION' ? (r.warning ? 'объект рядом с габаритом' : 'снижена достоверность данных')
+    : dec === 'CAUTION' ? 'причины в строке предупреждения'
     : dec === 'FAULT' ? 'нет достоверных данных'
     : r.clear_distance == null ? 'препятствие не обнаружено'
     : r.clear_distance > 0 ? `дальность контроля ≈ ${r.clear_distance.toFixed(0)} м` : 'дальность контроля не определена';
@@ -391,7 +393,9 @@ function drawCab(res) {
   ctx.fillStyle = { STOP: '#e4000d', CAUTION: '#e1dd00', FAULT: '#202020' }[dec] || '#00854a';
   round(16, 16, hw, 44, 12); ctx.fill();
   ctx.fillStyle = dec === 'CAUTION' ? '#18130a' : '#fff'; ctx.fillText(head, 30, 46);
-  ctx.font = '700 19px ' + UI_FONT; ctx.fillStyle = '#fff'; ctx.fillText(sub, 16 + hw + 14, 45);
+  ctx.font = '700 19px ' + UI_FONT; ctx.fillStyle = '#fff';
+  // The full explanation is in the wrapping DOM banner. Avoid clipped canvas text on mobile.
+  if (W > hw + ctx.measureText(sub).width + 46) ctx.fillText(sub, 16 + hw + 14, 45);
   // legend: what the green stretch means and how far the corridor is trusted
   ctx.font = '600 12px ' + UI_FONT;
   const legend = [
@@ -493,7 +497,7 @@ function applyResult(res, opts) {
   const decision = decisionOf(res);
   if (decision === 'STOP') setBanner('bad', res.stop_held ? 'СТОП СОХРАНЁН: НЕТ АКТУАЛЬНЫХ ДАННЫХ' : res.nearest_distance == null ? 'ПРЕПЯТСТВИЕ В ГАБАРИТЕ' : `ПРЕПЯТСТВИЕ  ${res.nearest_distance.toFixed(1)} м`, detail);
   else if (decision === 'FAULT') setBanner('bad', 'ОШИБКА: НЕТ ДОСТОВЕРНЫХ ДАННЫХ', detail);
-  else if (decision === 'CAUTION') setBanner('warn', res.warning ? 'ВНИМАНИЕ: ОБЪЕКТ РЯДОМ С ГАБАРИТОМ' : 'ВНИМАНИЕ: СНИЖЕНА ДОСТОВЕРНОСТЬ ДАННЫХ', detail);
+  else if (decision === 'CAUTION') setBanner('warn', 'ВНИМАНИЕ', [resenseFormat.cautionText(res, decision), detail].filter(Boolean).join(' · '));
   else setBanner('clear', 'ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО', detail);
   $('dist').textContent = res.nearest_distance == null ? '—' : res.nearest_distance.toFixed(1) + ' м' + (res.stop_held ? ' (последнее)' : '');
   $('counts').textContent = `${dets.length} / ${warns.length}`;
@@ -590,8 +594,14 @@ function setLiveStale(stale) {
 }
 function onStatus(msg, source = ros, generation = rosGeneration) {
   if (state.mode !== 'live' || source !== ros || generation !== rosGeneration) return;
-  let res; try { res = JSON.parse(msg.data); } catch (e) { return; }
-  if (!resenseFormat.result(res) || !VALID_DECISIONS.has(res.decision)) return;
+  const invalidStatus = () => {
+    checkLiveStream(performance.now(), true);
+    setLiveStale(true);
+    if (!state.last || decisionOf(state.last) !== 'STOP')
+      setBanner('fault', 'НЕКОРРЕКТНЫЕ ДАННЫЕ', 'Сообщение недоступно; ожидается корректный результат.');
+  };
+  let res; try { res = JSON.parse(msg.data); } catch (e) { invalidStatus(); return; }
+  if (!resenseFormat.result(res) || !VALID_DECISIONS.has(res.decision)) { invalidStatus(); return; }
   const f = res.freshness, finite = v => typeof v === 'number' && Number.isFinite(v);
   let invalid = '';
   if (!f || typeof f.valid !== 'boolean') invalid = 'status_clock_unknown';

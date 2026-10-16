@@ -326,3 +326,22 @@ Data dir layout: `resense_web.sqlite`; `uploads/<id>/` staging areas (`files/` f
 `parts/` chunked files in progress; removed `RESENSE_WEB_UPLOAD_TTL_H` after their last write); `recordings/<id>/` uploaded and demo recordings, uploaded labels; `jobs/<id>/` spec.json,
 progress.json, result.json, worker.log; `runs/<id>/` results.jsonl (+ .idx), clouds.bin +
 clouds.json, series.json, summary.json, worker.log, frames.csv.size; `cache/` demo zips.
+# C1 additive metadata (Role 2, 16 October 2026)
+
+Frame rows from newly computed jobs include `decision_policy: "v1"` and
+`caution_reason: string[]` from the shared policy. The array is empty outside
+CAUTION. These optional keys pass through stored JSONL, `GET /api/runs/{id}/frames`
+and simulated WebSocket messages. Historical JSONL imports retain an existing
+published decision and its metadata; missing reasons stay unavailable. Only rows
+without a decision use the shared v1 fallback. Invalid supplied decision/reason
+types fail import instead of silently rescoring or discarding metadata.
+
+Clients show every distinct reason as plain text, including unknown codes. A
+missing/empty CAUTION reason is «Причина не передана». Runtime v2 remains rejected;
+reading a historical v2 row does not enable it. GO means «Препятствие не обнаружено»;
+`clear_distance` is estimated monitored range, not guaranteed free path.
+
+For ROS live input, receipt activity alone is insufficient: the node's current-frame
+freshness, source/residence age and publisher clock are checked as well. Invalid
+data is unavailable; stale/disconnected STOP retains its last-distance label.
+Simulation remains recording playback, not evidence of detector latency.

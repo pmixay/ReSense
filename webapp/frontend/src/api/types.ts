@@ -253,6 +253,10 @@ export interface FrameResultDict {
   t: number;
   decision: Decision;
   pos: number;
+  /** Additive policy metadata; absent in historical runs. Never rescore to fill it. */
+  decision_policy?: string;
+  caution_reason?: string[];
+  stop_held?: boolean;
 }
 
 export interface FramesPage {

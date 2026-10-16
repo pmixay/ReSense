@@ -22,7 +22,7 @@ const doubleT = (() => {
 
 describe('decisions', () => {
   it('has Russian labels', () => {
-    expect(DECISION_LABEL).toEqual({ GO: 'свободно', CAUTION: 'внимание', STOP: 'стоп', FAULT: 'ошибка' });
+    expect(DECISION_LABEL).toEqual({ GO: 'препятствие не обнаружено', CAUTION: 'внимание', STOP: 'стоп', FAULT: 'ошибка' });
   });
   it('maps letters, unknown as FAULT', () => {
     expect(['G', 'C', 'S', 'F', 'x'].map(fromLetter)).toEqual(['GO', 'CAUTION', 'STOP', 'FAULT', 'FAULT']);

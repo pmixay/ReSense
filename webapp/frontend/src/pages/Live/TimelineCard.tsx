@@ -26,7 +26,7 @@ export function TimelineCard({ slots, live, className }: { slots: Slots; live: b
       className={[styles.tl, className].filter(Boolean).join(' ')}
       help={
         <>
-          Решение по времени, шаг <b>0,1 с</b>; разрыв — сообщений не было. Ниже — свободный путь впереди (clear_distance, м): до препятствия, а без него —
+          Решение по времени, шаг <b>0,1 с</b>; разрыв — сообщений не было. Ниже — оценка дальности контроля (clear_distance, м): до препятствия, а без него —
           оценка дальности контроля.
         </>
       }
@@ -58,7 +58,7 @@ export function TimelineCard({ slots, live, className }: { slots: Slots; live: b
           </div>
         )}
         <div ref={ref} className={styles.sparkBox}>
-          {sparkH > 0 && <Sparkline values={slots.free} min={0} max={max} height={sparkH} label="Свободный путь впереди за 30 секунд, м" />}
+          {sparkH > 0 && <Sparkline values={slots.free} min={0} max={max} height={sparkH} label="Оценка дальности контроля за 30 секунд, м" />}
         </div>
       </div>
       <div className={styles.taxis} aria-hidden>

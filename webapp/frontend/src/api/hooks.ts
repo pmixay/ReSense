@@ -11,6 +11,7 @@ import {
 } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ApiError, api, apiUrl } from './client';
+import { isStatus } from './status';
 import { decodeRSC1, type DecodedCloud } from './cloud';
 import type {
   CloudsIndex,
@@ -421,11 +422,13 @@ export function useRunLabels(id: string | null | undefined, opts?: QueryOpts<Run
 
 export const FRAMES_PAGE_MAX = 500;
 
-export function fetchRunFrames(id: string, from: number, count: number, signal?: AbortSignal): Promise<FramesPage> {
-  return api.get<FramesPage>(`/runs/${enc(id)}/frames`, {
+export async function fetchRunFrames(id: string, from: number, count: number, signal?: AbortSignal): Promise<FramesPage> {
+  const page = await api.get<FramesPage>(`/runs/${enc(id)}/frames`, {
     query: { from: Math.max(0, Math.floor(from)), count: Math.min(FRAMES_PAGE_MAX, Math.max(1, Math.floor(count))) },
     signal,
   });
+  if (!Array.isArray(page.frames) || !page.frames.every(isStatus)) throw new Error('Некорректные данные кадров');
+  return page;
 }
 
 export function useRunFrames(id: string | null | undefined, from: number, count: number, opts?: QueryOpts<FramesPage>) {

@@ -124,7 +124,7 @@ describe('LiveFeedStore — simulation', () => {
     sims[2].h.onOpen?.();
     expect(sims[2].send).toHaveBeenCalledWith({ cmd: 'seek', pos: 49 });
     expect(sims[2].send).toHaveBeenLastCalledWith({ cmd: 'pause' });
-    expect(store.getSnapshot().view).toBe('paused');
+    expect(store.getSnapshot().view).toBe('waiting'); // paused, but no frame of the requested position yet
     store.destroy();
   });
 
@@ -202,13 +202,51 @@ describe('LiveFeedStore — simulation', () => {
 });
 
 describe('LiveFeedStore — ROS node', () => {
+  it('rejects malformed reasons, holds STOP through watchdog faults, and releases only on current data', async () => {
+    const { store, ros, tick, frame } = setup();
+    const current = () => ({ valid: true, reason: 'current', mode: 'replay', clock_reference: 'publisher_utc',
+      source_age_s: 0, residence_age_s: 0, queue_lag_s: 0, evaluated_at_utc_s: Date.now() / 1000,
+      max_result_age_s: .5, future_tolerance_s: .05, go_allowed: true });
+    store.start({ kind: 'ros', url: 'ws://node' });
+    await vi.waitFor(() => expect(ros).toHaveLength(1));
+    ros[0].h.onConnection?.();
+    ros[0].h.onMessage(frame({ decision: 'STOP', nearest_distance: 40, freshness: { ...current(), go_allowed: false } }) as never);
+    tick(TICK_MS);
+    ros[0].h.onMessage(frame({ caution_reason: 'bad' }) as never);
+    expect(store.getSnapshot()).toMatchObject({ view: 'error', count: 1, msg: { decision: 'STOP' } });
+    ros[0].h.onMessage(frame({ decision: 'FAULT', snapshot_kind: 'watchdog', freshness: { valid: false } }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot()).toMatchObject({ view: 'stale', msg: { decision: 'STOP', stop_held: true, nearest_distance: 40, caution_reason: [] } });
+    ros[0].h.onMessage(frame({ freshness: current() }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot()).toMatchObject({ view: 'live', msg: { decision: 'GO' } });
+    // Frequent receipt of the same old publisher timestamp must never stay green.
+    const stale = frame({ freshness: current() });
+    for (let i = 0; i < 8; i++) { ros[0].h.onMessage(stale as never); tick(100); }
+    expect(store.getSnapshot().view).toBe('stale');
+    store.destroy();
+  });
+
+  it('ignores callbacks from a failed connection before the reconnect timer fires', async () => {
+    const { store, ros, frame } = setup();
+    store.start({ kind: 'ros', url: 'ws://node' });
+    await vi.waitFor(() => expect(ros).toHaveLength(1));
+    ros[0].h.onConnection?.();
+    ros[0].h.onClose?.();
+    ros[0].h.onMessage(frame({ decision: 'CAUTION', caution_reason: ['old'] }) as never);
+    ros[0].h.onConnection?.();
+    expect(store.getSnapshot()).toMatchObject({ link: 'connecting', msg: null, count: 0 });
+    store.destroy();
+  });
   it('connects, receives, and retries every 2 s after an established link drops', async () => {
     const { store, ros, tick, frame } = setup();
     store.start({ kind: 'ros', url: 'ws://node:9090' });
     await vi.waitFor(() => expect(ros).toHaveLength(1));
     expect(ros[0].url).toBe('ws://node:9090');
     ros[0].h.onConnection?.();
-    ros[0].h.onMessage(frame() as never);
+    ros[0].h.onMessage(frame({ freshness: { valid: true, reason: 'current', mode: 'replay',
+      clock_reference: 'publisher_utc', source_age_s: 0, residence_age_s: 0, queue_lag_s: 0,
+      evaluated_at_utc_s: Date.now() / 1000, max_result_age_s: .5, future_tolerance_s: .05, go_allowed: true } }) as never);
     tick(TICK_MS);
     expect(store.getSnapshot().view).toBe('live');
 

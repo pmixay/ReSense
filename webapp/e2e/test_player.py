@@ -105,7 +105,7 @@ def seeded(backend) -> dict:
         d = json.loads(line)
         if 10 <= i <= 20:  # the sensor input fails: health error, nothing verified ahead
             d["health"] = {**(d.get("health") or {}), "level": "error", "decision_level": "error"}
-            d.update(obstacle=False, detections=[], clear_distance=0.0)
+            d.update(decision="FAULT", caution_reason=[], obstacle=False, detections=[], clear_distance=0.0)
         lines.append(json.dumps(d))
     ids["fault"] = upload_jsonl(api, "fault_log", "\n".join(lines).encode())
     runs = {r["id"]: r for r in api.get("/runs")}

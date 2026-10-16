@@ -8,6 +8,20 @@ window.resenseFormat = (() => {
   const vector = (value, length) => Array.isArray(value) && value.length === length && value.every(finite);
   const numbers = (value, keys) => keys.every(key => value[key] == null || finite(value[key]));
   const decisions = new Set(['GO', 'CAUTION', 'STOP', 'FAULT']);
+  const reasonLabels = {
+    advisory_object: 'Предупреждение об объекте',
+    health_warning: 'Снижена достоверность данных',
+    doubt: 'Неоднозначный объект',
+    margin_object: 'Объект у границы габарита',
+    compact_range_object: 'Компактный объект в зоне контроля',
+    incomplete_advisory: 'Недостаточно данных об объекте',
+  };
+  function cautionText(r, decision = r.decision) {
+    if (decision !== 'CAUTION') return '';
+    if (!r.caution_reason?.length) return 'Причина не передана';
+    return [...new Set(r.caution_reason)].map(code => Object.hasOwn(reasonLabels, code)
+      ? reasonLabels[code] : `Причина: ${code}`).join(' · ');
+  }
   function detection(d) {
     return record(d) && vector(d.center, 3) && vector(d.size, 3) && d.size.every(v => v >= 0)
       && ['distance', 'lateral', 'confidence'].every(key => finite(d[key]))
@@ -18,6 +32,9 @@ window.resenseFormat = (() => {
         || (r.warning != null && typeof r.warning !== 'boolean')
         || (r.stop_held != null && typeof r.stop_held !== 'boolean')
         || (r.decision != null && !decisions.has(r.decision))
+        || ('decision_policy' in r && typeof r.decision_policy !== 'string')
+        || ('caution_reason' in r && (!Array.isArray(r.caution_reason)
+          || !r.caution_reason.every(code => typeof code === 'string')))
         || !numbers(r, ['stamp', 'nearest_distance', 'clear_distance', 'n_points', 'n_corridor'])
         || (r.frame != null && (!Number.isSafeInteger(r.frame) || r.frame < 0))
         || ['nearest_distance', 'clear_distance'].some(key => r[key] != null && r[key] < 0)) return false;
@@ -41,5 +58,5 @@ window.resenseFormat = (() => {
         || (h.messages != null && (!Array.isArray(h.messages) || !h.messages.every(v => typeof v === 'string')))) return false;
     return true;
   }
-  return { record, finite, vector, result };
+  return { record, finite, vector, result, cautionText };
 })();

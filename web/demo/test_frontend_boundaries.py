@@ -1,6 +1,8 @@
 """P2 regression checks for source switches, malformed records and label round trips."""
 import json
 
+import pytest
+
 from test_web import LABEL_TOOL
 
 
@@ -127,3 +129,50 @@ def test_invalid_live_status_keeps_panels_covered_until_current_result(page):
         future_tolerance_s: .05, evaluated_at_utc_s: Date.now()/1000
     }})})""", frame)
     assert not page.locator("#panel-cab .stale-veil").is_visible()
+
+
+def test_caution_reasons_are_text_and_do_not_survive_other_decisions(page):
+    dashboard(page)
+    unknown = '<img src=x onerror="window.reasonInjected=true">'
+    caution = {"obstacle": False, "decision": "CAUTION", "decision_policy": "v1",
+               "caution_reason": ["advisory_object", "health_warning", "advisory_object", unknown]}
+    for payload, expected in ((caution, "Предупреждение об объекте"),
+                              ({"obstacle": False, "decision": "CAUTION"}, "Причина не передана")):
+        page.evaluate("t => resense.loadText(t, 'reasons.jsonl')", json.dumps(payload))
+        assert expected in page.text_content("#banner-detail")
+    page.evaluate("t => resense.loadText(t, 'reasons.jsonl')", json.dumps(caution))
+    text = page.text_content("#banner-detail")
+    assert text.count("Предупреждение об объекте") == 1
+    assert "Снижена достоверность данных" in text and unknown in text
+    assert page.locator("#banner-detail img").count() == 0
+    for decision in ("GO", "STOP", "FAULT"):
+        # Even forward-compatible stored GO with warning=true is not rescored.
+        payload = {**caution, "decision": decision, "warning": True, "obstacle": decision == "STOP"}
+        page.evaluate("t => resense.loadText(t, 'next.jsonl')", json.dumps(payload))
+        assert "Предупреждение об объекте" not in page.text_content("#banner-detail")
+        assert page.evaluate("decisionOf(resense.state.last)") == decision
+
+
+@pytest.mark.parametrize("field,value", [("caution_reason", None), ("caution_reason", "health_warning"),
+                                        ("caution_reason", [1]), ("decision_policy", {})])
+def test_malformed_reason_metadata_is_not_a_valid_result(page, field, value):
+    dashboard(page)
+    payload = {"obstacle": False, "decision": "GO", field: value}
+    assert not page.evaluate("r => resenseFormat.result(r)", payload)
+
+
+def test_legacy_fallback_matches_shared_v1_policy(page):
+    from pathlib import Path
+    import importlib.util
+    path = Path(__file__).resolve().parents[2] / "scripts/decision_policy_import.py"
+    spec = importlib.util.spec_from_file_location("c1_policy_import", path)
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    policy = helper.load_policy(path.parent.parent)
+    dashboard(page)
+    cases = [{"obstacle": obstacle, "warning": warning, "health": health}
+             for obstacle in (False, True) for warning in (False, True)
+             for health in ({}, {"level": "warn"}, {"level": "warn", "decision_level": "ok"},
+                            {"level": "error"}, {"level": "ok", "decision_level": "error"})]
+    for case in cases:
+        assert page.evaluate("r => decisionOf(r)", case) == policy.decision(case)

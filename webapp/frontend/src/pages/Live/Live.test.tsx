@@ -51,11 +51,12 @@ describe('Beacon', () => {
     expect(container.querySelector('[class*="fill"]')).not.toBeNull(); // the monitored distance, in green
   });
 
-  it('never shows the last decision or a distance when the data is stale', () => {
+  it('shows stale STOP only as retained history, without a current signal or range bar', () => {
     const { container } = render(<Beacon snap={snap({ view: 'stale', age: 1600 })} kind="ros" />);
     expect(shown('ДАННЫЕ УСТАРЕЛИ')).toHaveLength(1);
     expect(shown('СТОП')).toHaveLength(0);
-    expect(text(container)).not.toContain('55,2');
+    expect(text(container)).toContain('СТОП сохранён · последнее расстояние: 55,2');
+    expect(container.querySelector('[class*="fill"]')).toBeNull();
     expect(text(container)).toContain('1,6 с');
   });
 

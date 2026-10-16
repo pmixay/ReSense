@@ -43,7 +43,7 @@ export function MapTile({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
       <div className={`${styles.tt} ${styles.mapTitle}`}>
         <span>Схема пути</span>
         <Help placement="top-start" tone="light" width={240}>
-          Вид сверху: вдоль пути 0–200 м, поперёк растянуто ×18. Зелёное — габарит свободен, пунктир — дальше не проверено.
+          Вид сверху: вдоль пути 0–200 м, поперёк растянуто ×18. Зелёное — оценка дальности контроля, не гарантия свободного пути; пунктир — дальше не проверено.
         </Help>
         <span className={styles.rt}>0–200 м</span>
       </div>
@@ -98,7 +98,7 @@ function DistanceBar({
   const x = (m: number) => (Math.min(SENSOR_REACH, Math.max(0, m)) / SENSOR_REACH) * W;
   const mon = monitored !== null ? x(monitored) : null;
   const fx = x(free);
-  const labels = distanceLabels(W, unverified ? 'не проверено' : 'свободно', value !== null && obstacle ? fmtNum(value, 1) : null, fx, mon, monitored);
+  const labels = distanceLabels(W, unverified ? 'не проверено' : 'контроль ≈', value !== null && obstacle ? fmtNum(value, 1) : null, fx, mon, monitored);
   return (
     <svg width={W} height="42" viewBox={`0 0 ${W} 42`} className={styles.dbar} aria-hidden>
       <defs>

@@ -34,6 +34,7 @@ export function DecisionChip({ decision, size = 'md', label, extra, pulse, class
     <span className={cls} title={title}>
       <Icon name={DECISION_ICON[decision]} className={styles.icon} strokeWidth={2.6} />
       <span className={styles.text}>{label ?? DECISION_CHIP_LABEL[decision]}</span>
+      {decision === 'GO' && label == null && <span className={styles.extra}>Препятствие не обнаружено</span>}
       {extra !== undefined && extra !== null && <span className={styles.extra}>{extra}</span>}
     </span>
   );

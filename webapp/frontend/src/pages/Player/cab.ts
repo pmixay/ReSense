@@ -97,6 +97,10 @@ export interface DecisionText {
 export function decisionText(decision: Decision, frame: FrameResultDict | null, confirmS: number, hz = 10): DecisionText {
   const nConfirm = Math.max(1, Math.round(confirmS * hz));
   if (decision === 'STOP') {
+    if (frame?.stop_held) return {
+      line1: 'СТОП сохранён', line2: 'последнее расстояние',
+      help: 'Нет актуальных данных. Отсутствие новых рамок не означает отсутствие препятствия.',
+    };
     return {
       line1: `в габарите ${envelopeText()}`,
       line2: `подтверждено за ${fmtNumTrim(confirmS, 2)} с`,
@@ -104,19 +108,10 @@ export function decisionText(decision: Decision, frame: FrameResultDict | null, 
     };
   }
   if (decision === 'CAUTION') {
-    const w = frame?.warnings ?? [];
-    if (w.length) {
-      const d = Math.min(...w.map((x) => x.distance));
-      return {
-        line1: 'объект у габарита',
-        line2: `ближайший ${fmtMeters(d)}`,
-        help: 'Объект в зоне предупреждения — на 0,35 м шире габарита. Это внимание, не СТОП.',
-      };
-    }
     return {
-      line1: 'исправность снижена',
-      line2: 'проверьте датчик',
-      help: 'Детектор предупреждает о входных данных: видимость, захват рельсов, калибровка или задержка.',
+      line1: 'предупреждение',
+      line2: 'причины над облаком',
+      help: 'Все переданные причины показаны над облаком. Без метаданных причина не известна; подробности — в исправности и списке объектов.',
     };
   }
   if (decision === 'FAULT') {
@@ -128,9 +123,9 @@ export function decisionText(decision: Decision, frame: FrameResultDict | null, 
   }
   const clear = frame?.clear_distance;
   return {
-    line1: 'путь свободен',
-    line2: typeof clear === 'number' ? `на ${fmtMeters(clear, 0)}` : '—',
-    help: 'Габарит свободен до этой дистанции: дальше детектор не видит путь или впереди объект вне габарита.',
+    line1: 'Препятствие не обнаружено',
+    line2: typeof clear === 'number' ? `контроль ≈ ${fmtMeters(clear, 0)}` : '—',
+    help: 'Оценка дальности контроля, не гарантия свободного пути. За пределами этой дистанции препятствие может быть не обнаружено.',
   };
 }
 
@@ -152,7 +147,7 @@ export interface DistanceModel {
  *  run's decision at the playhead and no number is claimed. */
 export function distanceModel(frame: FrameResultDict | null, decision: Decision | null = null): DistanceModel {
   if (!frame) {
-    const title = decision === 'STOP' ? 'До препятствия' : decision === 'FAULT' ? 'Путь не проверен' : 'Свободный путь';
+    const title = decision === 'STOP' ? 'До препятствия' : decision === 'FAULT' ? 'Путь не проверен' : 'Дальность контроля ≈';
     return { obstacle: false, unverified: decision === 'FAULT', title, value: null, free: 0, monitored: null };
   }
   const d = frame?.nearest_distance;
@@ -161,7 +156,7 @@ export function distanceModel(frame: FrameResultDict | null, decision: Decision 
   const clear = typeof frame?.clear_distance === 'number' ? frame.clear_distance : null;
   if (obstacle) return { obstacle, unverified: false, title: 'До препятствия', value: d as number, free: d as number, monitored };
   if (frame?.decision === 'FAULT') return { obstacle: false, unverified: true, title: 'Путь не проверен', value: null, free: 0, monitored: null };
-  return { obstacle: false, unverified: false, title: 'Свободный путь', value: clear, free: clear ?? 0, monitored };
+  return { obstacle: false, unverified: false, title: 'Дальность контроля ≈', value: clear, free: clear ?? 0, monitored };
 }
 
 /** Approximate width of a label under the distance bar (Montserrat 800 12 px). */
