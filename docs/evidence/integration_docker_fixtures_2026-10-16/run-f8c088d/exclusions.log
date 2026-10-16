@@ -1,0 +1,2 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+{"result": "PASS", "exact_context_and_copy_files": 24, "fixture_bytes": 1363127, "no_recorded_data_or_archives": true}

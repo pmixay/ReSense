@@ -64,19 +64,25 @@ RUN pip3 install --upgrade "pip>=24" "setuptools==75.6.0" "wheel==0.45.1" "packa
 # generator itself needs open3d, i.e. WITH_TOOLS=1).
 COPY tests ./tests
 COPY scripts ./scripts
+# Pure dataset-free test fixtures. Copy exact files: neither the web application nor recorded
+# judge/startup outputs belong in this image. The context regression builds this block verbatim.
+# BEGIN pure test fixtures
 # The paired synthetic evaluator and its tests use the registered protocol in the image too.
 COPY docs/evidence/cycle_2026-09-28/evaluation/protocol.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol.json
 COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
 # Committed residual-inventory fixtures keep the dataset-free tests runnable in the image.
 COPY docs/evidence/results/residual_events_2026-09-28.json ./docs/evidence/results/residual_events_2026-09-28.json
 COPY docs/RESIDUAL_EVENTS_2026-09-28.md ./docs/RESIDUAL_EVENTS_2026-09-28.md
-# Pure dataset-free test fixtures (also useful in a runtime-image unit check). Copy exact files:
-# neither the web server/frontend nor recorded judge/startup outputs belong in this image.
-# BEGIN pure test fixtures (the context regression builds these exact COPY instructions)
 COPY webapp/backend/resense_web/__init__.py webapp/backend/resense_web/decision.py ./webapp/backend/resense_web/
+# X3 imports probe -> judge_runner + range_test -> resense_ros.fastcloud (the ROS source below)
+# and configs/default.yaml (above). The scorer is a CLI; judge_geom is NumPy-only. No bag/cache,
+# odometry, extraction scripts or historical judge outputs are required for these regressions.
+COPY docs/evidence/judgement_2026-10-13/scripts/probe.py docs/evidence/judgement_2026-10-13/scripts/judge_runner.py docs/evidence/judgement_2026-10-13/scripts/range_test.py docs/evidence/judgement_2026-10-13/scripts/score_objects.py docs/evidence/judgement_2026-10-13/scripts/judge_geom.py ./docs/evidence/judgement_2026-10-13/scripts/
 COPY docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh docs/evidence/judgement_2026-10-13/scripts/docker/listener.py ./docs/evidence/judgement_2026-10-13/scripts/docker/
 COPY docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py docs/evidence/node_startup_2026-10-15/docker_tools/listener.py docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py ./docs/evidence/node_startup_2026-10-15/docker_tools/
 COPY docs/evidence/offline_rebuild_2026-10-15/verify.py ./docs/evidence/offline_rebuild_2026-10-15/verify.py
+# Label-envelope/schema regression and offline `resense eval`; no point-cloud dataset is copied.
+COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
 # END pure test fixtures
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
         pip3 install "rosbags==0.11.5" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2"; \
@@ -87,9 +93,6 @@ RUN if [ "$WITH_TOOLS" = "1" ]; then \
 COPY ros2_ws/src /opt/resense/ros2_ws/src
 COPY configs/default.yaml /opt/resense/ros2_ws/src/resense_ros/config/detector.yaml
 RUN . /opt/ros/humble/setup.sh && cd /opt/resense/ros2_ws && colcon build --symlink-install
-
-# The P4 label-metadata regression and offline `resense eval` use the committed real labels.
-COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
 
 COPY docker/entrypoint.sh /entrypoint.sh
 # DDS over UDP only by default: a bag played by a normal user on the host cannot write into the
