@@ -8,7 +8,7 @@
 > here" points at the seal of 29.09 night (shell off) and its gate, and at the superseded seal of
 > 29.09 evening; rows added for the 29.09 folders; each file remains the record of its own date ·
 > **Updated:** 2026-10-16: integration checkpoint, completed selected-scope H3/withdrawal/H4
-> and original handoffs indexed below; H5/H6 pending. **Status:** current
+> and original handoffs indexed below; H5/1.1.0 seal DONE, H6/CI/main and E1 pending. **Status:** current
 
 Every measured artifact here retains its original run identity: a new run gets a new file or folder
 (`results/<what>_<date>.json`, `<run>_<date>/`). "Log §…" refers to the full experiment log
@@ -22,7 +22,8 @@ per-file speeds and intake events) stays in `docs/` because scripts read it.
 
 | what | where |
 |---|---|
-| integration 15–16.10: measured/reviewed selected source `c9aea87cb5322092070158cd8987115ee44833c9`, H1 DROP, H2/range cap retained; completed H3/probes/H4, inherited High **OPEN 8.1**, **H5/H6 PENDING**; stable original publication links and branch archive | [`integration_2026-10-16/`](integration_2026-10-16/README.md) |
+| current detector seal **1.1.0, 16.10**: measured `5211565`, source/evidence `21e1d61`, seal commit `d6319c2`, proof `ec81e78`; **36 files**, source digest `db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751`. Final gate **208/208 non-latency rows identical**, same **146 gated rows passed**, all **18,329 frames** unchanged vs reviewed `c9aea87` outside registered timing. Explicit committed-manifest verification **PASS before/after native rebuild** in clean LF Linux. Package sealed; E1 tag/archive pending, published release still v1.0.0 | [`detector_freeze_2026-10-16_1.1.0.json`](detector_freeze_2026-10-16_1.1.0.json), [`h5/`](integration_2026-10-16/h5/README.md), [clean-checkout proof](integration_2026-10-16/h5/seal_verify/completion.json) |
+| integration 15–16.10: reviewed selected source `c9aea87cb5322092070158cd8987115ee44833c9`, final measured `5211565`, H1 DROP, H2/range cap retained; completed H3/probes/H4/H5, inherited High **OPEN 8.1**, **H6/CI/main and E1 PENDING**; stable original publication links and branch archive | [`integration_2026-10-16/`](integration_2026-10-16/README.md) |
 | replacement selected-scope H3, published `5282d6f`: **PASS**, exit 0, **208/208 non-latency rows identical**, same **146 gated rows passed**, no overrides/waivers; complete **18,329-frame** raw/serialized audit against same-Linux sealed `707ea9c`, no unexplained change; only intended range/additive effects after registered timing normalization | [`h3_selected/`](integration_2026-10-16/h3_selected/README.md) |
 | author H1 withdrawal measurements, published `829b243`, source `c9aea87`: **260 passed / 6 existing external-data deselections**, no failures/errors/skips; A-axis **82/177**, C-person **82.77 m / 55**; entire dark pieces 1/3 **14/2 STOP**, zero extras/losses or feature/observer calls | [`WITHDRAWAL_RESULTS.md`](integration_2026-10-16/h4_fixes/columns/WITHDRAWAL_RESULTS.md) |
 | fresh independent H4, published `70072f1`: revised difference `707ea9c..c9aea87` **ACCEPTED**, no supported **NEW medium+** finding; **306 passed**, **36 H2 angular/voxel boundary cases**, **1,344 paired Tracker updates per source**; inherited High tall miss **OPEN 8.1** | [`h4_selected/`](integration_2026-10-16/h4_selected/README.md) |

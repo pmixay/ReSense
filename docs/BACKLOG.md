@@ -8,9 +8,10 @@
 > **Last verified:** 2026-10-15: every cause and line reference against the sealed `707ea9c`
 > (v1.0.0 detector) by four read-only researchers and one critic; numbers recounted from the judge's
 > per-frame outputs (`docs/evidence/judgement_2026-10-13/out/`, `raw.tar.xz`). Line numbers in
-> `resense/` shift after the 1.1.0 reseal (§2): search for the named function.
+> `resense/` have shifted with the 1.1.0 reseal (§2): search for the named function.
 > **Updated:** 2026-10-16: selected scope `c9aea87`, H1 DROP; replacement H3/probes and fresh
-> independent H4 complete. Inherited High 8.1 OPEN; H5/H6 PENDING.
+> independent H4 complete; H5 DONE at `5211565`, 1.1.0 sealed 16.10. Inherited High 8.1 OPEN;
+> H6/CI/main and E1 PENDING.
 > **Status:** current; §2/§2a are the integration ledger, later dates are conditional planning targets.
 
 ## 1. How to use it
@@ -46,8 +47,13 @@
 ## 2. Integration outcomes and selected scope (16.10)
 
 Authoritative scope/acceptance links: [integration checkpoint](evidence/integration_2026-10-16/README.md).
-Measured/reviewed committed source is **`c9aea87cb5322092070158cd8987115ee44833c9`**,
-after shipping default withdrawal **`795a243`**.
+Reviewed committed scope is **`c9aea87cb5322092070158cd8987115ee44833c9`**,
+after shipping default withdrawal **`795a243`**. Final measured **1.1.0** source is
+**`52115654417a660669b8dddfce447692c1d782cc`**, with the numerical core/config unchanged.
+The [current 16.10 seal](evidence/detector_freeze_2026-10-16_1.1.0.json) was committed at
+`d6319c2` from source/evidence commit `21e1d61`; clean-LF proof `ec81e78` is retained in
+[H5](evidence/integration_2026-10-16/h5/README.md). Published tag/archive remains **v1.0.0**;
+1.1.0 is sealed but **unreleased**, H6/CI/main and E1 pending; no new J1 score.
 Original handoffs remain dated evidence; their branch names are historical identities.
 
 | what | judge problem | actual state on 16.10 |
@@ -62,7 +68,7 @@ Original handoffs remain dated evidence; their branch names are historical ident
 | H0 / X3 / G3 | evaluation | H0 **PASS**, 208/208 non-latency rows identical. X3 **40-case v1.0.0 baseline**, not candidate PASS. G3 **spec only**, no held-out result |
 | P2 D1 / PT1 | documentation / pitch | Pass 1 integrated; final numerical pass waits for J1. Current score/numbers remain explicitly **v1.0.0**, no new judge score |
 | O1 | organizer permission / format | Prepared **not sent**, no reply |
-| Version 1.1.0 / seal / main | release | **H5/H6 pending**; no new manifest/verify PASS claimed |
+| Version 1.1.0 / seal / main | release | **H5 DONE:** all four versions 1.1.0 before final gate; 208/208 non-latency rows identical, same 146 gated rows passed, all 18,329 frames unchanged vs reviewed scope outside registered timing. Current 16.10 manifest/clean-LF verification **PASS**. **H6/CI/main and E1 pending**; no new tag/archive or score |
 
 ### 2a. Acceptance results and remaining handoff (16.10)
 
@@ -78,7 +84,7 @@ scope/verdicts. Disabling H1 selects a smaller bundle; it does not rewrite these
 | H2 | P3 → P1/P4 | **DONE for selected scope:** integrated, full selected gate PASS, C-person retention reconfirmed and fresh independent H4 accepted, including **36 angular/voxel boundary cases** and the paired clustering route |
 | H3 | P1 | **DONE — replacement PASS**, [selected H3](evidence/integration_2026-10-16/h3_selected/README.md), published `5282d6f`, measured exact `c9aea87`: clean Linux/native full gate exit 0, no waivers/overrides; **208/208 non-latency rows identical**, same **146 gated rows passed**; **18,329/18,329 raw/serialized frames** compared against same-runtime sealed `707ea9c`, all differences explained |
 | H4 | P4, independent of authors | **DONE — revised-scope ACCEPTED**, [fresh independent H4](evidence/integration_2026-10-16/h4_selected/README.md), published `70072f1`, reviewed `707ea9c..c9aea87`: **306 passed**, zero failures/skips/deselections, **1,344 paired Tracker updates per source**; no supported **NEW medium-or-higher** finding remains. Inherited **High tall miss OPEN 8.1**; original safety **BLOCKED** unchanged |
-| H5 | P1 | **PENDING:** bump all four declarations (`pyproject.toml`, `resense/__init__.py`, ROS `package.xml` / `setup.py`) to 1.1.0 **before** final gate, then actual manifest/default-manifest update, clean LF verify, tests and release metadata. Update DETECTOR_FREEZE/README from actual results |
+| H5 | P1 | **DONE — 1.1.0 sealed 16.10:** [final H5](evidence/integration_2026-10-16/h5/README.md), measured `5211565`, all four version declarations 1.1.0 before gate. **208/208 non-latency rows identical**, same **146 gated rows passed**; all **18,329 raw/serialized frames**, zero non-latency changes vs reviewed `c9aea87`. [Manifest](evidence/detector_freeze_2026-10-16_1.1.0.json) source/evidence `21e1d61`, seal `d6319c2`, proof `ec81e78`: **PASS before/after native rebuild** in clean LF Linux. Parent owns default-pointer/freeze-overview integration |
 | H6 | P1 | **PENDING:** complete CI and normal history-preserving merge into `main`; E1 tag/archive verification remains separate. [Verified archive](evidence/integration_2026-10-16/branch_archive/README.md) prepared; parent verifies final-main restore and refreshed refs/worktrees before retirement |
 
 ## 3. Starting point and summary
@@ -98,8 +104,8 @@ Whether anything after v1.0.0 can still count is the organizers' answer (card O1
 | H2 | Physical 0.1° azimuth-span bar integrated; C-person retention and independent boundaries/route accepted | 8.1 | P3 | A | S | protects #2 fix | done 16.10 |
 | H3 | PASS: replacement full gate and complete explained frame diff on exact selected `c9aea87` (§2a) | 8.1, 8.2 | P1 | A | S | enabler | done 16.10 |
 | H4 | Revised difference ACCEPTED; no NEW medium+, inherited High OPEN; old safety BLOCKED / correctness PASS preserved | 8.1 (DETECTOR_FREEZE step 3) | P4 | A | S | enabler | done 16.10 |
-| H5 | PENDING: version 1.1.0 committed before final gate; final gate; reseal; docs | 8.6 | P1 | A | S | enabler | parent next; target 18.10 |
-| H6 | PENDING: CI / merge to `main` → card E1 (tag `v1.1.0`, release) | 8.6 | P1 | H | S | enabler | after H5; target 18.10 |
+| H5 | DONE: all four versions 1.1.0 before passing final gate, 16.10 seal and clean-LF verification (§2a) | 8.6 | P1 | A | S | enabler | done 16.10 |
+| H6 | PENDING: actual complete CI / merge to `main` → card E1 (tag `v1.1.0`, release) | 8.6 | P1 | H | S | enabler | parent next; target 18.10 |
 | O1 | Ask the organizers: pitch format, whether v1.1.x may be shown or re-run, results before 23.10 | 8.8 (gates 8.1–8.6) | P1 | H | S | decides ~3–6 | 15.10 |
 | E1 | Ship 1.1.0: PR to `main`, tag `v1.1.0`, verify the release, fix the jury block; repeat as v1.2.0 | 8.6 (enabler) | P1 | H+A | S | +0.25 | 18.10, 20.10 |
 | S1 | FAIL; runtime removed, published queue/freshness retained; new diagnosis remains open | 8.3, 8.6 | P1 | A | M | ~+2 if accepted later | reopen after diagnosis |
@@ -107,7 +113,7 @@ Whether anything after v1.0.0 can still count is the organizers' answer (card O1
 | C1 | Shared v1 selected; v2 offline-only FAIL (30.46%, 19 lost alerts), runtime rejects v2 | 8.1 | P1 | H+A | M | +1 if v2 accepted later | acceptance open |
 | C2 | `clear_distance` consistent with the advisory output; publish the overclaim scorer | 8.1 | P3 | H+A | S | +0.5 | 19–20.10 |
 | X1 | Range attribution harness: which rule or tracker hold costs each late frame | 8.2 (enabler) | P4 | A | S | enabler | 16–18.10 |
-| X3 | Standing CLI + measured 40-case v1.0.0 baseline; new-seal baseline pending | 8.4, 8.7 | P4 | A | S | +0.5 | baseline done; H5 follow-up |
+| X3 | Standing CLI + measured 40-case v1.0.0 baseline; new-seal baseline pending | 8.4, 8.7 | P4 | A | S | +0.5 | v1.0.0 baseline done; 1.1.0 X3 pending |
 | G3 | Specification registered; no held-out execution/result | 8.7, 8.4 | P4 | A | M | up to +1.5 after actual run | spec done; run target 21.10 |
 | J1 | Re-judge the shipped seal with the judge's tools; one table against 13.10 | evidence for all | P4 (P1 reads `delta.md`) | A | M | protects 8.2, +0.5 8.5, +0.5 8.8 | 18–19.10, 21.10 |
 | K1 | Standing train: far axis jitter → STOP flicker at 100–150 m and perturbation-sensitive platform false STOPs | 8.2, 8.4, 8.1 | P3 | A | M | +1 to +1.75 | 18–20.10 |
@@ -137,8 +143,9 @@ into **one bundle** (`det/1.2.0` from the 1.1.0 seal) with one combined gate, on
 and one reseal; items that miss the cut-off do not ship.
 
 The calendar below is the **original conditional plan**, not completion evidence. The actual
-16.10 ledger is §2/§2a: H1 dropped, S1 and offline C1 v2 failed, replacement H3/probes/H4 complete.
-18.10 for 1.1.0 and 18–20.10 for a later bundle remain targets dependent on acceptance.
+16.10 ledger is §2/§2a: H1 dropped, S1 and offline C1 v2 failed, replacement H3/probes/H4 and
+H5 complete; **1.1.0 sealed 16.10**. H6/E1 target 18.10 and a later 18–20.10 bundle remain
+conditional; the calendar's original H5 date below is superseded by the actual H5 receipt.
 
 * **15–16.10:** P1 sends O1 first (its answer is the branch point) and sets the C1 semantics; P1's
   agents start S1, E2 and the C1 policy module (node lane, no seal). P4 builds the data and caches
@@ -147,7 +154,8 @@ The calendar below is the **original conditional plan**, not completion evidence
   config variants with `--set` on `final/silent-misses` (re-checked after the 1.1.0 rebase). P2 runs
   D1 pass 1 and starts PT1's slide cuts (no numbers needed yet).
 * **Next acceptance:** replacement H3, withdrawal probes/dark and independent H4 completed
-  on `c9aea87`; P1 proceeds to parent-owned H5/H6, still PENDING until actual receipts.
+  on `c9aea87`; H5 completed on version-bumped `5211565` with the 16.10 seal. P1 proceeds to
+  parent-owned H6/CI/main and later E1, still PENDING until actual receipts.
 * **18.10:** review fixes (P3), then P1: H5 (bump to 1.1.0, final gate, reseal) and H6 / E1 (PR,
   CI green, tag `v1.1.0`, release verified). P4: J1 run 1 on v1.1.0 (its range table feeds the deck)
   and X1 on 1.1.0 and on `707ea9c`. P3 opens `det/1.2.0` from the 1.1.0 seal, cheapest first:
@@ -183,7 +191,7 @@ If a person is unavailable, P1 runs that role's items with agents in the same or
 
 **Where each role resumes (16.10):**
 
-* **P1:** send prepared O1; read actual replacement H3/probes/H4, then H5/H6 (§2a).
+* **P1:** send prepared O1; read completed H3/probes/H4/H5, finish H6 (§2a).
   Keep failed S1/v2 excluded. Complete the archive/main/cleanup receipt and later E1.
 * **P2:** D1/PT1 pass 1 is integrated; synchronize final numerical docs/chart only after J1.
   PT2 rehearsals, S5 and release-matched video remain open.
@@ -208,7 +216,8 @@ rows identical** to the 29.09 baseline. Shared root:
 See [P4 evidence and X3 report](evidence/p4_start_2026-10-15/README.md) for exact identities,
 paths and commands. This is Windows-native local replay, not Linux VM/node timing; the raw
 Windows checkout freeze check fails on CRLF/generated `.pyd`, while all 36 committed seal
-blobs match. The 1.1.0 standing baseline remains future H5/X3 work.
+blobs match. H5's separate clean-LF Linux seal proof now passes; the 1.1.0 standing X3 baseline
+remains future evaluation work, not supplied by the final regression gate.
 
 Rough gain if the pre-defence items land and count (judge's estimates): 8.1 +2 to +3, 8.2 +1 to +2,
 8.3 +1.5 to +2.5, 8.4 +0.5 to +1, 8.5 +1, 8.6 +1 to +1.5, 8.7 +1, 8.8 +1.

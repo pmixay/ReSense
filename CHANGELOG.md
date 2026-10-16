@@ -7,22 +7,35 @@
 > changelog, the 29.09 node change against the node source and launch file, the rules of 29.09
 > evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link;
 > 2026-09-29: the web prototype entry against `webapp/`, `scripts/run_webapp.sh` and `.github/workflows/ci.yml` of PR #31 ·
-> **Updated:** 2026-10-16: selected-scope H3/withdrawal/independent H4 at `c9aea87` below;
-> H5/H6 remain pending. **Status:** current
+> **Updated:** 2026-10-16: selected-scope H3/withdrawal/independent H4 at `c9aea87`, final H5
+> at `5211565` and verified 1.1.0 seal below; H6/CI/main and E1 remain pending. **Status:** current
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
-are team labels, the package is 1.0.0 since 25.09. Figures are the team's, measured when a change
+are team labels; package 1.0.0 dates from 25.09, current package **1.1.0 is sealed 16.10**.
+The published release remains v1.0.0. Figures are the team's, measured when a change
 landed (detector figures on the 1 cm frame cache). Current results: [`README.md`](README.md),
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
-## [1.1.0] — planned, unreleased integration (16.10)
+## [1.1.0] — sealed 16.10, unreleased (E1 tag/archive pending)
 
-**Measured/reviewed source `c9aea87`; replacement H3, withdrawal probes and independent H4
-complete. Parent-owned H5/H6 PENDING:** version 1.1.0, final committed gate/seal, CI/main.
+**H5 DONE:** final measured source `5211565`, numerical core unchanged from reviewed `c9aea87`;
+replacement H3, withdrawal probes, independent H4 and final version-bumped gate/seal complete.
+**H6 PENDING:** actual complete CI/main acceptance. No v1.1.0 E1 tag/archive or new J1 score.
 [Integration checkpoint](docs/evidence/integration_2026-10-16/README.md) links the committed
 reports and preserves the old H3 PASS / original H4 BLOCKED verdicts.
 
+- [Final H5](docs/evidence/integration_2026-10-16/h5/README.md): all four declarations committed
+  at **1.1.0** in `52115654417a660669b8dddfce447692c1d782cc` before measurement. Full gate
+  **PASS**, exit 0, **208/208 non-latency rows identical**, same **146 gated rows passed**,
+  no overrides/waivers; all **18,329 raw/serialized frames** have zero non-latency changes
+  against reviewed `c9aea87`. No new gated gain or detector timing improvement is claimed.
+- [Current seal](docs/evidence/detector_freeze_2026-10-16_1.1.0.json): measured `5211565`,
+  source/evidence commit `21e1d61`, seal commit `d6319c2`; **36 frozen files**, source digest
+  `db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751`.
+  [Committed-seal proof](docs/evidence/integration_2026-10-16/h5/seal_verify/completion.json)
+  retained at `ec81e78`: explicit new-manifest verification **PASS** in a clean LF Linux checkout
+  before and after native rebuild. Default-pointer integration is parent-owned.
 - Retained: structure-surface cut with H2's physical 0.1° azimuth bar; monitored/clear-range
   cap at wall drift; shared C1 v1 with strict raw flag/health validation; E2 offline rebuild;
   P4 evaluation tools/evidence and P2 docs/pitch preparation.
@@ -71,7 +84,8 @@ reports and preserves the old H3 PASS / original H4 BLOCKED verdicts.
 
 **Historical measurements below, not the selected 1.1.0 shipping claim.** H4 later blocked
 the column/free-top path; it is disabled by `795a243`. H2 and the range cap remain selected,
-with replacement H3/probes and revised-scope H4 complete at `c9aea87` (H5/H6 pending).
+with replacement H3/probes and revised-scope H4 complete at `c9aea87`; H5 later sealed 1.1.0
+from `5211565` (H6 and E1 pending).
 See the [16.10 checkpoint](docs/evidence/integration_2026-10-16/README.md).
 
 The two fixes below together, and the fixes of the review of 14.10 evening:
