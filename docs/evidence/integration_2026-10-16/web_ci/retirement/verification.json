@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "manifest": {
+    "bytes": 22493,
+    "sha256": "881578432f674d9e1b0010464ed9c12e1422e82dd641c10c405ce0cff0ebcbe8"
+  },
+  "verification": {
+    "verified_files": 19,
+    "raw_bytes": 1939465,
+    "archive": {
+      "bytes": 149177,
+      "sha256": "abc9690d4e04fc345d88d2c84708445b882ec65e74c81ad2ba8c8e7523a3587a"
+    }
+  },
+  "external_zip_and_manifest_identical": true,
+  "branch_inventory_path_and_metadata_match_count": 19,
+  "original_files_unchanged_count": 19,
+  "roundtrip": {
+    "verified_files": 19,
+    "raw_bytes": 1939465,
+    "archive": {
+      "bytes": 149177,
+      "sha256": "abc9690d4e04fc345d88d2c84708445b882ec65e74c81ad2ba8c8e7523a3587a"
+    },
+    "destination": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-integration-web-raw-20261016/roundtrip-restored",
+    "reads_original_worktree": false
+  },
+  "tracked_evidence_preserved_count": 30,
+  "additional_noncache_owner_files": [],
+  "supporting_files": {
+    ".gitattributes": {
+      "bytes": 93,
+      "sha256": "003f91b1cb3abc924bfc35dffbfad854782aac6ad019f7e0f555ab660830d6bc"
+    },
+    "README.md": {
+      "bytes": 4336,
+      "sha256": "00bebdb75bad0dd0318c60ebea45d75dc2192c25f01bbe25b2a536257596bb6c"
+    },
+    "preserve_raw.py": {
+      "bytes": 14065,
+      "sha256": "70a1e74c85e99bedc909ff7171d51019bc2e43bee0e02652bd6a13c02f161279"
+    },
+    "test_preserve_raw.py": {
+      "bytes": 3686,
+      "sha256": "b56ea6c51c2ac0d3afab0e43a17205784635d7eadb81b892504241fca378993f"
+    }
+  },
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "source_deletion_performed": false
+}
