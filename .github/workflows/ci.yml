@@ -135,9 +135,9 @@ jobs:
     needs: checks
     runs-on: ubuntu-22.04
     env:
-      # The score/improvement branch, retained working branches and main run the viewer and
-      # original-bag cold-start regression (scripts/p1_cold_bag_test.sh keeps the same list)
-      FULL: ${{ github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/integration/p3-score-sync-20260928' || github.ref == 'refs/heads/experiment/cross-ring-sparse-evidence' || github.ref == 'refs/heads/testovaya-gpt' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
+      # The integration branch, score/improvement branch, retained working branches and main run
+      # the viewer and original-bag cold/warm regression (scripts/p1_cold_bag_test.sh keeps the same list)
+      FULL: ${{ github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/integration/p3-score-sync-20260928' || github.ref == 'refs/heads/integration/2026-10-15-16' || github.ref == 'refs/heads/experiment/cross-ring-sparse-evidence' || github.ref == 'refs/heads/testovaya-gpt' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v7
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
@@ -205,7 +205,7 @@ jobs:
         # device on an isolated network and checks outage/recovery without requiring demo hardware.
         # FULL includes testovaya-gpt for the P1/P2/P4 completion run.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
-      # ---- the original-bag cold-start regression (working branch and main). The two original
+      # ---- the original-bag cold/warm regression (full-CI branches). The two original
       # organizer bags come from the Actions cache, so that Google Drive is not asked for the 3.7 GB
       # archive on every push: its download quota refused the runners on 27.09 ("Quota exceeded",
       # runs 36313587896 and 36313174302). The key is the hash of the pinned checksums
@@ -217,8 +217,8 @@ jobs:
       # a hit downloads nothing). Caches are scoped to the branch that saved them and readable from
       # every branch when saved on main (the default branch); dataset-cache.yml refreshes main's
       # entry on a schedule, before GitHub's 7-day eviction of unused caches. Without the bags
-      # (Google Drive refused the one download a miss gets) the check cannot run: it is reported
-      # as not run, in the job summary and as a warning, never as passed.
+      # (Google Drive refused the one download a miss gets) the check cannot run: the job fails
+      # and reports the missing regression in its summary, so complete CI cannot omit it.
       - name: the two original bags from the Actions cache
         id: bags
         if: ${{ !cancelled() && env.FULL == 'true' }}
@@ -230,7 +230,6 @@ jobs:
       - name: cache miss only — download the archive once, unpack and verify the two bags
         id: fetch
         if: ${{ !cancelled() && steps.bags.outcome == 'success' && steps.bags.outputs.cache-hit != 'true' }}
-        continue-on-error: true      # a Google Drive refusal is reported below as "not run"
         run: |
           pip install --quiet "zstandard>=0.22"
           scripts/fetch_cold_bags.sh ~/resense-cold-bags
@@ -240,16 +239,17 @@ jobs:
         with:
           path: ~/resense-cold-bags
           key: ${{ steps.bags.outputs.cache-primary-key }}
-      - name: original bag cold-start and warm full-rate regression — working branch and main
+      - name: original bag cold-start and warm full-rate regression — full-CI branches
         if: ${{ steps.bags.outputs.cache-hit == 'true' || steps.fetch.outcome == 'success' }}
         timeout-minutes: 15
         run: IMAGE=resense:ci DATASET_DIR="$HOME/resense-cold-bags" NO_DOWNLOAD=1 scripts/p1_cold_bag_test.sh
       - name: original bag cold-start regression not run (no verified bags)
-        if: ${{ steps.bags.outcome == 'success' && steps.bags.outputs.cache-hit != 'true' && steps.fetch.outcome != 'success' }}
+        if: ${{ !cancelled() && env.FULL == 'true' && steps.bags.outcome == 'success' && steps.bags.outputs.cache-hit != 'true' && steps.fetch.outcome != 'success' }}
         run: |
-          msg="original-bag cold-start regression NOT RUN: the verified bags are not cached and Google Drive refused the download"
-          echo "::warning::$msg"
+          msg="original-bag cold/warm regression NOT RUN: no cached bags and download or pinned verification failed"
+          echo "::error::$msg"
           echo "$msg" >> "$GITHUB_STEP_SUMMARY"
+          exit 1
       # The whole output folder includes cold captures, byte parity and the separate warm-rate gates.
       - name: retain original-bag cold and warm evidence
         if: ${{ always() && env.FULL == 'true' }}
@@ -394,7 +394,7 @@ jobs:
       # runner's small disk.
       - name: the archive as a download, named after the commit (push to the working branch or main)
         id: artifact
-        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/integration/p3-score-sync-20260928' || github.ref == 'refs/heads/experiment/cross-ring-sparse-evidence' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g') }}
+        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/integration/p3-score-sync-20260928' || github.ref == 'refs/heads/integration/2026-10-15-16' || github.ref == 'refs/heads/experiment/cross-ring-sparse-evidence' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g') }}
         run: |
           NAME="resense-image-$VER-${GITHUB_SHA::7}"
           mkdir -p /tmp/artifact

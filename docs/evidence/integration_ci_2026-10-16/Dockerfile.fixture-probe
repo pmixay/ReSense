@@ -1,0 +1,5 @@
+# Diagnostic only: ask Docker for the exact fixture through the current ignore rules.
+ARG TOOLS_IMAGE=resense:integration-fixtures-f8c088d-20261016
+FROM ${TOOLS_IMAGE}
+COPY docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json /tmp/rearm_witness.json
+RUN python3 -c "import json; assert json.load(open('/tmp/rearm_witness.json'))"
