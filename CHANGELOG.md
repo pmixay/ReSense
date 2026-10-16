@@ -33,6 +33,42 @@ code (`14f83dd`) passes with every gate frame identical to the sealed detector. 
 worse than the sealed detector; the review's false STOPs next to the wall and its dropout / pitch replays are back at
 the sealed numbers frame by frame.
 
+### Fixed — the monitored range stops where the axis leaves the track at a curve entry (`track.axis_wall_drift`, 15.10)
+
+- The judge's problem 4 and the GO that stayed of silent miss 2 (13.10): entering a curve (C =
+  `roundT_pressureGate_roundT`, frames 57-117) the fitted axis lags the track by 1.0-2.4 m at 100 m while the trusted
+  axis range stays 119-151 m, so an object on the track at 100-150 m never enters the corridor and the decision is GO
+  with `clear_distance` past it. Cause, measured: both tunnel walls are fitted and averaged by fit quality; the inner
+  wall is smooth (rms 0.03-0.14 m vs 0.12-0.21) but seen only to 56-96 m, where the transition's curvature is still
+  small, so it carries 3-10x the weight; even the outer wall alone, a quadratic held to the rails' tangent, cannot follow
+  a curvature that grows with the distance (−0.0008 vs about −0.0014 needed at frame 86). The outer wall's far part,
+  once it has crossed the lagging axis, is counted on the inner side (the walls are split by the sign of the lateral)
+  and lengthens that side's reach (the trusted range); removing it moves the averaged curvature by at most 0.9e-4
+  (frames 57-90) / 1.8e-4 (91-117), i.e. 0.4 / 0.9 m at 100 m of the 1.0-2.4 m: a part of the lag, not its main
+  cause. The rate limit never binds.
+- The monitored range (health `monitored_range` and `clear_distance`) now ends where a near tunnel wall, followed
+  outward from the rail range where it is parallel to the rails, has come 0.8 m nearer the axis (two bins in a row;
+  a faster step is a structure edge and moves the reference). On C the axis is 0.7-1.1 m off the wall-referenced track
+  there. The output names it (`health.wall_drift`, `track.wall_drift`, only in such a frame). The corridor and every
+  decision are unchanged.
+- Judge C range probes (frames where the decision is GO, the object visible and the range past it): person on the
+  axis 26 → 10, 1 m cube 27 → 7, 0.5 m cube 27 → 7, the person on the wall-referenced track 26 → 4; none is left
+  within 142 m (the rest: 142-156 m before the drift is measurable, and 178-186 m on the straight). STOP frames, A and B
+  identical. Cost: the ride's range is capped in 13.8 % of its frames (median 94 m; 3.8 % of the range), C 50 %
+  (its two curve entries), A 20 %, S 5 %, B 3 %, `doubleT_platform` and `doubleT_obstacle` none. Capping the corridor
+  there too (`beyond_axis`, CAUTION) was measured and not taken: C's person 55 → 43 STOP frames, first STOP 82.8 →
+  65.1 m. The full regression gate passes on this code: every decision of every gate frame is the sealed detector's;
+  only `monitored_range` / `clear_distance` / `wall_drift` differ (2 321 of 15 269 frames; and in 2 ride frames the
+  latency warning of the machine's timing, not a decision input).
+- Not shipped — the axis itself (15.10; local branch `r3/axis-B-trial`). Weighting the two walls also by how far each
+  is seen continuously (span ratio ** 4, gaps up to 16 m) puts C's axis on the wall-referenced track (100 m: median
+  1.39 → 0.42-0.56 m, max 2.41 → 0.71-1.05 m) and the judge's person placed on that track goes 47 → 64-74 STOP frames
+  (first STOP 71.0 → 96-111 m). Three versions failed the full gate: on every two-wall frame (ride 27 → 33 events, a
+  false STOP on `roundT_doubleT` from its double-track tunnel's far wall), only for two near walls with the farther
+  one curving more (ride 27 → 36, the station +1), and only after a frame with a wall drift as well (ride 27 → 34, C
+  +1 event at 56 m). Each moves the axis on frames the false-alarm rules were screened with; not tuned further on the
+  same recordings.
+
 ### Fixed — the review of 14.10 (`14f83dd`)
 
 - The structure cut placed objects standing 0.95-1.2 m in front of C's outer wall — outside the envelope, where the

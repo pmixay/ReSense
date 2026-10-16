@@ -305,8 +305,10 @@ class Detector:
         cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
+        drift = self.track.wall_drift
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
-                                    previous_latency_ms, mount, gauge[0].distance if gauge else None, cap)
+                                    previous_latency_ms, mount, gauge[0].distance if gauge else None, cap,
+                                    wall_drift=drift if drift < 1e9 else None)
         health["latency_basis"] = "previous_complete_process"
         health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
         t7 = time.perf_counter()
