@@ -1,0 +1,59 @@
+
+> resense-web-frontend@0.1.0 test
+> vitest run --maxWorkers=1 src/api/upload.test.ts -t acknowledged
+
+
+ RUN  v3.2.7 /src/webapp/frontend
+
+ ❯ src/api/upload.test.ts (16 tests | 1 failed | 15 skipped) 81ms
+   ↓ upload helpers > cleans paths and derives names
+   ↓ upload helpers > measures speed over a window
+   ↓ upload helpers > sorts errors into retry / pause / fatal
+   ↓ uploadRecording > sends small files whole, big ones in checked chunks (gzip when it pays), finalizes in the background
+   ↓ uploadRecording > resumes: sends only what the server does not hold
+   × uploadRecording > publishes acknowledged bytes and compression even within the progress throttle interval 79ms
+     → expected { phase: 'uploading', …(14) } to match object { phase: 'uploading', …(2) }
+(12 matching properties omitted from actual)
+   ↓ uploadRecording > starts over when the upload to resume is gone
+   ↓ uploadRecording > retries a dropped connection and a corrupted chunk, showing the wait
+   ↓ uploadRecording > pauses (the transfer stops, what arrived stays) and resumes
+   ↓ uploadRecording > pauses with the message when the server disk is full
+   ↓ uploadRecording > aborts: rejects with UploadAbortedError and drops the staging area
+   ↓ uploadRecording > a finalize that finds nothing usable rejects with the server message and drops the area
+   ↓ uploadRecording > a request refused for good stops the upload
+   ↓ uploadRecording > a finalize refused while a dead connection still holds the area is retried, never deleted
+   ↓ uploadRecording > a file the browser can no longer read stops the upload but keeps what the server holds
+   ↓ uploadRecording > rejects an empty selection in Russian
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/api/upload.test.ts > uploadRecording > publishes acknowledged bytes and compression even within the progress throttle interval
+AssertionError: expected { phase: 'uploading', …(14) } to match object { phase: 'uploading', …(2) }
+(12 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "compression": Any<Number>,[39m
+[32m-   "loaded": 65536,[39m
+[31m+   "compression": null,[39m
+[31m+   "loaded": 0,[39m
+[2m    "phase": "uploading",[22m
+[2m  }[22m
+
+ ❯ src/api/upload.test.ts:284:37
+    282|       await vi.waitFor(() => expect(chunkPuts()).toHaveLength(2));
+    283|       expect(server.chunks.get('a.db3')?.size).toBe(1);
+    284|       expect(seen[seen.length - 1]).toMatchObject({ phase: 'uploading'…
+       |                                     ^
+    285|       expect(seen[seen.length - 1].compression).toBeLessThan(0.5);
+    286|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 skipped (16)
+   Start at  07:01:14
+   Duration  909ms (transform 287ms, setup 266ms, collect 280ms, tests 81ms, environment 0ms, prepare 115ms)

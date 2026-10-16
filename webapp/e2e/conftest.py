@@ -262,6 +262,14 @@ class App:
     def goto(self, route: str, **kw) -> None:
         self.page.goto(self.base + route, **kw)
 
+    def reload(self) -> None:
+        """Reload the SPA document; callers assert the observable UI / data they need.
+
+        window.load also waits for non-blocking resources and is not the queue's readiness
+        condition (nor does it guarantee that React's lazy route and API calls are ready).
+        """
+        self.page.reload(wait_until="domcontentloaded")
+
     def path(self) -> str:
         """The current location without the origin ("/upload?source=demo")."""
         return self.page.url[len(self.base):]

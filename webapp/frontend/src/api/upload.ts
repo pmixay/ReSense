@@ -626,7 +626,10 @@ class Uploader {
     this.rawSent += prepared.rawSize;
     this.wireSent += prepared.body.byteLength;
     this.remaining[task.file] -= 1;
-    this.report();
+    // An acknowledgement changes confirmed bytes and compression after the last XHR progress
+    // event. Publish it even inside REPORT_MS: the remaining requests may stall / be paused,
+    // so there need not be another progress event to flush this authoritative state.
+    this.report(true);
   }
 
   private async finalize(): Promise<Recording> {

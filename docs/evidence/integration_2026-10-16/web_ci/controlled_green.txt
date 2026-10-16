@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /src
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 2 items
+
+webapp/e2e/test_data.py::test_queue_reload_with_a_pending_nonblocking_resource PASSED [ 50%]
+webapp/e2e/test_upload_resume.py::test_big_upload_pause_drop_reload_resume PASSED [100%]
+
+--------------- generated xml file: /tmp/controlled-green-2.xml ----------------
+============================== 2 passed in 37.83s ==============================
