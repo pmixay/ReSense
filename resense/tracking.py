@@ -103,7 +103,8 @@ class Track:
     fresh_blocked: bool = False     # opt-in: a reported advisory cannot become a STOP on this hit
     low_clean: Optional[Cluster] = None  # last clean low cluster; weak continuation cannot change this shape reference
     low_since_clean: float = 0.0  # actual elapsed time, including stamp gaps clipped for the existing motion/fit rules
-    explained_hist: List[bool] = field(default_factory=list)  # 29.09 (explained_run): last hits demoted with a reason?
+    explained_hist: List[bool] = field(default_factory=list)  # 29.09 (explained_run): measured infrastructure explanations
+    provisional_explained_hist: List[bool] = field(default_factory=list)  # imputed columns awaiting free-top corroboration and a clean run
     clean_run: int = 0              # 29.09 (explained_run): consecutive clean strict-gauge hits, broken by a miss
     odo: List[tuple] = field(default_factory=list)  # 29.09 (ego_veto_*): (odometry segment, train travel m, distance m) of the last hits
 
@@ -434,7 +435,8 @@ class Tracker:
                 if fresh_blocked:
                     fresh_blocked_tracks.add(id(t))
             if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == "gauge"
-                    and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or (
+                    and not t.near_escalated and (any(t.explained_hist) or any(t.provisional_explained_hist))
+                    and t.clean_run < c.explained_run) or (
                     q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == "gauge"
                     and not t.near_escalated and self._carried_along(t)):
                 # 29.09 (explained_run): a history of explained (demoted) hits needs a clean run before
@@ -658,9 +660,10 @@ class Tracker:
         """14.10 (``tracking.column_free_min_spares``, review of the 13.10 free-top test): a cluster the column
         rule fits but the free-top test spared (``Cluster.spared``) is believed only when the track it continues
         had at least ``column_free_min_spares`` - 1 such hits among its last ``zone_window`` hits; otherwise it is
-        the column the column rule made of it (reason ``column``, zone ``warning``: the column hold, the zone
-        vote and ``explained_run`` see what they saw before 13.10). One spare of a noisy frame does not turn a
-        column track into a STOP (point dropout at the standing train, a mount pitch on roundT_doubleT); the
+        provisionally a column (reason ``column``, zone ``warning``): the column hold and zone vote still see
+        a column, while ``_note`` distinguishes its imputed explanation from measured infrastructure.
+        One spare of a noisy frame does not turn a column track into a STOP (point dropout at the standing
+        train, a mount pitch on roundT_doubleT); the
         judge's pole, spared hit after hit, is believed from its second spared hit."""
         n = int(self.cfg.column_free_min_spares)
         if cl.spared and n > 1 and sum(spare_hist) < n - 1:
@@ -680,8 +683,18 @@ class Tracker:
         if c.explained_run > 0 and source == "ordinary":
             reasons = [r.strip() for r in str(c.explained_reasons).split(",") if r.strip()]
             explained = bool(cl.reason) and (not reasons or cl.reason in reasons)
-            t.explained_hist = (t.explained_hist + [explained])[-max(1, int(c.explained_window)):]
-            t.clean_run = t.clean_run + 1 if (cl.zone == "gauge" and not cl.reason) else 0
+            # A spared column is imputed by _uncorroborated_spare, not measured by the column rule.
+            # Keep its advisory-release guard until accepted free-top evidence completes the clean
+            # run. That corroboration discharges only provisional explanations, so a later miss
+            # cannot revive them; measured explanations retain their bounded history across gaps.
+            provisional = explained and cl.reason == "column" and cl.spared
+            ew = max(1, int(c.explained_window))
+            t.explained_hist = (t.explained_hist + [explained and not provisional])[-ew:]
+            t.provisional_explained_hist = (t.provisional_explained_hist + [provisional])[-ew:]
+            clean = cl.zone == "gauge" and not cl.reason
+            t.clean_run = t.clean_run + 1 if clean else 0
+            if clean and cl.spared and t.clean_run >= c.explained_run:
+                t.provisional_explained_hist = [False] * len(t.provisional_explained_hist)
         if c.fresh_stop_evidence:
             n = max(1, int(c.fresh_stop_evidence_window))
             if source == "ordinary" and cl.zone != "gauge":
