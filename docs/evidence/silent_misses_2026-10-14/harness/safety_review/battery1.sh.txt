@@ -1,0 +1,29 @@
+#!/bin/bash
+# sealed vs combined whole-recording replays under perturbations, one run at a time
+cd /tmp/claude-0/fixwork/safety_review; source env.sh
+pair() { name=$1; cache=$2; shift 2
+  [ -f out/${name}_s.jsonl ] || run_s jrep.py $J/$cache out/${name}_s "$@" > out/${name}_s.log 2>&1
+  [ -f out/${name}_w.jsonl ] || run_w jrep.py $J/$cache out/${name}_w "$@" > out/${name}_w.log 2>&1
+  python3 cmp.py out/${name}_s.jsonl out/${name}_w.jsonl $name >> out/battery1.txt
+  tail -1 out/${name}_w.log >> out/battery1.txt
+}
+S=squareT_platform_squareT_switch; B=roundT_doubleT; C=roundT_pressureGate_roundT; A=roundT_squareT_pressureGate_squareT
+for sd in 1 2 3; do pair S_drop30_s$sd $S --drop 0.3 --seed $sd; done
+pair S_pitchp2 $S --pitch 2
+pair S_pitchm2 $S --pitch -2
+pair S_dedup $S --dedup
+pair S_every2 $S --every 2
+for sd in 1 2; do pair S_ringdrop10_s$sd $S --ring-drop 0.1 --seed $sd; done
+for sd in 1 2 3; do pair B_drop30_s$sd $B --drop 0.3 --seed $sd; done
+pair B_pitchp2 $B --pitch 2
+pair B_pitchm2 $B --pitch -2
+pair B_dedup $B --dedup
+pair B_every2 $B --every 2
+for sd in 1 2; do pair B_ringdrop10_s$sd $B --ring-drop 0.1 --seed $sd; done
+for sd in 1 2; do pair C_ringdrop10_s$sd $C --ring-drop 0.1 --seed $sd; done
+for sd in 1 2; do pair A_ringdrop10_s$sd $A --ring-drop 0.1 --seed $sd; done
+pair C_pitchm2 $C --pitch -2
+for sd in 1 2; do pair C_slow3_s$sd $C --repeat 3 --rdrop 0.2 --seed $sd; done
+for sd in 1 2; do pair B_slow3_s$sd $B --repeat 3 --rdrop 0.2 --seed $sd; done
+for sd in 1 2; do pair C_drop30_s$sd $C --drop 0.3 --seed $sd; done
+echo BATTERY1 DONE >> out/battery1.txt

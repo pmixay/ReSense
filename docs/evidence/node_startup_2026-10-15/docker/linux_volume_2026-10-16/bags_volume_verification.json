@@ -1,0 +1,96 @@
+{
+  "kind": "docker_volume",
+  "source": "rs-s1-original-bags-20261016-72a601b",
+  "host_inventory_source": {
+    "doubleT_obstacle": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\for_hackathon\\doubleT_obstacle",
+    "roundT_doubleT": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\for_hackathon\\roundT_doubleT"
+  },
+  "inventory_digest": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6",
+  "volume_inspect": {
+    "CreatedAt": "2026-10-15T23:21:20Z",
+    "Driver": "local",
+    "Labels": {
+      "resense.startup.expected_inventory": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6",
+      "resense.startup.volume_owner": "stage-8a57c938210749fbadb58a5f912dd6c0"
+    },
+    "Mountpoint": "/var/lib/docker/volumes/rs-s1-original-bags-20261016-72a601b/_data",
+    "Name": "rs-s1-original-bags-20261016-72a601b",
+    "Options": null,
+    "Scope": "local"
+  },
+  "verification": {
+    "name": "rs-s1-volume-verify-2333c0893b6d",
+    "mode": "verify",
+    "volume": "rs-s1-original-bags-20261016-72a601b",
+    "read_only": true,
+    "memory_limit": "512m",
+    "swap": "disabled",
+    "cpus": 4,
+    "container_id": "d8cb37ca318300b5b36aceb694eda67390ec3c6537a2329f308985b7dd27033d",
+    "image_id": "sha256:4672efcc4505b274f2110ca2075ac048c8e0524d98311f693ddb9ea58f62fdbf",
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-15T23:42:04.503242144Z",
+      "FinishedAt": "2026-10-15T23:42:20.218959094Z"
+    },
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt07_linux_volume_warm_matrix",
+        "Destination": "/job",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "volume",
+        "Name": "rs-s1-original-bags-20261016-72a601b",
+        "Source": "/var/lib/docker/volumes/rs-s1-original-bags-20261016-72a601b/_data",
+        "Destination": "/data",
+        "Driver": "local",
+        "Mode": "z",
+        "RW": false,
+        "Propagation": ""
+      }
+    ],
+    "result": {
+      "verified": true,
+      "inventory_digest": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6",
+      "bags": {
+        "doubleT_obstacle": {
+          "expected_frames": 201,
+          "topic": "/sensing/lidar/hesai128/pointcloud",
+          "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+          "files": [
+            {
+              "name": "doubleT_obstacle_0.db3",
+              "bytes": 4821250048,
+              "sha256": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9"
+            }
+          ]
+        },
+        "roundT_doubleT": {
+          "expected_frames": 252,
+          "topic": "/lidar_points",
+          "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+          "files": [
+            {
+              "name": "roundT_doubleT_0.db3",
+              "bytes": 2014867456,
+              "sha256": "6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d"
+            }
+          ]
+        }
+      }
+    },
+    "cleanup_ok": true
+  }
+}

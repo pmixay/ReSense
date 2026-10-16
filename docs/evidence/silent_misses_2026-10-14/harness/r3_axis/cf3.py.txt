@@ -1,0 +1,47 @@
+"""Offline B variants (single frame): sides followed from the near field (gap <= G m), weights
+1/(rms^2+1e-4) * ((reach - 30)/ (ref))^p. Axis error vs the investigator's true axis at 60/80/100/120 m.
+usage: cf3.py <obs.json> k0 k1"""
+import json, sys
+import numpy as np
+from cflib import fit_side, cut_gap
+
+recs = json.load(open(sys.argv[1]))
+k0, k1 = int(sys.argv[2]), int(sys.argv[3])
+TA = {r["k"]: r for r in json.load(open("/tmp/claude-0/fixwork/investigate_oversize/C_true_axis_full.json"))}
+
+
+def axis_err(ta, c, t, k, X):
+    c2, c1, c0 = ta["coef"]
+    return c + t * X + 0.5 * k * X * X - (c0 - ta["off"] + c1 * X + c2 * X * X)
+
+
+VARS = [("sealed", None, 0), ("follow", 12.0, 0), ("f_p2", 12.0, 2), ("f_p4", 12.0, 4), ("f_max", 12.0, 99)]
+rows = {}
+for r in recs:
+    if not (k0 <= r["k"] <= k1):
+        continue
+    c = r["calls"][-1]
+    t = c["t_fixed"]
+    ta = TA.get(r["k"], {})
+    if t is None or not c.get("side_in") or not ta.get("ok"):
+        continue
+    S = [(np.array(s["x"]), np.array(s["y"])) for s in c["side_in"]]
+    out = []
+    for name, G, p in VARS:
+        fits = [fit_side(*(cut_gap(x, y, G) if G else (x, y)), t) for x, y in S]
+        fits = [f for f in fits if f is not None]
+        if not fits:
+            continue
+        if p == 99:
+            kk = max(fits, key=lambda f: f[2])[0]
+        else:
+            w = np.array([1.0 / (f[1] ** 2 + 1e-4) * max(f[2] - 30.0, 1.0) ** p for f in fits])
+            kk = float(np.sum(w * [f[0] for f in fits]) / w.sum())
+        e = [axis_err(ta, c["out"]["center"], t, kk, X) for X in (60, 80, 100, 120)]
+        rows.setdefault(name, []).append(e)
+        out.append("%s %.5f [%s]" % (name, kk, " ".join("%+.2f" % v for v in e)))
+    print(r["k"], " | ".join(out))
+print("median |err| at 60/80/100/120:")
+for name, es in rows.items():
+    a = np.abs(np.array(es))
+    print("%-7s" % name, np.round(np.median(a, 0), 2), "p90", np.round(np.percentile(a, 90, 0), 2), "n", len(es))

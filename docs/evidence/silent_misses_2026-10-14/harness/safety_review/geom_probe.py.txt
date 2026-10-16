@@ -1,0 +1,27 @@
+import json, sys, os, glob
+import numpy as np
+sys.path.insert(0, "/home/user/ReSense/docs/evidence/judgement_2026-10-13/scripts")
+import range_test as rt
+from resense.track import TrackModel
+cache = sys.argv[1]
+probe = json.load(open(sys.argv[2]))
+meta, files = rt.load_cache(cache)
+base = json.load(open(cache.rstrip('/') + '_baseline.json'))
+rep = rt.NodeReplica()
+Rvs = rep.R_vs.astype(np.float64)
+for r in probe['rows']:
+    k = r['k']
+    if r['X'] is None or r['X'] < 40 or r['X'] > 160 or k % 3: continue
+    b = base[k]
+    tm = TrackModel(floor_coef=np.array(b["floor_coef"]), floor_range=tuple(b["floor_range"]), center=b["center"], yaw=b["yaw"], curvature=b["curv"], rail_offset=b["rail_offset"])
+    Rm = np.array(b["R"])
+    d = np.load(files[k])
+    P = (d['xyz'].astype(np.float64) @ Rvs.T) @ Rm.T
+    X = r['X'] + 0.25
+    cy = float(tm.center_y(X)); rz = float(tm.rail_z(X))
+    w = max(1.0, 0.012 * X)
+    m = (np.abs(P[:, 0] - X) < w) & (P[:, 2] - rz > 0.5) & (P[:, 2] - rz < 2.2)
+    off = P[m, 1] - cy
+    hs = P[m, 2] - rz
+    qs = np.quantile(off, [0.05, 0.25, 0.5, 0.75, 0.95]) if off.size else []
+    print(k, round(X, 1), 'cy', round(cy, 2), 'n', int(m.sum()), 'off q', np.round(qs, 2), 'pos', np.round(np.sort(off[off > -0.5])[:: max(1, int((off > -0.5).sum() // 12))], 2))

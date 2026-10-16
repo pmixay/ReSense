@@ -1,0 +1,119 @@
+{
+  "result": "BLOCKED",
+  "attempt": "final-02",
+  "commands": [
+    {
+      "name": "docker-version",
+      "command": [
+        "docker",
+        "version"
+      ],
+      "exit": 0,
+      "seconds": 0.219
+    },
+    {
+      "name": "base-image",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "resense:p1-combined-tools-0caf5c227b68"
+      ],
+      "exit": 0,
+      "seconds": 0.234
+    },
+    {
+      "name": "dependency-inputs",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "0caf5c227b68d7d73513c514f40eff1a0edc9d11",
+        "dda698cb56c04fad4ec71ffdff1835244a397e8d",
+        "--",
+        "pyproject.toml",
+        "setup.py",
+        "ros2_ws/src/resense_ros/setup.py",
+        "ros2_ws/src/resense_ros/package.xml"
+      ],
+      "exit": 0,
+      "seconds": 0.063
+    },
+    {
+      "name": "guard-start",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--rm",
+        "--network",
+        "none",
+        "--name",
+        "resense-p1-final-suite-guard-dda698cb56c0-257fb773",
+        "--label",
+        "resense.p1.checks=final",
+        "--entrypoint",
+        "/bin/sleep",
+        "resense:p1-e2-check",
+        "1800"
+      ],
+      "exit": 0,
+      "seconds": 0.718
+    },
+    {
+      "name": "ruff-focused",
+      "command": [
+        "ruff",
+        "check",
+        "docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py",
+        "docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py",
+        "docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py",
+        "docs/evidence/offline_rebuild_2026-10-15/context_check.py",
+        "docs/evidence/p1_start_2026-10-15/integrated_linux_checks/run_checks.py",
+        "docs/evidence/p1_start_2026-10-15/integrated_linux_checks/suite.py",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+        "scripts/startup_acceptance.py",
+        "tests/test_docker_fixtures.py",
+        "tests/test_node.py",
+        "tests/test_startup_acceptance.py"
+      ],
+      "exit": 1,
+      "seconds": 0.203
+    },
+    {
+      "name": "guard-cleanup",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "resense-p1-final-suite-guard-dda698cb56c0-257fb773"
+      ],
+      "exit": 0,
+      "seconds": 0.297
+    }
+  ],
+  "source_commit": "dda698cb56c04fad4ec71ffdff1835244a397e8d",
+  "source_tree": "7c0317fc651eb35dcbd3a88da3c6349711cc88f6",
+  "image": "resense:p1-combined-tools-dda698cb56c0",
+  "guard_container": "resense-p1-final-suite-guard-dda698cb56c0-257fb773",
+  "suite_container": "resense-p1-final-suite-dda698cb56c0-257fb773",
+  "runner_sha256": {
+    "run_checks.py": "c3458e237eda5c84bcf00b6c8ac3bbed4d581b407c826a5e8a1f83b73f5dd714",
+    "suite.py": "a22d5cc60dfc60620a4bd5dc3d7110d1c8d41e5478c61155c6673539c26a0477"
+  },
+  "total_seconds": 11.594,
+  "construction": "incremental offline rebuild; not a fresh runtime Dockerfile build",
+  "base_image": "resense:p1-combined-tools-0caf5c227b68",
+  "base_id": "sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a",
+  "base_source_revision": "0caf5c227b68d7d73513c514f40eff1a0edc9d11",
+  "unchanged_dependency_inputs": [
+    "pyproject.toml",
+    "setup.py",
+    "ros2_ws/src/resense_ros/setup.py",
+    "ros2_ws/src/resense_ros/package.xml"
+  ],
+  "source_archive_sha256": "afd15aab016afdc0b0ff4968b565439fafa847aa6f9079e9a2897d54174d09bc",
+  "incremental_dockerfile_sha256": "75b18343067a21ccc1b96182b9225a683ae224663287d78d2aec578c526dcd08",
+  "source_manifest_files": 306,
+  "blocker": "CalledProcessError: Command '['ruff', 'check', 'docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py', 'docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py', 'docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py', 'docs/evidence/offline_rebuild_2026-10-15/context_check.py', 'docs/evidence/p1_start_2026-10-15/integrated_linux_checks/run_checks.py', 'docs/evidence/p1_start_2026-10-15/integrated_linux_checks/suite.py', 'ros2_ws/src/resense_ros/resense_ros/detector_node.py', 'scripts/startup_acceptance.py', 'tests/test_docker_fixtures.py', 'tests/test_node.py', 'tests/test_startup_acceptance.py']' returned non-zero exit status 1."
+}

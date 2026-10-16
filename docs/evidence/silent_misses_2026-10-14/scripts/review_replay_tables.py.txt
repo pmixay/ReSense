@@ -1,0 +1,45 @@
+import json, re
+def parse(path, pat):
+    rows = {}; last = None
+    for l in open(path).read().splitlines():
+        m = re.match(r"^(plain|rob)?\s*(\S+) (judge-baseline|sealed|13\.10)->(?:fin|\S+) frames (\d+) STOP (\d+) -> (\d+) episodes (\d+) -> (\d+) CAUTION (\d+) -> (\d+) decision diffs (\d+) det/warn diffs (\d+)", l)
+        if m:
+            n = m.group(2); base = m.group(3)
+            r = rows.setdefault(n, {"frames": int(m.group(4))})
+            key = "13.10" if base == "13.10" else "sealed"
+            r[key] = {"STOP": int(m.group(5)), "episodes": int(m.group(7)), "CAUTION": int(m.group(9)), "base_is": base}
+            r["now" if key == "sealed" else "_now13"] = {"STOP": int(m.group(6)), "episodes": int(m.group(8)), "CAUTION": int(m.group(10))}
+            r[f"decision_diffs_vs_{key}"] = int(m.group(11)); r[f"detail_diffs_vs_{key}"] = int(m.group(12))
+            last = n
+        m = re.match(r"^out/(?:plain_|rob_)?(\S+)_fin frames (\d+) tf (\d+) free (\d+) cut (\d+)", l)
+        if m and last:
+            rows[last].update(tf_calls=int(m.group(3)), tf_free=int(m.group(4)), cut_parts=int(m.group(5)))
+    for r in rows.values():
+        r.pop("_now13", None)
+    return rows
+plain = parse("out/plain_fin.txt", None)
+ride = parse("out/batch_ride_fin.txt", None)
+spare = json.load(open("out/review_replays_spare.json"))["runs"]
+out = {"_note": "14f83dd (code_fin snapshot of its tracked files), the judge's node replica (jrep.py) or a gate-faithful piece replay "
+       "(grun.py, fresh detector per piece); plain: against the judge's baseline_out; perturbed: against the sealed detector under the "
+       "same perturbation and seed (rob_*: run here on the main checkout 707ea9c; the review's S / B / ride runs: the review's own "
+       "sealed runs); *_dark: the review's DARKBAND 0.6 what-if against the sealed plain piece. tf = free-top tests (spared)",
+       "plain_and_robustness": plain, "spare_battery": spare, "ride_pieces": ride}
+json.dump(out, open("out/review_replays.json", "w"), indent=1)
+names = {"roundT_squareT_pressureGate_squareT": "A plain", "roundT_doubleT": "B plain", "roundT_pressureGate_roundT": "C plain",
+         "squareT_platform_squareT_switch": "S plain", "C_pitchp2": "C `--pitch 2`", "A_pitchp2": "A `--pitch 2`",
+         "C_drop03": "C `--drop 0.3`", "A_drop03": "A `--drop 0.3`", "C_every2": "C `--every 2` (5 Hz)", "C_dedup": "C `--dedup`"}
+print("| replay | frames | STOP frames / episodes / CAUTION, base → now | decisions changed | other fields changed (dets, warns) | free-top tests (spared) | cut parts |")
+print("|---|---:|---|---:|---:|---|---:|")
+for n, r in plain.items():
+    s, w = r["sealed"], r["now"]
+    print(f"| {names.get(n, n)} | {r['frames']} | {s['STOP']} / {s['episodes']} / {s['CAUTION']} → {w['STOP']} / {w['episodes']} / {w['CAUTION']} | {r['decision_diffs_vs_sealed']} | {r['detail_diffs_vs_sealed']} | {r.get('tf_calls')} ({r.get('tf_free')}) | {r.get('cut_parts')} |")
+print()
+rn = {"R4_dark": "R4 (restart segment), dark band", "p1_dark": "ride piece 1/8, dark band", "p3_dark": "ride piece 3/8, dark band",
+      "p1_drop30_s1": "ride piece 1/8, 30 % dropout, seed 1", "p1_drop30_s2": "ride piece 1/8, 30 %, seed 2",
+      "p3_drop30_s1": "ride piece 3/8, 30 %, seed 1", "R4_drop30_s1": "R4, 30 %, seed 1"}
+print("| run | frames | STOP frames / episodes, sealed → 13.10 → now | decisions differing from sealed | free-top tests (spared) | cut parts |")
+print("|---|---:|---|---:|---|---:|")
+for n, r in ride.items():
+    s, w, t = r["sealed"], r["now"], r.get("13.10", {})
+    print(f"| {rn[n]} | {r['frames']} | {s['STOP']} / {s['episodes']} → {t.get('STOP')} / {t.get('episodes')} → **{w['STOP']} / {w['episodes']}** | {r['decision_diffs_vs_sealed']} | {r.get('tf_calls')} ({r.get('tf_free')}) | {r.get('cut_parts')} |")

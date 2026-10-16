@@ -1,0 +1,35 @@
+Source: C:\Users\alikh\AppData\Local\Temp\opencode\resense-p1-runs-2026-10-15\volume_build06b\build.stderr.log
+SHA256: 04370b19c6b2d93341e410967304224440c958a3bbb9ecde15f447e02eda0979
+Full source lines: 67
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.offline
+#1 transferring dockerfile: 3.28kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/resense:p1-e2-check
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 1.79kB done
+#3 DONE 0.0s
+
+#4 [ 1/13] FROM docker.io/library/resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e
+#4 resolve docker.io/library/resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+[... 37 source lines omitted; full source in raw root / hash index ...]
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers 0.0s done
+#18 exporting manifest sha256:b8199dc8118c3c7674554befdf6cd9a14b5c85db7a9b982e191617f1fb18035f 0.0s done
+#18 exporting config sha256:8f98276a4d89d5cc14060ca620c4bf7a16548fcce835bb62f4135eff7d653e87 0.0s done
+#18 exporting attestation manifest sha256:2ca83d3e4ad784bd9957fb263fd7b7836258aa8d6fab947ff810f68486ceba26 0.0s done
+#18 exporting manifest list sha256:4672efcc4505b274f2110ca2075ac048c8e0524d98311f693ddb9ea58f62fdbf
+#18 exporting manifest list sha256:4672efcc4505b274f2110ca2075ac048c8e0524d98311f693ddb9ea58f62fdbf 0.0s done
+#18 naming to docker.io/library/resense:p1-s1-volume-62d055f-20261016 done
+#18 unpacking to docker.io/library/resense:p1-s1-volume-62d055f-20261016 0.0s done
+#18 DONE 0.3s

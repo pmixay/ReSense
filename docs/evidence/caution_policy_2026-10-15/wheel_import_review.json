@@ -1,0 +1,35 @@
+{
+  "schema": "resense.webapp_wheel_check.v1",
+  "status": "pass",
+  "backend_requirements": [
+    "resense",
+    "resense-ros>=1.0.0",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.9",
+    "pyyaml>=6",
+    "numpy>=1.23",
+    "rosbags>=0.9",
+    "pytest>=7; extra == \"dev\"",
+    "httpx>=0.27; extra == \"dev\""
+  ],
+  "isolated_import": {
+    "python": "3.10.22 (main, Oct  6 2026, 02:05:33) [GCC 14.2.0]",
+    "origins": {
+      "resense": "/tmp/resense-web-wheels-20epuqww/venv/lib/python3.10/site-packages/resense/__init__.py",
+      "resense_ros.decision_policy": "/tmp/resense-web-wheels-20epuqww/venv/lib/python3.10/site-packages/resense_ros/decision_policy.py",
+      "resense_web.decision": "/tmp/resense-web-wheels-20epuqww/venv/lib/python3.10/site-packages/resense_web/decision.py"
+    },
+    "ros_available": false,
+    "versions": {
+      "resense": "1.0.0",
+      "resense-ros": "1.0.0",
+      "resense-web": "0.1.0"
+    }
+  },
+  "wheels": {
+    "resense-1.0.0-cp310-cp310-linux_x86_64.whl": "bcb47bbb89b0b0ff5dd0fcc891414c622039248af31e26e5a3bdb391061d949f",
+    "resense_ros-1.0.0-py3-none-any.whl": "1b43700a6bdf8eb00aab9766b3e8cf6da5b63e5982de28f6d81a4b55d80f79e3",
+    "resense_web-0.1.0-py3-none-any.whl": "9a22e1596345784b301394391b7a46e7b2f01c4bb5b122a89bafab872eee2a8b"
+  }
+}

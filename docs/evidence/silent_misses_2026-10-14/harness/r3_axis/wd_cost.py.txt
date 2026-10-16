@@ -1,0 +1,49 @@
+"""Monitored-range cost of the wall-drift cap: join gobs records (code 'wd') with the sealed gate outputs
+(gate_head/work, uncapped monitored range, same frame order) per recording / ride chunk (scratch).
+Optionally re-derive the cap offline from the side bins with sig2.drift_cap for other parameters.
+usage: wd_cost.py <gobs_dir> [delta persist w0max gap mad]"""
+import glob, json, os, sys
+import numpy as np
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from sig2 import frame_cap, parse
+
+G = "/tmp/claude-0/fixwork/gate_head/work"
+d = sys.argv[1]
+kw = parse(sys.argv[2:]) if len(sys.argv) > 2 else None
+allc, alln, all_lost, all_tot = 0, 0, 0.0, 0.0
+ride = {"n": 0, "c": 0, "lost": 0.0, "tot": 0.0, "caps": [], "clear_lost": 0.0, "clear_tot": 0.0}
+for p in sorted(glob.glob(d + "/*.jsonl")):
+    name = os.path.basename(p)
+    g = os.path.join(G, name)
+    if not os.path.exists(g):
+        continue
+    rows = [json.loads(l) for l in open(p)]
+    sealed = [json.loads(l) for l in open(g)]
+    if len(rows) != len(sealed):
+        print("skip", name, len(rows), len(sealed))
+        continue
+    caps, n, c, lost, tot, clost, ctot = [], len(rows), 0, 0.0, 0.0, 0.0, 0.0
+    for r, s in zip(rows, sealed):
+        mon = float(s["health"]["monitored_range"])
+        clear = float(s["clear_distance"])
+        wd = frame_cap(r, **kw) if kw is not None else r.get("wd", 1e9)
+        wd = 1e9 if wd is None else wd
+        new = min(mon, wd)
+        tot += mon
+        ctot += clear
+        if new < mon:
+            c += 1
+            lost += mon - new
+            caps.append(wd)
+            clost += clear - min(clear, wd)
+    q = lambda a, pp: round(float(np.percentile(a, pp)), 1) if a else None
+    print("%-42s frames %5d capped %5d (%5.1f%%) cap q10/50/90 %s %s %s  monitored lost %4.1f%%  clear lost %4.1f%%" % (
+        name, n, c, 100.0 * c / n, q(caps, 10), q(caps, 50), q(caps, 90), 100 * lost / max(tot, 1), 100 * clost / max(ctot, 1)))
+    if name.startswith("new_data"):
+        ride["n"] += n; ride["c"] += c; ride["lost"] += lost; ride["tot"] += tot; ride["caps"] += caps
+        ride["clear_lost"] += clost; ride["clear_tot"] += ctot
+if ride["n"]:
+    q = lambda a, pp: round(float(np.percentile(a, pp)), 1) if a else None
+    print("RIDE frames %d capped %d (%.1f%%) cap q10/50/90 %s %s %s monitored lost %.1f%% clear lost %.1f%%" % (
+        ride["n"], ride["c"], 100.0 * ride["c"] / ride["n"], q(ride["caps"], 10), q(ride["caps"], 50), q(ride["caps"], 90),
+        100 * ride["lost"] / ride["tot"], 100 * ride["clear_lost"] / ride["clear_tot"]))

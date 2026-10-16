@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""Compact interaction summary for the evidence folder: every instrumented run (probes, replays, the ride's 8
+pieces, the bar-margin census) -> counts, the column-shaped cut parts, the windows asked about."""
+import glob
+import json
+import os
+import sys
+
+F = "/tmp/claude-0/fixwork/final_silent/"
+sys.path.insert(0, F)
+import interact_summary as S  # noqa: E402
+
+
+def counts(prefix):
+    p = prefix + "_count.json"
+    return json.load(open(p)) if os.path.exists(p) else None
+
+
+runs = {}
+for f in sorted(glob.glob(F + "probes/*_rec.jsonl")):
+    n = os.path.basename(f)[:-len("_rec.jsonl")]
+    runs[f"probe {n}"] = (f, counts(f[:-len("_rec.jsonl")]))
+for f in sorted(glob.glob(F + "replay/*_rec.jsonl")):
+    n = os.path.basename(f)[:-len("_rec.jsonl")]
+    runs[f"replay {n}"] = (f, counts(f[:-len("_rec.jsonl")]))
+ride = ",".join(sorted(glob.glob(F + "ride/ride_p*_rec.jsonl")))
+runs["ride (gate's 8 pieces)"] = (ride, counts(F + "ride/ride_0of8_1of8_2of8_3of8_4of8_5of8_6of8_7of8"))
+out = {"_note": ("Observation-only instrumentation of final/silent-misses 5fce816 (interact_hooks.py): cut = a part "
+                 "of the 14.10 structure cut; column-shaped = the geometric condition of the column rule "
+                 "(_advisory_reason), whatever rule fires first; reaches the column rule = the reason by shape alone "
+                 "is 'column'; spared = the free-top test turned that into another verdict. counts: frames, cut "
+                 "calls (clusters the 25.09 split refused), kept cut parts, top_is_free calls / True answers / ms."),
+       "runs": {}}
+tot = {"cut_parts": 0, "cut_column_shaped": 0, "cut_reaching_column_rule": 0, "cut_spared": 0}
+for label, (paths, cnt) in runs.items():
+    recs = S.load(paths)
+    s = S.summarise(label.split(" ", 1)[1] if label.startswith(("probe", "replay")) else "ride", recs)
+    row = {"counts": cnt, "cut_parts": s["cut_parts_described"], "cut_verdicts": s["cut_parts_by_verdict"],
+           "cut_column_shaped": s["cut_parts_column_shaped"], "cut_reaching_column_rule": s["cut_parts_reaching_column_rule"],
+           "cut_spared_by_free_top": s["cut_parts_spared_by_free_top"],
+           "free_top_asked_non_cut": s["non_cut_free_top_asked"], "spared_non_cut": s["non_cut_spared"]}
+    if s["cut_column_shaped_list"]:
+        row["cut_column_shaped_list"] = s["cut_column_shaped_list"]
+    for key in ("ride_k4720_4729", "pressure_gate_105_155"):
+        if key in s and s[key]:
+            row[key] = s[key]
+    out["runs"][label] = row
+    tot["cut_parts"] += row["cut_parts"]
+    tot["cut_column_shaped"] += row["cut_column_shaped"]
+    tot["cut_reaching_column_rule"] += row["cut_reaching_column_rule"]
+    tot["cut_spared"] += row["cut_spared_by_free_top"]
+out["totals"] = tot
+loose = {}
+for n in "ABCS":
+    s = S.summarise(n, S.load(F + f"loose/{n}_rec.jsonl"))
+    lo = [r for r in S.load(F + f"loose/{n}_rec.jsonl") if r.get("loose")]
+    loose[n] = {"parts_the_bar_removed": len(lo), "column_shaped": sum(bool(r.get("shape")) for r in lo),
+                "gauge": sum(bool(r.get("out") and r["out"]["zone"] == "gauge") for r in lo),
+                "pressure_gate_105_155": [x for x in s.get("pressure_gate_105_155", []) if x["cut"]]}
+loose["ride"] = json.load(open(F + "loose_ride.json"))
+out["bar_margin_census"] = {"_note": ("interact_hooks_loose.py: the parts structure_cut_min_points 8 removed, "
+                                      "described with every rule (free-top test included); the detector never sees them"),
+                            **loose}
+out["C_pole_gain_split"] = json.load(open(F + "split_gain.json"))
+json.dump(out, open(F + "interaction_summary.json", "w"), indent=1)
+print(json.dumps(tot), {k: v["parts_the_bar_removed"] if "parts_the_bar_removed" in v else v.get("loose_parts")
+                        for k, v in loose.items()})

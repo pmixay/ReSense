@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+"""Gate-cache replay (as eval_real.run_piece: a fresh Detector per piece, the worktree's default config) with
+the axhooks observer: per frame the final axis, the walls-stage side bins and the reported ranges (scratch).
+usage: run_gobs.py <cache_root> <name> <out.jsonl> [K/N]"""
+import json, os, sys
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import numpy as np
+import resense
+assert resense.__file__.startswith(WT), resense.__file__
+import axhooks as H  # noqa
+import ovr  # noqa
+from resense.config import DetectorConfig  # noqa
+from resense.detector import Detector  # noqa
+from resense.frame import frame_from_compact  # noqa
+from scripts.cache_io import cache_files, cache_file_stem, load_cache_array, load_cache_stamps  # noqa
+sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+from judge_runner import node_decision  # noqa
+
+root, name, out = sys.argv[1], sys.argv[2], sys.argv[3]
+d = os.path.join(root, name)
+files = [str(f) for f in cache_files(d)]
+if len(sys.argv) > 4:
+    k, n = (int(v) for v in sys.argv[4].split("/"))
+    files = [str(f) for f in np.array_split(np.array(files), n)[k]]
+stamps = load_cache_stamps(d)
+cfg = DetectorConfig.from_yaml(os.path.join(WT, "configs/default.yaml"))
+det = Detector(cfg)
+with open(out, "w") as fh:
+    for i, f in enumerate(files):
+        stem = cache_file_stem(f)
+        fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
+        n0 = len(H.REC["frames"])
+        res = det.process(fr)
+        calls = H.REC["frames"][n0:]
+        H.REC["frames"].clear()
+        c = calls[-1] if calls else {}
+        h = res.health or {}
+        t = res.track
+        rec = {"i": i, "stem": stem, "dec": node_decision(res), "clear": h.get("clear_distance"),
+               "mon": h.get("monitored_range"), "vis": h.get("visibility"), "av": float(t.axis_valid),
+               "c": float(t.center), "yaw": float(t.yaw), "curv": float(t.curvature), "tf": c.get("t_fixed"),
+               "sides": [[s["x"], s["y"], s["fit"] is not None] for s in c.get("side_in", [])],
+               "wd": float(getattr(t, "wall_drift", 1e9)), "nearest": res.nearest_distance,
+               "dets": [round(float(x.distance), 1) for x in res.detections],
+               "warns": [round(float(x.distance), 1) for x in res.warnings]}
+        # which side is which: left is fitted first when it has points; record the sign of the near median
+        fh.write(json.dumps(rec) + "\n")
+print(name, len(files))

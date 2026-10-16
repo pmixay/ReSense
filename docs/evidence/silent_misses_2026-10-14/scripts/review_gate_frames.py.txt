@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""The 15 gate work outputs of the code under test against the sealed detector's gate on this machine, frame by frame:
+obstacle / warning flags, detection and warning counts, and (here also) the detections' distance / zone / reason.
+usage: gate_frames.py <sealed_work> <work>"""
+import json, os, sys
+a_dir, b_dir = sys.argv[1], sys.argv[2]
+tot = 0; tot_det = 0
+for f in sorted(os.listdir(a_dir)):
+    if not f.endswith(".jsonl"):
+        continue
+    A = [json.loads(x) for x in open(os.path.join(a_dir, f))]
+    B = [json.loads(x) for x in open(os.path.join(b_dir, f))]
+    assert len(A) == len(B), f
+    ob = sum(a["obstacle"] != b["obstacle"] for a, b in zip(A, B))
+    wa = sum(a["warning"] != b["warning"] for a, b in zip(A, B))
+    cnt = sum(len(a["detections"]) != len(b["detections"]) or len(a["warnings"]) != len(b["warnings"]) for a, b in zip(A, B))
+    key = lambda d: (round(d.get("distance", 0), 2), d.get("zone"), d.get("reason"))
+    det = sum([key(x) for x in a["detections"] + a["warnings"]] != [key(x) for x in b["detections"] + b["warnings"]] for a, b in zip(A, B))
+    tot += ob + wa + cnt; tot_det += det
+    print(f"{f:45s} frames {len(A):5d} STOP {sum(a['obstacle'] for a in A):4d} -> {sum(b['obstacle'] for b in B):4d}  advisory {sum(a['warning'] for a in A):5d} -> {sum(b['warning'] for b in B):5d}  diff obstacle {ob} warning {wa} det/warn counts {cnt} det/warn distance-zone-reason {det}")
+print("TOTAL flag diffs", tot, "detail diffs", tot_det)

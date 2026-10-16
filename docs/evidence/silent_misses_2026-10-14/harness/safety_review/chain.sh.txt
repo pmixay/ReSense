@@ -1,0 +1,6 @@
+#!/bin/bash
+cd /tmp/claude-0/fixwork/safety_review
+while pgrep -f battery1.sh > /dev/null; do sleep 20; done
+./battery2.sh > out/battery2.log 2>&1
+./battery3.sh > out/battery3.log 2>&1
+echo CHAIN DONE > out/chain.done

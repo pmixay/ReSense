@@ -1,0 +1,43 @@
+{
+  "cwd": "/",
+  "python": "3.10.12",
+  "resense": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+  "version": "1.0.0",
+  "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+  "ros_node": "/opt/resense/ros2_ws/build/resense_ros/resense_ros/detector_node.py",
+  "open3d": "0.19.0",
+  "packages": {
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "scikit-learn": "1.5.2",
+    "pytest": "8.4.2",
+    "rosbags": "0.11.5",
+    "zstandard": "0.25.0"
+  },
+  "env": {
+    "RESENSE_REQUIRE_SYNTHETIC": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "source_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "79fe93bcc03f4181a5f6ef78938ec5cd637d7943e2f3b885f604da611814a481",
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "b3e74fb138330e119b8c4ce736290421ebd21f1090d4a2c7fc32f2c74b5826c4",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "6f247d2979aedc775a89fa3c4e71b8cb3e0532e6161b8db3b13c6c6dea50524d",
+    "scripts/startup_acceptance.py": "d2b2603441dd0ce35872e46f1787d910714194c72beeb85dfeda324af2623d18",
+    "scripts/decision_policy_import.py": "cc53ce119a462a89acf581fa74c199f06fdf4964d88ee04beaf7574e246ccbad",
+    "webapp/backend/resense_web/decision.py": "1f4a7c31beaad126399832dd27a1bc33a1f9e1efa486f85343273a7dbd27afe7",
+    "docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py": "6d3c333e6d8ae14075c7dd79640a11ac1d63e81d677b004d017253a639f560f8",
+    "docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py": "d21489ae8f5ecd53df408e0d9671c3ffb0591fa210af542f651148a1181193b7",
+    "tests/test_node.py": "e21886474e533009c3ace2083e466f0cd6dfee3d031f61aa83878d5876fe9e87",
+    "tests/test_startup_acceptance.py": "943ab4e22d760547681333cbf0445f59375b384b0d386a1d0f2cb2cb8d80b71f",
+    "tests/test_docker_fixtures.py": "a8c6017ea1a82dc1db8fde58ce660768dc64f3dcb7fc0739b0453be4076e08ab"
+  },
+  "frozen_source_verified": {
+    "commit": "7d3d5a05c258fc26a16c711e092822ff60d59d56",
+    "files": 306,
+    "declared_shell_normalizations": 23,
+    "manifest_sha256": "783fdc6ec6fd9050af44d8df631aa6f02a14170e5e8acf55927e8fc0344914e7"
+  }
+}

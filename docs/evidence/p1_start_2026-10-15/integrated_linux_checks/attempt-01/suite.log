@@ -1,0 +1,68 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+{
+  "cwd": "/",
+  "python": "3.10.12",
+  "resense": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+  "version": "1.0.0",
+  "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+  "ros_node": "/opt/resense/ros2_ws/build/resense_ros/resense_ros/detector_node.py",
+  "open3d": "0.19.0",
+  "packages": {
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "scikit-learn": "1.5.2",
+    "pytest": "8.4.2",
+    "rosbags": "0.11.5",
+    "zstandard": "0.25.0"
+  },
+  "env": {
+    "RESENSE_REQUIRE_SYNTHETIC": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "source_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "76f6e899a7f7de860c7b9a68a1e5ce3cef82dfc02e731228471b68d0931d2180",
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "b3e74fb138330e119b8c4ce736290421ebd21f1090d4a2c7fc32f2c74b5826c4",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "6f247d2979aedc775a89fa3c4e71b8cb3e0532e6161b8db3b13c6c6dea50524d",
+    "scripts/startup_acceptance.py": "2412eec60977167114b56bc285a860fc1c81288279abf386b81896d4dbe268a9",
+    "scripts/decision_policy_import.py": "cc53ce119a462a89acf581fa74c199f06fdf4964d88ee04beaf7574e246ccbad",
+    "webapp/backend/resense_web/decision.py": "1f4a7c31beaad126399832dd27a1bc33a1f9e1efa486f85343273a7dbd27afe7"
+  }
+}
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 13%]
+........................................................................ [ 18%]
+........................................................................ [ 23%]
+........................................................................ [ 27%]
+........................................................................ [ 32%]
+........................................................................ [ 36%]
+........................................................................ [ 41%]
+........................................................................ [ 46%]
+........................................................................ [ 50%]
+........................................................................ [ 55%]
+........................................................................ [ 59%]
+........................................................................ [ 64%]
+........................................................................ [ 69%]
+........................................................................ [ 73%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 87%]
+........................................................................ [ 92%]
+........................................................................ [ 96%]
+..................................................                       [100%]
+--------------- generated xml file: /checks/attempt-01/junit.xml ---------------
+--------- 10 test(s) deselected: their recorded data cache is not here ---------
+  tests/test_evidence_coherence.py::test_measured_remaining_inventory_is_133_track_frames (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_interval_rule_is_not_a_single_false_history_separator (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_293_fields_and_reference_change_are_not_identity_evidence (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_association_residuals_do_not_prove_wrong_association (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_sparse_edge_positive_rows_are_unchanged_by_fresh_onset_replay (no C:/Users/alikh/AppData/Local/Temp/opencode/fresh-stop-positive-stress)
+  tests/test_evidence_coherence.py::test_all_saved_stop_rows_validate_against_base_and_source (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_fresh_support_analysis.py::test_direct_fresh_selected_events_and_positive_counterexample_when_capture_available (no C:/Users/alikh/AppData/Local/Temp/opencode/direct-fresh-support-all)
+  tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop (no /data/cache/new_data)
+  tests/test_screen_competitor_rules.py::test_harness_reproduces_the_published_set_o_rows (no /opt/resense/docs/evidence/judgement_2026-09-28/raw/offline)
+  tests/test_screen_competitor_rules.py::test_committed_screen_matches_a_fresh_run (no /opt/resense/docs/evidence/judgement_2026-09-28/raw/offline)
+1562 passed, 10 deselected in 186.10s (0:03:06)

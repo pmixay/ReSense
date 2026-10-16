@@ -1,0 +1,181 @@
+{
+  "result": "PASS",
+  "source_commit": "4e4d5a96c8e1fe9302e1d6fcd967986356a8c107",
+  "owned_overlay_sha256": {
+    ".dockerignore": "ca98e26217b7f4e73365eeb9898dd7fcd703a06c97aeb19f2e599ead7a0110c2",
+    "docker/Dockerfile": "b7b77b40d466e2bf0e35b6b398c7146ec7997fdf4a616b48e5385e8fb9464772",
+    "tests/test_docker_fixtures.py": "c9768e56074efd075b58abc92368ffbf26077d8181584db239cd0a768102c39f",
+    "docs/evidence/offline_rebuild_2026-10-15/verify.py": "0cee00a0decbc978102f06373e70f526e6079db94a9f650dda1753d586a8be1f"
+  },
+  "base_image": "resense:p1-e2-check",
+  "base_id": "sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e",
+  "image": "resense:p1-e2-fixtures-review-20261015-v4",
+  "image_id": "sha256:fbe257da5c4e26914868a556d7e3deb5db1acc0ae5dddc73e4dd48662a978184",
+  "fixture_files": [
+    {
+      "path": "webapp/backend/resense_web/__init__.py",
+      "bytes": 111
+    },
+    {
+      "path": "webapp/backend/resense_web/decision.py",
+      "bytes": 678
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py",
+      "bytes": 3475
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh",
+      "bytes": 2119
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/listener.py",
+      "bytes": 2753
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py",
+      "bytes": 3475
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh",
+      "bytes": 2119
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py",
+      "bytes": 3787
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/listener.py",
+      "bytes": 2753
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py",
+      "bytes": 2793
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py",
+      "bytes": 22382
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py",
+      "bytes": 1600
+    },
+    {
+      "path": "docs/evidence/offline_rebuild_2026-10-15/verify.py",
+      "bytes": 8263
+    }
+  ],
+  "fixture_bytes": 56308,
+  "linux_unit_counts": {
+    "passed": 237,
+    "skipped": 18
+  },
+  "commands": [
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "resense:p1-e2-check"
+      ],
+      "exit": 0,
+      "seconds": 0.218
+    },
+    {
+      "command": [
+        "docker",
+        "build",
+        "--network",
+        "none",
+        "--pull=false",
+        "--no-cache",
+        "--progress=plain",
+        "--build-arg",
+        "RELEASE_IMAGE=resense:p1-e2-check",
+        "-f",
+        "docker/Dockerfile.context-check",
+        "-t",
+        "resense:p1-e2-fixtures-review-20261015-v4",
+        "."
+      ],
+      "exit": 0,
+      "seconds": 12.36
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "resense:p1-e2-fixtures-review-20261015-v4",
+        "python3",
+        "-c",
+        "from pathlib import Path; p=Path(\"/e2-context\"); assert sorted(x.name for x in (p/\"webapp/backend/resense_web\").iterdir()) == [\"__init__.py\", \"decision.py\"]; assert not (p/\"webapp/frontend\").exists(); assert not (p/\"docs/evidence/judgement_2026-10-13/out\").exists(); assert not (p/\"docs/evidence/node_startup_2026-10-15/out\").exists(); print(\"PASS: exact pure backend files; frontend and recorded evidence excluded\")"
+      ],
+      "exit": 0,
+      "seconds": 1.781
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "resense:p1-e2-fixtures-review-20261015-v4",
+        "python3",
+        "-c",
+        "import resense, sys, pytest; assert not resense.__file__.startswith(\"/opt/resense/\"); sys.path.insert(0, \"/opt/resense\"); sys.exit(pytest.main(['-q', '-rs', '/opt/resense/tests/test_docker_fixtures.py', '/opt/resense/tests/test_decision_policy.py', '/opt/resense/tests/test_node.py', '/opt/resense/tests/test_startup_acceptance.py']))"
+      ],
+      "exit": 0,
+      "seconds": 11.953
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "resense:p1-e2-fixtures-review-20261015-v4",
+        "python3",
+        "-c",
+        "import resense, sys, pytest; sys.path.insert(0, \"/opt/resense\"); sys.exit(pytest.main(['-q', '-rs', '/opt/resense/tests/test_docker_fixtures.py', '/opt/resense/tests/test_decision_policy.py', '/opt/resense/tests/test_startup_acceptance.py']))"
+      ],
+      "exit": 0,
+      "seconds": 9.672
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "resense:p1-e2-check"
+      ],
+      "exit": 0,
+      "seconds": 0.141
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "resense:p1-e2-fixtures-review-20261015-v4"
+      ],
+      "exit": 0,
+      "seconds": 0.14
+    }
+  ],
+  "scope": "frozen source plus E2 packaging; not final integrated suite"
+}

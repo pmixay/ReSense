@@ -8,8 +8,7 @@ WebSocket. The HTTP contract is [`../API.md`](../API.md).
 ## Install and run
 
 ```bash
-pip install -e ".[dev]"                     # from the repository root: the detector (resense)
-pip install -e "webapp/backend[dev]"        # this package: resense-web (+ pytest, httpx for the tests)
+pip install -e ".[dev]" -e ros2_ws/src/resense_ros -e "webapp/backend[dev]"
 python -m resense_web                       # http://0.0.0.0:8080 (serves webapp/frontend/dist when built)
 python -m resense_web --port 8000 --reload  # development, behind Vite on :5173 (proxies /api)
 cd webapp/backend && python -m pytest -q    # tests (~50 s; they write real bags, need open3d + rosbags)
@@ -18,6 +17,44 @@ cd webapp/backend && python -m pytest -q    # tests (~50 s; they write real bags
 One command for the whole prototype (builds the frontend when `dist/` is missing or older than the sources, installs nothing
 unless `--install`): `scripts/run_webapp.sh` — http://localhost:8080/, `RESENSE_DATA` defaults to
 `/data/for_hackathon` when it exists.
+
+`resense-web` declares both `resense` and `resense-ros>=1.0.0` as dependencies.
+The existing `ros2_ws/src/resense_ros` package supplies the shared pure-Python
+decision policy. Importing its package / policy requires no `rclpy`, ROS node or
+launch stack; running the ROS node still requires ROS. `--install` and CI install
+all three local projects together so pip can resolve their local distributions.
+
+### Local wheels, outside the checkout
+
+Build wheels for the target Python/platform, then install into a fresh venv:
+
+```bash
+# In the checkout, in a build environment with pip, setuptools and wheel:
+python -m pip install wheel
+python -m pip wheel --no-deps --wheel-dir wheelhouse . ./ros2_ws/src/resense_ros ./webapp/backend
+
+# Use absolute paths when taking the wheelhouse to another directory/machine.
+python -m venv /tmp/resense-web-env
+/tmp/resense-web-env/bin/python -m pip install --find-links /absolute/path/wheelhouse \
+  /absolute/path/wheelhouse/resense-*.whl /absolute/path/wheelhouse/resense_web-*.whl
+/tmp/resense-web-env/bin/python -m pip check
+cd /tmp
+/tmp/resense-web-env/bin/python -I -c 'from resense_web.decision import decision_of; print(decision_of({"warning": True}))'
+/tmp/resense-web-env/bin/python -I -m resense_web --help
+```
+
+The backend dependency resolves `resense_ros-*.whl` from that wheelhouse. Ordinary
+third-party dependencies still need an index/cache; for an offline install,
+download their target-platform wheels into the wheelhouse first and add
+`--no-index`. A source-only namespace fallback is not a wheel dependency. Use a
+fresh venv, or explicitly reinstall the current local ROS wheel if an older
+same-version overlay lacks `resense_ros.decision_policy`.
+
+`python scripts/check_webapp_wheels.py` automates building source copies and a
+fresh non-editable venv. It checks the wheel's declared dependency, lets pip
+resolve the ROS wheel, runs `pip check`, imports the actual backend application
+and policy with the source namespace unavailable, forbids node/ROS imports, and
+checks the installed CLI. CI runs it in the `webapp` job.
 
 ## Environment
 

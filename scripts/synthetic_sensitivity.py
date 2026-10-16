@@ -22,6 +22,11 @@ import sys
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+from decision_policy_import import load_policy  # noqa: E402
+
+POLICY = load_policy(ROOT)
+decision = POLICY.decision
 DETECTOR_ROOT = Path(os.environ.get("RESENSE_DETECTOR_ROOT", ROOT)).resolve()
 if not (DETECTOR_ROOT / "resense/__init__.py").is_file():
     raise ValueError(f"RESENSE_DETECTOR_ROOT has no resense package: {DETECTOR_ROOT}")
@@ -89,7 +94,9 @@ def source_identity(source_commit=None):
     if not commit:
         raise ValueError("Git metadata unavailable in this mount; pass --source-commit from the host checkout")
     return {"commit": commit, "commit_origin": "git" if result.returncode == 0 else "supplied by caller",
-            "detector_source_sha256": json_hash(hashes), "files": hashes}
+            "detector_source_sha256": json_hash(hashes), "files": hashes,
+            "decision_policy": {"version": "v1", "path": str(Path(POLICY.__file__).resolve()),
+                                "sha256": file_hash(POLICY.__file__), "origin": "observer checkout"}}
 
 
 def sequence_cases(protocol, split):
@@ -245,9 +252,6 @@ def target_matches(detection, case, matching):
 
 def observation(result, case, returns, index, stamp, matching):
     matched = [target_matches(d, case, matching) for d in result.detections]
-    level = result.health.get("level", "ok")
-    decision = ("STOP" if result.obstacle else "FAULT" if level == "error" else "CAUTION"
-                if result.warning or result.health.get("decision_level", level) == "warn" else "GO")
     return {"frame": index, "stamp_s": stamp, "target_returns": returns,
             "visible": bool(case["positive"] and returns > 0), "stop": bool(result.obstacle),
             "matched_stop": any(matched), "unmatched_stop": any(not m for m in matched),
@@ -255,7 +259,7 @@ def observation(result, case, returns, index, stamp, matching):
             "detections": [{"id": int(d.id), "distance": float(d.distance),
                             "center": np.asarray(d.center).tolist(), "size": np.asarray(d.size).tolist(),
                             "kind": d.kind, "reason": d.reason} for d in result.detections],
-            "health": result.health, "decision": decision,
+            "health": result.health, "decision": decision(result),
             "decision_scope": "offline detector policy; no ROS freshness/watchdog evaluation",
             "clear_distance_m": float(result.clear_distance),
             "clear_overclaim": bool(case["positive"] and returns > 0 and result.clear_distance > case["distance_m"] + 1.0),

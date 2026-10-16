@@ -1,0 +1,44 @@
+"""Single-frame raw curvature: sealed weighting vs B variants on gobs records (scratch). Reports how often and how
+much the variant changes the raw wall curvature (|dk| quantiles, share with |dk| > 1e-4 / 3e-4), split by class.
+usage: cf4.py G P files...   (G = follow gap m, 0 = off; P = reach power)"""
+import json, sys
+import numpy as np
+from cflib import fit_side, cut_gap
+
+import os
+G, P = float(sys.argv[1]), float(sys.argv[2])
+MODE = os.environ.get("MODE", "fit")
+out = {}
+for path in sys.argv[3:]:
+    rows = [json.loads(l) for l in open(path)]
+    curv = [r["curv"] for r in rows]
+    for i, r in enumerate(rows):
+        t = r["tf"]
+        if t is None or len(r["sides"]) < 2:
+            continue
+        S = [(np.array(x), np.array(y)) for x, y, ok in r["sides"]]
+        base = [fit_side(x, y, t) for x, y in S]
+        if MODE == "w":       # fits as sealed; the reach for the weights is the followed run's (gap <= G)
+            var = [None if b is None else (b[0], b[1], float(cut_gap(x, y, G)[0].max())) for b, (x, y) in zip(base, S)]
+        else:
+            var = [fit_side(*(cut_gap(x, y, G) if G > 0 else (x, y)), t) for x, y in S]
+
+        def comb(f, p):
+            f = [v for v in f if v is not None]
+            if not f:
+                return None
+            w = np.array([1.0 / (v[1] ** 2 + 1e-4) for v in f])
+            if p > 0 and len(f) == 2:
+                reach = np.array([max(v[2] - 30.0, 4.0) for v in f])
+                w = w * (reach / reach.max()) ** p
+            return float(np.sum(w * [v[0] for v in f]) / w.sum())
+        kb, kv = comb(base, 0), comb(var, P)
+        if kb is None or kv is None:
+            continue
+        lo, hi = max(0, i - 5), min(len(curv) - 1, i + 5)
+        cls = "entry/exit" if abs(curv[hi] - curv[lo]) > 2e-4 else ("curve" if abs(curv[i]) > 3e-4 else "straight")
+        out.setdefault(cls, []).append(kv - kb)
+for cls, d in sorted(out.items()):
+    d = np.abs(np.array(d))
+    print("%-11s n %5d |dk| median %.1e p90 %.1e p99 %.1e  >1e-4 %.1f%%  >3e-4 %.1f%%" % (
+        cls, d.size, np.median(d), np.percentile(d, 90), np.percentile(d, 99), 100 * np.mean(d > 1e-4), 100 * np.mean(d > 3e-4)))

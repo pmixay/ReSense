@@ -1,0 +1,28 @@
+{
+  "pid": 23196,
+  "t": 1792101314.2189515,
+  "argv": [
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-venv\\Scripts\\python.exe",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p1-start\\scripts\\startup_acceptance.py",
+    "--out",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt05_matrix",
+    "--image",
+    "resense:p1-start-2026-10-15",
+    "--detector-commit",
+    "1eed357",
+    "--bags",
+    "C:/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/for_hackathon",
+    "--repeats",
+    "3",
+    "--cpus",
+    "4",
+    "--memory",
+    "6g",
+    "--player-timeout",
+    "600"
+  ],
+  "out": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt05_matrix",
+  "stdout": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt05_matrix.stdout.log",
+  "stderr": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt05_matrix.stderr.log",
+  "driver_sha256": "3aacedb1a02fe7287ed8b606da3ef5d8313887fed2712ab3e7504e582ed59e78"
+}

@@ -10,6 +10,7 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 dependencies = [
     "resense",
+    "resense-ros>=1.0.0",
     "fastapi>=0.110",
     "uvicorn[standard]>=0.27",
     "python-multipart>=0.0.9",

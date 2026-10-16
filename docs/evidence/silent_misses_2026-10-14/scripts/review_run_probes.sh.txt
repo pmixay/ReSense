@@ -1,0 +1,42 @@
+#!/bin/bash
+# The 27 combined probes of silent_misses_2026-10-14 on the code at $CODE (default the worktree), one at a time,
+# under nice, hooks installed. usage: run_probes.sh <outdir> <case...> | all
+cd /tmp/claude-0/fixwork/fix_review; source env.sh
+O=$1; shift; mkdir -p $O
+A="$J/roundT_squareT_pressureGate_squareT $ICP/icp_roundT_squareT_pressureGate_squareT.json"
+B="$J/roundT_doubleT $ICP/icp_roundT_doubleT.json"
+C="$J/roundT_pressureGate_roundT $ICP/icp_roundT_pressureGate_roundT.json"
+S="$J/squareT_platform_squareT_switch $ICP/icp_squareT_platform_squareT_switch.json"
+AW="--start 150 --d0 230 --end 340"; CW="--start 0 --d0 230"
+P="--obj 0.5,0.5,1.75"; POLE="--obj 0.3,0.3,2.8"; POST="--obj 0.5,0.5,2.5"
+ALL="pole_c pole_side pole_sideN post_c post_side pole_c_drop pole_side_drop A_person S_pole_side60 S_pole_side100
+     B_pole_c B_pole_side C_pole_c C_pole_side C_person C_cube1 C_cube05 C_person_latp05 C_person_latm05
+     C_person_latp07 C_person_latm07 C_person_drop C_person_hd20 C_person_hdm20 C_cube1_hd20 B_person D_person"
+cases="$*"; [ "$cases" = all ] && cases=$ALL
+cd $W/docs/evidence/judgement_2026-10-13 || exit 9
+for c in $cases; do
+  ym=""; ye=0
+  case $c in
+    pole_c) args="$A $POLE $AW";; pole_side) args="$A $POLE $AW --lat 0.7";; pole_sideN) args="$A $POLE $AW --lat -0.7";;
+    post_c) args="$A $POST $AW";; post_side) args="$A $POST $AW --lat 0.7";;
+    pole_c_drop) args="$A $POLE $AW --dropout";; pole_side_drop) args="$A $POLE $AW --lat 0.7 --dropout";;
+    A_person) args="$A $P $AW";;
+    S_pole_side60) args="$S $POLE --start 360 --d0 60 --end 620 --lat 0.7";;
+    S_pole_side100) args="$S $POLE --start 360 --d0 100 --end 620 --lat 0.7";;
+    B_pole_c) args="$B $POLE --start 50 --d0 230";; B_pole_side) args="$B $POLE --start 50 --d0 230 --lat 0.7";;
+    C_pole_c) args="$C $POLE $CW";; C_pole_side) args="$C $POLE $CW --lat 0.7";;
+    C_person) args="$C $P $CW";; C_cube1) args="$C --obj 1.0,1.0,1.0 $CW";; C_cube05) args="$C --obj 0.5,0.5,0.5 $CW";;
+    C_person_latp05) args="$C $P $CW --lat 0.5";; C_person_latm05) args="$C $P $CW --lat -0.5";;
+    C_person_latp07) args="$C $P $CW --lat 0.7";; C_person_latm07) args="$C $P $CW --lat -0.7";;
+    C_person_drop) args="$C $P $CW --dropout";;
+    C_person_hd20) args="$C $P $CW"; ym=heading; ye=20;; C_person_hdm20) args="$C $P $CW"; ym=heading; ye=-20;;
+    C_cube1_hd20) args="$C --obj 1.0,1.0,1.0 $CW"; ym=heading; ye=20;;
+    B_person) args="$B $P --start 50 --d0 230";; D_person) args="$S $P --start 100 --end 420 --d0 230";;
+    *) echo "unknown $c"; continue;;
+  esac
+  [ -f $O/$c.json ] && continue
+  set -- $args; cache=$1; icp=$2; shift 2
+  YAW_MODE=$ym YAW_EXTRA=$ye run_w $FR/rtw2.py $cache $icp $O/$c "$@" > $O/$c.log 2>&1
+  echo "$c rc $? $(date +%T) $(tail -1 $O/$c.log)"
+done
+echo PROBES_DONE $(date +%T)

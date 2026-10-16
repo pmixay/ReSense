@@ -56,19 +56,23 @@ PARAMS = {
     "stale_timeout": ("0.5", float, "s without an input frame before the decision becomes FAULT"),
     "startup_grace": ("2.0", float, "s after start before 'no LiDAR frame received yet' is published as FAULT"),
     "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),
+    "decision_policy": ("v1", str, "shared decision policy: v1 compatibility default; v2 opt-in for measurement"),
+    "caution_distance_m": ("80.0", float, "v2: maximum distance for margin-advisory CAUTION, inclusive"),
+    "caution_compact_max_size_m": ("3.0", float, "v2: maximum box extent for compact range advisories, inclusive"),
     # v0.6.1: several recordings / topic names through one running node
     "input_switch_timeout": ("1.0", float, "s the active input topic must be silent before another topic is taken"),
     "new_input_gap": ("30.0", float, "s of forward header-stamp jump taken as a new recording (detector restarted)"),
     "hole_reset_gap": ("1.0", float, "s of forward header-stamp jump that resets the scene state (calibration kept)"),
-    "input_queue_depth": ("40", int, "frames the input subscription may hold between two processed frames"),
+    "input_queue_depth": ("12", int, "DDS keep-last frames per input subscription"),
+    "max_pending_frames": ("12", int, "hard Python pending-frame cap across all inputs; overflow is counted"),
     # v0.6.4: `ros2 bag play` sends the first seconds of a recording back to back (it preloads the bag)
     "catchup_step": ("0.3", float, "s of recording between processed frames while frames wait (a burst from the "
                                    "player); 0 = always process the newest frame only"),
     "catchup_max_lag": ("5.0", float, "s: waiting frames older than the newest by more than this are dropped"),
-    "catchup_startup_max_lag": ("20.0", float, "s: backlog allowed for a new recording's first catch-up; "
+    "catchup_startup_max_lag": ("2.5", float, "s: backlog allowed for a new recording's first catch-up; "
                                             "later stalls use catchup_max_lag"),
-    "catchup_startup_step": ("0.0", float, "s of recording between processed frames of a new recording's first "
-                                           "backlog; experimental default 0 keeps every frame; 0.2 opts into 5 Hz"),
+    "catchup_startup_step": ("0.2", float, "s between start-up chain links; adaptive up to 0.3 at processing "
+                                            "pressure >= 0.8; 0 = input-period compatibility within queue/lag bounds"),
     "warmup": ("true", bool, "run the decode and a throwaway detector on synthetic frames before listening"),
     "input_reliability": ("auto", str, "input QoS: auto = match the publishers (reliable for ros2 bag play of the "
                                        "organizers' recordings), reliable, best_effort"),

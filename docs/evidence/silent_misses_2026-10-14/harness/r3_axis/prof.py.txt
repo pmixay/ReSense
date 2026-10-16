@@ -1,0 +1,15 @@
+"""Side profiles (offset from the final axis per bin) of gobs frames, all sides (scratch).
+usage: prof.py <gobs.jsonl> i [i ...]"""
+import json, sys
+import numpy as np
+want = {int(v) for v in sys.argv[2:]}
+for l in open(sys.argv[1]):
+    r = json.loads(l)
+    if r["i"] not in want:
+        continue
+    t = np.tan(r["yaw"])
+    print(r["i"], r["stem"], "curv %.5f av %.0f mon %s wd %s dec %s dets %s" % (r["curv"], r["av"], r["mon"], r.get("wd"), r["dec"], r["dets"]))
+    for x, y, ok in r["sides"]:
+        x = np.array(x); y = np.array(y)
+        dy = y - (r["c"] + t * x + 0.5 * r["curv"] * x * x)
+        print("   fit" if ok else "   ---", " ".join("%d:%.2f" % (a, b) for a, b in zip(x, dy)))

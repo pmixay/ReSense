@@ -1,0 +1,28 @@
+"""Per-frame drift caps of a gobs file with the side profiles (scratch).
+usage: sig2f.py <gobs.jsonl> i0 i1 [delta persist step gap] [verbose]"""
+import json, sys
+import numpy as np
+from sig2 import drift_cap
+
+path, i0, i1 = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
+names = ["delta", "persist", "w0max", "gap", "mad"]
+kw = {}
+for n, v in zip(names, sys.argv[4:9]):
+    kw[n] = float(v) if n != "persist" else int(v)
+verbose = len(sys.argv) > 9
+for l in open(path):
+    r = json.loads(l)
+    if not (i0 <= r["i"] <= i1):
+        continue
+    t = np.tan(r["yaw"])
+    out = []
+    for x, y, ok in r["sides"]:
+        if not ok:
+            out.append("--")
+            continue
+        cap = drift_cap(x, y, r["c"], t, r["curv"], **kw)
+        x = np.array(x); y = np.array(y)
+        dy = y - (r["c"] + t * x + 0.5 * r["curv"] * x * x)
+        prof = " ".join("%d:%.2f" % (a, b) for a, b in zip(x, dy)) if verbose else ""
+        out.append("cap=%s %s" % (cap, prof))
+    print(r["i"], r["stem"], "curv %.5f av %.0f mon %s dec %s" % (r["curv"], r["av"], r["mon"], r["dec"]), " | ".join(out))

@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+"""Summarise the interaction records (<prefix>_rec.jsonl from interact_run.py).
+usage: interact_summary.py [--json OUT] label=<rec.jsonl>[,<rec.jsonl>...] ...
+Per label: cut parts, how many are column-shaped, how many reach the column rule (the reason by shape alone is
+'column'), how many the free-top test spares, their final verdicts; the non-cut clusters the free-top test was
+asked about and spared; windows: the ride k4720-4729, and on A / C every cut part or column-shaped cluster at
+105-155 m (the pressure-gate structures)."""
+import json
+import sys
+from collections import Counter
+
+
+def load(paths):
+    out = []
+    for p in paths.split(","):
+        out += [json.loads(line) for line in open(p)]
+    return out
+
+
+def brief(r):
+    o = r.get("out")
+    return {"k": r["k"], "cut": r["cut"], "parent": r.get("parent"), "d": r.get("dist"), "lat": r.get("lat"),
+            "size": r.get("size"), "h": [r.get("h_min"), r.get("h_max")], "n_vox": r.get("n_vox"),
+            "col_w": r.get("col_w"), "zone_in": r.get("zone_in"), "shape": r.get("shape"),
+            "by_shape": r.get("r_shape_only"), "reason": r.get("r"), "ft_asked": r.get("ft"),
+            "out": None if o is None else f"{o.get('zone')}/{o.get('reason') or '-'}" + ("/demoted" if o.get("demoted") else "")}
+
+
+def summarise(label, recs):
+    cut = [r for r in recs if r["cut"]]
+    cut_desc = [r for r in cut if "r" in r]
+    cut_shape = [r for r in cut_desc if r.get("shape")]
+    cut_col = [r for r in cut_desc if r.get("r_shape_only") == "column"]
+    cut_spared = [r for r in cut_col if r.get("r") != "column"]
+    non = [r for r in recs if not r["cut"] and "r" in r]
+    asked = [r for r in non if r.get("ft") is not None]
+    spared = [r for r in non if r.get("r_shape_only") == "column" and r.get("r") != "column"]
+    s = {"records": len(recs), "cut_parts_described": len(cut), "cut_parts_by_verdict": dict(Counter(
+            "dropped" if r.get("out") is None else f"{r['out']['zone']}/{r['out']['reason'] or '-'}" for r in cut)),
+         "cut_parts_column_shaped": len(cut_shape), "cut_parts_reaching_column_rule": len(cut_col),
+         "cut_parts_spared_by_free_top": len(cut_spared),
+         "cut_column_shaped_list": [brief(r) for r in cut_shape],
+         "non_cut_free_top_asked": len(asked), "non_cut_spared": len(spared),
+         "non_cut_spared_list": [brief(r) for r in spared][:40]}
+    if label.startswith("ride"):
+        s["ride_k4720_4729"] = [brief(r) for r in recs if 4720 <= r["k"] <= 4729]
+    if label[:1] in "AC":
+        s["pressure_gate_105_155"] = [brief(r) for r in recs if "r" in r and r.get("dist") is not None
+                                      and 105 <= r["dist"] <= 155 and (r["cut"] or r.get("shape"))]
+    return s
+
+
+def main():
+    args = sys.argv[1:]
+    jout = None
+    if args[:1] == ["--json"]:
+        jout, args = args[1], args[2:]
+    res = {}
+    for a in args:
+        label, paths = a.split("=", 1)
+        res[label] = s = summarise(label, load(paths))
+        print(f"== {label}: records {s['records']}, cut parts {s['cut_parts_described']} {s['cut_parts_by_verdict']}, "
+              f"column-shaped {s['cut_parts_column_shaped']}, reach the column rule {s['cut_parts_reaching_column_rule']}, "
+              f"spared {s['cut_parts_spared_by_free_top']}; non-cut free-top asked {s['non_cut_free_top_asked']}, "
+              f"spared {s['non_cut_spared']}")
+        for r in s["cut_column_shaped_list"]:
+            print("   cut+column-shaped", r)
+        for key in ("ride_k4720_4729", "pressure_gate_105_155"):
+            if key in s:
+                print(f"   {key}: {len(s[key])} records")
+                for r in s[key][:30]:
+                    print("     ", r)
+    if jout:
+        json.dump(res, open(jout, "w"), indent=1)
+
+
+if __name__ == "__main__":
+    main()

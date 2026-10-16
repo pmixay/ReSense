@@ -1,0 +1,64 @@
+#!/bin/bash
+# stage 2 on code_fin: wall-anchored probes (the review's battery 2/5) and plain replays, then ride pieces
+cd /tmp/claude-0/fixwork/fix_review
+until grep -q "GATE_FIN DONE" out/chain_fin.log 2>/dev/null; do sleep 10; done
+export CODE=/tmp/claude-0/fixwork/fix_review/code_fin
+source env.sh
+SR=/tmp/claude-0/fixwork/safety_review/out
+C="$J/roundT_pressureGate_roundT $ICP/icp_roundT_pressureGate_roundT.json"
+B="$J/roundT_doubleT $ICP/icp_roundT_doubleT.json"
+cd $W/docs/evidence/judgement_2026-10-13
+wb() { name=$1; bg=$2; shift 2
+  [ -f $FR/out/wb_fin_$name.json ] || run_w $FR/wallbox_rt.py $bg $FR/out/wb_fin_$name "$@" > $FR/out/wb_fin_$name.log 2>&1
+  python3 - $name >> $FR/out/wallbox_fin.txt <<'PY'
+import json, sys
+n = sys.argv[1]; SR = "/tmp/claude-0/fixwork/safety_review/out"; FR = "/tmp/claude-0/fixwork/fix_review/out"
+def st(p):
+    d = json.load(open(p)); o = d["summary"]["o0"]
+    vis = [r for r in d["rows"] if r["objs"] and r["objs"][0]["n_obj"] > 0]
+    dec = {k: sum(r["decision"] == k for r in vis) for k in ("GO", "CAUTION", "STOP")}
+    return o["obj_stop_frames"], o["first_stop_X"], dec, d["summary"]["decisions"], d["summary"]["hooks"].get("cut_parts")
+s, w, f = st(f"{SR}/wb_{n}_s.json"), st(f"{SR}/wb_{n}_w.json"), st(f"{FR}/wb_fin_{n}.json")
+print(f"{n:16s} objSTOP sealed {s[0]} (first {s[1]}) 13.10 {w[0]} (first {w[1]}) fix {f[0]} (first {f[1]}) | while visible sealed {s[2]} fix {f[2]} | all frames sealed {s[3]} fix {f[3]} | cut parts 13.10 {w[4]} fix {f[4]}")
+PY
+}
+wb person08 "$C" --start 0 --d0 230 --o 0.5,0.5,1.75:wall+:0.8
+wb person09 "$C" --start 0 --d0 230 --o 0.5,0.5,1.75:wall+:0.9
+wb person10 "$C" --start 0 --d0 230 --o 0.5,0.5,1.75:wall+:1.0
+wb person11 "$C" --start 0 --d0 230 --o 0.5,0.5,1.75:wall+:1.1
+wb person10_drop "$C" --start 0 --d0 230 --o 0.5,0.5,1.75:wall+:1.0 --dropout
+wb mast09 "$C" --start 0 --d0 230 --o 0.3,0.3,2.6:wall+:0.9
+wb mast10 "$C" --start 0 --d0 230 --o 0.3,0.3,2.6:wall+:1.0
+wb mast12 "$C" --start 0 --d0 230 --o 0.3,0.3,2.6:wall+:1.2
+wb signpost095 "$C" --start 0 --d0 230 --o 0.1,0.1,2.4:wall+:0.95 --o 0.05,0.6,0.6:wall+:0.95:0.1::wall:1.8
+wb col10 "$C" --start 0 --d0 230 --o 0.4,0.4,5.0:wall+:1.0
+wb darkcol10 "$C" --start 0 --d0 230 --o 0.4,0.4,5.0:wall+:1.0:0:2.6
+wb cab09 "$C" --start 0 --d0 230 --o 0.6,0.9,1.8:wall+:0.9
+wb cab10 "$C" --start 0 --d0 230 --o 0.6,1.0,1.8:wall+:1.0
+wb cab085off "$C" --start 0 --d0 230 --o 0.6,0.5,1.8:wall+:0.85
+wb tallcab10 "$C" --start 0 --d0 230 --o 0.6,0.6,2.5:wall+:1.0
+wb pers_cab_behind "$C" --start 0 --d0 230 --o 0.5,0.5,1.75:axis:0 --o 0.6,1.0,1.8:wall+:1.0:1.5
+wb pers_cab_front "$C" --start 0 --d0 230 --o 0.5,0.5,1.75:axis:0 --o 0.6,1.0,1.8:wall+:1.0:-1.5
+wb pers_mast_behind "$C" --start 0 --d0 230 --o 0.5,0.5,1.75:axis:0 --o 0.3,0.3,2.6:wall+:1.0:1.5
+wb B_person10 "$B" --start 50 --d0 230 --o 0.5,0.5,1.75:wall+:1.0
+wb B_person10m "$B" --start 50 --d0 230 --o 0.5,0.5,1.75:wall-:1.0
+echo "WALLBOX DONE" >> $FR/out/wallbox_fin.txt
+cd $FR
+BO=/tmp/claude-0/judge_data/baseline_out
+for bag in roundT_squareT_pressureGate_squareT roundT_doubleT roundT_pressureGate_roundT squareT_platform_squareT_switch; do
+  [ -f out/plain_${bag}_fin.jsonl ] || run_w jrep.py $J/$bag out/plain_${bag}_fin > out/plain_${bag}_fin.log 2>&1
+  python3 cmp.py $BO/$bag.jsonl out/plain_${bag}_fin.jsonl "plain $bag judge-baseline->fin" >> out/plain_fin.txt
+  tail -1 out/plain_${bag}_fin.log >> out/plain_fin.txt
+done
+for spec in "C_pitchp2 roundT_pressureGate_roundT --pitch 2" "A_pitchp2 roundT_squareT_pressureGate_squareT --pitch 2" \
+            "C_drop03 roundT_pressureGate_roundT --drop 0.3" "A_drop03 roundT_squareT_pressureGate_squareT --drop 0.3" \
+            "C_every2 roundT_pressureGate_roundT --every 2" "C_dedup roundT_pressureGate_roundT --dedup"; do
+  set -- $spec; name=$1; bag=$2; shift 2
+  [ -f out/rob_${name}_sealed.jsonl ] || run_s jrep.py $J/$bag out/rob_${name}_sealed "$@" > out/rob_${name}_sealed.log 2>&1
+  [ -f out/rob_${name}_fin.jsonl ] || run_w jrep.py $J/$bag out/rob_${name}_fin "$@" > out/rob_${name}_fin.log 2>&1
+  python3 cmp.py out/rob_${name}_sealed.jsonl out/rob_${name}_fin.jsonl "rob $name sealed->fin" >> out/plain_fin.txt
+  tail -1 out/rob_${name}_fin.log >> out/plain_fin.txt
+done
+echo "PLAIN DONE" >> out/plain_fin.txt
+TAG=fin ./batch_ride.sh
+echo CHAIN_FIN_STAGE2 DONE >> out/chain_fin.log

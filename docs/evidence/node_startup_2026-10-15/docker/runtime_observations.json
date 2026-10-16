@@ -1,0 +1,87 @@
+[
+  {
+    "label": "candidate_obstacle_literal_r1",
+    "play_wall_s": 369.3875343799591,
+    "player_queue_starvation_warnings": 0,
+    "strict_errors": [
+      "last expected bag frame missing (incomplete drain)"
+    ]
+  },
+  {
+    "label": "candidate_obstacle_literal_r2",
+    "play_wall_s": 352.7872748374939,
+    "player_queue_starvation_warnings": 0,
+    "strict_errors": []
+  },
+  {
+    "label": "candidate_obstacle_literal_r3",
+    "play_wall_s": 356.64405822753906,
+    "player_queue_starvation_warnings": 0,
+    "strict_errors": []
+  },
+  {
+    "label": "candidate_obstacle_readme_r1",
+    "play_wall_s": 339.1682093143463,
+    "player_queue_starvation_warnings": 315,
+    "strict_errors": [
+      "row 940: invalid/non-progressing arrival clock",
+      "last expected bag frame missing (incomplete drain)"
+    ]
+  },
+  {
+    "label": "candidate_obstacle_readme_r2",
+    "play_wall_s": 225.6275007724762,
+    "player_queue_starvation_warnings": 209,
+    "strict_errors": [
+      "last expected bag frame missing (incomplete drain)"
+    ]
+  },
+  {
+    "label": "candidate_obstacle_readme_r3",
+    "play_wall_s": 294.02710938453674,
+    "player_queue_starvation_warnings": 273,
+    "strict_errors": [
+      "last expected bag frame missing (incomplete drain)"
+    ]
+  },
+  {
+    "label": "candidate_clear_literal_r1",
+    "play_wall_s": 150.6656210422516,
+    "player_queue_starvation_warnings": 0,
+    "strict_errors": [
+      "last expected bag frame missing (incomplete drain)"
+    ]
+  },
+  {
+    "label": "candidate_clear_literal_r2",
+    "play_wall_s": 96.19987750053406,
+    "player_queue_starvation_warnings": 0,
+    "strict_errors": []
+  },
+  {
+    "label": "candidate_clear_literal_r3",
+    "play_wall_s": 96.08669543266296,
+    "player_queue_starvation_warnings": 0,
+    "strict_errors": [
+      "last expected bag frame missing (incomplete drain)"
+    ]
+  },
+  {
+    "label": "candidate_clear_readme_r1",
+    "play_wall_s": 97.56152176856995,
+    "player_queue_starvation_warnings": 89,
+    "strict_errors": []
+  },
+  {
+    "label": "candidate_clear_readme_r2",
+    "play_wall_s": 95.03591346740723,
+    "player_queue_starvation_warnings": 87,
+    "strict_errors": []
+  },
+  {
+    "label": "candidate_clear_readme_r3",
+    "play_wall_s": 92.28265142440796,
+    "player_queue_starvation_warnings": 84,
+    "strict_errors": []
+  }
+]

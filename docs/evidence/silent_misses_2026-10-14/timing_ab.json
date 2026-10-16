@@ -1,0 +1,73 @@
+{
+ "_note": "Detector.process wall time per frame (ms), one process per run, a fresh detector, the frames loaded one at a time and not timed, the first 20 frames dropped; sealed = the main checkout 707ea9c, combined = final/silent-misses 5fce816; runs interleaved sealed, combined x 3 on an otherwise idle 4-vCPU machine (one BLAS thread). ride = gate cache new_data frames 4227-5026 (the k4720-4729 crossover included), C = roundT_pressureGate_roundT (gate cache), all 268 frames.",
+ "ride": {
+  "sealed": {
+   "wall_mean": [
+    38.71,
+    39.06,
+    40.28
+   ],
+   "wall_p95": [
+    59.22,
+    62.33,
+    61.44
+   ],
+   "mean_of_means": 39.35,
+   "mean_of_p95": 61.0,
+   "native": "native (_resense_native.cpython-313-x86_64-linux-gnu.so)",
+   "frames": 780
+  },
+  "combined": {
+   "wall_mean": [
+    37.09,
+    40.37,
+    41.49
+   ],
+   "wall_p95": [
+    52.55,
+    65.13,
+    67.05
+   ],
+   "mean_of_means": 39.65,
+   "mean_of_p95": 61.58,
+   "native": "native (_resense_native.cpython-313-x86_64-linux-gnu.so)",
+   "frames": 780
+  },
+  "combined_minus_sealed_mean": 0.3
+ },
+ "C": {
+  "sealed": {
+   "wall_mean": [
+    31.5,
+    37.21,
+    34.13
+   ],
+   "wall_p95": [
+    43.7,
+    47.24,
+    50.35
+   ],
+   "mean_of_means": 34.28,
+   "mean_of_p95": 47.1,
+   "native": "native (_resense_native.cpython-313-x86_64-linux-gnu.so)",
+   "frames": 248
+  },
+  "combined": {
+   "wall_mean": [
+    34.42,
+    35.66,
+    34.42
+   ],
+   "wall_p95": [
+    44.98,
+    50.53,
+    45.88
+   ],
+   "mean_of_means": 34.83,
+   "mean_of_p95": 47.13,
+   "native": "native (_resense_native.cpython-313-x86_64-linux-gnu.so)",
+   "frames": 248
+  },
+  "combined_minus_sealed_mean": 0.55
+ }
+}

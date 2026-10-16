@@ -1,0 +1,53 @@
+{
+  "name": "rs-s1-volume-prefetch-5b99fddf49f1",
+  "mode": "prefetch",
+  "volume": "rs-s1-original-bags-20261016-72a601b",
+  "read_only": true,
+  "memory_limit": "6g",
+  "swap": "disabled",
+  "cpus": 4,
+  "container_id": "40fe60838153917e8ca8cc9ad8b305eb6d637dd9f025f450651421591a920cb1",
+  "image_id": "sha256:4672efcc4505b274f2110ca2075ac048c8e0524d98311f693ddb9ea58f62fdbf",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-15T23:51:28.688620054Z",
+    "FinishedAt": "2026-10-15T23:51:30.790956244Z"
+  },
+  "mounts": [
+    {
+      "Type": "bind",
+      "Source": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt07_linux_volume_warm_matrix\\prefetch\\candidate_clear_readme_r1",
+      "Destination": "/job",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "volume",
+      "Name": "rs-s1-original-bags-20261016-72a601b",
+      "Source": "/var/lib/docker/volumes/rs-s1-original-bags-20261016-72a601b/_data",
+      "Destination": "/data",
+      "Driver": "local",
+      "Mode": "z",
+      "RW": false,
+      "Propagation": ""
+    }
+  ],
+  "result": {
+    "prefetched": true,
+    "read_only": true,
+    "bag": "roundT_doubleT",
+    "read_bytes": 2014868458,
+    "wall_s": 1.7667775560003065,
+    "inventory_digest": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6"
+  },
+  "cleanup_ok": true
+}

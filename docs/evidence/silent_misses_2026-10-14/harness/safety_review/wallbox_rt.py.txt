@@ -1,0 +1,230 @@
+#!/usr/bin/env python3
+"""Adversarial ray-cast probes (scratch, safety review 14.10), built on the judge's range_test.py helpers.
+Objects are world-static along the track (ICP travel, as range_test) and placed laterally either on the
+detector's baseline axis (anchor 'axis', = range_test) or against the tunnel wall seen in the frame itself
+(anchor 'wall': the wall's lateral at the object's X from the background returns 0.5-2.2 m above the rail head
+on the given side of the axis; the object stands D m proud of it, i.e. its face nearest the track is D m
+from the wall). Boxes may be yawed parallel to the wall. A 'dark' height makes every ray hitting the box above
+it return nothing (a dark / glass band; the slot's background return is removed too: the ray is absorbed).
+usage: wallbox_rt.py <cache> <icp> <out> --start s --d0 D [--end e] --o SPEC [--o SPEC ...] [--dropout]
+SPEC = L,W,H:anchor:val[:dx[:dark[:yaw]]]   anchor axis -> val = lateral offset; wall+ / wall- -> val = D proud
+       of the wall on the +y / -y side of the axis; dx = along-track offset of this object from the base X;
+       yaw = none | wall | heading (default wall for wall anchors, none for axis)
+"""
+import argparse, json, math, os, sys
+import numpy as np
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hooks  # noqa
+sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+import range_test as rt  # noqa
+from judge_runner import NodeReplica, node_decision  # noqa
+from resense.track import TrackModel  # noqa
+
+
+def obb_cast(c, hl, yaw, rings_el, phase):
+    cz, sz = math.cos(yaw), math.sin(yaw)
+    Rz = np.array([[cz, -sz, 0], [sz, cz, 0], [0, 0, 1.0]])
+    corners = np.array([c + Rz @ (hl * np.array(s)) for s in [(i, j, k) for i in (-1, 1) for j in (-1, 1) for k in (-1, 1)]])
+    az = np.degrees(np.arctan2(corners[:, 1], corners[:, 0]))
+    el = np.degrees(np.arctan2(corners[:, 2], np.hypot(corners[:, 0], corners[:, 1])))
+    c0 = int(np.floor((az.min() - phase) / rt.AZ_STEP)) - 1
+    c1 = int(np.ceil((az.max() - phase) / rt.AZ_STEP)) + 1
+    rr = np.flatnonzero((rings_el >= el.min() - 0.3) & (rings_el <= el.max() + 0.3))
+    if rr.size == 0 or c1 < c0:
+        return None
+    cols = np.arange(c0, c1 + 1)
+    R, C = np.meshgrid(rr, cols, indexing="ij")
+    R, C = R.ravel(), C.ravel()
+    a = np.radians(phase + C * rt.AZ_STEP)
+    e = np.radians(rings_el[R])
+    d = np.c_[np.cos(e) * np.cos(a), np.cos(e) * np.sin(a), np.sin(e)]
+    o_b = Rz.T @ (-c)
+    d_b = d @ Rz
+    with np.errstate(divide="ignore", invalid="ignore"):
+        t1 = (-hl[None, :] - o_b[None, :]) / d_b
+        t2 = (hl[None, :] - o_b[None, :]) / d_b
+    tmin = np.nanmax(np.minimum(t1, t2), axis=1)
+    tmax = np.nanmin(np.maximum(t1, t2), axis=1)
+    hit = (tmax >= tmin) & (tmin > 0)
+    if not hit.any():
+        return None
+    t = tmin[hit]
+    return R[hit], C[hit], d[hit] * t[:, None], t
+
+
+def wall_off(P, tm, X, side, prev):
+    """Wall lateral offset from the axis (signed by side) at X in the processed frame."""
+    cy = float(tm.center_y(X)); rz = float(tm.rail_z(X))
+    w = max(1.5, 0.015 * X)
+    m = (np.abs(P[:, 0] - X) < w) & (P[:, 2] - rz > 0.5) & (P[:, 2] - rz < 2.2)
+    off = side * (P[m, 1] - cy)
+    off = off[(off > -0.6) & (off < 4.0)]
+    if off.size < 6:
+        return prev
+    return float(np.quantile(off, 0.75))
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("cache"); p.add_argument("icp"); p.add_argument("out")
+    p.add_argument("--o", action="append", required=True)
+    p.add_argument("--start", type=int, required=True)
+    p.add_argument("--d0", type=float, default=230.0)
+    p.add_argument("--end", type=int, default=10 ** 9)
+    p.add_argument("--dropout", action="store_true")
+    p.add_argument("--only-x", default="", help="lo,hi: insert the objects only while X in [lo,hi]")
+    a = p.parse_args()
+    objs = []
+    for s in a.o:
+        f = s.split(":")
+        L, W, H = (float(v) for v in f[0].split(","))
+        anchor = f[1]; val = float(f[2]); dx = float(f[3]) if len(f) > 3 else 0.0
+        dark = float(f[4]) if len(f) > 4 and f[4] else 0.0
+        yaw = f[5] if len(f) > 5 and f[5] else ("wall" if anchor.startswith("wall") else "none")
+        base = float(f[6]) if len(f) > 6 else 0.0
+        objs.append(dict(L=L, W=W, H=H, anchor=anchor, val=val, dx=dx, dark=dark, yawm=yaw, prev=None, base=base))
+    xlo, xhi = (float(v) for v in a.only_x.split(",")) if a.only_x else (-1e9, 1e9)
+    meta, files = rt.load_cache(a.cache)
+    base_rows = rt.baseline(a.cache, a.cache.rstrip("/") + "_baseline.json")
+    icp = json.load(open(a.icp))
+    dxs = np.zeros(len(files))
+    for i, v in zip(icp["i"], icp["dx"]):
+        dxs[i] = v
+    from scipy.ndimage import median_filter
+    dxs = np.clip(median_filter(dxs, size=7, mode="nearest"), 0.0, None)
+    cum = np.cumsum(dxs)
+    rep = NodeReplica()
+    Rvs = rep.R_vs.astype(np.float64)
+    rows = []
+    tab = None
+    for k, (m, f) in enumerate(zip(meta, files)):
+        if k >= a.end:
+            break
+        d = np.load(f)
+        xyz_s, inten, ring = d["xyz"], d["inten"], d["ring"]
+        info = {"k": k, "objs": []}
+        if k >= a.start:
+            X0 = a.d0 - (cum[k] - cum[a.start])
+            b = base_rows[k]
+            tm = TrackModel(floor_coef=np.array(b["floor_coef"]), floor_range=tuple(b["floor_range"]), center=b["center"],
+                            yaw=b["yaw"], curvature=b["curv"], rail_offset=b["rail_offset"])
+            Rm = np.array(b["R"])
+            xyz_v = xyz_s.astype(np.float64) @ Rvs.T
+            Pp = xyz_v @ Rm.T
+            if tab is None:
+                tab = rt.ring_table(xyz_v, ring)
+            az = np.degrees(np.arctan2(xyz_v[:, 1], xyz_v[:, 0]))
+            phase = float(np.median((az / rt.AZ_STEP) % 1.0)) * rt.AZ_STEP
+            col_bg = np.round((az - phase) / rt.AZ_STEP).astype(np.int64)
+            key_bg = ring.astype(np.int64) * 100000 + (col_bg + 50000)
+            rng_bg = np.linalg.norm(xyz_v, axis=1)
+            order = np.argsort(key_bg)
+            ks, rs = key_bg[order], rng_bg[order]
+            drop_all = np.zeros(len(key_bg), bool)
+            addP, addR = [], []
+            for oi, o in enumerate(objs):
+                X = X0 + o["dx"]
+                oinf = {"X": round(float(X), 2), "n_obj": 0}
+                info["objs"].append(oinf)
+                if X <= 3.0 or X < xlo or X > xhi:
+                    continue
+                Xc = X + 0.5 * o["L"]
+                cy = float(tm.center_y(Xc))
+                if o["anchor"] == "axis":
+                    yc = cy + o["val"]
+                    side = 1.0
+                    wo = None
+                else:
+                    side = 1.0 if o["anchor"] == "wall+" else -1.0
+                    wo = wall_off(Pp, tm, Xc, side, o["prev"])
+                    if wo is None:
+                        continue
+                    o["prev"] = wo
+                    # the face nearest the track is val proud of the wall; the box W deep across the track
+                    yc = cy + side * (wo - o["val"] + 0.5 * o["W"])
+                yaw = 0.0
+                if o["yawm"] == "heading":
+                    yaw = math.atan(float(tm.center_y(Xc + 0.5)) - float(tm.center_y(Xc - 0.5)))
+                elif o["yawm"] == "wall" and wo is not None:
+                    w1 = wall_off(Pp, tm, Xc - 3.0, side, None); w2 = wall_off(Pp, tm, Xc + 3.0, side, None)
+                    if w1 is not None and w2 is not None:
+                        y1 = float(tm.center_y(Xc - 3.0)) + side * w1; y2 = float(tm.center_y(Xc + 3.0)) + side * w2
+                        yaw = math.atan((y2 - y1) / 6.0)
+                zb = float(tm.rail_z(Xc)) + o["base"]
+                oinf.update(Y=round(yc, 2), wall=None if wo is None else round(wo, 2), yaw=round(math.degrees(yaw), 1),
+                            axis_valid=b["axis_valid"])
+                cen_p = np.array([Xc, yc, zb + 0.5 * o["H"]])
+                cen = Rm.T @ cen_p
+                hl = np.array([0.5 * o["L"], 0.5 * o["W"], 0.5 * o["H"]])
+                rc = obb_cast(cen, hl, yaw, tab, phase)
+                if rc is None:
+                    continue
+                R_, C_, P_, T_ = rc
+                key_ob = R_.astype(np.int64) * 100000 + (C_ + 50000)
+                lo_i = np.searchsorted(ks, key_ob, "left"); hi_i = np.searchsorted(ks, key_ob, "right")
+                nearest = np.array([rs[i:j].min() if j > i else np.inf for i, j in zip(lo_i, hi_i)])
+                vis = nearest > T_ - 0.05
+                if a.dropout:
+                    pk = np.clip(1.0 - 0.5 * (T_ - 120.0) / 80.0, 0.3, 1.0)
+                    vis &= np.random.default_rng(10_000 + k + 977 * oi).random(len(T_)) < pk
+                if not vis.any():
+                    continue
+                drop_all |= np.isin(key_bg, key_ob[vis])
+                ret = vis.copy()
+                if o["dark"] > 0:
+                    zp = (P_ @ Rm.T)[:, 2]           # height in the processed frame
+                    ret &= (zp - zb) <= o["dark"]
+                oinf["n_obj"] = int(ret.sum()); oinf["n_dark"] = int((vis & ~ret).sum())
+                if ret.any():
+                    addP.append(P_[ret]); addR.append(R_[ret])
+            if drop_all.any() or addP:
+                keep = ~drop_all
+                parts_xyz = [xyz_s[keep]]; parts_i = [inten[keep]]; parts_r = [ring[keep]]
+                for P_, R_ in zip(addP, addR):
+                    P2 = np.repeat(P_, 2, axis=0)
+                    P2 += np.random.default_rng(k).normal(0, 0.01, P2.shape)
+                    parts_xyz.append((P2 @ Rvs).astype(np.float32))
+                    parts_i.append(np.full(len(P2), 30.0, np.float32))
+                    parts_r.append(np.repeat(R_, 2).astype(ring.dtype))
+                xyz_s = np.vstack(parts_xyz); inten = np.concatenate(parts_i); ring = np.concatenate(parts_r)
+        hooks.STATS["k"] = k
+        res = rt.run_frame(rep, xyz_s, inten, ring, m, k)
+        info["decision"] = node_decision(res)
+        info["dets"] = [{"d": round(float(dd.distance), 1), "lat": round(float(dd.lateral), 2), "cy": round(float(dd.center[1]), 2),
+                         "size": [round(float(v), 2) for v in dd.size], "zone": dd.zone, "reason": dd.reason, "kind": dd.kind}
+                        for dd in res.detections]
+        info["warns"] = [{"d": round(float(dd.distance), 1), "cy": round(float(dd.center[1]), 2), "reason": dd.reason}
+                         for dd in res.warnings]
+        for o, oinf in zip(objs, info["objs"]):
+            if oinf.get("Y") is not None and oinf["n_obj"] > 0:
+                tol = max(2.0, 0.03 * oinf["X"]) + o["L"] / 2
+                oinf["hit"] = any(abs(dd.distance - oinf["X"]) <= tol and abs(dd.center[1] - oinf["Y"]) <= 1.0 + o["W"] / 2
+                                  for dd in res.detections)
+                oinf["cand"] = [{"d": round(float(c.distance), 1), "lat": round(float(c.lateral), 2), "zone": c.zone,
+                                 "reason": c.reason, "n": int(c.n), "ng": int(c.n_gauge),
+                                 "size": [round(float(v), 2) for v in c.size], "hmax": round(float(c.height_max), 2)}
+                                for c in res.candidates if abs(c.distance - oinf["X"]) < 6 + o["L"]]
+        rows.append(info)
+    summ = {"objs": a.o, "start": a.start, "d0": a.d0}
+    for oi, o in enumerate(objs):
+        vis = [r for r in rows if len(r["objs"]) > oi and r["objs"][oi]["n_obj"] > 0]
+        hits = [r for r in vis if r["objs"][oi].get("hit")]
+        stopf = [r for r in vis if r["decision"] == "STOP"]
+        bins = {}
+        for lo_, hi_ in [(3, 30), (30, 60), (60, 100), (100, 150), (150, 200), (200, 260)]:
+            bb = [r for r in vis if lo_ <= r["objs"][oi]["X"] < hi_]
+            if bb:
+                bins[f"{lo_}-{hi_}"] = f"{sum(bool(r['objs'][oi].get('hit')) for r in bb)}/{len(bb)}"
+        summ[f"o{oi}"] = {"visible": len(vis), "obj_stop_frames": len(hits), "first_stop_X": hits[0]["objs"][oi]["X"] if hits else None,
+                          "stop_frames_while_visible": len(stopf), "bins": bins,
+                          "X_hits": [r["objs"][oi]["X"] for r in hits][:60]}
+    summ["decisions"] = {kk: sum(1 for r in rows if r["decision"] == kk) for kk in ("GO", "CAUTION", "STOP", "FAULT")}
+    summ["hooks"] = {"tf_calls": hooks.STATS["tf_calls"], "tf_free": hooks.STATS["tf_free"], "cut_parts": hooks.STATS["cut_parts"]}
+    json.dump({"summary": summ, "rows": rows, "hooks": hooks.STATS}, open(a.out + ".json", "w"))
+    print(json.dumps(summ))
+
+
+if __name__ == "__main__":
+    main()

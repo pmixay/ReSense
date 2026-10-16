@@ -1,0 +1,117 @@
+"""Fixer scratch hooks (14.10): observation hooks as the safety review's hooks.py (top_is_free calls / spares,
+structure-cut parts) + optional config overrides for parameter sweeps without editing the worktree.
+Import AFTER sys.path holds the code root under test. Env:
+  WT        code root; asserted against resense.__file__
+  CFG       overrides 'section.key=value,section.key=value' applied to every DetectorConfig.from_yaml
+  DARKBAND  deg (0 = off): the safety review's dark-band what-if before top_is_free
+"""
+import json
+import os
+
+import numpy as np
+
+WT = os.environ["WT"]
+import resense  # noqa
+assert resense.__file__.startswith(WT), (resense.__file__, WT)
+import resense.clustering as C  # noqa
+from resense.config import DetectorConfig  # noqa
+
+STATS = {"tf_calls": 0, "tf_free": 0, "tf_rows": [], "cut_parts": 0, "cut_rows": [], "k": -1}
+DARK = float(os.environ.get("DARKBAND", "0") or 0)
+OVR = [kv.split("=") for kv in os.environ.get("CFG", "").split(",") if kv.strip()]
+
+_from_yaml = DetectorConfig.from_yaml.__func__
+
+
+def _conv(old, v):
+    if isinstance(old, bool):
+        return v.lower() in ("1", "true", "yes")
+    if isinstance(old, int):
+        return int(float(v))
+    if isinstance(old, float):
+        return float(v)
+    return v
+
+
+def from_yaml(cls, *a, **kw):
+    cfg = _from_yaml(cls, *a, **kw)
+    for k, v in OVR:
+        sec, key = k.split(".")
+        s = getattr(cfg, sec)
+        assert hasattr(s, key), k
+        setattr(s, key, _conv(getattr(s, key), v))
+    return cfg
+
+
+DetectorConfig.from_yaml = classmethod(from_yaml)
+
+
+def _dark(frame_xyz, idx, frame_ring):
+    p = frame_xyz[idx].astype(np.float64)
+    rh = np.hypot(p[:, 0], p[:, 1])
+    el = np.degrees(np.arctan2(p[:, 2], rh))
+    az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+    top = float(el.max())
+    r_top = float(np.median(np.hypot(rh, p[:, 2])[el >= top - 0.06]))
+    a0, a1 = float(az.min()) - 0.02, float(az.max()) + 0.02
+    q = frame_xyz.astype(np.float64)
+    qh = np.hypot(q[:, 0], q[:, 1])
+    qe = np.degrees(np.arctan2(q[:, 2], qh))
+    qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+    qr = np.hypot(qh, q[:, 2])
+    tol = max(0.5, 0.02 * r_top) + 0.5
+    rm = (q[:, 0] > 0) & (qa >= a0) & (qa <= a1) & (qe > top + 0.04) & (qe <= top + DARK) & (np.abs(qr - r_top) <= tol)
+    if not rm.any():
+        return frame_xyz, idx, frame_ring, 0
+    keep = ~rm
+    newi = np.cumsum(keep) - 1
+    return frame_xyz[keep], newi[idx], (None if frame_ring is None else frame_ring[keep]), int(rm.sum())
+
+
+_tf = getattr(C, "top_is_free", None)
+
+
+def top_is_free(frame_xyz, idx, *a, **kw):
+    nrm = 0
+    fr = kw.get("frame_ring", a[1] if len(a) > 1 else None)
+    if DARK > 0 and idx.size >= 2:
+        frame_xyz, idx, fr, nrm = _dark(frame_xyz, idx, fr)
+        if "frame_ring" in kw:
+            kw["frame_ring"] = fr
+        elif len(a) > 1:
+            a = (a[0], fr) + tuple(a[2:])
+    v = _tf(frame_xyz, idx, *a, **kw)
+    STATS["tf_calls"] += 1
+    STATS["tf_free"] += int(bool(v))
+    if v or nrm:
+        p = frame_xyz[idx]
+        STATS["tf_rows"].append({"k": STATS["k"], "free": bool(v), "removed": nrm,
+                                 "x": round(float(np.median(p[:, 0])), 1),
+                                 "y": round(float(np.median(p[:, 1])), 2), "n": int(idx.size)})
+    return v
+
+
+if _tf is not None:
+    C.top_is_free = top_is_free
+if hasattr(C, "_off_structure_parts"):
+    _cut = C._off_structure_parts
+
+    def _off_structure_parts(*a, **kw):
+        res = _cut(*a, **kw)
+        parts = res[0] if isinstance(res, tuple) else res
+        for p in parts:
+            STATS["cut_parts"] += 1
+            STATS["cut_rows"].append({"k": STATS["k"], "n_vox": int(p.n_vox), "x0": round(float(p.bmin[0]), 1),
+                                      "size": [round(float(v), 2) for v in p.size],
+                                      "y": round(float(np.median(p.pts[:, 1])), 2),
+                                      "extra": [round(float(v), 2) for v in res[1:]] if isinstance(res, tuple) else []})
+        return res
+    C._off_structure_parts = _off_structure_parts
+
+
+def dump(path):
+    json.dump(STATS, open(path, "w"))
+
+
+if os.environ.get("CUTCAP") is not None and hasattr(C, "_CUT_AXIS_CAP"):
+    C._CUT_AXIS_CAP = os.environ["CUTCAP"] == "1"

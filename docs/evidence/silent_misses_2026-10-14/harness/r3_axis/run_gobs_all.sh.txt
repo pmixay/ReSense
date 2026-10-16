@@ -1,0 +1,14 @@
+#!/bin/bash
+# all gate recordings through run_gobs.py, one at a time (r3 scratch); WT = the code snapshot
+# usage: WT=<snapshot> run_gobs_all.sh <outdir>
+R3=/tmp/claude-0/fixwork/r3axis
+OUT=${1:-$R3/gobs}
+mkdir -p $OUT
+C=/tmp/claude-0/fixdata/cache
+for k in 0 1 2 3 4 5 6 7; do
+  $R3/py.sh $R3/run_gobs.py $C new_data $OUT/new_data_$k.jsonl $k/8
+done
+for n in roundT_pressureGate_roundT roundT_doubleT roundT_squareT_pressureGate_squareT squareT_platform_squareT_switch doubleT_platform doubleT_obstacle cloud_with_fake_obj; do
+  $R3/py.sh $R3/run_gobs.py $C $n $OUT/$n.jsonl
+done
+echo done

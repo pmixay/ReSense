@@ -1,0 +1,76 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.context-check
+#1 transferring dockerfile: 1.47kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/resense:p1-e2-check
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 1.79kB done
+#3 DONE 0.0s
+
+#4 [ 1/14] FROM docker.io/library/resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e
+#4 resolve docker.io/library/resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e 0.0s done
+#4 DONE 0.0s
+
+#5 [ 2/14] WORKDIR /opt/resense
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 29.94MB 1.9s done
+#6 DONE 1.9s
+
+#7 [ 3/14] COPY . /e2-context
+#7 DONE 0.5s
+
+#8 [ 4/14] COPY scripts ./scripts
+#8 DONE 0.1s
+
+#9 [ 5/14] COPY tests ./tests
+#9 DONE 0.2s
+
+#10 [ 6/14] COPY webapp/backend/resense_web/__init__.py webapp/backend/resense_web/decision.py ./webapp/backend/resense_web/
+#10 DONE 0.1s
+
+#11 [ 7/14] COPY docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh docs/evidence/judgement_2026-10-13/scripts/docker/listener.py ./docs/evidence/judgement_2026-10-13/scripts/docker/
+#11 DONE 0.1s
+
+#12 [ 8/14] COPY docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py docs/evidence/node_startup_2026-10-15/docker_tools/listener.py docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py ./docs/evidence/node_startup_2026-10-15/docker_tools/
+#12 DONE 0.1s
+
+#13 [ 9/14] COPY docs/evidence/offline_rebuild_2026-10-15/verify.py ./docs/evidence/offline_rebuild_2026-10-15/verify.py
+#13 DONE 0.0s
+
+#14 [10/14] RUN rm -rf ros2_ws
+#14 DONE 0.2s
+
+#15 [11/14] COPY ros2_ws/src ./ros2_ws/src
+#15 DONE 0.1s
+
+#16 [12/14] COPY configs/default.yaml ./ros2_ws/src/resense_ros/config/detector.yaml
+#16 DONE 0.1s
+
+#17 [13/14] RUN . /opt/ros/humble/setup.sh && cd ros2_ws && colcon build --symlink-install
+#17 0.526 Starting >>> resense_ros
+#17 1.967 Finished <<< resense_ros [1.44s]
+#17 1.967
+#17 1.967 Summary: 1 package finished [1.58s]
+#17 DONE 2.1s
+
+#18 [14/14] RUN find scripts -type f -name '*.sh' -exec sed -i 's/\r$//' {} +
+#18 DONE 0.2s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 1.4s done
+#19 exporting manifest sha256:5f6e4595c1749a98d7938a0bdb56e7bf1fe59a0740434bf6a01f4621b02a4bf5 0.0s done
+#19 exporting config sha256:bb7fef158a0561072c000db87574451cc956f742e6ade52cd75b7745d12965f6 0.0s done
+#19 exporting attestation manifest sha256:9e9f47a77b1cad408ee19b2da207115d64cdf18a04af1a3cca6e82e05dd7dd19 0.0s done
+#19 exporting manifest list sha256:fbe257da5c4e26914868a556d7e3deb5db1acc0ae5dddc73e4dd48662a978184 0.0s done
+#19 naming to docker.io/library/resense:p1-e2-fixtures-review-20261015-v4
+#19 naming to docker.io/library/resense:p1-e2-fixtures-review-20261015-v4 done
+#19 unpacking to docker.io/library/resense:p1-e2-fixtures-review-20261015-v4
+#19 unpacking to docker.io/library/resense:p1-e2-fixtures-review-20261015-v4 1.1s done
+#19 DONE 2.7s

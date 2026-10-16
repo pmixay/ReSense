@@ -1,0 +1,1526 @@
+{
+ "_note": "the review's wall-anchored ray-cast probes (wallbox_rt.py, the judge's range_test helpers, ICP travel; the face nearest the track D m proud of the wall seen in the frame at 0.5-2.2 m height, yawed with the wall); sealed and 13.10 are the review's own runs, 'now' is 14f83dd (a snapshot of its tracked files); obj_stop_frames = STOP frames with a detection matching the object",
+ "person08": {
+  "background": "C",
+  "what": "person-size box 0.5 \u00d7 0.5 \u00d7 1.75 m, 0.8 m proud",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 80,
+    "CAUTION": 41,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 151,
+    "CAUTION": 117,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 80,
+    "CAUTION": 41,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 151,
+    "CAUTION": 117,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 1,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 80,
+    "CAUTION": 41,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 151,
+    "CAUTION": 117,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "person09": {
+  "background": "C",
+  "what": "the same, 0.9 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 63,
+    "CAUTION": 56,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 135,
+    "CAUTION": 131,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 63,
+    "CAUTION": 56,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 135,
+    "CAUTION": 131,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 2,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 63,
+    "CAUTION": 56,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 135,
+    "CAUTION": 131,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "person10": {
+  "background": "C",
+  "what": "the same, 1.0 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 53,
+    "CAUTION": 66,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 21,
+   "first_stop_X": 100.53,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 46,
+    "CAUTION": 52,
+    "STOP": 23
+   },
+   "all_frames": {
+    "GO": 117,
+    "CAUTION": 128,
+    "STOP": 23,
+    "FAULT": 0
+   },
+   "cut_parts": 16,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "20/27",
+    "100-150": "1/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 53,
+    "CAUTION": 66,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "person10_drop": {
+  "background": "C",
+  "what": "the same, 1.0 m, `--dropout`",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 53,
+    "CAUTION": 66,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 21,
+   "first_stop_X": 100.53,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 46,
+    "CAUTION": 52,
+    "STOP": 23
+   },
+   "all_frames": {
+    "GO": 117,
+    "CAUTION": 128,
+    "STOP": 23,
+    "FAULT": 0
+   },
+   "cut_parts": 16,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "20/27",
+    "100-150": "1/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 53,
+    "CAUTION": 66,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "person11": {
+  "background": "C",
+  "what": "the same, 1.1 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 52,
+    "CAUTION": 67,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 15,
+   "first_stop_X": 102.01,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 52,
+    "CAUTION": 52,
+    "STOP": 17
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 127,
+    "STOP": 17,
+    "FAULT": 0
+   },
+   "cut_parts": 19,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "13/27",
+    "100-150": "2/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 52,
+    "CAUTION": 67,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "mast09": {
+  "background": "C",
+  "what": "mast 0.3 \u00d7 0.3 \u00d7 2.6 m, 0.9 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 78,
+    "CAUTION": 41,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 146,
+    "CAUTION": 120,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 78,
+    "CAUTION": 41,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 146,
+    "CAUTION": 120,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 7,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 78,
+    "CAUTION": 41,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 146,
+    "CAUTION": 120,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "mast10": {
+  "background": "C",
+  "what": "the mast, 1.0 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 81,
+    "CAUTION": 38,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 154,
+    "CAUTION": 112,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 9,
+   "first_stop_X": 90.15,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 80,
+    "CAUTION": 30,
+    "STOP": 11
+   },
+   "all_frames": {
+    "GO": 153,
+    "CAUTION": 104,
+    "STOP": 11,
+    "FAULT": 0
+   },
+   "cut_parts": 12,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "9/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 81,
+    "CAUTION": 38,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 154,
+    "CAUTION": 112,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "mast12": {
+  "background": "C",
+  "what": "the mast, 1.2 m (at the envelope edge)",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 77,
+    "CAUTION": 42,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 145,
+    "CAUTION": 121,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 27,
+   "first_stop_X": 102.01,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 67,
+    "CAUTION": 25,
+    "STOP": 29
+   },
+   "all_frames": {
+    "GO": 135,
+    "CAUTION": 104,
+    "STOP": 29,
+    "FAULT": 0
+   },
+   "cut_parts": 26,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "25/27",
+    "100-150": "2/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 2,
+   "first_stop_X": 68.06,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 73,
+    "CAUTION": 44,
+    "STOP": 4
+   },
+   "all_frames": {
+    "GO": 141,
+    "CAUTION": 123,
+    "STOP": 4,
+    "FAULT": 0
+   },
+   "cut_parts": 4,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "2/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "signpost095": {
+  "background": "C",
+  "what": "sign post 0.1 \u00d7 0.1 \u00d7 2.4 m with a 0.6 m board, 0.95 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 86,
+   "decisions_while_visible": {
+    "GO": 57,
+    "CAUTION": 27,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 146,
+    "CAUTION": 120,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/20",
+    "100-150": "0/21",
+    "150-200": "0/6"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 5,
+   "first_stop_X": 84.25,
+   "visible": 86,
+   "decisions_while_visible": {
+    "GO": 53,
+    "CAUTION": 26,
+    "STOP": 7
+   },
+   "all_frames": {
+    "GO": 140,
+    "CAUTION": 119,
+    "STOP": 9,
+    "FAULT": 0
+   },
+   "cut_parts": 7,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "5/20",
+    "100-150": "0/21",
+    "150-200": "0/6"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 86,
+   "decisions_while_visible": {
+    "GO": 57,
+    "CAUTION": 27,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 146,
+    "CAUTION": 120,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/20",
+    "100-150": "0/21",
+    "150-200": "0/6"
+   }
+  }
+ },
+ "col10": {
+  "background": "C",
+  "what": "column 0.4 \u00d7 0.4 m to the vault, 1.0 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 91,
+    "CAUTION": 30,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 167,
+    "CAUTION": 100,
+    "STOP": 1,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 8,
+   "first_stop_X": 94.58,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 88,
+    "CAUTION": 25,
+    "STOP": 8
+   },
+   "all_frames": {
+    "GO": 164,
+    "CAUTION": 95,
+    "STOP": 9,
+    "FAULT": 0
+   },
+   "cut_parts": 12,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "8/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 91,
+    "CAUTION": 30,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 167,
+    "CAUTION": 100,
+    "STOP": 1,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "darkcol10": {
+  "background": "C",
+  "what": "the column, its face above 2.6 m dark",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 79,
+    "CAUTION": 40,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 150,
+    "CAUTION": 116,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 7,
+   "first_stop_X": 90.15,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 78,
+    "CAUTION": 34,
+    "STOP": 9
+   },
+   "all_frames": {
+    "GO": 149,
+    "CAUTION": 110,
+    "STOP": 9,
+    "FAULT": 0
+   },
+   "cut_parts": 12,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "7/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 79,
+    "CAUTION": 40,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 150,
+    "CAUTION": 116,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "cab09": {
+  "background": "C",
+  "what": "cabinet 0.6 \u00d7 0.9 \u00d7 1.8 m flat to the wall, 0.9 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 68,
+    "CAUTION": 53,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 140,
+    "CAUTION": 128,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 68,
+    "CAUTION": 53,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 140,
+    "CAUTION": 128,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 68,
+    "CAUTION": 53,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 140,
+    "CAUTION": 128,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "cab10": {
+  "background": "C",
+  "what": "cabinet 0.6 \u00d7 1.0 \u00d7 1.8 m, 1.0 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 56,
+    "CAUTION": 63,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 56,
+    "CAUTION": 63,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 2,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 56,
+    "CAUTION": 63,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 124,
+    "CAUTION": 142,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "cab085off": {
+  "background": "C",
+  "what": "free-standing box 0.6 \u00d7 0.5 \u00d7 1.8 m, 0.85 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 73,
+    "CAUTION": 46,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 143,
+    "CAUTION": 123,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 73,
+    "CAUTION": 46,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 143,
+    "CAUTION": 123,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 73,
+    "CAUTION": 46,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 143,
+    "CAUTION": 123,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "tallcab10": {
+  "background": "C",
+  "what": "tall cabinet 0.6 \u00d7 0.6 \u00d7 2.5 m, 1.0 m",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 80,
+    "CAUTION": 39,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 148,
+    "CAUTION": 118,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 80,
+    "CAUTION": 39,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 148,
+    "CAUTION": 118,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 121,
+   "decisions_while_visible": {
+    "GO": 80,
+    "CAUTION": 39,
+    "STOP": 2
+   },
+   "all_frames": {
+    "GO": 148,
+    "CAUTION": 118,
+    "STOP": 2,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/19",
+    "30-60": "0/20",
+    "60-100": "0/27",
+    "100-150": "0/34",
+    "150-200": "0/21"
+   }
+  }
+ },
+ "pers_cab_behind": {
+  "background": "C",
+  "what": "person on the axis, cabinet 1.0 m proud 1.5 m behind it",
+  "sealed": {
+   "obj_stop_frames": 44,
+   "first_stop_X": 66.58,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 47,
+    "CAUTION": 62,
+    "STOP": 44
+   },
+   "all_frames": {
+    "GO": 95,
+    "CAUTION": 128,
+    "STOP": 45,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "5/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 44,
+   "first_stop_X": 66.58,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 47,
+    "CAUTION": 62,
+    "STOP": 44
+   },
+   "all_frames": {
+    "GO": 95,
+    "CAUTION": 128,
+    "STOP": 45,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "5/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 44,
+   "first_stop_X": 66.58,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 47,
+    "CAUTION": 62,
+    "STOP": 44
+   },
+   "all_frames": {
+    "GO": 95,
+    "CAUTION": 128,
+    "STOP": 45,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "5/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  }
+ },
+ "pers_cab_front": {
+  "background": "C",
+  "what": "person on the axis, the cabinet 1.5 m in front of it",
+  "sealed": {
+   "obj_stop_frames": 45,
+   "first_stop_X": 68.06,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 48,
+    "CAUTION": 60,
+    "STOP": 45
+   },
+   "all_frames": {
+    "GO": 97,
+    "CAUTION": 125,
+    "STOP": 46,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "6/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 45,
+   "first_stop_X": 68.06,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 48,
+    "CAUTION": 60,
+    "STOP": 45
+   },
+   "all_frames": {
+    "GO": 97,
+    "CAUTION": 125,
+    "STOP": 46,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "6/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 45,
+   "first_stop_X": 68.06,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 48,
+    "CAUTION": 60,
+    "STOP": 45
+   },
+   "all_frames": {
+    "GO": 97,
+    "CAUTION": 125,
+    "STOP": 46,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "6/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  }
+ },
+ "pers_mast_behind": {
+  "background": "C",
+  "what": "person on the axis, mast 1.0 m proud 1.5 m behind it",
+  "sealed": {
+   "obj_stop_frames": 42,
+   "first_stop_X": 63.63,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 55,
+    "CAUTION": 56,
+    "STOP": 42
+   },
+   "all_frames": {
+    "GO": 103,
+    "CAUTION": 122,
+    "STOP": 43,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "3/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 42,
+   "first_stop_X": 63.63,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 55,
+    "CAUTION": 56,
+    "STOP": 42
+   },
+   "all_frames": {
+    "GO": 103,
+    "CAUTION": 122,
+    "STOP": 43,
+    "FAULT": 0
+   },
+   "cut_parts": 1,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "3/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 42,
+   "first_stop_X": 63.63,
+   "visible": 153,
+   "decisions_while_visible": {
+    "GO": 55,
+    "CAUTION": 56,
+    "STOP": 42
+   },
+   "all_frames": {
+    "GO": 103,
+    "CAUTION": 122,
+    "STOP": 43,
+    "FAULT": 0
+   },
+   "cut_parts": 1,
+   "bins": {
+    "3-30": "19/19",
+    "30-60": "20/20",
+    "60-100": "3/27",
+    "100-150": "0/34",
+    "150-200": "0/33",
+    "200-260": "0/20"
+   }
+  }
+ },
+ "B_person10": {
+  "background": "B",
+  "what": "person-size box 1.0 m proud, +y wall",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 58,
+   "decisions_while_visible": {
+    "GO": 13,
+    "CAUTION": 45,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 83,
+    "CAUTION": 169,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/15",
+    "30-60": "0/17",
+    "60-100": "0/23",
+    "100-150": "0/3"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 58,
+   "decisions_while_visible": {
+    "GO": 13,
+    "CAUTION": 45,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 83,
+    "CAUTION": 169,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/15",
+    "30-60": "0/17",
+    "60-100": "0/23",
+    "100-150": "0/3"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 58,
+   "decisions_while_visible": {
+    "GO": 13,
+    "CAUTION": 45,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 83,
+    "CAUTION": 169,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/15",
+    "30-60": "0/17",
+    "60-100": "0/23",
+    "100-150": "0/3"
+   }
+  }
+ },
+ "B_person10m": {
+  "background": "B",
+  "what": "the same, \u2212y side",
+  "sealed": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 67,
+   "decisions_while_visible": {
+    "GO": 3,
+    "CAUTION": 64,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 73,
+    "CAUTION": 179,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/15",
+    "30-60": "0/17",
+    "60-100": "0/23",
+    "100-150": "0/12"
+   }
+  },
+  "13.10": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 67,
+   "decisions_while_visible": {
+    "GO": 3,
+    "CAUTION": 64,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 73,
+    "CAUTION": 179,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/15",
+    "30-60": "0/17",
+    "60-100": "0/23",
+    "100-150": "0/12"
+   }
+  },
+  "now": {
+   "obj_stop_frames": 0,
+   "first_stop_X": null,
+   "visible": 67,
+   "decisions_while_visible": {
+    "GO": 3,
+    "CAUTION": 64,
+    "STOP": 0
+   },
+   "all_frames": {
+    "GO": 73,
+    "CAUTION": 179,
+    "STOP": 0,
+    "FAULT": 0
+   },
+   "cut_parts": 0,
+   "bins": {
+    "3-30": "0/15",
+    "30-60": "0/17",
+    "60-100": "0/23",
+    "100-150": "0/12"
+   }
+  }
+ }
+}

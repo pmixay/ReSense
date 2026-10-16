@@ -5,6 +5,13 @@ import json
 import math
 from pathlib import Path
 from statistics import median
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from decision_policy_import import load_policy  # noqa: E402
+
+decision_word = load_policy(Path(__file__).resolve().parents[1]).decision
 
 
 def load_rows(directory, bag):
@@ -30,6 +37,7 @@ def clean_detection(item):
 
 def decision(row):
     return {
+        "decision": decision_word(row),
         "obstacle": row.get("obstacle"),
         "warning": row.get("warning"),
         "nearest_distance": row.get("nearest_distance"),

@@ -1,0 +1,25 @@
+Source: C:\Users\alikh\AppData\Local\Temp\opencode\resense-p1-runs-2026-10-15\attempt07_linux_volume_warm_matrix\out\docker\candidate_obstacle_literal_r1.node.log
+SHA256: 83f1f7e666c5ca543206d9a8eb5121eab9ce14051453dcea2716791413d9d931
+Full source lines: 21
+
+[INFO] [launch]: All log files can be found below /tmp/.ros/log/2026-10-15-23-42-26-629966-docker-desktop-7
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [23]
+[detector_node-1] [INFO] [1792107747.441926559] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1792107748.298886595] [resense_detector]: warm-up: 830 ms
+[detector_node-1] [INFO] [1792107748.303799192] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.0.0
+[detector_node-1] [INFO] [1792107785.900669496] [resense_detector]: input 1: /sensing/lidar/hesai128/pointcloud (frame_id=lidar_livox, 921600 points)
+[detector_node-1] [INFO] [1792107785.910403740] [resense_detector]: static TF resense_lidar -> lidar_livox (identity)
+[detector_node-1] [INFO] [1792107786.050537504] [resense_detector]: mount calibration: pending -
+[detector_node-1] [INFO] [1792107786.890934615] [resense_detector]: 1.9 s of recording waiting: catching up, one frame every 0.3 s of recording
+[detector_node-1] [INFO] [1792107787.642392224] [resense_detector]: mount calibration: provisional - provisional tilt: roll +3.18, pitch -0.80 deg (final after 20 observations)
+[detector_node-1] [INFO] [1792107787.649843386] [resense_detector]: frame 5: FAULT: last result expired (> 0.5 s source/residence age): path not monitored; 2.3 fps; latency mean 160 / p95 203 / max 205 ms; input period 100 ms; dropped 15 (15 skipped by the catch-up); CPU 1.21 cores
+[detector_node-1] [INFO] [1792107789.599097989] [resense_detector]: frame 13: STOP: last result expired (> 0.5 s source/residence age): path not monitored; 4.1 fps; latency mean 154 / p95 219 / max 229 ms; input period 100 ms; dropped 38 (38 skipped by the catch-up); CPU 1.43 cores
+[detector_node-1] [INFO] [1792107791.632171872] [resense_detector]: frame 23: STOP at 56.7 m; freshness source_stale; axis y=+0.03 R=-6353; 4.9 fps; latency mean 119 / p95 156 / max 157 ms; input period 100 ms; dropped 68 (68 skipped by the catch-up); CPU 1.41 cores
+[detector_node-1] [INFO] [1792107793.834225868] [resense_detector]: frame 33: STOP: last result expired (> 0.5 s source/residence age): path not monitored; 4.5 fps; latency mean 131 / p95 183 / max 191 ms; input period 100 ms; dropped 103 (103 skipped by the catch-up); CPU 1.43 cores
+[detector_node-1] [WARN] [1792107795.356243180] [resense_detector]: 1.4 s hole in the input: scene state reset, calibration kept
+[detector_node-1] [INFO] [1792107795.621420607] [resense_detector]: frame 41: STOP: last result expired (> 0.5 s source/residence age): path not monitored; 4.5 fps; latency mean 126 / p95 187 / max 196 ms; input period 100 ms; dropped 128 (127 skipped by the catch-up); CPU 1.42 cores
+[detector_node-1] [INFO] [1792107797.536218448] [resense_detector]: frame 54: STOP at 56.2 m; freshness source_stale; axis y=+0.02 R=-6291; 6.8 fps; latency mean 107 / p95 159 / max 184 ms; input period 100 ms; dropped 149 (145 skipped by the catch-up); CPU 1.17 cores
+[detector_node-1] [INFO] [1792107797.694989069] [resense_detector]: caught up in 10.8 s: 54 frames processed, 145 skipped, at most 2.5 s of recording behind
+[detector_node-1] [INFO] [1792107799.472304313] [resense_detector]: frame 56: STOP: last result expired (> 0.5 s source/residence age): path not monitored; 1.0 fps; latency mean 162 / p95 170 / max 171 ms; input period 100 ms; dropped 149 (145 skipped by the catch-up); CPU 0.24 cores
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory

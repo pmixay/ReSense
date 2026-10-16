@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""Whole-recording replay comparison (judge node-replica jsonl, key "i"): per pair, STOP frames / episodes /
+CAUTION frames base -> new, frames whose decision differs, frames whose dets / warns / nearest / clear differ.
+usage: replay_cmp.py [--json OUT] label=<base.jsonl>,<new.jsonl> ..."""
+import json
+import sys
+
+
+def load(p):
+    return {r["i"]: r for r in map(json.loads, open(p))}
+
+
+def stats(rs, ks):
+    dec = [rs[k]["decision"] for k in ks]
+    return {"STOP": sum(d == "STOP" for d in dec),
+            "episodes": sum(1 for i, d in enumerate(dec) if d == "STOP" and (i == 0 or dec[i - 1] != "STOP")),
+            "CAUTION": sum(d == "CAUTION" for d in dec), "GO": sum(d == "GO" for d in dec)}
+
+
+def main():
+    args = sys.argv[1:]
+    jout = None
+    if args[:1] == ["--json"]:
+        jout, args = args[1], args[2:]
+    out = {}
+    for a in args:
+        label, pair = a.split("=", 1)
+        pb, pn = pair.split(",")
+        A, B = load(pb), load(pn)
+        ks = sorted(set(A) & set(B))
+        dd = [k for k in ks if A[k]["decision"] != B[k]["decision"]]
+        dx = [k for k in ks if any(A[k].get(f) != B[k].get(f) for f in ("dets", "warns", "nearest", "clear"))]
+        r = {"base": pb, "new": pn, "frames": len(ks), "frames_base": len(A), "frames_new": len(B),
+             "base_stats": stats(A, ks), "new_stats": stats(B, ks), "decision_changed": len(dd),
+             "decision_changed_frames": [[k, A[k]["decision"], B[k]["decision"]] for k in dd[:20]],
+             "detail_changed": len(dx),
+             "detail_changed_frames": [{"i": k, **{f: [A[k].get(f), B[k].get(f)] for f in ("decision", "nearest", "clear")
+                                                  if A[k].get(f) != B[k].get(f)}} for k in dx[:10]]}
+        out[label] = r
+        bs, ns = r["base_stats"], r["new_stats"]
+        print(f"{label:14s} frames {len(ks)} ({len(A)}/{len(B)})  STOP {bs['STOP']}->{ns['STOP']}  episodes "
+              f"{bs['episodes']}->{ns['episodes']}  CAUTION {bs['CAUTION']}->{ns['CAUTION']}  decisions changed {len(dd)}"
+              f"  detail changed {len(dx)}" + (f"  e.g. {r['detail_changed_frames'][:3]}" if dx else ""))
+    if jout:
+        json.dump(out, open(jout, "w"), indent=1)
+
+
+if __name__ == "__main__":
+    main()

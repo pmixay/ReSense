@@ -1,0 +1,14 @@
+#!/bin/bash
+# snapshot the worktree's code into a scratch dir so replays are not affected by later edits (r3 scratch)
+# usage: snap.sh <name>
+set -e
+WT=/home/user/ReSense/.claude/worktrees/wf_fad4ed48-27b-2
+D=/tmp/claude-0/fixwork/r3axis/snap_$1
+rm -rf $D
+mkdir -p $D/docs/evidence/judgement_2026-10-13 $D/ros2_ws/src
+cp -r $WT/resense $WT/scripts $WT/configs $D/
+cp -r $WT/docs/evidence/judgement_2026-10-13/scripts $D/docs/evidence/judgement_2026-10-13/
+cp -r $WT/docs/evidence/judgement_2026-10-13/out $D/docs/evidence/judgement_2026-10-13/
+cp -r $WT/ros2_ws/src/resense_ros $D/ros2_ws/src/
+find $D -name __pycache__ -type d -prune -exec rm -rf {} +
+echo $D

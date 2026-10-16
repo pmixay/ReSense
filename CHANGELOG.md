@@ -25,10 +25,102 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
   Final range-by-geometry graph, release numbers, video cards and P1 sign-off wait for O1/J1;
   C1 display, PT2 and S5 dependencies are tracked in [`web/P2_STATUS.md`](web/P2_STATUS.md).
 
+## [Unreleased] — detector candidate `final/silent-misses` (14.10; gate PASS, not resealed)
+
+The two fixes below together, and the fixes of the review of 14.10 evening:
+[`silent_misses_2026-10-14`](docs/evidence/silent_misses_2026-10-14/README.md). The full regression gate of the current
+code (`14f83dd`) passes with every gate frame identical to the sealed detector. No frame of the 27 judge range probes is
+worse than the sealed detector; the review's false STOPs next to the wall and its dropout / pitch replays are back at
+the sealed numbers frame by frame.
+
+### Fixed — the review of 14.10 (`14f83dd`)
+
+- The structure cut placed objects standing 0.95-1.2 m in front of C's outer wall — outside the envelope, where the
+  detector's trusted near axis reports them (lateral 1.24-1.32 m, CAUTION) — inside it, through the lagging far axis:
+  false STOPs for a person-size box 1.0 / 1.1 m from the wall 0 → 21 / 15 frames, a sign post 0 → 5, a 2.6 m mast
+  0 → 9, a column 0 → 8. `cluster.structure_cut_tol` 0.8 → 1.3 m (more than the wall equipment, 0.8-1.2 m, and more
+  than C's wall stands outside the strict envelope): all 0 again. The C gains shrink but stay above sealed: person
+  first STOP 73.9 → 82.8 m (13.10: 90.2), STOP frames 49 → 55 (60). Making the parts beyond the wall's entry into the
+  envelope advisory instead was measured and rejected: worse than sealed (person 49 → 47 frames).
+- One free-top spare broke a column hold: the standing train with 20-30 % point dropout gained 2-11 STOP frames and a
+  STOP episode in three of four seeds, `roundT_doubleT` pitched −2° one STOP frame. `tracking.column_free_min_spares`
+  2: a spared cluster is believed only when its track had another spared hit in its last 10 hits; alone it is the
+  column it was before 13.10. Every such replay is now identical to the sealed detector; the off-axis pole loses
+  1-12 STOP frames at 160-200 m (A, +0.7 m: 136 → 128 of 176), none within 150 m.
+- A demoted structure-cut part no longer removes a low object it overlaps; channel ids out of the ring table's order
+  are no empty-ring evidence for the free-top test; tests for the rule wiring (the detector's channel ids, a cut
+  part's free-top test) and a wall-fixture test that now pins the tolerance, not the voxel bar.
+
+### Fixed — a pole standing in the envelope is not a column (`cluster.column_free_max_top`, 13.10 / 14.10)
+
+- The judge's silent miss 1 of 13.10 ([`judgement_2026-10-13`](docs/evidence/judgement_2026-10-13/README.md)): a
+  0.3 × 0.3 × 2.8 m pole inside the envelope was demoted as a column — CAUTION from ~70 m to 5 m on the axis, never a
+  STOP 0.7 m off it. A column continues up to the vault, an object standing in the envelope ends inside it: the column
+  signature no longer demotes a cluster at least half inside the strict envelope, its top at most 2.95 m, whose top is
+  seen free (`clustering.top_is_free`: the first ring above the top that returns has nothing at the top's range, and
+  either a ring in between returned nothing — read from the frame's channel ids, the ring table only without them — or
+  more of its returns lie beyond the top than nearer). Every other rule still applies.
+- Judge range test on A: the pole 82 → 157 STOP frames of 177 on the axis, 0 → 136 / 133 at ±0.7 m (with `--dropout`
+  67 → 143 and 11 → 133), the 0.5 m post 56 → 157 and 30 → 150; the person box unchanged frame by frame. After the
+  review (one spare is a column, above): the same on the axis, ±0.7 m 128 / 132, `--dropout` +0.7 m 126, the post
+  +0.7 m 138; the losses are all at 160-200 m. The full
+  regression gate passes with every gate frame identical to the sealed detector (ride, five obstacle-free recordings,
+  `doubleT_obstacle`, set O); the four judge recordings and A / S with `--pitch 2` and `--drop 0.3` are unchanged.
+
+### Fixed — an object against the wall on a curve is not dropped with it (`cluster.structure_cut_tol`, 13.10 / 14.10)
+
+- The judge's silent miss 2 of 13.10: on the curve of `roundT_pressureGate_roundT` the lagging far axis lays the tunnel
+  wall across the envelope at 70-150 m; a person-size box there touches the wall, the two make one cluster longer than
+  `max_extent`, the 25.09 split refuses it and it was dropped whole (GO at 75-87 m). A cluster the split refused is now
+  cut along the smooth surface it lies on (`clustering._off_structure_parts`: a robust fit y(x, h), not fitted without a
+  strict-gauge point, not cut along a surface steeper than 45° to the track); its points at least 1.3 m (0.8 m on
+  13.10, see the review above) in front of the surface are linked again, and parts at most 3 m long with strict-gauge points and at least 8 voxels
+  (`structure_cut_min_points`) go through every rule. A cluster whose split part was accepted keeps the split's verdict.
+- Judge range test on C, first STOP sealed → 13.10 → 14.10: person 73.9 → 90.2 → 82.8 m (`--dropout` the same; yawed
+  ±20° 72.5 → 93.1 / 88.7 → 85.7 / 85.7; lateral +0.5 69.5 → 84.3 → 72.5, −0.7 85.7 → 109.4 → 96.1), 1 m cube 73.9 →
+  96.1 → 85.7 m, 0.5 m cube 75.4 → 82.8 → 75.4 m; B, A and D persons unchanged. Not fixed: C 100-150 m stays 0 / 34
+  STOP frames with GO at 118-150 m (the axis puts the box within 0.2-0.8 m of the wall there, judge problem 4), no
+  gain within 1.3 m of the wall. The full regression gate passes with every gated and information row identical.
+
 ## [Unreleased] — web prototype (PR #31; outside the `v1.0.0` release)
 
 [PR #31](https://github.com/pmixay/ReSense/pull/31) merged as `317eabf`; the prototype is in `main`
 and outside the runtime image and release v1.0.0.
+
+### Changed — resumable uploads for big recordings, faster processing (`webapp/`, 09.10)
+
+- Uploads are resumable and checked ([`webapp/API.md`](webapp/API.md), «Recordings»): a file over 8 MiB goes up in
+  8 MiB chunks, four requests at a time, in any order; every chunk carries the CRC-32 of its raw bytes and is
+  flushed to disk before it counts, so a dropped connection, a closed tab or a server restart loses at most the
+  chunks in flight. `GET /api/uploads/{id}` says what is missing; after a reload the page offers the unfinished
+  upload and continues it once the same file is picked again (another file asks before replacing it).
+  Unfinished uploads are kept 72 h after their last write (`RESENSE_WEB_UPLOAD_TTL_H`).
+- Compression on the wire: chunks are gzipped in Web Workers when that is faster than the link (adaptive: off on a
+  fast LAN, re-checked as data and link change). The synthetic lidar bags deflate to ≈ 0.65 of their size: a
+  333 MB demo bag through the page over an emulated 100 Mbit/s link took 18.6 s (17.9 MB/s) where the raw bytes
+  need 26.7 s, so the 25 GB / 100 Mbit/s case goes from ≈ 36 to ≈ 25 min (real bags may deflate differently).
+- Upload card: bytes, speed, time left (10 s average), the compression saved, «докачка» when resumed; pause /
+  continue / cancel buttons; automatic retries with backoff when the connection is gone («нет связи · повтор
+  через N с», at once when the browser is online again); a full server disk pauses with its message; the
+  browser asks before the page is left mid-upload; a second tab shows the upload as running there and offers
+  neither to continue nor to delete it. Главная shows the same state. The staging area of a failed upload is
+  removed only when it cannot become a recording; otherwise «Повторить» continues it.
+- A request body that sends nothing for 60 s ends with 408, so a connection that died without a FIN / RST
+  cannot keep an upload busy (finalize refused) for ever; the client retries 409 instead of giving up.
+- Finalize runs in the background with its stage (unpacking a zip shows its percentage): a 25 GB zip no longer
+  holds one HTTP request for minutes; a repeated call joins the running one.
+- Processing: the worker reads and decodes the next frames in a background thread while the detector works
+  (18–21 → 23–24 frames/s on the 10 s demo bag, same results).
+- Fixed: occasional 502 from the reverse proxy. uvicorn closed idle connections after its default 5 s while Caddy
+  keeps idle upstream connections 2 min, so a request could go out on a connection the backend was just closing
+  (the page polls every 5 s, exactly on that boundary). Caddy replays a GET that hits it, but not a POST / PUT /
+  DELETE: reproduced through Caddy 2.6.2, 19 of 150 POSTs sent at the boundary got 502 («connection reset by
+  peer», «broken pipe», «EOF»). The backend now keeps idle connections 130 s (`RESENSE_WEB_KEEPALIVE_S`,
+  `--timeout-keep-alive`), longer than the proxy, which therefore always closes first.
+- Fixed: deleting an upload while it was being finalized removed the files under the unpacking (now 409) and a
+  late file PUT could land in a finalized upload; an interrupted unpacking could be taken for input; a recording
+  could be orphaned when registering it failed; a folder of upper-case `.NPY` frames was counted but processed
+  as zero frames.
 
 ### Changed — resumable uploads for big recordings, faster processing (`webapp/`, 09.10)
 

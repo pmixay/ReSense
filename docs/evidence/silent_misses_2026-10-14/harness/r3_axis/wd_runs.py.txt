@@ -1,0 +1,27 @@
+"""Runs of frames with a binding wall drift in a gobs file, with curvature and the sealed monitored range.
+usage: wd_runs.py <gobs.jsonl> [min_run]"""
+import json, os, sys
+G = "/tmp/claude-0/fixwork/gate_head/work"
+p = sys.argv[1]
+mr = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+rows = [json.loads(l) for l in open(p)]
+sealed = [json.loads(l) for l in open(os.path.join(G, os.path.basename(p)))]
+runs, cur = [], None
+for i, (r, s) in enumerate(zip(rows, sealed)):
+    mon = s["health"]["monitored_range"]
+    b = r.get("wd", 1e9) < mon
+    if b:
+        if cur is None:
+            cur = [i, i, [], []]
+        cur[1] = i
+        cur[2].append(r["wd"])
+        cur[3].append(r["curv"])
+    elif cur is not None:
+        runs.append(cur)
+        cur = None
+if cur:
+    runs.append(cur)
+for a, b, wds, cs in runs:
+    if b - a + 1 < mr:
+        continue
+    print("%5d-%5d (%3d) %s  wd %5.0f-%5.0f  curv %+.5f..%+.5f" % (a, b, b - a + 1, rows[a]["stem"], min(wds), max(wds), min(cs), max(cs)))

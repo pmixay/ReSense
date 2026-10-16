@@ -1,0 +1,37 @@
+#!/bin/bash
+# ride segments / doubleT_platform (gate cache), sealed vs combined, one run at a time
+cd /tmp/claude-0/fixwork/safety_review; source env.sh
+G=/tmp/claude-0/fixdata/cache
+gp() { name=$1; cache=$2; shift 2
+  [ -f out/${name}_s.jsonl ] || run_s grun.py $G/$cache out/${name}_s "$@" > out/${name}_s.log 2>&1
+  [ -f out/${name}_w.jsonl ] || run_w grun.py $G/$cache out/${name}_w "$@" > out/${name}_w.log 2>&1
+  python3 cmp.py out/${name}_s.jsonl out/${name}_w.jsonl $name >> out/battery3.txt
+  tail -1 out/${name}_w.log >> out/battery3.txt
+}
+gd() { name=$1; base=$2; cache=$3; shift 3   # combined with the dark band vs the sealed base run
+  [ -f out/${name}_w.jsonl ] || DARKBAND=0.6 run_w grun.py $G/$cache out/${name}_w "$@" > out/${name}_w.log 2>&1
+  python3 cmp.py out/${base}_s.jsonl out/${name}_w.jsonl "$name(dark0.6)" >> out/battery3.txt
+  tail -1 out/${name}_w.log >> out/battery3.txt
+}
+R4="new_data_52_ new_data_54_ new_data_55_"
+gp R4_plain new_data $R4
+gd R4_dark R4_plain new_data $R4
+gp R4_drop30_s1 new_data $R4 --drop 0.3 --seed 1
+gp R4_drop30_s2 new_data $R4 --drop 0.3 --seed 2
+gp R4_ringdrop10 new_data $R4 --ring-drop 0.1 --seed 1
+gp R4_pitch2 new_data $R4 --pitch 2
+gp P_plain doubleT_platform piece:0/1
+gd P_dark P_plain doubleT_platform piece:0/1
+for sd in 1 2 3; do gp P_drop30_s$sd doubleT_platform piece:0/1 --drop 0.3 --seed $sd; done
+gp p1_plain new_data piece:1/8
+gd p1_dark p1_plain new_data piece:1/8
+gp p1_drop30_s1 new_data piece:1/8 --drop 0.3 --seed 1
+gp p1_drop30_s2 new_data piece:1/8 --drop 0.3 --seed 2
+gp p1_ringdrop10 new_data piece:1/8 --ring-drop 0.1 --seed 1
+gp p3_plain new_data piece:3/8
+gd p3_dark p3_plain new_data piece:3/8
+gp p3_drop30_s1 new_data piece:3/8 --drop 0.3 --seed 1
+gp p4_plain new_data piece:4/8
+gd p4_dark p4_plain new_data piece:4/8
+gp p4_drop30_s1 new_data piece:4/8 --drop 0.3 --seed 1
+echo BATTERY3 DONE >> out/battery3.txt

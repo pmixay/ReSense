@@ -1,0 +1,32 @@
+{
+  "cwd": "/",
+  "python": "3.10.12",
+  "resense": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+  "version": "1.0.0",
+  "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+  "ros_node": "/opt/resense/ros2_ws/build/resense_ros/resense_ros/detector_node.py",
+  "open3d": "0.19.0",
+  "packages": {
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "scikit-learn": "1.5.2",
+    "pytest": "8.4.2",
+    "rosbags": "0.11.5",
+    "zstandard": "0.25.0"
+  },
+  "env": {
+    "RESENSE_REQUIRE_SYNTHETIC": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "source_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "76f6e899a7f7de860c7b9a68a1e5ce3cef82dfc02e731228471b68d0931d2180",
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "b3e74fb138330e119b8c4ce736290421ebd21f1090d4a2c7fc32f2c74b5826c4",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "6f247d2979aedc775a89fa3c4e71b8cb3e0532e6161b8db3b13c6c6dea50524d",
+    "scripts/startup_acceptance.py": "2412eec60977167114b56bc285a860fc1c81288279abf386b81896d4dbe268a9",
+    "scripts/decision_policy_import.py": "cc53ce119a462a89acf581fa74c199f06fdf4964d88ee04beaf7574e246ccbad",
+    "webapp/backend/resense_web/decision.py": "1f4a7c31beaad126399832dd27a1bc33a1f9e1efa486f85343273a7dbd27afe7"
+  }
+}

@@ -197,6 +197,22 @@ class ClusterConfig:
     # is re-described from that part; 0 = off (the whole cluster dropped)
     oversize_split_max_length: float = 3.0
     oversize_split_max_distance: float = 30.0  # m, ... and only when that part starts within this distance (the far corridor holds long sparse clusters with a few gauge voxels, round 1 of 25.09)
+    # 13.10 (judge 13.10 problem 2; finished 14.10 with the judge's required changes; 0 = off): a cluster
+    # larger than max_extent that the 25.09 split refused (dropped whole) is cut along the smooth surface it
+    # lies on (a tunnel wall laid across the envelope by the lagging far axis of a curve; not fitted without
+    # a strict-gauge point, not cut when steeper than 45 deg to the track): its points at least this far (m)
+    # in front of the surface, as seen from the sensor, are linked again on their own and the parts at most
+    # oversize_split_max_length long, not flatter than min_height, with points in the strict gauge and at
+    # least structure_cut_min_points voxels are described as clusters (clustering._off_structure_parts).
+    # 14.10 (review): 1.3 m (0.8 on 13.10), more than the equipment fixed to the wall (0.8-1.2 m) and more
+    # than C's wall stands outside the strict envelope (2.25-2.3 m from the axis): at 0.8 an object 0.95-1.2 m
+    # in front of the wall, outside the envelope, was placed inside it by the lagging axis (false STOPs); no
+    # gain nearer the wall, nor at 100-150 m on C, where the lagging axis puts the judge's box within 0.2-0.6 m
+    # of the wall (configs/default.yaml has the measurements)
+    structure_cut_tol: float = 1.3
+    structure_cut_max_spread: float = 0.12  # m, ... only when the cluster is such a surface: robust spread of its points about the fit at most this
+    structure_cut_min_fit: float = 0.8      # ... and at least this fraction of its points on the surface
+    structure_cut_min_points: int = 8       # 14.10 (0 = no bar): ... and a part at least this many voxels (the accumulated near bar, min_points 5 x 1.5): the parts carved out of wall equipment on the empty recordings had 3-7, the judge's objects 8-42
     # on since 25.09 (P3): true = the distance of a cluster inside the strict gauge is that of its nearest
     # point inside the gauge, not of a point in the advisory margin it touches; false = the nearest point (v0.1).
     # Since the review of 25.09 "inside" is the envelope widened by the axis-uncertainty margin
@@ -238,6 +254,18 @@ class ClusterConfig:
     column_width_trim: float = 0.05     # 27.09 (P4 history, on; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
     column_width_trim_min_cut: float = 0.25  # 27.09: m, the trimmed width is used only when it is at least this much narrower than the box (sparse tails: a joined fragment); a dense body keeps its width
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
+    # 13.10 (the judge's 0.3 x 0.3 x 2.8 m pole: CAUTION, never STOP 0.7 m off the axis; 0 = off): a column
+    # continues up to the vault, an object standing in the envelope ends inside it. The column signature
+    # does not demote a cluster whose top is seen free (clustering.top_is_free: the rays right above it pass
+    # over it), whose top is at most column_free_max_top and at least column_free_min_core of whose voxels
+    # are inside the strict envelope; every other rule still applies. 14.10: the ring between the top and the
+    # first ring above it that returns is read from the frame's channel ids (the ring table only without them,
+    # set O; a mount tilt moves the rings off the table). Full regression gate PASS, every gate frame identical
+    # to the sealed detector; the judge's pole 0.7 m off the axis 0 -> 136 STOP frames of 176, on the axis
+    # 82 -> 157 of 177 (configs/default.yaml)
+    column_free_max_top: float = 2.95  # m, under the 3.0 m envelope top, where the candidates are cut
+    column_free_min_core: float = 0.5  # share of the cluster's voxels inside the strict envelope (a structure at its edge, a platform or canopy edge at 0.8-1.2 m: 0.09-0.56)
+    column_free_min_returns: int = 2   # returns beyond the top on the ring above it (one ray: the recordings hold each echo twice)
     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
     floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall
@@ -364,6 +392,14 @@ class TrackingConfig:
     ego_veto_min_travel: float = 4.0
     ego_veto_min_distance: float = 25.0
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
+    # 14.10 (review of the 13.10 free-top test; 0 / 1 = off, every spare believed): a cluster the column rule
+    # fits but cluster.column_free_max_top spares (its top seen free; Cluster.spared) is believed only when the
+    # track it continues had at least this many - 1 such hits among its last zone_window hits; alone it is the
+    # column the column rule made of it (reason column, zone warning: the column hold, the zone vote and
+    # explained_run see what they saw before 13.10). One spare of a noisy frame turned column tracks into
+    # STOPs (the standing train with 20-30 % point dropout, roundT_doubleT pitched -2 deg); the judge's pole,
+    # spared hit after hit, is believed from its second spared hit (configs/default.yaml has the measurements)
+    column_free_min_spares: int = 2
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
     stop_keep_low_s: float = 0.3  # seconds since a clean low hit during which matching current straddle returns may continue an existing low STOP; 0 = off

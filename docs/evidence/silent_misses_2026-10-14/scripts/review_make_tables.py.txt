@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+"""Markdown tables for the README of silent_misses_2026-10-14 (review fixes, 14.10)."""
+import json, re, sys
+P = json.load(open("out/probes_cmp_fin.json"))
+LABEL = {"pole_c": "A pole 0.3 × 0.3 × 2.8 m, axis", "pole_side": "A pole, +0.7 m", "pole_sideN": "A pole, −0.7 m",
+         "post_c": "A post 0.5 × 0.5 × 2.5 m, axis", "post_side": "A post, +0.7 m", "pole_c_drop": "A pole, axis, `--dropout`",
+         "pole_side_drop": "A pole, +0.7 m, `--dropout`", "A_person": "A person box 0.5 × 0.5 × 1.75 m",
+         "S_pole_side60": "S (standing train) pole +0.7 m, d0 60", "S_pole_side100": "S pole +0.7 m, d0 100",
+         "B_pole_c": "B pole, axis", "B_pole_side": "B pole, +0.7 m", "C_pole_c": "C pole, axis", "C_pole_side": "C pole, +0.7 m",
+         "C_person": "C person 0.5 × 0.5 × 1.75 m", "C_cube1": "C 1 m cube", "C_cube05": "C 0.5 m cube",
+         "C_person_latp05": "C person, +0.5 m", "C_person_latm05": "C person, −0.5 m", "C_person_latp07": "C person, +0.7 m (wall side)",
+         "C_person_latm07": "C person, −0.7 m", "C_person_drop": "C person, `--dropout`", "C_person_hd20": "C person yawed +20°",
+         "C_person_hdm20": "C person yawed −20°", "C_cube1_hd20": "C 1 m cube yawed +20°", "B_person": "B person",
+         "D_person": "D person (squareT switch)"}
+def f(s):
+    a = "–" if s["first_stop"] is None else f"{s['first_stop']:.1f}"
+    b = "–" if s["held_from"] is None else f"{s['held_from']:.1f}"
+    return f"{a} / {b} · {s['stop']}/{s['visible']}"
+print("| probe | sealed | 13.10 (`5fce816`) | now (`14f83dd`) | now G / C / S | frames worse than sealed | frames worse than 13.10 |")
+print("|---|---|---|---|---|---:|---:|")
+for k, v in P.items():
+    w = v["fix_vs_sealed_worse"]; w13 = v["fix_vs_13.10_worse"]
+    fx = v["fix"]
+    print(f"| {LABEL[k]} | {f(v['sealed'])} | {f(v['13.10'])} | **{f(fx)}** | {fx['GO']} / {fx['CAUTION']} / {fx['STOP']} | "
+          f"{w['lost_stop'] + w['new_go']} | {w13['lost_stop']} lost STOP, {w13['new_go']} new GO |")

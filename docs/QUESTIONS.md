@@ -4,16 +4,34 @@
 > send, and why each matters.
 > **Audience:** P1, team (the message: the organizers) · **Owner:** P1 · **Language:** RU message,
 > EN rationale
-> **Last verified:** 2026-09-29: against [`organizers/answers.md`](organizers/answers.md) §9 and the
-> sealed detector · **Status:** current
+> **Last verified:** 2026-10-15: O1 prepared against the 15–16 October backlog;
+> earlier answers checked against [`organizers/answers.md`](organizers/answers.md) §9 · **Status:** O1 awaiting dispatch and reply
 
-**Status: no open question.** Q1 and Q2 (sent on 25.09) were answered on 29.09: the envelope is
+**Status: O1 prepared on 15.10; not sent by this agent, no answer received.**
+Q1 and Q2 (sent on 25.09) were answered on 29.09: the envelope is
 measured from the rail heads, the rails may run at any angle to the LiDAR, and the synthetic objects
 are placed approximately; the organizers correct for that when checking
 ([`organizers/answers.md`](organizers/answers.md) §9). Every answered question is recorded in
 [`organizers/answers.md`](organizers/answers.md); a new question goes here as a message ready to
 send, with why it matters. Channel: the case moderator (Telegram
 [@gorbatovaol](https://t.me/gorbatovaol)) or info.leaders@develop.mos.ru.
+
+## O1 · Message ready for the captain to send (15.10)
+
+> Добрый день! Команда «Молоток», кейс 05, решение ReSense. Подскажите, пожалуйста, по защите 23 октября:
+>
+> 1. Сколько времени отведено на выступление и вопросы жюри? Будет ли демонстрация экрана и ожидается ли живая демонстрация решения?
+> 2. После сдачи 29 сентября мы нашли и исправляем ошибки обнаружения высоких узких объектов и объектов на кривых. Можно ли показать на защите обновлённую версию 1.1.x или передать её на повторный прогон? Может ли такая версия повлиять на оценку, либо оценивается только сданная v1.0.0?
+> 3. Будут ли до 23 октября доступны результаты скрытых прогонов или экспертные баллы? Можно ли повторно проверить обновлённый архив, и если да — куда и до какого срока его передать?
+>
+> Спасибо!
+
+Why these questions matter: (1) fixes PT1/PT2's talk/demo budget; (2) decides whether
+post-submission detector work may count; (3) fixes the evidence and delivery path.
+The captain records the actual dispatch date and the reply verbatim in
+[`organizers/answers.md`](organizers/answers.md) §10, then updates
+[`PRESENTATION.md`](PRESENTATION.md). Preparing this text does not close O1 or authorize
+a new submission. Until a reply, the five-minute talk remains a planning assumption.
 
 ## Answered
 

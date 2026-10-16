@@ -1,0 +1,14 @@
+#!/bin/bash
+cd /tmp/claude-0/fixwork/safety_review; source env.sh
+pair() { name=$1; cache=$2; shift 2
+  [ -f out/${name}_s.jsonl ] || run_s jrep.py $J/$cache out/${name}_s "$@" > out/${name}_s.log 2>&1
+  [ -f out/${name}_w.jsonl ] || run_w jrep.py $J/$cache out/${name}_w "$@" > out/${name}_w.log 2>&1
+  python3 cmp.py out/${name}_s.jsonl out/${name}_w.jsonl $name >> out/battery4.txt
+  tail -1 out/${name}_w.log >> out/battery4.txt
+}
+S=squareT_platform_squareT_switch
+for sd in 1 2 3 4; do pair S_drop10_s$sd $S --drop 0.1 --seed $sd; done
+for sd in 1 2 3 4; do pair S_drop20_s$sd $S --drop 0.2 --seed $sd; done
+for sd in 4 5 6; do pair S_drop30_s$sd $S --drop 0.3 --seed $sd; done
+for sd in 1 2; do pair S_noise02_s$sd $S --noise 0.02 --seed $sd; done
+echo BATTERY4 DONE >> out/battery4.txt

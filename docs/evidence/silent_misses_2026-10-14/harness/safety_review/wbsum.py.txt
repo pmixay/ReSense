@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+"""Summarise wallbox probe pairs: per object STOP frames attributable to it, first STOP X, the X range of its STOP
+frames, decisions while visible, frames lost (sealed hit -> combined not), wall offset at first STOP."""
+import json, sys, glob, os
+names = sys.argv[1:] or sorted({os.path.basename(p)[3:-7] for p in glob.glob('out/wb_*_w.json')})
+for n in names:
+    try:
+        s = json.load(open(f'out/wb_{n}_s.json')); w = json.load(open(f'out/wb_{n}_w.json'))
+    except FileNotFoundError:
+        continue
+    sr = {r['k']: r for r in s['rows']}; wr = {r['k']: r for r in w['rows']}
+    nobj = len(s['rows'][-1]['objs']) if s['rows'][-1]['objs'] else len(w['summary']) - 4
+    out = [n]
+    for oi in range(len(s['summary']['objs'])):
+        def st(rows):
+            vis = [r for r in rows.values() if len(r['objs']) > oi and r['objs'][oi]['n_obj'] > 0]
+            hits = sorted([r for r in vis if r['objs'][oi].get('hit')], key=lambda r: r['k'])
+            stop_vis = sum(r['decision'] == 'STOP' for r in vis)
+            dec = {k: sum(r['decision'] == k for r in vis) for k in ('GO', 'CAUTION', 'STOP')}
+            xs = [r['objs'][oi]['X'] for r in hits]
+            return len(vis), len(hits), (xs[0] if xs else None), (min(xs) if xs else None), dec, hits
+        a = st(sr); b = st(wr)
+        lost = [k for k in sr if len(sr[k]['objs']) > oi and sr[k]['objs'][oi].get('hit') and not wr[k]['objs'][oi].get('hit')]
+        wall = None
+        if b[5]:
+            o = b[5][0]['objs'][oi]; wall = (o.get('wall'), o.get('Y'), o.get('axis_valid'))
+        out.append(f"o{oi} {s['summary']['objs'][oi]}: vis {a[0]}/{b[0]} objSTOP {a[1]} -> {b[1]} first {a[2]} -> {b[2]} (last {a[3]} -> {b[3]}) dec {a[4]} -> {b[4]} lost {len(lost)} {lost[:8]} wall/Y/av@first {wall}")
+    out.append(f"   all-frame decisions {s['summary']['decisions']} -> {w['summary']['decisions']}; hooks {w['summary']['hooks']}")
+    print("\n  ".join(out))

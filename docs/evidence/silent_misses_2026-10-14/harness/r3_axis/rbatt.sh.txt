@@ -1,0 +1,44 @@
+#!/bin/bash
+# r3 battery: candidate (a188a2d snapshot) vs new snapshot; whole judge-cache replays (plain and perturbed),
+# wall-anchored probes on C. One run at a time. usage: rbatt.sh <new_snapshot> <outdir>
+R3=/tmp/claude-0/fixwork/r3axis
+SR=/tmp/claude-0/fixwork/safety_review
+CAND=$R3/snap_cand
+NEW=$1; OUT=$2
+mkdir -p $OUT
+J=/tmp/claude-0/judge_data/cache
+S=squareT_platform_squareT_switch; B=roundT_doubleT; C=roundT_pressureGate_roundT; A=roundT_squareT_pressureGate_squareT
+pair() { name=$1; cache=$2; shift 2
+  [ -s $OUT/${name}_c.jsonl ] || WT=$CAND $R3/py.sh $SR/jrep.py $J/$cache $OUT/${name}_c "$@" > $OUT/${name}_c.log 2>&1
+  [ -s $OUT/${name}_n.jsonl ] || WT=$NEW $R3/py.sh $SR/jrep.py $J/$cache $OUT/${name}_n "$@" > $OUT/${name}_n.log 2>&1
+  /tmp/claude-0/venv/bin/python $SR/cmp.py $OUT/${name}_c.jsonl $OUT/${name}_n.jsonl $name >> $OUT/battery.txt
+}
+pair A_plain $A
+pair B_plain $B
+pair C_plain $C
+pair S_plain $S
+pair C_drop30 $C --drop 0.3 --seed 1
+pair B_drop30 $B --drop 0.3 --seed 1
+pair S_drop30 $S --drop 0.3 --seed 1
+pair C_pitchm2 $C --pitch -2
+pair B_pitchm2 $B --pitch -2
+pair S_pitchp2 $S --pitch 2
+pair C_every2 $C --every 2
+pair B_every2 $B --every 2
+pair S_every2 $S --every 2
+ICP=$NEW/docs/evidence/judgement_2026-10-13/out
+CC="$J/$C $ICP/icp_$C.json"
+wb() { name=$1; shift
+  [ -s $OUT/wb_${name}_c.json ] || WT=$CAND $R3/py.sh $SR/wallbox_rt.py $CC $OUT/wb_${name}_c --start 0 --d0 230 "$@" > $OUT/wb_${name}_c.log 2>&1
+  [ -s $OUT/wb_${name}_n.json ] || WT=$NEW $R3/py.sh $SR/wallbox_rt.py $CC $OUT/wb_${name}_n --start 0 --d0 230 "$@" > $OUT/wb_${name}_n.log 2>&1
+  echo "== $name $*" >> $OUT/battery.txt
+  tail -1 $OUT/wb_${name}_c.log >> $OUT/battery.txt
+  tail -1 $OUT/wb_${name}_n.log >> $OUT/battery.txt
+}
+wb cab10     --o 0.6,1.0,1.8:wall+:1.0
+wb person08  --o 0.5,0.5,1.75:wall+:0.8
+wb person10  --o 0.5,0.5,1.75:wall+:1.0
+wb mast12    --o 0.3,0.3,2.6:wall+:1.2
+wb col10     --o 0.4,0.4,5.0:wall+:1.0
+wb pers_cab_behind --o 0.5,0.5,1.75:axis:0 --o 0.6,1.0,1.8:wall+:1.0:1.5
+echo RBATT_DONE >> $OUT/battery.txt

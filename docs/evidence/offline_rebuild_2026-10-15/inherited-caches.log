@@ -1,0 +1,27 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+{
+  "package": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+  "PYTHONPATH": "/opt/resense/ros2_ws/build/resense_ros:/opt/resense/ros2_ws/install/resense_ros/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages",
+  "sys_path": [
+    "",
+    "/opt/resense/ros2_ws/build/resense_ros",
+    "/opt/resense/ros2_ws/install/resense_ros/lib/python3.10/site-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages",
+    "/usr/lib/python310.zip",
+    "/usr/lib/python3.10",
+    "/usr/lib/python3.10/lib-dynload",
+    "/usr/local/lib/python3.10/dist-packages",
+    "/usr/lib/python3/dist-packages"
+  ],
+  "inherited_build_artifacts": [
+    {
+      "path": "/opt/resense/build/lib.linux-x86_64-cpython-310/resense/_resense_native.cpython-310-x86_64-linux-gnu.so",
+      "mtime": 1792093355.0
+    },
+    {
+      "path": "/opt/resense/build/temp.linux-x86_64-cpython-310/native/resense_native.o",
+      "mtime": 1792093355.0
+    }
+  ]
+}

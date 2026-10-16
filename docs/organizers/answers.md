@@ -26,8 +26,8 @@ from these sources:
 * the **organizers' written answer of 29.09** to our Q1 and Q2 (the envelope's reference and the
   accuracy of the synthetic objects), passed on by the team, §9.
 
-The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md)
-(none since 29.09).
+The open questions are in [`../QUESTIONS.md`](../QUESTIONS.md). On 15.10 the O1
+pitch/update/re-run message was prepared; dispatch and an organizer reply are pending (§10).
 
 ## 1. Answers by question (Q&A session 22.09 + written answers 23.09)
 
@@ -167,4 +167,16 @@ of that recording run at 0.24° to the LiDAR's axis; (Q2) is «2х2 сверху
 | Q1 | the train's envelope is **measured from the rail heads**; the rails **may run at any angle to the LiDAR** | **closed** | the organizers' envelope is the one the detector builds from the rails (`gauge.profile`: \|dy\| ≤ 1.05 m from the fitted track axis, 0.12–3.0 m above the rail-head plane); nothing is measured from the sensor axis in their definition. The shipped `gauge.reference` 3 stays: it is the union of the rails' envelope and the sensor-axis one, so it never narrows the organizers' envelope, and it only widens it within 60 m on straight track by at most `reference_max_offset` = 0.2 m, inside the 0.35 m advisory band, whatever the rail angle (the offset is clipped). Taking it off (`reference` 0) loses measured recall for no measured false-alarm gain: in the matched quality-cycle screens ([`review_fix_d`](../evidence/results/quality_cycle_2026-09-27/screens/review_fix_d.json) vs [`ablation_reference_off`](../evidence/results/quality_cycle_2026-09-27/screens/ablation_reference_off.json)) the real person drops 61 → 58 of 61 frames and set O's edge cube 18 → 2 STOP frames (first STOP 35.0 → 5.2 m), while the ride, the five empty recordings and set O's outside-object false STOPs (6) are identical ([`../DECISIONS.md`](../DECISIONS.md) row 18). The cost the answer defines: an object up to 0.2 m outside the rails' envelope, within 60 m on straight track, can be a STOP. `gauge.axis_union` (off) loses its reason (the sensor-axis frame) and stays off. "Any angle" is what the mount calibration and the per-frame track axis already assume: the envelope follows the fitted rails, not the LiDAR's X axis |
 | Q2 | not answered in so many words; it follows from Q1: the envelope's top is 3.0 m **above the rail head** | **closed** (by Q1) | the bottom of #8 «2х2 сверху габарита» is 2.4–2.9 m above the rail head, 0.1–0.6 m inside the 3.0 m envelope: an obstacle. Its label stays `in_gauge: true` and its STOPs (from ~111 m) stay counted as detections. If the organizers meant "must not alarm", the answer's allowance below covers a placement that far from the top edge only loosely; nothing changes in the detector either way |
 | — | the synthetic objects are **placed approximately** and **may drift relative to the envelope along the track**; the organizers are improving their accuracy and **will correct for it when checking the solutions** | noted | set O's edge tests (#4 `small_edge_inside`, #5 `small_outside_near`, #6 `big_edge_inside`, #7 `big_outside`) sit within ±0.1–0.4 m of the rails' envelope edge and cross it along the track ([`../DATASET.md`](../DATASET.md) "Synthetic-obstacle recording"). Their labels keep the organizers' intent (`in_gauge`); their in/out results are within the organizers' stated tolerance and are reported, not tuned further. The hidden check's synthetic objects may be placed as loosely: no rule is fitted to an exact synthetic placement |
+
+## 10. O1: pitch format, post-submission updates and results (prepared 15.10)
+
+**Pending dispatch by the captain. No organizer answer has been received or inferred.**
+The ready-to-send three-question message is in [`../QUESTIONS.md`](../QUESTIONS.md).
+It asks for pitch/Q&A/demo format, whether 1.1.x may be shown or re-run and affect scores,
+and whether hidden-check/expert results or another archive submission are available before 23.10.
+
+After dispatch, record its actual date here. After the reply, append its dated verbatim
+text and the resulting decisions; update `PRESENTATION.md` and the backlog's O1 branch.
+The current five-minute preparation budget and the submitted v1.0.0 are unchanged assumptions,
+not a new answer from the organizers.
 

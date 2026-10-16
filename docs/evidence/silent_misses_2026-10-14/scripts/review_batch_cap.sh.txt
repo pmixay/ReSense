@@ -1,0 +1,27 @@
+#!/bin/bash
+# finding 1: the wall-entry axis cap of the cut parts on top of structure_cut_tol (code_cap snapshot)
+cd /tmp/claude-0/fixwork/fix_review
+until grep -q "BATCH_SPARE DONE" out/batch_spare.txt 2>/dev/null; do sleep 10; done
+export CODE=/tmp/claude-0/fixwork/fix_review/code_cap
+source env.sh
+cd $W/docs/evidence/judgement_2026-10-13
+C="$J/roundT_pressureGate_roundT out/icp_roundT_pressureGate_roundT.json"
+jp() { tag=$1; name=$2; shift 2
+  [ -f $FR/out/${tag}_$name.json ] || CFG=$CFGV CUTCAP=$CAP run_w $FR/rtw.py $C $FR/out/${tag}_$name --start 0 --d0 230 "$@" > $FR/out/${tag}_$name.log 2>&1
+  echo "$tag $name $(python3 -c "import json;s=json.load(open('$FR/out/${tag}_$name.json'))['summary'];print(s['first_stop_X'],s['held_from_X'],s['stop_frames'],'/',s['visible_frames'],s['bins'].get('60-100'),s['bins'].get('100-150'),s['decisions_while_visible'])")" >> $FR/out/batch_cap.txt
+}
+wp() { tag=$1; name=$2; shift 2
+  [ -f $FR/out/wb_${tag}_$name.json ] || CFG=$CFGV CUTCAP=$CAP run_w $FR/wallbox_rt.py $C $FR/out/wb_${tag}_$name --start 0 --d0 230 "$@" > $FR/out/wb_${tag}_$name.log 2>&1
+  echo "$tag wb_$name $(python3 -c "import json;s=json.load(open('$FR/out/wb_${tag}_$name.json'))['summary'];o=s['o0'];print(o['obj_stop_frames'],'first',o['first_stop_X'],o['bins'].get('60-100'),s['decisions'],s['hooks'])")" >> $FR/out/batch_cap.txt
+}
+for tol in 1.3 0.8; do
+  CFGV="cluster.structure_cut_tol=$tol"; CAP=1; tag=cap$tol
+  jp $tag person --obj 0.5,0.5,1.75
+  jp $tag cube1 --obj 1,1,1
+  jp $tag person_m05 --obj 0.5,0.5,1.75 --lat -0.5
+  jp $tag person_m07 --obj 0.5,0.5,1.75 --lat -0.7
+  jp $tag person_p05 --obj 0.5,0.5,1.75 --lat 0.5
+  wp $tag mast12 --o 0.3,0.3,2.6:wall+:1.2
+  wp $tag person10 --o 0.5,0.5,1.75:wall+:1.0
+done
+echo BATCH_CAP DONE >> $FR/out/batch_cap.txt

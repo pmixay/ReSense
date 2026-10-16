@@ -1,0 +1,16 @@
+import json, sys
+recs = json.load(open(sys.argv[1]))
+k0, k1 = int(sys.argv[2]), int(sys.argv[3])
+for r in recs:
+    if not (k0 <= r['k'] <= k1):
+        continue
+    for c in r['calls']:
+        wo = c.get('walls_out')
+        si = c.get('side_in', [])
+        sides = []
+        for s in si:
+            f = s['fit']
+            sides.append(('mad%.2f' % s['mad']) + (' FAIL n%d' % len(s['x']) if f is None else ' k%.5f rms%.2f xmax%.0f far%d/%d' % (f[1], f[2], f[4], f[6], f[5])))
+        print(r['k'], 'prev %.5f' % c.get('prev', {}).get('curv', 0), 'raw',
+              None if wo is None else '%.5f n%d dis%.5f xv%.0f/%.0f' % (wo[1], wo[4], wo[5], wo[3], wo[6]),
+              'out %.5f av%.0f' % (c['out']['curv'], c['out']['axis_valid']), '|', ' || '.join(sides))

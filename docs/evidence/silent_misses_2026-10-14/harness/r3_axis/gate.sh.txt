@@ -1,0 +1,10 @@
+#!/bin/bash
+# r3: the full regression gate on the worktree's committed code. usage: gate.sh <outdir>
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+WT=/home/user/ReSense/.claude/worktrees/wf_fad4ed48-27b-2
+OUT=$1
+mkdir -p $OUT
+cd $WT
+git rev-parse HEAD > $OUT/commit
+PYTHONPATH=$WT RESENSE_REPO=$WT nice -n 5 /tmp/claude-0/venv/bin/python scripts/regression_gate.py --cache /tmp/claude-0/fixdata/cache --jobs 2 --work $OUT/gate_work --out $OUT/gate.json --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json > $OUT/gate.log 2>&1
+echo "exit $?" >> $OUT/gate.log

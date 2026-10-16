@@ -126,6 +126,7 @@ def test_long_floating_rule_needs_an_overhead_bottom():
 
 AXIS_Y = 0.25                   # synthetic_tunnel_frame: the track axis
 RAIL_HEAD_Z = -1.5 + 0.18       # the bed at -1.5, rails 0.18 m tall
+VAULT_H = 4.6                   # the lining 0.95 m off the track axis is 4.65 m above the rail head (radius 2.7 at Z 0.8)
 
 
 def _box_surface(x0: float, length: float, lateral: float, bottom: float, height: float, width: float,
@@ -206,11 +207,16 @@ def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
     # gauge.reference (on since 27.09) moves the envelope 0.2 m away from this column (the synthetic track axis
     # is 0.25 m off the sensor axis): at 40 m it is advisory '' (outside), not 'column'; off here for the hold
     cfg.gauge = replace(cfg.gauge, reference=0)
+    # 13.10: the injected box ends in the envelope and the tunnel's rays above its top reach the lining - the
+    # free-top test (cluster.column_free_max_top) makes it an obstacle (test_free_standing_post_is_a_stop);
+    # off here, so that the hold is tested on a column-demoted cluster
+    cfg.cluster = replace(cfg.cluster, column_free_max_top=0.0)
     shipped = DetectorConfig()
     hold, zw = cfg.tracking.column_hold, cfg.tracking.zone_window
     assert hold >= 1
     off = DetectorConfig()
     off.gauge = replace(off.gauge, reference=0)
+    off.cluster = replace(off.cluster, column_free_max_top=0.0)
     off.tracking = replace(off.tracking, column_hold=0)
     confirm = cfg.tracking.frames_to_confirm() - 1                  # frame index of the first STOP: 4
     for dist in (40.0, 60.0, 80.0):
@@ -239,6 +245,38 @@ def test_column_hold_person_beside_a_column_is_a_stop(tunnel):
             assert base < got <= zw - hold, (m, got, base)
         assert _first_stop(frame, seq, shipped) - m <= zw - hold             # the shipped defaults: the same bound
 
+
+
+def test_free_standing_post_is_a_stop(tunnel):
+    """13.10 (cluster.column_free_max_top; the judge's 0.3 x 0.3 x 2.8 m pole): the post of the column-hold
+    test 0.7 m off the axis, ending in the envelope - the tunnel's rays above its top reach the lining - is a
+    STOP one frame after the frame that confirms it at 40-80 m (14.10, tracking.column_free_min_spares: its
+    first spared hit is the column the column rule made of it, explained_run counts the clean hits after it;
+    with every spare believed, 13.10, on the confirming frame); with the free-top test off it is advisory
+    ``column`` (the behaviour before). A column up to the vault stays a column (the hanging stage off: it
+    takes a 0.3 m column this near the axis, through the envelope top, for a hanging object)."""
+    frame, _, _ = tunnel
+    cfg = DetectorConfig()
+    cfg.gauge = replace(cfg.gauge, reference=0)
+    off = DetectorConfig()
+    off.gauge = replace(off.gauge, reference=0)
+    off.cluster = replace(off.cluster, column_free_max_top=0.0)
+    unhung = DetectorConfig()
+    unhung.gauge = replace(unhung.gauge, reference=0)
+    unhung.cluster = replace(unhung.cluster, hanging_enabled=False)
+    believe_all = DetectorConfig()
+    believe_all.gauge = replace(believe_all.gauge, reference=0)
+    believe_all.tracking = replace(believe_all.tracking, column_free_min_spares=1)
+    confirm = cfg.tracking.frames_to_confirm() - 1
+    for dist in (40.0, 60.0, 80.0):
+        post = _box_surface(dist, 0.3, 0.7, 0.0, 2.8, 0.3)
+        assert _first_stop(frame, [post] * 8, cfg) == confirm + 1, dist
+        assert _first_stop(frame, [post] * 8, believe_all) == confirm, dist
+        assert _first_stop(frame, [post] * 8, off) is None, dist
+        column = _box_surface(dist, 0.3, 0.7, 0.0, VAULT_H, 0.3)
+        assert _first_stop(frame, [column] * 8, unhung) is None, dist
+        res = _run_with(frame, column, unhung)
+        assert res.warning and res.warnings[0].reason == "column", dist
 
 # --- the rail shadow of a large near object (P3, 25.09) ------------------------------------------
 
@@ -710,14 +748,15 @@ def test_far_axis_both_sides_hall_curvature_no_longer_carries_a_far_stop(tunnel)
 
 
 def test_far_axis_both_sides_mode_2_keeps_other_reasons(tunnel):
-    """Mode 2 demotes only would-be obstacles: a 2.6 m column-shaped cluster at 125 m on the bent
-    hall corridor stays advisory ``column`` (a column hit for tracking.column_hold); mode 1 turned
-    it into ``beyond_axis``, which hid a column from the hold on roundT_doubleT (EXPERIMENTS §1h)."""
+    """Mode 2 demotes only would-be obstacles: a column (up to the vault; 13.10: a post ending in the
+    envelope is an obstacle, cluster.column_free_max_top) at 125 m on the bent hall corridor stays
+    advisory ``column`` (a column hit for tracking.column_hold); mode 1 turned it into ``beyond_axis``,
+    which hid a column from the hold on roundT_doubleT (EXPERIMENTS §1h)."""
     frame, _, _ = tunnel
     scene = _far_scene(frame, hall=True)
     t = Detector(DetectorConfig()).process(scene).track
     lat = float(t.center_y(np.array([125.0]))[0]) - AXIS_Y
-    column = _box_surface(125.0, 0.3, lat + 0.8, 0.0, 2.6, 0.3)
+    column = _box_surface(125.0, 0.3, lat + 0.8, 0.0, VAULT_H, 0.3)
     reasons = {}
     for mode in (0, 1, 2):
         res = _run_with(scene, column, _both_sides(mode))

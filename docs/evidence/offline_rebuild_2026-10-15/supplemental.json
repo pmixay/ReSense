@@ -1,0 +1,103 @@
+{
+  "result": "PASS",
+  "commands": [
+    {
+      "name": "lint",
+      "command": [
+        "ruff",
+        "check",
+        "scripts/check_offline_image.py",
+        "scripts/check_nonroot_player.py",
+        "scripts/offline_rebuild_test.py",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p1-offline\\docs\\evidence\\offline_rebuild_2026-10-15\\verify.py"
+      ],
+      "seconds": 0.203,
+      "exit": 0
+    },
+    {
+      "name": "workflow-bash-syntax",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "resense:p1-e2-check",
+        "bash",
+        "-n",
+        "-c",
+        "mkdir -p out/release_offline\nORIGINAL_ID=\"$(docker image inspect -f '{{.Id}}' \"resense:$TAG\")\"\nSTART=\"$SECONDS\"\ndocker build --network none --pull=false --progress=plain \\\n  --build-arg \"RELEASE_IMAGE=resense:$TAG\" \\\n  -f docker/Dockerfile.offline -t resense:release-offline-check . 2>&1 | tee out/release_offline/build.log\necho \"seconds=$((SECONDS - START))\" | tee -a \"$GITHUB_OUTPUT\" out/release_offline/timing.txt\ndocker run --rm --network none -w / resense:release-offline-check \\\n  python3 /opt/resense/scripts/check_offline_image.py | tee out/release_offline/installed.log\n# Real changed-source test: a new native symbol, Python modules and launch/config data.\n# An old wheel or setuptools/colcon cache must not make this check pass.\npython3 scripts/offline_rebuild_test.py --base-image \"resense:$TAG\" \\\n  --image resense:release-offline-mutation-check --out out/release_offline/mutation\nfor IMAGE in \"resense:$TAG\" resense:release-offline-check; do\n  docker run --rm --network none --user 1000:1000 -w / \"$IMAGE\" \\\n    python3 /opt/resense/scripts/check_nonroot_player.py 2>&1 | tee \"out/release_offline/nonroot-${IMAGE##*:}.log\"\ndone\ntest \"$(docker image inspect -f '{{.Id}}' \"resense:$TAG\")\" = \"$ORIGINAL_ID\"\n"
+      ],
+      "seconds": 1.218,
+      "exit": 0
+    },
+    {
+      "name": "runtime-nonroot-hostnet",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--net=host",
+        "--user",
+        "1000:1000",
+        "-w",
+        "/",
+        "resense:p1-e2-check",
+        "python3",
+        "/opt/resense/scripts/check_nonroot_player.py"
+      ],
+      "seconds": 2.813,
+      "exit": 0
+    },
+    {
+      "name": "offline-nonroot-hostnet",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--net=host",
+        "--user",
+        "1000:1000",
+        "-w",
+        "/",
+        "resense:p1-e2-offline-check",
+        "python3",
+        "/opt/resense/scripts/check_nonroot_player.py"
+      ],
+      "seconds": 3.532,
+      "exit": 0
+    },
+    {
+      "name": "release-unit-linux",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-w",
+        "/",
+        "resense:p1-e2-check",
+        "bash",
+        "-c",
+        "pip3 install pytest==8.4.2 && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q -rs /opt/resense/tests/test_release.py"
+      ],
+      "seconds": 8.672,
+      "exit": 0
+    },
+    {
+      "name": "native-unit-linux",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-w",
+        "/",
+        "resense:p1-e2-offline-check",
+        "bash",
+        "-c",
+        "pip3 install pytest==8.4.2 && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q -rs /opt/resense/tests/test_native.py -k \"not track_stage_functions_identical and not detector_output_identical\""
+      ],
+      "seconds": 7.234,
+      "exit": 0
+    }
+  ]
+}
