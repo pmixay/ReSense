@@ -1,0 +1,29 @@
+{
+  "groups": {
+    "1.12": {
+      "cases": 48,
+      "cuts": 16,
+      "spared": 16,
+      "sealed_matched_STOP_frames": 384,
+      "candidate_matched_STOP_frames": 752,
+      "lost_STOP_frames": 0
+    },
+    "1.36": {
+      "cases": 48,
+      "cuts": 48,
+      "spared": 48,
+      "sealed_matched_STOP_frames": 384,
+      "candidate_matched_STOP_frames": 1488,
+      "lost_STOP_frames": 0
+    },
+    "1.64": {
+      "cases": 48,
+      "cuts": 40,
+      "spared": 16,
+      "sealed_matched_STOP_frames": 768,
+      "candidate_matched_STOP_frames": 1392,
+      "lost_STOP_frames": 0
+    }
+  },
+  "changed_or_cut_cases": 104
+}

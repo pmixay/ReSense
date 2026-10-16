@@ -1,0 +1,7994 @@
+{
+  "scope": "constructed filter/tracker boundary; not a physical scene",
+  "frames": [
+    {
+      "frame": 0,
+      "low_kept": false,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 1,
+          "misses": 0,
+          "age": 1,
+          "confidence": 0.35,
+          "history": [
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false
+          ],
+          "column_hist": [
+            true
+          ],
+          "spare_hist": [
+            true
+          ],
+          "hit_hist": [
+            true
+          ],
+          "thin_hist": [
+            false
+          ],
+          "near_hist": [
+            false
+          ],
+          "explained_hist": [
+            true
+          ],
+          "clean_run": 0,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.1,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 1,
+          "misses": 0,
+          "age": 1,
+          "confidence": 0.35,
+          "history": [
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true
+          ],
+          "column_hist": [
+            false
+          ],
+          "spare_hist": [
+            false
+          ],
+          "hit_hist": [
+            true
+          ],
+          "thin_hist": [
+            false
+          ],
+          "near_hist": [
+            false
+          ],
+          "explained_hist": [
+            false
+          ],
+          "clean_run": 1,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.1,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": []
+    },
+    {
+      "frame": 1,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 2,
+          "misses": 0,
+          "age": 2,
+          "confidence": 0.7,
+          "history": [
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.2,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 1,
+          "misses": 0,
+          "age": 1,
+          "confidence": 0.35,
+          "history": [
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true
+          ],
+          "column_hist": [
+            false
+          ],
+          "spare_hist": [
+            false
+          ],
+          "hit_hist": [
+            true
+          ],
+          "thin_hist": [
+            false
+          ],
+          "near_hist": [
+            false
+          ],
+          "explained_hist": [
+            false
+          ],
+          "clean_run": 1,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.1,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 2,
+          "misses": 0,
+          "age": 2,
+          "confidence": 0.7,
+          "history": [
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false
+          ],
+          "clean_run": 2,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.2,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": []
+    },
+    {
+      "frame": 2,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 3,
+          "misses": 0,
+          "age": 3,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.30000000000000004,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 2,
+          "misses": 0,
+          "age": 2,
+          "confidence": 0.7,
+          "history": [
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false
+          ],
+          "clean_run": 2,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.2,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 3,
+          "misses": 0,
+          "age": 3,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false
+          ],
+          "clean_run": 3,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.30000000000000004,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": []
+    },
+    {
+      "frame": 3,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 4,
+          "misses": 0,
+          "age": 4,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.4,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 3,
+          "misses": 0,
+          "age": 3,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false
+          ],
+          "clean_run": 3,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.30000000000000004,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 4,
+          "misses": 0,
+          "age": 4,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 4,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.4,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": []
+    },
+    {
+      "frame": 4,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 5,
+          "misses": 0,
+          "age": 5,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.5,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 4,
+          "misses": 0,
+          "age": 4,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 4,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.4,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 5,
+          "misses": 0,
+          "age": 5,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 5,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.5,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 5,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 6,
+          "misses": 0,
+          "age": 6,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.6,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 5,
+          "misses": 0,
+          "age": 5,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 5,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.5,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 6,
+          "misses": 0,
+          "age": 6,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 6,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.6,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 6,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 7,
+          "misses": 0,
+          "age": 7,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.7,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 6,
+          "misses": 0,
+          "age": 6,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 6,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.6,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 7,
+          "misses": 0,
+          "age": 7,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 7,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.7,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 7,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 8,
+          "misses": 0,
+          "age": 8,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.7999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 7,
+          "misses": 0,
+          "age": 7,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 7,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.7,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 8,
+          "misses": 0,
+          "age": 8,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 8,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.7999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 8,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 9,
+          "misses": 0,
+          "age": 9,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.8999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 8,
+          "misses": 0,
+          "age": 8,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 8,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.7999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 9,
+          "misses": 0,
+          "age": 9,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 9,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.8999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 9,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 10,
+          "misses": 0,
+          "age": 10,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.9999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 9,
+          "misses": 0,
+          "age": 9,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 9,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.8999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 10,
+          "misses": 0,
+          "age": 10,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 10,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.9999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 10,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 11,
+          "misses": 0,
+          "age": 11,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.0999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 10,
+          "misses": 0,
+          "age": 10,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 10,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 0.9999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 11,
+          "misses": 0,
+          "age": 11,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 11,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.0999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 11,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 12,
+          "misses": 0,
+          "age": 12,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.2,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 11,
+          "misses": 0,
+          "age": 11,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 11,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.0999999999999999,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 12,
+          "misses": 0,
+          "age": 12,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 12,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.2,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 12,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 13,
+          "misses": 0,
+          "age": 13,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.3,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 12,
+          "misses": 0,
+          "age": 12,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 12,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.2,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 13,
+          "misses": 0,
+          "age": 13,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 13,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.3,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 13,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 14,
+          "misses": 0,
+          "age": 14,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.4000000000000001,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 13,
+          "misses": 0,
+          "age": 13,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 13,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.3,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 14,
+          "misses": 0,
+          "age": 14,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 14,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.4000000000000001,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 14,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 15,
+          "misses": 0,
+          "age": 15,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.5000000000000002,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 14,
+          "misses": 0,
+          "age": 14,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 14,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.4000000000000001,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 15,
+          "misses": 0,
+          "age": 15,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 15,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.5000000000000002,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 15,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 16,
+          "misses": 0,
+          "age": 16,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.6000000000000003,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 15,
+          "misses": 0,
+          "age": 15,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 15,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.5000000000000002,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 16,
+          "misses": 0,
+          "age": 16,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 16,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.6000000000000003,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 16,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 17,
+          "misses": 0,
+          "age": 17,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.7000000000000004,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 16,
+          "misses": 0,
+          "age": 16,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 16,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.6000000000000003,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 17,
+          "misses": 0,
+          "age": 17,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 17,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.7000000000000004,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 17,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 18,
+          "misses": 0,
+          "age": 18,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.8000000000000005,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 17,
+          "misses": 0,
+          "age": 17,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 17,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.7000000000000004,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 18,
+          "misses": 0,
+          "age": 18,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 18,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.8000000000000005,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 18,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 19,
+          "misses": 0,
+          "age": 19,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 1.9000000000000006,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 18,
+          "misses": 0,
+          "age": 18,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 18,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.8000000000000005,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 19,
+          "misses": 0,
+          "age": 19,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 19,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.9000000000000006,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 19,
+      "low_kept": true,
+      "part_pre": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "part_post": {
+        "points_idx": {
+          "shape": [
+            12
+          ],
+          "dtype": "int64",
+          "sha256": "700a4498438a801b5781533040bce85a20ae4bfe08866f7552ff33e172923b0a"
+        },
+        "n": 12,
+        "n_raw": 12,
+        "centroid": [
+          93.0,
+          0.5,
+          -0.44999998807907104
+        ],
+        "bbox_min": [
+          92.94999694824219,
+          0.3499999940395355,
+          -1.7200000286102295
+        ],
+        "bbox_max": [
+          93.05000305175781,
+          0.6499999761581421,
+          0.8199999928474426
+        ],
+        "distance": 92.94999999925494,
+        "lateral": 0.5,
+        "height_min": 0.11000001907348644,
+        "height_max": 2.6499999809265136,
+        "intensity": 35.0,
+        "n_expected": 12.0,
+        "score": 1.0,
+        "zone": "warning",
+        "n_gauge": 12,
+        "retro": false,
+        "reason": "column",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "tracks": [
+        {
+          "id": 1,
+          "hits": 20,
+          "misses": 0,
+          "age": 20,
+          "confidence": 1.0,
+          "history": [
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494,
+            92.94999999925494
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "column_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "clean_run": 0,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 2.0000000000000004,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": Infinity,
+          "hold": 0
+        },
+        {
+          "id": 2,
+          "hits": 19,
+          "misses": 0,
+          "age": 19,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 19,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 1.9000000000000006,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "stop_ids": [
+        2
+      ],
+      "low_only_control_tracks": [
+        {
+          "id": 1,
+          "hits": 20,
+          "misses": 0,
+          "age": 20,
+          "confidence": 1.0,
+          "history": [
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988,
+            93.24999999850988
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "hit_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "clean_run": 20,
+          "reported": true,
+          "seen_reported": true,
+          "column_held": false,
+          "vote_zone": "gauge",
+          "rule_zone": "gauge",
+          "zone": "gauge",
+          "span_s": 2.0000000000000004,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": true,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "low_only_control_STOP_ids": [
+        1
+      ]
+    }
+  ]
+}

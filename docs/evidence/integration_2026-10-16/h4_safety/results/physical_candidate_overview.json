@@ -1,0 +1,42 @@
+{
+  "top_2.72": {
+    "cases": 256,
+    "matched_STOP_frames": 2608,
+    "inside_objects_without_STOP": 0
+  },
+  "top_3.22": {
+    "cases": 256,
+    "matched_STOP_frames": 1144,
+    "inside_objects_without_STOP": 112
+  },
+  "top_3.62": {
+    "cases": 256,
+    "matched_STOP_frames": 780,
+    "inside_objects_without_STOP": 140
+  },
+  "top_4.12": {
+    "cases": 256,
+    "matched_STOP_frames": 780,
+    "inside_objects_without_STOP": 140
+  },
+  "band_[2.54, 3.18]": {
+    "cases": 256,
+    "matched_STOP_frames": 1680,
+    "inside_objects_without_STOP": 80
+  },
+  "band_[2.54, 4.12]": {
+    "cases": 256,
+    "matched_STOP_frames": 2616,
+    "inside_objects_without_STOP": 8
+  },
+  "beam": {
+    "cases": 32,
+    "matched_STOP_frames": 416,
+    "inside_objects_without_STOP": 0
+  },
+  "multi": {
+    "cases": 8,
+    "matched_STOP_frames": 120,
+    "inside_objects_without_STOP": 16
+  }
+}

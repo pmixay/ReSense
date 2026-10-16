@@ -1,0 +1,8258 @@
+[
+  {
+    "case": 4,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 4,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 4,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 4,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 4,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 4,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 4,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 4,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 8,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 8,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 8,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 8,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 8,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 8,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 8,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 8,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 12,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 12,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 12,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 12,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 12,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 12,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 12,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 12,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 16,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 16,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 16,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 16,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 16,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 16,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 16,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 16,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 20,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 20,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 20,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 20,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 20,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 20,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 20,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 20,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 36,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 36,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 36,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 36,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 36,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 36,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 36,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 36,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 40,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 40,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 40,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 40,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 40,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 40,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 40,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 40,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 44,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 44,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 44,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 44,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 44,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 44,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 44,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 44,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 48,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 48,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 48,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 48,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 48,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 48,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 48,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 48,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 52,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 52,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 52,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 52,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 52,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 52,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 52,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 52,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 72,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 72,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 72,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 72,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 76,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 76,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 76,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 76,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 76,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 76,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 76,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 76,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 80,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 80,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 80,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 80,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 80,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 80,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 80,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 80,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 84,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 84,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 84,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 84,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 84,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 84,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 84,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 84,
+    "params": {
+      "d": 109.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 104,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 104,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 104,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 104,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 104,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 104,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 104,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 104,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 105,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 105,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 105,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 105,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 105,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 105,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 105,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 105,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 108,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 108,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 108,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 108,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 108,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 108,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 108,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 108,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 109,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 109,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 109,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 109,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 109,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 109,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 109,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 109,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 112,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 112,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 112,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 112,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 113,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 113,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 113,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 113,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 113,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 113,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 113,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 113,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 116,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 116,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 116,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 116,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 116,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 116,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 116,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 116,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 117,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 117,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 117,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 117,
+    "params": {
+      "d": 137.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 3.22,
+      "band": null,
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 131,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 131,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 131,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 131,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 131,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 131,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 131,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 131,
+    "params": {
+      "d": 37.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 133,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 133,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 133,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 133,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 133,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 133,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 133,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 133,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 135,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 135,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 135,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 135,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 135,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 135,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 135,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 135,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 137,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 137,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 137,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 137,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 139,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 139,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 139,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 139,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 139,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 139,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 139,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 139,
+    "params": {
+      "d": 37.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 147,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 147,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 147,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 147,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 147,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 147,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 147,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 147,
+    "params": {
+      "d": 67.0,
+      "y": 0.0,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 149,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 149,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 149,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 149,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 149,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 149,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 149,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 149,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 151,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 151,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 151,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 151,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 151,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 151,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 151,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 151,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 153,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 153,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 153,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 153,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 153,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 153,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 153,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 153,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.28,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 155,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 155,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 155,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 155,
+    "params": {
+      "d": 67.0,
+      "y": -0.68,
+      "w": 0.46,
+      "top": 4.12,
+      "band": [
+        2.54,
+        4.12
+      ],
+      "beam": false,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 192,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 192,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 192,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 192,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 192,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 192,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 192,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 192,
+    "params": {
+      "d": 37.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 193,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 193,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 193,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 193,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 193,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 193,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 193,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 193,
+    "params": {
+      "d": 67.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 194,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 194,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 194,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 194,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 194,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 194,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 194,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 194,
+    "params": {
+      "d": 109.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 195,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 195,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "highest",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 195,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 195,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "reverse",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 195,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 195,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "permuted",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 195,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.0,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  {
+    "case": 195,
+    "params": {
+      "d": 137.0,
+      "y": 0.68,
+      "w": 0.46,
+      "top": 2.72,
+      "band": null,
+      "beam": true,
+      "multi": false
+    },
+    "ring_mode": "absent",
+    "dropout": 0.27,
+    "label": 1,
+    "STOP_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  }
+]

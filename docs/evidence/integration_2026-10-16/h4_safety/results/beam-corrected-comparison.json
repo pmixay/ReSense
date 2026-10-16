@@ -1,0 +1,4998 @@
+{
+  "sealed": [
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 238
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              224
+            ],
+            "dtype": "int64",
+            "sha256": "81653aa378aab57589a0a3c07f2c1c1743c39c4f0952c78b4c9b2df88e955e99"
+          },
+          "n": 136,
+          "n_raw": 224,
+          "centroid": [
+            36.770015716552734,
+            0.6655824780464172,
+            -0.4042598605155945
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655834317207336,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33474037282488,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 136,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 187
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              176
+            ],
+            "dtype": "int64",
+            "sha256": "7ae487ee73b4b31ad9bce3b4219dbf7bd27baebdea2286e17b7ff8704ea9f962"
+          },
+          "n": 123,
+          "n_raw": 176,
+          "centroid": [
+            36.770015716552734,
+            0.6655831933021545,
+            -0.4177664518356323
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655840873718262,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33321670159197,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 123,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 238
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              224
+            ],
+            "dtype": "int64",
+            "sha256": "81653aa378aab57589a0a3c07f2c1c1743c39c4f0952c78b4c9b2df88e955e99"
+          },
+          "n": 136,
+          "n_raw": 224,
+          "centroid": [
+            36.770015716552734,
+            0.6655824780464172,
+            -0.4042598605155945
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655834317207336,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33474037282488,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 136,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 187
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              176
+            ],
+            "dtype": "int64",
+            "sha256": "7ae487ee73b4b31ad9bce3b4219dbf7bd27baebdea2286e17b7ff8704ea9f962"
+          },
+          "n": 123,
+          "n_raw": 176,
+          "centroid": [
+            36.770015716552734,
+            0.6655831933021545,
+            -0.4177664518356323
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655840873718262,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33321670159197,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 123,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 238
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              224
+            ],
+            "dtype": "int64",
+            "sha256": "81653aa378aab57589a0a3c07f2c1c1743c39c4f0952c78b4c9b2df88e955e99"
+          },
+          "n": 136,
+          "n_raw": 224,
+          "centroid": [
+            36.770015716552734,
+            0.6655824780464172,
+            -0.4042598605155945
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655834317207336,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33474037282488,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 136,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 187
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              176
+            ],
+            "dtype": "int64",
+            "sha256": "7ae487ee73b4b31ad9bce3b4219dbf7bd27baebdea2286e17b7ff8704ea9f962"
+          },
+          "n": 123,
+          "n_raw": 176,
+          "centroid": [
+            36.770015716552734,
+            0.6655831933021545,
+            -0.4177664518356323
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655840873718262,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33321670159197,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 123,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 238
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              224
+            ],
+            "dtype": "int64",
+            "sha256": "81653aa378aab57589a0a3c07f2c1c1743c39c4f0952c78b4c9b2df88e955e99"
+          },
+          "n": 136,
+          "n_raw": 224,
+          "centroid": [
+            36.770015716552734,
+            0.6655824780464172,
+            -0.4042598605155945
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655834317207336,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33474037282488,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 136,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 187
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              176
+            ],
+            "dtype": "int64",
+            "sha256": "7ae487ee73b4b31ad9bce3b4219dbf7bd27baebdea2286e17b7ff8704ea9f962"
+          },
+          "n": 123,
+          "n_raw": 176,
+          "centroid": [
+            36.770015716552734,
+            0.6655831933021545,
+            -0.4177664518356323
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655840873718262,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33321670159197,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 123,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 72
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              72
+            ],
+            "dtype": "int64",
+            "sha256": "e24665282afbdbc60ecd2ddc5d2e8180b6ff20883d22bf1739e4496ed9feaaab"
+          },
+          "n": 72,
+          "n_raw": 72,
+          "centroid": [
+            66.77001190185547,
+            0.6840906739234924,
+            -0.4356062710285187
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6840906739234924,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20214335170997,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 72,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 18,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 49
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              49
+            ],
+            "dtype": "int64",
+            "sha256": "cf1f92a9582b678aa606a2ecb1fc6678fc06cab72a71dd0044dbe681faefb203"
+          },
+          "n": 49,
+          "n_raw": 49,
+          "centroid": [
+            66.77001190185547,
+            0.6686302423477173,
+            -0.40411680936813354
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6686302423477173,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20268156696859,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 49,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 17,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 72
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              72
+            ],
+            "dtype": "int64",
+            "sha256": "e24665282afbdbc60ecd2ddc5d2e8180b6ff20883d22bf1739e4496ed9feaaab"
+          },
+          "n": 72,
+          "n_raw": 72,
+          "centroid": [
+            66.77001190185547,
+            0.6840906739234924,
+            -0.4356062710285187
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6840906739234924,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20214335170997,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 72,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 18,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 49
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              49
+            ],
+            "dtype": "int64",
+            "sha256": "cf1f92a9582b678aa606a2ecb1fc6678fc06cab72a71dd0044dbe681faefb203"
+          },
+          "n": 49,
+          "n_raw": 49,
+          "centroid": [
+            66.77001190185547,
+            0.6686302423477173,
+            -0.40411680936813354
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6686302423477173,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20268156696859,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 49,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 17,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 72
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              72
+            ],
+            "dtype": "int64",
+            "sha256": "e24665282afbdbc60ecd2ddc5d2e8180b6ff20883d22bf1739e4496ed9feaaab"
+          },
+          "n": 72,
+          "n_raw": 72,
+          "centroid": [
+            66.77001190185547,
+            0.6840906739234924,
+            -0.4356062710285187
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6840906739234924,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20214335170997,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 72,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 18,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 49
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              49
+            ],
+            "dtype": "int64",
+            "sha256": "cf1f92a9582b678aa606a2ecb1fc6678fc06cab72a71dd0044dbe681faefb203"
+          },
+          "n": 49,
+          "n_raw": 49,
+          "centroid": [
+            66.77001190185547,
+            0.6686302423477173,
+            -0.40411680936813354
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6686302423477173,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20268156696859,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 49,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 17,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 72
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              72
+            ],
+            "dtype": "int64",
+            "sha256": "e24665282afbdbc60ecd2ddc5d2e8180b6ff20883d22bf1739e4496ed9feaaab"
+          },
+          "n": 72,
+          "n_raw": 72,
+          "centroid": [
+            66.77001190185547,
+            0.6840906739234924,
+            -0.4356062710285187
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6840906739234924,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20214335170997,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 72,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 49
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              49
+            ],
+            "dtype": "int64",
+            "sha256": "cf1f92a9582b678aa606a2ecb1fc6678fc06cab72a71dd0044dbe681faefb203"
+          },
+          "n": 49,
+          "n_raw": 49,
+          "centroid": [
+            66.77001190185547,
+            0.6686302423477173,
+            -0.40411680936813354
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6686302423477173,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20268156696859,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 49,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 33
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              33
+            ],
+            "dtype": "int64",
+            "sha256": "26e1d6176f8d8e5ad7db4b30290869c71f9062433df28c82f6349bf1de2a6516"
+          },
+          "n": 33,
+          "n_raw": 33,
+          "centroid": [
+            108.77628326416016,
+            0.6397937536239624,
+            -0.3498668372631073
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6397936940193176,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.870032609290813,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 33,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 11,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 25
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              25
+            ],
+            "dtype": "int64",
+            "sha256": "518fb022bbd09eddcbabb32b30de3756413032016a041803603a9c60cfde3866"
+          },
+          "n": 25,
+          "n_raw": 25,
+          "centroid": [
+            108.77678680419922,
+            0.6322019100189209,
+            -0.46941593289375305
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6322019100189209,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.86970093166178,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 25,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 33
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              33
+            ],
+            "dtype": "int64",
+            "sha256": "26e1d6176f8d8e5ad7db4b30290869c71f9062433df28c82f6349bf1de2a6516"
+          },
+          "n": 33,
+          "n_raw": 33,
+          "centroid": [
+            108.77628326416016,
+            0.6397937536239624,
+            -0.3498668372631073
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6397936940193176,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.870032609290813,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 33,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 11,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 25
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              25
+            ],
+            "dtype": "int64",
+            "sha256": "518fb022bbd09eddcbabb32b30de3756413032016a041803603a9c60cfde3866"
+          },
+          "n": 25,
+          "n_raw": 25,
+          "centroid": [
+            108.77678680419922,
+            0.6322019100189209,
+            -0.46941593289375305
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6322019100189209,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.86970093166178,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 25,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 33
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              33
+            ],
+            "dtype": "int64",
+            "sha256": "26e1d6176f8d8e5ad7db4b30290869c71f9062433df28c82f6349bf1de2a6516"
+          },
+          "n": 33,
+          "n_raw": 33,
+          "centroid": [
+            108.77628326416016,
+            0.6397937536239624,
+            -0.3498668372631073
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6397936940193176,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.870032609290813,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 33,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 11,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 25
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              25
+            ],
+            "dtype": "int64",
+            "sha256": "518fb022bbd09eddcbabb32b30de3756413032016a041803603a9c60cfde3866"
+          },
+          "n": 25,
+          "n_raw": 25,
+          "centroid": [
+            108.77678680419922,
+            0.6322019100189209,
+            -0.46941593289375305
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6322019100189209,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.86970093166178,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 25,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 33
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              33
+            ],
+            "dtype": "int64",
+            "sha256": "26e1d6176f8d8e5ad7db4b30290869c71f9062433df28c82f6349bf1de2a6516"
+          },
+          "n": 33,
+          "n_raw": 33,
+          "centroid": [
+            108.77628326416016,
+            0.6397937536239624,
+            -0.3498668372631073
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6397936940193176,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.870032609290813,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 33,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 25
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              25
+            ],
+            "dtype": "int64",
+            "sha256": "518fb022bbd09eddcbabb32b30de3756413032016a041803603a9c60cfde3866"
+          },
+          "n": 25,
+          "n_raw": 25,
+          "centroid": [
+            108.77678680419922,
+            0.6322019100189209,
+            -0.46941593289375305
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6322019100189209,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.86970093166178,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 25,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 18
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              18
+            ],
+            "dtype": "int64",
+            "sha256": "a9b021b48bff9eec1b7df7e362d913ac315d04c375568ff1f9ce982b9c9fdbf4"
+          },
+          "n": 18,
+          "n_raw": 18,
+          "centroid": [
+            136.77000427246094,
+            0.6851001977920532,
+            -0.44004109501838684
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471980810165405
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.6851001977920532,
+          "height_min": 0.1828019618988037,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104354648066128,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 18,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 14
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "sha256": "02ff530b312bf08bbdde6973a47ef638b41f12eeee97bbb5bd04e2f4c17671f1"
+          },
+          "n": 14,
+          "n_raw": 14,
+          "centroid": [
+            136.77000427246094,
+            0.668049156665802,
+            -0.37939453125
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471836566925049
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.668049156665802,
+          "height_min": 0.18281638622283936,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104337447844578,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 14,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 8,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 18
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              18
+            ],
+            "dtype": "int64",
+            "sha256": "a9b021b48bff9eec1b7df7e362d913ac315d04c375568ff1f9ce982b9c9fdbf4"
+          },
+          "n": 18,
+          "n_raw": 18,
+          "centroid": [
+            136.77000427246094,
+            0.6851001977920532,
+            -0.44004109501838684
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471980810165405
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.6851001977920532,
+          "height_min": 0.1828019618988037,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104354648066128,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 18,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 14
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "sha256": "02ff530b312bf08bbdde6973a47ef638b41f12eeee97bbb5bd04e2f4c17671f1"
+          },
+          "n": 14,
+          "n_raw": 14,
+          "centroid": [
+            136.77000427246094,
+            0.668049156665802,
+            -0.37939453125
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471836566925049
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.668049156665802,
+          "height_min": 0.18281638622283936,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104337447844578,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 14,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 8,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 18
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              18
+            ],
+            "dtype": "int64",
+            "sha256": "a9b021b48bff9eec1b7df7e362d913ac315d04c375568ff1f9ce982b9c9fdbf4"
+          },
+          "n": 18,
+          "n_raw": 18,
+          "centroid": [
+            136.77000427246094,
+            0.6851001977920532,
+            -0.44004109501838684
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471980810165405
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.6851001977920532,
+          "height_min": 0.1828019618988037,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104354648066128,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 18,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 14
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "sha256": "02ff530b312bf08bbdde6973a47ef638b41f12eeee97bbb5bd04e2f4c17671f1"
+          },
+          "n": 14,
+          "n_raw": 14,
+          "centroid": [
+            136.77000427246094,
+            0.668049156665802,
+            -0.37939453125
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471836566925049
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.668049156665802,
+          "height_min": 0.18281638622283936,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104337447844578,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 14,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 8,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 18
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              18
+            ],
+            "dtype": "int64",
+            "sha256": "a9b021b48bff9eec1b7df7e362d913ac315d04c375568ff1f9ce982b9c9fdbf4"
+          },
+          "n": 18,
+          "n_raw": 18,
+          "centroid": [
+            136.77000427246094,
+            0.6851001977920532,
+            -0.44004109501838684
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471980810165405
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.6851001977920532,
+          "height_min": 0.1828019618988037,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104354648066128,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 18,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 14
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": []
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "sha256": "02ff530b312bf08bbdde6973a47ef638b41f12eeee97bbb5bd04e2f4c17671f1"
+          },
+          "n": 14,
+          "n_raw": 14,
+          "centroid": [
+            136.77000427246094,
+            0.668049156665802,
+            -0.37939453125
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471836566925049
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.668049156665802,
+          "height_min": 0.18281638622283936,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104337447844578,
+          "score": 1.0,
+          "zone": "warning",
+          "n_gauge": 14,
+          "retro": false,
+          "reason": "column",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false
+        }
+      ]
+    }
+  ],
+  "candidate": [
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 238
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              224
+            ],
+            "dtype": "int64",
+            "sha256": "81653aa378aab57589a0a3c07f2c1c1743c39c4f0952c78b4c9b2df88e955e99"
+          },
+          "n": 136,
+          "n_raw": 224,
+          "centroid": [
+            36.770015716552734,
+            0.6655824780464172,
+            -0.4042598605155945
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655834317207336,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33474037282488,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 136,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 187
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              176
+            ],
+            "dtype": "int64",
+            "sha256": "7ae487ee73b4b31ad9bce3b4219dbf7bd27baebdea2286e17b7ff8704ea9f962"
+          },
+          "n": 123,
+          "n_raw": 176,
+          "centroid": [
+            36.770015716552734,
+            0.6655831933021545,
+            -0.4177664518356323
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655840873718262,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33321670159197,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 123,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 238
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              224
+            ],
+            "dtype": "int64",
+            "sha256": "81653aa378aab57589a0a3c07f2c1c1743c39c4f0952c78b4c9b2df88e955e99"
+          },
+          "n": 136,
+          "n_raw": 224,
+          "centroid": [
+            36.770015716552734,
+            0.6655824780464172,
+            -0.4042598605155945
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655834317207336,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33474037282488,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 136,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 187
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              176
+            ],
+            "dtype": "int64",
+            "sha256": "7ae487ee73b4b31ad9bce3b4219dbf7bd27baebdea2286e17b7ff8704ea9f962"
+          },
+          "n": 123,
+          "n_raw": 176,
+          "centroid": [
+            36.770015716552734,
+            0.6655831933021545,
+            -0.4177664518356323
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655840873718262,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33321670159197,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 123,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 238
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              224
+            ],
+            "dtype": "int64",
+            "sha256": "81653aa378aab57589a0a3c07f2c1c1743c39c4f0952c78b4c9b2df88e955e99"
+          },
+          "n": 136,
+          "n_raw": 224,
+          "centroid": [
+            36.770015716552734,
+            0.6655824780464172,
+            -0.4042598605155945
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655834317207336,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33474037282488,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 136,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 187
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              176
+            ],
+            "dtype": "int64",
+            "sha256": "7ae487ee73b4b31ad9bce3b4219dbf7bd27baebdea2286e17b7ff8704ea9f962"
+          },
+          "n": 123,
+          "n_raw": 176,
+          "centroid": [
+            36.770015716552734,
+            0.6655831933021545,
+            -0.4177664518356323
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655840873718262,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33321670159197,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 123,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 32,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 238
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              224
+            ],
+            "dtype": "int64",
+            "sha256": "81653aa378aab57589a0a3c07f2c1c1743c39c4f0952c78b4c9b2df88e955e99"
+          },
+          "n": 136,
+          "n_raw": 224,
+          "centroid": [
+            36.770015716552734,
+            0.6655824780464172,
+            -0.4042598605155945
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655834317207336,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33474037282488,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 136,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 0,
+      "params": {
+        "d": 37.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 187
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              176
+            ],
+            "dtype": "int64",
+            "sha256": "7ae487ee73b4b31ad9bce3b4219dbf7bd27baebdea2286e17b7ff8704ea9f962"
+          },
+          "n": 123,
+          "n_raw": 176,
+          "centroid": [
+            36.770015716552734,
+            0.6655831933021545,
+            -0.4177664518356323
+          ],
+          "bbox_min": [
+            36.77000045776367,
+            0.4730014204978943,
+            -1.6675976514816284
+          ],
+          "bbox_max": [
+            36.77000045776367,
+            0.8581856489181519,
+            0.8507120013237
+          ],
+          "distance": 36.77000045776367,
+          "lateral": 0.6655840873718262,
+          "height_min": 0.16240239143371582,
+          "height_max": 2.6807119846343994,
+          "intensity": 35.0,
+          "n_expected": 188.33321670159197,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 123,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 72
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              72
+            ],
+            "dtype": "int64",
+            "sha256": "e24665282afbdbc60ecd2ddc5d2e8180b6ff20883d22bf1739e4496ed9feaaab"
+          },
+          "n": 72,
+          "n_raw": 72,
+          "centroid": [
+            66.77001190185547,
+            0.6840906739234924,
+            -0.4356062710285187
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6840906739234924,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20214335170997,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 72,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 18,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 49
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              49
+            ],
+            "dtype": "int64",
+            "sha256": "cf1f92a9582b678aa606a2ecb1fc6678fc06cab72a71dd0044dbe681faefb203"
+          },
+          "n": 49,
+          "n_raw": 49,
+          "centroid": [
+            66.77001190185547,
+            0.6686302423477173,
+            -0.40411680936813354
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6686302423477173,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20268156696859,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 49,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 17,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 72
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              72
+            ],
+            "dtype": "int64",
+            "sha256": "e24665282afbdbc60ecd2ddc5d2e8180b6ff20883d22bf1739e4496ed9feaaab"
+          },
+          "n": 72,
+          "n_raw": 72,
+          "centroid": [
+            66.77001190185547,
+            0.6840906739234924,
+            -0.4356062710285187
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6840906739234924,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20214335170997,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 72,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 18,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 49
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              49
+            ],
+            "dtype": "int64",
+            "sha256": "cf1f92a9582b678aa606a2ecb1fc6678fc06cab72a71dd0044dbe681faefb203"
+          },
+          "n": 49,
+          "n_raw": 49,
+          "centroid": [
+            66.77001190185547,
+            0.6686302423477173,
+            -0.40411680936813354
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6686302423477173,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20268156696859,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 49,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 17,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 72
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              72
+            ],
+            "dtype": "int64",
+            "sha256": "e24665282afbdbc60ecd2ddc5d2e8180b6ff20883d22bf1739e4496ed9feaaab"
+          },
+          "n": 72,
+          "n_raw": 72,
+          "centroid": [
+            66.77001190185547,
+            0.6840906739234924,
+            -0.4356062710285187
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6840906739234924,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20214335170997,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 72,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 18,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 49
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              49
+            ],
+            "dtype": "int64",
+            "sha256": "cf1f92a9582b678aa606a2ecb1fc6678fc06cab72a71dd0044dbe681faefb203"
+          },
+          "n": 49,
+          "n_raw": 49,
+          "centroid": [
+            66.77001190185547,
+            0.6686302423477173,
+            -0.40411680936813354
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6686302423477173,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20268156696859,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 49,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 17,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 72
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              72
+            ],
+            "dtype": "int64",
+            "sha256": "e24665282afbdbc60ecd2ddc5d2e8180b6ff20883d22bf1739e4496ed9feaaab"
+          },
+          "n": 72,
+          "n_raw": 72,
+          "centroid": [
+            66.77001190185547,
+            0.6840906739234924,
+            -0.4356062710285187
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6840906739234924,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20214335170997,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 72,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 1,
+      "params": {
+        "d": 67.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 49
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              49
+            ],
+            "dtype": "int64",
+            "sha256": "cf1f92a9582b678aa606a2ecb1fc6678fc06cab72a71dd0044dbe681faefb203"
+          },
+          "n": 49,
+          "n_raw": 49,
+          "centroid": [
+            66.77001190185547,
+            0.6686302423477173,
+            -0.40411680936813354
+          ],
+          "bbox_min": [
+            66.7699966430664,
+            0.5092706084251404,
+            -1.6681097745895386
+          ],
+          "bbox_max": [
+            66.7699966430664,
+            0.8589149713516235,
+            0.8181887865066528
+          ],
+          "distance": 66.7699966430664,
+          "lateral": 0.6686302423477173,
+          "height_min": 0.16189026832580566,
+          "height_max": 2.648188829421997,
+          "intensity": 35.0,
+          "n_expected": 51.20268156696859,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 49,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 33
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              33
+            ],
+            "dtype": "int64",
+            "sha256": "26e1d6176f8d8e5ad7db4b30290869c71f9062433df28c82f6349bf1de2a6516"
+          },
+          "n": 33,
+          "n_raw": 33,
+          "centroid": [
+            108.77628326416016,
+            0.6397937536239624,
+            -0.3498668372631073
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6397936940193176,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.870032609290813,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 33,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 11,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 25
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              25
+            ],
+            "dtype": "int64",
+            "sha256": "518fb022bbd09eddcbabb32b30de3756413032016a041803603a9c60cfde3866"
+          },
+          "n": 25,
+          "n_raw": 25,
+          "centroid": [
+            108.77678680419922,
+            0.6322019100189209,
+            -0.46941593289375305
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6322019100189209,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.86970093166178,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 25,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 33
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              33
+            ],
+            "dtype": "int64",
+            "sha256": "26e1d6176f8d8e5ad7db4b30290869c71f9062433df28c82f6349bf1de2a6516"
+          },
+          "n": 33,
+          "n_raw": 33,
+          "centroid": [
+            108.77628326416016,
+            0.6397937536239624,
+            -0.3498668372631073
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6397936940193176,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.870032609290813,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 33,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 11,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 25
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              25
+            ],
+            "dtype": "int64",
+            "sha256": "518fb022bbd09eddcbabb32b30de3756413032016a041803603a9c60cfde3866"
+          },
+          "n": 25,
+          "n_raw": 25,
+          "centroid": [
+            108.77678680419922,
+            0.6322019100189209,
+            -0.46941593289375305
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6322019100189209,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.86970093166178,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 25,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 33
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              33
+            ],
+            "dtype": "int64",
+            "sha256": "26e1d6176f8d8e5ad7db4b30290869c71f9062433df28c82f6349bf1de2a6516"
+          },
+          "n": 33,
+          "n_raw": 33,
+          "centroid": [
+            108.77628326416016,
+            0.6397937536239624,
+            -0.3498668372631073
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6397936940193176,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.870032609290813,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 33,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 11,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 25
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              25
+            ],
+            "dtype": "int64",
+            "sha256": "518fb022bbd09eddcbabb32b30de3756413032016a041803603a9c60cfde3866"
+          },
+          "n": 25,
+          "n_raw": 25,
+          "centroid": [
+            108.77678680419922,
+            0.6322019100189209,
+            -0.46941593289375305
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6322019100189209,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.86970093166178,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 25,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 33
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              33
+            ],
+            "dtype": "int64",
+            "sha256": "26e1d6176f8d8e5ad7db4b30290869c71f9062433df28c82f6349bf1de2a6516"
+          },
+          "n": 33,
+          "n_raw": 33,
+          "centroid": [
+            108.77628326416016,
+            0.6397937536239624,
+            -0.3498668372631073
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6397936940193176,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.870032609290813,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 33,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "params": {
+        "d": 109.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 25
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              25
+            ],
+            "dtype": "int64",
+            "sha256": "518fb022bbd09eddcbabb32b30de3756413032016a041803603a9c60cfde3866"
+          },
+          "n": 25,
+          "n_raw": 25,
+          "centroid": [
+            108.77678680419922,
+            0.6322019100189209,
+            -0.46941593289375305
+          ],
+          "bbox_min": [
+            108.7699966430664,
+            0.44999998807907104,
+            -1.5285859107971191
+          ],
+          "bbox_max": [
+            108.78883361816406,
+            0.829614520072937,
+            0.8297653198242188
+          ],
+          "distance": 108.7699966430664,
+          "lateral": 0.6322019100189209,
+          "height_min": 0.3014141321182251,
+          "height_max": 2.6597652435302734,
+          "intensity": 35.0,
+          "n_expected": 19.86970093166178,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 25,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 18
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              18
+            ],
+            "dtype": "int64",
+            "sha256": "a9b021b48bff9eec1b7df7e362d913ac315d04c375568ff1f9ce982b9c9fdbf4"
+          },
+          "n": 18,
+          "n_raw": 18,
+          "centroid": [
+            136.77000427246094,
+            0.6851001977920532,
+            -0.44004109501838684
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471980810165405
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.6851001977920532,
+          "height_min": 0.1828019618988037,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104354648066128,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 18,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "highest",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 14
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "sha256": "02ff530b312bf08bbdde6973a47ef638b41f12eeee97bbb5bd04e2f4c17671f1"
+          },
+          "n": 14,
+          "n_raw": 14,
+          "centroid": [
+            136.77000427246094,
+            0.668049156665802,
+            -0.37939453125
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471836566925049
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.668049156665802,
+          "height_min": 0.18281638622283936,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104337447844578,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 14,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 8,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 18
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              18
+            ],
+            "dtype": "int64",
+            "sha256": "a9b021b48bff9eec1b7df7e362d913ac315d04c375568ff1f9ce982b9c9fdbf4"
+          },
+          "n": 18,
+          "n_raw": 18,
+          "centroid": [
+            136.77000427246094,
+            0.6851001977920532,
+            -0.44004109501838684
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471980810165405
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.6851001977920532,
+          "height_min": 0.1828019618988037,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104354648066128,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 18,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "reverse",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 14
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "sha256": "02ff530b312bf08bbdde6973a47ef638b41f12eeee97bbb5bd04e2f4c17671f1"
+          },
+          "n": 14,
+          "n_raw": 14,
+          "centroid": [
+            136.77000427246094,
+            0.668049156665802,
+            -0.37939453125
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471836566925049
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.668049156665802,
+          "height_min": 0.18281638622283936,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104337447844578,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 14,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 8,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 18
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              18
+            ],
+            "dtype": "int64",
+            "sha256": "a9b021b48bff9eec1b7df7e362d913ac315d04c375568ff1f9ce982b9c9fdbf4"
+          },
+          "n": 18,
+          "n_raw": 18,
+          "centroid": [
+            136.77000427246094,
+            0.6851001977920532,
+            -0.44004109501838684
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471980810165405
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.6851001977920532,
+          "height_min": 0.1828019618988037,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104354648066128,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 18,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 9,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "permuted",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 14
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "sha256": "02ff530b312bf08bbdde6973a47ef638b41f12eeee97bbb5bd04e2f4c17671f1"
+          },
+          "n": 14,
+          "n_raw": 14,
+          "centroid": [
+            136.77000427246094,
+            0.668049156665802,
+            -0.37939453125
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471836566925049
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.668049156665802,
+          "height_min": 0.18281638622283936,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104337447844578,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 14,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 8,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.0,
+      "object_returns": {
+        "1": 18
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              18
+            ],
+            "dtype": "int64",
+            "sha256": "a9b021b48bff9eec1b7df7e362d913ac315d04c375568ff1f9ce982b9c9fdbf4"
+          },
+          "n": 18,
+          "n_raw": 18,
+          "centroid": [
+            136.77000427246094,
+            0.6851001977920532,
+            -0.44004109501838684
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471980810165405
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.6851001977920532,
+          "height_min": 0.1828019618988037,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104354648066128,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 18,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "case": 3,
+      "params": {
+        "d": 137.0,
+        "y": 0.68,
+        "w": 0.46,
+        "top": 2.72,
+        "band": null,
+        "beam": true,
+        "multi": false
+      },
+      "ring_mode": "absent",
+      "dropout": 0.27,
+      "object_returns": {
+        "1": 14
+      },
+      "clusters": 1,
+      "inside": true,
+      "matched_stop_frames": {
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "background_stop_frames": [],
+      "initial": [
+        {
+          "points_idx": {
+            "shape": [
+              14
+            ],
+            "dtype": "int64",
+            "sha256": "02ff530b312bf08bbdde6973a47ef638b41f12eeee97bbb5bd04e2f4c17671f1"
+          },
+          "n": 14,
+          "n_raw": 14,
+          "centroid": [
+            136.77000427246094,
+            0.668049156665802,
+            -0.37939453125
+          ],
+          "bbox_min": [
+            136.77000427246094,
+            0.5657427906990051,
+            -1.6471836566925049
+          ],
+          "bbox_max": [
+            136.77000427246094,
+            0.8044575452804565,
+            0.7710505723953247
+          ],
+          "distance": 136.77000427246094,
+          "lateral": 0.668049156665802,
+          "height_min": 0.18281638622283936,
+          "height_max": 2.601050615310669,
+          "intensity": 35.0,
+          "n_expected": 8.104337447844578,
+          "score": 1.0,
+          "zone": "gauge",
+          "n_gauge": 14,
+          "retro": false,
+          "reason": "",
+          "kind": "",
+          "rail_line": false,
+          "wall_kept": false,
+          "demoted": false,
+          "thin": false,
+          "weak": false,
+          "ring_count": 0,
+          "low_height_weak": false,
+          "spared": true,
+          "cut": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "artifact_checks": "PASS",
+  "safety_verdict": "BLOCKED",
+  "completed_workers": {
+    "components-candidate-all": {
+      "ok": true,
+      "wall_s": 51.74715757369995
+    },
+    "components-candidate-beam": {
+      "ok": true,
+      "wall_s": 4.577503681182861
+    },
+    "components-candidate-span": {
+      "ok": true,
+      "wall_s": 5.087464809417725
+    },
+    "components-sealed-all": {
+      "ok": true,
+      "wall_s": 45.399508476257324
+    },
+    "components-sealed-beam": {
+      "ok": true,
+      "wall_s": 3.361609697341919
+    },
+    "replay-candidate-all": {
+      "ok": true,
+      "wall_s": 268.20953917503357
+    },
+    "replay-candidate-dark": {
+      "ok": true,
+      "wall_s": 173.7301483154297
+    },
+    "replay-candidate-dark-inherited": {
+      "ok": true,
+      "wall_s": 171.61461901664734
+    },
+    "replay-sealed-all": {
+      "ok": true,
+      "wall_s": 257.73995327949524
+    }
+  },
+  "notes": "Evidence integrity checks are not safety acceptance."
+}

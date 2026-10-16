@@ -1,0 +1,114 @@
+[
+  {
+    "nominal_deg": 0.0,
+    "echo": 1,
+    "xyz": {
+      "shape": [
+        4685,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "2be2d58347abd9707ce4b71107b71fd30e8877a55155f6539c6bbdbeebcfec77"
+    },
+    "actual_deg": 0.0,
+    "parts": []
+  },
+  {
+    "nominal_deg": 0.0,
+    "echo": 2,
+    "xyz": {
+      "shape": [
+        4698,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "b8f1db75018f20b1ab2eed5063e0ba644f88cd7a0df1b205ada04a0584716194"
+    },
+    "actual_deg": 0.0,
+    "parts": []
+  },
+  {
+    "nominal_deg": 0.099,
+    "echo": 1,
+    "xyz": {
+      "shape": [
+        4698,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "a42e296acfdae1ed27628b8c9783c47acf92750f02ee2be95976c155dd8b0d53"
+    },
+    "actual_deg": 0.09899999821480363,
+    "parts": []
+  },
+  {
+    "nominal_deg": 0.099,
+    "echo": 2,
+    "xyz": {
+      "shape": [
+        4724,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "04d7941ed0407c383d3f684e92a4b6a60d2d1dbdb9ddbd4b4d8b8ed4b076c167"
+    },
+    "actual_deg": 0.09899999821480363,
+    "parts": []
+  },
+  {
+    "nominal_deg": 0.1,
+    "echo": 1,
+    "xyz": {
+      "shape": [
+        4698,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "05c500d85d65f54593f2aa9c192f3d3c3de162c97e5e652d2cabc54573cbd8b1"
+    },
+    "actual_deg": 0.09999999335009062,
+    "parts": []
+  },
+  {
+    "nominal_deg": 0.1,
+    "echo": 2,
+    "xyz": {
+      "shape": [
+        4724,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "2e5af359d634710332d0880968d52b89b345d7584a156e9cd816d43714f401f2"
+    },
+    "actual_deg": 0.09999999335009062,
+    "parts": []
+  },
+  {
+    "nominal_deg": 0.101,
+    "echo": 1,
+    "xyz": {
+      "shape": [
+        4698,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "1ab7bdc6c07fa518854c1dcc94c40955f39861f96a54a4ecc181e577895771eb"
+    },
+    "actual_deg": 0.10099998860722391,
+    "parts": []
+  },
+  {
+    "nominal_deg": 0.101,
+    "echo": 2,
+    "xyz": {
+      "shape": [
+        4724,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "0ff63f00a45185f5ab1702b108ef77ce632cce2e7dbee7ec54e7c8e09a4e0bdd"
+    },
+    "actual_deg": 0.10099998860722391,
+    "parts": []
+  }
+]

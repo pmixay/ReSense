@@ -1,0 +1,7703 @@
+{
+  "parts": 104,
+  "bottom_shortened": 104,
+  "top_shortened": 0,
+  "witnesses": [
+    {
+      "case": 8,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8263520002365112,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            48
+          ],
+          "dtype": "int64",
+          "sha256": "10746983ddfdb2dad9be11bd88f5c93ae8373f4ac7b34cdc16d74a97f745ec38"
+        },
+        "n": 11,
+        "n_raw": 48,
+        "centroid": [
+          111.0,
+          0.6646849513053894,
+          -0.8750000596046448
+        ],
+        "bbox_min": [
+          111.0,
+          0.5738080143928528,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.7915120124816895,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.6646850109100342,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.6351262537078926,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 11,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 9,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8263520002365112,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            96
+          ],
+          "dtype": "int64",
+          "sha256": "9dfdac43ed4fac77fe8b4841de5eb3f74d587141fafb504ab37f23cde4a01c20"
+        },
+        "n": 11,
+        "n_raw": 96,
+        "centroid": [
+          111.0,
+          0.6646848917007446,
+          -0.875
+        ],
+        "bbox_min": [
+          111.0,
+          0.5738080143928528,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.7915120124816895,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.6646850109100342,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.6351262537078926,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 11,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 10,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8263520002365112,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            48
+          ],
+          "dtype": "int64",
+          "sha256": "fa89be37a91035f6742a58c47f55daea66b3cb21fff364e4c2e395398ca446b9"
+        },
+        "n": 11,
+        "n_raw": 48,
+        "centroid": [
+          111.0,
+          0.6646850109100342,
+          -0.875
+        ],
+        "bbox_min": [
+          111.0,
+          0.5738080143928528,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.7915120124816895,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.6646850109100342,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.6351262537078926,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 11,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 11,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8263520002365112,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            96
+          ],
+          "dtype": "int64",
+          "sha256": "084c733263a867e8330ea62d03a820ec26361c5b43fb97c1e8a7a82ca93d4ead"
+        },
+        "n": 11,
+        "n_raw": 96,
+        "centroid": [
+          111.0,
+          0.6646848320960999,
+          -0.875
+        ],
+        "bbox_min": [
+          111.0,
+          0.5738080143928528,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.7915120124816895,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.6646850109100342,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.6351262537078926,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 11,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 12,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8263520002365112,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            48
+          ],
+          "dtype": "int64",
+          "sha256": "10746983ddfdb2dad9be11bd88f5c93ae8373f4ac7b34cdc16d74a97f745ec38"
+        },
+        "n": 11,
+        "n_raw": 48,
+        "centroid": [
+          111.0,
+          -0.6646849513053894,
+          -0.8750000596046448
+        ],
+        "bbox_min": [
+          111.0,
+          -0.7915120124816895,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5738080143928528,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.6646850109100342,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.6351262537078926,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 11,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 13,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8263520002365112,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            96
+          ],
+          "dtype": "int64",
+          "sha256": "9dfdac43ed4fac77fe8b4841de5eb3f74d587141fafb504ab37f23cde4a01c20"
+        },
+        "n": 11,
+        "n_raw": 96,
+        "centroid": [
+          111.0,
+          -0.6646848917007446,
+          -0.875
+        ],
+        "bbox_min": [
+          111.0,
+          -0.7915120124816895,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5738080143928528,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.6646850109100342,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.6351262537078926,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 11,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 14,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8263520002365112,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            48
+          ],
+          "dtype": "int64",
+          "sha256": "fa89be37a91035f6742a58c47f55daea66b3cb21fff364e4c2e395398ca446b9"
+        },
+        "n": 11,
+        "n_raw": 48,
+        "centroid": [
+          111.0,
+          -0.6646850109100342,
+          -0.875
+        ],
+        "bbox_min": [
+          111.0,
+          -0.7915120124816895,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5738080143928528,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.6646850109100342,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.6351262537078926,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 11,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 15,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8263520002365112,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            96
+          ],
+          "dtype": "int64",
+          "sha256": "084c733263a867e8330ea62d03a820ec26361c5b43fb97c1e8a7a82ca93d4ead"
+        },
+        "n": 11,
+        "n_raw": 96,
+        "centroid": [
+          111.0,
+          -0.6646848320960999,
+          -0.875
+        ],
+        "bbox_min": [
+          111.0,
+          -0.7915120124816895,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5738080143928528,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.6646850109100342,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.6351262537078926,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 11,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 16,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1063519716262817,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            130
+          ],
+          "dtype": "int64",
+          "sha256": "0e13b8e0c773d7887e352d186ee1916f0073eae6da631514622cc784de2ac1c0"
+        },
+        "n": 26,
+        "n_raw": 130,
+        "centroid": [
+          111.0,
+          0.8290282487869263,
+          -0.8650000095367432
+        ],
+        "bbox_min": [
+          111.0,
+          0.5603464841842651,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.07151198387146,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.829028308391571,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 15.5788810428236,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 17,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1063519716262817,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            260
+          ],
+          "dtype": "int64",
+          "sha256": "aa8ccc4bec0340778ccdee06b81ea6aadee1ac7ee8614dcde16e364b3b281302"
+        },
+        "n": 26,
+        "n_raw": 260,
+        "centroid": [
+          111.0,
+          0.8290286660194397,
+          -0.8649999499320984
+        ],
+        "bbox_min": [
+          111.0,
+          0.5603464841842651,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.07151198387146,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.829028308391571,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 15.5788810428236,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 18,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1063519716262817,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            130
+          ],
+          "dtype": "int64",
+          "sha256": "7e32e7979aa5b4b2b619a4d40910b6a7502245492625e61b81664d3bd016fcaa"
+        },
+        "n": 26,
+        "n_raw": 130,
+        "centroid": [
+          111.0,
+          0.8290282487869263,
+          -0.8649999499320984
+        ],
+        "bbox_min": [
+          111.0,
+          0.5603464841842651,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.07151198387146,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.829028308391571,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 15.5788810428236,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 19,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1063519716262817,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            260
+          ],
+          "dtype": "int64",
+          "sha256": "4923cf1aa92d9cc75234ffa6d68228bfd7576a25121dea187e2ca5d1368022fe"
+        },
+        "n": 26,
+        "n_raw": 260,
+        "centroid": [
+          111.0,
+          0.829028308391571,
+          -0.8650001287460327
+        ],
+        "bbox_min": [
+          111.0,
+          0.5603464841842651,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.07151198387146,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.8290282487869263,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 15.5788810428236,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 20,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1063519716262817,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            130
+          ],
+          "dtype": "int64",
+          "sha256": "0e13b8e0c773d7887e352d186ee1916f0073eae6da631514622cc784de2ac1c0"
+        },
+        "n": 26,
+        "n_raw": 130,
+        "centroid": [
+          111.0,
+          -0.8290282487869263,
+          -0.8650000095367432
+        ],
+        "bbox_min": [
+          111.0,
+          -1.07151198387146,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5603464841842651,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.829028308391571,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 15.5788810428236,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 21,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1063519716262817,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            260
+          ],
+          "dtype": "int64",
+          "sha256": "aa8ccc4bec0340778ccdee06b81ea6aadee1ac7ee8614dcde16e364b3b281302"
+        },
+        "n": 26,
+        "n_raw": 260,
+        "centroid": [
+          111.0,
+          -0.8290286660194397,
+          -0.8649999499320984
+        ],
+        "bbox_min": [
+          111.0,
+          -1.07151198387146,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5603464841842651,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.829028308391571,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 15.5788810428236,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 22,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1063519716262817,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            130
+          ],
+          "dtype": "int64",
+          "sha256": "7e32e7979aa5b4b2b619a4d40910b6a7502245492625e61b81664d3bd016fcaa"
+        },
+        "n": 26,
+        "n_raw": 130,
+        "centroid": [
+          111.0,
+          -0.8290282487869263,
+          -0.8649999499320984
+        ],
+        "bbox_min": [
+          111.0,
+          -1.07151198387146,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5603464841842651,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.829028308391571,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 15.5788810428236,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 23,
+      "params": {
+        "width": 0.17,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1063519716262817,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            260
+          ],
+          "dtype": "int64",
+          "sha256": "4923cf1aa92d9cc75234ffa6d68228bfd7576a25121dea187e2ca5d1368022fe"
+        },
+        "n": 26,
+        "n_raw": 260,
+        "centroid": [
+          111.0,
+          -0.829028308391571,
+          -0.8650001287460327
+        ],
+        "bbox_min": [
+          111.0,
+          -1.07151198387146,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5603464841842651,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.8290282487869263,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 15.5788810428236,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 32,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9001920223236084,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            76
+          ],
+          "dtype": "int64",
+          "sha256": "51751131549e815deedb21054fad252738c0d8c1148d10cc46f39221af6a4ca4"
+        },
+        "n": 19,
+        "n_raw": 76,
+        "centroid": [
+          111.0,
+          0.7047678232192993,
+          -0.3413158357143402
+        ],
+        "bbox_min": [
+          111.0,
+          0.5811920166015625,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.9001920223236084,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7047677636146545,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 16.794045747825272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 33,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9001920223236084,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            152
+          ],
+          "dtype": "int64",
+          "sha256": "eb46107a6b7d8c2730eddcf0497c8db281e890eab23eae6fba11d8ce2b446c56"
+        },
+        "n": 19,
+        "n_raw": 152,
+        "centroid": [
+          111.0,
+          0.7047675251960754,
+          -0.34131574630737305
+        ],
+        "bbox_min": [
+          111.0,
+          0.5811920166015625,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.9001920223236084,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7047677636146545,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 16.794045747825272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 34,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9001920223236084,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            76
+          ],
+          "dtype": "int64",
+          "sha256": "814d86eb0bb2493af6ab4e300de107663ec4cdbd7df275f3fc7d13114383cb8b"
+        },
+        "n": 19,
+        "n_raw": 76,
+        "centroid": [
+          111.0,
+          0.7047677040100098,
+          -0.34131577610969543
+        ],
+        "bbox_min": [
+          111.0,
+          0.5811920166015625,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.9001920223236084,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7047677040100098,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 16.794045747825272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 35,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9001920223236084,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            152
+          ],
+          "dtype": "int64",
+          "sha256": "929bd8cd404e9787d7b750990905ac864358d51f9f40f84b3cefc81118aa3d05"
+        },
+        "n": 19,
+        "n_raw": 152,
+        "centroid": [
+          111.0,
+          0.7047677040100098,
+          -0.34131577610969543
+        ],
+        "bbox_min": [
+          111.0,
+          0.5811920166015625,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.9001920223236084,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7047678232192993,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 16.794045747825272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 36,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9001920223236084,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            76
+          ],
+          "dtype": "int64",
+          "sha256": "51751131549e815deedb21054fad252738c0d8c1148d10cc46f39221af6a4ca4"
+        },
+        "n": 19,
+        "n_raw": 76,
+        "centroid": [
+          111.0,
+          -0.7047678232192993,
+          -0.3413158357143402
+        ],
+        "bbox_min": [
+          111.0,
+          -0.9001920223236084,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5811920166015625,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7047677636146545,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 16.794045747825272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 37,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9001920223236084,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            152
+          ],
+          "dtype": "int64",
+          "sha256": "eb46107a6b7d8c2730eddcf0497c8db281e890eab23eae6fba11d8ce2b446c56"
+        },
+        "n": 19,
+        "n_raw": 152,
+        "centroid": [
+          111.0,
+          -0.7047675251960754,
+          -0.34131574630737305
+        ],
+        "bbox_min": [
+          111.0,
+          -0.9001920223236084,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5811920166015625,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7047677636146545,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 16.794045747825272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 38,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9001920223236084,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            76
+          ],
+          "dtype": "int64",
+          "sha256": "814d86eb0bb2493af6ab4e300de107663ec4cdbd7df275f3fc7d13114383cb8b"
+        },
+        "n": 19,
+        "n_raw": 76,
+        "centroid": [
+          111.0,
+          -0.7047677040100098,
+          -0.34131577610969543
+        ],
+        "bbox_min": [
+          111.0,
+          -0.9001920223236084,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5811920166015625,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7047677040100098,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 16.794045747825272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 39,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9001920223236084,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            152
+          ],
+          "dtype": "int64",
+          "sha256": "929bd8cd404e9787d7b750990905ac864358d51f9f40f84b3cefc81118aa3d05"
+        },
+        "n": 19,
+        "n_raw": 152,
+        "centroid": [
+          111.0,
+          -0.7047677040100098,
+          -0.34131577610969543
+        ],
+        "bbox_min": [
+          111.0,
+          -0.9001920223236084,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5811920166015625,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7047678232192993,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 16.794045747825272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 40,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.180191993713379,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            203
+          ],
+          "dtype": "int64",
+          "sha256": "c67b4f26569d72ef4654d1270eafa920ebf858163f1227e8dab95841b8f5d59e"
+        },
+        "n": 39,
+        "n_raw": 203,
+        "centroid": [
+          111.0,
+          0.8814850449562073,
+          -0.33866995573043823
+        ],
+        "bbox_min": [
+          111.0,
+          0.6426541805267334,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.180191993713379,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.8814850449562073,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 28.298529634064966,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 41,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.180191993713379,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            406
+          ],
+          "dtype": "int64",
+          "sha256": "ed7dc0d56f77ef63dbb90702910c0adf2ee131c2ea0555453baedf6fef7cd469"
+        },
+        "n": 39,
+        "n_raw": 406,
+        "centroid": [
+          111.0,
+          0.8814848065376282,
+          -0.3386697769165039
+        ],
+        "bbox_min": [
+          111.0,
+          0.6426541805267334,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.180191993713379,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.8814850449562073,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 28.298529634064966,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 42,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.180191993713379,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            203
+          ],
+          "dtype": "int64",
+          "sha256": "d05c952ff540072190e0fbbf04f5a604b6374aa8c1df4af37a14cf23dba26576"
+        },
+        "n": 39,
+        "n_raw": 203,
+        "centroid": [
+          111.0,
+          0.8814850449562073,
+          -0.33866992592811584
+        ],
+        "bbox_min": [
+          111.0,
+          0.6426541805267334,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.180191993713379,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.8814849853515625,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 28.298529634064966,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 43,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8711919784545898,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.180191993713379,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            406
+          ],
+          "dtype": "int64",
+          "sha256": "81be893e094c5d0c6b40758d229bd4884b8c063f4a45f06b79af8262f7388e78"
+        },
+        "n": 39,
+        "n_raw": 406,
+        "centroid": [
+          111.0,
+          0.8814855217933655,
+          -0.33866992592811584
+        ],
+        "bbox_min": [
+          111.0,
+          0.6426541805267334,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.180191993713379,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.8814850449562073,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 28.298529634064966,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 44,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.180191993713379,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            203
+          ],
+          "dtype": "int64",
+          "sha256": "c67b4f26569d72ef4654d1270eafa920ebf858163f1227e8dab95841b8f5d59e"
+        },
+        "n": 39,
+        "n_raw": 203,
+        "centroid": [
+          111.0,
+          -0.8814850449562073,
+          -0.33866995573043823
+        ],
+        "bbox_min": [
+          111.0,
+          -1.180191993713379,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6426541805267334,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.8814850449562073,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 28.298529634064966,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 45,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.180191993713379,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            406
+          ],
+          "dtype": "int64",
+          "sha256": "ed7dc0d56f77ef63dbb90702910c0adf2ee131c2ea0555453baedf6fef7cd469"
+        },
+        "n": 39,
+        "n_raw": 406,
+        "centroid": [
+          111.0,
+          -0.8814848065376282,
+          -0.3386697769165039
+        ],
+        "bbox_min": [
+          111.0,
+          -1.180191993713379,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6426541805267334,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.8814850449562073,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 28.298529634064966,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 46,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.180191993713379,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            203
+          ],
+          "dtype": "int64",
+          "sha256": "d05c952ff540072190e0fbbf04f5a604b6374aa8c1df4af37a14cf23dba26576"
+        },
+        "n": 39,
+        "n_raw": 203,
+        "centroid": [
+          111.0,
+          -0.8814850449562073,
+          -0.33866992592811584
+        ],
+        "bbox_min": [
+          111.0,
+          -1.180191993713379,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6426541805267334,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.8814849853515625,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 28.298529634064966,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 47,
+      "params": {
+        "width": 0.17,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.180191993713379,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8711919784545898,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            406
+          ],
+          "dtype": "int64",
+          "sha256": "81be893e094c5d0c6b40758d229bd4884b8c063f4a45f06b79af8262f7388e78"
+        },
+        "n": 39,
+        "n_raw": 406,
+        "centroid": [
+          111.0,
+          -0.8814855217933655,
+          -0.33866992592811584
+        ],
+        "bbox_min": [
+          111.0,
+          -1.180191993713379,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6426541805267334,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.8814850449562073,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 28.298529634064966,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 56,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.936352014541626,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            88
+          ],
+          "dtype": "int64",
+          "sha256": "086f7d46bf46b36f9200ce226ca82b54386716ee8a6d43d528f5705c6206b68a"
+        },
+        "n": 20,
+        "n_raw": 88,
+        "centroid": [
+          111.0,
+          0.7193430066108704,
+          -0.8513637185096741
+        ],
+        "bbox_min": [
+          111.0,
+          0.5521413087844849,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.9015120267868042,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.7193429470062256,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 10.64800128014511,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 57,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.936352014541626,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            176
+          ],
+          "dtype": "int64",
+          "sha256": "e4999cfc5123931eaf792b4e9577779a1a8a12c9d3ffa7241f20eb37520497a1"
+        },
+        "n": 20,
+        "n_raw": 176,
+        "centroid": [
+          111.0,
+          0.7193430066108704,
+          -0.8513635993003845
+        ],
+        "bbox_min": [
+          111.0,
+          0.5521413087844849,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.9015120267868042,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.7193429470062256,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 10.64800128014511,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 58,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.936352014541626,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            88
+          ],
+          "dtype": "int64",
+          "sha256": "ee0ea8bf7fd3da7a8b475fc6b505039237762e213c6487782e3cfbdb779e7fff"
+        },
+        "n": 20,
+        "n_raw": 88,
+        "centroid": [
+          111.0,
+          0.7193428874015808,
+          -0.8513635993003845
+        ],
+        "bbox_min": [
+          111.0,
+          0.5521413087844849,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.9015120267868042,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.7193429470062256,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 10.64800128014511,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 59,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.936352014541626,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            176
+          ],
+          "dtype": "int64",
+          "sha256": "9c93807480cfb85e680c9a6314c3230ce2cbe28131b7df56a08f49d34067d481"
+        },
+        "n": 20,
+        "n_raw": 176,
+        "centroid": [
+          111.0,
+          0.719342827796936,
+          -0.8513635993003845
+        ],
+        "bbox_min": [
+          111.0,
+          0.5521413087844849,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.9015120267868042,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.7193429470062256,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 10.64800128014511,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 60,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.936352014541626,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            88
+          ],
+          "dtype": "int64",
+          "sha256": "086f7d46bf46b36f9200ce226ca82b54386716ee8a6d43d528f5705c6206b68a"
+        },
+        "n": 20,
+        "n_raw": 88,
+        "centroid": [
+          111.0,
+          -0.7193430066108704,
+          -0.8513637185096741
+        ],
+        "bbox_min": [
+          111.0,
+          -0.9015120267868042,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5521413087844849,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.7193429470062256,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 10.64800128014511,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 61,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.936352014541626,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            176
+          ],
+          "dtype": "int64",
+          "sha256": "e4999cfc5123931eaf792b4e9577779a1a8a12c9d3ffa7241f20eb37520497a1"
+        },
+        "n": 20,
+        "n_raw": 176,
+        "centroid": [
+          111.0,
+          -0.7193430066108704,
+          -0.8513635993003845
+        ],
+        "bbox_min": [
+          111.0,
+          -0.9015120267868042,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5521413087844849,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.7193429470062256,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 10.64800128014511,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 62,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.936352014541626,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            88
+          ],
+          "dtype": "int64",
+          "sha256": "ee0ea8bf7fd3da7a8b475fc6b505039237762e213c6487782e3cfbdb779e7fff"
+        },
+        "n": 20,
+        "n_raw": 88,
+        "centroid": [
+          111.0,
+          -0.7193428874015808,
+          -0.8513635993003845
+        ],
+        "bbox_min": [
+          111.0,
+          -0.9015120267868042,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5521413087844849,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.7193429470062256,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 10.64800128014511,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 63,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.936352014541626,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            176
+          ],
+          "dtype": "int64",
+          "sha256": "9c93807480cfb85e680c9a6314c3230ce2cbe28131b7df56a08f49d34067d481"
+        },
+        "n": 20,
+        "n_raw": 176,
+        "centroid": [
+          111.0,
+          -0.719342827796936,
+          -0.8513635993003845
+        ],
+        "bbox_min": [
+          111.0,
+          -0.9015120267868042,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5521413087844849,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.7193429470062256,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 10.64800128014511,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 64,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.2163519859313965,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            182
+          ],
+          "dtype": "int64",
+          "sha256": "38966a234fedd007b9467063038572016ad33829d1286c387f90355fcfb2ca81"
+        },
+        "n": 30,
+        "n_raw": 182,
+        "centroid": [
+          111.0,
+          0.876542329788208,
+          -0.8678572177886963
+        ],
+        "bbox_min": [
+          111.0,
+          0.5515766143798828,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.1815119981765747,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.8765420317649841,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 19.198519787456625,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 65,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.2163519859313965,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            364
+          ],
+          "dtype": "int64",
+          "sha256": "496fa906231a22fbcb3d803519311ef3d5b7cec9e213df785c3929c7caf8f450"
+        },
+        "n": 30,
+        "n_raw": 364,
+        "centroid": [
+          111.0,
+          0.8765413165092468,
+          -0.8678570985794067
+        ],
+        "bbox_min": [
+          111.0,
+          0.5515766143798828,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.1815119981765747,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.8765419721603394,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 19.198519787456625,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 66,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.2163519859313965,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            182
+          ],
+          "dtype": "int64",
+          "sha256": "594c5d134e40f0501378304b5a6af1affb828b108fd50ba98eb422c4f7340827"
+        },
+        "n": 30,
+        "n_raw": 182,
+        "centroid": [
+          111.0,
+          0.8765423893928528,
+          -0.8678572177886963
+        ],
+        "bbox_min": [
+          111.0,
+          0.5515766143798828,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.1815119981765747,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.8765419721603394,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 19.198519787456625,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 67,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.2163519859313965,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            364
+          ],
+          "dtype": "int64",
+          "sha256": "e7c6d701da2469ed73fb138e8ca37263bc6d4e407db751eae40cda09e00a46d0"
+        },
+        "n": 30,
+        "n_raw": 364,
+        "centroid": [
+          111.0,
+          0.8765409588813782,
+          -0.8678570985794067
+        ],
+        "bbox_min": [
+          111.0,
+          0.5515766143798828,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.1815119981765747,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.8765420317649841,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 19.198519787456625,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 68,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.2163519859313965,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            182
+          ],
+          "dtype": "int64",
+          "sha256": "38966a234fedd007b9467063038572016ad33829d1286c387f90355fcfb2ca81"
+        },
+        "n": 30,
+        "n_raw": 182,
+        "centroid": [
+          111.0,
+          -0.876542329788208,
+          -0.8678572177886963
+        ],
+        "bbox_min": [
+          111.0,
+          -1.1815119981765747,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5515766143798828,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.8765420317649841,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 19.198519787456625,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 69,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.2163519859313965,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            364
+          ],
+          "dtype": "int64",
+          "sha256": "496fa906231a22fbcb3d803519311ef3d5b7cec9e213df785c3929c7caf8f450"
+        },
+        "n": 30,
+        "n_raw": 364,
+        "centroid": [
+          111.0,
+          -0.8765413165092468,
+          -0.8678570985794067
+        ],
+        "bbox_min": [
+          111.0,
+          -1.1815119981765747,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5515766143798828,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.8765419721603394,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 19.198519787456625,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 70,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.2163519859313965,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            182
+          ],
+          "dtype": "int64",
+          "sha256": "594c5d134e40f0501378304b5a6af1affb828b108fd50ba98eb422c4f7340827"
+        },
+        "n": 30,
+        "n_raw": 182,
+        "centroid": [
+          111.0,
+          -0.8765423893928528,
+          -0.8678572177886963
+        ],
+        "bbox_min": [
+          111.0,
+          -1.1815119981765747,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5515766143798828,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.8765419721603394,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 19.198519787456625,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 71,
+      "params": {
+        "width": 0.39,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.2163519859313965,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            364
+          ],
+          "dtype": "int64",
+          "sha256": "e7c6d701da2469ed73fb138e8ca37263bc6d4e407db751eae40cda09e00a46d0"
+        },
+        "n": 30,
+        "n_raw": 364,
+        "centroid": [
+          111.0,
+          -0.8765409588813782,
+          -0.8678570985794067
+        ],
+        "bbox_min": [
+          111.0,
+          -1.1815119981765747,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5515766143798828,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.8765420317649841,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 19.198519787456625,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 19,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 80,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.0101920366287231,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            141
+          ],
+          "dtype": "int64",
+          "sha256": "58ab1babe01c1120ce29a15c0266b72db3edb4a15b40593af375e4ff33ebf6b5"
+        },
+        "n": 28,
+        "n_raw": 141,
+        "centroid": [
+          111.0,
+          0.760921835899353,
+          -0.34624114632606506
+        ],
+        "bbox_min": [
+          111.0,
+          0.5954746603965759,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.0101920366287231,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7609217166900635,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 21.833020804827758,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 26,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 81,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.0101920366287231,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            282
+          ],
+          "dtype": "int64",
+          "sha256": "8396b47a048771fa6eb904fef83a1acf19d9aa6080d93ea22126264dc32e7974"
+        },
+        "n": 28,
+        "n_raw": 282,
+        "centroid": [
+          111.0,
+          0.7609217166900635,
+          -0.3462411165237427
+        ],
+        "bbox_min": [
+          111.0,
+          0.5954746603965759,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.0101920366287231,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7609217762947083,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 21.833020804827758,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 26,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 82,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.0101920366287231,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            141
+          ],
+          "dtype": "int64",
+          "sha256": "76011c7e2de5b3406981866c49bf84ee7845102884b7a8ce038fd9f3c743b053"
+        },
+        "n": 28,
+        "n_raw": 141,
+        "centroid": [
+          111.0,
+          0.7609215378761292,
+          -0.34624117612838745
+        ],
+        "bbox_min": [
+          111.0,
+          0.5954746603965759,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.0101920366287231,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.760921835899353,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 21.833020804827758,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 26,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 83,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.0101920366287231,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            282
+          ],
+          "dtype": "int64",
+          "sha256": "3948fa0de0c723d646686ae7e06f50d30a83fbbc8491c0ee495d46cb7122c483"
+        },
+        "n": 28,
+        "n_raw": 282,
+        "centroid": [
+          111.0,
+          0.7609220743179321,
+          -0.3462411165237427
+        ],
+        "bbox_min": [
+          111.0,
+          0.5954746603965759,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.0101920366287231,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7609217762947083,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 21.833020804827758,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 26,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 84,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.0101920366287231,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            141
+          ],
+          "dtype": "int64",
+          "sha256": "58ab1babe01c1120ce29a15c0266b72db3edb4a15b40593af375e4ff33ebf6b5"
+        },
+        "n": 28,
+        "n_raw": 141,
+        "centroid": [
+          111.0,
+          -0.760921835899353,
+          -0.34624114632606506
+        ],
+        "bbox_min": [
+          111.0,
+          -1.0101920366287231,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5954746603965759,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7609217166900635,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 21.833020804827758,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 26,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 85,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.0101920366287231,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            282
+          ],
+          "dtype": "int64",
+          "sha256": "8396b47a048771fa6eb904fef83a1acf19d9aa6080d93ea22126264dc32e7974"
+        },
+        "n": 28,
+        "n_raw": 282,
+        "centroid": [
+          111.0,
+          -0.7609217166900635,
+          -0.3462411165237427
+        ],
+        "bbox_min": [
+          111.0,
+          -1.0101920366287231,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5954746603965759,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7609217762947083,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 21.833020804827758,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 26,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 86,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.0101920366287231,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            141
+          ],
+          "dtype": "int64",
+          "sha256": "76011c7e2de5b3406981866c49bf84ee7845102884b7a8ce038fd9f3c743b053"
+        },
+        "n": 28,
+        "n_raw": 141,
+        "centroid": [
+          111.0,
+          -0.7609215378761292,
+          -0.34624117612838745
+        ],
+        "bbox_min": [
+          111.0,
+          -1.0101920366287231,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5954746603965759,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.760921835899353,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 21.833020804827758,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 26,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 87,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.0101920366287231,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            282
+          ],
+          "dtype": "int64",
+          "sha256": "3948fa0de0c723d646686ae7e06f50d30a83fbbc8491c0ee495d46cb7122c483"
+        },
+        "n": 28,
+        "n_raw": 282,
+        "centroid": [
+          111.0,
+          -0.7609220743179321,
+          -0.3462411165237427
+        ],
+        "bbox_min": [
+          111.0,
+          -1.0101920366287231,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5954746603965759,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7609217762947083,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 21.833020804827758,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 26,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 88,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.2901920080184937,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            300
+          ],
+          "dtype": "int64",
+          "sha256": "5f822d0464a55e9331ccb378423af68ffd251ea7deeeed07907a77ea3bd4c5f3"
+        },
+        "n": 44,
+        "n_raw": 300,
+        "centroid": [
+          111.0,
+          0.9137944579124451,
+          -0.35499998927116394
+        ],
+        "bbox_min": [
+          111.0,
+          0.6588079929351807,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.2901920080184937,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.9137945771217346,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 33.238849667868564,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 23,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 89,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.2901920080184937,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            600
+          ],
+          "dtype": "int64",
+          "sha256": "aadad58e4b9a9314592b0f8f9554983e80be52dc778f742e227e8064611bfefb"
+        },
+        "n": 44,
+        "n_raw": 600,
+        "centroid": [
+          111.0,
+          0.9137941598892212,
+          -0.35499972105026245
+        ],
+        "bbox_min": [
+          111.0,
+          0.6588079929351807,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.2901920080184937,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.9137944579124451,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 33.238849667868564,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 23,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 90,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.2901920080184937,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            300
+          ],
+          "dtype": "int64",
+          "sha256": "3dbe341d659f96c2c2508917bcee65320516fb89c449cc2df56c3b3d3aae2384"
+        },
+        "n": 44,
+        "n_raw": 300,
+        "centroid": [
+          111.0,
+          0.9137943387031555,
+          -0.35499995946884155
+        ],
+        "bbox_min": [
+          111.0,
+          0.6588079929351807,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.2901920080184937,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.9137944579124451,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 33.238849667868564,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 23,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 91,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.9811919927597046,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.2901920080184937,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            600
+          ],
+          "dtype": "int64",
+          "sha256": "b941f138357bc8e394d79bf440cf38e04f0f601f2cefff85c74d67bdf40de563"
+        },
+        "n": 44,
+        "n_raw": 600,
+        "centroid": [
+          111.0,
+          0.9137940406799316,
+          -0.354999840259552
+        ],
+        "bbox_min": [
+          111.0,
+          0.6588079929351807,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.2901920080184937,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.9137944579124451,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 33.238849667868564,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 23,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 92,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.2901920080184937,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            300
+          ],
+          "dtype": "int64",
+          "sha256": "5f822d0464a55e9331ccb378423af68ffd251ea7deeeed07907a77ea3bd4c5f3"
+        },
+        "n": 44,
+        "n_raw": 300,
+        "centroid": [
+          111.0,
+          -0.9137944579124451,
+          -0.35499998927116394
+        ],
+        "bbox_min": [
+          111.0,
+          -1.2901920080184937,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6588079929351807,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.9137945771217346,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 33.238849667868564,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 23,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 93,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.2901920080184937,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            600
+          ],
+          "dtype": "int64",
+          "sha256": "aadad58e4b9a9314592b0f8f9554983e80be52dc778f742e227e8064611bfefb"
+        },
+        "n": 44,
+        "n_raw": 600,
+        "centroid": [
+          111.0,
+          -0.9137941598892212,
+          -0.35499972105026245
+        ],
+        "bbox_min": [
+          111.0,
+          -1.2901920080184937,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6588079929351807,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.9137944579124451,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 33.238849667868564,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 23,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 94,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.2901920080184937,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            300
+          ],
+          "dtype": "int64",
+          "sha256": "3dbe341d659f96c2c2508917bcee65320516fb89c449cc2df56c3b3d3aae2384"
+        },
+        "n": 44,
+        "n_raw": 300,
+        "centroid": [
+          111.0,
+          -0.9137943387031555,
+          -0.35499995946884155
+        ],
+        "bbox_min": [
+          111.0,
+          -1.2901920080184937,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6588079929351807,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.9137944579124451,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 33.238849667868564,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 23,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 95,
+      "params": {
+        "width": 0.39,
+        "top": 2.71,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.2901920080184937,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.9811919927597046,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            600
+          ],
+          "dtype": "int64",
+          "sha256": "b941f138357bc8e394d79bf440cf38e04f0f601f2cefff85c74d67bdf40de563"
+        },
+        "n": 44,
+        "n_raw": 600,
+        "centroid": [
+          111.0,
+          -0.9137940406799316,
+          -0.354999840259552
+        ],
+        "bbox_min": [
+          111.0,
+          -1.2901920080184937,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6588079929351807,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.9137944579124451,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 33.238849667868564,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 23,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 96,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.12,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8163520097732544,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            46
+          ],
+          "dtype": "int64",
+          "sha256": "638080bf25d2df7c586ce168d52186afbc9ef92bf080ab1f4a462b01f5df0674"
+        },
+        "n": 13,
+        "n_raw": 46,
+        "centroid": [
+          111.0,
+          0.6517965197563171,
+          -0.8467392325401306
+        ],
+        "bbox_min": [
+          111.0,
+          0.5588080286979675,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.7815120220184326,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.6517965197563171,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.7875512051957125,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 13,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 97,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.12,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8163520097732544,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            92
+          ],
+          "dtype": "int64",
+          "sha256": "a149aaa2c85325c5c271f24e8662dce33967a056ccd473ca1c439896229e6757"
+        },
+        "n": 13,
+        "n_raw": 92,
+        "centroid": [
+          111.0,
+          0.6517965197563171,
+          -0.8467391729354858
+        ],
+        "bbox_min": [
+          111.0,
+          0.5588080286979675,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.7815120220184326,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.6517965793609619,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.7875512051957125,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 13,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 98,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.12,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8163520097732544,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            46
+          ],
+          "dtype": "int64",
+          "sha256": "7845844c30aa26c0befed85b5d8813380d8a033b4c7311916e0548d13b4fbc57"
+        },
+        "n": 13,
+        "n_raw": 46,
+        "centroid": [
+          111.0,
+          0.6517965197563171,
+          -0.8467391729354858
+        ],
+        "bbox_min": [
+          111.0,
+          0.5588080286979675,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.7815120220184326,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.6517965197563171,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.7875512051957125,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 13,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 99,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.12,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8163520097732544,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            92
+          ],
+          "dtype": "int64",
+          "sha256": "90da3f312d91735316c748936b9a5ff9d66d1550c5d16df99bf1e42a01dd7419"
+        },
+        "n": 13,
+        "n_raw": 92,
+        "centroid": [
+          111.0,
+          0.6517965197563171,
+          -0.8467390537261963
+        ],
+        "bbox_min": [
+          111.0,
+          0.5588080286979675,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.7815120220184326,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.6517965793609619,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.7875512051957125,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 13,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 100,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.12,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8163520097732544,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            46
+          ],
+          "dtype": "int64",
+          "sha256": "638080bf25d2df7c586ce168d52186afbc9ef92bf080ab1f4a462b01f5df0674"
+        },
+        "n": 13,
+        "n_raw": 46,
+        "centroid": [
+          111.0,
+          -0.6517965197563171,
+          -0.8467392325401306
+        ],
+        "bbox_min": [
+          111.0,
+          -0.7815120220184326,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5588080286979675,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.6517965197563171,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.7875512051957125,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 13,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 101,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.12,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8163520097732544,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            92
+          ],
+          "dtype": "int64",
+          "sha256": "a149aaa2c85325c5c271f24e8662dce33967a056ccd473ca1c439896229e6757"
+        },
+        "n": 13,
+        "n_raw": 92,
+        "centroid": [
+          111.0,
+          -0.6517965197563171,
+          -0.8467391729354858
+        ],
+        "bbox_min": [
+          111.0,
+          -0.7815120220184326,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5588080286979675,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.6517965793609619,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.7875512051957125,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 13,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 102,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.12,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8163520097732544,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            46
+          ],
+          "dtype": "int64",
+          "sha256": "7845844c30aa26c0befed85b5d8813380d8a033b4c7311916e0548d13b4fbc57"
+        },
+        "n": 13,
+        "n_raw": 46,
+        "centroid": [
+          111.0,
+          -0.6517965197563171,
+          -0.8467391729354858
+        ],
+        "bbox_min": [
+          111.0,
+          -0.7815120220184326,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5588080286979675,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.6517965197563171,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.7875512051957125,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 13,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 103,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.12,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8163520097732544,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            92
+          ],
+          "dtype": "int64",
+          "sha256": "90da3f312d91735316c748936b9a5ff9d66d1550c5d16df99bf1e42a01dd7419"
+        },
+        "n": 13,
+        "n_raw": 92,
+        "centroid": [
+          111.0,
+          -0.6517965197563171,
+          -0.8467390537261963
+        ],
+        "bbox_min": [
+          111.0,
+          -0.7815120220184326,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5588080286979675,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.6517965793609619,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 6.7875512051957125,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 13,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 104,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.0563520193099976,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            132
+          ],
+          "dtype": "int64",
+          "sha256": "237d5ec61613dfddde54de79a1c82f616bf198de0f79c200059ad6b6baf8a660"
+        },
+        "n": 20,
+        "n_raw": 132,
+        "centroid": [
+          111.0,
+          0.7782955169677734,
+          -0.8750000596046448
+        ],
+        "bbox_min": [
+          111.0,
+          0.5738080143928528,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.0215120315551758,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.7782955765724182,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 13.6448274010828,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 18,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 105,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.0563520193099976,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            264
+          ],
+          "dtype": "int64",
+          "sha256": "795a2d893c8f6eb596b33cf8428de29ab42acb00fb7f7fd93a5aa5445dd1757c"
+        },
+        "n": 20,
+        "n_raw": 264,
+        "centroid": [
+          111.0,
+          0.7782958149909973,
+          -0.875
+        ],
+        "bbox_min": [
+          111.0,
+          0.5738080143928528,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.0215120315551758,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.7782955169677734,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 13.6448274010828,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 18,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 106,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.0563520193099976,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            132
+          ],
+          "dtype": "int64",
+          "sha256": "b6e3582c840dcc04a62e2720707592827870711465f67275de87f943370a1c99"
+        },
+        "n": 20,
+        "n_raw": 132,
+        "centroid": [
+          111.0,
+          0.7782954573631287,
+          -0.8749999403953552
+        ],
+        "bbox_min": [
+          111.0,
+          0.5738080143928528,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.0215120315551758,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.7782955169677734,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 13.6448274010828,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 18,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 107,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.0563520193099976,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            264
+          ],
+          "dtype": "int64",
+          "sha256": "deb9d8d847cb9de31f99ddeb0ef58e0d79da01b3971a24f250f208fc0b6c4577"
+        },
+        "n": 20,
+        "n_raw": 264,
+        "centroid": [
+          111.0,
+          0.7782959342002869,
+          -0.8750000596046448
+        ],
+        "bbox_min": [
+          111.0,
+          0.5738080143928528,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.0215120315551758,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.7782955765724182,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 13.6448274010828,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 18,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 108,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.0563520193099976,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            132
+          ],
+          "dtype": "int64",
+          "sha256": "237d5ec61613dfddde54de79a1c82f616bf198de0f79c200059ad6b6baf8a660"
+        },
+        "n": 20,
+        "n_raw": 132,
+        "centroid": [
+          111.0,
+          -0.7782955169677734,
+          -0.8750000596046448
+        ],
+        "bbox_min": [
+          111.0,
+          -1.0215120315551758,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5738080143928528,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.7782955765724182,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 13.6448274010828,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 18,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 109,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.0563520193099976,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            264
+          ],
+          "dtype": "int64",
+          "sha256": "795a2d893c8f6eb596b33cf8428de29ab42acb00fb7f7fd93a5aa5445dd1757c"
+        },
+        "n": 20,
+        "n_raw": 264,
+        "centroid": [
+          111.0,
+          -0.7782958149909973,
+          -0.875
+        ],
+        "bbox_min": [
+          111.0,
+          -1.0215120315551758,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5738080143928528,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.7782955169677734,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 13.6448274010828,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 18,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 110,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.0563520193099976,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            132
+          ],
+          "dtype": "int64",
+          "sha256": "b6e3582c840dcc04a62e2720707592827870711465f67275de87f943370a1c99"
+        },
+        "n": 20,
+        "n_raw": 132,
+        "centroid": [
+          111.0,
+          -0.7782954573631287,
+          -0.8749999403953552
+        ],
+        "bbox_min": [
+          111.0,
+          -1.0215120315551758,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5738080143928528,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.7782955169677734,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 13.6448274010828,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 18,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 111,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.0563520193099976,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            264
+          ],
+          "dtype": "int64",
+          "sha256": "deb9d8d847cb9de31f99ddeb0ef58e0d79da01b3971a24f250f208fc0b6c4577"
+        },
+        "n": 20,
+        "n_raw": 264,
+        "centroid": [
+          111.0,
+          -0.7782959342002869,
+          -0.8750000596046448
+        ],
+        "bbox_min": [
+          111.0,
+          -1.0215120315551758,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5738080143928528,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.7782955765724182,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 13.6448274010828,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 18,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 112,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.336351990699768,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            233
+          ],
+          "dtype": "int64",
+          "sha256": "568984fb5df44a5a19f72968f8a142b35861af74300203d5f8a9c447eb3f06e7"
+        },
+        "n": 38,
+        "n_raw": 233,
+        "centroid": [
+          111.0,
+          0.9166379570960999,
+          -0.8607725501060486
+        ],
+        "bbox_min": [
+          111.0,
+          0.5461919903755188,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.3015120029449463,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.9166384339332581,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 23.019752208733344,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 113,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.336351990699768,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            466
+          ],
+          "dtype": "int64",
+          "sha256": "3bddc2e2f06a657847e4e0b6aef8136b5c20a05efa6ea7456873782055083d66"
+        },
+        "n": 38,
+        "n_raw": 466,
+        "centroid": [
+          111.0,
+          0.9166385531425476,
+          -0.8607726693153381
+        ],
+        "bbox_min": [
+          111.0,
+          0.5461919903755188,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.3015120029449463,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.9166384339332581,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 23.019752208733344,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 114,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.336351990699768,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            233
+          ],
+          "dtype": "int64",
+          "sha256": "a42a91e13546844129e74998b514426409220112265d63d6ff2a757ab46ac5dc"
+        },
+        "n": 38,
+        "n_raw": 233,
+        "centroid": [
+          111.0,
+          0.9166384339332581,
+          -0.8607725501060486
+        ],
+        "bbox_min": [
+          111.0,
+          0.5461919903755188,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.3015120029449463,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.9166383743286133,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 23.019752208733344,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 115,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.336351990699768,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            466
+          ],
+          "dtype": "int64",
+          "sha256": "88660cf8a77a2a8d2718b9cf43626bac09790a3df8ecf0045ca6b5b1a0eefd94"
+        },
+        "n": 38,
+        "n_raw": 466,
+        "centroid": [
+          111.0,
+          0.9166381359100342,
+          -0.860772430896759
+        ],
+        "bbox_min": [
+          111.0,
+          0.5461919903755188,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.3015120029449463,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": 0.9166383743286133,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 23.019752208733344,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 116,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.336351990699768,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            233
+          ],
+          "dtype": "int64",
+          "sha256": "568984fb5df44a5a19f72968f8a142b35861af74300203d5f8a9c447eb3f06e7"
+        },
+        "n": 38,
+        "n_raw": 233,
+        "centroid": [
+          111.0,
+          -0.9166379570960999,
+          -0.8607725501060486
+        ],
+        "bbox_min": [
+          111.0,
+          -1.3015120029449463,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5461919903755188,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.9166384339332581,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 23.019752208733344,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 117,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.336351990699768,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            466
+          ],
+          "dtype": "int64",
+          "sha256": "3bddc2e2f06a657847e4e0b6aef8136b5c20a05efa6ea7456873782055083d66"
+        },
+        "n": 38,
+        "n_raw": 466,
+        "centroid": [
+          111.0,
+          -0.9166385531425476,
+          -0.8607726693153381
+        ],
+        "bbox_min": [
+          111.0,
+          -1.3015120029449463,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5461919903755188,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.9166384339332581,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 23.019752208733344,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 118,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.336351990699768,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            233
+          ],
+          "dtype": "int64",
+          "sha256": "a42a91e13546844129e74998b514426409220112265d63d6ff2a757ab46ac5dc"
+        },
+        "n": 38,
+        "n_raw": 233,
+        "centroid": [
+          111.0,
+          -0.9166384339332581,
+          -0.8607725501060486
+        ],
+        "bbox_min": [
+          111.0,
+          -1.3015120029449463,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5461919903755188,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.9166383743286133,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 23.019752208733344,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 119,
+      "params": {
+        "width": 0.63,
+        "top": 1.73,
+        "residual": 1.64,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.336351990699768,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          -0.1599999964237213
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            466
+          ],
+          "dtype": "int64",
+          "sha256": "88660cf8a77a2a8d2718b9cf43626bac09790a3df8ecf0045ca6b5b1a0eefd94"
+        },
+        "n": 38,
+        "n_raw": 466,
+        "centroid": [
+          111.0,
+          -0.9166381359100342,
+          -0.860772430896759
+        ],
+        "bbox_min": [
+          111.0,
+          -1.3015120029449463,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.5461919903755188,
+          -0.1599999964237213
+        ],
+        "distance": 111.0,
+        "lateral": -0.9166383743286133,
+        "height_min": 0.24000000953674316,
+        "height_max": 1.6700000762939453,
+        "intensity": 35.0,
+        "n_expected": 23.019752208733344,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 20,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": false,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 120,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.12,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8901919722557068,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            66
+          ],
+          "dtype": "int64",
+          "sha256": "fde9d37480d298fd45f3df5527eea69f0a08d7702dd2b84e7e38b5589bc6f12b"
+        },
+        "n": 17,
+        "n_raw": 66,
+        "centroid": [
+          111.0,
+          0.7064568400382996,
+          -0.2998485267162323
+        ],
+        "bbox_min": [
+          111.0,
+          0.6038079857826233,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.8901919722557068,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7064568400382996,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 15.076974733260109,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 17,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 121,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.12,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8901919722557068,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            132
+          ],
+          "dtype": "int64",
+          "sha256": "d73c1f762330c15b87b0404771d6178aea5a966b36a69dc8c6db82f71843cfa6"
+        },
+        "n": 17,
+        "n_raw": 132,
+        "centroid": [
+          111.0,
+          0.7064565420150757,
+          -0.29984843730926514
+        ],
+        "bbox_min": [
+          111.0,
+          0.6038079857826233,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.8901919722557068,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7064568400382996,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 15.076974733260109,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 17,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 122,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.12,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8901919722557068,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            66
+          ],
+          "dtype": "int64",
+          "sha256": "3d81030a46eb55a013e55ebdcc338af9d147f7bb0b5b93539cdff2555440bad5"
+        },
+        "n": 17,
+        "n_raw": 66,
+        "centroid": [
+          111.0,
+          0.7064567804336548,
+          -0.2998484969139099
+        ],
+        "bbox_min": [
+          111.0,
+          0.6038079857826233,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.8901919722557068,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7064568996429443,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 15.076974733260109,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 17,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 123,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.12,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          0.8901919722557068,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            132
+          ],
+          "dtype": "int64",
+          "sha256": "0c83869447a37bb121dc205632928eba603fa6882184e221a9600f6bbd3b223f"
+        },
+        "n": 17,
+        "n_raw": 132,
+        "centroid": [
+          111.0,
+          0.7064565420150757,
+          -0.2998485267162323
+        ],
+        "bbox_min": [
+          111.0,
+          0.6038079857826233,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          0.8901919722557068,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.7064568400382996,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 15.076974733260109,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 17,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 124,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.12,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8901919722557068,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            66
+          ],
+          "dtype": "int64",
+          "sha256": "fde9d37480d298fd45f3df5527eea69f0a08d7702dd2b84e7e38b5589bc6f12b"
+        },
+        "n": 17,
+        "n_raw": 66,
+        "centroid": [
+          111.0,
+          -0.7064568400382996,
+          -0.2998485267162323
+        ],
+        "bbox_min": [
+          111.0,
+          -0.8901919722557068,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6038079857826233,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7064568400382996,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 15.076974733260109,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 17,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 125,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.12,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8901919722557068,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            132
+          ],
+          "dtype": "int64",
+          "sha256": "d73c1f762330c15b87b0404771d6178aea5a966b36a69dc8c6db82f71843cfa6"
+        },
+        "n": 17,
+        "n_raw": 132,
+        "centroid": [
+          111.0,
+          -0.7064565420150757,
+          -0.29984843730926514
+        ],
+        "bbox_min": [
+          111.0,
+          -0.8901919722557068,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6038079857826233,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7064568400382996,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 15.076974733260109,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 17,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 126,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.12,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8901919722557068,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            66
+          ],
+          "dtype": "int64",
+          "sha256": "3d81030a46eb55a013e55ebdcc338af9d147f7bb0b5b93539cdff2555440bad5"
+        },
+        "n": 17,
+        "n_raw": 66,
+        "centroid": [
+          111.0,
+          -0.7064567804336548,
+          -0.2998484969139099
+        ],
+        "bbox_min": [
+          111.0,
+          -0.8901919722557068,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6038079857826233,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7064568996429443,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 15.076974733260109,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 17,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 127,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.12,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -0.8901919722557068,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            132
+          ],
+          "dtype": "int64",
+          "sha256": "0c83869447a37bb121dc205632928eba603fa6882184e221a9600f6bbd3b223f"
+        },
+        "n": 17,
+        "n_raw": 132,
+        "centroid": [
+          111.0,
+          -0.7064565420150757,
+          -0.2998485267162323
+        ],
+        "bbox_min": [
+          111.0,
+          -0.8901919722557068,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6038079857826233,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.7064568400382996,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 15.076974733260109,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 17,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 128,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1301920413970947,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            204
+          ],
+          "dtype": "int64",
+          "sha256": "e9f639df9e7735d1ca31db1a856bf1ea768af61263c45ac9627af75fb0e6a478"
+        },
+        "n": 33,
+        "n_raw": 204,
+        "centroid": [
+          111.0,
+          0.8272385001182556,
+          -0.3346078395843506
+        ],
+        "bbox_min": [
+          111.0,
+          0.6188079714775085,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.1301920413970947,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.8272385001182556,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 26.921880287180272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 27,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 129,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1301920413970947,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            408
+          ],
+          "dtype": "int64",
+          "sha256": "c6d79d3c9f92e3ef55a27eca91d1264f1aa8a50b855e902876beadf1c47b8178"
+        },
+        "n": 33,
+        "n_raw": 408,
+        "centroid": [
+          111.0,
+          0.8272385001182556,
+          -0.33460769057273865
+        ],
+        "bbox_min": [
+          111.0,
+          0.6188079714775085,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.1301920413970947,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.8272385597229004,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 26.921880287180272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 27,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 130,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1301920413970947,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            204
+          ],
+          "dtype": "int64",
+          "sha256": "55bd0efb14f06cc96f2388389617eada69cf238d247fec47c1037b6a694df98f"
+        },
+        "n": 33,
+        "n_raw": 204,
+        "centroid": [
+          111.0,
+          0.8272386193275452,
+          -0.3346078097820282
+        ],
+        "bbox_min": [
+          111.0,
+          0.6188079714775085,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.1301920413970947,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.8272385597229004,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 26.921880287180272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 27,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 131,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": -1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1011919975280762,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1301920413970947,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            408
+          ],
+          "dtype": "int64",
+          "sha256": "33eebb87bf59bcd914e260e4f26bfd99b2e4f412c3023636401b7d3dfe7287e6"
+        },
+        "n": 33,
+        "n_raw": 408,
+        "centroid": [
+          111.0,
+          0.8272382020950317,
+          -0.3346078097820282
+        ],
+        "bbox_min": [
+          111.0,
+          0.6188079714775085,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          1.1301920413970947,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": 0.8272385597229004,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 26.921880287180272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 27,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 132,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1301920413970947,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            204
+          ],
+          "dtype": "int64",
+          "sha256": "e9f639df9e7735d1ca31db1a856bf1ea768af61263c45ac9627af75fb0e6a478"
+        },
+        "n": 33,
+        "n_raw": 204,
+        "centroid": [
+          111.0,
+          -0.8272385001182556,
+          -0.3346078395843506
+        ],
+        "bbox_min": [
+          111.0,
+          -1.1301920413970947,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6188079714775085,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.8272385001182556,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 26.921880287180272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 27,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 133,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": false,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1301920413970947,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            408
+          ],
+          "dtype": "int64",
+          "sha256": "c6d79d3c9f92e3ef55a27eca91d1264f1aa8a50b855e902876beadf1c47b8178"
+        },
+        "n": 33,
+        "n_raw": 408,
+        "centroid": [
+          111.0,
+          -0.8272385001182556,
+          -0.33460769057273865
+        ],
+        "bbox_min": [
+          111.0,
+          -1.1301920413970947,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6188079714775085,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.8272385597229004,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 26.921880287180272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 27,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 134,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 1
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1301920413970947,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            204
+          ],
+          "dtype": "int64",
+          "sha256": "55bd0efb14f06cc96f2388389617eada69cf238d247fec47c1037b6a694df98f"
+        },
+        "n": 33,
+        "n_raw": 204,
+        "centroid": [
+          111.0,
+          -0.8272386193275452,
+          -0.3346078097820282
+        ],
+        "bbox_min": [
+          111.0,
+          -1.1301920413970947,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6188079714775085,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.8272385597229004,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 26.921880287180272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 27,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    },
+    {
+      "case": 135,
+      "params": {
+        "width": 0.63,
+        "top": 2.71,
+        "residual": 1.36,
+        "mirror": 1,
+        "reversed": true,
+        "echo": 2
+      },
+      "label": 2,
+      "expected_box": {
+        "label": 2,
+        "bmin": [
+          111.0,
+          -1.1301920413970947,
+          -1.7200000286102295
+        ],
+        "bmax": [
+          111.0,
+          1.1011919975280762,
+          0.8799999952316284
+        ]
+      },
+      "cut_part": {
+        "points_idx": {
+          "shape": [
+            408
+          ],
+          "dtype": "int64",
+          "sha256": "33eebb87bf59bcd914e260e4f26bfd99b2e4f412c3023636401b7d3dfe7287e6"
+        },
+        "n": 33,
+        "n_raw": 408,
+        "centroid": [
+          111.0,
+          -0.8272382020950317,
+          -0.3346078097820282
+        ],
+        "bbox_min": [
+          111.0,
+          -1.1301920413970947,
+          -1.590000033378601
+        ],
+        "bbox_max": [
+          111.0,
+          -0.6188079714775085,
+          0.8799999952316284
+        ],
+        "distance": 111.0,
+        "lateral": -0.8272385597229004,
+        "height_min": 0.24000000953674316,
+        "height_max": 2.7100000381469727,
+        "intensity": 35.0,
+        "n_expected": 26.921880287180272,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 27,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 0,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": true
+      },
+      "bottom_shortened": true,
+      "top_shortened": false
+    }
+  ]
+}
