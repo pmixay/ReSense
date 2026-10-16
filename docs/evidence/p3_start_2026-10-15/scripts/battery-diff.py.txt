@@ -1,0 +1,37 @@
+"""Explain non-decision descriptor differences in the H1 battery."""
+import json
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent / "resense-p3-runs/h1-battery"
+
+
+def differences(a, b, prefix=""):
+    if isinstance(a, dict) and isinstance(b, dict):
+        return [item for key in sorted(set(a) | set(b))
+                for item in differences(a.get(key), b.get(key), f"{prefix}.{key}")]
+    if isinstance(a, list) and isinstance(b, list) and len(a) == len(b):
+        return [item for i, (x, y) in enumerate(zip(a, b)) for item in differences(x, y, f"{prefix}[{i}]")]
+    return [] if a == b else [{"field": prefix, "sealed": a, "H1": b}]
+
+
+def main():
+    summary = json.loads((BASE / "summary.json").read_text())
+    result = {}
+    for name, info in summary.items():
+        if not info["det_warn_diffs"]:
+            continue
+        a = [json.loads(line) for line in (BASE / f"{name}_sealed.jsonl").read_text().splitlines()]
+        b = [json.loads(line) for line in (BASE / f"{name}_H1.jsonl").read_text().splitlines()]
+        rows = []
+        for x, y in zip(a, b):
+            diff = differences({key: x[key] for key in ("dets", "warns")},
+                               {key: y[key] for key in ("dets", "warns")})
+            if diff:
+                rows.append({"frame": x["i"], "sealed_decision": x["decision"], "H1_decision": y["decision"], "diff": diff})
+        result[name] = rows
+    (BASE / "descriptor_diff.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    print(json.dumps(result, indent=2))
+
+
+if __name__ == "__main__":
+    main()

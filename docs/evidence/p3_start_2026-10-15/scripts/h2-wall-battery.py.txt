@@ -1,0 +1,76 @@
+"""The inherited 20 wall-anchored acceptance cases, sealed versus H2."""
+from concurrent.futures import ThreadPoolExecutor
+import json
+import os
+from pathlib import Path
+import shlex
+import subprocess
+import sys
+
+BASE = Path(__file__).resolve().parent
+DATA = BASE / "resense-p3-data"
+OUT = BASE / "resense-p3-runs/h2-wall-battery"
+REPOS = {"sealed": Path("C:/Users/alikh/OneDrive/Desktop/projects/ReSense"), "H2": BASE / "rs-h2"}
+HARNESS = BASE / "rs-range-screen/docs/evidence/silent_misses_2026-10-14/harness/safety_review"
+
+
+def cases():
+    result = []
+    for line in (HARNESS / "battery2.sh.txt").read_text().splitlines():
+        if line.startswith("pr "):
+            _, name, *args = shlex.split(line)
+            result.append((name, "roundT_pressureGate_roundT", ["--start", "0", "--d0", "230"] + args))
+    for line in (HARNESS / "battery5.sh.txt").read_text().splitlines():
+        if line.startswith("pr "):
+            _, name, background, *args = shlex.split(line)
+            result.append((name, "roundT_doubleT" if background == "$B" else "roundT_pressureGate_roundT", args))
+    assert len(result) == 20, len(result)
+    return result
+
+
+def run(job):
+    tag, name, bag, args = job
+    repo = REPOS[tag]
+    prefix = OUT / f"{name}_{tag}"
+    if Path(str(prefix) + ".json").exists():
+        return
+    env = dict(os.environ, PYTHONPATH=os.pathsep.join((str(repo), str(BASE))), RESENSE_REPO=str(repo), WT=str(repo),
+               OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1", DARKBAND="0")
+    cmd = [sys.executable, str(BASE / "resense-p3-run-script.py"), str(repo), str(HARNESS / "wallbox_rt.py.txt"),
+           str(DATA / "decoded" / bag), str(DATA / "odometry" / f"icp_{bag}.json"), str(prefix)] + args
+    with open(str(prefix) + ".log", "w") as log:
+        result = subprocess.run(cmd, cwd=repo, env=env, stdout=log, stderr=subprocess.STDOUT)
+    print(name, tag, result.returncode, flush=True)
+    if result.returncode:
+        raise RuntimeError(f"{name} {tag}")
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    jobs = [(tag, *case) for case in cases() for tag in REPOS]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        list(pool.map(run, jobs))
+    summary = {}
+    for name, _, args in cases():
+        a, b = (json.loads(Path(str(OUT / f"{name}_{tag}") + ".json").read_text()) for tag in REPOS)
+        wall_objects = [i for i, value in enumerate(a["summary"]["objs"]) if ":wall" in value]
+        axis_objects = [i for i, value in enumerate(a["summary"]["objs"]) if ":axis" in value]
+        new_wall_hits = lost_axis_hits = 0
+        for x, y in zip(a["rows"], b["rows"]):
+            assert x["k"] == y["k"]
+            for i in wall_objects:
+                a_hit = len(x["objs"]) > i and x["objs"][i].get("hit", False)
+                b_hit = len(y["objs"]) > i and y["objs"][i].get("hit", False)
+                new_wall_hits += not a_hit and b_hit
+            for i in axis_objects:
+                a_hit = len(x["objs"]) > i and x["objs"][i].get("hit", False)
+                b_hit = len(y["objs"]) > i and y["objs"][i].get("hit", False)
+                lost_axis_hits += a_hit and not b_hit
+        summary[name] = {"sealed": a["summary"], "H2": b["summary"],
+                         "new_wall_stop_frames": int(new_wall_hits), "lost_axis_stop_frames": int(lost_axis_hits)}
+    (OUT / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    print("WALL BATTERY COMPLETE", flush=True)
+
+
+if __name__ == "__main__":
+    main()

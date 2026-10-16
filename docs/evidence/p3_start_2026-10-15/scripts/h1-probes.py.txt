@@ -1,0 +1,85 @@
+"""Re-run the H1 pole/post controls against the 14.10 candidate."""
+from concurrent.futures import ThreadPoolExecutor
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+BASE = Path(__file__).resolve().parent
+DATA = BASE / "resense-p3-data"
+OUT = BASE / ("resense-p3-runs/h1-tall-probes" if "--tall" in sys.argv else "resense-p3-runs/h1-probes")
+REPOS = {"14.10": BASE / "rs-range-screen", "H1": BASE / "rs-h1"}
+BAGS = {"A": "roundT_squareT_pressureGate_squareT", "B": "roundT_doubleT",
+        "C": "roundT_pressureGate_roundT", "S": "squareT_platform_squareT_switch"}
+
+
+def cases():
+    a = ["--start", "150", "--d0", "230", "--end", "340"]
+    b = ["--start", "50", "--d0", "230"]
+    c = ["--start", "0", "--d0", "230"]
+    s = ["--start", "360", "--end", "620", "--lat", "0.7"]
+    if "--tall" in sys.argv:
+        return [(f"pole{int(height * 10)}_{suffix}", "A", f"0.3,0.3,{height}", a + ["--lat", str(lateral)])
+                for height in (3.2, 3.6) for suffix, lateral in (("c", 0), ("side", 0.7), ("sideN", -0.7))]
+    return [
+        ("pole_c", "A", "0.3,0.3,2.8", a),
+        ("pole_side", "A", "0.3,0.3,2.8", a + ["--lat", "0.7"]),
+        ("pole_sideN", "A", "0.3,0.3,2.8", a + ["--lat", "-0.7"]),
+        ("post_c", "A", "0.5,0.5,2.5", a),
+        ("post_side", "A", "0.5,0.5,2.5", a + ["--lat", "0.7"]),
+        ("pole_c_drop", "A", "0.3,0.3,2.8", a + ["--dropout"]),
+        ("pole_side_drop", "A", "0.3,0.3,2.8", a + ["--lat", "0.7", "--dropout"]),
+        ("A_person", "A", "0.5,0.5,1.75", a),
+        ("S_pole_side60", "S", "0.3,0.3,2.8", s + ["--d0", "60"]),
+        ("S_pole_side100", "S", "0.3,0.3,2.8", s + ["--d0", "100"]),
+        ("B_pole_c", "B", "0.3,0.3,2.8", b),
+        ("B_pole_side", "B", "0.3,0.3,2.8", b + ["--lat", "0.7"]),
+        ("C_pole_c", "C", "0.3,0.3,2.8", c),
+        ("C_pole_side", "C", "0.3,0.3,2.8", c + ["--lat", "0.7"]),
+        ("C_person", "C", "0.5,0.5,1.75", c),
+    ]
+
+
+def run(job):
+    tag, name, background, obj, args = job
+    repo = REPOS[tag]
+    bag = BAGS[background]
+    prefix = OUT / f"{name}_{tag}"
+    env = dict(os.environ, PYTHONPATH=os.pathsep.join((str(repo), str(BASE))), RESENSE_REPO=str(repo), WT=str(repo),
+               OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1", DARKBAND="0")
+    driver = repo / "docs/evidence/judgement_2026-10-13/scripts/range_test.py"
+    cmd = [sys.executable, str(BASE / "resense-p3-run-script.py"), str(repo), str(driver),
+           str(DATA / "decoded" / bag), str(DATA / "odometry" / f"icp_{bag}.json"), str(prefix), "--obj", obj] + args
+    with open(str(prefix) + ".log", "w") as log:
+        result = subprocess.run(cmd, cwd=repo, env=env, stdout=log, stderr=subprocess.STDOUT)
+    print(name, tag, result.returncode, flush=True)
+    if result.returncode:
+        raise RuntimeError(f"{name} {tag}")
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    if "--tall" in sys.argv:
+        while not (BASE / "resense-p3-runs/h1-probes/summary.json").exists():
+            time.sleep(10)
+    while not all(Path(str(DATA / "decoded" / bag) + "_baseline.json").exists() for bag in BAGS.values()):
+        time.sleep(5)
+    jobs = [(tag, *case) for case in cases() for tag in REPOS]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        list(pool.map(run, jobs))
+    summary = {}
+    for name, *_ in cases():
+        a, b = (json.loads(Path(str(OUT / f"{name}_{tag}") + ".json").read_text()) for tag in REPOS)
+        ra, rb = a["rows"], b["rows"]
+        assert [r["k"] for r in ra] == [r["k"] for r in rb]
+        summary[name] = {"14.10": a["summary"], "H1": b["summary"],
+                         "lost_stop": sum(x["hit"] and not y["hit"] for x, y in zip(ra, rb)),
+                         "new_go": sum(x["decision"] != "GO" and y["decision"] == "GO" for x, y in zip(ra, rb))}
+    (OUT / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    print("H1 PROBES COMPLETE", flush=True)
+
+
+if __name__ == "__main__":
+    main()

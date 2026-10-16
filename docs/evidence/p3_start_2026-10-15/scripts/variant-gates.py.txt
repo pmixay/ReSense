@@ -1,0 +1,46 @@
+"""Run every pre-registered R2/R1 config variant through the full gate."""
+from concurrent.futures import ThreadPoolExecutor
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+BASE = Path(__file__).resolve().parent
+REPO = BASE / "rs-range-screen"
+OUT = BASE / "resense-p3-runs/variant-gates"
+
+
+def run(variant):
+    name = variant["id"]
+    env = dict(os.environ, PYTHONPATH=os.pathsep.join((str(REPO), str(BASE))), RESENSE_REPO=str(REPO),
+               OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1")
+    cmd = [sys.executable, "scripts/regression_gate.py", "--cache", str(BASE / "resense-p3-data/cache"),
+           "--jobs", "2", "--baseline", "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+           "--out", str(OUT / f"{name}.json"), "--work", str(OUT / f"{name}_work")]
+    for setting in variant["set"]:
+        cmd += ["--set", setting]
+    print(time.strftime("%H:%M:%S"), name, "START", flush=True)
+    with open(OUT / f"{name}.log", "w") as log:
+        result = subprocess.run(cmd, cwd=REPO, env=env, stdout=log, stderr=subprocess.STDOUT)
+    print(time.strftime("%H:%M:%S"), name, "EXIT", result.returncode, flush=True)
+    return name, result.returncode
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    completion = BASE / "resense-p3-runs/gates/exits.json"
+    while not completion.exists():
+        time.sleep(10)
+    if json.loads(completion.read_text()).get("baseline") != 0:
+        raise RuntimeError("baseline failed; variant gates not started")
+    protocol = json.loads((REPO / "docs/evidence/range_screen_2026-10-15/protocol.json").read_text())
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        exits = dict(pool.map(run, protocol["variants_in_order"]))
+    (OUT / "exits.json").write_text(json.dumps(exits, indent=2), encoding="utf-8")
+    print("VARIANT GATES COMPLETE", flush=True)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,59 @@
+"""Early R2/R1 Set O screen; explicitly not the full regression gate."""
+from concurrent.futures import ProcessPoolExecutor
+import json
+import os
+from pathlib import Path
+import sys
+
+BASE = Path(__file__).resolve().parent
+REPO = BASE / "rs-range-screen"
+os.environ.update(PYTHONPATH=str(REPO), RESENSE_REPO=str(REPO), OMP_NUM_THREADS="1",
+                  OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1")
+sys.path[:0] = [str(REPO), str(REPO / "scripts")]
+from scripts import eval_real, regression_gate as gate
+from scripts.cache_io import cache_files, load_cache_stamps
+from resense import _native
+
+OUT = BASE / "resense-p3-runs/range-screen-seto"
+
+
+def run(variant):
+    assert _native.enabled(), _native.status()
+    tag, overrides = variant["id"], variant["set"]
+    target = OUT / tag
+    target.mkdir(parents=True, exist_ok=True)
+    cfg_path = str(REPO / "configs/default.yaml")
+    config = eval_real.load_cfg_dict(cfg_path, overrides)
+    cache = "D:/Datasets/ReSense/cloud_with_fake_obj"
+    result_path = str(target / "cloud_with_fake_obj.jsonl")
+    eval_real.run_piece(("cloud_with_fake_obj", cache_files(cache), config, result_path,
+                         load_cache_stamps(cache), None))
+    entry = gate.set_o_entry([result_path], str(REPO / "labels/cloud_with_fake_obj.json"))
+    published = json.loads((REPO / "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json").read_text())
+    comparison = gate.compare({"set_O": published["set_O"]}, {"set_O": entry})
+    result = {"stage": "Set O preliminary screen only; full gate and range probes pending",
+              "variant": variant, "code": gate.code_info(), "native": gate.native_info(),
+              "set_O": entry, "comparison": comparison,
+              "failing_set_O_rows": [row for row in comparison if row["fails"]]}
+    (target / "screen.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    print(tag, "Set O failing rows", len(result["failing_set_O_rows"]), flush=True)
+    return tag, result
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    protocol = json.loads((REPO / "docs/evidence/range_screen_2026-10-15/protocol.json").read_text())
+    variants = [{"id": "baseline", "set": []}] + protocol["variants_in_order"]
+    # Baseline first, then independent variants with the same frames and labels.
+    baseline_tag, baseline = run(variants[0])
+    if baseline["failing_set_O_rows"]:
+        raise RuntimeError("Set O baseline did not reproduce; variants are not comparable")
+    with ProcessPoolExecutor(max_workers=2) as pool:
+        results = dict(pool.map(run, variants[1:]))
+    results[baseline_tag] = baseline
+    (OUT / "summary.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+    print("SET O SCREEN COMPLETE", flush=True)
+
+
+if __name__ == "__main__":
+    main()
