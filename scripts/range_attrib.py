@@ -328,6 +328,7 @@ class Recorder:
     def _blob(self, fn, b, out, events):
         pts = b.pts
         rec = {"fn": fn, "x0": r2(pts[:, 0].min()), "x1": r2(pts[:, 0].max()), "y": r2(pts[:, 1].mean()),
+               "y0": r2(pts[:, 1].min()), "y1": r2(pts[:, 1].max()),
                "n_vox": int(b.n_vox), "size": [r2(v) for v in b.size]}
         if out is None:
             rec["fail"], rec["cond"] = self.label(events, fn)
@@ -366,7 +367,8 @@ class Recorder:
         clusters = {}
         for c in list(res.candidates) + thin:
             clusters[id(c)] = {"d": r2(c.distance), "x0": r2(c.bbox_min[0]), "x1": r2(c.bbox_max[0]),
-                               "y": r2(c.centroid[1]), "zone": c.zone, "reason": c.reason or "",
+                               "y": r2(c.centroid[1]), "y0": r2(c.bbox_min[1]), "y1": r2(c.bbox_max[1]),
+                               "zone": c.zone, "reason": c.reason or "",
                                "thin": bool(getattr(c, "thin", False)), "weak": bool(getattr(c, "weak", False)),
                                "kind": c.kind, "n": int(c.n), "n_gauge": int(c.n_gauge),
                                "final": any(c is k for k in res.candidates)}
@@ -395,6 +397,17 @@ class Recorder:
 # ------------------------------------------------------------------------------------ causes
 def overlaps_x(x0, x1, X, L, tol):
     return x1 >= X - tol and x0 <= X + L + tol
+
+
+MARGIN = 0.5   # m around the object box: its returns lie inside it (+1 cm noise); one voxel and rounding spare
+
+
+def on_object(e, X, Y, L, W):
+    """Physical overlap of a blob / cluster bbox with the object box: the structure can contain the
+    object's returns. (The judge's distance tolerance, max(2 m, 3 %) + L/2, matches a STOP report to the
+    object; used for attribution it would credit a neighbouring structure several metres short of it.)"""
+    return (e["x1"] >= X - MARGIN and e["x0"] <= X + L + MARGIN
+            and e["y1"] >= Y - W / 2 - MARGIN and e["y0"] <= Y + W / 2 + MARGIN)
 
 
 def track_cause(t, cfg):
@@ -444,10 +457,7 @@ def cause(snap, X, Y, L, W, cfg, track_fn=track_cause):
     """Precedence: a clean gauge cluster on the object -> its track; a demoted / advisory cluster ->
     its reason; thin / weak -> tracker-only evidence; a dropped blob -> its first failing check;
     else no corridor blob on the object."""
-    tol = max(2.0, 0.03 * X) + L / 2
-    lat = 1.0 + W / 2
-    on = [(cid, c) for cid, c in snap["clusters"].items()
-          if overlaps_x(c["x0"], c["x1"], X, L, tol) and abs(c["y"] - Y) <= lat]
+    on = [(cid, c) for cid, c in snap["clusters"].items() if on_object(c, X, Y, L, W)]
     tracks = {t["last"]: t for t in snap["tracks"] if t["misses"] == 0 and t["last"] is not None}
     clean = [(cid, c) for cid, c in on if c["final"] and c["zone"] == "gauge" and not c["reason"]
              and not c["thin"] and not c["weak"]]
@@ -467,7 +477,7 @@ def cause(snap, X, Y, L, W, cfg, track_fn=track_cause):
         if t is not None and t["reported"] and t["zone"] != "gauge":
             return track_fn(t, cfg)
         return "weak_far_only" if c["weak"] else "thin_scanline_only"
-    blobs = [b for b in snap["blobs"] if overlaps_x(b["x0"], b["x1"], X, L, tol) and abs(b["y"] - Y) <= lat]
+    blobs = [b for b in snap["blobs"] if on_object(b, X, Y, L, W)]
     if any("out" in b for b in blobs):
         return "post_cluster_drop"
     if blobs:
@@ -613,9 +623,12 @@ def recheck(row, snap, cfg):
     cl, tk, low = cfg.cluster, cfg.tracking, cfg.lowobj
     X, Y, L = row["X"], row["Y"], row["L"]
     tol, lat = _window(row)
+    # physical overlap with the object box, recomputed from the bboxes (not the harness's selection)
     on_c = {int(cid): c for cid, c in snap["clusters"].items()
-            if overlaps_x(c["x0"], c["x1"], X, L, tol) and abs(c["y"] - Y) <= lat}
-    on_b = [b for b in snap["blobs"] if overlaps_x(b["x0"], b["x1"], X, L, tol) and abs(b["y"] - Y) <= lat]
+            if c["x1"] >= X - MARGIN and c["x0"] <= X + L + MARGIN
+            and c["y1"] >= Y - row["W"] / 2 - MARGIN and c["y0"] <= Y + row["W"] / 2 + MARGIN}
+    on_b = [b for b in snap["blobs"] if b["x1"] >= X - MARGIN and b["x0"] <= X + L + MARGIN
+            and b["y1"] >= Y - row["W"] / 2 - MARGIN and b["y0"] <= Y + row["W"] / 2 + MARGIN]
     final = {k: c for k, c in on_c.items() if c["final"]}
     clean = {k: c for k, c in final.items() if c["zone"] == "gauge" and not c["reason"] and not c["thin"]
              and not c["weak"]}
@@ -640,8 +653,8 @@ def recheck(row, snap, cfg):
         ev.update(blob={k: b[k] for k in ("x0", "x1", "y", "n_vox", "size")}, locals=e)
         # re-evaluate with the configuration the call itself used (recorded), not the detector default
         used = e.get(b["fn"], {})
-        cl = SimpleNamespace(**dict(vars(cl), **used.get("cfg", {}), **ic.get("cfg", {})))
-        low = SimpleNamespace(**dict({k: getattr(low, k, 0.0) for k in LOW_KEYS}, **lc.get("low_cfg", {})))
+        cl = SimpleNamespace(**{**vars(cl), **used.get("cfg", {}), **ic.get("cfg", {})})
+        low = SimpleNamespace(**{**{k: getattr(low, k, 0.0) for k in LOW_KEYS}, **lc.get("low_cfg", {})})
         ev["stage_config_differs"] = any(getattr(cfg.cluster, k, None) != v for k, v in used.get("cfg", {}).items())
         if rule == "oversize_split_refused":
             ok = bool(cc.get("part_is_none")) and max(cc["size"]) > cl.max_extent and cl.oversize_split_max_length > 0

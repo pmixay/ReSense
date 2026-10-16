@@ -87,7 +87,7 @@ def _snap(clusters=(), blobs=(), tracks=()):
 
 
 def _cl(d, **kw):
-    c = dict(d=d, x0=d, x1=d + 0.5, y=0.0, zone="gauge", reason="", thin=False, weak=False, kind="",
+    c = dict(d=d, x0=d, x1=d + 0.5, y=0.0, y0=-0.2, y1=0.2, zone="gauge", reason="", thin=False, weak=False, kind="",
              n=10, n_gauge=10, final=True)
     c.update(kw)
     return c
@@ -96,10 +96,13 @@ def _cl(d, **kw):
 def test_row_cause_precedence():
     X, Y, L, W = 100.0, 0.0, 0.5, 0.5
     assert RA.cause(_snap(), X, Y, L, W, CFG) == "no_blob"
-    blob = {"x0": 100.0, "x1": 100.4, "y": 0.0, "n_vox": 3, "fail": "min_points"}
+    blob = {"x0": 100.0, "x1": 100.4, "y": 0.0, "y0": -0.2, "y1": 0.2, "n_vox": 3, "fail": "min_points"}
     assert RA.cause(_snap(blobs=[blob]), X, Y, L, W, CFG) == "drop:min_points"
-    far_away = dict(blob, y=5.0)
+    far_away = dict(blob, y=5.0, y0=4.8, y1=5.2)
     assert RA.cause(_snap(blobs=[far_away]), X, Y, L, W, CFG) == "no_blob"
+    # inside the judge's 3 % distance tolerance but 4 m short of the object: not the object's blob
+    short = dict(blob, x0=90.0, x1=96.0, fail="oversize_split_refused")
+    assert RA.cause(_snap(blobs=[short]), X, Y, L, W, CFG) == "no_blob"
     col = (7, _cl(100.0, zone="warning", reason="column"))
     assert RA.cause(_snap([col], [blob]), X, Y, L, W, CFG) == "demoted:column"
     thin = (8, _cl(100.0, thin=True, final=False))
