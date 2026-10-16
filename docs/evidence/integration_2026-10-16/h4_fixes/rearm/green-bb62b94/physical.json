@@ -1,0 +1,4625 @@
+[
+  {
+    "label": "case44_free",
+    "top": 2.72,
+    "object_returns": 72,
+    "initial": [
+      {
+        "n": 72,
+        "n_gauge": 72,
+        "ring_count": 18,
+        "spared": true,
+        "reason": "",
+        "zone": "gauge"
+      }
+    ],
+    "stop_frames": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 1,
+            "misses": 0,
+            "age": 1,
+            "confidence": 0.35,
+            "history": [
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false
+            ],
+            "column_hist": [
+              true
+            ],
+            "spare_hist": [
+              true
+            ],
+            "hit_hist": [
+              true
+            ],
+            "thin_hist": [
+              false
+            ],
+            "near_hist": [
+              false
+            ],
+            "explained_hist": [
+              false
+            ],
+            "clean_run": 0,
+            "reported": false,
+            "seen_reported": false,
+            "column_held": false,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.1,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              true
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 1,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 2,
+            "misses": 0,
+            "age": 2,
+            "confidence": 0.7,
+            "history": [
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true
+            ],
+            "column_hist": [
+              true,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false
+            ],
+            "clean_run": 1,
+            "reported": false,
+            "seen_reported": false,
+            "column_held": false,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.2,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              true,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 2,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 3,
+            "misses": 0,
+            "age": 3,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false
+            ],
+            "clean_run": 2,
+            "reported": false,
+            "seen_reported": false,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 0.30000000000000004,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              true,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 3,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 4,
+            "misses": 0,
+            "age": 4,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 3,
+            "reported": false,
+            "seen_reported": false,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 0.4,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              true,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 4,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 5,
+            "misses": 0,
+            "age": 5,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 4,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "warning",
+            "span_s": 0.5,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": true,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 5,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 6,
+            "misses": 0,
+            "age": 6,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 5,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 0.6,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 6,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 7,
+            "misses": 0,
+            "age": 7,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 6,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 0.7,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 7,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 8,
+            "misses": 0,
+            "age": 8,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 7,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 0.7999999999999999,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 8,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 9,
+            "misses": 0,
+            "age": 9,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 8,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 0.8999999999999999,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 9,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 9,
+            "misses": 1,
+            "age": 10,
+            "confidence": 0.75,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 0.9999999999999999,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.1,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 10,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 9,
+            "misses": 2,
+            "age": 11,
+            "confidence": 0.5,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 0,
+            "reported": false,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.0999999999999999,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": 0.2,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 11,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 10,
+            "misses": 0,
+            "age": 12,
+            "confidence": 0.85,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 1,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.2,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 12,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 11,
+            "misses": 0,
+            "age": 13,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 2,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.3,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 13,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 12,
+            "misses": 0,
+            "age": 14,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 3,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.4000000000000001,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 14,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 13,
+            "misses": 0,
+            "age": 15,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 4,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.5000000000000002,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 15,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 14,
+            "misses": 0,
+            "age": 16,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 5,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.6000000000000003,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 16,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 15,
+            "misses": 0,
+            "age": 17,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 6,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.7000000000000004,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 17,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 16,
+            "misses": 0,
+            "age": 18,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              true,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 7,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.8000000000000005,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 18,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 17,
+            "misses": 0,
+            "age": 19,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 8,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 1.9000000000000006,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      },
+      {
+        "frame": 19,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 18,
+            "misses": 0,
+            "age": 20,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "column_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "spare_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "hit_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "clean_run": 9,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": false,
+            "vote_zone": "gauge",
+            "rule_zone": "gauge",
+            "zone": "gauge",
+            "span_s": 2.0000000000000004,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": true,
+            "withheld": false,
+            "since_clean": 0.0,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "label": "genuine_column_to_vault",
+    "top": 4.12,
+    "object_returns": 108,
+    "initial": [
+      {
+        "n": 80,
+        "n_gauge": 80,
+        "ring_count": 20,
+        "spared": false,
+        "reason": "column",
+        "zone": "warning"
+      }
+    ],
+    "stop_frames": [],
+    "frames": [
+      {
+        "frame": 0,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 1,
+            "misses": 0,
+            "age": 1,
+            "confidence": 0.35,
+            "history": [
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false
+            ],
+            "column_hist": [
+              true
+            ],
+            "spare_hist": [
+              false
+            ],
+            "hit_hist": [
+              true
+            ],
+            "thin_hist": [
+              false
+            ],
+            "near_hist": [
+              false
+            ],
+            "explained_hist": [
+              true
+            ],
+            "clean_run": 0,
+            "reported": false,
+            "seen_reported": false,
+            "column_held": false,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.1,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 1,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 2,
+            "misses": 0,
+            "age": 2,
+            "confidence": 0.7,
+            "history": [
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": false,
+            "seen_reported": false,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.2,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 2,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 3,
+            "misses": 0,
+            "age": 3,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": false,
+            "seen_reported": false,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.30000000000000004,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 3,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 4,
+            "misses": 0,
+            "age": 4,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": false,
+            "seen_reported": false,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.4,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 4,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 5,
+            "misses": 0,
+            "age": 5,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.5,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 5,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 6,
+            "misses": 0,
+            "age": 6,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.6,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 6,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 7,
+            "misses": 0,
+            "age": 7,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.7,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 7,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 8,
+            "misses": 0,
+            "age": 8,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.7999999999999999,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 8,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 9,
+            "misses": 0,
+            "age": 9,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.8999999999999999,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 9,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 9,
+            "misses": 1,
+            "age": 10,
+            "confidence": 0.75,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 0.9999999999999999,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 10,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 9,
+            "misses": 2,
+            "age": 11,
+            "confidence": 0.5,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": false,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.0999999999999999,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 11,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 10,
+            "misses": 0,
+            "age": 12,
+            "confidence": 0.85,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.2,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 12,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 11,
+            "misses": 0,
+            "age": 13,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.3,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 13,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 12,
+            "misses": 0,
+            "age": 14,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.4000000000000001,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 14,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 13,
+            "misses": 0,
+            "age": 15,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.5000000000000002,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 15,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 14,
+            "misses": 0,
+            "age": 16,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.6000000000000003,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 16,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 15,
+            "misses": 0,
+            "age": 17,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.7000000000000004,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 17,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 16,
+            "misses": 0,
+            "age": 18,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              true,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.8000000000000005,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 18,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 17,
+            "misses": 0,
+            "age": 19,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 1.9000000000000006,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      },
+      {
+        "frame": 19,
+        "tracks": [
+          {
+            "id": 1,
+            "hits": 18,
+            "misses": 0,
+            "age": 20,
+            "confidence": 1.0,
+            "history": [
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664,
+              66.7699966430664
+            ],
+            "zone_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "column_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "spare_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "hit_hist": [
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "thin_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "near_hist": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "explained_hist": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "clean_run": 0,
+            "reported": true,
+            "seen_reported": true,
+            "column_held": true,
+            "vote_zone": "warning",
+            "rule_zone": "warning",
+            "zone": "warning",
+            "span_s": 2.0000000000000004,
+            "approach_block": false,
+            "far_evidence": false,
+            "fresh_blocked": false,
+            "stop_earned": false,
+            "withheld": false,
+            "since_clean": Infinity,
+            "hold": 0,
+            "provisional_explained_hist": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ],
+        "stop_ids": []
+      }
+    ]
+  }
+]
