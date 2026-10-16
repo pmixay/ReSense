@@ -4,16 +4,49 @@
 > send, and why each matters.
 > **Audience:** P1, team (the message: the organizers) · **Owner:** P1 · **Language:** RU message,
 > EN rationale
-> **Last verified:** 2026-09-29: against [`organizers/answers.md`](organizers/answers.md) §9 and the
+> **Last verified:** 2026-10-16: against [`organizers/answers.md`](organizers/answers.md) §10 and the experts'
+> message; 2026-09-29: against [`organizers/answers.md`](organizers/answers.md) §9 and the
 > sealed detector · **Status:** current
 
-**Status: no open question.** Q1 and Q2 (sent on 25.09) were answered on 29.09: the envelope is
-measured from the rail heads, the rails may run at any angle to the LiDAR, and the synthetic objects
-are placed approximately; the organizers correct for that when checking
-([`organizers/answers.md`](organizers/answers.md) §9). Every answered question is recorded in
-[`organizers/answers.md`](organizers/answers.md); a new question goes here as a message ready to
-send, with why it matters. Channel: the case moderator (Telegram
-[@gorbatovaol](https://t.me/gorbatovaol)) or info.leaders@develop.mos.ru.
+**Status: five questions open (16.10).** Q1 and Q2 (sent on 25.09) were answered on 29.09: the envelope is
+measured from the rail heads, the rails may run at any angle to the LiDAR, and the synthetic objects are placed
+approximately; the organizers correct for that when checking
+([`organizers/answers.md`](organizers/answers.md) §9). The live Q&A of 16.10 left two questions without an answer
+(how `CAUTION` is read; which objects and scenes the hidden set has), and the experts' message of the same day
+([`FINALS_BRIEF_2026-10-16.md`](FINALS_BRIEF_2026-10-16.md)) raises three more (what "the filter" is, what the new
+data look like, how the bags will be played). Every answered question is recorded in
+[`organizers/answers.md`](organizers/answers.md); a new question goes here as a message ready to send, with why it
+matters. Channel: the case moderator (Telegram [@gorbatovaol](https://t.me/gorbatovaol)) or
+info.leaders@develop.mos.ru.
+
+## Open: message to send (16.10, RU, open form for a live conversation)
+
+Spoken form, most important first; each question can be asked as is.
+
+1. **Как вы относитесь к уровню «осторожно» в нашем ответе?** У нас есть «тревога» и «осторожно» (подсказка: объект у
+   границы габарита или известная инфраструктура). Что для вас считается ответом «препятствие есть», а что нет?
+2. **Какие объекты и какие участки будут в проверке?** Какие размеры и формы, есть ли тонкие висящие, движущиеся
+   (человек идёт), как выглядит пыль. Будут ли станции, платформы, стрелки, повороты, двухпутные участки; бывают ли
+   моменты, когда поезд стоит или едет очень медленно?
+3. **Что вы называете «работой фильтра»?** Фильтрацию ложных срабатываний, фильтр сопровождения (подтверждение
+   объекта по нескольким кадрам) или фильтр пыли?
+4. **Что будет в новых данных?** Когда их выдадут; для записи с другого лидара: модель, поля облака (есть ли номер
+   луча), число лучей, угол обзора, как направлены оси; объекты в новой синтетике закреплены в тоннеле, как в
+   `cloud_with_fake_obj`, или иначе?
+5. **Как вы будете проигрывать бэги?** Какая команда, скорость, нужны ли пауза и замедление из консоли, сколько
+   ядер процессора будет доступно.
+
+| # | why it matters (EN) | what changes with the answer |
+|---|---|---|
+| 1 | `CAUTION` is on 43 % of empty frames (judge, 13.10); if it counts as an alarm, false positives (scored like misses) multiply | the output mapping and the `CAUTION` policy (C1) |
+| 2 | N3 (dust), the small-object and thin-cable cards (R1, R3), and the standing-train rules (K1) depend on what the hidden set contains | priorities between R, K, F cards; the dust generator's parameters |
+| 3 | criterion 7 of the experts' list is not defined | whether N3, the tracker, or the false-alarm work is what is meant |
+| 4 | N2 (second lidar): the orientation search is limited to 8 rotations with the up axis vertical, and the far multi-ring rules assume 128 elevation channels; the objects' placement decides whether `ego_veto` is safe | N2's battery and the jury README for the second lidar; whether to keep `ego_veto` as it is |
+| 5 | the player's flags decide the stale-result problem (S1); pause and slow need the player's keyboard controls (N4); the core count bounds 360° speed (S5) | S1, N4, the launch notes |
+
+Not asked again, answered in §10 of [`organizers/answers.md`](organizers/answers.md): how the result is scored,
+how false alarms count against misses (equally), the hidden set's mix (real and synthetic), the range (300 m in the
+ideal), ground truth (not available), the results' explanation (promised, to be confirmed).
 
 ## Answered
 

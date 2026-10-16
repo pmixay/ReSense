@@ -4,7 +4,7 @@
 > `results/`, the logs, captures and bench output of each run, and the recordings' original
 > metadata. One line per file or folder: what it is, date, commit, result.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-09-29 night (`fe27068`, before the merge into `main`): every link of this index; "Start
+> **Last verified:** 2026-10-16: rows added for the two folders of 16.10; 2026-09-29 night (`fe27068`, before the merge into `main`): every link of this index; "Start
 > here" points at the seal of 29.09 night (shell off) and its gate, and at the superseded seal of
 > 29.09 evening; rows added for the 29.09 folders; each file remains the record of its own date ·
 > **Status:** current
@@ -27,6 +27,8 @@ per-file speeds and intake events) stays in `docs/` because scripts read it.
 | the seal of 27.09 and its full gate (the detector the judgement of 28.09 measured) | [`results/regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json), [its baseline](results/regression_baseline_2026-09-27_quality.json); the file [`detector_freeze_2026-09-27.json`](detector_freeze_2026-09-27.json) was reissued on 29.09 for `3eeb106` |
 | the independent judgement of 28.09 evening (`464f5bc`, detector of 27.09), basis of the SCORECARD | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) |
 | the independent judgement of 13.10 (`2cb0463`, the sealed detector of 29.09 = `v1.0.0`): 66/100, every frame of the organizers' data (15 279) incl. the whole ride, range by ray-cast on real backgrounds, the release image through the node; per-frame CSVs and scripts | [`judgement_2026-10-13/`](judgement_2026-10-13/README.md) |
+| read-only survey of 34 other teams' case-05 repositories (clone commits, per-repo reports, the brief the analysis agents received) | [`competitors_2026-10/`](competitors_2026-10/README.md) |
+| axis error, per-frame jitter and point counts by range from the organizers' synthetic objects (label-only; `scripts/axis_error_profile.py`, `profile.json`) | [`axis_profile_2026-10-16/`](axis_profile_2026-10-16/README.md) |
 | per-frame outputs of the sealed detector with a recount script | [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md) |
 | the full team VM run of 28.09 (`464f5bc`) | [`vm_2026-09-28/summary.md`](vm_2026-09-28/summary.md) |
 | the node's input path and end-to-end latency through ROS (28.09) | [`node_input_2026-09-28/`](node_input_2026-09-28/README.md) |

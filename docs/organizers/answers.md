@@ -3,7 +3,8 @@
 > **Purpose:** every answer the organizers gave to our questions (case 05), verbatim where it was
 > written, and what each answer changed in ReSense.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, the answers verbatim in RU
-> **Last verified:** 2026-09-29: §9 against the sealed detector's `gauge.*` settings and the labels
+> **Last verified:** 2026-10-16: §10 added (live Q&A and the experts' message of 16.10, as relayed by the team);
+> 2026-09-29: §9 against the sealed detector's `gauge.*` settings and the labels
 > of `cloud_with_fake_obj` · **Status:** current
 
 Everything the organizers answered to the questions of [`../QUESTIONS.md`](../QUESTIONS.md),
@@ -25,9 +26,11 @@ from these sources:
   the rails is not an obstacle), reported by the captain, §8;
 * the **organizers' written answer of 29.09** to our Q1 and Q2 (the envelope's reference and the
   accuracy of the synthetic objects), passed on by the team, §9.
+* the **live Q&A of 16.10** and the **experts' general message to the finalists** of the same day, both relayed by
+  the team (not recorded verbatim by us), §10.
 
 The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md)
-(none since 29.09).
+(two since 16.10: how `CAUTION` is read, and the object types and scenes of the hidden set).
 
 ## 1. Answers by question (Q&A session 22.09 + written answers 23.09)
 
@@ -167,4 +170,39 @@ of that recording run at 0.24° to the LiDAR's axis; (Q2) is «2х2 сверху
 | Q1 | the train's envelope is **measured from the rail heads**; the rails **may run at any angle to the LiDAR** | **closed** | the organizers' envelope is the one the detector builds from the rails (`gauge.profile`: \|dy\| ≤ 1.05 m from the fitted track axis, 0.12–3.0 m above the rail-head plane); nothing is measured from the sensor axis in their definition. The shipped `gauge.reference` 3 stays: it is the union of the rails' envelope and the sensor-axis one, so it never narrows the organizers' envelope, and it only widens it within 60 m on straight track by at most `reference_max_offset` = 0.2 m, inside the 0.35 m advisory band, whatever the rail angle (the offset is clipped). Taking it off (`reference` 0) loses measured recall for no measured false-alarm gain: in the matched quality-cycle screens ([`review_fix_d`](../evidence/results/quality_cycle_2026-09-27/screens/review_fix_d.json) vs [`ablation_reference_off`](../evidence/results/quality_cycle_2026-09-27/screens/ablation_reference_off.json)) the real person drops 61 → 58 of 61 frames and set O's edge cube 18 → 2 STOP frames (first STOP 35.0 → 5.2 m), while the ride, the five empty recordings and set O's outside-object false STOPs (6) are identical ([`../DECISIONS.md`](../DECISIONS.md) row 18). The cost the answer defines: an object up to 0.2 m outside the rails' envelope, within 60 m on straight track, can be a STOP. `gauge.axis_union` (off) loses its reason (the sensor-axis frame) and stays off. "Any angle" is what the mount calibration and the per-frame track axis already assume: the envelope follows the fitted rails, not the LiDAR's X axis |
 | Q2 | not answered in so many words; it follows from Q1: the envelope's top is 3.0 m **above the rail head** | **closed** (by Q1) | the bottom of #8 «2х2 сверху габарита» is 2.4–2.9 m above the rail head, 0.1–0.6 m inside the 3.0 m envelope: an obstacle. Its label stays `in_gauge: true` and its STOPs (from ~111 m) stay counted as detections. If the organizers meant "must not alarm", the answer's allowance below covers a placement that far from the top edge only loosely; nothing changes in the detector either way |
 | — | the synthetic objects are **placed approximately** and **may drift relative to the envelope along the track**; the organizers are improving their accuracy and **will correct for it when checking the solutions** | noted | set O's edge tests (#4 `small_edge_inside`, #5 `small_outside_near`, #6 `big_edge_inside`, #7 `big_outside`) sit within ±0.1–0.4 m of the rails' envelope edge and cross it along the track ([`../DATASET.md`](../DATASET.md) "Synthetic-obstacle recording"). Their labels keep the organizers' intent (`in_gauge`); their in/out results are within the organizers' stated tolerance and are reported, not tuned further. The hidden check's synthetic objects may be placed as loosely: no rule is fitted to an exact synthetic placement |
+
+## 10. Live Q&A and the experts' message to the finalists (16.10, relayed by the team)
+
+On 16.10 the team put ten questions to the organizers live (the list was prepared in the session of 16.10: how
+the result is scored, how false alarms are counted, how `CAUTION` is read, how the synthetic objects are inserted,
+what the hidden set contains, at what range, which objects, how the solution is launched and measured, whether
+ground truth and more data can be had, whether the results will be explained). The answers below are **the
+team's short relay in Russian, not the organizers' wording**: treat them as what the team understood, and confirm
+anything that matters before relying on it. The experts' general message of the same day is recorded verbatim in
+[`../FINALS_BRIEF_2026-10-16.md`](../FINALS_BRIEF_2026-10-16.md) §1.
+
+**What the organizers said about how they scored and what our project needs** (relayed, Russian):
+«смотрели на дальность детекции, первый успешный детект препятствия, насколько габарит был устойчивый, количество
+ложноположительных / отрицательных срабатываний, совпадает ли с realtime скорость работы алгоритма, насколько хорошо
+справлялся фильтр. Удобство запуска тоже важно. Нам в проект: надо улучшить устойчивость габарита, синхронизацию
+габарита с поворотом отдельно, не очень хорошо совпадает.»
+
+| # | our question (short) | answer as relayed | status | consequence in ReSense |
+|---|---|---|---|---|
+| 1 | how is the result scored | «отвечено»: detection range, first successful detect, gauge stability, false positives and false negatives, real-time speed, the filter, ease of launch; feedback: improve gauge stability and the gauge's synchronisation with turns | **closed** | the gauge is a scored object, not only a decision input: [`../FINALS_BRIEF_2026-10-16.md`](../FINALS_BRIEF_2026-10-16.md) (criteria 2–3, card N1); curves: BACKLOG K2; measured: [`../evidence/axis_profile_2026-10-16/`](../evidence/axis_profile_2026-10-16/README.md) |
+| 2 | how are false alarms counted against misses | «одинаково с пропущенным»: a false alarm costs the same as a miss | **closed** | a false `STOP` episode is as costly as a missed obstacle: false-alarm work (F1, F2, C1) is as valuable as range work |
+| 3 | how is `CAUTION` read (alarm or hint) | «не дали чёткого ответа» | **open** | unchanged: `CAUTION` stays a hint; it is on 43 % of empty frames (judge), so C1 matters whichever way it is read; asked again in [`../QUESTIONS.md`](../QUESTIONS.md) |
+| 4 | how are the synthetic objects inserted (fixed in the tunnel or riding with the train; shadow behind them) | no answer: «исследуй по датасету» | investigated | in `cloud_with_fake_obj` the objects stand still in the tunnel and the train approaches them (about 15–20 m/s), so `ego_veto` does not suppress them; the file stops at 250 m, the judge found points up to ~298 m: [`../evidence/axis_profile_2026-10-16/`](../evidence/axis_profile_2026-10-16/README.md) §1; whether the hidden set is the same is not confirmed |
+| 5 | what is in the hidden set | «смесь»: real and synthetic | **closed** | both count; we have one real positive, so G3 (held-out battery) matters |
+| 6 | at what range | «300 м в идеале» | **closed** | 300 m is the ideal; only large objects have enough returns that far (a 0.3 m cube: 1–2 returns beyond 80 m), and it needs a right axis (K2): [`../evidence/axis_profile_2026-10-16/`](../evidence/axis_profile_2026-10-16/README.md) §2 |
+| 7 | which objects and scenes | «нет ответа» | **open** | unchanged; asked again in [`../QUESTIONS.md`](../QUESTIONS.md) |
+| 8 | how the solution is launched and measured | not asked (the team judged it unimportant at the time) | not asked | the experts' message of the same day lists four launch requests: [`../FINALS_BRIEF_2026-10-16.md`](../FINALS_BRIEF_2026-10-16.md) §3, card N4 |
+| 9 | can ground truth and more data be had | «нельзя» | **closed** | no organizers' labels: our own labels (`labels/`) stay the reference; the extended data they announce (synthetic with a person and dust, a real recording from another lidar) comes by their schedule |
+| 10 | will the results be explained afterwards | «сказал» (they said so; the exact promise was not recorded) | **closed, unverified** | confirm what is promised (a per-recording breakdown, or only scores) |
+
+**The experts' message of 16.10** (verbatim in the brief) adds, beyond the criteria: an **extended dataset** with extra
+synthetic (a person, simulated dust or suspension) and a **real recording from another lidar** ("account for the
+different axis directions"); four launch requests (Docker with graphics, RViz in the container, pause or slow bags from
+the console, switch bags without restarting the container). What the shipped system does for each, and the cards that
+follow, are in [`../FINALS_BRIEF_2026-10-16.md`](../FINALS_BRIEF_2026-10-16.md) §2–§4.
 
