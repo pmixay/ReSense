@@ -1,0 +1,2 @@
+# Raw CI transcript is retained byte-for-byte, including original log whitespace.
+results/original-ci-failure.txt -text whitespace=cr-at-eol,-blank-at-eol

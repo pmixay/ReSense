@@ -1,0 +1,57 @@
+{
+  "source_commit": "e6cf5f2213f47945d753a0694deb7ebf21be87f7",
+  "helper_sha256": "209ed378f37b5a18f6030f98a44996263df82af7028c7be073280b18b375db0d",
+  "tests_sha256": "37e0274358ac127756e2989fbe2c29d91800eea7184254d987bdebc465958fd7",
+  "image": "resense:h4-fixture-fixed-1cfe8de-20261016",
+  "volume": "rs-s1-original-bags-20261016-72a601b",
+  "method_budget_s": 60,
+  "max_mapped_sweeps": 2,
+  "commands": [
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--entrypoint",
+        "python3",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "-v",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016:/work:ro",
+        "-w",
+        "/work",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "/work/docs/evidence/integration_ci_2026-10-16/warm_playback_followup/verify.py",
+        "--linux-units"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--entrypoint",
+        "python3",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "-v",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016:/work:ro",
+        "-w",
+        "/work",
+        "--mount",
+        "type=volume,src=rs-s1-original-bags-20261016-72a601b,dst=/data,readonly,volume-nocopy",
+        "-v",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016\\docs\\evidence\\integration_ci_2026-10-16\\warm_playback_followup\\results\\bag-once:/out",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "/work/docs/evidence/integration_ci_2026-10-16/warm_playback_followup/verify.py",
+        "--linux-bag"
+      ],
+      "exit": 0
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{"schema": "resense-warm-cache-v1", "scope": "page-cache precondition only, not playback acceptance", "mode": "bounded-read-and-mapped-faults", "bag": "/tmp/tmpvvkqux5d", "before": {"informational": true}, "files": [{"name": "bag_0.db3", "identity": {"device": 87, "inode": 1372337, "bytes": 8192, "mtime_ns": 1792167868254916487}, "before": {"pages": 2, "resident": 1, "missing": 1, "page_size": 4096, "fully_resident": false}, "read_bytes": 8192, "after_read": {"pages": 2, "resident": 1, "missing": 1, "page_size": 4096, "fully_resident": false}, "after": {"pages": 2, "resident": 1, "missing": 1, "page_size": 4096, "fully_resident": false}}], "errors": ["bag_0.db3: 1 pages not resident after bounded setup"], "setup": {"budget_s": 60.0, "max_mapped_sweeps": 2, "sweeps": [], "mappings_released_before_final_check": false, "method": "one buffered read, one all-page mapped touch, one missing-page mapped touch"}, "after": {"informational": true}, "wall_s": 0.0009141620103036985, "status": "ERROR"}
+{"controlled_faulting": "PASS", "before": {"pages": 1024, "resident": 0, "missing": 1024, "page_size": 4096, "fully_resident": false}, "after": {"pages": 1024, "resident": 1024, "missing": 0, "page_size": 4096, "fully_resident": true}, "setup": {"sweeps": [{"sweep": 1, "kind": "all-pages", "files": [{"name": "fixture.db3", "before": {"pages": 1024, "resident": 0, "missing": 1024, "page_size": 4096, "fully_resident": false}, "pages_touched": 1024, "sample_xor": 0, "after": {"pages": 1024, "resident": 1024, "missing": 0, "page_size": 4096, "fully_resident": true}}]}, {"sweep": 2, "kind": "missing-pages-once", "files": [{"name": "fixture.db3", "before": {"pages": 1024, "resident": 1024, "missing": 0, "page_size": 4096, "fully_resident": true}, "pages_touched": 0, "sample_xor": 0, "after": {"pages": 1024, "resident": 1024, "missing": 0, "page_size": 4096, "fully_resident": true}}]}], "mappings_released_before_final_check": true}}
+{"shell_gate": [{"valid_bag": false, "exit": 1, "player_called": false}, {"valid_bag": true, "exit": 0, "player_called": true}]}
+test_actual_linux_read_and_mincore_preserve_file_bytes (__main__.WarmCacheContract) ... ok
+test_all_splits_rechecked_after_all_reads (__main__.WarmCacheContract) ... ok
+test_changed_file_identity_fails (__main__.WarmCacheContract) ... ok
+test_complete_read_is_insufficient_when_pages_were_evicted (__main__.WarmCacheContract) ... ok
+test_error_receipt_is_retained_and_returns_nonzero (__main__.WarmCacheContract) ... usage: test_warm_cache.py [-h] --out OUT [--observe-only] bag
+test_warm_cache.py: error: receipt already exists; use a fresh output directory
+ok
+test_expired_budget_prevents_any_page_fault (__main__.WarmCacheContract) ... ok
+test_expired_budget_prevents_read (__main__.WarmCacheContract) ... ok
+test_final_check_rejects_eviction_after_successful_setup (__main__.WarmCacheContract) ... ok
+test_growing_read_fails (__main__.WarmCacheContract) ... ok
+test_mapped_sweeps_have_fixed_bound_and_only_repair_missing_pages (__main__.WarmCacheContract) ... ok
+test_mapping_is_closed_on_budget_failure (__main__.WarmCacheContract) ... ok
+test_missing_database_fails (__main__.WarmCacheContract) ... ok
+test_missing_metadata_fails (__main__.WarmCacheContract) ... ok
+test_observation_neither_warms_nor_claims_warm (__main__.WarmCacheContract) ... ok
+test_partial_read_fails (__main__.WarmCacheContract) ... ok
+test_receipt_reports_method_and_budget (__main__.WarmCacheContract) ... ok
+test_touch_reads_each_requested_page_without_writes (__main__.WarmCacheContract) ... ok
+test_unavailable_residency_is_error_not_warm_claim (__main__.WarmCacheContract) ... ok
+test_warm_verified_requires_complete_read_and_residency (__main__.WarmCacheContract) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.121s
+
+OK

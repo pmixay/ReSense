@@ -17,7 +17,7 @@
 #   RATE=1.0         bag playback rate passed to `ros2 bag play`
 #   BAG_READ_AHEAD_QUEUE_SIZE=10 messages buffered by rosbag2 before publication;
 #                            override only for a separately tested playback setup
-#   WARM_CACHE=1     read once and require full Linux page-cache residency immediately before play;
+#   WARM_CACHE=1     bounded read + mapped page faults; require full Linux residency before play;
 #                    retain before/after residency and resource receipts (default 0, cold cache policy unchanged)
 #   OUT=out/dry_run  where status.jsonl and node.log are written on the host
 #   DOCKER_ARGS=""   extra `docker run` arguments, split on whitespace, e.g. "-e RESENSE_NATIVE=0"

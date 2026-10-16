@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Read a bag once and verify Linux page-cache residency at the playback boundary.
+"""Establish and verify Linux page-cache residency within a bounded setup phase.
 
 This is a warm-cache precondition, never a detector/playback acceptance verdict.
-No mlock, cache eviction, CPU affinity changes, retries or bag writes are performed.
+One full read, one mapped page-touch sweep and at most one missing-page repair sweep.
+No mlock, cache eviction, CPU affinity changes, playback retries or bag writes.
 """
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack
 import ctypes
 import json
 import mmap
@@ -16,6 +18,8 @@ import sys
 import time
 
 BLOCK = 4 * 1024 * 1024
+SETUP_BUDGET_S = 60.0
+MAX_MAPPED_SWEEPS = 2
 
 
 def identity(stat):
@@ -34,12 +38,23 @@ def resources():
             readings[name] = Path(name).read_text().strip()
         except OSError as exc:
             readings[name] = {'unavailable': str(exc)}
+    try:
+        wanted = ('Uid:', 'CapEff:', 'VmRSS:', 'VmSize:')
+        readings['/proc/self/status:selected'] = [line for line in Path('/proc/self/status').read_text().splitlines()
+                                                  if line.startswith(wanted)]
+        counters = ('pgfault', 'pgmajfault', 'pgscan_kswapd', 'pgsteal_kswapd', 'pgscan_direct', 'pgsteal_direct',
+                    'workingset_refault_file', 'workingset_activate_file')
+        readings['/proc/vmstat:selected'] = {key: int(value) for key, value in
+                                            (line.split() for line in Path('/proc/vmstat').read_text().splitlines())
+                                            if key in counters}
+    except OSError as exc:
+        readings['process/reclaim_counters'] = {'unavailable': str(exc)}
     return {'utc_s': time.time(), 'cpu_count': os.cpu_count(),
             'cpu_affinity': sorted(os.sched_getaffinity(0)) if hasattr(os, 'sched_getaffinity') else None,
             'readings': readings}
 
 
-def resident_pages(file):
+def page_state(file):
     """mincore observes without faulting pages in; private mapping never writes the file."""
     if sys.platform != 'linux':
         raise RuntimeError('warm-cache proof requires Linux mincore')
@@ -63,24 +78,93 @@ def resident_pages(file):
             error = ctypes.get_errno()
             raise OSError(error, os.strerror(error))
     resident = sum(bool(value & 1) for value in vector)
-    return {'pages': pages, 'resident': resident, 'missing': pages - resident,
-            'page_size': mmap.PAGESIZE, 'fully_resident': resident == pages}
+    summary = {'pages': pages, 'resident': resident, 'missing': pages - resident,
+               'page_size': mmap.PAGESIZE, 'fully_resident': resident == pages}
+    return summary, vector
 
 
-def read_complete(file, expected):
+def resident_pages(file):
+    return page_state(file)[0]
+
+
+def check_budget(deadline):
+    if deadline is not None and time.monotonic() >= deadline:
+        raise RuntimeError('warm setup time budget exhausted (no playback attempted)')
+
+
+def read_complete(file, expected, *, deadline=None):
     total = 0
-    while block := file.read(BLOCK):
+    while True:
+        check_budget(deadline)
+        block = file.read(BLOCK)
+        if not block:
+            break
         total += len(block)
+    check_budget(deadline)
     if total != expected:
         raise ValueError(f'incomplete/changing warm read: expected {expected}, read {total}')
     return total
 
 
+def touch_pages(mapping, indices, deadline):
+    """Synchronously read one byte per requested page; no advisory-only warm claim."""
+    touched = 0
+    checksum = 0
+    for page in indices:
+        if touched % 256 == 0:
+            check_budget(deadline)
+        checksum ^= mapping[page * mmap.PAGESIZE]
+        touched += 1
+    check_budget(deadline)
+    return {'pages_touched': touched, 'sample_xor': checksum}
+
+
+def mapped_setup(paths, rows, deadline, setup):
+    """Fixed work schedule: full mapped touch, then only the measured missing pages once.
+
+    Keep mappings across both sweeps/all splits, but close every mapping and descriptor
+    before the caller's independent final mincore check. Mappings are not mlocked.
+    """
+    with ExitStack() as stack:
+        files, mappings = [], []
+        for path, row in zip(paths, rows):
+            check_budget(deadline)
+            file = stack.enter_context(path.open('rb', buffering=0))
+            if identity(os.fstat(file.fileno())) != row['identity']:
+                raise ValueError(f'file changed before mapped setup: {path}')
+            files.append(file)
+            mappings.append(stack.enter_context(mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ)))
+        for sweep in range(MAX_MAPPED_SWEEPS):
+            record = {'sweep': sweep + 1, 'kind': 'all-pages' if sweep == 0 else 'missing-pages-once', 'files': []}
+            setup['sweeps'].append(record)
+            for file, mapping, row in zip(files, mappings, rows):
+                check_budget(deadline)
+                before, vector = page_state(file)
+                indices = range(before['pages']) if sweep == 0 else (i for i, bit in enumerate(vector) if not bit & 1)
+                item = {'name': row['name'], 'before': before}
+                record['files'].append(item)
+                item.update(touch_pages(mapping, indices, deadline))
+            # Record all files together after each sweep; do not select a successful
+            # intermediate result or loop until lucky. The second sweep is always bounded.
+            for file, item in zip(files, record['files']):
+                item['after'] = resident_pages(file)
+                check_budget(deadline)
+        for file, row in zip(files, rows):
+            if identity(os.fstat(file.fileno())) != row['identity']:
+                raise ValueError(f'file changed during mapped setup: {row["name"]}')
+    setup['mappings_released_before_final_check'] = True
+
+
 def inspect_bag(bag, *, observe_only=False):
     start = time.monotonic()
+    deadline = None if observe_only else start + SETUP_BUDGET_S
     report = {'schema': 'resense-warm-cache-v1', 'scope': 'page-cache precondition only, not playback acceptance',
-              'mode': 'observe' if observe_only else 'warm-once-and-verify', 'bag': str(bag),
+              'mode': 'observe' if observe_only else 'bounded-read-and-mapped-faults', 'bag': str(bag),
               'before': resources(), 'files': [], 'errors': []}
+    if not observe_only:
+        report['setup'] = {'budget_s': SETUP_BUDGET_S, 'max_mapped_sweeps': MAX_MAPPED_SWEEPS,
+                           'sweeps': [], 'mappings_released_before_final_check': False,
+                           'method': 'one buffered read, one all-page mapped touch, one missing-page mapped touch'}
     try:
         if not (bag / 'metadata.yaml').is_file():
             raise ValueError('missing bag metadata.yaml')
@@ -94,20 +178,29 @@ def inspect_bag(bag, *, observe_only=False):
                 before = identity(os.fstat(file.fileno()))
                 row = {'name': path.name, 'identity': before, 'before': resident_pages(file)}
                 report['files'].append(row)
-                row['read_bytes'] = 0 if observe_only else read_complete(file, before['bytes'])
+                row['read_bytes'] = 0 if observe_only else read_complete(file, before['bytes'], deadline=deadline)
                 if identity(os.fstat(file.fileno())) != before:
                     raise ValueError(f'file changed during warm read: {path}')
-        # Check ALL files after ALL reads: warming a later split may evict an earlier split.
+        if not observe_only:
+            for row, path in zip(report['files'], paths):
+                with path.open('rb', buffering=0) as file:
+                    row['after_read'] = resident_pages(file)
+            mapped_setup(paths, report['files'], deadline, report['setup'])
+        # Final ALL-file check after ALL setup mappings have been released. No warm
+        # claim based solely on the sequential read or an earlier successful sweep.
         for row, path in zip(report['files'], paths):
             with path.open('rb', buffering=0) as file:
                 if identity(os.fstat(file.fileno())) != row['identity']:
                     raise ValueError(f'file changed before residency check: {path}')
                 row['after'] = resident_pages(file)
                 if not observe_only and not row['after']['fully_resident']:
-                    report['errors'].append(f'{path.name}: {row["after"]["missing"]} pages not resident after full read')
+                    report['errors'].append(f'{path.name}: {row["after"]["missing"]} pages not resident after bounded setup')
+        check_budget(deadline)
     except (OSError, ValueError, RuntimeError) as exc:
         report['errors'].append(str(exc))
     report.update(after=resources(), wall_s=time.monotonic() - start)
+    if not observe_only and report['wall_s'] >= SETUP_BUDGET_S and not report['errors']:
+        report['errors'].append('warm setup time budget exhausted before receipt completion')
     report['status'] = 'ERROR' if report['errors'] else 'OBSERVED' if observe_only else 'WARM_VERIFIED'
     return report
 
