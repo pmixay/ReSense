@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-16T15:54:17.200097+00:00",
+  "candidate_bytes": 44603273527,
+  "candidate_count": 85,
+  "disk_free_bytes": 87262261248,
+  "download_capacity_bytes": 81893552128,
+  "inventory_count": 146,
+  "policy": "September 24-29 v1.0.0 images only; retain October main image, all logs, releases, new artifacts",
+  "protected_count": 61,
+  "reserve_bytes": 5368709120
+}

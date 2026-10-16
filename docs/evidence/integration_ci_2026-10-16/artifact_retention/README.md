@@ -87,3 +87,12 @@ deletion. Failed `.zip.partial` files are preserved and block automatic overwrit
 investigate them before retrying. `audit` performs a read-only remote inventory,
 release comparison, and full local verification; `export` additionally refreshes
 the small evidence files in this directory. Neither mode deletes remote artifacts.
+
+## Subsequent completion on D: — 2026-10-16 15:56 UTC
+
+After the user designated available space on D:, all remaining 71 eligible ZIPs
+were retained there and their verified Actions copies deleted. The combined total
+is **85 archives / 44,603,273,527 bytes**, with no eligible September images left
+remotely. The original C: archive and proof files above remain unchanged; the disk
+blocker described above is historical. See [the appended D: continuation evidence](d_continuation/README.md)
+for the final multi-root audit, current inventories, and preservation checks.

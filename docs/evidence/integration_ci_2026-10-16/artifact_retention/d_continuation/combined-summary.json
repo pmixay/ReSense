@@ -1,0 +1,29 @@
+{
+  "all_original_85_complete": true,
+  "archive_roots": [
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016",
+    "D:\\ReSense-actions-archive-20261016"
+  ],
+  "at": "2026-10-16T15:56:16.172765+00:00",
+  "c_archive_count": 14,
+  "d_archive_bytes": 37301919561,
+  "d_archive_count": 71,
+  "deleted_bytes": 44603273527,
+  "deleted_count": 85,
+  "disk_free_bytes": 87262085120,
+  "errors": [],
+  "new_artifacts_present_at_d_start_missing": [],
+  "new_artifacts_since_original_snapshot": [],
+  "original_c_proof_unchanged": true,
+  "protected_missing_ids": [],
+  "protected_original_count": 61,
+  "quota_note": "Deletion verified; quota availability not verified. GitHub recalculation may take 6-12 hours.",
+  "release_v1_0_0_unchanged": true,
+  "remaining_artifact_count": 61,
+  "remaining_image_bytes": 529881425,
+  "remaining_image_count": 1,
+  "remaining_original_eligible_ids": [],
+  "reserve_bytes": 5368709120,
+  "verified_zip_bytes": 44603273527,
+  "verified_zip_count": 85
+}
