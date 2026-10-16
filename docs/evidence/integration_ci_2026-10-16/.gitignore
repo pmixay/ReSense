@@ -1,2 +1,3 @@
 !preflight*/*.log
 !fixture-probe/*.log
+!h4-fixture-fixed/*.log

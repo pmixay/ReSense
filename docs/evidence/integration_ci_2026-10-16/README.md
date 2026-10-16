@@ -58,7 +58,7 @@ No full detector suite, viewer, bag replay, or new release build was duplicated.
 The initial `preflight/` transcript records an evidence-harness mount-path error
 before checks began; locating the host root only in host mode fixed it for v2.
 
-## Concrete pending Docker fixture blocker
+## H4 Docker fixture blocker — repaired and verified
 
 The newly added `tests/test_h4_spare_rearm.py:23` unconditionally reads:
 
@@ -66,13 +66,55 @@ The newly added `tests/test_h4_spare_rearm.py:23` unconditionally reads:
 docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json
 ```
 
-At the inspected source, this 101,534-byte committed JSON fixture is excluded by
-`.dockerignore` and has no production Dockerfile `COPY`. A focused actual Linux
-Docker context probe failed with exit **1** on precisely that `COPY`; see
+The original inspection found this 101,534-byte committed JSON fixture excluded
+by `.dockerignore` and missing its production Dockerfile `COPY`. The original
+Linux Docker context probe failed with exit **1** on precisely that `COPY`; see
 [`fixture-probe/result.json`](fixture-probe/result.json) and its build transcript.
-The full tools-image suite therefore needs the fixture's exact ignore exception,
-production fixture-block `COPY`, and inventory entry before it can pass. This
-finding is separate from the passing CI-routing preflight.
+
+The repair adds its exact ignore exception, production fixture-block `COPY`, and
+`tests/test_docker_fixtures.py` inventory entry. The surrounding H4 output directory
+is still excluded. A fresh offline source reinstall on retained tools dependencies
+verified the actual production fixture block and installed import from `/`:
+
+- Image: `resense:h4-fixture-fixed-1cfe8de-20261016`, ID
+  `sha256:5b56394178f5c809febfd40017011d726eefe66008bc484ca0b968aba3f46b4c`.
+- Source frozen at `1cfe8de4cebf457a099705b12cdc2c1712e2dda1`, with only the named
+  packaging overlays. The parent's four in-progress version edits were excluded.
+- All **25** production fixtures match the filtered context and installed paths;
+  all **46** core/native/config/ROS source inputs match the frozen hashes.
+- The H4 JSON is 105,484 bytes in this Git archive's CRLF form; its recorded hash
+  matches both context and `/opt/resense/docs/evidence/.../rearm_witness.json`.
+- Installed package: `/usr/local/lib/python3.10/dist-packages/resense/__init__.py`;
+  native enabled, Open3D `0.19.0`, build/test networking disabled.
+
+| Focused Linux group | Passed | Skipped |
+| --- | ---: | ---: |
+| Existing robustness battery | 18 | 0 |
+| Docker fixtures, metrics/labels, policy, startup harness | 216 | 0 |
+| Native, fastcloud, core synthetic | 105 | 0 |
+| Changed H4 re-arm, shipping, opted-in free-top, late candidates, structure cut | 75 | 0 |
+| **Total** | **414** | **0** |
+
+Full-suite collection/imports also passed: **1,617 selected / 1,627 collected**, with
+**10** recorded-data tests deselected by the existing absent-cache policy. The
+changed shipping tests actually execute their external fixtures: canonical and
+ROS YAML are present, byte-identical, and keep H1 disabled; H4's measured witness
+constructs the real cluster and passes the tracker re-arm regressions. The new
+shipping tests require no additional external fixtures. Focused Ruff passed.
+
+Results and transcripts:
+[`h4-fixture-fixed/result.json`](h4-fixture-fixed/result.json) and
+[`h4-fixture-fixed/shipping-result.json`](h4-fixture-fixed/shipping-result.json).
+
+Reproduce with a fresh image/output:
+
+```powershell
+python docs/evidence/offline_rebuild_2026-10-15/context_check.py --source-ref 1cfe8de --image resense:h4-fixtures-recheck --out docs/evidence/integration_ci_2026-10-16/h4-recheck
+python docs/evidence/integration_ci_2026-10-16/shipping_fixture_check.py --image resense:h4-fixtures-recheck --out docs/evidence/integration_ci_2026-10-16/h4-recheck
+```
+
+This is frozen installed-source fixture evidence and focused tests, not a full
+suite execution or validation of the pending 1.1.0 release/version seal.
 
 The final pushed/sealed-source CI remains authoritative. Other execution risks
 are bag-cache availability/Drive quota on a cache miss, the existing strict cold

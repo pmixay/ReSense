@@ -19,6 +19,7 @@ FIXTURES = [
     'docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json',
     'docs/evidence/results/residual_events_2026-09-28.json',
     'docs/RESIDUAL_EVENTS_2026-09-28.md',
+    'docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json',
     'labels/doubleT_obstacle.json',
     'webapp/backend/resense_web/__init__.py',
     'webapp/backend/resense_web/decision.py',

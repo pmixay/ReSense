@@ -73,6 +73,8 @@ COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json ./docs/evidence/
 # Committed residual-inventory fixtures keep the dataset-free tests runnable in the image.
 COPY docs/evidence/results/residual_events_2026-09-28.json ./docs/evidence/results/residual_events_2026-09-28.json
 COPY docs/RESIDUAL_EVENTS_2026-09-28.md ./docs/RESIDUAL_EVENTS_2026-09-28.md
+# Measured pre-tracker rows for the dataset-free H4 re-arm regression.
+COPY docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json ./docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json
 COPY webapp/backend/resense_web/__init__.py webapp/backend/resense_web/decision.py ./webapp/backend/resense_web/
 # X3 imports probe -> judge_runner + range_test -> resense_ros.fastcloud (the ROS source below)
 # and configs/default.yaml (above). The scorer is a CLI; judge_geom is NumPy-only. No bag/cache,

@@ -1,0 +1,333 @@
+{
+  "result": "PASS",
+  "source_commit": "1cfe8de4cebf457a099705b12cdc2c1712e2dda1",
+  "owned_overlay_sha256": {
+    ".dockerignore": "b7bfdacf1a5502e98e29a73ad89d794033dc868b361ff678b4ed31de6a6d409f",
+    "docker/Dockerfile": "95aece22e23c2a85234a058e5460cf7629350e1f49cf5fdd733a66645ba787c5",
+    "tests/test_docker_fixtures.py": "5b1499a6478c5b63a69bc372cd2c81a00d757070db2010729a73f06db884313c",
+    "docs/evidence/offline_rebuild_2026-10-15/context_check.py": "0c1145c59f63af5a046f952e5b67ff5c9126ffbc2507140c6be821e6e292ed31"
+  },
+  "git_archive_sha256": "4ef725967a962a33666784706693c07e4ce3c1241c591a1533b967e6cd84cec5",
+  "base_image": "resense:p1-combined-tools-7d3d5a05c258",
+  "base_id": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+  "image": "resense:h4-fixture-fixed-1cfe8de-20261016",
+  "image_id": "sha256:5b56394178f5c809febfd40017011d726eefe66008bc484ca0b968aba3f46b4c",
+  "fixture_files": [
+    {
+      "path": "docs/evidence/cycle_2026-09-28/evaluation/protocol.json",
+      "bytes": 5271,
+      "sha256": "11408c1a244ace55fd31beee5584e5169fd4a5b95b8959a25de4a06c6ccbf729"
+    },
+    {
+      "path": "docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json",
+      "bytes": 9123,
+      "sha256": "26a457d627804d3ea1a4193b1e8871281d560712ac7e427f8491a115bf9f5728"
+    },
+    {
+      "path": "docs/evidence/results/residual_events_2026-09-28.json",
+      "bytes": 985110,
+      "sha256": "9503d2ce57e3105162735f6e7f894c78cd08b4a2c3a79c96fb29e108310e7cb5"
+    },
+    {
+      "path": "docs/RESIDUAL_EVENTS_2026-09-28.md",
+      "bytes": 18845,
+      "sha256": "27ae8f1b916c30bbe84a324987fed9660e66e524ebcffb83eae0167917366bbc"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json",
+      "bytes": 105484,
+      "sha256": "ffda03349e4c29eed62d3428a3c44a06ae7ed395a81bf093ff2ebf11e48ede4e"
+    },
+    {
+      "path": "webapp/backend/resense_web/__init__.py",
+      "bytes": 111,
+      "sha256": "53f14972e4f87e8d644341461ae03635d9dcf159a304b4bd72918fdca2b32dfe"
+    },
+    {
+      "path": "webapp/backend/resense_web/decision.py",
+      "bytes": 1270,
+      "sha256": "1f4a7c31beaad126399832dd27a1bc33a1f9e1efa486f85343273a7dbd27afe7"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/probe.py",
+      "bytes": 3641,
+      "sha256": "b48530cf0a1b50dfeebfd2379b65300d367b18486a669a50544ba191b9f73005"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/judge_runner.py",
+      "bytes": 9967,
+      "sha256": "7999fcca0204961f5651d17a368e635dbe82187245ce4fe29bc52b620f95791c"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/range_test.py",
+      "bytes": 13318,
+      "sha256": "b14444d6bbeb9124b74c193cdb001b847f93e78ccb6dc5b35e5d9dcaaf24e398"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/score_objects.py",
+      "bytes": 5379,
+      "sha256": "0e70467847637b82e2ae801c50152ee8dacfd0afe34e27e272da471e1a3233f3"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/judge_geom.py",
+      "bytes": 2425,
+      "sha256": "40fe1aacf43f1c30acc93d527fe2b55214a42a2db457b30fcdb40bdd5e2583f1"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py",
+      "bytes": 3475,
+      "sha256": "fbfaa78dc6ac1448761542fb4a53f80a43bb333f96e4d7ee8b665b4156c38f19"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh",
+      "bytes": 2119,
+      "sha256": "60cda14235243608452bb9a56308bb30f4a77b6a9fee71de009365a3581989b2"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/listener.py",
+      "bytes": 2753,
+      "sha256": "e3dc2cebf4d2a11ec1b890ac864077de72797d5e4eee2188d20ae56380b98b82"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py",
+      "bytes": 3475,
+      "sha256": "fbfaa78dc6ac1448761542fb4a53f80a43bb333f96e4d7ee8b665b4156c38f19"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py",
+      "bytes": 12304,
+      "sha256": "6d3c333e6d8ae14075c7dd79640a11ac1d63e81d677b004d017253a639f560f8"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh",
+      "bytes": 2119,
+      "sha256": "60cda14235243608452bb9a56308bb30f4a77b6a9fee71de009365a3581989b2"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py",
+      "bytes": 3787,
+      "sha256": "4dd6dea43795df1c778917f707426a1b011c8a6c946cb1cb008e5a63783c197f"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/listener.py",
+      "bytes": 2753,
+      "sha256": "e3dc2cebf4d2a11ec1b890ac864077de72797d5e4eee2188d20ae56380b98b82"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py",
+      "bytes": 2793,
+      "sha256": "aabc99e76fa7e390adf5d2a006e067dbbc3ab85af8ec9e3c0cceb4a5f291eb69"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py",
+      "bytes": 27803,
+      "sha256": "3fde77ad327006451108a9500f8e20d1bd125c35d374c9dd4b650e759de22d3c"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py",
+      "bytes": 1722,
+      "sha256": "d21489ae8f5ecd53df408e0d9671c3ffb0591fa210af542f651148a1181193b7"
+    },
+    {
+      "path": "docs/evidence/offline_rebuild_2026-10-15/verify.py",
+      "bytes": 8329,
+      "sha256": "d1357347ae13d7eb15aa180aeb3cb5a46cfc2d4b8bb0b35378c4aaa5ee8ab116"
+    },
+    {
+      "path": "labels/doubleT_obstacle.json",
+      "bytes": 235235,
+      "sha256": "752b75b3ed1ebaec7ed5974c0f3e9cf71a5187f9ec6a1110225cbf90d2d4d57d"
+    }
+  ],
+  "fixture_bytes": 1468611,
+  "linux_unit_counts": {
+    "robustness-units": {
+      "passed": 18,
+      "skipped": 0,
+      "deselected": 0
+    },
+    "fixture-packaging-units": {
+      "passed": 216,
+      "skipped": 0,
+      "deselected": 0
+    },
+    "native-synthetic-units": {
+      "passed": 105,
+      "skipped": 0,
+      "deselected": 0
+    }
+  },
+  "installed_source": {
+    "source_commit": "1cfe8de4cebf457a099705b12cdc2c1712e2dda1",
+    "import": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+    "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+    "native_sha256": "dc549d0583f92c3acd93c455bf94bab4bbedae35a9580d82ad24786473661d5c",
+    "open3d": "0.19.0",
+    "verified_source_files": 46
+  },
+  "commands": [
+    {
+      "name": "base",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "--format",
+        "{{.Id}}",
+        "resense:p1-combined-tools-7d3d5a05c258"
+      ],
+      "exit": 0,
+      "seconds": 0.265
+    },
+    {
+      "name": "build",
+      "command": [
+        "docker",
+        "build",
+        "--network",
+        "none",
+        "--pull=false",
+        "--no-cache",
+        "--progress=plain",
+        "--build-arg",
+        "RELEASE_IMAGE=resense:p1-combined-tools-7d3d5a05c258",
+        "-f",
+        "docker/Dockerfile.context-check",
+        "-t",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "."
+      ],
+      "exit": 0,
+      "seconds": 49.219
+    },
+    {
+      "name": "exclusions",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "python3",
+        "-c",
+        "\nimport hashlib, json, runpy\nfrom pathlib import Path\np, root = Path('/e2-context'), Path('/opt/resense')\nmanifest = json.loads((p / 'fixture-manifest.json').read_text())\nfixtures = {f['path']: f['sha256'] for f in manifest['fixtures']}\nassert set(runpy.run_path(str(root / 'tests/test_docker_fixtures.py'))['FIXTURES']) == set(fixtures)\nfor relative, expected in fixtures.items():\n    for parent in (p, root):\n        assert hashlib.sha256((parent / relative).read_bytes()).hexdigest() == expected, relative\nfor prefix in ('docs', 'webapp', 'labels'):\n    actual = {f.relative_to(p).as_posix() for f in (p / prefix).rglob('*') if f.is_file()}\n    assert actual == {n for n in fixtures if n.startswith(prefix + '/')}, (prefix, actual)\nfor name in ('.git', 'out', 'data', 'archive', 'archives', 'web', 'gitbook', 'webapp/frontend',\n             'docs/evidence/judgement_2026-10-13/out',\n             'docs/evidence/node_startup_2026-10-15/out'):\n    assert not (p / name).exists(), name\nprint(json.dumps({'result': 'PASS', 'exact_context_and_copy_files': len(fixtures),\n                  'fixture_bytes': sum(f['bytes'] for f in manifest['fixtures']),\n                  'no_recorded_data_or_archives': True}))\n"
+      ],
+      "exit": 0,
+      "seconds": 5.406
+    },
+    {
+      "name": "installed-source",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "python3",
+        "-c",
+        "\nimport hashlib, json\nfrom pathlib import Path\nimport open3d, resense, resense.detector\nfrom resense import _native\nroot = Path('/opt/resense')\npackage = Path(resense.__file__).parent\nassert not package.is_relative_to(root), package\nassert Path.cwd() == Path('/')\nassert _native.AVAILABLE and _native.enabled(), _native.status()\nmanifest = json.loads(Path('/e2-context/fixture-manifest.json').read_text())\nfor relative, expected in manifest['source_files'].items():\n    path = root / relative\n    if relative == 'ros2_ws/src/resense_ros/config/detector.yaml':\n        expected = manifest['source_files']['configs/default.yaml']\n    assert hashlib.sha256(path.read_bytes()).hexdigest() == expected, relative\n    if relative.startswith('resense/'):\n        installed = package / relative.removeprefix('resense/')\n        assert hashlib.sha256(installed.read_bytes()).hexdigest() == expected, str(installed)\nnative = Path(_native.LIBRARY)\nprint(json.dumps({'source_commit': manifest['source_commit'], 'import': resense.__file__,\n                  'native': _native.status(), 'native_sha256': hashlib.sha256(native.read_bytes()).hexdigest(),\n                  'open3d': open3d.__version__, 'verified_source_files': len(manifest['source_files'])}))\n"
+      ],
+      "exit": 0,
+      "seconds": 4.984
+    },
+    {
+      "name": "robustness-units",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "-e",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "python3",
+        "-c",
+        "import resense, sys, pytest; from resense import _native; assert not resense.__file__.startswith(\"/opt/resense/\"); assert _native.enabled(); sys.path.insert(0, \"/opt/resense\"); sys.exit(pytest.main(['-q', '-rs', '/opt/resense/tests/test_robustness_battery.py']))"
+      ],
+      "exit": 0,
+      "seconds": 3.609
+    },
+    {
+      "name": "fixture-packaging-units",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "-e",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "python3",
+        "-c",
+        "import resense, sys, pytest; from resense import _native; assert not resense.__file__.startswith(\"/opt/resense/\"); assert _native.enabled(); sys.path.insert(0, \"/opt/resense\"); sys.exit(pytest.main(['-q', '-rs', '/opt/resense/tests/test_docker_fixtures.py', '/opt/resense/tests/test_metrics.py', '/opt/resense/tests/test_decision_policy.py', '/opt/resense/tests/test_startup_acceptance.py']))"
+      ],
+      "exit": 0,
+      "seconds": 15.016
+    },
+    {
+      "name": "native-synthetic-units",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "-e",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "python3",
+        "-c",
+        "import resense, sys, pytest; from resense import _native; assert not resense.__file__.startswith(\"/opt/resense/\"); assert _native.enabled(); sys.path.insert(0, \"/opt/resense\"); sys.exit(pytest.main(['-q', '-rs', '/opt/resense/tests/test_native.py', '/opt/resense/tests/test_fastcloud.py', '/opt/resense/tests/test_core.py']))"
+      ],
+      "exit": 0,
+      "seconds": 7.516
+    },
+    {
+      "name": "base-after",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "--format",
+        "{{.Id}}",
+        "resense:p1-combined-tools-7d3d5a05c258"
+      ],
+      "exit": 0,
+      "seconds": 0.266
+    },
+    {
+      "name": "image",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "--format",
+        "{{.Id}}",
+        "resense:h4-fixture-fixed-1cfe8de-20261016"
+      ],
+      "exit": 0,
+      "seconds": 0.359
+    }
+  ],
+  "scope": "frozen source rebuilt on retained tools dependencies; focused units only"
+}

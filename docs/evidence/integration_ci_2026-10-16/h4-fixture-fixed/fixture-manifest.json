@@ -1,0 +1,178 @@
+{
+  "source_commit": "1cfe8de4cebf457a099705b12cdc2c1712e2dda1",
+  "source_files": {
+    "resense/__init__.py": "763e8ca9fd8e3a0d4713a51a9b6b60dd959e21c161508c7a62f21221af7a1919",
+    "resense/_native.py": "bf9b86b040d0dddd099f0828617459bd608867893fcb930bf97d8d32230d707e",
+    "resense/accumulate.py": "021874b38a41b14ee5c2af27d760bf0e2152aed65a4c43b7630d2ef1b37a45cd",
+    "resense/calibration.py": "e6b91def38624fc137d70e40b5af73313cb6e0fc14b9c10403fa3808ba05fe2e",
+    "resense/cli.py": "b6e5f95c1b9018677e910a73081d4d6f9baf1623cc8411e3e7e8cb673f2dbd2d",
+    "resense/clustering.py": "b26652880e1b260a2ff7dd6069e73de4ee106b24686a8c122c19c8973dd5da45",
+    "resense/config.py": "e68f96b3311253ebd101a12ee6014f275d0a5c7256a422c78ba8bcc97842a417",
+    "resense/detector.py": "c2f7db35485644c1f658f666a09e6a654bcd41875f2d7d9c83bb29e0282dd03f",
+    "resense/egomotion.py": "8e945d3ffdea94933cc62c6cde128e87931e110cc9c5a98511026c2aaef7e73a",
+    "resense/evidence.py": "607480ef2dcc025af3f80262eb75ab006163779303431530bd392005fe61799f",
+    "resense/farrails.py": "e5c7fb574527fabd209a14bb6b8cb155a1aa2ad2d0885f604bd631d4121cda79",
+    "resense/frame.py": "71594331e19a93ca9e0751429ac17141e2404b386569ddf720cb0c16b7a05462",
+    "resense/gauge.py": "4fe2afd090752e1ec58790448efc32378319de31486d68995bbb79a1b9e648ed",
+    "resense/health.py": "8be5d21ab1ada7b15dfa09dd85b390686d6177bc47c57a2a7cb5737550bc5402",
+    "resense/io.py": "a98f1db98a5ce49ffb7441aa552716d65e2d1119d1dd1c9a722b49f641da6b80",
+    "resense/lowobj.py": "653babaaad259fabeefbbee87ce359bd37a8e33589b4d17c5c9c3a092961bec5",
+    "resense/metrics.py": "40dc9fbd8689f09fbd70898295cae5ee683925cd50d9c3342f5e987e096950e7",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "d552d762411772dd85c2a59b66dc595306d3bf386d5e7ef99e3796c61355b13b",
+    "resense/opinion.py": "8980010c522dd891c61faaced28a860737988357a846bd21645f4a86711194b1",
+    "resense/pointcloud.py": "8be8df468ac4a91366400465bbe386a9be52cb340445109e4cd47d612acfa0e6",
+    "resense/sensor.py": "2568e830dae6d7abdbe7d783b1e3b41ffaae0b994702c8577ecf2024ac78d160",
+    "resense/synthetic.py": "3c71ddaa1478540a5d8c421a065c1be9aaade58b953b16dd622dc799d4d7700d",
+    "resense/track.py": "6236e7c0ce5f14a42a6a79b0f026e270f405666454abf6b0f8ab31349cda9712",
+    "resense/tracking.py": "02d841972a1b788701d192a682c708bd775e16da695073e951557f9516807c29",
+    "resense/viz.py": "bbddccff8b6ce6b52d23a8611d19c4d8f04440b86c13f111b77b479a80e6868f",
+    "native/resense_native.cpp": "9b4bd2c5669e03cec4d577c1174a36306a575f638866a8c0c4ede114314cbde9",
+    "configs/default.yaml": "b89084da1d06d07a2c32c9dcc656ffd8200bd425fa3d8480f5c1e6c03a66b1fd",
+    "configs/experimental_cross_ring.yaml": "8258729f41b8583826a4f154cf4ee3d407acc8044e5e090e542dbebfea608a59",
+    "configs/experimental_far_rail_rings.yaml": "5eda24541804e79e5768b678e27a893a7d7ee01ce2d7003d40b132c6b00ac19d",
+    "configs/experimental_fresh_stop_evidence.yaml": "98be17f5c849aa2f6e026eccef9ac71cbea4bdde8f0c64f3cd67a1472db6274c",
+    "configs/experimental_low_local_support.yaml": "115e4eb509b68d36fd4540b683b45c7f2aabdc845e230c6fc2c02f2540474b75",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "b89084da1d06d07a2c32c9dcc656ffd8200bd425fa3d8480f5c1e6c03a66b1fd",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "4d913c0c9d053070ba86a4848657d19c63b9a3bf916f356b3e65c10b8d2b8283",
+    "ros2_ws/src/resense_ros/package.xml": "f574b9b5382130315c394e5bc20a5177599da4d8009616eb63920d561ede9189",
+    "ros2_ws/src/resense_ros/resense_ros/__init__.py": "a8f6e1414d15ba6c81926d0d304fe35dee0535e1800256f17e7c00eda46c610d",
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "b3e74fb138330e119b8c4ce736290421ebd21f1090d4a2c7fc32f2c74b5826c4",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "08fabd90ccb437382c9f4bad8f89cc7e007a8f493d467b3b403d2d562771d202",
+    "ros2_ws/src/resense_ros/resense_ros/fastcloud.py": "b99e90be8da2add1ceaea0aa1e7b60f3002c7d7f483391cd18836e67e5f6e659",
+    "ros2_ws/src/resense_ros/resource/resense_ros": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ros2_ws/src/resense_ros/rviz/resense.rviz": "e4ee6401efa261d730d29eb8b63a3fedbb2e3218a27d55b66eca79e5a9019d53",
+    "ros2_ws/src/resense_ros/setup.cfg": "42df331312be4b15e78916d14d9f3886a2f8c843e233f96d98d55fc20d622d1d",
+    "ros2_ws/src/resense_ros/setup.py": "8a32086c9273a4149779af9a6e10ddef0499369bf8ae3eae4b970ce65bb5b2b8",
+    "pyproject.toml": "c70c6128f5a0d38a6128be3eaa181d1f08901edadb7ca614b5d802cdabfcebba",
+    "setup.py": "2913adf48005576c47064e9d3916e5ddb591926ae79cfb91d91e7253b25e9a1a",
+    "README.md": "fa6b7116c6774f723680dea7bb9c7a91b19fadf71383a16074d8f00c77ecfe5e"
+  },
+  "fixtures": [
+    {
+      "path": "docs/evidence/cycle_2026-09-28/evaluation/protocol.json",
+      "bytes": 5271,
+      "sha256": "11408c1a244ace55fd31beee5584e5169fd4a5b95b8959a25de4a06c6ccbf729"
+    },
+    {
+      "path": "docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json",
+      "bytes": 9123,
+      "sha256": "26a457d627804d3ea1a4193b1e8871281d560712ac7e427f8491a115bf9f5728"
+    },
+    {
+      "path": "docs/evidence/results/residual_events_2026-09-28.json",
+      "bytes": 985110,
+      "sha256": "9503d2ce57e3105162735f6e7f894c78cd08b4a2c3a79c96fb29e108310e7cb5"
+    },
+    {
+      "path": "docs/RESIDUAL_EVENTS_2026-09-28.md",
+      "bytes": 18845,
+      "sha256": "27ae8f1b916c30bbe84a324987fed9660e66e524ebcffb83eae0167917366bbc"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json",
+      "bytes": 105484,
+      "sha256": "ffda03349e4c29eed62d3428a3c44a06ae7ed395a81bf093ff2ebf11e48ede4e"
+    },
+    {
+      "path": "webapp/backend/resense_web/__init__.py",
+      "bytes": 111,
+      "sha256": "53f14972e4f87e8d644341461ae03635d9dcf159a304b4bd72918fdca2b32dfe"
+    },
+    {
+      "path": "webapp/backend/resense_web/decision.py",
+      "bytes": 1270,
+      "sha256": "1f4a7c31beaad126399832dd27a1bc33a1f9e1efa486f85343273a7dbd27afe7"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/probe.py",
+      "bytes": 3641,
+      "sha256": "b48530cf0a1b50dfeebfd2379b65300d367b18486a669a50544ba191b9f73005"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/judge_runner.py",
+      "bytes": 9967,
+      "sha256": "7999fcca0204961f5651d17a368e635dbe82187245ce4fe29bc52b620f95791c"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/range_test.py",
+      "bytes": 13318,
+      "sha256": "b14444d6bbeb9124b74c193cdb001b847f93e78ccb6dc5b35e5d9dcaaf24e398"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/score_objects.py",
+      "bytes": 5379,
+      "sha256": "0e70467847637b82e2ae801c50152ee8dacfd0afe34e27e272da471e1a3233f3"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/judge_geom.py",
+      "bytes": 2425,
+      "sha256": "40fe1aacf43f1c30acc93d527fe2b55214a42a2db457b30fcdb40bdd5e2583f1"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py",
+      "bytes": 3475,
+      "sha256": "fbfaa78dc6ac1448761542fb4a53f80a43bb333f96e4d7ee8b665b4156c38f19"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh",
+      "bytes": 2119,
+      "sha256": "60cda14235243608452bb9a56308bb30f4a77b6a9fee71de009365a3581989b2"
+    },
+    {
+      "path": "docs/evidence/judgement_2026-10-13/scripts/docker/listener.py",
+      "bytes": 2753,
+      "sha256": "e3dc2cebf4d2a11ec1b890ac864077de72797d5e4eee2188d20ae56380b98b82"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py",
+      "bytes": 3475,
+      "sha256": "fbfaa78dc6ac1448761542fb4a53f80a43bb333f96e4d7ee8b665b4156c38f19"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py",
+      "bytes": 12304,
+      "sha256": "6d3c333e6d8ae14075c7dd79640a11ac1d63e81d677b004d017253a639f560f8"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh",
+      "bytes": 2119,
+      "sha256": "60cda14235243608452bb9a56308bb30f4a77b6a9fee71de009365a3581989b2"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py",
+      "bytes": 3787,
+      "sha256": "4dd6dea43795df1c778917f707426a1b011c8a6c946cb1cb008e5a63783c197f"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/listener.py",
+      "bytes": 2753,
+      "sha256": "e3dc2cebf4d2a11ec1b890ac864077de72797d5e4eee2188d20ae56380b98b82"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py",
+      "bytes": 2793,
+      "sha256": "aabc99e76fa7e390adf5d2a006e067dbbc3ab85af8ec9e3c0cceb4a5f291eb69"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py",
+      "bytes": 27803,
+      "sha256": "3fde77ad327006451108a9500f8e20d1bd125c35d374c9dd4b650e759de22d3c"
+    },
+    {
+      "path": "docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py",
+      "bytes": 1722,
+      "sha256": "d21489ae8f5ecd53df408e0d9671c3ffb0591fa210af542f651148a1181193b7"
+    },
+    {
+      "path": "docs/evidence/offline_rebuild_2026-10-15/verify.py",
+      "bytes": 8329,
+      "sha256": "d1357347ae13d7eb15aa180aeb3cb5a46cfc2d4b8bb0b35378c4aaa5ee8ab116"
+    },
+    {
+      "path": "labels/doubleT_obstacle.json",
+      "bytes": 235235,
+      "sha256": "752b75b3ed1ebaec7ed5974c0f3e9cf71a5187f9ec6a1110225cbf90d2d4d57d"
+    }
+  ]
+}
