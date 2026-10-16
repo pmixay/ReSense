@@ -483,5 +483,75 @@
     "external_path": "seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d.result.json",
     "mode": "byte-identical copy",
     "package_path": "seal_create/runtime.result.json"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/checkout.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/checkout.txt"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/clone.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/clone.txt"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/commands.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/commands.json"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/completion.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/completion.json"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/generated_manifest.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/generated_manifest.json"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/native_build.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/native_build.txt"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/preflight.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/preflight.json"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/source_after.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/source_after.json"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/verify_after_native_or_create.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/verify_after_native_or_create.txt"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407/verify_before_native.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/verify_before_native.txt"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407.container-final.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/runtime.container-final.json"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407.container.log",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/runtime.container.txt"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407.launch.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/runtime.launch.json"
+  },
+  {
+    "external_path": "seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407.result.json",
+    "mode": "byte-identical copy",
+    "package_path": "seal_verify/runtime.result.json"
   }
 ]

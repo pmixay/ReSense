@@ -33,6 +33,19 @@ The manifest is the unedited standard-script output, with the explicit 29 Septem
 baseline and the committed H5 gate path. All frozen bytes and four release declarations match
 the measured commit, configs are synchronized, and generated native `.so` stays ignored.
 
+The manifest and creation proof were committed at
+`d6319c237213743897c661990c2c78adfa7b4796`. A second, independent clean Linux checkout of that
+commit verified the **committed new manifest PASS before native generation and PASS after the
+native rebuild**. The checkout stayed Git-clean and frozen bytes/config sync were unchanged.
+Its manifest was again byte-identical to the host/committed generated file.
+
+Verification session: `seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407`.
+Full proof is in `seal_verify/`, including both explicit verification logs, committed evidence
+authentication, native status/hash, source map, release-file hashes, Docker state and copy identity.
+The retained Linux checkout is `/evalworkspace/<verification-session>` in Docker volume
+`rs-seal-verify-1.1.0-d6319c237213-20261016t113016z-0b47c407-checkout`, using the immutable tools
+image below. The creation checkout is retained in its separately named creation volume as well.
+
 ## Gate acceptance and all-frame comparison
 
 | Check | Result |
