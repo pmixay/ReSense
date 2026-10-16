@@ -66,6 +66,8 @@ describe('Прогон', () => {
     fireEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Удалить' }));
     expect((await screen.findByTestId('elsewhere')).textContent).toBe('/runs');
     expect(fetch.mock.calls.some(([u, i]) => String(u).endsWith('/api/runs/r1') && i?.method === 'DELETE')).toBe(true);
+    const deletion = fetch.mock.calls.findIndex(([, i]) => i?.method === 'DELETE');
+    expect(fetch.mock.calls.slice(deletion + 1).some(([u, i]) => String(u).endsWith('/api/runs/r1') && i?.method === 'GET')).toBe(false);
   });
 
   it('says so when the run does not exist', async () => {

@@ -91,6 +91,29 @@ describe('LiveFeedStore — simulation', () => {
     store.destroy();
   });
 
+  it('holds the paused simulation frame against in-flight messages but permits an explicit seek', () => {
+    const { store, sims, tick, frame } = setup();
+    store.start({ kind: 'sim', runId: 'r1', speed: 1, loop: true });
+    sims[0].h.onOpen?.();
+    sims[0].h.onMessage(frame({ pos: 30, t: 3 }) as never);
+    store.pause();
+    sims[0].h.onMessage(frame({ pos: 31, t: 3.1 }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot()).toMatchObject({ paused: true, count: 1, msg: { pos: 30 } });
+    expect(store.getSnapshot().samples).toHaveLength(1);
+    store.seek(42);
+    sims[0].h.onMessage(frame({ pos: 32, t: 3.2 }) as never);
+    sims[0].h.onMessage(frame({ pos: 42, t: 4.2 }) as never);
+    sims[0].h.onMessage(frame({ pos: 43, t: 4.3 }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot()).toMatchObject({ paused: true, count: 2, msg: { pos: 42 } });
+    store.play();
+    sims[0].h.onMessage(frame({ pos: 44, t: 4.4 }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot()).toMatchObject({ paused: false, count: 3, msg: { pos: 44 } });
+    store.destroy();
+  });
+
   it('reports the backend close codes in Russian and ignores the old socket after a restart', () => {
     const { store, sims } = setup();
     store.start({ kind: 'sim', runId: 'gone', speed: 1, loop: false });
