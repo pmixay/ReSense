@@ -69,6 +69,10 @@ def test_track_causes_follow_track_zone_precedence():
     assert RA.track_cause(_track(hits=1), CFG) == "track:confirm_hits"
     assert RA.track_cause(_track(hits=3, span_s=0.1), CFG) == "track:confirm_time"
     assert RA.track_cause(_track(hits=3, confidence=0.1), CFG) == "track:confidence"
+    # exact floats: a span just short of the confirmation time is that rule, whatever 2-decimal rounding shows
+    half = SimpleNamespace(**dict(vars(CFG), confirm_time_s=0.5))
+    assert RA.track_cause(_track(hits=5, span_s=0.5 - 1e-6), half) == "track:confirm_time"
+    assert RA.track_cause(_track(hits=5, span_s=0.5 - 1e-6, timed=False), half) == "unclassified:not_qualified"
     rep = dict(reported=True, qualifies=True, hits=5)
     assert RA.track_cause(_track(**rep, withheld=True, column_held=True), CFG) == "track:doubt"
     assert RA.track_cause(_track(**rep, fresh_blocked=True, explained=True), CFG) == "track:explained_run"

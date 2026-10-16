@@ -177,10 +177,11 @@ class Recorder:
                                "final": any(c is k for k in res.candidates)}
         tracks = []
         for t in tr.tracks:
-            s = {f: (bool(v) if isinstance(v, (bool,)) else r2(v) if isinstance(v, float) else v)
+            # exact floats: the causes re-read the tracker's own thresholds (a 0.4999 s span is not 0.5)
+            s = {f: (bool(v) if isinstance(v, (bool,)) else float(v) if isinstance(v, float) else v)
                  for f in TRACK_FIELDS if (v := getattr(t, f, None)) is not None}
             s.update(last=id(t.last) if t.last is not None else None, zone=t.zone, rule_zone=t.rule_zone,
-                     vote_zone=t.vote_zone, hit_fraction=r2(t.hit_fraction), zone_hist=[bool(z) for z in t.zone_hist],
+                     vote_zone=t.vote_zone, hit_fraction=float(t.hit_fraction), timed=bool(getattr(tr, "_timed", True)), zone_hist=[bool(z) for z in t.zone_hist],
                      explained=any(getattr(t, "explained_hist", [])),
                      provisional=any(getattr(t, "provisional_explained_hist", [])),
                      qualifies=bool(tr._qualifies(t)),
@@ -216,7 +217,7 @@ def track_cause(t, cfg):
                 return "track:confidence"
             if cfg.min_hit_fraction > 0 and t["hit_fraction"] < cfg.min_hit_fraction - 1e-9:
                 return "track:hit_fraction"
-            if cfg.confirm_time_s > 0 and t["span_s"] < cfg.confirm_time_s - 1e-6:
+            if cfg.confirm_time_s > 0 and t.get("timed", True) and t["span_s"] < cfg.confirm_time_s - 1e-9:
                 return "track:confirm_time"
             return "unclassified:not_qualified"
         if t["last_kind"] == "low":
