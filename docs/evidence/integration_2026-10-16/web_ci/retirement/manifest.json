@@ -1,0 +1,474 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-16T11:11:19.325539+00:00",
+  "source_worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016",
+  "source_head": "36324e2ca71a3106079f0cf5708ae0e2349e95b2",
+  "source_branch": "integration/web-ci-20261016",
+  "branch_archive": {
+    "manifest_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/branch_archive/manifest.json",
+    "repository_path": "docs/evidence/integration_2026-10-16/branch_archive/manifest.json",
+    "bytes": 212571,
+    "sha256": "baf7c5777d37bd458e6151b9184d201effd49c17ddbadf431c8aaf1e011753f6",
+    "integration_tip": "52115654417a660669b8dddfce447692c1d782cc",
+    "manifest_git_blob": "ce20803c02eb4d791a18a210ae8b7d6deb04f5a4",
+    "worktree_entry": {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016",
+      "HEAD": "36324e2ca71a3106079f0cf5708ae0e2349e95b2",
+      "branch": "refs/heads/integration/web-ci-20261016",
+      "scope": "associated-with-retirement-ref-retain-pending-merge-and-review",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-ci-events.raw.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 140158,
+          "mtime_ns": 1792132407701014000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-ci.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 748,
+          "mtime_ns": 1792131900000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-events.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 298145,
+          "mtime_ns": 1792131006000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 172755,
+          "mtime_ns": 1792131152000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.raw.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 547532,
+          "mtime_ns": 1792132407696318000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 1471,
+          "mtime_ns": 1792131370000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 167444,
+          "mtime_ns": 1792131009000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/browser-followup.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 6394,
+          "mtime_ns": 1792135149000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/checks.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 24700,
+          "mtime_ns": 1792133678000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-green-2.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 681,
+          "mtime_ns": 1792132306000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-green.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 9201,
+          "mtime_ns": 1792132179000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-red.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 12816,
+          "mtime_ns": 1792132057000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/frontend-tests.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 7047,
+          "mtime_ns": 1792131312000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/navigation-red.log",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 4064,
+          "mtime_ns": 1792132121000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-1-events.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 152676,
+          "mtime_ns": 1792132690000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-2-events.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 143968,
+          "mtime_ns": 1792132839000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-1-events.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 127140,
+          "mtime_ns": 1792134443000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-2-events.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 65301,
+          "mtime_ns": 1792134477000000000,
+          "kind": "file"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-3-events.jsonl",
+          "classification": "unfamiliar-or-owner-work-retain-review-before-any-cleanup",
+          "bytes": 57224,
+          "mtime_ns": 1792134512000000000,
+          "kind": "file"
+        }
+      ]
+    }
+  },
+  "archive": {
+    "file": "web-raw.zip",
+    "bytes": 149177,
+    "sha256": "abc9690d4e04fc345d88d2c84708445b882ec65e74c81ad2ba8c8e7523a3587a",
+    "entries": 19,
+    "compression": "deflate-9"
+  },
+  "files": [
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-ci-events.raw.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/baseline-ci-events.raw.jsonl",
+      "bytes": 140158,
+      "sha256": "75259a4f7d7bae1d2772e1f0f3127bcbe02fe269e8c4402dda922aaec3848622",
+      "mtime_ns": 1792132407701014000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-ci.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/baseline-ci.log",
+      "bytes": 748,
+      "sha256": "cb55ff3d95e789b23bb5d65620c3385e0a47048de65ffc46df8280ea26ef9d39",
+      "mtime_ns": 1792131900000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-events.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/baseline-events.jsonl",
+      "bytes": 298145,
+      "sha256": "788b5456b7ebe48ab3932a84010925653f082a6093dc859b662fb34cdadb5fc7",
+      "mtime_ns": 1792131006000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.jsonl",
+      "bytes": 172755,
+      "sha256": "1105048c13f16642d24a48938c04d9837c82796dcb0e66321321f42d5891c29a",
+      "mtime_ns": 1792131152000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.raw.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.raw.jsonl",
+      "bytes": 547532,
+      "sha256": "b272aee105f880ee3f457503be6d5aeadc7c8b592939a001168c7b9b217d27ab",
+      "mtime_ns": 1792132407696318000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/baseline-valid.log",
+      "bytes": 1471,
+      "sha256": "d71b97dbecf7bbc02b60d3fd6c813c3e64ab2ee1dd75645ad7222333dda73c7d",
+      "mtime_ns": 1792131370000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/baseline.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/baseline.log",
+      "bytes": 167444,
+      "sha256": "3861e7734d8c8cc38e88974f5f560a499e4493171e02016e1ae62a6600e5ae7f",
+      "mtime_ns": 1792131009000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/browser-followup.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/browser-followup.log",
+      "bytes": 6394,
+      "sha256": "0654e8e8c2194eb6ed3ede86bb9018eb049639e5e605326059faa0ad012d081d",
+      "mtime_ns": 1792135149000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/checks.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/checks.log",
+      "bytes": 24700,
+      "sha256": "4f2354e89ba8c546cdf0d805bdc7b4cbc0d3693db4286912440fb30fe74499cd",
+      "mtime_ns": 1792133678000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-green-2.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/controlled-green-2.log",
+      "bytes": 681,
+      "sha256": "512d2a7c108fa53356ca9c4ce7e3a5b19cdeaf48528cbf4ec222f4ccd83be506",
+      "mtime_ns": 1792132306000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-green.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/controlled-green.log",
+      "bytes": 9201,
+      "sha256": "c200a1f3066388e6c89780cb3a8af663efc5a77a8a4022a64bcc6dbd5186d982",
+      "mtime_ns": 1792132179000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-red.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/controlled-red.log",
+      "bytes": 12816,
+      "sha256": "b63c22c3add9f87b0aa6ce433727c0c861603530cf0d5184be4a0deb1ee60556",
+      "mtime_ns": 1792132057000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/frontend-tests.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/frontend-tests.log",
+      "bytes": 7047,
+      "sha256": "e3d0a373a21b117e05871dadd7aadb903b50a3891181fa9d9f70433fd92350b4",
+      "mtime_ns": 1792131312000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/navigation-red.log",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/navigation-red.log",
+      "bytes": 4064,
+      "sha256": "488889d9036342c6f546f9bdcdb37f7123b5820b63dd9b76771c25442d771c83",
+      "mtime_ns": 1792132121000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-1-events.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/results/targeted-1-events.jsonl",
+      "bytes": 152676,
+      "sha256": "a1cde6e2721810cf762647755ac36396ab3143ba699e8c23a17cd5571a91eab4",
+      "mtime_ns": 1792132690000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-2-events.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/results/targeted-2-events.jsonl",
+      "bytes": 143968,
+      "sha256": "7878e0f4b57d9e67d6b0447ecc9d721fd30361da15b60f39b67f7b12a71d4e7e",
+      "mtime_ns": 1792132839000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-1-events.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/results/upload-1-events.jsonl",
+      "bytes": 127140,
+      "sha256": "5d3d65934c0f0e7c5ea74b42f89fa4e2d26698b1b6b25202681d51b2d245cd35",
+      "mtime_ns": 1792134443000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-2-events.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/results/upload-2-events.jsonl",
+      "bytes": 65301,
+      "sha256": "93852c206bd23dd73caf2a505a68039d960744fb4585d131ca63830705f4d39b",
+      "mtime_ns": 1792134477000000000
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-3-events.jsonl",
+      "original_absolute_path": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016/docs/evidence/integration_2026-10-16/web_ci/results/upload-3-events.jsonl",
+      "bytes": 57224,
+      "sha256": "096948896c5b43ce5bee67b84704368b46c1710e6c8ff32d0e2beaa2c8cb0996",
+      "mtime_ns": 1792134512000000000
+    }
+  ],
+  "external_keeper": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-integration-web-raw-20261016",
+  "inventory": {
+    "ignored_files": [
+      "docs/evidence/integration_2026-10-16/web_ci/baseline-ci-events.raw.jsonl",
+      "docs/evidence/integration_2026-10-16/web_ci/baseline-ci.log",
+      "docs/evidence/integration_2026-10-16/web_ci/baseline-events.jsonl",
+      "docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.jsonl",
+      "docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.raw.jsonl",
+      "docs/evidence/integration_2026-10-16/web_ci/baseline-valid.log",
+      "docs/evidence/integration_2026-10-16/web_ci/baseline.log",
+      "docs/evidence/integration_2026-10-16/web_ci/browser-followup.log",
+      "docs/evidence/integration_2026-10-16/web_ci/checks.log",
+      "docs/evidence/integration_2026-10-16/web_ci/controlled-green-2.log",
+      "docs/evidence/integration_2026-10-16/web_ci/controlled-green.log",
+      "docs/evidence/integration_2026-10-16/web_ci/controlled-red.log",
+      "docs/evidence/integration_2026-10-16/web_ci/frontend-tests.log",
+      "docs/evidence/integration_2026-10-16/web_ci/navigation-red.log",
+      "docs/evidence/integration_2026-10-16/web_ci/results/targeted-1-events.jsonl",
+      "docs/evidence/integration_2026-10-16/web_ci/results/targeted-2-events.jsonl",
+      "docs/evidence/integration_2026-10-16/web_ci/results/upload-1-events.jsonl",
+      "docs/evidence/integration_2026-10-16/web_ci/results/upload-2-events.jsonl",
+      "docs/evidence/integration_2026-10-16/web_ci/results/upload-3-events.jsonl"
+    ],
+    "untracked_retirement_deliverables": [
+      "docs/evidence/integration_2026-10-16/web_ci/retirement/.gitattributes",
+      "docs/evidence/integration_2026-10-16/web_ci/retirement/README.md",
+      "docs/evidence/integration_2026-10-16/web_ci/retirement/preserve_raw.py",
+      "docs/evidence/integration_2026-10-16/web_ci/retirement/test_preserve_raw.py"
+    ],
+    "additional_noncache_owner_files": [],
+    "unaccounted_physical_files": [],
+    "cache_paths_retained_in_place": [],
+    "tracked_evidence_preserved_in_integration": [
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/Dockerfile.tools",
+        "git_blob": "02b7980ae9e6f9263bc1491684b4539acfa1497f"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/README.md",
+        "git_blob": "c8b15425f3f9fca712bdccd5687c2ee83a3fb1ae"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/acknowledged_progress_browser_red.txt",
+        "git_blob": "56835315d371901538c9f52f9e036755bca0232e"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/acknowledged_progress_unit_red.txt",
+        "git_blob": "25fd4ad1cbd517f3f649cdae68a02f0da2e57184"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/baseline_ci.txt",
+        "git_blob": "b44caee2287f0824a224ebb113b1b8cec1774708"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/controlled_green.txt",
+        "git_blob": "8417038925257af89c9debcb4c43335d45576dd3"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/controlled_red.txt",
+        "git_blob": "b4f0316a576fe0052c20793d146b6f0d5d5804d7"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/full_browser_pause_red.txt",
+        "git_blob": "75707bd0e7c79edb9ffa7a30f6479f121fd9775f"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/navigation_red.txt",
+        "git_blob": "b75f2ec1dacb5acacf044a84604fb0fcd732ceff"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/backend.txt",
+        "git_blob": "976a8a5482dd38941ee6bf1c10e109d73123a94f"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/backend.xml",
+        "git_blob": "3371dd1ad0f1ce34d9cb488b40ab6dadf474e2c2"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/browser.txt",
+        "git_blob": "62028f0c13a70d36c4747a8875b55f27b535e8aa"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/browser.xml",
+        "git_blob": "f981c123e13afe53e9177e00cf9e272ec5752235"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/build.txt",
+        "git_blob": "baf44d508cfbf162f78c344fb210b10618be9a38"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/final_exit.txt",
+        "git_blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/frontend.txt",
+        "git_blob": "e61b82968fbf8774e0d05a4f733714d431c45d6f"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-1.txt",
+        "git_blob": "a5ec80c6642c86f0cc33e11a5249566313272c8f"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-1.xml",
+        "git_blob": "b5cdd99326b90266fef9a5eb614a8ce1bdacd62b"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-2.txt",
+        "git_blob": "4e909dd43c2c94895b0bca9fef0578c2263c8be5"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-2.xml",
+        "git_blob": "97249d08fcb61a225923d7b013bee04ff90a3a58"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-1.txt",
+        "git_blob": "187c1c6e6f9992fe8a99618e0d06030ac6aed7d8"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-1.xml",
+        "git_blob": "edb79fb66429c7b050de4df20fc486643ce32981"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-2.txt",
+        "git_blob": "8c49ed585671adba18e14d1236c55b433d9f1f21"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-2.xml",
+        "git_blob": "b0d68b2b41bf9467b696003c0226b5ab63f53347"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-3.txt",
+        "git_blob": "9d98644ed85b8fe1e7b4cfbbff6d23462813ff48"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-3.xml",
+        "git_blob": "6eb4de366c583b91539add6db5dfd9fe7df3c03a"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/results/versions.txt",
+        "git_blob": "0a3e74388d5c7cab79724beeafa38973a561c7b9"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/run_browser_followup.sh",
+        "git_blob": "899f14099fbbe6bb2e8c3be6487a548ad00da30b"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/run_checks.sh",
+        "git_blob": "48e4a0ed76d7dad5adfe64e3e898b0b536161869"
+      },
+      {
+        "path": "docs/evidence/integration_2026-10-16/web_ci/web_ci_events.py",
+        "git_blob": "e8b6bedb0c2be668d5a920baa3d24efbd62b07cf"
+      }
+    ]
+  },
+  "storage_policy": "Every raw file is stored verbatim in ZIP; no tracked-text deduplication is used."
+}
