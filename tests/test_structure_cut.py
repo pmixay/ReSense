@@ -147,18 +147,52 @@ def test_small_part_in_front_of_wall_stays_dropped():
     """3-7 voxels 1.4 m in front of a wall along the track at 1.9 m, at 120 m (the DBSCAN radius links them to
     it there), in the strict gauge, beyond far_range (3 voxels pass the point-count bar there): without the
     part-size bar each is carved out as a gauge obstacle; with structure_cut_min_points 8 they stay dropped with
-    the wall, and 8 voxels pass."""
+    the wall, and 8 voxels pass. H2: these fixtures span two azimuth columns so this tests voxel count alone."""
     on = ClusterConfig()
     assert on.structure_cut_min_points == 8 and on.min_points_far <= 3
     nobar = replace(on, structure_cut_min_points=0)
     wall = _straight_wall(y=1.9, x0=105.0, x1=150.0)
     for k in range(3, 8):
-        scene = np.concatenate([wall, _column(120.0, 0.5, k)])
+        part = _column(120.0, 0.5, k)
+        part[::2, 1] = 0.2
+        scene = np.concatenate([wall, part])
         assert _clusters(scene, on) == [] and _clusters(scene, replace(on, structure_cut_tol=0.0)) == [], k
         (c,) = _clusters(scene, nobar)
         assert c.cut and c.n == k and c.zone == "gauge" and not c.reason and abs(c.distance - 120.0) < 0.05
-    (c,) = _clusters(np.concatenate([wall, _column(120.0, 0.5, 8)]), on)
+    part = _column(120.0, 0.5, 8)
+    part[::2, 1] = 0.2
+    (c,) = _clusters(np.concatenate([wall, part]), on)
     assert c.cut and c.n == 8 and c.zone == "gauge" and not c.reason
+
+
+def test_eight_voxels_on_one_azimuth_column_are_not_a_resolved_cut_body():
+    """H2: voxel count alone cannot corroborate a single vertical scan line.
+
+    Reflection, input order and duplicate echoes must not manufacture a second
+    azimuth column. This is a cut-only guard; a resolved face must still pass.
+    """
+    cfg = ClusterConfig()
+    wall = _straight_wall(y=1.9, x0=105.0, x1=150.0)
+    line = _column(120.0, 0.5, 8)
+    for echoes in (1, 2):
+        scene = np.concatenate([wall, np.repeat(line, echoes, axis=0)])
+        for sign in (-1, 1):
+            reflected = scene * np.array([1.0, sign, 1.0])
+            assert _clusters(reflected, cfg) == [], (echoes, sign)
+            assert _clusters(reflected[::-1].copy(), cfg) == [], (echoes, sign, "reversed")
+
+
+def test_resolved_cut_face_keeps_its_corridor_verdict_with_duplicate_echoes():
+    """H2: a face with horizontal and vertical support retains its gauge verdict."""
+    cfg = ClusterConfig()
+    wall = _wall()
+    face = _face(95.0, _wall_y(95.0, 0.5) - 1.6, width=0.6)
+    for echoes in (1, 2):
+        scene = np.concatenate([wall, np.repeat(face, echoes, axis=0)])
+        for sign in (-1, 1):
+            (c,) = _clusters(scene * np.array([1.0, sign, 1.0]), cfg)
+            assert c.cut and c.zone == "gauge" and not c.reason
+            assert abs(c.distance - 95.0) < 0.05
 
 
 def _straight_wall(y: float = 2.6, x0: float = 10.0, x1: float = 40.0):
