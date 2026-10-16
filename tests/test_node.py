@@ -1040,13 +1040,20 @@ def test_one_period_allowance_cannot_bypass_freshness_or_health_guards(freshness
     send(20.1)
     kwargs = {}
     lag = 0.1
-    if guard == "source_stale": kwargs["age"] = 0.501
-    if guard == "source_future": kwargs["age"] = -0.051
-    if guard == "source_unknown": kwargs["info"] = False
-    if guard == "residence": kwargs["residence"] = 0.501
-    if guard == "epoch": node.freshness_previous = None
-    if guard == "health": clock["health"] = {"level": "error"}
-    if guard == "decision_health": clock["health"] = {"decision_level": "error"}
+    if guard == "source_stale":
+        kwargs["age"] = 0.501
+    if guard == "source_future":
+        kwargs["age"] = -0.051
+    if guard == "source_unknown":
+        kwargs["info"] = False
+    if guard == "residence":
+        kwargs["residence"] = 0.501
+    if guard == "epoch":
+        node.freshness_previous = None
+    if guard == "health":
+        clock["health"] = {"level": "error"}
+    if guard == "decision_health":
+        clock["health"] = {"decision_level": "error"}
     if guard == "queue_age":
         node.input_period = 1.0         # even a long input period cannot bypass max_result_age
         lag = 0.501

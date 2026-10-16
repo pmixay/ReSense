@@ -5,6 +5,11 @@ This supersedes the source coverage of `attempt-01` (1,562 cases on `0caf5c2`), 
 measurements. **Static lint is not fully green:** seven pre-existing E701 findings remain,
 documented below. YAML parsing and the owned Python/helper checks pass.
 
+**Parent follow-up, 16.10:** the seven E701 lines were expanded without changing the test AST.
+The final CI-scope Ruff command passes; production code still matches this tested source.
+See [FINALIZATION.json](../FINALIZATION.json). Historical receipts below retain their actual
+lint-failure status; this follow-up does not rewrite that run.
+
 ## Immutable source and construction
 
 | Identity | Exact value |

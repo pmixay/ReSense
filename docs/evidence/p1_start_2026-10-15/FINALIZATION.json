@@ -1,0 +1,32 @@
+{
+  "verification": "PASS",
+  "tested_source": "7d3d5a05c258fc26a16c711e092822ff60d59d56",
+  "product_matches_tested_source": true,
+  "test_node_delta_ast_equivalent": true,
+  "sealed_delta_from_candidate_base": [],
+  "linux_suite": {
+    "passed": 1601,
+    "skipped": 0,
+    "failed": 0,
+    "data_local_deselected": 10
+  },
+  "ruff": {
+    "version": "ruff 0.11.13",
+    "exit": 0,
+    "scope": "CI whole-tree command",
+    "archived_runner_excluded_as_in_ci": "docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py",
+    "output": "All checks passed!"
+  },
+  "h0_nonlatency_rows_identical": 208,
+  "s1_linux_volume": {
+    "accepted": false,
+    "complete": false,
+    "measured_source": "62d055f"
+  },
+  "c1_v2": {
+    "accepted": false,
+    "lost_labelled_alert_frames": 19
+  },
+  "o1": "prepared; dispatch and organizer reply pending",
+  "g3": "specification only; no heldout detector run"
+}
