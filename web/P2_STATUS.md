@@ -6,10 +6,16 @@
 > **Last verified:** 2026-10-16: fetched integration `b0c9c17`, participant handoffs and active P4
 > protocol `058a451`; local 1.1.0 seal verification PASS. Review:
 > [`p2_plan_2026-10-16`](../docs/evidence/p2_plan_2026-10-16/README.md).
-> **Status:** D1 pass 1 and PT1 slide cuts integrated; execution plan registered on `role-2`.
+> **Status:** Role 2 implementation in review; completion remains blocked on external inputs.
+> Execution receipt: [`p2_execution_2026-10-16`](../docs/evidence/p2_execution_2026-10-16/README.md).
+
+16.10 update: all 47 webapp E2E tests pass on the frozen build. P4 `6d6aaca`
+export/archive verified and accepted; [draft PPTX/PDF and charts](../docs/presentation/draft_2026-10-16/README.md)
+prepared with corrected prerelease captions. Final release J1 and P1 approval
+remain pending; no new score or held-out claim.
 
 **Current execution plan:** [`docs/ROLE_2_PLAN.md`](../docs/ROLE_2_PLAN.md).
-Start with checkpoint reconciliation (P2-01), then C1 consumers (P2-02). Package 1.1.0 is
+Checkpoint reconciliation and C1 consumer implementation are prepared for review. Package 1.1.0 is
 sealed but unreleased; published v1.0.0 and its 13.10 score **66/100** remain the release/score
 reference. H1 free-top and S1 were withdrawn, runtime C1 v2 rejected; shared v1 and its additive
 reason contract are available. Final charts/media follow P4's release J1 and P1's O1/E1 decisions.
@@ -27,11 +33,11 @@ Dates: upload 29.09 by 23:59 MSK; technical expertise 30.09–14.10; pitch 23.10
 |---|---|---|
 | **D1 pass 1** | corrections integrated; decision log preserved | P2-01 reconciles the newer selected scope; numerical pass after J1; no score gain claimed |
 | **PT1 task 2: slide cuts** | 16-slide PPTX + PDF rebuilt; detail moved to notes; build enforces ≤80 words/slide and ≤1,100 total, counting chart labels | counts, PDF inspection and gate check in evidence; P1 final sign-off pending |
-| **C1 display** | ready to implement on integration: shared v1 producer and additive contract present; consumers do not yet show reasons | P2-02: examples, backward-compatible web consumers; coordinate webapp ownership and RViz marker text with P1; runtime v2 remains rejected |
+| **C1 display** | implemented for P1 review in both clients, backend metadata flow and marker text; consumer verification in execution receipt | actual selected-image ROS/RViz/Foxglove and visual acceptance remain open; runtime v2 remains rejected |
 | **PT1 range chart / final numbers** | historical cache graph clearly labelled as preparation; context from 13.10 is labelled separately | P4 J1 on released v1.1.0 / final seal: first STOP by straight, curve, double-track, platform × person/1 m/0.3 m; P2 renders ≥3 geometries; P1 chooses version under O1 |
 | **PT2 fallback / second device** | runbook prepared; existing 69 s clip is explicitly the 23.09 archive | P1-selected permitted release image/checksum (v1.0.0 fallback if O1/E1 pending), captain's machine + second device; record commit/image ID, STOP/distance and forced switch ≤30 s |
 | **D1 pass 2 / S5 / video cards (21.10)** | final shipped image/J1 pending; reserve a qualifying host now | S5 measures selected shipping runtime even if S1/S2 remain unshipped; ≥8 physical cores, separate four-condition matrix; render cards from accepted results |
-| Dashboard / label tool / layouts | existing deliverables and prior checks; new C1 consumer acceptance pending | P2-02 matrix, actual viewer checks and P1 marker-text handoff |
+| Dashboard / label tool / layouts | C1 reason display and boundary regressions implemented; legacy label compatibility covered by web suite | actual viewer/device checks and P1 marker-text approval |
 | **D2 archival cleanup** | scheduled after 23.10 in BACKLOG; not brought forward | after D1 and the session's docs commits; P1 approval, P4-lane coordination |
 
 S5 hardware check: this workstation exposes **4 physical cores / 8 threads** (`lscpu -e`),

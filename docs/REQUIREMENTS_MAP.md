@@ -67,7 +67,7 @@
 | описание архитектуры | [`ARCHITECTURE.md`](ARCHITECTURE.md) | готово |
 | описание алгоритма | [`ALGORITHM.md`](ALGORITHM.md) | готово |
 | результаты экспериментов | [`EXPERIMENTS.md`](EXPERIMENTS.md), [`SCORECARD.md`](SCORECARD.md), [`evidence/`](evidence/README.md) | готово |
-| видео работы | [`docs/video/resense_overview.mp4`](video/resense_overview.mp4) (2:50, субтитры) и клипы; новое видео команды — по готовности | готово; обновляется |
+| видео работы | [`docs/video/resense_overview.mp4`](video/resense_overview.mp4) (3:00, `ffprobe` 16.10, субтитры) и архивные клипы; видео на выбранном релизе — после решения P1 | архив доступен; обновление ожидает релиза |
 | демонстрация на контрольном бэге | `scripts/play_bag.sh <контрольный бэг>` или шаги 0–5 README; нода принимает обе пары топик / frame id и перезапускается на каждой новой записи | готово |
 | запуск без ручной установки зависимостей | образ самодостаточен; без сети проверено в CI (`offline-build`) | готово |
 
