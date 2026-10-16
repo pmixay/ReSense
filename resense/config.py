@@ -257,42 +257,17 @@ class ClusterConfig:
     column_width_trim: float = 0.05     # 27.09 (P4 history, on; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
     column_width_trim_min_cut: float = 0.25  # 27.09: m, the trimmed width is used only when it is at least this much narrower than the box (sparse tails: a joined fragment); a dense body keeps its width
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
-    # 13.10 (the judge's 0.3 x 0.3 x 2.8 m pole: CAUTION, never STOP 0.7 m off the axis; 0 = off): a column
-    # continues up to the vault, an object standing in the envelope ends inside it. The column signature
-    # does not demote a cluster whose top is seen free (clustering.top_is_free: the rays right above it pass
-    # over it), whose top is at most column_free_max_top and at least column_free_min_core of whose voxels
-    # are inside the strict envelope; every other rule still applies. 14.10: the ring between the top and the
-    # first ring above it that returns is read from the frame's channel ids (the ring table only without them,
-    # set O; a mount tilt moves the rings off the table); 15.10: ids only where they number the rings in elevation
-    # order, otherwise a ring the frame itself shows beside the object - no table (clustering._ring_between: a
-    # 64-ring sensor read through the Pandar128's table saw an empty ring above an occluded column). Full
-    # regression gate PASS, every gate frame identical
-    # to the sealed detector; the judge's pole 0.7 m off the axis 0 -> 136 STOP frames of 176, on the axis
-    # 82 -> 157 of 177 (configs/default.yaml)
-    column_free_max_top: float = 2.95  # m, under the 3.0 m envelope top, where the candidates are cut
+    # Development-only free-top exemption, withdrawn from shipping after H4. Zero disables the whole
+    # observation/spare path; an explicit positive opt-in (historically 2.95 m) remains unaccepted, with
+    # known tall-object misses and dark-continuation false STOPs. Evidence: h4_fixes/columns/WITHDRAWAL.md.
+    column_free_max_top: float = 0.0
     column_free_min_core: float = 0.5  # share of the cluster's voxels inside the strict envelope (a structure at its edge, a platform or canopy edge at 0.8-1.2 m: 0.09-0.56)
     column_free_min_returns: int = 2   # returns beyond the top on the ring above it (one ray: the recordings hold each echo twice)
-    # 15.10 (review round 3, P1; 0 = the first ring with returns above the top only, as 14.10): any return at the
-    # top's range over the cluster's azimuth window, within its top ring's lateral extent +- 0.15 m, up to this many m
-    # above its top is continuation (a column whose face right above the top returns nothing - dark paint, glass, a
-    # sign - read as free on 14.10), but never up to the local vault (clustering._local_vault: the lowest return over
-    # the axis +- 0.5 m standing over free space, 15 % before to 15 % beyond the object, measured in the frame: the
-    # far field's heights drift with the rail level) less column_free_vault_margin; no vault seen, no window. The
-    # recordings' vault over the envelope in the near field (10-50 m, p5): round tunnels 3.79-3.81 m (crown 4.1-4.3),
-    # square 3.55-3.77, the ride 3.59-4.02, stations / switches down to 3.0 (structures over the track); 0.3-0.7 m
-    # lower at 110-150 m (the drift). The review's dark-band what-if (0.6 deg above every free-top cluster's top):
-    # ride piece 1 / 3 STOP frames sealed 14 / 2 -> 14.10 30 / 13 -> 23 / 7, R4 49 (sealed); what remains is at
-    # 107-141 m, where the band spans 1.1-1.5 m and reaches the vault margin. Every judge probe and the plain ride
-    # pieces as 14.10, frame for frame
+    # Experimental parameters below are inert while column_free_max_top == 0. The continuation window
+    # stops below the measured local vault; absent continuation alone still has known dark-band ambiguity.
     column_free_window: float = 1.2
     column_free_vault_margin: float = 0.3   # m under the local vault (read over the axis: a round vault is 0.2-0.3 m lower over the envelope edge; a ray meeting it 2 % beyond the object sits 0.05 m under it there)
-    # 15.10 (P4, opt-in, NOT shipped: 0 = off): a column-shaped cluster reaching the candidates' cut (top above
-    # column_free_max_top) is followed above it along its own returns at its range to its true top (top_is_free),
-    # which must lie at least this far (m) under the local vault, every one of its own rays above it (two rings at
-    # least) passing beyond it (a column with a dark face returns nothing on them). Measured at 0.3 m: no gain on the
-    # judge's 3.2 / 3.6 m poles on A (square tunnel, ceiling 3.8-4.0 m: little room for the rays above the pole), the
-    # 3.2 m pole 0.7 m off the axis 24 -> 23 STOP frames (one ring: 24 -> 18, worse than sealed), and under the
-    # review's dark-band what-if one spare of a real ride column added a 9-frame STOP episode (one ring)
+    # Additional experimental tall-following gap under the vault; 0 = off. Requires the master opt-in too.
     column_free_tall_gap: float = 0.0
     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
@@ -420,13 +395,9 @@ class TrackingConfig:
     ego_veto_min_travel: float = 4.0
     ego_veto_min_distance: float = 25.0
     column_hold: int = 2           # 25.09: a track whose cluster was demoted as a column (cluster.column_*) in at least this many of its last zone_window hits is advisory: a column far away shows more than column_min_height of itself in some frames only (roundT_doubleT, EXPERIMENTS.md 3a; 2 = the highest pre-registered candidate that passed, docs/evidence/results/column_hold_2026-09-25.json); 0 = off
-    # 14.10 (review of the 13.10 free-top test; 0 / 1 = off, every spare believed): a cluster the column rule
-    # fits but cluster.column_free_max_top spares (its top seen free; Cluster.spared) is believed only when the
-    # track it continues had at least this many - 1 such hits among its last zone_window hits; alone it is the
-    # column the column rule made of it (reason column, zone warning: the column hold, the zone vote and
-    # explained_run see what they saw before 13.10). One spare of a noisy frame turned column tracks into
-    # STOPs (the standing train with 20-30 % point dropout, roundT_doubleT pitched -2 deg); the judge's pole,
-    # spared hit after hit, is believed from its second spared hit (configs/default.yaml has the measurements)
+    # Experimental free-top corroboration only: require this many spare hits in zone_window (0/1 disables
+    # corroboration). Shipping column_free_max_top=0 produces no spared clusters, so this path and its
+    # provisional-explanation re-arm improvement are inactive under the shipping defaults.
     column_free_min_spares: int = 2
     max_misses: int = 3            # frames a track survives without a match
     hold_misses: int = 1           # frames a reported track stays reported without a match (at its predicted distance): one missed frame does not drop a STOP (review 23.09); 0 = the v0.6.2 behaviour
