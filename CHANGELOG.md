@@ -7,18 +7,182 @@
 > changelog, the 29.09 node change against the node source and launch file, the rules of 29.09
 > evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link;
 > 2026-09-29: the web prototype entry against `webapp/`, `scripts/run_webapp.sh` and `.github/workflows/ci.yml` of PR #31 ·
-> **Status:** current
+> **Updated:** 2026-10-16: selected-scope H3/withdrawal/independent H4 at `c9aea87`, final H5
+> at `5211565` and verified 1.1.0 seal below; H6/CI/main and E1 remain pending. **Status:** current
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
-are team labels, the package is 1.0.0 since 25.09. Figures are the team's, measured when a change
+are team labels; package 1.0.0 dates from 25.09, current package **1.1.0 is sealed 16.10**.
+The published release remains v1.0.0. Figures are the team's, measured when a change
 landed (detector figures on the 1 cm frame cache). Current results: [`README.md`](README.md),
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
+## [1.1.0] — sealed 16.10, unreleased (E1 tag/archive pending)
+
+**H5 DONE:** final measured source `5211565`, numerical core unchanged from reviewed `c9aea87`;
+replacement H3, withdrawal probes, independent H4 and final version-bumped gate/seal complete.
+**H6 PENDING:** actual complete CI/main acceptance. No v1.1.0 E1 tag/archive or new J1 score.
+[Integration checkpoint](docs/evidence/integration_2026-10-16/README.md) links the committed
+reports and preserves the old H3 PASS / original H4 BLOCKED verdicts.
+
+- [Final H5](docs/evidence/integration_2026-10-16/h5/README.md): all four declarations committed
+  at **1.1.0** in `52115654417a660669b8dddfce447692c1d782cc` before measurement. Full gate
+  **PASS**, exit 0, **208/208 non-latency rows identical**, same **146 gated rows passed**,
+  no overrides/waivers; all **18,329 raw/serialized frames** have zero non-latency changes
+  against reviewed `c9aea87`. No new gated gain or detector timing improvement is claimed.
+- [Current seal](docs/evidence/detector_freeze_2026-10-16_1.1.0.json): measured `5211565`,
+  source/evidence commit `21e1d61`, seal commit `d6319c2`; **36 frozen files**, source digest
+  `db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751`.
+  [Committed-seal proof](docs/evidence/integration_2026-10-16/h5/seal_verify/completion.json)
+  retained at `ec81e78`: explicit new-manifest verification **PASS** in a clean LF Linux checkout
+  before and after native rebuild. Default-pointer integration is parent-owned.
+- Retained: structure-surface cut with H2's physical 0.1° azimuth bar; monitored/clear-range
+  cap at wall drift; shared C1 v1 with strict raw flag/health validation; E2 offline rebuild;
+  P4 evaluation tools/evidence and P2 docs/pitch preparation.
+- H1 **DROP after H4**: `cluster.column_free_max_top=0` in class/YAML/ROS defaults (`795a243`).
+  Original H1 left 9+5 dark excess STOP frames and an inherited tall miss; the zero-dark author
+  attempt lost A-axis 157 → 139/177 and other positives. No column fix or 157-frame shipping
+  gain is claimed. [Measured withdrawal](docs/evidence/integration_2026-10-16/h4_fixes/columns/WITHDRAWAL_RESULTS.md)
+  (`829b243`, source `c9aea87`): A-axis **82/177**, exact sealed scored frame set; C-person
+  **82.77 m / 55 STOP frames** retained. Entire dark pieces 1/3: **14/2 STOP frames**, zero
+  extra/lost STOPs and zero free-top/observer calls. Author units **260 passed**, **6 existing
+  external-data deselections**, no failures/errors/skips; inherited High tall miss **OPEN, 8.1**.
+- [Replacement H3](docs/evidence/integration_2026-10-16/h3_selected/README.md) (`5282d6f`):
+  exact committed `c9aea87`, clean Linux/native full gate **PASS**, exit 0, no overrides/waivers;
+  **208/208 non-latency rows identical**, **146 gated rows passed**. All **18,329 raw/serialized
+  frames** compared to same-runtime sealed `707ea9c`; no unexplained change or gated gain.
+  Only the range cap/additive fields and registered timing telemetry differ.
+- [Fresh independent H4](docs/evidence/integration_2026-10-16/h4_selected/README.md) (`70072f1`):
+  revised difference `707ea9c..c9aea87` **ACCEPTED**, no supported **NEW medium-or-higher** finding.
+  **306 passed**, zero failures/skips/deselections; **36 H2 angular/voxel boundary cases**,
+  **1,344 paired Tracker updates per source**. Inherited High 8.1 remains OPEN; the original
+  enabled-H1 H4 remains BLOCKED and attempt 08 remains rejected.
+- S1 **FAIL, runtime removed**: queue 40, startup step 0, lag 20 s, original freshness retained.
+  C1 runtime accepts only v1; v2 is **offline experimental, FAIL** (30.46% CAUTION, 19 lost
+  labelled object-frame alerts).
+- E2 local clean offline rebuild **PASS**; new release-workflow check awaits a new tag.
+  H0 baseline **PASS**; X3 **40-case v1.0.0 baseline**, not new-candidate acceptance;
+  G3 **spec only**, no held-out result.
+- O1 prepared, **not dispatched**, no organizer reply. J1 and PT1 numerical claims remain
+  explicitly v1.0.0. Verified branch archive is prepared; main merge/retirement remain pending.
+- Documentation consolidated after P1/P2 merge conflicts; one exact duplicate 09.10 upload
+  entry removed; DECISIONS retains the historical rows and records the 16.10 scope/dispositions.
+  P4 intake aliases corrected with a dated note (**B = roundT_doubleT**, **C = roundT_pressureGate_roundT**),
+  full names/data unchanged; original handoff publication links pinned to commit SHAs.
+
+## [Unreleased] — P2 documentation and pitch preparation (15.10)
+
+- D1 pass 1: current SCORECARD and captain table now cite the 13.10 v1.0.0 judgement (66/100),
+  with earlier reviews dated; release/tag, merged prototype, current shell-off baseline, ownership,
+  dual-return sensitivity and cache-vs-node range claims corrected. Decision-log rows preserved.
+- PT1 pass 1: rebuilt the 16-slide named PPTX and PDF, moved detail into speaker notes, added
+  `build_deck.py --audit` and a build-time word budget (≤80/slide, ≤1,100 total, including chart labels).
+  Final range-by-geometry graph, release numbers, video cards and P1 sign-off wait for O1/J1;
+  C1 display, PT2 and S5 dependencies are tracked in [`web/P2_STATUS.md`](web/P2_STATUS.md).
+
+## Historical unreleased detector candidate `final/silent-misses` (14–15.10; not resealed)
+
+**Historical measurements below, not the selected 1.1.0 shipping claim.** H4 later blocked
+the column/free-top path; it is disabled by `795a243`. H2 and the range cap remain selected,
+with replacement H3/probes and revised-scope H4 complete at `c9aea87`; H5 later sealed 1.1.0
+from `5211565` (H6 and E1 pending).
+See the [16.10 checkpoint](docs/evidence/integration_2026-10-16/README.md).
+
+The two fixes below together, and the fixes of the review of 14.10 evening:
+[`silent_misses_2026-10-14`](docs/evidence/silent_misses_2026-10-14/README.md). The full regression gate of the current
+code (`14f83dd`) passes with every gate frame identical to the sealed detector. No frame of the 27 judge range probes is
+worse than the sealed detector; the review's false STOPs next to the wall and its dropout / pitch replays are back at
+the sealed numbers frame by frame.
+
+### Fixed — the monitored range stops where the axis leaves the track at a curve entry (`track.axis_wall_drift`, 15.10)
+
+- The judge's problem 4 and the GO that stayed of silent miss 2 (13.10): entering a curve (C =
+  `roundT_pressureGate_roundT`, frames 57-117) the fitted axis lags the track by 1.0-2.4 m at 100 m while the trusted
+  axis range stays 119-151 m, so an object on the track at 100-150 m never enters the corridor and the decision is GO
+  with `clear_distance` past it. Cause, measured: both tunnel walls are fitted and averaged by fit quality; the inner
+  wall is smooth (rms 0.03-0.14 m vs 0.12-0.21) but seen only to 56-96 m, where the transition's curvature is still
+  small, so it carries 3-10x the weight; even the outer wall alone, a quadratic held to the rails' tangent, cannot follow
+  a curvature that grows with the distance (−0.0008 vs about −0.0014 needed at frame 86). The outer wall's far part,
+  once it has crossed the lagging axis, is counted on the inner side (the walls are split by the sign of the lateral)
+  and lengthens that side's reach (the trusted range); removing it moves the averaged curvature by at most 0.9e-4
+  (frames 57-90) / 1.8e-4 (91-117), i.e. 0.4 / 0.9 m at 100 m of the 1.0-2.4 m: a part of the lag, not its main
+  cause. The rate limit never binds.
+- The monitored range (health `monitored_range` and `clear_distance`) now ends where a near tunnel wall, followed
+  outward from the rail range where it is parallel to the rails, has come 0.8 m nearer the axis (two bins in a row;
+  a faster step is a structure edge and moves the reference). On C the axis is 0.7-1.1 m off the wall-referenced track
+  there. The output names it (`health.wall_drift`, `track.wall_drift`, only in such a frame). The corridor and every
+  decision are unchanged.
+- Judge C range probes (frames where the decision is GO, the object visible and the range past it): person on the
+  axis 26 → 10, 1 m cube 27 → 7, 0.5 m cube 27 → 7, the person on the wall-referenced track 26 → 4; none is left
+  within 142 m (the rest: 142-156 m before the drift is measurable, and 178-186 m on the straight). STOP frames, A and B
+  identical. Cost: the ride's range is capped in 13.8 % of its frames (median 94 m; 3.8 % of the range), C 50 %
+  (its two curve entries), A 20 %, S 5 %, B 3 %, `doubleT_platform` and `doubleT_obstacle` none. Capping the corridor
+  there too (`beyond_axis`, CAUTION) was measured and not taken: C's person 55 → 43 STOP frames, first STOP 82.8 →
+  65.1 m. The full regression gate passes on this code: every decision of every gate frame is the sealed detector's;
+  only `monitored_range` / `clear_distance` / `wall_drift` differ (2 321 of 15 269 frames; and in 2 ride frames the
+  latency warning of the machine's timing, not a decision input).
+- Not shipped — the axis itself (15.10; local branch `r3/axis-B-trial`). Weighting the two walls also by how far each
+  is seen continuously (span ratio ** 4, gaps up to 16 m) puts C's axis on the wall-referenced track (100 m: median
+  1.39 → 0.42-0.56 m, max 2.41 → 0.71-1.05 m) and the judge's person placed on that track goes 47 → 64-74 STOP frames
+  (first STOP 71.0 → 96-111 m). Three versions failed the full gate: on every two-wall frame (ride 27 → 33 events, a
+  false STOP on `roundT_doubleT` from its double-track tunnel's far wall), only for two near walls with the farther
+  one curving more (ride 27 → 36, the station +1), and only after a frame with a wall drift as well (ride 27 → 34, C
+  +1 event at 56 m). Each moves the axis on frames the false-alarm rules were screened with; not tuned further on the
+  same recordings.
+
+### Fixed — the review of 14.10 (`14f83dd`)
+
+- The structure cut placed objects standing 0.95-1.2 m in front of C's outer wall — outside the envelope, where the
+  detector's trusted near axis reports them (lateral 1.24-1.32 m, CAUTION) — inside it, through the lagging far axis:
+  false STOPs for a person-size box 1.0 / 1.1 m from the wall 0 → 21 / 15 frames, a sign post 0 → 5, a 2.6 m mast
+  0 → 9, a column 0 → 8. `cluster.structure_cut_tol` 0.8 → 1.3 m (more than the wall equipment, 0.8-1.2 m, and more
+  than C's wall stands outside the strict envelope): all 0 again. The C gains shrink but stay above sealed: person
+  first STOP 73.9 → 82.8 m (13.10: 90.2), STOP frames 49 → 55 (60). Making the parts beyond the wall's entry into the
+  envelope advisory instead was measured and rejected: worse than sealed (person 49 → 47 frames).
+- One free-top spare broke a column hold: the standing train with 20-30 % point dropout gained 2-11 STOP frames and a
+  STOP episode in three of four seeds, `roundT_doubleT` pitched −2° one STOP frame. `tracking.column_free_min_spares`
+  2: a spared cluster is believed only when its track had another spared hit in its last 10 hits; alone it is the
+  column it was before 13.10. Every such replay is now identical to the sealed detector; the off-axis pole loses
+  1-12 STOP frames at 160-200 m (A, +0.7 m: 136 → 128 of 176), none within 150 m.
+- A demoted structure-cut part no longer removes a low object it overlaps; channel ids out of the ring table's order
+  are no empty-ring evidence for the free-top test; tests for the rule wiring (the detector's channel ids, a cut
+  part's free-top test) and a wall-fixture test that now pins the tolerance, not the voxel bar.
+
+### Fixed — a pole standing in the envelope is not a column (`cluster.column_free_max_top`, 13.10 / 14.10)
+
+- The judge's silent miss 1 of 13.10 ([`judgement_2026-10-13`](docs/evidence/judgement_2026-10-13/README.md)): a
+  0.3 × 0.3 × 2.8 m pole inside the envelope was demoted as a column — CAUTION from ~70 m to 5 m on the axis, never a
+  STOP 0.7 m off it. A column continues up to the vault, an object standing in the envelope ends inside it: the column
+  signature no longer demotes a cluster at least half inside the strict envelope, its top at most 2.95 m, whose top is
+  seen free (`clustering.top_is_free`: the first ring above the top that returns has nothing at the top's range, and
+  either a ring in between returned nothing — read from the frame's channel ids, the ring table only without them — or
+  more of its returns lie beyond the top than nearer). Every other rule still applies.
+- Judge range test on A: the pole 82 → 157 STOP frames of 177 on the axis, 0 → 136 / 133 at ±0.7 m (with `--dropout`
+  67 → 143 and 11 → 133), the 0.5 m post 56 → 157 and 30 → 150; the person box unchanged frame by frame. After the
+  review (one spare is a column, above): the same on the axis, ±0.7 m 128 / 132, `--dropout` +0.7 m 126, the post
+  +0.7 m 138; the losses are all at 160-200 m. The full
+  regression gate passes with every gate frame identical to the sealed detector (ride, five obstacle-free recordings,
+  `doubleT_obstacle`, set O); the four judge recordings and A / S with `--pitch 2` and `--drop 0.3` are unchanged.
+
+### Fixed — an object against the wall on a curve is not dropped with it (`cluster.structure_cut_tol`, 13.10 / 14.10)
+
+- The judge's silent miss 2 of 13.10: on the curve of `roundT_pressureGate_roundT` the lagging far axis lays the tunnel
+  wall across the envelope at 70-150 m; a person-size box there touches the wall, the two make one cluster longer than
+  `max_extent`, the 25.09 split refuses it and it was dropped whole (GO at 75-87 m). A cluster the split refused is now
+  cut along the smooth surface it lies on (`clustering._off_structure_parts`: a robust fit y(x, h), not fitted without a
+  strict-gauge point, not cut along a surface steeper than 45° to the track); its points at least 1.3 m (0.8 m on
+  13.10, see the review above) in front of the surface are linked again, and parts at most 3 m long with strict-gauge points and at least 8 voxels
+  (`structure_cut_min_points`) go through every rule. A cluster whose split part was accepted keeps the split's verdict.
+- Judge range test on C, first STOP sealed → 13.10 → 14.10: person 73.9 → 90.2 → 82.8 m (`--dropout` the same; yawed
+  ±20° 72.5 → 93.1 / 88.7 → 85.7 / 85.7; lateral +0.5 69.5 → 84.3 → 72.5, −0.7 85.7 → 109.4 → 96.1), 1 m cube 73.9 →
+  96.1 → 85.7 m, 0.5 m cube 75.4 → 82.8 → 75.4 m; B, A and D persons unchanged. Not fixed: C 100-150 m stays 0 / 34
+  STOP frames with GO at 118-150 m (the axis puts the box within 0.2-0.8 m of the wall there, judge problem 4), no
+  gain within 1.3 m of the wall. The full regression gate passes with every gated and information row identical.
+
 ## [Unreleased] — web prototype (PR #31; outside the `v1.0.0` release)
 
-[PR #31](https://github.com/pmixay/ReSense/pull/31), branch `claude/prototype-website-rebuild-tz31o0` with `main`
-merged in; optional, it reaches `main` only through that PR with CI green.
+[PR #31](https://github.com/pmixay/ReSense/pull/31) merged as `317eabf`; the prototype is in `main`
+and outside the runtime image and release v1.0.0.
 
 ### Changed — resumable uploads for big recordings, faster processing (`webapp/`, 09.10)
 
@@ -80,12 +244,12 @@ merged in; optional, it reaches `main` only through that PR with CI green.
 - Known limits: 60 fps playback not measured (headless SwiftShader only); the live mode tested against a
   rosbridge stand-in only; no authentication and one server process — a local stand.
 
-## [Unreleased] — package 1.0.0
+## [1.0.0] — released 29.09
 
-**Release status:** no git tag and no GitHub release exist yet. When the tag `v1.0.0` is pushed,
-[`.github/workflows/release.yml`](.github/workflows/release.yml) builds and proves the runtime image
-archive and publishes it (`.tar.gz`, `.sha256`, `SHA256SUMS`) as the assets of the GitHub release
-`v1.0.0`; until then: the CI artifact of a `main` run (GitHub login) or `scripts/export_image.sh`.
+**Release status:** [v1.0.0](https://github.com/pmixay/ReSense/releases/tag/v1.0.0) points to
+`5d6e9b5`; archive `resense-image-v1.0.0.tar.gz` (477,449,541 bytes), `.sha256` and
+`SHA256SUMS` published. The judge verified checksum/offline launch on 13.10. The entries
+below retain the dated development measurements that led to this release.
 
 ### Changed — shell rule off after the safety review (29.09 night; resealed at `fe27068`)
 

@@ -20,14 +20,41 @@ DECISION_WORD = r"(свободно|внимание|стоп|ошибка)"
 
 
 def player_pos(page, run_id: str) -> int:
-    """Wait for the player URL of a run and return its ?pos=."""
+    """The requested frame must arrive in the player, not just in the history URL."""
     expect(page).to_have_url(re.compile(rf"/player/{run_id}\?pos=\d+$"))
-    return int(page.url.rsplit("=", 1)[1])
+    pos = int(page.url.rsplit("=", 1)[1])
+    scrubber = page.get_by_role("slider", name="Кадр прогона")
+    expect(scrubber).to_be_visible()
+    expect(scrubber).to_have_attribute("aria-valuenow", str(pos))
+    return pos
 
 
 def back_to(page, pattern: str) -> None:
     page.go_back()
     expect(page).to_have_url(re.compile(pattern))
+    # React transitions can retain the outgoing DOM after history already changed.
+    expect(page.get_by_role("slider", name="Кадр прогона")).to_have_count(0)
+
+
+def test_player_link_waits_for_rendered_destination(app, backend):
+    """A history URL changes before a lazy destination/API response commits its DOM."""
+    page = app.page
+    app.goto("/runs")
+    # A tiny real processed recording keeps this readiness test independent of demo timing.
+    rec = backend.api.upload_jsonl("navigation_probe", b'{"stamp":0,"frame":0,"obstacle":false,"warning":false,"nearest_distance":null,"detections":[],"warnings":[]}\n')
+    rid = backend.api.processed(rec["id"])["run_id"]
+    cdp = page.context.new_cdp_session(page)
+    cdp.send("Network.enable")
+    cdp.send("Network.emulateNetworkConditions", {"offline": False, "latency": 100,
+                                                "downloadThroughput": -1, "uploadThroughput": -1})
+    try:
+        page.goto(f"{backend.url}/player/{rid}?pos=0", wait_until="commit")
+        assert player_pos(page, rid) == 0
+        assert page.get_by_role("slider", name="Кадр прогона").count() == 1
+    finally:
+        cdp.detach()
+        backend.api.delete(f"/runs/{rid}")
+        backend.api.delete(f"/recordings/{rec['id']}")
 
 
 # ---------------------------------------------------------------------------------------- seed

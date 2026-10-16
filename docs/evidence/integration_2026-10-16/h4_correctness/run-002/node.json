@@ -1,0 +1,12 @@
+{
+  "cases": 990,
+  "decisions": {
+    "CAUTION": 22,
+    "FAULT": 277,
+    "GO": 8,
+    "STOP": 683
+  },
+  "failures": [],
+  "policy_source": "/work/target/ros2_ws/src/resense_ros/resense_ros/decision_policy.py",
+  "source": "/work/target/ros2_ws/src/resense_ros/resense_ros/detector_node.py"
+}

@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+"""Combined probe table: sealed base, each finalizer, the combined branch; frame-decision differences.
+usage: probe_table.py [--json OUT] [case ...]"""
+import json
+import os
+import sys
+
+F = "/tmp/claude-0/fixwork"
+B = "/tmp/claude-0/judge_data/baseline_out"
+COMB = f"{F}/final_silent/probes"
+COLF = f"{F}/final_column/probes/final"
+OVF = f"{F}/final_oversize/probes"
+I = f"{F}/investigate_column/out"
+G = f"{F}/column_geom/out"
+T = f"{F}/column_track/probes/extra"
+JO = f"{F}/judge_oversize"
+COLUMN = ["pole_c", "pole_side", "pole_sideN", "post_c", "post_side", "pole_c_drop", "pole_side_drop", "A_person",
+          "S_pole_side60", "S_pole_side100", "B_pole_c", "B_pole_side", "C_pole_c", "C_pole_side"]
+CURVE = ["C_person", "C_cube1", "C_cube05", "C_person_latp05", "C_person_latm05", "C_person_latp07", "C_person_latm07",
+         "C_person_drop", "C_person_hd20", "C_person_hdm20", "C_cube1_hd20", "B_person", "D_person"]
+BASE = {"pole_c": f"{B}/range2/E5_pole_c.json", "pole_side": f"{B}/range2/E5_pole_side.json",
+        "pole_sideN": f"{I}/pole_sideN.json", "post_c": f"{I}/post_c.json", "post_side": f"{I}/post_side.json",
+        "A_person": f"{B}/range/A_person.json", "pole_side_drop": f"{T}/A_pole_side_drop_sealed.json",
+        "pole_c_drop": f"{F}/final_column/probes/base/pole_c_drop.json",
+        "S_pole_side60": f"{G}/base_S_pole_side60.json", "S_pole_side100": f"{F}/final_column/probes/base/S_pole_side100.json",
+        "B_pole_c": f"{G}/base_B_pole_c.json", "B_pole_side": f"{G}/base_B_pole_side.json",
+        "C_pole_c": f"{T}/C_pole_c_sealed.json", "C_pole_side": f"{T}/C_pole_side_sealed.json",
+        "C_person": f"{JO}/base_C_person.json", "C_cube1": f"{B}/range/C_cube1.json", "C_cube05": f"{B}/range/C_cube05.json",
+        "C_person_latp05": f"{OVF}/base_C_person_latp05.json", "C_person_latm05": f"{OVF}/base_C_person_latm05.json",
+        "C_person_latp07": f"{JO}/base_C_person_latp07.json", "C_person_latm07": f"{JO}/base_C_person_latm07.json",
+        "C_person_drop": f"{JO}/base_C_person_drop.json", "C_person_hd20": f"{JO}/base_C_person_hd20.json",
+        "C_person_hdm20": f"{JO}/base_C_person_hdm20.json", "C_cube1_hd20": f"{JO}/base_C_cube1_hd20.json",
+        "B_person": f"{B}/range/B_person.json", "D_person": f"{B}/range/D_person.json"}
+
+
+def finalizer(case):
+    out = {}
+    p = f"{COLF}/{case}.json"
+    if os.path.exists(p):
+        out["column"] = p
+    p = f"{OVF}/fin_{case}.json"
+    if os.path.exists(p):
+        out["oversize"] = p
+    return out
+
+
+def load(p):
+    if not p or not os.path.exists(p):
+        return None
+    d = json.load(open(p))
+    return {"summary": d.get("summary", d), "rows": d.get("rows")}
+
+
+def short(s):
+    if s is None:
+        return None
+    s = s["summary"]
+    dv = s.get("decisions_while_visible") or {}
+    return {"first_stop": s.get("first_stop_X"), "held_from": s.get("held_from_X"), "stop": s.get("stop_frames"),
+            "visible": s.get("visible_frames"), "bins": s.get("bins"),
+            "GO": dv.get("GO"), "CAUTION": dv.get("CAUTION"), "STOP": dv.get("STOP")}
+
+
+def ndiff(a, b):
+    if a is None or b is None or not a["rows"] or not b["rows"]:
+        return None
+    if len(a["rows"]) != len(b["rows"]):
+        return f"len {len(a['rows'])} vs {len(b['rows'])}"
+    return sum(1 for x, y in zip(a["rows"], b["rows"]) if x.get("decision") != y.get("decision"))
+
+
+def worse(a, b):
+    """frames where a (reference) is STOP and b is not, and where a is CAUTION/STOP and b is GO."""
+    if a is None or b is None or not a["rows"] or not b["rows"] or len(a["rows"]) != len(b["rows"]):
+        return None
+    lost_stop = sum(1 for x, y in zip(a["rows"], b["rows"]) if x.get("decision") == "STOP" and y.get("decision") != "STOP")
+    new_go = sum(1 for x, y in zip(a["rows"], b["rows"]) if x.get("decision") != "GO" and y.get("decision") == "GO")
+    return {"lost_stop": lost_stop, "new_go": new_go}
+
+
+def fmt(s):
+    if s is None:
+        return "-"
+    bins = "|".join(str(v) for v in (s["bins"] or {}).values())
+    return (f"{s['first_stop']} / {s['held_from']}  STOP {s['stop']}/{s['visible']} [{bins}]"
+            f"  G/C/S {s['GO']}/{s['CAUTION']}/{s['STOP']}")
+
+
+def main():
+    args = sys.argv[1:]
+    jout = None
+    if args[:1] == ["--json"]:
+        jout, args = args[1], args[2:]
+    cases = args or COLUMN + CURVE
+    table = {}
+    for c in cases:
+        base = load(BASE.get(c))
+        comb = load(f"{COMB}/{c}.json")
+        row = {"group": "column" if c in COLUMN else "curve", "base_file": BASE.get(c), "base": short(base),
+               "combined": short(comb), "combined_vs_base_decisions_differ": ndiff(base, comb)}
+        print(c)
+        print("  base      ", fmt(row["base"]))
+        for k, p in finalizer(c).items():
+            fz = load(p)
+            row[k] = short(fz)
+            row[f"combined_vs_{k}_decisions_differ"] = ndiff(fz, comb)
+            row[f"combined_vs_{k}_worse"] = worse(fz, comb)
+            print(f"  {k:10s}", fmt(row[k]))
+        print("  combined  ", fmt(row["combined"]),
+              "  differ: " + ", ".join(f"{k.split('_vs_')[1].replace('_decisions_differ', '')} {v}"
+                                     for k, v in row.items() if k.endswith("_decisions_differ")),
+              "  worse: " + ", ".join(f"{k.split('_vs_')[1]} {v}" for k, v in row.items() if k.endswith("_worse")))
+        table[c] = row
+    if jout:
+        json.dump(table, open(jout, "w"), indent=1)
+
+
+if __name__ == "__main__":
+    main()

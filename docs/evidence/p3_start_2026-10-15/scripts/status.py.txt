@@ -1,0 +1,99 @@
+"""Summarize completed P3 experiments without treating pending runs as passes."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+BASE = Path(__file__).resolve().parent
+RUNS = BASE / "resense-p3-runs"
+REPO = BASE / "rs-range-screen"
+sys.path[:0] = [str(REPO), str(REPO / "scripts")]
+from scripts import regression_gate as gate
+
+
+def read(path):
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+
+def gate_summary(path):
+    report = read(path)
+    if report is None:
+        return "pending"
+    comparison = gate.compare(read(REPO / "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json"), report)
+    return {"fails": [r for r in comparison if r["fails"]], "code": report["code"],
+            "ride": report["ride"], "five_empty": report["five_empty"],
+            "changed_non_latency_rows": [r for r in comparison if not r["metric"].startswith("latency_ms.") and r["verdict"] != "same"]}
+
+
+def frame_diff(baseline, candidate):
+    fields = ("obstacle", "warning", "detections", "warnings", "nearest_distance", "clear_distance", "n_candidates", "track")
+    result = {}
+    for source in sorted(baseline.glob("*.jsonl")):
+        target = candidate / source.name
+        a = [json.loads(line) for line in source.read_text().splitlines()]
+        b = [json.loads(line) for line in target.read_text().splitlines()]
+        assert len(a) == len(b), source.name
+        changed = {key: [i for i, (x, y) in enumerate(zip(a, b)) if x.get(key) != y.get(key)] for key in fields}
+        result[source.name] = {"frames": len(a), "changed_fields": {k: v for k, v in changed.items() if v}}
+    return result
+
+
+def main():
+    status = {"gates": {tag: gate_summary(RUNS / "gates" / f"{tag}.json") for tag in ("baseline", "H1", "H2")}}
+    status["variant_gates"] = {tag: gate_summary(RUNS / "variant-gates" / f"{tag}.json") for tag in ("R2a", "R2b", "R1a", "R1b", "R1c")}
+    status["darkband"] = read(RUNS / "darkband/summary.json") or "pending"
+    status["h1_battery"] = read(RUNS / "h1-battery/summary.json") or "pending"
+    for name in ("h1-probes", "h1-tall-probes", "h2-wall-battery"):
+        status[name] = read(RUNS / name / "summary.json") or "pending"
+    status["h2_initial"] = {}
+    for tag in ("sealed", "14.10", "H2"):
+        for case in ("mast12", "C_person"):
+            report = read(RUNS / "h2-probes" / f"{case}_{tag}.json")
+            if report:
+                status["h2_initial"][f"{case}_{tag}"] = report["summary"]
+    status["range_screen_seto"] = {}
+    status["range_screen_probes"] = read(RUNS / "range-screen-probes/summary.json") or "pending"
+    for tag in ("baseline", "R2a", "R2b", "R1a", "R1b", "R1c"):
+        report = read(RUNS / "range-screen-seto" / tag / "screen.json")
+        if report:
+            status["range_screen_seto"][tag] = {
+                "failing_rows": report["failing_set_O_rows"],
+                "inside_stop_frames": report["set_O"]["inside_stop_frames"],
+                "small_center": report["set_O"]["objects"]["small_center"],
+                "small_on_rail": report["set_O"]["objects"]["small_on_rail"]}
+    for tag in ("H1", "H2"):
+        if (RUNS / "gates" / f"{tag}.json").exists():
+            diff = frame_diff(RUNS / "gates/baseline_work", RUNS / "gates" / f"{tag}_work")
+            (RUNS / "gates" / f"{tag}_frame_diff.json").write_text(json.dumps(diff, indent=2), encoding="utf-8")
+    main_repo = Path("C:/Users/alikh/OneDrive/Desktop/projects/ReSense")
+    seal = read(main_repo / "docs/evidence/detector_freeze_2026-09-29_shell_off.json")
+    source_diffs = []
+    for path, expected in seal["files"].items():
+        blob = subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=main_repo)
+        if hashlib.sha256(blob).hexdigest() != expected:
+            source_diffs.append(path)
+    status["sealed_git_blob_differences"] = source_diffs
+    (RUNS / "status.json").write_text(json.dumps(status, indent=2), encoding="utf-8")
+    for tag, report in status["gates"].items():
+        print("gate", tag, "pending" if report == "pending" else f"{len(report['fails'])} failing rows")
+    for tag, report in status["variant_gates"].items():
+        print("variant", tag, "pending" if report == "pending" else f"{len(report['fails'])} failing rows")
+        if report != "pending":
+            for row in report["fails"]:
+                print(" ", row["metric"], row["baseline"], "->", row["current"])
+    for tag, report in status["range_screen_seto"].items():
+        print("Set O", tag, report["inside_stop_frames"], "small_center", report["small_center"]["first_stop_m"],
+              "small_on_rail", report["small_on_rail"]["first_stop_m"])
+    for name in ("h1_battery", "h1-probes", "h1-tall-probes", "h2-wall-battery"):
+        value = status[name]
+        print(name, "pending" if value == "pending" else f"{len(value)} completed cases")
+    if status["range_screen_probes"] != "pending":
+        for name, value in status["range_screen_probes"].items():
+            summary = value["summary"]
+            print("range", name, "first", summary["first_stop_X"], "held", summary["held_from_X"], "STOP", summary["stop_frames"])
+    print("sealed source git-blob differences", source_diffs)
+
+
+if __name__ == "__main__":
+    main()

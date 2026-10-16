@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /tmp/claude-0/fixwork/safety_review
+until [ -f out/chain5.done ]; do sleep 20; done
+./battery7.sh > out/battery7.log 2>&1
+echo DONE > out/chain6.done

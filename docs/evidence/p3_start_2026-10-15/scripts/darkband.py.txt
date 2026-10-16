@@ -1,0 +1,54 @@
+"""Reproduce H1's two ride pieces with the same inputs for all three codes."""
+from concurrent.futures import ThreadPoolExecutor
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+BASE = Path(__file__).resolve().parent
+REPOS = {"sealed": Path("C:/Users/alikh/OneDrive/Desktop/projects/ReSense"),
+         "14.10": BASE / "rs-range-screen", "H1": BASE / "rs-h1"}
+OUT = BASE / "resense-p3-runs/darkband"
+
+
+def run(job):
+    tag, piece, dark = job
+    repo = REPOS[tag]
+    name = f"p{piece}_{tag}_{'dark' if dark else 'plain'}"
+    prefix = OUT / name
+    env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
+               DARKBAND=str(dark), PYTHONPATH=os.pathsep.join((str(repo), str(BASE))),
+               RESENSE_REPO=str(repo), WT=str(repo))
+    driver = BASE / "rs-h1/docs/evidence/column_hardening_2026-10-15/scripts/grun.py.txt"
+    cmd = [sys.executable, str(BASE / "resense-p3-run-script.py"), str(repo), str(driver),
+           "D:/Datasets/ReSense/new_data", str(prefix), f"piece:{piece}/8"]
+    with open(str(prefix) + ".log", "w") as log:
+        result = subprocess.run(cmd, cwd=repo, env=env, stdout=log, stderr=subprocess.STDOUT)
+    print(name, result.returncode, flush=True)
+    if result.returncode:
+        raise RuntimeError(name)
+    rows = [json.loads(line) for line in Path(str(prefix) + ".jsonl").read_text().splitlines()]
+    prev = False
+    episodes = 0
+    for row in rows:
+        stop = row["decision"] == "STOP"
+        episodes += stop and not prev
+        prev = stop
+    return name, {"frames": len(rows), "STOP": sum(r["decision"] == "STOP" for r in rows),
+                  "episodes": episodes, "CAUTION": sum(r["decision"] == "CAUTION" for r in rows),
+                  "code_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()}
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    jobs = [(tag, piece, dark) for piece in (1, 3) for tag in REPOS
+            for dark in ((0,) if tag == "sealed" else (0, 0.6))]
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        results = dict(pool.map(run, jobs))
+    (OUT / "summary.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+    print(json.dumps(results, indent=2), flush=True)
+
+
+if __name__ == "__main__":
+    main()

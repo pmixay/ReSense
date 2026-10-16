@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-16T14:37:38.197789+00:00",
+  "disk_free_bytes": 124564496384,
+  "original_proof_hashes": {
+    "inventory-after.json": "6bf566434df98b1bc03319dc935ca576ab194ed3a717fd95663b13e777dcbf21",
+    "inventory-before.json": "30510cb9ea5f469a31e04fcaacdfef595469ba3f9a534ce06664bd7c6110cc32",
+    "local-final-verification.json": "fd09d7182702b37a0be2cc078851225a650f36fe4e880ace88b07bac62f9ee59",
+    "manifest.json": "cd0d5881919eada32510c50db2a53289850ca38a2a8197ed239d7607776bbe44",
+    "preflight.json": "59c7c1144d8d688fcd48344f4ad4126bf96d2d4518e2e305d80b411d919089b6",
+    "release-after.json": "c3a0d8236d16201a1f40fd23f2d6b8424bd63a0b5cf9515175cb55148fc42af8",
+    "release-before.json": "c3a0d8236d16201a1f40fd23f2d6b8424bd63a0b5cf9515175cb55148fc42af8",
+    "retain_artifacts.py": "38c83dffc7a1bad98fe68b0126326ffa9a74f187f7db1db4dfcb40dad8f35d3c",
+    "summary.json": "6f666eb7df7ddee3b6c48129e0437736fbe3f7667de0d44d8e0e3a0dbed8c7c0"
+  },
+  "prior_completed_count": 14,
+  "reserve_bytes": 5368709120
+}

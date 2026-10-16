@@ -31,6 +31,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+from pathlib import Path
 import sys
 
 import numpy as np
@@ -38,20 +39,10 @@ import numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from resense.metrics import gt_meta, load_gt  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from decision_policy_import import load_policy  # noqa: E402
 
-
-def decision(r: dict) -> str:
-    """The node's decision word for a result row (DetectorNode.decision; the health warning it
-    reads is ``decision_level``, 26.09: without the latency warning, and ``level`` in older rows)."""
-    h = r.get("health") or {}
-    level = h.get("level", "ok")
-    if r.get("obstacle"):
-        return "STOP"
-    if level == "error":
-        return "FAULT"
-    if r.get("warning") or h.get("decision_level", level) == "warn":
-        return "CAUTION"
-    return "GO"
+decision = load_policy(Path(__file__).resolve().parents[1]).decision
 
 
 def read(paths):

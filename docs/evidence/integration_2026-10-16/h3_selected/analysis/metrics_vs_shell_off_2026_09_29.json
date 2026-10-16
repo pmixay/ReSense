@@ -1,0 +1,2056 @@
+{
+  "rows": [
+    {
+      "allowed": false,
+      "baseline": 201,
+      "current": 201,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_obstacle.frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 2,
+      "current": 2,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.doubleT_obstacle.alarm_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 1,
+      "current": 1,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.doubleT_obstacle.stop_episodes",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 193,
+      "current": 193,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.doubleT_obstacle.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 91,
+      "current": 91,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.doubleT_obstacle.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 8,
+      "current": 8,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_obstacle.first_alarm_frame",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 129,
+      "current": 129,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 61,
+      "current": 61,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_obstacle.labelled.person_crossing.hits",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 126,
+      "current": 126,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 190,
+      "current": 190,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.doubleT_obstacle.labelled.hits",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_obstacle.labelled.fp_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0.23,
+      "current": 0.23,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.doubleT_obstacle.labelled.distance_error_max_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 345,
+      "current": 345,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_platform.frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 1,
+      "current": 1,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_platform.alarm_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 1,
+      "current": 1,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.doubleT_platform.stop_episodes",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 2,
+      "current": 2,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.doubleT_platform.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 182,
+      "current": 182,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.doubleT_platform.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 252,
+      "current": 252,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_doubleT.frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_doubleT.alarm_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_doubleT.stop_episodes",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.roundT_doubleT.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 173,
+      "current": 173,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.roundT_doubleT.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 268,
+      "current": 268,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_pressureGate_roundT.frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_pressureGate_roundT.alarm_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_pressureGate_roundT.stop_episodes",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.roundT_pressureGate_roundT.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 107,
+      "current": 107,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.roundT_pressureGate_roundT.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 545,
+      "current": 545,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_squareT_pressureGate_squareT.frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_squareT_pressureGate_squareT.alarm_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.roundT_squareT_pressureGate_squareT.stop_episodes",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.roundT_squareT_pressureGate_squareT.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 146,
+      "current": 146,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.roundT_squareT_pressureGate_squareT.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 877,
+      "current": 877,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.squareT_platform_squareT_switch.frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 7,
+      "current": 7,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.squareT_platform_squareT_switch.alarm_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 11,
+      "current": 11,
+      "fails": false,
+      "gated": true,
+      "metric": "recordings.squareT_platform_squareT_switch.stop_episodes",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 37,
+      "current": 37,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.squareT_platform_squareT_switch.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 398,
+      "current": 398,
+      "fails": false,
+      "gated": false,
+      "metric": "recordings.squareT_platform_squareT_switch.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 8,
+      "current": 8,
+      "fails": false,
+      "gated": false,
+      "metric": "five_empty.alarm_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 12,
+      "current": 12,
+      "fails": false,
+      "gated": false,
+      "metric": "five_empty.stop_episodes",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 39,
+      "current": 39,
+      "fails": false,
+      "gated": false,
+      "metric": "five_empty.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 11271,
+      "current": 11271,
+      "fails": false,
+      "gated": true,
+      "metric": "ride.frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 27,
+      "current": 27,
+      "fails": false,
+      "gated": true,
+      "metric": "ride.alarm_events",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 30,
+      "current": 30,
+      "fails": false,
+      "gated": true,
+      "metric": "ride.stop_episodes",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 126,
+      "current": 126,
+      "fails": false,
+      "gated": false,
+      "metric": "ride.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 1510,
+      "current": 1510,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 208,
+      "current": 208,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 98.0,
+      "current": 98.0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.first_stop_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 98.7,
+      "current": 98.7,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.held_from_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 5,
+      "current": 5,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.max_missed_streak_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0.5,
+      "current": 0.5,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.max_missed_span_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.big_center.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 43,
+      "current": 43,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.bins.0-50.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 43,
+      "current": 43,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.bins.0-50.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 170,
+      "current": 170,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.bins.50-100.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 165,
+      "current": 165,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_center.bins.50-100.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 32,
+      "current": 32,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 55.8,
+      "current": 55.8,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.first_stop_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 60.8,
+      "current": 60.8,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.held_from_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 47,
+      "current": 47,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.max_missed_streak_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 71.4,
+      "current": 71.4,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.max_missed_span_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.small_center.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 28,
+      "current": 28,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.bins.0-50.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 28,
+      "current": 28,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.bins.0-50.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 31,
+      "current": 31,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.bins.50-100.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 4,
+      "current": 4,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.bins.50-100.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 20,
+      "current": 20,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.bins.100-150.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_center.bins.100-150.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 23,
+      "current": 23,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 42.7,
+      "current": 42.7,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.first_stop_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 46.2,
+      "current": 46.2,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.held_from_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 23,
+      "current": 23,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.max_missed_streak_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 38.7,
+      "current": 38.7,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.max_missed_span_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.small_on_rail.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 27,
+      "current": 27,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.bins.0-50.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 23,
+      "current": 23,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.bins.0-50.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 19,
+      "current": 19,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.bins.50-100.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.bins.50-100.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 1,
+      "current": 1,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.bins.100-150.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.bins.100-150.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 2,
+      "current": 2,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.bins.200-300.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_on_rail.bins.200-300.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 18,
+      "current": 18,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 35.0,
+      "current": 35.0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.first_stop_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 38.7,
+      "current": 38.7,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.held_from_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 61,
+      "current": 61,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.max_missed_streak_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 109.0,
+      "current": 109.0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.max_missed_span_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 7,
+      "current": 7,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.small_edge_inside.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 26,
+      "current": 26,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.bins.0-50.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 18,
+      "current": 18,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.bins.0-50.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 27,
+      "current": 27,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.bins.50-100.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.bins.50-100.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 27,
+      "current": 27,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.bins.100-150.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.bins.100-150.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 3,
+      "current": 3,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.bins.150-200.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_edge_inside.bins.150-200.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.small_outside_near.false_stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 24,
+      "current": 24,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.small_outside_near.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 7,
+      "current": 7,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 18.3,
+      "current": 18.3,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.first_stop_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 10.3,
+      "current": 10.3,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.held_from_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 106,
+      "current": 106,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.max_missed_streak_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 202.4,
+      "current": 202.4,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.max_missed_span_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 1,
+      "current": 1,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.big_edge_inside.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 25,
+      "current": 25,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.0-50.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 7,
+      "current": 7,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.0-50.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 26,
+      "current": 26,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.50-100.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.50-100.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 26,
+      "current": 26,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.100-150.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.100-150.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 26,
+      "current": 26,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.150-200.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.150-200.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 22,
+      "current": 22,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.200-300.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_edge_inside.bins.200-300.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_outside.false_stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 43,
+      "current": 43,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.big_outside.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 56,
+      "current": 56,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 111.4,
+      "current": 111.4,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.first_stop_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 123.6,
+      "current": 123.6,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.held_from_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 68,
+      "current": 68,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.max_missed_streak_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 134.7,
+      "current": 134.7,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.max_missed_span_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.big_above.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 25,
+      "current": 25,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.0-50.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 25,
+      "current": 25,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.0-50.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 25,
+      "current": 25,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.50-100.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 25,
+      "current": 25,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.50-100.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 25,
+      "current": 25,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.100-150.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.100-150.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 24,
+      "current": 24,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.150-200.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.150-200.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 25,
+      "current": 25,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.200-300.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.big_above.bins.200-300.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 52,
+      "current": 52,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 87.2,
+      "current": 87.2,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.first_stop_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 95.9,
+      "current": 95.9,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.held_from_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 18,
+      "current": 18,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.max_missed_streak_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 30.4,
+      "current": 30.4,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.max_missed_span_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.long_low_on_rails.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 29,
+      "current": 29,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.bins.0-50.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 29,
+      "current": 29,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.bins.0-50.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 30,
+      "current": 30,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.bins.50-100.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 23,
+      "current": 23,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.bins.50-100.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 15,
+      "current": 15,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.bins.100-150.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.bins.100-150.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 12,
+      "current": 12,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.bins.200-300.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.long_low_on_rails.bins.200-300.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 15,
+      "current": 15,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 30.1,
+      "current": 30.1,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.first_stop_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 31.8,
+      "current": 31.8,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.held_from_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 4,
+      "current": 4,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.max_missed_streak_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 4.9,
+      "current": 4.9,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.max_missed_span_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.objects.thin_hanging.advisory_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 24,
+      "current": 24,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.bins.0-50.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 15,
+      "current": 15,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.bins.0-50.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 10,
+      "current": 10,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.bins.50-100.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.bins.50-100.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 3,
+      "current": 3,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.bins.100-150.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.bins.100-150.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 5,
+      "current": 5,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.bins.150-200.visible_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.objects.thin_hanging.bins.150-200.stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.background.alarm_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_O.background.track_ids",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 411,
+      "current": 411,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.inside_stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": false,
+      "metric": "set_O.outside_false_stop_frames",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.person.detected",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 151.0,
+      "current": 151.0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.person.first_detection_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.person.false_detections",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 157.1,
+      "current": 157.1,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.person.sustained_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 106,
+      "current": 106,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.person.recall_0-50",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 125,
+      "current": 125,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.person.recall_50-100",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 120,
+      "current": 120,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.person.recall_100-150",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 13,
+      "current": 13,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.person.recall_150-200",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.person.recall_200-250",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.box1.0.detected",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 123.9,
+      "current": 123.9,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.box1.0.first_detection_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 12,
+      "current": 12,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.box1.0.false_detections",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 119.0,
+      "current": 119.0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box1.0.sustained_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 106,
+      "current": 106,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box1.0.recall_0-50",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 123,
+      "current": 123,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box1.0.recall_50-100",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 47,
+      "current": 47,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box1.0.recall_100-150",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box1.0.recall_150-200",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box1.0.recall_200-250",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 2,
+      "current": 2,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.box0.5.detected",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 64.4,
+      "current": 64.4,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.box0.5.first_detection_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.box0.5.false_detections",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 55.6,
+      "current": 55.6,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box0.5.sustained_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 18,
+      "current": 18,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box0.5.recall_0-50",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 5,
+      "current": 5,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box0.5.recall_50-100",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box0.5.recall_100-150",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box0.5.recall_150-200",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.box0.5.recall_200-250",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.trolley.detected",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 151.4,
+      "current": 151.4,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.trolley.first_detection_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 5,
+      "current": 5,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.trolley.false_detections",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 120.9,
+      "current": 120.9,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.trolley.sustained_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 106,
+      "current": 106,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.trolley.recall_0-50",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 124,
+      "current": 124,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.trolley.recall_50-100",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 60,
+      "current": 60,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.trolley.recall_100-150",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 9,
+      "current": 9,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.trolley.recall_150-200",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.trolley.recall_200-250",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 6,
+      "current": 6,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.cable.detected",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 98.9,
+      "current": 98.9,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.cable.first_detection_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": true,
+      "metric": "set_F_straight.cable.false_detections",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 34.2,
+      "current": 34.2,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.cable.sustained_median_m",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 43,
+      "current": 43,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.cable.recall_0-50",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 47,
+      "current": 47,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.cable.recall_50-100",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 12,
+      "current": 12,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.cable.recall_100-150",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.cable.recall_150-200",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 0,
+      "current": 0,
+      "fails": false,
+      "gated": false,
+      "metric": "set_F_straight.cable.recall_200-250",
+      "verdict": "same"
+    },
+    {
+      "allowed": false,
+      "baseline": 43.2,
+      "current": 45.5,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.doubleT_obstacle.mean",
+      "verdict": "worse"
+    },
+    {
+      "allowed": false,
+      "baseline": 84.4,
+      "current": 85.9,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.doubleT_obstacle.p95",
+      "verdict": "worse"
+    },
+    {
+      "allowed": false,
+      "baseline": 57.2,
+      "current": 43.9,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.doubleT_platform.mean",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 100.3,
+      "current": 86.6,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.doubleT_platform.p95",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 55.4,
+      "current": 35.9,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.roundT_doubleT.mean",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 85.0,
+      "current": 56.2,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.roundT_doubleT.p95",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 52.2,
+      "current": 34.6,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.roundT_pressureGate_roundT.mean",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 80.5,
+      "current": 72.5,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.roundT_pressureGate_roundT.p95",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 41.8,
+      "current": 34.4,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 71.6,
+      "current": 68.5,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 43.7,
+      "current": 37.2,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.squareT_platform_squareT_switch.mean",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 72.5,
+      "current": 78.8,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.squareT_platform_squareT_switch.p95",
+      "verdict": "worse"
+    },
+    {
+      "allowed": false,
+      "baseline": 60.9,
+      "current": 34.4,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.cloud_with_fake_obj.mean",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 138.0,
+      "current": 72.2,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.cloud_with_fake_obj.p95",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 48.3,
+      "current": 36.0,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.new_data.mean",
+      "verdict": "better"
+    },
+    {
+      "allowed": false,
+      "baseline": 118.0,
+      "current": 76.8,
+      "fails": false,
+      "gated": false,
+      "metric": "latency_ms.new_data.p95",
+      "verdict": "better"
+    }
+  ],
+  "summary": {
+    "allow": [],
+    "baseline": "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+    "baseline_commit": "7464d80ec06f484ce1691b0ca7a87ce1ed82c5a0",
+    "baseline_config_sha256": "873374a221e37da48fbe9d31806f7a26349399ed09f9b58d9768c1ae50a2916e",
+    "better": [],
+    "changed_non_latency_rows": [],
+    "gated_rows": 146,
+    "identical_non_latency_rows": 208,
+    "info_changed": [
+      "latency_ms.doubleT_obstacle.mean",
+      "latency_ms.doubleT_obstacle.p95",
+      "latency_ms.doubleT_platform.mean",
+      "latency_ms.doubleT_platform.p95",
+      "latency_ms.roundT_doubleT.mean",
+      "latency_ms.roundT_doubleT.p95",
+      "latency_ms.roundT_pressureGate_roundT.mean",
+      "latency_ms.roundT_pressureGate_roundT.p95",
+      "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+      "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+      "latency_ms.squareT_platform_squareT_switch.mean",
+      "latency_ms.squareT_platform_squareT_switch.p95",
+      "latency_ms.cloud_with_fake_obj.mean",
+      "latency_ms.cloud_with_fake_obj.p95",
+      "latency_ms.new_data.mean",
+      "latency_ms.new_data.p95"
+    ],
+    "missing_allowed": [],
+    "missing_gated": [],
+    "non_latency_rows": 208,
+    "passed": true,
+    "same": 208,
+    "total_rows": 224,
+    "worse_allowed": [],
+    "worse_gated": []
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "cases": 1576,
+  "updates_per_source": 31520,
+  "groups": {
+    "top_2.72": {
+      "cases": 256,
+      "sealed_matched_STOP_frames": 840,
+      "candidate_matched_STOP_frames": 2608,
+      "new_STOP_frames": 1768,
+      "lost_STOP_frames": 0,
+      "inside_objects": 192,
+      "inside_no_STOP_objects": 0,
+      "candidate_background_STOP_frames": 0
+    },
+    "top_3.22": {
+      "cases": 256,
+      "sealed_matched_STOP_frames": 780,
+      "candidate_matched_STOP_frames": 1144,
+      "new_STOP_frames": 364,
+      "lost_STOP_frames": 0,
+      "inside_objects": 192,
+      "inside_no_STOP_objects": 112,
+      "candidate_background_STOP_frames": 0
+    },
+    "top_3.62": {
+      "cases": 256,
+      "sealed_matched_STOP_frames": 780,
+      "candidate_matched_STOP_frames": 780,
+      "new_STOP_frames": 0,
+      "lost_STOP_frames": 0,
+      "inside_objects": 192,
+      "inside_no_STOP_objects": 140,
+      "candidate_background_STOP_frames": 0
+    },
+    "top_4.12": {
+      "cases": 256,
+      "sealed_matched_STOP_frames": 780,
+      "candidate_matched_STOP_frames": 780,
+      "new_STOP_frames": 0,
+      "lost_STOP_frames": 0,
+      "inside_objects": 192,
+      "inside_no_STOP_objects": 140,
+      "candidate_background_STOP_frames": 0
+    },
+    "band_[2.54, 3.18]": {
+      "cases": 256,
+      "sealed_matched_STOP_frames": 1680,
+      "candidate_matched_STOP_frames": 1680,
+      "new_STOP_frames": 0,
+      "lost_STOP_frames": 0,
+      "inside_objects": 192,
+      "inside_no_STOP_objects": 80,
+      "candidate_background_STOP_frames": 0
+    },
+    "band_[2.54, 4.12]": {
+      "cases": 256,
+      "sealed_matched_STOP_frames": 1680,
+      "candidate_matched_STOP_frames": 2616,
+      "new_STOP_frames": 936,
+      "lost_STOP_frames": 0,
+      "inside_objects": 192,
+      "inside_no_STOP_objects": 8,
+      "candidate_background_STOP_frames": 0
+    },
+    "beam": {
+      "cases": 32,
+      "sealed_matched_STOP_frames": 0,
+      "candidate_matched_STOP_frames": 416,
+      "new_STOP_frames": 416,
+      "lost_STOP_frames": 0,
+      "inside_objects": 32,
+      "inside_no_STOP_objects": 0,
+      "candidate_background_STOP_frames": 0
+    },
+    "multi": {
+      "cases": 8,
+      "sealed_matched_STOP_frames": 120,
+      "candidate_matched_STOP_frames": 120,
+      "new_STOP_frames": 0,
+      "lost_STOP_frames": 0,
+      "inside_objects": 24,
+      "inside_no_STOP_objects": 16,
+      "candidate_background_STOP_frames": 0
+    }
+  },
+  "changed_cases": 268
+}

@@ -1,0 +1,86 @@
+{
+  "result": "PASS",
+  "image": "resense:h4-fixture-fixed-1cfe8de-20261016",
+  "changed_shipping_counts": {
+    "passed": 75
+  },
+  "full_suite_collection_summary": "1617/1627 tests collected (10 deselected) in 6.79s",
+  "fixture_paths": {
+    "source_commit": "1cfe8de4cebf457a099705b12cdc2c1712e2dda1",
+    "import": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+    "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+    "h4_witness": {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json",
+      "bytes": 105484,
+      "sha256": "ffda03349e4c29eed62d3428a3c44a06ae7ed395a81bf093ff2ebf11e48ede4e"
+    },
+    "shipping_yaml_and_ros_mirror_identical": true,
+    "shipping_h1_disabled": true
+  },
+  "commands": [
+    {
+      "name": "full-suite-collection",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "-e",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "python3",
+        "-c",
+        "import resense, sys, pytest; from resense import _native; assert not resense.__file__.startswith(\"/opt/resense/\"); assert _native.enabled(); sys.path.insert(0, \"/opt/resense\"); sys.exit(pytest.main([\"--collect-only\", \"-q\", \"-rs\", \"/opt/resense/tests\"]))"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "changed-shipping-units",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "-e",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "python3",
+        "-c",
+        "import resense, sys, pytest; from resense import _native; assert not resense.__file__.startswith(\"/opt/resense/\"); assert _native.enabled(); sys.path.insert(0, \"/opt/resense\"); sys.exit(pytest.main(['-q', '-rs', '/opt/resense/tests/test_h4_spare_rearm.py', '/opt/resense/tests/test_column_shipping.py', '/opt/resense/tests/test_column_free_top.py', '/opt/resense/tests/test_late_candidates.py', '/opt/resense/tests/test_structure_cut.py']))"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "shipping-fixture-paths",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-w",
+        "/",
+        "-e",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "python3",
+        "-c",
+        "\nimport hashlib, json\nfrom pathlib import Path\nimport resense\nfrom resense import _native\nfrom resense.config import DetectorConfig\nroot = Path('/opt/resense')\nassert not Path(resense.__file__).is_relative_to(root)\nassert _native.enabled(), _native.status()\nrelative = 'docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json'\nmanifest = json.loads(Path('/e2-context/fixture-manifest.json').read_text())\nexpected = next(f for f in manifest['fixtures'] if f['path'] == relative)\nassert hashlib.sha256((root / relative).read_bytes()).hexdigest() == expected['sha256']\ncanonical = root / 'configs/default.yaml'\nmirror = root / 'ros2_ws/src/resense_ros/config/detector.yaml'\nassert canonical.read_bytes() == mirror.read_bytes()\nfor path in (canonical, mirror):\n    assert DetectorConfig.from_yaml(str(path)).cluster.column_free_max_top == 0.0\nassert DetectorConfig().cluster.column_free_max_top == 0.0\nprint(json.dumps({'source_commit': manifest['source_commit'], 'import': resense.__file__,\n                  'native': _native.status(), 'h4_witness': expected,\n                  'shipping_yaml_and_ros_mirror_identical': True, 'shipping_h1_disabled': True}))\n"
+      ],
+      "exit": 0
+    }
+  ],
+  "scope": "full-suite collection/imports and focused changed tests; not the full test run or 1.1.0 release"
+}

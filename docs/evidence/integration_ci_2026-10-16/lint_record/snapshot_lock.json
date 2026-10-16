@@ -1,0 +1,1307 @@
+{
+  "schema": "resense-archived-lint-v1",
+  "ruff": "0.15.8",
+  "baseline_commit": "492e407b76d9dee7852f9e1884200e27939f0fca",
+  "python_roots": [
+    "docs/evidence/cycle_2026-09-28/complete_timing/default",
+    "docs/evidence/integration_2026-10-16/h3",
+    "docs/evidence/integration_2026-10-16/h3_selected",
+    "docs/evidence/integration_2026-10-16/h4_correctness",
+    "docs/evidence/integration_2026-10-16/h4_fixes/columns",
+    "docs/evidence/integration_2026-10-16/h4_fixes/rearm",
+    "docs/evidence/integration_2026-10-16/h4_safety",
+    "docs/evidence/integration_2026-10-16/h4_selected",
+    "docs/evidence/integration_2026-10-16/h5"
+  ],
+  "exclusions": [
+    {
+      "path": "docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/cycle_2026-09-28/complete_timing/default/artifact_manifest.json",
+        "pointer": [
+          "files",
+          "run_gate.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/analyze_h3.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h3/HASHES.json",
+        "pointer": [
+          "files",
+          62,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/finish_h3_analysis.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h3/HASHES.json",
+        "pointer": [
+          "files",
+          63,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h3/HASHES.json",
+        "pointer": [
+          "files",
+          75,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/analyze_h3.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h3_selected/HASHES.json",
+        "pointer": [
+          "files",
+          66,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/check_withdrawn_config.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h3_selected/HASHES.json",
+        "pointer": [
+          "files",
+          67,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/compare_scenes.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          6,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/diagnose_witness.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          22,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          23,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          24,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/followup_checks.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          31,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          32,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/inventory_evidence.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          33,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_continuation.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          34,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_followup.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          35,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_followup02.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          36,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/resume_linux.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          41,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/run_followup.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          96,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/run_followup02.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          97,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+        "pointer": [
+          "files",
+          99,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/compare.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/HASHES.json",
+        "pointer": [
+          "compare.py"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/details.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/PACKAGE_HASHES.json",
+        "pointer": [
+          "details.py"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/package.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/PACKAGE_HASHES.json",
+        "pointer": [
+          "package.py"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py",
+      "provenance": {
+        "kind": "git-pinned-launch",
+        "path": "docs/evidence/integration_2026-10-16/h4_fixes/rearm/green-bb62b94/launch.json",
+        "pointer": [
+          "argv",
+          42
+        ],
+        "commit": "bb62b94d69425e00079be88e9adb835978f8282e",
+        "source_blob": "924726e14e77ac089cee477624ed5967ca6ccda9"
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/analyze.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "analyze.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/common.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "common.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/components.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "components.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/derive.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "derive.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/finalize.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "finalize.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/launch.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "launch.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/package.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "package.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/replay.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "replay.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/verify_package.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "verify_package.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/worker.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+        "pointer": [
+          "worker.py",
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/audit.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_selected/HASHES.json",
+        "pointer": [
+          "files",
+          0,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_selected/HASHES.json",
+        "pointer": [
+          "files",
+          9,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/probes.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h4_selected/HASHES.json",
+        "pointer": [
+          "files",
+          10,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/analyze_h3.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h5/HASHES.json",
+        "pointer": [
+          "files",
+          67,
+          "sha256"
+        ]
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/check_final_config.py",
+      "provenance": {
+        "kind": "package-sha256",
+        "path": "docs/evidence/integration_2026-10-16/h5/HASHES.json",
+        "pointer": [
+          "files",
+          68,
+          "sha256"
+        ]
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/evidence/cycle_2026-09-28/complete_timing/default/artifact_manifest.json",
+      "bytes": 5210,
+      "sha256": "981cdb530d8d884c12e7b8ed5288ca7862183b8fd55d7f99ee43505aebb7d4ca",
+      "git_blob": "1e8c80d88c93b89afd947c1619fd1fa570327022"
+    },
+    {
+      "path": "docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py",
+      "bytes": 3672,
+      "sha256": "397440bbfeeae04134257e1db48490a17635ec524a2954c9d04178af2fe82076",
+      "git_blob": "17889bc84abbd772704e1720b47481eaecb60962"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/HASHES.json",
+      "bytes": 13696,
+      "sha256": "cb0dc724f3de545ef7d14e81f0094d52b20ee9d5cf78c8cb81e4e216ee996e5c",
+      "git_blob": "ab3f76d4696eb1749d96227c24705b9148a6c0c6"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/analyze_h3.py",
+      "bytes": 14406,
+      "sha256": "859b1ac4a32051d6a46e6ace491eb16aca9cceb1a11f99ec1fbaa0d1f5b87011",
+      "git_blob": "74eb9cc964d0734a21b74489657364924ecfa83b"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/finish_h3_analysis.py",
+      "bytes": 2341,
+      "sha256": "502fceb03363a31ad4a7f11f3f78b16e22d6c605910d88faeaca0d829f5081fc",
+      "git_blob": "4b584c85099c6bd7f9afa42e8f78f191eb2ec9c5"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/frame_diff.py",
+      "bytes": 14875,
+      "sha256": "61392175cb3ee25e7a2688ce02ef43eb3a4e85d7c2f5fdaab536875535f52465",
+      "git_blob": "b9e93d6f88ffdeb767e54e2d876db81e8168bbf0"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/gate_control.py",
+      "bytes": 6063,
+      "sha256": "a763aa5bd027f32bb9f0b6588060bbfe34e7bcc99d14bb6d348efdbf9cc48e83",
+      "git_blob": "e2b77f4ead41aa43057ef6459c66a6036c1c92e1"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/hooks/sitecustomize.py",
+      "bytes": 3336,
+      "sha256": "183cf3bf791a1221d79ff4aec4de5400f4232aa65da0dfea97512003ab1122b7",
+      "git_blob": "c0069f3cd3545e4d15597ce61f6b540570da6474"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/interpret_h3_trace.py",
+      "bytes": 1493,
+      "sha256": "73d98a50ddbcfcc0e8b3b1785fa7cf333bd42694add44100dc673304c06f596d",
+      "git_blob": "242291cdd374ee53a816b30c46abb5cf2a51513f"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/launch_gate.py",
+      "bytes": 2913,
+      "sha256": "11708506c7c008ab27a8c2527ca57610d0db299bdfc193229f594eaed4bd2c2f",
+      "git_blob": "c70fb86be1f665c3a0379333fcc928855710b1ab"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/metrics_h3.py",
+      "bytes": 3126,
+      "sha256": "fa56826c8afc3d45c9a699f344082d299d4b88b7c40edbdaadc0debdecec0760",
+      "git_blob": "7f055865eb9eb105e73b329db73d377a862d79d5"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/normalize_h3_package.py",
+      "bytes": 1853,
+      "sha256": "a4275a59f36a58212a794ea17b21373c2c7768f2936ca676296b42cffdad08b3",
+      "git_blob": "acfeb36326f98aaa439476d2b54ced976774c247"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/package_h3.py",
+      "bytes": 7951,
+      "sha256": "c0c6af67861e8d2efd505a1126f52f74adb8be4df9b90ec6f93a43b8b9f1937f",
+      "git_blob": "2934048c4570eb811cea0942756803b359415952"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/run_linux_gate.py",
+      "bytes": 9130,
+      "sha256": "7b6ea63caf755958009514536c53e991ebcd9b7b88372277e83de0c43aa07f7c",
+      "git_blob": "b8c848449f8428476a13546c39e6ac226ed932cb"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/start_job.py",
+      "bytes": 994,
+      "sha256": "6161e19703dabea3831f61928d49d41fb6dad94416664f8d49e1e2125b8cc033",
+      "git_blob": "f5c99d9978fce03d969d3b16b30186834d1b728c"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/test_frame_diff.py",
+      "bytes": 3040,
+      "sha256": "9530cea02167891659ad360fe6283f189ed4a5e10e7e5c2fab32add060c4e23d",
+      "git_blob": "e5abc514e4940501e08b2085f2427504948e875b"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py",
+      "bytes": 5903,
+      "sha256": "58ea9175687ab9c34228f79c1111c5abf91067b263f48b3fd8fcdcc26f126df0",
+      "git_blob": "79e3cf43a4131414a7cf27da3c669f80a6427d6a"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/verify_h3_package.py",
+      "bytes": 2636,
+      "sha256": "ae899326088078cb2227109752032d816d34419e512f3ef5a616da64eb01b400",
+      "git_blob": "4b454f373eb8e5ea1d756d3a41ea31c200215ec4"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/verify_run.py",
+      "bytes": 6878,
+      "sha256": "f834aa6c363b077209c260379fa72dd798b7a4836174120370fe9b32ed696dc3",
+      "git_blob": "1bec2b199c4c066dfee9ebe7980233a6c7a47333"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/HASHES.json",
+      "bytes": 14528,
+      "sha256": "77c59514702232cb9d25c2d805c9fb642054e7724b4987b4c9fea16010c8713a",
+      "git_blob": "b2fae7da78acffef1ce2964e3d048cedaf6375f4"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/analyze_h3.py",
+      "bytes": 14569,
+      "sha256": "64a1e444741d0c129411d63aad971b58c67423fafe8f2f0a472967493777bd90",
+      "git_blob": "38227e5ae8c61264636b5fe7d4e9ab371565296d"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/check_withdrawn_config.py",
+      "bytes": 2210,
+      "sha256": "fb7025a4345c281634962f9529f0c3b9e051d64e2dcb049ce27715464db9a089",
+      "git_blob": "b5dbba4745555ad55d91dad3e20e1648c6b502e6"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/finish_withdrawn_analysis.py",
+      "bytes": 3700,
+      "sha256": "805644737d0e6572ee8aa0376d8a0b607188947ab547d707df19279dfe041f69",
+      "git_blob": "9959d1de06e6c44230d228e4b488e32ca84eaf8e"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/frame_diff.py",
+      "bytes": 14875,
+      "sha256": "61392175cb3ee25e7a2688ce02ef43eb3a4e85d7c2f5fdaab536875535f52465",
+      "git_blob": "b9e93d6f88ffdeb767e54e2d876db81e8168bbf0"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/gate_control.py",
+      "bytes": 6063,
+      "sha256": "a763aa5bd027f32bb9f0b6588060bbfe34e7bcc99d14bb6d348efdbf9cc48e83",
+      "git_blob": "e2b77f4ead41aa43057ef6459c66a6036c1c92e1"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/hooks/sitecustomize.py",
+      "bytes": 3336,
+      "sha256": "183cf3bf791a1221d79ff4aec4de5400f4232aa65da0dfea97512003ab1122b7",
+      "git_blob": "c0069f3cd3545e4d15597ce61f6b540570da6474"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/launch_gate.py",
+      "bytes": 2913,
+      "sha256": "11708506c7c008ab27a8c2527ca57610d0db299bdfc193229f594eaed4bd2c2f",
+      "git_blob": "c70fb86be1f665c3a0379333fcc928855710b1ab"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/metrics_h3.py",
+      "bytes": 3126,
+      "sha256": "fa56826c8afc3d45c9a699f344082d299d4b88b7c40edbdaadc0debdecec0760",
+      "git_blob": "7f055865eb9eb105e73b329db73d377a862d79d5"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/normalize_h3_package.py",
+      "bytes": 2010,
+      "sha256": "254be3c5223cb411585c77087f31c48f1a39770d646fdd90574dcdd38d25d02f",
+      "git_blob": "b8999c4e01a1805a6e74f16bee3a8ec76e92f155"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/package_h3.py",
+      "bytes": 8788,
+      "sha256": "60aa3b9bfef0063fd7ff3fd5cecc2a277ff4cd845e54f7bdb07d37cba701ce9d",
+      "git_blob": "2b26ed62bcf1d51d89f15b432daa312db42de7eb"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/record_selected_banner_format.py",
+      "bytes": 1726,
+      "sha256": "da9ca7915d7787adb09c92a1087c321ba701d77954e97ef7fa0789533fa13967",
+      "git_blob": "f3f21e38d532c0143413b42b2d2c42b9a5eb7813"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/run_linux_gate.py",
+      "bytes": 9130,
+      "sha256": "7b6ea63caf755958009514536c53e991ebcd9b7b88372277e83de0c43aa07f7c",
+      "git_blob": "b8c848449f8428476a13546c39e6ac226ed932cb"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/start_job.py",
+      "bytes": 994,
+      "sha256": "6161e19703dabea3831f61928d49d41fb6dad94416664f8d49e1e2125b8cc033",
+      "git_blob": "f5c99d9978fce03d969d3b16b30186834d1b728c"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/test_frame_diff.py",
+      "bytes": 3040,
+      "sha256": "9530cea02167891659ad360fe6283f189ed4a5e10e7e5c2fab32add060c4e23d",
+      "git_blob": "e5abc514e4940501e08b2085f2427504948e875b"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/verify_h3_package.py",
+      "bytes": 2793,
+      "sha256": "723e6ef00482bc1e6d7e39a450cc3a87276eb1eb54a1e5c45002c3561f7f6e27",
+      "git_blob": "b3a7135ad8eee544bb1e5a6465beb6e5ec536688"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/verify_run.py",
+      "bytes": 6878,
+      "sha256": "f834aa6c363b077209c260379fa72dd798b7a4836174120370fe9b32ed696dc3",
+      "git_blob": "1bec2b199c4c066dfee9ebe7980233a6c7a47333"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/withdrawn_report.py",
+      "bytes": 6989,
+      "sha256": "24dbfecae729480a1f3dd68c1a9993859995b4166f7326a6c06d49e8223168df",
+      "git_blob": "8e872ff615cb632c4ddb4e1a704fa5cc0f3a567a"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json",
+      "bytes": 15904,
+      "sha256": "b31184351fa7e12e0ba4e52856a673a44e232486bd6aff464466e40d21bbcfb8",
+      "git_blob": "7bc911ed40a7094feb0ab85a860d3dd99726b195"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/audit_followup.py",
+      "bytes": 575,
+      "sha256": "771e9900c5cf06b3b47791542d64596b59e2262f1695fa48c691e15d384eaed9",
+      "git_blob": "013de9569b8a3ef258bfa96496f0efcf0d8b8e8a"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/compare_followup.py",
+      "bytes": 575,
+      "sha256": "7f7e38dcdca62ed4d6a68cf75bb650693d1e444a971c148a3d3f482f548dfba9",
+      "git_blob": "fe1b48b3a13a8d3f7a9e4a94dcbc5f5c8eed14bd"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/compare_scenes.py",
+      "bytes": 2304,
+      "sha256": "ccfdd4dd2cd2127f4c6f0f1e68163f2f69eacf19e57acd863a5ce3295a605ccd",
+      "git_blob": "3277d945531da507b908c7d0ed2f57d44eca5886"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/diagnose_witness.py",
+      "bytes": 1166,
+      "sha256": "7fdd74a655bdb0ce0e7d81b7b3056ca75b251f1f9b089b830fdab0866c1db6fc",
+      "git_blob": "4c20d36113f0294215c3779d3e7a7fc3bdace1cf"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py",
+      "bytes": 8181,
+      "sha256": "3a0f6366d195df80f2cc9e591b15fbb87893020d7562a8959693c17b07554900",
+      "git_blob": "712730369a5c4de7b29062c055ce0f30563e4bcd"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py",
+      "bytes": 4512,
+      "sha256": "fdbc8024e0c5cacb1694a1b6da00643dc2113c5bed5f6695cbe8405ee8ff264a",
+      "git_blob": "a9ccefd41aba10f1e7e59a5c9baa7170d8b1cffc"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/followup_checks.py",
+      "bytes": 1216,
+      "sha256": "c6a5281e58f74be182e0c88607d5c27d32e978561510d04ab28d83ea9c254345",
+      "git_blob": "d56bd60f5851dd3bf996288b50e2043a0ba1b825"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py",
+      "bytes": 24864,
+      "sha256": "86deafdc97ecd835c04605a42d8745f17a82f7928979b94ed905a4cc323a98ce",
+      "git_blob": "fff63454131c80b9c3879938a0d8c30898ebc4a6"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/inventory_evidence.py",
+      "bytes": 902,
+      "sha256": "63fd65f07e4fb4953387cb3f70bca5366fc6ad327849b9c19f1ebd257f2efba5",
+      "git_blob": "417bb13e8706e9d552d27839ea18bcafe403e85c"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_continuation.py",
+      "bytes": 1886,
+      "sha256": "567cbdd3385321f92f3598b3bb7af2bd7890865bbec43bd50647085ff5478098",
+      "git_blob": "14b41787f7421ca7bebc09a78bce3bfbcdb0af34"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_followup.py",
+      "bytes": 947,
+      "sha256": "8a7e59837da807e17eeceb3888b2a5a86b0e11de61c41fcaa4be749d799ecc92",
+      "git_blob": "d5e380fd6ff62ee037967b7347e8e5d7159e9c93"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_followup02.py",
+      "bytes": 1098,
+      "sha256": "208cdaf6587816218b30e42dec74227356a350e7e25f3ec46015994832e08c9d",
+      "git_blob": "982cd2629632c58fe0f327953387fb40b2b77b58"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/provenance.py",
+      "bytes": 1388,
+      "sha256": "7c8ef545db592c1d61664a338aa4fc46c34747b2e063475cda40af338880e6ad",
+      "git_blob": "4ea2829962f49503f760fba0a90ad6506e3687be"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/resume_linux.py",
+      "bytes": 1933,
+      "sha256": "0df345f84781a019faf236d0a6adeab3488ea47772ffa6db8fb05f27bf4d08ef",
+      "git_blob": "16dec1f3f54461d2138b4e8589a50b9a40fc9c94"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/run_followup.py",
+      "bytes": 1035,
+      "sha256": "730d833cfc4a13b2c8db17f66cae61737c20f2f25e6e3787b4c00034b2f6fe49",
+      "git_blob": "62902dcd2c92540b318058d48c5038088c0db51e"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/run_followup02.py",
+      "bytes": 1205,
+      "sha256": "ca9482dd95e9935819bc65a736a9fbdb2dd0daae5fc5960c46cd54bb9e597695",
+      "git_blob": "2c759c55572bc91b574150fa4f6b804c8e5a6f8c"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/run_linux.py",
+      "bytes": 4431,
+      "sha256": "92dbbb23f9f4a3dc26709240dae66eb379c1b12e92e37c12bb10668f3668bed0",
+      "git_blob": "b6ff9aab80f483144a5c0078df1d7e0277a99b00"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py",
+      "bytes": 1133,
+      "sha256": "fe0cee7e071456e9069d5aea0e25ab0598046ec4f4e7b9610181060e4f93a27e",
+      "git_blob": "b6894d32bb0ff8957cd108628e8cb7cf14d1a2c3"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/HASHES.json",
+      "bytes": 3335,
+      "sha256": "991de620dc2704634e07350200807551f76aea337271c245eb38d2b32f5ddc18",
+      "git_blob": "e607dfb77976c74d757095927fc2c49a890303a9"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/compare.py",
+      "bytes": 2545,
+      "sha256": "197d772702f2df97627dc5800d349ce472b9625ee36c510f5f155013a93181b6",
+      "git_blob": "347c89fc15778f81170d4af1adbf44b840890d2f"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57",
+      "git_blob": "f2b444f3464e02cdbf3b3b608377ebd34640d116"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/launch.py",
+      "bytes": 3719,
+      "sha256": "41bd2378eebd2b910f4ba18b0ea1cb6d6a087298d27f778d043197f7a23a9371",
+      "git_blob": "ec9e546a874cb04b5d0e0e7bce4ff3af23ad4526"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/normal_diff_details.py",
+      "bytes": 1475,
+      "sha256": "8cdd471b6a1b3ead91a80bde52e773792bfc8e04e889f00db3d840329c778a5e",
+      "git_blob": "53aaed1e169b3d2340f3fbe391c7070eb5fb274c"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/package.py",
+      "bytes": 5443,
+      "sha256": "23d7d09a8e25c202866ed3652fc6f83a6bd24049e698ecade5ab77932ec71d44",
+      "git_blob": "e58f9ef03cf4f947c03ff38368c8ab7c0378af6d"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/physical_report.py",
+      "bytes": 3908,
+      "sha256": "9d80763519ec9bbd18c2d69017fe4d94e0717e91a53ce35fc74df51c4179df33",
+      "git_blob": "b44fd199714076c135de3815a406db58cf94ceb6"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0",
+      "git_blob": "60a8f01bdd4a97c7b2af8f194135b9f958e50a41"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/verify.py",
+      "bytes": 5890,
+      "sha256": "2764aa4eb7d6f17dbc6dc8eb4f980b1bccfe2c9c14f2662c42fabc81155c6d18",
+      "git_blob": "dfc1682ac18a569c2741a8a450dcebd95fcd7a32"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/PACKAGE_HASHES.json",
+      "bytes": 10187,
+      "sha256": "88c2459354ed7412084adde4b055da73b90bf5c0eab651ab9f1caa2b8941c983",
+      "git_blob": "405ee4245be6f14142a6f3922e398c914635352f"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2",
+      "git_blob": "d47e3e0f110aabeac4b46a448403d71954ab3c26"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/details.py",
+      "bytes": 2777,
+      "sha256": "1113fe83b21799b7f39c7ef54cefc5a7c6e2d220e528678cfcae4adcb4d02c47",
+      "git_blob": "275b3a7949382970817eca19e442b3f9a7e2fd78"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2",
+      "git_blob": "1080e7d1e931e7ba054d9c913f182ef8f6d3ffaf"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/package.py",
+      "bytes": 18396,
+      "sha256": "e76f3029d2fedc392e6d2671ac90b290658540fc1d00f283b69680665d554c9c",
+      "git_blob": "e58c934cf6a9699a7c0c18b29a18474fd09ee735"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/dark-c9aea87-20261016a/author-code/byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2",
+      "git_blob": "d47e3e0f110aabeac4b46a448403d71954ab3c26"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/dark-c9aea87-20261016a/author-code/launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2",
+      "git_blob": "1080e7d1e931e7ba054d9c913f182ef8f6d3ffaf"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/dark-c9aea87-20261016a/author-code/worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f",
+      "git_blob": "67daa0d9622960ea05b4028ad5f73efec3bad154"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/experimental-c9aea87-20261016a/author-code/byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2",
+      "git_blob": "d47e3e0f110aabeac4b46a448403d71954ab3c26"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/experimental-c9aea87-20261016a/author-code/launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2",
+      "git_blob": "1080e7d1e931e7ba054d9c913f182ef8f6d3ffaf"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/experimental-c9aea87-20261016a/author-code/worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f",
+      "git_blob": "67daa0d9622960ea05b4028ad5f73efec3bad154"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/green-795a243/author-code/byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2",
+      "git_blob": "d47e3e0f110aabeac4b46a448403d71954ab3c26"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/green-795a243/author-code/launch.py",
+      "bytes": 3309,
+      "sha256": "2805e65321471d393888a759aab60c99803e8a095600f4d7c48b361c3068df85",
+      "git_blob": "1178a3909bce1e34e9cb0ac4a8e43949e7d94f5f"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/green-795a243/author-code/worker.py",
+      "bytes": 8063,
+      "sha256": "a98d1fa1a7519196fce3cdf30a26366d9ccb48c58d54f51cc42667d604a3f047",
+      "git_blob": "1a35d4a7e55bed2b439231db158074a04ab6f314"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/probes-c9aea87-20261016a/author-code/byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2",
+      "git_blob": "d47e3e0f110aabeac4b46a448403d71954ab3c26"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/probes-c9aea87-20261016a/author-code/launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2",
+      "git_blob": "1080e7d1e931e7ba054d9c913f182ef8f6d3ffaf"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/probes-c9aea87-20261016a/author-code/worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f",
+      "git_blob": "67daa0d9622960ea05b4028ad5f73efec3bad154"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/probes-sealed-707ea9c-20261016a/author-code/byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2",
+      "git_blob": "d47e3e0f110aabeac4b46a448403d71954ab3c26"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/probes-sealed-707ea9c-20261016a/author-code/launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2",
+      "git_blob": "1080e7d1e931e7ba054d9c913f182ef8f6d3ffaf"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/probes-sealed-707ea9c-20261016a/author-code/worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f",
+      "git_blob": "67daa0d9622960ea05b4028ad5f73efec3bad154"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/red-fc89ad2/author-code/byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2",
+      "git_blob": "d47e3e0f110aabeac4b46a448403d71954ab3c26"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/red-fc89ad2/author-code/launch.py",
+      "bytes": 3309,
+      "sha256": "2805e65321471d393888a759aab60c99803e8a095600f4d7c48b361c3068df85",
+      "git_blob": "1178a3909bce1e34e9cb0ac4a8e43949e7d94f5f"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/red-fc89ad2/author-code/worker.py",
+      "bytes": 8063,
+      "sha256": "a98d1fa1a7519196fce3cdf30a26366d9ccb48c58d54f51cc42667d604a3f047",
+      "git_blob": "1a35d4a7e55bed2b439231db158074a04ab6f314"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/tests-c9aea87-20261016a/author-code/byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2",
+      "git_blob": "d47e3e0f110aabeac4b46a448403d71954ab3c26"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/tests-c9aea87-20261016a/author-code/launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2",
+      "git_blob": "1080e7d1e931e7ba054d9c913f182ef8f6d3ffaf"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/runs/tests-c9aea87-20261016a/author-code/worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f",
+      "git_blob": "67daa0d9622960ea05b4028ad5f73efec3bad154"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/score_details.py",
+      "bytes": 2235,
+      "sha256": "f318e4a617ac74be0adb5d78d510259c9997b4ef0bb1d2165ed388af7ce2b2bf",
+      "git_blob": "82ddcf587bb161bf6aec52620eda1d0f9cf3bdad"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f",
+      "git_blob": "67daa0d9622960ea05b4028ad5f73efec3bad154"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/worker.py",
+      "bytes": 5814,
+      "sha256": "177473509c98ea223648e8ee1ba0015790c9c87ae64b8ce9f5971d67b0b6b713",
+      "git_blob": "6eec79a73cd1a6160c4555e3a8ef10369577859d"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/rearm/compare.py",
+      "bytes": 2361,
+      "sha256": "d5d5e28f04d6120c1d202c0a02bd307dfa297a6001210bf3d2f3ae508b47aa2c",
+      "git_blob": "31bba9b636d91d9557e77890b79ad9c77153fe16"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/rearm/green-bb62b94/launch.json",
+      "bytes": 1758,
+      "sha256": "ffaf24867f5de7a6bbf14b9396694f19c90c6ed0812fa8ba30568f4e02b6c304",
+      "git_blob": "a5ecfa11848e0c01aa9d1841e93a0f7d976227c1"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/rearm/launch.py",
+      "bytes": 2342,
+      "sha256": "30d13eaf515380fa58169906d34302d68baf63a17bcb4b679c959d043a80ec74",
+      "git_blob": "67f1483f921118fb8b69e1412166b451d1ff7308"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py",
+      "bytes": 4013,
+      "sha256": "e2e742bf59b8b3f65ef11730aa81403f6b871a4fd314801bdb985d8314b5c5bf",
+      "git_blob": "924726e14e77ac089cee477624ed5967ca6ccda9"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json",
+      "bytes": 6122,
+      "sha256": "9979984961fa4b9b8743298fcce613ff849884ab739f233944f1b9513186be12",
+      "git_blob": "6a0eb67313913370b51acbf0ff5dd9966a4dfedb"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/analyze.py",
+      "bytes": 15962,
+      "sha256": "e53a55bdf10c802c12b87653e7dcec1a479c8afdae8074bc2fe64d67e4dae971",
+      "git_blob": "30f8bfb3a5f2936e9a70fe97e89384b168c50506"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/common.py",
+      "bytes": 4122,
+      "sha256": "ccb4bc4e1e7d9b674e8bc6f6fd16f6aca6685812bc6fac8755c3c3f4df9781ed",
+      "git_blob": "d9eb496fbd9c3ab8d23ada3a924fdf8342c67bd9"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/components.py",
+      "bytes": 12928,
+      "sha256": "253e219672d1ab15b7bd518d0bc3a4da508e73e4963283330f56c911ec371b9a",
+      "git_blob": "e8aa282d4dbcbce4ecf791b70b4ea4e167948030"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/derive.py",
+      "bytes": 1405,
+      "sha256": "ed9c97c160a6f28c05d1690b943680aa01000c6a6e953219cfb4218e6f9f6364",
+      "git_blob": "f84153fddfcf73ea02e7646191921b7c814ad465"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/finalize.py",
+      "bytes": 3701,
+      "sha256": "12f2eabdfc84dcc4601aa9f2f54070085aedf48c6b9849cbfe411f0f8ca3b43a",
+      "git_blob": "83a53252c31d161a6d30c4a5dbbcff9c4532af04"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/launch.py",
+      "bytes": 2499,
+      "sha256": "be946d51ce90aad480133e75cb6f3d0f6fc5f88e98535c8b57cc0a9784c8a95d",
+      "git_blob": "a106d49f7c7bd7184c6b650194879ce9cdd4c5e7"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/package.py",
+      "bytes": 1058,
+      "sha256": "74bd0d19a95b87725c0da0d71225a195ff4afcf928ccdfd87a0f8b25170a0e5d",
+      "git_blob": "aa586c192498b2679155c1f9e1a7aebe3245314d"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/replay.py",
+      "bytes": 6130,
+      "sha256": "c772069e053b45566ccdffcbec1b9bc5ce8263dd96c0da3504df94d5ec844f07",
+      "git_blob": "04053dbc7ab0bf6b1debef3c81879716151aa4da"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/verify_package.py",
+      "bytes": 1121,
+      "sha256": "582b02f40260976e918c10bef2b7041ded9fdc9da851d3a0889d40813743b139",
+      "git_blob": "c2364c0d7dc3cbfe58c244bb5109473dd4c19cfd"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/worker.py",
+      "bytes": 856,
+      "sha256": "a824a3a5f6adf811519d2c6f40273735f3994640233a6aedcace4f219f1e51cf",
+      "git_blob": "f160b24bfacc251188bce42f37591750badba16d"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/HASHES.json",
+      "bytes": 7534,
+      "sha256": "63046ab71f4464353cf5de505f0677c6cd36cdf90a66a2927b2e76be212ae1c6",
+      "git_blob": "342194788a265c14351a7183128a9075a9e2c455"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/audit.py",
+      "bytes": 11046,
+      "sha256": "57c54e0f3e739abde52cc2d00f489c35ef1153b6243b0e12ef715596b05c29d9",
+      "git_blob": "364979b75ffc5f6493dbbd150db979f3acdc0ccc"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/finalize.py",
+      "bytes": 4479,
+      "sha256": "a39da683c51fd6054ada756ce2d55eb825cd3da778399ca1c85dbbde98f18045",
+      "git_blob": "dbd7d82239884f184841e52cd3b2a1f221ab3e7f"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/launch.py",
+      "bytes": 1488,
+      "sha256": "684c33dc577ec07e64ca28c6aee1312a251869697731d91519b025ef73ac5589",
+      "git_blob": "cadc68246a7769ae8cd9810169cba703fe9170cf"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py",
+      "bytes": 4981,
+      "sha256": "ab76b8671c310bc1cc43533a4dae516cf90998ecc98ae741a6341ebdb42dfbbc",
+      "git_blob": "ee0b59e0e2db00954e16847d8217fa2d1ab858bb"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/probes.py",
+      "bytes": 14151,
+      "sha256": "9219d15eaa7b29639c6a0a8ef787e1438629f2930c7ff59b748ef9d3a522a3b3",
+      "git_blob": "ca43ec914c70408117722e00b7cccb7b773a6eb3"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/resume.py",
+      "bytes": 786,
+      "sha256": "85ac302d07fe947eb3f047ed47e410264d8de8f239615b3b807c9816ae3e3ec6",
+      "git_blob": "384421411a07def235666f70133949ed4411c310"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/worker.py",
+      "bytes": 4771,
+      "sha256": "f97d57f467cbb65f3fb0c074706c899d02070c6851b4eb67312ac8a691b2b0a8",
+      "git_blob": "51c23dc88a62d9ba29911b7a56ebfaece81dacbc"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/HASHES.json",
+      "bytes": 20326,
+      "sha256": "d7c0f4d25486d2a02affbbae60ddef30ad99b6e2948c89ba20aebce3abb4d272",
+      "git_blob": "d930f93d8c9021697529a658514a6b71192ab8aa"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/analyze_h3.py",
+      "bytes": 14569,
+      "sha256": "64a1e444741d0c129411d63aad971b58c67423fafe8f2f0a472967493777bd90",
+      "git_blob": "38227e5ae8c61264636b5fe7d4e9ab371565296d"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/check_final_config.py",
+      "bytes": 2583,
+      "sha256": "d47659eab8560a1814feefc041fbcf201fad21f4ebb88646634263c54a603b2c",
+      "git_blob": "6aed7f87283dd03db1f302bc6ec36dac8f440169"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/copy_seal_proof.py",
+      "bytes": 3567,
+      "sha256": "8aa2714e442f003a17fb76c6cdfa1462379cfd3d99ad9fda1966536e2fdd0c1b",
+      "git_blob": "c606a45a8b3c19cc2a3b410ed9e1681d57efc6e5"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/finish_h5_analysis.py",
+      "bytes": 3776,
+      "sha256": "62970c1793368395c49e3e6abf47ac78af764f42f42d3a2df31bf4bb2b156938",
+      "git_blob": "09c5e17666e4e57f19f41d8642b01be99d4e2dad"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/frame_diff.py",
+      "bytes": 14875,
+      "sha256": "61392175cb3ee25e7a2688ce02ef43eb3a4e85d7c2f5fdaab536875535f52465",
+      "git_blob": "b9e93d6f88ffdeb767e54e2d876db81e8168bbf0"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/gate_control.py",
+      "bytes": 6063,
+      "sha256": "a763aa5bd027f32bb9f0b6588060bbfe34e7bcc99d14bb6d348efdbf9cc48e83",
+      "git_blob": "e2b77f4ead41aa43057ef6459c66a6036c1c92e1"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/h5_report.py",
+      "bytes": 6129,
+      "sha256": "e6e1a79b3e530d2806acbee2407d253ce678f69ca548d012b4a498dd0b614d43",
+      "git_blob": "e7f45852c3e7c9840ca6d741253ac0d3c675988a"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/hooks/sitecustomize.py",
+      "bytes": 3336,
+      "sha256": "183cf3bf791a1221d79ff4aec4de5400f4232aa65da0dfea97512003ab1122b7",
+      "git_blob": "c0069f3cd3545e4d15597ce61f6b540570da6474"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/launch_gate.py",
+      "bytes": 2913,
+      "sha256": "11708506c7c008ab27a8c2527ca57610d0db299bdfc193229f594eaed4bd2c2f",
+      "git_blob": "c70fb86be1f665c3a0379333fcc928855710b1ab"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/launch_seal.py",
+      "bytes": 3040,
+      "sha256": "4574c021032e8a8b36e5ae7045b11487c85e09fa19ff9c5ad72c0247b99a872b",
+      "git_blob": "fdb9dbf80c3db17f06002d3bfd06e4dba6f9f4a8"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/metrics_h3.py",
+      "bytes": 3126,
+      "sha256": "fa56826c8afc3d45c9a699f344082d299d4b88b7c40edbdaadc0debdecec0760",
+      "git_blob": "7f055865eb9eb105e73b329db73d377a862d79d5"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/normalize_h3_package.py",
+      "bytes": 2016,
+      "sha256": "6bee650de7a8a438d894177f398407991f81d62d7a03e51ea459da45d8244c3d",
+      "git_blob": "d4865e6cc5458416aff8b427ff69c877a6f741f0"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/package_h3.py",
+      "bytes": 9047,
+      "sha256": "bfca249b2480b4f71dd9fc5ab07a341f90c233cfae947284b7b1a2066c7ab04c",
+      "git_blob": "c837c0f083ac5b91d8ed6a037037ecdf981a8770"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/record_selected_banner_format.py",
+      "bytes": 1867,
+      "sha256": "ac6124118a166bda573f6cc9f8793742c5162d266966e49900f99682ab81976c",
+      "git_blob": "70b45c88fa2fd3470ca9462ea33e89690baacb7d"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/run_linux_gate.py",
+      "bytes": 9130,
+      "sha256": "7b6ea63caf755958009514536c53e991ebcd9b7b88372277e83de0c43aa07f7c",
+      "git_blob": "b8c848449f8428476a13546c39e6ac226ed932cb"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/seal_in_linux.py",
+      "bytes": 8918,
+      "sha256": "38d15ee108176d889735618a4c91d59b0c7896a213c51339b3f68573e3b1f5b9",
+      "git_blob": "112a23d4f54b5d29709e043901df90b3ebe1fa28"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/start_job.py",
+      "bytes": 994,
+      "sha256": "6161e19703dabea3831f61928d49d41fb6dad94416664f8d49e1e2125b8cc033",
+      "git_blob": "f5c99d9978fce03d969d3b16b30186834d1b728c"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/test_frame_diff.py",
+      "bytes": 3040,
+      "sha256": "9530cea02167891659ad360fe6283f189ed4a5e10e7e5c2fab32add060c4e23d",
+      "git_blob": "e5abc514e4940501e08b2085f2427504948e875b"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/verify_final_commit.py",
+      "bytes": 3216,
+      "sha256": "9f0a7b6d53550eabfd8b4ddf9f3dba7a0cdd84c63acf70317bd13770c7920340",
+      "git_blob": "097a56f216d7f3b1d9a9439eaf534b2228baecea"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/verify_h3_package.py",
+      "bytes": 2799,
+      "sha256": "798ded04f0f0cf99c4458052f7556d5a251c86f38b401dcb69ae27be03675cff",
+      "git_blob": "9cf07c526fc309fb43077199a67c429952e9b9c9"
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/verify_run.py",
+      "bytes": 6878,
+      "sha256": "f834aa6c363b077209c260379fa72dd798b7a4836174120370fe9b32ed696dc3",
+      "git_blob": "1bec2b199c4c066dfee9ebe7980233a6c7a47333"
+    }
+  ]
+}

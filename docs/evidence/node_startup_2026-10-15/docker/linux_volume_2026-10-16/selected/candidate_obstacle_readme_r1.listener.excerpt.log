@@ -1,0 +1,6 @@
+Source: C:\Users\alikh\AppData\Local\Temp\opencode\resense-p1-runs-2026-10-15\attempt07_linux_volume_warm_matrix\out\docker\candidate_obstacle_readme_r1.listener.log
+SHA256: 57995f32185671ef1f8d06a4295d166840c86724798e71422199daf2c48234cd
+Full source lines: 2
+
+S1_LISTENER_READY
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory

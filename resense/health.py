@@ -23,7 +23,9 @@ per frame and without touching any detection:
   (``track.floor_shadow_height``) found the shadow of a large near object, held the previous bed,
   or was released after ``track.floor_shadow_max_hold`` held frames in a row: counters only;
 * ``monitored_range`` - an estimate based on visibility and the supported model this frame:
-  ``min(visibility, trusted axis range, trusted height-reference range, gauge range)``; and
+  ``min(visibility, trusted axis range, trusted height-reference range, gauge range)``, since 15.10
+  also no farther than where the axis contradicts a near tunnel wall (``wall_drift``,
+  ``track.axis_wall_drift``: the curve entry whose lagging axis leaves the track); and
   ``clear_distance`` - the nearest confirmed obstacle, or ``monitored_range`` when there is
   none; with ``clear_cap`` (on since 25.09, round 2) also no farther than the nearest unconfirmed
   or advisory candidate touching the envelope (``candidate_distance``, from the detector).
@@ -131,8 +133,13 @@ class HealthMonitor:
 
     def update(self, xyz: np.ndarray, meta: dict, track, gauge: GaugeConfig, trusted_range: float,
                rails_min_score: float, latency_ms: Optional[float], calibration: Optional[dict] = None,
-               obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None) -> dict:
+               obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None,
+               wall_drift: Optional[float] = None) -> dict:
         """Update scene health once; append a supplied latency sample, or none for ``None``.
+
+        ``wall_drift`` (15.10, ``track.axis_wall_drift``): the X from which the axis contradicts a
+        near tunnel boundary (``TrackModel.wall_drift``); the monitored range ends there and the
+        output carries it as ``wall_drift`` (only when given).
 
         Numeric callers retain their existing supplied-interval semantics. The detector
         supplies its previous completed call so timing includes the health update itself.
@@ -204,6 +211,8 @@ class HealthMonitor:
                 flag(1, calibration["message"])
 
         monitored = float(max(0.0, min(vis, trusted_range, gauge.range_max)))
+        if wall_drift is not None:              # 15.10: the corridor beyond is not where the track is
+            monitored = float(max(0.0, min(monitored, wall_drift)))
         if level >= 2:
             monitored = 0.0                     # an input fault: nothing is verified
         clear = monitored if obstacle_distance is None else float(min(obstacle_distance, monitored))
@@ -219,4 +228,6 @@ class HealthMonitor:
         }
         if cfg.clear_cap:
             out["candidate_distance"] = None if candidate_distance is None else round(float(candidate_distance), 1)
+        if wall_drift is not None:
+            out["wall_drift"] = round(float(wall_drift), 1)
         return out

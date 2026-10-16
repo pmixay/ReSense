@@ -1,0 +1,129 @@
+{
+  "schema": "resense-warm-cache-v1",
+  "scope": "page-cache precondition only, not playback acceptance",
+  "mode": "observe",
+  "bag": "/data/doubleT_obstacle",
+  "before": {
+    "utc_s": 1792168019.404861,
+    "cpu_count": 12,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "readings": {
+      "/proc/meminfo": "MemTotal:        7023828 kB\nMemFree:          143892 kB\nMemAvailable:    6152604 kB\nBuffers:          258996 kB\nCached:          5466000 kB\nSwapCached:        11932 kB\nActive:          5327544 kB\nInactive:         693392 kB\nActive(anon):     156892 kB\nInactive(anon):   139560 kB\nActive(file):    5170652 kB\nInactive(file):   553832 kB\nUnevictable:           0 kB\nMlocked:               0 kB\nSwapTotal:       2097152 kB\nSwapFree:        1970004 kB\nDirty:                 4 kB\nWriteback:             0 kB\nAnonPages:        295172 kB\nMapped:            91632 kB\nShmem:               476 kB\nKReclaimable:     476480 kB\nSlab:             614052 kB\nSReclaimable:     476480 kB\nSUnreclaim:       137572 kB\nKernelStack:        6512 kB\nPageTables:         5252 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:     5609064 kB\nCommitted_AS:    1877696 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       32652 kB\nVmallocChunk:          0 kB\nPercpu:             7744 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:       80896 kB\nDirectMap2M:     5085184 kB\nDirectMap1G:    11534336 kB",
+      "/proc/pressure/memory": "some avg10=8.57 avg60=4.14 avg300=1.77 total=53963570\nfull avg10=7.95 avg60=3.94 avg300=1.73 total=49599407",
+      "/proc/pressure/io": "some avg10=5.73 avg60=2.96 avg300=1.33 total=866035721\nfull avg10=5.22 avg60=2.76 avg300=1.26 total=810513193",
+      "/proc/pressure/cpu": "some avg10=4.38 avg60=5.04 avg300=3.02 total=2251358202\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0",
+      "/sys/fs/cgroup/memory.current": "2548219904",
+      "/sys/fs/cgroup/memory.max": "max",
+      "/sys/fs/cgroup/memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "/sys/fs/cgroup/memory.pressure": "some avg10=2.00 avg60=0.99 avg300=0.24 total=1216701\nfull avg10=2.00 avg60=0.99 avg300=0.24 total=1216701",
+      "/sys/fs/cgroup/cpu.max": "max 100000",
+      "/sys/fs/cgroup/cpu.stat": "usage_usec 141465183\nuser_usec 6591200\nsystem_usec 134873983\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+      "/sys/fs/cgroup/io.stat": "8:32 rbytes=32768 wbytes=434176 rios=8 wios=106 dbytes=0 dios=0\n8:64 rbytes=3123474432 wbytes=0 rios=16059 wios=0 dbytes=0 dios=0",
+      "/proc/self/status:selected": [
+        "Uid:\t0\t0\t0\t0",
+        "VmSize:\t   26064 kB",
+        "VmRSS:\t   16768 kB",
+        "CapEff:\t00000000a80425fb"
+      ],
+      "/proc/vmstat:selected": {
+        "workingset_refault_file": 13642936,
+        "workingset_activate_file": 3354521,
+        "pgfault": 324313771,
+        "pgmajfault": 245656,
+        "pgsteal_kswapd": 25920206,
+        "pgsteal_direct": 169089,
+        "pgscan_kswapd": 26893406,
+        "pgscan_direct": 202921
+      }
+    }
+  },
+  "files": [
+    {
+      "name": "doubleT_obstacle_0.db3",
+      "identity": {
+        "device": 2112,
+        "inode": 1068532,
+        "bytes": 4821250048,
+        "mtime_ns": 1792106629177693708
+      },
+      "before": {
+        "pages": 1177063,
+        "resident": 1177063,
+        "missing": 0,
+        "page_size": 4096,
+        "fully_resident": true
+      },
+      "read_bytes": 0,
+      "after": {
+        "pages": 1177063,
+        "resident": 1177063,
+        "missing": 0,
+        "page_size": 4096,
+        "fully_resident": true
+      }
+    }
+  ],
+  "errors": [],
+  "after": {
+    "utc_s": 1792168019.9757223,
+    "cpu_count": 12,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "readings": {
+      "/proc/meminfo": "MemTotal:        7023828 kB\nMemFree:          143892 kB\nMemAvailable:    6152604 kB\nBuffers:          258996 kB\nCached:          5466000 kB\nSwapCached:        11932 kB\nActive:          5327544 kB\nInactive:         693392 kB\nActive(anon):     156892 kB\nInactive(anon):   139560 kB\nActive(file):    5170652 kB\nInactive(file):   553832 kB\nUnevictable:           0 kB\nMlocked:               0 kB\nSwapTotal:       2097152 kB\nSwapFree:        1970004 kB\nDirty:                 4 kB\nWriteback:             0 kB\nAnonPages:        295176 kB\nMapped:            91632 kB\nShmem:               476 kB\nKReclaimable:     476480 kB\nSlab:             614052 kB\nSReclaimable:     476480 kB\nSUnreclaim:       137572 kB\nKernelStack:        6512 kB\nPageTables:         5252 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:     5609064 kB\nCommitted_AS:    1877696 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       32652 kB\nVmallocChunk:          0 kB\nPercpu:             7744 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:       80896 kB\nDirectMap2M:     5085184 kB\nDirectMap1G:    11534336 kB",
+      "/proc/pressure/memory": "some avg10=7.02 avg60=4.00 avg300=1.76 total=53963570\nfull avg10=6.51 avg60=3.81 avg300=1.72 total=49599407",
+      "/proc/pressure/io": "some avg10=4.69 avg60=2.87 avg300=1.32 total=866035721\nfull avg10=4.27 avg60=2.67 avg300=1.25 total=810513193",
+      "/proc/pressure/cpu": "some avg10=3.58 avg60=4.87 avg300=3.00 total=2251361084\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0",
+      "/sys/fs/cgroup/memory.current": "2548482048",
+      "/sys/fs/cgroup/memory.max": "max",
+      "/sys/fs/cgroup/memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "/sys/fs/cgroup/memory.pressure": "some avg10=1.64 avg60=0.95 avg300=0.23 total=1216701\nfull avg10=1.64 avg60=0.95 avg300=0.23 total=1216701",
+      "/sys/fs/cgroup/cpu.max": "max 100000",
+      "/sys/fs/cgroup/cpu.stat": "usage_usec 142032281\nuser_usec 6915913\nsystem_usec 135116367\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+      "/sys/fs/cgroup/io.stat": "8:32 rbytes=32768 wbytes=434176 rios=8 wios=106 dbytes=0 dios=0\n8:64 rbytes=3123474432 wbytes=0 rios=16059 wios=0 dbytes=0 dios=0",
+      "/proc/self/status:selected": [
+        "Uid:\t0\t0\t0\t0",
+        "VmSize:\t   26064 kB",
+        "VmRSS:\t   16768 kB",
+        "CapEff:\t00000000a80425fb"
+      ],
+      "/proc/vmstat:selected": {
+        "workingset_refault_file": 13642936,
+        "workingset_activate_file": 3354521,
+        "pgfault": 324313772,
+        "pgmajfault": 245656,
+        "pgsteal_kswapd": 25920206,
+        "pgsteal_direct": 169089,
+        "pgscan_kswapd": 26893406,
+        "pgscan_direct": 202921
+      }
+    }
+  },
+  "wall_s": 0.5717677950015059,
+  "status": "OBSERVED"
+}

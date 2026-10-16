@@ -1,0 +1,447 @@
+{
+  "ride_1": {
+    "frames": 1409,
+    "candidates": 2805,
+    "first_frame": "new_data_27_0032",
+    "last_frame": "new_data_55_0012",
+    "sealed_stop": 14,
+    "withdrawal_stop": 14,
+    "stop_frames": [
+      "new_data_36_0011",
+      "new_data_52_0016",
+      "new_data_52_0017",
+      "new_data_52_0018",
+      "new_data_52_0019",
+      "new_data_52_0020",
+      "new_data_52_0021",
+      "new_data_52_0022",
+      "new_data_52_0023",
+      "new_data_52_0024",
+      "new_data_52_0025",
+      "new_data_52_0026",
+      "new_data_53_0026",
+      "new_data_53_0027"
+    ],
+    "extra_stop_frames": [],
+    "lost_stop_frames": [],
+    "exact_stop_centers": [
+      {
+        "frame": "new_data_36_0011",
+        "centers": [
+          [
+            160.13,
+            -8.54,
+            0.44
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0016",
+        "centers": [
+          [
+            42.79,
+            0.5,
+            -1.52
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0017",
+        "centers": [
+          [
+            40.79,
+            0.82,
+            -1.29
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0018",
+        "centers": [
+          [
+            38.85,
+            0.96,
+            -1.22
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0019",
+        "centers": [
+          [
+            25.94,
+            1.77,
+            -1.0
+          ],
+          [
+            38.85,
+            0.85,
+            -1.24
+          ],
+          [
+            88.53,
+            -0.7,
+            -1.92
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0020",
+        "centers": [
+          [
+            37.88,
+            0.86,
+            -1.21
+          ],
+          [
+            87.82,
+            -0.96,
+            -1.52
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0021",
+        "centers": [
+          [
+            34.96,
+            0.68,
+            -1.21
+          ],
+          [
+            86.52,
+            -1.14,
+            -1.37
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0022",
+        "centers": [
+          [
+            34.76,
+            0.58,
+            -1.42
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0023",
+        "centers": [
+          [
+            33.68,
+            0.48,
+            -1.52
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0024",
+        "centers": [
+          [
+            32.87,
+            0.61,
+            -1.35
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0025",
+        "centers": [
+          [
+            32.57,
+            1.02,
+            -1.05
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_52_0026",
+        "centers": [
+          [
+            31.94,
+            1.23,
+            -0.89
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_53_0026",
+        "centers": [
+          [
+            106.84,
+            1.2,
+            -0.93
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_53_0027",
+        "centers": [
+          [
+            105.72,
+            1.17,
+            -0.97
+          ]
+        ]
+      }
+    ],
+    "center_tolerance": 0,
+    "comparison": "Exact serialized numeric center multiset, no rounding or rematching",
+    "mismatches": {
+      "detection_centers": [],
+      "warning_centers": [],
+      "serialized": [
+        "new_data_36_0006",
+        "new_data_36_0007",
+        "new_data_36_0009",
+        "new_data_36_0010",
+        "new_data_36_0011",
+        "new_data_36_0012",
+        "new_data_36_0013",
+        "new_data_36_0014",
+        "new_data_36_0015",
+        "new_data_36_0018",
+        "new_data_36_0021",
+        "new_data_36_0022",
+        "new_data_37_0023",
+        "new_data_37_0041",
+        "new_data_37_0042",
+        "new_data_37_0045",
+        "new_data_45_0035",
+        "new_data_45_0037",
+        "new_data_46_0036",
+        "new_data_46_0037",
+        "new_data_46_0040",
+        "new_data_48_0015",
+        "new_data_48_0017",
+        "new_data_49_0012",
+        "new_data_50_0037",
+        "new_data_50_0038",
+        "new_data_50_0039",
+        "new_data_50_0040",
+        "new_data_51_0007",
+        "new_data_51_0045",
+        "new_data_53_0023",
+        "new_data_53_0027"
+      ],
+      "descriptors": []
+    },
+    "ordered_input_identity_sha256": "fbb6266068f613043cb515c832c2730afaf7534616656d2180fd5c4124edaa71"
+  },
+  "ride_3": {
+    "frames": 1409,
+    "candidates": 2260,
+    "first_frame": "new_data_82_0045",
+    "last_frame": "new_data_110_0025",
+    "sealed_stop": 2,
+    "withdrawal_stop": 2,
+    "stop_frames": [
+      "new_data_99_0016",
+      "new_data_99_0017"
+    ],
+    "extra_stop_frames": [],
+    "lost_stop_frames": [],
+    "exact_stop_centers": [
+      {
+        "frame": "new_data_99_0016",
+        "centers": [
+          [
+            136.25,
+            -1.24,
+            -0.97
+          ]
+        ]
+      },
+      {
+        "frame": "new_data_99_0017",
+        "centers": [
+          [
+            134.41,
+            -1.23,
+            -0.81
+          ]
+        ]
+      }
+    ],
+    "center_tolerance": 0,
+    "comparison": "Exact serialized numeric center multiset, no rounding or rematching",
+    "mismatches": {
+      "detection_centers": [],
+      "warning_centers": [],
+      "serialized": [
+        "new_data_91_0002",
+        "new_data_93_0017",
+        "new_data_93_0022",
+        "new_data_93_0032",
+        "new_data_93_0034",
+        "new_data_93_0040",
+        "new_data_93_0048",
+        "new_data_93_0050",
+        "new_data_94_0023",
+        "new_data_94_0024",
+        "new_data_94_0029",
+        "new_data_94_0030",
+        "new_data_94_0031",
+        "new_data_94_0034",
+        "new_data_94_0035",
+        "new_data_94_0036",
+        "new_data_94_0037",
+        "new_data_94_0038",
+        "new_data_94_0040",
+        "new_data_94_0044",
+        "new_data_94_0045",
+        "new_data_94_0046",
+        "new_data_94_0048",
+        "new_data_94_0049",
+        "new_data_95_0000",
+        "new_data_95_0001",
+        "new_data_95_0002",
+        "new_data_95_0003",
+        "new_data_95_0004",
+        "new_data_95_0005",
+        "new_data_95_0006",
+        "new_data_95_0007",
+        "new_data_95_0008",
+        "new_data_95_0009",
+        "new_data_95_0020",
+        "new_data_95_0023",
+        "new_data_95_0024",
+        "new_data_95_0026",
+        "new_data_95_0027",
+        "new_data_95_0029",
+        "new_data_95_0030",
+        "new_data_95_0031",
+        "new_data_95_0032",
+        "new_data_95_0033",
+        "new_data_95_0034",
+        "new_data_95_0036",
+        "new_data_95_0037",
+        "new_data_95_0038",
+        "new_data_95_0039",
+        "new_data_95_0042",
+        "new_data_95_0043",
+        "new_data_95_0044",
+        "new_data_95_0045",
+        "new_data_95_0046",
+        "new_data_95_0047",
+        "new_data_96_0002",
+        "new_data_101_0019",
+        "new_data_101_0025",
+        "new_data_101_0026",
+        "new_data_101_0027",
+        "new_data_101_0028",
+        "new_data_101_0030",
+        "new_data_101_0032",
+        "new_data_101_0033",
+        "new_data_101_0037",
+        "new_data_101_0040",
+        "new_data_101_0044",
+        "new_data_101_0047",
+        "new_data_101_0048",
+        "new_data_101_0049",
+        "new_data_101_0050",
+        "new_data_102_0001",
+        "new_data_102_0002",
+        "new_data_102_0003",
+        "new_data_102_0004",
+        "new_data_102_0005",
+        "new_data_102_0006",
+        "new_data_102_0007",
+        "new_data_102_0008",
+        "new_data_102_0009",
+        "new_data_102_0010",
+        "new_data_102_0011",
+        "new_data_102_0012",
+        "new_data_102_0013",
+        "new_data_102_0014",
+        "new_data_102_0015",
+        "new_data_102_0016",
+        "new_data_102_0017",
+        "new_data_102_0018",
+        "new_data_102_0019",
+        "new_data_102_0020",
+        "new_data_102_0021",
+        "new_data_102_0022",
+        "new_data_102_0023",
+        "new_data_102_0024",
+        "new_data_102_0025",
+        "new_data_102_0026",
+        "new_data_102_0027",
+        "new_data_102_0028",
+        "new_data_102_0029",
+        "new_data_102_0030",
+        "new_data_102_0031",
+        "new_data_102_0032",
+        "new_data_102_0033",
+        "new_data_102_0034",
+        "new_data_102_0035",
+        "new_data_102_0036",
+        "new_data_102_0037",
+        "new_data_102_0038",
+        "new_data_102_0039",
+        "new_data_102_0040",
+        "new_data_102_0041",
+        "new_data_102_0042",
+        "new_data_102_0043",
+        "new_data_102_0044",
+        "new_data_102_0045",
+        "new_data_102_0046",
+        "new_data_102_0047",
+        "new_data_102_0048",
+        "new_data_102_0049",
+        "new_data_102_0050",
+        "new_data_103_0000",
+        "new_data_103_0001",
+        "new_data_103_0002",
+        "new_data_103_0003",
+        "new_data_103_0004",
+        "new_data_103_0005",
+        "new_data_103_0006",
+        "new_data_103_0007",
+        "new_data_103_0008",
+        "new_data_103_0009",
+        "new_data_103_0010",
+        "new_data_103_0011",
+        "new_data_103_0012",
+        "new_data_103_0013",
+        "new_data_103_0014",
+        "new_data_103_0017",
+        "new_data_103_0018",
+        "new_data_103_0019",
+        "new_data_103_0020",
+        "new_data_103_0022",
+        "new_data_103_0023",
+        "new_data_103_0024",
+        "new_data_103_0025",
+        "new_data_103_0026",
+        "new_data_103_0028",
+        "new_data_103_0029",
+        "new_data_103_0030",
+        "new_data_103_0037",
+        "new_data_103_0038",
+        "new_data_103_0039",
+        "new_data_103_0043",
+        "new_data_103_0046",
+        "new_data_103_0048",
+        "new_data_104_0003",
+        "new_data_104_0004",
+        "new_data_104_0005",
+        "new_data_104_0008",
+        "new_data_104_0009",
+        "new_data_104_0014",
+        "new_data_104_0020",
+        "new_data_104_0030",
+        "new_data_104_0031",
+        "new_data_104_0032",
+        "new_data_104_0045",
+        "new_data_105_0000",
+        "new_data_105_0005",
+        "new_data_110_0022",
+        "new_data_110_0025"
+      ],
+      "descriptors": []
+    },
+    "ordered_input_identity_sha256": "25b31685f8e1f0bf128f696dcd442cc33318918d30e21fc17ad5886c3d56fc49"
+  }
+}

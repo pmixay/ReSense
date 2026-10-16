@@ -1,0 +1,28 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index d48fee9..94a5dfc 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -7 +7 @@ name = "resense"
+-version = "1.0.0"
++version = "1.1.0"
+diff --git a/resense/__init__.py b/resense/__init__.py
+index ac34a5c..a2d6545 100644
+--- a/resense/__init__.py
++++ b/resense/__init__.py
+@@ -13 +13 @@ __all__ = ["DetectorConfig", "Detector", "FrameResult", "Detection"]
+-__version__ = "1.0.0"
++__version__ = "1.1.0"
+diff --git a/ros2_ws/src/resense_ros/package.xml b/ros2_ws/src/resense_ros/package.xml
+index 4ce123b..cdd2347 100644
+--- a/ros2_ws/src/resense_ros/package.xml
++++ b/ros2_ws/src/resense_ros/package.xml
+@@ -5 +5 @@
+-  <version>1.0.0</version>
++  <version>1.1.0</version>
+diff --git a/ros2_ws/src/resense_ros/setup.py b/ros2_ws/src/resense_ros/setup.py
+index 65ff310..9ddf4de 100644
+--- a/ros2_ws/src/resense_ros/setup.py
++++ b/ros2_ws/src/resense_ros/setup.py
+@@ -9 +9 @@ setup(
+-    version="1.0.0",
++    version="1.1.0",

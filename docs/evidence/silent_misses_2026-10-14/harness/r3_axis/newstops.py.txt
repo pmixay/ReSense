@@ -1,0 +1,42 @@
+"""New STOP runs of a gate run vs the sealed gate, with the sealed-axis side offsets from gobs (scratch).
+usage: newstops.py <work_dir> [gobs_dir]"""
+import glob, json, os, sys
+import numpy as np
+new_dir = sys.argv[1]
+gobs = sys.argv[2] if len(sys.argv) > 2 else "/tmp/claude-0/fixwork/r3axis/gobsA1"
+old_dir = "/tmp/claude-0/fixwork/gate_head/work"
+for f in sorted(glob.glob(os.path.join(new_dir, "*.jsonl"))):
+    name = os.path.basename(f)
+    a = [json.loads(l) for l in open(f)]
+    b = [json.loads(l) for l in open(os.path.join(old_dir, name))]
+    gp = os.path.join(gobs, name)
+    if not os.path.exists(gp):
+        gp = os.path.join("/tmp/claude-0/fixwork/r3axis/gobs", name)
+    g = [json.loads(l) for l in open(gp)] if os.path.exists(gp) else None
+    runs, cur = [], None
+    for i, (x, y) in enumerate(zip(a, b)):
+        if x["obstacle"] and not y["obstacle"]:
+            if cur and i == cur[1] + 1:
+                cur[1] = i
+            else:
+                cur = [i, i]
+                runs.append(cur)
+    lost = sum(1 for x, y in zip(a, b) if y["obstacle"] and not x["obstacle"])
+    if not runs and not lost:
+        continue
+    print("==", name, "new STOP runs", len(runs), "frames", sum(r[1] - r[0] + 1 for r in runs), "| lost STOP frames", lost)
+    for r0, r1 in runs:
+        x, y = a[r0], b[r0]
+        d = x["detections"][0]
+        mad = ""
+        if g and r0 < len(g):
+            t = np.tan(g[r0]["yaw"])
+            offs = []
+            for xs, ys, ok in g[r0]["sides"]:
+                xs, ys = np.array(xs), np.array(ys)
+                dy = ys - (g[r0]["c"] + t * xs + 0.5 * g[r0]["curv"] * xs * xs)
+                offs.append("%.1f%s" % (float(np.mean(np.abs(dy))), "" if ok else "x"))
+            mad = "sides |dy| " + "/".join(offs)
+        print("   %5d-%5d d %.1f lat %.2f size %s | curv %.5f vs %.5f  av %s vs %s  %s" % (
+            r0, r1, d["distance"], d["lateral"], d["size"], x["track"]["curvature"], y["track"]["curvature"],
+            x["track"]["axis_valid"], y["track"]["axis_valid"], mad))

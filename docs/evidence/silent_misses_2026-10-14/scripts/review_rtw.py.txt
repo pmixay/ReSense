@@ -1,0 +1,15 @@
+"""Run the judge's range_test.py on the code at WT with hooks.py installed (CFG overrides, observation)."""
+import os, runpy, sys
+WT = os.environ["WT"]
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, WT); sys.path.insert(0, HERE)
+import hooks  # noqa
+JD = os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts")
+sys.path.insert(0, JD)
+out = sys.argv[3]
+sys.argv = [os.path.join(JD, "range_test.py")] + sys.argv[1:]
+try:
+    runpy.run_path(sys.argv[0], run_name="__main__")
+finally:
+    hooks.dump(out + ".hooks.json")
+    print("hooks tf", hooks.STATS["tf_calls"], "free", hooks.STATS["tf_free"], "cut", hooks.STATS["cut_parts"])

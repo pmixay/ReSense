@@ -1,0 +1,157 @@
+{
+  "measured_commit": "c9aea87cb5322092070158cd8987115ee44833c9",
+  "gate_exit": 0,
+  "source_sha256": "a73bc44642eb7d022e1433a763761f0f7e62bd0c5dfd93b4ad6db13660234aaf",
+  "source_clean_before_after": true,
+  "clean_LF": true,
+  "axis_range_and_additive_metadata_only": true,
+  "previous_H3_promotion_disappeared": true,
+  "current_spared_true": 0,
+  "current_cut_true": 0,
+  "exact_result_checks": {
+    "detections": 0,
+    "ego_motion": 0,
+    "mount": 0,
+    "n_candidates": 0,
+    "n_corridor": 0,
+    "n_points": 0,
+    "nearest_distance": 0,
+    "non_range_non_latency_health": 0,
+    "obstacle": 0,
+    "preexisting_raw_candidates": 0,
+    "preexisting_track_fields": 0,
+    "raw_corridor_membership": 0,
+    "warning": 0,
+    "warnings": 0
+  },
+  "common_raw_numeric_comparison": {
+    "common_numeric_values_changed": 5799,
+    "common_numeric_values_compared": 2432861,
+    "other_values_changed": 0,
+    "range_values_changed": 5799
+  }
+}
+{
+  "counts": {
+    "frames": 18329,
+    "changed_frames": 6,
+    "changed_entries": 8
+  },
+  "fields": {
+    "raw.candidates[].spared": 6,
+    "raw.candidates[].reason": 1,
+    "raw.candidates[].zone": 1
+  },
+  "groups": {
+    "candidates": {
+      "frames": 6,
+      "entries": 8
+    }
+  },
+  "all_changes": [
+    {
+      "sequence_file": "new_data_0.jsonl",
+      "row": 36,
+      "key": {
+        "recording": "new_data",
+        "frame_id": "new_data_0_0036",
+        "piece": "new_data_0",
+        "index": 36
+      },
+      "field": "raw.candidates[0].spared",
+      "historical": true,
+      "current": false
+    },
+    {
+      "sequence_file": "new_data_1.jsonl",
+      "row": 1348,
+      "key": {
+        "recording": "new_data",
+        "frame_id": "new_data_54_0003",
+        "piece": "new_data_1",
+        "index": 1348
+      },
+      "field": "raw.candidates[0].spared",
+      "historical": true,
+      "current": false
+    },
+    {
+      "sequence_file": "new_data_1.jsonl",
+      "row": 1349,
+      "key": {
+        "recording": "new_data",
+        "frame_id": "new_data_54_0004",
+        "piece": "new_data_1",
+        "index": 1349
+      },
+      "field": "raw.candidates[8].spared",
+      "historical": true,
+      "current": false
+    },
+    {
+      "sequence_file": "new_data_1.jsonl",
+      "row": 1354,
+      "key": {
+        "recording": "new_data",
+        "frame_id": "new_data_54_0009",
+        "piece": "new_data_1",
+        "index": 1354
+      },
+      "field": "raw.candidates[8].reason",
+      "historical": "",
+      "current": "column"
+    },
+    {
+      "sequence_file": "new_data_1.jsonl",
+      "row": 1354,
+      "key": {
+        "recording": "new_data",
+        "frame_id": "new_data_54_0009",
+        "piece": "new_data_1",
+        "index": 1354
+      },
+      "field": "raw.candidates[8].spared",
+      "historical": true,
+      "current": false
+    },
+    {
+      "sequence_file": "new_data_1.jsonl",
+      "row": 1354,
+      "key": {
+        "recording": "new_data",
+        "frame_id": "new_data_54_0009",
+        "piece": "new_data_1",
+        "index": 1354
+      },
+      "field": "raw.candidates[8].zone",
+      "historical": "gauge",
+      "current": "warning"
+    },
+    {
+      "sequence_file": "new_data_1.jsonl",
+      "row": 1361,
+      "key": {
+        "recording": "new_data",
+        "frame_id": "new_data_54_0016",
+        "piece": "new_data_1",
+        "index": 1361
+      },
+      "field": "raw.candidates[5].spared",
+      "historical": true,
+      "current": false
+    },
+    {
+      "sequence_file": "new_data_6.jsonl",
+      "row": 274,
+      "key": {
+        "recording": "new_data",
+        "frame_id": "new_data_171_0007",
+        "piece": "new_data_6",
+        "index": 274
+      },
+      "field": "raw.candidates[2].spared",
+      "historical": true,
+      "current": false
+    }
+  ]
+}

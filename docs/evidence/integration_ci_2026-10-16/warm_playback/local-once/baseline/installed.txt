@@ -1,0 +1,1 @@
+{"version": "1.1.0", "import": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py", "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)", "native_sha256": "dc549d0583f92c3acd93c455bf94bab4bbedae35a9580d82ad24786473661d5c"}

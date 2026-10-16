@@ -1,0 +1,21 @@
+{
+  "result": "BLOCKED",
+  "source_commit": "70072f1300d922d7542a6b45688084e7a426d7c7",
+  "fixture": "docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json",
+  "source_fixture_bytes": 101534,
+  "source_fixture_sha256": "b798e65b06b6841b3d0ac8bcf5fdb950c459924caa6808f525f168c674a89a81",
+  "production_copy_present": false,
+  "context_probe_exit": 1,
+  "command": [
+    "docker",
+    "build",
+    "--network",
+    "none",
+    "--pull=false",
+    "--progress=plain",
+    "-f",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016\\docs\\evidence\\integration_ci_2026-10-16\\Dockerfile.fixture-probe",
+    "."
+  ],
+  "scope": "one Docker COPY dependency probe; no installed-detector or full-suite claim"
+}

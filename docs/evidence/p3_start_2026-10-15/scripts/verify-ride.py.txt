@@ -1,0 +1,61 @@
+"""Verify the local organizer archive and the cache-view provenance for gate intake."""
+import hashlib
+import json
+from pathlib import Path
+import sys
+import time
+
+import numpy as np
+
+BASE = Path(__file__).resolve().parent
+REPO = BASE / "rs-range-screen"
+sys.path.insert(0, str(REPO))
+from scripts.cache_frames import _atomic_json
+from scripts.cache_io import load_cache_array, validate_extended_ride_cache, validate_ride_intake_manifest
+from resense.io import iter_bag_compact
+from resense.pointcloud import compact_to_compact16
+
+SOURCE = Path("D:/Datasets/ReSense")
+CACHE = BASE / "resense-p3-data/cache/new_data"
+SHA = "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec"
+SIZE = 17078961996
+
+
+def main():
+    archive = SOURCE / "new_data.zst"
+    assert archive.stat().st_size == SIZE
+    with open(archive, "rb") as stream:
+        actual = hashlib.file_digest(stream, "sha256").hexdigest()
+    assert actual == SHA, actual
+    print("organizer archive SHA-256 PASS", actual, flush=True)
+    while not (CACHE / "view_provenance.json").exists():
+        time.sleep(10)
+    validation = validate_extended_ride_cache(str(CACHE))
+    # Every original DB3 timestamp was checked by cache-view.py. Additionally
+    # compare the first payload of every split to a fresh raw decode.
+    for split in range(221):
+        db3 = SOURCE / "new_data" / f"new_data_{split}.db3"
+        _, _, _, array = next(iter_bag_compact(str(db3), limit=1))
+        cached = load_cache_array(CACHE / f"new_data_{split}_0000.npy.zst")
+        assert np.array_equal(compact_to_compact16(array), cached), split
+        if split % 20 == 0:
+            print("raw first-frame parity", split, flush=True)
+    manifest = {
+        "schema": "resense-extended-ride-intake-v1", "status": "complete",
+        "source_url": "https://disk.yandex.ru/d/N8IUpAyd7jyvow", "source_member": "new_data.zst",
+        "archive_bytes": SIZE, "archive_size_published": SIZE, "archive_size_verified": True,
+        "archive_checksum_published": True, "archive_sha256_published": SHA,
+        "archive_sha256_actual": actual, "archive_sha256_verified": True,
+        "cache_splits": validation["splits"], "cache_frames": validation["frames"],
+        "cache_bytes": validation["compressed_bytes"], "cache_location": str(CACHE),
+        "encoding": "compact16 NPY, independently zstd level 3",
+        "method": "lossless compressed view of existing flat cache; every timestamp checked against original DB3; first frame of every split re-decoded and compared",
+        "raw_payload_samples_checked": 221,
+    }
+    _atomic_json(str(CACHE / "intake_manifest.json"), manifest)
+    validate_ride_intake_manifest(str(CACHE), validation)
+    print("RIDE INTAKE VERIFIED", flush=True)
+
+
+if __name__ == "__main__":
+    main()

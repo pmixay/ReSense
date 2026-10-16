@@ -1,0 +1,1205 @@
+{
+  "root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016",
+  "files": [
+    {
+      "path": "attempt-01-probes\\completion.json",
+      "bytes": 41,
+      "sha256": "f63cd8b3afe2bbd86a1ae12a49fcd7373d5873b7d0ad8ae0ed0afe236f958653"
+    },
+    {
+      "path": "attempt-01-probes\\launch.json",
+      "bytes": 2783,
+      "sha256": "a7f629b146e98f5d01a76321fb1f6fcbd038329d968e7d765ebe1009a93c391c"
+    },
+    {
+      "path": "attempt-01-probes\\results\\C_person-sight.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "attempt-01-probes\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "attempt-01-probes\\results\\identity.json",
+      "bytes": 17312,
+      "sha256": "e725f7928960be0a2f26144e41f6cbff2c0369b52388a4fafed52d7160f4c893"
+    },
+    {
+      "path": "attempt-01-probes\\results\\pole_c-sight.json",
+      "bytes": 9008864,
+      "sha256": "889f7ccd76408bc122d24e30c561fa91feb6397ec377b48aedfd8e08692fe44c"
+    },
+    {
+      "path": "attempt-01-probes\\results\\pole_c.json",
+      "bytes": 93792,
+      "sha256": "963913552ce0ddba4ded6d22080c8cce8d2fd0ffe6d5ae4adb5ea81e99e5db17"
+    },
+    {
+      "path": "attempt-01-probes\\results\\summary.json",
+      "bytes": 3212,
+      "sha256": "dadb3378bab2ee0ff6ddc6308901556a44afef9b3676110bd0c5337e4c16374d"
+    },
+    {
+      "path": "attempt-01-probes\\source.patch",
+      "bytes": 11770,
+      "sha256": "84a789539ac284472477ea316ce6fb08391c52f87251b4a6eef6cbed0a1d86e5"
+    },
+    {
+      "path": "attempt-01-probes\\worker.txt",
+      "bytes": 2931,
+      "sha256": "6d10edb00826e7a8e00c1b5a7ca897328cf425a9c53e5616f1235bf3843d8382"
+    },
+    {
+      "path": "attempt-01-witness\\completion.json",
+      "bytes": 42,
+      "sha256": "6490bb2121609bb53d507f1d1439863290cd53a4d5cdc859694e1a3f5193275e"
+    },
+    {
+      "path": "attempt-01-witness\\launch.json",
+      "bytes": 2490,
+      "sha256": "113bda28d79ddecf32d2bee2d3aa08fa740a8413bea28ff9e527efa161543548"
+    },
+    {
+      "path": "attempt-01-witness\\results\\identity.json",
+      "bytes": 17312,
+      "sha256": "da45968684dd401bb2f38b57e4c43cd740f4c8b28b42d78b0d6d9e7872d46aa3"
+    },
+    {
+      "path": "attempt-01-witness\\results\\pytest.xml",
+      "bytes": 3460,
+      "sha256": "6298ef3e8dff5f9588ef5becd6fb4df240a86c272bb74228f32a41c8720aa438"
+    },
+    {
+      "path": "attempt-01-witness\\source.patch",
+      "bytes": 11770,
+      "sha256": "84a789539ac284472477ea316ce6fb08391c52f87251b4a6eef6cbed0a1d86e5"
+    },
+    {
+      "path": "attempt-01-witness\\worker.txt",
+      "bytes": 3380,
+      "sha256": "93232886bc4874aedbce11e567edcd765ee25fdb13f85aefb0f27c5bb8737fc5"
+    },
+    {
+      "path": "attempt-02-probes\\completion.json",
+      "bytes": 41,
+      "sha256": "67715155e9a5f814807cbb62a79d4f733f3be04e4c302858cefa981d734b11e7"
+    },
+    {
+      "path": "attempt-02-probes\\launch.json",
+      "bytes": 2783,
+      "sha256": "3eb8bc5e6cd4762c93651fc080a9bfe66926483af9977ff24108b73475693f47"
+    },
+    {
+      "path": "attempt-02-probes\\results\\C_person-sight.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "attempt-02-probes\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "attempt-02-probes\\results\\identity.json",
+      "bytes": 17312,
+      "sha256": "4ec181661fc02e1d27e73bb30f0b58c7a74c9da7b614d763571e692bdbc1615a"
+    },
+    {
+      "path": "attempt-02-probes\\results\\pole_c-sight.json",
+      "bytes": 9106469,
+      "sha256": "c7df696b232971a823c44ca12e9aae5f63fd6c4e988e11580f56b125f289cff9"
+    },
+    {
+      "path": "attempt-02-probes\\results\\pole_c.json",
+      "bytes": 93792,
+      "sha256": "963913552ce0ddba4ded6d22080c8cce8d2fd0ffe6d5ae4adb5ea81e99e5db17"
+    },
+    {
+      "path": "attempt-02-probes\\results\\summary.json",
+      "bytes": 3212,
+      "sha256": "dadb3378bab2ee0ff6ddc6308901556a44afef9b3676110bd0c5337e4c16374d"
+    },
+    {
+      "path": "attempt-02-probes\\source.patch",
+      "bytes": 12346,
+      "sha256": "80cd4ab51267cbe9c44e8a90c8ad546873dfa520de7b0f5938f2abcb180ba21c"
+    },
+    {
+      "path": "attempt-02-probes\\worker.txt",
+      "bytes": 3080,
+      "sha256": "5183126b5bcd30ba530bdac8fda550f2a0f11fc76336e5f5995cc40888b81551"
+    },
+    {
+      "path": "attempt-03-witness\\completion.json",
+      "bytes": 42,
+      "sha256": "c77dc4a3656af8cedb8ae9c5859c571e4595d9b5e8d1b3c4680a0ea9988ab7a0"
+    },
+    {
+      "path": "attempt-03-witness\\launch.json",
+      "bytes": 2784,
+      "sha256": "7fa09e6370b068c46fbc87cb353b6251c25587a351a8f528f7fdff0266f17f87"
+    },
+    {
+      "path": "attempt-03-witness\\results\\identity.json",
+      "bytes": 17312,
+      "sha256": "dc73dc5cb258243beb11e04408f058fc0c070a562614a0af23303024c5425527"
+    },
+    {
+      "path": "attempt-03-witness\\results\\pytest.xml",
+      "bytes": 3572,
+      "sha256": "a17f07cc3729a6dc97ce60746cc56ff419bf73d721e44040c2b77885a16b64ad"
+    },
+    {
+      "path": "attempt-03-witness\\source.patch",
+      "bytes": 16338,
+      "sha256": "40780f3c0b752396ed883c07ddf1ca829237852fe51aa57d85f49816a68fc18d"
+    },
+    {
+      "path": "attempt-03-witness\\worker.txt",
+      "bytes": 3130,
+      "sha256": "2f1c332f1911cb2bc94817c5315f7f2d518ba8e52dc591575728e2a99271209c"
+    },
+    {
+      "path": "attempt-04-probes\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-04-probes\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-04-probes\\author-code\\probes.py",
+      "bytes": 4417,
+      "sha256": "3d6bcba81a59494685b95a5672b38cccd470378f6f3cb9b2a4fe9d1b4fda6da0"
+    },
+    {
+      "path": "attempt-04-probes\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-04-probes\\completion.json",
+      "bytes": 41,
+      "sha256": "e9f46e7fb87e438f0945cf170b3aa1bdf58c0b4e07fe13716658fb00795ec96c"
+    },
+    {
+      "path": "attempt-04-probes\\launch.json",
+      "bytes": 2767,
+      "sha256": "157f1e1e847e7e081a09b9e85e977ac71e44536a1975e3cbd9e9df10c44523b6"
+    },
+    {
+      "path": "attempt-04-probes\\results\\C_person-sight.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "attempt-04-probes\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "attempt-04-probes\\results\\identity.json",
+      "bytes": 17857,
+      "sha256": "cf98f5f9fde38dff6a58c3eea69586adf29ad9535bee85a348249339d0a565c9"
+    },
+    {
+      "path": "attempt-04-probes\\results\\pole_c-sight.json",
+      "bytes": 9378082,
+      "sha256": "c77a72c024b2e669689c4e4205ffbf90122e20a7f75d85f3a4ae50ede9829a74"
+    },
+    {
+      "path": "attempt-04-probes\\results\\pole_c.json",
+      "bytes": 93428,
+      "sha256": "67dfc9070324e604189eafbd123ea7d3d7e09982a695aa0cbdef482f20d802d1"
+    },
+    {
+      "path": "attempt-04-probes\\results\\summary.json",
+      "bytes": 3723,
+      "sha256": "9a9e050d7d40c1afee0b259e721ed784f274e0315282d382fe52daebb8149e85"
+    },
+    {
+      "path": "attempt-04-probes\\source.patch",
+      "bytes": 16652,
+      "sha256": "60d68363cb34108c4147b4365129c44968d1a995038db17d00f2d6154ce5306f"
+    },
+    {
+      "path": "attempt-04-probes\\worker.txt",
+      "bytes": 3087,
+      "sha256": "500b9c316e57dd131af0ff7fa06fa435703d740787be05a0561d7d0989d88d57"
+    },
+    {
+      "path": "attempt-05-probes\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-05-probes\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-05-probes\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-05-probes\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-05-probes\\completion.json",
+      "bytes": 41,
+      "sha256": "9e81f835f9ebff56f9bb734734c7b9c965f60562271bfc29f70a6d0e36798b84"
+    },
+    {
+      "path": "attempt-05-probes\\launch.json",
+      "bytes": 2767,
+      "sha256": "10e48e45bd4dcb01ccd72a8c71aacbfdeeec23cd005c15b8ede2abfe3fb8b96f"
+    },
+    {
+      "path": "attempt-05-probes\\results\\C_person-sight.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "attempt-05-probes\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "attempt-05-probes\\results\\identity.json",
+      "bytes": 17857,
+      "sha256": "1c878ebb4e833702ab3c107a11bde5da4a8f003fec8f94030a92fb1f8146ed64"
+    },
+    {
+      "path": "attempt-05-probes\\results\\pole_c-sight.json",
+      "bytes": 9458031,
+      "sha256": "c1ccb67805324e8f9ca2b07fda7e4d269fe2cc3973f3fa0c0b222e50898fdb4e"
+    },
+    {
+      "path": "attempt-05-probes\\results\\pole_c.json",
+      "bytes": 93435,
+      "sha256": "496dea1fc202d22a442c78185d5e577e4f8b21da97df8ea089258dd7e99368a3"
+    },
+    {
+      "path": "attempt-05-probes\\results\\summary.json",
+      "bytes": 3680,
+      "sha256": "21b57490cec0ea8317b5ca1a8f764772a5de8893a3b5ba1be1d42f4844525a5c"
+    },
+    {
+      "path": "attempt-05-probes\\source.patch",
+      "bytes": 17372,
+      "sha256": "930c182f24a6aec149ace30da1912754050c21135a7b8268225487bdcc4e4bc8"
+    },
+    {
+      "path": "attempt-05-probes\\worker.txt",
+      "bytes": 3055,
+      "sha256": "d6ecb0452989c24ce64e2a81d3c755e364ffc63dc80e0a20f5de55e217a4b5a5"
+    },
+    {
+      "path": "attempt-06-dark\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-06-dark\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-06-dark\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-06-dark\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-06-dark\\completion.json",
+      "bytes": 42,
+      "sha256": "ad196416206f9a059c0706910bf9e01d0956e0bd88229d04586fcfdb57afb024"
+    },
+    {
+      "path": "attempt-06-dark\\launch.json",
+      "bytes": 2765,
+      "sha256": "da97b0ef4673234b981ed9471cc3f0f87fd364fedc352501ae4e6f4881ef8ea6"
+    },
+    {
+      "path": "attempt-06-dark\\results\\identity.json",
+      "bytes": 17857,
+      "sha256": "ccee5dc8f5b52581bddd9d7231d7b444e963fde67ee32d2e24b5308d67ee3ec6"
+    },
+    {
+      "path": "attempt-06-dark\\results\\ride_1-promotion.json",
+      "bytes": 36557,
+      "sha256": "1c2700fc98b7ab6ac3c9a5e4a3f3a43275e6467f5038e289044872478fa7a29a"
+    },
+    {
+      "path": "attempt-06-dark\\results\\ride_1.jsonl",
+      "bytes": 10287815,
+      "sha256": "92a774229c18a5fa88fcc011485ed0c7fc41bd6c5826919fc0a8f316c22272a8"
+    },
+    {
+      "path": "attempt-06-dark\\results\\ride_3.jsonl",
+      "bytes": 9360272,
+      "sha256": "c2a6bded8f1f2a90deb2991dba3d1aa4aae545b21e7d638999d521e48a9c5d9e"
+    },
+    {
+      "path": "attempt-06-dark\\results\\summary.json",
+      "bytes": 46808,
+      "sha256": "53054b740f65aeba11f6f1fc52416dc982bddd920962c0038262f2faceae26b4"
+    },
+    {
+      "path": "attempt-06-dark\\source.patch",
+      "bytes": 15309,
+      "sha256": "44b2d5674e67f1e4833efa58a096d72972ef6c03b8871bfb0a94b82f95d97c57"
+    },
+    {
+      "path": "attempt-06-dark\\worker.txt",
+      "bytes": 2805,
+      "sha256": "ed7caa57732ef42d673833304bdc24b1e4f3d6fd34d3d21b5eefeb7da62fb03a"
+    },
+    {
+      "path": "attempt-06-probes\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-06-probes\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-06-probes\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-06-probes\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-06-probes\\completion.json",
+      "bytes": 42,
+      "sha256": "4ddf562028a7d2a91cc2b8b887eb102eed1e58a9bd66c716ec1dc206edfcf716"
+    },
+    {
+      "path": "attempt-06-probes\\launch.json",
+      "bytes": 2767,
+      "sha256": "0a942a46c6e04e4b9e6cd536c9191b8d4b10c6b1a6000e16104c601ee855f0a6"
+    },
+    {
+      "path": "attempt-06-probes\\results\\C_person-sight.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "attempt-06-probes\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "attempt-06-probes\\results\\identity.json",
+      "bytes": 17857,
+      "sha256": "41e4b947b8dd5a59de954a40e984284da645abea0bb4edc58cc618ac0d6eca5d"
+    },
+    {
+      "path": "attempt-06-probes\\results\\pole_c-sight.json",
+      "bytes": 9458027,
+      "sha256": "d8d6f8cbefa19503342b4d5e3eda4789a893487e0d0358393e2ba94ed95a80d1"
+    },
+    {
+      "path": "attempt-06-probes\\results\\pole_c.json",
+      "bytes": 93398,
+      "sha256": "e16c61424b6f8be7b8ae43d2aa907918254cd5fd72769b93e9c71a9c9d3061a0"
+    },
+    {
+      "path": "attempt-06-probes\\results\\summary.json",
+      "bytes": 3790,
+      "sha256": "abba5355cf32356379a4eb3e85a1a2e7eefec64d827d0e4e1fece666a76d45df"
+    },
+    {
+      "path": "attempt-06-probes\\source.patch",
+      "bytes": 15309,
+      "sha256": "44b2d5674e67f1e4833efa58a096d72972ef6c03b8871bfb0a94b82f95d97c57"
+    },
+    {
+      "path": "attempt-06-probes\\worker.txt",
+      "bytes": 3032,
+      "sha256": "4e9eff0f90879bba5df6b3d5c9fc606d86d5988e1e61901d00f191acf1fbc02e"
+    },
+    {
+      "path": "attempt-07-dark\\author-code\\compare.py",
+      "bytes": 2215,
+      "sha256": "b353c0ece2f05efe6456a9422961edc2e47e5f1705824a8aaf564d42faedd7f6"
+    },
+    {
+      "path": "attempt-07-dark\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-07-dark\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-07-dark\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-07-dark\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-07-dark\\completion.json",
+      "bytes": 42,
+      "sha256": "29d0ac11a8567264c80443589374786711cbdcdd677b6f83bc68beaf55f7a42d"
+    },
+    {
+      "path": "attempt-07-dark\\launch.json",
+      "bytes": 2765,
+      "sha256": "0d5532d2f53a40188a0cf3d7b3feb3a8592c85cfbad792d6a2285a9a31956205"
+    },
+    {
+      "path": "attempt-07-dark\\results\\identity.json",
+      "bytes": 17943,
+      "sha256": "888e059b24c01613b4f9ab9e1f2aa76d86cdd31b89314b50048961c5f4b760d9"
+    },
+    {
+      "path": "attempt-07-dark\\results\\ride_1-promotion.json",
+      "bytes": 36557,
+      "sha256": "1c2700fc98b7ab6ac3c9a5e4a3f3a43275e6467f5038e289044872478fa7a29a"
+    },
+    {
+      "path": "attempt-07-dark\\results\\ride_1.jsonl",
+      "bytes": 10250768,
+      "sha256": "8ac075601a58f4645d5f9e9feddf6146892a4a73d9cbda14fbee34a2ba70f508"
+    },
+    {
+      "path": "attempt-07-dark\\results\\ride_3.jsonl",
+      "bytes": 9329854,
+      "sha256": "7a5eb59ff7a907eab3f95cec55125ced9c35be8a84565af98b85247cfc55fbf1"
+    },
+    {
+      "path": "attempt-07-dark\\results\\summary.json",
+      "bytes": 46808,
+      "sha256": "53054b740f65aeba11f6f1fc52416dc982bddd920962c0038262f2faceae26b4"
+    },
+    {
+      "path": "attempt-07-dark\\source.patch",
+      "bytes": 15603,
+      "sha256": "efef8de0c0948f5a11dba985d690c8e47163f7c6bafe7f41befa5c48e4bcc091"
+    },
+    {
+      "path": "attempt-07-dark\\worker.txt",
+      "bytes": 2574,
+      "sha256": "9ae0e34b92f9dc45080fcf5f1a493fb7e446c477965fc4f161fc09b954f191e7"
+    },
+    {
+      "path": "attempt-07-probes\\author-code\\compare.py",
+      "bytes": 2215,
+      "sha256": "b353c0ece2f05efe6456a9422961edc2e47e5f1705824a8aaf564d42faedd7f6"
+    },
+    {
+      "path": "attempt-07-probes\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-07-probes\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-07-probes\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-07-probes\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-07-probes\\completion.json",
+      "bytes": 41,
+      "sha256": "c333326eacff9369fa2895ece31f9068d057d46309fe4dcc183347efabfc4d2e"
+    },
+    {
+      "path": "attempt-07-probes\\launch.json",
+      "bytes": 2767,
+      "sha256": "410e820d0d84fa61ccd4f6758caf5e0b933dcb9df6013a51bb96195d4397cc8d"
+    },
+    {
+      "path": "attempt-07-probes\\results\\C_person-sight.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "attempt-07-probes\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "attempt-07-probes\\results\\identity.json",
+      "bytes": 17943,
+      "sha256": "768cc71a0631a269cce3db0fa27ef2fce12291fb634d08bfb9650fbb39d36a54"
+    },
+    {
+      "path": "attempt-07-probes\\results\\pole_c-sight.json",
+      "bytes": 9458018,
+      "sha256": "42626c1fa0bf397ad294e34e4a95e73b2b6dad1cf63ad4caa5f756ae676b39c3"
+    },
+    {
+      "path": "attempt-07-probes\\results\\pole_c.json",
+      "bytes": 93398,
+      "sha256": "e16c61424b6f8be7b8ae43d2aa907918254cd5fd72769b93e9c71a9c9d3061a0"
+    },
+    {
+      "path": "attempt-07-probes\\results\\summary.json",
+      "bytes": 3790,
+      "sha256": "abba5355cf32356379a4eb3e85a1a2e7eefec64d827d0e4e1fece666a76d45df"
+    },
+    {
+      "path": "attempt-07-probes\\source.patch",
+      "bytes": 15603,
+      "sha256": "efef8de0c0948f5a11dba985d690c8e47163f7c6bafe7f41befa5c48e4bcc091"
+    },
+    {
+      "path": "attempt-07-probes\\worker.txt",
+      "bytes": 3527,
+      "sha256": "2d42bc7d17a314df4440ccd122b2e65b97b8992e87e4414be7f29ce4b22b4349"
+    },
+    {
+      "path": "attempt-07-tests\\author-code\\compare.py",
+      "bytes": 2512,
+      "sha256": "d167803495a78bf008d6c2219cb3bd51fe6c65ca250465b1d29df56ae59c618e"
+    },
+    {
+      "path": "attempt-07-tests\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-07-tests\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-07-tests\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-07-tests\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-07-tests\\completion.json",
+      "bytes": 43,
+      "sha256": "30dae336845a80aacee150c0bc9430491217850be364775917d009400107ec85"
+    },
+    {
+      "path": "attempt-07-tests\\launch.json",
+      "bytes": 2757,
+      "sha256": "476edcc78a24555019efa8a1155311090db693f2fec0c1cc523f445148b25da4"
+    },
+    {
+      "path": "attempt-07-tests\\results\\identity.json",
+      "bytes": 17943,
+      "sha256": "084dbb17eb5c571ab02f89768e8126345170aefad936da1056e41df9a5bfea8e"
+    },
+    {
+      "path": "attempt-07-tests\\results\\pytest.xml",
+      "bytes": 23471,
+      "sha256": "525757fb32dfa277f15e76308b3b6ff703c642032e6ab6aaf1739fb85cb2a2e1"
+    },
+    {
+      "path": "attempt-07-tests\\source.patch",
+      "bytes": 15603,
+      "sha256": "efef8de0c0948f5a11dba985d690c8e47163f7c6bafe7f41befa5c48e4bcc091"
+    },
+    {
+      "path": "attempt-07-tests\\worker.txt",
+      "bytes": 9699,
+      "sha256": "71d63eec30ca7ec5b8b52608fe62eaae80fe9c2c23985b33a93111930b73c23a"
+    },
+    {
+      "path": "attempt-08-components\\author-code\\compare.py",
+      "bytes": 2512,
+      "sha256": "d167803495a78bf008d6c2219cb3bd51fe6c65ca250465b1d29df56ae59c618e"
+    },
+    {
+      "path": "attempt-08-components\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-08-components\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-08-components\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-08-components\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-08-components\\completion.json",
+      "bytes": 42,
+      "sha256": "30931eb45a3b42bf513c1d8226ecf81ae0fe563435bc5be80e2699d1250a734e"
+    },
+    {
+      "path": "attempt-08-components\\launch.json",
+      "bytes": 2782,
+      "sha256": "77a48861fa5c41ecb9c38a941c03f38d962486382195019553fcd7ba1715c367"
+    },
+    {
+      "path": "attempt-08-components\\results\\azimuth.json",
+      "bytes": 72852,
+      "sha256": "9ba64b70be7ca0c39300bd68bc7cbef526bddd3ed558e3eb96f94acefb11cefd"
+    },
+    {
+      "path": "attempt-08-components\\results\\identity.json",
+      "bytes": 17943,
+      "sha256": "23f34c9545569da9a6fa717a2ee099daf7310677fc36f7249df992a68d901b06"
+    },
+    {
+      "path": "attempt-08-components\\results\\low-witness.json",
+      "bytes": 179239,
+      "sha256": "80de9543157b1586d336c13a2f6e43b6b6d097d8146aaefb05750909bb50d6bc"
+    },
+    {
+      "path": "attempt-08-components\\results\\physical-summary.json",
+      "bytes": 2290716,
+      "sha256": "f91633e5536e202548288ea09d29dbe96058c7e818cda24f94e8db89987e557d"
+    },
+    {
+      "path": "attempt-08-components\\results\\physical.jsonl",
+      "bytes": 58777461,
+      "sha256": "38164d23da392fb4af482a0693e54dab113fe1bc9ce65fd29e600a8a3898c17e"
+    },
+    {
+      "path": "attempt-08-components\\results\\span.json",
+      "bytes": 2403,
+      "sha256": "d2f7fb1dbf99dcd8961c3611fbf4e23bde32df8cf01706a7f56a8acd01ffdd14"
+    },
+    {
+      "path": "attempt-08-components\\results\\surface-summary.json",
+      "bytes": 439279,
+      "sha256": "0caaf4e4d10ca69795ab2046303da068cd87c98a576196ea75d64d00336a2066"
+    },
+    {
+      "path": "attempt-08-components\\results\\surface.jsonl",
+      "bytes": 11396612,
+      "sha256": "1f2ac586eed922574717c44d0ab2eb467353f17bdecabb34dff0a7be06cac52c"
+    },
+    {
+      "path": "attempt-08-components\\source.patch",
+      "bytes": 15626,
+      "sha256": "6ddf5941e342cd751bd9dfea1deb42054037cac98d96a826175b9bb1f7b1ad87"
+    },
+    {
+      "path": "attempt-08-components\\worker.txt",
+      "bytes": 2832,
+      "sha256": "8e545dbd48bc8c67cd3a15ec6d060d0ff4a708e3a05428f353fb760ab9ca50ea"
+    },
+    {
+      "path": "attempt-08-dark\\author-code\\compare.py",
+      "bytes": 2512,
+      "sha256": "d167803495a78bf008d6c2219cb3bd51fe6c65ca250465b1d29df56ae59c618e"
+    },
+    {
+      "path": "attempt-08-dark\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-08-dark\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-08-dark\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-08-dark\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-08-dark\\completion.json",
+      "bytes": 42,
+      "sha256": "53dcdcdf4b21c65181dbb4f137e8658ebafa5e5fa35946906bdd82be6f7a23d2"
+    },
+    {
+      "path": "attempt-08-dark\\launch.json",
+      "bytes": 2765,
+      "sha256": "8314ed527f9d72c1786bd4adf65216090319bcad07151e395b07185547bab24f"
+    },
+    {
+      "path": "attempt-08-dark\\results\\identity.json",
+      "bytes": 17943,
+      "sha256": "713c43d791da3fde745b260057d127020d30f12aa33c984dcb3fa84267c039b3"
+    },
+    {
+      "path": "attempt-08-dark\\results\\ride_1-promotion.json",
+      "bytes": 36557,
+      "sha256": "1c2700fc98b7ab6ac3c9a5e4a3f3a43275e6467f5038e289044872478fa7a29a"
+    },
+    {
+      "path": "attempt-08-dark\\results\\ride_1.jsonl",
+      "bytes": 10139543,
+      "sha256": "d6f7c79c4275f65f56164cf38244e7a794120f26fab5419df0cbe1a918caa54f"
+    },
+    {
+      "path": "attempt-08-dark\\results\\ride_3.jsonl",
+      "bytes": 9248077,
+      "sha256": "51982136d2f53e3d498d7424b4a3c8566fd1ee88746f8446dbbe192ad7609aca"
+    },
+    {
+      "path": "attempt-08-dark\\results\\summary.json",
+      "bytes": 46600,
+      "sha256": "a3fc40d29a0bc46edb35652c916e3a84c4341e365f2e06b847b8f9f428ffc2d0"
+    },
+    {
+      "path": "attempt-08-dark\\source.patch",
+      "bytes": 15626,
+      "sha256": "6ddf5941e342cd751bd9dfea1deb42054037cac98d96a826175b9bb1f7b1ad87"
+    },
+    {
+      "path": "attempt-08-dark\\worker.txt",
+      "bytes": 3720,
+      "sha256": "3e2c30bbe000b9da66620bbdcf93a34706e9b35ca7ddf2c5fc7991e1f62b7f83"
+    },
+    {
+      "path": "attempt-08-normal\\author-code\\compare.py",
+      "bytes": 2512,
+      "sha256": "d167803495a78bf008d6c2219cb3bd51fe6c65ca250465b1d29df56ae59c618e"
+    },
+    {
+      "path": "attempt-08-normal\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-08-normal\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-08-normal\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-08-normal\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-08-normal\\completion.json",
+      "bytes": 42,
+      "sha256": "0e22c3ea10d9ac2c675f7b4a80e69175239d69bd9650ec90d4ba5bf570a6038d"
+    },
+    {
+      "path": "attempt-08-normal\\launch.json",
+      "bytes": 2762,
+      "sha256": "6fd940c015ad74971df60a5c71f34f0a3733662eea7dd803db51000c5b8b8acd"
+    },
+    {
+      "path": "attempt-08-normal\\results\\identity.json",
+      "bytes": 17943,
+      "sha256": "d19f646229e69094b3ca6a47ffd9155af409d04fc8c050fd3019fd325bd7f231"
+    },
+    {
+      "path": "attempt-08-normal\\results\\ride_1-promotion.json",
+      "bytes": 32196,
+      "sha256": "9445e5c71d4fb104be1bc145db10c2de9312864d3d1d419a2bfa410d4a647b9a"
+    },
+    {
+      "path": "attempt-08-normal\\results\\ride_1.jsonl",
+      "bytes": 9988436,
+      "sha256": "47a91afee16faca7f7e92ab8e8c5458d2e9b8587f6d6fd5c4ce1032212910051"
+    },
+    {
+      "path": "attempt-08-normal\\results\\ride_3.jsonl",
+      "bytes": 9102632,
+      "sha256": "5be55ecf6d43b075e22910438dc3180d3a801e92d59cd3d5b3c0008ea336b3f5"
+    },
+    {
+      "path": "attempt-08-normal\\results\\roundT_doubleT.jsonl",
+      "bytes": 1413565,
+      "sha256": "036517727ffefd200765fa60ba7e81e705ce2f61b7b84cd6dadac9c34ad67570"
+    },
+    {
+      "path": "attempt-08-normal\\results\\squareT_platform_squareT_switch.jsonl",
+      "bytes": 5992171,
+      "sha256": "7ea437f96ab95f458188073a3e9ade02b92e62b628ed98b7582c51874cab7c19"
+    },
+    {
+      "path": "attempt-08-normal\\results\\summary.json",
+      "bytes": 74330,
+      "sha256": "3136e9fad10df8a2da0813a70ca657a84281935524d5ba88a5ea967de60ecabd"
+    },
+    {
+      "path": "attempt-08-normal\\source.patch",
+      "bytes": 15626,
+      "sha256": "6ddf5941e342cd751bd9dfea1deb42054037cac98d96a826175b9bb1f7b1ad87"
+    },
+    {
+      "path": "attempt-08-normal\\worker.txt",
+      "bytes": 3639,
+      "sha256": "a96d2a32e0ca0266d120c5658f577ae6cf61ef0a9d0a795f493c3f50b64bd173"
+    },
+    {
+      "path": "attempt-08-probes\\author-code\\compare.py",
+      "bytes": 2512,
+      "sha256": "d167803495a78bf008d6c2219cb3bd51fe6c65ca250465b1d29df56ae59c618e"
+    },
+    {
+      "path": "attempt-08-probes\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-08-probes\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-08-probes\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-08-probes\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-08-probes\\completion.json",
+      "bytes": 41,
+      "sha256": "0a7eb6c0022dc4f7c2a39cc826a6ab9aff3ad0dc5943b682757cff31d7b4ce14"
+    },
+    {
+      "path": "attempt-08-probes\\launch.json",
+      "bytes": 2767,
+      "sha256": "18d6da1503e5455a397fad1aaee216502588fc2092de00ef4f09504895082679"
+    },
+    {
+      "path": "attempt-08-probes\\results\\C_person-sight.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "attempt-08-probes\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "attempt-08-probes\\results\\identity.json",
+      "bytes": 17943,
+      "sha256": "ecb3749c1a0eb9188375b41726dcd410f6211732fa015d070a076080868bfb43"
+    },
+    {
+      "path": "attempt-08-probes\\results\\pole_c-sight.json",
+      "bytes": 9458988,
+      "sha256": "8b9de6df4b4c20a4f7329c1af13ef536c737b06a2c602dbfd93573308d3c9709"
+    },
+    {
+      "path": "attempt-08-probes\\results\\pole_c.json",
+      "bytes": 93454,
+      "sha256": "52e46f646f65ee214c8379ab52dc3b33c006be7d7645bce395b69d7d82cfccaa"
+    },
+    {
+      "path": "attempt-08-probes\\results\\summary.json",
+      "bytes": 3702,
+      "sha256": "3a099d086148b2b5c6fc8cb97b27f339be40c21f029baec18dbeed0c50edce44"
+    },
+    {
+      "path": "attempt-08-probes\\source.patch",
+      "bytes": 15626,
+      "sha256": "6ddf5941e342cd751bd9dfea1deb42054037cac98d96a826175b9bb1f7b1ad87"
+    },
+    {
+      "path": "attempt-08-probes\\worker.txt",
+      "bytes": 2999,
+      "sha256": "8cb0f0eecb8b2019e86df40cc8f1b9aa57ae598f4c7054a272726c7de6a2fef3"
+    },
+    {
+      "path": "attempt-08-tests\\author-code\\compare.py",
+      "bytes": 2512,
+      "sha256": "d167803495a78bf008d6c2219cb3bd51fe6c65ca250465b1d29df56ae59c618e"
+    },
+    {
+      "path": "attempt-08-tests\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "attempt-08-tests\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "attempt-08-tests\\author-code\\physical_report.py",
+      "bytes": 3879,
+      "sha256": "68d11a6ac3e5729f91d0926f991cfed633e8085275d516e1f2ed49fa1ae98a6c"
+    },
+    {
+      "path": "attempt-08-tests\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "attempt-08-tests\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "attempt-08-tests\\completion.json",
+      "bytes": 42,
+      "sha256": "092c3a9bdcafe2c3e3a73fe699d1979fd58f50b19b918bff3ac96d6999b03a39"
+    },
+    {
+      "path": "attempt-08-tests\\launch.json",
+      "bytes": 2757,
+      "sha256": "5fd5402f6b92518fa700e0b012bfb60e597de9f97294caa8c8e37345d6e40baa"
+    },
+    {
+      "path": "attempt-08-tests\\results\\identity.json",
+      "bytes": 18037,
+      "sha256": "2a030c582447ce5dd5999e5e492dbf98c380c918a46fe4f354ca734c5e740665"
+    },
+    {
+      "path": "attempt-08-tests\\results\\pytest.xml",
+      "bytes": 25064,
+      "sha256": "3630728152eef6cb25a384330de0083732fa5b0d584f2e498b7873fda0ab4359"
+    },
+    {
+      "path": "attempt-08-tests\\source.patch",
+      "bytes": 15626,
+      "sha256": "6ddf5941e342cd751bd9dfea1deb42054037cac98d96a826175b9bb1f7b1ad87"
+    },
+    {
+      "path": "attempt-08-tests\\worker.txt",
+      "bytes": 11106,
+      "sha256": "5579390d3a71338b64827556d2f5ad38e84e49b7cc67bfd205b97c866547c7cc"
+    },
+    {
+      "path": "parent-critical\\author-code\\compare.py",
+      "bytes": 2512,
+      "sha256": "d167803495a78bf008d6c2219cb3bd51fe6c65ca250465b1d29df56ae59c618e"
+    },
+    {
+      "path": "parent-critical\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "parent-critical\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "parent-critical\\author-code\\physical_report.py",
+      "bytes": 3879,
+      "sha256": "68d11a6ac3e5729f91d0926f991cfed633e8085275d516e1f2ed49fa1ae98a6c"
+    },
+    {
+      "path": "parent-critical\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "parent-critical\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "parent-critical\\completion.json",
+      "bytes": 42,
+      "sha256": "ba9eee6679d38e5a94ddeaffec0b13c6749e3fc0b34e2c461969c591a36ab4fa"
+    },
+    {
+      "path": "parent-critical\\launch.json",
+      "bytes": 2759,
+      "sha256": "8d142cd82593733f28b85061fdcb7cef5286b2275f07002afe71676f0198917f"
+    },
+    {
+      "path": "parent-critical\\results\\C_person-sight.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "parent-critical\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "parent-critical\\results\\identity.json",
+      "bytes": 17901,
+      "sha256": "a952a8f865883fd2b37e5c14e89c8295c2315bc4d6ff208e6fd50b266afa2040"
+    },
+    {
+      "path": "parent-critical\\results\\pole_c-sight.json",
+      "bytes": 9013604,
+      "sha256": "6879d7430acd94b23a9afc74231da7c419827da49c4985f20928bc68a01c19b5"
+    },
+    {
+      "path": "parent-critical\\results\\pole_c.json",
+      "bytes": 93371,
+      "sha256": "701e203fc11af7ec0261a61e867e587c14359476bdd768501802c481089ac771"
+    },
+    {
+      "path": "parent-critical\\results\\summary.json",
+      "bytes": 3899,
+      "sha256": "12959c47d9e524f65b43556df74edc2d3930aaa22958d449fe4a8856b65aff32"
+    },
+    {
+      "path": "parent-critical\\source.patch",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "parent-critical\\worker.txt",
+      "bytes": 3247,
+      "sha256": "993c4ab2dfdaa0d500d398d625065d48aefe3cf602dde5f1aba203d6e2f41485"
+    },
+    {
+      "path": "parent-final-witness\\author-code\\compare.py",
+      "bytes": 2545,
+      "sha256": "197d772702f2df97627dc5800d349ce472b9625ee36c510f5f155013a93181b6"
+    },
+    {
+      "path": "parent-final-witness\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "parent-final-witness\\author-code\\launch.py",
+      "bytes": 3307,
+      "sha256": "b55e7a37600f90b1c1eec1f4d29aca69b37d4f23fc40ab0aacf75c8e3af79ced"
+    },
+    {
+      "path": "parent-final-witness\\author-code\\package.py",
+      "bytes": 5443,
+      "sha256": "23d7d09a8e25c202866ed3652fc6f83a6bd24049e698ecade5ab77932ec71d44"
+    },
+    {
+      "path": "parent-final-witness\\author-code\\physical_report.py",
+      "bytes": 3908,
+      "sha256": "9d80763519ec9bbd18c2d69017fe4d94e0717e91a53ce35fc74df51c4179df33"
+    },
+    {
+      "path": "parent-final-witness\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "parent-final-witness\\author-code\\worker.py",
+      "bytes": 5508,
+      "sha256": "e2e181db38a6709061a12c5fd1d319f16c28af947c1c69c35644c4b5e962627e"
+    },
+    {
+      "path": "parent-final-witness\\completion.json",
+      "bytes": 42,
+      "sha256": "47f6c29d65a98aef73b8074f4b9a7b5b26072d3fc53055ec05efcf477c5d3539"
+    },
+    {
+      "path": "parent-final-witness\\launch.json",
+      "bytes": 2777,
+      "sha256": "e5ee9102643fcc7fa9b7dfae600f10eedebf034fadd9a2c54e404607866f9e49"
+    },
+    {
+      "path": "parent-final-witness\\results\\identity.json",
+      "bytes": 17987,
+      "sha256": "4bdc4265dca7bd0ce29a70b3e0ee38ede4d310803ffab6b0a32b5d76b33b8bad"
+    },
+    {
+      "path": "parent-final-witness\\results\\pytest.xml",
+      "bytes": 30401,
+      "sha256": "b15615c9a6aa43c6062b12ffbcff5df6c228b505dff260b47d2caac94d8cf1d0"
+    },
+    {
+      "path": "parent-final-witness\\source.patch",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "parent-final-witness\\worker.txt",
+      "bytes": 22657,
+      "sha256": "70e22638fc31d32d4753265d758dba99c2e8409fdddf195fa7bd04ab5aadd239"
+    },
+    {
+      "path": "parent-witness\\completion.json",
+      "bytes": 42,
+      "sha256": "a8bf8f824edd95ee3ac7e880146fc5a24fa814589166ecf4205c29d8b46a4f66"
+    },
+    {
+      "path": "parent-witness\\launch.json",
+      "bytes": 2478,
+      "sha256": "768711f99d22af38fd9a89b39c63707013700820babc0513bf29bc38f20899aa"
+    },
+    {
+      "path": "parent-witness\\source.patch",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "parent-witness\\worker.txt",
+      "bytes": 301,
+      "sha256": "0aa9b1e54f7f7142817b1874547fee0a11d1f5c00261b74dcc8a14aed6ec557b"
+    },
+    {
+      "path": "parent-witness-02\\completion.json",
+      "bytes": 42,
+      "sha256": "1ca26c860426b5efc65ab4d2ceceb32fea133bd39761bf66a62cced1088dda4f"
+    },
+    {
+      "path": "parent-witness-02\\launch.json",
+      "bytes": 2487,
+      "sha256": "006b560cc90ecfa7ebea36952a7d516eb92c3c1c00471ebb7c62136d30fdc956"
+    },
+    {
+      "path": "parent-witness-02\\results\\identity.json",
+      "bytes": 17312,
+      "sha256": "9bb5094f0bf971cc463cd0bd70e30d8c2417eeccce5243b5150aa79df9b1391b"
+    },
+    {
+      "path": "parent-witness-02\\results\\pytest.xml",
+      "bytes": 13328,
+      "sha256": "2050807aebbc2b56110c602ec9a61c9b2e6c69ee2036cfd6ebc9de7b6a79f20c"
+    },
+    {
+      "path": "parent-witness-02\\source.patch",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "parent-witness-02\\worker.txt",
+      "bytes": 11975,
+      "sha256": "071a8b6aa1a3b239d06be53e68cd58182cd0879934eb7cd4baa541333e7f1ebb"
+    }
+  ]
+}

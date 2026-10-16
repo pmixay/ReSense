@@ -1,0 +1,62 @@
+"""Per-frame diff of gate work outputs vs the sealed gate (gate_head/work) (scratch).
+Ignores timing / latency fields; reports per recording the frames that differ (a) in anything but the
+monitored range (health.monitored_range, health.clear_distance, clear_distance, health.wall_drift,
+track.wall_drift) and (b) only in those, plus decision-level differences.
+usage: gdiff.py <work_dir> [sealed_work_dir]"""
+import glob, json, os, sys
+
+new_dir = sys.argv[1]
+old_dir = sys.argv[2] if len(sys.argv) > 2 else "/tmp/claude-0/fixwork/gate_head/work"
+RANGE = {("health", "monitored_range"), ("health", "clear_distance"), ("clear_distance",), ("health", "wall_drift"),
+         ("track", "wall_drift")}
+SKIP = {("timing_ms",), ("health", "latency_p95_ms"), ("health", "messages")}
+
+
+def flat(d, pre=()):
+    out = {}
+    for k, v in d.items():
+        p = pre + (k,)
+        if isinstance(v, dict):
+            out.update(flat(v, p))
+        else:
+            out[p] = v
+    return out
+
+
+def keyclass(p):
+    if p[:1] == ("timing_ms",) or p in SKIP:
+        return "skip"
+    return "range" if p in RANGE else "other"
+
+
+tot = {"frames": 0, "other": 0, "range_only": 0}
+for f in sorted(glob.glob(os.path.join(new_dir, "*.jsonl"))):
+    name = os.path.basename(f)
+    g = os.path.join(old_dir, name)
+    if not os.path.exists(g):
+        continue
+    a = [json.loads(l) for l in open(f)]
+    b = [json.loads(l) for l in open(g)]
+    if len(a) != len(b):
+        print(name, "LENGTH", len(a), len(b))
+        continue
+    other, ronly, dec, ex = 0, 0, 0, []
+    for i, (x, y) in enumerate(zip(a, b)):
+        fx, fy = flat(x), flat(y)
+        keys = set(fx) | set(fy)
+        diff = {k for k in keys if fx.get(k) != fy.get(k) and keyclass(k) != "skip"}
+        if not diff:
+            continue
+        if any(keyclass(k) == "other" for k in diff):
+            other += 1
+            if len(ex) < 3:
+                ex.append((i, sorted("/".join(k) for k in diff if keyclass(k) == "other")[:6]))
+        else:
+            ronly += 1
+        if (x["obstacle"], x["warning"], x["health"].get("decision_level")) != (y["obstacle"], y["warning"], y["health"].get("decision_level")):
+            dec += 1
+    tot["frames"] += len(a)
+    tot["other"] += other
+    tot["range_only"] += ronly
+    print("%-44s frames %5d other-diff %4d range-only %4d decision-diff %4d %s" % (name, len(a), other, ronly, dec, ex))
+print(tot)

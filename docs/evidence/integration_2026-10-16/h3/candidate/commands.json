@@ -1,0 +1,83 @@
+[
+  {
+    "argv": [
+      "git",
+      "-c",
+      "safe.directory=/source.git",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      "-c",
+      "core.autocrlf=false",
+      "-c",
+      "core.eol=lf",
+      "/source.git",
+      "/evalworkspace/candidate-f8c088dc4f32-20261016T073403Z-4b64ec55"
+    ],
+    "cwd": null,
+    "exit": 0,
+    "log": "clone.log",
+    "started_unix": 1792136045.421684,
+    "wall_s": 0.4867379665374756
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.autocrlf=false",
+      "checkout",
+      "--detach",
+      "f8c088dc4f3243fbd15a3aae9be0459e8a0aa941"
+    ],
+    "cwd": "/evalworkspace/candidate-f8c088dc4f32-20261016T073403Z-4b64ec55",
+    "exit": 0,
+    "log": "checkout.log",
+    "started_unix": 1792136045.9801545,
+    "wall_s": 14.451287508010864
+  },
+  {
+    "argv": [
+      "bash",
+      "scripts/build_native.sh"
+    ],
+    "cwd": "/evalworkspace/candidate-f8c088dc4f32-20261016T073403Z-4b64ec55",
+    "exit": 0,
+    "log": "native_build.log",
+    "started_unix": 1792136062.291761,
+    "wall_s": 1.5603430271148682
+  },
+  {
+    "argv": [
+      "g++",
+      "--version"
+    ],
+    "cwd": "/evalworkspace/candidate-f8c088dc4f32-20261016T073403Z-4b64ec55",
+    "exit": 0,
+    "log": "compiler.log",
+    "started_unix": 1792136064.058064,
+    "wall_s": 0.007669210433959961
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/regression_gate.py",
+      "--cache",
+      "/data/cache",
+      "--jobs",
+      "2",
+      "--chunks",
+      "8",
+      "--baseline",
+      "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+      "--work",
+      "/evidence/candidate-f8c088dc4f32-20261016T073403Z-4b64ec55/gate_work",
+      "--out",
+      "/evidence/candidate-f8c088dc4f32-20261016T073403Z-4b64ec55/gate.json"
+    ],
+    "cwd": "/evalworkspace/candidate-f8c088dc4f32-20261016T073403Z-4b64ec55",
+    "exit": 0,
+    "log": "gate.log",
+    "started_unix": 1792136263.5280988,
+    "wall_s": 855.4503540992737
+  }
+]

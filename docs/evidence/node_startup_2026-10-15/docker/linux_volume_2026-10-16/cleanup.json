@@ -1,0 +1,31 @@
+{
+  "checked_at_utc": "2026-10-15T23:55:57.063652+00:00",
+  "runs": [
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt05_matrix",
+      "run_id": "e627f1c3b5194c60a0d1e39cb5a47f7c",
+      "remaining_container_ids": []
+    },
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt06_linux_volume_diagnostic",
+      "run_id": "2c784e2b40ec41b6926c952c143b26e6",
+      "remaining_container_ids": []
+    },
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt06b_linux_volume_warm_diagnostic",
+      "run_id": "8b4cedc00ee348ff976b4bc7651b06de",
+      "remaining_container_ids": []
+    },
+    {
+      "raw_root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\attempt07_linux_volume_warm_matrix",
+      "run_id": "aa526c7c3bf54ab593c767374175b3a2",
+      "remaining_container_ids": []
+    }
+  ],
+  "clean": true,
+  "staging": {
+    "run_id": "stage-8a57c938210749fbadb58a5f912dd6c0",
+    "remaining_container_ids": [],
+    "volume_retained_read_only_for_reuse": "rs-s1-original-bags-20261016-72a601b"
+  }
+}

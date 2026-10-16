@@ -1,0 +1,40 @@
+#!/bin/bash
+# Whole-recording replays (judge node replica, probe.py) of the combined code through the observation-only
+# interaction hooks, one at a time; and the sealed-code bases that baseline_out/probe lacks (C dedup / 5 Hz).
+W=/home/user/ReSense/.claude/worktrees/wf_75640bbf-380-3
+SEALED=/home/user/ReSense
+F=/tmp/claude-0/fixwork/final_silent
+O=$F/replay
+J=/tmp/claude-0/judge_data/cache
+mkdir -p $O
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+fin() { # name bag args...
+  local n=$1 bag=$2; shift 2
+  [ -f $O/$n.ok ] && return
+  ( cd $W/docs/evidence/judgement_2026-10-13 && WT=$W RESENSE_REPO=$W PYTHONPATH=$W nice -n 10 /tmp/claude-0/venv/bin/python \
+      $F/interact_run.py probe $O/$n $W/docs/evidence/judgement_2026-10-13/scripts/probe.py $J/$bag $O/$n "$@" \
+      > $O/$n.log 2>&1 ) && touch $O/$n.ok
+  echo "fin $n $(date +%T) :: $(grep INTERACT $O/$n.log | cut -d' ' -f3-)"
+}
+base() { # name bag args...   (the sealed detector, the main checkout, read only)
+  local n=$1 bag=$2; shift 2
+  [ -f $O/base_$n.ok ] && return
+  ( cd $SEALED/docs/evidence/judgement_2026-10-13 && PYTHONDONTWRITEBYTECODE=1 RESENSE_REPO=$SEALED PYTHONPATH=$SEALED nice -n 10 \
+      /tmp/claude-0/venv/bin/python -c "import resense,sys,runpy; assert resense.__file__.startswith('$SEALED/resense'), resense.__file__; sys.argv=sys.argv[1:]; sys.path.insert(0,'scripts'); runpy.run_path(sys.argv[0], run_name='__main__')" \
+      scripts/probe.py $J/$bag $O/base_$n "$@" > $O/base_$n.log 2>&1 ) && touch $O/base_$n.ok
+  echo "base $n $(date +%T) :: $(tail -1 $O/base_$n.log | cut -c1-120)"
+}
+A=roundT_squareT_pressureGate_squareT
+C=roundT_pressureGate_roundT
+B=roundT_doubleT
+S=squareT_platform_squareT_switch
+for what in "$@"; do
+  case $what in
+    plain) fin A_plain $A; fin B_plain $B; fin C_plain $C; fin S_plain $S;;
+    robust) for b in A:$A C:$C; do n=${b%%:*}; bag=${b#*:}
+              fin ${n}_pitch2 $bag --pitch 2; fin ${n}_drop30 $bag --drop 0.3; fin ${n}_dedup $bag --dedup; fin ${n}_5Hz $bag --every 2
+            done;;
+    bases) base C_dedup $C --dedup; base C_5Hz $C --every 2;;
+  esac
+done
+echo REPLAYS_DONE $(date +%T)

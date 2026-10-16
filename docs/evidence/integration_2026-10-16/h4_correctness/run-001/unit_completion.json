@@ -1,0 +1,29 @@
+{
+  "control": "707ea9cda051369326fb9407c42488c1033dad76",
+  "exit": 0,
+  "target": "7cc640fb39698b1fe45bc6ab069eab68ad4ac6ae",
+  "test_files": [
+    "test_core.py",
+    "test_algorithm.py",
+    "test_modules.py",
+    "test_native.py",
+    "test_wall_drift.py",
+    "test_history_robustness.py",
+    "test_clear_cap.py",
+    "test_clear_cap_persist.py",
+    "test_column_free_top.py",
+    "test_structure_cut.py",
+    "test_stop_keep.py",
+    "test_near_escalation.py",
+    "test_explained_run.py",
+    "test_far_thin.py",
+    "test_reseed_safety.py",
+    "test_detector_timing.py",
+    "test_envelope_reference.py",
+    "test_edge_margin_quadratic.py",
+    "test_node.py",
+    "test_fastcloud.py",
+    "test_decision_policy.py",
+    "test_rescore_decisions.py"
+  ]
+}

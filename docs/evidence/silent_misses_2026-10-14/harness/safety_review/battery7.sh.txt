@@ -1,0 +1,7 @@
+#!/bin/bash
+cd /tmp/claude-0/fixwork/safety_review; source env.sh
+echo "== sealed 22" >> out/battery7.txt; run_s sr_moving.py 22 >> out/battery7.txt 2>&1
+echo "== combined 22" >> out/battery7.txt; run_w sr_moving.py 22 >> out/battery7.txt 2>&1
+echo "== sealed 10" >> out/battery7.txt; run_s sr_moving.py 10 >> out/battery7.txt 2>&1
+echo "== combined 10" >> out/battery7.txt; run_w sr_moving.py 10 >> out/battery7.txt 2>&1
+echo BATTERY7 DONE >> out/battery7.txt

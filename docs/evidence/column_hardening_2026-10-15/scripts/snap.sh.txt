@@ -1,0 +1,13 @@
+#!/bin/bash
+# snapshot the worktree's code for a measurement run: snap.sh <name>
+set -e
+S=/tmp/claude-0/fixwork/r3_column/$1
+W=/home/user/ReSense/.claude/worktrees/wf_fad4ed48-27b-1
+rm -rf "$S"
+mkdir -p "$S/docs/evidence"
+cp -r "$W/resense" "$W/configs" "$W/scripts" "$W/tests" "$S/"
+cp -r "$W/docs/evidence/judgement_2026-10-13" "$S/docs/evidence/"
+mkdir -p "$S/ros2_ws/src"
+cp -r "$W/ros2_ws/src/resense_ros" "$S/ros2_ws/src/"
+find "$S" -name __pycache__ -type d -prune -exec rm -rf {} +
+du -sh "$S"

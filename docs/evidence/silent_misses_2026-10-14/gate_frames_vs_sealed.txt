@@ -1,0 +1,16 @@
+cloud_with_fake_obj.jsonl                     frames  1510 STOP  447 ->  447  advisory   406 ->   406  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+doubleT_obstacle.jsonl                        frames   201 STOP  193 ->  193  advisory    91 ->    91  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+doubleT_platform.jsonl                        frames   345 STOP    2 ->    2  advisory   182 ->   182  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+new_data_0.jsonl                              frames  1409 STOP   12 ->   12  advisory   640 ->   640  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+new_data_1.jsonl                              frames  1409 STOP   14 ->   14  advisory   901 ->   901  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+new_data_2.jsonl                              frames  1409 STOP    6 ->    6  advisory   663 ->   663  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+new_data_3.jsonl                              frames  1409 STOP    2 ->    2  advisory   851 ->   851  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+new_data_4.jsonl                              frames  1409 STOP   20 ->   20  advisory   758 ->   758  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+new_data_5.jsonl                              frames  1409 STOP   36 ->   36  advisory   342 ->   342  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+new_data_6.jsonl                              frames  1409 STOP   27 ->   27  advisory   424 ->   424  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+new_data_7.jsonl                              frames  1408 STOP    9 ->    9  advisory   187 ->   187  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+roundT_doubleT.jsonl                          frames   252 STOP    0 ->    0  advisory   173 ->   173  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+roundT_pressureGate_roundT.jsonl              frames   268 STOP    0 ->    0  advisory   107 ->   107  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+roundT_squareT_pressureGate_squareT.jsonl     frames   545 STOP    0 ->    0  advisory   146 ->   146  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+squareT_platform_squareT_switch.jsonl         frames   877 STOP   37 ->   37  advisory   398 ->   398  diff obstacle 0 warning 0 det/warn counts 0 det/warn distance-zone-reason 0
+TOTAL flag diffs 0 detail diffs 0

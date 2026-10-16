@@ -1,0 +1,129 @@
+{
+  "result": "PASS",
+  "source_commit": "492e407b76d9dee7852f9e1884200e27939f0fca",
+  "original_snapshot_commit": "492e407",
+  "ruff": "ruff 0.15.8",
+  "immutable_files_unchanged": 139,
+  "exact_exclusions": 39,
+  "maintained_files_linted": 438,
+  "snapshot_lock_sha256": "b78312866a4b14a32ae69b8146c8b0729d04455240b1f86851731ac0db07a0be",
+  "commands": [
+    {
+      "name": "integrity",
+      "command": [
+        "python",
+        "scripts/check_archived_lint.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "contract-tests",
+      "command": [
+        "python",
+        "tests/test_archived_lint.py",
+        "-v"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "full-pinned-lint",
+      "command": [
+        "python",
+        "scripts/check_archived_lint.py",
+        "--lint",
+        "--ruff",
+        "C:/Users/alikh/AppData/Local/Temp/opencode/rs-ci-ruff0158/Scripts/ruff.exe"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "linux-pinned-lint-and-contracts",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--entrypoint",
+        "python3",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "-v",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9:/work:ro",
+        "-w",
+        "/work",
+        "resense:h4-fixture-fixed-1cfe8de-20261016",
+        "-c",
+        "\nimport subprocess\nsubprocess.run(['python3', '-m', 'pip', 'install', '--no-deps', '--target', '/tmp/lint-tools',\n                'ruff==0.15.8'], check=True)\nsubprocess.run(['python3', 'scripts/check_archived_lint.py', '--lint',\n                '--ruff', '/tmp/lint-tools/bin/ruff'], check=True)\nsubprocess.run(['python3', 'tests/test_archived_lint.py', '-v'], check=True)\n"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "lint-files",
+      "command": [
+        "C:/Users/alikh/AppData/Local/Temp/opencode/rs-ci-ruff0158/Scripts/ruff.exe",
+        "check",
+        "--no-cache",
+        "--show-files",
+        "--extend-exclude",
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\cycle_2026-09-28\\complete_timing\\default\\run_gate.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h3\\helpers\\analyze_h3.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h3\\helpers\\finish_h3_analysis.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h3\\helpers\\trace_h3_candidate.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h3_selected\\helpers\\analyze_h3.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h3_selected\\helpers\\check_withdrawn_config.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\compare_scenes.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\diagnose_witness.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\evidence_audit.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\finalize_evidence.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\followup_checks.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\independent_checks.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\inventory_evidence.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\launch_continuation.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\launch_followup.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\launch_followup02.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\resume_linux.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\run_followup.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\run_followup02.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_correctness\\scene_runner.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_fixes\\columns\\compare.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_fixes\\columns\\withdrawal\\details.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_fixes\\columns\\withdrawal\\package.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_fixes\\rearm\\verify.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\analyze.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\common.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\components.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\derive.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\finalize.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\launch.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\package.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\replay.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\verify_package.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_safety\\worker.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_selected\\audit.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_selected\\paired_h2.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h4_selected\\probes.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h5\\helpers\\analyze_h3.py,C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\integration_2026-10-16\\h5\\helpers\\check_final_config.py",
+        "."
+      ],
+      "exit": 0
+    },
+    {
+      "name": "negative-live-file",
+      "command": [
+        "python",
+        "scripts/check_archived_lint.py",
+        "--lint",
+        "--ruff",
+        "C:/Users/alikh/AppData/Local/Temp/opencode/rs-ci-ruff0158/Scripts/ruff.exe"
+      ],
+      "exit": 1
+    },
+    {
+      "name": "negative-unlisted-snapshot",
+      "command": [
+        "python",
+        "scripts/check_archived_lint.py",
+        "--lint",
+        "--ruff",
+        "C:/Users/alikh/AppData/Local/Temp/opencode/rs-ci-ruff0158/Scripts/ruff.exe"
+      ],
+      "exit": 1
+    },
+    {
+      "name": "negative-mutated-snapshot",
+      "command": [
+        "python",
+        "scripts/check_archived_lint.py",
+        "--lint",
+        "--ruff",
+        "C:/Users/alikh/AppData/Local/Temp/opencode/rs-ci-ruff0158/Scripts/ruff.exe"
+      ],
+      "exit": 1
+    },
+    {
+      "name": "negative-missing-snapshot",
+      "command": [
+        "python",
+        "scripts/check_archived_lint.py",
+        "--lint",
+        "--ruff",
+        "C:/Users/alikh/AppData/Local/Temp/opencode/rs-ci-ruff0158/Scripts/ruff.exe"
+      ],
+      "exit": 1
+    },
+    {
+      "name": "negative-same-basename",
+      "command": [
+        "python",
+        "scripts/check_archived_lint.py",
+        "--lint",
+        "--ruff",
+        "C:/Users/alikh/AppData/Local/Temp/opencode/rs-ci-ruff0158/Scripts/ruff.exe"
+      ],
+      "exit": 1
+    }
+  ],
+  "scope": "CI lint/integrity only; no archived helpers executed, no detector evaluation or reseal"
+}

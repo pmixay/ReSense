@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+"""The review's wall-anchored probes: sealed (the review's runs), 13.10 (the review's runs on 5fce816), now (14f83dd)."""
+import json
+SR = "/tmp/claude-0/fixwork/safety_review/out"; FR = "/tmp/claude-0/fixwork/fix_review/out"
+CASES = [("person08", "C", "person-size box 0.5 × 0.5 × 1.75 m, 0.8 m proud"), ("person09", "C", "the same, 0.9 m"),
+         ("person10", "C", "the same, 1.0 m"), ("person10_drop", "C", "the same, 1.0 m, `--dropout`"),
+         ("person11", "C", "the same, 1.1 m"), ("mast09", "C", "mast 0.3 × 0.3 × 2.6 m, 0.9 m"), ("mast10", "C", "the mast, 1.0 m"),
+         ("mast12", "C", "the mast, 1.2 m (at the envelope edge)"), ("signpost095", "C", "sign post 0.1 × 0.1 × 2.4 m with a 0.6 m board, 0.95 m"),
+         ("col10", "C", "column 0.4 × 0.4 m to the vault, 1.0 m"), ("darkcol10", "C", "the column, its face above 2.6 m dark"),
+         ("cab09", "C", "cabinet 0.6 × 0.9 × 1.8 m flat to the wall, 0.9 m"), ("cab10", "C", "cabinet 0.6 × 1.0 × 1.8 m, 1.0 m"),
+         ("cab085off", "C", "free-standing box 0.6 × 0.5 × 1.8 m, 0.85 m"), ("tallcab10", "C", "tall cabinet 0.6 × 0.6 × 2.5 m, 1.0 m"),
+         ("pers_cab_behind", "C", "person on the axis, cabinet 1.0 m proud 1.5 m behind it"),
+         ("pers_cab_front", "C", "person on the axis, the cabinet 1.5 m in front of it"),
+         ("pers_mast_behind", "C", "person on the axis, mast 1.0 m proud 1.5 m behind it"),
+         ("B_person10", "B", "person-size box 1.0 m proud, +y wall"), ("B_person10m", "B", "the same, −y side")]
+def st(p):
+    d = json.load(open(p)); o = d["summary"]["o0"]
+    vis = [r for r in d["rows"] if r["objs"] and r["objs"][0]["n_obj"] > 0]
+    dec = {k: sum(r["decision"] == k for r in vis) for k in ("GO", "CAUTION", "STOP")}
+    return {"obj_stop_frames": o["obj_stop_frames"], "first_stop_X": o["first_stop_X"], "visible": len(vis),
+            "decisions_while_visible": dec, "all_frames": d["summary"]["decisions"], "cut_parts": d["summary"]["hooks"].get("cut_parts"),
+            "bins": o["bins"]}
+out = {"_note": "the review's wall-anchored ray-cast probes (wallbox_rt.py, the judge's range_test helpers, ICP travel; "
+       "the face nearest the track D m proud of the wall seen in the frame at 0.5-2.2 m height, yawed with the wall); "
+       "sealed and 13.10 are the review's own runs, 'now' is 14f83dd (a snapshot of its tracked files); obj_stop_frames = "
+       "STOP frames with a detection matching the object"}
+print("| probe (C unless B) | STOP frames sealed → 13.10 → now | first STOP 13.10 → now (m) | now G / C / S while visible (sealed) | cut parts 13.10 → now |")
+print("|---|---|---|---|---|")
+for n, bg, label in CASES:
+    s, w, f = st(f"{SR}/wb_{n}_s.json"), st(f"{SR}/wb_{n}_w.json"), st(f"{FR}/wb_fin_{n}.json")
+    out[n] = {"background": bg, "what": label, "sealed": s, "13.10": w, "now": f}
+    fs = lambda v: "–" if v is None else f"{v:.1f}"
+    d, ds = f["decisions_while_visible"], s["decisions_while_visible"]
+    print(f"| {label}{' (B)' if bg == 'B' else ''} | {s['obj_stop_frames']} → {w['obj_stop_frames']} → **{f['obj_stop_frames']}** | {fs(w['first_stop_X'])} → {fs(f['first_stop_X'])} | "
+          f"{d['GO']} / {d['CAUTION']} / {d['STOP']} ({ds['GO']} / {ds['CAUTION']} / {ds['STOP']}) | {w['cut_parts']} → {f['cut_parts']} |")
+json.dump(out, open(f"{FR}/review_wallbox.json", "w"), indent=1)

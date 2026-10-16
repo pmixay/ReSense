@@ -1,0 +1,15 @@
+{
+  "source_commit": "9247354b3768f33aa7d334761afde7ca48b961e9",
+  "harness_commit": "72a601bcf2f05fef79f7c4797f027e5a071ef5af",
+  "image_reference": "resense:p1-s1-volume-9247354-20261016",
+  "docker_image_id_and_repo_digest": "sha256:df8013ef6f87ec60ac32e5207e804283731336603edc4b385de7fa6656e9be24",
+  "platform_manifest": "sha256:a3f10e3986b209af2ff2298d109753cf6780c69c525bfabacbcfef416ed635d3",
+  "config_digest": "sha256:c2b0a2e1e9eab103fa752a0c57693d9b6676979b7730ec3c4de2b50ad9fb53b0",
+  "base": "resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e",
+  "argv": ["docker", "build", "--network", "none", "--pull=false", "--build-arg", "RELEASE_IMAGE=resense:p1-e2-check", "--label", "org.opencontainers.image.revision=9247354b3768f33aa7d334761afde7ca48b961e9", "-f", "docker/Dockerfile.offline", "-t", "resense:p1-s1-volume-9247354-20261016", "."],
+  "exit_code": 0,
+  "stdout": "build.stdout.log",
+  "stderr": "build.stderr.log",
+  "concurrency": "Parent final Linux suite/guard containers had finished; docker ps was empty before build and before diagnostic.",
+  "scope": "Offline rebuild of current committed code. No node/launch/policy/core/Dockerfile edits, S1 parameter tuning, expected-count reduction, or threshold changes."
+}

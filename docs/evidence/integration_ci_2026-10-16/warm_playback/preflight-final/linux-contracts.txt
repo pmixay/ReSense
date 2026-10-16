@@ -1,0 +1,21 @@
+{"schema": "resense-warm-cache-v1", "scope": "page-cache precondition only, not playback acceptance", "mode": "warm-once-and-verify", "bag": "/tmp/tmpjdgqo0l_", "before": {"informational": true}, "files": [{"name": "bag_0.db3", "identity": {"device": 87, "inode": 1352157, "bytes": 8192, "mtime_ns": 1792160534835356086}, "before": {"pages": 2, "resident": 1, "missing": 1, "page_size": 4096, "fully_resident": false}, "read_bytes": 8192, "after": {"pages": 2, "resident": 1, "missing": 1, "page_size": 4096, "fully_resident": false}}], "errors": ["bag_0.db3: 1 pages not resident after full read"], "after": {"informational": true}, "wall_s": 0.0004560939996736124, "status": "ERROR"}
+{"shell_gate": [{"valid_bag": false, "exit": 1, "player_called": false}, {"valid_bag": true, "exit": 0, "player_called": true}]}
+test_actual_linux_read_and_mincore_preserve_file_bytes (__main__.WarmCacheContract) ... ok
+test_all_splits_rechecked_after_all_reads (__main__.WarmCacheContract) ... ok
+test_changed_file_identity_fails (__main__.WarmCacheContract) ... ok
+test_complete_read_is_insufficient_when_pages_were_evicted (__main__.WarmCacheContract) ... ok
+test_error_receipt_is_retained_and_returns_nonzero (__main__.WarmCacheContract) ... usage: test_warm_cache.py [-h] --out OUT [--observe-only] bag
+test_warm_cache.py: error: receipt already exists; use a fresh output directory
+ok
+test_growing_read_fails (__main__.WarmCacheContract) ... ok
+test_missing_database_fails (__main__.WarmCacheContract) ... ok
+test_missing_metadata_fails (__main__.WarmCacheContract) ... ok
+test_observation_neither_warms_nor_claims_warm (__main__.WarmCacheContract) ... ok
+test_partial_read_fails (__main__.WarmCacheContract) ... ok
+test_unavailable_residency_is_error_not_warm_claim (__main__.WarmCacheContract) ... ok
+test_warm_verified_requires_complete_read_and_residency (__main__.WarmCacheContract) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.044s
+
+OK

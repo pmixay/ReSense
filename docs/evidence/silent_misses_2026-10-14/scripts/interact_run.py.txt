@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+"""Interaction census driver (observation only; interact_hooks.py), the combined worktree's resense.
+usage:
+  interact_run.py ride <cache_dir> <out_prefix> K/N [K2/N ...]   the gate's ride pieces (np.array_split, fresh
+      detector per piece, cache stamps; as final_column/ride_instr.py): <out>_p<K>.jsonl decisions,
+      <out>_p<K>_rec.jsonl records (k = index in the whole recording)
+  interact_run.py probe <out_prefix> <probe.py> args...           the judge's node replica: <out>_rec.jsonl
+WT env: the worktree (asserted)."""
+import json
+import os
+import runpy
+import sys
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import resense  # noqa: E402
+
+assert resense.__file__.startswith(WT), resense.__file__
+import interact_hooks as H  # noqa: E402
+
+H.install()
+
+
+def summary(out, extra=None):
+    n = dict(H.STATE["n"])
+    n["tf_ms"] = round(n["tf_ms"], 1)
+    if extra:
+        n.update(extra)
+    print("INTERACT", out, json.dumps(n), flush=True)
+    json.dump(n, open(out + "_count.json", "w"))
+
+
+def ride(d, out, specs):
+    sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+    from judge_runner import node_decision
+    from resense.config import DetectorConfig
+    from resense.detector import Detector
+    from resense.frame import frame_from_compact
+    from scripts.cache_io import cache_file_stem, cache_files, load_cache_array, load_cache_stamps
+    allf = cache_files(d)
+    stamps = load_cache_stamps(d)
+    cfg = DetectorConfig.from_yaml(os.path.join(WT, "configs/default.yaml"))
+    pieces = np.array_split(np.arange(len(allf)), int(specs[0].split("/")[1]))
+    for spec in specs:
+        k, n = (int(v) for v in spec.split("/"))
+        idx = pieces[k]
+        det = Detector(cfg)
+        with open(f"{out}_p{k}.jsonl", "w") as fh, open(f"{out}_p{k}_rec.jsonl", "w") as fr:
+            for j, gi in enumerate(idx):
+                f = allf[int(gi)]
+                stem = cache_file_stem(f)
+                H.STATE["records"] = []
+                res = det.process(frame_from_compact(load_cache_array(f), cfg.sensor, stamp=stamps.get(stem, j * 0.1),
+                                                     frame_id=stem))
+                fh.write(json.dumps({"i": int(gi), "stem": stem, "decision": node_decision(res),
+                                     "obstacle": bool(res.obstacle), "warning": bool(res.warning),
+                                     "dets": [[round(float(x.distance), 1), round(float(x.lateral), 2), x.reason]
+                                              for x in res.detections]}) + "\n")
+                for r in H.STATE["records"]:
+                    r["k"] = int(gi)
+                    fr.write(json.dumps(r) + "\n")
+        print(out, "piece", k, "frames", len(idx), flush=True)
+    summary(out + "_" + "_".join(s.replace("/", "of") for s in specs))
+
+
+def probe(out, script, args):
+    sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+    import judge_runner  # noqa: F401  (the probe's own import path)
+    fr = open(out + "_rec.jsonl", "w")
+    orig = H.process
+
+    def process(self, frame, *a, **kw):
+        H.STATE["records"] = []
+        res = orig(self, frame, *a, **kw)
+        for r in H.STATE["records"]:
+            fr.write(json.dumps(r) + "\n")
+        return res
+
+    H.D.Detector.process = process
+    sys.argv = [script] + args
+    try:
+        runpy.run_path(script, run_name="__main__")
+    finally:
+        fr.close()
+        summary(out)
+
+
+if __name__ == "__main__":
+    mode = sys.argv[1]
+    if mode == "ride":
+        ride(sys.argv[2], sys.argv[3], sys.argv[4:])
+    else:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(sys.argv[3])))
+        probe(sys.argv[2], sys.argv[3], sys.argv[4:])

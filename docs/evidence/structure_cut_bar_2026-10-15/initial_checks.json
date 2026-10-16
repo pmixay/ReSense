@@ -1,0 +1,230 @@
+{
+  "initial": {
+    "mast12_sealed": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:1.2"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 145,
+        "CAUTION": 121,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "C_person_sealed": {
+      "cache": "roundT_pressureGate_roundT",
+      "obj": [
+        0.5,
+        0.5,
+        1.75
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 0,
+      "d0": 230.0,
+      "first_visible_X": 230.0,
+      "first_stop_X": 73.94,
+      "held_from_X": 81.3,
+      "visible_frames": 153,
+      "stop_frames": 49,
+      "bins": {
+        "3-30": "19/19",
+        "30-60": "20/20",
+        "60-100": "10/27",
+        "100-150": "0/34",
+        "150-200": "0/33",
+        "200-260": "0/20"
+      },
+      "decisions_while_visible": {
+        "GO": 46,
+        "CAUTION": 58,
+        "STOP": 49,
+        "FAULT": 0
+      },
+      "go_within_60m": 0,
+      "n_obj_at": {
+        "200": 4,
+        "150": 5,
+        "100": 24,
+        "60": 70,
+        "30": 260
+      }
+    },
+    "mast12_14.10": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:1.2"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 2,
+        "first_stop_X": 68.06,
+        "stop_frames_while_visible": 4,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "2/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": [
+          68.06,
+          66.58
+        ]
+      },
+      "decisions": {
+        "GO": 141,
+        "CAUTION": 123,
+        "STOP": 4,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 1,
+        "tf_free": 1,
+        "cut_parts": 4
+      }
+    },
+    "C_person_14.10": {
+      "cache": "roundT_pressureGate_roundT",
+      "obj": [
+        0.5,
+        0.5,
+        1.75
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 0,
+      "d0": 230.0,
+      "first_visible_X": 230.0,
+      "first_stop_X": 82.77,
+      "held_from_X": 91.63,
+      "visible_frames": 153,
+      "stop_frames": 55,
+      "bins": {
+        "3-30": "19/19",
+        "30-60": "20/20",
+        "60-100": "16/27",
+        "100-150": "0/34",
+        "150-200": "0/33",
+        "200-260": "0/20"
+      },
+      "decisions_while_visible": {
+        "GO": 42,
+        "CAUTION": 56,
+        "STOP": 55,
+        "FAULT": 0
+      },
+      "go_within_60m": 0,
+      "n_obj_at": {
+        "200": 4,
+        "150": 5,
+        "100": 24,
+        "60": 70,
+        "30": 260
+      }
+    },
+    "mast12_H2": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:1.2"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 145,
+        "CAUTION": 121,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 1,
+        "tf_free": 1,
+        "cut_parts": 2
+      }
+    },
+    "C_person_H2": {
+      "cache": "roundT_pressureGate_roundT",
+      "obj": [
+        0.5,
+        0.5,
+        1.75
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 0,
+      "d0": 230.0,
+      "first_visible_X": 230.0,
+      "first_stop_X": 82.77,
+      "held_from_X": 91.63,
+      "visible_frames": 153,
+      "stop_frames": 55,
+      "bins": {
+        "3-30": "19/19",
+        "30-60": "20/20",
+        "60-100": "16/27",
+        "100-150": "0/34",
+        "150-200": "0/33",
+        "200-260": "0/20"
+      },
+      "decisions_while_visible": {
+        "GO": 42,
+        "CAUTION": 56,
+        "STOP": 55,
+        "FAULT": 0
+      },
+      "go_within_60m": 0,
+      "n_obj_at": {
+        "200": 4,
+        "150": 5,
+        "100": 24,
+        "60": 70,
+        "30": 260
+      }
+    }
+  },
+  "perturbations": {
+    "C_drop30": {
+      "cut_parts": 0,
+      "cut_candidates": []
+    },
+    "C_5hz": {
+      "cut_parts": 0,
+      "cut_candidates": []
+    }
+  }
+}

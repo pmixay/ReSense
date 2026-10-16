@@ -1,0 +1,6 @@
+# Preserve raw captured bytes, including ROS/GitHub log whitespace; no code lint exception.
+original-ci/** -text whitespace=cr-at-eol
+local-once/** -text whitespace=cr-at-eol
+original-ci/docker-job.txt whitespace=cr-at-eol,-blank-at-eol
+original-ci/failed-steps.txt whitespace=cr-at-eol,-blank-at-eol
+local-once/baseline/node.log whitespace=cr-at-eol,-blank-at-eol

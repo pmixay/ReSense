@@ -1,0 +1,266 @@
+{
+  "roundT_doubleT": {
+    "paths": {
+      "/clear_distance": 6,
+      "/health/clear_distance": 6,
+      "/health/monitored_range": 6,
+      "/health/wall_drift": 6,
+      "/track/wall_drift": 6
+    },
+    "examples": [
+      {
+        "frame": "roundT_doubleT_0009",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 182.3,
+            "candidate": 110.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 182.3,
+            "candidate": 110.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 182.3,
+            "candidate": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "candidate": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "candidate": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "roundT_doubleT_0092",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 132.8,
+            "candidate": 66.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 132.8,
+            "candidate": 66.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 132.8,
+            "candidate": 66.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "candidate": 66.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "candidate": 66.0
+          }
+        ]
+      }
+    ]
+  },
+  "squareT_platform_squareT_switch": {
+    "paths": {
+      "/clear_distance": 39,
+      "/health/clear_distance": 39,
+      "/health/monitored_range": 45,
+      "/health/wall_drift": 46,
+      "/track/wall_drift": 46
+    },
+    "examples": [
+      {
+        "frame": "squareT_platform_squareT_switch_0025",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 128.6,
+            "candidate": 90.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 128.6,
+            "candidate": 90.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 128.6,
+            "candidate": 90.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "candidate": 90.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "candidate": 90.0
+          }
+        ]
+      },
+      {
+        "frame": "squareT_platform_squareT_switch_0026",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 129.6,
+            "candidate": 90.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 129.6,
+            "candidate": 90.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 129.6,
+            "candidate": 90.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "candidate": 90.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "candidate": 90.0
+          }
+        ]
+      }
+    ]
+  },
+  "ride_1": {
+    "paths": {
+      "/health/monitored_range": 31,
+      "/health/wall_drift": 32,
+      "/track/wall_drift": 32,
+      "/clear_distance": 26,
+      "/health/clear_distance": 26
+    },
+    "examples": [
+      {
+        "frame": "new_data_36_0006",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 162.9,
+            "candidate": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "candidate": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "candidate": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0007",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 161.6,
+            "candidate": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "candidate": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "candidate": 138.0
+          }
+        ]
+      }
+    ]
+  },
+  "ride_3": {
+    "paths": {
+      "/clear_distance": 122,
+      "/health/clear_distance": 122,
+      "/health/monitored_range": 133,
+      "/health/wall_drift": 169,
+      "/track/wall_drift": 169
+    },
+    "examples": [
+      {
+        "frame": "new_data_91_0002",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "candidate": 86.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "candidate": 86.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "candidate": 86.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "candidate": 86.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "candidate": 86.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_93_0017",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 143.0,
+            "candidate": 106.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 143.0,
+            "candidate": 106.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 143.0,
+            "candidate": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "candidate": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "candidate": 106.0
+          }
+        ]
+      }
+    ]
+  }
+}

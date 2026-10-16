@@ -1,0 +1,376 @@
+{
+  "root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016",
+  "sealed_plain": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-h4-safety-20261016\\run-001\\replay-sealed-all",
+  "files": [
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\red-fc89ad2\\author-code\\byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\red-fc89ad2\\author-code\\launch.py",
+      "bytes": 3309,
+      "sha256": "2805e65321471d393888a759aab60c99803e8a095600f4d7c48b361c3068df85"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\red-fc89ad2\\author-code\\worker.py",
+      "bytes": 8063,
+      "sha256": "a98d1fa1a7519196fce3cdf30a26366d9ccb48c58d54f51cc42667d604a3f047"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\red-fc89ad2\\completion.json",
+      "bytes": 42,
+      "sha256": "e8df548e4679ae27ef70632a0e0fa0fcd61096d37eab5dc5ba1d9e153e1429e4"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\red-fc89ad2\\launch.json",
+      "bytes": 2544,
+      "sha256": "ca8f280ceb5f5c5642718ed1deabff1e31584df1338444a6ac789d97b4f4618f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\red-fc89ad2\\results\\identity.json",
+      "bytes": 17722,
+      "sha256": "c006ef8c6ee8b0893a9f8a531222c4f5fe4e78f2208515ba174a2d1b3347cd82"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\red-fc89ad2\\results\\pytest.xml",
+      "bytes": 33816,
+      "sha256": "242aac8f174b7d1790d4f3cc9556f519aa93aa5e0882068b97ad69675db28814"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\red-fc89ad2\\worker.txt",
+      "bytes": 25598,
+      "sha256": "704872515600070833b3f46be1b332648f9e3bd84b86d28230dc3d4c022f12ae"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\green-795a243\\author-code\\byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\green-795a243\\author-code\\launch.py",
+      "bytes": 3309,
+      "sha256": "2805e65321471d393888a759aab60c99803e8a095600f4d7c48b361c3068df85"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\green-795a243\\author-code\\worker.py",
+      "bytes": 8063,
+      "sha256": "a98d1fa1a7519196fce3cdf30a26366d9ccb48c58d54f51cc42667d604a3f047"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\green-795a243\\completion.json",
+      "bytes": 43,
+      "sha256": "18db54d631e4c10caece0f6cbecb5c59ae42c4165298c5adbea37fa5109ed2bf"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\green-795a243\\launch.json",
+      "bytes": 2547,
+      "sha256": "4dfec0e4b0ee1548d88f3f435c99fdd9bb98ab6973940b78200cb42fbb335cb5"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\green-795a243\\results\\identity.json",
+      "bytes": 17721,
+      "sha256": "7133db63a5c01af3c87b69508176d1405d44bc4ca090a1d6923c80446674484d"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\green-795a243\\results\\pytest.xml",
+      "bytes": 34103,
+      "sha256": "559741d2b71d782711311eed87a3246278b37caa408e7761b5f154da67097add"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\green-795a243\\worker.txt",
+      "bytes": 6302,
+      "sha256": "f41852fdc905af8f8bb634b6ecb297e2e75ab54c3357e69566433fa9fbd4dea4"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\tests-c9aea87-20261016a\\author-code\\byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\tests-c9aea87-20261016a\\author-code\\launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\tests-c9aea87-20261016a\\author-code\\worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\tests-c9aea87-20261016a\\completion.json",
+      "bytes": 41,
+      "sha256": "2d4496f1e40a37611019e7fe05d5f43cf7699f7a1a497ee19f43acad8b3f8b60"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\tests-c9aea87-20261016a\\launch.json",
+      "bytes": 2587,
+      "sha256": "9ca52f108ce6ad3816ec79a8816d6f910cfc224f992496a59e4c69d502d68d0f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\tests-c9aea87-20261016a\\results\\identity.json",
+      "bytes": 17721,
+      "sha256": "f78648132db62e7e33b01c542085951a0b58f23c014b1b57670c43a057a9716e"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\tests-c9aea87-20261016a\\results\\pytest.xml",
+      "bytes": 32398,
+      "sha256": "d4916c6b215803b29e9231285de31e48cb3653044295f970356dbe09dcc7269e"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\tests-c9aea87-20261016a\\worker.txt",
+      "bytes": 4661,
+      "sha256": "e8145f44f6808dde35f157d9382296294e5f27ea1ed1976b703a43f00fd018e1"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\author-code\\byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\author-code\\launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\author-code\\worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\completion.json",
+      "bytes": 41,
+      "sha256": "83d94af0e3b804466a8f5065bc7db6cf9b684cea59020f34681df3bf8b4659e2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\launch.json",
+      "bytes": 2592,
+      "sha256": "3363272cbd1c2de15627cc588c3319865bc1275c0bc3985e7ae4e2fd286fe88e"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\results\\identity.json",
+      "bytes": 17721,
+      "sha256": "fd03b716400ae51099c85a0d7098c9ade8f94924644fd71f6fff12abb5e753f2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\results\\pole_c.json",
+      "bytes": 93868,
+      "sha256": "d4f244e66203b79d74a1945daf6661983553c944c89b8aae941166ea0022accb"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\results\\probes.json",
+      "bytes": 3263,
+      "sha256": "c27949268daff8aca4bb7b7c50303ac030eab6b6a4b46539703acd5a250310cc"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\results\\shipping_guard.json",
+      "bytes": 230,
+      "sha256": "337f08384bd4f739f690675f350545535fc8231d86be7ed9bc7b2b8155b3730a"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-c9aea87-20261016a\\worker.txt",
+      "bytes": 4034,
+      "sha256": "4ab665cf50d9823153cbbf66d038f2d0558fa3e70bd31cb1e638d09f9c5728d2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\author-code\\byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\author-code\\launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\author-code\\worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\completion.json",
+      "bytes": 42,
+      "sha256": "31e6d68ac7ef66932cb01ce912c72652fec70cf64b683931c15fabae86de360e"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\launch.json",
+      "bytes": 2582,
+      "sha256": "c7eb9e126ca852be03223467e9bc3c1cdaad0a15fe4b1caa7fa2c2622d8fdf14"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\results\\identity.json",
+      "bytes": 17721,
+      "sha256": "50e1a661c51915df2e3358a399ed2184b0e82f59507397807a56184c363d8350"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\results\\ride_1-promotion.json",
+      "bytes": 32196,
+      "sha256": "9445e5c71d4fb104be1bc145db10c2de9312864d3d1d419a2bfa410d4a647b9a"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\results\\ride_1.jsonl",
+      "bytes": 9988436,
+      "sha256": "47a91afee16faca7f7e92ab8e8c5458d2e9b8587f6d6fd5c4ce1032212910051"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\results\\ride_3.jsonl",
+      "bytes": 9102632,
+      "sha256": "5be55ecf6d43b075e22910438dc3180d3a801e92d59cd3d5b3c0008ea336b3f5"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\results\\shipping_guard.json",
+      "bytes": 290,
+      "sha256": "096dead43a18fad8c8dc513979dd32179e5319163ed4b8471cc0ad6d68facd59"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\results\\summary.json",
+      "bytes": 46600,
+      "sha256": "a3fc40d29a0bc46edb35652c916e3a84c4341e365f2e06b847b8f9f428ffc2d0"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\dark-c9aea87-20261016a\\worker.txt",
+      "bytes": 3741,
+      "sha256": "713dd2f82dea5efd1a4d2fded7c2defffc4d06f3cf254075d4236679efbcca37"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\experimental-c9aea87-20261016a\\author-code\\byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\experimental-c9aea87-20261016a\\author-code\\launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\experimental-c9aea87-20261016a\\author-code\\worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\experimental-c9aea87-20261016a\\completion.json",
+      "bytes": 42,
+      "sha256": "7d4d7da8e252d875177dd652a57f3f8142ca57050d75bbe9334104ac5834cb2f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\experimental-c9aea87-20261016a\\launch.json",
+      "bytes": 2622,
+      "sha256": "ef5589da6ab7d8e50ac427c90de2e10bc77f718d7decab659e5def9d670eaf09"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\experimental-c9aea87-20261016a\\results\\experimental_still_rejected.json",
+      "bytes": 787,
+      "sha256": "2fbe7bff1017624e18ad8742e379ad0999c89480a739a8cf1647576175867046"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\experimental-c9aea87-20261016a\\results\\identity.json",
+      "bytes": 17721,
+      "sha256": "6afd184cef28d8b4e312342194ed800e3c0a2734bb7b3ef0ff623776db42e667"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\experimental-c9aea87-20261016a\\worker.txt",
+      "bytes": 2604,
+      "sha256": "ce8a0a03f65bf8f9d0315a94325142b3c32fa10c10af41d598145d1a01ab2005"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\author-code\\byte_proof.py",
+      "bytes": 1377,
+      "sha256": "d1d6a86ab9f8aeacccb3b13a5b848a191c06b101d6e3d2f52da8d6b6f371d1c2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\author-code\\launch.py",
+      "bytes": 3325,
+      "sha256": "34bcfdf8baafadc4b802483572a680ad65f208e73bf5618a490a82e3cb74d5d2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\author-code\\worker.py",
+      "bytes": 9785,
+      "sha256": "9fef34c4a9aedef986282bde341465a6268eb7056509c3776b61f49ec36f7c5f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\completion.json",
+      "bytes": 41,
+      "sha256": "3933cac05715041fc842760aa26b561ac9eba49f461e8c82b0554e929e9314ec"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\launch.json",
+      "bytes": 2620,
+      "sha256": "20e8914675ed506784de1fd010bb4698757642b83d4845dd015d2476e78fab6d"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\results\\C_person.json",
+      "bytes": 66257,
+      "sha256": "bda26912d14b383e9c8621cb09541fdbd0d8705d3d898d0f876945dd38f57db5"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\results\\identity.json",
+      "bytes": 17225,
+      "sha256": "30aea96d96d412e2b1a55432d561b35f7859b3a953f5d10817c1a55bad2d8677"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\results\\pole_c.json",
+      "bytes": 93868,
+      "sha256": "d4f244e66203b79d74a1945daf6661983553c944c89b8aae941166ea0022accb"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\results\\probes.json",
+      "bytes": 3198,
+      "sha256": "e102175f8be5388538e9d3e44c4ab32d96ab06d6ee8e6c0894a1df46cd90c040"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\results\\shipping_guard.json",
+      "bytes": 231,
+      "sha256": "f57af4ae4610c5128f2b08d2fc1be38799eb98999fc75c9504f9ab14b7d9c700"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-column-withdrawal-20261016\\probes-sealed-707ea9c-20261016a\\worker.txt",
+      "bytes": 3582,
+      "sha256": "335e85ac6eed0f3fa5c01c64f281b1f098f4eab8f9d516552a89e47ed61cc3ad"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-h4-safety-20261016\\run-001\\replay-sealed-all\\identity.json",
+      "bytes": 16259,
+      "sha256": "d6ade6b9b0b48880a96a32337fb5be73a880a5b2512728069ef54238ece3483f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-h4-safety-20261016\\run-001\\replay-sealed-all\\completion.json",
+      "bytes": 42,
+      "sha256": "70847a614e3a5dd268f7225bfc523730403a260f5ec424b3d30e0baa2d908200"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016\\parent-critical\\results\\identity.json",
+      "bytes": 17901,
+      "sha256": "a952a8f865883fd2b37e5c14e89c8295c2315bc4d6ff208e6fd50b266afa2040"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016\\parent-critical\\results\\C_person.json",
+      "bytes": 67089,
+      "sha256": "80ab72b06fe47131026291c08cdee718c809911f833d6dd072d21d331db54f40"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016\\parent-critical\\completion.json",
+      "bytes": 42,
+      "sha256": "ba9eee6679d38e5a94ddeaffec0b13c6749e3fc0b34e2c461969c591a36ab4fa"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016\\parent-critical\\launch.json",
+      "bytes": 2759,
+      "sha256": "8d142cd82593733f28b85061fdcb7cef5286b2275f07002afe71676f0198917f"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-h4-safety-20261016\\run-001\\replay-sealed-all\\ride_1.jsonl",
+      "bytes": 9684321,
+      "sha256": "b375635ff701e57ec7420a168f70f1618002ec166dfdf43049138d5f061d1fc2"
+    },
+    {
+      "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-h4-safety-20261016\\run-001\\replay-sealed-all\\ride_3.jsonl",
+      "bytes": 8854462,
+      "sha256": "a23b31130431fde908c1cda23fded6c5f6ee534a5a2608d13e4e7440d3c6ba28"
+    }
+  ]
+}

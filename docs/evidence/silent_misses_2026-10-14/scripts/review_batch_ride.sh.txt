@@ -1,0 +1,20 @@
+#!/bin/bash
+# finding 6 (dark band what-if) and ride pieces with dropout on the code at $CODE, against the review's sealed runs
+cd /tmp/claude-0/fixwork/fix_review; source env.sh
+G=/tmp/claude-0/fixdata/cache; SR=/tmp/claude-0/fixwork/safety_review/out
+T=${TAG:-fin}
+gp() { name=$1; base=$2; dark=$3; cache=$4; shift 4
+  [ -f out/${name}_$T.jsonl ] || DARKBAND=$dark run_w grun.py $G/$cache out/${name}_$T "$@" > out/${name}_$T.log 2>&1
+  python3 cmp.py $SR/${base}_s.jsonl out/${name}_$T.jsonl "$name sealed->$T" >> out/batch_ride_$T.txt
+  [ -f $SR/${name}_w.jsonl ] && python3 cmp.py $SR/${name}_w.jsonl out/${name}_$T.jsonl "$name 13.10->$T" | head -1 >> out/batch_ride_$T.txt
+  tail -1 out/${name}_$T.log >> out/batch_ride_$T.txt
+}
+R4="new_data_52_ new_data_54_ new_data_55_"
+gp R4_dark R4_plain 0.6 new_data $R4
+gp p1_dark p1_plain 0.6 new_data piece:1/8
+gp p3_dark p3_plain 0.6 new_data piece:3/8
+gp p1_drop30_s1 p1_drop30_s1 0 new_data piece:1/8 --drop 0.3 --seed 1
+gp p1_drop30_s2 p1_drop30_s2 0 new_data piece:1/8 --drop 0.3 --seed 2
+gp p3_drop30_s1 p3_drop30_s1 0 new_data piece:3/8 --drop 0.3 --seed 1
+gp R4_drop30_s1 R4_drop30_s1 0 new_data $R4 --drop 0.3 --seed 1
+echo BATCH_RIDE DONE >> out/batch_ride_$T.txt

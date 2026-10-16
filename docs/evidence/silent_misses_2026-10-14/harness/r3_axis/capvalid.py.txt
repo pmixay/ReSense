@@ -1,0 +1,18 @@
+"""Scratch variant (r3): also cap the track model's axis_valid at the wall-drift range (+ CAPV_MARGIN m), so
+clusters beyond it are demoted beyond_axis (CAUTION). Enabled by env CAPV=1; import before the detector runs."""
+import os
+
+import resense.detector as D
+
+if os.environ.get("CAPV") == "1":
+    _orig = D.estimate_track
+    MARGIN = float(os.environ.get("CAPV_MARGIN", "0"))
+
+    def est(xyz, cfg, prev=None, periods=1, ring=None):
+        m = _orig(xyz, cfg, prev=prev, periods=periods, ring=ring)
+        if m.wall_drift < 1e9:
+            m.axis_valid = min(m.axis_valid, m.wall_drift + MARGIN)
+        return m
+
+    D.estimate_track = est
+    print("CAPV on, margin", MARGIN, flush=True)

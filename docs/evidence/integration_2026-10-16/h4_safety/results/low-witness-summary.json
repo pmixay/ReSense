@@ -1,0 +1,227 @@
+{
+  "scope": "constructed filter/tracker boundary; not a physical scene",
+  "frames": [
+    {
+      "frame": 0,
+      "low_kept": false,
+      "part_pre_reason": "",
+      "part_post_reason": "column",
+      "STOP_ids": [],
+      "control_STOP_ids": []
+    },
+    {
+      "frame": 1,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [],
+      "control_STOP_ids": []
+    },
+    {
+      "frame": 2,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [],
+      "control_STOP_ids": []
+    },
+    {
+      "frame": 3,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [],
+      "control_STOP_ids": []
+    },
+    {
+      "frame": 4,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 5,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 6,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 7,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 8,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 9,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 10,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 11,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 12,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 13,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 14,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 15,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 16,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 17,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 18,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    },
+    {
+      "frame": 19,
+      "low_kept": true,
+      "part_pre_reason": "column",
+      "part_post_reason": "column",
+      "STOP_ids": [
+        2
+      ],
+      "control_STOP_ids": [
+        1
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+"""Initial H2 acceptance probes with sealed placement/ICP shared by all codes."""
+from concurrent.futures import ThreadPoolExecutor
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+BASE = Path(__file__).resolve().parent
+DATA = BASE / "resense-p3-data"
+OUT = BASE / "resense-p3-runs/h2-probes"
+REPOS = {"sealed": Path("C:/Users/alikh/OneDrive/Desktop/projects/ReSense"),
+         "14.10": BASE / "rs-range-screen", "H2": BASE / "rs-h2"}
+BG = "roundT_pressureGate_roundT"
+
+
+def run(job):
+    tag, case = job
+    repo = REPOS[tag]
+    prefix = OUT / f"{case}_{tag}"
+    if Path(str(prefix) + ".json").exists() and case in ("mast12", "C_person"):
+        return f"{case}_{tag}", 0
+    cache = DATA / "decoded" / BG
+    icp = DATA / "odometry" / f"icp_{BG}.json"
+    if case == "mast12":
+        driver = BASE / "rs-range-screen/docs/evidence/silent_misses_2026-10-14/harness/safety_review/wallbox_rt.py.txt"
+        args = [str(cache), str(icp), str(prefix), "--start", "0", "--d0", "230", "--o", "0.3,0.3,2.6:wall+:1.2"]
+    elif case == "C_person":
+        driver = repo / "docs/evidence/judgement_2026-10-13/scripts/range_test.py"
+        args = [str(cache), str(icp), str(prefix), "--obj", "0.5,0.5,1.75", "--start", "0", "--d0", "230"]
+    else:
+        driver = BASE / "rs-h1/docs/evidence/column_hardening_2026-10-15/scripts/jrep.py.txt"
+        args = [str(cache), str(prefix)] + (["--drop", "0.3"] if case == "C_drop30" else ["--every", "2"])
+    env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
+               PYTHONPATH=os.pathsep.join((str(repo), str(BASE))), RESENSE_REPO=str(repo), WT=str(repo))
+    with open(str(prefix) + ".log", "w") as log:
+        result = subprocess.run([sys.executable, str(BASE / "resense-p3-run-script.py"), str(repo), str(driver)] + args,
+                                cwd=repo, env=env, stdout=log, stderr=subprocess.STDOUT)
+    print(tag, case, result.returncode, flush=True)
+    if result.returncode:
+        raise RuntimeError(f"{tag} {case}")
+    return f"{case}_{tag}", result.returncode
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    while not Path(str(DATA / "decoded" / BG) + "_baseline.json").exists():
+        time.sleep(5)
+    jobs = [(tag, case) for case in ("mast12", "C_person", "C_drop30", "C_5hz") for tag in REPOS]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        result = dict(pool.map(run, jobs))
+    (OUT / "completion.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

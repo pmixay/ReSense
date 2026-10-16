@@ -1,0 +1,18 @@
+{
+  "roundT_doubleT": {
+    "frames": 252,
+    "h3_non_timing_mismatches": []
+  },
+  "squareT_platform_squareT_switch": {
+    "frames": 877,
+    "h3_non_timing_mismatches": []
+  },
+  "ride_1": {
+    "frames": 1409,
+    "h3_non_timing_mismatches": []
+  },
+  "ride_3": {
+    "frames": 1409,
+    "h3_non_timing_mismatches": []
+  }
+}

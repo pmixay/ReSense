@@ -1,0 +1,832 @@
+{
+  "schema": "resense.s1.docker.v1",
+  "run_id": "aa526c7c3bf54ab593c767374175b3a2",
+  "passed": false,
+  "complete": false,
+  "protocol_errors": [],
+  "comparison_mode": "published_judge_different_runtime",
+  "improvement_claim_allowed": false,
+  "published_comparison": {
+    "source": "docs/BACKLOG.md S1; judgement_2026-10-13",
+    "runtime": "Published judge, DIFFERENT runtime/host; not a same-runtime A/B baseline",
+    "obstacle_literal": {
+      "processed": 146,
+      "expected": 201,
+      "fresh": 0,
+      "source_age_p50_s": 7.33,
+      "source_age_max_s": 10.51,
+      "reported_rss_mb": 3357
+    },
+    "obstacle_readme": {
+      "fresh": 35,
+      "expected": 201,
+      "source_age_max_s": 1.2
+    },
+    "clear_literal": {
+      "fault": 47
+    },
+    "memory_note": "Historical MB labels are not reinterpreted as this protocol's decimal MB."
+  },
+  "evaluations": {
+    "candidate": {
+      "passed": false,
+      "errors": [],
+      "conditions": {
+        "obstacle_literal": {
+          "complete": false,
+          "errors": [
+            "incomplete/corrupt run"
+          ],
+          "checks": [
+            {
+              "metric": "fresh_fraction",
+              "median": 0.004975124378109453,
+              "operator": ">=",
+              "bound": 0.8,
+              "passed": false
+            },
+            {
+              "metric": "source_age_p50_s",
+              "median": 1.1904542446136475,
+              "operator": "<=",
+              "bound": 0.5,
+              "passed": false
+            },
+            {
+              "metric": "memory_gate_mb",
+              "median": 784.91648,
+              "operator": "<=",
+              "bound": 1200,
+              "passed": true
+            },
+            {
+              "metric": "first_stop_dist",
+              "median": 55.54,
+              "operator": ">=",
+              "bound": 55,
+              "passed": true
+            },
+            {
+              "metric": "first_stop_dist",
+              "median": 55.54,
+              "operator": "<=",
+              "bound": 57,
+              "passed": true
+            }
+          ],
+          "passed": false
+        },
+        "obstacle_readme": {
+          "complete": true,
+          "errors": [],
+          "checks": [
+            {
+              "metric": "fresh_frames",
+              "median": 85,
+              "operator": ">=",
+              "bound": 180,
+              "passed": false
+            },
+            {
+              "metric": "source_age_max_s",
+              "median": 1.9408786296844482,
+              "operator": "<=",
+              "bound": 0.6,
+              "passed": false
+            },
+            {
+              "metric": "STOP",
+              "median": 147,
+              "operator": ">=",
+              "bound": 185,
+              "passed": false
+            },
+            {
+              "metric": "first_stop_after_first_result_s",
+              "median": 2.1627089977264404,
+              "operator": "<=",
+              "bound": 1.2,
+              "passed": false
+            }
+          ],
+          "passed": false
+        },
+        "clear_literal": {
+          "complete": true,
+          "errors": [],
+          "checks": [
+            {
+              "metric": "FAULT",
+              "median": 16,
+              "operator": "<=",
+              "bound": 10,
+              "passed": false
+            }
+          ],
+          "passed": false
+        },
+        "clear_readme": {
+          "complete": false,
+          "errors": [
+            "incomplete/corrupt run"
+          ],
+          "checks": [
+            {
+              "metric": "fresh_frames",
+              "median": 235,
+              "operator": ">=",
+              "bound": 242,
+              "passed": false
+            }
+          ],
+          "passed": false
+        }
+      }
+    }
+  },
+  "runs": {
+    "candidate": [
+      {
+        "condition": "obstacle_literal",
+        "repetition": 1,
+        "label": "candidate_obstacle_literal_r1",
+        "metrics": {
+          "complete": false,
+          "errors": [
+            "missing/extra/mismatched decision messages"
+          ],
+          "expected_frames": 201,
+          "frames_processed": 56,
+          "fresh_frames": 1,
+          "fresh_fraction": 0.004975124378109453,
+          "missing_bag_frame_results": 145,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 1,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": -1,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 1,
+            "CAUTION": 0,
+            "STOP": 50,
+            "FAULT": 5
+          },
+          "watchdog_results": {
+            "FAULT": 65,
+            "STOP": 18
+          },
+          "decision_messages": {
+            "FAULT": 70,
+            "GO": 1,
+            "STOP": 69
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 1,
+            "current": 1,
+            "source_stale": 54
+          },
+          "first_stop_after_first_result_s": 2.0307490825653076,
+          "first_stop_dist": 55.54,
+          "source_age_p50_s": 1.3895419836044312,
+          "source_age_max_s": 2.349483013153076,
+          "latency_p50_ms": 120.0856819152832,
+          "node_cpu_cores_p50": 1.42,
+          "node_cpu_cores_max": 1.43,
+          "docker_cpu_cores_mean": 0.3672666666666667,
+          "docker_cpu_cores_max": 1.5644999999999998,
+          "docker_working_set_peak_mb": 769.130496,
+          "container_cgroup_peak_mb": 784.91648,
+          "node_rss_peak_mb": 745.6423936,
+          "memory_gate_mb": 784.91648,
+          "dropped": 149,
+          "skipped": 145
+        }
+      },
+      {
+        "condition": "obstacle_literal",
+        "repetition": 2,
+        "label": "candidate_obstacle_literal_r2",
+        "metrics": {
+          "complete": true,
+          "errors": [],
+          "expected_frames": 201,
+          "frames_processed": 49,
+          "fresh_frames": 0,
+          "fresh_fraction": 0.0,
+          "missing_bag_frame_results": 152,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 0,
+            "CAUTION": 0,
+            "STOP": 47,
+            "FAULT": 2
+          },
+          "watchdog_results": {
+            "FAULT": 62,
+            "STOP": 18
+          },
+          "decision_messages": {
+            "FAULT": 64,
+            "STOP": 65
+          },
+          "freshness_reasons": {
+            "source_stale": 49
+          },
+          "first_stop_after_first_result_s": 1.2832651138305664,
+          "first_stop_dist": 55.52,
+          "source_age_p50_s": 1.1904542446136475,
+          "source_age_max_s": 2.2721927165985107,
+          "latency_p50_ms": 97.37274932861328,
+          "node_cpu_cores_p50": 1.38,
+          "node_cpu_cores_max": 1.48,
+          "docker_cpu_cores_mean": 0.290237037037037,
+          "docker_cpu_cores_max": 1.5348,
+          "docker_working_set_peak_mb": 843.9988224,
+          "container_cgroup_peak_mb": 859.824128,
+          "node_rss_peak_mb": 827.4313216,
+          "memory_gate_mb": 859.824128,
+          "dropped": 151,
+          "skipped": 143
+        }
+      },
+      {
+        "condition": "obstacle_literal",
+        "repetition": 3,
+        "label": "candidate_obstacle_literal_r3",
+        "metrics": {
+          "complete": true,
+          "errors": [],
+          "expected_frames": 201,
+          "frames_processed": 49,
+          "fresh_frames": 1,
+          "fresh_fraction": 0.004975124378109453,
+          "missing_bag_frame_results": 152,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 1,
+            "CAUTION": 0,
+            "STOP": 42,
+            "FAULT": 6
+          },
+          "watchdog_results": {
+            "FAULT": 62,
+            "STOP": 21
+          },
+          "decision_messages": {
+            "FAULT": 68,
+            "GO": 1,
+            "STOP": 63
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 1,
+            "current": 1,
+            "source_stale": 46,
+            "queue_stale": 1
+          },
+          "first_stop_after_first_result_s": 1.7085683345794678,
+          "first_stop_dist": 55.83,
+          "source_age_p50_s": 0.7416598796844482,
+          "source_age_max_s": 1.1282918453216553,
+          "latency_p50_ms": 80.04071044921875,
+          "node_cpu_cores_p50": 1.37,
+          "node_cpu_cores_max": 1.38,
+          "docker_cpu_cores_mean": 0.23830689655172416,
+          "docker_cpu_cores_max": 1.3888,
+          "docker_working_set_peak_mb": 663.6437503999999,
+          "container_cgroup_peak_mb": 706.10944,
+          "node_rss_peak_mb": 665.4263296,
+          "memory_gate_mb": 706.10944,
+          "dropped": 156,
+          "skipped": 152
+        }
+      },
+      {
+        "condition": "obstacle_readme",
+        "repetition": 1,
+        "label": "candidate_obstacle_readme_r1",
+        "metrics": {
+          "complete": true,
+          "errors": [],
+          "expected_frames": 201,
+          "frames_processed": 153,
+          "fresh_frames": 98,
+          "fresh_fraction": 0.48756218905472637,
+          "missing_bag_frame_results": 48,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 1,
+            "CAUTION": 0,
+            "STOP": 147,
+            "FAULT": 5
+          },
+          "watchdog_results": {
+            "FAULT": 36,
+            "STOP": 17
+          },
+          "decision_messages": {
+            "FAULT": 41,
+            "GO": 1,
+            "STOP": 164
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 2,
+            "current": 98,
+            "source_stale": 35,
+            "catchup": 18
+          },
+          "first_stop_after_first_result_s": 2.1627089977264404,
+          "first_stop_dist": 55.54,
+          "source_age_p50_s": 0.15880942344665527,
+          "source_age_max_s": 2.3611860275268555,
+          "latency_p50_ms": 75.59870910644531,
+          "node_cpu_cores_p50": 1.06,
+          "node_cpu_cores_max": 1.41,
+          "docker_cpu_cores_mean": 0.5000875,
+          "docker_cpu_cores_max": 1.5249000000000001,
+          "docker_working_set_peak_mb": 634.38848,
+          "container_cgroup_peak_mb": 750.784512,
+          "node_rss_peak_mb": 728.8651776,
+          "memory_gate_mb": 750.784512,
+          "dropped": 52,
+          "skipped": 48
+        }
+      },
+      {
+        "condition": "obstacle_readme",
+        "repetition": 2,
+        "label": "candidate_obstacle_readme_r2",
+        "metrics": {
+          "complete": true,
+          "errors": [],
+          "expected_frames": 201,
+          "frames_processed": 155,
+          "fresh_frames": 85,
+          "fresh_fraction": 0.4228855721393035,
+          "missing_bag_frame_results": 46,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 1,
+            "CAUTION": 0,
+            "STOP": 149,
+            "FAULT": 5
+          },
+          "watchdog_results": {
+            "FAULT": 31,
+            "STOP": 14
+          },
+          "decision_messages": {
+            "FAULT": 36,
+            "GO": 1,
+            "STOP": 163
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 1,
+            "current": 85,
+            "source_stale": 23,
+            "catchup": 46
+          },
+          "first_stop_after_first_result_s": 2.7567338943481445,
+          "first_stop_dist": 55.59,
+          "source_age_p50_s": 0.20015549659729004,
+          "source_age_max_s": 1.9408786296844482,
+          "latency_p50_ms": 71.29573059082031,
+          "node_cpu_cores_p50": 1.09,
+          "node_cpu_cores_max": 1.49,
+          "docker_cpu_cores_mean": 0.4840833333333333,
+          "docker_cpu_cores_max": 1.7223,
+          "docker_working_set_peak_mb": 602.7214848,
+          "container_cgroup_peak_mb": 724.529152,
+          "node_rss_peak_mb": 724.9854464,
+          "memory_gate_mb": 724.9854464,
+          "dropped": 50,
+          "skipped": 34
+        }
+      },
+      {
+        "condition": "obstacle_readme",
+        "repetition": 3,
+        "label": "candidate_obstacle_readme_r3",
+        "metrics": {
+          "complete": true,
+          "errors": [],
+          "expected_frames": 201,
+          "frames_processed": 149,
+          "fresh_frames": 37,
+          "fresh_fraction": 0.18407960199004975,
+          "missing_bag_frame_results": 52,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 0,
+            "CAUTION": 0,
+            "STOP": 143,
+            "FAULT": 6
+          },
+          "watchdog_results": {
+            "FAULT": 28,
+            "STOP": 16
+          },
+          "decision_messages": {
+            "FAULT": 34,
+            "STOP": 159
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 2,
+            "source_stale": 29,
+            "catchup": 81,
+            "current": 37
+          },
+          "first_stop_after_first_result_s": 1.3309733867645264,
+          "first_stop_dist": 55.54,
+          "source_age_p50_s": 0.3363840579986572,
+          "source_age_max_s": 1.1124114990234375,
+          "latency_p50_ms": 66.2548828125,
+          "node_cpu_cores_p50": 1.11,
+          "node_cpu_cores_max": 1.4,
+          "docker_cpu_cores_mean": 0.5459909090909091,
+          "docker_cpu_cores_max": 1.485,
+          "docker_working_set_peak_mb": 575.0390784,
+          "container_cgroup_peak_mb": 627.986432,
+          "node_rss_peak_mb": 621.7007103999999,
+          "memory_gate_mb": 627.986432,
+          "dropped": 56,
+          "skipped": 52
+        }
+      },
+      {
+        "condition": "clear_literal",
+        "repetition": 1,
+        "label": "candidate_clear_literal_r1",
+        "metrics": {
+          "complete": true,
+          "errors": [],
+          "expected_frames": 252,
+          "frames_processed": 193,
+          "fresh_frames": 159,
+          "fresh_fraction": 0.6309523809523809,
+          "missing_bag_frame_results": 59,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 18,
+            "CAUTION": 158,
+            "STOP": 0,
+            "FAULT": 17
+          },
+          "watchdog_results": {
+            "FAULT": 42
+          },
+          "decision_messages": {
+            "FAULT": 59,
+            "CAUTION": 158,
+            "GO": 18
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 1,
+            "queue_stale": 16,
+            "catchup": 17,
+            "current": 159
+          },
+          "first_stop_after_first_result_s": null,
+          "first_stop_dist": null,
+          "source_age_p50_s": 0.047675371170043945,
+          "source_age_max_s": 0.49337124824523926,
+          "latency_p50_ms": 36.842071533203125,
+          "node_cpu_cores_p50": 0.5,
+          "node_cpu_cores_max": 0.99,
+          "docker_cpu_cores_mean": 0.3387791666666667,
+          "docker_cpu_cores_max": 1.2015,
+          "docker_working_set_peak_mb": 263.9265792,
+          "container_cgroup_peak_mb": 313.577472,
+          "node_rss_peak_mb": 301.7801728,
+          "memory_gate_mb": 313.577472,
+          "dropped": 59,
+          "skipped": 59
+        }
+      },
+      {
+        "condition": "clear_literal",
+        "repetition": 2,
+        "label": "candidate_clear_literal_r2",
+        "metrics": {
+          "complete": true,
+          "errors": [],
+          "expected_frames": 252,
+          "frames_processed": 205,
+          "fresh_frames": 184,
+          "fresh_fraction": 0.7301587301587301,
+          "missing_bag_frame_results": 47,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 20,
+            "CAUTION": 170,
+            "STOP": 0,
+            "FAULT": 15
+          },
+          "watchdog_results": {
+            "FAULT": 38
+          },
+          "decision_messages": {
+            "FAULT": 53,
+            "CAUTION": 170,
+            "GO": 20
+          },
+          "freshness_reasons": {
+            "queue_stale": 11,
+            "source_stale": 4,
+            "catchup": 6,
+            "current": 184
+          },
+          "first_stop_after_first_result_s": null,
+          "first_stop_dist": null,
+          "source_age_p50_s": 0.04550909996032715,
+          "source_age_max_s": 0.5637388229370117,
+          "latency_p50_ms": 36.5037841796875,
+          "node_cpu_cores_p50": 0.49,
+          "node_cpu_cores_max": 0.94,
+          "docker_cpu_cores_mean": 0.31650384615384614,
+          "docker_cpu_cores_max": 1.1759,
+          "docker_working_set_peak_mb": 344.981504,
+          "container_cgroup_peak_mb": 374.673408,
+          "node_rss_peak_mb": 337.85118719999997,
+          "memory_gate_mb": 374.673408,
+          "dropped": 47,
+          "skipped": 43
+        }
+      },
+      {
+        "condition": "clear_literal",
+        "repetition": 3,
+        "label": "candidate_clear_literal_r3",
+        "metrics": {
+          "complete": true,
+          "errors": [],
+          "expected_frames": 252,
+          "frames_processed": 201,
+          "fresh_frames": 171,
+          "fresh_fraction": 0.6785714285714286,
+          "missing_bag_frame_results": 51,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 21,
+            "CAUTION": 164,
+            "STOP": 0,
+            "FAULT": 16
+          },
+          "watchdog_results": {
+            "FAULT": 37
+          },
+          "decision_messages": {
+            "FAULT": 53,
+            "CAUTION": 164,
+            "GO": 21
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 1,
+            "queue_stale": 10,
+            "source_stale": 5,
+            "catchup": 14,
+            "current": 171
+          },
+          "first_stop_after_first_result_s": null,
+          "first_stop_dist": null,
+          "source_age_p50_s": 0.047667503356933594,
+          "source_age_max_s": 0.61924147605896,
+          "latency_p50_ms": 38.643043518066406,
+          "node_cpu_cores_p50": 0.47,
+          "node_cpu_cores_max": 1.0,
+          "docker_cpu_cores_mean": 0.3369,
+          "docker_cpu_cores_max": 1.2021,
+          "docker_working_set_peak_mb": 336.4880384,
+          "container_cgroup_peak_mb": 347.471872,
+          "node_rss_peak_mb": 335.43946239999997,
+          "memory_gate_mb": 347.471872,
+          "dropped": 50,
+          "skipped": 45
+        }
+      },
+      {
+        "condition": "clear_readme",
+        "repetition": 1,
+        "label": "candidate_clear_readme_r1",
+        "metrics": {
+          "complete": false,
+          "errors": [
+            "last expected bag frame missing (incomplete drain)"
+          ],
+          "expected_frames": 252,
+          "frames_processed": 247,
+          "fresh_frames": 235,
+          "fresh_fraction": 0.9325396825396826,
+          "missing_bag_frame_results": 5,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 0,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": 0,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 69,
+            "CAUTION": 177,
+            "STOP": 0,
+            "FAULT": 1
+          },
+          "watchdog_results": {
+            "FAULT": 30
+          },
+          "decision_messages": {
+            "FAULT": 31,
+            "CAUTION": 177,
+            "GO": 69
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 1,
+            "catchup": 11,
+            "current": 235
+          },
+          "first_stop_after_first_result_s": null,
+          "first_stop_dist": null,
+          "source_age_p50_s": 0.04715847969055176,
+          "source_age_max_s": 0.4024045467376709,
+          "latency_p50_ms": 39.001220703125,
+          "node_cpu_cores_p50": 0.49,
+          "node_cpu_cores_max": 1.06,
+          "docker_cpu_cores_mean": 0.3665875,
+          "docker_cpu_cores_max": 1.1374,
+          "docker_working_set_peak_mb": 171.12760319999998,
+          "container_cgroup_peak_mb": 189.034496,
+          "node_rss_peak_mb": 180.2502144,
+          "memory_gate_mb": 189.034496,
+          "dropped": 4,
+          "skipped": 4
+        }
+      },
+      {
+        "condition": "clear_readme",
+        "repetition": 2,
+        "label": "candidate_clear_readme_r2",
+        "metrics": {
+          "complete": false,
+          "errors": [
+            "last expected bag frame missing (incomplete drain)",
+            "missing/extra/mismatched decision messages"
+          ],
+          "expected_frames": 252,
+          "frames_processed": 249,
+          "fresh_frames": 238,
+          "fresh_fraction": 0.9444444444444444,
+          "missing_bag_frame_results": 3,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 1,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": -1,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 68,
+            "CAUTION": 180,
+            "STOP": 0,
+            "FAULT": 1
+          },
+          "watchdog_results": {
+            "FAULT": 31
+          },
+          "decision_messages": {
+            "FAULT": 33,
+            "CAUTION": 180,
+            "GO": 68
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 1,
+            "catchup": 10,
+            "current": 238
+          },
+          "first_stop_after_first_result_s": null,
+          "first_stop_dist": null,
+          "source_age_p50_s": 0.04562950134277344,
+          "source_age_max_s": 0.39090776443481445,
+          "latency_p50_ms": 38.172950744628906,
+          "node_cpu_cores_p50": 0.5,
+          "node_cpu_cores_max": 0.93,
+          "docker_cpu_cores_mean": 0.325376,
+          "docker_cpu_cores_max": 1.2114,
+          "docker_working_set_peak_mb": 162.4244224,
+          "container_cgroup_peak_mb": 180.084736,
+          "node_rss_peak_mb": 178.3627776,
+          "memory_gate_mb": 180.084736,
+          "dropped": 2,
+          "skipped": 2
+        }
+      },
+      {
+        "condition": "clear_readme",
+        "repetition": 3,
+        "label": "candidate_clear_readme_r3",
+        "metrics": {
+          "complete": false,
+          "errors": [
+            "last expected bag frame missing (incomplete drain)",
+            "missing/extra/mismatched decision messages"
+          ],
+          "expected_frames": 252,
+          "frames_processed": 249,
+          "fresh_frames": 234,
+          "fresh_fraction": 0.9285714285714286,
+          "missing_bag_frame_results": 3,
+          "missing_status_messages": 0,
+          "missing_decision_messages": 0,
+          "extra_decision_messages": 1,
+          "missing_latency_messages": 0,
+          "extra_latency_messages": 0,
+          "decision_message_delta": -1,
+          "latency_message_delta": 0,
+          "frame_results": {
+            "GO": 67,
+            "CAUTION": 181,
+            "STOP": 0,
+            "FAULT": 1
+          },
+          "watchdog_results": {
+            "FAULT": 31
+          },
+          "decision_messages": {
+            "FAULT": 33,
+            "CAUTION": 181,
+            "GO": 67
+          },
+          "freshness_reasons": {
+            "epoch_unconfirmed": 1,
+            "catchup": 14,
+            "current": 234
+          },
+          "first_stop_after_first_result_s": null,
+          "first_stop_dist": null,
+          "source_age_p50_s": 0.04675436019897461,
+          "source_age_max_s": 0.4176754951477051,
+          "latency_p50_ms": 38.939613342285156,
+          "node_cpu_cores_p50": 0.47,
+          "node_cpu_cores_max": 1.03,
+          "docker_cpu_cores_mean": 0.337504,
+          "docker_cpu_cores_max": 1.1028,
+          "docker_working_set_peak_mb": 168.50616319999997,
+          "container_cgroup_peak_mb": 186.744832,
+          "node_rss_peak_mb": 184.025088,
+          "memory_gate_mb": 186.744832,
+          "dropped": 2,
+          "skipped": 2
+        }
+      }
+    ]
+  },
+  "manifest": "manifest.json"
+}

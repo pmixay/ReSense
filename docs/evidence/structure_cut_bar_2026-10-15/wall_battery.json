@@ -1,0 +1,1768 @@
+{
+  "cab09": {
+    "sealed": {
+      "objs": [
+        "0.6,0.9,1.8:wall+:0.9"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 140,
+        "CAUTION": 128,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.6,0.9,1.8:wall+:0.9"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 140,
+        "CAUTION": 128,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "cab10": {
+    "sealed": {
+      "objs": [
+        "0.6,1.0,1.8:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 124,
+        "CAUTION": 142,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.6,1.0,1.8:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 124,
+        "CAUTION": 142,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "cab085off": {
+    "sealed": {
+      "objs": [
+        "0.6,0.5,1.8:wall+:0.85"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 143,
+        "CAUTION": 123,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.6,0.5,1.8:wall+:0.85"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 143,
+        "CAUTION": 123,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "person08": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:0.8"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 151,
+        "CAUTION": 117,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:0.8"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 151,
+        "CAUTION": 117,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "person10": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 124,
+        "CAUTION": 142,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 124,
+        "CAUTION": 142,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "mast10": {
+    "sealed": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 154,
+        "CAUTION": 112,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 154,
+        "CAUTION": 112,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "mast12": {
+    "sealed": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:1.2"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 145,
+        "CAUTION": 121,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:1.2"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 145,
+        "CAUTION": 121,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 1,
+        "tf_free": 1,
+        "cut_parts": 2
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "tallcab10": {
+    "sealed": {
+      "objs": [
+        "0.6,0.6,2.5:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 148,
+        "CAUTION": 118,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.6,0.6,2.5:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 148,
+        "CAUTION": 118,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "darkcol10": {
+    "sealed": {
+      "objs": [
+        "0.4,0.4,5.0:wall+:1.0:0:2.6"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 150,
+        "CAUTION": 116,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.4,0.4,5.0:wall+:1.0:0:2.6"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 150,
+        "CAUTION": 116,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "col10": {
+    "sealed": {
+      "objs": [
+        "0.4,0.4,5.0:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 167,
+        "CAUTION": 100,
+        "STOP": 1,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.4,0.4,5.0:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 167,
+        "CAUTION": 100,
+        "STOP": 1,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "pers_cab_behind": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:axis:0",
+        "0.6,1.0,1.8:wall+:1.0:1.5"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 153,
+        "obj_stop_frames": 44,
+        "first_stop_X": 66.58,
+        "stop_frames_while_visible": 44,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "5/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "X_hits": [
+          66.58,
+          65.11,
+          63.63,
+          62.16,
+          60.69,
+          59.21,
+          57.74,
+          56.27,
+          54.81,
+          53.34,
+          51.87,
+          50.41,
+          48.94,
+          47.47,
+          46.0,
+          44.53,
+          43.05,
+          41.58,
+          40.1,
+          38.63,
+          37.16,
+          35.7,
+          34.23,
+          32.76,
+          31.28,
+          29.82,
+          28.34,
+          26.86,
+          25.38,
+          23.9,
+          22.43,
+          20.97,
+          19.5,
+          18.03,
+          16.55,
+          15.08,
+          13.6,
+          12.12,
+          10.64,
+          9.17,
+          7.69,
+          6.21,
+          4.73,
+          3.25
+        ]
+      },
+      "o1": {
+        "visible": 109,
+        "obj_stop_frames": 4,
+        "first_stop_X": 68.08,
+        "stop_frames_while_visible": 45,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "4/27",
+          "100-150": "0/34",
+          "150-200": "0/9"
+        },
+        "X_hits": [
+          68.08,
+          66.61,
+          65.13,
+          63.66
+        ]
+      },
+      "decisions": {
+        "GO": 95,
+        "CAUTION": 128,
+        "STOP": 45,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:axis:0",
+        "0.6,1.0,1.8:wall+:1.0:1.5"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 153,
+        "obj_stop_frames": 44,
+        "first_stop_X": 66.58,
+        "stop_frames_while_visible": 44,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "5/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "X_hits": [
+          66.58,
+          65.11,
+          63.63,
+          62.16,
+          60.69,
+          59.21,
+          57.74,
+          56.27,
+          54.81,
+          53.34,
+          51.87,
+          50.41,
+          48.94,
+          47.47,
+          46.0,
+          44.53,
+          43.05,
+          41.58,
+          40.1,
+          38.63,
+          37.16,
+          35.7,
+          34.23,
+          32.76,
+          31.28,
+          29.82,
+          28.34,
+          26.86,
+          25.38,
+          23.9,
+          22.43,
+          20.97,
+          19.5,
+          18.03,
+          16.55,
+          15.08,
+          13.6,
+          12.12,
+          10.64,
+          9.17,
+          7.69,
+          6.21,
+          4.73,
+          3.25
+        ]
+      },
+      "o1": {
+        "visible": 109,
+        "obj_stop_frames": 4,
+        "first_stop_X": 68.08,
+        "stop_frames_while_visible": 45,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "4/27",
+          "100-150": "0/34",
+          "150-200": "0/9"
+        },
+        "X_hits": [
+          68.08,
+          66.61,
+          65.13,
+          63.66
+        ]
+      },
+      "decisions": {
+        "GO": 95,
+        "CAUTION": 128,
+        "STOP": 45,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "pers_cab_front": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:axis:0",
+        "0.6,1.0,1.8:wall+:1.0:-1.5"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 153,
+        "obj_stop_frames": 45,
+        "first_stop_X": 68.06,
+        "stop_frames_while_visible": 45,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "6/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "X_hits": [
+          68.06,
+          66.58,
+          65.11,
+          63.63,
+          62.16,
+          60.69,
+          59.21,
+          57.74,
+          56.27,
+          54.81,
+          53.34,
+          51.87,
+          50.41,
+          48.94,
+          47.47,
+          46.0,
+          44.53,
+          43.05,
+          41.58,
+          40.1,
+          38.63,
+          37.16,
+          35.7,
+          34.23,
+          32.76,
+          31.28,
+          29.82,
+          28.34,
+          26.86,
+          25.38,
+          23.9,
+          22.43,
+          20.97,
+          19.5,
+          18.03,
+          16.55,
+          15.08,
+          13.6,
+          12.12,
+          10.64,
+          9.17,
+          7.69,
+          6.21,
+          4.73,
+          3.25
+        ]
+      },
+      "o1": {
+        "visible": 120,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 44,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/20"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 97,
+        "CAUTION": 125,
+        "STOP": 46,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:axis:0",
+        "0.6,1.0,1.8:wall+:1.0:-1.5"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 153,
+        "obj_stop_frames": 45,
+        "first_stop_X": 68.06,
+        "stop_frames_while_visible": 45,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "6/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "X_hits": [
+          68.06,
+          66.58,
+          65.11,
+          63.63,
+          62.16,
+          60.69,
+          59.21,
+          57.74,
+          56.27,
+          54.81,
+          53.34,
+          51.87,
+          50.41,
+          48.94,
+          47.47,
+          46.0,
+          44.53,
+          43.05,
+          41.58,
+          40.1,
+          38.63,
+          37.16,
+          35.7,
+          34.23,
+          32.76,
+          31.28,
+          29.82,
+          28.34,
+          26.86,
+          25.38,
+          23.9,
+          22.43,
+          20.97,
+          19.5,
+          18.03,
+          16.55,
+          15.08,
+          13.6,
+          12.12,
+          10.64,
+          9.17,
+          7.69,
+          6.21,
+          4.73,
+          3.25
+        ]
+      },
+      "o1": {
+        "visible": 120,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 44,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/20"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 97,
+        "CAUTION": 125,
+        "STOP": 46,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "pers_mast_behind": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:axis:0",
+        "0.3,0.3,2.6:wall+:1.0:1.5"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 153,
+        "obj_stop_frames": 42,
+        "first_stop_X": 63.63,
+        "stop_frames_while_visible": 42,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "3/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "X_hits": [
+          63.63,
+          62.16,
+          60.69,
+          59.21,
+          57.74,
+          56.27,
+          54.81,
+          53.34,
+          51.87,
+          50.41,
+          48.94,
+          47.47,
+          46.0,
+          44.53,
+          43.05,
+          41.58,
+          40.1,
+          38.63,
+          37.16,
+          35.7,
+          34.23,
+          32.76,
+          31.28,
+          29.82,
+          28.34,
+          26.86,
+          25.38,
+          23.9,
+          22.43,
+          20.97,
+          19.5,
+          18.03,
+          16.55,
+          15.08,
+          13.6,
+          12.12,
+          10.64,
+          9.17,
+          7.69,
+          6.21,
+          4.73,
+          3.25
+        ]
+      },
+      "o1": {
+        "visible": 109,
+        "obj_stop_frames": 2,
+        "first_stop_X": 65.13,
+        "stop_frames_while_visible": 43,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "2/27",
+          "100-150": "0/34",
+          "150-200": "0/9"
+        },
+        "X_hits": [
+          65.13,
+          63.66
+        ]
+      },
+      "decisions": {
+        "GO": 103,
+        "CAUTION": 122,
+        "STOP": 43,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:axis:0",
+        "0.3,0.3,2.6:wall+:1.0:1.5"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 153,
+        "obj_stop_frames": 42,
+        "first_stop_X": 63.63,
+        "stop_frames_while_visible": 42,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "3/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "X_hits": [
+          63.63,
+          62.16,
+          60.69,
+          59.21,
+          57.74,
+          56.27,
+          54.81,
+          53.34,
+          51.87,
+          50.41,
+          48.94,
+          47.47,
+          46.0,
+          44.53,
+          43.05,
+          41.58,
+          40.1,
+          38.63,
+          37.16,
+          35.7,
+          34.23,
+          32.76,
+          31.28,
+          29.82,
+          28.34,
+          26.86,
+          25.38,
+          23.9,
+          22.43,
+          20.97,
+          19.5,
+          18.03,
+          16.55,
+          15.08,
+          13.6,
+          12.12,
+          10.64,
+          9.17,
+          7.69,
+          6.21,
+          4.73,
+          3.25
+        ]
+      },
+      "o1": {
+        "visible": 109,
+        "obj_stop_frames": 2,
+        "first_stop_X": 65.13,
+        "stop_frames_while_visible": 43,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "2/27",
+          "100-150": "0/34",
+          "150-200": "0/9"
+        },
+        "X_hits": [
+          65.13,
+          63.66
+        ]
+      },
+      "decisions": {
+        "GO": 103,
+        "CAUTION": 122,
+        "STOP": 43,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 1
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "person09": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:0.9"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 135,
+        "CAUTION": 131,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:0.9"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 135,
+        "CAUTION": 131,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "mast09": {
+    "sealed": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:0.9"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 146,
+        "CAUTION": 120,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.3,0.3,2.6:wall+:0.9"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 146,
+        "CAUTION": 120,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "person11": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:1.1"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 124,
+        "CAUTION": 142,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:1.1"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 124,
+        "CAUTION": 142,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "signpost095": {
+    "sealed": {
+      "objs": [
+        "0.1,0.1,2.4:wall+:0.95",
+        "0.05,0.6,0.6:wall+:0.95:0.1::wall:1.8"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 86,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/20",
+          "100-150": "0/21",
+          "150-200": "0/6"
+        },
+        "X_hits": []
+      },
+      "o1": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 146,
+        "CAUTION": 120,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.1,0.1,2.4:wall+:0.95",
+        "0.05,0.6,0.6:wall+:0.95:0.1::wall:1.8"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 86,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/20",
+          "100-150": "0/21",
+          "150-200": "0/6"
+        },
+        "X_hits": []
+      },
+      "o1": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 146,
+        "CAUTION": 120,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "person10_drop": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 124,
+        "CAUTION": 142,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:1.0"
+      ],
+      "start": 0,
+      "d0": 230.0,
+      "o0": {
+        "visible": 121,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 2,
+        "bins": {
+          "3-30": "0/19",
+          "30-60": "0/20",
+          "60-100": "0/27",
+          "100-150": "0/34",
+          "150-200": "0/21"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 124,
+        "CAUTION": 142,
+        "STOP": 2,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "B_person10": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:1.0"
+      ],
+      "start": 50,
+      "d0": 230.0,
+      "o0": {
+        "visible": 58,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/15",
+          "30-60": "0/17",
+          "60-100": "0/23",
+          "100-150": "0/3"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 83,
+        "CAUTION": 169,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:wall+:1.0"
+      ],
+      "start": 50,
+      "d0": 230.0,
+      "o0": {
+        "visible": 58,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/15",
+          "30-60": "0/17",
+          "60-100": "0/23",
+          "100-150": "0/3"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 83,
+        "CAUTION": 169,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 64,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  },
+  "B_person10m": {
+    "sealed": {
+      "objs": [
+        "0.5,0.5,1.75:wall-:1.0"
+      ],
+      "start": 50,
+      "d0": 230.0,
+      "o0": {
+        "visible": 67,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/15",
+          "30-60": "0/17",
+          "60-100": "0/23",
+          "100-150": "0/12"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 73,
+        "CAUTION": 179,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 0,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "H2": {
+      "objs": [
+        "0.5,0.5,1.75:wall-:1.0"
+      ],
+      "start": 50,
+      "d0": 230.0,
+      "o0": {
+        "visible": 67,
+        "obj_stop_frames": 0,
+        "first_stop_X": null,
+        "stop_frames_while_visible": 0,
+        "bins": {
+          "3-30": "0/15",
+          "30-60": "0/17",
+          "60-100": "0/23",
+          "100-150": "0/12"
+        },
+        "X_hits": []
+      },
+      "decisions": {
+        "GO": 73,
+        "CAUTION": 179,
+        "STOP": 0,
+        "FAULT": 0
+      },
+      "hooks": {
+        "tf_calls": 57,
+        "tf_free": 0,
+        "cut_parts": 0
+      }
+    },
+    "new_wall_stop_frames": 0,
+    "lost_axis_stop_frames": 0
+  }
+}

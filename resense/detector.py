@@ -189,6 +189,8 @@ class Detector:
         self.low_range = 0.0            # m, how far the bed was observed for the low-object stage (last frame)
         self._thin: List[Cluster] = []  # 26.09 (tracking.stop_keep_thin): this frame's corridor clusters flatter than min_height
         self._frame_ring: Optional[np.ndarray] = None
+        self._frame_xyz: Optional[np.ndarray] = None  # 13.10: this frame's cloud for the column free-top test (cluster.column_free_max_top)
+        self._frame_hd: Optional[tuple] = None  # 15.10: its heights above the rail head and laterals (dy_all, h_all) for that test
         self._low_height: List[Cluster] = []  # current straddle evidence just below its clean top-height threshold
         self._prev_stamp: Optional[float] = None
         self._previous_latency_ms: Optional[float] = None  # previous completed process interval
@@ -213,6 +215,8 @@ class Detector:
         self.bed.reset()
         self._thin = []
         self._frame_ring = None
+        self._frame_xyz = None
+        self._frame_hd = None
         self._low_height = []
         self._prev_stamp = None
         self._previous_latency_ms = None
@@ -265,8 +269,10 @@ class Detector:
         self._frame_ring = frame.ring
         dt = self._frame_dt(frame.stamp)
         xyz = self._fit_track(frame.xyz, self._periods())
+        self._frame_xyz = xyz
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
+        self._frame_hd = (dy_all, h_all)
         trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
@@ -299,8 +305,10 @@ class Detector:
         cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
+        drift = self.track.wall_drift
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
-                                    previous_latency_ms, mount, gauge[0].distance if gauge else None, cap)
+                                    previous_latency_ms, mount, gauge[0].distance if gauge else None, cap,
+                                    wall_drift=drift if drift < 1e9 else None)
         health["latency_basis"] = "previous_complete_process"
         health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
         t7 = time.perf_counter()
@@ -562,7 +570,8 @@ class Detector:
         """Voxelise, cluster, describe and filter: the corridor candidates (count thresholds
         scaled for merged frames), the low candidates on their own with a tighter radius, the
         straddle candidates; then the low clusters that are the foot or the lower part of a
-        corridor object are dropped."""
+        corridor object are dropped. The corridor clustering gets this frame's cloud for the column
+        signature's free-top test (13.10, ``cluster.column_free_max_top``)."""
         cfg = self.cfg
         acc = cfg.accumulation
         self._low_height = []
@@ -575,6 +584,7 @@ class Detector:
             if reg is not None:
                 dy_alt = corr.dy + reg[1]
         keep_thin = cfg.tracking.stop_keep_thin > 0 or cfg.tracking.thin_far_min_distance > 0
+        hd = self._frame_hd or (None, None)
         clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
                                 height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
                                 min_points_factor=factor, factor_range=acc.min_range,
@@ -582,7 +592,9 @@ class Detector:
                                 smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
                                 dy_alt=dy_alt, keep_thin=keep_thin,
                                 weak_from=cfg.tracking.thin_far_min_distance
-                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0)
+                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
+                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0 else None,
+                                frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1])
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
@@ -688,8 +700,10 @@ class Detector:
             # 26.09 (safety review): a blob kept only by the wall keep (cluster.wall_keep_gauge_voxels)
             # counts only as an obstacle, as for a straddling cluster: demoted (a column), it must not
             # remove a low object beside it
+            # 14.10 (review): so does a part the structure cut carved out of an oversize cluster
+            # (Cluster.cut): the sealed detector dropped that cluster whole, it removed nothing
             dup = any(_overlap(c, k) for k in clusters
-                      if not (strad or k.wall_kept) or (k.zone == "gauge" and not k.reason))
+                      if not (strad or k.wall_kept or k.cut) or (k.zone == "gauge" and not k.reason))
             if not dup:
                 keep.append(c)
         return keep
@@ -848,8 +862,7 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
             continue
         if (t.hits if t is not None else 1) < hcfg.clear_cap_min_hits:
             continue
-        if hcfg.clear_cap_skip_columns and (c.reason == "column" or (
-                t is not None and t.column_hold > 0 and sum(t.column_hist) >= t.column_hold)):
+        if hcfg.clear_cap_skip_columns and (c.reason == "column" or (t is not None and t.column_held)):
             continue
         touch = c.n_gauge >= hcfg.clear_cap_min_gauge
         if not touch and poly is not None and c.points_idx.size:
@@ -865,8 +878,7 @@ def clear_cap_distance(clusters: List[Cluster], tracks, cand: Candidates, dy_all
                 continue
             if t.last.n_gauge < hcfg.clear_cap_min_gauge:
                 continue
-            if hcfg.clear_cap_skip_columns and (t.last.reason == "column" or (
-                    t.column_hold > 0 and sum(t.column_hist) >= t.column_hold)):
+            if hcfg.clear_cap_skip_columns and (t.last.reason == "column" or t.column_held):
                 continue
             d = float(t.last.distance + (t.centroid[0] - t.last.centroid[0]))
             best = d if best is None else min(best, d)

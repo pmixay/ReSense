@@ -1,0 +1,11 @@
+2026-10-16T08:22:02.374101293Z [INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+2026-10-16T08:22:02.394038802Z /review/resume_linux.py: line 1: Continue the adopted volume; never re-run setup_units or overwrite run-001.: command not found
+2026-10-16T08:22:02.396694531Z /review/resume_linux.py: line 2: import: command not found
+2026-10-16T08:22:02.399259292Z /review/resume_linux.py: line 3: import: command not found
+2026-10-16T08:22:02.401836663Z /review/resume_linux.py: line 4: from: command not found
+2026-10-16T08:22:02.403741653Z /review/resume_linux.py: line 5: import: command not found
+2026-10-16T08:22:02.405089291Z /review/resume_linux.py: line 6: import: command not found
+2026-10-16T08:22:02.406933076Z /review/resume_linux.py: line 7: import: command not found
+2026-10-16T08:22:02.409164503Z /review/resume_linux.py: line 9: from: command not found
+2026-10-16T08:22:02.410548527Z /review/resume_linux.py: line 11: syntax error near unexpected token `('
+2026-10-16T08:22:02.413610132Z /review/resume_linux.py: line 11: `OUT = Path('/review/run-002')'

@@ -1,0 +1,83 @@
+{
+  "groups": {
+    "obstacle_warning": {
+      "frames": 0,
+      "changes": 0
+    },
+    "nearest_clear": {
+      "frames": 1834,
+      "changes": 3668
+    },
+    "detections_warnings": {
+      "frames": 0,
+      "changes": 0
+    },
+    "candidates": {
+      "frames": 12781,
+      "changes": 51412
+    },
+    "track": {
+      "frames": 18329,
+      "changes": 20751
+    },
+    "health": {
+      "frames": 2422,
+      "changes": 12774
+    },
+    "ego_motion": {
+      "frames": 0,
+      "changes": 0
+    },
+    "mount": {
+      "frames": 0,
+      "changes": 0
+    },
+    "other_result_fields": {
+      "frames": 0,
+      "changes": 0
+    }
+  },
+  "explicit": {
+    "obstacle": 0,
+    "warning": 0,
+    "nearest_distance": 0,
+    "detections": 0,
+    "warnings": 0,
+    "n_candidates": 0,
+    "n_points": 0,
+    "n_corridor": 0,
+    "preexisting_track_fields": 0,
+    "non_range_non_latency_health": 0,
+    "ego_motion": 0,
+    "mount": 0,
+    "preexisting_raw_candidates": 0,
+    "raw_corridor_membership": 0
+  },
+  "checks": {
+    "frames": 18329,
+    "finite_wall_drift_frames": 2422,
+    "health.monitored_range_formula_checked": 18329,
+    "health.clear_distance_formula_checked": 18329,
+    "result.clear_distance_formula_checked": 18329,
+    "health.monitored_range_increased_frames": 0,
+    "health.clear_distance_increased_frames": 0,
+    "result.clear_distance_increased_frames": 0
+  },
+  "numeric": {
+    "common_numeric_values_compared": 2432861,
+    "common_numeric_values_changed": 5799,
+    "range_values_changed": 5799
+  },
+  "flags": {
+    "cut": {
+      "false": 25706
+    },
+    "spared": {
+      "false": 25706
+    }
+  },
+  "other_changes": 0,
+  "setF_fields": {
+    "sequences[].rows[].mon": 90
+  }
+}

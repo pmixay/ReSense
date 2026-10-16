@@ -1,0 +1,55 @@
+"""P3 timing: the cost of K free-top tests in one frame on the code at WT (14.10: a frame scan per test; 15.10: one
+azimuth index per frame). A real ride frame (gate cache new_data, the detector run over the 5 frames before it for
+the heights / laterals), K 'clusters' = the frame's returns in K boxes 0.4 x 0.4 m at 20-120 m along the wall side
+(y 1.2-1.6 m) - whatever is there, the test runs the same work. Median of 7 repeats per K.
+usage: timing_scale.py <cache> <file index>"""
+import os
+import sys
+import time
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import resense  # noqa
+assert resense.__file__.startswith(WT)
+import resense.clustering as C  # noqa
+from resense.config import DetectorConfig  # noqa
+from resense.detector import Detector  # noqa
+from resense.frame import frame_from_compact  # noqa
+from scripts.cache_io import cache_files, cache_file_stem, load_cache_array, load_cache_stamps  # noqa
+
+cache, k0 = sys.argv[1], int(sys.argv[2])
+files = [str(f) for f in cache_files(cache)]
+stamps = load_cache_stamps(cache)
+cfg = DetectorConfig.from_yaml(os.path.join(WT, "configs/default.yaml"))
+det = Detector(cfg)
+for i in range(k0 - 5, k0 + 1):
+    stem = cache_file_stem(files[i])
+    res = det.process(frame_from_compact(load_cache_array(files[i]), cfg.sensor, stamp=stamps.get(stem, i * 0.1),
+                                         frame_id=stem))
+xyz, ring = res.xyz, det._frame_ring
+hd = getattr(det, "_frame_hd", None)
+boxes = []
+for x in np.linspace(20.0, 120.0, 40):
+    for y in (1.2, -1.6):
+        m = np.flatnonzero((xyz[:, 0] >= x) & (xyz[:, 0] < x + 0.4) & (xyz[:, 1] >= y) & (xyz[:, 1] < y + 0.4))
+        if m.size >= 4:
+            boxes.append(m)
+print("frame", cache_file_stem(files[k0]), "points", len(xyz), "boxes", len(boxes))
+new = hasattr(C, "FrameRays")
+for K in (1, 3, 10, 30):
+    ts = []
+    for rep in range(7):
+        t0 = time.perf_counter()
+        if new:
+            rays = C.FrameRays(xyz, ring, hd[1], hd[0])
+            for b in boxes[:K]:
+                C.top_is_free(rays, b, 2, window=cfg.cluster.column_free_window,
+                              vault_margin=cfg.cluster.column_free_vault_margin)
+        else:
+            for b in boxes[:K]:
+                C.top_is_free(xyz, b, 2, ring)
+        ts.append((time.perf_counter() - t0) * 1e3)
+    t = float(np.median(ts))
+    print(f"K {K:3d} frame ms {t:7.2f} per test ms {t / K:6.3f}")

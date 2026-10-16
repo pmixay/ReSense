@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+"""Per frame of a judge cache (no object): the detector's axis vs a wall-referenced true-axis estimate.
+The wall on side S (+1 left / -1 right) at h 1.0-2.2 m is followed from the near field (where the
+detector's rail-locked axis is right) with an iterative quadratic fit; true axis = wall - near offset.
+Prints per frame: dy_det of the true axis at x = 40..160 step 10 (NaN beyond the fitted wall extent).
+usage: true_axis_all.py <cache> <out.json> <side> [k0 k1]"""
+import glob, json, os, sys
+JUDGE = os.environ.get("JUDGE_SCRIPTS", "/home/user/ReSense/docs/evidence/judgement_2026-10-13/scripts")
+sys.path.insert(0, JUDGE)
+import numpy as np
+import resense.detector as D
+from judge_runner import NodeReplica
+from range_test import run_frame
+cache, out, side = sys.argv[1], sys.argv[2], int(sys.argv[3])
+k0, k1 = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (0, 10 ** 9)
+CAP = {}
+_orig = D.Detector._corridor
+def _corr(self, xyz, intensity):
+    r = _orig(self, xyz, intensity)
+    CAP.update(xyz=xyz, dy=r[1], h=r[2])
+    return r
+D.Detector._corridor = _corr
+meta = json.load(open(os.path.join(cache, "meta.json")))
+files = sorted(glob.glob(os.path.join(cache, "f_*.npz")))
+rep = NodeReplica()
+res_all = []
+XS = np.arange(40, 170, 10.0)
+for k, (m, f) in enumerate(zip(meta, files)):
+    if k >= k1:
+        break
+    d = np.load(f)
+    res = run_frame(rep, d["xyz"], d["inten"], d["ring"], m, k)
+    if k < k0:
+        continue
+    xyz, dy, h = CAP["xyz"], np.asarray(CAP["dy"]), np.asarray(CAP["h"])
+    X, Y = xyz[:, 0], xyz[:, 1]
+    t = res.track
+    mm = (X > 15) & (X < 170) & (h > 1.0) & (h < 2.2)
+    near = mm & (X < 45) & (side * dy > 1.6) & (side * dy < 3.2)
+    rec = {"k": k, "curv": float(t.curvature), "axis_valid": float(t.axis_valid)}
+    if near.sum() < 50:
+        rec["ok"] = False
+        res_all.append(rec); continue
+    off = float(np.median(side * dy[near]))
+    sel = near.copy()
+    for it in range(9):
+        c = np.polyfit(X[sel], Y[sel], 2)
+        r_ = Y - np.polyval(c, X)
+        sel = mm & (np.abs(r_) < 0.6) & (X < 45 + 15 * (it + 1))
+    c = np.polyfit(X[sel], Y[sel], 2)
+    xmax = float(np.quantile(X[sel], 0.98))
+    yd = np.array([float(t.center_y(x)) for x in XS])
+    ta = np.polyval(c, XS) - side * off - yd
+    rec["coef"] = [float(v) for v in c]
+    rec["center_y"] = {int(x): round(float(v), 3) for x, v in zip(XS, yd)}
+    ta[XS > xmax + 15] = np.nan
+    rec.update(ok=True, off=round(off, 2), wall_xmax=round(xmax, 1), n=int(sel.sum()),
+               true_axis_dy={int(x): (None if np.isnan(v) else round(float(v), 2)) for x, v in zip(XS, ta)})
+    res_all.append(rec)
+json.dump(res_all, open(out, "w"))
+for r in res_all:
+    if r.get("ok"):
+        print(r["k"], round(r["curv"], 5), r["axis_valid"], r["off"], r["wall_xmax"], [r["true_axis_dy"][x] for x in (60, 80, 100, 120, 140)])

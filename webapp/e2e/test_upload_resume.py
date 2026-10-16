@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 
 import pytest
-from e2e_helpers import real_errors, wait_until
+from e2e_helpers import api_route, real_errors, wait_until
 
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
@@ -56,13 +56,45 @@ def received(api, uid: str) -> int:
 
 def accepted_chunks(backend, uid: str, since: int = 0) -> set[int]:
     """Chunk indexes the server answered 200 for (its access log), from byte ``since`` of the log."""
+    return accepted_chunk_snapshot(backend, uid, since)[0]
+
+
+def accepted_chunk_snapshot(backend, uid: str, since: int = 0) -> tuple[set[int], int]:
+    """Return the accepted indexes AND the cursor of the same read, without a read/stat gap."""
     with open(backend.log, "rb") as fh:
         fh.seek(since)
         text = fh.read().decode("utf-8", errors="replace")
-    return {int(i) for i in re.findall(rf'"PUT /api/uploads/{uid}/chunked/(\d+)\?[^"]*" 200', text)}
+        end = fh.tell()
+    return {int(i) for i in re.findall(rf'"PUT /api/uploads/{uid}/chunked/(\d+)\?[^"]*" 200', text)}, end
 
 
-def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
+@pytest.fixture
+def held_chunk_routes(app):
+    """Finish held route handlers before context teardown, including on a failed assertion."""
+    routes = []
+
+    def close():
+        # Resolve handlers before removing interception. Paused/reloaded requests may
+        # already be gone: fallback completes their local handler when abort cannot
+        # reach Chromium, instead of leaving its future pending until context teardown.
+        while routes:
+            route = routes.pop()
+            try:
+                route.abort()
+            except pw.Error:
+                try:
+                    route.fallback()
+                except pw.Error:  # already handled
+                    pass
+        app.page.unroute_all(behavior="ignoreErrors")
+
+    try:
+        yield routes, close
+    finally:
+        close()
+
+
+def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path, held_chunk_routes):
     page, api = app.page, backend.api
     ride = tmp_path / "long_ride.jsonl"
     results_with_padding(ride, 40 * MB)
@@ -70,8 +102,31 @@ def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
     cdp.send("Network.enable")
     throttle(cdp)
     app.goto("/upload")
+    # A throughput limit alone is not a synchronization barrier: four concurrent, compressed
+    # chunks can finish while the assertions / second tab are running. Keep a strict subset
+    # on the real server until reload, without changing the file size or upload concurrency.
+    cutoff, offline = 2, False
+    held_routes, close_routes = held_chunk_routes
+    chunks = api_route(backend.url, r"/uploads/[^/]+/chunked/\d+\?")
+
+    def gate(route):
+        index = int(re.search(r"/chunked/(\d+)", route.request.url)[1])
+        if offline or index < cutoff:
+            route.continue_()  # offline failures must still come from Chromium's real network
+        else:
+            held_routes.append(route)
+
+    page.route(chunks, gate)
     files = page.locator('input[type=file][accept^=".zip"]')
-    files.set_input_files(str(ride))
+    # Routed Blob PUTs need not emit intermediate progress before their responses. Observe
+    # both permitted acknowledgements before checking metrics / taking the pause snapshot:
+    # abort cannot undo a complete body the server is already committing.
+    with (
+        page.expect_response(lambda r: r.request.method == "PUT" and chunks.search(r.url) and "/chunked/0?" in r.url) as first_chunk,
+        page.expect_response(lambda r: r.request.method == "PUT" and chunks.search(r.url) and "/chunked/1?" in r.url) as second_chunk,
+    ):
+        files.set_input_files(str(ride))
+    assert [first_chunk.value.status, second_chunk.value.status] == [200, 200]
 
     # live progress: bytes, speed, time left, the compression saved on the wire
     expect(page.get_by_text(re.compile(r"из\s40\sМБ"))).to_be_visible()
@@ -87,34 +142,61 @@ def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
     assert received(api, uid) == held
 
     # the connection is gone when the transfer resumes: it waits and retries by itself
+    offline = True
     throttle(cdp, offline=True)
     page.get_by_role("button", name="Продолжить загрузку").click()
     expect(page.get_by_text(re.compile(r"нет связи · повтор через \d+ с"))).to_be_visible()
     expect(page.get_by_text(re.compile(r"^(Нет сети — загрузка продолжится|Связь с сервером прервалась)"))).to_be_visible()
-    throttle(cdp)                                             # back: the browser's «online» retries at once
-    expect(page.get_by_text(re.compile(r"^осталось"))).to_be_visible(timeout=15_000)
+    # Register before taking the link online: the 16 MiB initial prefix already satisfies
+    # the old >=8 MiB check, which says nothing about this newly permitted chunk's commit.
+    with page.expect_response(lambda r: r.request.method == "PUT" and chunks.search(r.url) and "/chunked/2?" in r.url) as recovered:
+        cutoff, offline = 3, False  # one more real chunk moves after recovery; the rest wait for reload
+        throttle(cdp)  # the browser's «online» retries at once
+        expect(page.get_by_text(re.compile(r"^осталось"))).to_be_visible(timeout=15_000)
 
-    # a second tab sees the upload running there: it offers neither to continue nor to delete it
-    other_tab = page.context.new_page()
-    other_tab.goto(backend.url + "/upload")
-    expect(other_tab.get_by_text("идёт в другой вкладке")).to_be_visible()
-    expect(other_tab.get_by_role("button", name="Удалить незавершённую загрузку")).to_have_count(0)
-    expect(other_tab.get_by_role("button", name="Выбрать файлы")).to_be_disabled()
-    other_tab.close()
+        # a second tab sees the upload running there: it offers neither to continue nor to delete it
+        other_tab = page.context.new_page()
+        try:
+            other_tab.goto(backend.url + "/upload")
+            expect(other_tab.get_by_text("идёт в другой вкладке")).to_be_visible()
+            expect(other_tab.get_by_role("button", name="Удалить незавершённую загрузку")).to_have_count(0)
+            expect(other_tab.get_by_role("button", name="Выбрать файлы")).to_be_disabled()
+        finally:
+            other_tab.close()
+    assert recovered.value.status == 200
+    assert recovered.value.finished() is None
+
+    # Quiescent prefix: all permitted PUTs acknowledged, all other chunks still gated.
+    # Check actual server chunk state as well as HTTP success, then wait for the real log
+    # to catch up. A delayed log write must be included on one side of the cursor, never lost.
+    n_chunks = -(-ride.stat().st_size // (8 * MB))
+    state = api.get(f"/uploads/{uid}")
+    assert state["state"] == "receiving" and state["bytes_received"] == 24 * MB
+    assert len(state["partial"]) == 1
+    assert state["partial"][0]["received_chunks"] == 3
+    assert state["partial"][0]["missing"] == [[3, n_chunks - 1]]
+    wait_until(lambda: accepted_chunks(backend, uid) == {0, 1, 2})
+    stored, log_mark = accepted_chunk_snapshot(backend, uid)
+    assert stored == {0, 1, 2} and len(stored) < n_chunks
 
     # a reload in the middle: the browser asks first; the server keeps every finished chunk
-    wait_until(lambda: received(api, uid) >= 8 * MB, timeout=60)
-    page.on("dialog", lambda d: d.accept())
+    dialogs = []
+
+    def leave(d):
+        dialogs.append(d.type)
+        d.accept()
+
+    page.once("dialog", leave)
     page.reload()
+    assert dialogs == ["beforeunload"]
+    close_routes()
     expect(page.get_by_text("не завершена")).to_be_visible()
     expect(page.get_by_text("выберите тот же файл, чтобы продолжить")).to_be_visible()
     expect(page.get_by_text(re.compile(r"на сервере .+ из\s40\sМБ"))).to_be_visible()
     before = received(api, uid)
-    assert 8 * MB <= before < 40 * MB
-    stored = accepted_chunks(backend, uid)
-    n_chunks = -(-ride.stat().st_size // (8 * MB))
-    assert stored and len(stored) < n_chunks
-    log_mark = backend.log.stat().st_size
+    assert before == 24 * MB < ride.stat().st_size
+    assert accepted_chunks(backend, uid) == stored
+    assert accepted_chunks(backend, uid, since=log_mark) == set()
 
     # another file is not taken for it by mistake: it asks before replacing the unfinished upload
     other = tmp_path / "other.jsonl"

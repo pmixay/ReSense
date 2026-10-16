@@ -1,0 +1,53 @@
+"""interact_hooks.py plus the margin of the part-size bar (observation only): for every cut, the parts the bar
+(cluster.structure_cut_min_points) removed are described as well (bar 0), every rule applied - the free-top test
+included - and recorded with "loose": True. The detector never sees them; the counters are restored."""
+from dataclasses import replace
+
+import numpy as np
+
+import interact_hooks as H
+import resense.clustering as C
+
+STATE = H.STATE
+
+
+def _key(p):
+    return tuple(np.sort(p.idx)[:4].tolist())
+
+
+def cut(b, xyz, h, in_gauge, vox, inv, cfg):
+    parts = H.cut(b, xyz, h, in_gauge, vox, inv, cfg)
+    if cfg.structure_cut_min_points <= 0 or STATE.get("rest") is None:
+        return parts
+    n0 = dict(STATE["n"])
+    kept = {_key(p) for p in parts}
+    loose = H.ORIG_CUT(b, xyz, h, in_gauge, vox, inv, replace(cfg, structure_cut_min_points=0))
+    for p in loose:
+        if _key(p) in kept:
+            continue
+        ctx = {"cut": True, "loose": True,
+               "parent": (round(float(b.bmin[0]), 1), round(float(b.bmax[0]), 1), int(b.n_vox))}
+        prev = STATE["ctx"]
+        STATE["ctx"] = ctx
+        try:
+            c = H.ORIG_CC(p, *STATE["rest"])
+        finally:
+            STATE["ctx"] = prev
+        ctx["out"] = None if c is None else {"zone": c.zone, "reason": c.reason, "demoted": bool(c.demoted),
+                                             "n_gauge": int(c.n_gauge), "d": round(float(c.distance), 1)}
+        ctx["k"] = STATE["k"]
+        STATE["records"].append(ctx)
+    STATE["n"] = n0
+    return parts
+
+
+def cc(b, *rest, **kw):
+    if not kw:
+        STATE["rest"] = rest
+    return H.cc(b, *rest, **kw)
+
+
+def install():
+    H.install()
+    C._off_structure_parts = cut
+    C._corridor_cluster = cc

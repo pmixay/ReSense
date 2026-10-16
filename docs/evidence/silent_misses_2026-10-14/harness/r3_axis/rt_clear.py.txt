@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+"""The judge's range_test.py with per-row clear_distance / monitored range / axis_valid / live curvature added
+(scratch, r3). Optional TRUE_AXIS=<true_axis.json> places the box on the investigator's wall-referenced true
+axis (as range_true_axis.py) instead of the detector's baseline axis.
+usage: rt_clear.py <range_test args...>   (WT must point at the worktree under test)"""
+import json
+import os
+import sys
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import resense  # noqa: E402
+assert resense.__file__.startswith(WT), resense.__file__
+JUDGE = os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts")
+sys.path.insert(0, JUDGE)
+import numpy as np  # noqa: E402
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import ovr  # noqa: E402,F401
+import capvalid  # noqa: E402,F401
+import range_test  # noqa: E402
+
+EXTRA = {}
+_orig_run = range_test.run_frame
+
+
+def run_frame(rep, xyz_s, inten, ring, m, idx):
+    res = _orig_run(rep, xyz_s, inten, ring, m, idx)
+    h = res.health or {}
+    EXTRA[idx] = {"clear": float(res.clear_distance), "mon": h.get("monitored_range"),
+                  "av_live": round(float(res.track.axis_valid), 1), "curv_live": float(res.track.curvature),
+                  "contra": h.get("wall_drift")}
+    return res
+
+
+range_test.run_frame = run_frame
+
+TA_PATH = os.environ.get("TRUE_AXIS")
+if TA_PATH:
+    TA = {r["k"]: r for r in json.load(open(TA_PATH))}
+    _orig_baseline = range_test.baseline
+
+    def baseline(cache, out):
+        rows = [dict(r) for r in _orig_baseline(cache, out)]
+        n = 0
+        for k, r in enumerate(rows):
+            t = TA.get(k)
+            if t and t.get("ok") and "coef" in t:
+                c2, c1, c0 = t["coef"]
+                r["center"] = float(c0 - t["off"])
+                r["yaw"] = float(np.arctan(c1))
+                r["curv"] = float(2.0 * c2)
+                n += 1
+        print("true-axis placement on", n, "frames", file=sys.stderr)
+        return rows
+
+    range_test.baseline = baseline
+
+sys.argv = ["range_test.py"] + sys.argv[1:]
+out = sys.argv[sys.argv.index("--obj") - 1] if "--obj" in sys.argv else None
+range_test.main()
+# the output prefix is the third positional argument
+pos = [a for a in sys.argv[1:] if not a.startswith("--")]
+prefix = None
+args = sys.argv[1:]
+i, p = 0, []
+while i < len(args):
+    if args[i].startswith("--"):
+        i += 1 if args[i] == "--dropout" else 2
+        continue
+    p.append(args[i])
+    i += 1
+prefix = p[2]
+d = json.load(open(prefix + ".json"))
+for r in d["rows"]:
+    r.update(EXTRA.get(r["k"], {}))
+vis = [r for r in d["rows"] if r.get("X") is not None and r["X"] > 3.0 and r.get("n_obj", 0) > 0]
+silent = [r for r in vis if r["decision"] == "GO" and r["clear"] >= r["X"]]
+d["summary"]["silent_go_frames"] = len(silent)
+d["summary"]["silent_go_X"] = [r["X"] for r in silent]
+d["summary"]["go_frames"] = sum(1 for r in vis if r["decision"] == "GO")
+json.dump(d, open(prefix + ".json", "w"))
+print(json.dumps({"silent_go_frames": len(silent), "silent_X_range": [min([r["X"] for r in silent], default=None),
+                  max([r["X"] for r in silent], default=None)]}))

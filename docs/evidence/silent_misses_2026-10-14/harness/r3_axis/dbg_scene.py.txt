@@ -1,0 +1,27 @@
+import sys, os
+sys.path.insert(0, os.environ["WT"])
+sys.path.insert(0, os.path.join(os.environ["WT"], "tests"))
+import numpy as np
+from resense.config import TrackConfig
+from resense.track import estimate_track, estimate_axis_from_walls
+from test_wall_drift import _entry_scene
+j = float(sys.argv[1]) if len(sys.argv) > 1 else 1 / 60000
+x0 = float(sys.argv[2]) if len(sys.argv) > 2 else 30.0
+inner = float(sys.argv[3]) if len(sys.argv) > 3 else 160.0
+xyz, yt = _entry_scene(j=j, x0=x0, inner_to=inner)
+cfg = TrackConfig()
+if os.environ.get("B"):
+    g, p = (float(v) for v in os.environ["B"].split(","))
+    from dataclasses import replace
+    cfg = replace(cfg, walls_reach_gap=g, walls_reach_power=p)
+m = None
+for _ in range(8):
+    m = estimate_track(xyz, cfg, prev=m)
+print("curv %.5f yaw %.4f drift %s av %.0f sides %d" % (m.curvature, m.yaw, m.wall_drift, m.axis_valid, m.axis_sides))
+for x in range(10, 165, 10):
+    print(x, "err %.2f" % (float(m.center_y(x)) - float(yt(x))))
+b = {}
+estimate_axis_from_walls(xyz, m, cfg, np.tan(m.yaw), boundaries=b)
+for n, (x, y) in b.items():
+    dy = y - m.center_y(x)
+    print(n, " ".join("%d:%.2f" % (a, c) for a, c in zip(x, dy)))

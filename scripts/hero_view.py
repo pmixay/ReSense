@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import os
+from pathlib import Path
 import sys
 
 import numpy as np
@@ -22,6 +23,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from resense.config import DetectorConfig  # noqa: E402
 from resense.detector import Detector  # noqa: E402
 from resense.io import iter_npy_frames  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from decision_policy_import import load_policy  # noqa: E402
+
+decision = load_policy(Path(__file__).resolve().parents[1]).decision
 
 BG = "#16091f"
 PINK = "#FF0053"
@@ -70,18 +75,6 @@ class Camera:
         u = self.W / 2 - self.f * d[:, 1] / x
         v = self.H / 2 - self.f * (d[:, 2] / x - self.tp)
         return u, v, d[:, 0]
-
-
-def decision(res):
-    """Offline STOP/health precedence, matching DetectorNode.decision without ROS imports."""
-    health = getattr(res, "health", {}) or {}
-    if res.obstacle:
-        return "STOP"
-    if health.get("level") == "error":
-        return "FAULT"
-    if res.warning or health.get("decision_level", health.get("level")) == "warn":
-        return "CAUTION"
-    return "GO"
 
 
 def render(frame, res, path, name, index, lang="ru", x_max=110.0, W=1920, H=1080, hud=True, foot=None):

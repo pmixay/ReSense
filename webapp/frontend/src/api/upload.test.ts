@@ -271,6 +271,25 @@ describe('uploadRecording', () => {
     expect(seen[seen.length - 1].resumed).toBe(10 + 2 * CHUNK);
   });
 
+  it('publishes acknowledged bytes and compression even within the progress throttle interval', async () => {
+    const clock = vi.spyOn(performance, 'now').mockReturnValue(1);
+    server.hook = (r) => (r.url.includes('/chunked/1?') ? 'hold' : undefined);
+    const seen: UploadProgress[] = [];
+    const h = uploadRecording([file('a.db3', cloudish(2 * CHUNK))], {
+      chunkSize: CHUNK, concurrency: 1, pollMs: 10, onProgress: (p) => seen.push(p),
+    });
+    try {
+      await vi.waitFor(() => expect(chunkPuts()).toHaveLength(2));
+      expect(server.chunks.get('a.db3')?.size).toBe(1);
+      expect(seen[seen.length - 1]).toMatchObject({ phase: 'uploading', loaded: CHUNK, compression: expect.any(Number) });
+      expect(seen[seen.length - 1].compression).toBeLessThan(0.5);
+    } finally {
+      h.abort();
+      await h.promise.catch(() => undefined);
+      clock.mockRestore();
+    }
+  });
+
   it('starts over when the upload to resume is gone', async () => {
     const staged: string[] = [];
     // GET /uploads/old1 is a 404 in the fake (expired): a new area is made

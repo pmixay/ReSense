@@ -1,5 +1,6 @@
 # The image copies only pyproject.toml, setup.py, README.md, native/, resense/, configs/, tests/, scripts/,
-# labels/doubleT_obstacle.json, ros2_ws/src/ and selected docker/ files (docker/Dockerfile); keep everything else out of the
+# exact dataset-free judge fixtures, labels/doubleT_obstacle.json, ros2_ws/src/ and selected docker/ files
+# (docker/Dockerfile); keep everything else out of the
 # build context (git history, videos, caches, local outputs and cached frames).
 .git
 .github
@@ -9,7 +10,34 @@ gitbook
 !docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
 !docs/evidence/results/residual_events_2026-09-28.json
 !docs/RESIDUAL_EVENTS_2026-09-28.md
+# H4 tracker replay uses this compact pre-tracker witness, not the surrounding safety outputs.
+!docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json
+# Dataset-free S1 identity/launcher tests need these pure harness fixtures, not judge outputs.
+!docs/evidence/judgement_2026-10-13/scripts/probe.py
+!docs/evidence/judgement_2026-10-13/scripts/judge_runner.py
+!docs/evidence/judgement_2026-10-13/scripts/range_test.py
+!docs/evidence/judgement_2026-10-13/scripts/score_objects.py
+!docs/evidence/judgement_2026-10-13/scripts/judge_geom.py
+!docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py
+!docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh
+!docs/evidence/judgement_2026-10-13/scripts/docker/listener.py
+!docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py
+!docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py
+!docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh
+!docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py
+!docs/evidence/node_startup_2026-10-15/docker_tools/listener.py
+!docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py
+!docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py
+!docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py
+!docs/evidence/offline_rebuild_2026-10-15/verify.py
 web
+webapp
+# The shared-policy tests import only this dependency-free consumer, not the web application.
+!webapp/backend/resense_web/__init__.py
+!webapp/backend/resense_web/decision.py
+# Only the committed label-schema regression fixture is needed by the dataset-free suite.
+labels
+!labels/doubleT_obstacle.json
 out
 data
 dist

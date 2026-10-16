@@ -1,0 +1,1991 @@
+{
+  "artifacts": [
+    {
+      "created_at": "2026-10-15T16:08:07Z",
+      "digest": "sha256:d047bd5693deda64b7680991908d61dc9a53ff83e08b61b186aeb5e95e10d367",
+      "expired": false,
+      "id": 11990270962,
+      "name": "resense-image-1.0.0-3fdc879",
+      "size_in_bytes": 529881425,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+        "id": 38765546278,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-10-15T16:17:10Z",
+      "digest": "sha256:571e273e4c68be31f5d230d31a3ad7b0557b3e46de04c31022aa5f6d9f307367",
+      "expired": false,
+      "id": 11990252411,
+      "name": "p1-cold-dry-run-3fdc87957f5d09ff32573eabe6637924b91ea376",
+      "size_in_bytes": 234125,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+        "id": 38765546278,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T11:46:20Z",
+      "digest": "sha256:75e99da98bcc050643a0c57d6caa7e980e6500074f446e11fdafc02c89abe716",
+      "expired": false,
+      "id": 11031051297,
+      "name": "p1-cold-dry-run-86e0dc1751fa5bc7926fe6b4ce63c4d4391e528a",
+      "size_in_bytes": 164173,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "86e0dc1751fa5bc7926fe6b4ce63c4d4391e528a",
+        "id": 36562317998,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T11:37:18Z",
+      "digest": "sha256:0197d42b758f259119bf18eccad38047f6da96313de72473c8c818b5a7bcf499",
+      "expired": false,
+      "id": 11030467604,
+      "name": "resense-image-1.0.0-86e0dc1",
+      "size_in_bytes": 534345242,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "86e0dc1751fa5bc7926fe6b4ce63c4d4391e528a",
+        "id": 36562317998,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T09:15:19Z",
+      "digest": "sha256:d1311d5cc3ef021f6850962ad465e831599f9b04c287e384e71a3ac06507735f",
+      "expired": false,
+      "id": 11023760222,
+      "name": "resense-image-1.0.0-6cafb28",
+      "size_in_bytes": 534358853,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "6cafb282d8a4b2d829051c5f1d98ff80c8d9fe00",
+        "id": 36547463949,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T09:23:41Z",
+      "digest": "sha256:df225a89a6245187d5cd1db88d1fffbbe9e53cfca3a0f7ef99144fd8e30a18b8",
+      "expired": false,
+      "id": 11023533208,
+      "name": "p1-cold-dry-run-6cafb282d8a4b2d829051c5f1d98ff80c8d9fe00",
+      "size_in_bytes": 226773,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "6cafb282d8a4b2d829051c5f1d98ff80c8d9fe00",
+        "id": 36547463949,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T09:07:43Z",
+      "digest": "sha256:3bfd038422e06a3f9c6eeed48251519173b16c120aafe1f6d7f2a8b13cca587d",
+      "expired": false,
+      "id": 11023465293,
+      "name": "p1-cold-dry-run-625197df44c2f032eec5c61c0c56f0df889b2619",
+      "size_in_bytes": 225368,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "625197df44c2f032eec5c61c0c56f0df889b2619",
+        "id": 36545766380,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T08:59:39Z",
+      "digest": "sha256:b5a9b8c1b58758c71be2d13108fec234623561fd9307b93e0b66b43cf6cb2263",
+      "expired": false,
+      "id": 11022736406,
+      "name": "resense-image-1.0.0-625197d",
+      "size_in_bytes": 534328041,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "625197df44c2f032eec5c61c0c56f0df889b2619",
+        "id": 36545766380,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T07:56:53Z",
+      "digest": "sha256:d4343a7970ae34c0ac1db343edd01df427acbb7b7b74f8362d2c8587fe90e7f2",
+      "expired": false,
+      "id": 11020025699,
+      "name": "p1-cold-dry-run-b34e83da9a1c9c5896662aeb9f3678cb2b9a49b8",
+      "size_in_bytes": 227258,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "b34e83da9a1c9c5896662aeb9f3678cb2b9a49b8",
+        "id": 36538468171,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T07:49:07Z",
+      "digest": "sha256:11b1ff95ee3ef4d8005d27ab730e4e9a58e6ec86e306c27379d9af338388918f",
+      "expired": false,
+      "id": 11019417761,
+      "name": "resense-image-1.0.0-b34e83d",
+      "size_in_bytes": 534334791,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "b34e83da9a1c9c5896662aeb9f3678cb2b9a49b8",
+        "id": 36538468171,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T03:13:05Z",
+      "digest": "sha256:30b77b65c9c13d8e1917b2303540d03f46bf372db129843df59f60668c0e2729",
+      "expired": false,
+      "id": 11011166857,
+      "name": "p1-cold-dry-run-c840c9a634df53622d2d358d20ac9a5e9fe78e05",
+      "size_in_bytes": 226216,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "c840c9a634df53622d2d358d20ac9a5e9fe78e05",
+        "id": 36515155615,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-29T03:04:09Z",
+      "digest": "sha256:99aea124f0e14cfce420e8ba55ce7af8a98e3a6cf821334d0683c87c5edb877c",
+      "expired": false,
+      "id": 11010761790,
+      "name": "resense-image-1.0.0-c840c9a",
+      "size_in_bytes": 534345266,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "c840c9a634df53622d2d358d20ac9a5e9fe78e05",
+        "id": 36515155615,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:59:51Z",
+      "digest": "sha256:983e9513b8f7ee63e793ae2ea09cccb7ce63ab8aa69184511f9a87df17154ecd",
+      "expired": false,
+      "id": 11001391355,
+      "name": "p1-cold-dry-run-2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+      "size_in_bytes": 225382,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+        "id": 36488337385,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:59:06Z",
+      "digest": "sha256:dc8c27cc717fd22f69e1274e40ef692b55fa131fce270ed810bcc9d94610ab8d",
+      "expired": false,
+      "id": 11000971714,
+      "name": "resense-image-1.0.0-5fe59dd",
+      "size_in_bytes": 534334962,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "5fe59ddc6143f1d99a90b7e5e03b8997fc15e6f8",
+        "id": 36489110774,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T22:06:20Z",
+      "digest": "sha256:6ea1d6d9370fffa1fbab83b7a9b13ec6188d08f35ba1f7d0467b89dbe6ddb09e",
+      "expired": false,
+      "id": 11000857953,
+      "name": "p1-cold-dry-run-5fe59ddc6143f1d99a90b7e5e03b8997fc15e6f8",
+      "size_in_bytes": 223944,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "5fe59ddc6143f1d99a90b7e5e03b8997fc15e6f8",
+        "id": 36489110774,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:51:22Z",
+      "digest": "sha256:6d369f7a694b52dfd3b24164671da025651df7f94be1e7d18056fd694041d861",
+      "expired": false,
+      "id": 11000570779,
+      "name": "resense-image-1.0.0-2acda69",
+      "size_in_bytes": 534356161,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+        "id": 36488337385,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T22:03:06Z",
+      "digest": "sha256:eb4df36f8a39714980a44ff46ba9aca9d1e459c954c4a16370c7024a7957db7c",
+      "expired": false,
+      "id": 11000347595,
+      "name": "resense-image-1.0.0-1a05ea7",
+      "size_in_bytes": 534324035,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "1a05ea76498c2160e7c62fa5452bbe1e730b8a4d",
+        "id": 36489557298,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:49:46Z",
+      "digest": "sha256:7fae884200a1cec306257588326347cc982e2de290c4f39c5cbee53a91102ee6",
+      "expired": false,
+      "id": 11000225796,
+      "name": "p1-cold-dry-run-871dbdf28f6b47c2e23f7f4b95565477ecb84235",
+      "size_in_bytes": 225617,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "871dbdf28f6b47c2e23f7f4b95565477ecb84235",
+        "id": 36487256773,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T22:10:18Z",
+      "digest": "sha256:e427d9e24fad14d8fc86c01b1af292a7fa11d139793396f49a6c9e1fb6743e8e",
+      "expired": false,
+      "id": 11000188477,
+      "name": "p1-cold-dry-run-1a05ea76498c2160e7c62fa5452bbe1e730b8a4d",
+      "size_in_bytes": 223423,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "1a05ea76498c2160e7c62fa5452bbe1e730b8a4d",
+        "id": 36489557298,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:44:37Z",
+      "digest": "sha256:01e51f0f693cb94a82a69aa7da4bc2d502b907d71f2f19cf9b5ed85403cd197e",
+      "expired": false,
+      "id": 10999639341,
+      "name": "resense-image-1.0.0-407f5b0",
+      "size_in_bytes": 534369147,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "407f5b05e4d494112f71bc7ff84229e0e6c0b094",
+        "id": 36487617833,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:41:15Z",
+      "digest": "sha256:af8cc9f99a9f5cb1d8b35ec5e4bb20ad8ad108f5bf00a5d47badc69cc6686a09",
+      "expired": false,
+      "id": 10999563491,
+      "name": "resense-image-1.0.0-871dbdf",
+      "size_in_bytes": 534171295,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "871dbdf28f6b47c2e23f7f4b95565477ecb84235",
+        "id": 36487256773,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:21:17Z",
+      "digest": "sha256:ce18ec2ff9d550f8b438df2bf2430fb00a92ac4d081a28f3f5bb2277e6682479",
+      "expired": false,
+      "id": 10998746721,
+      "name": "p1-cold-dry-run-292397833edf9db649a24f16807b2cfb15812194",
+      "size_in_bytes": 225759,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "292397833edf9db649a24f16807b2cfb15812194",
+        "id": 36484016040,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:28:54Z",
+      "digest": "sha256:ea247aed4e7df9c559fcd8734a42155c8c84e0f53ff4eec2725d47f7caa9744f",
+      "expired": false,
+      "id": 10998712804,
+      "name": "resense-image-1.0.0-60e5e87",
+      "size_in_bytes": 534207403,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "60e5e8766664e4d3e80d0268139c45247d28975b",
+        "id": 36485844689,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:12:52Z",
+      "digest": "sha256:c05f3dd8ef527fd0233d475a01cd5e0a58863cc6d7f4baf0ff8fe0bf2aaf7fba",
+      "expired": false,
+      "id": 10998585490,
+      "name": "resense-image-1.0.0-2923978",
+      "size_in_bytes": 534150808,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "292397833edf9db649a24f16807b2cfb15812194",
+        "id": 36484016040,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:04:25Z",
+      "digest": "sha256:0ef218e08809207d29636f9f38871cccf516f37f26662b42e1ae236617fa21c3",
+      "expired": false,
+      "id": 10998490482,
+      "name": "resense-image-1.0.0-692820b",
+      "size_in_bytes": 521734226,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "692820bc7323b417d4f23dd94a16d0a7636e203f",
+        "id": 36483111097,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T21:09:21Z",
+      "digest": "sha256:e7bc77e8bb9fea28d52489b8176d7bc5328e042a57955b438398921cc8fe2aa2",
+      "expired": false,
+      "id": 10997841991,
+      "name": "p1-cold-dry-run-692820bc7323b417d4f23dd94a16d0a7636e203f",
+      "size_in_bytes": 107619,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "692820bc7323b417d4f23dd94a16d0a7636e203f",
+        "id": 36483111097,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T20:45:02Z",
+      "digest": "sha256:b02da03a179289431aed0f322c46f5cfff04dd79017e6fbf46f45524a3016433",
+      "expired": false,
+      "id": 10996433249,
+      "name": "resense-image-1.0.0-20d884b",
+      "size_in_bytes": 534150834,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "20d884b6c122d389b803e4bb6a301c6838a82cd1",
+        "id": 36480986298,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T20:51:50Z",
+      "digest": "sha256:42b819cc3d1596ab93a287f748dccfb6fa1345a3de363bc33e9f6c674f984d89",
+      "expired": false,
+      "id": 10996204211,
+      "name": "p1-cold-dry-run-20d884b6c122d389b803e4bb6a301c6838a82cd1",
+      "size_in_bytes": 215559,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "20d884b6c122d389b803e4bb6a301c6838a82cd1",
+        "id": 36480986298,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T20:19:40Z",
+      "digest": "sha256:43464bd61fb76910ffc75e1004f768145dd6a1a407b506fcf43a98f28eb43d38",
+      "expired": false,
+      "id": 10995945119,
+      "name": "resense-image-1.0.0-75ef4e2",
+      "size_in_bytes": 534086887,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "75ef4e20e587203a394e365c4fa601c822adb164",
+        "id": 36477865858,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T20:26:43Z",
+      "digest": "sha256:eea14fc67a026af59d09b926692354ddad39824bf681280dd5d602d22a277c53",
+      "expired": false,
+      "id": 10994617486,
+      "name": "p1-cold-dry-run-75ef4e20e587203a394e365c4fa601c822adb164",
+      "size_in_bytes": 110281,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "75ef4e20e587203a394e365c4fa601c822adb164",
+        "id": 36477865858,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T20:16:09Z",
+      "digest": "sha256:6305970ca53a5589e37c94ac69b69182c69a2b90d8368653dfee52f3bd1c003f",
+      "expired": false,
+      "id": 10994510818,
+      "name": "p1-cold-dry-run-059948aceff069133ba936417f2c6cbeb3bf89df",
+      "size_in_bytes": 107992,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "059948aceff069133ba936417f2c6cbeb3bf89df",
+        "id": 36476565549,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T20:08:17Z",
+      "digest": "sha256:8f6e39013f0a825f8f06dea2d6906f58a0ae7a475c9b7403b8b473242af41322",
+      "expired": false,
+      "id": 10994107678,
+      "name": "resense-image-1.0.0-059948a",
+      "size_in_bytes": 521742942,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "059948aceff069133ba936417f2c6cbeb3bf89df",
+        "id": 36476565549,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:25:57Z",
+      "digest": "sha256:20c4485ea6ecb75b2b6c417b9c146cb431438f09624edf10d2a2e265b60e29e8",
+      "expired": false,
+      "id": 10992800052,
+      "name": "resense-image-1.0.0-f41d20a",
+      "size_in_bytes": 534187991,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "f41d20af0f6716e08e88ce00f3179c938b7ed7fe",
+        "id": 36471670525,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:29:15Z",
+      "digest": "sha256:9f56b256fb3faeeb3c84b6636d68bbfe4f373c95f1ffd23d3840fb4da11fd3c5",
+      "expired": false,
+      "id": 10992696307,
+      "name": "resense-image-1.0.0-25a218a",
+      "size_in_bytes": 534136072,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "25a218a0a8b4e10089dfcf73b8d557d4a963290e",
+        "id": 36471997066,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:35:36Z",
+      "digest": "sha256:171021d8d31c9befc3137fee45c7c43979b1f89e529cdee94158933758c847a6",
+      "expired": false,
+      "id": 10992562823,
+      "name": "p1-cold-dry-run-25a218a0a8b4e10089dfcf73b8d557d4a963290e",
+      "size_in_bytes": 108283,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "25a218a0a8b4e10089dfcf73b8d557d4a963290e",
+        "id": 36471997066,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:33:52Z",
+      "digest": "sha256:0edd6b69ea21bc6028c8f6d9ca0b04d27726aed4cac2f1628ae948651c7b6dc3",
+      "expired": false,
+      "id": 10992337699,
+      "name": "p1-cold-dry-run-f577a7cac83fef70c0fd2f0a9f071598563108ea",
+      "size_in_bytes": 109733,
+      "workflow_run": {
+        "head_branch": "integration/p3-score-sync-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "f577a7cac83fef70c0fd2f0a9f071598563108ea",
+        "id": 36471632628,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:33:26Z",
+      "digest": "sha256:94527a7f716f2c5972f74f71d185898753535bec1e4dda465993ecf4ed65e4df",
+      "expired": false,
+      "id": 10991708657,
+      "name": "p1-cold-dry-run-f41d20af0f6716e08e88ce00f3179c938b7ed7fe",
+      "size_in_bytes": 109843,
+      "workflow_run": {
+        "head_branch": "experiment/cross-ring-sparse-evidence",
+        "head_repository_id": 1370982135,
+        "head_sha": "f41d20af0f6716e08e88ce00f3179c938b7ed7fe",
+        "id": 36471670525,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:25:49Z",
+      "digest": "sha256:228a41e242974183a0a57a87aa6ae6e8bd732e98b222f8f3d5e5162239e29841",
+      "expired": false,
+      "id": 10991547668,
+      "name": "resense-image-1.0.0-f577a7c",
+      "size_in_bytes": 534162786,
+      "workflow_run": {
+        "head_branch": "integration/p3-score-sync-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "f577a7cac83fef70c0fd2f0a9f071598563108ea",
+        "id": 36471632628,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:07:24Z",
+      "digest": "sha256:c8160a255215e504ab63781c08f15e545e5238db3e8ac244bc4ddbe2044dd26e",
+      "expired": false,
+      "id": 10991317586,
+      "name": "p1-cold-dry-run-1c2c5397006ecdc0e81da84dacff88aba6c2ecd3",
+      "size_in_bytes": 109641,
+      "workflow_run": {
+        "head_branch": "gpt-score-push-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "1c2c5397006ecdc0e81da84dacff88aba6c2ecd3",
+        "id": 36468659803,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:53:50Z",
+      "digest": "sha256:4c65625987f11989b572124075f27ef01e47007987e02b78e945246bba851bd3",
+      "expired": false,
+      "id": 10991225672,
+      "name": "resense-image-1.0.0-8547009",
+      "size_in_bytes": 534126274,
+      "workflow_run": {
+        "head_branch": "gpt-score-push-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "854700995ac93f1314d1c62e94c7b00c89ddd986",
+        "id": 36467904812,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:59:53Z",
+      "digest": "sha256:85b0803a27551678b22eb7e8ffcab200eb64d7ddbd35113a23694cfdfaccb61b",
+      "expired": false,
+      "id": 10990857388,
+      "name": "resense-image-1.0.0-1c2c539",
+      "size_in_bytes": 534127831,
+      "workflow_run": {
+        "head_branch": "gpt-score-push-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "1c2c5397006ecdc0e81da84dacff88aba6c2ecd3",
+        "id": 36468659803,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:02:11Z",
+      "digest": "sha256:c3d7a88b3b78eeead40b8e4e1a2ef290b731cbe73bbb4dc9754cbb04bb204d82",
+      "expired": false,
+      "id": 10990828144,
+      "name": "p1-cold-dry-run-71cdb5094e44555899d6d8bcd6f130e5151cea81",
+      "size_in_bytes": 107328,
+      "workflow_run": {
+        "head_branch": "gpt-score-push-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "71cdb5094e44555899d6d8bcd6f130e5151cea81",
+        "id": 36468364551,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T19:00:59Z",
+      "digest": "sha256:7de2beb186865f27cd9150f7b36d970ede00677262bba0d30585f0abc2d7eeb8",
+      "expired": false,
+      "id": 10990788022,
+      "name": "p1-cold-dry-run-854700995ac93f1314d1c62e94c7b00c89ddd986",
+      "size_in_bytes": 108946,
+      "workflow_run": {
+        "head_branch": "gpt-score-push-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "854700995ac93f1314d1c62e94c7b00c89ddd986",
+        "id": 36467904812,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:57:28Z",
+      "digest": "sha256:85aa63b4fdd5adde54f373123d8a37aead736282d7939ee4dd8821ebbabb0812",
+      "expired": false,
+      "id": 10990247731,
+      "name": "resense-image-1.0.0-71cdb50",
+      "size_in_bytes": 534094464,
+      "workflow_run": {
+        "head_branch": "gpt-score-push-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "71cdb5094e44555899d6d8bcd6f130e5151cea81",
+        "id": 36468364551,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:26:25Z",
+      "digest": "sha256:f1404b29ed5f1a20a33268279d5a1771ab4eb5286da6b1014c00fba836cba40b",
+      "expired": false,
+      "id": 10989816124,
+      "name": "p1-cold-dry-run-12f0c5578597b087f3e03996f447e35ad39af001",
+      "size_in_bytes": 110374,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "12f0c5578597b087f3e03996f447e35ad39af001",
+        "id": 36463728629,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:29:13Z",
+      "digest": "sha256:99f2d2bf230a7fe12a82376b96dcf269569631f3d004908a6e4b2fea942cad00",
+      "expired": false,
+      "id": 10989751772,
+      "name": "p1-cold-dry-run-9a27bbfb69bef2172428a5dec27a86c4047b8d1d",
+      "size_in_bytes": 109787,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "9a27bbfb69bef2172428a5dec27a86c4047b8d1d",
+        "id": 36464095912,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:24:42Z",
+      "digest": "sha256:6f668d6a3ce0e121af5bc4726fbd0805d18382c6eac06f0240a4abb42f4662b9",
+      "expired": false,
+      "id": 10989631888,
+      "name": "resense-image-1.0.0-c7de2bf",
+      "size_in_bytes": 534063118,
+      "workflow_run": {
+        "head_branch": "gpt-score-push-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "c7de2bf4ea2934745c43613a3b8ad341e037ea2f",
+        "id": 36464476305,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:32:34Z",
+      "digest": "sha256:d1faffe8753d978d049ae7a1505609d01b013cd20c08e78101d4643b37e0606d",
+      "expired": false,
+      "id": 10989003333,
+      "name": "p1-cold-dry-run-c7de2bf4ea2934745c43613a3b8ad341e037ea2f",
+      "size_in_bytes": 111499,
+      "workflow_run": {
+        "head_branch": "gpt-score-push-20260928",
+        "head_repository_id": 1370982135,
+        "head_sha": "c7de2bf4ea2934745c43613a3b8ad341e037ea2f",
+        "id": 36464476305,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:21:07Z",
+      "digest": "sha256:e933ac3ef6b3420f9d61b35dbaa9d7863d47faea2bb9a91b956c1612f925a39c",
+      "expired": false,
+      "id": 10988806505,
+      "name": "resense-image-1.0.0-9a27bbf",
+      "size_in_bytes": 521794062,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "9a27bbfb69bef2172428a5dec27a86c4047b8d1d",
+        "id": 36464095912,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:19:00Z",
+      "digest": "sha256:2a79a8116b9947297bfc72a335074d676443bba3a493b3ad714221208c3515ac",
+      "expired": false,
+      "id": 10988781281,
+      "name": "resense-image-1.0.0-12f0c55",
+      "size_in_bytes": 521799814,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "12f0c5578597b087f3e03996f447e35ad39af001",
+        "id": 36463728629,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:11:56Z",
+      "digest": "sha256:16169fbffe7b3c9cf4fbfac605545b4e46e931c50788828a4353679a46d59ac4",
+      "expired": false,
+      "id": 10988760112,
+      "name": "resense-image-1.0.0-2d28d2a",
+      "size_in_bytes": 521767288,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "2d28d2af52a1ac08c64b5843fe3c8f22f3fb9f9b",
+        "id": 36463005912,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T18:19:18Z",
+      "digest": "sha256:94243489f81934edff460b2fc6b6483f4f5e9694037bfea245537262a686e2e3",
+      "expired": false,
+      "id": 10988741383,
+      "name": "p1-cold-dry-run-2d28d2af52a1ac08c64b5843fe3c8f22f3fb9f9b",
+      "size_in_bytes": 109992,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "2d28d2af52a1ac08c64b5843fe3c8f22f3fb9f9b",
+        "id": 36463005912,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T16:31:06Z",
+      "digest": "sha256:d8aa86b7ec6c730c5b96c608ec594f608a46b7fe8c6ed77dd960d948fc003f96",
+      "expired": false,
+      "id": 10984126890,
+      "name": "resense-image-1.0.0-2242bc6",
+      "size_in_bytes": 521798532,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "2242bc689f37ff4ba51f5f7f8b2cced458477527",
+        "id": 36451076056,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T16:38:08Z",
+      "digest": "sha256:40f0f4610a2b92fb8c1c7f4208d550ef8e36431510d4e39d4b13dd3522cb780a",
+      "expired": false,
+      "id": 10983184030,
+      "name": "p1-cold-dry-run-2242bc689f37ff4ba51f5f7f8b2cced458477527",
+      "size_in_bytes": 109287,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "2242bc689f37ff4ba51f5f7f8b2cced458477527",
+        "id": 36451076056,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T14:46:48Z",
+      "digest": "sha256:d7cfe99d453fec8c09dbcca25773034a286ca475eb67046f2a648f7fe784e8a5",
+      "expired": false,
+      "id": 10976846351,
+      "name": "p1-cold-dry-run-a2f9122acdd9de83d4bf30a2befdc0d3e1f9cdd5",
+      "size_in_bytes": 108623,
+      "workflow_run": {
+        "head_branch": "testovaya-gpt",
+        "head_repository_id": 1370982135,
+        "head_sha": "a2f9122acdd9de83d4bf30a2befdc0d3e1f9cdd5",
+        "id": 36437060113,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T14:12:21Z",
+      "digest": "sha256:e489c80acb7ff9ab2b7ebcb3f2b40238255f783403f6a53b0d9ed0dd2fc19e58",
+      "expired": false,
+      "id": 10974507564,
+      "name": "p1-cold-dry-run-9086cd123316739065568220aeddcda035c42836",
+      "size_in_bytes": 108113,
+      "workflow_run": {
+        "head_branch": "testovaya-gpt",
+        "head_repository_id": 1370982135,
+        "head_sha": "9086cd123316739065568220aeddcda035c42836",
+        "id": 36432860933,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T13:02:19Z",
+      "digest": "sha256:ec483ff2dd4f3fa68ba561e0570050180cc96caacbc171f035dd646730b50f3c",
+      "expired": false,
+      "id": 10971258374,
+      "name": "p1-cold-dry-run-464f5bc6b193ff3dcc4bd7d30b03745d8d260f6a",
+      "size_in_bytes": 109071,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "464f5bc6b193ff3dcc4bd7d30b03745d8d260f6a",
+        "id": 36424461052,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T12:55:00Z",
+      "digest": "sha256:5183c6afdeaec3a19c032de3765c5e5fecafc687fa11007161d71e68a0d74563",
+      "expired": false,
+      "id": 10970422663,
+      "name": "resense-image-1.0.0-464f5bc",
+      "size_in_bytes": 521771323,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "464f5bc6b193ff3dcc4bd7d30b03745d8d260f6a",
+        "id": 36424461052,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T11:00:19Z",
+      "digest": "sha256:8b485fdc525a5fedecf59cb428d1b2218133603a38d9a2ba212a9594705a067d",
+      "expired": false,
+      "id": 10965801174,
+      "name": "p1-cold-dry-run-e44819dfc4795021c8acf13805e6f8e26e54b97a",
+      "size_in_bytes": 109141,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "e44819dfc4795021c8acf13805e6f8e26e54b97a",
+        "id": 36411885989,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T10:56:44Z",
+      "digest": "sha256:892c225e3942d4db94a11ad000e861eea75c58862354a4138ef3604de7373603",
+      "expired": false,
+      "id": 10965122508,
+      "name": "p1-cold-dry-run-1e2f70095b5662d965dc62d7b413ac2e76b621fb",
+      "size_in_bytes": 109042,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "1e2f70095b5662d965dc62d7b413ac2e76b621fb",
+        "id": 36411664817,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T10:41:27Z",
+      "digest": "sha256:f961147f3d09b510a7d6439202ddf82de3c1d3526975c107b757a19c0b7eface",
+      "expired": false,
+      "id": 10964381946,
+      "name": "p1-cold-dry-run-2583e0dc32afff95dc56efb0637fe46020e6dd3e",
+      "size_in_bytes": 107785,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "2583e0dc32afff95dc56efb0637fe46020e6dd3e",
+        "id": 36410170877,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T10:53:16Z",
+      "digest": "sha256:5deab200079031119a532d815e3f201520b09cf81f8ebbe7a71ecde69cdd41c1",
+      "expired": false,
+      "id": 10964359486,
+      "name": "resense-image-1.0.0-e44819d",
+      "size_in_bytes": 521801055,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "e44819dfc4795021c8acf13805e6f8e26e54b97a",
+        "id": 36411885989,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T10:51:19Z",
+      "digest": "sha256:8cbe69a7d1f5144d41c92a2bdae75a53cb3397a0519feb62b281cd4c60ecdd64",
+      "expired": false,
+      "id": 10964322913,
+      "name": "resense-image-1.0.0-1e2f700",
+      "size_in_bytes": 521799325,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "1e2f70095b5662d965dc62d7b413ac2e76b621fb",
+        "id": 36411664817,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T10:35:35Z",
+      "digest": "sha256:e5d8e8f6224774094c0b976d01f53742589c08961317a75df1b2be85481a34a4",
+      "expired": false,
+      "id": 10964167482,
+      "name": "resense-image-1.0.0-2583e0d",
+      "size_in_bytes": 521781961,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "2583e0dc32afff95dc56efb0637fe46020e6dd3e",
+        "id": 36410170877,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T10:19:09Z",
+      "digest": "sha256:8af791d28f5bec1413fb0d5fdd5fef33f412e2d278b26b0c5202e48d3ff15615",
+      "expired": false,
+      "id": 10963542691,
+      "name": "resense-image-1.0.0-05862a7",
+      "size_in_bytes": 521782835,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "05862a7bccd285df21fd84b2a1ca4d2b20936d92",
+        "id": 36408572581,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T10:26:38Z",
+      "digest": "sha256:2eab5eee7ac74e65e4e5b9ba7bd8cefbaecec95992ddc98a7edec1edb42c4edf",
+      "expired": false,
+      "id": 10963412824,
+      "name": "p1-cold-dry-run-05862a7bccd285df21fd84b2a1ca4d2b20936d92",
+      "size_in_bytes": 110031,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "05862a7bccd285df21fd84b2a1ca4d2b20936d92",
+        "id": 36408572581,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T09:42:39Z",
+      "digest": "sha256:a18e9f7c709720cd996ece851efd2cd41d0daaa813bac66f8b7735980641f6b4",
+      "expired": false,
+      "id": 10962291536,
+      "name": "p1-cold-dry-run-776d36da8a6ceca865e742d2e5bd09369fba301e",
+      "size_in_bytes": 109265,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "776d36da8a6ceca865e742d2e5bd09369fba301e",
+        "id": 36403868047,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T10:05:19Z",
+      "digest": "sha256:c79a5047137e65f2cd3cc7a20b3904e9ceac4f3908190c242b49d82001ace5b9",
+      "expired": false,
+      "id": 10962074666,
+      "name": "resense-image-1.0.0-d359a06",
+      "size_in_bytes": 521818114,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "d359a06d3cffabf09ec332f99c4ac568e6b627de",
+        "id": 36407122729,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T09:35:23Z",
+      "digest": "sha256:9f0bbce37c1ede22815add389458f225de57e07f25fedca097cb05a6092855f8",
+      "expired": false,
+      "id": 10961895814,
+      "name": "resense-image-1.0.0-776d36d",
+      "size_in_bytes": 521814912,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "776d36da8a6ceca865e742d2e5bd09369fba301e",
+        "id": 36403868047,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T08:38:48Z",
+      "digest": "sha256:7cb00747127857cd76528c6732ef68b0689e4d060ca74f566b79b31a9f6ff448",
+      "expired": false,
+      "id": 10959248090,
+      "name": "p1-cold-dry-run-806b6c4912d0a2bd92f5f4cc726fba87758e6548",
+      "size_in_bytes": 107794,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "806b6c4912d0a2bd92f5f4cc726fba87758e6548",
+        "id": 36397511351,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T08:32:17Z",
+      "digest": "sha256:5fddbd0443ac771ef2f4c5611fcf592033f8eacf9a3ae2200b4aaf35d7b1176c",
+      "expired": false,
+      "id": 10958484541,
+      "name": "resense-image-1.0.0-806b6c4",
+      "size_in_bytes": 521774358,
+      "workflow_run": {
+        "head_branch": "claude/amazing-fermi-t67v8g",
+        "head_repository_id": 1370982135,
+        "head_sha": "806b6c4912d0a2bd92f5f4cc726fba87758e6548",
+        "id": 36397511351,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T06:27:54Z",
+      "digest": "sha256:5996ed9bd6e976a1a756d6f59efa13c132a0c0709e69e4f664ca946713b5be18",
+      "expired": false,
+      "id": 10955130453,
+      "name": "resense-image-1.0.0-8f23284",
+      "size_in_bytes": 521776971,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
+        "id": 36386231662,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T06:28:26Z",
+      "digest": "sha256:6fac8e84c1f5c9e3431916286c3afde1ef52f3a01c42b40549086b005dfae9ad",
+      "expired": false,
+      "id": 10955046027,
+      "name": "resense-image-1.0.0-8f23284",
+      "size_in_bytes": 521801150,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
+        "id": 36386260778,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T06:34:40Z",
+      "digest": "sha256:cb348e3bbd01fcfbda412fc5308043216b9f811088e60f73413899bf9288dd6d",
+      "expired": false,
+      "id": 10954783153,
+      "name": "p1-cold-dry-run-8f232847477aaabc9c5f4965e6466af70b7d5d47",
+      "size_in_bytes": 105343,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
+        "id": 36386231662,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T06:35:21Z",
+      "digest": "sha256:397dde0e3045d2151c5b81ec630879f192891831825a0e66b2cdcad197f25198",
+      "expired": false,
+      "id": 10954059042,
+      "name": "p1-cold-dry-run-8f232847477aaabc9c5f4965e6466af70b7d5d47",
+      "size_in_bytes": 104420,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
+        "id": 36386260778,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T05:26:14Z",
+      "digest": "sha256:256037c482b536596a37721b9adf1b1b1ea7e69cb399754e983ad43bb353791e",
+      "expired": false,
+      "id": 10953376490,
+      "name": "p1-cold-dry-run-df24c18edbebf83360b0d8bf2e100cf73ec84108",
+      "size_in_bytes": 104563,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "df24c18edbebf83360b0d8bf2e100cf73ec84108",
+        "id": 36380714035,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-28T05:13:54Z",
+      "digest": "sha256:2a988652ba42e8022fd551b390dc1a947450c489b19fc7ddffad7c834030b6c5",
+      "expired": false,
+      "id": 10952821720,
+      "name": "resense-image-1.0.0-df24c18",
+      "size_in_bytes": 521800778,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "df24c18edbebf83360b0d8bf2e100cf73ec84108",
+        "id": 36380714035,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T22:00:16Z",
+      "digest": "sha256:84b59b6a5763608876af75f2f05b1e0574c4ba77fec3a9028d5d9ba2223056a4",
+      "expired": false,
+      "id": 10943421179,
+      "name": "p1-cold-dry-run-56c4e1420236d4fa17872bc3e65ebc92760bc4c7",
+      "size_in_bytes": 102925,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "56c4e1420236d4fa17872bc3e65ebc92760bc4c7",
+        "id": 36353047423,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T21:02:35Z",
+      "digest": "sha256:5ed28a8988584e552facb3d12c177c6965263494a12ea5e5c5751cff2c08151e",
+      "expired": false,
+      "id": 10942151335,
+      "name": "p1-cold-dry-run-d57280701f63d4baddb5e23233e7bdebda9c0594",
+      "size_in_bytes": 106228,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "d57280701f63d4baddb5e23233e7bdebda9c0594",
+        "id": 36349389691,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T21:21:41Z",
+      "digest": "sha256:dd6d3fee738acfcd6a112f9c03a1b1b66dfd172685c01e44aeb71d22601e968a",
+      "expired": false,
+      "id": 10942023715,
+      "name": "p1-cold-dry-run-0e5e2513d72e3b79926c13ac1f54628bbb7dabc6",
+      "size_in_bytes": 105377,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "0e5e2513d72e3b79926c13ac1f54628bbb7dabc6",
+        "id": 36350565459,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T20:10:24Z",
+      "digest": "sha256:3f7b598d827f43534e729be3216f93791b54b9ed590ab4e5e1687b48e2ace51e",
+      "expired": false,
+      "id": 10941301526,
+      "name": "p1-cold-dry-run-84c76b18bd0dffdc814803fe09925d4327751103",
+      "size_in_bytes": 107738,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "84c76b18bd0dffdc814803fe09925d4327751103",
+        "id": 36346205768,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T17:50:49Z",
+      "digest": "sha256:f7a0231317ea4aa6d20adaa2d7e49a86aa6182ceb836110e360db109627dc957",
+      "expired": false,
+      "id": 10937842294,
+      "name": "p1-cold-dry-run-3fc74ab9662257ef709ef3041638675f683ed1a4",
+      "size_in_bytes": 106405,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "3fc74ab9662257ef709ef3041638675f683ed1a4",
+        "id": 36337626188,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T18:11:50Z",
+      "digest": "sha256:a7865a680109cb942dd0c00dbcebe90bf328249d8d6a60d1eb95fa26245a919d",
+      "expired": false,
+      "id": 10937534192,
+      "name": "p1-cold-dry-run-8b74cd005a9c51f8375ae7efa75ce23773ef47aa",
+      "size_in_bytes": 106603,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "8b74cd005a9c51f8375ae7efa75ce23773ef47aa",
+        "id": 36338878336,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T13:35:26Z",
+      "digest": "sha256:b64eb396b1f62ecc5ec0c1d9b8ab2610322341e2d9220ebd6bedc7f238676458",
+      "expired": false,
+      "id": 10933230900,
+      "name": "p1-cold-dry-run-f6b156b2c48e772e2c591e3acbf72174b97d71be",
+      "size_in_bytes": 105984,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "f6b156b2c48e772e2c591e3acbf72174b97d71be",
+        "id": 36322169709,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T12:55:06Z",
+      "digest": "sha256:706610b18187096ead1d8513d0378932594573894669c188f34a0dc082f3b6a3",
+      "expired": false,
+      "id": 10932626223,
+      "name": "p1-cold-dry-run-2f237195a6bf80d9c3f57d4b12c9e9e6879d7d56",
+      "size_in_bytes": 103679,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "2f237195a6bf80d9c3f57d4b12c9e9e6879d7d56",
+        "id": 36319767736,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T13:11:04Z",
+      "digest": "sha256:d640b10c3bae3a250068b9b1fa818576def6fb122cd4b2d17ffdd52666352c7f",
+      "expired": false,
+      "id": 10932482101,
+      "name": "p1-cold-dry-run-8869d3a9751868198e922d587892be5376b7ec93",
+      "size_in_bytes": 105761,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "8869d3a9751868198e922d587892be5376b7ec93",
+        "id": 36320768239,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T13:29:27Z",
+      "digest": "sha256:046837e35b7f7707ecfe66fa8128940fc47dc38662a57fffe59d3d773703c54c",
+      "expired": false,
+      "id": 10931979510,
+      "name": "p1-cold-dry-run-35da3efbf7939df6c44d40cc18de46cf90695211",
+      "size_in_bytes": 104540,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "35da3efbf7939df6c44d40cc18de46cf90695211",
+        "id": 36321887018,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T12:37:38Z",
+      "digest": "sha256:c4dafbb5f71e74e17b927c327a5d316ef31e9bd75f4e0ea42d829eba7fe36e32",
+      "expired": false,
+      "id": 10931626816,
+      "name": "p1-cold-dry-run-5a27c66c35457d36405600492106064dccb8fcdb",
+      "size_in_bytes": 106411,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "5a27c66c35457d36405600492106064dccb8fcdb",
+        "id": 36313880352,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T10:57:13Z",
+      "digest": "sha256:6f3980909eeeedee2828c1a028fa9a064e402e5340d5347e19c3a60637df84ac",
+      "expired": false,
+      "id": 10930345616,
+      "name": "p1-cold-dry-run-09629f5a981fa7e9ab5a789abecb13e8544c99d0",
+      "size_in_bytes": 386,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "09629f5a981fa7e9ab5a789abecb13e8544c99d0",
+        "id": 36313587896,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T10:46:11Z",
+      "digest": "sha256:080eef6b4f182129e238719b32c1a94c0bd03625729d86793827d8e78cd3dcf9",
+      "expired": false,
+      "id": 10930155783,
+      "name": "p1-cold-dry-run-f9d6ba6dd384744b94972055143b2bbe74e105a7",
+      "size_in_bytes": 385,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "f9d6ba6dd384744b94972055143b2bbe74e105a7",
+        "id": 36313174302,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T10:49:29Z",
+      "digest": "sha256:7586fe44045dba98704407ab5c477ad8a48189acaacd3b95350a7928e901203a",
+      "expired": false,
+      "id": 10929906924,
+      "name": "resense-image-1.0.0-09629f5",
+      "size_in_bytes": 521614793,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "09629f5a981fa7e9ab5a789abecb13e8544c99d0",
+        "id": 36313587896,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T11:05:06Z",
+      "digest": "sha256:71868fc66c3213dae62e435dcbcac781388b2571d111b5fc2257d7eec090d1e5",
+      "expired": false,
+      "id": 10929798658,
+      "name": "p1-cold-dry-run-5a27c66c35457d36405600492106064dccb8fcdb",
+      "size_in_bytes": 386,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-supported-playback-20260927",
+        "head_repository_id": 1370982135,
+        "head_sha": "5a27c66c35457d36405600492106064dccb8fcdb",
+        "id": 36313880352,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T08:09:57Z",
+      "digest": "sha256:164dadd2af0ca3e1bb440862adbd258f69acd78e2d35bb8ddb792d3fb15fc7bc",
+      "expired": false,
+      "id": 10927485409,
+      "name": "p1-cold-dry-run-054a8eaa8cf87a1f2b4d7941a22e63d4c65d369d",
+      "size_in_bytes": 386,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "054a8eaa8cf87a1f2b4d7941a22e63d4c65d369d",
+        "id": 36305037203,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T08:08:19Z",
+      "digest": "sha256:8c4aa355823e3d534eec21bc856c06a20401b9537a9bb4d3e5b80721e72dedee",
+      "expired": false,
+      "id": 10926802943,
+      "name": "resense-image-1.0.0-054a8ea",
+      "size_in_bytes": 521605991,
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1370982135,
+        "head_sha": "054a8eaa8cf87a1f2b4d7941a22e63d4c65d369d",
+        "id": 36305037203,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T07:05:06Z",
+      "digest": "sha256:a97ebce8dbcfbfa87b1c78e14f7433efea35b5cb4ef89302af2f483cb0da3941",
+      "expired": false,
+      "id": 10925982323,
+      "name": "p1-cold-dry-run-5fc668f2f4c707599934fa982950e9bd01fcb28e",
+      "size_in_bytes": 106295,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "5fc668f2f4c707599934fa982950e9bd01fcb28e",
+        "id": 36301468840,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T06:58:29Z",
+      "digest": "sha256:f0c61793a84c795d80f5145b08758a96003ce731e4881d22c8c894f0c7be2d4b",
+      "expired": false,
+      "id": 10925552590,
+      "name": "resense-image-1.0.0-5fc668f",
+      "size_in_bytes": 521620722,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "5fc668f2f4c707599934fa982950e9bd01fcb28e",
+        "id": 36301468840,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T00:42:54Z",
+      "digest": "sha256:88fe7d4d64d656e6f860d679685ebde4cee422a774a259841930e52fcbd00683",
+      "expired": false,
+      "id": 10919029921,
+      "name": "p1-cold-dry-run-9540d66ed3dc1208e11dda847424e4ccce32df37",
+      "size_in_bytes": 107164,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "9540d66ed3dc1208e11dda847424e4ccce32df37",
+        "id": 36282745429,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T00:35:15Z",
+      "digest": "sha256:289b2c9b49f752d641ad76077de4fc4243f908aac29a1b9d947a7fbea042e9a0",
+      "expired": false,
+      "id": 10918819624,
+      "name": "resense-image-1.0.0-9540d66",
+      "size_in_bytes": 521612584,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "9540d66ed3dc1208e11dda847424e4ccce32df37",
+        "id": 36282745429,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T23:40:28Z",
+      "digest": "sha256:bfb35dd1cef20a4afe0e29689751607ca18ae92fa7c2b74a3606d5e9bc25f9ac",
+      "expired": false,
+      "id": 10918752773,
+      "name": "p1-cold-dry-run-adcd3b874ada88cf5a227f50e33afd6435beea0f",
+      "size_in_bytes": 16262,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "adcd3b874ada88cf5a227f50e33afd6435beea0f",
+        "id": 36278988540,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T23:21:41Z",
+      "digest": "sha256:98a7513cdd8df60747201dfd1455d2320ca3424bb18d429fae6a28098ad48896",
+      "expired": false,
+      "id": 10918736364,
+      "name": "resense-image-1.0.0-adcd3b8",
+      "size_in_bytes": 521612580,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "adcd3b874ada88cf5a227f50e33afd6435beea0f",
+        "id": 36278988540,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T00:09:56Z",
+      "digest": "sha256:1f571b2791a031fcf77c9b495192dd75efb73e8dba6aa15036f2eab785962700",
+      "expired": false,
+      "id": 10918568545,
+      "name": "resense-image-1.0.0-43b6793",
+      "size_in_bytes": 521611902,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "43b679352a151a53473fc2221a246bec725ccf66",
+        "id": 36281462241,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T23:56:00Z",
+      "digest": "sha256:941c18dd439bc68973664e1b3299fc7231ca461ab785ab1764d6249ea0c4ccfd",
+      "expired": false,
+      "id": 10918554315,
+      "name": "p1-cold-dry-run-67e456b21a7706ad5ea641e3209044bbed625150",
+      "size_in_bytes": 46265,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "67e456b21a7706ad5ea641e3209044bbed625150",
+        "id": 36280434044,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T22:55:01Z",
+      "digest": "sha256:e829ced1e2b21dad2ee25c5f93cb060759a231d2351920207c3475756cab2c70",
+      "expired": false,
+      "id": 10918270065,
+      "name": "resense-image-1.0.0-90158e8",
+      "size_in_bytes": 521610491,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "90158e8a441e7157bd7eabe235ac56c0e24225b2",
+        "id": 36277608569,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-27T00:17:07Z",
+      "digest": "sha256:736e699d10f8f2f7b3616c39f2b9c179053a80d3734fecb137b2341fb0e7cbda",
+      "expired": false,
+      "id": 10918089542,
+      "name": "p1-cold-dry-run-43b679352a151a53473fc2221a246bec725ccf66",
+      "size_in_bytes": 105196,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "43b679352a151a53473fc2221a246bec725ccf66",
+        "id": 36281462241,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T22:48:51Z",
+      "digest": "sha256:c809b0e169dc0180c1393891d91207128cc0ded6c23453168f08fb7830be7670",
+      "expired": false,
+      "id": 10917995038,
+      "name": "resense-image-1.0.0-914d0a6",
+      "size_in_bytes": 521611293,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "914d0a69de4d746e627c21fec0041b9cdaa0ea33",
+        "id": 36277262520,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T23:49:30Z",
+      "digest": "sha256:4d8aef2f4b7aa826ddb8325c6ed00bf93bcae3d1d0a07f96e4fd4e3926ebe608",
+      "expired": false,
+      "id": 10917979757,
+      "name": "resense-image-1.0.0-67e456b",
+      "size_in_bytes": 521635668,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "67e456b21a7706ad5ea641e3209044bbed625150",
+        "id": 36280434044,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T22:49:20Z",
+      "digest": "sha256:cbfc05c015075165ae4cb68b637b27b9626e278d814f3f8e510bcf01c48a24ce",
+      "expired": false,
+      "id": 10917716629,
+      "name": "resense-image-1.0.0-c45626f",
+      "size_in_bytes": 521608272,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "c45626fa9d68c4c026655250477a0e5816a642f6",
+        "id": 36277284017,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T23:01:58Z",
+      "digest": "sha256:9789f67f947a45a4c4dac693fae09b6df8c5452303ed69e85273b7f555b78542",
+      "expired": false,
+      "id": 10917682929,
+      "name": "p1-cold-dry-run-90158e8a441e7157bd7eabe235ac56c0e24225b2",
+      "size_in_bytes": 23440,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "90158e8a441e7157bd7eabe235ac56c0e24225b2",
+        "id": 36277608569,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T22:06:00Z",
+      "digest": "sha256:54b59cab97345229481dcb41ec9540237ba6aa76034dd8b2b0cf140dd30ca99a",
+      "expired": false,
+      "id": 10917590342,
+      "name": "p1-cold-dry-run-446e0aded9f57e49abfff31516a728bd25e5e123",
+      "size_in_bytes": 23900,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "446e0aded9f57e49abfff31516a728bd25e5e123",
+        "id": 36274548282,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:59:20Z",
+      "digest": "sha256:8a5a01e2a1ea5c0cda476e8ea6ca105b6b78ae05948a6a52c0a71e9bfdc66f07",
+      "expired": false,
+      "id": 10917475307,
+      "name": "resense-image-1.0.0-446e0ad",
+      "size_in_bytes": 521624756,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "446e0aded9f57e49abfff31516a728bd25e5e123",
+        "id": 36274548282,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T22:35:14Z",
+      "digest": "sha256:64434ca5e9f945d7123cc209c00797db9e014745e25021b2fcecbdd98868ce3d",
+      "expired": false,
+      "id": 10917388670,
+      "name": "resense-image-1.0.0-0684546",
+      "size_in_bytes": 521595341,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "06845469065d5b7d093210c61c989c1ef34271e4",
+        "id": 36276559663,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T22:17:19Z",
+      "digest": "sha256:823f580fffa61faf1904000599f6a6b44aac5b70133a17343e2028106262d9d4",
+      "expired": false,
+      "id": 10917252513,
+      "name": "resense-image-1.0.0-d480b13",
+      "size_in_bytes": 521627667,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "d480b1330491da838d6fb4996e34e37b3c060915",
+        "id": 36275557220,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:47:35Z",
+      "digest": "sha256:37bb054f12fabf41f09d9598c0991eff3c40e0772e653bbdc8e474016fda216a",
+      "expired": false,
+      "id": 10917080169,
+      "name": "resense-image-1.0.0-36a88f0",
+      "size_in_bytes": 521615997,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "36a88f031c5feee5c331678032a4dfdb4b372909",
+        "id": 36273909935,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:51:32Z",
+      "digest": "sha256:86949a9a7ea36f2065798e9f1ec82044e0394805a100a1306c16af8115fa7cec",
+      "expired": false,
+      "id": 10916771642,
+      "name": "resense-image-1.0.0-a5fbe7f",
+      "size_in_bytes": 521616570,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "a5fbe7f4d55c526dfca4e618a8ebae17844cba77",
+        "id": 36274129376,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:53:35Z",
+      "digest": "sha256:4a17098626b5633543453a9f6e19d1f1435333836b4438900766a1c8ffc3a875",
+      "expired": false,
+      "id": 10916735953,
+      "name": "resense-image-1.0.0-115b471",
+      "size_in_bytes": 521605128,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "115b471acdbdfd3e1b052024e6e06f919a2a66b7",
+        "id": 36274240128,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:56:05Z",
+      "digest": "sha256:000e94541a306578fdb16909e849cd38849cb604d57a4e4f64cc1697481345d6",
+      "expired": false,
+      "id": 10916521526,
+      "name": "resense-image-1.0.0-635e510",
+      "size_in_bytes": 521598512,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "635e5101568417f6ab7a075051a0d04a55e83b16",
+        "id": 36274361679,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:30:04Z",
+      "digest": "sha256:6e12ef04c8186d0f2a524ca9aa82e51161295f3981b8eb81d49ec6ff52ddaa2b",
+      "expired": false,
+      "id": 10916465613,
+      "name": "resense-image-1.0.0-fdfe81a",
+      "size_in_bytes": 521608101,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "fdfe81a736a2fd745922651826b74ca8e9e5bbf4",
+        "id": 36272911140,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:19:33Z",
+      "digest": "sha256:e27e29ec2732e624282b1b7909c0ed5172ce7d188dc3e04c830c7787d0c36abc",
+      "expired": false,
+      "id": 10916371592,
+      "name": "resense-image-1.0.0-1cac391",
+      "size_in_bytes": 521622686,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "1cac3917fa22cbc404bb8e29aed64dc9c7e942d7",
+        "id": 36272308634,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:38:49Z",
+      "digest": "sha256:75806e35d6892b12b9374413c41d03d8f6a504115d58fe0a6fb4a84856dc43e7",
+      "expired": false,
+      "id": 10916233665,
+      "name": "resense-image-1.0.0-3558a96",
+      "size_in_bytes": 521611678,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "3558a96fb546a9f75071a1208d7d504934330ac5",
+        "id": 36273432115,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:42:53Z",
+      "digest": "sha256:9019f2ff369b845f603be15c629c954bdadb3c9b9b107b4ad133425f413babce",
+      "expired": false,
+      "id": 10916159113,
+      "name": "resense-image-1.0.0-dae9504",
+      "size_in_bytes": 521620573,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "dae950444fabbd7776791924ff297f2cba40ec1d",
+        "id": 36273703371,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:21:44Z",
+      "digest": "sha256:7db323ec1ccd53173879b6e1930179136624d1f92835fd3107b835dbbbb15cdd",
+      "expired": false,
+      "id": 10916152449,
+      "name": "resense-image-1.0.0-56c947c",
+      "size_in_bytes": 521606178,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "56c947ca6eb11742c20e9be6756a20c4f0d86a7f",
+        "id": 36272462620,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T20:59:17Z",
+      "digest": "sha256:12e4690500aacf90f3335af83dcb568baba1f66138109b0da554e9391b799367",
+      "expired": false,
+      "id": 10916045813,
+      "name": "resense-image-1.0.0-b04e1d3",
+      "size_in_bytes": 521540235,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "b04e1d398e5d7e238897bf693597eb4148e4db5b",
+        "id": 36271200222,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T20:48:44Z",
+      "digest": "sha256:df2d85b273b8627b41dd43dca3d6022b9521fafc6ea5fda3d32da4939effa994",
+      "expired": false,
+      "id": 10915756656,
+      "name": "resense-image-1.0.0-5f2d0cb",
+      "size_in_bytes": 521578052,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "5f2d0cbae93af833afcfec8f406de3500f914fa0",
+        "id": 36270584279,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:12:18Z",
+      "digest": "sha256:5605507d34c50739925ebfa7c247cf5ef4afd8a393db12549cf01341affdba62",
+      "expired": false,
+      "id": 10915733892,
+      "name": "resense-image-1.0.0-aa8765a",
+      "size_in_bytes": 521603880,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "aa8765aa55840df011f7df05f276a5b6932674df",
+        "id": 36271848675,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:20:11Z",
+      "digest": "sha256:c73c717688cc1b611d75a40cd20a0b9460253b3460fa163a64eef1d72d4f6e90",
+      "expired": false,
+      "id": 10915719675,
+      "name": "resense-image-1.0.0-295ea24",
+      "size_in_bytes": 521592082,
+      "workflow_run": {
+        "head_branch": "claude/p1-p2-completion-20260926",
+        "head_repository_id": 1370982135,
+        "head_sha": "295ea24049e4e943d01753282e54ea1683a847cc",
+        "id": 36272355379,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T21:01:29Z",
+      "digest": "sha256:c97360cbe1258998d6e0ca3a054aa07ef97c8d4943aba0413aea859e54169095",
+      "expired": false,
+      "id": 10915572521,
+      "name": "resense-image-1.0.0-57bc3dd",
+      "size_in_bytes": 521582726,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "57bc3ddde2bbf93eed1b5243ad11ff8423d747aa",
+        "id": 36271290915,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T20:23:00Z",
+      "digest": "sha256:603330db482e3e3d4d248d7a7f5e49aef9e973e7880d3cf87a18138e88034dd7",
+      "expired": false,
+      "id": 10915331327,
+      "name": "resense-image-1.0.0-56d3169",
+      "size_in_bytes": 521579863,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "56d31696da3abfd5ab84e57831c9564b6e780fdd",
+        "id": 36269074222,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T20:16:31Z",
+      "digest": "sha256:653db33cbef0271d2e69dcaf3018990cf4b4490ca0448422e31e5abf7e7f2c48",
+      "expired": false,
+      "id": 10915215353,
+      "name": "resense-image-1.0.0-498f280",
+      "size_in_bytes": 521587792,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "498f28042d79ca43233f7db797af625a8f88eec9",
+        "id": 36268719619,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T20:33:04Z",
+      "digest": "sha256:479a8d241a30474b510d335d01e4a6d2568dbebe41ea9762dd132c428d1fb18e",
+      "expired": false,
+      "id": 10914823643,
+      "name": "resense-image-1.0.0-2d25c13",
+      "size_in_bytes": 521571011,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "2d25c13501a973c9c21494032ba946a40e1be455",
+        "id": 36269676465,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T20:40:19Z",
+      "digest": "sha256:858e9d1265359004397e28faa04c1c66944fbcb7abcf070d48eb4b313b2f25aa",
+      "expired": false,
+      "id": 10914764440,
+      "name": "resense-image-1.0.0-2019fdb",
+      "size_in_bytes": 521564228,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "2019fdb67c4340343411cd362b2fa57172bb9de4",
+        "id": 36270097035,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T19:53:55Z",
+      "digest": "sha256:13c42f7991d18735f558f070f252af5dfae33ef568202d05b1508a8a9e59d892",
+      "expired": false,
+      "id": 10914339357,
+      "name": "resense-image-1.0.0-1dccdec",
+      "size_in_bytes": 521544876,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "1dccdecb3f919ef411adfcec077e803364c9902d",
+        "id": 36267438927,
+        "repository_id": 1370982135
+      }
+    },
+    {
+      "created_at": "2026-09-26T19:46:11Z",
+      "digest": "sha256:7512e328bdbe3d9506573944b8643332929cc2dba85c4d170eeb7e323598ba65",
+      "expired": false,
+      "id": 10913468780,
+      "name": "resense-image-1.0.0-8a10449",
+      "size_in_bytes": 521555426,
+      "workflow_run": {
+        "head_branch": "claude/nifty-pascal-lzgl78",
+        "head_repository_id": 1370982135,
+        "head_sha": "8a10449f0bc76fd9791c711d4d194b2c471aa321",
+        "id": 36266983143,
+        "repository_id": 1370982135
+      }
+    }
+  ],
+  "at": "2026-10-16T14:04:57.192287+00:00",
+  "count": 132,
+  "full_external_snapshot_sha256": "6bf566434df98b1bc03319dc935ca576ab194ed3a717fd95663b13e777dcbf21",
+  "page_counts": [
+    100,
+    32
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "spare_cases": 128,
+  "actual_track_clear_cap_cases": 1024,
+  "failures": []
+}

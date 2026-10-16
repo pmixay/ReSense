@@ -1,0 +1,148 @@
+"""r3 column scratch hooks (15.10): observation of top_is_free (calls, spares, per-call time), structure-cut parts,
+optional config overrides and the safety review's DARKBAND what-if, for both the 14.10 signature
+top_is_free(frame_xyz, idx, min_returns, frame_ring) and the 15.10 one top_is_free(FrameRays, idx, ...).
+Import AFTER sys.path holds the code root under test. Env:
+  WT        code root; asserted against resense.__file__
+  CFG       overrides 'section.key=value,...' applied to every DetectorConfig.from_yaml
+  DARKBAND  deg (0 = off): before top_is_free, delete the frame returns of the cluster's OWN face above its top
+            (azimuth span +-0.02 deg, elevation top+0.04 .. top+DARKBAND, range within the top's tolerance + 0.5 m)
+"""
+import json
+import os
+import time
+
+import numpy as np
+
+WT = os.environ["WT"]
+import resense  # noqa
+assert resense.__file__.startswith(WT), (resense.__file__, WT)
+import resense.clustering as C  # noqa
+from resense.config import DetectorConfig  # noqa
+
+STATS = {"tf_calls": 0, "tf_free": 0, "tf_tall": 0, "tf_tall_free": 0, "tf_ms": 0.0, "tf_rows": [], "cut_parts": 0,
+         "cut_rows": [], "k": -1, "frames_with_calls": 0, "_last_k": None}
+DARK = float(os.environ.get("DARKBAND", "0") or 0)
+OVR = [kv.split("=") for kv in os.environ.get("CFG", "").split(",") if kv.strip()]
+FR = getattr(C, "FrameRays", None)
+
+_from_yaml = DetectorConfig.from_yaml.__func__
+
+
+def _conv(old, v):
+    if isinstance(old, bool):
+        return v.lower() in ("1", "true", "yes")
+    if isinstance(old, int):
+        return int(float(v))
+    if isinstance(old, float):
+        return float(v)
+    return v
+
+
+def from_yaml(cls, *a, **kw):
+    cfg = _from_yaml(cls, *a, **kw)
+    for k, v in OVR:
+        sec, key = k.split(".")
+        s = getattr(cfg, sec)
+        assert hasattr(s, key), k
+        setattr(s, key, _conv(getattr(s, key), v))
+    return cfg
+
+
+DetectorConfig.from_yaml = classmethod(from_yaml)
+
+
+def _dark_mask(xyz, idx):
+    p = xyz[idx].astype(np.float64)
+    rh = np.hypot(p[:, 0], p[:, 1])
+    el = np.degrees(np.arctan2(p[:, 2], rh))
+    az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+    top = float(el.max())
+    r_top = float(np.median(np.hypot(rh, p[:, 2])[el >= top - 0.06]))
+    a0, a1 = float(az.min()) - 0.02, float(az.max()) + 0.02
+    q = xyz.astype(np.float64)
+    qh = np.hypot(q[:, 0], q[:, 1])
+    qe = np.degrees(np.arctan2(q[:, 2], qh))
+    qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+    qr = np.hypot(qh, q[:, 2])
+    tol = max(0.5, 0.02 * r_top) + 0.5
+    return (q[:, 0] > 0) & (qa >= a0) & (qa <= a1) & (qe > top + 0.04) & (qe <= top + DARK) & (np.abs(qr - r_top) <= tol)
+
+
+def _sub(a, keep):
+    return None if a is None else a[keep]
+
+
+_tf = getattr(C, "top_is_free", None)
+
+
+def top_is_free(frame, idx, *a, **kw):
+    nrm = 0
+    if DARK > 0 and idx.size >= 2:
+        if FR is not None and isinstance(frame, FR):
+            rm = _dark_mask(frame.xyz, idx)
+            if rm.any():
+                keep = ~rm
+                newi = np.cumsum(keep) - 1
+                frame = FR(frame.xyz[keep], _sub(frame.ring, keep), _sub(frame.h, keep), _sub(frame.dy, keep))
+                idx, nrm = newi[idx], int(rm.sum())
+        else:
+            rm = _dark_mask(frame, idx)
+            if rm.any():
+                keep = ~rm
+                newi = np.cumsum(keep) - 1
+                ring = kw.get("frame_ring", a[1] if len(a) > 1 else None)
+                ring = _sub(ring, keep)
+                if "frame_ring" in kw:
+                    kw["frame_ring"] = ring
+                elif len(a) > 1:
+                    a = (a[0], ring) + tuple(a[2:])
+                frame, idx, nrm = frame[keep], newi[idx], int(rm.sum())
+    dump_dir = os.environ.get("DUMP_TALL")
+    if dump_dir and (kw.get("tall_gap", 0.0) > 0 or os.environ.get("DUMP_ANY")) and FR is not None \
+            and isinstance(frame, FR):
+        x = float(np.median(frame.xyz[idx, 0]))
+        lo_, hi_ = (float(v_) for v_ in os.environ.get("DUMP_X", "55,75").split(","))
+        if lo_ <= x <= hi_ and STATS.get("dumped", 0) < 12:
+            STATS["dumped"] = STATS.get("dumped", 0) + 1
+            np.savez(os.path.join(dump_dir, f"tall_{STATS['dumped']:02d}.npz"), xyz=frame.xyz, ring=frame.ring,
+                     h=frame.h, dy=frame.dy, idx=idx, kw=json.dumps(kw), a=json.dumps(list(a)))
+    t0 = time.perf_counter()
+    v = _tf(frame, idx, *a, **kw)
+    STATS["tf_ms"] += (time.perf_counter() - t0) * 1e3
+    tall = kw.get("tall_gap", 0.0) > 0
+    STATS["tf_calls"] += 1
+    STATS["tf_free"] += int(bool(v))
+    STATS["tf_tall"] += int(tall)
+    STATS["tf_tall_free"] += int(tall and bool(v))
+    if STATS["_last_k"] != STATS["k"]:
+        STATS["frames_with_calls"] += 1
+        STATS["_last_k"] = STATS["k"]
+    xyz = frame.xyz if FR is not None and isinstance(frame, FR) else frame
+    p = xyz[idx]
+    STATS["tf_rows"].append({"k": STATS["k"], "free": bool(v), "tall": tall, "removed": nrm,
+                             "x": round(float(np.median(p[:, 0])), 1), "y": round(float(np.median(p[:, 1])), 2),
+                             "n": int(idx.size)})
+    return v
+
+
+if _tf is not None:
+    C.top_is_free = top_is_free
+if hasattr(C, "_off_structure_parts"):
+    _cut = C._off_structure_parts
+
+    def _off_structure_parts(*a, **kw):
+        res = _cut(*a, **kw)
+        parts = res[0] if isinstance(res, tuple) else res
+        for p in parts:
+            STATS["cut_parts"] += 1
+            STATS["cut_rows"].append({"k": STATS["k"], "n_vox": int(p.n_vox), "x0": round(float(p.bmin[0]), 1),
+                                      "size": [round(float(v), 2) for v in p.size],
+                                      "y": round(float(np.median(p.pts[:, 1])), 2)})
+        return res
+    C._off_structure_parts = _off_structure_parts
+
+
+def dump(path):
+    s = dict(STATS)
+    s.pop("_last_k", None)
+    json.dump(s, open(path, "w"))

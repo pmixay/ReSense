@@ -1,0 +1,2 @@
+# The runtime records the manifest's byte hash; preserve the original Windows-written bytes.
+final-*/source_manifest.json -text whitespace=cr-at-eol

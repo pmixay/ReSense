@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/review/probes.py", line 255, in <module>
+    RESULT["runtime"] = runtime()
+  File "/review/probes.py", line 243, in runtime
+    assert set(changes) == {"__init__", "result_freshness", "publish_fault", "decision", "publish", "publish_markers"}, changes
+AssertionError: ['__init__', 'decision', 'make_markers', 'publish', 'publish_fault', 'result_freshness']

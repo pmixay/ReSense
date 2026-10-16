@@ -1,0 +1,251 @@
+Cloning into '/source/repo'...
+done.
+Updating files:  43% (1499/3462)Updating files:  44% (1524/3462)Updating files:  45% (1558/3462)Updating files:  46% (1593/3462)Updating files:  47% (1628/3462)Updating files:  48% (1662/3462)Updating files:  49% (1697/3462)Updating files:  50% (1731/3462)Updating files:  51% (1766/3462)Updating files:  52% (1801/3462)Updating files:  53% (1835/3462)Updating files:  54% (1870/3462)Updating files:  55% (1905/3462)Updating files:  56% (1939/3462)Updating files:  57% (1974/3462)Updating files:  58% (2008/3462)Updating files:  59% (2043/3462)Updating files:  60% (2078/3462)Updating files:  61% (2112/3462)Updating files:  62% (2147/3462)Updating files:  62% (2177/3462)Updating files:  63% (2182/3462)Updating files:  64% (2216/3462)Updating files:  65% (2251/3462)Updating files:  66% (2285/3462)Updating files:  67% (2320/3462)Updating files:  68% (2355/3462)Updating files:  69% (2389/3462)Updating files:  70% (2424/3462)Updating files:  71% (2459/3462)Updating files:  72% (2493/3462)Updating files:  73% (2528/3462)Updating files:  74% (2562/3462)Updating files:  74% (2567/3462)Updating files:  75% (2597/3462)Updating files:  76% (2632/3462)Updating files:  77% (2666/3462)Updating files:  78% (2701/3462)Updating files:  79% (2735/3462)Updating files:  80% (2770/3462)Updating files:  80% (2788/3462)Updating files:  81% (2805/3462)Updating files:  82% (2839/3462)Updating files:  83% (2874/3462)Updating files:  84% (2909/3462)Updating files:  85% (2943/3462)Updating files:  86% (2978/3462)Updating files:  86% (2982/3462)Updating files:  87% (3012/3462)Updating files:  88% (3047/3462)Updating files:  89% (3082/3462)Updating files:  90% (3116/3462)Updating files:  91% (3151/3462)Updating files:  92% (3186/3462)Updating files:  93% (3220/3462)Updating files:  94% (3255/3462)Updating files:  95% (3289/3462)Updating files:  96% (3324/3462)Updating files:  97% (3359/3462)Updating files:  98% (3393/3462)Updating files:  99% (3428/3462)Updating files: 100% (3462/3462)Updating files: 100% (3462/3462), done.
+HEAD is now at fc89ad2 Register H1 withdrawal expectations and preserve failed acceptance bytes
+HEAD is now at fc89ad2 Register H1 withdrawal expectations and preserve failed acceptance bytes
+FFFFFFFFFFF                                                              [100%]
+=================================== FAILURES ===================================
+____________ test_shipping_selection_and_retained_parameters[class] ____________
+
+shipping_config = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+
+    def test_shipping_selection_and_retained_parameters(shipping_config):
+        cfg = shipping_config
+>       assert cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+
+tests/test_column_shipping.py:39: AssertionError
+_____________ test_shipping_selection_and_retained_parameters[cli] _____________
+
+shipping_config = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+
+    def test_shipping_selection_and_retained_parameters(shipping_config):
+        cfg = shipping_config
+>       assert cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+
+tests/test_column_shipping.py:39: AssertionError
+____________ test_shipping_selection_and_retained_parameters[yaml] _____________
+
+shipping_config = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+
+    def test_shipping_selection_and_retained_parameters(shipping_config):
+        cfg = shipping_config
+>       assert cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+
+tests/test_column_shipping.py:39: AssertionError
+_____________ test_shipping_selection_and_retained_parameters[ros] _____________
+
+shipping_config = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+
+    def test_shipping_selection_and_retained_parameters(shipping_config):
+        cfg = shipping_config
+>       assert cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+
+tests/test_column_shipping.py:39: AssertionError
+_______________ test_shipping_yaml_and_ros_mirror_are_identical ________________
+
+    def test_shipping_yaml_and_ros_mirror_are_identical():
+        assert CANONICAL.read_bytes() == ROS.read_bytes()
+>       assert DetectorConfig.from_yaml(str(CANONICAL)).cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+E        +      where DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0) = from_yaml('/source/repo/configs/default.yaml')
+E        +        where from_yaml = DetectorConfig.from_yaml
+E        +        and   '/source/repo/configs/default.yaml' = str(PosixPath('/source/repo/configs/default.yaml'))
+
+tests/test_column_shipping.py:49: AssertionError
+______ test_same_physical_pole_only_explicit_opt_in_can_be_spared[class] _______
+
+shipping_config = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x78d039f40340>
+
+    def test_same_physical_pole_only_explicit_opt_in_can_be_spared(shipping_config, monkeypatch):
+        cfg = shipping_config
+>       assert cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+
+tests/test_column_shipping.py:54: AssertionError
+_______ test_same_physical_pole_only_explicit_opt_in_can_be_spared[cli] ________
+
+shipping_config = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x78d039c92560>
+
+    def test_same_physical_pole_only_explicit_opt_in_can_be_spared(shipping_config, monkeypatch):
+        cfg = shipping_config
+>       assert cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+
+tests/test_column_shipping.py:54: AssertionError
+_______ test_same_physical_pole_only_explicit_opt_in_can_be_spared[yaml] _______
+
+shipping_config = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x78d039f6e0b0>
+
+    def test_same_physical_pole_only_explicit_opt_in_can_be_spared(shipping_config, monkeypatch):
+        cfg = shipping_config
+>       assert cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+
+tests/test_column_shipping.py:54: AssertionError
+_______ test_same_physical_pole_only_explicit_opt_in_can_be_spared[ros] ________
+
+shipping_config = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x78d039f43fd0>
+
+    def test_same_physical_pole_only_explicit_opt_in_can_be_spared(shipping_config, monkeypatch):
+        cfg = shipping_config
+>       assert cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+
+tests/test_column_shipping.py:54: AssertionError
+_________ test_default_detector_and_cli_never_enter_free_top[ordinary] _________
+
+tunnel = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],
+       [ 2.0674713 , -2.4552011 ,  0.8242414 ],
+       [ 2....r_support_run=0, disagree_left=0, axis_valid_both=1000000000.0, axis_valid_bent=1000000000.0, wall_drift=1000000000.0))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x78d039f905b0>
+entry = 'ordinary'
+
+    @pytest.mark.parametrize("entry", ["ordinary", "cli"])
+    def test_default_detector_and_cli_never_enter_free_top(tunnel, monkeypatch, entry):
+        frame, _, _ = tunnel
+        seen = []
+        process = Detector.process
+    
+        def forbidden(*args, **kwargs):
+            pytest.fail("default detector/CLI invoked the withdrawn free-top algorithm")
+    
+        def observed(self, *args, **kwargs):
+            assert self.cfg.cluster.column_free_max_top == 0.0
+            result = process(self, *args, **kwargs)
+            assert all(not c.spared for c in result.candidates)
+            assert all(not any(t.spare_hist) and not any(t.provisional_explained_hist) for t in self.tracker.tracks)
+            seen.append(result)
+            return result
+    
+        monkeypatch.setattr(clustering, "top_is_free", forbidden)
+        monkeypatch.setattr(Detector, "process", observed)
+        frames = [(k, replace(frame, stamp=k * 0.1)) for k in range(6)]
+        if entry == "ordinary":
+            detector = Detector()
+            for _, fr in frames:
+>               detector.process(fr)
+
+tests/test_column_shipping.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <resense.detector.Detector object at 0x78cff259e5c0>
+args = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],
+       [ 2.0674713 , -2.4552011 ,  0.8242414 ],
+       [ 2....17, 11.921144,
+       12.240438], dtype=float32), ring=None, stamp=0.0, frame_id='synthetic', meta={'obstacles': []}),)
+kwargs = {}
+@py_assert1 = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+@py_assert3 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8)
+@py_assert5 = 2.95, @py_assert8 = 0.0, @py_assert7 = False
+@py_format10 = '2.95\n{2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, fa...08), voxel=0.0) = <resense.detector.Detector object at 0x78cff259e5c0>.cfg\n}.cluster\n}.column_free_max_top\n} == 0.0'
+@py_format12 = 'assert 2.95\n{2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_fa...08), voxel=0.0) = <resense.detector.Detector object at 0x78cff259e5c0>.cfg\n}.cluster\n}.column_free_max_top\n} == 0.0'
+
+    def observed(self, *args, **kwargs):
+>       assert self.cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+E        +      where DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0) = <resense.detector.Detector object at 0x78cff259e5c0>.cfg
+
+tests/test_column_shipping.py:92: AssertionError
+___________ test_default_detector_and_cli_never_enter_free_top[cli] ____________
+
+tunnel = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],
+       [ 2.0674713 , -2.4552011 ,  0.8242414 ],
+       [ 2....r_support_run=0, disagree_left=0, axis_valid_both=1000000000.0, axis_valid_bent=1000000000.0, wall_drift=1000000000.0))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x78cff254bc10>
+entry = 'cli'
+
+    @pytest.mark.parametrize("entry", ["ordinary", "cli"])
+    def test_default_detector_and_cli_never_enter_free_top(tunnel, monkeypatch, entry):
+        frame, _, _ = tunnel
+        seen = []
+        process = Detector.process
+    
+        def forbidden(*args, **kwargs):
+            pytest.fail("default detector/CLI invoked the withdrawn free-top algorithm")
+    
+        def observed(self, *args, **kwargs):
+            assert self.cfg.cluster.column_free_max_top == 0.0
+            result = process(self, *args, **kwargs)
+            assert all(not c.spared for c in result.candidates)
+            assert all(not any(t.spare_hist) and not any(t.provisional_explained_hist) for t in self.tracker.tracks)
+            seen.append(result)
+            return result
+    
+        monkeypatch.setattr(clustering, "top_is_free", forbidden)
+        monkeypatch.setattr(Detector, "process", observed)
+        frames = [(k, replace(frame, stamp=k * 0.1)) for k in range(6)]
+        if entry == "ordinary":
+            detector = Detector()
+            for _, fr in frames:
+                detector.process(fr)
+        else:
+            import resense.cli as cli
+            monkeypatch.setattr(cli, "_frames", lambda *args, **kwargs: iter(frames))
+>           cmd_run(SimpleNamespace(config=None, out=None, render=None, quiet=True, ego_speed=None))
+
+tests/test_column_shipping.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+resense/cli.py:56: in cmd_run
+    res = det.process(frame, ego_speed=ego_speed)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <resense.detector.Detector object at 0x78cff254b640>
+args = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],
+       [ 2.0674713 , -2.4552011 ,  0.8242414 ],
+       [ 2....17, 11.921144,
+       12.240438], dtype=float32), ring=None, stamp=0.0, frame_id='synthetic', meta={'obstacles': []}),)
+kwargs = {'ego_speed': None}
+@py_assert1 = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0)
+@py_assert3 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8)
+@py_assert5 = 2.95, @py_assert8 = 0.0, @py_assert7 = False
+@py_format10 = '2.95\n{2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, fa...08), voxel=0.0) = <resense.detector.Detector object at 0x78cff254b640>.cfg\n}.cluster\n}.column_free_max_top\n} == 0.0'
+@py_format12 = 'assert 2.95\n{2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_fa...08), voxel=0.0) = <resense.detector.Detector object at 0x78cff254b640>.cfg\n}.cluster\n}.column_free_max_top\n} == 0.0'
+
+    def observed(self, *args, **kwargs):
+>       assert self.cfg.cluster.column_free_max_top == 0.0
+E       AssertionError: assert 2.95 == 0.0
+E        +  where 2.95 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_max_top
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+E        +      where DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0) = <resense.detector.Detector object at 0x78cff254b640>.cfg
+
+tests/test_column_shipping.py:92: AssertionError
+----------------- generated xml file: /out/results/pytest.xml ------------------
+11 failed in 3.13s
+Traceback (most recent call last):
+  File "/author/worker.py", line 154, in <module>
+    main()
+  File "/author/worker.py", line 127, in main
+    command(["python3", "-m", "pytest", "-q", "-rs", *tests, "--junitxml=/out/results/pytest.xml"], cwd=ROOT)
+  File "/author/worker.py", line 20, in command
+    return subprocess.run(args, check=True, stdout=sys.stdout, stderr=subprocess.STDOUT, **kwargs)
+  File "/usr/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['python3', '-m', 'pytest', '-q', '-rs', 'tests/test_column_shipping.py', '--junitxml=/out/results/pytest.xml']' returned non-zero exit status 1.

@@ -1,0 +1,32 @@
+{
+ "piece 1/8": {
+  "new": {
+   "frames": 1409,
+   "STOP": 14,
+   "episodes": 3,
+   "CAUTION": 887
+  },
+  "new_hooks": {
+   "free_top_tests": 180,
+   "spared": 4,
+   "frames_with_tests": 119,
+   "test_ms_total": 530.9
+  },
+  "14.10_hooks": null
+ },
+ "piece 3/8": {
+  "new": {
+   "frames": 1409,
+   "STOP": 2,
+   "episodes": 1,
+   "CAUTION": 849
+  },
+  "new_hooks": {
+   "free_top_tests": 171,
+   "spared": 0,
+   "frames_with_tests": 154,
+   "test_ms_total": 1058.1
+  },
+  "14.10_hooks": null
+ }
+}

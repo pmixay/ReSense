@@ -1,0 +1,254 @@
+[
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521417006,
+        "checksum_member": "resense-image-1.0.0-00143b0.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-00143b0.tar.gz",
+        "sha256": "e466e2639bc2ec2c0ee0175248a790ee049d58e1bb6b9b0699e183e9d905b0a8"
+      }
+    ],
+    "id": 10900957428,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10900957428--resense-image-1.0.0-00143b0.zip",
+    "verified_at": "2026-10-16T14:04:59.622660+00:00",
+    "zip_bytes": 521417463,
+    "zip_crc_all_members": true,
+    "zip_sha256": "6fa4107d757d47ee8c3f07424e8887caeead706288ee63a69563ba65c7fc9ca1"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521515309,
+        "checksum_member": "resense-image-1.0.0-f8d9eed.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-f8d9eed.tar.gz",
+        "sha256": "23aad2042b1fcf9085d70ae698d279d017cfb043e2632c2b960d081152c7d7a8"
+      }
+    ],
+    "id": 10903142103,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903142103--resense-image-1.0.0-f8d9eed.zip",
+    "verified_at": "2026-10-16T14:05:00.874935+00:00",
+    "zip_bytes": 521515766,
+    "zip_crc_all_members": true,
+    "zip_sha256": "8202825dc9992d3a88d1ccac01f6845a602616a892850c2345d3515a1311dc6e"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521524192,
+        "checksum_member": "resense-image-1.0.0-208152d.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-208152d.tar.gz",
+        "sha256": "0924efeedb40d91e36c4b288760905207920659d22951c9583994e018c2feed3"
+      }
+    ],
+    "id": 10903397684,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903397684--resense-image-1.0.0-208152d.zip",
+    "verified_at": "2026-10-16T14:05:02.156319+00:00",
+    "zip_bytes": 521524649,
+    "zip_crc_all_members": true,
+    "zip_sha256": "043c607b8a1c229005dbe5f2df8a4bf0651e20f6b50a84309d4d386d1bb14066"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521515314,
+        "checksum_member": "resense-image-1.0.0-e5f0f02.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-e5f0f02.tar.gz",
+        "sha256": "ed345d36971fdd143ae540b19b85f9a9b43aa65a1e36fcc69069143bb99f3adc"
+      }
+    ],
+    "id": 10903579782,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903579782--resense-image-1.0.0-e5f0f02.zip",
+    "verified_at": "2026-10-16T14:05:03.377106+00:00",
+    "zip_bytes": 521515771,
+    "zip_crc_all_members": true,
+    "zip_sha256": "a2a9a41001314694f9ec92d18827b4d1782a18b805c67698ad117ca13c77bff9"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521522055,
+        "checksum_member": "resense-image-1.0.0-ee65c46.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-ee65c46.tar.gz",
+        "sha256": "4ff2f7895c6cce66aaea7ff515acdc663969b48e1841c48f62eb4c369163609a"
+      }
+    ],
+    "id": 10903679999,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903679999--resense-image-1.0.0-ee65c46.zip",
+    "verified_at": "2026-10-16T14:05:04.604382+00:00",
+    "zip_bytes": 521522512,
+    "zip_crc_all_members": true,
+    "zip_sha256": "fba49b2551330bc12978305a88224ba8265bf6b247f4eb58a0628246746ec666"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521513359,
+        "checksum_member": "resense-image-1.0.0-d7c6047.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-d7c6047.tar.gz",
+        "sha256": "3de90d062a5b9025773971c54b39899b8c8ead6677b7ee3bad157a8834073ba4"
+      }
+    ],
+    "id": 10903746609,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903746609--resense-image-1.0.0-d7c6047.zip",
+    "verified_at": "2026-10-16T14:05:05.835151+00:00",
+    "zip_bytes": 521513816,
+    "zip_crc_all_members": true,
+    "zip_sha256": "e208c81b27d2be94f16e4ae458379e8990803737449348644995b71064995539"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521547163,
+        "checksum_member": "resense-image-1.0.0-57ef16f.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-57ef16f.tar.gz",
+        "sha256": "3fc7769e79ce24c6ca5513b64a161ba9598643f4b2baec41c0026c2b8bf40d6b"
+      }
+    ],
+    "id": 10904853559,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10904853559--resense-image-1.0.0-57ef16f.zip",
+    "verified_at": "2026-10-16T14:05:07.303263+00:00",
+    "zip_bytes": 521547620,
+    "zip_crc_all_members": true,
+    "zip_sha256": "3b82e5d96f5ff9c70d436d3daf2d055e046822612e2a0cc898049b0bf22b4741"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521564679,
+        "checksum_member": "resense-image-1.0.0-f99687f.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-f99687f.tar.gz",
+        "sha256": "08eb963ea76c0c38eff2fbcdaec504ba4af83f546cb6cbbb98019b716d8a9546"
+      }
+    ],
+    "id": 10905092857,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10905092857--resense-image-1.0.0-f99687f.zip",
+    "verified_at": "2026-10-16T14:05:09.126825+00:00",
+    "zip_bytes": 521565136,
+    "zip_crc_all_members": true,
+    "zip_sha256": "77ebcf11b5502af35237e1c8880a367d2da510c5516b181cf7784aa43a8570c9"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521518364,
+        "checksum_member": "resense-image-1.0.0-dcf7f90.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-dcf7f90.tar.gz",
+        "sha256": "ba9ce13f17cb509e99df47e87d157f6b5c02aaf90fd9eff49c383a629f4ccde0"
+      }
+    ],
+    "id": 10905146476,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10905146476--resense-image-1.0.0-dcf7f90.zip",
+    "verified_at": "2026-10-16T14:05:10.373098+00:00",
+    "zip_bytes": 521518821,
+    "zip_crc_all_members": true,
+    "zip_sha256": "f4cdf79eb1477c58468a3649b636ba37284b951e5f1d59f10b125e782546ef03"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521530684,
+        "checksum_member": "resense-image-1.0.0-be5f5fc.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-be5f5fc.tar.gz",
+        "sha256": "00b85e904ee729f5b084d92e9520491d75101ae4cee451357fa3e1856a5d05a0"
+      }
+    ],
+    "id": 10908332273,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10908332273--resense-image-1.0.0-be5f5fc.zip",
+    "verified_at": "2026-10-16T14:05:11.592984+00:00",
+    "zip_bytes": 521531141,
+    "zip_crc_all_members": true,
+    "zip_sha256": "ad5076a62f00dae5d83a03656fc433c4206a5cc49ea2fd352a23f25b75bd2872"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521550172,
+        "checksum_member": "resense-image-1.0.0-4974242.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-4974242.tar.gz",
+        "sha256": "141f5aad21fdd03f574f9d546583596a4e1421841a973e71843c4abd7239a99c"
+      }
+    ],
+    "id": 10909594385,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10909594385--resense-image-1.0.0-4974242.zip",
+    "verified_at": "2026-10-16T14:05:12.815517+00:00",
+    "zip_bytes": 521550629,
+    "zip_crc_all_members": true,
+    "zip_sha256": "9a80e6fc4f540b06abd123dfeec1163473f11be207c70789da919cabac260ef5"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521548005,
+        "checksum_member": "resense-image-1.0.0-a55f27e.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-a55f27e.tar.gz",
+        "sha256": "f77f8213d34359d0119b471f2dfec539da1da3d728ced3f96f1840fed80e91fa"
+      }
+    ],
+    "id": 10910412582,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10910412582--resense-image-1.0.0-a55f27e.zip",
+    "verified_at": "2026-10-16T14:05:14.058207+00:00",
+    "zip_bytes": 521548462,
+    "zip_crc_all_members": true,
+    "zip_sha256": "42f3fe622453b0638cf8c874860d6afe8c17be2a9a68bdff7c46fd79a66efbfe"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521534281,
+        "checksum_member": "resense-image-1.0.0-b3f2535.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-b3f2535.tar.gz",
+        "sha256": "7ed1f182ef140a3abc03190f1e20b4573197c86d1d5ea0824cd20def3b8d9131"
+      }
+    ],
+    "id": 10910862598,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10910862598--resense-image-1.0.0-b3f2535.zip",
+    "verified_at": "2026-10-16T14:05:15.319145+00:00",
+    "zip_bytes": 521534738,
+    "zip_crc_all_members": true,
+    "zip_sha256": "6c2745cd6633cd2893bd38765fd7d0abaf50b5263af4e9f0e4d8bdedf9c3f671"
+  },
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 521546985,
+        "checksum_member": "resense-image-1.0.0-1f8b8ff.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-1f8b8ff.tar.gz",
+        "sha256": "b13c0724613e68c7ddebf22c03aceda06a2d786393a8ad592817b5f610ecc6b9"
+      }
+    ],
+    "id": 10911031354,
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10911031354--resense-image-1.0.0-1f8b8ff.zip",
+    "verified_at": "2026-10-16T14:05:16.705539+00:00",
+    "zip_bytes": 521547442,
+    "zip_crc_all_members": true,
+    "zip_sha256": "2fed63ffedf213cdec601e2bbe11ae5144e8dd5a4ecfe4fb3047c136d5ff1226"
+  }
+]

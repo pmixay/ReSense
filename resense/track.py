@@ -49,6 +49,7 @@ class TrackModel:
     disagree_left: int = 0           # 27.09 (axis_disagree_hold): nominal frame periods the disagreement cap still applies to one-boundary frames (not reported)
     axis_valid_both: float = 1e9     # 25.09: X up to which BOTH fitted boundaries support the axis (= axis_valid with one or none); read only with cluster.far_axis_both_sides 1, not serialised
     axis_valid_bent: float = 1e9     # 25.09: the same without the straight bonus, on a bent axis with two boundaries only (1e9 otherwise); cluster.far_axis_both_sides 2, not serialised
+    wall_drift: float = 1e9          # 15.10 (axis_wall_drift): X where a near tunnel boundary has come axis_wall_drift nearer the axis than in the rail range (1e9 = none): the monitored range ends there
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -102,6 +103,8 @@ class TrackModel:
             **({"floor_shadow": round(float(self.floor_shadow), 1), "floor_held": bool(self.floor_held),
                 "floor_hold_run": int(self.floor_hold_run)}
                if self.floor_shadow > 0 else {}),
+            # 15.10 (additive, only in a frame with a wall drift)
+            **({"wall_drift": round(float(self.wall_drift), 1)} if self.wall_drift < 1e9 else {}),
         }
 
 
@@ -391,7 +394,7 @@ def _far_supported_side(sides: dict, cfg: TrackConfig) -> Optional[str]:
 
 def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
                              t_fixed: Optional[float] = None, floor_z_all: Optional[np.ndarray] = None,
-                             far_support_run: int = 0):
+                             far_support_run: int = 0, boundaries: Optional[dict] = None):
     """Yaw (tan) and curvature of the track from the left/right tunnel boundaries.
 
     Walls, column rows and cable ducts run parallel to the track, so their curvature is the
@@ -404,7 +407,9 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     when both were fitted; ``x_valid`` / ``x_valid_min`` are the last observed bin of the longer
     / shorter side kept; ``run`` counts the consecutive frames (``far_support_run`` of the
     previous frame + 1, or 0) in which the ``walls_min_far_support`` condition held: the rule
-    applies from the ``walls_far_support_frames``-th.
+    applies from the ``walls_far_support_frames``-th. ``boundaries`` (15.10, ``axis_wall_drift``):
+    a dict that receives per side the boundary bins as ``(centres, absolute Y)``, populated bins
+    only, nearest first, whether or not the side's fit succeeded (:func:`wall_drift_range`).
     """
     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     x0, x1 = cfg.walls_range
@@ -438,6 +443,8 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
         ok = np.isfinite(q)
         if not ok.any():
             continue
+        if boundaries is not None:
+            boundaries[name] = (centres[ok], yq[ok])
         fit = _fit_side(centres[ok], yq[ok], cfg, float(np.mean(q[ok])), t_fixed)
         if fit is not None:
             sides[name] = fit
@@ -472,6 +479,70 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     x_valid = float(max(f[4] for f in sides.values()))
     x_valid_min = float(min(f[4] for f in sides.values()))
     return c1, c2, quality, x_valid, n_sides, disagreement, x_valid_min, run
+
+
+_DRIFT_GAP_BINS = 3        # 15.10 (axis_wall_drift): a boundary is followed outward while its populated bins are at most this many walls_bin apart
+_DRIFT_NEAR_MAD = 0.25     # m, the boundary's offset in the rail range must be this consistent (median absolute deviation) to be the reference
+_DRIFT_NEAR_SLOPE = 0.02   # and run this parallel to the rails there (|slope| of a line through its offsets: 0.4 m over 20 m)
+_DRIFT_MAX_CURVATURE = 2e-3  # 1/m (R 500 m): a curvature error this large moves a boundary by at most this x X x dX between bins at X; a faster change is a structure edge
+
+
+def wall_drift_range(boundaries: dict, model: TrackModel, cfg: TrackConfig) -> float:
+    """The X from which the fitted axis contradicts a near tunnel boundary (15.10, ``axis_wall_drift``),
+    or 1e9.
+
+    A boundary within ``axis_wall_drift_max_offset`` of the axis in the rail range (the wall of a
+    single-track tube, a column row: structures the gauge keeps parallel to the track) runs at the same
+    offset along the whole track. Its median offset from ``model``'s axis over the bins within
+    ``rails_range[1]``, where the rails fix the axis, is the reference (at least three bins, median
+    absolute deviation at most ``_DRIFT_NEAR_MAD``, a line through the ones within that of the
+    reference sloping at most ``_DRIFT_NEAR_SLOPE``: parallel to the rails; a boundary closing in
+    already there is a structure crossing, not a wall). The boundary is then followed outward while its
+    populated bins are at most ``_DRIFT_GAP_BINS`` bins apart. A change between two followed bins faster
+    than a curvature error of ``_DRIFT_MAX_CURVATURE`` can move it is a structure edge (a gate, a
+    platform screen, a niche): the reference moves with it. Where the boundary is more than
+    ``axis_wall_drift`` nearer the axis than the reference in ``axis_wall_drift_bins`` consecutive bins,
+    the axis there is off the track by about that much, or the boundary is not parallel to it: either
+    way the corridor beyond is not where the track is. The near edge of the first of those bins is
+    returned (the smallest over the sides). At the entry of a curve the quadratic axis lags the track
+    (the curvature of a transition grows with the distance, the fit's does not), the outer wall runs
+    diagonally across the corridor and an object on the track beyond the crossing is outside the
+    corridor (roundT_pressureGate_roundT frames 57-117: 1.0-2.4 m at 100 m; at the returned X the
+    axis is 0.7-1.1 m off the wall-referenced track). ``boundaries`` is
+    :func:`estimate_axis_from_walls`'s; a boundary that moves away from the axis says nothing (a
+    niche, a hall, a diverging tunnel)."""
+    best = 1e9
+    near_max = cfg.rails_range[1]
+    c, t, k2 = model.center_coefs()
+    for x, y in boundaries.values():
+        x = np.asarray(x, dtype=np.float64)
+        dy = np.asarray(y, dtype=np.float64) - (c + t * x + k2 * x * x)
+        near = x <= near_max
+        if int(near.sum()) < 3:
+            continue
+        a = dy * np.sign(np.median(dy[near]))          # offset from the axis, positive towards the boundary
+        ref = float(np.median(a[near]))
+        if ref <= 0.0 or ref > cfg.axis_wall_drift_max_offset or float(np.median(np.abs(a[near] - ref))) > _DRIFT_NEAR_MAD:
+            continue
+        inl = near & (np.abs(a - ref) <= _DRIFT_NEAR_MAD)  # the slope without the odd near bin (a structure at 6-10 m)
+        if int(inl.sum()) < 3 or abs(float(np.polyfit(x[inl], a[inl], 1)[0])) > _DRIFT_NEAR_SLOPE:
+            continue
+        prev, prev_a, run, first = float(x[near][-1]), float(a[near][-1]), 0, 0.0
+        for xi, ai in zip(x[~near], a[~near]):
+            if xi - prev > _DRIFT_GAP_BINS * cfg.walls_bin:
+                break                                   # the boundary is lost (occluded): no evidence beyond
+            if abs(ai - prev_a) > _DRIFT_MAX_CURVATURE * xi * (xi - prev):
+                ref += ai - prev_a                      # a structure edge, not the axis drifting
+            prev, prev_a = float(xi), float(ai)
+            if ai < ref - cfg.axis_wall_drift:
+                run += 1
+                first = first if run > 1 else float(xi) - 0.5 * cfg.walls_bin
+                if run >= cfg.axis_wall_drift_bins:
+                    best = min(best, first)
+                    break
+            else:
+                run = 0
+    return best
 
 
 def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
@@ -880,8 +951,10 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             model.rail_offset = a_r * prior.rail_offset + (1 - a_r) * rails.rail_offset
             if cfg.rails_yaw_enabled and rails.tan_yaw is not None:
                 t_fixed = float(np.clip(rails.tan_yaw, -cfg.walls_max_yaw, cfg.walls_max_yaw))
+    bounds: Optional[dict] = {} if cfg.walls_enabled and cfg.axis_wall_drift > 0 else None
     if cfg.walls_enabled:
-        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf, far_support_run=prior.far_support_run)
+        est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf, far_support_run=prior.far_support_run,
+                                       boundaries=bounds)
         if est is not None:
             tan_yaw, curv, q, x_valid, n_sides, disagreement, x_valid_min, model.far_support_run = est
             model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(tan_yaw)
@@ -943,5 +1016,8 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             model.curvature = float(np.clip(model.curvature, prev.curvature - r, prev.curvature + r))
     if cfg.rails_far_check_enabled and rails is not None and cfg.walls_enabled:
         _check_far_rails(xyz, model, cfg, rails, ring)
+    if bounds:
+        # 15.10: against the final axis (smoothed, rate-limited), the one the corridor uses
+        model.wall_drift = wall_drift_range(bounds, model, cfg)
     model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)
     return model

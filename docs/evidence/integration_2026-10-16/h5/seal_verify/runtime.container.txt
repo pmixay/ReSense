@@ -1,0 +1,26 @@
+RUN clone ["git", "-c", "safe.directory=/source.git", "clone", "--shared", "--no-checkout", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "/source.git", "/evalworkspace/seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407"]
+RUN checkout ["git", "-c", "core.autocrlf=false", "checkout", "--detach", "d6319c237213743897c661990c2c78adfa7b4796"]
+RUN verify_before_native ["/usr/bin/python3", "scripts/detector_freeze.py", "verify", "--manifest", "docs/evidence/detector_freeze_2026-10-16_1.1.0.json"]
+RUN native_build ["bash", "scripts/build_native.sh"]
+RUN verify_after_native_or_create ["/usr/bin/python3", "scripts/detector_freeze.py", "verify", "--manifest", "docs/evidence/detector_freeze_2026-10-16_1.1.0.json"]
+{
+  "passed": true,
+  "checkout_commit": "d6319c237213743897c661990c2c78adfa7b4796",
+  "manifest_source_commit": "21e1d6195eda438056fb51c3bab886e420d19ee2",
+  "manifest_measured_commit": "52115654417a660669b8dddfce447692c1d782cc",
+  "source_sha256": "db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751",
+  "manifest_sha256": "523b5eefaed42882c6a9c6974f3ac16ebd791472d7c831da245ad2827d8cc648",
+  "manifest_bytes": 5273,
+  "validation_sha256": "e0b2c76f61d6b65b1f6d3901af91c96d6370e76c125b5192735399b889a5547a",
+  "baseline_sha256": "8d86d6d19ef00f0ece4fd0c924935887ba6f8b39dbfd7074c2f1577099029b30",
+  "source_files": 36,
+  "clean_LF": true,
+  "config_sync": true,
+  "frozen_source_unchanged": true,
+  "version": "1.1.0",
+  "verify_only": true,
+  "use_default": false,
+  "manifest_path": "docs/evidence/detector_freeze_2026-10-16_1.1.0.json",
+  "evidence_path": "docs/evidence/integration_2026-10-16/h5/candidate/gate.json",
+  "repo_path": "/evalworkspace/seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407"
+}

@@ -1,0 +1,56 @@
+{
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "executable": "/usr/bin/python3",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "numpy": "1.26.4",
+  "open3d": "0.19.0",
+  "open3d_path": "/usr/local/lib/python3.10/dist-packages/open3d/__init__.py",
+  "native": "native (_resense_native.so)",
+  "binaries": {
+    "/work/target/resense/_resense_native.so": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534"
+  },
+  "modules": {
+    "resense.config": {
+      "path": "/work/target/resense/config.py",
+      "sha256": "d272bcf9ad5df16d056997e789ff6f8c4ef84ab81096904569342a8404830b4e"
+    },
+    "resense.detector": {
+      "path": "/work/target/resense/detector.py",
+      "sha256": "930c96c0afb22d4f60f6729235ab34664fb8807c8569ead18a69c42c33bb2a92"
+    },
+    "resense.track": {
+      "path": "/work/target/resense/track.py",
+      "sha256": "e8bb4e7053bba4785c7f68f1557d7b6e2a4e789a6a03af1bc4277a1248a00386"
+    },
+    "resense.tracking": {
+      "path": "/work/target/resense/tracking.py",
+      "sha256": "c83f9f4ab37e5b742776f3f62c801f6f386309824ba474c53b532bbdbad4a715"
+    },
+    "resense.health": {
+      "path": "/work/target/resense/health.py",
+      "sha256": "2c99fb716ab9a7d17b0e1ae8033cd6ee13be9585a030c9430f18b46adb74f45f"
+    },
+    "resense.clustering": {
+      "path": "/work/target/resense/clustering.py",
+      "sha256": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b"
+    },
+    "resense.sensor": {
+      "path": "/work/target/resense/sensor.py",
+      "sha256": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0"
+    },
+    "resense._native": {
+      "path": "/work/target/resense/_native.py",
+      "sha256": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58"
+    }
+  },
+  "sys_path": [
+    "/review",
+    "/work/target",
+    "/usr/lib/python310.zip",
+    "/usr/lib/python3.10",
+    "/usr/lib/python3.10/lib-dynload",
+    "/usr/local/lib/python3.10/dist-packages",
+    "/usr/lib/python3/dist-packages"
+  ],
+  "compiler": "g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+}

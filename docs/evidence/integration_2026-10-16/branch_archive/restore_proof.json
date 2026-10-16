@@ -1,0 +1,152 @@
+{
+  "created_utc": "2026-10-16T08:19:50.581420+00:00",
+  "source_read_only": "C:\\Users\\alikh\\OneDrive\\Desktop\\projects\\ReSense\\.git",
+  "scratch_bare_repository": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-branch-archive-restore-20261016",
+  "prerequisite": "e39a011e0f07a9809ba1000f800c39e91d28d15c",
+  "source_fetch_refspec": "e39a011e0f07a9809ba1000f800c39e91d28d15c:refs/archive/frozen-prerequisite",
+  "no_alternates": true,
+  "checks": {
+    "sha256": "26b2a311fedc1a0e07b85058badad6953df69fb4de4091c4e60e43c7a662b314",
+    "bytes": 47312366,
+    "bundle_verify_stdout": "The bundle contains these 6 refs:\n2acda69e9ed9b47d6b79b674c269ee40a97faf4f refs/heads/experiment/cross-ring-sparse-evidence\nd3aa88414a9927a81a273b8883156198afa9a141 refs/heads/p1/decision-policy-2026-10-15\n0cccb7e2bea60716e2cd1d352589b8341055b705 refs/heads/p1/offline-rebuild-2026-10-15\na14ddd1faf53b4477b28c1494995b925ce278746 refs/heads/p1/startup-2026-10-15\n9f6a54e4e0c6203bf24973815aa780d844a5a267 refs/heads/p4/heldout-spec-2026-10-15\nd77a861aefc1b9b889eb28851feb365326684b34 refs/remotes/origin/r3/axis-B-trial\nThe bundle requires these 9 refs:\n464f5bc6b193ff3dcc4bd7d30b03745d8d260f6a \n8f232847477aaabc9c5f4965e6466af70b7d5d47 \ndf24c18edbebf83360b0d8bf2e100cf73ec84108 \n692820bc7323b417d4f23dd94a16d0a7636e203f \n059948aceff069133ba936417f2c6cbeb3bf89df \n9a27bbfb69bef2172428a5dec27a86c4047b8d1d \n3fdc87957f5d09ff32573eabe6637924b91ea376 \nd0d17bb5dcc2b5b23f9ddd96744a8fd0424e0b5d \na188a2d07f5ee1a151f3f8d880d2d78d8fe38dc6 \nThe bundle uses this hash algorithm: sha1\n",
+    "bundle_verify_stderr": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/branch_archive/retired-heads.bundle is okay\n",
+    "list_heads": {
+      "refs/heads/experiment/cross-ring-sparse-evidence": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+      "refs/heads/p1/decision-policy-2026-10-15": "d3aa88414a9927a81a273b8883156198afa9a141",
+      "refs/heads/p1/offline-rebuild-2026-10-15": "0cccb7e2bea60716e2cd1d352589b8341055b705",
+      "refs/heads/p1/startup-2026-10-15": "a14ddd1faf53b4477b28c1494995b925ce278746",
+      "refs/heads/p4/heldout-spec-2026-10-15": "9f6a54e4e0c6203bf24973815aa780d844a5a267",
+      "refs/remotes/origin/r3/axis-B-trial": "d77a861aefc1b9b889eb28851feb365326684b34"
+    }
+  },
+  "seed_only_availability": {
+    "refs/heads/experiment/cross-ring-sparse-evidence": false,
+    "refs/heads/h2/cut-bar": true,
+    "refs/heads/integration/web-ci-20261016": true,
+    "refs/heads/p1/decision-policy-2026-10-15": false,
+    "refs/heads/p1/offline-rebuild-2026-10-15": false,
+    "refs/heads/p1/start-2026-10-15": true,
+    "refs/heads/p1/startup-2026-10-15": false,
+    "refs/heads/p3/range-screen": true,
+    "refs/heads/p4/eval-start-2026-10-15": true,
+    "refs/heads/p4/heldout-spec-2026-10-15": false,
+    "refs/heads/r3/column": true,
+    "refs/remotes/origin/final/silent-misses": true,
+    "refs/remotes/origin/h2/cut-bar": true,
+    "refs/remotes/origin/p1/start-2026-10-15": true,
+    "refs/remotes/origin/p2/docs-and-pitch-20261015": true,
+    "refs/remotes/origin/p3/range-screen": true,
+    "refs/remotes/origin/p4/eval-start-2026-10-15": true,
+    "refs/remotes/origin/r3/axis": true,
+    "refs/remotes/origin/r3/axis-B-trial": false,
+    "refs/remotes/origin/r3/column": true
+  },
+  "unbundle_stdout": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f refs/heads/experiment/cross-ring-sparse-evidence\nd3aa88414a9927a81a273b8883156198afa9a141 refs/heads/p1/decision-policy-2026-10-15\n0cccb7e2bea60716e2cd1d352589b8341055b705 refs/heads/p1/offline-rebuild-2026-10-15\na14ddd1faf53b4477b28c1494995b925ce278746 refs/heads/p1/startup-2026-10-15\n9f6a54e4e0c6203bf24973815aa780d844a5a267 refs/heads/p4/heldout-spec-2026-10-15\nd77a861aefc1b9b889eb28851feb365326684b34 refs/remotes/origin/r3/axis-B-trial",
+  "restored_refs": [
+    {
+      "archive_ref": "refs/heads/experiment/cross-ring-sparse-evidence",
+      "sha": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/h2/cut-bar",
+      "sha": "7380f650829fd1c64a9b894afcf2868b6ffc2434",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/integration/web-ci-20261016",
+      "sha": "36324e2ca71a3106079f0cf5708ae0e2349e95b2",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/p1/decision-policy-2026-10-15",
+      "sha": "d3aa88414a9927a81a273b8883156198afa9a141",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/p1/offline-rebuild-2026-10-15",
+      "sha": "0cccb7e2bea60716e2cd1d352589b8341055b705",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/p1/start-2026-10-15",
+      "sha": "01e1f669d8b558755cf0c8ebd680c7641d59becf",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/p1/startup-2026-10-15",
+      "sha": "a14ddd1faf53b4477b28c1494995b925ce278746",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/p3/range-screen",
+      "sha": "527a76c4139add1862b7eaaf954129a73d65964f",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/p4/eval-start-2026-10-15",
+      "sha": "ab295b144c67d9ea5a63ef9fa75fd7d72346073a",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/p4/heldout-spec-2026-10-15",
+      "sha": "9f6a54e4e0c6203bf24973815aa780d844a5a267",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/heads/r3/column",
+      "sha": "ccb68c106f562a1768636685f4513c09336dbec6",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/final/silent-misses",
+      "sha": "d0d17bb5dcc2b5b23f9ddd96744a8fd0424e0b5d",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/h2/cut-bar",
+      "sha": "7380f650829fd1c64a9b894afcf2868b6ffc2434",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/p1/start-2026-10-15",
+      "sha": "01e1f669d8b558755cf0c8ebd680c7641d59becf",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/p2/docs-and-pitch-20261015",
+      "sha": "90a472e31f225efc7689ce74db6c36c6e4d7fc5c",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/p3/range-screen",
+      "sha": "527a76c4139add1862b7eaaf954129a73d65964f",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/p4/eval-start-2026-10-15",
+      "sha": "ab295b144c67d9ea5a63ef9fa75fd7d72346073a",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/r3/axis",
+      "sha": "972edd2b7a9986e277a30a69d4adce6255462103",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/r3/axis-B-trial",
+      "sha": "d77a861aefc1b9b889eb28851feb365326684b34",
+      "commit_and_tree_present": true
+    },
+    {
+      "archive_ref": "refs/remotes/origin/r3/column",
+      "sha": "ccb68c106f562a1768636685f4513c09336dbec6",
+      "commit_and_tree_present": true
+    }
+  ],
+  "fsck_exit": 0,
+  "fsck_stdout": "",
+  "fsck_stderr": "notice: HEAD points to an unborn branch (master)\n",
+  "git_version": "git version 2.50.1.windows.1",
+  "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+}

@@ -86,5 +86,7 @@ const router = createBrowserRouter(routes, {
 });
 
 export default function App() {
-  return <RouterProvider router={router} future={{ v7_startTransition: true }} />;
+  // Commit route departures synchronously: retaining the player in a transition lets
+  // its frame/scene updates delay Back while the address bar already shows another page.
+  return <RouterProvider router={router} future={{ v7_startTransition: false }} />;
 }

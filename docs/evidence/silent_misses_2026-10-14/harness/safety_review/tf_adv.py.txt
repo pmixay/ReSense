@@ -1,0 +1,72 @@
+"""Adversarial top_is_free cases on the pure-numpy ray cast of tests/test_column_free_top.py (scratch).
+Boxes: (x0, x1, y0, y1, h0, h1, mode) mode 'r' returns, 'a' absorbs (the ray ends, no return: dark / glass band)."""
+import os, sys
+import numpy as np
+W = os.environ["WT"]; sys.path.insert(0, W); sys.path.insert(0, os.path.join(W, "tests"))
+import resense; assert resense.__file__.startswith(W)
+from resense.clustering import top_is_free, find_clusters
+from resense.config import DetectorConfig
+from resense.gauge import point_in_polygon, widened_profile
+from resense.sensor import RING_ELEVATION_DEG
+H0 = 1.8
+
+def cast(boxes, vault=4.2, wall=220.0, az=(-3.0, 3.0), max_range=210.0, elev=None, ring_ids=None, pitch=0.0):
+    el = np.radians(RING_ELEVATION_DEG if elev is None else elev)
+    a = np.radians(np.arange(az[0], az[1] + 1e-9, 0.1))
+    E, A = np.meshgrid(el, a, indexing="ij")
+    rid = np.repeat(np.arange(el.size) if ring_ids is None else ring_ids, a.size)
+    d = np.stack([np.cos(E) * np.cos(A), np.cos(E) * np.sin(A), np.sin(E)], axis=-1).reshape(-1, 3)
+    p = np.radians(pitch)
+    d = d @ np.array([[np.cos(p), 0.0, -np.sin(p)], [0.0, 1.0, 0.0], [np.sin(p), 0.0, np.cos(p)]]).T
+    with np.errstate(divide="ignore", invalid="ignore"):
+        rise = d[:, 2]
+        t = np.minimum.reduce([np.where(d[:, 0] > 1e-9, wall / d[:, 0], np.inf),
+                               np.where(rise > 1e-9, (vault - H0) / rise, np.inf),
+                               np.where(rise < -1e-9, -H0 / rise, np.inf)])
+        lab = np.zeros(len(d), dtype=int); absorbed = np.zeros(len(d), bool)
+        for k, (x0, x1, y0, y1, h0, h1, mode) in enumerate(boxes, start=1):
+            lo, hi = np.array([x0, y0, -H0 + h0]), np.array([x1, y1, -H0 + h1])
+            t0, t1 = lo / d, hi / d
+            tn = np.nanmax(np.minimum(t0, t1), axis=1); tf = np.nanmin(np.maximum(t0, t1), axis=1)
+            hit = (tn <= tf) & (tn > 0) & (tn < t)
+            t = np.where(hit, tn, t); lab = np.where(hit, k, lab); absorbed = np.where(hit, mode == "a", absorbed)
+    ok = (t < max_range) & ~absorbed
+    xyz = (d[ok] * t[ok, None]).astype(np.float32)
+    h = xyz[:, 2].astype(np.float64) + H0
+    return np.repeat(xyz, 2, axis=0), np.repeat(h, 2), np.repeat(lab[ok], 2), np.repeat(rid[ok], 2).astype(np.uint16)
+
+def free(boxes, ids=True, **kw):
+    xyz, h, lab, ring = cast(boxes, **kw)
+    idx = np.flatnonzero((lab == 1) & (h <= 3.0))
+    if idx.size < 4:
+        return None, 0, None
+    return top_is_free(xyz, idx, frame_ring=ring if ids else None), idx.size, round(float(h[idx].max()), 2)
+
+def col(x, lat, w=0.4, h0=0.0, h1=4.2, mode="r"):
+    return (x, x + w, lat - w / 2, lat + w / 2, h0, h1, mode)
+
+rows = []
+for x in (30.0, 60.0, 100.0, 140.0):
+    for lat in (0.0, 0.7):
+        r = {"x": x, "lat": lat}
+        r["column_to_vault"] = free([col(x, lat)])
+        # the column's face returns nothing above top_dark (dark paint / glass / a black sign): seen as a short post
+        for td in (2.6, 2.85):
+            r[f"dark_above_{td}"] = free([col(x, lat, h1=td), col(x, lat, h0=td, h1=4.2, mode="a")])
+        # a narrow lamp (0.3 m) hanging nearer, right in front of the column's top (occluded from above, narrow)
+        hs = 2.75
+        el_top = np.arctan2(hs - H0, x)
+        xl = x * 0.6
+        hl = H0 + np.tan(el_top) * xl
+        r["column_top2.75_narrow_lamp_in_front"] = free([col(x, lat, h1=hs), (xl, xl + 0.2, lat * 0.6 - 0.15, lat * 0.6 + 0.15, hl + 0.02, hl + 0.35, "r")])
+        r["column_top2.75_wide_beam_in_front"] = free([col(x, lat, h1=hs), (xl, xl + 0.2, -2.0, 2.0, hl + 0.02, hl + 0.35, "r")])
+        # same, the ring table only (no channel ids): another sensor or a driver without ids
+        r["top2.75_wide_beam_noids"] = free([col(x, lat, h1=hs), (xl, xl + 0.2, -2.0, 2.0, hl + 0.02, hl + 0.35, "r")], ids=False)
+        # a 64-ring sensor at uniform 0.33 deg (-16..+5), table of the Pandar128 in the code (no ids / ids reversed)
+        el64 = np.linspace(-16.0, 5.0, 64)
+        r["S64_beam_noids"] = free([col(x, lat, h1=hs), (xl, xl + 0.2, -2.0, 2.0, hl + 0.02, hl + 0.35, "r")], ids=False, elev=el64)
+        r["S64_beam_ids_bottom_up"] = free([col(x, lat, h1=hs), (xl, xl + 0.2, -2.0, 2.0, hl + 0.02, hl + 0.35, "r")], ids=True, elev=el64, ring_ids=np.arange(64))
+        r["S64_column_to_vault_noids"] = free([col(x, lat)], ids=False, elev=el64)
+        rows.append(r)
+for r in rows:
+    print(r)

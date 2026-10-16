@@ -1,0 +1,27 @@
+import json, sys
+import numpy as np
+recs = json.load(open(sys.argv[1]))
+TA = {r["k"]: r for r in json.load(open("/tmp/claude-0/fixwork/investigate_oversize/C_true_axis_full.json"))}
+ks = [int(v) for v in sys.argv[2].split(",")]
+for r in recs:
+    if r['k'] not in ks:
+        continue
+    c = r['calls'][0]
+    wm = c['walls_model']
+    t = np.tan(wm['yaw'])
+    ta = TA.get(r['k'])
+    print("=== k", r['k'], "model curv %.5f yaw %.4f center %.2f t_fixed %s" % (wm['curv'], wm['yaw'], wm['center'], c['t_fixed']))
+    for name, s in zip(("L", "R"), c['side_in']):
+        x = np.array(s['x']); y = np.array(s['y'])
+        dyd = y - (wm['center'] + t * x + 0.5 * wm['curv'] * x * x)
+        line = []
+        for xi, yi, di in zip(x, y, dyd):
+            tr = ""
+            if ta and ta.get('ok'):
+                c2, c1, c0 = ta['coef']
+                yt = c0 - ta['off'] + c1 * xi + c2 * xi * xi
+                tr = "/%.2f" % (yi - yt)
+            line.append("%d:%.2f%s" % (xi, di, tr))
+        f = s['fit']
+        print(name, "fit", None if f is None else "k%.5f t%.4f rms%.2f" % (f[1], f[0], f[2]))
+        print("   ", " ".join(line))

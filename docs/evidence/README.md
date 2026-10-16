@@ -7,9 +7,10 @@
 > **Last verified:** 2026-10-16: rows added for the two folders of 16.10; 2026-09-29 night (`fe27068`, before the merge into `main`): every link of this index; "Start
 > here" points at the seal of 29.09 night (shell off) and its gate, and at the superseded seal of
 > 29.09 evening; rows added for the 29.09 folders; each file remains the record of its own date ·
-> **Status:** current
+> **Updated:** 2026-10-16: integration checkpoint, completed selected-scope H3/withdrawal/H4
+> and original handoffs indexed below; H5/1.1.0 seal DONE, H6/CI/main and E1 pending. **Status:** current
 
-Every file here is the record of one run and is not rewritten: a new run gets a new file or folder
+Every measured artifact here retains its original run identity: a new run gets a new file or folder
 (`results/<what>_<date>.json`, `<run>_<date>/`). "Log §…" refers to the full experiment log
 [`../archive/EXPERIMENTS_log_2026-09.md`](../archive/EXPERIMENTS_log_2026-09.md); the current
 results are in [`../EXPERIMENTS.md`](../EXPERIMENTS.md) and the criteria judgement in
@@ -17,16 +18,25 @@ results are in [`../EXPERIMENTS.md`](../EXPERIMENTS.md) and the criteria judgeme
 [`../archive/results/`](../archive/results). `docs/extended_dataset_intake.json` (the ride's
 per-file speeds and intake events) stays in `docs/` because scripts read it.
 
-**Start here** (the current seal and the runs of 28–29.09):
+**Start here** (the current seal, independent judgement and dated work evidence):
 
 | what | where |
 |---|---|
+| current detector seal **1.1.0, 16.10**: measured `5211565`, source/evidence `21e1d61`, seal commit `d6319c2`, proof `ec81e78`; **36 files**, source digest `db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751`. Final gate **208/208 non-latency rows identical**, same **146 gated rows passed**, all **18,329 frames** unchanged vs reviewed `c9aea87` outside registered timing. Explicit committed-manifest verification **PASS before/after native rebuild** in clean LF Linux. Package sealed; E1 tag/archive pending, published release still v1.0.0 | [`detector_freeze_2026-10-16_1.1.0.json`](detector_freeze_2026-10-16_1.1.0.json), [`h5/`](integration_2026-10-16/h5/README.md), [clean-checkout proof](integration_2026-10-16/h5/seal_verify/completion.json) |
+| integration 15–16.10: reviewed selected source `c9aea87cb5322092070158cd8987115ee44833c9`, final measured `5211565`, H1 DROP, H2/range cap retained; completed H3/probes/H4/H5, inherited High **OPEN 8.1**, **H6/CI/main and E1 PENDING**; stable original publication links and branch archive | [`integration_2026-10-16/`](integration_2026-10-16/README.md) |
+| replacement selected-scope H3, published `5282d6f`: **PASS**, exit 0, **208/208 non-latency rows identical**, same **146 gated rows passed**, no overrides/waivers; complete **18,329-frame** raw/serialized audit against same-Linux sealed `707ea9c`, no unexplained change; only intended range/additive effects after registered timing normalization | [`h3_selected/`](integration_2026-10-16/h3_selected/README.md) |
+| author H1 withdrawal measurements, published `829b243`, source `c9aea87`: **260 passed / 6 existing external-data deselections**, no failures/errors/skips; A-axis **82/177**, C-person **82.77 m / 55**; entire dark pieces 1/3 **14/2 STOP**, zero extras/losses or feature/observer calls | [`WITHDRAWAL_RESULTS.md`](integration_2026-10-16/h4_fixes/columns/WITHDRAWAL_RESULTS.md) |
+| fresh independent H4, published `70072f1`: revised difference `707ea9c..c9aea87` **ACCEPTED**, no supported **NEW medium+** finding; **306 passed**, **36 H2 angular/voxel boundary cases**, **1,344 paired Tracker updates per source**; inherited High tall miss **OPEN 8.1** | [`h4_selected/`](integration_2026-10-16/h4_selected/README.md) |
+| original enabled-H1 acceptance history: H3 PASS at `f8c088d`, independent correctness PASS, safety **BLOCKED** (tall miss, returning-hit gap, exact dark excess 9+5); later selected-scope acceptance does not revise those verdicts | [`h3/`](integration_2026-10-16/h3/README.md), [`h4_correctness/`](integration_2026-10-16/h4_correctness/README.md), [`h4_safety/`](integration_2026-10-16/h4_safety/README.md) |
+| original P1/P3/P4 handoffs: S1 FAIL, C1 offline v2 FAIL/runtime v1 selected, E2 local PASS; rejected cheap R1/R2 screens; H0 exact `707ea9c` PASS and X3 **40-case v1.0.0 baseline only**, not a new-candidate result | [`p1_start_2026-10-15/`](p1_start_2026-10-15/README.md), [`p3_start_2026-10-15/`](p3_start_2026-10-15/README.md), [`p4_start_2026-10-15/`](p4_start_2026-10-15/README.md) |
 | the detector seal of 29.09 night (two false-alarm rules on, `shell` off after the safety review; 36 files measured at `7464d80`, committed in `fe27068`) and its full gate against the `3eeb106` gate | [`detector_freeze_2026-09-29_shell_off.json`](detector_freeze_2026-09-29_shell_off.json), [`cycle_2026-09-29/shell_off/`](cycle_2026-09-29/shell_off/README.md) (= [the current baseline](results/regression_baseline_2026-09-29_shell_off.json)) |
 | the independent safety review of the three rules of 29.09 evening: `shell` BLOCKING (switched off, `a5455b3`), `explained_run` and the ego-motion veto NON-BLOCKING with limits; synthetic numbers and scripts | [`safety_review_2026-09-29/`](safety_review_2026-09-29/README.md) |
 | the detector seal of 29.09 evening (three false-alarm rules on; `1e2ed82`, 36 files) and its full gate; superseded the same night | [`detector_freeze_2026-09-29_competitor_rules.json`](detector_freeze_2026-09-29_competitor_rules.json), [`cycle_2026-09-29/competitor_rules/`](cycle_2026-09-29/competitor_rules/gate_table.md) (= [its baseline](results/regression_baseline_2026-09-29_competitor_rules.json)) |
 | the seal of 27.09 and its full gate (the detector the judgement of 28.09 measured) | [`results/regression_gate_2026-09-27_quality.json`](results/regression_gate_2026-09-27_quality.json), [its baseline](results/regression_baseline_2026-09-27_quality.json); the file [`detector_freeze_2026-09-27.json`](detector_freeze_2026-09-27.json) was reissued on 29.09 for `3eeb106` |
-| the independent judgement of 28.09 evening (`464f5bc`, detector of 27.09), basis of the SCORECARD | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) |
+| the historical independent judgement of 28.09 evening (`464f5bc`, detector of 27.09); superseded as the SCORECARD headline by 13.10 | [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) |
 | the independent judgement of 13.10 (`2cb0463`, the sealed detector of 29.09 = `v1.0.0`): 66/100, every frame of the organizers' data (15 279) incl. the whole ride, range by ray-cast on real backgrounds, the release image through the node; per-frame CSVs and scripts | [`judgement_2026-10-13/`](judgement_2026-10-13/README.md) |
+| P2, 15.10: D1 documentation corrections and PT1 slide cuts, word audit, checks and remaining dependencies | [`p2_2026-10-15/`](p2_2026-10-15/README.md) |
+| historical silent-miss candidate (14.10, `final/silent-misses`, **not resealed**): free-top column test and structure cut, review fixes (`14f83dd`: cut at 1.3 m, one free-top spare is a column); its full gate PASS, 27 range probes and wall-anchored/seeded replays, interaction census and A/B timing. **H1 was later BLOCKED/dropped**, so its pole gains are not shipping claims; see the 16.10 checkpoint above | [`silent_misses_2026-10-14/`](silent_misses_2026-10-14/README.md) |
 | read-only survey of 34 other teams' case-05 repositories (clone commits, per-repo reports, the brief the analysis agents received) | [`competitors_2026-10/`](competitors_2026-10/README.md) |
 | axis error, per-frame jitter and point counts by range from the organizers' synthetic objects (label-only; `scripts/axis_error_profile.py`, `profile.json`) | [`axis_profile_2026-10-16/`](axis_profile_2026-10-16/README.md) |
 | per-frame outputs of the sealed detector with a recount script | [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md) |

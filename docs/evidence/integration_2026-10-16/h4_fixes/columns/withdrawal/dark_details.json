@@ -1,0 +1,5645 @@
+{
+  "ride_1": {
+    "entire_piece": true,
+    "split": "numpy.array_split natural cache order into 8 pieces, zero-based indices 1 and 3",
+    "total_ride_frames": 11271,
+    "frames": 1409,
+    "all_cache_bytes_match_logged_sha256": true,
+    "stamp_sidecars": [
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_27_stamps.json",
+        "bytes": 1469,
+        "sha256": "4c1246932c248d8090e83e4dd63dff85c85d1a32112365aaed9deb5bd815bfe1"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_28_stamps.json",
+        "bytes": 1464,
+        "sha256": "a46108079e8a8ef3b017071f55704c1fdd1f95739de77d85f487978941ad86ba"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_29_stamps.json",
+        "bytes": 1463,
+        "sha256": "61e3622e6fd7758ee8116f023ebaf1a8a98dbffffb608ac72590d837e511b412"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_30_stamps.json",
+        "bytes": 1467,
+        "sha256": "15650c2d37b81181ce6011bd7e9a1a02217fe68e3a78f455eab24d23c13f293d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_31_stamps.json",
+        "bytes": 1463,
+        "sha256": "570367cc651de60678a6d98f69873c7509f63169882297c526996dbfef61a93b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_32_stamps.json",
+        "bytes": 1457,
+        "sha256": "cf0451a1b377dca404bd506b5d5502f651bf2560f45e3a1f9308c561ab4ffb7f"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_33_stamps.json",
+        "bytes": 1467,
+        "sha256": "cc0ed921cf2ffac2cda8cf68c48563d4fe624a27da70a92efd35e6dfc68c7e75"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_34_stamps.json",
+        "bytes": 1462,
+        "sha256": "c8bac3a209cb03ac5596b73ac33de22db0c4ecfcb3b5e8490b785da17b20af27"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_35_stamps.json",
+        "bytes": 1469,
+        "sha256": "7f68cea59b7623956265217352f427dae0fdd233292de095d8802c31dc5719c8"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_36_stamps.json",
+        "bytes": 1457,
+        "sha256": "919d72faef726f281e8e13e41cd5622b8c646181b1f14a639bff2ed7a91fc927"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_37_stamps.json",
+        "bytes": 1463,
+        "sha256": "842fcecafe14c5fd188529b187b7df9ac3a64fa1b78e1102c6ba54936905e931"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_38_stamps.json",
+        "bytes": 1469,
+        "sha256": "5cb267a00c4948a903b9f5ef37a2ea8b021904efe0fd8d7c3f2635b65f6457fe"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_39_stamps.json",
+        "bytes": 1462,
+        "sha256": "fa1d188dc9a3c0f838cdaa0ae6cc83e1bb33e0b91e3ff1823cc49f89e6ba6540"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_40_stamps.json",
+        "bytes": 1457,
+        "sha256": "43ae6476a90b8c4dd8bcbb2390a3e292a7d53b7b490dff5cdf45208ea4dc3ee2"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_41_stamps.json",
+        "bytes": 1467,
+        "sha256": "9d495f9f3ee27afc2b40ad084fe4ade8d5d7a5bc655f8a03a8b87a905d5a9bf7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_42_stamps.json",
+        "bytes": 1461,
+        "sha256": "e1eed279682d8d2c0c6bfd9ba830339c6c145fe196d0e5f3e403672aee542034"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_43_stamps.json",
+        "bytes": 1461,
+        "sha256": "9fd24dc30ac12ba6c7ce0b7a0b88b70baccdf46ecf7c23efad087b4de98632fd"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_44_stamps.json",
+        "bytes": 1465,
+        "sha256": "bb08ed8321a9af72e08d25039ad736135b514e0d7feddb47f88cf37930fdfe5e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_45_stamps.json",
+        "bytes": 1467,
+        "sha256": "5a002458639e1acc3dd2c61d81c13df04d4bdc9ae727c54e6d508d50f9991a05"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_46_stamps.json",
+        "bytes": 1464,
+        "sha256": "ab4abc796edfca9b6fb3a03c60658c436915e8f78e7abd726a3d96204536bb76"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_47_stamps.json",
+        "bytes": 1461,
+        "sha256": "af4fea04af1efc766ba1831d6fbebe041e47f08e2d7e698a0aac946b777f9bcf"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_48_stamps.json",
+        "bytes": 1464,
+        "sha256": "a329a0d6698071c4190eb79761d82b9b15678bd1d3148aaf278ce4bf2f6d85ba"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_49_stamps.json",
+        "bytes": 1470,
+        "sha256": "6e23be91b5e490e62606f8c9cba92eed477f4ce26e7a51c5e8f913b30c451d0e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_50_stamps.json",
+        "bytes": 1466,
+        "sha256": "42aa90775081afbcd732cea258fb23b1c15c569b52186658fad835926e4adea6"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_51_stamps.json",
+        "bytes": 1465,
+        "sha256": "9f685964c8a81b8244910780792891feacfacf1119fcde0921a6d0902daa9210"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_52_stamps.json",
+        "bytes": 1468,
+        "sha256": "649c0bb24bd555f96e03b3de67adc7da573923c94b746d6f4f389860b6d39443"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_53_stamps.json",
+        "bytes": 1463,
+        "sha256": "b1332ace253d83e3059f37d82a3a2bfbe53aef950fee71e1f592d16a8bb6612a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_54_stamps.json",
+        "bytes": 1468,
+        "sha256": "a06bbe18a8fadb21c0375e19771ddb1e8e532e4a018ef02813314846c26a1698"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_55_stamps.json",
+        "bytes": 1464,
+        "sha256": "5fd959540c634ca5cde831139f37b23af1b510b50bfec46d15857053fbdba40c"
+      }
+    ],
+    "serialized_differing_frames": 32,
+    "paths": {
+      "/health/monitored_range": 31,
+      "/health/wall_drift": 32,
+      "/track/wall_drift": 32,
+      "/clear_distance": 26,
+      "/health/clear_distance": 26
+    },
+    "differences": [
+      {
+        "frame": "new_data_36_0006",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 162.9,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0007",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 161.6,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0009",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 160.6,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 160.6,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 160.7,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0010",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 156.9,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 156.9,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 160.7,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0011",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 155.4,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 155.4,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 160.7,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0012",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 160.5,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 160.5,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 160.6,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0013",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 145.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 145.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 160.5,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0014",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 160.3,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 160.3,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 160.5,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0015",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 160.3,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 160.3,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 160.5,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0018",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 159.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 159.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 159.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0021",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 155.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 155.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 155.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_36_0022",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 151.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 151.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 151.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_37_0023",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 139.0,
+            "withdrawal": 66.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 139.0,
+            "withdrawal": 66.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 139.0,
+            "withdrawal": 66.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 66.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 66.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_37_0041",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_37_0042",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 135.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 135.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 135.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_37_0045",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_45_0035",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 155.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 155.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 155.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_45_0037",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 121.6,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 121.6,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 151.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_46_0036",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 195.1,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 195.1,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 195.1,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_46_0037",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 191.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_46_0040",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 153.6,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 153.6,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 183.9,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_48_0015",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 194.4,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_48_0017",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 201.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 201.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 201.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_49_0012",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 193.7,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 193.7,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 193.7,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_50_0037",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 145.8,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 145.8,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 148.3,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_50_0038",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 85.4,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 85.4,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 146.4,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_50_0039",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 109.1,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 109.1,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_50_0040",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_51_0007",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 127.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 127.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 127.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_51_0045",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 42.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 42.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 42.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 42.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 42.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_53_0023",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 108.3,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 108.3,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 119.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_53_0027",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 115.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          }
+        ]
+      }
+    ]
+  },
+  "ride_3": {
+    "entire_piece": true,
+    "split": "numpy.array_split natural cache order into 8 pieces, zero-based indices 1 and 3",
+    "total_ride_frames": 11271,
+    "frames": 1409,
+    "all_cache_bytes_match_logged_sha256": true,
+    "stamp_sidecars": [
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_100_stamps.json",
+        "bytes": 1454,
+        "sha256": "6f0d8c9ef356282bad3250a7909c804c67ffcfc6a46ecbd7caf752273d04774e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_101_stamps.json",
+        "bytes": 1461,
+        "sha256": "60e037e26663b1822f8aade0dd12bb73a0cf6a4c3d3863bf7a0438cb6b071a71"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_102_stamps.json",
+        "bytes": 1457,
+        "sha256": "8de6de2be34bbcf210fbb78aa6824ed52235185303cbdd29ccef4db7b7f4f70b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_103_stamps.json",
+        "bytes": 1474,
+        "sha256": "cddbca765784f8710094517254461a1eea1cfe67e7f33d3656622fc13bce1063"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_104_stamps.json",
+        "bytes": 1461,
+        "sha256": "4bd4b53ab71384aa1f5ca153724b498b63f98fccfbd8e159a07394ba300685ed"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_105_stamps.json",
+        "bytes": 1460,
+        "sha256": "77f06442e0b853dee14963c4c2d1be3826e7a18355c3d2459ab77204bc83cd07"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_106_stamps.json",
+        "bytes": 1468,
+        "sha256": "a408b407c1c87ab18c20ba5d92d9fddf27a853c0ddbb06fe1b1a06fdacc0f791"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_107_stamps.json",
+        "bytes": 1470,
+        "sha256": "1c3d7eb17b2a08fd9b229e241f07cf78075373001ac34cecbad59b04eb914c1d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_108_stamps.json",
+        "bytes": 1468,
+        "sha256": "91826473fccdb85dd14d9d04904b0de3685f11e74974e13cc054204ccfcf8904"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_109_stamps.json",
+        "bytes": 1464,
+        "sha256": "e1f0ec6be00c4f85e00f2836efe68b1aa0b61c0708ee06b06b3ffaa79d7f84b7"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_110_stamps.json",
+        "bytes": 1467,
+        "sha256": "e4741602d1e33c0c0ce46f807c5c17f49fe504aaa3282f5a016f9e8454ed0485"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_82_stamps.json",
+        "bytes": 1457,
+        "sha256": "5ae9328bd359042cbf2a6c121d05cd48ec149ecafe449febb1bb8850c516b57d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_83_stamps.json",
+        "bytes": 1456,
+        "sha256": "8d3ba42a1ef9056f74af84f2b97597d4b32387488b86f6ed6cd0ea4eb432de50"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_84_stamps.json",
+        "bytes": 1461,
+        "sha256": "4a98676d42655c2a40cd7642ec78ca3d8ab1bb5e6432b881b6eef9ff80026679"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_85_stamps.json",
+        "bytes": 1466,
+        "sha256": "beb80c18ecbfef0dcf1d4771640f07febf1c415af2d9bacb782ea7baef4a697d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_86_stamps.json",
+        "bytes": 1465,
+        "sha256": "909ccbd5b1bce58630d02308ff77c0bc3f269a49205c6af4d7bb73b5fc35c208"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_87_stamps.json",
+        "bytes": 1465,
+        "sha256": "120a93773c4d859ed12931d13e57ddc87a4ac41da9bbfa82e2c711b8bc59993d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_88_stamps.json",
+        "bytes": 1463,
+        "sha256": "11fa21dcddcf16a06764bd50c9a5808086588b53c6219acd3b8060c1cd12ca8b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_89_stamps.json",
+        "bytes": 1470,
+        "sha256": "7cbe90928a7d434d0ceb96e04b75e21741ee47b9a28d9eb1c409e035b226859a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_90_stamps.json",
+        "bytes": 1467,
+        "sha256": "61b8978936ba27156f463ac1854da46f1186da96e8625b68932b04fee617f12d"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_91_stamps.json",
+        "bytes": 1464,
+        "sha256": "9c71b7986e75c67e75c0819e5d26d5dc1fd3ffc280178c24fd65752bb87f5ffb"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_92_stamps.json",
+        "bytes": 1465,
+        "sha256": "dc78b7a4505c1a5603bc29e29247ba7b6b7bb1a688bb6f715249bf686382eb66"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_93_stamps.json",
+        "bytes": 1471,
+        "sha256": "bfcd61af105c685a406dcda9b298de94eb1ff7eb8ca5e524cb7de122c73e4f6e"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_94_stamps.json",
+        "bytes": 1465,
+        "sha256": "90ffbd1328b0214fecbb443cdb033e720d018d7a6fff7d2ff15d0a36762de13a"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_95_stamps.json",
+        "bytes": 1463,
+        "sha256": "18ba42db503d68b127e95e4c2e4e2b0e98c07aabe414323f7289eda754fb3c9b"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_96_stamps.json",
+        "bytes": 1467,
+        "sha256": "6ce2446fd930519b60825be0306833724f2ba10bcaa38d2f4ed0fd4b00cdbf8c"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_97_stamps.json",
+        "bytes": 1468,
+        "sha256": "09a910cacb146343849ec0427cb324bcfc7136ef04a309dd204c5c9b6a9bf250"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_98_stamps.json",
+        "bytes": 1470,
+        "sha256": "f8b6a16c477c6fb5ff8da066a49672c80b18f3d91b55cf77f17e5e8a95c97596"
+      },
+      {
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\cache\\new_data\\new_data_99_stamps.json",
+        "bytes": 1460,
+        "sha256": "79026f46112a8f589637675c34ea9c53441f64f29e8119b9d066dbefca83d116"
+      }
+    ],
+    "serialized_differing_frames": 169,
+    "paths": {
+      "/clear_distance": 122,
+      "/health/clear_distance": 122,
+      "/health/monitored_range": 133,
+      "/health/wall_drift": 169,
+      "/track/wall_drift": 169
+    },
+    "differences": [
+      {
+        "frame": "new_data_91_0002",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_93_0017",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 143.0,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 143.0,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 143.0,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_93_0022",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 135.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 135.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 135.0,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_93_0032",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 90.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 90.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.0,
+            "withdrawal": 90.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 90.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 90.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_93_0034",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_93_0040",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 139.0,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 139.0,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 139.0,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_93_0048",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_93_0050",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 118.7,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 118.7,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 131.0,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0023",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 139.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 139.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 139.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0024",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0029",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 184.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 184.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 184.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0030",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 177.1,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0031",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 179.6,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 179.6,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 179.6,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0034",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 135.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 135.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 135.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0035",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 131.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 131.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 131.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0036",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 143.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 143.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 143.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0037",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 135.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 135.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 135.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0038",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 155.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 155.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 155.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0040",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.9,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.9,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 175.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0044",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0045",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 163.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0046",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 151.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 151.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 151.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0048",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 163.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_94_0049",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0000",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0001",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0002",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0003",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 163.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0004",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 163.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0005",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 159.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 159.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 159.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0006",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0007",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0008",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 175.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0009",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0020",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0023",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0024",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0026",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0027",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 173.7,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 173.7,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 173.7,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0029",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 170.6,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 170.6,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 170.6,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0030",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0031",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0032",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0033",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0034",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 146.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0036",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 175.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0037",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0038",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 150.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 150.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 150.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0039",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 175.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0042",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0043",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0044",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 163.0,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0045",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0046",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 163.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 163.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_95_0047",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 146.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_96_0002",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 171.0,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0019",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 194.6,
+            "withdrawal": 154.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 194.6,
+            "withdrawal": 154.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 194.6,
+            "withdrawal": 154.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 154.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 154.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0025",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 200.9,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 200.9,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 200.9,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0026",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 199.4,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 199.4,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 199.4,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0027",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 182.9,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 182.9,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 199.7,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0028",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 195.4,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 195.4,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 195.4,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0030",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 194.8,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 194.8,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 194.8,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0032",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0033",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 186.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 186.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 186.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0037",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 146.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0040",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0044",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 154.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 154.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0047",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 146.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 146.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0048",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0049",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_101_0050",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 154.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 154.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0001",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 150.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0002",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 155.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 155.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 155.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0003",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 159.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 159.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 159.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0004",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 167.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 167.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0005",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 164.8,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 164.8,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 164.8,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0006",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 160.9,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 160.9,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 160.9,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0007",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0008",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0009",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 156.1,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 156.1,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 156.1,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0010",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 149.6,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 149.6,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 149.6,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0011",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.9,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.9,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.9,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0012",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0013",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0014",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.2,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.2,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.2,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0015",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0016",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0017",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0018",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0019",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 143.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 143.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 143.0,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0020",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.0,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0021",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 139.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 139.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 139.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0022",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0023",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 137.4,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 137.4,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 137.4,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0024",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 123.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 123.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 123.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0025",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 129.3,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 129.3,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 129.3,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0026",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 127.2,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 127.2,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 127.2,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0027",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 125.3,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 125.3,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 125.3,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0028",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 115.0,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0029",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 123.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0030",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.9,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.9,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.9,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0031",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0032",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0033",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 111.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 111.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 111.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0034",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 115.0,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 78.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0035",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 121.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 121.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 121.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0036",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 111.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 111.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 111.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0037",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 119.6,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 119.6,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 119.6,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0038",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 107.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 107.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 107.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0039",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 111.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 111.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 111.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0040",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0041",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0042",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 115.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0043",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 122.7,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0044",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 111.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 111.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 111.0,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0045",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0046",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 119.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 119.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 119.0,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0047",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 86.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0048",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 90.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 90.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0049",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 135.4,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 135.4,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 135.4,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_102_0050",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0000",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 119.0,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 119.0,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 119.0,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0001",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0002",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0003",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 150.8,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0004",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 102.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0005",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0006",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0007",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0008",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0009",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0010",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0011",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 149.2,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 149.2,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 149.2,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0012",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0013",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0014",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0017",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 148.8,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 148.8,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 148.8,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0018",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 146.9,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 146.9,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 146.9,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0019",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0020",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.1,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.1,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.1,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0022",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0023",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 143.3,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0024",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 146.5,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 146.5,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 146.5,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 94.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0025",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0026",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0028",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 144.7,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0029",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 146.0,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0030",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 141.7,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 106.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0037",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 144.4,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 144.4,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 144.4,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0038",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 143.4,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 143.4,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 143.4,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 126.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0039",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0043",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 144.3,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 144.3,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 144.3,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0046",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 145.8,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 145.8,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 145.8,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_103_0048",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.2,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.2,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.2,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 138.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0003",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 143.3,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 143.3,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 143.3,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0004",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 143.2,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 143.2,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 143.2,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 130.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0005",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 120.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 120.0,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0008",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 149.3,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 149.3,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 149.3,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 122.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0009",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 145.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 145.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 145.0,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 134.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0014",
+        "differences": [
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 118.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0020",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 152.3,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 152.3,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 152.3,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0030",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 135.8,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 135.8,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 135.8,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 114.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0031",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 139.2,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 139.2,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 139.2,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 82.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0032",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 137.6,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 137.6,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 137.6,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 98.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_104_0045",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 133.2,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 133.2,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 133.2,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_105_0000",
+        "differences": [
+          {
+            "path": "/health/monitored_range",
+            "sealed": 139.0,
+            "withdrawal": 70.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 70.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 70.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_105_0005",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 115.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 115.0,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 74.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_110_0022",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 147.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 147.0,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 142.0
+          }
+        ]
+      },
+      {
+        "frame": "new_data_110_0025",
+        "differences": [
+          {
+            "path": "/clear_distance",
+            "sealed": 163.9,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/clear_distance",
+            "sealed": 163.9,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/monitored_range",
+            "sealed": 163.9,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/health/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          },
+          {
+            "path": "/track/wall_drift",
+            "sealed": null,
+            "withdrawal": 110.0
+          }
+        ]
+      }
+    ]
+  }
+}

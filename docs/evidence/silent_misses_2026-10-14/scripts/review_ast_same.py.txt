@@ -1,0 +1,21 @@
+"""Code of the working tree vs a commit: ASTs without docstrings, and the parsed YAML."""
+import ast, subprocess, sys, yaml
+rev = sys.argv[1]
+def strip(src):
+    t = ast.parse(src)
+    for n in ast.walk(t):
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Module)) and n.body and \
+                isinstance(n.body[0], ast.Expr) and isinstance(getattr(n.body[0], "value", None), ast.Constant) and isinstance(n.body[0].value.value, str):
+            n.body = n.body[1:] or [ast.Pass()]
+    return ast.dump(t)
+ok = True
+for f in ("resense/clustering.py", "resense/config.py", "resense/detector.py", "resense/tracking.py",
+          "tests/test_structure_cut.py", "tests/test_column_free_top.py", "tests/test_late_candidates.py"):
+    old = subprocess.run(["git", "show", f"{rev}:{f}"], capture_output=True, text=True).stdout
+    same = strip(old) == strip(open(f).read()); ok &= same
+    print(f, "AST without docstrings identical" if same else "DIFFERS")
+for f in ("configs/default.yaml", "ros2_ws/src/resense_ros/config/detector.yaml"):
+    old = subprocess.run(["git", "show", f"{rev}:{f}"], capture_output=True, text=True).stdout
+    same = yaml.safe_load(old) == yaml.safe_load(open(f).read()); ok &= same
+    print(f, "parsed YAML identical" if same else "DIFFERS")
+print("ALL SAME" if ok else "DIFFERENT")

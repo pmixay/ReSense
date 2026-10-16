@@ -1,0 +1,21 @@
+{
+  "baseline_sha256": "8d86d6d19ef00f0ece4fd0c924935887ba6f8b39dbfd7074c2f1577099029b30",
+  "checkout_commit": "21e1d6195eda438056fb51c3bab886e420d19ee2",
+  "clean_LF": true,
+  "config_sync": true,
+  "evidence_path": "docs/evidence/integration_2026-10-16/h5/candidate/gate.json",
+  "frozen_source_unchanged": true,
+  "manifest_bytes": 5273,
+  "manifest_measured_commit": "52115654417a660669b8dddfce447692c1d782cc",
+  "manifest_path": "docs/evidence/detector_freeze_2026-10-16_1.1.0.json",
+  "manifest_sha256": "523b5eefaed42882c6a9c6974f3ac16ebd791472d7c831da245ad2827d8cc648",
+  "manifest_source_commit": "21e1d6195eda438056fb51c3bab886e420d19ee2",
+  "passed": true,
+  "repo_path": "/evalworkspace/seal-create-1.1.0-21e1d6195eda-20261016T112554Z-21b4cb6d",
+  "source_files": 36,
+  "source_sha256": "db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751",
+  "use_default": false,
+  "validation_sha256": "e0b2c76f61d6b65b1f6d3901af91c96d6370e76c125b5192735399b889a5547a",
+  "verify_only": false,
+  "version": "1.1.0"
+}

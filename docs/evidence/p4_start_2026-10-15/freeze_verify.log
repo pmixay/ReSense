@@ -1,0 +1,41 @@
+Detector freeze FAIL:
+- added detector file: resense/_resense_native.pyd
+- changed detector file: configs/default.yaml
+- changed detector file: configs/experimental_cross_ring.yaml
+- changed detector file: configs/experimental_far_rail_rings.yaml
+- changed detector file: configs/experimental_fresh_stop_evidence.yaml
+- changed detector file: configs/experimental_low_local_support.yaml
+- changed detector file: native/resense_native.cpp
+- changed detector file: pyproject.toml
+- changed detector file: resense/__init__.py
+- changed detector file: resense/_native.py
+- changed detector file: resense/accumulate.py
+- changed detector file: resense/calibration.py
+- changed detector file: resense/cli.py
+- changed detector file: resense/clustering.py
+- changed detector file: resense/config.py
+- changed detector file: resense/detector.py
+- changed detector file: resense/egomotion.py
+- changed detector file: resense/evidence.py
+- changed detector file: resense/farrails.py
+- changed detector file: resense/frame.py
+- changed detector file: resense/gauge.py
+- changed detector file: resense/health.py
+- changed detector file: resense/io.py
+- changed detector file: resense/lowobj.py
+- changed detector file: resense/metrics.py
+- changed detector file: resense/models/track_opinion_report.json
+- changed detector file: resense/opinion.py
+- changed detector file: resense/pointcloud.py
+- changed detector file: resense/sensor.py
+- changed detector file: resense/synthetic.py
+- changed detector file: resense/track.py
+- changed detector file: resense/tracking.py
+- changed detector file: resense/viz.py
+- changed detector file: ros2_ws/src/resense_ros/config/detector.yaml
+- changed detector file: scripts/build_native.sh
+- changed detector file: setup.py
+- canonical / ROS config does not match the freeze
+- changed baseline evidence: docs/evidence/cycle_2026-09-29/health_compare_counts/candidate/gate.json
+- changed validation evidence: docs/evidence/cycle_2026-09-29/shell_off/gate.json
+- validation must use the current default config without overrides

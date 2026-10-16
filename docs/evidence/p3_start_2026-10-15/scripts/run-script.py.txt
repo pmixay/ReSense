@@ -1,0 +1,54 @@
+"""Run an inherited scratch driver with its original hooks and pinned checkout.
+
+The only source adaptation is accepting the local flat ride frame names in
+grun.py; the global index remains the same as split*51+local in the handoff.
+"""
+import importlib.machinery
+import importlib.util
+import os
+from pathlib import Path
+import sys
+
+BASE = Path(__file__).resolve().parent
+repo = Path(sys.argv[1]).resolve()
+driver = Path(sys.argv[2]).resolve()
+os.environ["WT"] = os.environ["RESENSE_REPO"] = str(repo)
+sys.path[:0] = [str(repo), str(BASE), str(repo / "docs/evidence/judgement_2026-10-13/scripts")]
+import resense
+from resense import _native
+assert Path(resense.__file__).resolve().is_relative_to(repo), resense.__file__
+assert _native.enabled(), _native.status()
+hook_path = BASE / "rs-h1/docs/evidence/column_hardening_2026-10-15/scripts/hooks.py.txt"
+loader = importlib.machinery.SourceFileLoader("hooks", str(hook_path))
+spec = importlib.util.spec_from_loader("hooks", loader)
+hooks = importlib.util.module_from_spec(spec)
+sys.modules["hooks"] = hooks
+loader.exec_module(hooks)
+from resense.detector import Detector
+hooks.STATS["cut_candidates"] = []
+original_process = Detector.process
+
+
+def observe_process(self, *args, **kwargs):
+    result = original_process(self, *args, **kwargs)
+    for cluster in result.candidates:
+        if getattr(cluster, "cut", False):
+            hooks.STATS["cut_candidates"].append({"k": hooks.STATS["k"], "n": cluster.n,
+                                                "zone": cluster.zone, "reason": cluster.reason,
+                                                "distance": float(cluster.distance)})
+    return result
+
+
+Detector.process = observe_process
+source = driver.read_text(encoding="utf-8")
+if driver.name == "grun.py.txt":
+    source = source.replace(
+        'gi = int(parts[-2]) * 51 + int(parts[-1]) if stem.startswith("new_data_") else i',
+        'gi = (int(parts[-2]) * 51 + int(parts[-1]) if len(parts) == 4 else int(parts[-1])) if stem.startswith("new_data_") else i')
+sys.argv = [str(driver)] + sys.argv[3:]
+namespace = {"__name__": "__main__", "__file__": str(driver)}
+try:
+    exec(compile(source, str(driver), "exec"), namespace)
+finally:
+    output_arg = 2 if driver.name in ("grun.py.txt", "jrep.py.txt") else 3
+    hooks.dump(sys.argv[output_arg] + ".hooks.json")

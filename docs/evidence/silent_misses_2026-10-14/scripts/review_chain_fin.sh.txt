@@ -1,0 +1,31 @@
+#!/bin/bash
+# The candidate final code (code_fin snapshot), one job at a time: pole probes, spare replays, the other probes,
+# wall-anchored probes, plain replays, ride pieces (dark band / dropout)
+cd /tmp/claude-0/fixwork/fix_review
+export CODE=/tmp/claude-0/fixwork/fix_review/code_fin
+source env.sh
+SR=/tmp/claude-0/fixwork/safety_review/out
+PO=$FR/out/probes_fin
+./run_probes.sh $PO pole_c pole_side pole_sideN post_c post_side pole_c_drop pole_side_drop >> out/chain_fin.log 2>&1
+echo "POLES DONE" >> out/chain_fin.log
+pair() { name=$1; cache=$2; shift 2
+  [ -f out/${name}_fin.jsonl ] || run_w jrep.py $J/$cache out/${name}_fin "$@" > out/${name}_fin.log 2>&1
+  python3 cmp.py $SR/${name}_s.jsonl out/${name}_fin.jsonl "$name sealed->fin" >> out/spare_fin.txt
+  python3 cmp.py $SR/${name}_w.jsonl out/${name}_fin.jsonl "$name 13.10->fin" | head -1 >> out/spare_fin.txt
+  tail -1 out/${name}_fin.log >> out/spare_fin.txt
+}
+S=squareT_platform_squareT_switch; B=roundT_doubleT
+pair S_drop30_s2 $S --drop 0.3 --seed 2
+pair S_drop30_s3 $S --drop 0.3 --seed 3
+pair S_drop30_s5 $S --drop 0.3 --seed 5
+pair S_drop20_s3 $S --drop 0.2 --seed 3
+pair B_pitchm2 $B --pitch -2
+for sd in 1 2 3; do pair B_drop30_s$sd $B --drop 0.3 --seed $sd; done
+for sd in 1 4 6; do pair S_drop30_s$sd $S --drop 0.3 --seed $sd; done
+for sd in 1 2 4; do pair S_drop20_s$sd $S --drop 0.2 --seed $sd; done
+for sd in 1 2 3 4; do pair S_drop10_s$sd $S --drop 0.1 --seed $sd; done
+for sd in 1 2; do pair B_slow3_s$sd $B --repeat 3 --rdrop 0.2 --seed $sd; done
+echo "SPARE DONE" >> out/spare_fin.txt
+./run_probes.sh $PO all >> out/chain_fin.log 2>&1
+echo "PROBES DONE" >> out/chain_fin.log
+echo CHAIN_FIN_STAGE1 DONE >> out/chain_fin.log

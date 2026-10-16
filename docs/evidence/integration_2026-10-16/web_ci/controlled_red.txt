@@ -1,0 +1,241 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /src
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 2 items
+
+webapp/e2e/test_data.py::test_queue_reload_with_a_pending_nonblocking_resource FAILED [ 50%]
+webapp/e2e/test_upload_resume.py::test_big_upload_pause_drop_reload_resume FAILED [100%]
+
+=================================== FAILURES ===================================
+____________ test_queue_reload_with_a_pending_nonblocking_resource _____________
+
+app = App(page=<Page url='http://127.0.0.1:37507/queue'>, base='http://127.0.0.1:37507', errors=[])
+
+    def test_queue_reload_with_a_pending_nonblocking_resource(app):
+        """Queue actions are usable after document readiness, independently of window.load."""
+        page = app.page
+        app.goto("/queue")
+        held = []
+        pattern = "**/slow-queue-image.png"
+        page.route(pattern, lambda route: held.append(route))
+        page.add_init_script("""document.addEventListener('DOMContentLoaded', () => {
+            const img = document.createElement('img');
+            img.id = 'slow-resource';
+            img.hidden = true;
+            img.src = '/slow-queue-image.png';
+            document.body.append(img);
+        });""")
+        try:
+            page.reload()
+            expect(page.get_by_role("heading", name="Очередь", exact=True)).to_be_visible()
+            expect(page.get_by_text("Детектор свободен")).to_be_visible()
+            assert page.evaluate("document.readyState") == "interactive"
+            assert page.locator("#slow-resource").evaluate("img => img.complete") is False
+        finally:
+            page.unroute(pattern)
+            for route in held:
+>               route.abort()
+
+webapp/e2e/test_data.py:55:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/local/lib/python3.10/dist-packages/playwright/sync_api/_generated.py:22430: in abort
+    self._sync(self._impl_obj.abort(errorCode=error_code))
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_network.py:408: in abort
+    await self._handle_route(
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_network.py:508: in _handle_route
+    raise e
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_network.py:504: in _handle_route
+    await callback()
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_network.py:604: in _race_with_page_close
+    raise cast(BaseException, fut.exception())
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:78: in send
+    return await self._connection.wrap_api_call(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <playwright._impl._connection.Connection object at 0x7c3e11742c50>
+cb = <function Channel.send.<locals>.<lambda> at 0x7c3e10912950>
+is_internal = False, title = None
+
+    async def wrap_api_call(
+        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None
+    ) -> Any:
+        if self._api_zone.get():
+            return await cb()
+        task = asyncio.current_task(self._loop)
+        parsed_st = _attach_api_call_information(
+            getattr(task, "__pw_stack__", None) or _capture_stack_trace(),
+            is_internal,
+            title,
+        )
+        self._api_zone.set(parsed_st)
+        try:
+            return await cb()
+        except Exception as error:
+>           raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E           playwright._impl._errors.Error: Route.abort: Route is already handled!
+
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:636: Error
+___________________ test_big_upload_pause_drop_reload_resume ___________________
+
+app = App(page=<Page url='http://127.0.0.1:60301/upload?rec=q70hijen0i'>, base='http://127.0.0.1:60301', errors=['Failed to load resource: net::ERR_INTERNET_DISCONNECTED'])
+backend = Backend(url='http://127.0.0.1:60301', data_dir=PosixPath('/tmp/pytest-of-root/pytest-1/webapp1/data'), server_root=Pos...rver'), log=PosixPath('/tmp/pytest-of-root/pytest-1/webapp1/backend.log'), api=<conftest.Api object at 0x7c3e148d1ab0>)
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-1/test_big_upload_pause_drop_rel0')
+
+    def test_big_upload_pause_drop_reload_resume(app, backend, tmp_path):
+        page, api = app.page, backend.api
+        ride = tmp_path / "long_ride.jsonl"
+        results_with_padding(ride, 40 * MB)
+        cdp = page.context.new_cdp_session(page)
+        cdp.send("Network.enable")
+        throttle(cdp)
+        app.goto("/upload")
+        files = page.locator('input[type=file][accept^=".zip"]')
+        files.set_input_files(str(ride))
+
+        # live progress: bytes, speed, time left, the compression saved on the wire
+        expect(page.get_by_text(re.compile(r"из\s40\sМБ"))).to_be_visible()
+        expect(page.get_by_text(re.compile(r"^осталось \d+:\d\d$"))).to_be_visible()
+        expect(page.get_by_text(re.compile(r"^сжатие −\d+\s%$"))).to_be_visible(timeout=20_000)
+        uid = upload_id(page)
+
+        # pause: the transfer stops (nothing more arrives), what arrived stays on the server
+        page.get_by_role("button", name="Приостановить загрузку").click()
+        expect(page.get_by_text("пауза", exact=True)).to_be_visible()
+        held = received(api, uid)
+        time.sleep(1.5)
+        assert received(api, uid) == held
+
+        # the connection is gone when the transfer resumes: it waits and retries by itself
+        throttle(cdp, offline=True)
+        page.get_by_role("button", name="Продолжить загрузку").click()
+        expect(page.get_by_text(re.compile(r"нет связи · повтор через \d+ с"))).to_be_visible()
+        expect(page.get_by_text(re.compile(r"^(Нет сети — загрузка продолжится|Связь с сервером прервалась)"))).to_be_visible()
+        throttle(cdp)                                             # back: the browser's «online» retries at once
+        expect(page.get_by_text(re.compile(r"^осталось"))).to_be_visible(timeout=15_000)
+
+        # a second tab sees the upload running there: it offers neither to continue nor to delete it
+        other_tab = page.context.new_page()
+        other_tab.goto(backend.url + "/upload")
+        expect(other_tab.get_by_text("идёт в другой вкладке")).to_be_visible()
+        expect(other_tab.get_by_role("button", name="Удалить незавершённую загрузку")).to_have_count(0)
+        expect(other_tab.get_by_role("button", name="Выбрать файлы")).to_be_disabled()
+        other_tab.close()
+
+        # a reload in the middle: the browser asks first; the server keeps every finished chunk
+        wait_until(lambda: received(api, uid) >= 8 * MB, timeout=60)
+        page.on("dialog", lambda d: d.accept())
+        page.reload()
+>       expect(page.get_by_text("не завершена")).to_be_visible()
+E       AssertionError: Locator expected to be visible
+E       Actual value: None
+E       Error: element(s) not found
+E       Call log:
+E         - Expect "to_be_visible" get_by_text("не завершена") with timeout 5000ms
+E         - waiting for get_by_text("не завершена")
+E
+E       Aria snapshot:
+E       - link "К содержимому":
+E         - /url: "#main"
+E       - banner:
+E         - link "ReSense — на главную":
+E           - /url: /
+E           - text: ReSense
+E         - navigation "Разделы":
+E           - link "Главная":
+E             - /url: /
+E           - button "1 Данные"
+E           - button "2 Анализ"
+E           - button "3 Система"
+E         - status: бэкенд онлайн
+E         - text: ЛЦТ 2026 · кейс 05 М
+E       - 'navigation "Линия: путь работы с записью"':
+E         - link "Главная":
+E           - /url: /
+E         - link "Загрузка":
+E           - /url: /upload
+E         - link "Очередь":
+E           - /url: /queue
+E         - link "Прогоны":
+E           - /url: /runs
+E         - link "Плеер":
+E           - /url: /player
+E         - link "Сравнение":
+E           - /url: /compare
+E       - main:
+E         - heading "Загрузка" [level=1]
+E         - text: 1 запись на сервере свободно 891 ГБ
+E         - link "Пресеты":
+E           - /url: /presets
+E         - heading "Источник" [level=2]
+E         - radiogroup "Источник записи":
+E           - radio "Файл" [checked]
+E           - radio "Папка на сервере"
+E           - radio "Демо-запись"
+E           - radio "Записи на сервере": Записи 1
+E         - text: long_ride проверено
+E         - button "Подсказка": "?"
+E         - text: "результаты .jsonl файл 40 кадров 3,9 с 40 МБ без разметки только результаты: без облаков точек"
+E         - button "Снять выбор записи"
+E         - heading "Перетащите запись" [level=2]
+E         - button "Выбрать файлы"
+E         - button "Выбрать папку"
+E         - text: rosbag2 · .zip .db3 + metadata.yaml .mcap результаты .jsonl кэш .npy / .npz
+E         - button "Подсказка": "?"
+E         - heading "Обработка" [level=2]
+E         - text: long_ride Пресет
+E         - button "Подсказка": "?"
+E         - text: Пресет
+E         - combobox "Пресет":
+E           - option "Стандарт 1.0" [selected]
+E         - text: Топик облака Топик облака
+E         - combobox "Топик облака" [disabled]:
+E           - option "авто" [selected]
+E         - text: Шаг кадров
+E         - button "Подсказка": "?"
+E         - 'button "Шаг кадров: меньше" [disabled]'
+E         - spinbutton "Шаг кадров" [disabled]: "1"
+E         - 'button "Шаг кадров: больше" [disabled]'
+E         - text: Для плеера
+E         - button "Подсказка": "?"
+E         - text: Облака точек
+E         - switch "Облака точек" [disabled]
+E         - text: 40 кадров · ≈ 4,0 с По разметке
+E         - button "Подсказка": "?"
+E         - switch "Оценка по разметке" [disabled]
+E         - button "Прикрепить разметку .json"
+E         - button "Обработать"
+E         - heading "Очередь" [level=2]
+E         - text: 0 в работе 0 ждёт 0 готово Детектор свободен
+E         - link "Открыть очередь":
+E           - /url: /queue
+E         - text: Завершено 0
+E         - link "вся очередь":
+E           - /url: /queue
+E         - text: Готовых задач нет
+
+webapp/e2e/test_upload_resume.py:109: AssertionError
+---------------------------- Captured log teardown -----------------------------
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+----------------- generated xml file: /tmp/controlled-red.xml ------------------
+========================= 2 failed in 66.52s (0:01:06) =========================

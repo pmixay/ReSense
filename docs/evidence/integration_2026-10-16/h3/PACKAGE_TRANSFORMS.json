@@ -1,0 +1,68 @@
+[
+  {
+    "compact_sha256": "3462883c9ec99ac02bec5d4893b60dd604ef5f15476edf8a1c698f78c0921505",
+    "original_sha256": "f49831c5b5be57aae6b2fa9e86a27ebd4cf9b8d786f367b5e409358ba68b0bbe",
+    "path": "baseline/runtime.container-final.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "7e5edc1956c3e9040778e06d7134183945cee92c8acb42c3e1d0d9e48d964a67",
+    "original_sha256": "1e505e25e684431c29d30b1e0cd57a85949cdd2a9523bc99641b895dc6610473",
+    "path": "baseline/runtime.finalization.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "4e3e9ed4d415a057f207d5b83c96641c7a0aee434e396daac9bb45fb424b650b",
+    "original_sha256": "cb08413aada275cfc3e9e8cf9fd034a5b3b6742d0f02a71a037be00db8e418f3",
+    "path": "baseline/runtime.infrastructure_tests.txt",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "593f9e48889c45e33bbdc8ae4c54d4cf9f8f0ae51e7069e39b41c9c6073951e8",
+    "original_sha256": "5bbb0ba1abaaeb26895b1a17ce32adf3cf1b559001f568c077d8f7b776bdd2e8",
+    "path": "baseline/runtime.launch.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "478abab6756715efe54d04dcfdfb6454e034a8032592acdec338934018c77383",
+    "original_sha256": "334e2b5bd4cc66a08098176f83db3dd857dd2c4cbfcb0c46361204b2ae443407",
+    "path": "candidate/runtime.container-final.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "3574b4947d0e605d27ef0d545e8b0bdc707b833fa2b6fa4dd745fc2f264c50ae",
+    "original_sha256": "ef7fc4dca3f89096d87ed1ba78a32c38a737538044b074ea811f921edb2fd3ba",
+    "path": "candidate/runtime.finalization.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "867bc77c737cc4920092ed0d3e2b6f8f578ee0575b17b17c22eab54f94299352",
+    "original_sha256": "d1bd9f7a92280bce17f1d201b1b4070814db2bd96d336e26407b8bbd40281048",
+    "path": "candidate/runtime.infrastructure_tests.txt",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "5e5d1b7bc1d212505943bc9d8b4ae0e6e8ec27a53fb6c0cf799ee35a887702d2",
+    "original_sha256": "f764326fa6628cd478df3746024a631273416911df257e8961f506c5455d2298",
+    "path": "candidate/runtime.launch.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "c1325da2833f3172c322310cc798cbb332b3652add8ae7804a7d38fe94a3ddbb",
+    "original_sha256": "0791135ed25f9907bd7d4eab72a2f0f7c712d4e9592274ff39ed88de239130ef",
+    "path": "frame_diff/setF_report_changes.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "db2a3e8ddc4b0ecc0129363738cb2a8741bf9603c32c40647f3176ac7ccd3fa0",
+    "original_sha256": "d9046873f4c621d5eee721c40f0cce37fe1f007f3d24a27d923bc471f04a43e8",
+    "path": "frame_diff/summary.json",
+    "transformation": "CRLF to LF only"
+  },
+  {
+    "compact_sha256": "74c09154bbda38e0b68e8499bc4798163830de78661a114c12c8849eb8d1b469",
+    "original_sha256": "805455ee62c51763c0df3da9056ec2665df77085baa44ce0a6344855915bf4f6",
+    "path": "frame_diff/SUMMARY.md",
+    "transformation": "CRLF to LF only"
+  }
+]

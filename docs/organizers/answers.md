@@ -29,8 +29,10 @@ from these sources:
 * the **live Q&A of 16.10** and the **experts' general message to the finalists** of the same day, both relayed by
   the team (not recorded verbatim by us), §10.
 
-The questions that are still open are the only ones left in [`../QUESTIONS.md`](../QUESTIONS.md)
-(two since 16.10: how `CAUTION` is read, and the object types and scenes of the hidden set).
+The questions that are still open are in [`../QUESTIONS.md`](../QUESTIONS.md)
+(five since 16.10: how `CAUTION` is read, the object types and scenes of the hidden set, what "the filter" is,
+what the new data look like, how the bags will be played). On 15.10 the O1 pitch/update/re-run message was
+prepared; dispatch and an organizer reply are pending (§11).
 
 ## 1. Answers by question (Q&A session 22.09 + written answers 23.09)
 
@@ -205,4 +207,16 @@ synthetic (a person, simulated dust or suspension) and a **real recording from a
 different axis directions"); four launch requests (Docker with graphics, RViz in the container, pause or slow bags from
 the console, switch bags without restarting the container). What the shipped system does for each, and the cards that
 follow, are in [`../FINALS_BRIEF_2026-10-16.md`](../FINALS_BRIEF_2026-10-16.md) §2–§4.
+
+## 11. O1: pitch format, post-submission updates and results (prepared 15.10)
+
+**Pending dispatch by the captain. No organizer answer has been received or inferred.**
+The ready-to-send three-question message is in [`../QUESTIONS.md`](../QUESTIONS.md).
+It asks for pitch/Q&A/demo format, whether 1.1.x may be shown or re-run and affect scores,
+and whether hidden-check/expert results or another archive submission are available before 23.10.
+
+After dispatch, record its actual date here. After the reply, append its dated verbatim
+text and the resulting decisions; update `PRESENTATION.md` and the backlog's O1 branch.
+The current five-minute preparation budget and the submitted v1.0.0 are unchanged assumptions,
+not a new answer from the organizers.
 

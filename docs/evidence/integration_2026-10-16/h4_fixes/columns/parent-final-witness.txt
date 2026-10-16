@@ -1,0 +1,259 @@
+Cloning into '/source/repo'...
+done.
+Updating files:  45% (1587/3462)Updating files:  46% (1593/3462)Updating files:  47% (1628/3462)Updating files:  48% (1662/3462)Updating files:  49% (1697/3462)Updating files:  50% (1731/3462)Updating files:  51% (1766/3462)Updating files:  52% (1801/3462)Updating files:  53% (1835/3462)Updating files:  54% (1870/3462)Updating files:  55% (1905/3462)Updating files:  56% (1939/3462)Updating files:  57% (1974/3462)Updating files:  58% (2008/3462)Updating files:  59% (2043/3462)Updating files:  60% (2078/3462)Updating files:  61% (2112/3462)Updating files:  62% (2147/3462)Updating files:  62% (2176/3462)Updating files:  63% (2182/3462)Updating files:  64% (2216/3462)Updating files:  65% (2251/3462)Updating files:  65% (2254/3462)Updating files:  66% (2285/3462)Updating files:  67% (2320/3462)Updating files:  68% (2355/3462)Updating files:  69% (2389/3462)Updating files:  70% (2424/3462)Updating files:  71% (2459/3462)Updating files:  71% (2469/3462)Updating files:  72% (2493/3462)Updating files:  73% (2528/3462)Updating files:  74% (2562/3462)Updating files:  75% (2597/3462)Updating files:  76% (2632/3462)Updating files:  77% (2666/3462)Updating files:  78% (2701/3462)Updating files:  79% (2735/3462)Updating files:  80% (2770/3462)Updating files:  80% (2783/3462)Updating files:  80% (2793/3462)Updating files:  81% (2805/3462)Updating files:  82% (2839/3462)Updating files:  83% (2874/3462)Updating files:  84% (2909/3462)Updating files:  85% (2943/3462)Updating files:  86% (2978/3462)Updating files:  87% (3012/3462)Updating files:  88% (3047/3462)Updating files:  89% (3082/3462)Updating files:  90% (3116/3462)Updating files:  91% (3151/3462)Updating files:  92% (3186/3462)Updating files:  93% (3220/3462)Updating files:  94% (3255/3462)Updating files:  95% (3289/3462)Updating files:  96% (3324/3462)Updating files:  97% (3359/3462)Updating files:  98% (3393/3462)Updating files:  99% (3428/3462)Updating files: 100% (3462/3462)Updating files: 100% (3462/3462), done.
+HEAD is now at f3074cf Retain rejected H4 sight attempts and exact-mask portable controls
+HEAD is now at f3074cf Retain rejected H4 sight attempts and exact-mask portable controls
+FFFFFFFFFF.......FF                                                      [100%]
+=================================== FAILURES ===================================
+________ test_h4_case45_follows_actual_returns_above_the_candidate_cut _________
+
+    def test_h4_case45_follows_actual_returns_above_the_candidate_cut():
+        xyz, ring, labels = physical_column()
+        assert hashlib.sha256(xyz.tobytes()).hexdigest() == "680878ed4f0b233cec517f999ca8648b1193522c929b7ce0f9df9fad7d545a20"
+        c = object_cluster(xyz, ring, labels)
+        assert (int((labels == 1).sum()), c.n_gauge, c.ring_count) == (84, 80, 20)
+        assert 2.93 < c.height_max < 2.95  # observed cut is NOT the physical top (3.22 m)
+>       assert (c.zone, c.reason, c.spared) == ("gauge", "", True)
+E       AssertionError: assert ('warning', 'column', False) == ('gauge', '', True)
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_h4_column_evidence.py:81: AssertionError
+_____________ test_h4_absent_face_is_not_free_sight[highest-67.0] ______________
+
+distance = 67.0, ring_mode = 'highest'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb1776a530>, array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 39473, 39474, 39475,...49434,\n       49435, 49436, 50434, 50435, 50436, 50437, 51435, 51436, 51437,\n       51438, 52436, 52437, 52438, 52439]), window=1.2)
+E        +    where array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 39473, 39474, 39475,...49434,\n       49435, 49436, 50434, 50435, 50436, 50437, 51435, 51436, 51437,\n       51438, 52436, 52437, 52438, 52439]) = Cluster(points_idx=array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 3..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=17, low_height_weak=False, spared=True, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+_____________ test_h4_absent_face_is_not_free_sight[highest-109.0] _____________
+
+distance = 109.0, ring_mode = 'highest'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb17b1c9a0>, array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 42473, 42474, 42475, 43465, 43466, 43467,\n       44457, 44458, 44459, 45457, 45458, 45459, 46458, 46459, 46460,\n       47459, 47460, 47461]), window=1.2)
+E        +    where array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 42473, 42474, 42475, 43465, 43466, 43467,\n       44457, 44458, 44459, 45457, 45458, 45459, 46458, 46459, 46460,\n       47459, 47460, 47461]) = Cluster(points_idx=array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 4... wall_kept=False, demoted=False, thin=False, weak=False, ring_count=10, low_height_weak=False, spared=False, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+_____________ test_h4_absent_face_is_not_free_sight[highest-137.0] _____________
+
+distance = 137.0, ring_mode = 'highest'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb1776af80>, array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 45455, 45456, 46456, 46457]), window=1.2)
+E        +    where array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 45455, 45456, 46456, 46457]) = Cluster(points_idx=array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 4..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=8, low_height_weak=False, spared=False, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+_____________ test_h4_absent_face_is_not_free_sight[reverse-67.0] ______________
+
+distance = 67.0, ring_mode = 'reverse'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb1774e410>, array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 39473, 39474, 39475,...49434,\n       49435, 49436, 50434, 50435, 50436, 50437, 51435, 51436, 51437,\n       51438, 52436, 52437, 52438, 52439]), window=1.2)
+E        +    where array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 39473, 39474, 39475,...49434,\n       49435, 49436, 50434, 50435, 50436, 50437, 51435, 51436, 51437,\n       51438, 52436, 52437, 52438, 52439]) = Cluster(points_idx=array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 3..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=17, low_height_weak=False, spared=True, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+_____________ test_h4_absent_face_is_not_free_sight[reverse-109.0] _____________
+
+distance = 109.0, ring_mode = 'reverse'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb1776bb50>, array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 42473, 42474, 42475, 43465, 43466, 43467,\n       44457, 44458, 44459, 45457, 45458, 45459, 46458, 46459, 46460,\n       47459, 47460, 47461]), window=1.2)
+E        +    where array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 42473, 42474, 42475, 43465, 43466, 43467,\n       44457, 44458, 44459, 45457, 45458, 45459, 46458, 46459, 46460,\n       47459, 47460, 47461]) = Cluster(points_idx=array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 4... wall_kept=False, demoted=False, thin=False, weak=False, ring_count=10, low_height_weak=False, spared=False, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+_____________ test_h4_absent_face_is_not_free_sight[reverse-137.0] _____________
+
+distance = 137.0, ring_mode = 'reverse'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb17b1e9b0>, array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 45455, 45456, 46456, 46457]), window=1.2)
+E        +    where array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 45455, 45456, 46456, 46457]) = Cluster(points_idx=array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 4..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=8, low_height_weak=False, spared=False, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+______________ test_h4_absent_face_is_not_free_sight[absent-67.0] ______________
+
+distance = 67.0, ring_mode = 'absent'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb177ab520>, array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 39473, 39474, 39475,...49434,\n       49435, 49436, 50434, 50435, 50436, 50437, 51435, 51436, 51437,\n       51438, 52436, 52437, 52438, 52439]), window=1.2)
+E        +    where array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 39473, 39474, 39475,...49434,\n       49435, 49436, 50434, 50435, 50436, 50437, 51435, 51436, 51437,\n       51438, 52436, 52437, 52438, 52439]) = Cluster(points_idx=array([36500, 36501, 36502, 36503, 37491, 37492, 37493, 37494, 38482,\n       38483, 38484, 38485, 3...e, wall_kept=False, demoted=False, thin=False, weak=False, ring_count=0, low_height_weak=False, spared=True, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+_____________ test_h4_absent_face_is_not_free_sight[absent-109.0] ______________
+
+distance = 109.0, ring_mode = 'absent'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb17b0a0e0>, array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 42473, 42474, 42475, 43465, 43466, 43467,\n       44457, 44458, 44459, 45457, 45458, 45459, 46458, 46459, 46460,\n       47459, 47460, 47461]), window=1.2)
+E        +    where array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 42473, 42474, 42475, 43465, 43466, 43467,\n       44457, 44458, 44459, 45457, 45458, 45459, 46458, 46459, 46460,\n       47459, 47460, 47461]) = Cluster(points_idx=array([38505, 38506, 38507, 39497, 39498, 39499, 40489, 40490, 40491,\n       41481, 41482, 41483, 4..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=0, low_height_weak=False, spared=False, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+_____________ test_h4_absent_face_is_not_free_sight[absent-137.0] ______________
+
+distance = 137.0, ring_mode = 'absent'
+
+    @pytest.mark.parametrize("distance", [67.0, 109.0, 137.0])
+    @pytest.mark.parametrize("ring_mode", ["highest", "reverse", "absent"])
+    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))
+        ring = None if ring_mode == "absent" else 127 - ring if ring_mode == "reverse" else ring
+        c = object_cluster(xyz, ring, labels)
+        # At long range the absorbing visible stump can be shorter than the column
+        # signature. This test targets evidence, not a new global shape demotion.
+        rays = FrameRays(xyz, ring, xyz[:, 2] + 1.83, xyz[:, 1])
+>       assert not top_is_free(rays, c.points_idx, window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb177ab250>, array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 45455, 45456, 46456, 46457]), window=1.2)
+E        +    where array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 45455, 45456, 46456, 46457]) = Cluster(points_idx=array([39501, 39502, 40492, 40493, 41483, 41484, 42474, 42475, 43465,\n       43466, 44456, 44457, 4..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=0, low_height_weak=False, spared=False, cut=False).points_idx
+
+tests/test_h4_column_evidence.py:99: AssertionError
+______ test_h4_exact_inherited_observer_mask_does_not_invent_sight[109.0] ______
+
+distance = 109.0
+
+    @pytest.mark.parametrize("distance", [109.0, 137.0])
+    def test_h4_exact_inherited_observer_mask_does_not_invent_sight(distance):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12)
+        c = object_cluster(xyz, ring, labels)
+        idx = c.points_idx
+        p, q = xyz[idx].astype(float), xyz.astype(float)
+        el = np.degrees(np.arctan2(p[:, 2], np.hypot(p[:, 0], p[:, 1])))
+        az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+        top = float(el.max())
+        rt = float(np.median(np.linalg.norm(p[el >= top - .06], axis=1)))
+        qe = np.degrees(np.arctan2(q[:, 2], np.hypot(q[:, 0], q[:, 1])))
+        qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+        remove = (np.abs(np.linalg.norm(q, axis=1) - rt) <= max(.5, .02 * rt) + .5)
+        remove &= (qe > top + .04) & (qe <= top + .6) & (q[:, 0] > 0)
+        remove &= (qa >= az.min() - .02) & (qa <= az.max() + .02)
+        remove[idx] = False  # observer only: candidate points and fitted coordinates are unchanged
+        assert remove.any()
+        keep = ~remove
+        remap = np.cumsum(keep) - 1
+        rays = FrameRays(xyz[keep], ring[keep], xyz[keep, 2] + 1.83, xyz[keep, 1])
+>       assert not top_is_free(rays, remap[idx], window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb17b0e710>, array([36526, 36527, 36528, 37519, 37520, 37521, 38511, 38512, 38513,\n       39503, 39504, 39505, 40495, 40496, 40497,...42481, 43471, 43472, 43473, 44463, 44464, 44465,\n       45463, 45464, 45465, 46464, 46465, 46466, 47465, 47466, 47467]), window=1.2)
+
+tests/test_h4_column_evidence.py:140: AssertionError
+______ test_h4_exact_inherited_observer_mask_does_not_invent_sight[137.0] ______
+
+distance = 137.0
+
+    @pytest.mark.parametrize("distance", [109.0, 137.0])
+    def test_h4_exact_inherited_observer_mask_does_not_invent_sight(distance):
+        xyz, ring, labels = physical_column(distance=distance, top=4.12)
+        c = object_cluster(xyz, ring, labels)
+        idx = c.points_idx
+        p, q = xyz[idx].astype(float), xyz.astype(float)
+        el = np.degrees(np.arctan2(p[:, 2], np.hypot(p[:, 0], p[:, 1])))
+        az = np.degrees(np.arctan2(p[:, 1], p[:, 0]))
+        top = float(el.max())
+        rt = float(np.median(np.linalg.norm(p[el >= top - .06], axis=1)))
+        qe = np.degrees(np.arctan2(q[:, 2], np.hypot(q[:, 0], q[:, 1])))
+        qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+        remove = (np.abs(np.linalg.norm(q, axis=1) - rt) <= max(.5, .02 * rt) + .5)
+        remove &= (qe > top + .04) & (qe <= top + .6) & (q[:, 0] > 0)
+        remove &= (qa >= az.min() - .02) & (qa <= az.max() + .02)
+        remove[idx] = False  # observer only: candidate points and fitted coordinates are unchanged
+        assert remove.any()
+        keep = ~remove
+        remap = np.cumsum(keep) - 1
+        rays = FrameRays(xyz[keep], ring[keep], xyz[keep, 2] + 1.83, xyz[keep, 1])
+>       assert not top_is_free(rays, remap[idx], window=1.2)
+E       assert not True
+E        +  where True = top_is_free(<resense.clustering.FrameRays object at 0x74fb177aa950>, array([37523, 37524, 38514, 38515, 39505, 39506, 40496, 40497, 41487,\n       41488, 42478, 42479, 43469, 43470, 44460, 44461, 45459, 45460,\n       46460, 46461]), window=1.2)
+
+tests/test_h4_column_evidence.py:140: AssertionError
+----------------- generated xml file: /out/results/pytest.xml ------------------
+12 failed, 7 passed in 1.22s
+Traceback (most recent call last):
+  File "/author/worker.py", line 114, in <module>
+    main()
+  File "/author/worker.py", line 93, in main
+    raise RuntimeError(f"pytest exit {r.returncode}")
+RuntimeError: pytest exit 1

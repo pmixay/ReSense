@@ -1,0 +1,3237 @@
+{
+  "pole_c": {
+    "parent": {
+      "cache": "roundT_squareT_pressureGate_squareT",
+      "obj": [
+        0.3,
+        0.3,
+        2.8
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 150,
+      "d0": 230.0,
+      "first_visible_X": 228.36,
+      "first_stop_X": 218.38,
+      "held_from_X": 225.9,
+      "visible_frames": 177,
+      "stop_frames": 157,
+      "bins": {
+        "3-30": "18/18",
+        "30-60": "21/21",
+        "60-100": "27/27",
+        "100-150": "39/39",
+        "150-200": "41/42",
+        "200-260": "11/30"
+      },
+      "decisions_while_visible": {
+        "GO": 5,
+        "CAUTION": 15,
+        "STOP": 157,
+        "FAULT": 0
+      },
+      "go_within_60m": 0,
+      "n_obj_at": {
+        "200": 6,
+        "150": 16,
+        "100": 26,
+        "60": 63,
+        "30": 228
+      }
+    },
+    "comparisons": {
+      "attempt-06-probes": {
+        "summary": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.3,
+            0.3,
+            2.8
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 228.36,
+          "first_stop_X": 218.38,
+          "held_from_X": 206.82,
+          "visible_frames": 177,
+          "stop_frames": 147,
+          "bins": {
+            "3-30": "18/18",
+            "30-60": "21/21",
+            "60-100": "27/27",
+            "100-150": "35/39",
+            "150-200": "35/42",
+            "200-260": "11/30"
+          },
+          "decisions_while_visible": {
+            "GO": 5,
+            "CAUTION": 25,
+            "STOP": 147,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 6,
+            "150": 16,
+            "100": 26,
+            "60": 63,
+            "30": 228
+          }
+        },
+        "lost_matched_stop_frames": [
+          {
+            "parent": {
+              "k": 224,
+              "X": 157.05,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.53,
+              "Zb": -4.05,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 157.0,
+                  "lat": 0.08,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 15,
+                  "n_gauge": 15,
+                  "hmin": 0.13,
+                  "hmax": 2.5,
+                  "size": [
+                    0.03,
+                    0.3,
+                    2.37
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.6,
+                "railz_at_X": -4.05,
+                "axis_valid": 193.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 157.03
+            },
+            "candidate": {
+              "k": 224,
+              "X": 157.05,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.53,
+              "Zb": -4.05,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 157.0,
+                  "lat": 0.08,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 15,
+                  "n_gauge": 15,
+                  "hmin": 0.13,
+                  "hmax": 2.5,
+                  "size": [
+                    0.03,
+                    0.3,
+                    2.37
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.6,
+                "railz_at_X": -4.05,
+                "axis_valid": 193.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 225,
+              "X": 155.87,
+              "n_obj": 18,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.91,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 155.9,
+                  "lat": 0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.28,
+                  "hmax": 2.75,
+                  "size": [
+                    0.04,
+                    0.31,
+                    2.46
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.59,
+                "railz_at_X": -3.9,
+                "axis_valid": 169.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 155.85
+            },
+            "candidate": {
+              "k": 225,
+              "X": 155.87,
+              "n_obj": 18,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.91,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 155.9,
+                  "lat": 0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.28,
+                  "hmax": 2.75,
+                  "size": [
+                    0.04,
+                    0.31,
+                    2.46
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.59,
+                "railz_at_X": -3.9,
+                "axis_valid": 169.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 226,
+              "X": 154.69,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.77,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 154.7,
+                  "lat": 0.02,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.2,
+                  "hmax": 2.63,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.43
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.54,
+                "railz_at_X": -3.76,
+                "axis_valid": 169.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 154.66
+            },
+            "candidate": {
+              "k": 226,
+              "X": 154.69,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.77,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 154.7,
+                  "lat": 0.02,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.2,
+                  "hmax": 2.63,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.43
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.54,
+                "railz_at_X": -3.76,
+                "axis_valid": 169.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 227,
+              "X": 153.5,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.1,
+              "axis_valid": 205.0,
+              "cand_near": [
+                {
+                  "d": 153.5,
+                  "lat": 0.0,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.23,
+                  "hmax": 2.58,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.34
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.52,
+                "railz_at_X": -4.1,
+                "axis_valid": 189.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 153.48
+            },
+            "candidate": {
+              "k": 227,
+              "X": 153.5,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.1,
+              "axis_valid": 205.0,
+              "cand_near": [
+                {
+                  "d": 153.5,
+                  "lat": 0.0,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.23,
+                  "hmax": 2.58,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.34
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.52,
+                "railz_at_X": -4.1,
+                "axis_valid": 189.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 228,
+              "X": 152.3,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.24,
+              "axis_valid": 221.0,
+              "cand_near": [
+                {
+                  "d": 152.3,
+                  "lat": -0.23,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.41,
+                  "hmax": 2.74,
+                  "size": [
+                    0.04,
+                    0.04,
+                    2.33
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.42,
+                "railz_at_X": -3.24,
+                "axis_valid": 205.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 152.28
+            },
+            "candidate": {
+              "k": 228,
+              "X": 152.3,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.24,
+              "axis_valid": 221.0,
+              "cand_near": [
+                {
+                  "d": 152.3,
+                  "lat": -0.23,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.41,
+                  "hmax": 2.74,
+                  "size": [
+                    0.04,
+                    0.04,
+                    2.33
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.42,
+                "railz_at_X": -3.24,
+                "axis_valid": 205.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 229,
+              "X": 151.1,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.72,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 151.1,
+                  "lat": -0.21,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.22,
+                  "hmax": 2.61,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.39
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.43,
+                "railz_at_X": -3.72,
+                "axis_valid": 201.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 151.08
+            },
+            "candidate": {
+              "k": 229,
+              "X": 151.1,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.72,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 151.1,
+                  "lat": -0.21,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.22,
+                  "hmax": 2.61,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.39
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.43,
+                "railz_at_X": -3.72,
+                "axis_valid": 201.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 230,
+              "X": 149.9,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.94,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 149.9,
+                  "lat": -0.12,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.19,
+                  "hmax": 2.46,
+                  "size": [
+                    0.05,
+                    0.31,
+                    2.26
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.39,
+                "railz_at_X": -3.94,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 149.87
+            },
+            "candidate": {
+              "k": 230,
+              "X": 149.9,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.94,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 149.9,
+                  "lat": -0.12,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.19,
+                  "hmax": 2.46,
+                  "size": [
+                    0.05,
+                    0.31,
+                    2.26
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.39,
+                "railz_at_X": -3.94,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 231,
+              "X": 148.69,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.46,
+              "Zb": -3.92,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 148.7,
+                  "lat": -0.01,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.19,
+                  "hmax": 2.44,
+                  "size": [
+                    0.03,
+                    0.06,
+                    2.25
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.37,
+                "railz_at_X": -3.91,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 148.68
+            },
+            "candidate": {
+              "k": 231,
+              "X": 148.69,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.46,
+              "Zb": -3.92,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 148.7,
+                  "lat": -0.01,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.19,
+                  "hmax": 2.44,
+                  "size": [
+                    0.03,
+                    0.06,
+                    2.25
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.37,
+                "railz_at_X": -3.91,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 232,
+              "X": 147.47,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.49,
+              "Zb": -4.02,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 147.5,
+                  "lat": -0.04,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.33,
+                  "hmax": 2.55,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.22
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.46,
+                "railz_at_X": -4.01,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 147.46
+            },
+            "candidate": {
+              "k": 232,
+              "X": 147.47,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.49,
+              "Zb": -4.02,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 147.5,
+                  "lat": -0.04,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.33,
+                  "hmax": 2.55,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.22
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.46,
+                "railz_at_X": -4.01,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 233,
+              "X": 146.25,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.06,
+              "axis_valid": 225.0,
+              "cand_near": [
+                {
+                  "d": 146.2,
+                  "lat": -0.19,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.4,
+                  "hmax": 2.62,
+                  "size": [
+                    0.03,
+                    0.04,
+                    2.21
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.44,
+                "railz_at_X": -4.06,
+                "axis_valid": 181.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 146.24
+            },
+            "candidate": {
+              "k": 233,
+              "X": 146.25,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.06,
+              "axis_valid": 225.0,
+              "cand_near": [
+                {
+                  "d": 146.2,
+                  "lat": -0.19,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.4,
+                  "hmax": 2.62,
+                  "size": [
+                    0.03,
+                    0.04,
+                    2.21
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.44,
+                "railz_at_X": -4.06,
+                "axis_valid": 181.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          }
+        ],
+        "new_matched_stop_frames": []
+      },
+      "attempt-07-probes": {
+        "summary": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.3,
+            0.3,
+            2.8
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 228.36,
+          "first_stop_X": 218.38,
+          "held_from_X": 206.82,
+          "visible_frames": 177,
+          "stop_frames": 147,
+          "bins": {
+            "3-30": "18/18",
+            "30-60": "21/21",
+            "60-100": "27/27",
+            "100-150": "35/39",
+            "150-200": "35/42",
+            "200-260": "11/30"
+          },
+          "decisions_while_visible": {
+            "GO": 5,
+            "CAUTION": 25,
+            "STOP": 147,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 6,
+            "150": 16,
+            "100": 26,
+            "60": 63,
+            "30": 228
+          }
+        },
+        "lost_matched_stop_frames": [
+          {
+            "parent": {
+              "k": 224,
+              "X": 157.05,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.53,
+              "Zb": -4.05,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 157.0,
+                  "lat": 0.08,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 15,
+                  "n_gauge": 15,
+                  "hmin": 0.13,
+                  "hmax": 2.5,
+                  "size": [
+                    0.03,
+                    0.3,
+                    2.37
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.6,
+                "railz_at_X": -4.05,
+                "axis_valid": 193.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 157.03
+            },
+            "candidate": {
+              "k": 224,
+              "X": 157.05,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.53,
+              "Zb": -4.05,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 157.0,
+                  "lat": 0.08,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 15,
+                  "n_gauge": 15,
+                  "hmin": 0.13,
+                  "hmax": 2.5,
+                  "size": [
+                    0.03,
+                    0.3,
+                    2.37
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.6,
+                "railz_at_X": -4.05,
+                "axis_valid": 193.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 225,
+              "X": 155.87,
+              "n_obj": 18,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.91,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 155.9,
+                  "lat": 0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.28,
+                  "hmax": 2.75,
+                  "size": [
+                    0.04,
+                    0.31,
+                    2.46
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.59,
+                "railz_at_X": -3.9,
+                "axis_valid": 169.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 155.85
+            },
+            "candidate": {
+              "k": 225,
+              "X": 155.87,
+              "n_obj": 18,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.91,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 155.9,
+                  "lat": 0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.28,
+                  "hmax": 2.75,
+                  "size": [
+                    0.04,
+                    0.31,
+                    2.46
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.59,
+                "railz_at_X": -3.9,
+                "axis_valid": 169.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 226,
+              "X": 154.69,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.77,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 154.7,
+                  "lat": 0.02,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.2,
+                  "hmax": 2.63,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.43
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.54,
+                "railz_at_X": -3.76,
+                "axis_valid": 169.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 154.66
+            },
+            "candidate": {
+              "k": 226,
+              "X": 154.69,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.77,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 154.7,
+                  "lat": 0.02,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.2,
+                  "hmax": 2.63,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.43
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.54,
+                "railz_at_X": -3.76,
+                "axis_valid": 169.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 227,
+              "X": 153.5,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.1,
+              "axis_valid": 205.0,
+              "cand_near": [
+                {
+                  "d": 153.5,
+                  "lat": 0.0,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.23,
+                  "hmax": 2.58,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.34
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.52,
+                "railz_at_X": -4.1,
+                "axis_valid": 189.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 153.48
+            },
+            "candidate": {
+              "k": 227,
+              "X": 153.5,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.1,
+              "axis_valid": 205.0,
+              "cand_near": [
+                {
+                  "d": 153.5,
+                  "lat": 0.0,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.23,
+                  "hmax": 2.58,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.34
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.52,
+                "railz_at_X": -4.1,
+                "axis_valid": 189.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 228,
+              "X": 152.3,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.24,
+              "axis_valid": 221.0,
+              "cand_near": [
+                {
+                  "d": 152.3,
+                  "lat": -0.23,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.41,
+                  "hmax": 2.74,
+                  "size": [
+                    0.04,
+                    0.04,
+                    2.33
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.42,
+                "railz_at_X": -3.24,
+                "axis_valid": 205.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 152.28
+            },
+            "candidate": {
+              "k": 228,
+              "X": 152.3,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.24,
+              "axis_valid": 221.0,
+              "cand_near": [
+                {
+                  "d": 152.3,
+                  "lat": -0.23,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.41,
+                  "hmax": 2.74,
+                  "size": [
+                    0.04,
+                    0.04,
+                    2.33
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.42,
+                "railz_at_X": -3.24,
+                "axis_valid": 205.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 229,
+              "X": 151.1,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.72,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 151.1,
+                  "lat": -0.21,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.22,
+                  "hmax": 2.61,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.39
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.43,
+                "railz_at_X": -3.72,
+                "axis_valid": 201.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 151.08
+            },
+            "candidate": {
+              "k": 229,
+              "X": 151.1,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.72,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 151.1,
+                  "lat": -0.21,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.22,
+                  "hmax": 2.61,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.39
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.43,
+                "railz_at_X": -3.72,
+                "axis_valid": 201.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 230,
+              "X": 149.9,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.94,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 149.9,
+                  "lat": -0.12,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.19,
+                  "hmax": 2.46,
+                  "size": [
+                    0.05,
+                    0.31,
+                    2.26
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.39,
+                "railz_at_X": -3.94,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 149.87
+            },
+            "candidate": {
+              "k": 230,
+              "X": 149.9,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.94,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 149.9,
+                  "lat": -0.12,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.19,
+                  "hmax": 2.46,
+                  "size": [
+                    0.05,
+                    0.31,
+                    2.26
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.39,
+                "railz_at_X": -3.94,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 231,
+              "X": 148.69,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.46,
+              "Zb": -3.92,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 148.7,
+                  "lat": -0.01,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.19,
+                  "hmax": 2.44,
+                  "size": [
+                    0.03,
+                    0.06,
+                    2.25
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.37,
+                "railz_at_X": -3.91,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 148.68
+            },
+            "candidate": {
+              "k": 231,
+              "X": 148.69,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.46,
+              "Zb": -3.92,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 148.7,
+                  "lat": -0.01,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.19,
+                  "hmax": 2.44,
+                  "size": [
+                    0.03,
+                    0.06,
+                    2.25
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.37,
+                "railz_at_X": -3.91,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 232,
+              "X": 147.47,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.49,
+              "Zb": -4.02,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 147.5,
+                  "lat": -0.04,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.33,
+                  "hmax": 2.55,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.22
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.46,
+                "railz_at_X": -4.01,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 147.46
+            },
+            "candidate": {
+              "k": 232,
+              "X": 147.47,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.49,
+              "Zb": -4.02,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 147.5,
+                  "lat": -0.04,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.33,
+                  "hmax": 2.55,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.22
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.46,
+                "railz_at_X": -4.01,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 233,
+              "X": 146.25,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.06,
+              "axis_valid": 225.0,
+              "cand_near": [
+                {
+                  "d": 146.2,
+                  "lat": -0.19,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.4,
+                  "hmax": 2.62,
+                  "size": [
+                    0.03,
+                    0.04,
+                    2.21
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.44,
+                "railz_at_X": -4.06,
+                "axis_valid": 181.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 146.24
+            },
+            "candidate": {
+              "k": 233,
+              "X": 146.25,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.06,
+              "axis_valid": 225.0,
+              "cand_near": [
+                {
+                  "d": 146.2,
+                  "lat": -0.19,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.4,
+                  "hmax": 2.62,
+                  "size": [
+                    0.03,
+                    0.04,
+                    2.21
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.44,
+                "railz_at_X": -4.06,
+                "axis_valid": 181.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          }
+        ],
+        "new_matched_stop_frames": []
+      },
+      "attempt-08-probes": {
+        "summary": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.3,
+            0.3,
+            2.8
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 228.36,
+          "first_stop_X": 218.38,
+          "held_from_X": 147.47,
+          "visible_frames": 177,
+          "stop_frames": 139,
+          "bins": {
+            "3-30": "16/18",
+            "30-60": "21/21",
+            "60-100": "27/27",
+            "100-150": "29/39",
+            "150-200": "35/42",
+            "200-260": "11/30"
+          },
+          "decisions_while_visible": {
+            "GO": 5,
+            "CAUTION": 33,
+            "STOP": 139,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 6,
+            "150": 16,
+            "100": 26,
+            "60": 63,
+            "30": 228
+          }
+        },
+        "lost_matched_stop_frames": [
+          {
+            "parent": {
+              "k": 224,
+              "X": 157.05,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.53,
+              "Zb": -4.05,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 157.0,
+                  "lat": 0.08,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 15,
+                  "n_gauge": 15,
+                  "hmin": 0.13,
+                  "hmax": 2.5,
+                  "size": [
+                    0.03,
+                    0.3,
+                    2.37
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.6,
+                "railz_at_X": -4.05,
+                "axis_valid": 193.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 157.03
+            },
+            "candidate": {
+              "k": 224,
+              "X": 157.05,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.53,
+              "Zb": -4.05,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 157.0,
+                  "lat": 0.08,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 15,
+                  "n_gauge": 15,
+                  "hmin": 0.13,
+                  "hmax": 2.5,
+                  "size": [
+                    0.03,
+                    0.3,
+                    2.37
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.6,
+                "railz_at_X": -4.05,
+                "axis_valid": 193.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 225,
+              "X": 155.87,
+              "n_obj": 18,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.91,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 155.9,
+                  "lat": 0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.28,
+                  "hmax": 2.75,
+                  "size": [
+                    0.04,
+                    0.31,
+                    2.46
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.59,
+                "railz_at_X": -3.9,
+                "axis_valid": 169.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 155.85
+            },
+            "candidate": {
+              "k": 225,
+              "X": 155.87,
+              "n_obj": 18,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.91,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 155.9,
+                  "lat": 0.06,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.28,
+                  "hmax": 2.75,
+                  "size": [
+                    0.04,
+                    0.31,
+                    2.46
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.59,
+                "railz_at_X": -3.9,
+                "axis_valid": 169.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 226,
+              "X": 154.69,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.77,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 154.7,
+                  "lat": 0.02,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.2,
+                  "hmax": 2.63,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.43
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.54,
+                "railz_at_X": -3.76,
+                "axis_valid": 169.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 154.66
+            },
+            "candidate": {
+              "k": 226,
+              "X": 154.69,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.77,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 154.7,
+                  "lat": 0.02,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 17,
+                  "n_gauge": 17,
+                  "hmin": 0.2,
+                  "hmax": 2.63,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.43
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.54,
+                "railz_at_X": -3.76,
+                "axis_valid": 169.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 227,
+              "X": 153.5,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.1,
+              "axis_valid": 205.0,
+              "cand_near": [
+                {
+                  "d": 153.5,
+                  "lat": 0.0,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.23,
+                  "hmax": 2.58,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.34
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.52,
+                "railz_at_X": -4.1,
+                "axis_valid": 189.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 153.48
+            },
+            "candidate": {
+              "k": 227,
+              "X": 153.5,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.1,
+              "axis_valid": 205.0,
+              "cand_near": [
+                {
+                  "d": 153.5,
+                  "lat": 0.0,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.23,
+                  "hmax": 2.58,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.34
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.52,
+                "railz_at_X": -4.1,
+                "axis_valid": 189.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 228,
+              "X": 152.3,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.24,
+              "axis_valid": 221.0,
+              "cand_near": [
+                {
+                  "d": 152.3,
+                  "lat": -0.23,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.41,
+                  "hmax": 2.74,
+                  "size": [
+                    0.04,
+                    0.04,
+                    2.33
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.42,
+                "railz_at_X": -3.24,
+                "axis_valid": 205.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 152.28
+            },
+            "candidate": {
+              "k": 228,
+              "X": 152.3,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.24,
+              "axis_valid": 221.0,
+              "cand_near": [
+                {
+                  "d": 152.3,
+                  "lat": -0.23,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.41,
+                  "hmax": 2.74,
+                  "size": [
+                    0.04,
+                    0.04,
+                    2.33
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.42,
+                "railz_at_X": -3.24,
+                "axis_valid": 205.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 229,
+              "X": 151.1,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.72,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 151.1,
+                  "lat": -0.21,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.22,
+                  "hmax": 2.61,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.39
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.43,
+                "railz_at_X": -3.72,
+                "axis_valid": 201.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 151.08
+            },
+            "candidate": {
+              "k": 229,
+              "X": 151.1,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -3.72,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 151.1,
+                  "lat": -0.21,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.22,
+                  "hmax": 2.61,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.39
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.43,
+                "railz_at_X": -3.72,
+                "axis_valid": 201.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 230,
+              "X": 149.9,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.94,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 149.9,
+                  "lat": -0.12,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.19,
+                  "hmax": 2.46,
+                  "size": [
+                    0.05,
+                    0.31,
+                    2.26
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.39,
+                "railz_at_X": -3.94,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 149.87
+            },
+            "candidate": {
+              "k": 230,
+              "X": 149.9,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -3.94,
+              "axis_valid": 201.0,
+              "cand_near": [
+                {
+                  "d": 149.9,
+                  "lat": -0.12,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.19,
+                  "hmax": 2.46,
+                  "size": [
+                    0.05,
+                    0.31,
+                    2.26
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.39,
+                "railz_at_X": -3.94,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 231,
+              "X": 148.69,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.46,
+              "Zb": -3.92,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 148.7,
+                  "lat": -0.01,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.19,
+                  "hmax": 2.44,
+                  "size": [
+                    0.03,
+                    0.06,
+                    2.25
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.37,
+                "railz_at_X": -3.91,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 148.68
+            },
+            "candidate": {
+              "k": 231,
+              "X": 148.69,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.46,
+              "Zb": -3.92,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 148.7,
+                  "lat": -0.01,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.19,
+                  "hmax": 2.44,
+                  "size": [
+                    0.03,
+                    0.06,
+                    2.25
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.37,
+                "railz_at_X": -3.91,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 232,
+              "X": 147.47,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.49,
+              "Zb": -4.02,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 147.5,
+                  "lat": -0.04,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.33,
+                  "hmax": 2.55,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.22
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.46,
+                "railz_at_X": -4.01,
+                "axis_valid": 185.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 147.46
+            },
+            "candidate": {
+              "k": 232,
+              "X": 147.47,
+              "n_obj": 16,
+              "lat": 0.0,
+              "Y": -0.49,
+              "Zb": -4.02,
+              "axis_valid": 185.0,
+              "cand_near": [
+                {
+                  "d": 147.5,
+                  "lat": -0.04,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 16,
+                  "n_gauge": 16,
+                  "hmin": 0.33,
+                  "hmax": 2.55,
+                  "size": [
+                    0.04,
+                    0.3,
+                    2.22
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.46,
+                "railz_at_X": -4.01,
+                "axis_valid": 185.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 233,
+              "X": 146.25,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.06,
+              "axis_valid": 225.0,
+              "cand_near": [
+                {
+                  "d": 146.2,
+                  "lat": -0.19,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.4,
+                  "hmax": 2.62,
+                  "size": [
+                    0.03,
+                    0.04,
+                    2.21
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.44,
+                "railz_at_X": -4.06,
+                "axis_valid": 181.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 146.24
+            },
+            "candidate": {
+              "k": 233,
+              "X": 146.25,
+              "n_obj": 8,
+              "lat": 0.0,
+              "Y": -0.52,
+              "Zb": -4.06,
+              "axis_valid": 225.0,
+              "cand_near": [
+                {
+                  "d": 146.2,
+                  "lat": -0.19,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 8,
+                  "n_gauge": 8,
+                  "hmin": 0.4,
+                  "hmax": 2.62,
+                  "size": [
+                    0.03,
+                    0.04,
+                    2.21
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.44,
+                "railz_at_X": -4.06,
+                "axis_valid": 181.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 234,
+              "X": 145.03,
+              "n_obj": 6,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -4.33,
+              "axis_valid": 225.0,
+              "cand_near": [
+                {
+                  "d": 145.0,
+                  "lat": -0.18,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 7,
+                  "n_gauge": 7,
+                  "hmin": 0.96,
+                  "hmax": 2.58,
+                  "size": [
+                    0.03,
+                    0.04,
+                    1.62
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.44,
+                "railz_at_X": -4.32,
+                "axis_valid": 201.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 145.02
+            },
+            "candidate": {
+              "k": 234,
+              "X": 145.03,
+              "n_obj": 6,
+              "lat": 0.0,
+              "Y": -0.54,
+              "Zb": -4.33,
+              "axis_valid": 225.0,
+              "cand_near": [
+                {
+                  "d": 145.0,
+                  "lat": -0.18,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 7,
+                  "n_gauge": 7,
+                  "hmin": 0.96,
+                  "hmax": 2.58,
+                  "size": [
+                    0.03,
+                    0.04,
+                    1.62
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.44,
+                "railz_at_X": -4.32,
+                "axis_valid": 201.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 235,
+              "X": 143.81,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.55,
+              "Zb": -3.53,
+              "axis_valid": 197.0,
+              "cand_near": [
+                {
+                  "d": 143.8,
+                  "lat": -0.16,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 9,
+                  "n_gauge": 9,
+                  "hmin": 0.18,
+                  "hmax": 2.78,
+                  "size": [
+                    0.04,
+                    0.03,
+                    2.6
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.46,
+                "railz_at_X": -3.52,
+                "axis_valid": 197.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 143.8
+            },
+            "candidate": {
+              "k": 235,
+              "X": 143.81,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.55,
+              "Zb": -3.53,
+              "axis_valid": 197.0,
+              "cand_near": [
+                {
+                  "d": 143.8,
+                  "lat": -0.16,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 9,
+                  "n_gauge": 9,
+                  "hmin": 0.18,
+                  "hmax": 2.78,
+                  "size": [
+                    0.04,
+                    0.03,
+                    2.6
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.46,
+                "railz_at_X": -3.52,
+                "axis_valid": 197.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 236,
+              "X": 142.57,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.65,
+              "Zb": -3.49,
+              "axis_valid": 221.0,
+              "cand_near": [
+                {
+                  "d": 142.6,
+                  "lat": -0.04,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 9,
+                  "n_gauge": 9,
+                  "hmin": 0.42,
+                  "hmax": 2.95,
+                  "size": [
+                    0.05,
+                    0.03,
+                    2.53
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.57,
+                "railz_at_X": -3.7,
+                "axis_valid": 177.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 142.56
+            },
+            "candidate": {
+              "k": 236,
+              "X": 142.57,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.65,
+              "Zb": -3.49,
+              "axis_valid": 221.0,
+              "cand_near": [
+                {
+                  "d": 142.6,
+                  "lat": -0.04,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 9,
+                  "n_gauge": 9,
+                  "hmin": 0.42,
+                  "hmax": 2.95,
+                  "size": [
+                    0.05,
+                    0.03,
+                    2.53
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.57,
+                "railz_at_X": -3.7,
+                "axis_valid": 177.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 237,
+              "X": 141.33,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.58,
+              "Zb": -3.37,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 141.3,
+                  "lat": -0.07,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 9,
+                  "n_gauge": 9,
+                  "hmin": 0.21,
+                  "hmax": 2.74,
+                  "size": [
+                    0.02,
+                    0.05,
+                    2.53
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.53,
+                "railz_at_X": -3.48,
+                "axis_valid": 193.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 141.32
+            },
+            "candidate": {
+              "k": 237,
+              "X": 141.33,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.58,
+              "Zb": -3.37,
+              "axis_valid": 193.0,
+              "cand_near": [
+                {
+                  "d": 141.3,
+                  "lat": -0.07,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 9,
+                  "n_gauge": 9,
+                  "hmin": 0.21,
+                  "hmax": 2.74,
+                  "size": [
+                    0.02,
+                    0.05,
+                    2.53
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.53,
+                "railz_at_X": -3.48,
+                "axis_valid": 193.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 238,
+              "X": 140.09,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.63,
+              "Zb": -3.38,
+              "axis_valid": 197.0,
+              "cand_near": [
+                {
+                  "d": 140.1,
+                  "lat": -0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 9,
+                  "n_gauge": 9,
+                  "hmin": 0.18,
+                  "hmax": 2.7,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.52
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.54,
+                "railz_at_X": -3.43,
+                "axis_valid": 197.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 140.08
+            },
+            "candidate": {
+              "k": 238,
+              "X": 140.09,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.63,
+              "Zb": -3.38,
+              "axis_valid": 197.0,
+              "cand_near": [
+                {
+                  "d": 140.1,
+                  "lat": -0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 9,
+                  "n_gauge": 9,
+                  "hmin": 0.18,
+                  "hmax": 2.7,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.52
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.54,
+                "railz_at_X": -3.43,
+                "axis_valid": 197.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 239,
+              "X": 138.85,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.66,
+              "Zb": -3.32,
+              "axis_valid": 173.0,
+              "cand_near": [
+                {
+                  "d": 138.8,
+                  "lat": -0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 11,
+                  "n_gauge": 11,
+                  "hmin": 0.14,
+                  "hmax": 2.63,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.48
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.53,
+                "railz_at_X": -3.34,
+                "axis_valid": 173.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 138.83
+            },
+            "candidate": {
+              "k": 239,
+              "X": 138.85,
+              "n_obj": 9,
+              "lat": 0.0,
+              "Y": -0.66,
+              "Zb": -3.32,
+              "axis_valid": 173.0,
+              "cand_near": [
+                {
+                  "d": 138.8,
+                  "lat": -0.06,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 11,
+                  "n_gauge": 11,
+                  "hmin": 0.14,
+                  "hmax": 2.63,
+                  "size": [
+                    0.04,
+                    0.05,
+                    2.48
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.53,
+                "railz_at_X": -3.34,
+                "axis_valid": 173.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 333,
+              "X": 5.28,
+              "n_obj": 3232,
+              "lat": 0.0,
+              "Y": -0.03,
+              "Zb": -1.11,
+              "axis_valid": 123.0,
+              "cand_near": [
+                {
+                  "d": 5.2,
+                  "lat": 0.0,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 415,
+                  "n_gauge": 415,
+                  "hmin": 0.12,
+                  "hmax": 2.46,
+                  "size": [
+                    0.07,
+                    0.35,
+                    2.34
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.04,
+                "railz_at_X": -1.08,
+                "axis_valid": 127.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 5.25
+            },
+            "candidate": {
+              "k": 333,
+              "X": 5.28,
+              "n_obj": 3232,
+              "lat": 0.0,
+              "Y": -0.03,
+              "Zb": -1.11,
+              "axis_valid": 123.0,
+              "cand_near": [
+                {
+                  "d": 5.2,
+                  "lat": 0.0,
+                  "zone": "warning",
+                  "reason": "column",
+                  "n": 415,
+                  "n_gauge": 415,
+                  "hmin": 0.12,
+                  "hmax": 2.46,
+                  "size": [
+                    0.07,
+                    0.35,
+                    2.34
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.04,
+                "railz_at_X": -1.08,
+                "axis_valid": 127.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          },
+          {
+            "parent": {
+              "k": 334,
+              "X": 3.85,
+              "n_obj": 4905,
+              "lat": 0.0,
+              "Y": -0.02,
+              "Zb": -1.11,
+              "axis_valid": 123.0,
+              "cand_near": [
+                {
+                  "d": 3.8,
+                  "lat": 0.01,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 492,
+                  "n_gauge": 492,
+                  "hmin": 0.12,
+                  "hmax": 2.11,
+                  "size": [
+                    0.08,
+                    0.35,
+                    1.99
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.03,
+                "railz_at_X": -1.09,
+                "axis_valid": 131.0
+              },
+              "decision": "STOP",
+              "hit": true,
+              "warn": false,
+              "nearest": 3.81
+            },
+            "candidate": {
+              "k": 334,
+              "X": 3.85,
+              "n_obj": 4905,
+              "lat": 0.0,
+              "Y": -0.02,
+              "Zb": -1.11,
+              "axis_valid": 123.0,
+              "cand_near": [
+                {
+                  "d": 3.8,
+                  "lat": 0.01,
+                  "zone": "gauge",
+                  "reason": "",
+                  "n": 492,
+                  "n_gauge": 492,
+                  "hmin": 0.12,
+                  "hmax": 2.11,
+                  "size": [
+                    0.08,
+                    0.35,
+                    1.99
+                  ],
+                  "thin": false,
+                  "weak": false
+                }
+              ],
+              "track_live": {
+                "center_at_X": -0.03,
+                "railz_at_X": -1.09,
+                "axis_valid": 131.0
+              },
+              "decision": "CAUTION",
+              "hit": false,
+              "warn": true,
+              "nearest": null
+            }
+          }
+        ],
+        "new_matched_stop_frames": []
+      }
+    }
+  },
+  "C_person": {
+    "parent": {
+      "cache": "roundT_pressureGate_roundT",
+      "obj": [
+        0.5,
+        0.5,
+        1.75
+      ],
+      "lat": 0.0,
+      "base": 0.0,
+      "start": 0,
+      "d0": 230.0,
+      "first_visible_X": 230.0,
+      "first_stop_X": 82.77,
+      "held_from_X": 91.63,
+      "visible_frames": 153,
+      "stop_frames": 55,
+      "bins": {
+        "3-30": "19/19",
+        "30-60": "20/20",
+        "60-100": "16/27",
+        "100-150": "0/34",
+        "150-200": "0/33",
+        "200-260": "0/20"
+      },
+      "decisions_while_visible": {
+        "GO": 42,
+        "CAUTION": 56,
+        "STOP": 55,
+        "FAULT": 0
+      },
+      "go_within_60m": 0,
+      "n_obj_at": {
+        "200": 4,
+        "150": 5,
+        "100": 24,
+        "60": 70,
+        "30": 260
+      }
+    },
+    "comparisons": {
+      "attempt-06-probes": {
+        "summary": {
+          "cache": "roundT_pressureGate_roundT",
+          "obj": [
+            0.5,
+            0.5,
+            1.75
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 0,
+          "d0": 230.0,
+          "first_visible_X": 230.0,
+          "first_stop_X": 82.77,
+          "held_from_X": 91.63,
+          "visible_frames": 153,
+          "stop_frames": 55,
+          "bins": {
+            "3-30": "19/19",
+            "30-60": "20/20",
+            "60-100": "16/27",
+            "100-150": "0/34",
+            "150-200": "0/33",
+            "200-260": "0/20"
+          },
+          "decisions_while_visible": {
+            "GO": 42,
+            "CAUTION": 56,
+            "STOP": 55,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 4,
+            "150": 5,
+            "100": 24,
+            "60": 70,
+            "30": 260
+          }
+        },
+        "lost_matched_stop_frames": [],
+        "new_matched_stop_frames": []
+      },
+      "attempt-07-probes": {
+        "summary": {
+          "cache": "roundT_pressureGate_roundT",
+          "obj": [
+            0.5,
+            0.5,
+            1.75
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 0,
+          "d0": 230.0,
+          "first_visible_X": 230.0,
+          "first_stop_X": 82.77,
+          "held_from_X": 91.63,
+          "visible_frames": 153,
+          "stop_frames": 55,
+          "bins": {
+            "3-30": "19/19",
+            "30-60": "20/20",
+            "60-100": "16/27",
+            "100-150": "0/34",
+            "150-200": "0/33",
+            "200-260": "0/20"
+          },
+          "decisions_while_visible": {
+            "GO": 42,
+            "CAUTION": 56,
+            "STOP": 55,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 4,
+            "150": 5,
+            "100": 24,
+            "60": 70,
+            "30": 260
+          }
+        },
+        "lost_matched_stop_frames": [],
+        "new_matched_stop_frames": []
+      },
+      "attempt-08-probes": {
+        "summary": {
+          "cache": "roundT_pressureGate_roundT",
+          "obj": [
+            0.5,
+            0.5,
+            1.75
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 0,
+          "d0": 230.0,
+          "first_visible_X": 230.0,
+          "first_stop_X": 82.77,
+          "held_from_X": 91.63,
+          "visible_frames": 153,
+          "stop_frames": 55,
+          "bins": {
+            "3-30": "19/19",
+            "30-60": "20/20",
+            "60-100": "16/27",
+            "100-150": "0/34",
+            "150-200": "0/33",
+            "200-260": "0/20"
+          },
+          "decisions_while_visible": {
+            "GO": 42,
+            "CAUTION": 56,
+            "STOP": 55,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 4,
+            "150": 5,
+            "100": 24,
+            "60": 70,
+            "30": 260
+          }
+        },
+        "lost_matched_stop_frames": [],
+        "new_matched_stop_frames": []
+      }
+    }
+  }
+}

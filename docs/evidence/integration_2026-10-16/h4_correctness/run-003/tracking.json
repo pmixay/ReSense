@@ -1,0 +1,333 @@
+{
+  "actual_track_clear_cap_cases": 1024,
+  "failures": [],
+  "sequence": [
+    {
+      "column_hist": [
+        true
+      ],
+      "reason": "column",
+      "reported": false,
+      "rule": "warning",
+      "spare_hist": [
+        false
+      ],
+      "spared": false,
+      "vote": "warning",
+      "zone": "warning"
+    },
+    {
+      "column_hist": [
+        true,
+        true
+      ],
+      "reason": "column",
+      "reported": false,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true
+      ],
+      "spared": true,
+      "vote": "warning",
+      "zone": "warning"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        true
+      ],
+      "reason": "column",
+      "reported": false,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true,
+        false
+      ],
+      "spared": false,
+      "vote": "warning",
+      "zone": "warning"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "reason": "",
+      "reported": false,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true,
+        false,
+        true
+      ],
+      "spared": true,
+      "vote": "warning",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "warning",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "warning",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "warning",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "gauge",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "gauge",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "warning",
+      "spare_hist": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "gauge",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "warning",
+      "spare_hist": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "gauge",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "gauge",
+      "spare_hist": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "gauge",
+      "zone": "gauge"
+    },
+    {
+      "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reason": "",
+      "reported": true,
+      "rule": "gauge",
+      "spare_hist": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "spared": true,
+      "vote": "gauge",
+      "zone": "gauge"
+    }
+  ],
+  "spare_cases": 128
+}

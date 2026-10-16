@@ -1,0 +1,12 @@
+{"name": "boundaries", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "boundaries", "/review/run-002/boundaries.json"], "cwd": "/work/target", "exit": 1, "elapsed_informational_s": 4.668828725814819}
+{"name": "health", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "health", "/review/run-002/health.json"], "cwd": "/work/target", "exit": 1, "elapsed_informational_s": 4.101675987243652}
+{"name": "tracking", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "tracking", "/review/run-002/tracking.json"], "cwd": "/work/target", "exit": 1, "elapsed_informational_s": 2.8479056358337402}
+{"name": "cache", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "cache", "/review/run-002/cache.json"], "cwd": "/work/target", "exit": 0, "elapsed_informational_s": 4.543911933898926}
+{"name": "final_axis", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "final_axis", "/review/run-002/final_axis.json"], "cwd": "/work/target", "exit": 0, "elapsed_informational_s": 2.7372214794158936}
+{"name": "node", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "node", "/review/run-002/node.json"], "cwd": "/work/target", "exit": 0, "elapsed_informational_s": 3.777528762817383}
+{"name": "ast", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "ast", "/review/run-002/ast.json"], "cwd": "/work/target", "exit": 0, "elapsed_informational_s": 4.045043706893921}
+{"name": "target_on", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "scenes_on", "/review/run-002/target_on.json"], "cwd": "/work/target", "exit": 0, "elapsed_informational_s": 9.205642461776733}
+{"name": "target_off", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "scenes_off", "/review/run-002/target_off.json"], "cwd": "/work/target", "exit": 0, "elapsed_informational_s": 8.35335087776184}
+{"name": "control", "argv": ["/usr/bin/python3", "/review/independent_checks.py", "scenes_off", "/review/run-002/control.json"], "cwd": "/work/control", "exit": 1, "elapsed_informational_s": 2.602137327194214}
+{"name": "evidence_audit", "argv": ["/usr/bin/python3", "/review/evidence_audit.py", "/review/run-002/evidence_audit.json"], "cwd": "/work/target", "exit": 1, "elapsed_informational_s": 27.11907958984375}
+{"name": "compare_scenes", "argv": ["/usr/bin/python3", "/review/compare_scenes.py", "/review/run-002"], "cwd": "/work/target", "exit": 1, "elapsed_informational_s": 0.09378433227539062}

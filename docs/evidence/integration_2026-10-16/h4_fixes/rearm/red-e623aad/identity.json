@@ -1,0 +1,11 @@
+{
+  "source_commit": "e623aad1be281272d5adb61e03651f80cdf0008e",
+  "import_path": "/tmp/repo/resense/__init__.py",
+  "open3d": "0.19.0",
+  "native_status": "native (_resense_native.so)",
+  "native_library": "/tmp/repo/resense/_resense_native.so",
+  "native_sha256": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534",
+  "tracking_sha256": "c83f9f4ab37e5b742776f3f62c801f6f386309824ba474c53b532bbdbad4a715",
+  "clustering_sha256": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+  "config_sha256": "d272bcf9ad5df16d056997e789ff6f8c4ef84ab81096904569342a8404830b4e"
+}

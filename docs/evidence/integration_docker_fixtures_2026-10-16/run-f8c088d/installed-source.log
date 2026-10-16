@@ -1,0 +1,2 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+{"source_commit": "f8c088dc4f3243fbd15a3aae9be0459e8a0aa941", "import": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py", "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)", "native_sha256": "dc549d0583f92c3acd93c455bf94bab4bbedae35a9580d82ad24786473661d5c", "open3d": "0.19.0", "verified_source_files": 46}

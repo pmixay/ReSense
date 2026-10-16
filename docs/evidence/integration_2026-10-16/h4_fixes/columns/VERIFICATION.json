@@ -1,0 +1,32 @@
+{
+  "artifact_integrity": "PASS",
+  "author_acceptance": "BLOCKED",
+  "accepted_column_fix": false,
+  "runtime_restored": true,
+  "git_head_before_evidence_commit": "f3074cfb445425c50d926ded235fe01a4c3029ea",
+  "restored_source_sha256": "c90f76cc485f6c479e64de23236785cc22cfcb5af5a282d514304f95a402ca51",
+  "rejected_source_sha256": "e9eb1bf6443d5cf8206904c32c6f03cd1f2bd4f726741e8e88292a8bb44475d8",
+  "exact_reconstruction": true,
+  "zero_dark_detection_center_differences": true,
+  "new_portable_tests_remain_red_on_restored_runtime": true,
+  "lost_A_axis_frames": [
+    224,
+    225,
+    226,
+    227,
+    228,
+    229,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    333,
+    334
+  ]
+}

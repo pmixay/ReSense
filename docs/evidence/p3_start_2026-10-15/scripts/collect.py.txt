@@ -1,0 +1,102 @@
+"""Collect completed P3 evidence and reproducible scratch drivers into the worktrees."""
+import hashlib
+import importlib.metadata
+import json
+from pathlib import Path
+import platform
+import subprocess
+import sys
+
+BASE = Path(__file__).resolve().parent
+RUNS = BASE / "resense-p3-runs"
+REPOS = {"H1": BASE / "rs-h1", "H2": BASE / "rs-h2", "screen": BASE / "rs-range-screen"}
+
+
+def transfer(source, target):
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(source.read_bytes())
+
+
+def main():
+    primary = "--primary" in sys.argv
+    subprocess.run([sys.executable, str(BASE / "resense-p3-status.py")], check=True)
+    status = json.loads((RUNS / "status.json").read_text())
+    assert all(report != "pending" for report in status["gates"].values())
+    if not primary:
+        assert all(report != "pending" for report in status["variant_gates"].values())
+    assert all(status[name] != "pending" for name in ("h1_battery", "h1-probes", "h1-tall-probes", "h2-wall-battery"))
+    assert status["range_screen_probes"] != "pending"
+    h1 = REPOS["H1"] / "docs/evidence/column_hardening_2026-10-15/continuation"
+    h2 = REPOS["H2"] / "docs/evidence/structure_cut_bar_2026-10-15"
+    screen = REPOS["screen"] / "docs/evidence/range_screen_2026-10-15"
+    for source, target in (
+        (RUNS / "gates/H1.json", h1 / "gate.json"),
+        (RUNS / "gates/H1_frame_diff.json", h1 / "frame_diff.json"),
+        (RUNS / "darkband/summary.json", h1 / "darkband.json"),
+        (RUNS / "h1-battery/summary.json", h1 / "battery.json"),
+        (RUNS / "h1-battery/descriptor_diff.json", h1 / "descriptor_diff.json"),
+        (RUNS / "h1-probes/summary.json", h1 / "probes.json"),
+        (RUNS / "h1-tall-probes/summary.json", h1 / "tall_probes.json"),
+        (RUNS / "gates/H2.json", h2 / "gate.json"),
+        (RUNS / "gates/H2_frame_diff.json", h2 / "frame_diff.json"),
+        (RUNS / "h2-wall-battery/summary.json", h2 / "wall_battery.json"),
+        (RUNS / "gates/baseline.json", screen / "baseline_gate.json"),
+        (RUNS / "range-screen-seto/summary.json", screen / "set_O_screen.json"),
+        (RUNS / "range-screen-probes/summary.json", screen / "range_probes.json"),
+        (RUNS / "variant-gates/exits.json", screen / "gate_exits.json"),
+    ):
+        if source.exists():
+            transfer(source, target)
+        else:
+            assert primary, source
+    for variant in ("R2a", "R2b", "R1a", "R1b", "R1c"):
+        source = RUNS / "variant-gates" / f"{variant}.json"
+        if source.exists():
+            transfer(source, screen / f"gate_{variant}.json")
+    h2_checks = dict(initial=status["h2_initial"], perturbations={})
+    for case in ("C_drop30", "C_5hz"):
+        hooks = json.loads((RUNS / "h2-probes" / f"{case}_H2.hooks.json").read_text())
+        h2_checks["perturbations"][case] = {"cut_parts": hooks["cut_parts"], "cut_candidates": hooks["cut_candidates"]}
+    (h2 / "initial_checks.json").write_text(json.dumps(h2_checks, indent=2), encoding="utf-8")
+    provenance = {
+        "platform": platform.platform(), "python": platform.python_version(),
+        "packages": {name: importlib.metadata.version(name) for name in ("numpy", "scipy", "open3d", "rosbags", "pytest")},
+        "native": "MSVC x64 /O2 /std:c++17 /fp:strict, all exported C ABI symbols; native parity tests passed",
+        "code": {"H1": status["gates"]["H1"]["code"]["commit"],
+                 "H2": status["gates"]["H2"]["code"]["commit"],
+                 "screen": status["gates"]["baseline"]["code"]["commit"]},
+        "sealed_git_blob_differences": status["sealed_git_blob_differences"],
+        "raw_output_root": str(RUNS), "cache_root": str(BASE / "resense-p3-data/cache"),
+        "node_decoded_root": str(BASE / "resense-p3-data/decoded"),
+        "gate_commands": "scripts/regression_gate.py --cache <cache> --jobs 3 (H1/H2/baseline), --jobs 2 (variants), --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --out <json> --work <work>; variants add their registered --set only; no --allow",
+        "unix_resource_adapter": "On Windows only, resource.getrusage(RUSAGE_SELF).ru_maxrss uses psutil peak_wset / 1024; detection/decision logic unchanged",
+        "freeze_verify_on_windows": "Raw verify fails for CRLF checkout bytes and the generated .pyd artifact; the 36 committed baseline source blobs match the seal. Candidate source changes are intentionally unsealed; H4/H5 remain outstanding.",
+        "independent_review": "not performed in this P3 session; assigned to P4 (H4)",
+    }
+    for directory in (h1, h2, screen):
+        (directory / "provenance.json").write_text(json.dumps(provenance, indent=2), encoding="utf-8")
+    if primary:
+        print("PRIMARY H1/H2 EVIDENCE COLLECTED")
+        return
+    common = REPOS["screen"] / "docs/evidence/p3_start_2026-10-15"
+    common.mkdir(parents=True, exist_ok=True)
+    transfer(RUNS / "status.json", common / "results.json")
+    transfer(BASE / "resense-p3-data/cache/new_data/intake_manifest.json", common / "ride_intake.json")
+    for name in ("run-script", "darkband", "h1-battery", "h1-probes", "h2-probes", "h2-wall-battery", "gates",
+                 "screen-seto", "range-screen-probes", "variant-gates", "intake", "cache-view", "verify-ride", "odometry", "battery-diff", "status", "collect", "validate-evidence"):
+        transfer(BASE / f"resense-p3-{name}.py", common / "scripts" / f"{name}.py.txt")
+    transfer(BASE / "resource.py", common / "scripts/resource.py.txt")
+    transfer(BASE / "resense-build-native.cmd", common / "scripts/build_native_windows.cmd.txt")
+    # Raw output identities let the reviewer verify the local retained replay logs.
+    identities = {}
+    for folder in ("darkband", "h1-battery", "h1-probes", "h1-tall-probes", "h2-probes", "h2-wall-battery", "range-screen-probes", "gates", "variant-gates"):
+        for path in (RUNS / folder).rglob("*"):
+            if path.is_file() and path.suffix in (".json", ".jsonl"):
+                with open(path, "rb") as stream:
+                    identities[str(path.relative_to(RUNS))] = hashlib.file_digest(stream, "sha256").hexdigest()
+    (common / "raw_sha256.json").write_text(json.dumps(identities, indent=2), encoding="utf-8")
+    print("EVIDENCE COLLECTED", common)
+
+
+if __name__ == "__main__":
+    main()

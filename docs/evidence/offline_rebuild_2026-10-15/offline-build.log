@@ -1,0 +1,122 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.offline
+#1 transferring dockerfile: 3.23kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/resense:p1-e2-check
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 797B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [ 1/13] FROM docker.io/library/resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e
+#5 resolve docker.io/library/resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e
+#5 ...
+
+#4 [internal] load build context
+#4 transferring context: 2.63kB 0.0s done
+#4 DONE 0.1s
+
+#5 [ 1/13] FROM docker.io/library/resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e
+#5 resolve docker.io/library/resense:p1-e2-check@sha256:91c36b2fdbc39a70e0f3a53dd8a3c84ef6fb1ae28d97ef37bcb3377c3153fd5e 0.1s done
+#5 DONE 0.5s
+
+#6 [ 2/13] WORKDIR /opt/resense
+#6 DONE 0.1s
+
+#7 [ 3/13] RUN (cd / && pip3 uninstall -y resense         && python3 -c "import importlib.util as u; assert u.find_spec('resense') is None, 'old resense install survived uninstall'")     && rm -rf resense native configs build resense.egg-info ros2_ws
+#7 0.571 Found existing installation: resense 1.0.0
+#7 0.576 Uninstalling resense-1.0.0:
+#7 0.618   Successfully uninstalled resense-1.0.0
+#7 0.622 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#7 DONE 0.9s
+
+#8 [ 4/13] COPY pyproject.toml setup.py README.md ./
+#8 DONE 0.2s
+
+#9 [ 5/13] COPY resense ./resense
+#9 DONE 0.2s
+
+#10 [ 6/13] COPY native ./native
+#10 DONE 0.1s
+
+#11 [ 7/13] COPY configs ./configs
+#11 DONE 0.1s
+
+#12 [ 8/13] RUN rm -rf build *.egg-info     && find resense -type f ( -name '_resense_native*.so' -o -name '_resense_native*.pyd' -o -name '*.pyc' ) -delete     && PIP_NO_INDEX=1 pip3 install --no-deps --no-build-isolation .     && cd / && python3 -c "import resense, resense.detector, resense._native as n; assert not resense.__file__.startswith('/opt/resense/'), resense.__file__; assert n.AVAILABLE and n.enabled(), n.status(); print('resense', resense.__version__, resense.__file__, n.status())"
+#12 0.601 Processing ./.
+#12 0.604   Preparing metadata (pyproject.toml): started
+#12 0.953   Preparing metadata (pyproject.toml): finished with status 'done'
+#12 0.959 Building wheels for collected packages: resense
+#12 0.963   Building wheel for resense (pyproject.toml): started
+#12 2.304   Building wheel for resense (pyproject.toml): finished with status 'done'
+#12 2.305   Created wheel for resense: filename=resense-1.0.0-cp310-cp310-linux_x86_64.whl size=209074 sha256=fedc891c38c012eb0d3823fdb964c503d3530f53ef20c34a5b09b521d41bee6b
+#12 2.306   Stored in directory: /tmp/pip-ephem-wheel-cache-4aqx_r2k/wheels/31/af/f2/b23fb9c6260190af3c7acec185d72bb6e9652784d861e70930
+#12 2.309 Successfully built resense
+#12 2.320 Installing collected packages: resense
+#12 2.479 Successfully installed resense-1.0.0
+#12 2.480 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#12 2.909 resense 1.0.0 /usr/local/lib/python3.10/dist-packages/resense/__init__.py native (_resense_native.cpython-310-x86_64-linux-gnu.so)
+#12 DONE 3.1s
+
+#13 [ 9/13] COPY ros2_ws/src /opt/resense/ros2_ws/src
+#13 DONE 0.3s
+
+#14 [10/13] COPY configs/default.yaml /opt/resense/ros2_ws/src/resense_ros/config/detector.yaml
+#14 DONE 0.2s
+
+#15 [11/13] RUN find ros2_ws/src -type d ( -name build -o -name install -o -name log -o -name '*.egg-info' -o -name __pycache__ ) -prune -exec rm -rf {} +     && unset AMENT_PREFIX_PATH COLCON_PREFIX_PATH CMAKE_PREFIX_PATH PYTHONPATH     && . /opt/ros/humble/setup.sh     && cd /opt/resense/ros2_ws && colcon build --symlink-install
+#15 0.768 Starting >>> resense_ros
+#15 2.478 Finished <<< resense_ros [1.71s]
+#15 2.480
+#15 2.480 Summary: 1 package finished [1.88s]
+#15 DONE 2.7s
+
+#16 [12/13] COPY scripts/check_offline_image.py /opt/resense/scripts/check_offline_image.py
+#16 DONE 0.2s
+
+#17 [13/13] RUN . /opt/ros/humble/setup.sh && . /opt/resense/ros2_ws/install/setup.sh     && cd / && python3 /opt/resense/scripts/check_offline_image.py     && ros2 launch resense_ros detector.launch.py --show-args >/dev/null     && rm -rf /tmp/.ros
+#17 1.305 {
+#17 1.305   "version": "1.0.0",
+#17 1.305   "package": "/usr/local/lib/python3.10/dist-packages/resense",
+#17 1.305   "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+#17 1.305   "native_library": "/usr/local/lib/python3.10/dist-packages/resense/_resense_native.cpython-310-x86_64-linux-gnu.so",
+#17 1.305   "native_sha256": "dc549d0583f92c3acd93c455bf94bab4bbedae35a9580d82ad24786473661d5c",
+#17 1.305   "native_source_sha256": "9b4bd2c5669e03cec4d577c1174a36306a575f638866a8c0c4ede114314cbde9",
+#17 1.305   "ros_node": "/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+#17 1.305   "share": "/opt/resense/ros2_ws/install/resense_ros/share/resense_ros",
+#17 1.305   "launch_sha256": "1e22b22af2df5401276c40a55ca2459ab5ed55b43802db7687663ecb02d962ad",
+#17 1.305   "config_sha256": "d41052adfbcdfb54a7e4836f9a0ca0fbfd2a9320dc99ca85fc83643103714a28",
+#17 1.305   "sys_path": [
+#17 1.305     "/opt/resense/scripts",
+#17 1.305     "/opt/resense/ros2_ws/build/resense_ros",
+#17 1.305     "/opt/resense/ros2_ws/install/resense_ros/lib/python3.10/site-packages",
+#17 1.305     "/opt/ros/humble/lib/python3.10/site-packages",
+#17 1.305     "/opt/ros/humble/local/lib/python3.10/dist-packages",
+#17 1.305     "/usr/lib/python310.zip",
+#17 1.305     "/usr/lib/python3.10",
+#17 1.305     "/usr/lib/python3.10/lib-dynload",
+#17 1.305     "/usr/local/lib/python3.10/dist-packages",
+#17 1.305     "/usr/lib/python3/dist-packages"
+#17 1.305   ]
+#17 1.305 }
+#17 DONE 2.1s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 2.1s done
+#18 exporting manifest sha256:d28b7b98311a9aed59ecbfd54db5a71b9109fff4dda63e8096fd9c9c32752ceb 0.1s done
+#18 exporting config sha256:7013756af058e5fa8413fb449b9ca7e262bd5226d37e2d6563b27dcffbc3f563 0.0s done
+#18 exporting attestation manifest sha256:5bf8e13ae49437edc5f1426b6ddeb709c9a1b0e7f76508aa80ff612a7c49fd26 0.1s done
+#18 exporting manifest list sha256:37292b1370f15a344fd43986b85cb76c170dd22a61b8bd15b57d6f42cdd2b381
+#18 exporting manifest list sha256:37292b1370f15a344fd43986b85cb76c170dd22a61b8bd15b57d6f42cdd2b381 0.0s done
+#18 naming to docker.io/library/resense:p1-e2-offline-check 0.0s done
+#18 unpacking to docker.io/library/resense:p1-e2-offline-check
+#18 unpacking to docker.io/library/resense:p1-e2-offline-check 0.9s done
+#18 DONE 3.5s

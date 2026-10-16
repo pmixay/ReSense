@@ -1,0 +1,83 @@
+[
+  {
+    "argv": [
+      "git",
+      "-c",
+      "safe.directory=/source.git",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      "-c",
+      "core.autocrlf=false",
+      "-c",
+      "core.eol=lf",
+      "/source.git",
+      "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1"
+    ],
+    "cwd": null,
+    "exit": 0,
+    "log": "clone.log",
+    "started_unix": 1792145583.4243019,
+    "wall_s": 0.3140435218811035
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.autocrlf=false",
+      "checkout",
+      "--detach",
+      "c9aea87cb5322092070158cd8987115ee44833c9"
+    ],
+    "cwd": "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1",
+    "exit": 0,
+    "log": "checkout.log",
+    "started_unix": 1792145583.7824025,
+    "wall_s": 18.32398748397827
+  },
+  {
+    "argv": [
+      "bash",
+      "scripts/build_native.sh"
+    ],
+    "cwd": "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1",
+    "exit": 0,
+    "log": "native_build.log",
+    "started_unix": 1792145605.4316344,
+    "wall_s": 11.092544317245483
+  },
+  {
+    "argv": [
+      "g++",
+      "--version"
+    ],
+    "cwd": "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1",
+    "exit": 0,
+    "log": "compiler.log",
+    "started_unix": 1792145616.9444118,
+    "wall_s": 0.00739598274230957
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/regression_gate.py",
+      "--cache",
+      "/data/cache",
+      "--jobs",
+      "2",
+      "--chunks",
+      "8",
+      "--baseline",
+      "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+      "--work",
+      "/evidence/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/gate_work",
+      "--out",
+      "/evidence/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/gate.json"
+    ],
+    "cwd": "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1",
+    "exit": 0,
+    "log": "gate.log",
+    "started_unix": 1792145908.4674907,
+    "wall_s": 935.864958524704
+  }
+]

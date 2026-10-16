@@ -1,0 +1,57 @@
+# Recompile source on top of a release archive loaded with `docker load -i ...`.
+# Default: the archive's resense:latest alias. Prefer the exact loaded version tag:
+#   docker build --network none --pull=false --build-arg RELEASE_IMAGE=resense:v1.0.0 \
+#     -f docker/Dockerfile.offline -t resense:offline .
+# No external Dockerfile frontend, apt, dependency resolution or isolated PEP 517 backend.
+ARG RELEASE_IMAGE=resense:latest
+FROM ${RELEASE_IMAGE}
+
+USER root
+WORKDIR /opt/resense
+ENV ROS_HOME=/tmp/.ros ROS_LOG_DIR=/tmp/.ros/log
+
+# COPY merges directories. Remove the inherited source and colcon symlink-install trees first,
+# including Python's setuptools build cache (otherwise a newer cached .so can win over C++).
+# Uninstall the old wheel too: native compilation is optional in setup.py, so an old installed
+# .so must never hide a failed rebuild. A missing new native library fails the check below.
+RUN (cd / && pip3 uninstall -y resense \
+        && python3 -c "import importlib.util as u; assert u.find_spec('resense') is None, 'old resense install survived uninstall'") \
+    && rm -rf resense native configs build resense.egg-info ros2_ws
+COPY pyproject.toml setup.py README.md ./
+COPY resense ./resense
+COPY native ./native
+COPY configs ./configs
+# Also discard artifacts accidentally supplied by a local context (including nested ROS build
+# products below). The repository's .dockerignore already excludes the detector's native .so.
+RUN rm -rf build *.egg-info \
+    && find resense -type f \( -name '_resense_native*.so' -o -name '_resense_native*.pyd' -o -name '*.pyc' \) -delete \
+    && PIP_NO_INDEX=1 pip3 install --no-deps --no-build-isolation . \
+    && cd / && python3 -c "import resense, resense.detector, resense._native as n; assert not resense.__file__.startswith('/opt/resense/'), resense.__file__; assert n.AVAILABLE and n.enabled(), n.status(); print('resense', resense.__version__, resense.__file__, n.status())"
+
+COPY ros2_ws/src /opt/resense/ros2_ws/src
+COPY configs/default.yaml /opt/resense/ros2_ws/src/resense_ros/config/detector.yaml
+# colcon must see only the underlay, never the inherited overlay's setup.sh/PYTHONPATH.
+# A clean build/install is essential with --symlink-install: COPY through installed symlinks
+# can otherwise change old source or leave launch/config links pointing at obsolete build files.
+RUN find ros2_ws/src -type d \( -name build -o -name install -o -name log -o -name '*.egg-info' -o -name __pycache__ \) -prune -exec rm -rf {} + \
+    && unset AMENT_PREFIX_PATH COLCON_PREFIX_PATH CMAKE_PREFIX_PATH PYTHONPATH \
+    && . /opt/ros/humble/setup.sh \
+    && cd /opt/resense/ros2_ws && colcon build --symlink-install
+
+
+RUN rm -rf scripts tests docs webapp labels /e2-context
+COPY . /e2-context
+COPY scripts ./scripts
+COPY tests ./tests
+COPY docs/evidence/cycle_2026-09-28/evaluation/protocol.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol.json
+COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
+COPY docs/evidence/results/residual_events_2026-09-28.json ./docs/evidence/results/residual_events_2026-09-28.json
+COPY docs/RESIDUAL_EVENTS_2026-09-28.md ./docs/RESIDUAL_EVENTS_2026-09-28.md
+COPY docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json ./docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json
+COPY webapp/backend/resense_web/__init__.py webapp/backend/resense_web/decision.py ./webapp/backend/resense_web/
+COPY docs/evidence/judgement_2026-10-13/scripts/probe.py docs/evidence/judgement_2026-10-13/scripts/judge_runner.py docs/evidence/judgement_2026-10-13/scripts/range_test.py docs/evidence/judgement_2026-10-13/scripts/score_objects.py docs/evidence/judgement_2026-10-13/scripts/judge_geom.py ./docs/evidence/judgement_2026-10-13/scripts/
+COPY docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh docs/evidence/judgement_2026-10-13/scripts/docker/listener.py ./docs/evidence/judgement_2026-10-13/scripts/docker/
+COPY docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py docs/evidence/node_startup_2026-10-15/docker_tools/listener.py docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py ./docs/evidence/node_startup_2026-10-15/docker_tools/
+COPY docs/evidence/offline_rebuild_2026-10-15/verify.py ./docs/evidence/offline_rebuild_2026-10-15/verify.py
+COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
+RUN find scripts -type f -name '*.sh' -exec sed -i 's/\r$//' {} +

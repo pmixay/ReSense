@@ -1,0 +1,11 @@
+{
+  "original_commit": "4c6ea250f85192bbf252c0c6058a1dedac98b5a0",
+  "original_path": "tests/test_h4_column_evidence.py",
+  "archived_path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawn_acceptance.py.txt",
+  "byte_exact": true,
+  "bytes": 7051,
+  "git_blob": "8e82688d6765de842bfb9597bf82ea9776b880a9",
+  "archived_git_blob": "8e82688d6765de842bfb9597bf82ea9776b880a9",
+  "sha256": "b3102de04d108ff4f3ecce4cc9bed6b9a7f49d56927e5fc534a6ca4124b58ebb",
+  "reason": "Withdrawn feature's unmet acceptance criteria; not a passing shipping test or waiver."
+}

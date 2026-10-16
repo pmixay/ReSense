@@ -1,0 +1,193 @@
+{
+  "root": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016",
+  "files": [
+    {
+      "path": "retained-08-reconstruction\\author-code\\compare.py",
+      "bytes": 2545,
+      "sha256": "197d772702f2df97627dc5800d349ce472b9625ee36c510f5f155013a93181b6"
+    },
+    {
+      "path": "retained-08-reconstruction\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "retained-08-reconstruction\\author-code\\launch.py",
+      "bytes": 3719,
+      "sha256": "41bd2378eebd2b910f4ba18b0ea1cb6d6a087298d27f778d043197f7a23a9371"
+    },
+    {
+      "path": "retained-08-reconstruction\\author-code\\normal_diff_details.py",
+      "bytes": 1475,
+      "sha256": "8cdd471b6a1b3ead91a80bde52e773792bfc8e04e889f00db3d840329c778a5e"
+    },
+    {
+      "path": "retained-08-reconstruction\\author-code\\package.py",
+      "bytes": 5443,
+      "sha256": "23d7d09a8e25c202866ed3652fc6f83a6bd24049e698ecade5ab77932ec71d44"
+    },
+    {
+      "path": "retained-08-reconstruction\\author-code\\physical_report.py",
+      "bytes": 3908,
+      "sha256": "9d80763519ec9bbd18c2d69017fe4d94e0717e91a53ce35fc74df51c4179df33"
+    },
+    {
+      "path": "retained-08-reconstruction\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "retained-08-reconstruction\\author-code\\rejected.patch",
+      "bytes": 15626,
+      "sha256": "6ddf5941e342cd751bd9dfea1deb42054037cac98d96a826175b9bb1f7b1ad87"
+    },
+    {
+      "path": "retained-08-reconstruction\\author-code\\worker.py",
+      "bytes": 5814,
+      "sha256": "177473509c98ea223648e8ee1ba0015790c9c87ae64b8ce9f5971d67b0b6b713"
+    },
+    {
+      "path": "retained-08-reconstruction\\completion.json",
+      "bytes": 41,
+      "sha256": "e2122f7aab5c5ff15c62a8c2ad03e0569b6192212a4339555a0f6cd22f70570f"
+    },
+    {
+      "path": "retained-08-reconstruction\\launch.json",
+      "bytes": 2840,
+      "sha256": "9fd823efeedba9de83a69e52675bcad5301d07fe27cafadccbaa1db08ecccf40"
+    },
+    {
+      "path": "retained-08-reconstruction\\results\\identity.json",
+      "bytes": 18248,
+      "sha256": "a5ce08c1e0f4e1c5b693439c3bb48301bed4a4e8d9960f7db0e06efd39387944"
+    },
+    {
+      "path": "retained-08-reconstruction\\results\\pytest.xml",
+      "bytes": 2800,
+      "sha256": "3a8fefc1c1d9c330130626c1188b92cb16ae95efb0ae8a8d715ffb21977c9f7e"
+    },
+    {
+      "path": "retained-08-reconstruction\\source.patch",
+      "bytes": 15626,
+      "sha256": "6ddf5941e342cd751bd9dfea1deb42054037cac98d96a826175b9bb1f7b1ad87"
+    },
+    {
+      "path": "retained-08-reconstruction\\worker.txt",
+      "bytes": 2597,
+      "sha256": "b0982c592001a86fce43051dec292bf1e79b518bc454f62f538eeb070eca0044"
+    },
+    {
+      "path": "restored-dark\\author-code\\compare.py",
+      "bytes": 2545,
+      "sha256": "197d772702f2df97627dc5800d349ce472b9625ee36c510f5f155013a93181b6"
+    },
+    {
+      "path": "restored-dark\\author-code\\inspect_sight.py",
+      "bytes": 725,
+      "sha256": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57"
+    },
+    {
+      "path": "restored-dark\\author-code\\launch.py",
+      "bytes": 3719,
+      "sha256": "41bd2378eebd2b910f4ba18b0ea1cb6d6a087298d27f778d043197f7a23a9371"
+    },
+    {
+      "path": "restored-dark\\author-code\\normal_diff_details.py",
+      "bytes": 1475,
+      "sha256": "8cdd471b6a1b3ead91a80bde52e773792bfc8e04e889f00db3d840329c778a5e"
+    },
+    {
+      "path": "restored-dark\\author-code\\package.py",
+      "bytes": 5443,
+      "sha256": "23d7d09a8e25c202866ed3652fc6f83a6bd24049e698ecade5ab77932ec71d44"
+    },
+    {
+      "path": "restored-dark\\author-code\\physical_report.py",
+      "bytes": 3908,
+      "sha256": "9d80763519ec9bbd18c2d69017fe4d94e0717e91a53ce35fc74df51c4179df33"
+    },
+    {
+      "path": "restored-dark\\author-code\\probes.py",
+      "bytes": 4516,
+      "sha256": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0"
+    },
+    {
+      "path": "restored-dark\\author-code\\worker.py",
+      "bytes": 5814,
+      "sha256": "177473509c98ea223648e8ee1ba0015790c9c87ae64b8ce9f5971d67b0b6b713"
+    },
+    {
+      "path": "restored-dark\\completion.json",
+      "bytes": 42,
+      "sha256": "216e62c4e8ed84aa938e01eac04cd0f3ecf1b62fb84323cea27b525bfada55e7"
+    },
+    {
+      "path": "restored-dark\\launch.json",
+      "bytes": 2796,
+      "sha256": "141a216c0e1544bcb3c6dbf189fb3801a89c522c1b5f288d9a12f486ed16c693"
+    },
+    {
+      "path": "restored-dark\\results\\identity.json",
+      "bytes": 18112,
+      "sha256": "9b97a42b5c09e91846b40e80368ec384fbf4c9c83f72fe1a6842c4e5227260fb"
+    },
+    {
+      "path": "restored-dark\\results\\ride_1-promotion.json",
+      "bytes": 43164,
+      "sha256": "731663779bcadc8e363fc3154767669edb8f0d1b7e722715f6c48c526b7a5c4c"
+    },
+    {
+      "path": "restored-dark\\results\\ride_1.jsonl",
+      "bytes": 10377110,
+      "sha256": "48f7f5565cc6a1bd3b6c359fad1bd0574e6675251fb1cc4a2d716af3bc5a2461"
+    },
+    {
+      "path": "restored-dark\\results\\ride_3.jsonl",
+      "bytes": 9627403,
+      "sha256": "cf62dba298d17a8aa59f026dd18193a713495f29da1c3d9411ed951c45c27c7b"
+    },
+    {
+      "path": "restored-dark\\results\\summary.json",
+      "bytes": 46938,
+      "sha256": "164376c2c2e176f982880b1098369997bbbcaeae9f9d526e92624de00489f89d"
+    },
+    {
+      "path": "restored-dark\\source.patch",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "restored-dark\\worker.txt",
+      "bytes": 2592,
+      "sha256": "ca464a5797d2675fc2e29aac773715e2619cffb742a622ae2c3ddd4b099a44bb"
+    }
+  ],
+  "runtime": {
+    "retained-08-reconstruction": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-16T09:44:19.255202262Z",
+      "FinishedAt": "2026-10-16T09:44:37.671549315Z"
+    },
+    "restored-dark": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-16T09:47:27.154852696Z",
+      "FinishedAt": "2026-10-16T09:50:42.245048895Z"
+    }
+  }
+}

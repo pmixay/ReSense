@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-56b0okh9\scripts\check_archived_lint.py", line 163, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-56b0okh9\scripts\check_archived_lint.py", line 150, in main
+    exclusions = verify(ROOT, lock)
+                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-56b0okh9\scripts\check_archived_lint.py", line 62, in verify
+    raise ValueError(f'changed immutable snapshot: {name}')
+ValueError: changed immutable snapshot: docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py

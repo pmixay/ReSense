@@ -1,0 +1,21 @@
+"""Summary of the code's wall_drift (rec 'wd') vs the reported monitored range in gobs files (scratch).
+The 'mon' recorded is ALREADY capped when the snapshot has the rule on; the uncapped range is not recorded,
+so the loss is estimated against max(mon, the frame's capped value) only where wd < 1e9.
+usage: wd_sum.py files..."""
+import json, sys
+import numpy as np
+
+tot_n = tot_c = 0
+for p in sys.argv[1:]:
+    rows = [json.loads(l) for l in open(p)]
+    wd = np.array([r.get("wd", 1e9) for r in rows])
+    mon = np.array([r["mon"] or 0.0 for r in rows])
+    capped = (wd < 1e9) & (mon >= wd - 0.11)
+    n = len(rows)
+    tot_n += n
+    tot_c += int(capped.sum())
+    q = lambda a, pp: round(float(np.percentile(a, pp)), 1) if a.size else None
+    print("%-42s frames %5d wd<1e9 %5d binding %5d (%.1f%%) wd q10/50/90 %s %s %s" % (
+        p.split("/")[-1], n, int((wd < 1e9).sum()), int(capped.sum()), 100.0 * capped.sum() / max(n, 1),
+        q(wd[capped], 10), q(wd[capped], 50), q(wd[capped], 90)))
+print("total", tot_n, "binding", tot_c, "%.1f%%" % (100.0 * tot_c / max(tot_n, 1)))

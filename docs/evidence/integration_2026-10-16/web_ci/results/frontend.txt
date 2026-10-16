@@ -1,0 +1,66 @@
+
+> resense-web-frontend@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v3.2.7 /src/webapp/frontend
+
+ ✓ src/api/chunkCodec.test.ts (7 tests) 1068ms
+   ✓ prepareChunk > gzips what shrinks, with the CRC of the raw bytes from the trailer  542ms
+   ✓ prepareChunk > sends raw what does not shrink, or when not asked  423ms
+ ✓ src/player/geometry.test.ts (14 tests) 94ms
+ ✓ src/pages/Live/feed.test.ts (13 tests) 24ms
+ ✓ src/player/engine.test.ts (9 tests) 33ms
+ ✓ src/pages/Upload/uploadStore.test.ts (13 tests) 57ms
+ ✓ src/player/cloudCache.test.ts (9 tests) 21ms
+ ✓ src/pages/Runs/common/analysis.test.ts (16 tests) 18ms
+ ✓ src/api/cloud.test.ts (4 tests) 6ms
+ ✓ src/player/frameStore.test.ts (5 tests) 16ms
+ ✓ src/api/upload.test.ts (16 tests) 5766ms
+   ✓ uploadRecording > sends small files whole, big ones in checked chunks (gzip when it pays), finalizes in the background  861ms
+   ✓ uploadRecording > retries a dropped connection and a corrupted chunk, showing the wait  3214ms
+   ✓ uploadRecording > a finalize refused while a dead connection still holds the area is retried, never deleted  1034ms
+ ✓ src/api/client.test.ts (6 tests) 14ms
+ ✓ src/pages/Presets/model.test.ts (10 tests) 15ms
+ ✓ src/lib/track.test.ts (10 tests) 8ms
+ ✓ src/lib/format.test.ts (9 tests) 14ms
+ ✓ src/pages/Live/timeline.test.ts (12 tests) 10ms
+ ✓ src/pages/Player/cab.test.ts (22 tests) 15ms
+ ✓ src/pages/Upload/upload.test.ts (8 tests) 8ms
+ ✓ src/player/clock.test.ts (11 tests) 9ms
+ ✓ src/api/hooks.test.ts (2 tests) 8ms
+ ✓ src/player/motion.test.ts (11 tests) 7ms
+ ✓ src/lib/decisions.test.ts (6 tests) 6ms
+ ✓ src/pages/Overview/kpis.test.ts (5 tests) 7ms
+ ✓ src/pages/Overview/verdict.test.ts (7 tests) 6ms
+ ✓ src/player/events.test.ts (9 tests) 6ms
+ ✓ src/pages/Queue/jobs.test.ts (8 tests) 5ms
+ ✓ src/pages/Player/useCab.test.ts (4 tests) 6ms
+ ✓ src/pages/RunDetail/RunDetail.test.tsx (5 tests) 1630ms
+   ✓ Прогон > shows the verdict, KPIs, events, evaluation and downloads of a run  1081ms
+ ✓ src/pages/About/About.test.tsx (9 tests) 2168ms
+   ✓ О системе > shows the pipeline as a line of stations, each explained in its «?»  542ms
+   ✓ О системе > shows the four decisions as signals with their rule  348ms
+   ✓ О системе > lists the five ROS commands and copies one  526ms
+ ✓ src/pages/Runs/Runs.test.tsx (5 tests) 1076ms
+   ✓ Прогоны > lists runs with their facts, filters them and compares a selection  579ms
+ ✓ src/pages/Presets/Presets.test.tsx (7 tests) 1254ms
+   ✓ Presets page > shows the sealed built-in read-only, grouped by the schema  346ms
+   ✓ Presets page > duplicates the built-in, counts the changes and creates the preset with only the overrides  477ms
+ ✓ src/components/TopBar/TopBar.test.tsx (3 tests) 647ms
+   ✓ TopBar > marks the group of the current page and shows the backend offline  411ms
+ ✓ src/pages/Compare/Compare.test.tsx (3 tests) 1091ms
+   ✓ Сравнение > compares the runs of the URL: KPI table with the best values, strips, what changed  672ms
+   ✓ Сравнение > removes a run keeping the colour slots in the URL, and asks for more below two  368ms
+ ✓ src/pages/Live/Live.test.tsx (14 tests) 357ms
+ ✓ src/pages/Queue/QueueParts.test.tsx (3 tests) 157ms
+ ✓ src/components/LineRail/LineRail.test.tsx (3 tests) 133ms
+ ✓ src/components/Help/Help.test.tsx (3 tests) 135ms
+ ✓ src/components/DecisionStrip/DecisionStrip.test.tsx (2 tests) 101ms
+ ✓ src/pages/Upload/useDemo.test.tsx (2 tests) 85ms
+ ✓ src/pages/Runs/common/useUrlParams.test.tsx (1 test) 29ms
+
+ Test Files  39 passed (39)
+      Tests  306 passed (306)
+   Start at  07:02:26
+   Duration  24.31s (transform 2.06s, setup 5.28s, collect 8.66s, tests 16.11s, environment 7.12s, prepare 3.25s)

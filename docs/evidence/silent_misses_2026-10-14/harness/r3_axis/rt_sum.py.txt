@@ -1,0 +1,17 @@
+"""Summaries of rt_batt outputs side by side (scratch). usage: rt_sum.py dir1 [dir2 ...]"""
+import glob, json, os, sys
+
+dirs = sys.argv[1:]
+names = sorted({os.path.basename(p)[:-5] for d in dirs for p in glob.glob(d + "/*.json")})
+for n in names:
+    print("==", n)
+    for d in dirs:
+        p = os.path.join(d, n + ".json")
+        if not os.path.exists(p):
+            continue
+        s = json.load(open(p))["summary"]
+        sx = s.get("silent_go_X") or []
+        print("  %-28s first %-6s held %-6s STOP %3d/%3d GO %3s silent %3s [%s..%s] bins %s" % (
+            os.path.basename(d.rstrip("/")), s["first_stop_X"], s["held_from_X"], s["stop_frames"], s["visible_frames"],
+            s.get("go_frames"), s.get("silent_go_frames"), min(sx) if sx else "", max(sx) if sx else "",
+            " ".join("%s:%s" % kv for kv in s["bins"].items())))

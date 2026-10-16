@@ -1,0 +1,15 @@
+[INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+...............................................................sss.ss..s [ 28%]
+.......ssssssss.s....................................................... [ 56%]
+............ss.s........................................................ [ 84%]
+.......................................                                  [100%]
+=============================== warnings summary ===============================
+tests/test_decision_policy.py::test_all_consumers_share_the_same_callable_and_cross_ring_keeps_geometry
+  /usr/lib/python3/dist-packages/_pytest/monkeypatch.py:308: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    from pkg_resources import fixup_namespace_packages
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ============================
+SKIPPED [13] opt/resense/tests/conftest.py:74: open3d not importable (ModuleNotFoundError: No module named 'open3d')
+SKIPPED [5] opt/resense/tests/test_node.py:218: could not import 'open3d': No module named 'open3d'
+237 passed, 18 skipped, 1 warning in 9.64s

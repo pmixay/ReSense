@@ -1,0 +1,1 @@
+{"root": "/work/control", "frames": 96, "native": "native (_resense_native.so)", "numpy": "1.26.4", "open3d": "0.19.0", "native_path": "/work/control/resense/__init__.py"}

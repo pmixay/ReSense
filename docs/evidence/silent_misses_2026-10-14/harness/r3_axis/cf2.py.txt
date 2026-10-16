@@ -1,0 +1,47 @@
+"""Offline B variants on obs records (single frame, no EMA): the curvature from (sealed) the quality-weighted
+average, (far) the side reaching farther, (eq) equal weights, (Lonly) left only; per variant the axis error vs
+the investigator's true axis at 60/80/100/120 m and the outer wall's max approach (drift) within its reach.
+usage: cf2.py <obs.json> k0 k1"""
+import json, sys
+import numpy as np
+from cflib import fit_side
+
+recs = json.load(open(sys.argv[1]))
+k0, k1 = int(sys.argv[2]), int(sys.argv[3])
+TA = {r["k"]: r for r in json.load(open("/tmp/claude-0/fixwork/investigate_oversize/C_true_axis_full.json"))}
+
+
+def axis_err(ta, c, t, k, X):
+    c2, c1, c0 = ta["coef"]
+    return c + t * X + 0.5 * k * X * X - (c0 - ta["off"] + c1 * X + c2 * X * X)
+
+
+rows = {}
+for r in recs:
+    if not (k0 <= r["k"] <= k1):
+        continue
+    c = r["calls"][-1]
+    t = c["t_fixed"]
+    ta = TA.get(r["k"], {})
+    if t is None or len(c.get("side_in", [])) < 2 or not ta.get("ok"):
+        continue
+    S = [(np.array(s["x"]), np.array(s["y"])) for s in c["side_in"]]
+    fits = [fit_side(x, y, t) for x, y in S]
+    if fits[0] is None or fits[1] is None:
+        continue
+    w = [1.0 / (f[1] ** 2 + 1e-4) for f in fits]
+    var = {"sealed": (w[0] * fits[0][0] + w[1] * fits[1][0]) / (w[0] + w[1]),
+           "eq": 0.5 * (fits[0][0] + fits[1][0]),
+           "far": fits[0][0] if fits[0][2] >= fits[1][2] else fits[1][0],
+           "L": fits[0][0]}
+    cen = c["out"]["center"]
+    out = []
+    for name, kk in var.items():
+        e = [axis_err(ta, cen, t, kk, X) for X in (60, 80, 100, 120)]
+        rows.setdefault(name, []).append(e)
+        out.append("%s %.5f [%s]" % (name, kk, " ".join("%+.2f" % v for v in e)))
+    print(r["k"], " | ".join(out))
+print("median |err| at 60/80/100/120:")
+for name, es in rows.items():
+    a = np.abs(np.array(es))
+    print(name, np.round(np.median(a, 0), 2), "p90", np.round(np.percentile(a, 90, 0), 2))

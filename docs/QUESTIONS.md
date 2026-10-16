@@ -48,6 +48,23 @@ Not asked again, answered in §10 of [`organizers/answers.md`](organizers/answer
 how false alarms count against misses (equally), the hidden set's mix (real and synthetic), the range (300 m in the
 ideal), ground truth (not available), the results' explanation (promised, to be confirmed).
 
+## O1 · Message ready for the captain to send (15.10)
+
+> Добрый день! Команда «Молоток», кейс 05, решение ReSense. Подскажите, пожалуйста, по защите 23 октября:
+>
+> 1. Сколько времени отведено на выступление и вопросы жюри? Будет ли демонстрация экрана и ожидается ли живая демонстрация решения?
+> 2. После сдачи 29 сентября мы нашли и исправляем ошибки обнаружения высоких узких объектов и объектов на кривых. Можно ли показать на защите обновлённую версию 1.1.x или передать её на повторный прогон? Может ли такая версия повлиять на оценку, либо оценивается только сданная v1.0.0?
+> 3. Будут ли до 23 октября доступны результаты скрытых прогонов или экспертные баллы? Можно ли повторно проверить обновлённый архив, и если да — куда и до какого срока его передать?
+>
+> Спасибо!
+
+Why these questions matter: (1) fixes PT1/PT2's talk/demo budget; (2) decides whether
+post-submission detector work may count; (3) fixes the evidence and delivery path.
+The captain records the actual dispatch date and the reply verbatim in
+[`organizers/answers.md`](organizers/answers.md) §11, then updates
+[`PRESENTATION.md`](PRESENTATION.md). Preparing this text does not close O1 or authorize
+a new submission. Until a reply, the five-minute talk remains a planning assumption.
+
 ## Answered
 
 | # | question | answer | what it settled | recorded in |

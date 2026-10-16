@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-b_cg24v0\scripts\check_archived_lint.py", line 162, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-b_cg24v0\scripts\check_archived_lint.py", line 149, in main
+    exclusions = verify(ROOT, lock)
+                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-b_cg24v0\scripts\check_archived_lint.py", line 70, in verify
+    raise ValueError(f'unlisted/missing snapshot Python: {folder}: {sorted(actual ^ expected)}')
+ValueError: unlisted/missing snapshot Python: docs/evidence/cycle_2026-09-28/complete_timing/default: ['docs/evidence/cycle_2026-09-28/complete_timing/default/unlisted_probe.py']

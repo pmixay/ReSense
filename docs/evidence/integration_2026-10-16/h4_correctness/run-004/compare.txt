@@ -1,0 +1,10 @@
+{
+  "frames": 96,
+  "families": 12,
+  "checks": 480,
+  "failures": [],
+  "finite_drift": 36,
+  "monitored_reduced": 36,
+  "clear_reduced": 18,
+  "obstacle_frames": 24
+}

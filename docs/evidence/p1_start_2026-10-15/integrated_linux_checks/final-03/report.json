@@ -1,0 +1,306 @@
+{
+  "result": "BLOCKED",
+  "attempt": "final-03",
+  "commands": [
+    {
+      "name": "docker-version",
+      "command": [
+        "docker",
+        "version"
+      ],
+      "exit": 0,
+      "seconds": 0.203
+    },
+    {
+      "name": "base-image",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "resense:p1-combined-tools-0caf5c227b68"
+      ],
+      "exit": 0,
+      "seconds": 0.219
+    },
+    {
+      "name": "dependency-inputs",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "0caf5c227b68d7d73513c514f40eff1a0edc9d11",
+        "e5640d947cd65418da898a57119632325113f1d0",
+        "--",
+        "pyproject.toml",
+        "setup.py",
+        "ros2_ws/src/resense_ros/setup.py",
+        "ros2_ws/src/resense_ros/package.xml"
+      ],
+      "exit": 0,
+      "seconds": 0.063
+    },
+    {
+      "name": "guard-start",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--rm",
+        "--network",
+        "none",
+        "--name",
+        "resense-p1-final-suite-guard-e5640d947cd6-b41064a7",
+        "--label",
+        "resense.p1.checks=final",
+        "--entrypoint",
+        "/bin/sleep",
+        "resense:p1-e2-check",
+        "1800"
+      ],
+      "exit": 0,
+      "seconds": 0.531
+    },
+    {
+      "name": "ruff-focused",
+      "command": [
+        "ruff",
+        "check",
+        "docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py",
+        "docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py",
+        "docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py",
+        "docs/evidence/offline_rebuild_2026-10-15/context_check.py",
+        "docs/evidence/p1_start_2026-10-15/integrated_linux_checks/run_checks.py",
+        "docs/evidence/p1_start_2026-10-15/integrated_linux_checks/suite.py",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+        "scripts/startup_acceptance.py",
+        "tests/test_docker_fixtures.py",
+        "tests/test_node.py",
+        "tests/test_startup_acceptance.py"
+      ],
+      "exit": 1,
+      "seconds": 0.625
+    },
+    {
+      "name": "yaml-parse",
+      "command": [
+        "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-venv\\Scripts\\python.exe",
+        "-c",
+        "from pathlib import Path; import yaml; paths=sorted(Path('.github/workflows').glob('*.yml')); [yaml.safe_load(p.read_text(encoding='utf-8')) for p in paths]; print('PASS: parsed', len(paths), 'workflow YAML files')"
+      ],
+      "exit": 0,
+      "seconds": 0.203
+    },
+    {
+      "name": "build",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--network",
+        "none",
+        "--pull=false",
+        "--no-cache",
+        "--build-arg",
+        "RELEASE_IMAGE=resense:p1-combined-tools-0caf5c227b68",
+        "--label",
+        "resense.p1.base-image-id=sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a",
+        "-f",
+        "docker/Dockerfile.incremental",
+        "--label",
+        "org.opencontainers.image.revision=e5640d947cd65418da898a57119632325113f1d0",
+        "--label",
+        "resense.p1.checks=final",
+        "-t",
+        "resense:p1-combined-tools-e5640d947cd6",
+        "."
+      ],
+      "exit": 0,
+      "seconds": 20.031
+    },
+    {
+      "name": "image",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "resense:p1-combined-tools-e5640d947cd6"
+      ],
+      "exit": 0,
+      "seconds": 0.234
+    },
+    {
+      "name": "suite",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--name",
+        "resense-p1-final-suite-e5640d947cd6-b41064a7",
+        "--label",
+        "resense.p1.checks=final",
+        "-w",
+        "/",
+        "-e",
+        "RESENSE_REQUIRE_SYNTHETIC=1",
+        "-e",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+        "--mount",
+        "type=bind,source=C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p1-start\\docs\\evidence\\p1_start_2026-10-15\\integrated_linux_checks,target=/checks",
+        "resense:p1-combined-tools-e5640d947cd6",
+        "python3",
+        "/checks/suite.py",
+        "--out",
+        "/checks/final-03",
+        "--expected-source",
+        "/checks/final-03/source_manifest.json"
+      ],
+      "exit": 1,
+      "seconds": 7.157
+    },
+    {
+      "name": "base-image-after",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "resense:p1-combined-tools-0caf5c227b68"
+      ],
+      "exit": 0,
+      "seconds": 0.328
+    },
+    {
+      "name": "suite-cleanup",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "resense-p1-final-suite-e5640d947cd6-b41064a7"
+      ],
+      "exit": 0,
+      "seconds": 0.157
+    },
+    {
+      "name": "guard-cleanup",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "resense-p1-final-suite-guard-e5640d947cd6-b41064a7"
+      ],
+      "exit": 0,
+      "seconds": 0.312
+    }
+  ],
+  "source_commit": "e5640d947cd65418da898a57119632325113f1d0",
+  "source_tree": "95e3f9d4cfed2a7736e3669ab177b7401f50fb5b",
+  "image": "resense:p1-combined-tools-e5640d947cd6",
+  "guard_container": "resense-p1-final-suite-guard-e5640d947cd6-b41064a7",
+  "suite_container": "resense-p1-final-suite-e5640d947cd6-b41064a7",
+  "runner_sha256": {
+    "run_checks.py": "947d5f21118c885a77bbc23d0f5c05278ca1f50a030c30f70ca44d157f00cb3d",
+    "suite.py": "a22d5cc60dfc60620a4bd5dc3d7110d1c8d41e5478c61155c6673539c26a0477"
+  },
+  "total_seconds": 40.062,
+  "construction": "incremental offline rebuild; not a fresh runtime Dockerfile build",
+  "base_image": "resense:p1-combined-tools-0caf5c227b68",
+  "base_id": "sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a",
+  "base_source_revision": "0caf5c227b68d7d73513c514f40eff1a0edc9d11",
+  "unchanged_dependency_inputs": [
+    "pyproject.toml",
+    "setup.py",
+    "ros2_ws/src/resense_ros/setup.py",
+    "ros2_ws/src/resense_ros/package.xml"
+  ],
+  "source_archive_sha256": "4e2b073e3c75317c12d894a9a70830443eabf33a3af9cfe71c653bb2d73559d8",
+  "incremental_dockerfile_sha256": "75b18343067a21ccc1b96182b9225a683ae224663287d78d2aec578c526dcd08",
+  "source_manifest_files": 306,
+  "ruff_focused_exit": 1,
+  "static_checks_passed": false,
+  "remaining_concerns": [
+    "Focused Ruff failed; preserve ruff-focused.log separately from the full-suite result"
+  ],
+  "image_id": "sha256:c40f9b8ca405b696ae266cb420070ab36410025d650cb2f2eda49496c9922099",
+  "image_config": {
+    "Labels": {
+      "org.opencontainers.image.revision": "e5640d947cd65418da898a57119632325113f1d0",
+      "org.opencontainers.image.version": "22.04",
+      "resense.p1.base-image-id": "sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a",
+      "resense.p1.checks": "final"
+    },
+    "Entrypoint": [
+      "/entrypoint.sh"
+    ],
+    "Cmd": [
+      "ros2",
+      "launch",
+      "resense_ros",
+      "detector.launch.py",
+      "freshness_mode:=replay"
+    ]
+  },
+  "image_layers": [
+    "sha256:cbaf391e670933f026c05c7dedec3faf8f194b6c2d83b0d5694ad68323c8077c",
+    "sha256:d13d3cd1e3488c39ff159544d1cf9397301200b468f9e533f93bab2aa73cd8a8",
+    "sha256:45342197e6a8cfa3560835ba091de7923ba4a2731436910b9a3d32bbcb0aeb3c",
+    "sha256:9337bc5f5441f2979e5889b4718ff5506e1951296836ad4a9e9b65d0a6bb85b3",
+    "sha256:4f536fb18e4bdce75d2400dde8020a6a4a6d26ca162a9e9a1674630d1ded8a4f",
+    "sha256:4305e81ff3fdb8a5b3226df9d500a5ee0258ce6b9bd9dd24c4875cc615229d4c",
+    "sha256:5fda6f1e8a501f30ff8a42b5d1608148aa0f4b9b99fd463551026c57d3294680",
+    "sha256:db004991c9339854fc48826c49b721ba21e878484af0a7fc8a8825af28077a15",
+    "sha256:26a462ab1ac337e8761a9a499fd369b455473c54d12d8d6f2c6293ba371f0a3f",
+    "sha256:8b2f0a6205e629a4ee67417614a02f1b990f4bffc540c3184e7e2e385459f70e",
+    "sha256:4411793153af924040804b32f48619f626836ee4c3e7e1beb8995963b95c7fcb",
+    "sha256:cb12ea471930c7f7aedce63bc68abb01bcbbefcda3d93a5faa710e0fa547232c",
+    "sha256:544e4c602ef827330ed7fe7764e25abec712b6a389d41219b421cab650c80be5",
+    "sha256:ec2bc136c6c720ebfa8fa36223e9770407691e0358d09d5dce26e1d8c3fd3988",
+    "sha256:aa62823194a083c7a415d1d3f63ac20de9db1a8f674d49d57b08c3756224b4f1",
+    "sha256:5296a659c36d3a7609ee3337b6c4de2e32c2564c491094fd74e8c3dd80ae2923",
+    "sha256:94b9e1397f6c80e3f1bf9faa2a9e4d27c73eecdf432de38e4b1ba43600b64b75",
+    "sha256:e939070fc7636e2ed1d47fce1353d5262c3da77c3e49fee05cd42b4a251e6502",
+    "sha256:dc27dceeaa1dfe77c676126a77fa3b1141f0f7d7ee83b34bf4d635dfc3a1496e",
+    "sha256:c2b14aabb96b1dcde3f58d4c23d04ba5b5fb36e1cc26e8d80c981fd02f86e8f3",
+    "sha256:d6a3696dc49b126d4b6b7438bffcd24b1e247e08709863655399c314c1a47f9e",
+    "sha256:6a802b54ada731faa5d2d5e08b840db51f122f3ef6b1aad35ca2abcf81dae2dc",
+    "sha256:e1557927ba618d17e9840e77ff7ff1cdd826c6d4a7dc386c6d6fbab9ec676a2b",
+    "sha256:85f54e4889e6494823f36458e3cce77080015b03394ec315b5505f827bcdacfd",
+    "sha256:fc558b97977e7e14d9dbcb6b929249a8b3a5a9121de0a8ba77807dfeeb46ec2a",
+    "sha256:bc7200094ded291dbb258cc96aaac2c269515e966334e2e3d4f2c9446f8a6af9",
+    "sha256:d620b36a9412b6ce7f14ca79544eb6e6f30c12748e601c35722d7e3ae2edb1f4",
+    "sha256:1ae203185be78107f6beaecef62626138749b02045304f78280b1f3ee697687e",
+    "sha256:813bace10b260d00102556703ba1b3d781004f07b10a62583f967b0f8f49622e",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+    "sha256:4a1a771e2d19219de5bca36fb24e95371da9773e4575760231d2cef52f3d68c8",
+    "sha256:575a57cc1b13d523cb7e1f57111e674384e2247a35c612abf8e21e03645d0b63",
+    "sha256:2e47409202ec0bb83121ae436763beb4e94fb92bed7c71c8129e652f076554a6",
+    "sha256:a03b06999651db30b94d185bd049509aa5a8129ad70c394f24f1d195bc09f028",
+    "sha256:ac9d544d5cd53152110f12e10a80734f7c18f99fb95c6ac24a26b0e08df7e030",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+    "sha256:c864db6b6c1e9258006394cc4eb33db35f53f3eddc9b0cf85cb8384f9caa63de",
+    "sha256:2be888706964995006c078c3ffde6786f61bf4ffae266f0a0544899e8aa5920e",
+    "sha256:f3d7a39728be1efdbb7d6a1c86db85ee4fce3e89727d049f09b7b2bfad630202",
+    "sha256:b1a3248e6c48f786c2431a80bbb0c37a62e35a83f6e96813f3be04fb98399790",
+    "sha256:15cf881934edfe1b182f742c9833830bec963808719ddc427f25faadf4fc3647",
+    "sha256:b17ff581fa20b630f28fb812ab3d5b4ab4637acf3f80661a44135f779c8cbf0f",
+    "sha256:e81071a1b0f8bfb8d442f7298a17f2a2a46dc5948d331c135c029b1403e1181e",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+    "sha256:4771c0ce187a1b1be79e95c0e20c502f6554c0203f706319e18a30958f96a3c1",
+    "sha256:f1682d77e5d7207262bde5150b70c4a57ac765c35d7c8ebb41f40510d0e1fe0c",
+    "sha256:be6ab5a3ef3ef2ef1623cd3984c19fe2814e29c5e3a5f6b7a9b67dbf8f2833a6",
+    "sha256:e4e6e8d437838d051bdd449b318bddc2b8f76dde906b21c69520abc2c2859162",
+    "sha256:9af5c1e82779f62b6623648bd19e1695c12362ede58e12748e874d6c557dfa41",
+    "sha256:fc4c8d7a2d3a3cc98ce3036c3469321176bb04cbbc26ea7d54d99506f43127e4",
+    "sha256:b478c5d009656e34a98fb8f22d0365a9697d41ed5d8929633e8aba75dc5100b5",
+    "sha256:2db4f543e6a13e2153643d0db62346e0e1db4b7b64012a40325c3461a89ce1ac",
+    "sha256:9f56ec58234883d6b868d1692dd072e9286ca5239921fb47025392c77f9e0878",
+    "sha256:f81fb4a9ac019c090739277d160886bccdcbf9d6ab30c59f9d5e4ef4632439b2",
+    "sha256:3adf97a3377f288e8f2277226b5136896b53788a684bbe2afdce45022d0a4079",
+    "sha256:c493471c8808041343b56b63018b1cd36fe5eff9eccf8ad22df9493901ef2790",
+    "sha256:25657ae5df76846754bae8dc5aea14d4ccca2185613caff937229610b336391c",
+    "sha256:bf22a51252ee938c05326477446f2ff0e28797fe9c808bbe08dd561ff2de00b9",
+    "sha256:cc06a9ef4d9a1e6b74d5c373415b202f84f2399510b1e0939c593cd5db4a035d",
+    "sha256:7a295d35a9ea795f69d38c59e31f5a76e4abb5f97a0651875a81f3e84c4f4ed4"
+  ],
+  "blocker": "suite exited without a JUnit result; see suite.log"
+}

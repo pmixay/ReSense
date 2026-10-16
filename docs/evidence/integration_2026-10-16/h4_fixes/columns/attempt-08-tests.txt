@@ -1,0 +1,117 @@
+Cloning into '/source/repo'...
+done.
+Updating files:  43% (1518/3462)Updating files:  44% (1524/3462)Updating files:  45% (1558/3462)Updating files:  46% (1593/3462)Updating files:  47% (1628/3462)Updating files:  48% (1662/3462)Updating files:  49% (1697/3462)Updating files:  50% (1731/3462)Updating files:  51% (1766/3462)Updating files:  52% (1801/3462)Updating files:  53% (1835/3462)Updating files:  54% (1870/3462)Updating files:  55% (1905/3462)Updating files:  56% (1939/3462)Updating files:  57% (1974/3462)Updating files:  58% (2008/3462)Updating files:  59% (2043/3462)Updating files:  60% (2078/3462)Updating files:  61% (2112/3462)Updating files:  62% (2147/3462)Updating files:  62% (2177/3462)Updating files:  63% (2182/3462)Updating files:  64% (2216/3462)Updating files:  65% (2251/3462)Updating files:  66% (2285/3462)Updating files:  67% (2320/3462)Updating files:  68% (2355/3462)Updating files:  69% (2389/3462)Updating files:  70% (2424/3462)Updating files:  71% (2459/3462)Updating files:  71% (2472/3462)Updating files:  72% (2493/3462)Updating files:  73% (2528/3462)Updating files:  74% (2562/3462)Updating files:  75% (2597/3462)Updating files:  76% (2632/3462)Updating files:  77% (2666/3462)Updating files:  78% (2701/3462)Updating files:  79% (2735/3462)Updating files:  80% (2770/3462)Updating files:  80% (2783/3462)Updating files:  80% (2793/3462)Updating files:  81% (2805/3462)Updating files:  82% (2839/3462)Updating files:  83% (2874/3462)Updating files:  83% (2902/3462)Updating files:  84% (2909/3462)Updating files:  85% (2943/3462)Updating files:  86% (2978/3462)Updating files:  87% (3012/3462)Updating files:  88% (3047/3462)Updating files:  89% (3082/3462)Updating files:  90% (3116/3462)Updating files:  91% (3151/3462)Updating files:  92% (3186/3462)Updating files:  93% (3220/3462)Updating files:  94% (3255/3462)Updating files:  95% (3289/3462)Updating files:  96% (3324/3462)Updating files:  97% (3359/3462)Updating files:  98% (3393/3462)Updating files:  99% (3428/3462)Updating files: 100% (3462/3462)Updating files: 100% (3462/3462), done.
+HEAD is now at f3074cf Retain rejected H4 sight attempts and exact-mask portable controls
+HEAD is now at f3074cf Retain rejected H4 sight attempts and exact-mask portable controls
+M	configs/default.yaml
+M	resense/clustering.py
+M	resense/config.py
+M	ros2_ws/src/resense_ros/config/detector.yaml
+......................F...FF..F......................................... [ 59%]
+.................................................                        [100%]
+=================================== FAILURES ===================================
+____________ test_column_signature_spares_a_free_standing_pole_only ____________
+
+    def test_column_signature_spares_a_free_standing_pole_only():
+        cfg = DetectorConfig()
+        assert (cfg.cluster.column_free_max_top, cfg.cluster.column_free_min_core,
+                cfg.cluster.column_free_min_returns) == (2.95, 0.5, 2)          # shipped 13.10
+        pole = [_pole(60.0, 0.7)]
+        c = _the(_clusters(pole), 60.0)
+        assert c.size[2] > cfg.cluster.column_min_height and abs(c.lateral) > cfg.cluster.signature_min_lateral
+        assert (c.reason, c.zone) == ("", "gauge")                 # the column shape, a free top: an obstacle
+        assert _the(_clusters(pole, with_frame=False), 60.0).reason == "column"   # no frame: the shape alone
+        off = DetectorConfig()
+        off.cluster.column_free_max_top = 0.0
+        assert _the(_clusters(pole, off), 60.0).reason == "column"                # 0 = off
+        assert _the(_clusters([_pole(60.0, 0.7, top=4.2)]), 60.0).reason == "column"   # continues to the vault
+        # reaching the envelope top: at 50 m a ring meets the 3.05 m post at 2.956 m, the next passes over it
+        cut = [_pole(50.0, 0.7, top=3.05)]
+        c = _the(_clusters(cut), 50.0)
+        assert c.height_max > cfg.cluster.column_free_max_top and c.reason == "column"
+        high = DetectorConfig()
+        high.cluster.column_free_max_top = 3.0
+        assert _the(_clusters(cut, high), 50.0).reason == ""
+        # 15.10 (cluster.column_free_tall_gap, opt-in): with the frame's heights the post is followed above the cut to
+        # its true top, 1.15 m under the vault, its own rays above it passing beyond it: an obstacle; 0 (shipped) = off
+        tall_on = DetectorConfig()
+        tall_on.cluster.column_free_tall_gap = 0.3
+        assert _the(_clusters(cut, tall_on, heights=True), 50.0).reason == ""
+>       assert _the(_clusters(cut, heights=True), 50.0).reason == "column"
+E       AssertionError: assert '' == 'column'
+E         
+E         - column
+
+tests/test_column_free_top.py:172: AssertionError
+____________ test_a_column_continuing_above_a_dark_band_is_a_column ____________
+
+    def test_a_column_continuing_above_a_dark_band_is_a_column():
+        """15.10 (review round 3, P1; cluster.column_free_window 1.2): a column whose face right above the cluster's
+        top returns nothing (dark paint, glass, a black sign) while the rays beside it reach the tunnel behind read as
+        free on 14.10, whose continuation was the first ring with returns only (the safety review's dark-band
+        what-if: most real ride columns spared). Any return at the top's range over the window up to 1.2 m above the
+        top is continuation now: a 0.6 m band right above a 2.6 m top at 30-140 m, a 1.0 m band to 100 m. The free
+        pole stays free: the window stays 0.15 m under the local vault. Not told apart: a face dark up to the vault."""
+        cfg = DetectorConfig().cluster
+        assert (cfg.column_free_window, cfg.column_free_vault_margin) == (1.2, 0.3)       # shipped 15.10
+        for x in (30.0, 60.0, 100.0, 140.0):
+            for lat in (0.0, 0.7):
+                if x <= 100.0:            # at 140 m the first ring above the band's top meets the face again
+                    assert _free(_dark_band(x, lat, 2.6, 3.2), ids=True), (x, lat)                 # 14.10
+                    assert _free(_dark_band(x, lat, 2.6, 3.2), ids=True, heights=True), (x, lat)   # window 0 = 14.10
+                assert not _free(_dark_band(x, lat, 2.6, 3.2), ids=True, heights=True, window=1.2), (x, lat)
+                assert _free([_pole(x, lat)], ids=True, heights=True, window=1.2), (x, lat)
+                assert not _free([_pole(x, lat, top=4.2)], ids=True, heights=True, window=1.2), (x, lat)
+                dark_to_vault = [_pole(x, lat, top=2.6), _pole(x, lat, top=4.2, bottom=2.6, mode="a")]
+>               assert _free(dark_to_vault, ids=True, heights=True, window=1.2), (x, lat)        # not told apart
+E               AssertionError: (30.0, 0.0)
+E               assert False
+E                +  where False = _free([(30.0, 30.3, -0.15, 0.15, 0.0, 2.6), (30.0, 30.3, -0.15, 0.15, 2.6, 4.2, ...)], ids=True, heights=True, window=1.2)
+
+tests/test_column_free_top.py:316: AssertionError
+_________________ test_the_window_stays_under_the_local_vault __________________
+
+    def test_the_window_stays_under_the_local_vault():
+        """15.10: the window never reaches what is over the object at its range: the vault, a ceiling, a beam or a
+        lintel across the track, which the rays above a free top meet there too. The local vault is the lowest return
+        over the object's lateral extent +- 0.5 m around it, measured in the frame; the object's own face is left
+        out. A beam across the track over a free pole at its range, 0.5 m above its top, leaves it free; the same
+        beam narrowed to the pole's own azimuth span (a lamp right above it) is read as its continuation."""
+        for x in (30.0, 60.0, 100.0):
+            xyz, h, lab, ring = _cast([_pole(x, 0.7)])
+            idx = np.flatnonzero((lab == 1) & (h <= 3.0))
+            rays = FrameRays(xyz, ring, h, xyz[:, 1].astype(np.float64))
+            assert abs(_local_vault(rays, idx, 2.8, np.zeros(0, dtype=np.int64)) - 4.2) < 0.01
+            beam = (x - 0.3, x + 0.6, -2.0, 2.0, 3.3, 3.5)
+>           assert _free([_pole(x, 0.7), beam], ids=True, heights=True, window=1.2), x
+E           AssertionError: 30.0
+E           assert False
+E            +  where False = _free([(30.0, 30.3, 0.5499999999999999, 0.85, 0.0, 2.8), (29.7, 30.6, -2.0, 2.0, 3.3, 3.5)], ids=True, heights=True, window=1.2)
+
+tests/test_column_free_top.py:333: AssertionError
+_________ test_a_pole_taller_than_the_envelope_is_followed_to_its_top __________
+
+    def test_a_pole_taller_than_the_envelope_is_followed_to_its_top():
+        """15.10 (review round 3, P4; cluster.column_free_tall_gap, opt-in, 0 shipped): the candidates are cut at the 3.0 m envelope
+        top, so a 3.2-3.8 m pole or ladder standing in the envelope read as a column (its ring above the cut meets
+        itself). It is followed above the cut along its own returns at its range to its true top, which must lie at
+        least 0.3 m under the local vault, every one of its own rays above it (up to 0.3 m under the vault, on at least
+        two rings) passing beyond it. A column to the vault, a column whose face above the cut is dark (its own rays
+        return nothing) and one whose face resumes above a dark band stay columns; a 3.6 m pole under a 4.2 m vault at
+        100 m too (one ring of its own rays between its top and 3.9 m); without the frame's heights the test is not
+        asked. Not shipped (0): no gain on the judge's 3.2 / 3.6 m poles on A, see config.py."""
+>       assert DetectorConfig().cluster.column_free_tall_gap == 0.0                      # 15.10: off
+E       AssertionError: assert 0.3 == 0.0
+E        +  where 0.3 = ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8).column_free_tall_gap
+E        +    where ClusterConfig(eps=0.35, range_scale=40.0, voxel=0.05, min_samples=3, min_points=5, min_points_far=3, far_range=100.0, ...ner=0.3, visibility_ratio=0.15, retro_intensity=0.0, retro_min_fraction=0.5, retro_max_height=1.2, retro_max_width=0.8) = DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0).cluster
+E        +      where DetectorConfig(sensor=SensorConfig(forward='-y', left='+x', up='+z', min_range=2.5, max_range=250.0, frame_id='hesai_l...st_max_around=10, persist_shift=[0.5, 3.0], persist_tol_dy=0.12, persist_tol_h=0.2, persist_tol_shift=0.08), voxel=0.0) = DetectorConfig()
+
+tests/test_column_free_top.py:418: AssertionError
+----------------- generated xml file: /out/results/pytest.xml ------------------
+4 failed, 117 passed in 8.70s
+Traceback (most recent call last):
+  File "/author/worker.py", line 114, in <module>
+    main()
+  File "/author/worker.py", line 93, in main
+    raise RuntimeError(f"pytest exit {r.returncode}")
+RuntimeError: pytest exit 1

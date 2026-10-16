@@ -1,0 +1,2 @@
+# Retain the focused, dataset-free integration build and test transcripts.
+!run-f8c088d/*.log

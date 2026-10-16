@@ -1,0 +1,102 @@
+{
+  "result": "PASS",
+  "branch_checks": [
+    {
+      "ref": "refs/heads/claude/amazing-fermi-t67v8g",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/claude/nifty-pascal-lzgl78",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/claude/p1-p2-supported-playback-20260927",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/experiment/cross-ring-sparse-evidence",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/gpt-score-push-20260928",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/integration/2026-10-15-16",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/integration/p3-score-sync-20260928",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/main",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/testovaya-gpt",
+      "full": true,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/integration/2026-10-15-160",
+      "full": false,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/heads/feature/ordinary",
+      "full": false,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "refs/pull/1/merge",
+      "full": false,
+      "shell_guard_matches": true
+    },
+    {
+      "ref": "",
+      "full": false,
+      "shell_guard_matches": true
+    }
+  ],
+  "workflow_bash_steps_syntax_checked": 36,
+  "cache_hit_runs_regression": true,
+  "verified_download_runs_regression": true,
+  "missing_verified_bags_fail_job": true,
+  "cold_warm_body_and_thresholds_unchanged": true,
+  "integration_archive_enabled_after_success": true,
+  "trigger": "push",
+  "source_commit": "70072f1300d922d7542a6b45688084e7a426d7c7",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--network",
+    "none",
+    "-i",
+    "--entrypoint",
+    "python3",
+    "-v",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016\\docs\\evidence\\integration_ci_2026-10-16\\verify.py:/verify.py:ro",
+    "-w",
+    "/",
+    "resense:integration-fixtures-f8c088d-20261016",
+    "/verify.py",
+    "--linux"
+  ],
+  "image": "resense:integration-fixtures-f8c088d-20261016",
+  "image_id": "sha256:333863304533e543b875bfc49c52344c1b41d560797bb3152de31a741a630024",
+  "checked_sha256": {
+    ".github/workflows/ci.yml": "7e849efadacbb4d8f36a8892c7182b49c8a0f52939f4877a2642cf42577f66e8",
+    "scripts/p1_cold_bag_test.sh": "feaddc0759f53c88b23fa9bfa59b70a1fc15b4b96a8c4f8277f1d0d3011e79db"
+  },
+  "scope": "routing, Linux Bash syntax and missing-data failure only; no detector/runtime CI claim"
+}

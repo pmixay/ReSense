@@ -1,0 +1,140 @@
+[
+  {
+    "path": "scripts/bench_8core.sh",
+    "expected": "742d854ee69e4db565f887f56ebf63d9793df72bb0fdf06f0c32a63a170556de",
+    "actual": "b6a79be1f5a7582117923be4b9897a2e3e5d0241fcdad2c316721b3f6cc4437a",
+    "bytes": 17516
+  },
+  {
+    "path": "scripts/build.sh",
+    "expected": "fcea83da2c33a968970df5445a69f25bec9c36543ad89bfc9e55de22520a72cf",
+    "actual": "62699575bb1500fec7079431c5c8b7fd18b36c356c8f0612da764a1862a448c9",
+    "bytes": 711
+  },
+  {
+    "path": "scripts/build_native.sh",
+    "expected": "8e0d13e553a9f6b691dcdcbc429939f8846cafc4bffa729fbcca975ef399f057",
+    "actual": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "bytes": 769
+  },
+  {
+    "path": "scripts/console_test.sh",
+    "expected": "7e3b1f5df2b2a0a32c74fbdfc2ad3bf32e1c3d7b31abb085ad96112b05c28fd4",
+    "actual": "d5fa09ebc99123b6538b76585d4d64d20207c3b42e3d5633fa6c30aca782f412",
+    "bytes": 17540
+  },
+  {
+    "path": "scripts/dry_run.sh",
+    "expected": "a3e98927a95f6872fde465725aeb6882e6185c9affc3b7a1a923d2446f7ff045",
+    "actual": "4e0db85c9ad18d1a3dc5d805e9b9179e509d43361fb230186841bed6f10b0063",
+    "bytes": 6703
+  },
+  {
+    "path": "scripts/export_image.sh",
+    "expected": "b46db609d436c88902cc1cc9626a6950b5a40b5e5788935a413e5d02ee04c913",
+    "actual": "781bf315545d732617818f77d90ec0cf700d2bce53d780feb537f64c6e3291bf",
+    "bytes": 7918
+  },
+  {
+    "path": "scripts/fetch_cold_bags.sh",
+    "expected": "10e382ee81593889f69146d6270da9564b60835c32207002297e26427fa5e6c3",
+    "actual": "3dbb60647b47cd32c806d3911b8b83d896e07ef377f5c7d5e0fc56181385e6b1",
+    "bytes": 4755
+  },
+  {
+    "path": "scripts/internal_net_test.sh",
+    "expected": "5bcaf34bf11bf1ab5ae70021b125b668c32bc9f181f233612d2743852be280ab",
+    "actual": "9569b2f126471e3edae2b6ea605009591d0c799d77038407941268f950389f57",
+    "bytes": 4888
+  },
+  {
+    "path": "scripts/load_image.sh",
+    "expected": "a94537c646b3be6185dc4f5f8a782c3ce09428430ff86a67dc70945cb5564853",
+    "actual": "f0f5403a8417b1b8a94a93edbdc3bdc260389a1121250039a07c375ee7a04c7c",
+    "bytes": 5448
+  },
+  {
+    "path": "scripts/p1_cold_bag_test.sh",
+    "expected": "ff98d11713859861e8724727fd76f9c642973fec00a5578ab3932d5e653c68ca",
+    "actual": "90c934c70191e2c535abd1f1eaa3f57e049b5a560b93e2007cfbb7412b10a598",
+    "bytes": 5353
+  },
+  {
+    "path": "scripts/p2_viewer_test.sh",
+    "expected": "2ef2c45d1e1b63934697ffe7d276986eecc6dc08b883866d3b87bb6063e6719d",
+    "actual": "9b06123ec5f3bb2f8e61fd982c5feba9329a61b1e939b8372b44482fb08c2906",
+    "bytes": 2882
+  },
+  {
+    "path": "scripts/play_bag.sh",
+    "expected": "6aa48b62c94db51630503ead404e284d1dbc54f6498ed51d243f782604ec09af",
+    "actual": "ad201e401086c921db7f70b42e9ea9ddc34daca0797e1cf18d824fcbbb7c36e1",
+    "bytes": 5575
+  },
+  {
+    "path": "scripts/publish_release.sh",
+    "expected": "84a94a1922ae4b508d08b3572b021ffe0b77f8bda6303a71cc7cfe893fed9f0b",
+    "actual": "631dafb061d3cfce62a3751857a160840e691434d865f35217cda90a7a991096",
+    "bytes": 5656
+  },
+  {
+    "path": "scripts/record_rviz_chain.sh",
+    "expected": "71fafc7183e2ef291d5f36351eebc43bd173f71e92818431e90ea91c6c3ccfb1",
+    "actual": "e62eb73e9c54cb251dd8428bc5f07021338c9036cefe5209277b1c66f85d285f",
+    "bytes": 3805
+  },
+  {
+    "path": "scripts/release.sh",
+    "expected": "99cf789be24dc8c82462651b5b79a9c80e1499e5e1c9308eccfd759961565c7a",
+    "actual": "df2d21574896636bf53a16a616446d555a01c23fd771db6cb6bba74ec00bc312",
+    "bytes": 9955
+  },
+  {
+    "path": "scripts/require_docker.sh",
+    "expected": "3d47f3a1d66981bee27a2d3b79ed78dda98db34466b98c01e13a114a9c3b063b",
+    "actual": "0dd7664f7fc071951cfb8cf2481a6045801d2e74be21da1116d5e2959182353b",
+    "bytes": 643
+  },
+  {
+    "path": "scripts/run_demo.sh",
+    "expected": "49136bd60d5b1e4844aa311195e8b88c214698ce4eb377f6dddd522657c321fc",
+    "actual": "8c29e298ee8b771ebd883225fc29af1c6332f9c2587c75e1dde2b210276c21e4",
+    "bytes": 1374
+  },
+  {
+    "path": "scripts/run_headless.sh",
+    "expected": "3ffe39639e6c82f8d0a95139d715ae06f2d4d8c260385333240c43b99e770ae3",
+    "actual": "9d3ddeebaf8608b3e71fe540a401f0c54243a280554c6e8ad21c41aaf9d8fa25",
+    "bytes": 1907
+  },
+  {
+    "path": "scripts/run_offline.sh",
+    "expected": "b9684344dd9d643a85db5b9bbcd3b07c04986658d63187b29a961335e93fb949",
+    "actual": "dd511828f9bb88ea4ada59719aa2974dc3ec70005166674f707869d65262a36f",
+    "bytes": 399
+  },
+  {
+    "path": "scripts/run_webapp.sh",
+    "expected": "7881a710b42f9a6a8f41f6c53c9c9d9e1ca68c539aeacb7e9e3a01235261d9b0",
+    "actual": "e860040f8a8785876591f91bdbeb2e5f93837952b8e3f55bc885b954a291f6be",
+    "bytes": 4476
+  },
+  {
+    "path": "scripts/smoke_test.sh",
+    "expected": "df16458429fd3ea318ecfba44a5eed2b49712ee6b243311428ada28ac07ec58d",
+    "actual": "0f24081f98cba493dfd01b7e457047e3bd0af7b7fd9e5d0fae97f74160b6fd90",
+    "bytes": 3807
+  },
+  {
+    "path": "scripts/sync_params.sh",
+    "expected": "753862dca16ad9ef3aadf426f8c0708f4b724d5fc3ed101dad2adc1596e1ded1",
+    "actual": "e18f61094551e0e0ce605bcd681bee037c595d0dfd568b0eb10b76e9ab6266bf",
+    "bytes": 990
+  },
+  {
+    "path": "scripts/verify_release.sh",
+    "expected": "efa60c1b0aaa7c8067d09cd73d67c4912029d8f0f688cd72cddbf2158cd2bd8a",
+    "actual": "9196d75677efb977e6c126eee2be618ac9552c0344bc90b607c052e4f11523fd",
+    "bytes": 5956
+  }
+]

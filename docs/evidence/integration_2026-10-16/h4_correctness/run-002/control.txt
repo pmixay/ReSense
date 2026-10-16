@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/review/independent_checks.py", line 28, in <module>
+    from resense.track import TrackModel, estimate_axis_from_walls, estimate_track, wall_drift_range
+ImportError: cannot import name 'wall_drift_range' from 'resense.track' (/work/control/resense/track.py)

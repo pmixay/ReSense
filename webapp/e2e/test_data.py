@@ -29,6 +29,35 @@ def first_stop(decisions: str) -> int:
     return max(0, i)
 
 
+def test_queue_reload_with_a_pending_nonblocking_resource(app):
+    """Queue actions are usable after document readiness, independently of window.load."""
+    page = app.page
+    app.goto("/queue")
+    held = []
+    pattern = "**/slow-queue-image.png"
+    page.route(pattern, lambda route: held.append(route))
+    page.add_init_script("""document.addEventListener('DOMContentLoaded', () => {
+        const img = document.createElement('img');
+        img.id = 'slow-resource';
+        img.hidden = true;
+        img.src = '/slow-queue-image.png';
+        document.body.append(img);
+    });""")
+    try:
+        app.reload()
+        expect(page.get_by_role("heading", name="Очередь", exact=True)).to_be_visible()
+        expect(page.get_by_text("Детектор свободен")).to_be_visible()
+        assert page.evaluate("document.readyState") == "interactive"
+        assert page.locator("#slow-resource").evaluate("img => img.complete") is False
+    finally:
+        for route in held:
+            try:
+                route.abort()
+            except pw.Error:  # cancelled by the timed-out navigation / page teardown
+                pass
+        page.unroute(pattern)
+
+
 # ---------------------------------------------------------------------------------------- 1
 
 
@@ -236,7 +265,11 @@ def test_server_folder_preset_and_options(app, backend):
     page.get_by_role("switch", name=re.compile("Облака")).click()
     half = (rec["n_frames"] + 1) // 2
     expect(page.get_by_text(re.compile(rf"^{half}\s+кадр"))).to_be_visible()
-    page.get_by_role("button", name="Обработать").click()
+    # Submission is asynchronous (the button shows its pending state). First observe the
+    # real API acknowledgement, then check the client-side navigation and saved options.
+    with page.expect_response(lambda r: r.url == backend.url + "/api/jobs" and r.request.method == "POST") as created:
+        page.get_by_role("button", name="Обработать").click()
+    assert created.value.status == 201
     expect(page).to_have_url(re.compile(r"/queue$"))
     job = next(j for j in api.get("/jobs") if j["recording_id"] == rec["id"])
     assert job["preset_id"] == preset["id"]
@@ -372,7 +405,7 @@ def test_queue_cancel_retry_log_and_clear(app, backend):
     failed_job = api.job(gone["id"])
     api.post(f"/jobs/{failed_job['id']}/cancel")
     api.delete(f"/recordings/{gone['id']}")
-    page.reload()
+    app.reload()
     row = page.locator("div", has=page.get_by_text("demo_clear", exact=True)).filter(
         has=page.get_by_role("button", name="Повторить", exact=True)).last
     row.get_by_role("button", name="Повторить", exact=True).click()

@@ -5,8 +5,8 @@
 #   docker run --rm -it --net=host --ipc=host resense            # the node; play the bag from the host console
 #   (RViz from the image needs the X11 socket: README "Remote real-time demo", scripts/run_demo.sh)
 # The build needs the internet (base image, apt, pip); the test stand has none, so the jury gets
-# this image as an archive instead: scripts/export_image.sh here, `docker load -i` there
-# (docs/ARCHITECTURE.md "Deployment without internet").
+# this image as an archive instead: scripts/export_image.sh here, `docker load -i` there.
+# Rebuild changed source without internet using docker/Dockerfile.offline and the loaded tag.
 #
 # The runtime image contains only what the node needs: pinned numpy / scipy / scikit-learn /
 # pyyaml, the ROS 2 packages, RViz, rosbag2, foxglove_bridge. WITH_TOOLS=1 adds the pure python
@@ -20,6 +20,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PYTHONUNBUFFERED=1 \
+    ROS_HOME=/tmp/.ros \
+    ROS_LOG_DIR=/tmp/.ros/log \
     OMP_NUM_THREADS=1 \
     OPENBLAS_NUM_THREADS=1 \
     MKL_NUM_THREADS=1
@@ -49,9 +51,11 @@ COPY configs ./configs
 # (native/resense_native.cpp, g++ above; bit-identical results, docs/ARCHITECTURE.md): the line
 # prints "native (...)", or "numpy (...)" if they could not be built (the node then runs on
 # numpy alone, slower, same output; CI's in-image test_native.py fails in that case).
-RUN pip3 install --upgrade "pip>=24" \
+# Keep the PEP 517 backend and wheel builder in the release image: the offline rebuild must
+# use them in place (--no-build-isolation), without fetching an isolated build environment.
+RUN pip3 install --upgrade "pip>=24" "setuptools==75.6.0" "wheel==0.45.1" "packaging==24.2" \
     && pip3 install "numpy==1.26.4" "scipy==1.13.1" "scikit-learn==1.5.2" "pyyaml==6.0.2" \
-    && pip3 install --no-deps . \
+    && pip3 install --no-deps --no-build-isolation . \
     && cd / && python3 -c "import resense, resense.detector, resense._native as n; print('resense', resense.__version__, resense.__file__, n.status())"
 
 # optional offline / research tooling (bag reading without ROS, plots, synthetic injection, tests)
@@ -60,12 +64,28 @@ RUN pip3 install --upgrade "pip>=24" \
 # generator itself needs open3d, i.e. WITH_TOOLS=1).
 COPY tests ./tests
 COPY scripts ./scripts
+# Pure dataset-free test fixtures. Copy exact files: neither the web application nor recorded
+# judge/startup outputs belong in this image. The context regression builds this block verbatim.
+# BEGIN pure test fixtures
 # The paired synthetic evaluator and its tests use the registered protocol in the image too.
 COPY docs/evidence/cycle_2026-09-28/evaluation/protocol.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol.json
 COPY docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json ./docs/evidence/cycle_2026-09-28/evaluation/protocol_v2.json
 # Committed residual-inventory fixtures keep the dataset-free tests runnable in the image.
 COPY docs/evidence/results/residual_events_2026-09-28.json ./docs/evidence/results/residual_events_2026-09-28.json
 COPY docs/RESIDUAL_EVENTS_2026-09-28.md ./docs/RESIDUAL_EVENTS_2026-09-28.md
+# Measured pre-tracker rows for the dataset-free H4 re-arm regression.
+COPY docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json ./docs/evidence/integration_2026-10-16/h4_safety/results/rearm_witness.json
+COPY webapp/backend/resense_web/__init__.py webapp/backend/resense_web/decision.py ./webapp/backend/resense_web/
+# X3 imports probe -> judge_runner + range_test -> resense_ros.fastcloud (the ROS source below)
+# and configs/default.yaml (above). The scorer is a CLI; judge_geom is NumPy-only. No bag/cache,
+# odometry, extraction scripts or historical judge outputs are required for these regressions.
+COPY docs/evidence/judgement_2026-10-13/scripts/probe.py docs/evidence/judgement_2026-10-13/scripts/judge_runner.py docs/evidence/judgement_2026-10-13/scripts/range_test.py docs/evidence/judgement_2026-10-13/scripts/score_objects.py docs/evidence/judgement_2026-10-13/scripts/judge_geom.py ./docs/evidence/judgement_2026-10-13/scripts/
+COPY docs/evidence/judgement_2026-10-13/scripts/docker/analyze_chain.py docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh docs/evidence/judgement_2026-10-13/scripts/docker/listener.py ./docs/evidence/judgement_2026-10-13/scripts/docker/
+COPY docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py docs/evidence/node_startup_2026-10-15/docker_tools/listener.py docs/evidence/node_startup_2026-10-15/docker_tools/observe_listener.py docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py ./docs/evidence/node_startup_2026-10-15/docker_tools/
+COPY docs/evidence/offline_rebuild_2026-10-15/verify.py ./docs/evidence/offline_rebuild_2026-10-15/verify.py
+# Label-envelope/schema regression and offline `resense eval`; no point-cloud dataset is copied.
+COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
+# END pure test fixtures
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
         pip3 install "rosbags==0.11.5" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2"; \
     fi
@@ -76,17 +96,18 @@ COPY ros2_ws/src /opt/resense/ros2_ws/src
 COPY configs/default.yaml /opt/resense/ros2_ws/src/resense_ros/config/detector.yaml
 RUN . /opt/ros/humble/setup.sh && cd /opt/resense/ros2_ws && colcon build --symlink-install
 
-# The P4 label-metadata regression and offline `resense eval` use the committed real labels.
-COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
-
 COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 # DDS over UDP only by default: a bag played by a normal user on the host cannot write into the
 # shared-memory segments of a root process (docker/fastdds_udp.xml). Opt-in `docker run -e
 # RESENSE_DDS=shm`: shared memory + UDP (docker/fastdds_shm_udp.xml), the node's Fast DDS files in
 # /dev/shm opened to other users (docker/fastdds_shm_share.py); the entrypoint picks the mode
 # (docker/dds_transport.sh).
 COPY docker/fastdds_udp.xml docker/fastdds_shm_udp.xml docker/dds_transport.sh docker/fastdds_shm_share.py /opt/resense/
+# Windows checkouts may have CRLF shell scripts; keep the image runnable from a checkout as
+# well as the release job's LF-only git archive. No entrypoint or DDS behavior is changed.
+RUN sed -i 's/\r$//' /entrypoint.sh /opt/resense/dds_transport.sh \
+    && find /opt/resense/scripts -type f -name '*.sh' -exec sed -i 's/\r$//' {} + \
+    && chmod +x /entrypoint.sh
 ENV FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml
 ENTRYPOINT ["/entrypoint.sh"]
 # The default command is for recorded bags, the jury's use (28.09): `docker run --net=host resense`

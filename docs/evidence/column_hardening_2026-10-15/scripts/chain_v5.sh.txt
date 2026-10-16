@@ -1,0 +1,11 @@
+#!/bin/bash
+# v5 (the vault over free space, 15 % stretch): ride pieces, the probes (column + tall), the tall probes on the 14.10
+# candidate, the S / B dropout + pitch battery. One job at a time.
+cd /tmp/claude-0/fixwork/r3_column
+V=${V:-v5}
+CODE=/tmp/claude-0/fixwork/r3_column/code_$V TAG=$V bash batch_ride.sh
+CODE=/tmp/claude-0/fixwork/r3_column/code_$V bash run_probes.sh out/probes_$V all > out/probes_$V.log 2>&1
+[ -f out/probes_cand/pole36_sideN.json ] || CODE=/home/user/ReSense/.claude/worktrees/wf_75640bbf-380-3 bash run_probes.sh out/probes_cand tall > out/probes_cand.log 2>&1
+echo PROBES DONE >> out/probes_$V.log
+CODE=/tmp/claude-0/fixwork/r3_column/code_$V TAG=$V bash batch_spare.sh
+echo CHAIN DONE >> out/probes_$V.log

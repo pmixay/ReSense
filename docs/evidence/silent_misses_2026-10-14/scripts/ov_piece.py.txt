@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+"""The structure cut's kept parts on one gate ride piece with a given worktree's code (observation only; works
+without the free-top test). usage: ov_piece.py <cache_dir> <out_prefix> K/N   (WT env: the worktree, asserted)
+Writes <out>_p<K>_parts.jsonl (k, n_vox, distance, lateral, size, verdict) and <out>_p<K>.jsonl decisions."""
+import json
+import os
+import sys
+
+import numpy as np
+
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import resense  # noqa: E402
+
+assert resense.__file__.startswith(WT), resense.__file__
+import resense.clustering as C  # noqa: E402
+
+ORIG_CUT, ORIG_CC = C._off_structure_parts, C._corridor_cluster
+ST = {"k": -1, "rest": None, "rows": []}
+
+
+def cc(b, *rest, **kw):
+    if not kw:
+        ST["rest"] = rest
+    return ORIG_CC(b, *rest, **kw)
+
+
+def cut(b, xyz, h, in_gauge, vox, inv, cfg):
+    parts = ORIG_CUT(b, xyz, h, in_gauge, vox, inv, cfg)
+    for p in parts:
+        c = ORIG_CC(p, *ST["rest"])
+        ST["rows"].append({"k": ST["k"], "n_vox": int(p.n_vox), "x0": round(float(p.bmin[0]), 1),
+                           "size": [round(float(v), 2) for v in p.size],
+                           "out": None if c is None else f"{c.zone}/{c.reason or '-'}",
+                           "d": None if c is None else round(float(c.distance), 1),
+                           "lat": None if c is None else round(float(c.lateral), 2)})
+    return parts
+
+
+C._off_structure_parts, C._corridor_cluster = cut, cc
+sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+from judge_runner import node_decision  # noqa: E402
+from resense.config import DetectorConfig  # noqa: E402
+from resense.detector import Detector  # noqa: E402
+from resense.frame import frame_from_compact  # noqa: E402
+from scripts.cache_io import cache_file_stem, cache_files, load_cache_array, load_cache_stamps  # noqa: E402
+
+d, out, spec = sys.argv[1], sys.argv[2], sys.argv[3]
+k, n = (int(v) for v in spec.split("/"))
+allf = cache_files(d)
+stamps = load_cache_stamps(d)
+cfg = DetectorConfig.from_yaml(os.path.join(WT, "configs/default.yaml"))
+idx = np.array_split(np.arange(len(allf)), n)[k]
+det = Detector(cfg)
+with open(f"{out}_p{k}.jsonl", "w") as fh:
+    for j, gi in enumerate(idx):
+        f = allf[int(gi)]
+        stem = cache_file_stem(f)
+        ST["k"] = int(gi)
+        res = det.process(frame_from_compact(load_cache_array(f), cfg.sensor, stamp=stamps.get(stem, j * 0.1),
+                                             frame_id=stem))
+        fh.write(json.dumps({"i": int(gi), "decision": node_decision(res), "obstacle": bool(res.obstacle)}) + "\n")
+with open(f"{out}_p{k}_parts.jsonl", "w") as fp:
+    for r in ST["rows"]:
+        fp.write(json.dumps(r) + "\n")
+print("OVPIECE", out, k, "parts", len(ST["rows"]), [r for r in ST["rows"]][:10], flush=True)

@@ -1,0 +1,183 @@
+{
+  "label": "candidate_obstacle_readme_r1",
+  "condition": "obstacle_readme",
+  "repetition": 1,
+  "errors": [],
+  "image_id": "sha256:70916f04ffb451922eb860afaa3f5ee185e2f13d6f0ae29ded97b5bff5857a52",
+  "detector_commit": "1eed357a82ac4bd8b5a33ff8d3902c8190b2edec",
+  "domain": 42,
+  "container_names": {
+    "node": "rs-s1-e627f1c3b519-candidate-obstacle-readme-r1-node",
+    "listener": "rs-s1-e627f1c3b519-candidate-obstacle-readme-r1-listener",
+    "player": "rs-s1-e627f1c3b519-candidate-obstacle-readme-r1-player"
+  },
+  "cpus": 4.0,
+  "memory_limit": "6g",
+  "play_args": "--read-ahead-queue-size 10 --clock --delay 3",
+  "node_args": [],
+  "t_start": 1792102481.6092062,
+  "containers": {
+    "node": {
+      "id": "dbb7fb5d644b3ed65c7fd5beff58970a7b8809b5254b0925d657699fb0cc9319",
+      "image": "sha256:70916f04ffb451922eb860afaa3f5ee185e2f13d6f0ae29ded97b5bff5857a52",
+      "NanoCpus": 4000000000,
+      "Memory": 6442450944,
+      "MemorySwap": 6442450944,
+      "cmd": [
+        "ros2",
+        "launch",
+        "resense_ros",
+        "detector.launch.py",
+        "freshness_mode:=replay"
+      ],
+      "labels": {
+        "org.opencontainers.image.version": "22.04",
+        "resense.startup.args": "[\"ros2\", \"launch\", \"resense_ros\", \"detector.launch.py\", \"freshness_mode:=replay\"]",
+        "resense.startup.condition": "obstacle_readme",
+        "resense.startup.cpus": "4.0",
+        "resense.startup.detector_commit": "1eed357a82ac4bd8b5a33ff8d3902c8190b2edec",
+        "resense.startup.domain": "42",
+        "resense.startup.image_id": "sha256:70916f04ffb451922eb860afaa3f5ee185e2f13d6f0ae29ded97b5bff5857a52",
+        "resense.startup.memory": "6g",
+        "resense.startup.repetition": "1",
+        "resense.startup.run": "e627f1c3b5194c60a0d1e39cb5a47f7c"
+      },
+      "pid_mode": "",
+      "network_mode": "host",
+      "ros_localhost_only": "0"
+    },
+    "listener": {
+      "id": "d98bd17273c08b42575f5b6f767e9b40fa3df992d1a20465fd03bdddbfdc0606",
+      "image": "sha256:70916f04ffb451922eb860afaa3f5ee185e2f13d6f0ae29ded97b5bff5857a52",
+      "NanoCpus": 4000000000,
+      "Memory": 6442450944,
+      "MemorySwap": 6442450944,
+      "cmd": [
+        "python3",
+        "/tools/observe_listener.py",
+        "--base",
+        "/evidence/out/docker/candidate_obstacle_readme_r1"
+      ],
+      "labels": {
+        "org.opencontainers.image.version": "22.04",
+        "resense.startup.args": "[\"python3\", \"/tools/observe_listener.py\", \"--base\", \"/evidence/out/docker/candidate_obstacle_readme_r1\"]",
+        "resense.startup.condition": "obstacle_readme",
+        "resense.startup.cpus": "4.0",
+        "resense.startup.detector_commit": "1eed357a82ac4bd8b5a33ff8d3902c8190b2edec",
+        "resense.startup.domain": "42",
+        "resense.startup.image_id": "sha256:70916f04ffb451922eb860afaa3f5ee185e2f13d6f0ae29ded97b5bff5857a52",
+        "resense.startup.memory": "6g",
+        "resense.startup.repetition": "1",
+        "resense.startup.run": "e627f1c3b5194c60a0d1e39cb5a47f7c"
+      },
+      "pid_mode": "container:dbb7fb5d644b3ed65c7fd5beff58970a7b8809b5254b0925d657699fb0cc9319",
+      "network_mode": "host",
+      "ros_localhost_only": "0"
+    },
+    "player": {
+      "id": "9f04402990714ede355f2d6714411b768598f40035148f90cc676c781dbb3525",
+      "image": "sha256:70916f04ffb451922eb860afaa3f5ee185e2f13d6f0ae29ded97b5bff5857a52",
+      "NanoCpus": 4000000000,
+      "Memory": 6442450944,
+      "MemorySwap": 6442450944,
+      "cmd": [
+        "ros2",
+        "bag",
+        "play",
+        "/data/doubleT_obstacle",
+        "--read-ahead-queue-size",
+        "10",
+        "--clock",
+        "--delay",
+        "3"
+      ],
+      "labels": {
+        "org.opencontainers.image.version": "22.04",
+        "resense.startup.args": "[\"ros2\", \"bag\", \"play\", \"/data/doubleT_obstacle\", \"--read-ahead-queue-size\", \"10\", \"--clock\", \"--delay\", \"3\"]",
+        "resense.startup.condition": "obstacle_readme",
+        "resense.startup.cpus": "4.0",
+        "resense.startup.detector_commit": "1eed357a82ac4bd8b5a33ff8d3902c8190b2edec",
+        "resense.startup.domain": "42",
+        "resense.startup.image_id": "sha256:70916f04ffb451922eb860afaa3f5ee185e2f13d6f0ae29ded97b5bff5857a52",
+        "resense.startup.memory": "6g",
+        "resense.startup.repetition": "1",
+        "resense.startup.run": "e627f1c3b5194c60a0d1e39cb5a47f7c"
+      },
+      "pid_mode": "container:dbb7fb5d644b3ed65c7fd5beff58970a7b8809b5254b0925d657699fb0cc9319",
+      "network_mode": "host",
+      "ros_localhost_only": "0"
+    }
+  },
+  "node_advertised": true,
+  "t_ready": 1792102486.179762,
+  "runtime_provenance": {
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "nproc": 12,
+    "lscpu": "Architecture:                         x86_64\nCPU op-mode(s):                       32-bit, 64-bit\nAddress sizes:                        48 bits physical, 48 bits virtual\nByte Order:                           Little Endian\nCPU(s):                               12\nOn-line CPU(s) list:                  0-11\nVendor ID:                            AuthenticAMD\nModel name:                           AMD Ryzen 5 5600H with Radeon Graphics\nCPU family:                           25\nModel:                                80\nThread(s) per core:                   2\nCore(s) per socket:                   6\nSocket(s):                            1\nStepping:                             0\nBogoMIPS:                             6587.45\nFlags:                                fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm\nVirtualization:                       AMD-V\nHypervisor vendor:                    Microsoft\nVirtualization type:                  full\nL1d cache:                            192 KiB (6 instances)\nL1i cache:                            192 KiB (6 instances)\nL2 cache:                             3 MiB (6 instances)\nL3 cache:                             16 MiB (1 instance)\nNUMA node(s):                         1\nNUMA node0 CPU(s):                    0-11\nVulnerability Gather data sampling:   Not affected\nVulnerability Itlb multihit:          Not affected\nVulnerability L1tf:                   Not affected\nVulnerability Mds:                    Not affected\nVulnerability Meltdown:               Not affected\nVulnerability Mmio stale data:        Not affected\nVulnerability Reg file data sampling: Not affected\nVulnerability Retbleed:               Not affected\nVulnerability Spec rstack overflow:   Vulnerable: Safe RET, no microcode\nVulnerability Spec store bypass:      Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:             Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:             Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                  Not affected\nVulnerability Tsx async abort:        Not affected\n",
+    "meminfo": "MemTotal:        7023828 kB\nMemFree:         5126468 kB\nMemAvailable:    6004608 kB\nBuffers:           92572 kB\nCached:           538608 kB\nSwapCached:           24 kB\nActive:           411316 kB\nInactive:         705092 kB\nActive(anon):       2812 kB\nInactive(anon):   486672 kB\nActive(file):     408504 kB\nInactive(file):   218420 kB\nUnevictable:           0 kB\nMlocked:               0 kB\nSwapTotal:       2097152 kB\nSwapFree:        2095616 kB\nDirty:               320 kB\nWriteback:             0 kB\nAnonPages:        485144 kB\nMapped:           357576 kB\nShmem:              4036 kB\nKReclaimable:     443468 kB\nSlab:             547144 kB\nSReclaimable:     443468 kB\nSUnreclaim:       103676 kB\nKernelStack:        6464 kB\nPageTables:         5176 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:     5609064 kB\nCommitted_AS:    2007228 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       31984 kB\nVmallocChunk:          0 kB\nPercpu:             6592 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:     10240 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:       80896 kB\nDirectMap2M:     5085184 kB\nDirectMap1G:    11534336 kB\n",
+    "resense_version": "1.0.0",
+    "resense_path": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+    "native": "native (_resense_native.cpython-310-x86_64-linux-gnu.so)",
+    "source_sha256_lf": {
+      "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "621375fb9e0caabc71220f3c98cd5d7aea4cf77f07065ce25a71d581d371640b",
+      "ros2_ws/src/resense_ros/launch/detector.launch.py": "37748a63a77f3a33b347055c69ebecda85de8a2768b8db42987f7acd27acca54"
+    },
+    "thread_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1"
+    }
+  },
+  "listener_ready": true,
+  "t_play": 1792102492.4984164,
+  "t_end": 1792102831.6666257,
+  "player_exit": 0,
+  "drained": true,
+  "listener_exit": 0,
+  "judge_analysis_exit": 0,
+  "final_states": {
+    "listener": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-15T22:14:47.131005785Z",
+      "FinishedAt": "2026-10-15T22:20:36.547966857Z"
+    },
+    "player": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-15T22:14:52.886936697Z",
+      "FinishedAt": "2026-10-15T22:20:31.491674687Z"
+    },
+    "node": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 143,
+      "Error": "",
+      "StartedAt": "2026-10-15T22:14:42.928260267Z",
+      "FinishedAt": "2026-10-15T22:20:40.79546208Z"
+    }
+  },
+  "cleanup_ok": true
+}

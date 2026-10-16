@@ -1,0 +1,19 @@
+{
+  "measured_commit": "52115654417a660669b8dddfce447692c1d782cc",
+  "gate_exit": 0,
+  "source_sha256": "db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751",
+  "changed_frozen_files_from_reviewed_selection": [
+    "pyproject.toml",
+    "resense/__init__.py"
+  ],
+  "numerical_core_bytes_identical_to_reviewed_scope": true,
+  "all_versions_1_1_0": true,
+  "selected_to_final_frame_comparison": {
+    "frames": 18329,
+    "changed_frames": 0,
+    "changed_entries": 0,
+    "setF_frames": 3060
+  },
+  "final_vs_sealed_axis_and_metadata_only": true,
+  "config_unchanged_from_reviewed_selection": true
+}

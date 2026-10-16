@@ -1,0 +1,7 @@
+{
+  "exact_window_cases": 160,
+  "axis_band_reuse": true,
+  "process_frames": 2,
+  "reset_clears": true,
+  "failures": []
+}

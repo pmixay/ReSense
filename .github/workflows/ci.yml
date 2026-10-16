@@ -12,14 +12,19 @@ jobs:
   checks:
     # ruff: pyflakes + the pycodestyle error classes (ruff's default rule set) over the package, the
     # ROS node, the scripts and the tests; the version is pinned so a ruff release cannot turn CI
-    # red. configs/default.yaml is the single source of truth; the ROS package carries a copy. Each
-    # step runs even when an earlier one failed, so one run reports all three.
+    # red. configs/default.yaml is the single source of truth; the ROS package carries a copy.
+    # Parameter sync and the detector seal run even after a lint/integrity failure.
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v7
-      - name: lint (ruff, pinned)
-        # This archived gate runner is preserved byte-for-byte; its imports follow sys.path setup.
-        run: pipx run ruff==0.15.8 check --output-format github --exclude docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py .
+      - name: immutable archived helper integrity
+        # Exact package/Git-blob locks preserve measured author bytes; no snapshot code executes.
+        run: python3 scripts/check_archived_lint.py
+      - name: lint (ruff, pinned; exact verified snapshots only)
+        # Isolated pipx tool environment; the wrapper verifies locks again before any exclusions.
+        run: |
+          pipx install --suffix=-ci ruff==0.15.8
+          python3 scripts/check_archived_lint.py --lint --ruff ruff-ci
       - name: the ROS package's parameter copy is in sync with configs/default.yaml
         if: ${{ !cancelled() }}
         run: ./scripts/sync_params.sh --check
@@ -85,6 +90,7 @@ jobs:
           cache: pip
           cache-dependency-path: |
             pyproject.toml
+            ros2_ws/src/resense_ros/setup.py
             webapp/backend/pyproject.toml
       - uses: actions/setup-node@v7
         with:
@@ -95,9 +101,11 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
       - id: install
         run: |
-          pip install -e ".[dev]" -e "webapp/backend[dev]" playwright
+          pip install -e ".[dev]" -e ros2_ws/src/resense_ros -e "webapp/backend[dev]" playwright wheel
           python -m playwright install --with-deps chromium
           cd webapp/frontend && npm ci
+      - name: backend and policy wheels outside the checkout, without ROS
+        run: python scripts/check_webapp_wheels.py
       - name: backend (webapp/backend)
         run: cd webapp/backend && python -m pytest -q -rs --junitxml=../../junit-webapp-backend.xml
       - name: frontend unit tests, type check and production build
@@ -132,9 +140,9 @@ jobs:
     needs: checks
     runs-on: ubuntu-22.04
     env:
-      # The score/improvement branch, retained working branches and main run the viewer and
-      # original-bag cold-start regression (scripts/p1_cold_bag_test.sh keeps the same list)
-      FULL: ${{ github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/integration/p3-score-sync-20260928' || github.ref == 'refs/heads/experiment/cross-ring-sparse-evidence' || github.ref == 'refs/heads/testovaya-gpt' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
+      # The integration branch, score/improvement branch, retained working branches and main run
+      # the viewer and original-bag cold/warm regression (scripts/p1_cold_bag_test.sh keeps the same list)
+      FULL: ${{ github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/integration/p3-score-sync-20260928' || github.ref == 'refs/heads/integration/2026-10-15-16' || github.ref == 'refs/heads/experiment/cross-ring-sparse-evidence' || github.ref == 'refs/heads/testovaya-gpt' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v7
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
@@ -202,7 +210,7 @@ jobs:
         # device on an isolated network and checks outage/recovery without requiring demo hardware.
         # FULL includes testovaya-gpt for the P1/P2/P4 completion run.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
-      # ---- the original-bag cold-start regression (working branch and main). The two original
+      # ---- the original-bag cold/warm regression (full-CI branches). The two original
       # organizer bags come from the Actions cache, so that Google Drive is not asked for the 3.7 GB
       # archive on every push: its download quota refused the runners on 27.09 ("Quota exceeded",
       # runs 36313587896 and 36313174302). The key is the hash of the pinned checksums
@@ -214,8 +222,8 @@ jobs:
       # a hit downloads nothing). Caches are scoped to the branch that saved them and readable from
       # every branch when saved on main (the default branch); dataset-cache.yml refreshes main's
       # entry on a schedule, before GitHub's 7-day eviction of unused caches. Without the bags
-      # (Google Drive refused the one download a miss gets) the check cannot run: it is reported
-      # as not run, in the job summary and as a warning, never as passed.
+      # (Google Drive refused the one download a miss gets) the check cannot run: the job fails
+      # and reports the missing regression in its summary, so complete CI cannot omit it.
       - name: the two original bags from the Actions cache
         id: bags
         if: ${{ !cancelled() && env.FULL == 'true' }}
@@ -227,7 +235,6 @@ jobs:
       - name: cache miss only — download the archive once, unpack and verify the two bags
         id: fetch
         if: ${{ !cancelled() && steps.bags.outcome == 'success' && steps.bags.outputs.cache-hit != 'true' }}
-        continue-on-error: true      # a Google Drive refusal is reported below as "not run"
         run: |
           pip install --quiet "zstandard>=0.22"
           scripts/fetch_cold_bags.sh ~/resense-cold-bags
@@ -237,25 +244,19 @@ jobs:
         with:
           path: ~/resense-cold-bags
           key: ${{ steps.bags.outputs.cache-primary-key }}
-      - name: original bag cold-start and warm full-rate regression — working branch and main
+      - name: original bag cold-start and warm full-rate regression — full-CI branches
         if: ${{ steps.bags.outputs.cache-hit == 'true' || steps.fetch.outcome == 'success' }}
         timeout-minutes: 15
         run: IMAGE=resense:ci DATASET_DIR="$HOME/resense-cold-bags" NO_DOWNLOAD=1 scripts/p1_cold_bag_test.sh
       - name: original bag cold-start regression not run (no verified bags)
-        if: ${{ steps.bags.outcome == 'success' && steps.bags.outputs.cache-hit != 'true' && steps.fetch.outcome != 'success' }}
+        if: ${{ !cancelled() && env.FULL == 'true' && steps.bags.outcome == 'success' && steps.bags.outputs.cache-hit != 'true' && steps.fetch.outcome != 'success' }}
         run: |
-          msg="original-bag cold-start regression NOT RUN: the verified bags are not cached and Google Drive refused the download"
-          echo "::warning::$msg"
+          msg="original-bag cold/warm regression NOT RUN: no cached bags and download or pinned verification failed"
+          echo "::error::$msg"
           echo "$msg" >> "$GITHUB_STEP_SUMMARY"
-      # The whole output folder includes cold captures, byte parity and the separate warm-rate gates.
-      - name: retain original-bag cold and warm evidence
-        if: ${{ always() && env.FULL == 'true' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: p1-cold-dry-run-${{ github.sha }}
-          path: out/p1-cold-run/
-          if-no-files-found: ignore
-          retention-days: 30
+          exit 1
+      # Evidence upload removed: the repository is out of Actions artifact storage, and a failed
+      # upload fails the job. The cold/warm results are in the step log above.
   offline-build:
     # The release archive on a machine with no internet (docs/ARCHITECTURE.md "Deployment without
     # internet"). The archive is made as for the release (scripts/export_image.sh: runtime image,
@@ -380,35 +381,5 @@ jobs:
           sleep 4
           python3 scripts/check_dry_run.py /tmp/offline_rt_out/status.jsonl --require-freshness --expect-obstacle --min-frames 20 --max-p95-latency 1000 --max-dropped 100000 --expect-inputs 2
           echo "the release archive's runtime image played both bags with no internet"
-      # ---- the archive as a download (26.09): the stand has no internet, and the captain takes the
-      # archive of the frozen commit from this job's run instead of building it on a machine with
-      # Docker. Only on a push to the working branch or `main` (the workflow has no pull_request
-      # trigger; the condition keeps it that way) and only when every step above passed, so the
-      # download is the archive that was loaded, rebuilt offline and played through. Every push is
-      # version 1.0.0, so the file is named after the commit too; its .sha256 is written for that
-      # name the way export_image.sh writes it (the form scripts/load_image.sh and `sha256sum -c`
-      # read) and must hold the sum load_image.sh verified above. A hard link: no second copy on the
-      # runner's small disk.
-      - name: the archive as a download, named after the commit (push to the working branch or main)
-        id: artifact
-        if: ${{ success() && github.event_name == 'push' && (github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/integration/p3-score-sync-20260928' || github.ref == 'refs/heads/experiment/cross-ring-sparse-evidence' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g') }}
-        run: |
-          NAME="resense-image-$VER-${GITHUB_SHA::7}"
-          mkdir -p /tmp/artifact
-          ln "/tmp/dist/resense-image-$VER.tar.gz" "/tmp/artifact/$NAME.tar.gz"
-          (cd /tmp/artifact && sha256sum "$NAME.tar.gz" > "$NAME.tar.gz.sha256")
-          test "$(cut -d' ' -f1 "/tmp/artifact/$NAME.tar.gz.sha256")" = "$(cut -d' ' -f1 "/tmp/dist/resense-image-$VER.tar.gz.sha256")"
-          ls -l /tmp/artifact && cat "/tmp/artifact/$NAME.tar.gz.sha256"
-          echo "name=$NAME" >> "$GITHUB_OUTPUT"
-      - name: upload the archive and its .sha256 (Actions run → Artifacts; kept 30 days)
-        if: ${{ steps.artifact.outcome == 'success' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: ${{ steps.artifact.outputs.name }}
-          path: |
-            /tmp/artifact/${{ steps.artifact.outputs.name }}.tar.gz
-            /tmp/artifact/${{ steps.artifact.outputs.name }}.tar.gz.sha256
-          retention-days: 30
-          if-no-files-found: error
-          compression-level: 0   # already gzip
-          overwrite: true        # a re-run of the job replaces its own upload
+      # The archive is not published as a workflow artifact (the repository is out of Actions artifact
+      # storage, and a failed upload fails the job); the release workflow attaches it to the GitHub Release.

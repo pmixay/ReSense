@@ -7,11 +7,9 @@
 > [`archive/CAPTAIN_board_2026-09-28.md`](archive/CAPTAIN_board_2026-09-28.md); 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29 night: GitHub (0 tags, 0 releases; `main` at `7532a6b`, PR #29, CI green),
-> the new seal on the documentation branch (`7464d80`, shell rule off, verify PASS), 1 279 tests passing on `7532a6b`, the VM run of
-> 28.09 and the independent judgement of 28.09 ([`SCORECARD.md`](SCORECARD.md)); the requirements map
-> [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md); 2026-09-29: §4 against the remote's branches and PR #31 (open,
-> base `main` `5d6e9b5`), its web-prototype row against the branch's `webapp/` and `.github/workflows/ci.yml`.
+> **Last verified:** 2026-10-15, D1 pass 1: the judgement of 13.10 (v1.0.0, 66/100),
+> remote branches and tag `v1.0.0` → `5d6e9b5`, GitHub release metadata (three archive/checksum assets);
+> detector baseline and ownership against the current files. The decision log retains its original dates.
 > **Status:** current
 
 ## 1. Role and dates
@@ -31,17 +29,18 @@ the image, the tools and the documents change (§6).
 
 ## 2. The captain's criteria and their score
 
-From the independent judgement of 28.09 evening ([`SCORECARD.md`](SCORECARD.md), not re-scored
-since); maxima are the team's reading of the spec, the organizers publish no weights.
+From the independent judgement of **13.10 on v1.0.0** ([`SCORECARD.md`](SCORECARD.md));
+maxima are the team's reading of the spec, the organizers publish no weights. These are agent
+review scores, not organizer scores; pending work in BACKLOG has not been credited.
 
-| criterion | max | score | what of it is the captain's | what costs points | done since the judgement |
+| criterion | max | score | what of it is the captain's | what costs points | evidence / next check |
 |---|---:|---:|---|---|---|
-| **8.3 Speed** (node side) | 10 | **7.5** | the node's input path, catch-up, freshness, the timing evidence | slow start-up (e2e p95 0.5–1.1 s over the first seconds at 360°); stale output under the default player; no 8-core measurement | 29.09: faster decode, warm-up, 5 Hz start-up catch-up — first 3 s at 360° 312–325 → 38–105 ms median e2e, all results p95 410–447 → 212–344 ms (cold 864–1084 → 333–599 ms), identical decisions ([evidence](evidence/node_startup_2026-09-29/README.md)); `check_dry_run.py` reports the playback pace and the start-up lag |
+| **8.3 Speed** (node side) | 10 | **7** | input, catch-up, freshness, timing evidence | 4 vCPU: 360° node p95 111 ms, only 35/201 results current with README flags; literal player 0/146 current, RSS 3.4 GB; no 8-core run | S1/S2/S5 pending; the historical 29.09 catch-up A/B used explicit step 0.2, not the shipped default 0 |
 | **8.5 Technical quality** (CI, Docker, docs) | 10 | **7** | CI, Dockerfile, release workflow, README / ARCHITECTURE / ALGORITHM / EVALUATION, this board | Markdown volume and dated process notes; stale statements | 29.09: README cut to the jury path; EXPERIMENTS compacted (full log archived); dated records archived; stale facts fixed across the docs and the GitBook |
-| **8.6 Ease of launch** | 10 | **7** | all of it | no published image archive for README step 1; `--read-ahead-queue-size 10` required; `--net=host` | 29.09: the node exits cleanly on Ctrl+C; the start-up burst is caught up faster |
-| **captain's criteria** | **30** | **21.5** | | | |
+| **8.6 Ease of launch** | 10 | **8** | all of it | `--read-ahead-queue-size 10` and host networking required; build needs internet; non-root player needs HOME | v1.0.0 archive and checksum verified by the judge 13.10; offline node starts in ~3 s; E2 pending |
+| **captain's criteria** | **30** | **22** | | | |
 | 8.7 Team approach (shared) | 10 | 8 | DECISIONS, the documents' structure | the record was scattered and partly described an older detector | 29.09: one compact EXPERIMENTS, DECISIONS current |
-| 8.8 Pitch — P2 28.09, **the captain again since 29.09 evening** | 5 | 3 | the deck, the speech, the demo, rehearsals | silent video, team slides without names, dense slides, no rehearsal | 29.09: the deck with the team's photos and current numbers, the speech and the video script ([`PRESENTATION.md`](PRESENTATION.md)) |
+| 8.8 Pitch — **the captain since 29.09 evening**, P2 visuals | 5 | 4 | deck, speech, demo, rehearsals | text-heavy slides, favourable range/timing headlines; live delivery not observed | named deck and videos inspected 13.10; PT1 cuts and PT2 rehearsals tracked in BACKLOG |
 
 The rest of the total is the detector's (8.1, 8.2, 8.4: P3 with P4's evaluation); the detector is
 sealed, so moving those needs the captain to unfreeze it (§3, item 6).
@@ -54,14 +53,14 @@ sealed, so moving those needs the captain to unfreeze it (§3, item 6).
 H = only a person can do it; A = an agent can do it, the captain merges. The full requirement →
 artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) §4–§5.
 
-**Before the upload (29.09, closes 23:59 MSK):**
+**Submission history (29.09, closed 23:59 MSK; not today's queue):**
 
 | # | item | who | state |
 |---|---|---|---|
-| 1 | **Final documentation pass** (every doc against `7532a6b`, the 29.09 rules in ALGORITHM / EXPERIMENTS / DECISIONS, the pitch deck with current numbers, the requirements map, the judgement's offline measurements re-run on `7532a6b` as `evidence/judgement_2026-09-29/`) → one PR from `claude/admiring-pascal-ex9v51`; merge after CI is green. Docs only: no sealed file changes. | A; H merges | **done**: PR #30 merged as `70bc265` (CI green) |
-| 2 | **Release `v1.0.0` on `70bc265`** (the merge of the documentation PR #30; the user, 29.09 ~20:40: no release candidate, and the release does not wait for the interface — the runtime image does not contain `webapp/`). `release.yml` needs 30–40 min to build, prove and publish the archive, so the tag goes out by ~23:00 MSK. The agent session cannot push tags or write through the GitHub API (its proxy refuses), so the captain pushes it: `git tag -a v1.0.0 70bc265 -m "ReSense 1.0.0" && git push origin v1.0.0`. | H | now |
-| 3 | **Check the release:** logged out, download `resense-image-v1.0.0.tar.gz` and its `.sha256`, `sha256sum -c`; on the team VM `IMAGE_TAR=… OFFLINE=1 scripts/dry_run.sh` on `doubleT_obstacle` and `roundT_doubleT` if time allows (CI's `release.yml` already loads the archive back and plays both smoke bags through it with no network). | H | after 2 |
-| 4 | **Submit** (links): the repository with the final commit hash, the `v1.0.0` archive and its sha256, the video, the deck (PDF), the GitBook — every link opened logged out first. | H | after 3 |
+| 1 | **Final documentation pass** on `7532a6b`, shell-off reseal and deck. `evidence/judgement_2026-09-29/` contains scripts only, not a completed re-run; the completed later judgement is 13.10. | A; H merges | PR #30 merged as `70bc265` |
+| 2 | **Release v1.0.0:** the plan named `70bc265`; the actual tag is **`5d6e9b5`**, with the same runtime. | H | published 29.09 17:58:58 UTC; archive and two checksum assets present |
+| 3 | **Check the release:** checksum, load and node chain. | H | independently verified 13.10; a new logged-out download was not repeated by D1 |
+| 4 | **Submit** the repository, archive/checksum, video, PDF and GitBook links. | P1 | captain's action; no submission receipt recorded here |
 | 5 | Keep `--read-ahead-queue-size 10` prominent in every instruction: with Humble's default read-ahead the results stay stale. | A | done in README / GitBook |
 
 **After the upload:**
@@ -73,20 +72,26 @@ artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) �
 | 8 | A human read of the safety review of 29.09 night (the agent review: `shell` BLOCKING → switched off; `explained_run`, the ego veto NON-BLOCKING with documented limits). | P1, P3 |
 | 9 | If an 8-core machine is available: `scripts/bench_8core.sh` on both original bags, evidence committed. | H (+ A) |
 
-## 4. Branches other than `main` (29.09 evening)
+## 4. Branches other than `main` (15.10)
 
-Checked on GitHub: `main` and one other branch; one open pull request, #31.
+Remote refs checked 15.10: `main` plus the four detector work branches below. PR #31 is merged
+as `317eabf`; the web prototype is in `main` and outside the v1.0.0 runtime image.
 
 | branch | state | recommendation |
 |---|---|---|
 | `claude/admiring-pascal-ex9v51` | the final documentation pass (item 1): merged into `main` as PR #30 (`70bc265`), deleted on the remote | nothing to do |
-| `claude/prototype-website-rebuild-tz31o0` | the web prototype ([`webapp/README.md`](../webapp/README.md): FastAPI backend, React pages in the «Линия» design, live at https://resense.arbuz.lol/, locally `scripts/run_webapp.sh` → http://localhost:8080); **[PR #31](https://github.com/pmixay/ReSense/pull/31) open**, `main` (`5d6e9b5`) merged in; all pages built, reviewed and tested (149 backend + 278 frontend + 44 browser tests), CI job `webapp` added; runs the same sealed detector; adds `webapp/` and `scripts/run_webapp.sh`, nothing the runtime image uses; not merged into `main` | optional and outside the release (the user, 29.09 ~20:40): merge only through a PR with `main` merged in and CI green, before 23:59 if it is to be part of the upload; otherwise after it |
+| `final/silent-misses` | `d0d17bb`: candidate fixes and probe harness | BACKLOG H1–H6; not a released seal |
+| `r3/axis` | `972edd2`: monitored-range cap gated, integration/review pending | H3/H4 |
+| `r3/axis-B-trial` | `d77a861`: axis-weighting trials failed the gate | K2; not shipped |
+| `r3/column` | `42108ac`: ungated WIP | H1; measure before integration |
 | `experiment/cross-ring-sparse-evidence`, `claude/funny-gates-3358a8`, `claude/amazing-fermi-t67v8g`, `gpt-score-push-20260928` | merged into `main` (PR #27, #28, #29) or deleted on the remote | nothing to do |
 
 ## 5. Release and submission
 
-No tag or release exists yet (GitHub, 29.09 19:30 MSK). `.github/workflows/release.yml` publishes one
-per pushed tag `v1.0.0-rcN` / `v1.0.0` (§3, items 2–3): it builds the runtime image from the tag,
+**v1.0.0 is published**, tag **`5d6e9b5`** (29.09). GitHub metadata checked 15.10 lists
+`resense-image-v1.0.0.tar.gz` (477 449 541 bytes), its `.sha256` and `SHA256SUMS`.
+The judge verified the checksum and offline launch on 13.10; D1 checked metadata, not a new
+archive download. `.github/workflows/release.yml` builds the runtime image from a pushed version tag,
 removes it, loads the archive back, plays both smoke bags through the loaded image with no internet
 and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The version in
 `pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` is 1.0.0, kept equal by
@@ -106,7 +111,7 @@ and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The 
   in the PR title and a heads-up to the consumers; add, never rename or remove.
 - Freeze: detector and config sealed since 27.09 (`docs/DETECTOR_FREEZE.md`, checked by CI); the node, the image, the tools and the documents change through reviewed PRs with CI green.
 - Detector / config gate: `python scripts/regression_gate.py --baseline
-  docs/evidence/results/regression_baseline_2026-09-29_competitor_rules.json` (the sealing gate of `1e2ed82`) exits 0 on the change. Every
+  docs/evidence/results/regression_baseline_2026-09-29_shell_off.json` (the current v1.0.0 baseline) exits 0 on the change. Every
   gated metric must be identical or better on the six recordings, set O, the ride and set F
   straight (the last two need `/data/cache/new_data`, streamed split by split as in
   [`VM_GUIDE.md`](VM_GUIDE.md) §2.3; without it their rows fail as "missing in this run", and a run
@@ -121,7 +126,7 @@ and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The 
 | contract | where | consumers |
 |---|---|---|
 | jury path `docker load` (no internet on the stand; `docker build` where there is) `→ docker run → ros2 bag play → /resense/decision` | README «Кратко для жюри»; GitBook «Приёмочный тест» (`gitbook/guides/acceptance-test.md`) | jury, P2 video |
-| release (deferred by the captain, 25.09; inert until a tag is pushed): tags `v1.0.0-rcN` / `v1.0.0` only; assets `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS` | `.github/workflows/release.yml`, `scripts/release_meta.py`, `scripts/verify_release.sh` | the later deployment |
+| release: `v<version>` / `v<version>-rcN` matching the four package versions; assets `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`; v1.0.0 published on `5d6e9b5` | `.github/workflows/release.yml`, `scripts/release_meta.py`, `scripts/verify_release.sh` | jury; P1 E1; P2 demo/fallback |
 | 12 topics `/resense/{decision, obstacle_detected, warning, nearest_distance, clear_distance, detections, status, health, markers, corridor_points, latency_ms, fps}` + `/tf_static` | `detector_node.py`, GitBook «Топики и JSON статуса» (`gitbook/reference/topics.md`) | P2, jury |
 | status JSON: `stamp, obstacle, warning, nearest_distance, clear_distance, detections[], warnings[], track, health, mount, timing_ms, ego_speed*, n_accumulated, n_*` + `node` (added by the node) | `FrameResult.to_dict()` in `resense/detector.py` | P2 dashboard, `resense run --out` |
 | `Frame` (xyz in the vehicle frame, intensity, ring, stamp) | `resense/frame.py` | P3, P4 |
@@ -140,7 +145,9 @@ and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The 
 | `resense/{frame,pointcloud,sensor}.py` | P1 decoding / P3 geometry |
 | `resense/{synthetic,metrics,io,cli}.py`, other `tests/` (`test_node.py`: P1), `labels/`, `scripts/{cache_frames,eval_real,far_range_eval,compare_setf,label_fake_objects,score_fake_objects,short_signature_experiment,unpack_dataset,start_offsets,regression_gate}.py`, `scripts/speed_*.py` (with `tests/test_speed_eval_helpers.py`), `tests/test_regression_gate.py`, `docs/DATASET.md`, `docs/archive/P4_AUDIT.md`, `docs/evidence/results/` | P4 |
 | `docs/EXPERIMENTS.md` (the full log of 16–28.09 archived in `docs/archive/EXPERIMENTS_log_2026-09.md`) | P3 / P4; P1 the node timing |
-| `web/` (incl. `web/assets/fonts/`, `web/demo/`), `ros2_ws/src/resense_ros/rviz/`, `docs/{PRESENTATION.md,images/,img/,video/,presentation/}`, `scripts/{build_deck,hero_view,make_overview_video}.py`, `tests/test_overview_video.py`; the pitch and the video since 28.09 | P2 (`docs/img/` stays in place: scripts read it) |
+| `web/` (incl. `web/assets/fonts/`, `web/demo/`), `ros2_ws/src/resense_ros/rviz/`, `docs/{images/,img/}`, `scripts/hero_view.py` | P2 (`docs/img/` stays in place: scripts read it) |
+| `docs/PRESENTATION.md`, `docs/presentation/`, `scripts/build_deck.py` | P1 owns pitch, content and approval since 29.09 evening; P2 slide cuts, range-chart rendering and visuals (BACKLOG PT1) |
+| `docs/video/`, `scripts/make_overview_video.py`, `tests/test_overview_video.py` | P1 coordinates the team's recording; P2 video cards and the release-matched fallback (BACKLOG PT1/PT2) |
 
 ## 9. Decision log
 
@@ -212,5 +219,5 @@ and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The 
 The experimental branch also contains the accepted P3 changes and health histogram optimization.
 Their measured commits, acceptance checks and remaining work are in
 [`P3_SCORE_SYNC_2026-09-28.md`](P3_SCORE_SYNC_2026-09-28.md) and the
-[health evidence](evidence/cycle_2026-09-28/health_histogram/README.md). The 61/100 judgement above
-remains the assessment of `464f5bc`; it does not score the combined branch.
+[health evidence](evidence/cycle_2026-09-28/health_histogram/README.md). The historical 61/100
+judgement assessed `464f5bc`; the current 13.10 judgement of v1.0.0 is 66/100 (§2).

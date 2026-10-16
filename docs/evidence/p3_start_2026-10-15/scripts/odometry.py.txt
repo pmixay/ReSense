@@ -1,0 +1,38 @@
+"""Prepare shared sealed baseline axes and ICP for the inherited range probes."""
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+BASE = Path(__file__).resolve().parent
+REPO = Path("C:/Users/alikh/OneDrive/Desktop/projects/ReSense")
+DATA = BASE / "resense-p3-data"
+BAGS = ("roundT_pressureGate_roundT", "roundT_squareT_pressureGate_squareT",
+        "roundT_doubleT", "squareT_platform_squareT_switch")
+
+
+def main():
+    out = DATA / "odometry"
+    out.mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ, PYTHONPATH=os.pathsep.join((str(REPO), str(BASE))), RESENSE_REPO=str(REPO),
+               OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1")
+    for bag in BAGS:
+        cache = DATA / "decoded" / bag
+        while not (cache / "meta.json").exists():
+            time.sleep(5)
+        target = out / f"icp_{bag}.json"
+        if not target.exists():
+            subprocess.run([sys.executable, "docs/evidence/judgement_2026-10-13/scripts/icp_odometry.py",
+                            str(cache), str(target)], cwd=REPO, env=env, check=True)
+        baseline = str(cache) + "_baseline.json"
+        if not Path(baseline).exists():
+            code = ("import sys; sys.path.insert(0, 'docs/evidence/judgement_2026-10-13/scripts'); "
+                    "import range_test; range_test.baseline(sys.argv[1], sys.argv[2])")
+            subprocess.run([sys.executable, "-c", code, str(cache), baseline], cwd=REPO, env=env, check=True)
+        print("ready", bag, flush=True)
+    print("ODOMETRY AND SEALED BASELINES COMPLETE", flush=True)
+
+
+if __name__ == "__main__":
+    main()

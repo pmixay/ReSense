@@ -1,0 +1,14 @@
+#!/bin/bash
+# the full regression gate of the committed worktree code, after stage 1
+cd /tmp/claude-0/fixwork/fix_review
+until grep -q "CHAIN_FIN_STAGE1 DONE" out/chain_fin.log 2>/dev/null; do sleep 10; done
+source /tmp/claude-0/venv/bin/activate
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+W=/home/user/ReSense/.claude/worktrees/wf_75640bbf-380-3
+cd $W
+echo "gate start $(date +%T) $(git rev-parse --short HEAD) $(git status --short resense configs ros2_ws | wc -l) dirty" >> /tmp/claude-0/fixwork/fix_review/out/chain_fin.log
+PYTHONPATH=$W nice -n 5 python scripts/regression_gate.py --cache /tmp/claude-0/fixdata/cache --jobs 2 \
+  --work /tmp/claude-0/fixwork/fix_review/gate_work --out /tmp/claude-0/fixwork/fix_review/gate.json \
+  --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json > /tmp/claude-0/fixwork/fix_review/gate.log 2>&1
+echo "gate exit $? $(date +%T)" >> /tmp/claude-0/fixwork/fix_review/out/chain_fin.log
+echo "GATE_FIN DONE" >> /tmp/claude-0/fixwork/fix_review/out/chain_fin.log

@@ -1,0 +1,38 @@
+#!/bin/bash
+# r3 probe battery: judge range tests with clear_distance, on the detector's axis and on the true axis.
+# usage: WT=<code snapshot> [R3_OVR=...] rt_batt.sh <outdir> [set]   set: core (default) | full
+R3=/tmp/claude-0/fixwork/r3axis
+OUT=$1; SET=${2:-core}
+mkdir -p $OUT
+J=/tmp/claude-0/judge_data/cache
+ICP=$WT/docs/evidence/judgement_2026-10-13/out
+CA="$J/roundT_squareT_pressureGate_squareT $ICP/icp_roundT_squareT_pressureGate_squareT.json"
+CB="$J/roundT_doubleT $ICP/icp_roundT_doubleT.json"
+CC="$J/roundT_pressureGate_roundT $ICP/icp_roundT_pressureGate_roundT.json"
+TC=/tmp/claude-0/fixwork/investigate_oversize/C_true_axis_full.json
+TB=$R3/B_true_axis_f.json
+run() { # name truth args...
+  local n=$1 t=$2; shift 2
+  [ -s $OUT/$n.json ] && return
+  if [ "$t" = "-" ]; then $R3/py.sh $R3/rt_clear.py "$@" > $OUT/$n.log 2>&1
+  else TRUE_AXIS=$t $R3/py.sh $R3/rt_clear.py "$@" > $OUT/$n.log 2>&1; fi
+}
+run C_person - $CC $OUT/C_person --obj 0.5,0.5,1.75 --start 0 --d0 230
+run C_person_true $TC $CC $OUT/C_person_true --obj 0.5,0.5,1.75 --start 0 --d0 230
+run C_cube1 - $CC $OUT/C_cube1 --obj 1.0,1.0,1.0 --start 0 --d0 230
+run C_cube05 - $CC $OUT/C_cube05 --obj 0.5,0.5,0.5 --start 0 --d0 230
+run C_cube1_true $TC $CC $OUT/C_cube1_true --obj 1.0,1.0,1.0 --start 0 --d0 230
+run B_person - $CB $OUT/B_person --obj 0.5,0.5,1.75 --start 50 --d0 230
+[ -s $TB ] && run B_person_true $TB $CB $OUT/B_person_true --obj 0.5,0.5,1.75 --start 50 --d0 230
+run A_person - $CA $OUT/A_person --obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340
+if [ "$SET" = "full" ]; then
+  run C_cube05_true $TC $CC $OUT/C_cube05_true --obj 0.5,0.5,0.5 --start 0 --d0 230
+  run B_cube1 - $CB $OUT/B_cube1 --obj 1.0,1.0,1.0 --start 50 --d0 230
+  [ -s $TB ] && run B_cube1_true $TB $CB $OUT/B_cube1_true --obj 1.0,1.0,1.0 --start 50 --d0 230
+  run C_person_latm07 - $CC $OUT/C_person_latm07 --obj 0.5,0.5,1.75 --start 0 --d0 230 --lat -0.7
+  run C_person_latp07 - $CC $OUT/C_person_latp07 --obj 0.5,0.5,1.75 --start 0 --d0 230 --lat 0.7
+  run C_person_drop - $CC $OUT/C_person_drop --obj 0.5,0.5,1.75 --start 0 --d0 230 --dropout
+  run A_cube1 - $CA $OUT/A_cube1 --obj 1.0,1.0,1.0 --start 150 --d0 230 --end 340
+  run A_person_latp05 - $CA $OUT/A_person_latp05 --obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340 --lat 0.5
+fi
+echo BATT_DONE

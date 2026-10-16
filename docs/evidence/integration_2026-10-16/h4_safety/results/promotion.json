@@ -1,0 +1,211 @@
+{
+  "frame": "new_data_54_0009",
+  "index": 1354,
+  "cache_sha256": "93ff5e2c87dda4a2794351a682dff6729836552d5ae1d20f4bf4c0f1b9bd86e1",
+  "input": {
+    "shape": [
+      156978
+    ],
+    "dtype": "[('x', '<i2'), ('y', '<i2'), ('z', '<i2'), ('intensity', 'u1'), ('ring', 'u1')]",
+    "sha256": "b20cced8c4dda3cc32dc869ccc607624ce339fce9a3dbc9c721b32a3794c5872"
+  },
+  "obstacle": false,
+  "nearest": null,
+  "clear": 44.6,
+  "witness": [
+    {
+      "prior_hist": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "pre": {
+        "points_idx": {
+          "shape": [
+            49
+          ],
+          "dtype": "int64",
+          "sha256": "51bb32220cf41970cd913faa44180423d8b69b23595367e4a64a84f58ed313b1"
+        },
+        "n": 25,
+        "n_raw": 49,
+        "centroid": [
+          75.40693664550781,
+          1.5114284753799438,
+          0.5434694290161133
+        ],
+        "bbox_min": [
+          73.55999755859375,
+          1.2699999809265137,
+          -0.550000011920929
+        ],
+        "bbox_max": [
+          76.25999450683594,
+          1.659999966621399,
+          2.0899999141693115
+        ],
+        "distance": 73.55999755859375,
+        "lateral": -0.1383347559154351,
+        "height_min": 0.13031013912933676,
+        "height_max": 2.7459693933711486,
+        "intensity": 5.755102157592773,
+        "n_expected": 47.53178733489585,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 17,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": false
+      },
+      "post": {
+        "points_idx": {
+          "shape": [
+            49
+          ],
+          "dtype": "int64",
+          "sha256": "51bb32220cf41970cd913faa44180423d8b69b23595367e4a64a84f58ed313b1"
+        },
+        "n": 25,
+        "n_raw": 49,
+        "centroid": [
+          75.40693664550781,
+          1.5114284753799438,
+          0.5434694290161133
+        ],
+        "bbox_min": [
+          73.55999755859375,
+          1.2699999809265137,
+          -0.550000011920929
+        ],
+        "bbox_max": [
+          76.25999450683594,
+          1.659999966621399,
+          2.0899999141693115
+        ],
+        "distance": 73.55999755859375,
+        "lateral": -0.1383347559154351,
+        "height_min": 0.13031013912933676,
+        "height_max": 2.7459693933711486,
+        "intensity": 5.755102157592773,
+        "n_expected": 47.53178733489585,
+        "score": 1.0,
+        "zone": "gauge",
+        "n_gauge": 25,
+        "retro": false,
+        "reason": "",
+        "kind": "",
+        "rail_line": false,
+        "wall_kept": false,
+        "demoted": false,
+        "thin": false,
+        "weak": false,
+        "ring_count": 17,
+        "low_height_weak": false,
+        "spared": true,
+        "cut": false
+      },
+      "tracks_by_object_identity": [
+        {
+          "id": 422,
+          "hits": 5,
+          "misses": 0,
+          "age": 10,
+          "confidence": 0.7,
+          "history": [
+            81.54000091552734,
+            78.79000091552734,
+            77.94999694824219,
+            74.43999481201172,
+            73.55999755859375
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          "column_hist": [
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          "spare_hist": [
+            false,
+            false,
+            true,
+            false,
+            true
+          ],
+          "hit_hist": [
+            true,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "thin_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "near_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "explained_hist": [
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          "clean_run": 1,
+          "reported": false,
+          "seen_reported": false,
+          "column_held": true,
+          "vote_zone": "warning",
+          "rule_zone": "warning",
+          "zone": "warning",
+          "span_s": 0.9939892292022705,
+          "approach_block": false,
+          "far_evidence": false,
+          "fresh_blocked": false,
+          "stop_earned": false,
+          "withheld": false,
+          "since_clean": 0.0,
+          "hold": 0
+        }
+      ],
+      "output_membership": [
+        {
+          "id": 422,
+          "detection": false,
+          "warning": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+Detector freeze PASS: 36 files; source 075a20df9fcdba6605a92e6505ae4dfdb3bf410ec09d17a8b3c79ce714db9292
+Integrity check only; no recordings replayed.

@@ -1,0 +1,72 @@
+[
+  {
+    "argv": [
+      "git",
+      "-c",
+      "safe.directory=/source.git",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      "-c",
+      "core.autocrlf=false",
+      "-c",
+      "core.eol=lf",
+      "/source.git",
+      "/evalworkspace/seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407"
+    ],
+    "cwd": null,
+    "exit": 0,
+    "log": "clone.log",
+    "wall_s": 0.9051547050476074
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.autocrlf=false",
+      "checkout",
+      "--detach",
+      "d6319c237213743897c661990c2c78adfa7b4796"
+    ],
+    "cwd": "/evalworkspace/seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407",
+    "exit": 0,
+    "log": "checkout.log",
+    "wall_s": 15.448221921920776
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/detector_freeze.py",
+      "verify",
+      "--manifest",
+      "docs/evidence/detector_freeze_2026-10-16_1.1.0.json"
+    ],
+    "cwd": "/evalworkspace/seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407",
+    "exit": 0,
+    "log": "verify_before_native.log",
+    "wall_s": 0.12683320045471191
+  },
+  {
+    "argv": [
+      "bash",
+      "scripts/build_native.sh"
+    ],
+    "cwd": "/evalworkspace/seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407",
+    "exit": 0,
+    "log": "native_build.log",
+    "wall_s": 1.4068889617919922
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/detector_freeze.py",
+      "verify",
+      "--manifest",
+      "docs/evidence/detector_freeze_2026-10-16_1.1.0.json"
+    ],
+    "cwd": "/evalworkspace/seal-verify-1.1.0-d6319c237213-20261016T113016Z-0b47c407",
+    "exit": 0,
+    "log": "verify_after_native_or_create.log",
+    "wall_s": 0.054052114486694336
+  }
+]

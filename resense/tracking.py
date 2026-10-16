@@ -82,6 +82,7 @@ class Track:
     reported: bool = False          # reported as an obstacle / advisory after the last update
     column_hist: List[bool] = field(default_factory=list)  # last zone_window hits: demoted as a column?
     column_hold: int = 0            # this many column hits in column_hist keep the track advisory (0 = off)
+    spare_hist: List[bool] = field(default_factory=list)  # 14.10: last zone_window hits: column-shaped, the top seen free (Cluster.spared)?
     hold: int = 0                   # 26.09: frames left of a calibration re-seed hold window (Tracker.reseed)
     seen_reported: bool = False     # 26.09: reported in the frame of its last match (health.clear_cap_lost)
     kept: bool = False              # 26.09 (stop_keep_*): the last hit kept a reported obstacle only by the keep rules
@@ -102,7 +103,8 @@ class Track:
     fresh_blocked: bool = False     # opt-in: a reported advisory cannot become a STOP on this hit
     low_clean: Optional[Cluster] = None  # last clean low cluster; weak continuation cannot change this shape reference
     low_since_clean: float = 0.0  # actual elapsed time, including stamp gaps clipped for the existing motion/fit rules
-    explained_hist: List[bool] = field(default_factory=list)  # 29.09 (explained_run): last hits demoted with a reason?
+    explained_hist: List[bool] = field(default_factory=list)  # 29.09 (explained_run): measured infrastructure explanations
+    provisional_explained_hist: List[bool] = field(default_factory=list)  # imputed columns awaiting free-top corroboration and a clean run
     clean_run: int = 0              # 29.09 (explained_run): consecutive clean strict-gauge hits, broken by a miss
     odo: List[tuple] = field(default_factory=list)  # 29.09 (ego_veto_*): (odometry segment, train travel m, distance m) of the last hits
 
@@ -308,6 +310,7 @@ class Tracker:
                     break
                 i, j = np.unravel_index(np.argmin(d), d.shape)
                 t, cl = self.tracks[i], clusters[j]
+                self._uncorroborated_spare(cl, t.spare_hist)
                 t.since_clean = 0.0 if cl.zone == "gauge" else t.since_clean + kdt
                 keep = self._keeps(t, cl)
                 t.velocity = 0.5 * t.velocity + 0.5 * (cl.centroid - t.centroid) if t.hits > 1 else (cl.centroid - t.centroid)
@@ -328,6 +331,7 @@ class Tracker:
                 t.gauge_hits += int(g)
                 t.zone_hist = (t.zone_hist + [g])[-zw:]
                 t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
+                t.spare_hist = (t.spare_hist + [cl.spared])[-zw:]
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 if nk:
                     t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
@@ -362,12 +366,14 @@ class Tracker:
         # new tracks
         for j, cl in enumerate(clusters):
             if not matched_c[j]:
+                self._uncorroborated_spare(cl, [])
                 self.tracks.append(Track(
                     id=self._next_id, centroid=cl.centroid, velocity=np.zeros(3),
                     confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
                     gauge_hits=int(cl.zone == "gauge"), zone_hist=[cl.zone == "gauge"], hit_hist=[True],
                     span_s=dt, zone_min_fraction=c.zone_min_fraction, zone_min_votes=int(c.zone_min_votes),
                     column_hist=[cl.reason == "column"], column_hold=int(c.column_hold),
+                    spare_hist=[cl.spared],
                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
                     obs=[observation(cl)] if self.record else [],
@@ -380,7 +386,8 @@ class Tracker:
                       confidence=c.conf_gain * cl.score, last=cl, history=[cl.distance],
                       gauge_hits=1, zone_hist=[True], hit_hist=[True], span_s=dt,
                       zone_min_fraction=c.zone_min_fraction, column_hist=[False],
-                      column_hold=int(c.column_hold), near_hist=[False] if nk else [], near_hits=nk,
+                      column_hold=int(c.column_hold), spare_hist=[False],
+                      near_hist=[False] if nk else [], near_hits=nk,
                       since_clean=float("inf"))
             self._note(t, cl, True, zw, "far_thin")
             self.tracks.append(t)
@@ -428,7 +435,8 @@ class Tracker:
                 if fresh_blocked:
                     fresh_blocked_tracks.add(id(t))
             if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == "gauge"
-                    and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or (
+                    and not t.near_escalated and (any(t.explained_hist) or any(t.provisional_explained_hist))
+                    and t.clean_run < c.explained_run) or (
                     q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == "gauge"
                     and not t.near_escalated and self._carried_along(t)):
                 # 29.09 (explained_run): a history of explained (demoted) hits needs a clean run before
@@ -521,6 +529,7 @@ class Tracker:
             t.gauge_hits += 1
             t.zone_hist = (t.zone_hist + [True])[-zw:]
             t.column_hist = (t.column_hist + [False])[-zw:]
+            t.spare_hist = (t.spare_hist + [False])[-zw:]
             t.hit_hist = (t.hit_hist + [True])[-hw:]
             if nk:
                 t.near_hist = (t.near_hist + [False])[-nk:]
@@ -635,6 +644,7 @@ class Tracker:
             t.gauge_hits += 1
             t.zone_hist = (t.zone_hist + [True])[-zw:]
             t.column_hist = (t.column_hist + [cl.reason == "column"])[-zw:]
+            t.spare_hist = (t.spare_hist + [cl.spared])[-zw:]
             t.hit_hist = (t.hit_hist + [True])[-hw:]
             if nk:
                 t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
@@ -645,6 +655,19 @@ class Tracker:
             d[a, :] = np.inf
             d[:, b] = np.inf
         return used
+
+    def _uncorroborated_spare(self, cl: Cluster, spare_hist: List[bool]) -> None:
+        """14.10 (``tracking.column_free_min_spares``, review of the 13.10 free-top test): a cluster the column
+        rule fits but the free-top test spared (``Cluster.spared``) is believed only when the track it continues
+        had at least ``column_free_min_spares`` - 1 such hits among its last ``zone_window`` hits; otherwise it is
+        provisionally a column (reason ``column``, zone ``warning``): the column hold and zone vote still see
+        a column, while ``_note`` distinguishes its imputed explanation from measured infrastructure.
+        One spare of a noisy frame does not turn a column track into a STOP (point dropout at the standing
+        train, a mount pitch on roundT_doubleT); the
+        judge's pole, spared hit after hit, is believed from its second spared hit."""
+        n = int(self.cfg.column_free_min_spares)
+        if cl.spared and n > 1 and sum(spare_hist) < n - 1:
+            cl.reason, cl.zone, cl.demoted = "column", "warning", False
 
     def _note(self, t: Track, cl: Cluster, far_thin: bool, zw: int, source: str = "ordinary") -> None:
         """Record hit provenance and the existing far-evidence approach history.
@@ -660,8 +683,18 @@ class Tracker:
         if c.explained_run > 0 and source == "ordinary":
             reasons = [r.strip() for r in str(c.explained_reasons).split(",") if r.strip()]
             explained = bool(cl.reason) and (not reasons or cl.reason in reasons)
-            t.explained_hist = (t.explained_hist + [explained])[-max(1, int(c.explained_window)):]
-            t.clean_run = t.clean_run + 1 if (cl.zone == "gauge" and not cl.reason) else 0
+            # A spared column is imputed by _uncorroborated_spare, not measured by the column rule.
+            # Keep its advisory-release guard until accepted free-top evidence completes the clean
+            # run. That corroboration discharges only provisional explanations, so a later miss
+            # cannot revive them; measured explanations retain their bounded history across gaps.
+            provisional = explained and cl.reason == "column" and cl.spared
+            ew = max(1, int(c.explained_window))
+            t.explained_hist = (t.explained_hist + [explained and not provisional])[-ew:]
+            t.provisional_explained_hist = (t.provisional_explained_hist + [provisional])[-ew:]
+            clean = cl.zone == "gauge" and not cl.reason
+            t.clean_run = t.clean_run + 1 if clean else 0
+            if clean and cl.spared and t.clean_run >= c.explained_run:
+                t.provisional_explained_hist = [False] * len(t.provisional_explained_hist)
         if c.fresh_stop_evidence:
             n = max(1, int(c.fresh_stop_evidence_window))
             if source == "ordinary" and cl.zone != "gauge":
@@ -817,6 +850,7 @@ class Tracker:
             t.gauge_hits += 1
             t.zone_hist = (t.zone_hist + [True])[-zw:]
             t.column_hist = (t.column_hist + [False])[-zw:]
+            t.spare_hist = (t.spare_hist + [False])[-zw:]
             t.hit_hist = (t.hit_hist + [True])[-hw:]
             if nk:
                 t.near_hist = (t.near_hist + [False])[-nk:]

@@ -1,0 +1,159 @@
+{
+  "run_id": "stage-8a57c938210749fbadb58a5f912dd6c0",
+  "volume_name": "rs-s1-original-bags-20261016-72a601b",
+  "image_id": "sha256:6ff506466f8b1e981719b468cc0023b8ef000b983cdec0eafe119d01f379e31d",
+  "source": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p3-data\\for_hackathon",
+  "inventory_digest": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6",
+  "t_start": 1792106480.5328748,
+  "verified": true,
+  "reference_manifest": {
+    "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-p1-start\\docs\\evidence\\node_startup_2026-10-15\\docker\\manifest.json",
+    "sha256": "0635bcc82e61f6b1da55f74e0e3132bc07d6a86e30a827b5c1ef7bfd2a4fb8bf",
+    "matched": true
+  },
+  "copy": {
+    "name": "rs-s1-volume-copy-730ea2484751",
+    "mode": "copy",
+    "volume": "rs-s1-original-bags-20261016-72a601b",
+    "read_only": false,
+    "container_id": "87402adbc451538b28e1579b2f6094d8bc4b9128598b9a62c24ff79f7847d11c",
+    "image_id": "sha256:6ff506466f8b1e981719b468cc0023b8ef000b983cdec0eafe119d01f379e31d",
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-15T23:21:20.945424712Z",
+      "FinishedAt": "2026-10-15T23:25:10.78406803Z"
+    },
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\volume_stage06",
+        "Destination": "/job",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "volume",
+        "Name": "rs-s1-original-bags-20261016-72a601b",
+        "Source": "/var/lib/docker/volumes/rs-s1-original-bags-20261016-72a601b/_data",
+        "Destination": "/data",
+        "Driver": "local",
+        "Mode": "z",
+        "RW": true,
+        "Propagation": ""
+      },
+      {
+        "Type": "bind",
+        "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/resense-p3-data/for_hackathon",
+        "Destination": "/source",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "result": {
+      "copied": true,
+      "inventory_digest": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6",
+      "files": [
+        "doubleT_obstacle/metadata.yaml",
+        "doubleT_obstacle/doubleT_obstacle_0.db3",
+        "roundT_doubleT/metadata.yaml",
+        "roundT_doubleT/roundT_doubleT_0.db3"
+      ]
+    },
+    "cleanup_ok": true
+  },
+  "verification": {
+    "name": "rs-s1-volume-verify-58ebcbbc60e5",
+    "mode": "verify",
+    "volume": "rs-s1-original-bags-20261016-72a601b",
+    "read_only": true,
+    "container_id": "893beeee6a3dcacd05fd97ce0c7766abb18eecc32f79ea4e349ee2988b5dc811",
+    "image_id": "sha256:6ff506466f8b1e981719b468cc0023b8ef000b983cdec0eafe119d01f379e31d",
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-15T23:25:12.115591879Z",
+      "FinishedAt": "2026-10-15T23:25:45.659679966Z"
+    },
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-p1-runs-2026-10-15\\volume_stage06",
+        "Destination": "/job",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "volume",
+        "Name": "rs-s1-original-bags-20261016-72a601b",
+        "Source": "/var/lib/docker/volumes/rs-s1-original-bags-20261016-72a601b/_data",
+        "Destination": "/data",
+        "Driver": "local",
+        "Mode": "z",
+        "RW": false,
+        "Propagation": ""
+      }
+    ],
+    "result": {
+      "verified": true,
+      "inventory_digest": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6",
+      "bags": {
+        "doubleT_obstacle": {
+          "expected_frames": 201,
+          "topic": "/sensing/lidar/hesai128/pointcloud",
+          "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+          "files": [
+            {
+              "name": "doubleT_obstacle_0.db3",
+              "bytes": 4821250048,
+              "sha256": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9"
+            }
+          ]
+        },
+        "roundT_doubleT": {
+          "expected_frames": 252,
+          "topic": "/lidar_points",
+          "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+          "files": [
+            {
+              "name": "roundT_doubleT_0.db3",
+              "bytes": 2014867456,
+              "sha256": "6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d"
+            }
+          ]
+        }
+      }
+    },
+    "cleanup_ok": true
+  },
+  "t_end": 1792106746.1516466,
+  "volume_inspect": {
+    "CreatedAt": "2026-10-15T23:21:20Z",
+    "Driver": "local",
+    "Labels": {
+      "resense.startup.expected_inventory": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6",
+      "resense.startup.volume_owner": "stage-8a57c938210749fbadb58a5f912dd6c0"
+    },
+    "Mountpoint": "/var/lib/docker/volumes/rs-s1-original-bags-20261016-72a601b/_data",
+    "Name": "rs-s1-original-bags-20261016-72a601b",
+    "Options": null,
+    "Scope": "local"
+  }
+}

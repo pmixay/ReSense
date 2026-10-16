@@ -1,0 +1,107 @@
+[
+  {
+    "argv": [
+      "git",
+      "-c",
+      "safe.directory=/source.git",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      "-c",
+      "core.autocrlf=false",
+      "-c",
+      "core.eol=lf",
+      "/source.git",
+      "/evalworkspace/baseline-707ea9cda051-20261016T060147Z-68fb3429"
+    ],
+    "cwd": null,
+    "exit": 0,
+    "log": "clone.log",
+    "started_unix": 1792130510.3913918,
+    "wall_s": 1.1588683128356934
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.autocrlf=false",
+      "checkout",
+      "--detach",
+      "707ea9cda051369326fb9407c42488c1033dad76"
+    ],
+    "cwd": "/evalworkspace/baseline-707ea9cda051-20261016T060147Z-68fb3429",
+    "exit": 0,
+    "log": "checkout.log",
+    "started_unix": 1792130511.5826614,
+    "wall_s": 10.117707014083862
+  },
+  {
+    "argv": [
+      "bash",
+      "scripts/build_native.sh"
+    ],
+    "cwd": "/evalworkspace/baseline-707ea9cda051-20261016T060147Z-68fb3429",
+    "exit": 0,
+    "log": "native_build.log",
+    "started_unix": 1792130524.1868603,
+    "wall_s": 2.613340139389038
+  },
+  {
+    "argv": [
+      "g++",
+      "--version"
+    ],
+    "cwd": "/evalworkspace/baseline-707ea9cda051-20261016T060147Z-68fb3429",
+    "exit": 0,
+    "log": "compiler.log",
+    "started_unix": 1792130527.1190205,
+    "wall_s": 0.0075838565826416016
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/detector_freeze.py",
+      "verify"
+    ],
+    "cwd": "/evalworkspace/baseline-707ea9cda051-20261016T060147Z-68fb3429",
+    "exit": 0,
+    "log": "seal_verify_before.log",
+    "started_unix": 1792130527.13059,
+    "wall_s": 0.14326977729797363
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/regression_gate.py",
+      "--cache",
+      "/data/cache",
+      "--jobs",
+      "2",
+      "--chunks",
+      "8",
+      "--baseline",
+      "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+      "--work",
+      "/evidence/baseline-707ea9cda051-20261016T060147Z-68fb3429/gate_work",
+      "--out",
+      "/evidence/baseline-707ea9cda051-20261016T060147Z-68fb3429/gate.json"
+    ],
+    "cwd": "/evalworkspace/baseline-707ea9cda051-20261016T060147Z-68fb3429",
+    "exit": 0,
+    "log": "gate.log",
+    "started_unix": 1792130987.746562,
+    "wall_s": 1227.173194885254
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "scripts/detector_freeze.py",
+      "verify"
+    ],
+    "cwd": "/evalworkspace/baseline-707ea9cda051-20261016T060147Z-68fb3429",
+    "exit": 0,
+    "log": "seal_verify_after.log",
+    "started_unix": 1792132215.4068136,
+    "wall_s": 0.1374213695526123
+  }
+]

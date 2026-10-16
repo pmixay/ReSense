@@ -1,0 +1,11 @@
+test_candidate_list_additions_and_schema_additions_are_retained (test_frame_diff.FrameDiffContract.test_candidate_list_additions_and_schema_additions_are_retained) ... ok
+test_latency_only_warn_is_normalized_without_mutating_input (test_frame_diff.FrameDiffContract.test_latency_only_warn_is_normalized_without_mutating_input) ... ok
+test_new_health_fields_are_never_blanket_excluded (test_frame_diff.FrameDiffContract.test_new_health_fields_are_never_blanket_excluded) ... ok
+test_scene_health_error_and_non_latency_messages_remain (test_frame_diff.FrameDiffContract.test_scene_health_error_and_non_latency_messages_remain) ... ok
+test_severity_normalization_fails_on_ambiguous_scene_health (test_frame_diff.FrameDiffContract.test_severity_normalization_fails_on_ambiguous_scene_health) ... ok
+test_sub_rounding_geometry_changes_are_not_tolerated (test_frame_diff.FrameDiffContract.test_sub_rounding_geometry_changes_are_not_tolerated) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK

@@ -1,0 +1,80 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____________ test_queue_reload_with_a_pending_nonblocking_resource _____________
+
+app = App(page=<Page url='http://127.0.0.1:48775/queue'>, base='http://127.0.0.1:48775', errors=[])
+
+    def test_queue_reload_with_a_pending_nonblocking_resource(app):
+        """Queue actions are usable after document readiness, independently of window.load."""
+        page = app.page
+        app.goto("/queue")
+        held = []
+        pattern = "**/slow-queue-image.png"
+        page.route(pattern, lambda route: held.append(route))
+        page.add_init_script("""document.addEventListener('DOMContentLoaded', () => {
+            const img = document.createElement('img');
+            img.id = 'slow-resource';
+            img.hidden = true;
+            img.src = '/slow-queue-image.png';
+            document.body.append(img);
+        });""")
+        try:
+>           page.reload()
+
+webapp/e2e/test_data.py:47:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/local/lib/python3.10/dist-packages/playwright/sync_api/_generated.py:19882: in reload
+    self._sync(
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py:572: in reload
+    await self._channel.send(
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:78: in send
+    return await self._connection.wrap_api_call(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <playwright._impl._connection.Connection object at 0x70dfecef93c0>
+cb = <function Channel.send.<locals>.<lambda> at 0x70dfec0557e0>
+is_internal = False, title = None
+
+    async def wrap_api_call(
+        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None
+    ) -> Any:
+        if self._api_zone.get():
+            return await cb()
+        task = asyncio.current_task(self._loop)
+        parsed_st = _attach_api_call_information(
+            getattr(task, "__pw_stack__", None) or _capture_stack_trace(),
+            is_internal,
+            title,
+        )
+        self._api_zone.set(parsed_st)
+        try:
+            return await cb()
+        except Exception as error:
+>           raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E           playwright._impl._errors.TimeoutError: Page.reload: Timeout 30000ms exceeded.
+E           Call log:
+E             - waiting for navigation until "load"
+E               - navigated to "http://127.0.0.1:48775/queue"
+
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:636: TimeoutError
+---------------------------- Captured log teardown -----------------------------
+ERROR    asyncio:base_events.py:1758 Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:298>>) at /usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:546>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_page.py", line 312, in _on_route
+    handled = await route_handler.handle(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 443, in handle
+    return await self._handle_internal(route)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_helper.py", line 485, in _handle_internal
+    return await handled_future
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py", line 547, in _done_callback
+    exc = future.exception()
+asyncio.exceptions.CancelledError
+1 failed in 33.47s

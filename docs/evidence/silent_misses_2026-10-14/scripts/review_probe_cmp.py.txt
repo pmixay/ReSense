@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""Probe table of the review fixes (14.10): sealed base, the 13.10 combined branch (5fce816), this code. Per case the
+summary (first STOP / held from / STOP frames of visible / G-C-S while visible), the frame differences against
+both, and frames worse than sealed (a sealed STOP lost, a new GO while visible).
+usage: probe_cmp.py <fin_dir> [--json OUT]"""
+import json
+import sys
+
+F = "/tmp/claude-0/fixwork"
+B = "/tmp/claude-0/judge_data/baseline_out"
+COMB = f"{F}/final_silent/probes"
+OVF = f"{F}/final_oversize/probes"
+I = f"{F}/investigate_column/out"
+G = f"{F}/column_geom/out"
+T = f"{F}/column_track/probes/extra"
+JO = f"{F}/judge_oversize"
+BASE = {"pole_c": f"{B}/range2/E5_pole_c.json", "pole_side": f"{B}/range2/E5_pole_side.json",
+        "pole_sideN": f"{I}/pole_sideN.json", "post_c": f"{I}/post_c.json", "post_side": f"{I}/post_side.json",
+        "A_person": f"{B}/range/A_person.json", "pole_side_drop": f"{T}/A_pole_side_drop_sealed.json",
+        "pole_c_drop": f"{F}/final_column/probes/base/pole_c_drop.json",
+        "S_pole_side60": f"{G}/base_S_pole_side60.json", "S_pole_side100": f"{F}/final_column/probes/base/S_pole_side100.json",
+        "B_pole_c": f"{G}/base_B_pole_c.json", "B_pole_side": f"{G}/base_B_pole_side.json",
+        "C_pole_c": f"{T}/C_pole_c_sealed.json", "C_pole_side": f"{T}/C_pole_side_sealed.json",
+        "C_person": f"{JO}/base_C_person.json", "C_cube1": f"{B}/range/C_cube1.json", "C_cube05": f"{B}/range/C_cube05.json",
+        "C_person_latp05": f"{OVF}/base_C_person_latp05.json", "C_person_latm05": f"{OVF}/base_C_person_latm05.json",
+        "C_person_latp07": f"{JO}/base_C_person_latp07.json", "C_person_latm07": f"{JO}/base_C_person_latm07.json",
+        "C_person_drop": f"{JO}/base_C_person_drop.json", "C_person_hd20": f"{JO}/base_C_person_hd20.json",
+        "C_person_hdm20": f"{JO}/base_C_person_hdm20.json", "C_cube1_hd20": f"{JO}/base_C_cube1_hd20.json",
+        "B_person": f"{B}/range/B_person.json", "D_person": f"{B}/range/D_person.json"}
+
+COLUMN = ["pole_c", "pole_side", "pole_sideN", "post_c", "post_side", "pole_c_drop", "pole_side_drop", "A_person",
+          "S_pole_side60", "S_pole_side100", "B_pole_c", "B_pole_side", "C_pole_c", "C_pole_side"]
+CURVE = ["C_person", "C_cube1", "C_cube05", "C_person_latp05", "C_person_latm05", "C_person_latp07", "C_person_latm07",
+         "C_person_drop", "C_person_hd20", "C_person_hdm20", "C_cube1_hd20", "B_person", "D_person"]
+
+
+def load(p):
+    d = json.load(open(p))
+    rows = {r["k"]: r for r in d["rows"] if r.get("X") is not None and r["X"] > 3.0 and r.get("n_obj", 0) > 0}
+    s = d["summary"]
+    dec = s["decisions_while_visible"]
+    return rows, {"first_stop": s["first_stop_X"], "held_from": s["held_from_X"], "stop": s["stop_frames"],
+                  "visible": s["visible_frames"], "GO": dec["GO"], "CAUTION": dec["CAUTION"], "STOP": dec["STOP"],
+                  "bins": s["bins"]}
+
+
+def worse(a, b):
+    """frames where b is worse than a: a hit lost, or a new GO"""
+    lost = sum(1 for k, r in a.items() if r["hit"] and k in b and not b[k]["hit"])
+    new_go = sum(1 for k, r in a.items() if r["decision"] != "GO" and k in b and b[k]["decision"] == "GO")
+    return {"lost_stop": lost, "new_go": new_go}
+
+
+def main():
+    fin = sys.argv[1]
+    out = {}
+    for case in COLUMN + CURVE:
+        try:
+            rb, sb = load(BASE[case]); rc, sc = load(f"{COMB}/{case}.json"); rf, sf = load(f"{fin}/{case}.json")
+        except FileNotFoundError as e:
+            print(case, "missing", e.filename)
+            continue
+        diff_c = sum(1 for k in rf if k in rc and rf[k]["decision"] != rc[k]["decision"])
+        out[case] = {"sealed": sb, "13.10": sc, "fix": sf, "fix_vs_13.10_frames_differ": diff_c,
+                     "fix_vs_sealed_worse": worse(rb, rf), "fix_vs_13.10_worse": worse(rc, rf),
+                     "13.10_vs_fix_worse": worse(rf, rc)}
+        f = lambda s: f"{s['first_stop']} / {s['held_from']} - {s['stop']}/{s['visible']}"
+        print(f"{case:16s} sealed {f(sb):28s} 13.10 {f(sc):28s} fix {f(sf):28s} GCS {sf['GO']}/{sf['CAUTION']}/{sf['STOP']}"
+              f"  diff13 {diff_c}  worse-vs-sealed {out[case]['fix_vs_sealed_worse']}  worse-vs-13.10 {out[case]['fix_vs_13.10_worse']}")
+    if "--json" in sys.argv:
+        json.dump(out, open(sys.argv[sys.argv.index("--json") + 1], "w"), indent=1)
+
+
+if __name__ == "__main__":
+    main()

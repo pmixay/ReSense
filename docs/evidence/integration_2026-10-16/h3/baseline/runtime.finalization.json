@@ -1,0 +1,150 @@
+{
+  "stage": "ready",
+  "run_id": "baseline-707ea9cda051-20261016T060147Z-68fb3429",
+  "gate_exit": 0,
+  "verified": true,
+  "completion": {
+    "clean_source": true,
+    "commit": "707ea9cda051369326fb9407c42488c1033dad76",
+    "comparison_rows": 224,
+    "frame_counts": {
+      "cloud_with_fake_obj.jsonl": 1510,
+      "doubleT_obstacle.jsonl": 201,
+      "doubleT_platform.jsonl": 345,
+      "new_data_0.jsonl": 1409,
+      "new_data_1.jsonl": 1409,
+      "new_data_2.jsonl": 1409,
+      "new_data_3.jsonl": 1409,
+      "new_data_4.jsonl": 1409,
+      "new_data_5.jsonl": 1409,
+      "new_data_6.jsonl": 1409,
+      "new_data_7.jsonl": 1408,
+      "roundT_doubleT.jsonl": 252,
+      "roundT_pressureGate_roundT.jsonl": 268,
+      "roundT_squareT_pressureGate_squareT.jsonl": 545,
+      "setF_box0.5_new_data_140_b8a86fd3f1414f3bcfd7.jsonl": 110,
+      "setF_box0.5_new_data_168_14576dea2df148c0f682.jsonl": 78,
+      "setF_box0.5_new_data_172_45180d83d7f35263abfa.jsonl": 110,
+      "setF_box0.5_new_data_46_4cfe0b46ada3bb71fb38.jsonl": 102,
+      "setF_box0.5_new_data_68_6f4a62007d93cfe41396.jsonl": 106,
+      "setF_box0.5_new_data_98_6521f1d6500d574b2a95.jsonl": 106,
+      "setF_box1.0_new_data_140_4fa39fd590e7068e51fb.jsonl": 110,
+      "setF_box1.0_new_data_168_23e5a2e511e69ce7fac5.jsonl": 78,
+      "setF_box1.0_new_data_172_b440d21e5642abe5a2bc.jsonl": 110,
+      "setF_box1.0_new_data_46_93d45073343df532db7d.jsonl": 102,
+      "setF_box1.0_new_data_68_052139d5410c800b9d47.jsonl": 106,
+      "setF_box1.0_new_data_98_c7d7cdf94d2db0035d23.jsonl": 106,
+      "setF_cable_new_data_140_250d95d2d4da099247a8.jsonl": 110,
+      "setF_cable_new_data_168_0921ae1b267f97ead3e7.jsonl": 78,
+      "setF_cable_new_data_172_44013b1affe0ff6dc88d.jsonl": 110,
+      "setF_cable_new_data_46_7f3c700fe85420b886ce.jsonl": 102,
+      "setF_cable_new_data_68_882af45e1f00a1d79a28.jsonl": 106,
+      "setF_cable_new_data_98_5a5b5bfcd7702de2d4f1.jsonl": 106,
+      "setF_person_new_data_140_0d342534f05e1db784c1.jsonl": 110,
+      "setF_person_new_data_168_1a32f3046d4acde43b6b.jsonl": 78,
+      "setF_person_new_data_172_450d81fbfd0b8681b4fe.jsonl": 110,
+      "setF_person_new_data_46_b3234f0a4224d1899192.jsonl": 102,
+      "setF_person_new_data_68_00728732c7027e0afb6f.jsonl": 106,
+      "setF_person_new_data_98_9477d02b03c4f12b01d0.jsonl": 106,
+      "setF_trolley_new_data_140_e842efaf5225bc8c8234.jsonl": 110,
+      "setF_trolley_new_data_168_32e38c37f5dc54991b96.jsonl": 78,
+      "setF_trolley_new_data_172_88158d31c9949cfd5392.jsonl": 110,
+      "setF_trolley_new_data_46_4a533d0d1338e90b900d.jsonl": 102,
+      "setF_trolley_new_data_68_aa8d75f6c800bbb9147d.jsonl": 106,
+      "setF_trolley_new_data_98_586a3e49d23455316931.jsonl": 106,
+      "squareT_platform_squareT_switch.jsonl": 877
+    },
+    "gate_exit": 0,
+    "gated_rows": 146,
+    "non_latency_rows": 208,
+    "passed": true,
+    "same_non_latency_rows": 208,
+    "seal_verified": true,
+    "set_f_rows": 3060,
+    "total_frames": 18329
+  },
+  "frame_comparison": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs\\selfdiff-baseline-707ea9cda051-20261016T060147Z-68fb3429",
+  "verification_argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--label",
+    "resense.integration.owner=gate-frame-infra-20261016",
+    "--network",
+    "none",
+    "--cpus",
+    "1",
+    "--memory",
+    "512m",
+    "--mount",
+    "type=bind,source=C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs,target=/evidence",
+    "--mount",
+    "type=bind,source=C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs\\helpers,target=/helpers,readonly",
+    "--mount",
+    "type=volume,source=rs-gate-baseline-707ea9cda051-20261016t060147z-68fb3429-checkout,target=/evalworkspace,readonly",
+    "--mount",
+    "type=bind,source=C:\\Users\\alikh\\OneDrive\\Desktop\\projects\\ReSense\\.git,target=/source.git,readonly",
+    "--entrypoint",
+    "python3",
+    "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+    "/helpers/verify_run.py",
+    "/evidence/baseline-707ea9cda051-20261016T060147Z-68fb3429"
+  ],
+  "comparison_argv": [
+    "C:\\Users\\alikh\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs\\helpers\\frame_diff.py",
+    "--baseline",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs\\baseline-707ea9cda051-20261016T060147Z-68fb3429",
+    "--candidate",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs\\baseline-707ea9cda051-20261016T060147Z-68fb3429",
+    "--out",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs\\selfdiff-baseline-707ea9cda051-20261016T060147Z-68fb3429"
+  ],
+  "infrastructure_tests_exit": 0,
+  "external_provenance": [
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.container-final.json",
+      "sha256": "f49831c5b5be57aae6b2fa9e86a27ebd4cf9b8d786f367b5e409358ba68b0bbe"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.container.log",
+      "sha256": "d101e03b44ff9c396fd2aa4f4be9814b69db2eeef70cb2cab94a93b8f0744db5"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.docker-info.json",
+      "sha256": "830c6ddfe9ed55a9c007351ab974f166c5773245f42e3a29bc7e1f6aa943b3a0"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.docker-version.txt",
+      "sha256": "3da6caee340160f60be9af908e30894216f512a6f26e92baab72d8844269d486"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.framediff.log",
+      "sha256": "476057f100601b1e200dc8907e70d844181b4fc9d6a566395a520de62dc18dd0"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.image.json",
+      "sha256": "759d75b1967edab85b618244f2408fded9fbf2879ab7dbd2973b86fe5f057db8"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.infrastructure_tests.log",
+      "sha256": "cb08413aada275cfc3e9e8cf9fd034a5b3b6742d0f02a71a037be00db8e418f3"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.inspect.json",
+      "sha256": "a27643e670bc01fc30ba52fa0af1ce3ae7f4d02c2f20b584a31051454de27f46"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.launch.json",
+      "sha256": "5bbb0ba1abaaeb26895b1a17ce32adf3cf1b559001f568c077d8f7b776bdd2e8"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.resource_telemetry.jsonl",
+      "sha256": "d5f527a69fbafc846d9677912607188a6f96c2afaf00a0990ceddbd0a44d8dfc"
+    },
+    {
+      "path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.verification.log",
+      "sha256": "7315c78c420c95ec0706bafd32409a559f10a9c450c273714d294a2691646b38"
+    }
+  ]
+}

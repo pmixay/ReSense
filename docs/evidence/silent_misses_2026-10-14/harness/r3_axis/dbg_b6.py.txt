@@ -1,0 +1,38 @@
+import os, sys, json, glob
+WT = os.environ["WT"]
+sys.path.insert(0, WT)
+import numpy as np
+import resense.track as T
+import resense.detector as D
+sys.path.insert(0, os.path.join(WT, "docs/evidence/judgement_2026-10-13/scripts"))
+import range_test as rt
+from judge_runner import NodeReplica
+_orig = T.estimate_axis_from_walls
+LOG = []
+
+
+def walls(*a, **kw):
+    LOG.append(kw.get("reach"))
+    return _orig(*a, **kw)
+
+
+T.estimate_axis_from_walls = walls
+_est = D.estimate_track
+
+
+def est(xyz, cfg, prev=None, periods=1, ring=None):
+    m = _est(xyz, cfg, prev=prev, periods=periods, ring=ring)
+    LOG.append(("wd", None if prev is None else prev.wall_drift, m.wall_drift, cfg.walls_reach_power))
+    return m
+
+
+D.estimate_track = est
+meta, files = rt.load_cache("/tmp/claude-0/judge_data/cache/roundT_pressureGate_roundT")
+rep = NodeReplica()
+for k, (m, f) in enumerate(zip(meta, files)):
+    if k > 90:
+        break
+    d = np.load(f)
+    rt.run_frame(rep, d["xyz"], d["inten"], d["ring"], m, k)
+    if k >= 80:
+        print(k, LOG[-3:])

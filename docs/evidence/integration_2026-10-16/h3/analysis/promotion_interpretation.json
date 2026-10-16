@@ -1,0 +1,240 @@
+{
+  "candidate": {
+    "bbox_max": [
+      76.25999450683594,
+      1.659999966621399,
+      2.0899999141693115
+    ],
+    "bbox_min": [
+      73.55999755859375,
+      1.2699999809265137,
+      -0.550000011920929
+    ],
+    "centroid": [
+      75.40693664550781,
+      1.5114284753799438,
+      0.5434694290161133
+    ],
+    "cut": false,
+    "demoted": false,
+    "distance": 73.55999755859375,
+    "height_max": 2.7459693933711486,
+    "height_min": 0.13031013912933676,
+    "intensity": 5.755102157592773,
+    "kind": "",
+    "lateral": -0.1383347559154351,
+    "low_height_weak": false,
+    "n": 25,
+    "n_expected": 47.53178733489585,
+    "n_gauge": 25,
+    "n_raw": 49,
+    "rail_line": false,
+    "reason": "",
+    "retro": false,
+    "ring_count": 17,
+    "score": 1.0,
+    "spared": true,
+    "thin": false,
+    "wall_kept": false,
+    "weak": false,
+    "zone": "gauge"
+  },
+  "candidate_index": 8,
+  "clear": 44.6,
+  "detections": [],
+  "frame_id": "new_data_54_0009",
+  "matched_tracks": [
+    {
+      "clean_run": 1,
+      "column_held": true,
+      "column_hist": [
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "column_hold": 2,
+      "confidence": 0.7,
+      "explained_hist": [
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "hits": 5,
+      "id": 422,
+      "misses": 0,
+      "reported": false,
+      "rule_zone": "warning",
+      "seen_reported": false,
+      "spare_hist": [
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "vote_zone": "warning",
+      "zone": "warning",
+      "zone_hist": [
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  ],
+  "measured_commit": "f8c088dc4f3243fbd15a3aae9be0459e8a0aa941",
+  "nearest": null,
+  "obstacle": false,
+  "replay_validation": {
+    "frames": 1409,
+    "raw_and_serialized_mismatches": 0
+  },
+  "row": 1354,
+  "source_paths": [
+    "resense/clustering.py:_corridor_cluster / _advisory_reason",
+    "resense/tracking.py:_uncorroborated_spare / Track.column_held / Track.rule_zone"
+  ],
+  "spare_observation": {
+    "after": {
+      "reason": "",
+      "spared": true,
+      "zone": "gauge"
+    },
+    "before": {
+      "prior_spare_hist": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "reason": "",
+      "required_spares": 2,
+      "spared": true,
+      "zone": "gauge"
+    },
+    "row": 1354
+  },
+  "warning": true,
+  "warnings": [
+    {
+      "age": 9,
+      "center": [
+        44.11,
+        1.63,
+        0.24
+      ],
+      "confidence": 1.0,
+      "distance": 43.66,
+      "height_min": 0.12,
+      "id": 424,
+      "intensity": 2.4,
+      "kind": "",
+      "lateral": 0.86,
+      "n_points": 64,
+      "reason": "column",
+      "size": [
+        1.8,
+        0.63,
+        2.83
+      ],
+      "zone": "warning"
+    },
+    {
+      "age": 10,
+      "center": [
+        47.98,
+        1.61,
+        0.35
+      ],
+      "confidence": 1.0,
+      "distance": 47.18,
+      "height_min": 0.12,
+      "id": 419,
+      "intensity": 1.9,
+      "kind": "",
+      "lateral": 0.74,
+      "n_points": 48,
+      "reason": "column",
+      "size": [
+        2.44,
+        0.59,
+        2.58
+      ],
+      "zone": "warning"
+    },
+    {
+      "age": 10,
+      "center": [
+        52.01,
+        1.62,
+        0.55
+      ],
+      "confidence": 1.0,
+      "distance": 51.65,
+      "height_min": 0.14,
+      "id": 420,
+      "intensity": 1.9,
+      "kind": "",
+      "lateral": 0.64,
+      "n_points": 35,
+      "reason": "column",
+      "size": [
+        1.65,
+        0.13,
+        2.66
+      ],
+      "zone": "warning"
+    },
+    {
+      "age": 6,
+      "center": [
+        55.88,
+        1.59,
+        0.51
+      ],
+      "confidence": 1.0,
+      "distance": 55.68,
+      "height_min": 0.19,
+      "id": 426,
+      "intensity": 1.2,
+      "kind": "",
+      "lateral": 0.51,
+      "n_points": 27,
+      "reason": "",
+      "size": [
+        1.13,
+        0.13,
+        2.71
+      ],
+      "zone": "warning"
+    },
+    {
+      "age": 10,
+      "center": [
+        59.81,
+        1.51,
+        0.79
+      ],
+      "confidence": 1.0,
+      "distance": 59.66,
+      "height_min": 0.2,
+      "id": 421,
+      "intensity": 13.7,
+      "kind": "",
+      "lateral": 0.32,
+      "n_points": 34,
+      "reason": "column",
+      "size": [
+        0.26,
+        0.36,
+        2.77
+      ],
+      "zone": "warning"
+    }
+  ]
+}

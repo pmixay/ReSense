@@ -1,0 +1,70 @@
+"""Offline screening of gated reach-weight variants on gobs records (single frame raw curvature) (scratch).
+Variant: weights x (span ratio)^P only when both sides are near (mean |dy| <= NEAR) and, with INTENS=1, the
+farther-reaching side curves more in the same sense (an intensifying curve: a curve entry), with RATIO the
+largest span ratio that triggers. Prints |dk| stats by class and the wall-referenced error (cf5 style).
+usage: P=4 NEAR=3.5 INTENS=1 RATIO=1.0 cf6.py files..."""
+import json, os, sys
+import numpy as np
+from cflib import fit_side, cut_gap, follow, BANDS
+
+P = float(os.environ.get("P", "4"))
+NEAR = float(os.environ.get("NEAR", "3.5"))
+INTENS = os.environ.get("INTENS", "1") == "1"
+RATIO = float(os.environ.get("RATIO", "1.0"))
+G = 16.0
+
+
+def raw(r, variant):
+    t = r["tf"]
+    S = [(np.array(x), np.array(y)) for x, y, ok in r["sides"]]
+    fits = [fit_side(x, y, t) for x, y in S]
+    keep = [(f, x, y) for f, (x, y) in zip(fits, S) if f is not None]
+    if not keep:
+        return None
+    w = np.array([1.0 / (f[1] ** 2 + 1e-4) for f, _, _ in keep])
+    if variant and len(keep) == 2:
+        tt = np.tan(r["yaw"])
+        mad = [float(np.mean(np.abs(y - (r["c"] + tt * x + 0.5 * r["curv"] * x * x)))) for _, x, y in keep]
+        span = np.array([max(float(cut_gap(x, y, G)[0].max()) - 30.0, 4.0) for _, x, y in keep])
+        ratio = span / span.max()
+        ks = [f[0] for f, _, _ in keep]
+        far, near = int(np.argmax(span)), int(np.argmin(span))
+        ok = max(mad) <= NEAR and ratio.min() <= RATIO
+        if INTENS:
+            ok = ok and ks[far] * ks[near] >= 0 and abs(ks[far]) > abs(ks[near])
+        if ok:
+            w = w * ratio ** P
+    return float(np.sum(w * [f[0] for f, _, _ in keep]) / w.sum())
+
+
+dk, err = {}, {}
+for path in sys.argv[1:]:
+    rows = [json.loads(l) for l in open(path)]
+    curv = [r["curv"] for r in rows]
+    for i, r in enumerate(rows):
+        if r["tf"] is None or len(r["sides"]) < 2:
+            continue
+        kb, kv = raw(r, False), raw(r, True)
+        if kb is None or kv is None:
+            continue
+        lo, hi = max(0, i - 5), min(len(curv) - 1, i + 5)
+        cls = "entry/exit" if abs(curv[hi] - curv[lo]) > 2e-4 else ("curve" if abs(curv[i]) > 3e-4 else "straight")
+        dk.setdefault(cls, []).append(kv - kb)
+        for name, k in (("sealed", kb), ("variant", kv)):
+            best = {}
+            for x, y, ok in r["sides"]:
+                for xi, d in (follow(x, y, r["c"], r["tf"], k) or []):
+                    for b in BANDS:
+                        if b[0] <= xi < b[1] and abs(d) > abs(best.get(b, 0.0)):
+                            best[b] = d
+            for b in BANDS:
+                if b in best:
+                    err.setdefault((cls, name, b), []).append(abs(best[b]))
+for cls in ("straight", "curve", "entry/exit"):
+    d = np.abs(np.array(dk.get(cls, [0.0])))
+    print("%-11s n %5d |dk|>1e-4 %.1f%% >3e-4 %.1f%%" % (cls, d.size, 100 * np.mean(d > 1e-4), 100 * np.mean(d > 3e-4)))
+    for b in BANDS:
+        s, v = err.get((cls, "sealed", b), []), err.get((cls, "variant", b), [])
+        if s and v:
+            print("   %3d-%3d m  sealed %.2f / %.2f | variant %.2f / %.2f (median / p90)" % (
+                b[0], b[1], np.median(s), np.percentile(s, 90), np.median(v), np.percentile(v, 90)))

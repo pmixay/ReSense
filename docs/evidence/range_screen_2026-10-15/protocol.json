@@ -1,0 +1,32 @@
+{
+  "task": "P3 R2/R1 preliminary configuration screening, 15-16 October",
+  "status": "pre-registered; no production config change",
+  "baseline_commit": "d0d17bb",
+  "baseline_gate": "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+  "gate_policy": "Each variant separately; exit 0 without --allow. Missing datasets are a failure, not an exemption.",
+  "variants_in_order": [
+    {"id": "R2a", "set": ["cluster.weak_min_points=3"]},
+    {"id": "R2b", "set": ["cluster.far_range=60"]},
+    {"id": "R1a", "set": ["tracking.low_confirm_hits=3"], "scope": "Screen global setting only; any code candidate must restrict it to low clusters reaching min_top."},
+    {"id": "R1b", "set": ["lowobj.straddle_min_width=0.25"], "scope": "Screen global setting only; any code candidate must restrict it to clusters <=0.6 m long."},
+    {"id": "R1c", "set": ["lowobj.range_max=75"]}
+  ],
+  "recorded_data_limits": {
+    "ride_alarm_events_max": 27,
+    "ride_stop_episodes_max": 30,
+    "five_bags_alarm_events_max": 8,
+    "five_bags_stop_episodes_max": 12,
+    "set_O_small_outside_near_false_stop_max": 0,
+    "set_O_big_outside_false_stop_max": 6
+  },
+  "range_targets": {
+    "R2": "A_cube05 held >=120 m; 80-100 m >=12/14; C/D no worse; small_center first STOP >=65 m; set F box0.5 >=2/6",
+    "R1": "A_cube03 first STOP >=55 m and held >=52 m; rail-head box held >=50 m; B/C no worse; small_on_rail first STOP >42.7 m"
+  },
+  "promotion": "Only separately passing variants may be combined; re-check after rebase onto the 1.1.0 seal. X1 attribution and independent safety review are required before shipping.",
+  "not_in_this_screen": [
+    "R1 hardware-rule code change (requires X1)",
+    "R2 monotone point-bar code change",
+    "R2 floor_verified-dependent height rule"
+  ]
+}

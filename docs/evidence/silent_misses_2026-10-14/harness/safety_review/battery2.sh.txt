@@ -1,0 +1,27 @@
+#!/bin/bash
+# wall-anchored adversarial ray-cast probes on C (and person+equipment pairs), sealed vs combined, one at a time
+cd /tmp/claude-0/fixwork/safety_review; source env.sh
+ICP=$W/docs/evidence/judgement_2026-10-13/out
+C="$J/roundT_pressureGate_roundT $ICP/icp_roundT_pressureGate_roundT.json"
+cd $W/docs/evidence/judgement_2026-10-13
+pr() { name=$1; shift
+  [ -f $SR/out/wb_${name}_s.json ] || run_s $SR/wallbox_rt.py $C $SR/out/wb_${name}_s --start 0 --d0 230 "$@" > $SR/out/wb_${name}_s.log 2>&1
+  [ -f $SR/out/wb_${name}_w.json ] || run_w $SR/wallbox_rt.py $C $SR/out/wb_${name}_w --start 0 --d0 230 "$@" > $SR/out/wb_${name}_w.log 2>&1
+  echo "== $name $*" >> $SR/out/battery2.txt
+  tail -1 $SR/out/wb_${name}_s.log >> $SR/out/battery2.txt
+  tail -1 $SR/out/wb_${name}_w.log >> $SR/out/battery2.txt
+}
+pr cab09     --o 0.6,0.9,1.8:wall+:0.9
+pr cab10     --o 0.6,1.0,1.8:wall+:1.0
+pr cab085off --o 0.6,0.5,1.8:wall+:0.85
+pr person08  --o 0.5,0.5,1.75:wall+:0.8
+pr person10  --o 0.5,0.5,1.75:wall+:1.0
+pr mast10    --o 0.3,0.3,2.6:wall+:1.0
+pr mast12    --o 0.3,0.3,2.6:wall+:1.2
+pr tallcab10 --o 0.6,0.6,2.5:wall+:1.0
+pr darkcol10 --o 0.4,0.4,5.0:wall+:1.0:0:2.6
+pr col10     --o 0.4,0.4,5.0:wall+:1.0
+pr pers_cab_behind --o 0.5,0.5,1.75:axis:0 --o 0.6,1.0,1.8:wall+:1.0:1.5
+pr pers_cab_front  --o 0.5,0.5,1.75:axis:0 --o 0.6,1.0,1.8:wall+:1.0:-1.5
+pr pers_mast_behind --o 0.5,0.5,1.75:axis:0 --o 0.3,0.3,2.6:wall+:1.0:1.5
+echo BATTERY2 DONE >> $SR/out/battery2.txt

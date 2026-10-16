@@ -1,0 +1,76 @@
+FF...................................................................... [ 28%]
+........................................................................ [ 57%]
+........................................................................ [ 86%]
+..................................                                       [100%]
+=================================== FAILURES ===================================
+______________ test_case44_first_returning_frame11_is_stop[False] ______________
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+fresh = False
+
+    @pytest.mark.parametrize("fresh", [False, True])
+    def test_case44_first_returning_frame11_is_stop(pole, fresh):
+        tracker = _tracker(fresh_stop_evidence=fresh)
+        stops = []
+        for frame in range(20):
+            t = _step(tracker, None if frame in (9, 10) else pole)
+            assert t.id == 1
+            if _stop(t):
+                stops.append(frame)
+            if frame == 0:
+                assert t.last.reason == "column" and t.last.spared
+                assert t.column_hist == [True] and not t.column_held
+            if frame == 9:
+                assert _stop(t) and t.misses == 1
+            if frame == 10:
+                assert not t.reported and not t.stop_earned and t.misses == 2
+            if frame == 11:
+                assert t.last.n_gauge == 72 and t.last.ring_count == 18
+                assert t.last.reason == "" and t.last.spared
+                assert t.confidence == pytest.approx(0.85)
+                assert sum(t.zone_hist) == 9 and not t.column_held
+>               assert _stop(t), "H4 returning frame 11 must regain STOP on its clean physical hit"
+E               AssertionError: H4 returning frame 11 must regain STOP on its clean physical hit
+E               assert False
+E                +  where False = _stop(Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=10, misses=0, ...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]))
+
+tests/test_h4_spare_rearm.py:66: AssertionError
+______________ test_case44_first_returning_frame11_is_stop[True] _______________
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+fresh = True
+
+    @pytest.mark.parametrize("fresh", [False, True])
+    def test_case44_first_returning_frame11_is_stop(pole, fresh):
+        tracker = _tracker(fresh_stop_evidence=fresh)
+        stops = []
+        for frame in range(20):
+            t = _step(tracker, None if frame in (9, 10) else pole)
+            assert t.id == 1
+            if _stop(t):
+                stops.append(frame)
+            if frame == 0:
+                assert t.last.reason == "column" and t.last.spared
+                assert t.column_hist == [True] and not t.column_held
+            if frame == 9:
+                assert _stop(t) and t.misses == 1
+            if frame == 10:
+                assert not t.reported and not t.stop_earned and t.misses == 2
+            if frame == 11:
+                assert t.last.n_gauge == 72 and t.last.ring_count == 18
+                assert t.last.reason == "" and t.last.spared
+                assert t.confidence == pytest.approx(0.85)
+                assert sum(t.zone_hist) == 9 and not t.column_held
+>               assert _stop(t), "H4 returning frame 11 must regain STOP on its clean physical hit"
+E               AssertionError: H4 returning frame 11 must regain STOP on its clean physical hit
+E               assert False
+E                +  where False = _stop(Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=10, misses=0, ...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]))
+
+tests/test_h4_spare_rearm.py:66: AssertionError
+--------------------- generated xml file: /out/pytest.xml ----------------------
+=========================== short test summary info ============================
+FAILED tests/test_h4_spare_rearm.py::test_case44_first_returning_frame11_is_stop[False]
+FAILED tests/test_h4_spare_rearm.py::test_case44_first_returning_frame11_is_stop[True]
+2 failed, 248 passed in 31.31s
