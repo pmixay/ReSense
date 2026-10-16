@@ -287,7 +287,8 @@ def test_a_cut_part_meets_the_column_rule_and_its_free_top_test(monkeypatch):
     free-top test included (the frame's cloud is handed on to the parts). A 0.3 m post, 2.6 m tall, 0.8-1.1 m
     in front of a straight wall at 1.7 m at 60 m (one oversize cluster with it, the split refuses it beyond
     30 m): its part is asked whether its top is seen free - free, an obstacle; not free, a column."""
-    cfg = replace(ClusterConfig(), structure_cut_tol=0.8)
+    # This checks experimental H1 routing through H2, not the shipping default.
+    cfg = replace(ClusterConfig(), structure_cut_tol=0.8, column_free_max_top=2.95)
     scene = np.concatenate([_straight_wall(y=1.7, x0=50.0, x1=72.0), _post(60.0, 0.6)]).astype(np.float32)
     dy, h = scene[:, 1].astype(np.float64), scene[:, 2].astype(np.float64)
     strict = (np.abs(dy) < 1.05) & (h > 0.0) & (h < 3.0)

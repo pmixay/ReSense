@@ -98,6 +98,35 @@ def probes():
     (OUT / "results/probes.json").write_text(json.dumps(summary, indent=2) + "\n")
 
 
+def experimental(cfg):
+    """Re-exercise known rejected evidence with explicit historical opt-in, without tuning."""
+    import copy
+    import runpy
+    import numpy as np
+    assert cfg.cluster.column_free_max_top == 0.0
+    opt_in = copy.deepcopy(cfg)
+    opt_in.cluster.column_free_max_top = 2.95
+    path = "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawn_acceptance.py.txt"
+    original = subprocess.check_output(["git", "show", "4c6ea25:tests/test_h4_column_evidence.py"], cwd=ROOT)
+    assert (ROOT / path).read_bytes() == original
+    helpers = runpy.run_path(str(ROOT / path))
+    rows = []
+    for name, args in [("case45_tall_miss", {}),
+                       ("absorbing_continuation_false_free_evidence", dict(top=4.12, absorbing=(2.54, 4.12)))]:
+        xyz, ring, labels = helpers["physical_column"](**args)
+        cs = helpers["column_clusters"](xyz, ring, opt_in)
+        matches = [c for c in cs if np.mean(labels[c.points_idx] == 1) > 0.5]
+        assert len(matches) == 1
+        c = matches[0]
+        rows.append(dict(case=name, xyz_sha256=sha(xyz.tobytes()), zone=c.zone, reason=c.reason,
+                         spared=c.spared, n_gauge=c.n_gauge, rings=c.ring_count, height_max=c.height_max))
+    assert (rows[0]["reason"], rows[0]["spared"]) == ("column", False)
+    assert (rows[1]["zone"], rows[1]["spared"]) == ("gauge", True)
+    (OUT / "results/experimental_still_rejected.json").write_text(json.dumps(dict(
+        explicit_opt_in=2.95, shipping_default=0.0, accepted=False, cases=rows,
+        note="Known unmet withdrawn-feature criteria; these observations are not an H4 safety PASS."), indent=2) + "\n")
+
+
 def main():
     head = os.environ["WITHDRAWAL_HEAD"]
     if not ROOT.exists():
@@ -125,6 +154,8 @@ def main():
             "tests/test_synthetic_sensitivity.py", "tests/test_synthetic_diagnosis.py", "tests/test_cli.py",
             "tests/test_shipped_defaults.py"]
         command(["python3", "-m", "pytest", "-q", "-rs", *tests, "--junitxml=/out/results/pytest.xml"], cwd=ROOT)
+    elif task == "experimental":
+        experimental(cfg)
     else:
         guard = install_shipping_guard(cfg)
         if task == "probes":

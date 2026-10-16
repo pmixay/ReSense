@@ -10,7 +10,7 @@ TEMP = Path(r"C:\Users\alikh\AppData\Local\Temp\opencode")
 IMAGE = "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19"
 ap = argparse.ArgumentParser()
 ap.add_argument("run")
-ap.add_argument("task", choices=["tests", "probes", "dark"])
+ap.add_argument("task", choices=["tests", "probes", "dark", "experimental"])
 ap.add_argument("--mode", default="all")
 ap.add_argument("--sealed", action="store_true")
 a = ap.parse_args()
