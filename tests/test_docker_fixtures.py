@@ -13,7 +13,7 @@ FIXTURES = [
     'webapp/backend/resense_web/__init__.py',
     'webapp/backend/resense_web/decision.py',
     *[JUDGE + name for name in ('analyze_chain.py', 'chain.sh', 'listener.py')],
-    *[STARTUP + name for name in ('analyze_chain.py', 'chain.sh', 'launch_matrix.py', 'listener.py',
+    *[STARTUP + name for name in ('analyze_chain.py', 'bags_volume.py', 'chain.sh', 'launch_matrix.py', 'listener.py',
                                  'observe_listener.py', 'publish_report.py', 'runtime_probe.py')],
     VERIFIER,
 ]

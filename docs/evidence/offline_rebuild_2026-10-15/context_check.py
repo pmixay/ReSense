@@ -94,7 +94,10 @@ RUN find scripts -type f -name '*.sh' -exec sed -i 's/\\r$//' {{}} +
             'assert not (p/"webapp/frontend").exists(); '
             'assert not (p/"docs/evidence/judgement_2026-10-13/out").exists(); '
             'assert not (p/"docs/evidence/node_startup_2026-10-15/out").exists(); '
-            'print("PASS: exact pure backend files; frontend and recorded evidence excluded")'
+            'relative="docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py"; '
+            'assert (p/relative).is_file(); '
+            'assert (p/relative).read_bytes() == (Path("/opt/resense")/relative).read_bytes(); '
+            'print("PASS: exact pure backend and volume fixtures; frontend and recorded evidence excluded")'
         )
         run('exclusions', ['docker', 'run', '--rm', '--network', 'none', '-w', '/', args.image,
                            'python3', '-c', exclusion])

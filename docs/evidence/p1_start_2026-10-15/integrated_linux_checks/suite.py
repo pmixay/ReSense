@@ -20,6 +20,7 @@ def write(path, value):
 def main():
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument('--out', type=Path, required=True)
+    cli.add_argument('--expected-source', type=Path)
     args = cli.parse_args()
     assert Path.cwd() == Path('/'), Path.cwd()
     assert os.environ['RESENSE_REQUIRE_SYNTHETIC'] == '1'
@@ -39,7 +40,26 @@ def main():
         'ros2_ws/src/resense_ros/launch/detector.launch.py',
         'scripts/startup_acceptance.py', 'scripts/decision_policy_import.py',
         'webapp/backend/resense_web/decision.py',
+        'docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py',
+        'docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py',
+        'tests/test_node.py', 'tests/test_startup_acceptance.py', 'tests/test_docker_fixtures.py',
     ]
+    verified = None
+    if args.expected_source:
+        expected = json.loads(args.expected_source.read_text(encoding='utf-8'))
+        actual = {name: hashlib.sha256((Path('/opt/resense') / name).read_bytes()).hexdigest()
+                  for name in expected['files']}
+        assert actual == expected['files'], 'image source bytes differ from the frozen archive'
+        for directory in ('tests', 'scripts'):
+            found = {p.relative_to('/opt/resense').as_posix()
+                     for p in (Path('/opt/resense') / directory).rglob('*')
+                     if p.is_file() and '__pycache__' not in p.parts and p.suffix != '.pyc'}
+            wanted = {name for name in expected['files'] if name.startswith(directory + '/')}
+            assert found == wanted, f'inherited or missing {directory} files: {found ^ wanted}'
+        verified = {'commit': expected['source_commit'], 'files': len(actual),
+                    'manifest_sha256': hashlib.sha256(args.expected_source.read_bytes()).hexdigest()}
+    node_origin = Path(importlib.util.find_spec('resense_ros.detector_node').origin)
+    assert node_origin.resolve() == Path('/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py')
     identity = {
         'cwd': str(Path.cwd()), 'python': platform.python_version(),
         'resense': str(installed), 'version': resense.__version__, 'native': _native.status(),
@@ -51,6 +71,7 @@ def main():
             'OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS')},
         'source_sha256': {name: hashlib.sha256((Path('/opt/resense') / name).read_bytes()).hexdigest()
                           for name in source_paths},
+        'frozen_source_verified': verified,
     }
     write(args.out / 'runtime_identity.json', identity)
     print(json.dumps(identity, indent=2), flush=True)
@@ -62,6 +83,7 @@ def main():
             self.deselected = []
             self.skipped = []
             self.failed = []
+            self.passed_by_file = {}
 
         def pytest_deselected(self, items):
             for item in items:
@@ -71,6 +93,9 @@ def main():
                                         'allowed_missing_realdata': path is not None and not Path(path).is_dir()})
 
         def pytest_runtest_logreport(self, report):
+            if report.when == 'call' and report.passed:
+                name = report.nodeid.split('::')[0]
+                self.passed_by_file[name] = self.passed_by_file.get(name, 0) + 1
             if report.skipped:
                 self.skipped.append(report.nodeid)
             if report.failed:
@@ -85,6 +110,7 @@ def main():
         'pytest_exit': code, 'pytest_seconds': round(time.monotonic() - start, 3),
         'deselected': receipt.deselected, 'only_missing_realdata_deselected': allowed,
         'skipped': receipt.skipped, 'failed': receipt.failed,
+        'passed_by_file': receipt.passed_by_file,
     })
     sys.exit(code or (1 if receipt.skipped or not allowed else 0))
 

@@ -14,6 +14,7 @@ gitbook
 !docs/evidence/judgement_2026-10-13/scripts/docker/chain.sh
 !docs/evidence/judgement_2026-10-13/scripts/docker/listener.py
 !docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py
+!docs/evidence/node_startup_2026-10-15/docker_tools/bags_volume.py
 !docs/evidence/node_startup_2026-10-15/docker_tools/chain.sh
 !docs/evidence/node_startup_2026-10-15/docker_tools/launch_matrix.py
 !docs/evidence/node_startup_2026-10-15/docker_tools/listener.py
