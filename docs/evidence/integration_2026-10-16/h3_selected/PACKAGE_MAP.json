@@ -1,0 +1,397 @@
+[
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/gate.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/gate.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/gate_comparison_rows.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/gate_comparison_rows.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/completion.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/completion.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/verification.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/verification.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/source_before.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/source_before.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/source_after.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/source_after.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/provenance.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/provenance.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/evaluation_source.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/evaluation_source.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/cache_identity.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/cache_identity.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/observer.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/observer.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/commands.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/commands.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/native_build.log",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/native_build.txt"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/compiler.log",
+    "mode": "compiler stdout text with final empty banner line removed; complete external bytes retained and indexed",
+    "package_path": "candidate/compiler.txt"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/artifact_inventory.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/artifact_inventory.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/gate_work/config.yaml",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/gate_work/config.yaml"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/gate_work/config.yaml.json",
+    "mode": "byte-identical copy",
+    "package_path": "candidate/gate_work/config.yaml.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1.launch.json",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "candidate/runtime.launch.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1.container-final.json",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "candidate/runtime.container-final.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1.resource_telemetry.jsonl",
+    "mode": "lossless JSONL records as JSON array",
+    "package_path": "candidate/runtime.resource_telemetry.json"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1.infrastructure_tests.log",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "candidate/runtime.infrastructure_tests.txt"
+  },
+  {
+    "external_path": "candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1.finalization.json",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "candidate/runtime.finalization.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/gate.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/gate.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/gate_comparison_rows.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/gate_comparison_rows.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/completion.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/completion.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/verification.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/verification.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/source_before.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/source_before.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/source_after.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/source_after.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/provenance.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/provenance.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/evaluation_source.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/evaluation_source.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/cache_identity.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/cache_identity.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/observer.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/observer.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/commands.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/commands.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/native_build.log",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/native_build.txt"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/compiler.log",
+    "mode": "compiler stdout text with final empty banner line removed; complete external bytes retained and indexed",
+    "package_path": "baseline/compiler.txt"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/artifact_inventory.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/artifact_inventory.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/gate_work/config.yaml",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/gate_work/config.yaml"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/gate_work/config.yaml.json",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/gate_work/config.yaml.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.launch.json",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "baseline/runtime.launch.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.container-final.json",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "baseline/runtime.container-final.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.resource_telemetry.jsonl",
+    "mode": "lossless JSONL records as JSON array",
+    "package_path": "baseline/runtime.resource_telemetry.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.infrastructure_tests.log",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "baseline/runtime.infrastructure_tests.txt"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429.finalization.json",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "baseline/runtime.finalization.json"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/seal_verify_before.log",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/seal_verify_before.txt"
+  },
+  {
+    "external_path": "baseline-707ea9cda051-20261016T060147Z-68fb3429/seal_verify_after.log",
+    "mode": "byte-identical copy",
+    "package_path": "baseline/seal_verify_after.txt"
+  },
+  {
+    "external_path": "framediff-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/summary.json",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "frame_diff/summary.json"
+  },
+  {
+    "external_path": "framediff-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/SUMMARY.md",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "frame_diff/SUMMARY.md"
+  },
+  {
+    "external_path": "framediff-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/setF_report_changes.json",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "frame_diff/setF_report_changes.json"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/analysis_commands.json",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/analysis_commands.json"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/evaluation_and_config.json",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/evaluation_and_config.json"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/explained_frames.json",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/explained_frames.json"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/EXPLANATION.md",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/EXPLANATION.md"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/frame_explanation.stderr.txt",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/frame_explanation.stderr.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/frame_explanation.stdout.txt",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "analysis/frame_explanation.stdout.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/metrics_vs_same_runtime.json",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/metrics_vs_same_runtime.json"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/metrics_vs_same_runtime.txt",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/metrics_vs_same_runtime.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/metrics_vs_shell_off_2026_09_29.json",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/metrics_vs_shell_off_2026_09_29.json"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/metrics_vs_shell_off_2026_09_29.txt",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/metrics_vs_shell_off_2026_09_29.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/metric_collection.stderr.txt",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/metric_collection.stderr.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/metric_collection.stdout.txt",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/metric_collection.stdout.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/shipping_route.json",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/shipping_route.json"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/shipping_route.stderr.txt",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/shipping_route.stderr.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/shipping_route.stdout.txt",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/shipping_route.stdout.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/withdrawal_comparison.stderr.txt",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/withdrawal_comparison.stderr.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/withdrawal_comparison.stdout.txt",
+    "mode": "text copy normalized CRLF to LF; original external bytes retained and indexed",
+    "package_path": "analysis/withdrawal_comparison.stdout.txt"
+  },
+  {
+    "external_path": "analysis-candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/WITHDRAWN_RESULT.json",
+    "mode": "byte-identical copy",
+    "package_path": "analysis/WITHDRAWN_RESULT.json"
+  },
+  {
+    "external_path": "helpers/run_linux_gate.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/run_linux_gate.py"
+  },
+  {
+    "external_path": "helpers/launch_gate.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/launch_gate.py"
+  },
+  {
+    "external_path": "helpers/hooks/sitecustomize.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/hooks/sitecustomize.py"
+  },
+  {
+    "external_path": "helpers/verify_run.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/verify_run.py"
+  },
+  {
+    "external_path": "helpers/frame_diff.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/frame_diff.py"
+  },
+  {
+    "external_path": "helpers/gate_control.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/gate_control.py"
+  },
+  {
+    "external_path": "helpers/test_frame_diff.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/test_frame_diff.py"
+  },
+  {
+    "external_path": "helpers/analyze_h3.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/analyze_h3.py"
+  },
+  {
+    "external_path": "helpers/metrics_h3.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/metrics_h3.py"
+  },
+  {
+    "external_path": "helpers/package_h3.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/package_h3.py"
+  },
+  {
+    "external_path": "helpers/start_job.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/start_job.py"
+  },
+  {
+    "external_path": "helpers/withdrawn_report.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/withdrawn_report.py"
+  },
+  {
+    "external_path": "helpers/finish_withdrawn_analysis.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/finish_withdrawn_analysis.py"
+  },
+  {
+    "external_path": "helpers/check_withdrawn_config.py",
+    "mode": "byte-identical copy",
+    "package_path": "helpers/check_withdrawn_config.py"
+  }
+]

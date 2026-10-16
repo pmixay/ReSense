@@ -1,0 +1,1274 @@
+{
+  "acceptance_control_commit": "707ea9cda051369326fb9407c42488c1033dad76",
+  "active_evaluation_inputs_identical": true,
+  "axis_range_and_additive_metadata_only": true,
+  "clean_LF": true,
+  "common_raw_numeric_comparison": {
+    "common_numeric_values_changed": 5799,
+    "common_numeric_values_compared": 2432861,
+    "other_values_changed": 0,
+    "range_values_changed": 5799
+  },
+  "current_cut_true": 0,
+  "current_spared_true": 0,
+  "exact_result_checks": {
+    "detections": 0,
+    "ego_motion": 0,
+    "mount": 0,
+    "n_candidates": 0,
+    "n_corridor": 0,
+    "n_points": 0,
+    "nearest_distance": 0,
+    "non_range_non_latency_health": 0,
+    "obstacle": 0,
+    "preexisting_raw_candidates": 0,
+    "preexisting_track_fields": 0,
+    "raw_corridor_membership": 0,
+    "warning": 0,
+    "warnings": 0
+  },
+  "gate_exit": 0,
+  "historical_commit": "f8c088dc4f3243fbd15a3aae9be0459e8a0aa941",
+  "historical_is_acceptance_control": false,
+  "historical_to_current": {
+    "all_changes": [
+      {
+        "current": false,
+        "field": "raw.candidates[0].spared",
+        "historical": true,
+        "key": {
+          "frame_id": "new_data_0_0036",
+          "index": 36,
+          "piece": "new_data_0",
+          "recording": "new_data"
+        },
+        "row": 36,
+        "sequence_file": "new_data_0.jsonl"
+      },
+      {
+        "current": false,
+        "field": "raw.candidates[0].spared",
+        "historical": true,
+        "key": {
+          "frame_id": "new_data_54_0003",
+          "index": 1348,
+          "piece": "new_data_1",
+          "recording": "new_data"
+        },
+        "row": 1348,
+        "sequence_file": "new_data_1.jsonl"
+      },
+      {
+        "current": false,
+        "field": "raw.candidates[8].spared",
+        "historical": true,
+        "key": {
+          "frame_id": "new_data_54_0004",
+          "index": 1349,
+          "piece": "new_data_1",
+          "recording": "new_data"
+        },
+        "row": 1349,
+        "sequence_file": "new_data_1.jsonl"
+      },
+      {
+        "current": "column",
+        "field": "raw.candidates[8].reason",
+        "historical": "",
+        "key": {
+          "frame_id": "new_data_54_0009",
+          "index": 1354,
+          "piece": "new_data_1",
+          "recording": "new_data"
+        },
+        "row": 1354,
+        "sequence_file": "new_data_1.jsonl"
+      },
+      {
+        "current": false,
+        "field": "raw.candidates[8].spared",
+        "historical": true,
+        "key": {
+          "frame_id": "new_data_54_0009",
+          "index": 1354,
+          "piece": "new_data_1",
+          "recording": "new_data"
+        },
+        "row": 1354,
+        "sequence_file": "new_data_1.jsonl"
+      },
+      {
+        "current": "warning",
+        "field": "raw.candidates[8].zone",
+        "historical": "gauge",
+        "key": {
+          "frame_id": "new_data_54_0009",
+          "index": 1354,
+          "piece": "new_data_1",
+          "recording": "new_data"
+        },
+        "row": 1354,
+        "sequence_file": "new_data_1.jsonl"
+      },
+      {
+        "current": false,
+        "field": "raw.candidates[5].spared",
+        "historical": true,
+        "key": {
+          "frame_id": "new_data_54_0016",
+          "index": 1361,
+          "piece": "new_data_1",
+          "recording": "new_data"
+        },
+        "row": 1361,
+        "sequence_file": "new_data_1.jsonl"
+      },
+      {
+        "current": false,
+        "field": "raw.candidates[2].spared",
+        "historical": true,
+        "key": {
+          "frame_id": "new_data_171_0007",
+          "index": 274,
+          "piece": "new_data_6",
+          "recording": "new_data"
+        },
+        "row": 274,
+        "sequence_file": "new_data_6.jsonl"
+      }
+    ],
+    "counts": {
+      "changed_entries": 8,
+      "changed_frames": 6,
+      "frames": 18329
+    },
+    "fields": {
+      "raw.candidates[].reason": 1,
+      "raw.candidates[].spared": 6,
+      "raw.candidates[].zone": 1
+    },
+    "groups": {
+      "candidates": {
+        "entries": 8,
+        "frames": 6
+      }
+    }
+  },
+  "limits": "The plain full gate and every captured frame are measured here. H4 author withdrawal units/probes/dark evidence are separate; no G3 held-out case is run. Equality claims concern captured results, not every unrecorded intermediate or tracker state.",
+  "measured_commit": "c9aea87cb5322092070158cd8987115ee44833c9",
+  "metrics_summaries": {
+    "same_runtime": {
+      "allow": [],
+      "baseline": "/evidence/baseline-707ea9cda051-20261016T060147Z-68fb3429/gate.json",
+      "baseline_commit": "707ea9cda051369326fb9407c42488c1033dad76",
+      "baseline_config_sha256": "873374a221e37da48fbe9d31806f7a26349399ed09f9b58d9768c1ae50a2916e",
+      "better": [],
+      "changed_non_latency_rows": [],
+      "gated_rows": 146,
+      "identical_non_latency_rows": 208,
+      "info_changed": [
+        "latency_ms.doubleT_obstacle.mean",
+        "latency_ms.doubleT_obstacle.p95",
+        "latency_ms.doubleT_platform.mean",
+        "latency_ms.doubleT_platform.p95",
+        "latency_ms.roundT_doubleT.mean",
+        "latency_ms.roundT_doubleT.p95",
+        "latency_ms.roundT_pressureGate_roundT.mean",
+        "latency_ms.roundT_pressureGate_roundT.p95",
+        "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+        "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+        "latency_ms.squareT_platform_squareT_switch.mean",
+        "latency_ms.squareT_platform_squareT_switch.p95",
+        "latency_ms.cloud_with_fake_obj.mean",
+        "latency_ms.cloud_with_fake_obj.p95",
+        "latency_ms.new_data.mean",
+        "latency_ms.new_data.p95"
+      ],
+      "missing_allowed": [],
+      "missing_gated": [],
+      "non_latency_rows": 208,
+      "passed": true,
+      "same": 208,
+      "total_rows": 224,
+      "worse_allowed": [],
+      "worse_gated": []
+    },
+    "shell_off_2026_09_29": {
+      "allow": [],
+      "baseline": "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+      "baseline_commit": "7464d80ec06f484ce1691b0ca7a87ce1ed82c5a0",
+      "baseline_config_sha256": "873374a221e37da48fbe9d31806f7a26349399ed09f9b58d9768c1ae50a2916e",
+      "better": [],
+      "changed_non_latency_rows": [],
+      "gated_rows": 146,
+      "identical_non_latency_rows": 208,
+      "info_changed": [
+        "latency_ms.doubleT_obstacle.mean",
+        "latency_ms.doubleT_obstacle.p95",
+        "latency_ms.doubleT_platform.mean",
+        "latency_ms.doubleT_platform.p95",
+        "latency_ms.roundT_doubleT.mean",
+        "latency_ms.roundT_doubleT.p95",
+        "latency_ms.roundT_pressureGate_roundT.mean",
+        "latency_ms.roundT_pressureGate_roundT.p95",
+        "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+        "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+        "latency_ms.squareT_platform_squareT_switch.mean",
+        "latency_ms.squareT_platform_squareT_switch.p95",
+        "latency_ms.cloud_with_fake_obj.mean",
+        "latency_ms.cloud_with_fake_obj.p95",
+        "latency_ms.new_data.mean",
+        "latency_ms.new_data.p95"
+      ],
+      "missing_allowed": [],
+      "missing_gated": [],
+      "non_latency_rows": 208,
+      "passed": true,
+      "same": 208,
+      "total_rows": 224,
+      "worse_allowed": [],
+      "worse_gated": []
+    }
+  },
+  "previous_H3_promotion_disappeared": true,
+  "previous_promotion_witness": {
+    "candidate_index": 8,
+    "current": {
+      "bbox_max": [
+        76.25999450683594,
+        1.659999966621399,
+        2.0899999141693115
+      ],
+      "bbox_min": [
+        73.55999755859375,
+        1.2699999809265137,
+        -0.550000011920929
+      ],
+      "centroid": [
+        75.40693664550781,
+        1.5114284753799438,
+        0.5434694290161133
+      ],
+      "cut": false,
+      "demoted": false,
+      "distance": 73.55999755859375,
+      "height_max": 2.7459693933711486,
+      "height_min": 0.13031013912933676,
+      "intensity": 5.755102157592773,
+      "kind": "",
+      "lateral": -0.1383347559154351,
+      "low_height_weak": false,
+      "n": 25,
+      "n_expected": 47.53178733489585,
+      "n_gauge": 25,
+      "n_raw": 49,
+      "rail_line": false,
+      "reason": "column",
+      "retro": false,
+      "ring_count": 17,
+      "score": 1.0,
+      "spared": false,
+      "thin": false,
+      "wall_kept": false,
+      "weak": false,
+      "zone": "warning"
+    },
+    "current_clear": 44.6,
+    "current_detections": [],
+    "current_nearest": null,
+    "current_obstacle": false,
+    "current_warning": true,
+    "current_warnings": [
+      {
+        "age": 9,
+        "center": [
+          44.11,
+          1.63,
+          0.24
+        ],
+        "confidence": 1.0,
+        "distance": 43.66,
+        "height_min": 0.12,
+        "id": 424,
+        "intensity": 2.4,
+        "kind": "",
+        "lateral": 0.86,
+        "n_points": 64,
+        "reason": "column",
+        "size": [
+          1.8,
+          0.63,
+          2.83
+        ],
+        "zone": "warning"
+      },
+      {
+        "age": 10,
+        "center": [
+          47.98,
+          1.61,
+          0.35
+        ],
+        "confidence": 1.0,
+        "distance": 47.18,
+        "height_min": 0.12,
+        "id": 419,
+        "intensity": 1.9,
+        "kind": "",
+        "lateral": 0.74,
+        "n_points": 48,
+        "reason": "column",
+        "size": [
+          2.44,
+          0.59,
+          2.58
+        ],
+        "zone": "warning"
+      },
+      {
+        "age": 10,
+        "center": [
+          52.01,
+          1.62,
+          0.55
+        ],
+        "confidence": 1.0,
+        "distance": 51.65,
+        "height_min": 0.14,
+        "id": 420,
+        "intensity": 1.9,
+        "kind": "",
+        "lateral": 0.64,
+        "n_points": 35,
+        "reason": "column",
+        "size": [
+          1.65,
+          0.13,
+          2.66
+        ],
+        "zone": "warning"
+      },
+      {
+        "age": 6,
+        "center": [
+          55.88,
+          1.59,
+          0.51
+        ],
+        "confidence": 1.0,
+        "distance": 55.68,
+        "height_min": 0.19,
+        "id": 426,
+        "intensity": 1.2,
+        "kind": "",
+        "lateral": 0.51,
+        "n_points": 27,
+        "reason": "",
+        "size": [
+          1.13,
+          0.13,
+          2.71
+        ],
+        "zone": "warning"
+      },
+      {
+        "age": 10,
+        "center": [
+          59.81,
+          1.51,
+          0.79
+        ],
+        "confidence": 1.0,
+        "distance": 59.66,
+        "height_min": 0.2,
+        "id": 421,
+        "intensity": 13.7,
+        "kind": "",
+        "lateral": 0.32,
+        "n_points": 34,
+        "reason": "column",
+        "size": [
+          0.26,
+          0.36,
+          2.77
+        ],
+        "zone": "warning"
+      }
+    ],
+    "frame_id": "new_data_54_0009",
+    "historical": {
+      "bbox_max": [
+        76.25999450683594,
+        1.659999966621399,
+        2.0899999141693115
+      ],
+      "bbox_min": [
+        73.55999755859375,
+        1.2699999809265137,
+        -0.550000011920929
+      ],
+      "centroid": [
+        75.40693664550781,
+        1.5114284753799438,
+        0.5434694290161133
+      ],
+      "cut": false,
+      "demoted": false,
+      "distance": 73.55999755859375,
+      "height_max": 2.7459693933711486,
+      "height_min": 0.13031013912933676,
+      "intensity": 5.755102157592773,
+      "kind": "",
+      "lateral": -0.1383347559154351,
+      "low_height_weak": false,
+      "n": 25,
+      "n_expected": 47.53178733489585,
+      "n_gauge": 25,
+      "n_raw": 49,
+      "rail_line": false,
+      "reason": "",
+      "retro": false,
+      "ring_count": 17,
+      "score": 1.0,
+      "spared": true,
+      "thin": false,
+      "wall_kept": false,
+      "weak": false,
+      "zone": "gauge"
+    },
+    "row": 1354,
+    "sealed": {
+      "bbox_max": [
+        76.25999450683594,
+        1.659999966621399,
+        2.0899999141693115
+      ],
+      "bbox_min": [
+        73.55999755859375,
+        1.2699999809265137,
+        -0.550000011920929
+      ],
+      "centroid": [
+        75.40693664550781,
+        1.5114284753799438,
+        0.5434694290161133
+      ],
+      "demoted": false,
+      "distance": 73.55999755859375,
+      "height_max": 2.7459693933711486,
+      "height_min": 0.13031013912933676,
+      "intensity": 5.755102157592773,
+      "kind": "",
+      "lateral": -0.1383347559154351,
+      "low_height_weak": false,
+      "n": 25,
+      "n_expected": 47.53178733489585,
+      "n_gauge": 25,
+      "n_raw": 49,
+      "rail_line": false,
+      "reason": "column",
+      "retro": false,
+      "ring_count": 17,
+      "score": 1.0,
+      "thin": false,
+      "wall_kept": false,
+      "weak": false,
+      "zone": "warning"
+    },
+    "sequence_file": "new_data_1.jsonl"
+  },
+  "previous_spared_candidates": [
+    {
+      "candidate_index": 0,
+      "current": {
+        "bbox_max": [
+          126.47999572753906,
+          1.5799999237060547,
+          0.699999988079071
+        ],
+        "bbox_min": [
+          123.64999389648438,
+          1.5199999809265137,
+          -1.7400000095367432
+        ],
+        "centroid": [
+          125.14750671386719,
+          1.552499771118164,
+          -0.6000000238418579
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 123.64999389648438,
+        "height_max": 2.572097426549951,
+        "height_min": 0.13533566227112837,
+        "intensity": 3.0,
+        "kind": "",
+        "lateral": 0.6680554589804322,
+        "low_height_weak": false,
+        "n": 4,
+        "n_expected": 6.136137942124836,
+        "n_gauge": 4,
+        "n_raw": 8,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 4,
+        "score": 1.0,
+        "spared": false,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "frame_id": "new_data_0_0036",
+      "historical": {
+        "bbox_max": [
+          126.47999572753906,
+          1.5799999237060547,
+          0.699999988079071
+        ],
+        "bbox_min": [
+          123.64999389648438,
+          1.5199999809265137,
+          -1.7400000095367432
+        ],
+        "centroid": [
+          125.14750671386719,
+          1.552499771118164,
+          -0.6000000238418579
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 123.64999389648438,
+        "height_max": 2.572097426549951,
+        "height_min": 0.13533566227112837,
+        "intensity": 3.0,
+        "kind": "",
+        "lateral": 0.6680554589804322,
+        "low_height_weak": false,
+        "n": 4,
+        "n_expected": 6.136137942124836,
+        "n_gauge": 4,
+        "n_raw": 8,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 4,
+        "score": 1.0,
+        "spared": true,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "row": 36,
+      "sealed": {
+        "bbox_max": [
+          126.47999572753906,
+          1.5799999237060547,
+          0.699999988079071
+        ],
+        "bbox_min": [
+          123.64999389648438,
+          1.5199999809265137,
+          -1.7400000095367432
+        ],
+        "centroid": [
+          125.14750671386719,
+          1.552499771118164,
+          -0.6000000238418579
+        ],
+        "demoted": false,
+        "distance": 123.64999389648438,
+        "height_max": 2.572097426549951,
+        "height_min": 0.13533566227112837,
+        "intensity": 3.0,
+        "kind": "",
+        "lateral": 0.6680554589804322,
+        "low_height_weak": false,
+        "n": 4,
+        "n_expected": 6.136137942124836,
+        "n_gauge": 4,
+        "n_raw": 8,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 4,
+        "score": 1.0,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "sequence_file": "new_data_0.jsonl"
+    },
+    {
+      "candidate_index": 0,
+      "current": {
+        "bbox_max": [
+          50.68000030517578,
+          1.6699999570846558,
+          1.6799999475479126
+        ],
+        "bbox_min": [
+          48.93000030517578,
+          1.0399999618530273,
+          -1.059999942779541
+        ],
+        "centroid": [
+          49.518157958984375,
+          1.5914939641952515,
+          0.2266666144132614
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 48.93000030517578,
+        "height_max": 2.9060510406133235,
+        "height_min": 0.16300339668485941,
+        "intensity": 2.1379311084747314,
+        "kind": "",
+        "lateral": 0.6936759559325514,
+        "low_height_weak": false,
+        "n": 48,
+        "n_expected": 184.68853348511547,
+        "n_gauge": 48,
+        "n_raw": 87,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 26,
+        "score": 1.0,
+        "spared": false,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "frame_id": "new_data_54_0003",
+      "historical": {
+        "bbox_max": [
+          50.68000030517578,
+          1.6699999570846558,
+          1.6799999475479126
+        ],
+        "bbox_min": [
+          48.93000030517578,
+          1.0399999618530273,
+          -1.059999942779541
+        ],
+        "centroid": [
+          49.518157958984375,
+          1.5914939641952515,
+          0.2266666144132614
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 48.93000030517578,
+        "height_max": 2.9060510406133235,
+        "height_min": 0.16300339668485941,
+        "intensity": 2.1379311084747314,
+        "kind": "",
+        "lateral": 0.6936759559325514,
+        "low_height_weak": false,
+        "n": 48,
+        "n_expected": 184.68853348511547,
+        "n_gauge": 48,
+        "n_raw": 87,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 26,
+        "score": 1.0,
+        "spared": true,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "row": 1348,
+      "sealed": {
+        "bbox_max": [
+          50.68000030517578,
+          1.6699999570846558,
+          1.6799999475479126
+        ],
+        "bbox_min": [
+          48.93000030517578,
+          1.0399999618530273,
+          -1.059999942779541
+        ],
+        "centroid": [
+          49.518157958984375,
+          1.5914939641952515,
+          0.2266666144132614
+        ],
+        "demoted": false,
+        "distance": 48.93000030517578,
+        "height_max": 2.9060510406133235,
+        "height_min": 0.16300339668485941,
+        "intensity": 2.1379311084747314,
+        "kind": "",
+        "lateral": 0.6936759559325514,
+        "low_height_weak": false,
+        "n": 48,
+        "n_expected": 184.68853348511547,
+        "n_gauge": 48,
+        "n_raw": 87,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 26,
+        "score": 1.0,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "sequence_file": "new_data_1.jsonl"
+    },
+    {
+      "candidate_index": 8,
+      "current": {
+        "bbox_max": [
+          80.9000015258789,
+          1.6200000047683716,
+          2.059999942779541
+        ],
+        "bbox_min": [
+          77.94999694824219,
+          1.209999918937683,
+          -0.5799999833106995
+        ],
+        "centroid": [
+          79.93000030517578,
+          1.4594593048095703,
+          0.5956756472587585
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 77.94999694824219,
+        "height_max": 2.8292838725791283,
+        "height_min": 0.2294704428992429,
+        "intensity": 5.567567348480225,
+        "kind": "",
+        "lateral": -0.6975439116906015,
+        "low_height_weak": false,
+        "n": 18,
+        "n_expected": 44.476910133807074,
+        "n_gauge": 18,
+        "n_raw": 37,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 13,
+        "score": 1.0,
+        "spared": false,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "frame_id": "new_data_54_0004",
+      "historical": {
+        "bbox_max": [
+          80.9000015258789,
+          1.6200000047683716,
+          2.059999942779541
+        ],
+        "bbox_min": [
+          77.94999694824219,
+          1.209999918937683,
+          -0.5799999833106995
+        ],
+        "centroid": [
+          79.93000030517578,
+          1.4594593048095703,
+          0.5956756472587585
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 77.94999694824219,
+        "height_max": 2.8292838725791283,
+        "height_min": 0.2294704428992429,
+        "intensity": 5.567567348480225,
+        "kind": "",
+        "lateral": -0.6975439116906015,
+        "low_height_weak": false,
+        "n": 18,
+        "n_expected": 44.476910133807074,
+        "n_gauge": 18,
+        "n_raw": 37,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 13,
+        "score": 1.0,
+        "spared": true,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "row": 1349,
+      "sealed": {
+        "bbox_max": [
+          80.9000015258789,
+          1.6200000047683716,
+          2.059999942779541
+        ],
+        "bbox_min": [
+          77.94999694824219,
+          1.209999918937683,
+          -0.5799999833106995
+        ],
+        "centroid": [
+          79.93000030517578,
+          1.4594593048095703,
+          0.5956756472587585
+        ],
+        "demoted": false,
+        "distance": 77.94999694824219,
+        "height_max": 2.8292838725791283,
+        "height_min": 0.2294704428992429,
+        "intensity": 5.567567348480225,
+        "kind": "",
+        "lateral": -0.6975439116906015,
+        "low_height_weak": false,
+        "n": 18,
+        "n_expected": 44.476910133807074,
+        "n_gauge": 18,
+        "n_raw": 37,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 13,
+        "score": 1.0,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "sequence_file": "new_data_1.jsonl"
+    },
+    {
+      "candidate_index": 8,
+      "current": {
+        "bbox_max": [
+          76.25999450683594,
+          1.659999966621399,
+          2.0899999141693115
+        ],
+        "bbox_min": [
+          73.55999755859375,
+          1.2699999809265137,
+          -0.550000011920929
+        ],
+        "centroid": [
+          75.40693664550781,
+          1.5114284753799438,
+          0.5434694290161133
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 73.55999755859375,
+        "height_max": 2.7459693933711486,
+        "height_min": 0.13031013912933676,
+        "intensity": 5.755102157592773,
+        "kind": "",
+        "lateral": -0.1383347559154351,
+        "low_height_weak": false,
+        "n": 25,
+        "n_expected": 47.53178733489585,
+        "n_gauge": 25,
+        "n_raw": 49,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 17,
+        "score": 1.0,
+        "spared": false,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "frame_id": "new_data_54_0009",
+      "historical": {
+        "bbox_max": [
+          76.25999450683594,
+          1.659999966621399,
+          2.0899999141693115
+        ],
+        "bbox_min": [
+          73.55999755859375,
+          1.2699999809265137,
+          -0.550000011920929
+        ],
+        "centroid": [
+          75.40693664550781,
+          1.5114284753799438,
+          0.5434694290161133
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 73.55999755859375,
+        "height_max": 2.7459693933711486,
+        "height_min": 0.13031013912933676,
+        "intensity": 5.755102157592773,
+        "kind": "",
+        "lateral": -0.1383347559154351,
+        "low_height_weak": false,
+        "n": 25,
+        "n_expected": 47.53178733489585,
+        "n_gauge": 25,
+        "n_raw": 49,
+        "rail_line": false,
+        "reason": "",
+        "retro": false,
+        "ring_count": 17,
+        "score": 1.0,
+        "spared": true,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "gauge"
+      },
+      "row": 1354,
+      "sealed": {
+        "bbox_max": [
+          76.25999450683594,
+          1.659999966621399,
+          2.0899999141693115
+        ],
+        "bbox_min": [
+          73.55999755859375,
+          1.2699999809265137,
+          -0.550000011920929
+        ],
+        "centroid": [
+          75.40693664550781,
+          1.5114284753799438,
+          0.5434694290161133
+        ],
+        "demoted": false,
+        "distance": 73.55999755859375,
+        "height_max": 2.7459693933711486,
+        "height_min": 0.13031013912933676,
+        "intensity": 5.755102157592773,
+        "kind": "",
+        "lateral": -0.1383347559154351,
+        "low_height_weak": false,
+        "n": 25,
+        "n_expected": 47.53178733489585,
+        "n_gauge": 25,
+        "n_raw": 49,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 17,
+        "score": 1.0,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "sequence_file": "new_data_1.jsonl"
+    },
+    {
+      "candidate_index": 5,
+      "current": {
+        "bbox_max": [
+          55.44999694824219,
+          1.649999976158142,
+          1.899999976158142
+        ],
+        "bbox_min": [
+          53.84000015258789,
+          1.3199999332427979,
+          -0.7599999904632568
+        ],
+        "centroid": [
+          54.04536056518555,
+          1.5080801248550415,
+          0.728888750076294
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 53.84000015258789,
+        "height_max": 2.840316001703471,
+        "height_min": 0.19149032756274353,
+        "intensity": 14.848484992980957,
+        "kind": "",
+        "lateral": 0.540982663747171,
+        "low_height_weak": false,
+        "n": 47,
+        "n_expected": 78.84916650795518,
+        "n_gauge": 47,
+        "n_raw": 99,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 23,
+        "score": 1.0,
+        "spared": false,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "frame_id": "new_data_54_0016",
+      "historical": {
+        "bbox_max": [
+          55.44999694824219,
+          1.649999976158142,
+          1.899999976158142
+        ],
+        "bbox_min": [
+          53.84000015258789,
+          1.3199999332427979,
+          -0.7599999904632568
+        ],
+        "centroid": [
+          54.04536056518555,
+          1.5080801248550415,
+          0.728888750076294
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 53.84000015258789,
+        "height_max": 2.840316001703471,
+        "height_min": 0.19149032756274353,
+        "intensity": 14.848484992980957,
+        "kind": "",
+        "lateral": 0.540982663747171,
+        "low_height_weak": false,
+        "n": 47,
+        "n_expected": 78.84916650795518,
+        "n_gauge": 47,
+        "n_raw": 99,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 23,
+        "score": 1.0,
+        "spared": true,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "row": 1361,
+      "sealed": {
+        "bbox_max": [
+          55.44999694824219,
+          1.649999976158142,
+          1.899999976158142
+        ],
+        "bbox_min": [
+          53.84000015258789,
+          1.3199999332427979,
+          -0.7599999904632568
+        ],
+        "centroid": [
+          54.04536056518555,
+          1.5080801248550415,
+          0.728888750076294
+        ],
+        "demoted": false,
+        "distance": 53.84000015258789,
+        "height_max": 2.840316001703471,
+        "height_min": 0.19149032756274353,
+        "intensity": 14.848484992980957,
+        "kind": "",
+        "lateral": 0.540982663747171,
+        "low_height_weak": false,
+        "n": 47,
+        "n_expected": 78.84916650795518,
+        "n_gauge": 47,
+        "n_raw": 99,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 23,
+        "score": 1.0,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "sequence_file": "new_data_1.jsonl"
+    },
+    {
+      "candidate_index": 2,
+      "current": {
+        "bbox_max": [
+          120.11000061035156,
+          9.920000076293945,
+          1.2400000095367432
+        ],
+        "bbox_min": [
+          116.3499984741211,
+          9.260000228881836,
+          -1.159999966621399
+        ],
+        "centroid": [
+          119.32257080078125,
+          9.598000526428223,
+          0.010571418330073357
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 116.3499984741211,
+        "height_max": 2.5572263450963013,
+        "height_min": 0.1307308216933225,
+        "intensity": 11.914285659790039,
+        "kind": "",
+        "lateral": 0.7442558476192848,
+        "low_height_weak": false,
+        "n": 19,
+        "n_expected": 29.029811517480802,
+        "n_gauge": 13,
+        "n_raw": 35,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 8,
+        "score": 1.0,
+        "spared": false,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "frame_id": "new_data_171_0007",
+      "historical": {
+        "bbox_max": [
+          120.11000061035156,
+          9.920000076293945,
+          1.2400000095367432
+        ],
+        "bbox_min": [
+          116.3499984741211,
+          9.260000228881836,
+          -1.159999966621399
+        ],
+        "centroid": [
+          119.32257080078125,
+          9.598000526428223,
+          0.010571418330073357
+        ],
+        "cut": false,
+        "demoted": false,
+        "distance": 116.3499984741211,
+        "height_max": 2.5572263450963013,
+        "height_min": 0.1307308216933225,
+        "intensity": 11.914285659790039,
+        "kind": "",
+        "lateral": 0.7442558476192848,
+        "low_height_weak": false,
+        "n": 19,
+        "n_expected": 29.029811517480802,
+        "n_gauge": 13,
+        "n_raw": 35,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 8,
+        "score": 1.0,
+        "spared": true,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "row": 274,
+      "sealed": {
+        "bbox_max": [
+          120.11000061035156,
+          9.920000076293945,
+          1.2400000095367432
+        ],
+        "bbox_min": [
+          116.3499984741211,
+          9.260000228881836,
+          -1.159999966621399
+        ],
+        "centroid": [
+          119.32257080078125,
+          9.598000526428223,
+          0.010571418330073357
+        ],
+        "demoted": false,
+        "distance": 116.3499984741211,
+        "height_max": 2.5572263450963013,
+        "height_min": 0.1307308216933225,
+        "intensity": 11.914285659790039,
+        "kind": "",
+        "lateral": 0.7442558476192848,
+        "low_height_weak": false,
+        "n": 19,
+        "n_expected": 29.029811517480802,
+        "n_gauge": 13,
+        "n_raw": 35,
+        "rail_line": false,
+        "reason": "column",
+        "retro": false,
+        "ring_count": 8,
+        "score": 1.0,
+        "thin": false,
+        "wall_kept": false,
+        "weak": false,
+        "zone": "warning"
+      },
+      "sequence_file": "new_data_6.jsonl"
+    }
+  ],
+  "range_checks": {
+    "finite_wall_drift_frames": 2422,
+    "frames": 18329,
+    "health.clear_distance_formula_checked": 18329,
+    "health.clear_distance_increased_frames": 0,
+    "health.monitored_range_formula_checked": 18329,
+    "health.monitored_range_increased_frames": 0,
+    "result.clear_distance_formula_checked": 18329,
+    "result.clear_distance_increased_frames": 0
+  },
+  "range_formula_mismatches": {},
+  "shipping_routes": {
+    "canonical_config_sha256": "3936780252f00cf0dc34c9205b5633738368a0d5c3bdc4f07200d21d3de6143c",
+    "canonical_ros_bytes_identical": true,
+    "column_free_max_top_routes": {
+      "canonical_yaml": 0.0,
+      "class_default": 0.0,
+      "measured_gate_yaml": 0.0,
+      "resolved_measured_config": 0.0,
+      "ros_yaml": 0.0
+    },
+    "inactive_experimental_knobs": {
+      "column_free_min_core": 0.5,
+      "column_free_min_returns": 2,
+      "column_free_tall_gap": 0.0,
+      "column_free_vault_margin": 0.3,
+      "column_free_window": 1.2
+    },
+    "measured_commit": "c9aea87cb5322092070158cd8987115ee44833c9",
+    "native_enabled": true,
+    "native_status": "native (_resense_native.so)",
+    "resense_file": "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/resense/__init__.py",
+    "shipping_H1_disabled": true,
+    "structure_cut": {
+      "structure_cut_max_spread": 0.12,
+      "structure_cut_min_fit": 0.8,
+      "structure_cut_min_points": 8,
+      "structure_cut_tol": 1.3
+    },
+    "version": "1.0.0",
+    "wall_drift": {
+      "axis_wall_drift": 0.8,
+      "axis_wall_drift_bins": 2,
+      "axis_wall_drift_max_offset": 3.5
+    }
+  },
+  "source_clean_before_after": true,
+  "source_sha256": "a73bc44642eb7d022e1433a763761f0f7e62bd0c5dfd93b4ad6db13660234aaf"
+}

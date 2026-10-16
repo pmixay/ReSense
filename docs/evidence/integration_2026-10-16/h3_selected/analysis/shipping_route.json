@@ -1,0 +1,35 @@
+{
+  "measured_commit": "c9aea87cb5322092070158cd8987115ee44833c9",
+  "version": "1.0.0",
+  "resense_file": "/evalworkspace/candidate-c9aea87cb532-20261016T101302Z-8a9ae4d1/resense/__init__.py",
+  "column_free_max_top_routes": {
+    "class_default": 0.0,
+    "canonical_yaml": 0.0,
+    "ros_yaml": 0.0,
+    "measured_gate_yaml": 0.0,
+    "resolved_measured_config": 0.0
+  },
+  "shipping_H1_disabled": true,
+  "canonical_ros_bytes_identical": true,
+  "canonical_config_sha256": "3936780252f00cf0dc34c9205b5633738368a0d5c3bdc4f07200d21d3de6143c",
+  "structure_cut": {
+    "structure_cut_tol": 1.3,
+    "structure_cut_max_spread": 0.12,
+    "structure_cut_min_fit": 0.8,
+    "structure_cut_min_points": 8
+  },
+  "wall_drift": {
+    "axis_wall_drift": 0.8,
+    "axis_wall_drift_max_offset": 3.5,
+    "axis_wall_drift_bins": 2
+  },
+  "inactive_experimental_knobs": {
+    "column_free_min_core": 0.5,
+    "column_free_min_returns": 2,
+    "column_free_window": 1.2,
+    "column_free_vault_margin": 0.3,
+    "column_free_tall_gap": 0.0
+  },
+  "native_enabled": true,
+  "native_status": "native (_resense_native.so)"
+}

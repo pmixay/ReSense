@@ -1,0 +1,811 @@
+{
+  "controls": {
+    "baseline_commit": "707ea9cda051369326fb9407c42488c1033dad76",
+    "cache": {
+      "bytes": 9659917289,
+      "files": 15499,
+      "sha256": "87ad4712a99a3aeef62230388baec9ffd2e86c24c5a2036d6899fdd295761d9c"
+    },
+    "candidate_commit": "c9aea87cb5322092070158cd8987115ee44833c9",
+    "candidate_gate_exit": 0,
+    "candidate_gate_passed": true,
+    "changed_evaluation_files": [
+      "scripts/analyze_cross_ring_measurement.py",
+      "scripts/build_deck.py",
+      "scripts/check_nonroot_player.py",
+      "scripts/check_offline_image.py",
+      "scripts/check_webapp_wheels.py",
+      "scripts/decision_policy_import.py",
+      "scripts/hero_view.py",
+      "scripts/offline_rebuild_test.py",
+      "scripts/p4_data_intake.py",
+      "scripts/rescore_decisions.py",
+      "scripts/robustness_battery.py",
+      "scripts/score_clear_distance.py",
+      "scripts/startup_acceptance.py",
+      "scripts/synthetic_sensitivity.py"
+    ],
+    "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+    "observer_sha256": "183cf3bf791a1221d79ff4aec4de5400f4232aa65da0dfea97512003ab1122b7",
+    "packages": {
+      "PyYAML": "6.0.2",
+      "numpy": "1.26.4",
+      "open3d": "0.19.0",
+      "rosbags": "0.11.5",
+      "scikit-learn": "1.5.2",
+      "scipy": "1.13.1",
+      "zstandard": "0.25.0"
+    }
+  },
+  "counts": {
+    "changed_frames": 18329,
+    "frames": 18329,
+    "timing_changed_frames": 18329
+  },
+  "datasets": {
+    "SetF": {
+      "changed_frames": 3060,
+      "frames": 3060
+    },
+    "cloud_with_fake_obj": {
+      "changed_frames": 1510,
+      "frames": 1510
+    },
+    "doubleT_obstacle": {
+      "changed_frames": 201,
+      "frames": 201
+    },
+    "doubleT_platform": {
+      "changed_frames": 345,
+      "frames": 345
+    },
+    "new_data": {
+      "changed_frames": 11271,
+      "frames": 11271
+    },
+    "roundT_doubleT": {
+      "changed_frames": 252,
+      "frames": 252
+    },
+    "roundT_pressureGate_roundT": {
+      "changed_frames": 268,
+      "frames": 268
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "changed_frames": 545,
+      "frames": 545
+    },
+    "squareT_platform_squareT_switch": {
+      "changed_frames": 877,
+      "frames": 877
+    }
+  },
+  "exact_comparison": true,
+  "excluded_field_change_counts": {
+    "raw.health.latency_messages": 2214,
+    "raw.health.latency_messages[]": 273,
+    "raw.health.latency_only_level": 2166,
+    "raw.health.latency_p95_ms": 18233,
+    "raw.timing_ms.accumulate": 18322,
+    "raw.timing_ms.cluster": 18329,
+    "raw.timing_ms.corridor": 18329,
+    "raw.timing_ms.egomotion": 18329,
+    "raw.timing_ms.health": 18329,
+    "raw.timing_ms.result": 18325,
+    "raw.timing_ms.stages": 18329,
+    "raw.timing_ms.total": 18329,
+    "raw.timing_ms.track": 18329,
+    "raw.timing_ms.tracking": 18329,
+    "serialized.health.latency_messages": 2214,
+    "serialized.health.latency_messages[]": 273,
+    "serialized.health.latency_only_level": 2166,
+    "serialized.health.latency_p95_ms": 18233,
+    "serialized.timing_ms.accumulate": 5708,
+    "serialized.timing_ms.cluster": 18298,
+    "serialized.timing_ms.corridor": 18297,
+    "serialized.timing_ms.egomotion": 18255,
+    "serialized.timing_ms.health": 18270,
+    "serialized.timing_ms.result": 12322,
+    "serialized.timing_ms.stages": 18321,
+    "serialized.timing_ms.total": 18318,
+    "serialized.timing_ms.track": 18304,
+    "serialized.timing_ms.tracking": 18145
+  },
+  "excluded_telemetry_fields": [
+    "timing_ms",
+    "health.latency_p95_ms",
+    "health.latency_basis",
+    "health.latency_sample_age_frames",
+    "health.messages entries matching ^latency p95 \\d+ ms over the \\d+ ms budget$",
+    "health.level=warn only when latency message exists, decision_level=ok and no scene messages"
+  ],
+  "fields": {
+    "raw.candidates[].cut": {
+      "changes": 25706,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": "cloud_with_fake_obj.jsonl:0"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": "cloud_with_fake_obj.jsonl:1"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": "cloud_with_fake_obj.jsonl:2"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": "cloud_with_fake_obj.jsonl:3"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": "cloud_with_fake_obj.jsonl:4"
+        }
+      ],
+      "frames": 12781,
+      "max_abs_numeric_delta": 0.0
+    },
+    "raw.candidates[].spared": {
+      "changes": 25706,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": "cloud_with_fake_obj.jsonl:0"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": "cloud_with_fake_obj.jsonl:1"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": "cloud_with_fake_obj.jsonl:2"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": "cloud_with_fake_obj.jsonl:3"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": "cloud_with_fake_obj.jsonl:4"
+        }
+      ],
+      "frames": 12781,
+      "max_abs_numeric_delta": 0.0
+    },
+    "raw.clear_distance": {
+      "changes": 1834,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "raw.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "raw.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "raw.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": 90.8,
+          "candidate": 90.0,
+          "field": "raw.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": 90.1,
+          "candidate": 90.0,
+          "field": "raw.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 1834,
+      "max_abs_numeric_delta": 131.5
+    },
+    "raw.health.clear_distance": {
+      "changes": 1834,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "raw.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "raw.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "raw.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": 90.8,
+          "candidate": 90.0,
+          "field": "raw.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": 90.1,
+          "candidate": 90.0,
+          "field": "raw.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 1834,
+      "max_abs_numeric_delta": 131.5
+    },
+    "raw.health.monitored_range": {
+      "changes": 2131,
+      "examples": [
+        {
+          "baseline": 158.5,
+          "candidate": 94.0,
+          "field": "raw.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 154.7,
+          "candidate": 90.0,
+          "field": "raw.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": 161.4,
+          "candidate": 90.0,
+          "field": "raw.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": 158.9,
+          "candidate": 90.0,
+          "field": "raw.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": 164.9,
+          "candidate": 90.0,
+          "field": "raw.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 2131,
+      "max_abs_numeric_delta": 160.3
+    },
+    "raw.health.wall_drift": {
+      "changes": 2422,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 94.0,
+          "field": "raw.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "raw.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "raw.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "raw.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "raw.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 2422,
+      "max_abs_numeric_delta": 0.0
+    },
+    "raw.track.wall_drift": {
+      "changes": 18329,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:0"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:1"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:2"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:3"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:4"
+        }
+      ],
+      "frames": 18329,
+      "max_abs_numeric_delta": 0.0
+    },
+    "serialized.clear_distance": {
+      "changes": 1834,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "serialized.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "serialized.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "serialized.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": 90.8,
+          "candidate": 90.0,
+          "field": "serialized.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": 90.1,
+          "candidate": 90.0,
+          "field": "serialized.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 1834,
+      "max_abs_numeric_delta": 131.5
+    },
+    "serialized.health.clear_distance": {
+      "changes": 1834,
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "serialized.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "serialized.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "serialized.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": 90.8,
+          "candidate": 90.0,
+          "field": "serialized.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": 90.1,
+          "candidate": 90.0,
+          "field": "serialized.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 1834,
+      "max_abs_numeric_delta": 131.5
+    },
+    "serialized.health.monitored_range": {
+      "changes": 2131,
+      "examples": [
+        {
+          "baseline": 158.5,
+          "candidate": 94.0,
+          "field": "serialized.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 154.7,
+          "candidate": 90.0,
+          "field": "serialized.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": 161.4,
+          "candidate": 90.0,
+          "field": "serialized.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": 158.9,
+          "candidate": 90.0,
+          "field": "serialized.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": 164.9,
+          "candidate": 90.0,
+          "field": "serialized.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 2131,
+      "max_abs_numeric_delta": 160.3
+    },
+    "serialized.health.wall_drift": {
+      "changes": 2422,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 94.0,
+          "field": "serialized.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 2422,
+      "max_abs_numeric_delta": 0.0
+    },
+    "serialized.track.wall_drift": {
+      "changes": 2422,
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 94.0,
+          "field": "serialized.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:50"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 90.0,
+          "field": "serialized.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:54"
+        }
+      ],
+      "frames": 2422,
+      "max_abs_numeric_delta": 0.0
+    }
+  },
+  "groups": {
+    "candidates": {
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": "cloud_with_fake_obj.jsonl:0"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": "cloud_with_fake_obj.jsonl:0"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": "cloud_with_fake_obj.jsonl:1"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].spared",
+          "frame": "cloud_with_fake_obj.jsonl:1"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": false,
+          "field": "raw.candidates[0].cut",
+          "frame": "cloud_with_fake_obj.jsonl:2"
+        }
+      ],
+      "field_changes": 51412,
+      "frames": 12781
+    },
+    "health": {
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "raw.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 158.5,
+          "candidate": 94.0,
+          "field": "raw.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 94.0,
+          "field": "raw.health.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "serialized.health.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 158.5,
+          "candidate": 94.0,
+          "field": "serialized.health.monitored_range",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        }
+      ],
+      "field_changes": 12774,
+      "frames": 2422
+    },
+    "nearest_clear": {
+      "examples": [
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "raw.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 95.1,
+          "candidate": 94.0,
+          "field": "serialized.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:24"
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "raw.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": 91.1,
+          "candidate": 90.0,
+          "field": "serialized.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:48"
+        },
+        {
+          "baseline": 91.0,
+          "candidate": 90.0,
+          "field": "raw.clear_distance",
+          "frame": "cloud_with_fake_obj.jsonl:49"
+        }
+      ],
+      "field_changes": 3668,
+      "frames": 1834
+    },
+    "track": {
+      "examples": [
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:0"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:1"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:2"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:3"
+        },
+        {
+          "baseline": {
+            "__frame_diff_missing__": true
+          },
+          "candidate": 1000000000.0,
+          "field": "raw.track.wall_drift",
+          "frame": "cloud_with_fake_obj.jsonl:4"
+        }
+      ],
+      "field_changes": 20751,
+      "frames": 18329
+    }
+  },
+  "interpretation": {
+    "metadata": "Raw-only changes can also be additive unreported fields, not just rounding. Inspect field names/examples and source before assigning a cause.",
+    "placement": "Legacy Set F placement depends on detector track fits. GT, injected point counts and scoring row changes are reported separately; changed input placement is not automatically a candidate gain.",
+    "range": "Monitored/clear range and track.axis_valid changes are retained. The integration plan intends an axis-supported range cap; review counted examples before attributing any individual change to it.",
+    "rounding": "serialized is exact FrameResult.to_dict(); raw retains unrounded scalar/array/dataclass result fields and full candidate descriptors. Health/mount may already be rounded by the detector. xyz is not a result field serialized by the application; corridor membership is retained as dtype/shape/SHA-256.",
+    "timing": "Shared Docker CPU performance is informational only; all excluded differences remain in excluded_timing_changes.jsonl."
+  },
+  "numeric_tolerance": null,
+  "raw_group_changes_not_visible_in_serialized_frame": {
+    "candidates": 12781,
+    "track": 15907
+  },
+  "schema": "resense-same-runtime-full-frame-diff-v1",
+  "setF_report_field_changes": 90,
+  "setF_scoring_rows_compared": 3060
+}

@@ -1,0 +1,455 @@
+{
+  "changes": [
+    {
+      "baseline": 195.1,
+      "candidate": 122.0,
+      "field": "sequences[0].rows[36].mon"
+    },
+    {
+      "baseline": 191.0,
+      "candidate": 110.0,
+      "field": "sequences[0].rows[37].mon"
+    },
+    {
+      "baseline": 183.9,
+      "candidate": 102.0,
+      "field": "sequences[0].rows[40].mon"
+    },
+    {
+      "baseline": 195.1,
+      "candidate": 122.0,
+      "field": "sequences[1].rows[36].mon"
+    },
+    {
+      "baseline": 191.0,
+      "candidate": 110.0,
+      "field": "sequences[1].rows[37].mon"
+    },
+    {
+      "baseline": 183.9,
+      "candidate": 102.0,
+      "field": "sequences[1].rows[40].mon"
+    },
+    {
+      "baseline": 195.1,
+      "candidate": 122.0,
+      "field": "sequences[2].rows[36].mon"
+    },
+    {
+      "baseline": 191.0,
+      "candidate": 110.0,
+      "field": "sequences[2].rows[37].mon"
+    },
+    {
+      "baseline": 183.9,
+      "candidate": 102.0,
+      "field": "sequences[2].rows[40].mon"
+    },
+    {
+      "baseline": 195.1,
+      "candidate": 122.0,
+      "field": "sequences[3].rows[36].mon"
+    },
+    {
+      "baseline": 191.0,
+      "candidate": 110.0,
+      "field": "sequences[3].rows[37].mon"
+    },
+    {
+      "baseline": 183.9,
+      "candidate": 102.0,
+      "field": "sequences[3].rows[40].mon"
+    },
+    {
+      "baseline": 182.2,
+      "candidate": 98.0,
+      "field": "sequences[3].rows[83].mon"
+    },
+    {
+      "baseline": 195.1,
+      "candidate": 122.0,
+      "field": "sequences[4].rows[36].mon"
+    },
+    {
+      "baseline": 191.0,
+      "candidate": 110.0,
+      "field": "sequences[4].rows[37].mon"
+    },
+    {
+      "baseline": 176.4,
+      "candidate": 102.0,
+      "field": "sequences[4].rows[49].mon"
+    },
+    {
+      "baseline": 184.7,
+      "candidate": 138.0,
+      "field": "sequences[5].rows[85].mon"
+    },
+    {
+      "baseline": 189.8,
+      "candidate": 138.0,
+      "field": "sequences[5].rows[86].mon"
+    },
+    {
+      "baseline": 186.9,
+      "candidate": 126.0,
+      "field": "sequences[5].rows[92].mon"
+    },
+    {
+      "baseline": 185.0,
+      "candidate": 114.0,
+      "field": "sequences[5].rows[98].mon"
+    },
+    {
+      "baseline": 186.5,
+      "candidate": 138.0,
+      "field": "sequences[6].rows[85].mon"
+    },
+    {
+      "baseline": 190.6,
+      "candidate": 126.0,
+      "field": "sequences[6].rows[92].mon"
+    },
+    {
+      "baseline": 185.0,
+      "candidate": 114.0,
+      "field": "sequences[6].rows[98].mon"
+    },
+    {
+      "baseline": 186.5,
+      "candidate": 138.0,
+      "field": "sequences[7].rows[85].mon"
+    },
+    {
+      "baseline": 189.8,
+      "candidate": 138.0,
+      "field": "sequences[7].rows[86].mon"
+    },
+    {
+      "baseline": 198.7,
+      "candidate": 134.0,
+      "field": "sequences[7].rows[88].mon"
+    },
+    {
+      "baseline": 197.0,
+      "candidate": 122.0,
+      "field": "sequences[7].rows[93].mon"
+    },
+    {
+      "baseline": 185.0,
+      "candidate": 114.0,
+      "field": "sequences[7].rows[98].mon"
+    },
+    {
+      "baseline": 183.0,
+      "candidate": 106.0,
+      "field": "sequences[7].rows[101].mon"
+    },
+    {
+      "baseline": 192.6,
+      "candidate": 118.0,
+      "field": "sequences[8].rows[95].mon"
+    },
+    {
+      "baseline": 188.4,
+      "candidate": 114.0,
+      "field": "sequences[8].rows[98].mon"
+    },
+    {
+      "baseline": 184.7,
+      "candidate": 138.0,
+      "field": "sequences[9].rows[85].mon"
+    },
+    {
+      "baseline": 186.3,
+      "candidate": 138.0,
+      "field": "sequences[9].rows[86].mon"
+    },
+    {
+      "baseline": 197.1,
+      "candidate": 134.0,
+      "field": "sequences[9].rows[88].mon"
+    },
+    {
+      "baseline": 197.0,
+      "candidate": 122.0,
+      "field": "sequences[9].rows[93].mon"
+    },
+    {
+      "baseline": 192.6,
+      "candidate": 118.0,
+      "field": "sequences[9].rows[95].mon"
+    },
+    {
+      "baseline": 188.4,
+      "candidate": 114.0,
+      "field": "sequences[9].rows[98].mon"
+    },
+    {
+      "baseline": 184.8,
+      "candidate": 106.0,
+      "field": "sequences[9].rows[101].mon"
+    },
+    {
+      "baseline": 145.5,
+      "candidate": 94.0,
+      "field": "sequences[20].rows[66].mon"
+    },
+    {
+      "baseline": 146.6,
+      "candidate": 98.0,
+      "field": "sequences[20].rows[67].mon"
+    },
+    {
+      "baseline": 148.6,
+      "candidate": 94.0,
+      "field": "sequences[20].rows[68].mon"
+    },
+    {
+      "baseline": 146.9,
+      "candidate": 94.0,
+      "field": "sequences[20].rows[69].mon"
+    },
+    {
+      "baseline": 146.6,
+      "candidate": 94.0,
+      "field": "sequences[20].rows[70].mon"
+    },
+    {
+      "baseline": 147.2,
+      "candidate": 98.0,
+      "field": "sequences[20].rows[71].mon"
+    },
+    {
+      "baseline": 144.4,
+      "candidate": 94.0,
+      "field": "sequences[20].rows[72].mon"
+    },
+    {
+      "baseline": 144.1,
+      "candidate": 94.0,
+      "field": "sequences[20].rows[73].mon"
+    },
+    {
+      "baseline": 147.5,
+      "candidate": 94.0,
+      "field": "sequences[20].rows[74].mon"
+    },
+    {
+      "baseline": 144.1,
+      "candidate": 90.0,
+      "field": "sequences[20].rows[75].mon"
+    },
+    {
+      "baseline": 148.5,
+      "candidate": 98.0,
+      "field": "sequences[21].rows[66].mon"
+    },
+    {
+      "baseline": 146.6,
+      "candidate": 94.0,
+      "field": "sequences[21].rows[67].mon"
+    },
+    {
+      "baseline": 149.9,
+      "candidate": 98.0,
+      "field": "sequences[21].rows[68].mon"
+    },
+    {
+      "baseline": 147.8,
+      "candidate": 94.0,
+      "field": "sequences[21].rows[69].mon"
+    },
+    {
+      "baseline": 147.1,
+      "candidate": 94.0,
+      "field": "sequences[21].rows[70].mon"
+    },
+    {
+      "baseline": 144.6,
+      "candidate": 86.0,
+      "field": "sequences[21].rows[71].mon"
+    },
+    {
+      "baseline": 140.7,
+      "candidate": 82.0,
+      "field": "sequences[21].rows[72].mon"
+    },
+    {
+      "baseline": 145.5,
+      "candidate": 94.0,
+      "field": "sequences[22].rows[66].mon"
+    },
+    {
+      "baseline": 145.5,
+      "candidate": 90.0,
+      "field": "sequences[22].rows[67].mon"
+    },
+    {
+      "baseline": 145.7,
+      "candidate": 90.0,
+      "field": "sequences[22].rows[68].mon"
+    },
+    {
+      "baseline": 146.0,
+      "candidate": 94.0,
+      "field": "sequences[22].rows[69].mon"
+    },
+    {
+      "baseline": 145.1,
+      "candidate": 90.0,
+      "field": "sequences[22].rows[70].mon"
+    },
+    {
+      "baseline": 144.6,
+      "candidate": 94.0,
+      "field": "sequences[22].rows[71].mon"
+    },
+    {
+      "baseline": 143.9,
+      "candidate": 90.0,
+      "field": "sequences[22].rows[72].mon"
+    },
+    {
+      "baseline": 144.9,
+      "candidate": 94.0,
+      "field": "sequences[22].rows[73].mon"
+    },
+    {
+      "baseline": 145.5,
+      "candidate": 94.0,
+      "field": "sequences[22].rows[74].mon"
+    },
+    {
+      "baseline": 141.5,
+      "candidate": 90.0,
+      "field": "sequences[22].rows[75].mon"
+    },
+    {
+      "baseline": 123.0,
+      "candidate": 90.0,
+      "field": "sequences[22].rows[76].mon"
+    },
+    {
+      "baseline": 144.7,
+      "candidate": 86.0,
+      "field": "sequences[22].rows[77].mon"
+    },
+    {
+      "baseline": 148.5,
+      "candidate": 94.0,
+      "field": "sequences[23].rows[66].mon"
+    },
+    {
+      "baseline": 145.5,
+      "candidate": 98.0,
+      "field": "sequences[23].rows[67].mon"
+    },
+    {
+      "baseline": 147.8,
+      "candidate": 94.0,
+      "field": "sequences[23].rows[68].mon"
+    },
+    {
+      "baseline": 146.4,
+      "candidate": 94.0,
+      "field": "sequences[23].rows[69].mon"
+    },
+    {
+      "baseline": 147.1,
+      "candidate": 98.0,
+      "field": "sequences[23].rows[70].mon"
+    },
+    {
+      "baseline": 146.8,
+      "candidate": 98.0,
+      "field": "sequences[23].rows[71].mon"
+    },
+    {
+      "baseline": 141.1,
+      "candidate": 90.0,
+      "field": "sequences[23].rows[72].mon"
+    },
+    {
+      "baseline": 143.6,
+      "candidate": 94.0,
+      "field": "sequences[23].rows[73].mon"
+    },
+    {
+      "baseline": 168.9,
+      "candidate": 110.0,
+      "field": "sequences[24].rows[57].mon"
+    },
+    {
+      "baseline": 148.5,
+      "candidate": 98.0,
+      "field": "sequences[24].rows[66].mon"
+    },
+    {
+      "baseline": 145.5,
+      "candidate": 94.0,
+      "field": "sequences[24].rows[67].mon"
+    },
+    {
+      "baseline": 148.6,
+      "candidate": 94.0,
+      "field": "sequences[24].rows[68].mon"
+    },
+    {
+      "baseline": 146.9,
+      "candidate": 94.0,
+      "field": "sequences[24].rows[69].mon"
+    },
+    {
+      "baseline": 147.1,
+      "candidate": 94.0,
+      "field": "sequences[24].rows[70].mon"
+    },
+    {
+      "baseline": 144.6,
+      "candidate": 98.0,
+      "field": "sequences[24].rows[71].mon"
+    },
+    {
+      "baseline": 143.9,
+      "candidate": 94.0,
+      "field": "sequences[24].rows[72].mon"
+    },
+    {
+      "baseline": 144.3,
+      "candidate": 94.0,
+      "field": "sequences[24].rows[73].mon"
+    },
+    {
+      "baseline": 147.5,
+      "candidate": 94.0,
+      "field": "sequences[24].rows[74].mon"
+    },
+    {
+      "baseline": 141.5,
+      "candidate": 90.0,
+      "field": "sequences[24].rows[75].mon"
+    },
+    {
+      "baseline": 123.0,
+      "candidate": 90.0,
+      "field": "sequences[24].rows[76].mon"
+    },
+    {
+      "baseline": 145.2,
+      "candidate": 86.0,
+      "field": "sequences[24].rows[77].mon"
+    },
+    {
+      "baseline": 186.5,
+      "candidate": 86.0,
+      "field": "sequences[27].rows[67].mon"
+    },
+    {
+      "baseline": 186.5,
+      "candidate": 86.0,
+      "field": "sequences[29].rows[67].mon"
+    }
+  ],
+  "rows_compared": 3060
+}
