@@ -1,0 +1,14 @@
+[
+    {
+        "CreatedAt": "2026-10-15T23:21:20Z",
+        "Driver": "local",
+        "Labels": {
+            "resense.startup.expected_inventory": "51d44e1c1893e4a96cb9208d4fc03c9cd5ba6caa2720a6c12c80608c5db496c6",
+            "resense.startup.volume_owner": "stage-8a57c938210749fbadb58a5f912dd6c0"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/rs-s1-original-bags-20261016-72a601b/_data",
+        "Name": "rs-s1-original-bags-20261016-72a601b",
+        "Options": null,
+        "Scope": "local"
+    }
+]

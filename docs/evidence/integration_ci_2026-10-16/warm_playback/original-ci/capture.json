@@ -1,0 +1,40 @@
+[
+  {
+    "command": [
+      "gh",
+      "run",
+      "view",
+      "38897519801",
+      "--job",
+      "116961605744",
+      "--log-failed"
+    ],
+    "exit": 0,
+    "bytes": 35969
+  },
+  {
+    "command": [
+      "gh",
+      "run",
+      "view",
+      "38897519801",
+      "--job",
+      "116961605744",
+      "--log"
+    ],
+    "exit": 0,
+    "bytes": 418088
+  },
+  {
+    "command": [
+      "gh",
+      "run",
+      "view",
+      "38897519801",
+      "--json",
+      "headSha,conclusion,jobs,url"
+    ],
+    "exit": 0,
+    "bytes": 14694
+  }
+]

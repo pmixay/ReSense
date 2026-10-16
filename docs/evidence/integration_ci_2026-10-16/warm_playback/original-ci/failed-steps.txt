@@ -1,0 +1,189 @@
+docker	original bag cold-start and warm full-rate regression — full-CI branches	﻿2026-10-16T12:11:38.3347310Z ##[group]Run IMAGE=resense:ci DATASET_DIR="$HOME/resense-cold-bags" NO_DOWNLOAD=1 scripts/p1_cold_bag_test.sh
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.3348139Z [36;1mIMAGE=resense:ci DATASET_DIR="$HOME/resense-cold-bags" NO_DOWNLOAD=1 scripts/p1_cold_bag_test.sh[0m
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.3426126Z shell: /usr/bin/bash -e {0}
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.3426428Z env:
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.3426651Z   FULL: true
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.3426879Z ##[endgroup]
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.3641640Z source: scripts/fetch_cold_bags.sh (pins: scripts/cold_bags.sha256)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.3657576Z playback: rate=1.0; read_ahead_queue_size=10
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.3695630Z commit: b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.4029191Z Filesystem      Size  Used Avail Use% Mounted on
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:11:38.4030109Z /dev/root        73G   70G  3.3G  96% /
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:10.7799716Z cold bags: verified in /home/runner/resense-cold-bags (no download)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:10.7879480Z 90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09  /home/runner/resense-cold-bags/for_hackathon/doubleT_obstacle/metadata.yaml
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:33.0630176Z 05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9  /home/runner/resense-cold-bags/for_hackathon/doubleT_obstacle/doubleT_obstacle_0.db3
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:33.0669996Z 6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d  /home/runner/resense-cold-bags/for_hackathon/roundT_doubleT/metadata.yaml
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:42.6971989Z 6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d  /home/runner/resense-cold-bags/for_hackathon/roundT_doubleT/roundT_doubleT_0.db3
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:45.1434775Z == SKIP_BUILD=1: reusing resense:ci ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:45.1436069Z == playing doubleT_obstacle at rate 1.0 through the node (headless) ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:45.1437103Z == rosbag2 read-ahead queue: 10 messages ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:46.0392392Z [INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:51.5086878Z stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792152771.507893476] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:51.5089102Z [INFO] [1792152771.507952606] [rosbag2_player]: Set rate to 1
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:51.5259452Z [INFO] [1792152771.525485189] [rosbag2_player]: Sleep 3000000000 ns
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:54.5277094Z [INFO] [1792152774.526930013] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:56.2834643Z [WARN] [1792152776.282931733] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:57.2834803Z [WARN] [1792152777.282977767] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:58.2835911Z [WARN] [1792152778.283060216] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:12:59.2841025Z [WARN] [1792152779.283064278] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:00.2836451Z [WARN] [1792152780.283161343] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:01.2838337Z [WARN] [1792152781.283236189] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:02.2838481Z [WARN] [1792152782.283342152] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:03.2851846Z [WARN] [1792152783.283424028] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:04.2839805Z [WARN] [1792152784.283451518] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:05.3030985Z [WARN] [1792152785.302356301] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:06.3028475Z [WARN] [1792152786.302382396] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:07.3041690Z [WARN] [1792152787.302408033] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:08.3151325Z [WARN] [1792152788.314465896] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:09.3181407Z [WARN] [1792152789.317496190] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:10.3179700Z [WARN] [1792152790.317542426] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:11.3181967Z [WARN] [1792152791.317631132] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:12.3188667Z [WARN] [1792152792.317757358] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:13.3183088Z [WARN] [1792152793.317785465] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:14.3183218Z [WARN] [1792152794.317857941] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:15.3201429Z [WARN] [1792152795.317965296] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:16.3201344Z [WARN] [1792152796.319219925] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:17.3197370Z [WARN] [1792152797.319223734] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:20.8378952Z 
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:20.8380124Z == checking /home/runner/work/ReSense/ReSense/out/p1-cold-run/dry_run/status.jsonl ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8336867Z status messages      : 201 (22 lines skipped)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8337709Z alarm frames         : 193
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8338555Z detector alarm frames: 193 (held STOP excluded from positive evidence)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8339585Z obstacle distance    : 55.5 .. 56.6 m
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8340657Z latency decode+detect: mean 59 / p95 73 / max 100 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8341434Z detector stage total : mean 42 / p95 57 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8342552Z end-to-end (current) : median 73 / p95 92 / max 154 ms over 143 current results (input publication -> result, through DDS)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8343884Z end-to-end (all)     : median 78 / p95 1195 / max 1282 ms over 201 results, start-up included
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8344936Z playback pace        : 0.96 x real time (20.4 s of recording in 21.3 s)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8346004Z node CPU             : 0.61 cores median, 1.03 max (node process, every stats period); peak RSS 597 MB
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8347096Z dropped input frames : 4 (0 of them skipped by the node's catch-up)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8348388Z dropped input settle : start-up catch-up back on the newest frame at +5.8 s; drops counted after +5.8 s (the later of 5 s and that, at most 15 s)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8350547Z dropped input vs bag : 143 messages of /sensing/lidar/hesai128/pointcloud after +5.8 s (the end of the start-up catch-up), 4 frame(s) missing from the recording itself; 0 of its messages not processed
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8352566Z fps (last report)    : 8.5
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8353455Z start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8354499Z freshness contract  : PASS
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8354988Z 
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8355359Z PASS: all dry-run criteria met
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:22.8446176Z PASS: original doubleT_obstacle cold-disk dry run
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:24.0531666Z == SKIP_BUILD=1: reusing resense:ci ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:24.0551798Z == playing roundT_doubleT at rate 1.0 through the node (headless) ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:24.0561484Z == rosbag2 read-ahead queue: 10 messages ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:24.9341784Z [INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:30.4154955Z stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792152810.414878655] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:30.4157493Z [INFO] [1792152810.414965137] [rosbag2_player]: Set rate to 1
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:30.4314449Z [INFO] [1792152810.430962896] [rosbag2_player]: Sleep 3000000000 ns
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:13:33.4322776Z [INFO] [1792152813.431680246] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:01.9382176Z 
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:01.9383224Z == checking /home/runner/work/ReSense/ReSense/out/p1-cold-run/roundT_doubleT/status.jsonl ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8365354Z status messages      : 252 (13 lines skipped)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8366205Z alarm frames         : 0
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8367006Z detector alarm frames: 0 (held STOP excluded from positive evidence)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8368003Z latency decode+detect: mean 38 / p95 49 / max 69 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8368767Z detector stage total : mean 32 / p95 41 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8369878Z end-to-end (current) : median 45 / p95 55 / max 129 ms over 248 current results (input publication -> result, through DDS)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8371581Z end-to-end (all)     : median 45 / p95 56 / max 195 ms over 252 results, start-up included
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8372588Z playback pace        : 1.01 x real time (25.1 s of recording in 24.8 s)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8378351Z node CPU             : 0.46 cores median, 0.49 max (node process, every stats period); peak RSS 164 MB
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8379195Z dropped input frames : 0 (0 of them skipped by the node's catch-up)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8380570Z dropped input vs bag : 201 messages of /lidar_points after the first 5 s, 0 frame(s) missing from the recording itself; 0 of its messages not processed
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8381576Z fps (last report)    : 10.0
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8382177Z start of the input   : 51 frames in the first 5 s after the first one, largest gap 0.1 s
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8382861Z freshness contract  : PASS
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8383110Z 
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8383274Z PASS: all dry-run criteria met
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:02.8464269Z PASS: original roundT_doubleT cold-disk dry run
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:03.3979797Z [INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:03.7332736Z [INFO] [1792152843.732564897] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:26.8095340Z [INFO] [1792152866.809028589] [rosbag2_storage]: Opened database '/data/roundT_doubleT/roundT_doubleT_0.db3' for READ_ONLY.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:32.6223448Z /data/doubleT_obstacle: 201 of 201 frames identical (921600 points per frame) - PASS
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:32.6224638Z   rclpy_deserialize  median  12.07  p95  43.98  max 119.39 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:32.6225746Z   fastcloud_parse    median   0.07  p95   0.10  max   3.87 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:32.6226731Z /data/roundT_doubleT: 252 of 252 frames identical (307200 points per frame) - PASS
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:32.6227747Z   rclpy_deserialize  median   2.90  p95   5.21  max  14.53 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:32.6228623Z   fastcloud_parse    median   0.07  p95   0.08  max   0.10 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:32.7704174Z PASS: fast input path identical on every frame of both original recordings
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.0047323Z == SKIP_BUILD=1: reusing resense:ci ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.0050891Z == OFFLINE=1: the container gets no network at all (--network none, loopback only) ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.0150204Z    (this host still reaches the internet; the container cannot)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.4972236Z [INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5295626Z interfaces: lo
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5345423Z   1.1.1.1:443: unreachable (ENETUNREACH)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5348166Z   8.8.8.8:443: unreachable (ENETUNREACH)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5349033Z   9.9.9.9:443: unreachable (ENETUNREACH)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5349916Z   [2606:4700:4700::1111]:443: unreachable (no IPv6 here: ENETUNREACH)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5351073Z   [2001:4860:4860::8888]:443: unreachable (no IPv6 here: ENETUNREACH)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5351843Z   [2620:fe::fe]:443: unreachable (no IPv6 here: ENETUNREACH)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5352578Z   registry-1.docker.io IPv4: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5353348Z   registry-1.docker.io IPv6: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5354101Z   archive.ubuntu.com IPv4: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5354812Z   archive.ubuntu.com IPv6: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5355501Z   packages.ros.org IPv4: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5356175Z   packages.ros.org IPv6: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5356798Z   pypi.org IPv4: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5357382Z   pypi.org IPv6: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5358053Z   files.pythonhosted.org IPv4: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5358810Z   files.pythonhosted.org IPv6: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5359527Z   cdn.jsdelivr.net IPv4: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5360193Z   cdn.jsdelivr.net IPv6: no name resolution (gaierror)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5371389Z IPv4: blocked (0 of 3 connections succeeded)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5371901Z IPv6: blocked, no IPv6 on this machine (3 of 3 attempts: no IPv6 socket, route or address)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5372655Z OK: no internet from here
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5931262Z == playing doubleT_obstacle at rate 1.0 through the node (headless) ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:34.5932540Z == rosbag2 read-ahead queue: 10 messages ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:35.0572133Z [INFO] [resense.dds]: DDS transport: udp, UDPv4 only (/opt/resense/fastdds_udp.xml); -e RESENSE_DDS=shm adds shared memory
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:40.2378130Z stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792152880.237243598] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:40.2382495Z [INFO] [1792152880.237362470] [rosbag2_player]: Set rate to 1
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:40.2493076Z [INFO] [1792152880.248999263] [rosbag2_player]: Sleep 3000000000 ns
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:43.2501720Z [INFO] [1792152883.249606777] [rosbag2_storage]: Opened database '/data/doubleT_obstacle/doubleT_obstacle_0.db3' for READ_ONLY.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:47.7514533Z [WARN] [1792152887.750935480] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:48.7515307Z [WARN] [1792152888.751017354] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:49.7518023Z [WARN] [1792152889.751230102] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:50.7530934Z [WARN] [1792152890.751295992] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:51.7519773Z [WARN] [1792152891.751423670] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:52.7521554Z [WARN] [1792152892.751542544] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:53.7521545Z [WARN] [1792152893.751699284] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:54.7641906Z [WARN] [1792152894.761623762] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:55.7646575Z [WARN] [1792152895.763940051] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:56.7650232Z [WARN] [1792152896.764010021] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:14:57.7652128Z [WARN] [1792152897.764050519] [rosbag2_player]: Message queue starved. Messages will be delayed. Consider increasing the --read-ahead-queue-size option.
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:07.1268742Z 
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:07.1282220Z == checking /home/runner/work/ReSense/ReSense/out/p1-cold-run/warm_positive/status.jsonl ==
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1505137Z status messages      : 192 (17 lines skipped)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1506516Z alarm frames         : 184
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1507520Z detector alarm frames: 184 (held STOP excluded from positive evidence)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1508479Z obstacle distance    : 55.5 .. 56.6 m
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1509213Z latency decode+detect: mean 58 / p95 81 / max 144 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1509977Z detector stage total : mean 42 / p95 62 ms
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1511323Z end-to-end (current) : median 74 / p95 107 / max 168 ms over 152 current results (input publication -> result, through DDS)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1512615Z end-to-end (all)     : median 80 / p95 751 / max 932 ms over 192 results, start-up included
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1513686Z playback pace        : 1.05 x real time (20.4 s of recording in 19.4 s)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1514758Z node CPU             : 0.64 cores median, 1.05 max (node process, every stats period); peak RSS 483 MB
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1516293Z dropped input frames : 13 (9 of them skipped by the node's catch-up)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1517594Z dropped input settle : start-up catch-up back on the newest frame at +3.0 s; drops counted after +5.0 s (the later of 5 s and that, at most 15 s)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1519434Z dropped input vs bag : 151 messages of /sensing/lidar/hesai128/pointcloud after the first 5 s, 4 frame(s) missing from the recording itself; 9 of its messages not processed
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1521020Z fps (last report)    : 9.76
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1521927Z start of the input   : 50 frames in the first 5 s after the first one, largest gap 0.1 s, first STOP at +0.8 s
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1522940Z freshness contract  : PASS
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1523393Z 
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1523984Z FAIL: only 192 status messages, expected >= 201 (the node started late or dropped most of the bag)
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1525033Z FAIL: 9 frames of the recording not processed after the first 5 s > 0
+docker	original bag cold-start and warm full-rate regression — full-CI branches	2026-10-16T12:15:09.1614518Z ##[error]Process completed with exit code 1.
+docker	retain original-bag cold and warm evidence	﻿2026-10-16T12:15:09.1757145Z ##[group]Run actions/upload-artifact@v7
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1757528Z with:
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1757854Z   name: p1-cold-dry-run-b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1758259Z   path: out/p1-cold-run/
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1758522Z   if-no-files-found: ignore
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1758788Z   retention-days: 30
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1759032Z   compression-level: 6
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1759279Z   overwrite: false
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1759516Z   include-hidden-files: false
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1759779Z   archive: true
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1759997Z env:
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1760204Z   FULL: true
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.1760612Z ##[endgroup]
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.6058758Z With the provided path, there will be 11 files uploaded
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.6060032Z Artifact name is valid!
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.6060892Z Root directory input is valid!
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.6078603Z ##[warning]Retention days cannot be greater than the maximum allowed retention set within the repository. Using 14 instead.
+docker	retain original-bag cold and warm evidence	2026-10-16T12:15:09.7351725Z ##[error]Failed to CreateArtifact: Artifact storage quota has been hit. Unable to upload any new artifacts.
+docker	retain original-bag cold and warm evidence	More info on storage limits: https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#calculating-minute-and-storage-spending

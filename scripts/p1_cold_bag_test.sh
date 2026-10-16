@@ -63,17 +63,16 @@ docker run --rm -v "$BAGS_DIR/for_hackathon":/data:ro -v "$OUT":/out "$IMAGE" \
 echo "PASS: fast input path identical on every frame of both original recordings" | tee -a "$OUT/result.txt"
 
 # Cold storage can slow the player while each received result looks current. Keep those cold
-# checks above and add separate full-rate acceptance after warming each bag's page cache.
-# Do not evict caches here: these results have their own folders and are explicitly warm.
-for warm_db in "$BAG"/*.db3; do cat "$warm_db" > /dev/null; done
-IMAGE="$IMAGE" SKIP_BUILD=1 OFFLINE=1 RATE=1.0 BAG_READ_AHEAD_QUEUE_SIZE=10 \
+# checks above and add separate full-rate acceptance. Verify the whole bag's page-cache
+# residency inside the playback container after node/recorder startup, immediately before play.
+# No retries, pinning or cache eviction: an incomplete warm precondition fails explicitly.
+IMAGE="$IMAGE" SKIP_BUILD=1 OFFLINE=1 WARM_CACHE=1 RATE=1.0 BAG_READ_AHEAD_QUEUE_SIZE=10 \
   OUT="$OUT/warm_positive" scripts/dry_run.sh "$BAG" \
   --expect-obstacle --distance 50:62 --min-frames 201 --max-p95-latency 100 \
   --max-dropped 0 --min-playback-rate 0.9 | tee "$OUT/warm_positive.txt"
 echo "PASS: original doubleT_obstacle warm-cache full-rate dry run" | tee -a "$OUT/result.txt"
 
-for warm_db in "$CLEAR_BAG"/*.db3; do cat "$warm_db" > /dev/null; done
-IMAGE="$IMAGE" SKIP_BUILD=1 OFFLINE=1 RATE=1.0 BAG_READ_AHEAD_QUEUE_SIZE=10 \
+IMAGE="$IMAGE" SKIP_BUILD=1 OFFLINE=1 WARM_CACHE=1 RATE=1.0 BAG_READ_AHEAD_QUEUE_SIZE=10 \
   OUT="$OUT/warm_clear" scripts/dry_run.sh "$CLEAR_BAG" \
   --expect-clear --max-alarm-frames 0 --min-frames 252 --max-p95-latency 100 \
   --max-dropped 0 --min-playback-rate 0.9 | tee "$OUT/warm_clear.txt"

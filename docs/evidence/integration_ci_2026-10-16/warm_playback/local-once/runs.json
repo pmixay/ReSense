@@ -1,0 +1,52 @@
+[
+  {
+    "mode": "baseline",
+    "command": [
+      "docker",
+      "run",
+      "--rm",
+      "--network",
+      "none",
+      "--entrypoint",
+      "python3",
+      "--mount",
+      "type=volume,src=rs-s1-original-bags-20261016-72a601b,dst=/data,readonly,volume-nocopy",
+      "-v",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\warm-ci-source-80hcsep4:/source:ro",
+      "-v",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016\\docs\\evidence\\integration_ci_2026-10-16\\warm_playback\\local-once\\baseline:/out",
+      "-v",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016\\docs\\evidence\\integration_ci_2026-10-16\\warm_playback\\reproduce.py:/driver.py:ro",
+      "resense:h4-fixture-fixed-1cfe8de-20261016",
+      "/driver.py",
+      "--container",
+      "baseline"
+    ],
+    "exit": 1
+  },
+  {
+    "mode": "guarded",
+    "command": [
+      "docker",
+      "run",
+      "--rm",
+      "--network",
+      "none",
+      "--entrypoint",
+      "python3",
+      "--mount",
+      "type=volume,src=rs-s1-original-bags-20261016-72a601b,dst=/data,readonly,volume-nocopy",
+      "-v",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\warm-ci-source-80hcsep4:/source:ro",
+      "-v",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016\\docs\\evidence\\integration_ci_2026-10-16\\warm_playback\\local-once\\guarded:/out",
+      "-v",
+      "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016\\docs\\evidence\\integration_ci_2026-10-16\\warm_playback\\reproduce.py:/driver.py:ro",
+      "resense:h4-fixture-fixed-1cfe8de-20261016",
+      "/driver.py",
+      "--container",
+      "guarded"
+    ],
+    "exit": 1
+  }
+]
