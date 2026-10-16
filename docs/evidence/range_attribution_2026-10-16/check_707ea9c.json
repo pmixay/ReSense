@@ -1,0 +1,4367 @@
+{
+ "schema": "resense-range-attribution-v1-check",
+ "root": "/home/user/rs-data/x1/707ea9c",
+ "commit": "707ea9cda051369326fb9407c42488c1033dad76",
+ "samples_per_cause": 3,
+ "causes": {
+  "demoted:beyond_axis": {
+   "rows_with_cause": 55,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "B_person",
+     "k": 51,
+     "X": 230.0,
+     "cause": "demoted:beyond_axis",
+     "recon_cause": "demoted:beyond_axis",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 229.98,
+        "x0": 229.98,
+        "x1": 230.01,
+        "y": -1.91,
+        "y0": -2.19,
+        "y1": -1.76,
+        "zone": "warning",
+        "reason": "beyond_axis",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 3,
+        "n_gauge": 3,
+        "final": true
+       }
+      ]
+     }
+    },
+    {
+     "case": "D_cube05",
+     "k": 168,
+     "X": 148.78,
+     "cause": "demoted:beyond_axis",
+     "recon_cause": "demoted:beyond_axis",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 148.76,
+        "x0": 148.76,
+        "x1": 149.19,
+        "y": -0.51,
+        "y0": -0.63,
+        "y1": -0.38,
+        "zone": "warning",
+        "reason": "beyond_axis",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 4,
+        "n_gauge": 4,
+        "final": true
+       }
+      ]
+     }
+    },
+    {
+     "case": "E6_cable_low_c",
+     "k": 261,
+     "X": 110.03,
+     "cause": "demoted:beyond_axis",
+     "recon_cause": "demoted:beyond_axis",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 110.01,
+        "x0": 110.01,
+        "x1": 110.06,
+        "y": -0.47,
+        "y0": -0.48,
+        "y1": -0.45,
+        "zone": "warning",
+        "reason": "beyond_axis",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 12,
+        "n_gauge": 12,
+        "final": true
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "demoted:beyond_height_ref": {
+   "rows_with_cause": 20,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube05",
+     "k": 220,
+     "X": 161.73,
+     "cause": "demoted:beyond_height_ref",
+     "recon_cause": "demoted:beyond_height_ref",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 161.72,
+        "x0": 161.72,
+        "x1": 161.75,
+        "y": -0.52,
+        "y0": -0.69,
+        "y1": -0.39,
+        "zone": "warning",
+        "reason": "beyond_height_ref",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 4,
+        "n_gauge": 4,
+        "final": true
+       }
+      ]
+     }
+    },
+    {
+     "case": "C_cube05",
+     "k": 24,
+     "X": 193.5,
+     "cause": "demoted:beyond_height_ref",
+     "recon_cause": "demoted:beyond_height_ref",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 193.49,
+        "x0": 193.49,
+        "x1": 198.51,
+        "y": -2.17,
+        "y0": -2.5,
+        "y1": -1.84,
+        "zone": "warning",
+        "reason": "beyond_height_ref",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 4,
+        "n_gauge": 4,
+        "final": true
+       }
+      ]
+     }
+    },
+    {
+     "case": "S_person_150",
+     "k": 410,
+     "X": 150.0,
+     "cause": "demoted:beyond_height_ref",
+     "recon_cause": "demoted:beyond_height_ref",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 147.48,
+        "x0": 147.48,
+        "x1": 154.9,
+        "y": 1.43,
+        "y0": -0.15,
+        "y1": 1.99,
+        "zone": "warning",
+        "reason": "beyond_height_ref",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 22,
+        "n_gauge": 14,
+        "final": true
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "demoted:column": {
+   "rows_with_cause": 16,
+   "checked": 2,
+   "confirmed": 2,
+   "rerun_same_cause": 2,
+   "traced_equals_reconstructed": 2,
+   "samples": [
+    {
+     "case": "S_cube05_100",
+     "k": 495,
+     "X": 100.0,
+     "cause": "demoted:column",
+     "recon_cause": "demoted:column",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 98.0,
+        "x0": 98.0,
+        "x1": 100.03,
+        "y": 1.02,
+        "y0": 0.61,
+        "y1": 1.57,
+        "zone": "warning",
+        "reason": "column",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 12,
+        "n_gauge": 8,
+        "final": true
+       }
+      ]
+     }
+    },
+    {
+     "case": "S_person_100",
+     "k": 363,
+     "X": 100.0,
+     "cause": "demoted:column",
+     "recon_cause": "demoted:column",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 98.96,
+        "x0": 98.96,
+        "x1": 100.02,
+        "y": 0.86,
+        "y0": 0.59,
+        "y1": 1.57,
+        "zone": "warning",
+        "reason": "column",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 25,
+        "n_gauge": 25,
+        "final": true
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "demoted:wall_face": {
+   "rows_with_cause": 3,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "S_person_100",
+     "k": 477,
+     "X": 100.0,
+     "cause": "demoted:wall_face",
+     "recon_cause": "demoted:wall_face",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 94.19,
+        "x0": 94.19,
+        "x1": 100.02,
+        "y": 0.72,
+        "y0": -1.2,
+        "y1": 1.52,
+        "zone": "warning",
+        "reason": "wall_face",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 41,
+        "n_gauge": 30,
+        "final": true
+       }
+      ]
+     }
+    },
+    {
+     "case": "S_person_100",
+     "k": 515,
+     "X": 100.0,
+     "cause": "demoted:wall_face",
+     "recon_cause": "demoted:wall_face",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 99.03,
+        "x0": 99.03,
+        "x1": 100.02,
+        "y": 0.6,
+        "y0": -1.37,
+        "y1": 1.37,
+        "zone": "warning",
+        "reason": "wall_face",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 41,
+        "n_gauge": 27,
+        "final": true
+       }
+      ]
+     }
+    },
+    {
+     "case": "S_person_100",
+     "k": 517,
+     "X": 100.0,
+     "cause": "demoted:wall_face",
+     "recon_cause": "demoted:wall_face",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 98.94,
+        "x0": 98.94,
+        "x1": 100.02,
+        "y": 0.77,
+        "y0": -1.2,
+        "y1": 1.39,
+        "zone": "warning",
+        "reason": "wall_face",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 40,
+        "n_gauge": 18,
+        "final": true
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "drop:infra_hardware": {
+   "rows_with_cause": 30,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube03",
+     "k": 259,
+     "X": 112.75,
+     "cause": "drop:infra_hardware",
+     "recon_cause": "drop:infra_hardware",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 112.76,
+       "x1": 112.89,
+       "y": -0.38,
+       "n_vox": 3,
+       "size": [
+        0.13,
+        0.21,
+        0.01
+       ]
+      },
+      "locals": {
+       "_is_infrastructure": {
+        "size": [
+         0.1313934326171875,
+         0.21170833706855774,
+         0.013879776000976562
+        ],
+        "h_max": 0.20851173676803203,
+        "lateral": 0.04902475039893303,
+        "spare_wall": false,
+        "lat_along": 0.04902475039893303,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       },
+       "_corridor_cluster": {
+        "thin": true,
+        "keep_thin": true,
+        "size": [
+         0.1313934326171875,
+         0.21170833706855774,
+         0.013879776000976562
+        ],
+        "min_pts": 3,
+        "dist": 112.76044464111328,
+        "weak": false,
+        "h_max": 0.20851173676803203,
+        "lat_rules": 0.04902475039893303,
+        "spare": false,
+        "lateral": 0.04902475039893303,
+        "lat_along": 0.04902475039893303,
+        "factor": 1.0,
+        "n_vox": 3,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false,
+      "infra_rules_true": [
+       "infra_hardware"
+      ]
+     }
+    },
+    {
+     "case": "A_cube05",
+     "k": 262,
+     "X": 108.67,
+     "cause": "drop:infra_hardware",
+     "recon_cause": "drop:infra_hardware",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 108.66,
+       "x1": 108.7,
+       "y": -0.45,
+       "n_vox": 6,
+       "size": [
+        0.03,
+        0.39,
+        0.19
+       ]
+      },
+      "locals": {
+       "_is_infrastructure": {
+        "size": [
+         0.03461456298828125,
+         0.3873980939388275,
+         0.1862555742263794
+        ],
+        "h_max": 0.3108816219493056,
+        "lateral": 0.0649682711364553,
+        "spare_wall": false,
+        "lat_along": 0.0649682711364553,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       },
+       "_corridor_cluster": {
+        "thin": false,
+        "keep_thin": true,
+        "size": [
+         0.03461456298828125,
+         0.3873980939388275,
+         0.1862555742263794
+        ],
+        "min_pts": 3,
+        "dist": 108.66384887695312,
+        "weak": false,
+        "h_max": 0.3108816219493056,
+        "lat_rules": 0.0649682711364553,
+        "spare": false,
+        "lateral": 0.0649682711364553,
+        "lat_along": 0.0649682711364553,
+        "factor": 1.0,
+        "n_vox": 6,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false,
+      "infra_rules_true": [
+       "infra_hardware"
+      ]
+     }
+    },
+    {
+     "case": "A_lowbox_rail",
+     "k": 294,
+     "X": 62.77,
+     "cause": "drop:infra_hardware",
+     "recon_cause": "drop:infra_hardware",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 62.77,
+       "x1": 62.78,
+       "y": -0.27,
+       "n_vox": 4,
+       "size": [
+        0.01,
+        0.23,
+        0.01
+       ]
+      },
+      "locals": {
+       "_is_infrastructure": {
+        "size": [
+         0.00665283203125,
+         0.2256370633840561,
+         0.01442110538482666
+        ],
+        "h_max": 0.13690203384623878,
+        "lateral": -0.022997739776084748,
+        "spare_wall": false,
+        "lat_along": -0.022997739776084748,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       },
+       "_corridor_cluster": {
+        "thin": true,
+        "keep_thin": true,
+        "size": [
+         0.00665283203125,
+         0.2256370633840561,
+         0.01442110538482666
+        ],
+        "min_pts": 5,
+        "dist": 62.772403717041016,
+        "ordinary": true,
+        "cross_ring": false,
+        "weak": true,
+        "h_max": 0.13690203384623878,
+        "lat_rules": -0.022997739776084748,
+        "spare": false,
+        "lateral": -0.022997739776084748,
+        "lat_along": -0.022997739776084748,
+        "factor": 1.0,
+        "n_vox": 4,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false,
+      "infra_rules_true": [
+       "infra_hardware"
+      ]
+     }
+    }
+   ]
+  },
+  "drop:infra_linear_side": {
+   "rows_with_cause": 1,
+   "checked": 1,
+   "confirmed": 1,
+   "rerun_same_cause": 1,
+   "traced_equals_reconstructed": 1,
+   "samples": [
+    {
+     "case": "setO",
+     "k": 307,
+     "X": 104.08,
+     "cause": "drop:infra_linear_side",
+     "recon_cause": "drop:infra_linear_side",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 101.58,
+       "x1": 105.5,
+       "y": -7.09,
+       "n_vox": 3,
+       "size": [
+        3.91,
+        0.47,
+        0.57
+       ]
+      },
+      "locals": {
+       "_is_infrastructure": {
+        "size": [
+         3.9136199951171875,
+         0.46943044662475586,
+         0.5669668912887573
+        ],
+        "h_max": 0.6921204298242571,
+        "lateral": 1.0745010060588933,
+        "spare_wall": false,
+        "lat_along": null,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       },
+       "_corridor_cluster": {
+        "thin": false,
+        "keep_thin": true,
+        "size": [
+         3.9136199951171875,
+         0.46943044662475586,
+         0.5669668912887573
+        ],
+        "min_pts": 3,
+        "dist": 101.5845947265625,
+        "weak": false,
+        "h_max": 0.6921204298242571,
+        "lat_rules": 1.0745010060588933,
+        "spare": false,
+        "lateral": 1.0745010060588933,
+        "lat_along": null,
+        "factor": 1.0,
+        "n_vox": 3,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false,
+      "infra_rules_true": [
+       "infra_linear_side"
+      ]
+     }
+    }
+   ]
+  },
+  "drop:infra_wall_segment": {
+   "rows_with_cause": 138,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "C_cube05",
+     "k": 37,
+     "X": 173.92,
+     "cause": "drop:infra_wall_segment",
+     "recon_cause": "drop:infra_wall_segment",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 173.89,
+       "x1": 180.86,
+       "y": -2.53,
+       "n_vox": 6,
+       "size": [
+        6.97,
+        1.34,
+        2.58
+       ]
+      },
+      "locals": {
+       "_is_infrastructure": {
+        "size": [
+         6.9658203125,
+         1.34012770652771,
+         2.578625202178955
+        ],
+        "h_max": 2.9580104495515123,
+        "lateral": -0.37749117457953824,
+        "spare_wall": false,
+        "lat_along": -0.37749117457953824,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       },
+       "_corridor_cluster": {
+        "thin": false,
+        "keep_thin": true,
+        "size": [
+         6.9658203125,
+         1.34012770652771,
+         2.578625202178955
+        ],
+        "min_pts": 3,
+        "dist": 173.8931427001953,
+        "weak": false,
+        "h_max": 2.9580104495515123,
+        "lat_rules": -0.37749117457953824,
+        "spare": false,
+        "lateral": -0.37749117457953824,
+        "lat_along": -0.37749117457953824,
+        "factor": 1.0,
+        "n_vox": 6,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false,
+      "infra_rules_true": [
+       "infra_wall_segment"
+      ]
+     }
+    },
+    {
+     "case": "D_cube05",
+     "k": 314,
+     "X": 84.68,
+     "cause": "drop:infra_wall_segment",
+     "recon_cause": "drop:infra_wall_segment",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 80.53,
+       "x1": 87.1,
+       "y": 1.11,
+       "n_vox": 27,
+       "size": [
+        6.57,
+        1.28,
+        2.81
+       ]
+      },
+      "locals": {
+       "_is_infrastructure": {
+        "size": [
+         6.570121765136719,
+         1.2760961055755615,
+         2.8076648712158203
+        ],
+        "h_max": 2.9675444175403047,
+        "lateral": 0.5931094393598707,
+        "spare_wall": false,
+        "lat_along": null,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       },
+       "_corridor_cluster": {
+        "thin": false,
+        "keep_thin": true,
+        "size": [
+         6.570121765136719,
+         1.2760961055755615,
+         2.8076648712158203
+        ],
+        "min_pts": 5,
+        "dist": 80.53360748291016,
+        "weak": false,
+        "h_max": 2.9675444175403047,
+        "lat_rules": 0.5931094393598707,
+        "spare": false,
+        "lateral": 0.5931094393598707,
+        "lat_along": null,
+        "factor": 1.0,
+        "n_vox": 27,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false,
+      "infra_rules_true": [
+       "infra_wall_segment"
+      ]
+     }
+    },
+    {
+     "case": "S_cube05_100",
+     "k": 362,
+     "X": 100.0,
+     "cause": "drop:infra_wall_segment",
+     "recon_cause": "drop:infra_wall_segment",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 94.28,
+       "x1": 100.02,
+       "y": 1.17,
+       "n_vox": 14,
+       "size": [
+        5.74,
+        1.01,
+        2.86
+       ]
+      },
+      "locals": {
+       "_is_infrastructure": {
+        "size": [
+         5.735443115234375,
+         1.012277364730835,
+         2.8571603298187256
+        ],
+        "h_max": 2.9922873493506694,
+        "lateral": 0.47311511575785903,
+        "spare_wall": false,
+        "lat_along": null,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       },
+       "_corridor_cluster": {
+        "thin": false,
+        "keep_thin": true,
+        "size": [
+         5.735443115234375,
+         1.012277364730835,
+         2.8571603298187256
+        ],
+        "min_pts": 5,
+        "dist": 94.28499603271484,
+        "weak": false,
+        "h_max": 2.9922873493506694,
+        "lat_rules": 0.47311511575785903,
+        "spare": false,
+        "lateral": 0.47311511575785903,
+        "lat_along": null,
+        "factor": 1.0,
+        "n_vox": 14,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false,
+      "infra_rules_true": [
+       "infra_wall_segment"
+      ]
+     }
+    }
+   ]
+  },
+  "drop:low_narrow": {
+   "rows_with_cause": 6,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube03",
+     "k": 298,
+     "X": 56.79,
+     "cause": "drop:low_narrow",
+     "recon_cause": "drop:low_narrow",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 2,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 56.78,
+       "x1": 56.8,
+       "y": -0.24,
+       "n_vox": 5,
+       "size": [
+        0.03,
+        0.22,
+        0.17
+       ]
+      },
+      "locals": {
+       "_low_cluster": {
+        "size": [
+         0.026683807373046875,
+         0.22096166014671326,
+         0.17401480674743652
+        ],
+        "n_vox": 5,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        },
+        "low_cfg": {
+         "min_length": 0.0,
+         "max_length": 0.8,
+         "max_width": 2.2,
+         "min_height": 0.0,
+         "min_points": 3,
+         "min_width": 0.35,
+         "min_top": 0.1
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    },
+    {
+     "case": "A_lowbox_rail",
+     "k": 298,
+     "X": 56.79,
+     "cause": "drop:low_narrow",
+     "recon_cause": "drop:low_narrow",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 56.78,
+       "x1": 56.8,
+       "y": -0.24,
+       "n_vox": 3,
+       "size": [
+        0.02,
+        0.19,
+        0.03
+       ]
+      },
+      "locals": {
+       "_low_cluster": {
+        "size": [
+         0.017223358154296875,
+         0.1913343071937561,
+         0.034705519676208496
+        ],
+        "n_vox": 3,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        },
+        "low_cfg": {
+         "min_length": 0.0,
+         "max_length": 0.8,
+         "max_width": 2.2,
+         "min_height": 0.0,
+         "min_points": 3,
+         "min_width": 0.35,
+         "min_top": 0.1
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    },
+    {
+     "case": "A_cube03",
+     "k": 299,
+     "X": 55.3,
+     "cause": "drop:low_narrow",
+     "recon_cause": "drop:low_narrow",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 2,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 55.28,
+       "x1": 55.31,
+       "y": -0.23,
+       "n_vox": 8,
+       "size": [
+        0.03,
+        0.22,
+        0.26
+       ]
+      },
+      "locals": {
+       "_low_cluster": {
+        "size": [
+         0.03104400634765625,
+         0.22347591817378998,
+         0.26434576511383057
+        ],
+        "n_vox": 8,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        },
+        "low_cfg": {
+         "min_length": 0.0,
+         "max_length": 0.8,
+         "max_width": 2.2,
+         "min_height": 0.0,
+         "min_points": 3,
+         "min_width": 0.35,
+         "min_top": 0.1
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    }
+   ]
+  },
+  "drop:min_points": {
+   "rows_with_cause": 57,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube03",
+     "k": 270,
+     "X": 97.63,
+     "cause": "drop:min_points",
+     "recon_cause": "drop:min_points",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 97.63,
+       "x1": 97.65,
+       "y": -0.35,
+       "n_vox": 3,
+       "size": [
+        0.02,
+        0.16,
+        0.15
+       ]
+      },
+      "locals": {
+       "_corridor_cluster": {
+        "thin": false,
+        "keep_thin": true,
+        "size": [
+         0.01941680908203125,
+         0.16292685270309448,
+         0.1452498435974121
+        ],
+        "min_pts": 5,
+        "dist": 97.62621307373047,
+        "ordinary": false,
+        "cross_ring": false,
+        "weak": false,
+        "factor": 1.0,
+        "n_vox": 3,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    },
+    {
+     "case": "A_cube05",
+     "k": 270,
+     "X": 97.63,
+     "cause": "drop:min_points",
+     "recon_cause": "drop:min_points",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 97.62,
+       "x1": 97.65,
+       "y": -0.42,
+       "n_vox": 3,
+       "size": [
+        0.02,
+        0.34,
+        0.03
+       ]
+      },
+      "locals": {
+       "_corridor_cluster": {
+        "thin": true,
+        "keep_thin": true,
+        "size": [
+         0.02130889892578125,
+         0.3402252793312073,
+         0.027567148208618164
+        ],
+        "min_pts": 5,
+        "dist": 97.62432098388672,
+        "ordinary": false,
+        "cross_ring": false,
+        "weak": false,
+        "factor": 1.0,
+        "n_vox": 3,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    },
+    {
+     "case": "D_cube05",
+     "k": 249,
+     "X": 95.63,
+     "cause": "drop:min_points",
+     "recon_cause": "drop:min_points",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 95.61,
+       "x1": 95.8,
+       "y": -0.4,
+       "n_vox": 3,
+       "size": [
+        0.18,
+        0.32,
+        0.02
+       ]
+      },
+      "locals": {
+       "_corridor_cluster": {
+        "thin": true,
+        "keep_thin": true,
+        "size": [
+         0.18058013916015625,
+         0.3229668140411377,
+         0.022602081298828125
+        ],
+        "min_pts": 5,
+        "dist": 95.61487579345703,
+        "ordinary": false,
+        "cross_ring": false,
+        "weak": false,
+        "factor": 1.0,
+        "n_vox": 3,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    }
+   ]
+  },
+  "drop:oversize_split_refused": {
+   "rows_with_cause": 223,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "B_person",
+     "k": 130,
+     "X": 111.09,
+     "cause": "drop:oversize_split_refused",
+     "recon_cause": "drop:oversize_split_refused",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 84.78,
+       "x1": 111.09,
+       "y": -8.54,
+       "n_vox": 210,
+       "size": [
+        26.31,
+        5.7,
+        2.93
+       ]
+      },
+      "locals": {
+       "_corridor_cluster": {
+        "keep_thin": true,
+        "size": [
+         26.310333251953125,
+         5.703567981719971,
+         2.9275426864624023
+        ],
+        "factor": 1.0,
+        "n_vox": 210,
+        "part_is_none": true,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    },
+    {
+     "case": "C_cube05",
+     "k": 17,
+     "X": 204.11,
+     "cause": "drop:oversize_split_refused",
+     "recon_cause": "drop:oversize_split_refused",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 193.05,
+       "x1": 204.12,
+       "y": -2.12,
+       "n_vox": 5,
+       "size": [
+        11.07,
+        1.29,
+        0.88
+       ]
+      },
+      "locals": {
+       "_corridor_cluster": {
+        "keep_thin": true,
+        "size": [
+         11.067840576171875,
+         1.291406273841858,
+         0.8759381175041199
+        ],
+        "factor": 1.0,
+        "n_vox": 5,
+        "part_is_none": true,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    },
+    {
+     "case": "D_cube05",
+     "k": 144,
+     "X": 173.69,
+     "cause": "drop:oversize_split_refused",
+     "recon_cause": "drop:oversize_split_refused",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blob": {
+       "x0": 163.74,
+       "x1": 173.69,
+       "y": -2.57,
+       "n_vox": 4,
+       "size": [
+        9.95,
+        0.49,
+        2.54
+       ]
+      },
+      "locals": {
+       "_corridor_cluster": {
+        "keep_thin": true,
+        "size": [
+         9.949981689453125,
+         0.4853932857513428,
+         2.5396482944488525
+        ],
+        "factor": 1.0,
+        "n_vox": 4,
+        "part_is_none": true,
+        "cfg": {
+         "max_extent": 8.0,
+         "oversize_split_max_length": 3.0,
+         "min_height": 0.08,
+         "gauge_min_points": 3,
+         "thin_min_length": 3.0,
+         "thin_max_width": 0.35,
+         "thin_max_height": 0.25,
+         "hardware_max_top": 0.35,
+         "hardware_max_width": 0.4,
+         "hardware_max_height": 0.3,
+         "wall_min_height": 1.9,
+         "wall_min_lateral": 1.2,
+         "wall_segment_min_length": 4.0,
+         "wall_segment_max_width": 1.5,
+         "linear_min_aspect": 5.0,
+         "linear_max_height": 0.8,
+         "linear_min_lateral": 0.8
+        }
+       }
+      },
+      "stage_config_differs": false
+     }
+    }
+   ]
+  },
+  "no_blob": {
+   "rows_with_cause": 448,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube03",
+     "k": 152,
+     "X": 228.36,
+     "cause": "no_blob",
+     "recon_cause": "no_blob",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 0,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blobs_in_frame": 22,
+      "nearest_blob_dx": 19.25
+     }
+    },
+    {
+     "case": "A_cube05",
+     "k": 150,
+     "X": 230.0,
+     "cause": "no_blob",
+     "recon_cause": "no_blob",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 0,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blobs_in_frame": 16,
+      "nearest_blob_dx": 38.16999999999999
+     }
+    },
+    {
+     "case": "A_lowbox_rail",
+     "k": 152,
+     "X": 228.36,
+     "cause": "no_blob",
+     "recon_cause": "no_blob",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 0,
+      "blobs_on_object": 0,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "blobs_in_frame": 22,
+      "nearest_blob_dx": 19.25
+     }
+    }
+   ]
+  },
+  "outside_strict_gauge": {
+   "rows_with_cause": 3,
+   "checked": 2,
+   "confirmed": 2,
+   "rerun_same_cause": 2,
+   "traced_equals_reconstructed": 2,
+   "samples": [
+    {
+     "case": "S_person_100",
+     "k": 546,
+     "X": 99.99,
+     "cause": "outside_strict_gauge",
+     "recon_cause": "outside_strict_gauge",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 99.97,
+        "x0": 99.97,
+        "x1": 100.01,
+        "y": 0.88,
+        "y0": 0.78,
+        "y1": 0.99,
+        "zone": "warning",
+        "reason": "",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 17,
+        "n_gauge": 0,
+        "final": true
+       }
+      ]
+     }
+    },
+    {
+     "case": "S_person_150",
+     "k": 534,
+     "X": 149.99,
+     "cause": "outside_strict_gauge",
+     "recon_cause": "outside_strict_gauge",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "clusters": [
+       {
+        "d": 147.46,
+        "x0": 147.46,
+        "x1": 150.0,
+        "y": 1.57,
+        "y0": 1.23,
+        "y1": 1.98,
+        "zone": "warning",
+        "reason": "",
+        "thin": false,
+        "weak": false,
+        "kind": "",
+        "n": 10,
+        "n_gauge": 2,
+        "final": true
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "stop_off_object": {
+   "rows_with_cause": 2,
+   "checked": 2,
+   "confirmed": 2,
+   "rerun_same_cause": 2,
+   "traced_equals_reconstructed": 2,
+   "samples": [
+    {
+     "case": "S_cube05_100",
+     "k": 368,
+     "X": 100.0,
+     "cause": "stop_off_object",
+     "recon_cause": "stop_off_object",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 186,
+       "hits": 4,
+       "confidence": 1.0,
+       "span_s": 0.5999610424041748,
+       "hit_fraction": 0.6666666666666666,
+       "reported": true,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 2,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "vote_zone": {
+         "value": "gauge",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 4,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "gauge",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 4,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "gauge",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 4,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 4,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.5999610424041748,
+        "need_span": 0.5,
+        "hit_fraction": 0.6666666666666666,
+        "min_hit_fraction": 0.6
+       },
+       "carried": false
+      }
+     }
+    },
+    {
+     "case": "S_cube05_100",
+     "k": 610,
+     "X": 99.99,
+     "cause": "stop_off_object",
+     "recon_cause": "stop_off_object",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 279,
+       "hits": 17,
+       "confidence": 1.0,
+       "span_s": 2.7000850439071655,
+       "hit_fraction": 0.7,
+       "reported": true,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "vote_zone": {
+         "value": "gauge",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "gauge",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "gauge",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 17,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 2.7000850439071655,
+        "need_span": 0.5,
+        "hit_fraction": 0.7,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "thin_scanline_only": {
+   "rows_with_cause": 18,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube05",
+     "k": 210,
+     "X": 173.07,
+     "cause": "thin_scanline_only",
+     "recon_cause": "thin_scanline_only",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "side": [
+       {
+        "d": 173.06,
+        "x0": 173.06,
+        "x1": 173.09,
+        "y": -0.59,
+        "y0": -0.74,
+        "y1": -0.42,
+        "zone": "warning",
+        "reason": "beyond_height_ref",
+        "thin": true,
+        "weak": false,
+        "kind": "",
+        "n": 3,
+        "n_gauge": 3,
+        "final": false
+       }
+      ]
+     }
+    },
+    {
+     "case": "C_cube05",
+     "k": 6,
+     "X": 220.84,
+     "cause": "thin_scanline_only",
+     "recon_cause": "thin_scanline_only",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "side": [
+       {
+        "d": 220.84,
+        "x0": 220.84,
+        "x1": 220.99,
+        "y": -2.28,
+        "y0": -2.47,
+        "y1": -2.08,
+        "zone": "warning",
+        "reason": "beyond_axis",
+        "thin": true,
+        "weak": false,
+        "kind": "",
+        "n": 3,
+        "n_gauge": 3,
+        "final": false
+       }
+      ]
+     }
+    },
+    {
+     "case": "D_cube05",
+     "k": 121,
+     "X": 201.78,
+     "cause": "thin_scanline_only",
+     "recon_cause": "thin_scanline_only",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "side": [
+       {
+        "d": 201.77,
+        "x0": 201.77,
+        "x1": 201.79,
+        "y": -1.04,
+        "y0": -1.22,
+        "y1": -0.86,
+        "zone": "warning",
+        "reason": "beyond_axis",
+        "thin": true,
+        "weak": false,
+        "kind": "",
+        "n": 3,
+        "n_gauge": 3,
+        "final": false
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "track:approach_block": {
+   "rows_with_cause": 11,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "D_cube05",
+     "k": 291,
+     "X": 86.49,
+     "cause": "track:approach_block",
+     "recon_cause": "track:approach_block",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 154,
+       "hits": 17,
+       "confidence": 0.85,
+       "span_s": 2.3000229597091675,
+       "hit_fraction": 0.6,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": true,
+       "zone_hist": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 0,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "rule_zone": {
+         "value": "warning",
+         "line": 136,
+         "return": "return \"warning\"",
+         "guard": "if not self.zone_hist or self.column_held or self.approach_block:",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": true,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": true,
+         "zone_hist": 10,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 17,
+        "need_hits": 3,
+        "confidence": 0.85,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 2.3000229597091675,
+        "need_span": 0.5,
+        "hit_fraction": 0.6,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "S_cube05_100",
+     "k": 384,
+     "X": 100.0,
+     "cause": "track:approach_block",
+     "recon_cause": "track:approach_block",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 193,
+       "hits": 4,
+       "confidence": 0.85,
+       "span_s": 0.5999969244003296,
+       "hit_fraction": 0.6666666666666666,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": true,
+       "zone_hist": [
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 0,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "rule_zone": {
+         "value": "warning",
+         "line": 136,
+         "return": "return \"warning\"",
+         "guard": "if not self.zone_hist or self.column_held or self.approach_block:",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": true,
+         "zone_hist": 4,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": true,
+         "zone_hist": 4,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 4,
+        "need_hits": 3,
+        "confidence": 0.85,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.5999969244003296,
+        "need_span": 0.5,
+        "hit_fraction": 0.6666666666666666,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "D_cube05",
+     "k": 293,
+     "X": 86.28,
+     "cause": "track:approach_block",
+     "recon_cause": "track:approach_block",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 154,
+       "hits": 19,
+       "confidence": 1.0,
+       "span_s": 2.5000109672546387,
+       "hit_fraction": 0.7,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": true,
+       "zone_hist": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 0,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "rule_zone": {
+         "value": "warning",
+         "line": 136,
+         "return": "return \"warning\"",
+         "guard": "if not self.zone_hist or self.column_held or self.approach_block:",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": true,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": true,
+         "zone_hist": 10,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 19,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 2.5000109672546387,
+        "need_span": 0.5,
+        "hit_fraction": 0.7,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "track:column_hold": {
+   "rows_with_cause": 30,
+   "checked": 2,
+   "confirmed": 2,
+   "rerun_same_cause": 2,
+   "traced_equals_reconstructed": 2,
+   "samples": [
+    {
+     "case": "S_cube05_100",
+     "k": 503,
+     "X": 100.0,
+     "cause": "track:column_hold",
+     "recon_cause": "track:column_hold",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 235,
+       "hits": 13,
+       "confidence": 1.0,
+       "span_s": 1.6999119520187378,
+       "hit_fraction": 0.9,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": true,
+       "approach_block": false,
+       "zone_hist": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": true,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "rule_zone": {
+         "value": "warning",
+         "line": 136,
+         "return": "return \"warning\"",
+         "guard": "if not self.zone_hist or self.column_held or self.approach_block:",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": true,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": true,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 13,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 1.6999119520187378,
+        "need_span": 0.5,
+        "hit_fraction": 0.9,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "S_person_100",
+     "k": 368,
+     "X": 100.0,
+     "cause": "track:column_hold",
+     "recon_cause": "track:column_hold",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 186,
+       "hits": 4,
+       "confidence": 0.8999999999999999,
+       "span_s": 0.5999610424041748,
+       "hit_fraction": 0.6666666666666666,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": true,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        true,
+        false,
+        true
+       ],
+       "column_hist": [
+        true,
+        false,
+        true,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": true,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "rule_zone": {
+         "value": "warning",
+         "line": 136,
+         "return": "return \"warning\"",
+         "guard": "if not self.zone_hist or self.column_held or self.approach_block:",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": true,
+         "approach_block": false,
+         "zone_hist": 4,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": true,
+         "approach_block": false,
+         "zone_hist": 4,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 4,
+        "need_hits": 3,
+        "confidence": 0.8999999999999999,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.5999610424041748,
+        "need_span": 0.5,
+        "hit_fraction": 0.6666666666666666,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "track:confidence": {
+   "rows_with_cause": 12,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube05",
+     "k": 252,
+     "X": 122.1,
+     "cause": "track:confidence",
+     "recon_cause": "track:confidence",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 41,
+       "hits": 9,
+       "confidence": 0.5499999999999999,
+       "span_s": 1.7999459505081177,
+       "hit_fraction": 0.4,
+       "reported": false,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 9,
+        "need_hits": 3,
+        "confidence": 0.5499999999999999,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 1.7999459505081177,
+        "need_span": 0.5,
+        "hit_fraction": 0.4,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "B_person",
+     "k": 126,
+     "X": 117.9,
+     "cause": "track:confidence",
+     "recon_cause": "track:confidence",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 49,
+       "hits": 3,
+       "confidence": 0.35,
+       "span_s": 0.6000769138336182,
+       "hit_fraction": 0.5,
+       "reported": false,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 3,
+        "need_hits": 3,
+        "confidence": 0.35,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.6000769138336182,
+        "need_span": 0.5,
+        "hit_fraction": 0.5,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "S_cube05_100",
+     "k": 397,
+     "X": 100.0,
+     "cause": "track:confidence",
+     "recon_cause": "track:confidence",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 200,
+       "hits": 3,
+       "confidence": 0.35,
+       "span_s": 0.5999960899353027,
+       "hit_fraction": 0.5,
+       "reported": false,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 3,
+        "need_hits": 3,
+        "confidence": 0.35,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.5999960899353027,
+        "need_span": 0.5,
+        "hit_fraction": 0.5,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "track:confirm_hits": {
+   "rows_with_cause": 99,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube03",
+     "k": 297,
+     "X": 58.29,
+     "cause": "track:confirm_hits",
+     "recon_cause": "track:confirm_hits",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 2,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 61,
+       "hits": 1,
+       "confidence": 0.35,
+       "span_s": 0.10000097751617432,
+       "hit_fraction": 1.0,
+       "reported": false,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true
+       ],
+       "column_hist": [
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": "low"
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 1,
+        "need_hits": 5,
+        "confidence": 0.35,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.10000097751617432,
+        "need_span": 0.5,
+        "hit_fraction": 1.0,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "A_cube05",
+     "k": 280,
+     "X": 83.37,
+     "cause": "track:confirm_hits",
+     "recon_cause": "track:confirm_hits",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 62,
+       "hits": 1,
+       "confidence": 0.35,
+       "span_s": 0.10000097751617432,
+       "hit_fraction": 1.0,
+       "reported": false,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true
+       ],
+       "column_hist": [
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 1,
+        "need_hits": 3,
+        "confidence": 0.35,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.10000097751617432,
+        "need_span": 0.5,
+        "hit_fraction": 1.0,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "A_lowbox_rail",
+     "k": 297,
+     "X": 58.29,
+     "cause": "track:confirm_hits",
+     "recon_cause": "track:confirm_hits",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 2,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 62,
+       "hits": 1,
+       "confidence": 0.35,
+       "span_s": 0.10000097751617432,
+       "hit_fraction": 1.0,
+       "reported": false,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true
+       ],
+       "column_hist": [
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": "low"
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 1,
+        "need_hits": 5,
+        "confidence": 0.35,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.10000097751617432,
+        "need_span": 0.5,
+        "hit_fraction": 1.0,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "track:confirm_time": {
+   "rows_with_cause": 53,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube05",
+     "k": 238,
+     "X": 140.09,
+     "cause": "track:confirm_time",
+     "recon_cause": "track:confirm_time",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 41,
+       "hits": 3,
+       "confidence": 0.7999999999999999,
+       "span_s": 0.400007963180542,
+       "hit_fraction": 0.75,
+       "reported": false,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 3,
+        "need_hits": 3,
+        "confidence": 0.7999999999999999,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.400007963180542,
+        "need_span": 0.5,
+        "hit_fraction": 0.75,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "B_person",
+     "k": 147,
+     "X": 81.68,
+     "cause": "track:confirm_time",
+     "recon_cause": "track:confirm_time",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 53,
+       "hits": 5,
+       "confidence": 1.0,
+       "span_s": 0.49995601177215576,
+       "hit_fraction": 1.0,
+       "reported": false,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        false,
+        false,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 5,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.49995601177215576,
+        "need_span": 0.5,
+        "hit_fraction": 1.0,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "C_cube05",
+     "k": 100,
+     "X": 79.83,
+     "cause": "track:confirm_time",
+     "recon_cause": "track:confirm_time",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 2,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 46,
+       "hits": 3,
+       "confidence": 1.0,
+       "span_s": 0.2999800443649292,
+       "hit_fraction": 1.0,
+       "reported": false,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 3,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 3,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.2999800443649292,
+        "need_span": 0.5,
+        "hit_fraction": 1.0,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "track:doubt": {
+   "rows_with_cause": 1,
+   "checked": 1,
+   "confirmed": 1,
+   "rerun_same_cause": 1,
+   "traced_equals_reconstructed": 1,
+   "samples": [
+    {
+     "case": "S_person_100",
+     "k": 536,
+     "X": 99.99,
+     "cause": "track:doubt",
+     "recon_cause": "track:doubt",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 278,
+       "hits": 5,
+       "confidence": 1.0,
+       "span_s": 0.8000349998474121,
+       "hit_fraction": 0.625,
+       "reported": true,
+       "zone": "warning",
+       "withheld": true,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true,
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 3,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "vote_zone": {
+         "value": "gauge",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 5,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "gauge",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 5,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 129,
+         "return": "return \"warning\"",
+         "guard": "if self.withheld or self.fresh_blocked:",
+         "withheld": true,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 5,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 5,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.8000349998474121,
+        "need_span": 0.5,
+        "hit_fraction": 0.625,
+        "min_hit_fraction": 0.6
+       },
+       "carried": false
+      }
+     }
+    }
+   ]
+  },
+  "track:explained_run": {
+   "rows_with_cause": 33,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "S_cube05_100",
+     "k": 497,
+     "X": 100.0,
+     "cause": "track:explained_run",
+     "recon_cause": "track:explained_run",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 235,
+       "hits": 8,
+       "confidence": 1.0,
+       "span_s": 1.099937915802002,
+       "hit_fraction": 0.7,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": true,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 2,
+       "explained": true,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [
+        {
+         "line": 436,
+         "text": "q = False",
+         "guard": "if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or ( q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and self._carried_along(t)):"
+        },
+        {
+         "line": 437,
+         "text": "fresh_blocked = explained_blocked = True",
+         "guard": "if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or ( q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and self._carried_along(t)):"
+        },
+        {
+         "line": 451,
+         "text": "t.reported = True",
+         "guard": "if fresh_blocked and was_reported and not earned_stop and t.misses == 0:"
+        }
+       ],
+       "zone_eval": {
+        "vote_zone": {
+         "value": "gauge",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 8,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "gauge",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 8,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 129,
+         "return": "return \"warning\"",
+         "guard": "if self.withheld or self.fresh_blocked:",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 8,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 8,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 1.099937915802002,
+        "need_span": 0.5,
+        "hit_fraction": 0.7,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "S_person_100",
+     "k": 378,
+     "X": 100.0,
+     "cause": "track:explained_run",
+     "recon_cause": "track:explained_run",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 186,
+       "hits": 11,
+       "confidence": 1.0,
+       "span_s": 1.5999400615692139,
+       "hit_fraction": 0.7,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": true,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": true,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [
+        {
+         "line": 436,
+         "text": "q = False",
+         "guard": "if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or ( q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and self._carried_along(t)):"
+        },
+        {
+         "line": 437,
+         "text": "fresh_blocked = explained_blocked = True",
+         "guard": "if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or ( q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and self._carried_along(t)):"
+        },
+        {
+         "line": 451,
+         "text": "t.reported = True",
+         "guard": "if fresh_blocked and was_reported and not earned_stop and t.misses == 0:"
+        }
+       ],
+       "zone_eval": {
+        "vote_zone": {
+         "value": "gauge",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "gauge",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 129,
+         "return": "return \"warning\"",
+         "guard": "if self.withheld or self.fresh_blocked:",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 11,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 1.5999400615692139,
+        "need_span": 0.5,
+        "hit_fraction": 0.7,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "S_cube05_100",
+     "k": 501,
+     "X": 100.0,
+     "cause": "track:explained_run",
+     "recon_cause": "track:explained_run",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 235,
+       "hits": 11,
+       "confidence": 1.0,
+       "span_s": 1.499912977218628,
+       "hit_fraction": 0.9,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": true,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": true,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [
+        {
+         "line": 436,
+         "text": "q = False",
+         "guard": "if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or ( q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and self._carried_along(t)):"
+        },
+        {
+         "line": 437,
+         "text": "fresh_blocked = explained_blocked = True",
+         "guard": "if (q and c.explained_run > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and any(t.explained_hist) and t.clean_run < c.explained_run) or ( q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == \"gauge\" and not t.near_escalated and self._carried_along(t)):"
+        },
+        {
+         "line": 451,
+         "text": "t.reported = True",
+         "guard": "if fresh_blocked and was_reported and not earned_stop and t.misses == 0:"
+        }
+       ],
+       "zone_eval": {
+        "zone": {
+         "value": "warning",
+         "line": 129,
+         "return": "return \"warning\"",
+         "guard": "if self.withheld or self.fresh_blocked:",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "vote_zone": {
+         "value": "gauge",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "gauge",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": true,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 11,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 1.499912977218628,
+        "need_span": 0.5,
+        "hit_fraction": 0.9,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "track:hit_fraction": {
+   "rows_with_cause": 20,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube05",
+     "k": 247,
+     "X": 128.63,
+     "cause": "track:hit_fraction",
+     "recon_cause": "track:hit_fraction",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 41,
+       "hits": 7,
+       "confidence": 0.6,
+       "span_s": 1.2999849319458008,
+       "hit_fraction": 0.5,
+       "reported": false,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 7,
+        "need_hits": 3,
+        "confidence": 0.6,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 1.2999849319458008,
+        "need_span": 0.5,
+        "hit_fraction": 0.5,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "B_person",
+     "k": 127,
+     "X": 116.2,
+     "cause": "track:hit_fraction",
+     "recon_cause": "track:hit_fraction",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 49,
+       "hits": 4,
+       "confidence": 0.7,
+       "span_s": 0.7000828981399536,
+       "hit_fraction": 0.5714285714285714,
+       "reported": false,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 2,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 4,
+        "need_hits": 3,
+        "confidence": 0.7,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.7000828981399536,
+        "need_span": 0.5,
+        "hit_fraction": 0.5714285714285714,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "E6_cable_low_c",
+     "k": 184,
+     "X": 200.14,
+     "cause": "track:hit_fraction",
+     "recon_cause": "track:hit_fraction",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 3,
+       "hits": 3,
+       "confidence": 0.7,
+       "span_s": 0.6000440120697021,
+       "hit_fraction": 0.5,
+       "reported": false,
+       "zone": "gauge",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        true,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 2,
+       "explained": false,
+       "provisional": false,
+       "qualifies": false,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {},
+       "qualifies": {
+        "value": false,
+        "line": 838,
+        "guard": "",
+        "hits": 3,
+        "need_hits": 3,
+        "confidence": 0.7,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.6000440120697021,
+        "need_span": 0.5,
+        "hit_fraction": 0.5,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "track:zone_vote": {
+   "rows_with_cause": 20,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "A_cube05",
+     "k": 239,
+     "X": 138.85,
+     "cause": "track:zone_vote",
+     "recon_cause": "track:zone_vote",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 41,
+       "hits": 4,
+       "confidence": 1.0,
+       "span_s": 0.5000079870223999,
+       "hit_fraction": 0.8,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        true,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 2,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "vote_zone": {
+         "value": "warning",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 4,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "warning",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 4,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 4,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 4,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.5000079870223999,
+        "need_span": 0.5,
+        "hit_fraction": 0.8,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "B_person",
+     "k": 149,
+     "X": 78.19,
+     "cause": "track:zone_vote",
+     "recon_cause": "track:zone_vote",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 53,
+       "hits": 7,
+       "confidence": 1.0,
+       "span_s": 0.6999419927597046,
+       "hit_fraction": 1.0,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "vote_zone": {
+         "value": "warning",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 7,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "warning",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 7,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 7,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 7,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 0.6999419927597046,
+        "need_span": 0.5,
+        "hit_fraction": 1.0,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    },
+    {
+     "case": "D_cube05",
+     "k": 218,
+     "X": 110.28,
+     "cause": "track:zone_vote",
+     "recon_cause": "track:zone_vote",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 1,
+      "matching_gauge_detection": false,
+      "track": {
+       "id": 126,
+       "hits": 11,
+       "confidence": 1.0,
+       "span_s": 1.399927020072937,
+       "hit_fraction": 0.8,
+       "reported": true,
+       "zone": "warning",
+       "withheld": false,
+       "fresh_blocked": false,
+       "column_held": false,
+       "approach_block": false,
+       "zone_hist": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+       ],
+       "column_hist": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+       ],
+       "column_hold": 2,
+       "clean_run": 1,
+       "explained": false,
+       "provisional": false,
+       "qualifies": true,
+       "last_kind": ""
+      },
+      "branch": {
+       "gates": [],
+       "zone_eval": {
+        "vote_zone": {
+         "value": "warning",
+         "line": 124,
+         "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "rule_zone": {
+         "value": "warning",
+         "line": 139,
+         "return": "return self.vote_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        },
+        "zone": {
+         "value": "warning",
+         "line": 130,
+         "return": "return self.rule_zone",
+         "guard": "",
+         "withheld": false,
+         "fresh_blocked": false,
+         "column_held": false,
+         "approach_block": false,
+         "zone_hist": 10,
+         "near_escalated": false
+        }
+       },
+       "qualifies": {
+        "value": true,
+        "line": 838,
+        "guard": "",
+        "hits": 11,
+        "need_hits": 3,
+        "confidence": 1.0,
+        "conf_threshold": 0.6,
+        "misses": 0,
+        "span_s": 1.399927020072937,
+        "need_span": 0.5,
+        "hit_fraction": 0.8,
+        "min_hit_fraction": 0.6
+       }
+      }
+     }
+    }
+   ]
+  },
+  "weak_far_only": {
+   "rows_with_cause": 17,
+   "checked": 3,
+   "confirmed": 3,
+   "rerun_same_cause": 3,
+   "traced_equals_reconstructed": 3,
+   "samples": [
+    {
+     "case": "D_cube05",
+     "k": 308,
+     "X": 85.03,
+     "cause": "weak_far_only",
+     "recon_cause": "weak_far_only",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "side": [
+       {
+        "d": 85.02,
+        "x0": 85.02,
+        "x1": 85.59,
+        "y": 0.59,
+        "y0": 0.23,
+        "y1": 1.21,
+        "zone": "gauge",
+        "reason": "",
+        "thin": true,
+        "weak": true,
+        "kind": "",
+        "n": 4,
+        "n_gauge": 3,
+        "final": false
+       }
+      ]
+     }
+    },
+    {
+     "case": "S_cube05_100",
+     "k": 366,
+     "X": 100.0,
+     "cause": "weak_far_only",
+     "recon_cause": "weak_far_only",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "side": [
+       {
+        "d": 99.99,
+        "x0": 99.99,
+        "x1": 100.01,
+        "y": 0.72,
+        "y0": 0.63,
+        "y1": 0.8,
+        "zone": "gauge",
+        "reason": "",
+        "thin": false,
+        "weak": true,
+        "kind": "",
+        "n": 4,
+        "n_gauge": 4,
+        "final": false
+       }
+      ]
+     }
+    },
+    {
+     "case": "setO",
+     "k": 320,
+     "X": 83.65,
+     "cause": "weak_far_only",
+     "recon_cause": "weak_far_only",
+     "confirmed": true,
+     "evidence": {
+      "clusters_on_object": 1,
+      "blobs_on_object": 1,
+      "clean_on_object": 0,
+      "matching_gauge_detection": false,
+      "side": [
+       {
+        "d": 83.65,
+        "x0": 83.65,
+        "x1": 83.88,
+        "y": -4.5,
+        "y0": -4.6,
+        "y1": -4.4,
+        "zone": "warning",
+        "reason": "",
+        "thin": false,
+        "weak": true,
+        "kind": "",
+        "n": 4,
+        "n_gauge": 2,
+        "final": false
+       }
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "wrong": []
+}

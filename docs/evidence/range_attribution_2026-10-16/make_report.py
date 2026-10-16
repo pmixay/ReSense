@@ -90,6 +90,31 @@ def main(root, out_dir):
             agg[c].update(v)
     for c, v in sorted(agg.items(), key=lambda kv: -sum(kv[1].values())):
         md.append(f"| {c} | " + " | ".join(str(v.get(f"{lo}-{hi}", 0)) for lo, hi in BINS) + f" | {sum(v.values())} |")
+    # label check (range_attrib.py check): sampled frames re-run with full snapshots, rule re-evaluated
+    md += ["", "Label check: sampled non-STOP frames per cause re-run with full snapshots (cause reproduced, "
+           "traced branch = reconstruction, rule independently re-evaluated):", "",
+           "| cause | " + " | ".join(f"{t}: rows / checked / confirmed" for t in TAGS) + " |", "|---|" + "---|" * len(TAGS)]
+    checks = {}
+    for tag in TAGS:
+        p = root / f"check_{tag}" / "check.json"
+        if p.exists():
+            checks[tag] = json.loads(p.read_text())
+            summary.setdefault("label_check", {})[tag] = {
+                "check_sha256": sha(p), "wrong": checks[tag]["wrong"],
+                "causes": {c: {k: v[k] for k in ("rows_with_cause", "checked", "confirmed", "rerun_same_cause",
+                                                  "traced_equals_reconstructed")}
+                           for c, v in checks[tag]["causes"].items()}}
+            if checks[tag]["wrong"]:
+                summary["errors"].append(f"{tag}: {len(checks[tag]['wrong'])} wrong labels in the check")
+        else:
+            summary["errors"].append(f"{tag}: no label check")
+    for c in sorted({c for ch in checks.values() for c in ch["causes"]}):
+        cells = []
+        for tag in TAGS:
+            v = checks.get(tag, {}).get("causes", {}).get(c)
+            cells.append(f"{v['rows_with_cause']} / {v['checked']} / {v['confirmed']}" if v else "–")
+        md.append(f"| {c} | " + " | ".join(cells) + " |")
+    (out_dir / "x1_summary.json").write_text(json.dumps(summary, indent=1) + "\n")
     (out_dir / "x1_tables.md").write_text("\n".join(md) + "\n")
     print("errors:", len(summary["errors"]), "anchors:", {k: v["equal"] for k, v in summary["anchors"].items()})
     return 1 if summary["errors"] else 0

@@ -1,0 +1,37 @@
+{
+ "cache": "squareT_platform_squareT_switch",
+ "obj": [
+  0.5,
+  0.5,
+  0.5
+ ],
+ "lat": 0.0,
+ "base": 0.0,
+ "start": 100,
+ "d0": 230.0,
+ "first_visible_X": 230.0,
+ "first_stop_X": 104.78,
+ "held_from_X": null,
+ "visible_frames": 316,
+ "stop_frames": 121,
+ "bins": {
+  "60-100": "114/181",
+  "100-150": "7/72",
+  "150-200": "0/42",
+  "200-260": "0/21"
+ },
+ "decisions_while_visible": {
+  "GO": 120,
+  "CAUTION": 74,
+  "STOP": 122,
+  "FAULT": 0
+ },
+ "go_within_60m": 0,
+ "n_obj_at": {
+  "200": 4,
+  "150": 4,
+  "100": 9,
+  "60": null,
+  "30": null
+ }
+}
