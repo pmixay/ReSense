@@ -1,0 +1,199 @@
+diff --git a/ros2_ws/src/resense_ros/launch/detector.launch.py b/ros2_ws/src/resense_ros/launch/detector.launch.py
+index a5d4dd8..21ec3d3 100644
+--- a/ros2_ws/src/resense_ros/launch/detector.launch.py
++++ b/ros2_ws/src/resense_ros/launch/detector.launch.py
+@@ -56,6 +56,9 @@ PARAMS = {
+     "stale_timeout": ("0.5", float, "s without an input frame before the decision becomes FAULT"),
+     "startup_grace": ("2.0", float, "s after start before 'no LiDAR frame received yet' is published as FAULT"),
+     "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),
++    "decision_policy": ("v1", str, "shared decision policy: runtime accepts v1 only; v2 is offline-only pending acceptance"),
++    "caution_distance_m": ("80.0", float, "reserved for future accepted policy: margin-advisory distance, inclusive"),
++    "caution_compact_max_size_m": ("3.0", float, "reserved for future accepted policy: compact box extent, inclusive"),
+     # v0.6.1: several recordings / topic names through one running node
+     "input_switch_timeout": ("1.0", float, "s the active input topic must be silent before another topic is taken"),
+     "new_input_gap": ("30.0", float, "s of forward header-stamp jump taken as a new recording (detector restarted)"),
+diff --git a/ros2_ws/src/resense_ros/resense_ros/detector_node.py b/ros2_ws/src/resense_ros/resense_ros/detector_node.py
+index bbbc922..b33f57b 100644
+--- a/ros2_ws/src/resense_ros/resense_ros/detector_node.py
++++ b/ros2_ws/src/resense_ros/resense_ros/detector_node.py
+@@ -70,6 +70,13 @@ in catch-up give CAUTION, and STOP has priority. JSON ``freshness`` explains val
+ ``go_allowed``. Exposed monitored range is zero while invalid; ``detector_clear_distance``
+ retains the raw estimate. ``snapshot_kind`` separates frames from watchdog/error snapshots.
+ 
++Decision policy is shared with offline consumers (``resense_ros.decision_policy``).
++``decision_policy`` is ``v1``; runtime ``v2`` is rejected until accepted. Offline evaluation
++retains v2 with ``caution_distance_m`` 80 m and ``caution_compact_max_size_m`` 3 m. Status adds
++``decision_policy`` and a sorted, deduplicated ``caution_reason`` array, empty off CAUTION.
++Raw flags and health are validated before latch release or health projection. Policy is evaluated
++after freshness health projection and the STOP latch; raw detector warnings remain available.
++
+ Sensor mount (v0.6): ``sensor_forward`` / ``sensor_left`` / ``sensor_up`` override the axis
+ mapping of the parameter file, ``mount_roll_deg`` / ``mount_pitch_deg`` / ``mount_yaw_deg`` a
+ fixed tilt correction, and ``auto_calibrate`` (default true) lets the detector find the
+@@ -137,6 +144,7 @@ import os
+ import resource
+ import time
+ import traceback
++from collections.abc import Mapping
+ from types import SimpleNamespace
+ 
+ import numpy as np
+@@ -159,6 +167,7 @@ from resense.detector import Detector, FrameResult
+ from resense.frame import Frame, axis_matrix
+ 
+ from resense_ros import fastcloud
++from resense_ros.decision_policy import DecisionPolicy, decision as policy_decision, evaluate_decision
+ 
+ 
+ UNSET = -999.0   # sentinel of the mount_*_deg parameters: keep the value of the parameter file
+@@ -219,6 +228,9 @@ class DetectorNode(Node):
+         self.declare_parameter("stale_timeout", 0.5)    # s without an input frame before FAULT / STALE
+         self.declare_parameter("startup_grace", 2.0)    # s after start before "no input yet" is a FAULT
+         self.declare_parameter("max_consecutive_errors", 5)   # processing exceptions in a row before the detector is reset
++        self.declare_parameter("decision_policy", "v1")     # runtime v2 rejected pending acceptance
++        self.declare_parameter("caution_distance_m", 80.0)
++        self.declare_parameter("caution_compact_max_size_m", 3.0)
+         # --- v0.6.1: several recordings / topic names through one running node
+         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
+         self.declare_parameter("new_input_gap", 30.0)         # s of forward stamp jump that means a new recording (full reset)
+@@ -255,6 +267,12 @@ class DetectorNode(Node):
+         # (rclpy's conversion: 12.5 ms median, 32 ms p95 per 24 MB cloud); false = rclpy's messages
+         self.declare_parameter("raw_input", True)
+ 
++        self.decision_policy = DecisionPolicy(
++            version=self.get_parameter("decision_policy").get_parameter_value().string_value,
++            caution_distance_m=self.get_parameter("caution_distance_m").get_parameter_value().double_value,
++            compact_max_size_m=self.get_parameter("caution_compact_max_size_m").get_parameter_value().double_value)
++        if self.decision_policy.version != "v1":
++            raise ValueError("runtime decision_policy must be v1; v2 has not passed acceptance (offline only)")
+         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
+         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
+         for axis in ("forward", "left", "up"):
+@@ -954,7 +972,28 @@ class DetectorNode(Node):
+         self.epoch_reason = reason
+         self.freshness_previous = (stamp, source, now, wall)
+ 
+-    def result_freshness(self, res):
++    @staticmethod
++    def raw_result_state(res):
++        """Strict flags and health validity before any freshness/latch projection.
++
++        Validate independently through shared v1: a true raw STOP must not hide malformed
++        health/warning, and v2 advisory suppression must not be mistaken for validation.
++        """
++        flags = {name: getattr(res, name, False) for name in ("obstacle", "warning")}
++        # numpy 2 names its boolean scalar "bool" rather than "bool_". Normalize only
++        # actual numpy booleans for the shared API; integers/strings remain invalid.
++        for name, value in flags.items():
++            if isinstance(value, np.bool_):
++                flags[name] = bool(value)
++        obstacle = evaluate_decision({"obstacle": flags["obstacle"]}, "v1")
++        warning = evaluate_decision({"warning": flags["warning"]}, "v1")
++        health = evaluate_decision({"health": getattr(res, "health", None)}, "v1")
++        valid = all(answer.decision != "FAULT" for answer in (obstacle, warning, health))
++        return obstacle.decision == "STOP", warning.decision == "CAUTION", valid
++
++    def result_freshness(self, res, *, raw_valid=None):
++        if raw_valid is None:
++            _, _, raw_valid = self.raw_result_state(res)
+         now, wall = time.perf_counter(), time.time()
+         arrival = self.current_arrival
+         source = self.freshness_previous[1] if self.freshness_previous is not None else None
+@@ -980,7 +1019,7 @@ class DetectorNode(Node):
+             reason = "queue_stale"
+         elif self.epoch_reason:
+             reason = self.epoch_reason
+-        elif (getattr(res, "health", {}) or {}).get("level") == "error":
++        elif not raw_valid:
+             reason = "detector_error"
+         elif self.frame_in_catchup or self.current_queue_lag > 1e-6:
+             reason = "catchup"
+@@ -1050,6 +1089,8 @@ class DetectorNode(Node):
+             "mount": {},
+             "clear_distance": 0.0,
+             "decision": decision,
++            "decision_policy": self.decision_policy.version,
++            "caution_reason": [],
+             "detector_clear_distance": None,
+             "stop_held": held,
+             "snapshot_kind": "processing_error" if level_name == "ERROR" else "watchdog",
+@@ -1106,20 +1147,11 @@ class DetectorNode(Node):
+             self.publish_fault(Header(frame_id=self.active_frame_id or ""), message, "STALE")
+ 
+     @staticmethod
+-    def decision(res: FrameResult) -> str:
+-        """STOP > FAULT (health ``level`` error) > CAUTION (an advisory object, or a warning in
+-        the health ``decision_level``) > GO. ``decision_level`` (26.09) is ``level`` without the
+-        latency warning unless ``health.latency_affects_decision``; a result without it (older
+-        core) uses ``level``."""
+-        h = getattr(res, "health", {}) or {}
+-        level = h.get("level", "ok")
+-        if res.obstacle:
+-            return "STOP"
+-        if level == "error":
+-            return "FAULT"
+-        if res.warning or h.get("decision_level", level) == "warn":
+-            return "CAUTION"
+-        return "GO"
++    def decision(res: FrameResult, policy: DecisionPolicy | str = "v1") -> str:
++        """Accepted v1 word-only API; freshness and STOP projection belong to the caller."""
++        if (policy if isinstance(policy, str) else policy.version) != "v1":
++            raise ValueError("runtime decision_policy must be v1; v2 has not passed acceptance (offline only)")
++        return policy_decision(res, policy)
+ 
+     def health_msg(self, hdr: Header, res: FrameResult) -> DiagnosticArray:
+         h = getattr(res, "health", {}) or {}
+@@ -1143,9 +1175,13 @@ class DetectorNode(Node):
+     def publish(self, header: Header, frame: Frame, res: FrameResult) -> None:
+         out_frame = self.get_parameter("output_frame").get_parameter_value().string_value or header.frame_id
+         hdr = Header(stamp=header.stamp, frame_id=out_frame)
+-        freshness = self.result_freshness(res)
++        raw_obstacle, raw_warning, raw_valid = self.raw_result_state(res)
++        freshness = self.result_freshness(res, raw_valid=raw_valid)
+         raw_range = float(getattr(res, "clear_distance", 0.0))
+-        raw_obstacle = bool(res.obstacle)
++        # Normalize only the copy: arbitrary truthy values must not acquire a STOP latch,
++        # reach boolean ROS topics, or be coerced by FrameResult.to_dict before validation.
++        res = copy.copy(res)
++        res.obstacle, res.warning = raw_obstacle, raw_warning
+         status = res.to_dict()
+         if raw_obstacle:
+             self.stop_latch = {"nearest_distance": res.nearest_distance, "detections": status["detections"],
+@@ -1154,8 +1190,8 @@ class DetectorNode(Node):
+             self.stop_latch, self.stop_ros = None, None
+         held = not raw_obstacle and self.stop_latch is not None
+         # Do not mutate the detector's FrameResult or health dictionary.
+-        res = copy.copy(res)
+-        res.health = copy.deepcopy(getattr(res, "health", {}) or {})
++        health = getattr(res, "health", None)
++        res.health = copy.deepcopy(dict(health)) if isinstance(health, Mapping) else {}
+         if not freshness["valid"]:
+             level = "warn" if freshness["reason"] == "catchup" else "error"
+             res.health.update(level=level, decision_level=level)
+@@ -1173,7 +1209,8 @@ class DetectorNode(Node):
+                           detections=self.stop_latch["detections"],
+                           stop_source_stamp=self.stop_latch["stamp"],
+                           stop_source_frame_id=self.stop_latch["frame_id"])
+-        decision = self.decision(res)
++        answer = evaluate_decision(res, self.decision_policy)
++        decision = answer.decision
+         freshness["go_allowed"] = freshness["valid"] and decision == "GO"
+         # the answer first (28.09): flag, distance and decision before the JSON and the visualisation
+         self.pub_flag.publish(Bool(data=bool(res.obstacle)))
+@@ -1189,6 +1226,7 @@ class DetectorNode(Node):
+         status.update(node=self.node_stats(), decision=decision, snapshot_kind="frame", freshness=freshness,
+                       stop_held=held, detector_obstacle=raw_obstacle, detector_clear_distance=raw_range,
+                       clear_distance=float(res.clear_distance), health=res.health)
++        status.update(answer.to_dict())
+         self.pub_status.publish(String(data=json.dumps(status)))
+         self.pub_health.publish(self.health_msg(hdr, res))
+         # vehicle frame of the detector (after the mount calibration) -> sensor frame
+@@ -1288,7 +1326,7 @@ class DetectorNode(Node):
+         status.pose.position.x, status.pose.position.y, status.pose.position.z = map(float, p_s)
+         status.pose.orientation.w = 1.0
+         status.scale.z = 1.2
+-        decision = self.decision(res)             # the same word as /resense/decision
++        decision = self.decision(res, self.decision_policy)  # the same policy as /resense/decision
+         clear = float(getattr(res, "clear_distance", -1.0))
+         if res.obstacle:
+             status.text = f"STOP: OBSTACLE  {res.nearest_distance:.1f} m"

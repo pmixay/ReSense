@@ -1,0 +1,37 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "/review/followup_checks.py",
+        "boundaries",
+        "/review/run-003/boundaries.json"
+      ],
+      "cwd": "/work/target",
+      "exit": 0,
+      "elapsed_informational_s": 4.788607597351074
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "/review/followup_checks.py",
+        "health",
+        "/review/run-003/health.json"
+      ],
+      "cwd": "/work/target",
+      "exit": 0,
+      "elapsed_informational_s": 6.485935926437378
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "/review/followup_checks.py",
+        "tracking",
+        "/review/run-003/tracking.json"
+      ],
+      "cwd": "/work/target",
+      "exit": 0,
+      "elapsed_informational_s": 3.3022749423980713
+    }
+  ]
+}

@@ -1,0 +1,2508 @@
+{
+  "checks": 480,
+  "clear_reduced": 18,
+  "failures": [],
+  "families": 12,
+  "finite_drift": 36,
+  "frames": 96,
+  "monitored_reduced": 36,
+  "obstacle_frames": 24,
+  "rows": [
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        false,
+        0
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        false,
+        1
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        false,
+        2
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        false,
+        3
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        false,
+        4
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        false,
+        5
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        false,
+        6
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        false,
+        7
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        true,
+        0
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        true,
+        1
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        true,
+        2
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        true,
+        3
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        true,
+        4
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        true,
+        5
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        true,
+        6
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        -1,
+        true,
+        7
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        false,
+        0
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        false,
+        1
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        false,
+        2
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        false,
+        3
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        false,
+        4
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        false,
+        5
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        false,
+        6
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        false,
+        7
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        true,
+        0
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        true,
+        1
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        true,
+        2
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        true,
+        3
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        true,
+        4
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        true,
+        5
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        true,
+        6
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "straight",
+        1,
+        true,
+        7
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        157.9
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        false,
+        0
+      ],
+      "monitored": [
+        157.9,
+        157.9
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        146.0
+      ],
+      "error_at_cap_bin": 1.0513944790359027,
+      "key": [
+        "constant",
+        -1,
+        false,
+        1
+      ],
+      "monitored": [
+        157.9,
+        146.0
+      ],
+      "obstacle": false,
+      "wall_drift": 146.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        false,
+        2
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        false,
+        3
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        false,
+        4
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        false,
+        5
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        false,
+        6
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        false,
+        7
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        true,
+        0
+      ],
+      "monitored": [
+        157.9,
+        157.9
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9135306458133652,
+      "key": [
+        "constant",
+        -1,
+        true,
+        1
+      ],
+      "monitored": [
+        157.9,
+        142.0
+      ],
+      "obstacle": false,
+      "wall_drift": 142.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        true,
+        2
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        true,
+        3
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        true,
+        4
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        true,
+        5
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        true,
+        6
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        -1,
+        true,
+        7
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        157.9
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        false,
+        0
+      ],
+      "monitored": [
+        157.9,
+        157.9
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        146.0
+      ],
+      "error_at_cap_bin": 1.0691892805251264,
+      "key": [
+        "constant",
+        1,
+        false,
+        1
+      ],
+      "monitored": [
+        157.9,
+        146.0
+      ],
+      "obstacle": false,
+      "wall_drift": 146.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        false,
+        2
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        false,
+        3
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        false,
+        4
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        false,
+        5
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        false,
+        6
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        158.0,
+        158.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        false,
+        7
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        true,
+        0
+      ],
+      "monitored": [
+        157.9,
+        157.9
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9831398074865056,
+      "key": [
+        "constant",
+        1,
+        true,
+        1
+      ],
+      "monitored": [
+        157.9,
+        138.0
+      ],
+      "obstacle": false,
+      "wall_drift": 138.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        true,
+        2
+      ],
+      "monitored": [
+        157.9,
+        157.9
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        true,
+        3
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": false,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        true,
+        4
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        true,
+        5
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        true,
+        6
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": null,
+      "key": [
+        "constant",
+        1,
+        true,
+        7
+      ],
+      "monitored": [
+        158.0,
+        158.0
+      ],
+      "obstacle": true,
+      "wall_drift": 1000000000.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9644658042818521,
+      "key": [
+        "transition",
+        -1,
+        false,
+        0
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9645512174575328,
+      "key": [
+        "transition",
+        -1,
+        false,
+        1
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9645470966746192,
+      "key": [
+        "transition",
+        -1,
+        false,
+        2
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9645160953945554,
+      "key": [
+        "transition",
+        -1,
+        false,
+        3
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9644953432545731,
+      "key": [
+        "transition",
+        -1,
+        false,
+        4
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9645347129468503,
+      "key": [
+        "transition",
+        -1,
+        false,
+        5
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9646058951076052,
+      "key": [
+        "transition",
+        -1,
+        false,
+        6
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9646142141890351,
+      "key": [
+        "transition",
+        -1,
+        false,
+        7
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9615797163630764,
+      "key": [
+        "transition",
+        -1,
+        true,
+        0
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9592349379437638,
+      "key": [
+        "transition",
+        -1,
+        true,
+        1
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9588155990194898,
+      "key": [
+        "transition",
+        -1,
+        true,
+        2
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9586085001404427,
+      "key": [
+        "transition",
+        -1,
+        true,
+        3
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9584518077293069,
+      "key": [
+        "transition",
+        -1,
+        true,
+        4
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": true,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9583355552471929,
+      "key": [
+        "transition",
+        -1,
+        true,
+        5
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": true,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9582270608874224,
+      "key": [
+        "transition",
+        -1,
+        true,
+        6
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": true,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9580813838347523,
+      "key": [
+        "transition",
+        -1,
+        true,
+        7
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": true,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        98.0
+      ],
+      "error_at_cap_bin": 0.8734649496325165,
+      "key": [
+        "transition",
+        1,
+        false,
+        0
+      ],
+      "monitored": [
+        157.9,
+        98.0
+      ],
+      "obstacle": false,
+      "wall_drift": 98.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9978070960928983,
+      "key": [
+        "transition",
+        1,
+        false,
+        1
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9604327154091219,
+      "key": [
+        "transition",
+        1,
+        false,
+        2
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9326456198631009,
+      "key": [
+        "transition",
+        1,
+        false,
+        3
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9171213862537694,
+      "key": [
+        "transition",
+        1,
+        false,
+        4
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9102012674694134,
+      "key": [
+        "transition",
+        1,
+        false,
+        5
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9240460182117388,
+      "key": [
+        "transition",
+        1,
+        false,
+        6
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        157.9,
+        102.0
+      ],
+      "error_at_cap_bin": 0.9140037748238807,
+      "key": [
+        "transition",
+        1,
+        false,
+        7
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.8754988289641609,
+      "key": [
+        "transition",
+        1,
+        true,
+        0
+      ],
+      "monitored": [
+        157.9,
+        98.0
+      ],
+      "obstacle": false,
+      "wall_drift": 98.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9793582856410996,
+      "key": [
+        "transition",
+        1,
+        true,
+        1
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.965936012025577,
+      "key": [
+        "transition",
+        1,
+        true,
+        2
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9449940291701122,
+      "key": [
+        "transition",
+        1,
+        true,
+        3
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": false,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9328670389413385,
+      "key": [
+        "transition",
+        1,
+        true,
+        4
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": true,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9250236533313174,
+      "key": [
+        "transition",
+        1,
+        true,
+        5
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": true,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9205856604425819,
+      "key": [
+        "transition",
+        1,
+        true,
+        6
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": true,
+      "wall_drift": 102.0
+    },
+    {
+      "checks": {
+        "axis_only_geometry_exact": true,
+        "health_clear": true,
+        "monitored": true,
+        "result_clear": true,
+        "target_off_control_exact": true
+      },
+      "clear": [
+        21.0,
+        21.0
+      ],
+      "error_at_cap_bin": 0.9187522458622787,
+      "key": [
+        "transition",
+        1,
+        true,
+        7
+      ],
+      "monitored": [
+        157.9,
+        102.0
+      ],
+      "obstacle": true,
+      "wall_drift": 102.0
+    }
+  ]
+}

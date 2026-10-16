@@ -1,0 +1,354 @@
+{
+  "cases": 58,
+  "failures": [],
+  "rows": [
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "closing_-1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "parallel_-1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "diverging_-1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "curved_parallel_-1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "curved_closing_-1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "closing_-1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "parallel_-1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "diverging_-1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "curved_parallel_-1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "curved_closing_-1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "closing_-1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "parallel_-1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "diverging_-1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "curved_parallel_-1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "curved_closing_-1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "closing_1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "parallel_1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "diverging_1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "curved_parallel_1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "curved_closing_1_1.5",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "closing_1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "parallel_1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "diverging_1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "curved_parallel_1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "curved_closing_1_2.75",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "closing_1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "parallel_1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "diverging_1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "curved_parallel_1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "curved_closing_1_3.5",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "threshold_equal_-1",
+      "passed": true
+    },
+    {
+      "expected": 78.0,
+      "got": 78.0,
+      "name": "threshold_beyond_-1",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "threshold_inside_-1",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "threshold_equal_1",
+      "passed": true
+    },
+    {
+      "expected": 78.0,
+      "got": 78.0,
+      "name": "threshold_beyond_1",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "threshold_inside_1",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "far_reference_rejected",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "near_zero_reference_rejected",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "near_count_0",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "near_count_1",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "near_count_2",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "near_count_3",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "gap_12.0",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "gap_12.0001",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "consecutive_1",
+      "passed": true
+    },
+    {
+      "expected": 78.0,
+      "got": 78.0,
+      "name": "consecutive_2",
+      "passed": true
+    },
+    {
+      "expected": 78.0,
+      "got": 78.0,
+      "name": "consecutive_3",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "structure_step",
+      "passed": true
+    },
+    {
+      "expected": 90.0,
+      "got": 90.0,
+      "name": "structure_then_drift",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "near_mad_reject",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "near_slope_reject",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "mad_boundary_0.0",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "mad_boundary_1e-06",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "near_outlier_ignored",
+      "passed": true
+    },
+    {
+      "expected": 76.0,
+      "got": 76.0,
+      "name": "rail_bound_inclusive",
+      "passed": true
+    },
+    {
+      "expected": 1000000000.0,
+      "got": 1000000000.0,
+      "name": "rail_bound_just_below",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "asymmetric_earliest",
+      "passed": true
+    },
+    {
+      "expected": 74.0,
+      "got": 74.0,
+      "name": "asymmetric_earliest",
+      "passed": true
+    }
+  ]
+}

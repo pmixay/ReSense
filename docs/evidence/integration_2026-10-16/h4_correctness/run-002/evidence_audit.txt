@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/review/evidence_audit.py", line 149, in <module>
+    if __name__ == '__main__': main()
+  File "/review/evidence_audit.py", line 138, in main
+    assert witness['new'] == trace['candidate']
+AssertionError

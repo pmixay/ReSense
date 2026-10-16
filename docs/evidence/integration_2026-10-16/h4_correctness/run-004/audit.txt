@@ -1,0 +1,34 @@
+{
+  "package_hashes": 83,
+  "external_hashes": 152,
+  "copy_mappings": 75,
+  "counts": {
+    "frames": 18329,
+    "finite_drift": 2422,
+    "formula_checks": 109974,
+    "common_raw_numbers": 2432861,
+    "unequal_raw_numbers": 5799,
+    "monitored_reduced": 2131,
+    "clear_reduced": 1834,
+    "candidates": 25706,
+    "cut_true": 0,
+    "spared_true": 6
+  },
+  "classified_non_axis_changes": [
+    {
+      "file": "new_data_1.jsonl",
+      "row": 1354,
+      "key": "raw.candidates[8].reason",
+      "before": "column",
+      "after": ""
+    },
+    {
+      "file": "new_data_1.jsonl",
+      "row": 1354,
+      "key": "raw.candidates[8].zone",
+      "before": "warning",
+      "after": "gauge"
+    }
+  ],
+  "failures": []
+}

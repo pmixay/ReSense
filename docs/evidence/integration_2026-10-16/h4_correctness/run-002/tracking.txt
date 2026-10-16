@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/review/independent_checks.py", line 436, in <module>
+    main()
+  File "/review/independent_checks.py", line 429, in main
+    answer = scenes(name[7:]) if name.startswith('scenes_') else funcs[name]()
+  File "/review/independent_checks.py", line 205, in tracking_properties
+    assert sequence[3]['rule'] == 'warning' and sequence[-1]['rule'] == 'gauge'
+AssertionError

@@ -1,0 +1,3 @@
+2026-10-16T08:26:30.094374788Z {"argv": ["/usr/bin/python3", "/review/scene_runner.py", "/review/run-004/control.json"], "cwd": "/work/control", "exit": 0, "elapsed_informational_s": 9.556040048599243}
+2026-10-16T08:26:54.930799612Z {"argv": ["/usr/bin/python3", "/review/audit_followup.py", "/review/run-004/evidence_audit.json"], "cwd": "/work/target", "exit": 0, "elapsed_informational_s": 24.836292266845703}
+2026-10-16T08:26:55.065477026Z {"argv": ["/usr/bin/python3", "/review/compare_followup.py", "/review/run-004"], "cwd": "/work/target", "exit": 0, "elapsed_informational_s": 0.13475584983825684}

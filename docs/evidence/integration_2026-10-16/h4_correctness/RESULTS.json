@@ -1,0 +1,633 @@
+{
+  "argv": [
+    "docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py"
+  ],
+  "containers": [
+    {
+      "id": "bdb526cc93b7311e003edeeff9171291422d0cf154763b13e0343125e6a07714",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "name": "resense-h4-correctness-20261016-01",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2026-10-16T08:13:05.826244153Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 0,
+        "Restarting": false,
+        "Running": false,
+        "StartedAt": "2026-10-16T08:11:21.558679517Z",
+        "Status": "exited"
+      }
+    },
+    {
+      "id": "9511bd719c9091348079a59040741faf212a0828a38aa6532f3f78bda2c504c8",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "name": "resense-h4-correctness-20261016-02",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 2,
+        "FinishedAt": "2026-10-16T08:22:02.427694181Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 0,
+        "Restarting": false,
+        "Running": false,
+        "StartedAt": "2026-10-16T08:22:01.381217481Z",
+        "Status": "exited"
+      }
+    },
+    {
+      "id": "1e4f920b579fc9df09372cccfc8a9b60adaf575617495a2900698e8025ab98b8",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "name": "resense-h4-correctness-20261016-03",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 1,
+        "FinishedAt": "2026-10-16T08:24:08.988493427Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 0,
+        "Restarting": false,
+        "Running": false,
+        "StartedAt": "2026-10-16T08:22:51.734986014Z",
+        "Status": "exited"
+      }
+    },
+    {
+      "id": "1f63a4ba1e68f7c12215561910ebb5086d907af20621327abae4a832766eb7f2",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "name": "resense-h4-correctness-20261016-04",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2026-10-16T08:24:59.979404529Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 0,
+        "Restarting": false,
+        "Running": false,
+        "StartedAt": "2026-10-16T08:24:42.10090534Z",
+        "Status": "exited"
+      }
+    },
+    {
+      "id": "f89757b690f5a19afd24699e037b646616f5eca2b61e5f8a665b66e6ccdbe31f",
+      "image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+      "name": "resense-h4-correctness-20261016-05",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2026-10-16T08:26:57.666332361Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 0,
+        "Restarting": false,
+        "Running": false,
+        "StartedAt": "2026-10-16T08:26:20.212555708Z",
+        "Status": "exited"
+      }
+    }
+  ],
+  "independent": {
+    "actual_track_clear_cap_cases": 1024,
+    "ast": {
+      "additive_defaults": {
+        "caution_compact_max_size_m": 3.0,
+        "caution_distance_m": 80.0,
+        "decision_policy": "v1"
+      },
+      "failures": [],
+      "h3_equal_blobs": 36,
+      "published_defaults": 39,
+      "unchanged_methods": [
+        "_account_frame",
+        "node_stats",
+        "start_new_input",
+        "check_continuity",
+        "catchup_plan",
+        "on_cloud",
+        "on_pending",
+        "take_waiting",
+        "prune",
+        "process_next",
+        "track_catchup",
+        "process_cloud",
+        "begin_freshness",
+        "on_watchdog",
+        "subscribe",
+        "remember_arrival"
+      ]
+    },
+    "boundaries": 58,
+    "cache": {
+      "axis_band_reuse": true,
+      "exact_window_cases": 160,
+      "failures": [],
+      "process_frames": 2,
+      "reset_clears": true
+    },
+    "final_axis": {
+      "failures": [],
+      "rows": [
+        {
+          "coefs": [
+            -0.04254473675083303,
+            2.249638513772302e-06,
+            6.51458479205188e-05
+          ],
+          "drift": 86.0,
+          "fit_failed_bins": {
+            "left": 28,
+            "right": 27
+          },
+          "periods": 1,
+          "sign": -1
+        },
+        {
+          "coefs": [
+            -0.04254473675083303,
+            4.409291487014848e-06,
+            3.168586192421684e-05
+          ],
+          "drift": 94.0,
+          "fit_failed_bins": {
+            "left": 30,
+            "right": 25
+          },
+          "periods": 3,
+          "sign": -1
+        },
+        {
+          "coefs": [
+            -0.04342284525563551,
+            0.0014757122330525578,
+            -6.916162598320707e-05
+          ],
+          "drift": 82.0,
+          "fit_failed_bins": {
+            "left": 26,
+            "right": 29
+          },
+          "periods": 1,
+          "sign": 1
+        },
+        {
+          "coefs": [
+            -0.04342284525563551,
+            0.0028924019430636694,
+            -3.9556786927085844e-05
+          ],
+          "drift": 90.0,
+          "fit_failed_bins": {
+            "left": 25,
+            "right": 30
+          },
+          "periods": 3,
+          "sign": 1
+        }
+      ]
+    },
+    "health": {
+      "cases": 3024,
+      "clear_reductions": 224,
+      "failures": [],
+      "fault_checked": true
+    },
+    "node": {
+      "cases": 990,
+      "decisions": {
+        "CAUTION": 22,
+        "FAULT": 277,
+        "GO": 8,
+        "STOP": 683
+      },
+      "failures": [],
+      "policy_source": "/work/target/ros2_ws/src/resense_ros/resense_ros/decision_policy.py",
+      "source": "/work/target/ros2_ws/src/resense_ros/resense_ros/detector_node.py"
+    },
+    "scene_comparison": {
+      "checks": 480,
+      "clear_reduced": 18,
+      "failures": [],
+      "families": 12,
+      "finite_drift": 36,
+      "frames": 96,
+      "monitored_reduced": 36,
+      "obstacle_frames": 24
+    },
+    "scene_families": [
+      {
+        "finite_caps": 0,
+        "frames": 8,
+        "last": {
+          "clear": [
+            158.0,
+            158.0
+          ],
+          "error_at_cap_bin": null,
+          "monitored": [
+            158.0,
+            158.0
+          ],
+          "obstacle": false,
+          "wall_drift": 1000000000.0
+        },
+        "scene": [
+          "straight",
+          -1,
+          false
+        ],
+        "stops": 0
+      },
+      {
+        "finite_caps": 0,
+        "frames": 8,
+        "last": {
+          "clear": [
+            21.0,
+            21.0
+          ],
+          "error_at_cap_bin": null,
+          "monitored": [
+            158.0,
+            158.0
+          ],
+          "obstacle": true,
+          "wall_drift": 1000000000.0
+        },
+        "scene": [
+          "straight",
+          -1,
+          true
+        ],
+        "stops": 4
+      },
+      {
+        "finite_caps": 0,
+        "frames": 8,
+        "last": {
+          "clear": [
+            158.0,
+            158.0
+          ],
+          "error_at_cap_bin": null,
+          "monitored": [
+            158.0,
+            158.0
+          ],
+          "obstacle": false,
+          "wall_drift": 1000000000.0
+        },
+        "scene": [
+          "straight",
+          1,
+          false
+        ],
+        "stops": 0
+      },
+      {
+        "finite_caps": 0,
+        "frames": 8,
+        "last": {
+          "clear": [
+            21.0,
+            21.0
+          ],
+          "error_at_cap_bin": null,
+          "monitored": [
+            158.0,
+            158.0
+          ],
+          "obstacle": true,
+          "wall_drift": 1000000000.0
+        },
+        "scene": [
+          "straight",
+          1,
+          true
+        ],
+        "stops": 4
+      },
+      {
+        "finite_caps": 1,
+        "frames": 8,
+        "last": {
+          "clear": [
+            158.0,
+            158.0
+          ],
+          "error_at_cap_bin": null,
+          "monitored": [
+            158.0,
+            158.0
+          ],
+          "obstacle": false,
+          "wall_drift": 1000000000.0
+        },
+        "scene": [
+          "constant",
+          -1,
+          false
+        ],
+        "stops": 0
+      },
+      {
+        "finite_caps": 1,
+        "frames": 8,
+        "last": {
+          "clear": [
+            21.0,
+            21.0
+          ],
+          "error_at_cap_bin": null,
+          "monitored": [
+            158.0,
+            158.0
+          ],
+          "obstacle": true,
+          "wall_drift": 1000000000.0
+        },
+        "scene": [
+          "constant",
+          -1,
+          true
+        ],
+        "stops": 4
+      },
+      {
+        "finite_caps": 1,
+        "frames": 8,
+        "last": {
+          "clear": [
+            158.0,
+            158.0
+          ],
+          "error_at_cap_bin": null,
+          "monitored": [
+            158.0,
+            158.0
+          ],
+          "obstacle": false,
+          "wall_drift": 1000000000.0
+        },
+        "scene": [
+          "constant",
+          1,
+          false
+        ],
+        "stops": 0
+      },
+      {
+        "finite_caps": 1,
+        "frames": 8,
+        "last": {
+          "clear": [
+            21.0,
+            21.0
+          ],
+          "error_at_cap_bin": null,
+          "monitored": [
+            158.0,
+            158.0
+          ],
+          "obstacle": true,
+          "wall_drift": 1000000000.0
+        },
+        "scene": [
+          "constant",
+          1,
+          true
+        ],
+        "stops": 4
+      },
+      {
+        "finite_caps": 8,
+        "frames": 8,
+        "last": {
+          "clear": [
+            157.9,
+            102.0
+          ],
+          "error_at_cap_bin": 0.9646142141890351,
+          "monitored": [
+            157.9,
+            102.0
+          ],
+          "obstacle": false,
+          "wall_drift": 102.0
+        },
+        "scene": [
+          "transition",
+          -1,
+          false
+        ],
+        "stops": 0
+      },
+      {
+        "finite_caps": 8,
+        "frames": 8,
+        "last": {
+          "clear": [
+            21.0,
+            21.0
+          ],
+          "error_at_cap_bin": 0.9580813838347523,
+          "monitored": [
+            157.9,
+            102.0
+          ],
+          "obstacle": true,
+          "wall_drift": 102.0
+        },
+        "scene": [
+          "transition",
+          -1,
+          true
+        ],
+        "stops": 4
+      },
+      {
+        "finite_caps": 8,
+        "frames": 8,
+        "last": {
+          "clear": [
+            157.9,
+            102.0
+          ],
+          "error_at_cap_bin": 0.9140037748238807,
+          "monitored": [
+            157.9,
+            102.0
+          ],
+          "obstacle": false,
+          "wall_drift": 102.0
+        },
+        "scene": [
+          "transition",
+          1,
+          false
+        ],
+        "stops": 0
+      },
+      {
+        "finite_caps": 8,
+        "frames": 8,
+        "last": {
+          "clear": [
+            21.0,
+            21.0
+          ],
+          "error_at_cap_bin": 0.9187522458622787,
+          "monitored": [
+            157.9,
+            102.0
+          ],
+          "obstacle": true,
+          "wall_drift": 102.0
+        },
+        "scene": [
+          "transition",
+          1,
+          true
+        ],
+        "stops": 4
+      }
+    ],
+    "spare_histories": 128
+  },
+  "remaining_medium_or_higher_findings": [],
+  "retained_h3": {
+    "classified_non_axis_changes": [
+      {
+        "after": "",
+        "before": "column",
+        "file": "new_data_1.jsonl",
+        "key": "raw.candidates[8].reason",
+        "row": 1354
+      },
+      {
+        "after": "gauge",
+        "before": "warning",
+        "file": "new_data_1.jsonl",
+        "key": "raw.candidates[8].zone",
+        "row": 1354
+      }
+    ],
+    "copy_mappings": 75,
+    "counts": {
+      "candidates": 25706,
+      "clear_reduced": 1834,
+      "common_raw_numbers": 2432861,
+      "cut_true": 0,
+      "finite_drift": 2422,
+      "formula_checks": 109974,
+      "frames": 18329,
+      "monitored_reduced": 2131,
+      "spared_true": 6,
+      "unequal_raw_numbers": 5799
+    },
+    "external_hashes": 152,
+    "package_hashes": 83
+  },
+  "reviewed_commands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "707ea9c",
+        "7cc640f",
+        "--",
+        "resense",
+        "configs/default.yaml",
+        "ros2_ws/src/resense_ros/config/detector.yaml"
+      ],
+      "cwd": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016",
+      "exit": 0,
+      "output": "reviewed-core-diff.txt"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "3fdc87957f5d09ff32573eabe6637924b91ea376",
+        "7cc640f",
+        "--",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+        "ros2_ws/src/resense_ros/launch/detector.launch.py"
+      ],
+      "cwd": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016",
+      "exit": 0,
+      "output": "reviewed-runtime-diff.txt"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "7cc640f",
+        "HEAD",
+        "--",
+        "resense",
+        "native",
+        "configs",
+        "ros2_ws/src/resense_ros",
+        "scripts/decision_policy_import.py",
+        "scripts/rescore_decisions.py",
+        "scripts/build_native.sh",
+        "pyproject.toml"
+      ],
+      "cwd": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016",
+      "exit": 0,
+      "output": "scope-current-core-diff.txt"
+    }
+  ],
+  "source_checks": [
+    {
+      "control_files": 36,
+      "control_head": "707ea9cda051369326fb9407c42488c1033dad76",
+      "path": "run-001/source_before.json",
+      "target_files": 36,
+      "target_head": "7cc640fb39698b1fe45bc6ab069eab68ad4ac6ae"
+    },
+    {
+      "control_files": 36,
+      "control_head": "707ea9cda051369326fb9407c42488c1033dad76",
+      "path": "run-001/source_after_units.json",
+      "target_files": 36,
+      "target_head": "7cc640fb39698b1fe45bc6ab069eab68ad4ac6ae"
+    },
+    {
+      "control_files": 36,
+      "control_head": "707ea9cda051369326fb9407c42488c1033dad76",
+      "path": "run-002/source_after.json",
+      "target_files": 36,
+      "target_head": "7cc640fb39698b1fe45bc6ab069eab68ad4ac6ae"
+    },
+    {
+      "control_files": 36,
+      "control_head": "707ea9cda051369326fb9407c42488c1033dad76",
+      "path": "run-003/source_after.json",
+      "target_files": 36,
+      "target_head": "7cc640fb39698b1fe45bc6ab069eab68ad4ac6ae"
+    },
+    {
+      "control_files": 36,
+      "control_head": "707ea9cda051369326fb9407c42488c1033dad76",
+      "path": "run-004/source_after.json",
+      "target_files": 36,
+      "target_head": "7cc640fb39698b1fe45bc6ab069eab68ad4ac6ae"
+    }
+  ],
+  "units": {
+    "failed": 0,
+    "files": 22,
+    "passed": 572,
+    "skipped": 0
+  },
+  "verdict": "PASS"
+}

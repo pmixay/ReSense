@@ -1,0 +1,259 @@
+{
+  "AppArmorProfile": "",
+  "Args": [
+    "/review/resume_linux.py"
+  ],
+  "Config": {
+    "AttachStderr": false,
+    "AttachStdin": false,
+    "AttachStdout": false,
+    "Cmd": [
+      "/review/resume_linux.py"
+    ],
+    "Domainname": "",
+    "Entrypoint": [
+      "/entrypoint.sh"
+    ],
+    "Env": [
+      "OMP_NUM_THREADS=1",
+      "OPENBLAS_NUM_THREADS=1",
+      "MKL_NUM_THREADS=1",
+      "NUMEXPR_NUM_THREADS=1",
+      "PYTHONHASHSEED=0",
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "LANG=C.UTF-8",
+      "LC_ALL=C.UTF-8",
+      "ROS_DISTRO=humble",
+      "DEBIAN_FRONTEND=noninteractive",
+      "PIP_NO_CACHE_DIR=1",
+      "PIP_DISABLE_PIP_VERSION_CHECK=1",
+      "PYTHONUNBUFFERED=1",
+      "ROS_HOME=/tmp/.ros",
+      "ROS_LOG_DIR=/tmp/.ros/log",
+      "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+    ],
+    "Hostname": "9511bd719c90",
+    "Image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+    "Labels": {
+      "org.opencontainers.image.revision": "7d3d5a05c258fc26a16c711e092822ff60d59d56",
+      "org.opencontainers.image.version": "22.04",
+      "resense.integration.owner": "h4-correctness-20261016",
+      "resense.p1.base-image-id": "sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a",
+      "resense.p1.checks": "final"
+    },
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "StopTimeout": 1,
+    "Tty": false,
+    "User": "root",
+    "Volumes": null,
+    "WorkingDir": "/opt/resense"
+  },
+  "Created": "2026-10-16T08:22:01.214266345Z",
+  "Driver": "overlayfs",
+  "ExecIDs": null,
+  "HostConfig": {
+    "AutoRemove": false,
+    "Binds": null,
+    "BlkioDeviceReadBps": [],
+    "BlkioDeviceReadIOps": [],
+    "BlkioDeviceWriteBps": [],
+    "BlkioDeviceWriteIOps": [],
+    "BlkioWeight": 0,
+    "BlkioWeightDevice": [],
+    "CapAdd": null,
+    "CapDrop": null,
+    "Cgroup": "",
+    "CgroupParent": "",
+    "CgroupnsMode": "private",
+    "ConsoleSize": [
+      0,
+      0
+    ],
+    "ContainerIDFile": "",
+    "CpuCount": 0,
+    "CpuPercent": 0,
+    "CpuPeriod": 0,
+    "CpuQuota": 0,
+    "CpuRealtimePeriod": 0,
+    "CpuRealtimeRuntime": 0,
+    "CpuShares": 0,
+    "CpusetCpus": "",
+    "CpusetMems": "",
+    "DeviceCgroupRules": null,
+    "DeviceRequests": null,
+    "Devices": [],
+    "Dns": null,
+    "DnsOptions": [],
+    "DnsSearch": [],
+    "ExtraHosts": null,
+    "GroupAdd": null,
+    "IOMaximumBandwidth": 0,
+    "IOMaximumIOps": 0,
+    "IpcMode": "private",
+    "Isolation": "",
+    "Links": null,
+    "LogConfig": {
+      "Config": {},
+      "Type": "json-file"
+    },
+    "MaskedPaths": [
+      "/proc/acpi",
+      "/proc/asound",
+      "/proc/interrupts",
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/latency_stats",
+      "/proc/sched_debug",
+      "/proc/scsi",
+      "/proc/timer_list",
+      "/proc/timer_stats",
+      "/sys/devices/virtual/powercap",
+      "/sys/firmware"
+    ],
+    "Memory": 5368709120,
+    "MemoryReservation": 0,
+    "MemorySwap": 10737418240,
+    "MemorySwappiness": null,
+    "Mounts": [
+      {
+        "ReadOnly": true,
+        "Source": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs",
+        "Target": "/h3-external",
+        "Type": "bind"
+      }
+    ],
+    "NanoCpus": 2000000000,
+    "NetworkMode": "none",
+    "OomKillDisable": null,
+    "OomScoreAdj": 0,
+    "PidMode": "",
+    "PidsLimit": null,
+    "PortBindings": {},
+    "Privileged": false,
+    "PublishAllPorts": false,
+    "ReadonlyPaths": [
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ],
+    "ReadonlyRootfs": false,
+    "RestartPolicy": {
+      "MaximumRetryCount": 0,
+      "Name": "no"
+    },
+    "Runtime": "runc",
+    "SecurityOpt": null,
+    "ShmSize": 67108864,
+    "UTSMode": "",
+    "Ulimits": [],
+    "UsernsMode": "",
+    "VolumeDriver": "",
+    "VolumesFrom": [
+      "resense-h4-correctness-20261016-01"
+    ]
+  },
+  "HostnamePath": "/var/lib/docker/containers/9511bd719c9091348079a59040741faf212a0828a38aa6532f3f78bda2c504c8/hostname",
+  "HostsPath": "/var/lib/docker/containers/9511bd719c9091348079a59040741faf212a0828a38aa6532f3f78bda2c504c8/hosts",
+  "Id": "9511bd719c9091348079a59040741faf212a0828a38aa6532f3f78bda2c504c8",
+  "Image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+  "ImageManifestDescriptor": {
+    "digest": "sha256:72263136326542d3b0f69df3e3806fc8fbbfe9a986456b6d9c48b90429f20c90",
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "platform": {
+      "architecture": "amd64",
+      "os": "linux"
+    },
+    "size": 11695
+  },
+  "LogPath": "/var/lib/docker/containers/9511bd719c9091348079a59040741faf212a0828a38aa6532f3f78bda2c504c8/9511bd719c9091348079a59040741faf212a0828a38aa6532f3f78bda2c504c8-json.log",
+  "MountLabel": "",
+  "Mounts": [
+    {
+      "Destination": "/work",
+      "Driver": "local",
+      "Mode": "",
+      "Name": "resense-h4-correctness-20261016-01",
+      "Propagation": "",
+      "RW": true,
+      "Source": "/var/lib/docker/volumes/resense-h4-correctness-20261016-01/_data",
+      "Type": "volume"
+    },
+    {
+      "Destination": "/review",
+      "Mode": "",
+      "Propagation": "rprivate",
+      "RW": true,
+      "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_correctness",
+      "Type": "bind"
+    },
+    {
+      "Destination": "/h3-external",
+      "Mode": "",
+      "Propagation": "rprivate",
+      "RW": false,
+      "Source": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-20261016-runs",
+      "Type": "bind"
+    },
+    {
+      "Destination": "/source.git",
+      "Mode": "",
+      "Propagation": "rprivate",
+      "RW": false,
+      "Source": "/run/desktop/mnt/host/c/Users/alikh/OneDrive/Desktop/projects/ReSense/.git",
+      "Type": "bind"
+    }
+  ],
+  "Name": "/resense-h4-correctness-20261016-02",
+  "NetworkSettings": {
+    "Networks": {
+      "none": {
+        "Aliases": null,
+        "DNSNames": null,
+        "DriverOpts": null,
+        "EndpointID": "",
+        "Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "GwPriority": 0,
+        "IPAMConfig": null,
+        "IPAddress": "",
+        "IPPrefixLen": 0,
+        "IPv6Gateway": "",
+        "Links": null,
+        "MacAddress": "",
+        "NetworkID": "9c67a162243cb08053abd8248dcadd9ef58155f090c2ab26c5a3e9190e4c9543"
+      }
+    },
+    "Ports": {},
+    "SandboxID": "",
+    "SandboxKey": ""
+  },
+  "Path": "/entrypoint.sh",
+  "Platform": "linux",
+  "ProcessLabel": "",
+  "ResolvConfPath": "/var/lib/docker/containers/9511bd719c9091348079a59040741faf212a0828a38aa6532f3f78bda2c504c8/resolv.conf",
+  "RestartCount": 0,
+  "State": {
+    "Dead": false,
+    "Error": "",
+    "ExitCode": 2,
+    "FinishedAt": "2026-10-16T08:22:02.427694181Z",
+    "OOMKilled": false,
+    "Paused": false,
+    "Pid": 0,
+    "Restarting": false,
+    "Running": false,
+    "StartedAt": "2026-10-16T08:22:01.381217481Z",
+    "Status": "exited"
+  },
+  "Storage": {
+    "RootFS": {
+      "Snapshot": {
+        "Name": "overlayfs"
+      }
+    }
+  }
+}

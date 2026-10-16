@@ -1,0 +1,259 @@
+{
+  "Id": "bdb526cc93b7311e003edeeff9171291422d0cf154763b13e0343125e6a07714",
+  "Created": "2026-10-16T08:11:21.439774938Z",
+  "Path": "python3",
+  "Args": [
+    "/review/run_linux.py"
+  ],
+  "State": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-16T08:11:21.558679517Z",
+    "FinishedAt": "2026-10-16T08:13:05.826244153Z"
+  },
+  "Image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+  "ResolvConfPath": "/var/lib/docker/containers/bdb526cc93b7311e003edeeff9171291422d0cf154763b13e0343125e6a07714/resolv.conf",
+  "HostnamePath": "/var/lib/docker/containers/bdb526cc93b7311e003edeeff9171291422d0cf154763b13e0343125e6a07714/hostname",
+  "HostsPath": "/var/lib/docker/containers/bdb526cc93b7311e003edeeff9171291422d0cf154763b13e0343125e6a07714/hosts",
+  "LogPath": "/var/lib/docker/containers/bdb526cc93b7311e003edeeff9171291422d0cf154763b13e0343125e6a07714/bdb526cc93b7311e003edeeff9171291422d0cf154763b13e0343125e6a07714-json.log",
+  "Name": "/resense-h4-correctness-20261016-01",
+  "RestartCount": 0,
+  "Driver": "overlayfs",
+  "Platform": "linux",
+  "MountLabel": "",
+  "ProcessLabel": "",
+  "AppArmorProfile": "",
+  "ExecIDs": null,
+  "HostConfig": {
+    "Binds": null,
+    "ContainerIDFile": "",
+    "LogConfig": {
+      "Type": "json-file",
+      "Config": {}
+    },
+    "NetworkMode": "bridge",
+    "PortBindings": {},
+    "RestartPolicy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "AutoRemove": false,
+    "VolumeDriver": "",
+    "VolumesFrom": null,
+    "ConsoleSize": [
+      0,
+      0
+    ],
+    "CapAdd": null,
+    "CapDrop": null,
+    "CgroupnsMode": "private",
+    "Dns": null,
+    "DnsOptions": [],
+    "DnsSearch": [],
+    "ExtraHosts": null,
+    "GroupAdd": null,
+    "IpcMode": "private",
+    "Cgroup": "",
+    "Links": null,
+    "OomScoreAdj": 0,
+    "PidMode": "",
+    "Privileged": false,
+    "PublishAllPorts": false,
+    "ReadonlyRootfs": false,
+    "SecurityOpt": null,
+    "UTSMode": "",
+    "UsernsMode": "",
+    "ShmSize": 67108864,
+    "Runtime": "runc",
+    "Isolation": "",
+    "CpuShares": 0,
+    "Memory": 5368709120,
+    "NanoCpus": 2000000000,
+    "CgroupParent": "",
+    "BlkioWeight": 0,
+    "BlkioWeightDevice": [],
+    "BlkioDeviceReadBps": [],
+    "BlkioDeviceWriteBps": [],
+    "BlkioDeviceReadIOps": [],
+    "BlkioDeviceWriteIOps": [],
+    "CpuPeriod": 0,
+    "CpuQuota": 0,
+    "CpuRealtimePeriod": 0,
+    "CpuRealtimeRuntime": 0,
+    "CpusetCpus": "",
+    "CpusetMems": "",
+    "Devices": [],
+    "DeviceCgroupRules": null,
+    "DeviceRequests": null,
+    "MemoryReservation": 0,
+    "MemorySwap": 10737418240,
+    "MemorySwappiness": null,
+    "OomKillDisable": null,
+    "PidsLimit": null,
+    "Ulimits": [],
+    "CpuCount": 0,
+    "CpuPercent": 0,
+    "IOMaximumIOps": 0,
+    "IOMaximumBandwidth": 0,
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\alikh\\OneDrive\\Desktop\\projects\\ReSense\\.git",
+        "Target": "/source.git",
+        "ReadOnly": true
+      },
+      {
+        "Type": "volume",
+        "Source": "resense-h4-correctness-20261016-01",
+        "Target": "/work"
+      },
+      {
+        "Type": "bind",
+        "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_correctness",
+        "Target": "/review"
+      }
+    ],
+    "MaskedPaths": [
+      "/proc/acpi",
+      "/proc/asound",
+      "/proc/interrupts",
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/latency_stats",
+      "/proc/sched_debug",
+      "/proc/scsi",
+      "/proc/timer_list",
+      "/proc/timer_stats",
+      "/sys/devices/virtual/powercap",
+      "/sys/firmware"
+    ],
+    "ReadonlyPaths": [
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ]
+  },
+  "Storage": {
+    "RootFS": {
+      "Snapshot": {
+        "Name": "overlayfs"
+      }
+    }
+  },
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "C:\\Users\\alikh\\OneDrive\\Desktop\\projects\\ReSense\\.git",
+      "Destination": "/source.git",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "volume",
+      "Name": "resense-h4-correctness-20261016-01",
+      "Source": "/var/lib/docker/volumes/resense-h4-correctness-20261016-01/_data",
+      "Destination": "/work",
+      "Driver": "local",
+      "Mode": "z",
+      "RW": true,
+      "Propagation": ""
+    },
+    {
+      "Type": "bind",
+      "Source": "/run/desktop/mnt/host/c/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/h4_correctness",
+      "Destination": "/review",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    }
+  ],
+  "Config": {
+    "Hostname": "bdb526cc93b7",
+    "Domainname": "",
+    "User": "root",
+    "AttachStdin": false,
+    "AttachStdout": false,
+    "AttachStderr": false,
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Env": [
+      "OMP_NUM_THREADS=1",
+      "OPENBLAS_NUM_THREADS=1",
+      "MKL_NUM_THREADS=1",
+      "NUMEXPR_NUM_THREADS=1",
+      "PYTHONHASHSEED=0",
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "LANG=C.UTF-8",
+      "LC_ALL=C.UTF-8",
+      "ROS_DISTRO=humble",
+      "DEBIAN_FRONTEND=noninteractive",
+      "PIP_NO_CACHE_DIR=1",
+      "PIP_DISABLE_PIP_VERSION_CHECK=1",
+      "PYTHONUNBUFFERED=1",
+      "ROS_HOME=/tmp/.ros",
+      "ROS_LOG_DIR=/tmp/.ros/log",
+      "FASTRTPS_DEFAULT_PROFILES_FILE=/opt/resense/fastdds_udp.xml"
+    ],
+    "Cmd": [
+      "/review/run_linux.py"
+    ],
+    "Image": "sha256:5e2659e8f8d3a7e9f64d7c269ae920badd86b8a388e48e9449dda7028b920c19",
+    "Volumes": null,
+    "WorkingDir": "/opt/resense",
+    "Entrypoint": [
+      "python3"
+    ],
+    "Labels": {
+      "org.opencontainers.image.revision": "7d3d5a05c258fc26a16c711e092822ff60d59d56",
+      "org.opencontainers.image.version": "22.04",
+      "resense.integration.owner": "h4-correctness-20261016",
+      "resense.p1.base-image-id": "sha256:14bb79c2e0755bf846a5df66a82da3671839c3b26335e4ff09dae20851c1607a",
+      "resense.p1.checks": "final"
+    },
+    "StopTimeout": 1
+  },
+  "NetworkSettings": {
+    "SandboxID": "",
+    "SandboxKey": "",
+    "Ports": {},
+    "Networks": {
+      "bridge": {
+        "IPAMConfig": null,
+        "Links": null,
+        "Aliases": null,
+        "DriverOpts": null,
+        "GwPriority": 0,
+        "NetworkID": "325994363a17411dac20622ac5a6d3c5783ab9bf851c8ef808086f78c8f95a01",
+        "EndpointID": "",
+        "Gateway": "",
+        "IPAddress": "",
+        "MacAddress": "",
+        "IPPrefixLen": 0,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "DNSNames": null
+      }
+    }
+  },
+  "ImageManifestDescriptor": {
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "digest": "sha256:72263136326542d3b0f69df3e3806fc8fbbfe9a986456b6d9c48b90429f20c90",
+    "size": 11695,
+    "platform": {
+      "architecture": "amd64",
+      "os": "linux"
+    }
+  }
+}

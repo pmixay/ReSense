@@ -1,0 +1,28 @@
+{
+  "published_defaults": 39,
+  "unchanged_methods": [
+    "_account_frame",
+    "node_stats",
+    "start_new_input",
+    "check_continuity",
+    "catchup_plan",
+    "on_cloud",
+    "on_pending",
+    "take_waiting",
+    "prune",
+    "process_next",
+    "track_catchup",
+    "process_cloud",
+    "begin_freshness",
+    "on_watchdog",
+    "subscribe",
+    "remember_arrival"
+  ],
+  "additive_defaults": {
+    "decision_policy": "v1",
+    "caution_distance_m": 80.0,
+    "caution_compact_max_size_m": 3.0
+  },
+  "h3_equal_blobs": 36,
+  "failures": []
+}
