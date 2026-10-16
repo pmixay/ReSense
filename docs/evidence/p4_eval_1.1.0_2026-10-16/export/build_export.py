@@ -202,6 +202,32 @@ def j1(ex):
                    "frames" if k == "stop_frames" else "episodes", status, "in-sample", LINUX)
 
 
+def j1_range(ex):
+    """The judge's 37 range jobs pre-built on both versions (rejudge_2026-10-16/prebuild)."""
+    for key, status in (("707ea9c", "DRY RUN (reproduction of 13.10)"), ("1.1.0", "PRE-RELEASE, not a J1 result")):
+        version = VERSIONS[key][0]
+        rel = f"docs/evidence/rejudge_2026-10-16/prebuild/summary_{key}.json"
+        doc, _ = load(rel)
+        for i, j in enumerate(doc["jobs"]):
+            s = j["summary"]
+            cid = f"j1range/{j['job']}"
+            ex.case(case_id=cid, stage="J1-range", recording=j["recording"], alias=j["job"].split("_")[0],
+                    object=j["job"], variant=j["args"], version=version, commit=VERSIONS[key][1], runtime=LINUX,
+                    status=status, scope="development data (in-sample), synthetic ray-cast object",
+                    result=f"first STOP {s['first_stop_X']} m, held {s['held_from_X']} m, STOP hits "
+                           f"{s['stop_frames']}/{s['visible_frames']}", evidence=rel)
+            base = f"/jobs/{i}/summary"
+            for k, unit in (("first_visible_X", "m"), ("first_stop_X", "m"), ("held_from_X", "m")):
+                if s[k] is not None:
+                    ex.num("J1-range", cid, version, k.replace("_X", "_m"), rel, f"{base}/{k}", unit, status,
+                           "in-sample", LINUX)
+            for k in ("visible_frames", "stop_frames"):
+                ex.num("J1-range", cid, version, k, rel, f"{base}/{k}", "frames", status, "in-sample", LINUX)
+            for k in ("GO", "CAUTION", "STOP", "FAULT"):
+                ex.num("J1-range", cid, version, f"decisions_while_visible.{k}", rel,
+                       f"{base}/decisions_while_visible/{k}", "frames", status, "in-sample", LINUX)
+
+
 def g3(ex):
     rel = "docs/evidence/heldout_2026-10-15/spec.json"
     doc, _ = load(rel)
@@ -239,7 +265,7 @@ def write(rows, cols, stem):
 
 def main():
     ex = Export()
-    for part in (x3, x1, j1, g3):
+    for part in (x3, x1, j1, j1_range, g3):
         part(ex)
     if "--check" not in sys.argv:
         write(ex.cases, RECORD_COLS, "case_register")

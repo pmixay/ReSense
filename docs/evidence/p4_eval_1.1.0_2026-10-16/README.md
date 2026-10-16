@@ -84,8 +84,8 @@ all per-object rows are in the JSON.
 
 ## For P2: register, numbers, limitations
 
-* [export/case_register.csv](export/case_register.csv): every P4 case (238 rows: X3, X1, J1, G3 registered).
-* [export/numbers.csv](export/numbers.csv): 2,461 numbers, each with source file, JSON pointer and
+* [export/case_register.csv](export/case_register.csv): every P4 case (312 rows: X3, X1, J1, J1-range pre-built, G3 registered).
+* [export/numbers.csv](export/numbers.csv): 3,105 numbers, each with source file, JSON pointer and
   SHA-256; format [export/FORMAT.md](export/FORMAT.md) (**proposed v1, P2 to confirm**).
 * [LIMITATIONS.md](LIMITATIONS.md): confirmed limitations of 1.1.0, evaluation limits, and a
   caption check of the existing docs (2 m edge box 29 → 28 m, plank 87 → 89 m, top box 111.4 m for 1.1.0).

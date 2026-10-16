@@ -2,7 +2,7 @@
 
 Built by [`build_export.py`](build_export.py) from committed evidence only; re-run it after any new
 P4 result. `python build_export.py --check` re-reads every exported number from its source and
-fails on any difference (last run: **2,461 numbers, 0 mismatches**). Proposed by P4 on 16.10.
+fails on any difference (last run: **3,105 numbers, 0 mismatches**). Proposed by P4 on 16.10.
 **Not yet agreed:** P2 confirms the columns, or names the changes, and the format then becomes "v1 agreed".
 
 ## `case_register.csv` / `.json` — one row per case × detector version
@@ -10,7 +10,7 @@ fails on any difference (last run: **2,461 numbers, 0 mismatches**). Proposed by
 | column | meaning |
 |---|---|
 | `case_id` | `<stage>/<recording or case>/<variant>`, stable across versions |
-| `stage` | `X3` robustness battery, `X1` range attribution, `J1` judge pipeline, `G3` held-out (registered) |
+| `stage` | `X3` robustness battery, `X1` range attribution, `J1` judge pipeline on the bags, `J1-range` the judge's 37 range jobs (pre-built), `G3` held-out (registered) |
 | `recording`, `alias` | organizer recording; alias A/B/C/S/D/obstacle/platform/Set O (B = roundT_doubleT, C = roundT_pressureGate_roundT) |
 | `object` | labelled / synthetic object or `none (empty)` |
 | `variant` | X3 perturbation, X1 judge arguments, G3 motion + its 11 variants |
@@ -21,8 +21,9 @@ fails on any difference (last run: **2,461 numbers, 0 mismatches**). Proposed by
 | `result` | one-line human summary |
 | `evidence` | committed source file |
 
-Current content: **238 rows**. X3 has 120 rows: 40 cases × 3 runs (v1.0.0 Windows, the v1.0.0
-Linux control and 1.1.0). X1 has 22 (11 cases × 2 versions) and J1 has 12 (6 bags × 2). G3 has
+Current content: **312 rows**. X3 has 120 rows: 40 cases × 3 runs (v1.0.0 Windows, the v1.0.0
+Linux control and 1.1.0). X1 has 22 (11 cases × 2 versions), J1 has 12 (6 bags × 2) and J1-range has 74
+(the judge's 37 range jobs × 2, pre-built). G3 has
 **84 registered cases (924 planned runs), none run.**
 
 ## `numbers.csv` / `.json` — one row per number (long / tidy)
