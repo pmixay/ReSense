@@ -1,0 +1,31 @@
+{
+ "windows": {
+  "path": "docs/evidence/p4_start_2026-10-15/battery_707ea9c.json",
+  "status": "MEASURED",
+  "commit": "707ea9cda051369326fb9407c42488c1033dad76",
+  "runtime": "Windows-10-10.0.26200-SP0"
+ },
+ "linux": {
+  "path": "/home/user/rs-data/p4out/battery_707ea9c_linux_haswell.json",
+  "status": "MEASURED",
+  "commit": "707ea9cda051369326fb9407c42488c1033dad76",
+  "runtime": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39"
+ },
+ "same_commit": true,
+ "same_driver": true,
+ "judge_scripts_equal_modulo_crlf": true,
+ "same_labels": true,
+ "source_meta_equal": {
+  "squareT_platform_squareT_switch": true,
+  "doubleT_obstacle": true,
+  "roundT_squareT_pressureGate_squareT": true,
+  "cloud_with_fake_obj": true
+ },
+ "entries": 40,
+ "differences": {},
+ "judge_reproduction": {
+  "windows": true,
+  "linux": true
+ },
+ "equal": true
+}

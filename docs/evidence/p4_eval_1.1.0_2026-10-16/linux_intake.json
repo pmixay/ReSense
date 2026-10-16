@@ -1,0 +1,86 @@
+{
+ "schema": "resense-p4-linux-decoded-intake-v1",
+ "reference": "docs/evidence/p4_start_2026-10-15/intake.json",
+ "reference_sha256": "40f01bd4d2c26e7395a2d2292c169dda07efe3e88180e67b9c6b1b8b78bb004f",
+ "tool_sha256": "843ed53d6289eca4f4cc5cc122436262665e2a111267d667462adbff1d3ed0c9",
+ "runtime": {
+  "platform": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39",
+  "python": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+  "numpy": "1.26.4"
+ },
+ "bags": {
+  "doubleT_obstacle": {
+   "path": "/home/user/rs-data/decoded/doubleT_obstacle",
+   "frames": 201,
+   "meta_sha256": "67358d464c52a242eac4ce8777b9ba8d833755395019581fee58db1e9eef34c9",
+   "reference_meta_sha256": "67358d464c52a242eac4ce8777b9ba8d833755395019581fee58db1e9eef34c9",
+   "arrays_checked": 201,
+   "mismatches": [],
+   "linux_payload_sha256": "3c3fb579d09dde4d875460d153f60ea5800278fe6c76d636885b23f7a7278e84",
+   "reference_payload_sha256": "5ffaad874e227249302fd9f278df4e9a2acd3d92824f46007d4b9213529fea5b"
+  },
+  "doubleT_platform": {
+   "path": "/home/user/rs-data/decoded/doubleT_platform",
+   "frames": 345,
+   "meta_sha256": "1335688bbd73ef2e092aca4e59e32b52be9f4ed027540595ef942ce0cea0a3c0",
+   "reference_meta_sha256": "1335688bbd73ef2e092aca4e59e32b52be9f4ed027540595ef942ce0cea0a3c0",
+   "arrays_checked": 345,
+   "mismatches": [],
+   "linux_payload_sha256": "3953be4342e2aa5a942d9efa7485c82689f7d902e0d2c9b698e186311e41991d",
+   "reference_payload_sha256": "91c87f8c412c394e7996a7ecf3241d11ac3f92622d1daedc2e03c408ceca07a5"
+  },
+  "roundT_doubleT": {
+   "path": "/home/user/rs-data/decoded/roundT_doubleT",
+   "frames": 252,
+   "meta_sha256": "51004f10044870d65574a3b9b1f0025f082c6ece10f93e9b1feccb9e95f6e621",
+   "reference_meta_sha256": "51004f10044870d65574a3b9b1f0025f082c6ece10f93e9b1feccb9e95f6e621",
+   "arrays_checked": 252,
+   "mismatches": [],
+   "linux_payload_sha256": "8781bba5ef1077bfed1f56abac86f9d1994d7e3d9642c2226fa805f2aebdf25c",
+   "reference_payload_sha256": "3aa35b289647d8012d1fa76b342df25a44f928f2d1aa0a2676a394e86b98806b"
+  },
+  "roundT_pressureGate_roundT": {
+   "path": "/home/user/rs-data/decoded/roundT_pressureGate_roundT",
+   "frames": 268,
+   "meta_sha256": "4f039fb28c8148096caa14e80002b627c9d674691a1209a6dfb6b846d328e41f",
+   "reference_meta_sha256": "4f039fb28c8148096caa14e80002b627c9d674691a1209a6dfb6b846d328e41f",
+   "arrays_checked": 268,
+   "mismatches": [],
+   "linux_payload_sha256": "75ff86029a243d78fb439e04bf96c20f3e68c766ff0e8d4313f224a5780045f6",
+   "reference_payload_sha256": "dae901064b8af31ce80845ae345f1ebae365eccd9366919d8a582fb4b8c49920"
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "path": "/home/user/rs-data/decoded/roundT_squareT_pressureGate_squareT",
+   "frames": 545,
+   "meta_sha256": "ad930fe594c02da7e26260d66e53c19bd9d864abbfe8e6784e4f15f0aa4b7438",
+   "reference_meta_sha256": "ad930fe594c02da7e26260d66e53c19bd9d864abbfe8e6784e4f15f0aa4b7438",
+   "arrays_checked": 545,
+   "mismatches": [],
+   "linux_payload_sha256": "9c453a7e0c2e1fb77fb65b512b20633a7a03a141eb41773fb5d2dc031b4fff3c",
+   "reference_payload_sha256": "60b00337374519fa01adfd0bf2e3857f95e262d299e830e493dd4336fecb8b0c"
+  },
+  "squareT_platform_squareT_switch": {
+   "path": "/home/user/rs-data/decoded/squareT_platform_squareT_switch",
+   "frames": 877,
+   "meta_sha256": "b3996437b21104398ba19ae80c05f9183935174b76ec1960eb561756476aa361",
+   "reference_meta_sha256": "b3996437b21104398ba19ae80c05f9183935174b76ec1960eb561756476aa361",
+   "arrays_checked": 877,
+   "mismatches": [],
+   "linux_payload_sha256": "fef16fdb6bc6328b2d0c5dfaec6faa3af275c9331f41565468f65a7cb6bfb09a",
+   "reference_payload_sha256": "f1ca5c49f2d79503d644dbd5d246db06aa9cecc394173a802d02ad7c6f715b60"
+  },
+  "cloud_with_fake_obj": {
+   "path": "/home/user/rs-data/decoded/cloud_with_fake_obj",
+   "frames": 1510,
+   "meta_sha256": "479122b72837d7b220a984d114da6778cf2a2816f848f0dfa621d02074af0115",
+   "reference_meta_sha256": "479122b72837d7b220a984d114da6778cf2a2816f848f0dfa621d02074af0115",
+   "arrays_checked": 1510,
+   "mismatches": [
+    "f_00332.npz: canonical bytes differ from reference"
+   ],
+   "linux_payload_sha256": "5a47d3845beb90f00a21f0879decc5480d5997f097391e4403c0e846550a1e4f",
+   "reference_payload_sha256": "691782a242382ee89028339258b1ac27144847a2aeabba4d8e8f47a3ca3615f9"
+  }
+ },
+ "status": "DIFFERENT"
+}
