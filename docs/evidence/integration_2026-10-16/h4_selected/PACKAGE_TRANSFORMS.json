@@ -1,0 +1,38 @@
+[
+  {
+    "path": "h3_audit.json",
+    "before_sha256": "a3ac02c8d2e634d032fc3d5a728174e8c1b5655e61f061ac9b512ce7d6fa5b8c",
+    "after_sha256": "b5ff132b3754be88c55cc978375ad2117e4c3c2e407e4f368d83bcaca63924b3",
+    "operation": "CRLF to LF, reversible text normalization"
+  },
+  {
+    "path": "withdrawal_audit.json",
+    "before_sha256": "d27b4f317f5d6d4fb0c3507661177264a487414bc97beeadef69966f660ecfe6",
+    "after_sha256": "03df6936ff064a8228f8c7f4e95586a66e3f59867e8d8e0ef9e15dada9b9173a",
+    "operation": "CRLF to LF, reversible text normalization"
+  },
+  {
+    "path": "run-001/launch.json",
+    "before_sha256": "2019b3ca63a0d3a6c3f1134a9771f5b248acc1b342f24b7270a54ef17ec61fdb",
+    "after_sha256": "06c6842312d8b2206b13ba745d682a81a3e013b8c005e64eb44c51b87cc60c07",
+    "operation": "CRLF to LF, reversible text normalization"
+  },
+  {
+    "path": "run-002/launch.json",
+    "before_sha256": "e017bb9d759fc3dade386537f8106c3b7d088e865ee1aa95088d5a85064da256",
+    "after_sha256": "f48b2cc1f8fa7fd3e50c2bb99e9322c07b5b5758a29b7e494e867e25c46da002",
+    "operation": "CRLF to LF, reversible text normalization"
+  },
+  {
+    "path": "run-003/launch.json",
+    "before_sha256": "d83e2c01e21e468fd9eff55c35709ad56803be0de2fe0d3fa2fda7bc47e5ce06",
+    "after_sha256": "dc03e69274caefd08d830a223f437e3c5da5958d623337e4621f2c54eb43b993",
+    "operation": "CRLF to LF, reversible text normalization"
+  },
+  {
+    "path": "run-004/launch.json",
+    "before_sha256": "a836e0649726d0d2f3236f176eabcb812a11ecb0dc575562bb93587e39e6e97f",
+    "after_sha256": "e6ddd912d3e9f3b3b6f78bbf588fdd9805464b277b08e33361365ea37f343b28",
+    "operation": "CRLF to LF, reversible text normalization"
+  }
+]

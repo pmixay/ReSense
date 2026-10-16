@@ -1,0 +1,29 @@
+{
+  "paired_inputs": 36,
+  "sealed_accepted": 0,
+  "selected_accepted": 16,
+  "labelled_support_only": true,
+  "low_duplicate_controls": [
+    {
+      "reason": "column",
+      "independent_low_preserved": true
+    },
+    {
+      "reason": "beyond_axis",
+      "independent_low_preserved": true
+    },
+    {
+      "reason": "floating",
+      "independent_low_preserved": true
+    },
+    {
+      "reason": "doubt",
+      "independent_low_preserved": true
+    },
+    {
+      "reason": "",
+      "independent_low_preserved": false
+    }
+  ],
+  "passed": true
+}

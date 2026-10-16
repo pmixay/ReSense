@@ -1,0 +1,62 @@
+{
+  "mode": "selected",
+  "imported": "/work/selected/resense/__init__.py",
+  "numpy": "1.26.4",
+  "native": "native (_resense_native.so)",
+  "runtime": {
+    "preserved_defaults": 39,
+    "added_defaults": {
+      "decision_policy": "v1",
+      "caution_distance_m": 80.0,
+      "caution_compact_max_size_m": 3.0
+    },
+    "identical_methods": [
+      "_account_frame",
+      "_stamp",
+      "as_cloud",
+      "begin_freshness",
+      "catchup_plan",
+      "check_continuity",
+      "check_socket_buffers",
+      "ego_speed",
+      "health_msg",
+      "input_qos",
+      "input_silent",
+      "make_cloud",
+      "make_header",
+      "node_stats",
+      "on_cloud",
+      "on_discover",
+      "on_match_qos",
+      "on_odom",
+      "on_pending",
+      "on_processing_error",
+      "on_speed",
+      "on_stats",
+      "on_watchdog",
+      "process_cloud",
+      "process_next",
+      "prune",
+      "publisher_reliability",
+      "remember_arrival",
+      "send_static_tf",
+      "socket_buffer_warning",
+      "start_new_input",
+      "subscribe",
+      "subscribed",
+      "synthetic_cloud",
+      "take_waiting",
+      "track_catchup",
+      "warm_up"
+    ],
+    "changed_methods": [
+      "__init__",
+      "decision",
+      "make_markers",
+      "publish",
+      "publish_fault",
+      "result_freshness"
+    ]
+  },
+  "success": true
+}

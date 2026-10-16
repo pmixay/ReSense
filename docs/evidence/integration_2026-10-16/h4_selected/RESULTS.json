@@ -1,0 +1,49 @@
+{
+  "reviewed_sha": "c9aea87cb5322092070158cd8987115ee44833c9",
+  "baseline_sha": "707ea9cda051369326fb9407c42488c1033dad76",
+  "verdict": "ACCEPTED revised shipping difference; no supported NEW medium-or-higher finding",
+  "inherited_high_8_1": "OPEN: tall in-envelope pole remains advisory; original H4 safety BLOCKED retained",
+  "experimental_H1": "withdrawn from defaults; enabled-feature acceptance remains rejected",
+  "new_focused_units": 306,
+  "paired_tracker_sequences": 64,
+  "paired_tracker_updates_per_source": 1344,
+  "paired_components": 6,
+  "direct_h2_boundaries": 36,
+  "residual_controls": 6,
+  "axis_cases": 20,
+  "health_cases": 216,
+  "full_detector_frames": 16,
+  "unchanged_node_methods": 37,
+  "h2_route": {
+    "paired_inputs": 36,
+    "sealed_accepted": 0,
+    "selected_accepted": 16,
+    "labelled_support_only": true,
+    "low_duplicate_controls": [
+      {
+        "reason": "column",
+        "independent_low_preserved": true
+      },
+      {
+        "reason": "beyond_axis",
+        "independent_low_preserved": true
+      },
+      {
+        "reason": "floating",
+        "independent_low_preserved": true
+      },
+      {
+        "reason": "doubt",
+        "independent_low_preserved": true
+      },
+      {
+        "reason": "",
+        "independent_low_preserved": false
+      }
+    ],
+    "passed": true
+  },
+  "h3_completed_before_verdict": true,
+  "h3_recount": "h3_audit.json",
+  "withdrawal_recount": "withdrawal_audit.json"
+}

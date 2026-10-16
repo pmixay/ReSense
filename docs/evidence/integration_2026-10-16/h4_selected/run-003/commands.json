@@ -1,0 +1,92 @@
+[
+  {
+    "argv": [
+      "python3",
+      "/review/probes.py",
+      "selected",
+      "/review/run-003/runtime.json",
+      "--runtime-only"
+    ],
+    "cwd": "/work/selected",
+    "returncode": 0,
+    "elapsed_s": 1.1150946617126465,
+    "log": "runtime.txt"
+  },
+  {
+    "argv": [
+      "python3",
+      "-m",
+      "pytest",
+      "-q",
+      "-rs",
+      "tests/test_node.py",
+      "tests/test_decision_policy.py",
+      "tests/test_rescore_decisions.py",
+      "tests/test_health_histogram.py",
+      "tests/test_native.py",
+      "tests/test_structure_cut.py",
+      "tests/test_column_shipping.py",
+      "tests/test_wall_drift.py",
+      "tests/test_explained_run.py",
+      "--junitxml=/review/run-003/pytest.xml"
+    ],
+    "cwd": "/work/selected",
+    "returncode": 0,
+    "elapsed_s": 38.120466232299805,
+    "log": "focused-units.txt"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "safe.directory=/source.git",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      "-q",
+      "/source.git",
+      "/work/sealed"
+    ],
+    "cwd": "/work",
+    "returncode": 0,
+    "elapsed_s": 0.3331425189971924,
+    "log": "sealed-clone.txt"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.autocrlf=false",
+      "checkout",
+      "--detach",
+      "-q",
+      "707ea9cda051369326fb9407c42488c1033dad76"
+    ],
+    "cwd": "/work/sealed",
+    "returncode": 0,
+    "elapsed_s": 9.364214897155762,
+    "log": "sealed-checkout.txt"
+  },
+  {
+    "argv": [
+      "bash",
+      "scripts/build_native.sh"
+    ],
+    "cwd": "/work/sealed",
+    "returncode": 0,
+    "elapsed_s": 2.3321471214294434,
+    "log": "sealed-build.txt"
+  },
+  {
+    "argv": [
+      "python3",
+      "/review/probes.py",
+      "sealed",
+      "/review/run-003/sealed-probes.json"
+    ],
+    "cwd": "/work/sealed",
+    "returncode": 0,
+    "elapsed_s": 0.9734475612640381,
+    "log": "sealed-probes.txt"
+  }
+]

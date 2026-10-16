@@ -1,0 +1,107 @@
+{
+  "unspared_tracker_identical": true,
+  "tracker_sequences": 64,
+  "tracker_frames": 1344,
+  "gt_components_identical": true,
+  "gt_components": [
+    {
+      "top": 1.7,
+      "side": -1,
+      "input_sha256": "59a613d11c3a72434266938f9417261e273e82fce004b2c591757eae42701900",
+      "n": 52,
+      "n_gauge": 52,
+      "reason": "",
+      "zone": "gauge",
+      "stop_frames": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "truth": "in-envelope supplied-coordinate face; top>2.95 uses known corridor cut"
+    },
+    {
+      "top": 1.7,
+      "side": 1,
+      "input_sha256": "e889a0282c906d880feeb13c2a1f6545a2a005a41df2cf4321fbb38c7b9ddd26",
+      "n": 52,
+      "n_gauge": 52,
+      "reason": "",
+      "zone": "gauge",
+      "stop_frames": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "truth": "in-envelope supplied-coordinate face; top>2.95 uses known corridor cut"
+    },
+    {
+      "top": 2.72,
+      "side": -1,
+      "input_sha256": "80e5fe14a8f3c04bd13b6964eab69219dfe0c95726d81e83c38d7b4c3ec2587a",
+      "n": 80,
+      "n_gauge": 80,
+      "reason": "column",
+      "zone": "warning",
+      "stop_frames": [],
+      "truth": "in-envelope supplied-coordinate face; top>2.95 uses known corridor cut"
+    },
+    {
+      "top": 2.72,
+      "side": 1,
+      "input_sha256": "25cc6b17d51cd8e8696970849aced3f3489447da26b53d9aeab771daecb71034",
+      "n": 80,
+      "n_gauge": 80,
+      "reason": "column",
+      "zone": "warning",
+      "stop_frames": [],
+      "truth": "in-envelope supplied-coordinate face; top>2.95 uses known corridor cut"
+    },
+    {
+      "top": 3.22,
+      "side": -1,
+      "input_sha256": "f1f793ffe60c2b3b38c8d89d70a7bb2618be7bd02aa59fdcfc68646ed7614cde",
+      "n": 88,
+      "n_gauge": 88,
+      "reason": "column",
+      "zone": "warning",
+      "stop_frames": [],
+      "truth": "in-envelope supplied-coordinate face; top>2.95 uses known corridor cut"
+    },
+    {
+      "top": 3.22,
+      "side": 1,
+      "input_sha256": "f322e92d332cd9375e3596914e2e7d74a97c74a0fd0e5027ce25fbbada6f199c",
+      "n": 88,
+      "n_gauge": 88,
+      "reason": "column",
+      "zone": "warning",
+      "stop_frames": [],
+      "truth": "in-envelope supplied-coordinate face; top>2.95 uses known corridor cut"
+    }
+  ],
+  "completed": true
+}

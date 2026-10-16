@@ -1,0 +1,56 @@
+[
+  {
+    "argv": [
+      "git",
+      "-c",
+      "safe.directory=/source.git",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      "-q",
+      "/source.git",
+      "/work/selected"
+    ],
+    "cwd": "/work",
+    "returncode": 0,
+    "elapsed_s": 0.8039164543151855,
+    "log": "selected-clone.txt"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.autocrlf=false",
+      "checkout",
+      "--detach",
+      "-q",
+      "c9aea87cb5322092070158cd8987115ee44833c9"
+    ],
+    "cwd": "/work/selected",
+    "returncode": 0,
+    "elapsed_s": 48.81509780883789,
+    "log": "selected-checkout.txt"
+  },
+  {
+    "argv": [
+      "bash",
+      "scripts/build_native.sh"
+    ],
+    "cwd": "/work/selected",
+    "returncode": 0,
+    "elapsed_s": 3.1037116050720215,
+    "log": "selected-build.txt"
+  },
+  {
+    "argv": [
+      "python3",
+      "/review/probes.py",
+      "selected",
+      "/review/run-001/selected-probes.json"
+    ],
+    "cwd": "/work/selected",
+    "returncode": 1,
+    "elapsed_s": 4.352815628051758,
+    "log": "selected-probes.txt"
+  }
+]
