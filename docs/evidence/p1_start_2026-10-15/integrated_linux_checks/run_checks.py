@@ -10,6 +10,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tarfile
@@ -131,11 +132,20 @@ def main():
                 paths.update(('pyproject.toml', 'setup.py', 'README.md'))
                 for line in copies:
                     paths.update(line.split()[1:-1])
-                manifest = {'source_commit': commit, 'files': {
-                    name: hashlib.sha256((context / name).read_bytes()).hexdigest() for name in sorted(paths)}}
+                hashes, transforms = {}, {}
+                for name in sorted(paths):
+                    raw = (context / name).read_bytes()
+                    data = re.sub(rb'\r(?=\n|$)', b'', raw) if name.startswith('scripts/') and name.endswith('.sh') else raw
+                    hashes[name] = hashlib.sha256(data).hexdigest()
+                    if data != raw:
+                        transforms[name] = {'operation': 'declared Dockerfile sed removes line-final CR',
+                                            'source_sha256': hashlib.sha256(raw).hexdigest(),
+                                            'image_sha256': hashes[name]}
+                manifest = {'source_commit': commit, 'files': hashes, 'transforms': transforms}
                 (out / 'source_manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
                 report['incremental_dockerfile_sha256'] = hashlib.sha256(generated.encode('utf-8')).hexdigest()
                 report['source_manifest_files'] = len(paths)
+                report['declared_shell_normalizations'] = len(transforms)
                 changed = subprocess.check_output(['git', 'diff', '--name-only', base_revision, commit], cwd=ROOT, text=True)
                 python_paths = [name for name in changed.splitlines() if name.endswith('.py') and (context / name).is_file()]
                 lint = run('ruff-focused', ['ruff', 'check', *python_paths], cwd=context, check=False, timeout=30)

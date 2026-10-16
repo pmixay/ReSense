@@ -49,6 +49,10 @@ def main():
         expected = json.loads(args.expected_source.read_text(encoding='utf-8'))
         actual = {name: hashlib.sha256((Path('/opt/resense') / name).read_bytes()).hexdigest()
                   for name in expected['files']}
+        if actual != expected['files']:
+            write(args.out / 'source_mismatches.json', {
+                name: {'expected': expected['files'][name], 'actual': actual[name]}
+                for name in actual if actual[name] != expected['files'][name]})
         assert actual == expected['files'], 'image source bytes differ from the frozen archive'
         for directory in ('tests', 'scripts'):
             found = {p.relative_to('/opt/resense').as_posix()
@@ -57,6 +61,7 @@ def main():
             wanted = {name for name in expected['files'] if name.startswith(directory + '/')}
             assert found == wanted, f'inherited or missing {directory} files: {found ^ wanted}'
         verified = {'commit': expected['source_commit'], 'files': len(actual),
+                    'declared_shell_normalizations': len(expected.get('transforms', {})),
                     'manifest_sha256': hashlib.sha256(args.expected_source.read_bytes()).hexdigest()}
     node_origin = Path(importlib.util.find_spec('resense_ros.detector_node').origin)
     assert node_origin.resolve() == Path('/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py')
