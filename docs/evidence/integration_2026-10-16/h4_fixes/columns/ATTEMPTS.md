@@ -54,3 +54,55 @@ Further results will be appended, not substituted for these attempts.
   (3 cm measurement clearance remains). Outside that band and for followed
   tall tops the full configured margin remains. No frame IDs, range exception,
   signature bar or target waiver is introduced.
+
+* `attempt-05-probes`: REJECTED, A-axis 137/177, C-person 82.77 / 55. Expanding
+  positive sight also includes later roof returns; checking every later ring
+  defeats an already complete positive short-top ring. Attempt 06 accepts a
+  complete positive short ring immediately, retaining stricter tall evidence.
+* `attempt-06-probes` / `attempt-06-dark`: REJECTED, A-axis 147/177; dark rides
+  22 / 2, i.e. 8 / 0 excess, zero removed sealed STOPs. All eight residual
+  detection centers match sealed warnings exactly. The original head-ring span
+  can be narrower than the body; attempt 07 requires the full observed body
+  azimuth footprint (union with the followed top if it extends beyond it).
+* `attempt-07-probes` / `attempt-07-dark`: REJECTED, still A-axis 147/177 and
+  dark 22 / 2 (8 / 0 excess). Full-footprint one-ring sight is insufficient to
+  remove this artificial observer sensitivity. Affected suite: 118 passed,
+  3 failed, no skips; unchanged assertions expose the unaccepted default and
+  changed dark-to-vault policy. No existing assertions are rewritten.
+* `attempt-08-probes` / `attempt-08-dark`: REJECTED despite zero dark excess:
+  require two complete positive footprint rings for short tops as well, while
+  allowing other unreturned short-top rings to remain ambiguous. Tall tops
+  retain the stronger every-ring requirement. Actual dark frame sets become
+  exactly sealed 14 / 2, no extra or removed STOP, but A-axis falls to 139/177.
+  The same-runtime parent control independently reproduces 157/177 and C-person
+  82.77 / 55. Published range-probe placements and matcher are unchanged.
+* `attempt-08-components`: independent full 1,576-scene / 144-component matrix,
+  with exact input identities verified against the sealed fixtures. Case 45 is
+  recovered (STOP 5..9,11..19); case 44 re-arms on 11 with the separately owned
+  tracker fix. No sealed matched STOP is lost in this matrix, but **208** prior
+  short-pole updates and **1,200** prior surface-component updates are lost.
+  Physical absorbing and beam-control losses are also retained explicitly.
+* `attempt-08-normal`: B/S dropout 0 / 51; plain rides 14 / 2. All detection and
+  warning descriptors are identical to sealed plain, including exact centers.
+  Other serialized differences are the inherited H3 wall-drift/clear-range
+  fields (`normal_diff_details.json`), not hidden or claimed byte-identical.
+* `attempt-08-tests`: 117 passed, 4 failed, no skips. All 19 new H4 witnesses
+  pass; native 28, structure 22 and synthetic 40 pass. In addition to unaccepted
+  policy/default assertions, the existing free-pole-under-beam positive fails.
+  The two-ring candidate is therefore unsuitable even beyond its P3 loss.
+* `parent-final-witness`: the final portable test file on unchanged runtime is
+  7 passed / 12 failed, no skips: the tall miss, nine absorption cases and both
+  inherited-mask cases remain visible. These failures are not xfailed/skipped.
+
+All runtime author changes are restored after retaining exact attempt-08 source
+as `rejected_attempt_08.patch`. No accepted column fix or default results from
+these iterations. Further author work / joint temporal-evidence design and review
+remain the parent's decision; no claim of a general impossibility is made.
+
+* `retained-08-reconstruction`: archived patch reconstructs exactly the measured
+  source/config/native identities and passes all 19 portable witnesses in a new
+  Linux source volume; it remains rejected on the measured acceptance losses.
+* `restored-dark`: new full paired replay on the restored integration runtime
+  reproduces 23 / 7 STOP frames, exactly 9 / 5 excess and no removed sealed STOPs;
+  all 14 excess detection centers match sealed warnings exactly. The current
+  runtime's residual is therefore measured rather than inferred from old reports.

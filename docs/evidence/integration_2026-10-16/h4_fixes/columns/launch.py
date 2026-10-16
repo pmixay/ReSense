@@ -13,7 +13,9 @@ ap.add_argument("run")
 ap.add_argument("task", choices=["tests", "components", "replay", "probes", "diagnose"])
 ap.add_argument("--mode", default="all")
 ap.add_argument("--parent", action="store_true")
+ap.add_argument("--rejected-08", action="store_true", help="reconstruct the exact retained rejected source in Linux")
 a = ap.parse_args()
+assert not (a.parent and a.rejected_08)
 assert TEMP.is_dir() and (ROOT / "resense").is_dir()
 out = TEMP / "resense-h4-columns-author-20261016"
 out.mkdir(exist_ok=True)
@@ -23,7 +25,11 @@ code = run / "author-code"
 code.mkdir()
 for p in P.glob("*.py"):
     (code / p.name).write_bytes(p.read_bytes().replace(b"\r\n", b"\n"))
+if a.rejected_08:
+    (code / "rejected.patch").write_bytes((P / "rejected_attempt_08.patch").read_bytes())
 head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+if a.rejected_08:
+    head = "f3074cfb445425c50d926ded235fe01a4c3029ea"
 name = "rs-h4-columns-" + a.run
 volume = name + "-source"
 subprocess.run(["docker", "volume", "create", volume], check=True, capture_output=True)
@@ -41,7 +47,8 @@ cmd = ["docker", "run", "--detach", "--name", name, "--network", "none", "--cpus
        "--mount", r"type=bind,source=C:\Users\alikh\AppData\Local\Temp\opencode\resense-p3-data\odometry,target=/data/odometry,readonly",
        "--mount", r"type=bind,source=C:\Users\alikh\AppData\Local\Temp\opencode\resense-integration-20261016-runs,target=/h3,readonly"]
 env = dict(PYTHONPATH="/source/repo", RESENSE_REPO="/source/repo", H4_OUT="/out/results",
-           AUTHOR_HEAD=head, AUTHOR_OVERLAY="0" if a.parent else "1", RESENSE_NATIVE="1",
+           AUTHOR_HEAD=head, AUTHOR_OVERLAY="0" if a.parent or a.rejected_08 else "1",
+           AUTHOR_PATCH08="1" if a.rejected_08 else "0", RESENSE_NATIVE="1",
            RESENSE_REQUIRE_SYNTHETIC="1", OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1",
            MKL_NUM_THREADS="1", NUMEXPR_NUM_THREADS="1", PYTHONHASHSEED="0", PYTHONDONTWRITEBYTECODE="1")
 for k, v in env.items():

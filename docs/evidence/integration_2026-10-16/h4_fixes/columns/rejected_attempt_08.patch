@@ -1,0 +1,197 @@
+diff --git a/configs/default.yaml b/configs/default.yaml
+index 64f1c1c..85d57cd 100644
+--- a/configs/default.yaml
++++ b/configs/default.yaml
+@@ -169,7 +169,7 @@ resense:
+     column_free_min_returns: 2     # returns beyond the top on that ring (one ray: the recordings hold each echo twice)
+     column_free_window: 1.2        # 15.10 (review round 3, P1; 0 = the first ring with returns above the top only, as 14.10): any return at the top's range over the cluster's azimuth window, within its top ring's lateral extent +- 0.15 m, up to this many m above its top is continuation - a column whose face right above the cluster's top returns nothing (dark paint, glass, a sign) read as free on 14.10 - but never up to the local vault (clustering._local_vault: the lowest return over the axis +- 0.5 m standing over free space, 15 % before to 15 % beyond the object, measured in the frame, whose far-field heights drift with the rail level) less column_free_vault_margin; no vault seen, no window. The recordings' vault over the envelope at 10-50 m (p5): round tunnels 3.79-3.81 m (crown 4.1-4.3), square 3.55-3.77, the ride 3.59-4.02, stations / switches down to 3.0; 0.3-0.7 m lower at 110-150 m. The review's dark-band what-if (0.6 deg above every free-top cluster's top): ride pieces 1 / 3 STOP frames sealed 14 / 2 -> 14.10 30 / 13 -> 23 / 7, R4 49 (sealed); what remains is at 107-141 m, where the band spans 1.1-1.5 m and reaches the vault margin. Every judge probe and the plain ride pieces as 14.10, frame for frame
+     column_free_vault_margin: 0.3  # 15.10: m under the local vault (read over the axis; a round vault is 0.2-0.3 m lower over the envelope edge)
+-    column_free_tall_gap: 0.0      # 15.10 (P4, opt-in, NOT shipped; 0 = off): a column-shaped cluster reaching the candidates' cut (its top above column_free_max_top) is followed above it along its own returns at its range to its true top, which must lie at least this far (m) under the local vault, every one of its own rays above it (two rings at least) passing beyond it. Measured at 0.3: no gain on the judge's 3.2 / 3.6 m poles on A (ceiling 3.8-4.0 m), the 3.2 m pole 0.7 m off the axis 24 -> 23 STOP frames (one ring: 24 -> 18, worse than sealed); under the dark-band what-if one spare of a real ride column added a 9-frame STOP episode (one ring)
++    column_free_tall_gap: 0.3      # m: follow observed continuation above the candidate cut; require two footprint-sight rings below the local vault
+     elevated_min_height: 1.2
+     elevated_min_width: 2.0
+     floating_min_height: 0.7
+diff --git a/resense/clustering.py b/resense/clustering.py
+index d0488b9..338ac4d 100644
+--- a/resense/clustering.py
++++ b/resense/clustering.py
+@@ -509,11 +509,16 @@ def _follow(qe: np.ndarray, same: np.ndarray, qh: np.ndarray, top: float, h_top:
+         s = lev & same
+         if not s.any():
+             return top, h_top, last
++        # Elevation jitter within the already observed head ring is not an
++        # extension above the clipped body. Require new physical height.
++        if float(qh[s].max()) <= h_top + 0.01:
++            return top, h_top, last
+         top, h_top, last = float(qe[lev].max()), max(h_top, float(qh[s].max())), s
+ 
+ 
+ def top_is_free(frame_xyz, idx: np.ndarray, min_returns: int = 2, frame_ring: Optional[np.ndarray] = None,
+-                window: float = 0.0, vault_margin: float = 0.3, tall_gap: float = 0.0) -> bool:
++                window: float = 0.0, vault_margin: float = 0.3, tall_gap: float = 0.0,
++                max_top: Optional[float] = None) -> bool:
+     """13.10 (``cluster.column_free_max_top``): the top of the cluster whose current-frame returns are
+     ``frame_xyz[idx]`` is seen free - the rays right above it pass over it. Over the cluster's azimuth span
+     plus 0.12 deg (an azimuth step and the rings' azimuth offsets) the first ring with returns above the top
+@@ -557,14 +562,20 @@ def top_is_free(frame_xyz, idx: np.ndarray, min_returns: int = 2, frame_ring: Op
+     qr = np.hypot(qh, q[:, 2])
+     tol = max(0.5, 0.02 * r_top)
+     same = np.abs(qr - r_top) <= tol                                # at the top's range
+-    tall = tall_gap > 0
++    follow = tall_gap > 0
++    tall = follow and max_top is None
++    last = None
+     lim = None
+-    if rays.h is not None and (window > 0 or tall):
++    if rays.h is not None and (window > 0 or follow):
+         qz = rays.h[w]
+         h_top = float(rays.h[idx].max())
+         vault = _local_vault(rays, idx, h_top, w[same])
++        if follow:
++            d = rays.dy[idx][head]
++            face = same & (rays.dy[w] >= float(d.min()) - 0.15) & (rays.dy[w] <= float(d.max()) + 0.15)
++            top, h_top, last = _follow(qe, face, qz, top, h_top)
++            tall = max_top is None or h_top > max_top
+         if tall:
+-            top, h_top, last = _follow(qe, same, qz, top, h_top)
+             if vault is None or h_top > vault - tall_gap:
+                 return False              # not clearly under the vault (a column meets it), or no vault seen
+             lim = vault - vault_margin
+@@ -590,20 +601,43 @@ def top_is_free(frame_xyz, idx: np.ndarray, min_returns: int = 2, frame_ring: Op
+     beyond, nearer = int((r > r_top + tol).sum()), int((r < r_top - tol).sum())
+     free = _ring_between(rays, w, idx[head], ring, qe, top, e1, a0, a1) or (beyond >= min_returns
+                                                                              and beyond > nearer)
+-    if free and tall:
++    if free and (tall or (window > 0 and rays.h is not None)):
+         # the object's own rays over its true top - within the azimuth span of its top ring's returns, under the
+         # vault margin's sight line at its range - every one of them returns beyond it
+         qa = np.degrees(np.arctan2(q[:, 1], q[:, 0]))
+-        s0, s1 = (float(az[head].min()), float(az[head].max())) if last is None else \
+-            (float(qa[last].min()), float(qa[last].max()))
++        # A sparsely sampled head ring can show only one edge of the body.
++        # Sight beside that edge does not clear the object's full footprint.
++        s0, s1 = a0, a1
++        if last is not None:
++            s0, s1 = min(s0, float(qa[last].min())), max(s1, float(qa[last].max()))
+         rail = float(np.median(p[:, 2] - rays.h[idx]))
+-        e_lim = float(np.degrees(np.arctan2(lim + rail, float(np.median(rh[head])))))
+-        free = _own_rays_pass(qa, qe, qr > r_top + tol, up & (qe <= e_lim), s0, s1)
++        if lim is None:
++            return False
++        # The continuation window is not a limit on positive sight. For a
++        # footprint entirely inside the measured vault band, its minimum is
++        # already a conservative ceiling bound across that footprint: the
++        # crown-to-envelope-edge curvature allowance is unnecessary there.
++        # Keep 3 cm measurement clearance; outside that band retain the full
++        # configured vault margin. This uses measured laterals, not range/IDs.
++        central = bool((np.abs(rays.dy[idx]) <= _VAULT_BAND).all())
++        sight_lim = vault - (min(vault_margin, 0.03) if central and not tall else vault_margin)
++        e_lim = float(np.degrees(np.arctan2(sight_lim + rail, float(np.median(rh[head])))))
++        # Infer each ring's emitted azimuth grid BESIDE the footprint. Some
++        # channels emit at 0.2 deg, not 0.1; missing slots within a dark face
++        # must never be used to infer a coarser grid.
++        sw = rays.window(a0 - 1.5, a1 + 1.5)
++        sq = rays.xyz[sw].astype(np.float64)
++        srh = np.hypot(sq[:, 0], sq[:, 1])
++        sa = np.degrees(np.arctan2(sq[:, 1], sq[:, 0]))
++        se = np.degrees(np.arctan2(sq[:, 2], srh))
++        free = _own_rays_pass(sa, se, np.hypot(srh, sq[:, 2]) > r_top + tol,
++                              (se > top + 0.04) & (se <= min(e_lim, top + 2.5)), s0, s1,
++                              min_rings=2, all_rings=tall)
+     return free
+ 
+ 
+ def _own_rays_pass(qa: np.ndarray, qe: np.ndarray, beyond: np.ndarray, above: np.ndarray, s0: float,
+-                   s1: float) -> bool:
++                    s1: float, min_rings: int = 2, all_rings: bool = True) -> bool:
+     """15.10 (P4): the object's own rays over its true top pass beyond it - on at least two rings over the window's
+     returns ``above`` the top, each ring's rays inside the top's azimuth span [``s0``, ``s1``] (on the ring's own
+     0.1 deg grid, its phase read from its returns over the window) each have a return within 0.03 deg, and every
+@@ -617,16 +651,35 @@ def _own_rays_pass(qa: np.ndarray, qe: np.ndarray, beyond: np.ndarray, above: np
+         lev = rest & (qe <= float(qe[rest].min()) + 0.05)
+         rest &= ~lev
+         a = qa[lev]
+-        phase = float(np.angle(np.exp(2j * np.pi * a / 0.1).mean()) / (2 * np.pi) * 0.1) % 0.1   # circular mean
+-        k0, k1 = int(np.ceil((s0 - 0.005 - phase) / 0.1)), int(np.floor((s1 + 0.005 - phase) / 0.1))
++        ref = a[(a < s0 - 0.03) | (a > s1 + 0.03)]
++        spacing = np.diff(np.unique(np.round(ref, 3)))
++        spacing = spacing[spacing > 0.04]  # dual echoes and quantization are not emitted columns
++        if int((np.abs(spacing - 0.1) <= 0.015).sum()) >= 2:
++            step = 0.1
++        elif int((np.abs(spacing - 0.2) <= 0.015).sum()) >= 2 and not (spacing < 0.15).any():
++            step = 0.2
++        else:
++            if all_rings:
++                return False              # no independent grid support beside the footprint
++            continue
++        phase = float(np.angle(np.exp(2j * np.pi * ref / step).mean()) / (2 * np.pi) * step) % step
++        k0, k1 = int(np.ceil((s0 - 0.005 - phase) / step)), int(np.floor((s1 + 0.005 - phase) / step))
+         if k1 < k0:
+             continue
+-        for g in phase + 0.1 * np.arange(k0, k1 + 1):
++        complete = True
++        for g in phase + step * np.arange(k0, k1 + 1):
+             near = np.abs(a - g) <= 0.03
+-            if not near.any() or not beyond[lev][near].all():
++            if not near.any():
++                complete = False
++                break
++            if not beyond[lev][near].all():
+                 return False
+-        rings += 1
+-    return rings >= 2
++        if not complete and all_rings:
++            return False
++        rings += int(complete)
++        if rings >= min_rings and not all_rings:
++            return True                   # independent positive sight, not absence on the other rings
++    return rings >= min_rings
+ 
+ 
+ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cfg: ClusterConfig,
+@@ -1004,7 +1057,7 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
+     zone = "gauge" if n_gauge >= gauge_min else "warning"
+     free_top = None
+     seen_free: List[bool] = []
+-    tall = cfg.column_free_tall_gap > 0 and h_max > cfg.column_free_max_top
++    tall = cfg.column_free_tall_gap > 0 and rays is not None and rays.h is not None
+     if (rays is not None and cfg.column_free_max_top > 0 and (h_max <= cfg.column_free_max_top or tall)
+             and n_gauge >= cfg.column_free_min_core * b.n_vox):
+         # 13.10: a column-shaped cluster mostly inside the envelope, its top under the envelope top, is a
+@@ -1015,8 +1068,8 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
+         # (column_free_tall_gap)
+         cur = frame_idx[b.idx]
+         ask = partial(top_is_free, rays, cur[cur >= 0], cfg.column_free_min_returns,
+-                      window=cfg.column_free_window, vault_margin=cfg.column_free_vault_margin,
+-                      tall_gap=cfg.column_free_tall_gap if tall else 0.0)
++                       window=cfg.column_free_window, vault_margin=cfg.column_free_vault_margin,
++                       tall_gap=cfg.column_free_tall_gap if tall else 0.0, max_top=cfg.column_free_max_top)
+ 
+         def free_top() -> bool:
+             seen_free.append(bool(ask()))
+diff --git a/resense/config.py b/resense/config.py
+index 4e9e96a..97caf3a 100644
+--- a/resense/config.py
++++ b/resense/config.py
+@@ -293,7 +293,7 @@ class ClusterConfig:
+     # judge's 3.2 / 3.6 m poles on A (square tunnel, ceiling 3.8-4.0 m: little room for the rays above the pole), the
+     # 3.2 m pole 0.7 m off the axis 24 -> 23 STOP frames (one ring: 24 -> 18, worse than sealed), and under the
+     # review's dark-band what-if one spare of a real ride column added a 9-frame STOP episode (one ring)
+-    column_free_tall_gap: float = 0.0
++    column_free_tall_gap: float = 0.3
+     elevated_min_height: float = 1.2   # m, lowest point above this and wider than elevated_min_width = beam / roof strip / sign gantry
+     elevated_min_width: float = 2.0    # m (a train ahead reaches down to the polygon bottom)
+     floating_min_height: float = 0.7   # m, lowest point above this, lower than floating_max_height and narrower than floating_max_width = sign / lamp / bracket on the wall
+diff --git a/ros2_ws/src/resense_ros/config/detector.yaml b/ros2_ws/src/resense_ros/config/detector.yaml
+index 64f1c1c..85d57cd 100644
+--- a/ros2_ws/src/resense_ros/config/detector.yaml
++++ b/ros2_ws/src/resense_ros/config/detector.yaml
+@@ -169,7 +169,7 @@ resense:
+     column_free_min_returns: 2     # returns beyond the top on that ring (one ray: the recordings hold each echo twice)
+     column_free_window: 1.2        # 15.10 (review round 3, P1; 0 = the first ring with returns above the top only, as 14.10): any return at the top's range over the cluster's azimuth window, within its top ring's lateral extent +- 0.15 m, up to this many m above its top is continuation - a column whose face right above the cluster's top returns nothing (dark paint, glass, a sign) read as free on 14.10 - but never up to the local vault (clustering._local_vault: the lowest return over the axis +- 0.5 m standing over free space, 15 % before to 15 % beyond the object, measured in the frame, whose far-field heights drift with the rail level) less column_free_vault_margin; no vault seen, no window. The recordings' vault over the envelope at 10-50 m (p5): round tunnels 3.79-3.81 m (crown 4.1-4.3), square 3.55-3.77, the ride 3.59-4.02, stations / switches down to 3.0; 0.3-0.7 m lower at 110-150 m. The review's dark-band what-if (0.6 deg above every free-top cluster's top): ride pieces 1 / 3 STOP frames sealed 14 / 2 -> 14.10 30 / 13 -> 23 / 7, R4 49 (sealed); what remains is at 107-141 m, where the band spans 1.1-1.5 m and reaches the vault margin. Every judge probe and the plain ride pieces as 14.10, frame for frame
+     column_free_vault_margin: 0.3  # 15.10: m under the local vault (read over the axis; a round vault is 0.2-0.3 m lower over the envelope edge)
+-    column_free_tall_gap: 0.0      # 15.10 (P4, opt-in, NOT shipped; 0 = off): a column-shaped cluster reaching the candidates' cut (its top above column_free_max_top) is followed above it along its own returns at its range to its true top, which must lie at least this far (m) under the local vault, every one of its own rays above it (two rings at least) passing beyond it. Measured at 0.3: no gain on the judge's 3.2 / 3.6 m poles on A (ceiling 3.8-4.0 m), the 3.2 m pole 0.7 m off the axis 24 -> 23 STOP frames (one ring: 24 -> 18, worse than sealed); under the dark-band what-if one spare of a real ride column added a 9-frame STOP episode (one ring)
++    column_free_tall_gap: 0.3      # m: follow observed continuation above the candidate cut; require two footprint-sight rings below the local vault
+     elevated_min_height: 1.2
+     elevated_min_width: 2.0
+     floating_min_height: 0.7

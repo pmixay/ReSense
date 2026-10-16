@@ -1,0 +1,133 @@
+{
+  "groups": {
+    "tests.test_h4_column_evidence": {
+      "passed": 6,
+      "failed": 11,
+      "skipped": 0,
+      "errors": 0
+    }
+  },
+  "failures": [
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_case45_follows_actual_returns_above_the_candidate_cut",
+        "time": "0.088"
+      },
+      "message": {
+        "message": "AssertionError: assert ('warning', 'column', False) == ('gauge', '', True)\n  \n  At index 0 diff: 'warning' != 'gauge'\n  Use -v to get more diff"
+      },
+      "text": "def test_h4_case45_follows_actual_returns_above_the_candidate_cut():\n        xyz, ring, labels = physical_column()\n        assert hashlib.sha256(xyz.tobytes()).hexdigest() == \"680878ed4f0b233cec517f999ca8648b1193522c929b7ce0f9df9fad7d545a20\"\n        c = object_cluster(xyz, ring, labels)\n        assert (int((labels == 1).sum()), c.n_gauge, c.ring_count) == (84, 80, 20)\n        assert 2.93 < c.height_max < 2.95  # observed cut is NOT the physical top (3.22 m)\n>       assert (c.zone, c.reason, c.spared) == (\"gauge\", \"\", True)\nE       AssertionError: assert ('warning', 'column', False) == ('gauge', '', True)\nE         \nE         At index 0 diff: 'warning' != 'gauge'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:81: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[highest-67.0]",
+        "time": "0.046"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', True) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 67.0, ring_mode = 'highest'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', True) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[highest-109.0]",
+        "time": "0.033"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 109.0, ring_mode = 'highest'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[highest-137.0]",
+        "time": "0.036"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 137.0, ring_mode = 'highest'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[reverse-67.0]",
+        "time": "0.034"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', True) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 67.0, ring_mode = 'reverse'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', True) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[reverse-109.0]",
+        "time": "0.034"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 109.0, ring_mode = 'reverse'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[reverse-137.0]",
+        "time": "0.030"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 137.0, ring_mode = 'reverse'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[absent-67.0]",
+        "time": "0.031"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', True) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 67.0, ring_mode = 'absent'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', True) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[absent-109.0]",
+        "time": "0.035"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 109.0, ring_mode = 'absent'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_absent_face_is_not_free_sight[absent-137.0]",
+        "time": "0.037"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "distance = 137.0, ring_mode = 'absent'\n\n    @pytest.mark.parametrize(\"distance\", [67.0, 109.0, 137.0])\n    @pytest.mark.parametrize(\"ring_mode\", [\"highest\", \"reverse\", \"absent\"])\n    def test_h4_absent_face_is_not_free_sight(distance, ring_mode):\n        xyz, ring, labels = physical_column(distance=distance, top=4.12, absorbing=(2.54, 4.12))\n        ring = None if ring_mode == \"absent\" else 127 - ring if ring_mode == \"reverse\" else ring\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', False) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:96: AssertionError"
+    },
+    {
+      "test": {
+        "classname": "tests.test_h4_column_evidence",
+        "name": "test_h4_opaque_resumed_face_and_occluding_beam_are_not_free[2.72-None-True]",
+        "time": "0.044"
+      },
+      "message": {
+        "message": "AssertionError: assert ('gauge', '', True) == ('warning', 'column', False)\n  \n  At index 0 diff: 'gauge' != 'warning'\n  Use -v to get more diff"
+      },
+      "text": "top = 2.72, absorbing = None, beam = True\n\n    @pytest.mark.parametrize(\"top,absorbing,beam\", [(4.12, None, False), (4.12, (2.54, 3.18), False),\n                                                    (2.72, None, True)])\n    def test_h4_opaque_resumed_face_and_occluding_beam_are_not_free(top, absorbing, beam):\n        xyz, ring, labels = physical_column(top=top, absorbing=absorbing, beam=beam)\n        c = object_cluster(xyz, ring, labels)\n>       assert (c.zone, c.reason, c.spared) == (\"warning\", \"column\", False)\nE       AssertionError: assert ('gauge', '', True) == ('warning', 'column', False)\nE         \nE         At index 0 diff: 'gauge' != 'warning'\nE         Use -v to get more diff\n\ntests/test_h4_column_evidence.py:104: AssertionError"
+    }
+  ]
+}

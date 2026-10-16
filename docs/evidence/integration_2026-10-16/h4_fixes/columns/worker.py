@@ -54,6 +54,8 @@ def identity():
                 files_differing_from_commit=differing,
                 adapter_files={p.name: sha(p.read_bytes()) for p in Path("/author").glob("*.py")},
                 environment={k: v for k, v in os.environ.items() if k.endswith("NUM_THREADS") or k.startswith("AUTHOR_")})
+    if os.environ.get("AUTHOR_PATCH08") == "1":
+        assert data["source_sha256"] == "e9eb1bf6443d5cf8206904c32c6f03cd1f2bd4f726741e8e88292a8bb44475d8"
     (OUT / "results/identity.json").write_text(json.dumps(data, indent=2) + "\n")
     return cfg
 
@@ -67,6 +69,8 @@ def main():
     if os.environ["AUTHOR_OVERLAY"] == "1":
         for p in OWNED:
             (ROOT / p).write_bytes((Path("/integration") / p).read_bytes().replace(b"\r\n", b"\n"))
+    if os.environ.get("AUTHOR_PATCH08") == "1" and "--prepared" not in sys.argv:
+        command(["git", "apply", "/author/rejected.patch"], cwd=ROOT)
     (OUT / "source.patch").write_bytes(subprocess.check_output(["git", "diff", "--", *OWNED], cwd=ROOT))
     ref = Path("/reference/candidate-f8c088dc4f32-20261016T073403Z-4b64ec55/resense")
     for p in ref.glob("*.so"):

@@ -1,0 +1,12 @@
+{
+  "ride_1": {
+    "frames": 1409,
+    "lost_exact_detection_centers": [],
+    "new_exact_detection_centers": []
+  },
+  "ride_3": {
+    "frames": 1409,
+    "lost_exact_detection_centers": [],
+    "new_exact_detection_centers": []
+  }
+}

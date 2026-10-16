@@ -1,0 +1,6112 @@
+{
+  "author": true,
+  "run": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016\\restored-dark",
+  "reference": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-h4-safety-20261016\\run-001\\replay-sealed-all",
+  "pieces": {
+    "ride_1": {
+      "frames": 1409,
+      "sealed_stop": 14,
+      "candidate_stop": 23,
+      "extra_stop_frames": [
+        "new_data_27_0048",
+        "new_data_37_0049",
+        "new_data_37_0050",
+        "new_data_38_0000",
+        "new_data_38_0001",
+        "new_data_38_0002",
+        "new_data_38_0003",
+        "new_data_38_0004",
+        "new_data_38_0005"
+      ],
+      "lost_stop_frames": [],
+      "witnesses": [
+        {
+          "frame": "new_data_27_0048",
+          "pairs": [
+            {
+              "detection": {
+                "id": 2,
+                "zone": "gauge",
+                "distance": 121.9,
+                "lateral": 1.09,
+                "center": [
+                  122.1,
+                  -2.95,
+                  0.31
+                ],
+                "size": [
+                  0.43,
+                  0.48,
+                  1.84
+                ],
+                "n_points": 15,
+                "confidence": 1.0,
+                "age": 17,
+                "height_min": 0.92,
+                "intensity": 9.0,
+                "reason": "beyond_axis",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 2,
+                  "zone": "warning",
+                  "distance": 121.9,
+                  "lateral": 1.09,
+                  "center": [
+                    122.1,
+                    -2.95,
+                    0.31
+                  ],
+                  "size": [
+                    0.43,
+                    0.48,
+                    1.84
+                  ],
+                  "n_points": 15,
+                  "confidence": 1.0,
+                  "age": 17,
+                  "height_min": 0.92,
+                  "intensity": 9.0,
+                  "reason": "beyond_axis",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [],
+          "spares": [],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  25
+                ],
+                "dtype": "int64",
+                "sha256": "fc606d842e7b4c1dc89718e2d4d5554f7b570252d32dfa2446b944861d99ba30"
+              },
+              "n": 15,
+              "n_raw": 25,
+              "centroid": [
+                122.100830078125,
+                -2.9547998905181885,
+                0.31279996037483215
+              ],
+              "bbox_min": [
+                121.89999389648438,
+                -3.18999981880188,
+                -0.9099999666213989
+              ],
+              "bbox_max": [
+                122.32999420166016,
+                -2.7100000381469727,
+                0.9300000071525574
+              ],
+              "distance": 121.89999389648438,
+              "lateral": 1.0908199888253132,
+              "height_min": 0.923495532120878,
+              "height_max": 2.7642807220373986,
+              "intensity": 8.960000038146973,
+              "n_expected": 15.548902921339904,
+              "score": 1.0,
+              "zone": "warning",
+              "n_gauge": 1,
+              "retro": false,
+              "reason": "beyond_axis",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 1,
+              "low_height_weak": false,
+              "spared": false,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 2,
+              "hits": 17,
+              "misses": 0,
+              "age": 17,
+              "confidence": 1.0,
+              "history": [
+                137.6699981689453,
+                136.6699981689453,
+                135.66000366210938,
+                134.64999389648438,
+                133.6999969482422,
+                132.63999938964844,
+                131.8699951171875,
+                130.72999572753906,
+                129.739990234375,
+                128.77999877929688,
+                127.7699966430664,
+                126.80999755859375,
+                125.79999542236328,
+                124.82999420166016,
+                123.80999755859375,
+                122.8699951171875,
+                121.89999389648438
+              ],
+              "zone_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                false,
+                true,
+                false,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                true,
+                true,
+                true,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 0,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 1.704698419570923,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.20213770866394043,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_37_0049",
+          "pairs": [
+            {
+              "detection": {
+                "id": 84,
+                "zone": "gauge",
+                "distance": 128.97,
+                "lateral": 0.52,
+                "center": [
+                  129.05,
+                  -5.25,
+                  0.05
+                ],
+                "size": [
+                  0.28,
+                  0.53,
+                  2.54
+                ],
+                "n_points": 16,
+                "confidence": 1.0,
+                "age": 41,
+                "height_min": 0.37,
+                "intensity": 11.1,
+                "reason": "",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 84,
+                  "zone": "warning",
+                  "distance": 128.97,
+                  "lateral": 0.52,
+                  "center": [
+                    129.05,
+                    -5.25,
+                    0.05
+                  ],
+                  "size": [
+                    0.28,
+                    0.53,
+                    2.54
+                  ],
+                  "n_points": 16,
+                  "confidence": 1.0,
+                  "age": 41,
+                  "height_min": 0.37,
+                  "intensity": 11.1,
+                  "reason": "column",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [
+            {
+              "idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "cf293e89e57ddeff08e60a8dc0a98a6dbe80b33e6d0fc46316c7ec6dea2b1fd8"
+              },
+              "centroid": [
+                129.05225741478705,
+                -5.246451485541559,
+                0.046451603693346825
+              ],
+              "bbox": [
+                [
+                  128.97000122070312,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                [
+                  129.25,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ]
+              ],
+              "top": 0.43916135338975304,
+              "range": 129.1375427170384,
+              "removed": {
+                "shape": [
+                  8
+                ],
+                "dtype": "int64",
+                "sha256": "6abba2a7056116de33dca6efe71a2a9a6fea8801194949b43bec00c20655307e"
+              },
+              "removed_n": 8,
+              "plain_answer": false,
+              "masked_answer": true
+            }
+          ],
+          "spares": [
+            {
+              "prior_hist": [
+                false,
+                false,
+                false,
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true
+              ],
+              "pre": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "cf293e89e57ddeff08e60a8dc0a98a6dbe80b33e6d0fc46316c7ec6dea2b1fd8"
+                },
+                "n": 16,
+                "n_raw": 31,
+                "centroid": [
+                  129.05226135253906,
+                  -5.2464518547058105,
+                  0.046451635658741
+                ],
+                "bbox_min": [
+                  128.97000122070312,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.25,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ],
+                "distance": 128.97000122070312,
+                "lateral": 0.5183700458424557,
+                "height_min": 0.36724467560915475,
+                "height_max": 2.907971404569792,
+                "intensity": 11.129032135009766,
+                "n_expected": 21.193198194310494,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 16,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 10,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "post": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "cf293e89e57ddeff08e60a8dc0a98a6dbe80b33e6d0fc46316c7ec6dea2b1fd8"
+                },
+                "n": 16,
+                "n_raw": 31,
+                "centroid": [
+                  129.05226135253906,
+                  -5.2464518547058105,
+                  0.046451635658741
+                ],
+                "bbox_min": [
+                  128.97000122070312,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.25,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ],
+                "distance": 128.97000122070312,
+                "lateral": 0.5183700458424557,
+                "height_min": 0.36724467560915475,
+                "height_max": 2.907971404569792,
+                "intensity": 11.129032135009766,
+                "n_expected": 21.193198194310494,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 16,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 10,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "tracks_by_object_identity": [
+                {
+                  "id": 84,
+                  "hits": 41,
+                  "misses": 0,
+                  "age": 41,
+                  "confidence": 1.0,
+                  "history": [
+                    129.02999877929688,
+                    128.989990234375,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.989990234375,
+                    128.9499969482422,
+                    128.9499969482422,
+                    128.97999572753906,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312
+                  ],
+                  "zone_hist": [
+                    false,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "column_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "spare_hist": [
+                    false,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "hit_hist": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "thin_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "near_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "explained_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "clean_run": 4,
+                  "reported": true,
+                  "seen_reported": true,
+                  "column_held": false,
+                  "vote_zone": "gauge",
+                  "rule_zone": "gauge",
+                  "zone": "gauge",
+                  "span_s": 4.090849161148071,
+                  "approach_block": false,
+                  "far_evidence": false,
+                  "fresh_blocked": false,
+                  "stop_earned": true,
+                  "withheld": false,
+                  "since_clean": 0.0,
+                  "hold": 0
+                }
+              ],
+              "output_membership": [
+                {
+                  "id": 84,
+                  "detection": true,
+                  "warning": false
+                }
+              ]
+            }
+          ],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "cf293e89e57ddeff08e60a8dc0a98a6dbe80b33e6d0fc46316c7ec6dea2b1fd8"
+              },
+              "n": 16,
+              "n_raw": 31,
+              "centroid": [
+                129.05226135253906,
+                -5.2464518547058105,
+                0.046451635658741
+              ],
+              "bbox_min": [
+                128.97000122070312,
+                -5.440000057220459,
+                -1.5499999523162842
+              ],
+              "bbox_max": [
+                129.25,
+                -4.909999847412109,
+                0.9899999499320984
+              ],
+              "distance": 128.97000122070312,
+              "lateral": 0.5183700458424557,
+              "height_min": 0.36724467560915475,
+              "height_max": 2.907971404569792,
+              "intensity": 11.129032135009766,
+              "n_expected": 21.193198194310494,
+              "score": 1.0,
+              "zone": "gauge",
+              "n_gauge": 16,
+              "retro": false,
+              "reason": "",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 10,
+              "low_height_weak": false,
+              "spared": true,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 84,
+              "hits": 41,
+              "misses": 0,
+              "age": 41,
+              "confidence": 1.0,
+              "history": [
+                129.02999877929688,
+                128.989990234375,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97999572753906,
+                128.97999572753906,
+                128.9499969482422,
+                128.95999145507812,
+                128.95999145507812,
+                128.97999572753906,
+                128.97000122070312,
+                128.989990234375,
+                128.9499969482422,
+                128.9499969482422,
+                128.97999572753906,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.9499969482422,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312
+              ],
+              "zone_hist": [
+                false,
+                false,
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                false,
+                false,
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 4,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.090849161148071,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.0,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_37_0050",
+          "pairs": [
+            {
+              "detection": {
+                "id": 84,
+                "zone": "gauge",
+                "distance": 128.96,
+                "lateral": 0.52,
+                "center": [
+                  129.06,
+                  -5.25,
+                  0.05
+                ],
+                "size": [
+                  0.35,
+                  0.54,
+                  2.53
+                ],
+                "n_points": 16,
+                "confidence": 1.0,
+                "age": 42,
+                "height_min": 0.28,
+                "intensity": 11.5,
+                "reason": "",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 84,
+                  "zone": "warning",
+                  "distance": 128.96,
+                  "lateral": 0.52,
+                  "center": [
+                    129.06,
+                    -5.25,
+                    0.05
+                  ],
+                  "size": [
+                    0.35,
+                    0.54,
+                    2.53
+                  ],
+                  "n_points": 16,
+                  "confidence": 1.0,
+                  "age": 42,
+                  "height_min": 0.28,
+                  "intensity": 11.5,
+                  "reason": "column",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [
+            {
+              "idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "deb1720d55098b812e8d2a1717c9c3b9b55b34f210b19b1dc390bf7dc5dfe2bf"
+              },
+              "centroid": [
+                129.06322405415196,
+                -5.246451485541559,
+                0.045806443018298
+              ],
+              "bbox": [
+                [
+                  128.95999145507812,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                [
+                  129.30999755859375,
+                  -4.900000095367432,
+                  0.9799999594688416
+                ]
+              ],
+              "top": 0.43486273679744036,
+              "range": 129.13250333161824,
+              "removed": {
+                "shape": [
+                  8
+                ],
+                "dtype": "int64",
+                "sha256": "db355712aa9beb04ebc6130182f8671c1e0ea1c34e7a75d778b24f0327205b9c"
+              },
+              "removed_n": 8,
+              "plain_answer": false,
+              "masked_answer": true
+            }
+          ],
+          "spares": [
+            {
+              "prior_hist": [
+                false,
+                false,
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true
+              ],
+              "pre": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "deb1720d55098b812e8d2a1717c9c3b9b55b34f210b19b1dc390bf7dc5dfe2bf"
+                },
+                "n": 16,
+                "n_raw": 31,
+                "centroid": [
+                  129.06321716308594,
+                  -5.246451377868652,
+                  0.04580647498369217
+                ],
+                "bbox_min": [
+                  128.95999145507812,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.30999755859375,
+                  -4.900000095367432,
+                  0.9799999594688416
+                ],
+                "distance": 128.95999145507812,
+                "lateral": 0.5205773487136156,
+                "height_min": 0.27942305641643816,
+                "height_max": 2.8097141352294597,
+                "intensity": 11.45161247253418,
+                "n_expected": 21.504404553246122,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 15,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 10,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "post": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "deb1720d55098b812e8d2a1717c9c3b9b55b34f210b19b1dc390bf7dc5dfe2bf"
+                },
+                "n": 16,
+                "n_raw": 31,
+                "centroid": [
+                  129.06321716308594,
+                  -5.246451377868652,
+                  0.04580647498369217
+                ],
+                "bbox_min": [
+                  128.95999145507812,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.30999755859375,
+                  -4.900000095367432,
+                  0.9799999594688416
+                ],
+                "distance": 128.95999145507812,
+                "lateral": 0.5205773487136156,
+                "height_min": 0.27942305641643816,
+                "height_max": 2.8097141352294597,
+                "intensity": 11.45161247253418,
+                "n_expected": 21.504404553246122,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 15,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 10,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "tracks_by_object_identity": [
+                {
+                  "id": 84,
+                  "hits": 42,
+                  "misses": 0,
+                  "age": 42,
+                  "confidence": 1.0,
+                  "history": [
+                    129.02999877929688,
+                    128.989990234375,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.989990234375,
+                    128.9499969482422,
+                    128.9499969482422,
+                    128.97999572753906,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812
+                  ],
+                  "zone_hist": [
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "column_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "spare_hist": [
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "hit_hist": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "thin_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "near_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "explained_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "clean_run": 5,
+                  "reported": true,
+                  "seen_reported": true,
+                  "column_held": false,
+                  "vote_zone": "gauge",
+                  "rule_zone": "gauge",
+                  "zone": "gauge",
+                  "span_s": 4.190429210662842,
+                  "approach_block": false,
+                  "far_evidence": false,
+                  "fresh_blocked": false,
+                  "stop_earned": true,
+                  "withheld": false,
+                  "since_clean": 0.0,
+                  "hold": 0
+                }
+              ],
+              "output_membership": [
+                {
+                  "id": 84,
+                  "detection": true,
+                  "warning": false
+                }
+              ]
+            }
+          ],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "deb1720d55098b812e8d2a1717c9c3b9b55b34f210b19b1dc390bf7dc5dfe2bf"
+              },
+              "n": 16,
+              "n_raw": 31,
+              "centroid": [
+                129.06321716308594,
+                -5.246451377868652,
+                0.04580647498369217
+              ],
+              "bbox_min": [
+                128.95999145507812,
+                -5.440000057220459,
+                -1.5499999523162842
+              ],
+              "bbox_max": [
+                129.30999755859375,
+                -4.900000095367432,
+                0.9799999594688416
+              ],
+              "distance": 128.95999145507812,
+              "lateral": 0.5205773487136156,
+              "height_min": 0.27942305641643816,
+              "height_max": 2.8097141352294597,
+              "intensity": 11.45161247253418,
+              "n_expected": 21.504404553246122,
+              "score": 1.0,
+              "zone": "gauge",
+              "n_gauge": 15,
+              "retro": false,
+              "reason": "",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 10,
+              "low_height_weak": false,
+              "spared": true,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 84,
+              "hits": 42,
+              "misses": 0,
+              "age": 42,
+              "confidence": 1.0,
+              "history": [
+                129.02999877929688,
+                128.989990234375,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97999572753906,
+                128.97999572753906,
+                128.9499969482422,
+                128.95999145507812,
+                128.95999145507812,
+                128.97999572753906,
+                128.97000122070312,
+                128.989990234375,
+                128.9499969482422,
+                128.9499969482422,
+                128.97999572753906,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.9499969482422,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812
+              ],
+              "zone_hist": [
+                false,
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                false,
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 5,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.190429210662842,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.0,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_38_0000",
+          "pairs": [
+            {
+              "detection": {
+                "id": 84,
+                "zone": "gauge",
+                "distance": 128.98,
+                "lateral": 0.6,
+                "center": [
+                  129.05,
+                  -5.24,
+                  0.1
+                ],
+                "size": [
+                  0.21,
+                  0.53,
+                  2.54
+                ],
+                "n_points": 15,
+                "confidence": 1.0,
+                "age": 43,
+                "height_min": 0.24,
+                "intensity": 11.8,
+                "reason": "",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 84,
+                  "zone": "warning",
+                  "distance": 128.98,
+                  "lateral": 0.6,
+                  "center": [
+                    129.05,
+                    -5.24,
+                    0.1
+                  ],
+                  "size": [
+                    0.21,
+                    0.53,
+                    2.54
+                  ],
+                  "n_points": 15,
+                  "confidence": 1.0,
+                  "age": 43,
+                  "height_min": 0.24,
+                  "intensity": 11.8,
+                  "reason": "column",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [
+            {
+              "idx": {
+                "shape": [
+                  29
+                ],
+                "dtype": "int64",
+                "sha256": "72fca34c46887feffa95abab4842381334cba28f9a30432e6613f3eca47217ac"
+              },
+              "centroid": [
+                129.04585950127964,
+                -5.235861926243223,
+                0.09655171478616781
+              ],
+              "bbox": [
+                [
+                  128.97999572753906,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                [
+                  129.19000244140625,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ]
+              ],
+              "top": 0.43916135338975304,
+              "range": 129.1425356304706,
+              "removed": {
+                "shape": [
+                  8
+                ],
+                "dtype": "int64",
+                "sha256": "2004820e2f73924fd6a6274c7deb3ff2860e2f40ba5c54e8d6f57a7ad458c16f"
+              },
+              "removed_n": 8,
+              "plain_answer": false,
+              "masked_answer": true
+            }
+          ],
+          "spares": [
+            {
+              "prior_hist": [
+                false,
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "pre": {
+                "points_idx": {
+                  "shape": [
+                    29
+                  ],
+                  "dtype": "int64",
+                  "sha256": "72fca34c46887feffa95abab4842381334cba28f9a30432e6613f3eca47217ac"
+                },
+                "n": 15,
+                "n_raw": 29,
+                "centroid": [
+                  129.04586791992188,
+                  -5.2358622550964355,
+                  0.09655171632766724
+                ],
+                "bbox_min": [
+                  128.97999572753906,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.19000244140625,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ],
+                "distance": 128.97999572753906,
+                "lateral": 0.5968948821966178,
+                "height_min": 0.23610568489749073,
+                "height_max": 2.776559861617863,
+                "intensity": 11.82758617401123,
+                "n_expected": 21.195426714497163,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 13,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 9,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "post": {
+                "points_idx": {
+                  "shape": [
+                    29
+                  ],
+                  "dtype": "int64",
+                  "sha256": "72fca34c46887feffa95abab4842381334cba28f9a30432e6613f3eca47217ac"
+                },
+                "n": 15,
+                "n_raw": 29,
+                "centroid": [
+                  129.04586791992188,
+                  -5.2358622550964355,
+                  0.09655171632766724
+                ],
+                "bbox_min": [
+                  128.97999572753906,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.19000244140625,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ],
+                "distance": 128.97999572753906,
+                "lateral": 0.5968948821966178,
+                "height_min": 0.23610568489749073,
+                "height_max": 2.776559861617863,
+                "intensity": 11.82758617401123,
+                "n_expected": 21.195426714497163,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 13,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 9,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "tracks_by_object_identity": [
+                {
+                  "id": 84,
+                  "hits": 43,
+                  "misses": 0,
+                  "age": 43,
+                  "confidence": 1.0,
+                  "history": [
+                    129.02999877929688,
+                    128.989990234375,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.989990234375,
+                    128.9499969482422,
+                    128.9499969482422,
+                    128.97999572753906,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97999572753906
+                  ],
+                  "zone_hist": [
+                    true,
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "column_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "spare_hist": [
+                    true,
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "hit_hist": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "thin_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "near_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "explained_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "clean_run": 6,
+                  "reported": true,
+                  "seen_reported": true,
+                  "column_held": false,
+                  "vote_zone": "gauge",
+                  "rule_zone": "gauge",
+                  "zone": "gauge",
+                  "span_s": 4.298244953155518,
+                  "approach_block": false,
+                  "far_evidence": false,
+                  "fresh_blocked": false,
+                  "stop_earned": true,
+                  "withheld": false,
+                  "since_clean": 0.0,
+                  "hold": 0
+                }
+              ],
+              "output_membership": [
+                {
+                  "id": 84,
+                  "detection": true,
+                  "warning": false
+                }
+              ]
+            }
+          ],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  29
+                ],
+                "dtype": "int64",
+                "sha256": "72fca34c46887feffa95abab4842381334cba28f9a30432e6613f3eca47217ac"
+              },
+              "n": 15,
+              "n_raw": 29,
+              "centroid": [
+                129.04586791992188,
+                -5.2358622550964355,
+                0.09655171632766724
+              ],
+              "bbox_min": [
+                128.97999572753906,
+                -5.440000057220459,
+                -1.5499999523162842
+              ],
+              "bbox_max": [
+                129.19000244140625,
+                -4.909999847412109,
+                0.9899999499320984
+              ],
+              "distance": 128.97999572753906,
+              "lateral": 0.5968948821966178,
+              "height_min": 0.23610568489749073,
+              "height_max": 2.776559861617863,
+              "intensity": 11.82758617401123,
+              "n_expected": 21.195426714497163,
+              "score": 1.0,
+              "zone": "gauge",
+              "n_gauge": 13,
+              "retro": false,
+              "reason": "",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 9,
+              "low_height_weak": false,
+              "spared": true,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 84,
+              "hits": 43,
+              "misses": 0,
+              "age": 43,
+              "confidence": 1.0,
+              "history": [
+                129.02999877929688,
+                128.989990234375,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97999572753906,
+                128.97999572753906,
+                128.9499969482422,
+                128.95999145507812,
+                128.95999145507812,
+                128.97999572753906,
+                128.97000122070312,
+                128.989990234375,
+                128.9499969482422,
+                128.9499969482422,
+                128.97999572753906,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.9499969482422,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906
+              ],
+              "zone_hist": [
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 6,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.298244953155518,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.0,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_38_0001",
+          "pairs": [
+            {
+              "detection": {
+                "id": 84,
+                "zone": "gauge",
+                "distance": 128.98,
+                "lateral": 0.69,
+                "center": [
+                  129.05,
+                  -5.25,
+                  0.05
+                ],
+                "size": [
+                  0.28,
+                  0.53,
+                  2.53
+                ],
+                "n_points": 16,
+                "confidence": 1.0,
+                "age": 44,
+                "height_min": 0.19,
+                "intensity": 11.3,
+                "reason": "",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 84,
+                  "zone": "warning",
+                  "distance": 128.98,
+                  "lateral": 0.69,
+                  "center": [
+                    129.05,
+                    -5.25,
+                    0.05
+                  ],
+                  "size": [
+                    0.28,
+                    0.53,
+                    2.53
+                  ],
+                  "n_points": 16,
+                  "confidence": 1.0,
+                  "age": 44,
+                  "height_min": 0.19,
+                  "intensity": 11.3,
+                  "reason": "column",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [
+            {
+              "idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "69c85442e98dc52e63f43c4123b0395ce8ce2c29806c5b9c7d34e40765c68cb0"
+              },
+              "centroid": [
+                129.0545137466923,
+                -5.247096661598452,
+                0.045806443018298
+              ],
+              "bbox": [
+                [
+                  128.97999572753906,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                [
+                  129.25999450683594,
+                  -4.909999847412109,
+                  0.9799999594688416
+                ]
+              ],
+              "top": 0.434896370717681,
+              "range": 129.13251131391056,
+              "removed": {
+                "shape": [
+                  9
+                ],
+                "dtype": "int64",
+                "sha256": "9b457e6328226683c588540d5d20fc2ad1e8a63fab74ea71aa4e10159f5460fa"
+              },
+              "removed_n": 9,
+              "plain_answer": false,
+              "masked_answer": true
+            }
+          ],
+          "spares": [
+            {
+              "prior_hist": [
+                true,
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "pre": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "69c85442e98dc52e63f43c4123b0395ce8ce2c29806c5b9c7d34e40765c68cb0"
+                },
+                "n": 16,
+                "n_raw": 31,
+                "centroid": [
+                  129.0545196533203,
+                  -5.247097492218018,
+                  0.04580647498369217
+                ],
+                "bbox_min": [
+                  128.97999572753906,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.25999450683594,
+                  -4.909999847412109,
+                  0.9799999594688416
+                ],
+                "distance": 128.97999572753906,
+                "lateral": 0.6930822954571726,
+                "height_min": 0.19239867795524113,
+                "height_max": 2.7227104290116433,
+                "intensity": 11.322580337524414,
+                "n_expected": 21.109017321735436,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 13,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 10,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "post": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "69c85442e98dc52e63f43c4123b0395ce8ce2c29806c5b9c7d34e40765c68cb0"
+                },
+                "n": 16,
+                "n_raw": 31,
+                "centroid": [
+                  129.0545196533203,
+                  -5.247097492218018,
+                  0.04580647498369217
+                ],
+                "bbox_min": [
+                  128.97999572753906,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.25999450683594,
+                  -4.909999847412109,
+                  0.9799999594688416
+                ],
+                "distance": 128.97999572753906,
+                "lateral": 0.6930822954571726,
+                "height_min": 0.19239867795524113,
+                "height_max": 2.7227104290116433,
+                "intensity": 11.322580337524414,
+                "n_expected": 21.109017321735436,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 13,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 10,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "tracks_by_object_identity": [
+                {
+                  "id": 84,
+                  "hits": 44,
+                  "misses": 0,
+                  "age": 44,
+                  "confidence": 1.0,
+                  "history": [
+                    129.02999877929688,
+                    128.989990234375,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.989990234375,
+                    128.9499969482422,
+                    128.9499969482422,
+                    128.97999572753906,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.97999572753906
+                  ],
+                  "zone_hist": [
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "column_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "spare_hist": [
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "hit_hist": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "thin_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "near_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "explained_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "clean_run": 7,
+                  "reported": true,
+                  "seen_reported": true,
+                  "column_held": false,
+                  "vote_zone": "gauge",
+                  "rule_zone": "gauge",
+                  "zone": "gauge",
+                  "span_s": 4.395549535751343,
+                  "approach_block": false,
+                  "far_evidence": false,
+                  "fresh_blocked": false,
+                  "stop_earned": true,
+                  "withheld": false,
+                  "since_clean": 0.0,
+                  "hold": 0
+                }
+              ],
+              "output_membership": [
+                {
+                  "id": 84,
+                  "detection": true,
+                  "warning": false
+                }
+              ]
+            }
+          ],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "69c85442e98dc52e63f43c4123b0395ce8ce2c29806c5b9c7d34e40765c68cb0"
+              },
+              "n": 16,
+              "n_raw": 31,
+              "centroid": [
+                129.0545196533203,
+                -5.247097492218018,
+                0.04580647498369217
+              ],
+              "bbox_min": [
+                128.97999572753906,
+                -5.440000057220459,
+                -1.5499999523162842
+              ],
+              "bbox_max": [
+                129.25999450683594,
+                -4.909999847412109,
+                0.9799999594688416
+              ],
+              "distance": 128.97999572753906,
+              "lateral": 0.6930822954571726,
+              "height_min": 0.19239867795524113,
+              "height_max": 2.7227104290116433,
+              "intensity": 11.322580337524414,
+              "n_expected": 21.109017321735436,
+              "score": 1.0,
+              "zone": "gauge",
+              "n_gauge": 13,
+              "retro": false,
+              "reason": "",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 10,
+              "low_height_weak": false,
+              "spared": true,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 84,
+              "hits": 44,
+              "misses": 0,
+              "age": 44,
+              "confidence": 1.0,
+              "history": [
+                129.02999877929688,
+                128.989990234375,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97999572753906,
+                128.97999572753906,
+                128.9499969482422,
+                128.95999145507812,
+                128.95999145507812,
+                128.97999572753906,
+                128.97000122070312,
+                128.989990234375,
+                128.9499969482422,
+                128.9499969482422,
+                128.97999572753906,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.9499969482422,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.97999572753906
+              ],
+              "zone_hist": [
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 7,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.395549535751343,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.0,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_38_0002",
+          "pairs": [
+            {
+              "detection": {
+                "id": 84,
+                "zone": "gauge",
+                "distance": 128.97,
+                "lateral": 0.76,
+                "center": [
+                  129.06,
+                  -5.25,
+                  0.05
+                ],
+                "size": [
+                  0.32,
+                  0.53,
+                  2.54
+                ],
+                "n_points": 16,
+                "confidence": 1.0,
+                "age": 45,
+                "height_min": 0.23,
+                "intensity": 10.5,
+                "reason": "",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 84,
+                  "zone": "warning",
+                  "distance": 128.97,
+                  "lateral": 0.76,
+                  "center": [
+                    129.06,
+                    -5.25,
+                    0.05
+                  ],
+                  "size": [
+                    0.32,
+                    0.53,
+                    2.54
+                  ],
+                  "n_points": 16,
+                  "confidence": 1.0,
+                  "age": 45,
+                  "height_min": 0.23,
+                  "intensity": 10.5,
+                  "reason": "column",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [
+            {
+              "idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "f6a24556efcf947c9682cce353afbf1f493cb15099c4d6710ef19ef00dd2daa1"
+              },
+              "centroid": [
+                129.05967417070943,
+                -5.245806309484666,
+                0.046451603693346825
+              ],
+              "bbox": [
+                [
+                  128.97000122070312,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                [
+                  129.2899932861328,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ]
+              ],
+              "top": 0.43912740054208743,
+              "range": 129.1423313156825,
+              "removed": {
+                "shape": [
+                  8
+                ],
+                "dtype": "int64",
+                "sha256": "aa97b42cc1dfe4e5747ea00300f97461b68797aa66909fbf6554972df0a652f2"
+              },
+              "removed_n": 8,
+              "plain_answer": false,
+              "masked_answer": true
+            }
+          ],
+          "spares": [
+            {
+              "prior_hist": [
+                true,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "pre": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "f6a24556efcf947c9682cce353afbf1f493cb15099c4d6710ef19ef00dd2daa1"
+                },
+                "n": 16,
+                "n_raw": 31,
+                "centroid": [
+                  129.05967712402344,
+                  -5.245806694030762,
+                  0.046451635658741
+                ],
+                "bbox_min": [
+                  128.97000122070312,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.2899932861328,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ],
+                "distance": 128.97000122070312,
+                "lateral": 0.7620381821419915,
+                "height_min": 0.23136300293175016,
+                "height_max": 2.7717480427984995,
+                "intensity": 10.45161247253418,
+                "n_expected": 21.190774764608417,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 10,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 10,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "post": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "f6a24556efcf947c9682cce353afbf1f493cb15099c4d6710ef19ef00dd2daa1"
+                },
+                "n": 16,
+                "n_raw": 31,
+                "centroid": [
+                  129.05967712402344,
+                  -5.245806694030762,
+                  0.046451635658741
+                ],
+                "bbox_min": [
+                  128.97000122070312,
+                  -5.440000057220459,
+                  -1.5499999523162842
+                ],
+                "bbox_max": [
+                  129.2899932861328,
+                  -4.909999847412109,
+                  0.9899999499320984
+                ],
+                "distance": 128.97000122070312,
+                "lateral": 0.7620381821419915,
+                "height_min": 0.23136300293175016,
+                "height_max": 2.7717480427984995,
+                "intensity": 10.45161247253418,
+                "n_expected": 21.190774764608417,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 10,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 10,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "tracks_by_object_identity": [
+                {
+                  "id": 84,
+                  "hits": 45,
+                  "misses": 0,
+                  "age": 45,
+                  "confidence": 1.0,
+                  "history": [
+                    129.02999877929688,
+                    128.989990234375,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.989990234375,
+                    128.9499969482422,
+                    128.9499969482422,
+                    128.97999572753906,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.97999572753906,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.9499969482422,
+                    128.97000122070312,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.989990234375,
+                    128.95999145507812,
+                    128.95999145507812,
+                    128.97000122070312,
+                    128.95999145507812,
+                    128.97999572753906,
+                    128.97999572753906,
+                    128.97000122070312
+                  ],
+                  "zone_hist": [
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "column_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "spare_hist": [
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "hit_hist": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "thin_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "near_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "explained_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "clean_run": 8,
+                  "reported": true,
+                  "seen_reported": true,
+                  "column_held": false,
+                  "vote_zone": "gauge",
+                  "rule_zone": "gauge",
+                  "zone": "gauge",
+                  "span_s": 4.497609376907349,
+                  "approach_block": false,
+                  "far_evidence": false,
+                  "fresh_blocked": false,
+                  "stop_earned": true,
+                  "withheld": false,
+                  "since_clean": 0.0,
+                  "hold": 0
+                }
+              ],
+              "output_membership": [
+                {
+                  "id": 84,
+                  "detection": true,
+                  "warning": false
+                }
+              ]
+            }
+          ],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "f6a24556efcf947c9682cce353afbf1f493cb15099c4d6710ef19ef00dd2daa1"
+              },
+              "n": 16,
+              "n_raw": 31,
+              "centroid": [
+                129.05967712402344,
+                -5.245806694030762,
+                0.046451635658741
+              ],
+              "bbox_min": [
+                128.97000122070312,
+                -5.440000057220459,
+                -1.5499999523162842
+              ],
+              "bbox_max": [
+                129.2899932861328,
+                -4.909999847412109,
+                0.9899999499320984
+              ],
+              "distance": 128.97000122070312,
+              "lateral": 0.7620381821419915,
+              "height_min": 0.23136300293175016,
+              "height_max": 2.7717480427984995,
+              "intensity": 10.45161247253418,
+              "n_expected": 21.190774764608417,
+              "score": 1.0,
+              "zone": "gauge",
+              "n_gauge": 10,
+              "retro": false,
+              "reason": "",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 10,
+              "low_height_weak": false,
+              "spared": true,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 84,
+              "hits": 45,
+              "misses": 0,
+              "age": 45,
+              "confidence": 1.0,
+              "history": [
+                129.02999877929688,
+                128.989990234375,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97999572753906,
+                128.97999572753906,
+                128.9499969482422,
+                128.95999145507812,
+                128.95999145507812,
+                128.97999572753906,
+                128.97000122070312,
+                128.989990234375,
+                128.9499969482422,
+                128.9499969482422,
+                128.97999572753906,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.9499969482422,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.97999572753906,
+                128.97000122070312
+              ],
+              "zone_hist": [
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 8,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.497609376907349,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.0,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_38_0003",
+          "pairs": [
+            {
+              "detection": {
+                "id": 84,
+                "zone": "gauge",
+                "distance": 128.97,
+                "lateral": 1.07,
+                "center": [
+                  129.04,
+                  -5.23,
+                  0.15
+                ],
+                "size": [
+                  0.19,
+                  0.53,
+                  2.54
+                ],
+                "n_points": 14,
+                "confidence": 1.0,
+                "age": 46,
+                "height_min": 0.32,
+                "intensity": 12.1,
+                "reason": "beyond_axis",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 84,
+                  "zone": "warning",
+                  "distance": 128.97,
+                  "lateral": 1.07,
+                  "center": [
+                    129.04,
+                    -5.23,
+                    0.15
+                  ],
+                  "size": [
+                    0.19,
+                    0.53,
+                    2.54
+                  ],
+                  "n_points": 14,
+                  "confidence": 1.0,
+                  "age": 46,
+                  "height_min": 0.32,
+                  "intensity": 12.1,
+                  "reason": "beyond_axis",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [],
+          "spares": [],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  28
+                ],
+                "dtype": "int64",
+                "sha256": "9e4bbc9693b4c89d3f5d2ffae5b321f557627196e2d0eeb46c05fcc4904e0b6f"
+              },
+              "n": 14,
+              "n_raw": 28,
+              "centroid": [
+                129.0414581298828,
+                -5.233571529388428,
+                0.14571428298950195
+              ],
+              "bbox_min": [
+                128.97000122070312,
+                -5.440000057220459,
+                -1.5499999523162842
+              ],
+              "bbox_max": [
+                129.16000366210938,
+                -4.909999847412109,
+                0.9899999499320984
+              ],
+              "distance": 128.97000122070312,
+              "lateral": 1.067110966804148,
+              "height_min": 0.3175966145065092,
+              "height_max": 2.8580429811303594,
+              "intensity": 12.142857551574707,
+              "n_expected": 21.196889215375627,
+              "score": 1.0,
+              "zone": "warning",
+              "n_gauge": 0,
+              "retro": false,
+              "reason": "beyond_axis",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 0,
+              "low_height_weak": false,
+              "spared": false,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 84,
+              "hits": 46,
+              "misses": 0,
+              "age": 46,
+              "confidence": 1.0,
+              "history": [
+                129.02999877929688,
+                128.989990234375,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97999572753906,
+                128.97999572753906,
+                128.9499969482422,
+                128.95999145507812,
+                128.95999145507812,
+                128.97999572753906,
+                128.97000122070312,
+                128.989990234375,
+                128.9499969482422,
+                128.9499969482422,
+                128.97999572753906,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.9499969482422,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312
+              ],
+              "zone_hist": [
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 0,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.593546628952026,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.09593725204467773,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_38_0004",
+          "pairs": [
+            {
+              "detection": {
+                "id": 84,
+                "zone": "gauge",
+                "distance": 128.97,
+                "lateral": 1.19,
+                "center": [
+                  129.06,
+                  -5.31,
+                  -0.07
+                ],
+                "size": [
+                  0.22,
+                  0.33,
+                  2.53
+                ],
+                "n_points": 13,
+                "confidence": 1.0,
+                "age": 47,
+                "height_min": 0.4,
+                "intensity": 12.4,
+                "reason": "beyond_axis",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 84,
+                  "zone": "warning",
+                  "distance": 128.97,
+                  "lateral": 1.19,
+                  "center": [
+                    129.06,
+                    -5.31,
+                    -0.07
+                  ],
+                  "size": [
+                    0.22,
+                    0.33,
+                    2.53
+                  ],
+                  "n_points": 13,
+                  "confidence": 1.0,
+                  "age": 47,
+                  "height_min": 0.4,
+                  "intensity": 12.4,
+                  "reason": "beyond_axis",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [],
+          "spares": [],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  25
+                ],
+                "dtype": "int64",
+                "sha256": "15b9939c6f5e9ebe7d71c1c7e08d75f651b42fff2ea672cb2d568c8680cdc305"
+              },
+              "n": 13,
+              "n_raw": 25,
+              "centroid": [
+                129.0615997314453,
+                -5.3144001960754395,
+                -0.0655999630689621
+              ],
+              "bbox_min": [
+                128.97000122070312,
+                -5.440000057220459,
+                -1.5499999523162842
+              ],
+              "bbox_max": [
+                129.19000244140625,
+                -5.109999656677246,
+                0.9799999594688416
+              ],
+              "distance": 128.97000122070312,
+              "lateral": 1.1854969879527137,
+              "height_min": 0.4011664215568733,
+              "height_max": 2.931336800999874,
+              "intensity": 12.4399995803833,
+              "n_expected": 13.1413583711976,
+              "score": 1.0,
+              "zone": "warning",
+              "n_gauge": 0,
+              "retro": false,
+              "reason": "beyond_axis",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 0,
+              "low_height_weak": false,
+              "spared": false,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 84,
+              "hits": 47,
+              "misses": 0,
+              "age": 47,
+              "confidence": 1.0,
+              "history": [
+                129.02999877929688,
+                128.989990234375,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97999572753906,
+                128.97999572753906,
+                128.9499969482422,
+                128.95999145507812,
+                128.95999145507812,
+                128.97999572753906,
+                128.97000122070312,
+                128.989990234375,
+                128.9499969482422,
+                128.9499969482422,
+                128.97999572753906,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.9499969482422,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312
+              ],
+              "zone_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 0,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.696758031845093,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.19914865493774414,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_38_0005",
+          "pairs": [
+            {
+              "detection": {
+                "id": 84,
+                "zone": "gauge",
+                "distance": 128.98,
+                "lateral": 1.19,
+                "center": [
+                  129.07,
+                  -5.35,
+                  -0.15
+                ],
+                "size": [
+                  0.22,
+                  0.33,
+                  2.53
+                ],
+                "n_points": 13,
+                "confidence": 0.75,
+                "age": 48,
+                "height_min": 0.4,
+                "intensity": 12.4,
+                "reason": "beyond_axis",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 84,
+                  "zone": "warning",
+                  "distance": 128.98,
+                  "lateral": 1.19,
+                  "center": [
+                    129.07,
+                    -5.35,
+                    -0.15
+                  ],
+                  "size": [
+                    0.22,
+                    0.33,
+                    2.53
+                  ],
+                  "n_points": 13,
+                  "confidence": 0.75,
+                  "age": 48,
+                  "height_min": 0.4,
+                  "intensity": 12.4,
+                  "reason": "beyond_axis",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [],
+          "spares": [],
+          "candidates": [],
+          "tracks": [
+            {
+              "id": 84,
+              "hits": 47,
+              "misses": 1,
+              "age": 48,
+              "confidence": 0.75,
+              "history": [
+                129.02999877929688,
+                128.989990234375,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97999572753906,
+                128.97999572753906,
+                128.9499969482422,
+                128.95999145507812,
+                128.95999145507812,
+                128.97999572753906,
+                128.97000122070312,
+                128.989990234375,
+                128.9499969482422,
+                128.9499969482422,
+                128.97999572753906,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.9499969482422,
+                128.97000122070312,
+                128.97000122070312,
+                128.95999145507812,
+                128.989990234375,
+                128.95999145507812,
+                128.95999145507812,
+                128.97000122070312,
+                128.95999145507812,
+                128.97999572753906,
+                128.97999572753906,
+                128.97000122070312,
+                128.97000122070312,
+                128.97000122070312
+              ],
+              "zone_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 0,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.797659397125244,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.3000500202178955,
+              "hold": 0
+            }
+          ]
+        }
+      ]
+    },
+    "ride_3": {
+      "frames": 1409,
+      "sealed_stop": 2,
+      "candidate_stop": 7,
+      "extra_stop_frames": [
+        "new_data_106_0047",
+        "new_data_99_0014",
+        "new_data_99_0015",
+        "new_data_99_0029",
+        "new_data_99_0030"
+      ],
+      "lost_stop_frames": [],
+      "witnesses": [
+        {
+          "frame": "new_data_106_0047",
+          "pairs": [
+            {
+              "detection": {
+                "id": 454,
+                "zone": "gauge",
+                "distance": 111.92,
+                "lateral": 0.82,
+                "center": [
+                  112.0,
+                  -0.26,
+                  0.4
+                ],
+                "size": [
+                  0.28,
+                  0.54,
+                  1.99
+                ],
+                "n_points": 16,
+                "confidence": 1.0,
+                "age": 47,
+                "height_min": 0.9,
+                "intensity": 8.9,
+                "reason": "",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 454,
+                  "zone": "warning",
+                  "distance": 111.92,
+                  "lateral": 0.82,
+                  "center": [
+                    112.0,
+                    -0.26,
+                    0.4
+                  ],
+                  "size": [
+                    0.28,
+                    0.54,
+                    1.99
+                  ],
+                  "n_points": 16,
+                  "confidence": 1.0,
+                  "age": 47,
+                  "height_min": 0.9,
+                  "intensity": 8.9,
+                  "reason": "",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [],
+          "spares": [],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  30
+                ],
+                "dtype": "int64",
+                "sha256": "4d08e61814827248fdb6bdd06c63d5ab67707717a1510baec88aa8671b60859f"
+              },
+              "n": 16,
+              "n_raw": 30,
+              "centroid": [
+                112.00364685058594,
+                -0.2639999985694885,
+                0.39933326840400696
+              ],
+              "bbox_min": [
+                111.91999816894531,
+                -0.47999998927116394,
+                -0.8299999833106995
+              ],
+              "bbox_max": [
+                112.19999694824219,
+                0.05999999865889549,
+                1.159999966621399
+              ],
+              "distance": 111.91999816894531,
+              "lateral": 0.8162744622003556,
+              "height_min": 0.8969161913749055,
+              "height_max": 2.8880362730154783,
+              "intensity": 8.933333396911621,
+              "n_expected": 22.49623007048546,
+              "score": 1.0,
+              "zone": "gauge",
+              "n_gauge": 10,
+              "retro": false,
+              "reason": "",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 9,
+              "low_height_weak": false,
+              "spared": false,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 454,
+              "hits": 47,
+              "misses": 0,
+              "age": 47,
+              "confidence": 1.0,
+              "history": [
+                186.17999267578125,
+                184.489990234375,
+                182.8699951171875,
+                181.1699981689453,
+                179.55999755859375,
+                177.89999389648438,
+                176.25,
+                174.58999633789062,
+                172.92999267578125,
+                171.3000030517578,
+                169.66000366210938,
+                168.0,
+                166.33999633789062,
+                164.72000122070312,
+                163.11000061035156,
+                161.45999145507812,
+                159.83999633789062,
+                158.1999969482422,
+                156.5699920654297,
+                154.9499969482422,
+                153.3300018310547,
+                151.69000244140625,
+                150.0800018310547,
+                148.47000122070312,
+                146.84999084472656,
+                145.25,
+                143.61000061035156,
+                141.9499969482422,
+                140.37998962402344,
+                138.80999755859375,
+                137.1999969482422,
+                135.6199951171875,
+                134.0,
+                132.4199981689453,
+                130.83999633789062,
+                129.27000427246094,
+                127.58999633789062,
+                126.06999969482422,
+                122.36000061035156,
+                122.89999389648438,
+                121.32999420166016,
+                119.75999450683594,
+                118.18000030517578,
+                116.58999633789062,
+                115.04999542236328,
+                113.47999572753906,
+                111.91999816894531
+              ],
+              "zone_hist": [
+                true,
+                true,
+                true,
+                true,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                true,
+                false,
+                true,
+                false,
+                false,
+                true,
+                true,
+                false,
+                true,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 5,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.6965172290802,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.0,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_99_0014",
+          "pairs": [
+            {
+              "detection": {
+                "id": 268,
+                "zone": "gauge",
+                "distance": 140.14,
+                "lateral": 0.04,
+                "center": [
+                  140.38,
+                  -1.14,
+                  -0.77
+                ],
+                "size": [
+                  1.22,
+                  1.28,
+                  2.49
+                ],
+                "n_points": 10,
+                "confidence": 1.0,
+                "age": 24,
+                "height_min": 0.39,
+                "intensity": 9.6,
+                "reason": "",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 268,
+                  "zone": "warning",
+                  "distance": 140.14,
+                  "lateral": 0.04,
+                  "center": [
+                    140.38,
+                    -1.14,
+                    -0.77
+                  ],
+                  "size": [
+                    1.22,
+                    1.28,
+                    2.49
+                  ],
+                  "n_points": 10,
+                  "confidence": 1.0,
+                  "age": 24,
+                  "height_min": 0.39,
+                  "intensity": 9.6,
+                  "reason": "",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [],
+          "spares": [],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  16
+                ],
+                "dtype": "int64",
+                "sha256": "56da87f28d52ec896015205cca7d759079ca7206f1d3e9c7f3edc743c35100ab"
+              },
+              "n": 10,
+              "n_raw": 16,
+              "centroid": [
+                140.38372802734375,
+                -1.1387500762939453,
+                -0.7668749690055847
+              ],
+              "bbox_min": [
+                140.13999938964844,
+                -1.46999990940094,
+                -1.9900000095367432
+              ],
+              "bbox_max": [
+                141.36000061035156,
+                -0.1899999976158142,
+                0.5
+              ],
+              "distance": 140.13999938964844,
+              "lateral": 0.03773378263143515,
+              "height_min": 0.3919329044535793,
+              "height_max": 2.870122950930555,
+              "intensity": 9.5625,
+              "n_expected": 42.468750003839965,
+              "score": 1.0,
+              "zone": "gauge",
+              "n_gauge": 9,
+              "retro": false,
+              "reason": "",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 6,
+              "low_height_weak": false,
+              "spared": false,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 268,
+              "hits": 19,
+              "misses": 0,
+              "age": 24,
+              "confidence": 1.0,
+              "history": [
+                186.70999145507812,
+                184.69000244140625,
+                182.6699981689453,
+                176.63999938964844,
+                174.5699920654297,
+                170.55999755859375,
+                168.55999755859375,
+                166.51998901367188,
+                164.489990234375,
+                160.42999267578125,
+                158.39999389648438,
+                156.38999938964844,
+                154.33999633789062,
+                152.3300018310547,
+                148.22999572753906,
+                146.22999572753906,
+                144.1999969482422,
+                142.17999267578125,
+                140.13999938964844
+              ],
+              "zone_hist": [
+                false,
+                true,
+                true,
+                true,
+                false,
+                true,
+                false,
+                false,
+                true,
+                true
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 2,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 2.4057986736297607,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.0,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_99_0015",
+          "pairs": [
+            {
+              "detection": {
+                "id": 268,
+                "zone": "gauge",
+                "distance": 138.11,
+                "lateral": 0.01,
+                "center": [
+                  138.17,
+                  -1.18,
+                  0.1
+                ],
+                "size": [
+                  0.19,
+                  0.54,
+                  1.22
+                ],
+                "n_points": 8,
+                "confidence": 1.0,
+                "age": 25,
+                "height_min": 1.72,
+                "intensity": 12.0,
+                "reason": "beyond_height_ref",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 268,
+                  "zone": "warning",
+                  "distance": 138.11,
+                  "lateral": 0.01,
+                  "center": [
+                    138.17,
+                    -1.18,
+                    0.1
+                  ],
+                  "size": [
+                    0.19,
+                    0.54,
+                    1.22
+                  ],
+                  "n_points": 8,
+                  "confidence": 1.0,
+                  "age": 25,
+                  "height_min": 1.72,
+                  "intensity": 12.0,
+                  "reason": "beyond_height_ref",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [],
+          "spares": [],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  9
+                ],
+                "dtype": "int64",
+                "sha256": "018b3536709490cbaed6d783e65f3feff8b56f76ee5b191b1a63ad2f69a7fe3c"
+              },
+              "n": 8,
+              "n_raw": 9,
+              "centroid": [
+                138.17332458496094,
+                -1.1755554676055908,
+                0.09555555880069733
+              ],
+              "bbox_min": [
+                138.11000061035156,
+                -1.4499999284744263,
+                -0.7299999594688416
+              ],
+              "bbox_max": [
+                138.3000030517578,
+                -0.9099999666213989,
+                0.4899999797344208
+              ],
+              "distance": 138.11000061035156,
+              "lateral": 0.010698951798185967,
+              "height_min": 1.7240831441159372,
+              "height_max": 2.945721325423544,
+              "intensity": 12.0,
+              "n_expected": 9.061679793669558,
+              "score": 1.0,
+              "zone": "warning",
+              "n_gauge": 8,
+              "retro": false,
+              "reason": "beyond_height_ref",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 5,
+              "low_height_weak": false,
+              "spared": false,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 268,
+              "hits": 20,
+              "misses": 0,
+              "age": 25,
+              "confidence": 1.0,
+              "history": [
+                186.70999145507812,
+                184.69000244140625,
+                182.6699981689453,
+                176.63999938964844,
+                174.5699920654297,
+                170.55999755859375,
+                168.55999755859375,
+                166.51998901367188,
+                164.489990234375,
+                160.42999267578125,
+                158.39999389648438,
+                156.38999938964844,
+                154.33999633789062,
+                152.3300018310547,
+                148.22999572753906,
+                146.22999572753906,
+                144.1999969482422,
+                142.17999267578125,
+                140.13999938964844,
+                138.11000061035156
+              ],
+              "zone_hist": [
+                true,
+                true,
+                true,
+                false,
+                true,
+                false,
+                false,
+                true,
+                true,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 0,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 2.4987151622772217,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.09291648864746094,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_99_0029",
+          "pairs": [
+            {
+              "detection": {
+                "id": 268,
+                "zone": "gauge",
+                "distance": 109.74,
+                "lateral": 0.62,
+                "center": [
+                  109.9,
+                  -1.2,
+                  -0.06
+                ],
+                "size": [
+                  0.36,
+                  0.47,
+                  2.38
+                ],
+                "n_points": 18,
+                "confidence": 1.0,
+                "age": 39,
+                "height_min": 0.43,
+                "intensity": 11.5,
+                "reason": "",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 268,
+                  "zone": "warning",
+                  "distance": 109.74,
+                  "lateral": 0.62,
+                  "center": [
+                    109.9,
+                    -1.2,
+                    -0.06
+                  ],
+                  "size": [
+                    0.36,
+                    0.47,
+                    2.38
+                  ],
+                  "n_points": 18,
+                  "confidence": 1.0,
+                  "age": 39,
+                  "height_min": 0.43,
+                  "intensity": 11.5,
+                  "reason": "column",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [
+            {
+              "idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "7b78d3135220b63f0e1267ed4ea309d46818b68a0f805d779f30fdc07726f87a"
+              },
+              "centroid": [
+                109.90193348546183,
+                -1.2032257856861237,
+                -0.06193548392864966
+              ],
+              "bbox": [
+                [
+                  109.73999786376953,
+                  -1.3700000047683716,
+                  -1.5399999618530273
+                ],
+                [
+                  110.0999984741211,
+                  -0.8999999761581421,
+                  0.8399999737739563
+                ]
+              ],
+              "top": 0.43845949493841424,
+              "range": 109.85421674634907,
+              "removed": {
+                "shape": [
+                  13
+                ],
+                "dtype": "int64",
+                "sha256": "4ab484fb74b201d7c3d3737355bf446280d26b1f8f61be308ee3d6d20b967438"
+              },
+              "removed_n": 13,
+              "plain_answer": false,
+              "masked_answer": true
+            },
+            {
+              "idx": {
+                "shape": [
+                  17
+                ],
+                "dtype": "int64",
+                "sha256": "54e073a7f6884dc4647fedcf61aa63465fc2a8ada2c91415c13191604ffbc19b"
+              },
+              "centroid": [
+                134.82705419203813,
+                -2.8482352705562817,
+                -0.3982352872981745
+              ],
+              "bbox": [
+                [
+                  134.72999572753906,
+                  -3.0199999809265137,
+                  -1.8899999856948853
+                ],
+                [
+                  134.95999145507812,
+                  -2.5399999618530273,
+                  0.47999998927116394
+                ]
+              ],
+              "top": 0.20399835695954585,
+              "range": 134.81951301612966,
+              "removed": {
+                "shape": [
+                  11
+                ],
+                "dtype": "int64",
+                "sha256": "904db6773eddc49214ddf03c8725b124a30cfcf00c554b8cd2fd8c85ace5fa38"
+              },
+              "removed_n": 11,
+              "plain_answer": false,
+              "masked_answer": true
+            }
+          ],
+          "spares": [
+            {
+              "prior_hist": [
+                false,
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "pre": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "7b78d3135220b63f0e1267ed4ea309d46818b68a0f805d779f30fdc07726f87a"
+                },
+                "n": 18,
+                "n_raw": 31,
+                "centroid": [
+                  109.90193176269531,
+                  -1.2032257318496704,
+                  -0.06193546950817108
+                ],
+                "bbox_min": [
+                  109.73999786376953,
+                  -1.3700000047683716,
+                  -1.5399999618530273
+                ],
+                "bbox_max": [
+                  110.0999984741211,
+                  -0.8999999761581421,
+                  0.8399999737739563
+                ],
+                "distance": 109.73999786376953,
+                "lateral": 0.6173924748922061,
+                "height_min": 0.43133388871577205,
+                "height_max": 2.812392845879355,
+                "intensity": 11.45161247253418,
+                "n_expected": 24.31908678617433,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 16,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 11,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "post": {
+                "points_idx": {
+                  "shape": [
+                    31
+                  ],
+                  "dtype": "int64",
+                  "sha256": "7b78d3135220b63f0e1267ed4ea309d46818b68a0f805d779f30fdc07726f87a"
+                },
+                "n": 18,
+                "n_raw": 31,
+                "centroid": [
+                  109.90193176269531,
+                  -1.2032257318496704,
+                  -0.06193546950817108
+                ],
+                "bbox_min": [
+                  109.73999786376953,
+                  -1.3700000047683716,
+                  -1.5399999618530273
+                ],
+                "bbox_max": [
+                  110.0999984741211,
+                  -0.8999999761581421,
+                  0.8399999737739563
+                ],
+                "distance": 109.73999786376953,
+                "lateral": 0.6173924748922061,
+                "height_min": 0.43133388871577205,
+                "height_max": 2.812392845879355,
+                "intensity": 11.45161247253418,
+                "n_expected": 24.31908678617433,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 16,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 11,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "tracks_by_object_identity": [
+                {
+                  "id": 268,
+                  "hits": 34,
+                  "misses": 0,
+                  "age": 39,
+                  "confidence": 1.0,
+                  "history": [
+                    186.70999145507812,
+                    184.69000244140625,
+                    182.6699981689453,
+                    176.63999938964844,
+                    174.5699920654297,
+                    170.55999755859375,
+                    168.55999755859375,
+                    166.51998901367188,
+                    164.489990234375,
+                    160.42999267578125,
+                    158.39999389648438,
+                    156.38999938964844,
+                    154.33999633789062,
+                    152.3300018310547,
+                    148.22999572753906,
+                    146.22999572753906,
+                    144.1999969482422,
+                    142.17999267578125,
+                    140.13999938964844,
+                    138.11000061035156,
+                    136.0699920654297,
+                    134.0500030517578,
+                    132.00999450683594,
+                    129.97999572753906,
+                    127.97999572753906,
+                    125.93000030517578,
+                    123.89999389648438,
+                    121.82999420166016,
+                    119.87999725341797,
+                    117.8499984741211,
+                    115.79000091552734,
+                    113.79000091552734,
+                    111.75999450683594,
+                    109.73999786376953
+                  ],
+                  "zone_hist": [
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "column_hist": [
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "spare_hist": [
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "hit_hist": [
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "thin_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "near_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "explained_hist": [
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "clean_run": 9,
+                  "reported": true,
+                  "seen_reported": true,
+                  "column_held": false,
+                  "vote_zone": "gauge",
+                  "rule_zone": "gauge",
+                  "zone": "gauge",
+                  "span_s": 3.8965301513671875,
+                  "approach_block": false,
+                  "far_evidence": false,
+                  "fresh_blocked": false,
+                  "stop_earned": true,
+                  "withheld": false,
+                  "since_clean": 0.0,
+                  "hold": 0
+                }
+              ],
+              "output_membership": [
+                {
+                  "id": 268,
+                  "detection": true,
+                  "warning": false
+                }
+              ]
+            },
+            {
+              "prior_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                true
+              ],
+              "pre": {
+                "points_idx": {
+                  "shape": [
+                    17
+                  ],
+                  "dtype": "int64",
+                  "sha256": "54e073a7f6884dc4647fedcf61aa63465fc2a8ada2c91415c13191604ffbc19b"
+                },
+                "n": 9,
+                "n_raw": 17,
+                "centroid": [
+                  134.82705688476562,
+                  -2.8482351303100586,
+                  -0.3982352018356323
+                ],
+                "bbox_min": [
+                  134.72999572753906,
+                  -3.0199999809265137,
+                  -1.8899999856948853
+                ],
+                "bbox_max": [
+                  134.95999145507812,
+                  -2.5399999618530273,
+                  0.47999998927116394
+                ],
+                "distance": 134.72999572753906,
+                "lateral": -0.18461542851563617,
+                "height_min": 0.3751405698367427,
+                "height_max": 2.7469054310797727,
+                "intensity": 11.823529243469238,
+                "n_expected": 16.427563713053114,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 9,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 6,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "post": {
+                "points_idx": {
+                  "shape": [
+                    17
+                  ],
+                  "dtype": "int64",
+                  "sha256": "54e073a7f6884dc4647fedcf61aa63465fc2a8ada2c91415c13191604ffbc19b"
+                },
+                "n": 9,
+                "n_raw": 17,
+                "centroid": [
+                  134.82705688476562,
+                  -2.8482351303100586,
+                  -0.3982352018356323
+                ],
+                "bbox_min": [
+                  134.72999572753906,
+                  -3.0199999809265137,
+                  -1.8899999856948853
+                ],
+                "bbox_max": [
+                  134.95999145507812,
+                  -2.5399999618530273,
+                  0.47999998927116394
+                ],
+                "distance": 134.72999572753906,
+                "lateral": -0.18461542851563617,
+                "height_min": 0.3751405698367427,
+                "height_max": 2.7469054310797727,
+                "intensity": 11.823529243469238,
+                "n_expected": 16.427563713053114,
+                "score": 1.0,
+                "zone": "gauge",
+                "n_gauge": 9,
+                "retro": false,
+                "reason": "",
+                "kind": "",
+                "rail_line": false,
+                "wall_kept": false,
+                "demoted": false,
+                "thin": false,
+                "weak": false,
+                "ring_count": 6,
+                "low_height_weak": false,
+                "spared": true,
+                "cut": false
+              },
+              "tracks_by_object_identity": [
+                {
+                  "id": 277,
+                  "hits": 12,
+                  "misses": 0,
+                  "age": 13,
+                  "confidence": 1.0,
+                  "history": [
+                    159.0500030517578,
+                    157.0399932861328,
+                    155.00999450683594,
+                    153.0,
+                    150.97000122070312,
+                    148.94000244140625,
+                    144.86000061035156,
+                    142.80999755859375,
+                    140.80999755859375,
+                    138.7899932861328,
+                    136.77000427246094,
+                    134.72999572753906
+                  ],
+                  "zone_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true
+                  ],
+                  "column_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "spare_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    true,
+                    false,
+                    false,
+                    true,
+                    true
+                  ],
+                  "hit_hist": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                  ],
+                  "thin_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "near_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "explained_hist": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "clean_run": 3,
+                  "reported": true,
+                  "seen_reported": true,
+                  "column_held": false,
+                  "vote_zone": "warning",
+                  "rule_zone": "warning",
+                  "zone": "warning",
+                  "span_s": 1.2968320846557617,
+                  "approach_block": false,
+                  "far_evidence": false,
+                  "fresh_blocked": false,
+                  "stop_earned": false,
+                  "withheld": false,
+                  "since_clean": 0.0,
+                  "hold": 0
+                }
+              ],
+              "output_membership": [
+                {
+                  "id": 277,
+                  "detection": false,
+                  "warning": true
+                }
+              ]
+            }
+          ],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  31
+                ],
+                "dtype": "int64",
+                "sha256": "7b78d3135220b63f0e1267ed4ea309d46818b68a0f805d779f30fdc07726f87a"
+              },
+              "n": 18,
+              "n_raw": 31,
+              "centroid": [
+                109.90193176269531,
+                -1.2032257318496704,
+                -0.06193546950817108
+              ],
+              "bbox_min": [
+                109.73999786376953,
+                -1.3700000047683716,
+                -1.5399999618530273
+              ],
+              "bbox_max": [
+                110.0999984741211,
+                -0.8999999761581421,
+                0.8399999737739563
+              ],
+              "distance": 109.73999786376953,
+              "lateral": 0.6173924748922061,
+              "height_min": 0.43133388871577205,
+              "height_max": 2.812392845879355,
+              "intensity": 11.45161247253418,
+              "n_expected": 24.31908678617433,
+              "score": 1.0,
+              "zone": "gauge",
+              "n_gauge": 16,
+              "retro": false,
+              "reason": "",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 11,
+              "low_height_weak": false,
+              "spared": true,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 268,
+              "hits": 34,
+              "misses": 0,
+              "age": 39,
+              "confidence": 1.0,
+              "history": [
+                186.70999145507812,
+                184.69000244140625,
+                182.6699981689453,
+                176.63999938964844,
+                174.5699920654297,
+                170.55999755859375,
+                168.55999755859375,
+                166.51998901367188,
+                164.489990234375,
+                160.42999267578125,
+                158.39999389648438,
+                156.38999938964844,
+                154.33999633789062,
+                152.3300018310547,
+                148.22999572753906,
+                146.22999572753906,
+                144.1999969482422,
+                142.17999267578125,
+                140.13999938964844,
+                138.11000061035156,
+                136.0699920654297,
+                134.0500030517578,
+                132.00999450683594,
+                129.97999572753906,
+                127.97999572753906,
+                125.93000030517578,
+                123.89999389648438,
+                121.82999420166016,
+                119.87999725341797,
+                117.8499984741211,
+                115.79000091552734,
+                113.79000091552734,
+                111.75999450683594,
+                109.73999786376953
+              ],
+              "zone_hist": [
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "column_hist": [
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "spare_hist": [
+                false,
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "clean_run": 9,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 3.8965301513671875,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.0,
+              "hold": 0
+            }
+          ]
+        },
+        {
+          "frame": "new_data_99_0030",
+          "pairs": [
+            {
+              "detection": {
+                "id": 268,
+                "zone": "gauge",
+                "distance": 107.73,
+                "lateral": 0.61,
+                "center": [
+                  107.94,
+                  -1.21,
+                  -0.07
+                ],
+                "size": [
+                  1.29,
+                  1.72,
+                  2.67
+                ],
+                "n_points": 21,
+                "confidence": 1.0,
+                "age": 40,
+                "height_min": 0.13,
+                "intensity": 10.6,
+                "reason": "column",
+                "kind": ""
+              },
+              "exact_warning_matches": [
+                {
+                  "id": 268,
+                  "zone": "warning",
+                  "distance": 107.73,
+                  "lateral": 0.61,
+                  "center": [
+                    107.94,
+                    -1.21,
+                    -0.07
+                  ],
+                  "size": [
+                    1.29,
+                    1.72,
+                    2.67
+                  ],
+                  "n_points": 21,
+                  "confidence": 1.0,
+                  "age": 40,
+                  "height_min": 0.13,
+                  "intensity": 10.6,
+                  "reason": "column",
+                  "kind": ""
+                }
+              ]
+            }
+          ],
+          "observer": [
+            {
+              "idx": {
+                "shape": [
+                  34
+                ],
+                "dtype": "int64",
+                "sha256": "b825c3f4784feda08bd1f23784b37f1bf9c204323602043c208c4ca8ab2318be"
+              },
+              "centroid": [
+                107.94058586569393,
+                -1.2099999680238611,
+                -0.07352939708267942
+              ],
+              "bbox": [
+                [
+                  107.72999572753906,
+                  -2.419999837875366,
+                  -1.8499999046325684
+                ],
+                [
+                  109.0199966430664,
+                  -0.699999988079071,
+                  0.8199999928474426
+                ]
+              ],
+              "top": 0.4359707416211482,
+              "range": 107.77803800578242,
+              "removed": {
+                "shape": [
+                  9
+                ],
+                "dtype": "int64",
+                "sha256": "454d878db316cf8411087c3bdfb5cef332927d4b72a6470c83dedc747ba09668"
+              },
+              "removed_n": 9,
+              "plain_answer": false,
+              "masked_answer": false
+            }
+          ],
+          "spares": [],
+          "candidates": [
+            {
+              "points_idx": {
+                "shape": [
+                  34
+                ],
+                "dtype": "int64",
+                "sha256": "b825c3f4784feda08bd1f23784b37f1bf9c204323602043c208c4ca8ab2318be"
+              },
+              "n": 21,
+              "n_raw": 34,
+              "centroid": [
+                107.94058990478516,
+                -1.2099997997283936,
+                -0.07352937012910843
+              ],
+              "bbox_min": [
+                107.72999572753906,
+                -2.419999837875366,
+                -1.8499999046325684
+              ],
+              "bbox_max": [
+                109.0199966430664,
+                -0.699999988079071,
+                0.8199999928474426
+              ],
+              "distance": 107.72999572753906,
+              "lateral": 0.6099767028418007,
+              "height_min": 0.12565321854391165,
+              "height_max": 2.780588214658305,
+              "intensity": 10.588234901428223,
+              "n_expected": 103.50242982708264,
+              "score": 1.0,
+              "zone": "warning",
+              "n_gauge": 17,
+              "retro": false,
+              "reason": "column",
+              "kind": "",
+              "rail_line": false,
+              "wall_kept": false,
+              "demoted": false,
+              "thin": false,
+              "weak": false,
+              "ring_count": 12,
+              "low_height_weak": false,
+              "spared": false,
+              "cut": false
+            }
+          ],
+          "tracks": [
+            {
+              "id": 268,
+              "hits": 35,
+              "misses": 0,
+              "age": 40,
+              "confidence": 1.0,
+              "history": [
+                186.70999145507812,
+                184.69000244140625,
+                182.6699981689453,
+                176.63999938964844,
+                174.5699920654297,
+                170.55999755859375,
+                168.55999755859375,
+                166.51998901367188,
+                164.489990234375,
+                160.42999267578125,
+                158.39999389648438,
+                156.38999938964844,
+                154.33999633789062,
+                152.3300018310547,
+                148.22999572753906,
+                146.22999572753906,
+                144.1999969482422,
+                142.17999267578125,
+                140.13999938964844,
+                138.11000061035156,
+                136.0699920654297,
+                134.0500030517578,
+                132.00999450683594,
+                129.97999572753906,
+                127.97999572753906,
+                125.93000030517578,
+                123.89999389648438,
+                121.82999420166016,
+                119.87999725341797,
+                117.8499984741211,
+                115.79000091552734,
+                113.79000091552734,
+                111.75999450683594,
+                109.73999786376953,
+                107.72999572753906
+              ],
+              "zone_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false
+              ],
+              "column_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ],
+              "spare_hist": [
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false
+              ],
+              "hit_hist": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "thin_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "near_hist": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained_hist": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+              ],
+              "clean_run": 0,
+              "reported": true,
+              "seen_reported": true,
+              "column_held": false,
+              "vote_zone": "gauge",
+              "rule_zone": "gauge",
+              "zone": "gauge",
+              "span_s": 4.010115623474121,
+              "approach_block": false,
+              "far_evidence": false,
+              "fresh_blocked": false,
+              "stop_earned": true,
+              "withheld": false,
+              "since_clean": 0.1135854721069336,
+              "hold": 0
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "identity": {
+    "author": true,
+    "head": "f3074cfb445425c50d926ded235fe01a4c3029ea",
+    "imported": "/source/repo/resense/__init__.py",
+    "files": {
+      "configs/default.yaml": "1ff8f3de68a25dacc3f554f76383c27103b803c75d3478b16631313ab1a6e60c",
+      "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+      "configs/experimental_far_rail_rings.yaml": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+      "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+      "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
+      "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+      "pyproject.toml": "088fb6545b1c9f7339b838cef779d0a24a3e8e24a1322a0392b5aa383c40e12a",
+      "resense/__init__.py": "fdf04a88071df1d8300d46f75d34cc00bf9fa205369be99b3cfef6db514ae306",
+      "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+      "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+      "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+      "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+      "resense/clustering.py": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+      "resense/config.py": "d272bcf9ad5df16d056997e789ff6f8c4ef84ab81096904569342a8404830b4e",
+      "resense/detector.py": "930c96c0afb22d4f60f6729235ab34664fb8807c8569ead18a69c42c33bb2a92",
+      "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+      "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+      "resense/farrails.py": "3055903e3af6ab1036b6bebfbd76caac840415b1b3fedb82cc0fba23613449a7",
+      "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+      "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+      "resense/health.py": "2c99fb716ab9a7d17b0e1ae8033cd6ee13be9585a030c9430f18b46adb74f45f",
+      "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+      "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+      "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+      "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+      "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+      "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+      "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+      "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+      "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+      "resense/track.py": "e8bb4e7053bba4785c7f68f1557d7b6e2a4e789a6a03af1bc4277a1248a00386",
+      "resense/tracking.py": "50b7ed6c14d9d00a456f73d61ea8d986e1d02604e3a7943358ac2746492d5c37",
+      "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+      "ros2_ws/src/resense_ros/config/detector.yaml": "1ff8f3de68a25dacc3f554f76383c27103b803c75d3478b16631313ab1a6e60c",
+      "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+      "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+    },
+    "source_sha256": "c90f76cc485f6c479e64de23236785cc22cfcb5af5a282d514304f95a402ca51",
+    "native": {
+      "_resense_native.so": "b5a5c2dc08be8fa1ab00e27dee7662d31413a99f819a760d2d2d4b16b93e8534"
+    },
+    "native_status": "native (_resense_native.so)",
+    "config": {
+      "sensor": {
+        "forward": "-y",
+        "left": "+x",
+        "up": "+z",
+        "min_range": 2.5,
+        "max_range": 250.0,
+        "frame_id": "hesai_lidar",
+        "roll_deg": 0.0,
+        "pitch_deg": 0.0,
+        "yaw_deg": 0.0
+      },
+      "track": {
+        "lateral_center": -0.1,
+        "yaw_deg": 0.0,
+        "curvature": 0.0,
+        "floor_fit_range": [
+          3.0,
+          120.0
+        ],
+        "floor_bin": 2.0,
+        "floor_percentile": 20.0,
+        "floor_halfwidth": 1.0,
+        "floor_min_points": 15,
+        "floor_poly_degree": 2,
+        "floor_max_residual": 0.35,
+        "floor_smoothing": 0.5,
+        "floor_shadow_height": 1.0,
+        "floor_shadow_range": 30.0,
+        "floor_shadow_min_bins": 5,
+        "floor_shadow_max_hold": 20,
+        "floor_far_min_width": 0.0,
+        "floor_far_from": 90.0,
+        "floor_far_min_standing": 2,
+        "rails_enabled": true,
+        "rails_range": [
+          4.0,
+          30.0
+        ],
+        "rails_search_halfwidth": 2.5,
+        "rails_bin": 0.05,
+        "rails_percentile": 85.0,
+        "rails_spacing": 1.59,
+        "rails_min_score": 0.05,
+        "rails_head_height": [
+          0.08,
+          0.5
+        ],
+        "rails_smoothing": 0.7,
+        "rail_offset_default": 0.35,
+        "walls_enabled": true,
+        "walls_range": [
+          6.0,
+          160.0
+        ],
+        "walls_band": [
+          1.6,
+          2.8
+        ],
+        "walls_bin": 4.0,
+        "walls_min_points": 3,
+        "walls_percentile": 90.0,
+        "walls_max_residual": 0.4,
+        "walls_min_bins": 6,
+        "walls_max_rms": 0.35,
+        "walls_max_yaw": 0.09,
+        "walls_min_radius": 150.0,
+        "walls_smoothing": 0.6,
+        "walls_min_far_support": 0.0,
+        "walls_far_support_max_curvature": 0.0002,
+        "walls_far_support_frames": 1,
+        "axis_valid_margin": 15.0,
+        "axis_valid_straight_bonus": 50.0,
+        "floor_valid_margin": 20.0,
+        "rails_yaw_enabled": true,
+        "rails_yaw_slabs": 3,
+        "rails_yaw_min_slabs": 2,
+        "rails_yaw_max_dev": 0.3,
+        "rails_far_check_enabled": false,
+        "rails_far_rings": false,
+        "axis_max_yaw_rate": 0.003,
+        "axis_max_curvature_rate": 0.0001,
+        "axis_warmup_frames": 5,
+        "rates_per_period": true,
+        "walls_smoothing_per_period": true,
+        "axis_sides_max_disagreement": 0.00067,
+        "axis_disagree_range": 60.0,
+        "axis_one_side_range": 120.0,
+        "axis_disagree_hold": 0,
+        "axis_wall_drift": 0.8,
+        "axis_wall_drift_max_offset": 3.5,
+        "axis_wall_drift_bins": 2,
+        "floor_verify_enabled": true,
+        "floor_verify_band": [
+          1.6,
+          3.5
+        ],
+        "floor_verify_bin": 5.0,
+        "floor_verify_window": 30.0,
+        "floor_verify_tolerance": 0.5,
+        "floor_verify_min_points": 5,
+        "floor_verify_max_range": 250.0
+      },
+      "gauge": {
+        "profile": [
+          [
+            -1.05,
+            0.12
+          ],
+          [
+            1.05,
+            0.12
+          ],
+          [
+            1.05,
+            3.0
+          ],
+          [
+            -1.05,
+            3.0
+          ]
+        ],
+        "warning_margin": 0.35,
+        "range_min": 3.0,
+        "range_max": 250.0,
+        "lateral_growth_per_100m": 0.0,
+        "edge_margin": 0.0,
+        "edge_margin_per_100m": 0.15,
+        "edge_margin_per_100m2": 0.0,
+        "no_rail_range": 40.0,
+        "axis_union": 0,
+        "axis_union_range": 50.0,
+        "axis_union_max_offset": 0.3,
+        "axis_union_max_curvature": 0.0002,
+        "reference": 3,
+        "reference_range": 60.0,
+        "reference_max_offset": 0.2,
+        "reference_max_curvature": 0.0002,
+        "reference_along_rails": true,
+        "reference_edge_margin": 1.0
+      },
+      "cluster": {
+        "eps": 0.35,
+        "range_scale": 40.0,
+        "voxel": 0.05,
+        "min_samples": 3,
+        "min_points": 5,
+        "min_points_far": 3,
+        "far_range": 100.0,
+        "weak_min_points": 4,
+        "weak_min_rings": 0,
+        "weak_min_points_with_rings": 3,
+        "max_extent": 8.0,
+        "oversize_split_max_length": 3.0,
+        "oversize_split_max_distance": 30.0,
+        "structure_cut_tol": 1.3,
+        "structure_cut_max_spread": 0.12,
+        "structure_cut_min_fit": 0.8,
+        "structure_cut_min_points": 8,
+        "gauge_distance": true,
+        "min_height": 0.08,
+        "thin_min_length": 3.0,
+        "thin_max_width": 0.35,
+        "thin_max_height": 0.25,
+        "hardware_max_top": 0.35,
+        "hardware_max_width": 0.4,
+        "hardware_max_height": 0.3,
+        "linear_min_aspect": 5.0,
+        "linear_max_height": 0.8,
+        "linear_min_lateral": 0.8,
+        "wall_min_height": 1.9,
+        "wall_min_lateral": 1.2,
+        "wall_segment_min_length": 4.0,
+        "wall_segment_max_width": 1.5,
+        "wall_keep_gauge_voxels": 10,
+        "wall_keep_distance": 20.0,
+        "gauge_min_points": 3,
+        "overhead_min_height": 3.0,
+        "column_min_height": 2.2,
+        "column_max_width": 1.0,
+        "column_width_trim": 0.05,
+        "column_width_trim_min_cut": 0.25,
+        "column_min_width": 0.25,
+        "column_free_max_top": 2.95,
+        "column_free_min_core": 0.5,
+        "column_free_min_returns": 2,
+        "column_free_window": 1.2,
+        "column_free_vault_margin": 0.3,
+        "column_free_tall_gap": 0.0,
+        "elevated_min_height": 1.2,
+        "elevated_min_width": 2.0,
+        "floating_min_height": 0.7,
+        "floating_max_height": 1.2,
+        "floating_max_width": 1.0,
+        "floating_long_min_length": 3.0,
+        "floating_long_min_bottom": 1.6,
+        "floating_free_max_size": 0.5,
+        "floating_free_max_dy": 1.2,
+        "floating_free_max_top": 2.5,
+        "edge_min_lateral": 1.0,
+        "edge_min_aspect": 2.5,
+        "edge_max_height": 1.0,
+        "far_min_height": 0.6,
+        "far_max_length": 3.0,
+        "far_max_bottom": 1.0,
+        "far_axis_both_sides": 0,
+        "signature_min_lateral": 0.6,
+        "short_signature_max_length": 0.0,
+        "short_signature_max_distance": 100.0,
+        "hanging_enabled": true,
+        "hanging_max_lateral": 0.8,
+        "hanging_min_height": 1.8,
+        "hanging_link_band": 0.6,
+        "hanging_min_voxels": 1,
+        "hanging_max_size": 0.5,
+        "hanging_max_distance": 60.0,
+        "hanging_needs_rails": true,
+        "hanging_yield_gauge_only": true,
+        "wall_face_min_height": 2.0,
+        "shell_min_top": 0.0,
+        "shell_max_bottom": 0.8,
+        "shell_min_distance": 40.0,
+        "shell_gap": 1.2,
+        "shell_lateral": 0.15,
+        "shell_min_points": 3,
+        "shell_touch_min": 0.25,
+        "shell_touch_beams": 3.0,
+        "wall_face_min_top": 2.8,
+        "wall_face_edge": 1.3,
+        "wall_face_min_inner": 0.3,
+        "visibility_ratio": 0.15,
+        "retro_intensity": 0.0,
+        "retro_min_fraction": 0.5,
+        "retro_max_height": 1.2,
+        "retro_max_width": 0.8
+      },
+      "tracking": {
+        "gate_base": 1.5,
+        "gate_per_m": 0.02,
+        "ego_speed_max": 25.0,
+        "frame_dt": 0.1,
+        "confirm_hits": 3,
+        "low_confirm_hits": 5,
+        "confirm_time_s": 0.5,
+        "hit_window": 10,
+        "min_hit_fraction": 0.6,
+        "zone_window": 10,
+        "zone_min_fraction": 0.6,
+        "zone_min_votes": 0,
+        "gate_along_only": true,
+        "start_clean": false,
+        "fresh_stop_evidence": false,
+        "fresh_stop_evidence_window": 3,
+        "fresh_stop_evidence_min_hits": 2,
+        "explained_run": 5,
+        "explained_window": 10,
+        "explained_reasons": "column,overhead,retro,shell",
+        "ego_veto_min_speed": 4.0,
+        "ego_veto_max_slope": -0.35,
+        "ego_veto_min_hits": 4,
+        "ego_veto_min_travel": 4.0,
+        "ego_veto_min_distance": 25.0,
+        "column_hold": 2,
+        "column_free_min_spares": 2,
+        "max_misses": 3,
+        "hold_misses": 1,
+        "stop_keep_low_s": 0.3,
+        "reseed_hold": 5,
+        "low_min_seen_distance": 0.0,
+        "near_escalate_voxels": 10,
+        "near_escalate_distance": 35.0,
+        "near_escalate_hits": 5,
+        "stop_keep_signature": true,
+        "stop_keep_thin": 1,
+        "stop_keep_max_s": 10.0,
+        "stop_keep_min_voxels": 10,
+        "doubt_model": "track_opinion.json",
+        "doubt_extra_hits": 10,
+        "doubt_threshold": 0.015,
+        "doubt_near": 25.0,
+        "doubt_sticky": true,
+        "doubt_body_height": 1.0,
+        "doubt_body_range": 40.0,
+        "thin_far_min_distance": 60.0,
+        "thin_far_min_voxels": 3,
+        "far_min_ring_count": 0,
+        "approach_hits": 5,
+        "approach_min_speed": 2.0,
+        "approach_max_residual": 0.5,
+        "conf_gain": 0.35,
+        "conf_decay": 0.25,
+        "conf_threshold": 0.6
+      },
+      "accumulation": {
+        "enabled": true,
+        "n_frames": 5,
+        "min_range": 40.0,
+        "min_points_scale": 0.3,
+        "estimate_speed": false,
+        "speed_min_confidence": 0.5,
+        "speed_max": 30.0,
+        "speed_max_step": 3.0,
+        "speed_warmup_frames": 3,
+        "tracks_min_speed": 1.0,
+        "min_speed": 1.0,
+        "smear_max_length": 2.0,
+        "smear_max_width": 1.0,
+        "max_points_per_frame": 20000,
+        "stamp_dt_range": [
+          0.02,
+          0.5
+        ]
+      },
+      "lowobj": {
+        "enabled": true,
+        "half_width": 1.05,
+        "min_excess": 0.05,
+        "max_excess": 1.0,
+        "min_top": 0.0,
+        "min_point_top": 0.03,
+        "template_range": [
+          4.0,
+          30.0
+        ],
+        "template_bin": 0.025,
+        "template_percentile": 30.0,
+        "template_min_points": 12,
+        "template_dilate": 0.05,
+        "template_smoothing": 0.8,
+        "local_bin": 2.0,
+        "local_min_points": 5,
+        "range_max": 60.0,
+        "foot_max_top": 0.35,
+        "eps": 0.2,
+        "min_points": 3,
+        "min_height": 0.0,
+        "max_length": 1.5,
+        "min_length": 0.0,
+        "max_width": 2.2,
+        "min_width": 0.15,
+        "straddle_enabled": true,
+        "straddle_min_top": 0.1,
+        "straddle_band": 0.3,
+        "straddle_min_width": 0.35,
+        "straddle_max_length": 0.8,
+        "straddle_keep_height_margin": 0.03,
+        "near_enabled": false,
+        "near_range": 30.0,
+        "near_half_width": 0.55,
+        "near_min_excess": 0.05,
+        "near_min_width": 0.24,
+        "near_max_width": 0.55,
+        "near_min_length": 0.0,
+        "near_min_height": 0.0,
+        "near_min_bed_lateral_bins": 20,
+        "near_min_points": 5,
+        "near_max_length": 0.75,
+        "local_support_enabled": false,
+        "local_support_along": 8.0,
+        "local_support_guard": 0.3,
+        "local_support_lateral": 0.15,
+        "local_support_tolerance": 0.025,
+        "local_support_max_correction": 0.15,
+        "pending_advisory": false,
+        "pending_advisory_within": 0.0,
+        "min_model_age": 0,
+        "rail_start_within": 4.0,
+        "rail_start_margin": 0.05,
+        "rail_start_lateral": 0.1,
+        "rail_start_max_width": 0.45,
+        "rail_start_min_ref": 0.06
+      },
+      "calibration": {
+        "enabled": true,
+        "frames": 20,
+        "obs_spacing": 10,
+        "provisional_frames": 5,
+        "provisional_min_deg": 2.5,
+        "max_frames": 400,
+        "search_orientations": true,
+        "keep_up_axis": true,
+        "orientation_votes": 2,
+        "min_rail_score": 0.05,
+        "apply_min_deg": 0.75,
+        "min_yaw_deg": 3.0,
+        "max_tilt_deg": 15.0,
+        "monitor_period": 50,
+        "drift_warn_deg": 1.5,
+        "drift_window": 10,
+        "time_cadence": true,
+        "refine_min_deg": 0.0,
+        "provisional_per_axis": false,
+        "keep_within_deg": 0.25,
+        "refine_raw_trigger": false,
+        "refine_confirm_obs": 2,
+        "refine_max": 1,
+        "reseed_keep_max_deg": 1.0
+      },
+      "health": {
+        "min_points": 20000,
+        "low_points_fraction": 0.5,
+        "near_range": 2.5,
+        "max_near_fraction": 0.2,
+        "min_visibility": 60.0,
+        "sector_deg": 10.0,
+        "lock_window": 20,
+        "min_lock_rate": 0.3,
+        "latency_budget_ms": 100.0,
+        "latency_window": 50,
+        "latency_affects_decision": false,
+        "clear_cap": true,
+        "clear_cap_min_gauge": 1,
+        "clear_cap_min_hits": 1,
+        "clear_cap_margin": -1.0,
+        "clear_cap_points": 0,
+        "clear_cap_skip_columns": true,
+        "clear_cap_lost": true,
+        "clear_cap_thin": true,
+        "clear_cap_persist": 4,
+        "persist_min_points": 2,
+        "persist_max_extent": 0.5,
+        "persist_row_height": 0.05,
+        "persist_row_width": 2.1,
+        "persist_max_around": 10,
+        "persist_shift": [
+          0.5,
+          3.0
+        ],
+        "persist_tol_dy": 0.12,
+        "persist_tol_h": 0.2,
+        "persist_tol_shift": 0.08
+      },
+      "voxel": 0.0
+    },
+    "reviewer_sources": {
+      "analyze.py": "e53a55bdf10c802c12b87653e7dcec1a479c8afdae8074bc2fe64d67e4dae971",
+      "common.py": "ccb4bc4e1e7d9b674e8bc6f6fd16f6aca6685812bc6fac8755c3c3f4df9781ed",
+      "components.py": "253e219672d1ab15b7bd518d0bc3a4da508e73e4963283330f56c911ec371b9a",
+      "derive.py": "ed9c97c160a6f28c05d1690b943680aa01000c6a6e953219cfb4218e6f9f6364",
+      "finalize.py": "12f2eabdfc84dcc4601aa9f2f54070085aedf48c6b9849cbfe411f0f8ca3b43a",
+      "launch.py": "be946d51ce90aad480133e75cb6f3d0f6fc5f88e98535c8b57cc0a9784c8a95d",
+      "package.py": "74bd0d19a95b87725c0da0d71225a195ff4afcf928ccdfd87a0f8b25170a0e5d",
+      "replay.py": "c772069e053b45566ccdffcbec1b9bc5ce8263dd96c0da3504df94d5ec844f07",
+      "verify_package.py": "582b02f40260976e918c10bef2b7041ded9fdc9da851d3a0889d40813743b139",
+      "worker.py": "a824a3a5f6adf811519d2c6f40273735f3994640233a6aedcace4f219f1e51cf"
+    },
+    "files_differing_from_commit": [],
+    "adapter_files": {
+      "compare.py": "197d772702f2df97627dc5800d349ce472b9625ee36c510f5f155013a93181b6",
+      "inspect_sight.py": "8630ea41fe073183eaa56233ed29182d33b77377f089de8f64b59c806e877c57",
+      "launch.py": "41bd2378eebd2b910f4ba18b0ea1cb6d6a087298d27f778d043197f7a23a9371",
+      "normal_diff_details.py": "8cdd471b6a1b3ead91a80bde52e773792bfc8e04e889f00db3d840329c778a5e",
+      "package.py": "23d7d09a8e25c202866ed3652fc6f83a6bd24049e698ecade5ab77932ec71d44",
+      "physical_report.py": "9d80763519ec9bbd18c2d69017fe4d94e0717e91a53ce35fc74df51c4179df33",
+      "probes.py": "84f8c81e5b6baddd753f5dd9371c42e873b632f9e9d7cb2cb8fba8585fd43ae0",
+      "worker.py": "177473509c98ea223648e8ee1ba0015790c9c87ae64b8ce9f5971d67b0b6b713"
+    },
+    "environment": {
+      "AUTHOR_HEAD": "f3074cfb445425c50d926ded235fe01a4c3029ea",
+      "AUTHOR_OVERLAY": "0",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "AUTHOR_PATCH08": "0",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "raw_sha256": {
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016\\restored-dark\\results\\ride_1.jsonl": "48f7f5565cc6a1bd3b6c359fad1bd0574e6675251fb1cc4a2d716af3bc5a2461",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-h4-columns-author-20261016\\restored-dark\\results\\ride_3.jsonl": "cf62dba298d17a8aa59f026dd18193a713495f29da1c3d9411ed951c45c27c7b",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-h4-safety-20261016\\run-001\\replay-sealed-all\\ride_1.jsonl": "b375635ff701e57ec7420a168f70f1618002ec166dfdf43049138d5f061d1fc2",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-integration-h4-safety-20261016\\run-001\\replay-sealed-all\\ride_3.jsonl": "a23b31130431fde908c1cda23fded6c5f6ee534a5a2608d13e4e7440d3c6ba28"
+  }
+}
