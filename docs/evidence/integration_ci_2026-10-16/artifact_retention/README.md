@@ -96,3 +96,14 @@ is **85 archives / 44,603,273,527 bytes**, with no eligible September images lef
 remotely. The original C: archive and proof files above remain unchanged; the disk
 blocker described above is historical. See [the appended D: continuation evidence](d_continuation/README.md)
 for the final multi-root audit, current inventories, and preservation checks.
+
+## Final October image archival — 2026-10-16 16:51 UTC
+
+The user subsequently approved archiving the remaining October 15 main image as
+well. Its 529,881,425-byte ZIP is now verified and retained in the D: archive's
+`main_image` directory; Actions artifact `11990270962` was deleted and returned
+HTTP 404. Earlier statements about retaining this image remotely describe the
+historical policy at those checkpoints. See [the new exact-ID proof](main_image/README.md).
+The final remote inventory contains 60 log artifacts totaling 7,059,109 bytes,
+with no image artifacts. Published v1.0.0 assets remain unchanged. Cumulative
+archival is 86 images / 45,133,154,952 bytes; quota recalculation is unconfirmed.

@@ -1,0 +1,20 @@
+[
+  {
+    "api_sha256_match": true,
+    "embedded_tar_checksums": [
+      {
+        "bytes": 529880968,
+        "checksum_member": "resense-image-1.0.0-3fdc879.tar.gz.sha256",
+        "crc_verified": true,
+        "name": "resense-image-1.0.0-3fdc879.tar.gz",
+        "sha256": "80d429268e9393eb27ed1cf032933e98e60b9754afa9959c081ce3a18b7e995a"
+      }
+    ],
+    "id": 11990270962,
+    "path": "D:\\ReSense-actions-archive-20261016\\main_image\\11990270962--resense-image-1.0.0-3fdc879.zip",
+    "verified_at": "2026-10-16T16:51:40.723833+00:00",
+    "zip_bytes": 529881425,
+    "zip_crc_all_members": true,
+    "zip_sha256": "d047bd5693deda64b7680991908d61dc9a53ff83e08b61b186aeb5e95e10d367"
+  }
+]

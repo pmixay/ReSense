@@ -1,0 +1,24 @@
+{
+  "assets": [
+    {
+      "digest": "sha256:af424e425843213b3ccbbf7058fd86f8cf94e9ae4739d87509837719d07db721",
+      "id": 598868511,
+      "name": "resense-image-v1.0.0.tar.gz",
+      "size": 477449541
+    },
+    {
+      "digest": "sha256:ed23510e966cfc8ce1bb26f89f7e8e41708ddcd9e963e44277dda799b8e6902f",
+      "id": 598868494,
+      "name": "resense-image-v1.0.0.tar.gz.sha256",
+      "size": 94
+    },
+    {
+      "digest": "sha256:ed23510e966cfc8ce1bb26f89f7e8e41708ddcd9e963e44277dda799b8e6902f",
+      "id": 598868487,
+      "name": "SHA256SUMS",
+      "size": 94
+    }
+  ],
+  "id": 399396306,
+  "tag_name": "v1.0.0"
+}
