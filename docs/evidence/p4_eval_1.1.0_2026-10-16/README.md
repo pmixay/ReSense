@@ -26,7 +26,7 @@ numpy 1.26.4 (bundled OpenBLAS 0.3.23), scipy 1.13.1, scikit-learn 1.5.2, g++ 13
 committed flags; one BLAS thread per worker, **`OPENBLAS_CORETYPE=Haswell`**. Both runs fit the
 30-minute target. This is neither the specified 4-vCPU team VM nor the H5 Docker image; timing is
 informational. Harness commit for both batteries: `dd1814e`. Commands are in the logs next to the
-JSONs; external raw outputs are indexed in [raw_sha256.json](raw_sha256.json).
+JSONs; external raw outputs are indexed in [raw_sha256.json](raw_sha256.json) and archived durably in [raw/](raw/README.md).
 
 ## A. Inputs
 

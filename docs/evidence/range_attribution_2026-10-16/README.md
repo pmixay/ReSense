@@ -137,4 +137,4 @@ Runs 1–4 are superseded and not used; their outputs stay external.
   300–340 small_center, 760–790 thin_hanging; 60 visible rows, 6 STOP).
 * ICP odometry from open3d is not bit-reproducible run to run (~1e-14 m); the hashed files used are fixed.
 
-External raw outputs (run 5, check re-runs, ICP) are indexed in [raw_sha256.json](raw_sha256.json).
+External raw outputs (run 5, check re-runs, ICP) are indexed in [raw_sha256.json](raw_sha256.json) and archived in [../p4_eval_1.1.0_2026-10-16/raw/](../p4_eval_1.1.0_2026-10-16/raw/README.md).
