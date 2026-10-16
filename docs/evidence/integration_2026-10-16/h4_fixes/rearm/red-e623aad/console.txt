@@ -1,0 +1,239 @@
+FFFFFF.F.F.F............................................................ [ 28%]
+........................................................................ [ 57%]
+........................................................................ [ 86%]
+..................................                                       [100%]
+=================================== FAILURES ===================================
+______________ test_case44_first_returning_frame11_is_stop[False] ______________
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+fresh = False
+
+    @pytest.mark.parametrize("fresh", [False, True])
+    def test_case44_first_returning_frame11_is_stop(pole, fresh):
+        tracker = _tracker(fresh_stop_evidence=fresh)
+        stops = []
+        for frame in range(20):
+            t = _step(tracker, None if frame in (9, 10) else pole)
+            assert t.id == 1
+            if _stop(t):
+                stops.append(frame)
+            if frame == 0:
+                assert t.last.reason == "column" and t.last.spared
+                assert t.column_hist == [True] and not t.column_held
+            if frame == 9:
+                assert _stop(t) and t.misses == 1
+            if frame == 10:
+                assert not t.reported and not t.stop_earned and t.misses == 2
+            if frame == 11:
+                assert t.last.n_gauge == 72 and t.last.ring_count == 18
+                assert t.last.reason == "" and t.last.spared
+                assert t.confidence == pytest.approx(0.85)
+                assert sum(t.zone_hist) == 9 and not t.column_held
+>               assert _stop(t), "H4 returning frame 11 must regain STOP on its clean physical hit"
+E               AssertionError: H4 returning frame 11 must regain STOP on its clean physical hit
+E               assert False
+E                +  where False = _stop(Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=10, misses=0, ...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]))
+
+tests/test_h4_spare_rearm.py:66: AssertionError
+______________ test_case44_first_returning_frame11_is_stop[True] _______________
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+fresh = True
+
+    @pytest.mark.parametrize("fresh", [False, True])
+    def test_case44_first_returning_frame11_is_stop(pole, fresh):
+        tracker = _tracker(fresh_stop_evidence=fresh)
+        stops = []
+        for frame in range(20):
+            t = _step(tracker, None if frame in (9, 10) else pole)
+            assert t.id == 1
+            if _stop(t):
+                stops.append(frame)
+            if frame == 0:
+                assert t.last.reason == "column" and t.last.spared
+                assert t.column_hist == [True] and not t.column_held
+            if frame == 9:
+                assert _stop(t) and t.misses == 1
+            if frame == 10:
+                assert not t.reported and not t.stop_earned and t.misses == 2
+            if frame == 11:
+                assert t.last.n_gauge == 72 and t.last.ring_count == 18
+                assert t.last.reason == "" and t.last.spared
+                assert t.confidence == pytest.approx(0.85)
+                assert sum(t.zone_hist) == 9 and not t.column_held
+>               assert _stop(t), "H4 returning frame 11 must regain STOP on its clean physical hit"
+E               AssertionError: H4 returning frame 11 must regain STOP on its clean physical hit
+E               assert False
+E                +  where False = _stop(Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=10, misses=0, ...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]))
+
+tests/test_h4_spare_rearm.py:66: AssertionError
+____ test_measured_infrastructure_still_requires_run_after_release[column] _____
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+reason = 'column'
+
+    @pytest.mark.parametrize("reason", ["column", "overhead", "retro", "shell"])
+    def test_measured_infrastructure_still_requires_run_after_release(pole, reason):
+        tracker = _tracker()
+        measured = replace(pole, zone="warning", reason=reason, spared=False)
+        for frame in range(12):
+            cl = measured if frame == 0 else pole
+            t = _step(tracker, None if frame in (9, 10) else cl)
+            if frame == 5:
+>               assert _stop(t)
+E               assert False
+E                +  where False = _stop(Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=6, misses=0, a...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]))
+
+tests/test_h4_spare_rearm.py:80: AssertionError
+___ test_measured_infrastructure_still_requires_run_after_release[overhead] ____
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+reason = 'overhead'
+
+    @pytest.mark.parametrize("reason", ["column", "overhead", "retro", "shell"])
+    def test_measured_infrastructure_still_requires_run_after_release(pole, reason):
+        tracker = _tracker()
+        measured = replace(pole, zone="warning", reason=reason, spared=False)
+        for frame in range(12):
+            cl = measured if frame == 0 else pole
+            t = _step(tracker, None if frame in (9, 10) else cl)
+            if frame == 5:
+>               assert _stop(t)
+E               assert False
+E                +  where False = _stop(Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=6, misses=0, a...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]))
+
+tests/test_h4_spare_rearm.py:80: AssertionError
+_____ test_measured_infrastructure_still_requires_run_after_release[retro] _____
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+reason = 'retro'
+
+    @pytest.mark.parametrize("reason", ["column", "overhead", "retro", "shell"])
+    def test_measured_infrastructure_still_requires_run_after_release(pole, reason):
+        tracker = _tracker()
+        measured = replace(pole, zone="warning", reason=reason, spared=False)
+        for frame in range(12):
+            cl = measured if frame == 0 else pole
+            t = _step(tracker, None if frame in (9, 10) else cl)
+            if frame == 5:
+>               assert _stop(t)
+E               assert False
+E                +  where False = _stop(Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=6, misses=0, a...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]))
+
+tests/test_h4_spare_rearm.py:80: AssertionError
+_____ test_measured_infrastructure_still_requires_run_after_release[shell] _____
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+reason = 'shell'
+
+    @pytest.mark.parametrize("reason", ["column", "overhead", "retro", "shell"])
+    def test_measured_infrastructure_still_requires_run_after_release(pole, reason):
+        tracker = _tracker()
+        measured = replace(pole, zone="warning", reason=reason, spared=False)
+        for frame in range(12):
+            cl = measured if frame == 0 else pole
+            t = _step(tracker, None if frame in (9, 10) else cl)
+            if frame == 5:
+>               assert _stop(t)
+E               assert False
+E                +  where False = _stop(Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=6, misses=0, a...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]))
+
+tests/test_h4_spare_rearm.py:80: AssertionError
+_____________ test_single_noisy_spare_keeps_advisory_release_guard _____________
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+
+    def test_single_noisy_spare_keeps_advisory_release_guard(pole):
+        tracker = _tracker()
+        ordinary = replace(pole, spared=False)
+        advisory = replace(ordinary, zone="warning", reason="beyond_axis")
+        sequence = [ordinary, advisory, ordinary, advisory, advisory, ordinary, pole] + [ordinary] * 5
+        stops = []
+        for frame, cl in enumerate(sequence):
+            t = _step(tracker, cl)
+            if _stop(t):
+                stops.append(frame)
+            if 7 <= frame <= 10:
+>               assert t.reported and t.zone == "warning" and t.fresh_blocked
+E               AssertionError: assert (True and 'warning' == 'warning'
+E                +  where True = Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=8, misses=0, a...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]).reported
+E                 )
+E                   warning and False
+E                +  and   False = Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=8, misses=0, a...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]).fresh_blocked
+
+tests/test_h4_spare_rearm.py:114: AssertionError
+_______________ test_previous_stop_still_rearms_fresh_onset_gate _______________
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+
+    def test_previous_stop_still_rearms_fresh_onset_gate(pole):
+        tracker = _tracker(fresh_stop_evidence=True, fresh_stop_evidence_min_hits=3, zone_window=3)
+        for _ in range(9):
+            t = _step(tracker, pole)
+        assert _stop(t)
+        _step(tracker)
+        t = _step(tracker)
+        assert not t.reported and not t.stop_earned
+        advisory = replace(pole, spared=False, zone="warning", reason="beyond_axis")
+        for _ in range(3):
+            _step(tracker, advisory)
+        _step(tracker, pole)
+        t = _step(tracker, pole)
+>       assert t.id == 1 and t.reported and t.fresh_blocked and not _stop(t)
+E       assert (1 == 1 and True and False)
+E        +  where 1 = Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=14, misses=0, ...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]).id
+E        +  and   True = Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=14, misses=0, ...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]).reported
+E        +  and   False = Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=14, misses=0, ...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]).fresh_blocked
+
+tests/test_h4_spare_rearm.py:141: AssertionError
+________________ test_corroborated_spare_does_not_bypass_doubt _________________
+
+pole = Cluster(points_idx=array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 2..., wall_kept=False, demoted=False, thin=False, weak=False, ring_count=18, low_height_weak=False, spared=True, cut=False)
+
+    def test_corroborated_spare_does_not_bypass_doubt(pole):
+        class DoubtfulOpinion:
+            def prob(self, features):
+                return 0.0
+    
+        tracker = _tracker(doubt_extra_hits=2, doubt_body_height=0.0)
+        tracker.opinion = DoubtfulOpinion()
+        tracker.record = True
+        for _ in range(7):
+            t = _step(tracker, pole)
+>       assert t.reported and t.withheld and not _stop(t) and not t.stop_earned
+E       assert (True and False)
+E        +  where True = Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=7, misses=0, a...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]).reported
+E        +  and   False = Track(id=1, centroid=array([66.7700119 ,  0.68409067, -0.43560627]), velocity=array([0., 0., 0.]), hits=7, misses=0, a...0664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664), (0, 0.0, 66.7699966430664)]).withheld
+
+tests/test_h4_spare_rearm.py:163: AssertionError
+--------------------- generated xml file: /out/pytest.xml ----------------------
+=========================== short test summary info ============================
+FAILED tests/test_h4_spare_rearm.py::test_case44_first_returning_frame11_is_stop[False]
+FAILED tests/test_h4_spare_rearm.py::test_case44_first_returning_frame11_is_stop[True]
+FAILED tests/test_h4_spare_rearm.py::test_measured_infrastructure_still_requires_run_after_release[column]
+FAILED tests/test_h4_spare_rearm.py::test_measured_infrastructure_still_requires_run_after_release[overhead]
+FAILED tests/test_h4_spare_rearm.py::test_measured_infrastructure_still_requires_run_after_release[retro]
+FAILED tests/test_h4_spare_rearm.py::test_measured_infrastructure_still_requires_run_after_release[shell]
+FAILED tests/test_h4_spare_rearm.py::test_single_noisy_spare_keeps_advisory_release_guard
+FAILED tests/test_h4_spare_rearm.py::test_previous_stop_still_rearms_fresh_onset_gate
+FAILED tests/test_h4_spare_rearm.py::test_corroborated_spare_does_not_bypass_doubt
+9 failed, 241 passed in 32.81s
+
+[{"label": "case44_free", "stop_frames": [5, 6, 7, 8, 9, 12, 13, 14, 15, 16, 17, 18, 19]}, {"label": "genuine_column_to_vault", "stop_frames": []}]
+Cloning into '/tmp/repo'...
+done.
+HEAD is now at e623aad Register H4 spare re-arm regression and clean-snapshot protocol
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['python3', '/tmp/repo/docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py']' returned non-zero exit status 1.

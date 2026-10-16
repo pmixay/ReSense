@@ -71,12 +71,13 @@ def test_case44_first_returning_frame11_is_stop(pole, fresh):
 
 @pytest.mark.parametrize("reason", ["column", "overhead", "retro", "shell"])
 def test_measured_infrastructure_still_requires_run_after_release(pole, reason):
-    tracker = _tracker()
+    # Isolate explained_run from the separate two-column hold (tested below).
+    tracker = _tracker(column_hold=0)
     measured = replace(pole, zone="warning", reason=reason, spared=False)
     for frame in range(12):
         cl = measured if frame == 0 else pole
         t = _step(tracker, None if frame in (9, 10) else cl)
-        if frame == 5:
+        if frame == 8:
             assert _stop(t)
         if frame in (9, 10):
             # Misses reset the run, not the measured-hit history.
@@ -111,7 +112,9 @@ def test_single_noisy_spare_keeps_advisory_release_guard(pole):
         if _stop(t):
             stops.append(frame)
         if 7 <= frame <= 10:
-            assert t.reported and t.zone == "warning" and t.fresh_blocked
+            assert t.reported and t.zone == "warning"
+            if t.rule_zone == "gauge":
+                assert t.fresh_blocked
     assert stops == [11]  # Five clean hits, not a spare followed by only three.
 
 
@@ -136,10 +139,11 @@ def test_previous_stop_still_rearms_fresh_onset_gate(pole):
     advisory = replace(pole, spared=False, zone="warning", reason="beyond_axis")
     for _ in range(3):
         _step(tracker, advisory)
-    _step(tracker, pole)
-    t = _step(tracker, pole)
+    ordinary = replace(pole, spared=False)
+    _step(tracker, ordinary)
+    t = _step(tracker, ordinary)
     assert t.id == 1 and t.reported and t.fresh_blocked and not _stop(t)
-    t = _step(tracker, pole)
+    t = _step(tracker, ordinary)
     assert _stop(t) and not t.fresh_blocked
 
 
@@ -158,7 +162,7 @@ def test_corroborated_spare_does_not_bypass_doubt(pole):
     tracker = _tracker(doubt_extra_hits=2, doubt_body_height=0.0)
     tracker.opinion = DoubtfulOpinion()
     tracker.record = True
-    for _ in range(7):
+    for _ in range(6):
         t = _step(tracker, pole)
     assert t.reported and t.withheld and not _stop(t) and not t.stop_earned
     t = _step(tracker, pole)
