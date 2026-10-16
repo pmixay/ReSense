@@ -12,6 +12,7 @@ nine post-settle frames has not been demonstrated fixed or attributed to a node 
   `failed-steps.txt`, `run.json` and `capture.json` preserve failure and provenance.
   Raw capture paths have byte-preserving Git attributes; trailing whitespace in
   the three original ROS/GitHub log files is retained rather than cleaned up.
+  Windows-generated driver receipts retain CRLF bytes alongside the Linux LF captures.
 - Tools-image units: **1,640 passed, 10 recorded-data tests deselected**. Native,
   synthetic smoke, console/player interoperability and remote viewer checks passed.
 - Cold positive: **201 statuses**, decode+detect p95 **73 ms**, no post-settle bag
