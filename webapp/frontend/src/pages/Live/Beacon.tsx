@@ -4,7 +4,7 @@
 // a green light.
 import type { Decision } from '../../api/types';
 import { Card, DECISION_ICON, DecisionChip, Help, Icon, Spinner } from '../../components';
-import { DECISION_CHIP_LABEL } from '../../lib/decisions';
+import { cautionText, DECISION_CHIP_LABEL } from '../../lib/decisions';
 import { fmtInt, fmtNum } from '../../lib/format';
 import { SENSOR_REACH } from '../../lib/track';
 import type { FeedSnapshot } from './feed';
@@ -52,7 +52,7 @@ export function Beacon({ snap, kind, className }: BeaconProps) {
   // ОШИБКА: the input cannot be trusted — no monitored (green) distance, whatever the frame says
   const clear = decision === 'FAULT' ? null : num(msg?.clear_distance);
   const dist = !shown ? null : decision === 'STOP' ? obstacle : decision === 'FAULT' ? null : clear;
-  const distLabel = decision === 'STOP' ? 'До препятствия' : decision === 'FAULT' ? 'Путь не контролируется' : 'Свободно впереди';
+  const distLabel = decision === 'STOP' ? 'До препятствия' : decision === 'FAULT' ? 'Путь не контролируется' : 'Оценка дальности контроля';
   const headTone = live && decision ? decision.toLowerCase() : view === 'idle' || view === 'connecting' || view === 'waiting' ? 'quiet' : 'ink';
   const busy = view === 'connecting' || view === 'waiting';
   // the clock only runs while the link delivers: after the end or an error an old age would read as fresh
@@ -101,12 +101,15 @@ export function Beacon({ snap, kind, className }: BeaconProps) {
           <br />
           <b>ВНИМАНИЕ</b> — объект у габарита или сниженная исправность.
           <br />
-          Иначе <b>СВОБОДНО</b>.
+          Иначе <b>GO — препятствие не обнаружено</b>. Дальность контроля — оценка, не гарантия свободного пути.
           <br />
           Нет сообщения дольше <b>0,5 с</b> — «данные устарели», зелёного нет.
         </Help>
       </div>
 
+      {shown && decision === 'GO' && <p>Препятствие не обнаружено</p>}
+      {shown && decision === 'CAUTION' && <p style={{ overflowWrap: 'anywhere' }}>{cautionText(msg)}</p>}
+      {decision === 'STOP' && (!shown || msg?.stop_held) && <p>СТОП сохранён · последнее расстояние: {fmtNum(obstacle, 1)} м. Нет актуальных данных.</p>}
       <div className={styles.readout}>
         <div className={styles.rl}>{shown && decision ? distLabel : 'Дистанция'}</div>
         {dist === null ? (

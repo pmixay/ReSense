@@ -11,6 +11,7 @@ import asyncio
 import json
 import re
 import threading
+import time
 import urllib.parse
 
 import pytest
@@ -110,7 +111,11 @@ class FakeRosbridge:
                 n += 1
                 f.update(node={"latency_ms": (f.get("timing_ms") or {}).get("total", 20) + 5, "fps": 10.0, "frames": n, "dropped_frames": 0,
                                "input_topic": "/lidar_points"},
-                         snapshot_kind="frame", freshness={"mode": "replay", "valid": True, "reason": "ok"}, stop_held=False)
+                         snapshot_kind="frame", freshness={"mode": "replay", "valid": True, "reason": "current",
+                             "clock_reference": "publisher_utc", "evaluated_at_utc_s": time.time(),
+                             "source_age_s": 0, "residence_age_s": 0, "queue_lag_s": 0,
+                             "max_result_age_s": .5, "future_tolerance_s": .05,
+                             "go_allowed": f["decision"] == "GO"}, stop_held=False)
                 await ws.send(json.dumps({"op": "publish", "topic": STATUS_TOPIC, "msg": {"data": json.dumps(f)}}))
                 self.sent += 1
         except websockets.ConnectionClosed:
@@ -128,6 +133,33 @@ class FakeRosbridge:
 
 
 # ---------------------------------------------------------------------------------------- seed
+
+
+def test_c1_reasons_are_readable_and_cleared_on_transition(app):
+    frame = {"decision": "CAUTION", "obstacle": False, "warning": True,
+             "decision_policy": "v1", "caution_reason": ["advisory_object", "health_warning", "<b>unknown</b>"],
+             "health": {"level": "warn", "decision_level": "warn"},
+             "detections": [], "warnings": [], "clear_distance": 80}
+    with FakeRosbridge([frame]) as node:
+        page = app.page
+        app.goto(f"/live?source=ros&url={node.url}")
+        page.get_by_role("button", name="Подключить", exact=True).click()
+        b = beacon(page)
+        reason = b.get_by_text("Предупреждение об объекте · Снижена достоверность данных · Причина: <b>unknown</b>", exact=True)
+        expect(reason).to_be_visible()
+        assert reason.locator("b").count() == 0
+        for width, height in ((1280, 720), (1920, 1080), (390, 844)):
+            page.set_viewport_size({"width": width, "height": height})
+            expect(reason).to_be_visible()
+            rb, cb = reason.bounding_box(), b.bounding_box()
+            assert rb and cb and rb["x"] >= cb["x"] and rb["x"] + rb["width"] <= cb["x"] + cb["width"] + 1
+            assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), "page must fit viewport"
+        node.frames = [{**frame, "decision": "GO", "warning": False, "health": {"level": "ok", "decision_level": "ok"}}]
+        expect(b.get_by_text("Препятствие не обнаружено", exact=True)).to_be_visible()
+        expect(reason).to_have_count(0)
+        node.publishing.clear()
+        expect(b.get_by_text("ДАННЫЕ УСТАРЕЛИ", exact=True)).to_be_visible()
+        expect(b.get_by_text("Препятствие не обнаружено", exact=True)).to_have_count(0)
 
 
 @pytest.fixture(scope="module")
@@ -212,7 +244,7 @@ def test_live_simulation_transport(app, seeded):
 
     page.get_by_role("button", name="Запустить").click()
     expect(chips(page)).to_have_text("в эфире", timeout=20_000)
-    expect(beacon(page).get_by_text(re.compile(r"^(СВОБОДНО|ВНИМАНИЕ|СТОП|ОШИБКА)$"))).to_be_visible()
+    expect(beacon(page).get_by_text(re.compile(r"^(GO|ВНИМАНИЕ|СТОП|ОШИБКА)$"))).to_be_visible()
     expect(beacon(page).get_by_text(re.compile(r"^(До препятствия|Свободно впереди)$"))).to_be_visible()
     node = card(page, "Узел")
     expect(node).to_contain_text("Гц")
@@ -577,7 +609,7 @@ def test_about_page(app, backend):
     expect(page.get_by_role("tooltip").filter(has_text="1,05 м в каждую сторону")).to_be_visible()
 
     decisions = page.get_by_role("list", name="Решения").get_by_role("listitem")
-    expect(decisions).to_have_text([re.compile(rf"^{d}\?$") for d in ("СВОБОДНО", "ВНИМАНИЕ", "СТОП", "ОШИБКА")])
+    expect(decisions).to_have_text([re.compile(rf"^{d}\?$") for d in ("Препятствие не обнаружено", "ВНИМАНИЕ", "СТОП", "ОШИБКА")])
     page.get_by_role("button", name="Когда СТОП").hover()
     expect(page.get_by_role("tooltip").filter(has_text="подтверждённое препятствие в габарите 2,1 × 3,0 м")).to_be_visible()
 

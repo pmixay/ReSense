@@ -66,7 +66,7 @@ describe('О системе', () => {
     stubSystem(ok);
     renderPage();
     const list = screen.getByRole('list', { name: 'Решения' });
-    expect(within(list).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['СВОБОДНО?', 'ВНИМАНИЕ?', 'СТОП?', 'ОШИБКА?']);
+    expect(within(list).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['Препятствие не обнаружено?', 'ВНИМАНИЕ?', 'СТОП?', 'ОШИБКА?']);
     expect(tip(screen.getByRole('button', { name: 'Когда СТОП' }))).toContain('подтверждённое препятствие в габарите 2,1 × 3,0 м');
     expect(tip(screen.getByRole('button', { name: 'Когда ОШИБКА' }))).toContain('0,5 с');
   });

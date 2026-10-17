@@ -16,7 +16,7 @@ pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
 SENSITIVE = {"tracking.confirm_time_s": 0.1}
-DECISION_WORD = r"(свободно|внимание|стоп|ошибка)"
+DECISION_WORD = r"(препятствие не обнаружено|внимание|стоп|ошибка)"
 
 
 def player_pos(page, run_id: str) -> int:
@@ -301,7 +301,7 @@ def test_run_page_timeline_chart_events_and_downloads(app, backend, seeded):
     assert 0 <= player_pos(page, rid) < len(frames)
     back_to(page, rf"/runs/{rid}$")
     page.get_by_role("radio", name="Путь").click()
-    expect(page.get_by_role("group", name="График: свободный путь по времени")).to_be_visible()
+    expect(page.get_by_role("group", name="График: дальность контроля ≈ по времени")).to_be_visible()
     page.get_by_role("radio", name="Видимость").click()
     expect(page.get_by_role("group", name="График: видимость по времени")).to_be_visible()
 

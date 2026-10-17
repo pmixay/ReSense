@@ -78,7 +78,7 @@ export function DistanceCard({
     return out;
   }, [series, metric]);
 
-  const unitLabel = metric === 'nearest' ? 'детектор' : metric === 'clear' ? 'свободный путь' : 'видимость';
+  const unitLabel = metric === 'nearest' ? 'детектор' : metric === 'clear' ? 'дальность контроля ≈' : 'видимость';
 
   return (
     <Card
@@ -153,7 +153,7 @@ export function DistanceCard({
                   </div>
                   {metric !== 'nearest' && (
                     <div className={styles.tipSub}>
-                      {metric === 'clear' ? 'свободный путь' : 'видимость'} {fmtMeters(v, 0)}
+                      {metric === 'clear' ? 'дальность контроля ≈' : 'видимость'} {fmtMeters(v, 0)}
                     </div>
                   )}
                   {near !== null && near !== undefined && <div className={styles.tipSub}>разметка {fmtRange(near, band?.hi[i] ?? near)}</div>}

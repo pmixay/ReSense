@@ -94,7 +94,9 @@ The judge verified the checksum and offline launch on 13.10; D1 checked metadata
 archive download. `.github/workflows/release.yml` builds the runtime image from a pushed version tag,
 removes it, loads the archive back, plays both smoke bags through the loaded image with no internet
 and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The version in
-`pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` is 1.0.0, kept equal by
+`pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` on the selected integration
+checkout is **1.1.0**, sealed but unreleased (16.10); published **v1.0.0** remains the release
+reference. H6/E1 and release J1 are pending. Versions are kept equal by
 `tests/test_release.py`. Fallbacks: the CI artifact of a `main` run (GitHub login, 30 days) or
 `scripts/export_image.sh` on a machine with internet. The submission is the captain's personally.
 

@@ -107,6 +107,7 @@ def steps(t, items, active):
 # ``--gate-from <new baseline>``, replace each changed value (one line per number), set "run",
 # re-render (mp4 + srt) and run tests/test_overview_video.py, which compares this block with the
 # newest baseline.
+GATE_SOURCE = "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json"
 GATE = {
     "run": "r_7464d80",           # the gate run the numbers come from (shown in the source lines)
     "ride_events": 27,            # ride.alarm_events            (new_data: 13.0 km, 11 271 frames)

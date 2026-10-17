@@ -1018,6 +1018,29 @@ def _advisory(reason, distance=40.0):
                      zone="warning", height_min=0.0, intensity=30.0, reason=reason)
 
 
+def test_c1_consumer_producer_examples(freshness_driver, tmp_path):
+    """Capture real serialization from accepted node fixtures for consumer review."""
+    node, clock, send = freshness_driver
+    rows = {"fault_before_epoch": send(20.0), "go": send(20.1)}
+    clock["warnings"] = [_advisory("column")]
+    rows["object"] = send(20.2)
+    clock["health"] = {"level": "warn", "decision_level": "warn"}
+    rows["both"] = send(20.3)
+    clock["warnings"] = []
+    rows["health"] = send(20.4)
+    clock["obstacle"] = True
+    rows["stop"] = send(20.5)
+    clock["obstacle"] = False
+    rows["held_stop"] = send(20.6, age=2.0)
+    assert {k: v["decision"] for k, v in rows.items()} == {
+        "fault_before_epoch": "FAULT", "go": "GO", "object": "CAUTION",
+        "both": "CAUTION", "health": "CAUTION", "stop": "STOP", "held_stop": "STOP"}
+    assert rows["held_stop"]["stop_held"]
+    assert rows["both"]["caution_reason"] == ["advisory_object", "health_warning"]
+    target = Path(os.environ.get("RESENSE_C1_EXAMPLES", str(tmp_path / "node-examples.json")))
+    target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n")
+
+
 def test_node_selected_policy_keeps_raw_column_warning_and_marker_matches(freshness_driver):
     node, clock, send = freshness_driver
     clock["warnings"] = [_advisory("column")]
@@ -1045,12 +1068,15 @@ def test_node_caution_reasons_are_sorted_unique_and_empty_off_caution(freshness_
     result = send(20.1)
     assert result["decision"] == "CAUTION"
     assert result["caution_reason"] == ["advisory_object", "health_warning"]
+    marker = node.published["/resense/markers"][-1].markers[-1].text
+    assert "object advisory" in marker and "degraded data" in marker
     clock["obstacle"] = True
     stop = send(20.2)
     assert stop["decision"] == "STOP" and stop["caution_reason"] == []
     clock.update(obstacle=False, warnings=[], health={})
     go = send(20.3)
     assert go["decision"] == "GO" and go["caution_reason"] == []
+    assert "advisory" not in node.published["/resense/markers"][-1].markers[-1].text
 
 
 def _queued_freshness_result(node, clock, lag, *, age=0.1, residence=0.0, info=True):

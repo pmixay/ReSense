@@ -2,7 +2,8 @@
 // the preset chip of the header.
 import { Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { downloads } from '../../api/hooks';
+import { downloads, useRunFrames } from '../../api/hooks';
+import { cautionText } from '../../lib/decisions';
 import type { Decision, EvalSummary, ParamSpec, RunDetail } from '../../api/types';
 import { Button, Card, Chip, DecisionChip, EmptyState, Help, Icon } from '../../components';
 import { FRAMES, fmtBytes, fmtCount, fmtMeters, fmtNum, fmtPercent, plural } from '../../lib/format';
@@ -35,13 +36,13 @@ export function EventsCard({
       className={styles.ev}
       title="События"
       headGap={6}
-      help="Всё, кроме СВОБОДНО: эпизоды СТОП, ВНИМАНИЕ, ошибки датчика и разрывы внутри СТОП. Наведите — 3D-вид покажет кадр, клик откроет его в плеере."
+      help="Всё, кроме GO (препятствие не обнаружено): эпизоды СТОП, ВНИМАНИЕ, ошибки датчика и разрывы внутри СТОП. Наведите — 3D-вид покажет кадр, клик откроет его в плеере."
       helpPlacement="bottom"
       actions={<Chip>{fmtNum(r.events.length)}</Chip>}
     >
       {r.events.length === 0 ? (
         <EmptyState icon="check" size="sm" title="Событий нет">
-          Все кадры — СВОБОДНО.
+          Во всех кадрах препятствие не обнаружено.
         </EmptyState>
       ) : (
         <div className={styles.evList} onMouseLeave={() => onSelect(null)}>
@@ -136,6 +137,8 @@ export function EvalCard({ ev }: { ev: EvalSummary }) {
 // ---------------------------------------------------------------- 3D preview
 
 export function PreviewCard({ r, pos, frame, decision, compact = false }: { r: RunDetail; pos: number; frame: number; decision: Decision; compact?: boolean }) {
+  const result = useRunFrames(r.id, pos, 1, { placeholderData: undefined });
+  const current = result.data?.frames[0];
   return (
     <section className={styles.pv} aria-label="3D-вид кадра">
       {r.has_clouds ? (
@@ -160,6 +163,9 @@ export function PreviewCard({ r, pos, frame, decision, compact = false }: { r: R
       <div className={styles.o2}>
         {/* narrow: the frame is already on the glass above */}
         <DecisionChip decision={decision} extra={compact ? undefined : `кадр ${frame}`} />
+        {decision === 'CAUTION' && <span className={styles.glass} style={{ whiteSpace: 'normal', overflowWrap: 'anywhere' }}>
+          {result.isError ? 'Причина недоступна: ошибка данных' : !current ? 'Загрузка причины…' : cautionText(current)}
+        </span>}
         <span className={styles.sp} />
         <Button variant="outline" size="sm" icon="play" to={playerUrl(r.id, pos)}>
           Плеер

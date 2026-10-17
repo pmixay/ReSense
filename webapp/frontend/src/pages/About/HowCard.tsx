@@ -72,7 +72,7 @@ export function HowCard({ className }: { className?: string }) {
           {DECISION_INFO.map((d) => (
             <li key={d.decision} className={[styles.sig, styles[`sig-${d.decision.toLowerCase()}`]].join(' ')}>
               <Icon name={DECISION_ICON[d.decision]} size={22} strokeWidth={2.6} />
-              <span className={styles.sigLabel}>{DECISION_CHIP_LABEL[d.decision]}</span>
+              <span className={styles.sigLabel}>{d.decision === 'GO' ? 'Препятствие не обнаружено' : DECISION_CHIP_LABEL[d.decision]}</span>
               <Help
                 tone={d.decision === 'CAUTION' ? 'dark' : 'light'}
                 placement={d.decision === 'GO' || d.decision === 'CAUTION' ? 'bottom-end' : 'top-end'}

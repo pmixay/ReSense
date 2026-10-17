@@ -55,6 +55,7 @@
   justify-content: space-between;
   padding: 0 70px 0 22px;
 }
+
 .branched .stations {
   padding-right: 40px;
 }
@@ -206,4 +207,22 @@
 .bstations {
   left: 20px;
   padding: 0 44px 0 118px;
+}
+
+/* Compact navigation keeps every destination accessible without overlapping labels. */
+@media (max-width: 700px) {
+  .band { height: auto; padding: 12px 16px; }
+  .main, .branched .main { position: static; }
+  .line, .bline, .transfer, .roundel, .branchName, .st .c { display: none; }
+  .stations, .bstations, .branched .stations {
+    position: static; display: flex; flex-wrap: wrap; justify-content: flex-start;
+    padding: 0; gap: 10px 16px;
+  }
+  .st { width: auto; height: auto; }
+  .lbl { position: static; display: block; transform: none; white-space: normal; }
+  .branch { display: none; }
+  .branched .branch {
+    display: block; position: static; width: auto; margin-top: 12px;
+  }
+  .st:focus-visible { box-shadow: var(--focus); }
 }

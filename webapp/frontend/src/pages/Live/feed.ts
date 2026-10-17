@@ -4,8 +4,9 @@
 // place and published at most every TICK_MS, which is also the freshness clock.
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
 import { subscribeRosStatus, type RosStatusHandlers, type RosStatusSubscription } from '../../api/rosbridge';
+import { isStatus } from '../../api/status';
 import { clampSpeed, openLiveSim, type LiveHandlers, type LiveSimParams, type LiveSocket } from '../../api/ws';
-import { liveView, sampleOf, trimSamples, type LinkStatus, type LiveView, type Sample, type StatusMessage } from './timeline';
+import { liveView, nodeCurrent, sampleOf, trimSamples, type LinkStatus, type LiveView, type Sample, type StatusMessage } from './timeline';
 
 export const TICK_MS = 100;
 /** rosbridge: after an established connection drops, try again this often (until «Отключить»). */
@@ -60,10 +61,6 @@ const SIM_CLOSE: Record<number, string> = {
   4404: 'Прогон не найден',
   1011: 'Ошибка чтения прогона',
 };
-
-function isMessage(v: unknown): v is StatusMessage {
-  return !!v && typeof v === 'object' && typeof (v as { decision?: unknown }).decision === 'string';
-}
 
 export class LiveFeedStore {
   private readonly deps: FeedDeps;
@@ -259,7 +256,11 @@ export class LiveFeedStore {
             this.publish();
           },
           onMessage: (m) => mine() && this.receive(m),
-          onError: () => undefined, // the close event that follows carries the reason
+          onError: (message) => {
+            if (!mine() || !/сообщение/i.test(message)) return; // transport error is followed by close
+            this.error = message;
+            this.publish();
+          },
           onClose: (ev) => {
             if (!mine()) return;
             this.sim = null;
@@ -329,6 +330,8 @@ export class LiveFeedStore {
   }
 
   private scheduleReconnect(url: string): void {
+    if (this.retry !== null) return;
+    this.gen += 1; // invalidate the failed connection's callbacks immediately
     const ros = this.ros;
     this.ros = null;
     try {
@@ -336,7 +339,6 @@ export class LiveFeedStore {
     } catch {
       /* already closed */
     }
-    if (this.retry !== null) return;
     this.link = 'connecting';
     this.publish();
     this.retry = setTimeout(() => {
@@ -360,8 +362,13 @@ export class LiveFeedStore {
     this.seekSkip = pos === null ? 0 : SEEK_SKIP_MAX;
   }
 
-  private receive(raw: unknown): void {
-    if (!isMessage(raw)) return;
+  private receive(input: unknown): void {
+    if (!isStatus(input)) {
+      this.error = 'Некорректное сообщение: данные недоступны';
+      this.publish();
+      return;
+    }
+    let raw: StatusMessage = input;
     // Pause freezes the simulation view immediately. A frame already on the wire
     // must not advance it after the paused snapshot; an explicit paused seek still
     // owns one requested frame. Real ROS status is never filtered by this control.
@@ -375,7 +382,15 @@ export class LiveFeedStore {
       this.awaitSeek(null);
     }
     const now = this.deps.now();
+    this.error = null;
     const sim = this.source?.kind === 'sim';
+    // A watchdog/invalid source cannot erase the last STOP. Only a current node
+    // frame can release it. Simulation preserves the saved decisions verbatim.
+    if (!sim && !nodeCurrent(raw) && this.msg?.decision === 'STOP' && raw.decision !== 'STOP') {
+      raw = { ...raw, decision: 'STOP', obstacle: true, stop_held: true,
+        nearest_distance: this.msg.nearest_distance, detections: this.msg.detections,
+        clear_distance: 0, caution_reason: [] };
+    }
     const t = typeof raw.t === 'number' && Number.isFinite(raw.t) ? raw.t * 1000 : null;
     const at = sim && t !== null ? t : now;
     const prev = this.samples.length ? this.samples[this.samples.length - 1].at : null;
@@ -410,7 +425,10 @@ export class LiveFeedStore {
     const timeNow = sim ? (this.samples.length ? this.samples[this.samples.length - 1].at : 0) : now;
     return {
       link: this.link,
-      view: liveView(this.link, this.lastAt, now, this.paused),
+      view: this.error && this.link === 'open' ? 'error'
+        : this.seekTo !== null && this.link === 'open' ? 'waiting'
+        : !sim && this.link === 'open' && this.msg && !nodeCurrent(this.msg) ? 'stale'
+        : liveView(this.link, this.lastAt, now, this.paused),
       error: this.error,
       msg: this.msg,
       age: this.lastAt === null ? null : Math.max(0, now - this.lastAt),
