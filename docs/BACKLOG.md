@@ -107,17 +107,17 @@ Whether anything after v1.0.0 can still count is the organizers' answer (card O1
 | H3 | PASS: replacement full gate and complete explained frame diff on exact selected `c9aea87` (§2a) | 8.1, 8.2 | P1 | A | S | enabler | done 16.10 |
 | H4 | Revised difference ACCEPTED; no NEW medium+, inherited High OPEN; old safety BLOCKED / correctness PASS preserved | 8.1 (DETECTOR_FREEZE step 3) | P4 | A | S | enabler | done 16.10 |
 | H5 | DONE: all four versions 1.1.0 before passing final gate, 16.10 seal and clean-LF verification (§2a) | 8.6 | P1 | A | S | enabler | done 16.10 |
-| H6 | PENDING: actual complete CI / merge to `main` → card E1 (tag `v1.1.0`, release) | 8.6 | P1 | H | S | enabler | parent next; target 18.10 |
+| H6 | 17.10: integration merged into `main` as **squash** PR #33 (`44b462e`, detector = sealed 1.1.0); no tag yet; history-preserving merge still needed for the branch archive (§8) | 8.6 | P1 | H | S | enabler | merge done; history fix + E1 next |
 | O1 | Ask the organizers: pitch format, whether v1.1.x may be shown or re-run, results before 23.10 | 8.8 (gates 8.1–8.6) | P1 | H | S | decides ~3–6 | 15.10 |
 | E1 | Ship 1.1.0: PR to `main`, tag `v1.1.0`, verify the release, fix the jury block; repeat as v1.2.0 | 8.6 (enabler) | P1 | H+A | S | +0.25 | 18.10, 20.10 |
 | S1 | FAIL; runtime removed, published queue/freshness retained; new diagnosis remains open | 8.3, 8.6 | P1 | A | M | ~+2 if accepted later | reopen after diagnosis |
 | E2 | Local offline PASS; new release-workflow check awaits tagged execution | 8.6 | P1 | A | S | +0.5 | local done; E1 pending |
 | C1 | Shared v1 selected; v2 offline-only FAIL (30.46%, 19 lost alerts), runtime rejects v2 | 8.1 | P1 | H+A | M | +1 if v2 accepted later | acceptance open |
 | C2 | `clear_distance` consistent with the advisory output; publish the overclaim scorer | 8.1 | P3 | H+A | S | +0.5 | 19–20.10 |
-| X1 | Range attribution harness: which rule or tracker hold costs each late frame | 8.2 (enabler) | P4 | A | S | enabler | 16–18.10 |
-| X3 | Standing CLI + measured 40-case v1.0.0 baseline; new-seal baseline pending | 8.4, 8.7 | P4 | A | S | +0.5 | v1.0.0 baseline done; 1.1.0 X3 pending |
+| X1 | DONE 16.10: cause tables on 707ea9c and 1.1.0, traced tracker branches, label check 64/64 per version ([X1](evidence/range_attribution_2026-10-16/README.md)) | 8.2 (enabler) | P4 | A | S | enabler | done 16.10 |
+| X3 | DONE 16.10: 1.1.0 PASS, all 40 cases identical to v1.0.0; Linux = Windows with the OpenBLAS kernel pinned ([P4](evidence/p4_eval_1.1.0_2026-10-16/README.md)) | 8.4, 8.7 | P4 | A | S | +0.5 | done 16.10 |
 | G3 | Specification registered; no held-out execution/result | 8.7, 8.4 | P4 | A | M | up to +1.5 after actual run | spec done; run target 21.10 |
-| J1 | Re-judge the shipped seal with the judge's tools; one table against 13.10 | evidence for all | P4 (P1 reads `delta.md`) | A | M | protects 8.2, +0.5 8.5, +0.5 8.8 | 18–19.10, 21.10 |
+| J1 | Re-judge the shipped seal; dry run reproduces 13.10, 37 range jobs + six bags pre-built on 1.1.0 ([runbook](evidence/rejudge_2026-10-16/RELEASE_DAY.md)); release-only steps wait for E1 | evidence for all | P4 (P1 reads `delta.md`) | A | M | protects 8.2, +0.5 8.5, +0.5 8.8 | ~3–4 h after E1; run 2 21.10 |
 | K1 | Standing train: far axis jitter → STOP flicker at 100–150 m and perturbation-sensitive platform false STOPs | 8.2, 8.4, 8.1 | P3 | A | M | +1 to +1.75 | 18–20.10 |
 | R1 | 0.3 m objects confirmed only from ~45 m (hardware rule, low stage ends at 60 m) | 8.2, 8.1 | P3 | A | M | ~+0.5 | screen 16–17.10, ship 18–20.10 |
 | R2 | Sparse far objects: the point bar leaves an 80–100 m hole (0.5 m cube, set O small_center) | 8.2, 8.1 | P3 | A | M | +0.5 to +1 | screen 16–17.10, ship 18–20.10 |
@@ -952,3 +952,80 @@ Two documents were added on 16.10; neither changes a card above, they attach evi
   `scripts/axis_error_profile.py`: the axis error, per-frame jitter and point counts by range from the organizers'
   synthetic objects (label-only, reproducible). Input for K1 / K2 and for N1's acceptance numbers.
 
+
+## 8. Update of 17.10: release state, the extended dataset and the second lidar
+
+Proposed by P4 on 17.10 from the material below; P1 owns this file and the schedule. No card above changes owner.
+
+### 8a. What changed since §2
+
+| item | state on 17.10 | evidence |
+|---|---|---|
+| `main` | PR #33 merged the integration branch as **one squashed commit** `44b462e`; `main`'s detector = the sealed 1.1.0 (seal verify PASS) | `git show 44b462e` |
+| branch archive | its restore rule needs the frozen seed `e39a011` **in `main`'s history**; after the squash it is not. **Do not retire any branch** (integration, `p1/*`, `p3/*`, `p4/*`, `r3/*`, `h2/*`, `final/*`) until P1 adds a history-preserving merge of `integration/2026-10-15-16` into `main` (no code change) or re-bundles them | [branch archive](evidence/integration_2026-10-16/branch_archive/README.md) |
+| E1 | **no `v1.1.0` tag / release yet**; CI also blocked by the repository's Actions artifact quota (docker / offline-build upload) | CI run of `b0c9c17` |
+| X3, X1, J1 prep | done on 1.1.0 (§3 rows); P4 branch `ccr-027997e8-kqywat` merges cleanly into `main` | [P4 report](evidence/p4_eval_1.1.0_2026-10-16/README.md) |
+| for P2 | case register / numeric export (proposed format, P2 to confirm), confirmed limitations and caption corrections | [export](evidence/p4_eval_1.1.0_2026-10-16/export/FORMAT.md), [limitations](evidence/p4_eval_1.1.0_2026-10-16/LIMITATIONS.md) |
+
+### 8b. The extended dataset of 16.10 (measured)
+
+Organizers' files: [intake note](organizers/extended_dataset_2026-10-16.md); analysis:
+[extended data](evidence/extended_data_2026-10-17/README.md) and [Falcon Prime](sensor/falcon_prime/README.md).
+The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, it is development data (not G3).
+
+* **`new_synth_data`**: three Pandar128 bags (platform 386, switch 736, tunnels 545 frames), same topic / fields /
+  axes as the six originals. Objects are inserted **in place** (no appended block; intensity 1 marks them), so Set O's
+  `label_fake_objects.py` does not label them; no ground truth. Platform: a box at the rail (STOP from 87 m), a box
+  outside (CAUTION), a **person-shaped object STOP only from 44 m** although visible from 201 m (CAUTION from ~166 m;
+  `monitored_range` capped at 45 m at the platform). Switch / tunnels: ≥ 5 and ≥ 3 objects; false STOP on background
+  8 frames (switch) and 3 + 1 frames (tunnels). **No dust or suspension in this delivery.**
+* **`falcon_test`** (second lidar, real, standing train in a dark tunnel, 444 s): topic `/iv_points`, `frame_id`
+  `seyond`, **ROS axes** (x forward, y left, z up), no `ring`, single return, ~95 k points per frame, header stamp =
+  sensor uptime. The default launch works: 1 `FAULT` frame, orientation adopted at frame 1, mount 1.77 m / −2.4°.
+  **But CAUTION on 65–99 % of frames** (two static gauge-edge warnings at 105.6 / 115 m) and short false STOPs at
+  115 m; a walking person (97–127 m) gets STOP from 123 m. Only 187 of 444 s were read (disk); the rest is unseen.
+
+### 8c. Cards: N2 and N3 revised, N5 and N6 new (format of §6)
+
+#### N2 · Second lidar (revised 17.10: measured, launch works; the jury-visible problem is CAUTION)
+**Owner** P1 (launch, docs) + P4 (measurement) + P3 (detector, only after measurement) · **Size** M
+* **Tasks:** (1) P1: the Falcon line in the jury README / gitbook (`/iv_points`, `freshness_mode:=replay`, explicit
+  `sensor_forward:=+x sensor_left:=+y sensor_up:=+z` or the default with auto-calibration), and the two-bag switch
+  Pandar → Falcon in one node (N4); (2) P4: read the unseen 257 s of `falcon_test` in streamed windows; the orientation
+  battery incl. the manual's native x-up frame (which the 8-candidate search cannot find); a Falcon proxy from our
+  Pandar data (±60°, single return, Falcon grid) through the full gate; (3) P3, measurement first: what the two static
+  warnings at 105.6 / 115 m are (real edge structure, or the 0.77 m lateral mount offset / 1.77 m height / −2.4° pitch);
+  ring-free and single-return effects. Sealed changes only from those measurements.
+* **Done when:** the README shows the Falcon command; the whole recording is characterised; the CAUTION and false-STOP
+  cause on the Falcon is attributed (X1-style); a decision on a fix or an honest limitation for the pitch.
+
+#### N3 · Dust / suspension (revised 17.10: the organizers' data contains none)
+**Owner** P4 + P3 · **Size** M · **Depends on** O1-style question to the organizers
+* **Tasks:** (1) P1 asks whether dust data is still to come; (2) P4 builds the generator and measures as in
+  [FINALS_BRIEF](FINALS_BRIEF_2026-10-16.md) N3, so the answer exists if the hidden set has dust.
+
+#### N5 · Labels and scoring for the new synthetic bags
+**Owner** P4 · **Size** S–M · **Depends on** nothing
+* **Tasks:** per-object labels from the intensity-1 marker (exact against Set O for platform frames 0–314), then
+  first-STOP / held distance per object and false STOP per bag on 1.1.0 (and on every candidate). Feeds criterion 1
+  (first-detect range) and 4–5; registered as **development** data before any tuning use.
+
+#### N6 · Late STOP on the synthetic person at the platform (criterion 1)
+**Owner** P3 · **Size** M · **Depends on** N5, X1-style attribution
+* **Evidence:** visible from 201 m, CAUTION from ~166 m, STOP only at 44 m, `monitored_range` capped at 45 m at the
+  platform (the honest-range cap of 1.1.0). **Tasks:** attribute the frames (X1 harness) before any change; then K1 / K2.
+
+### 8d. Order up to 23.10 (replaces §4 from 17.10)
+
+* **17.10:** P1: keep all branches; add the history-preserving merge (or re-bundle); free the Actions artifact quota;
+  tag `v1.1.0` and release (E1); merge the P4 branch. P1: ask the organizers about dust, ground truth for the new
+  synthetic objects, and the Falcon recording (N2 / N3 questions). P4: N5 labels; Falcon remaining windows.
+  P2: confirm the export format; N1 gauge display can start (no seal).
+* **18.10:** P4: J1 on the release (~3–4 h after E1; runbook ready). P1: N4 + the Falcon launch line (N2 task 1).
+  P3: X1-style attribution of the Falcon warnings (N2 task 3) and the platform person (N6), then the 1.2.0 bundle
+  as in §4 (R2 / R1 → K1 → F1 …) with the new bags as **development** checks.
+* **19–20.10:** as §4: bundle items measured one by one; noon 20.10 cut-off; P4 independent safety review of
+  `det/1.2.0`, including the new synthetic bags and the Falcon recording in its checks.
+* **21.10:** P4: J1 run 2 on the final seal; G3 by a fresh agent (unchanged; the new data is not G3). P2: deck numbers
+  from J1 and N5 (marked development data).
+* **22.10:** rehearsal 2 (Falcon bag included in the demo only if N2's CAUTION issue is understood).
