@@ -1,0 +1,3239 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-16T12:07:04.282012+00:00",
+  "head": "b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1",
+  "archives": {
+    "branch": {
+      "sha256": "26b2a311fedc1a0e07b85058badad6953df69fb4de4091c4e60e43c7a662b314",
+      "bytes": 47312366,
+      "bundle_verify_stdout": "The bundle contains these 6 refs:\n2acda69e9ed9b47d6b79b674c269ee40a97faf4f refs/heads/experiment/cross-ring-sparse-evidence\nd3aa88414a9927a81a273b8883156198afa9a141 refs/heads/p1/decision-policy-2026-10-15\n0cccb7e2bea60716e2cd1d352589b8341055b705 refs/heads/p1/offline-rebuild-2026-10-15\na14ddd1faf53b4477b28c1494995b925ce278746 refs/heads/p1/startup-2026-10-15\n9f6a54e4e0c6203bf24973815aa780d844a5a267 refs/heads/p4/heldout-spec-2026-10-15\nd77a861aefc1b9b889eb28851feb365326684b34 refs/remotes/origin/r3/axis-B-trial\nThe bundle requires these 9 refs:\n464f5bc6b193ff3dcc4bd7d30b03745d8d260f6a \n8f232847477aaabc9c5f4965e6466af70b7d5d47 \ndf24c18edbebf83360b0d8bf2e100cf73ec84108 \n692820bc7323b417d4f23dd94a16d0a7636e203f \n059948aceff069133ba936417f2c6cbeb3bf89df \n9a27bbfb69bef2172428a5dec27a86c4047b8d1d \n3fdc87957f5d09ff32573eabe6637924b91ea376 \nd0d17bb5dcc2b5b23f9ddd96744a8fd0424e0b5d \na188a2d07f5ee1a151f3f8d880d2d78d8fe38dc6 \nThe bundle uses this hash algorithm: sha1\n",
+      "bundle_verify_stderr": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016/docs/evidence/integration_2026-10-16/branch_archive/retired-heads.bundle is okay\n",
+      "list_heads": {
+        "refs/heads/experiment/cross-ring-sparse-evidence": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+        "refs/heads/p1/decision-policy-2026-10-15": "d3aa88414a9927a81a273b8883156198afa9a141",
+        "refs/heads/p1/offline-rebuild-2026-10-15": "0cccb7e2bea60716e2cd1d352589b8341055b705",
+        "refs/heads/p1/startup-2026-10-15": "a14ddd1faf53b4477b28c1494995b925ce278746",
+        "refs/heads/p4/heldout-spec-2026-10-15": "9f6a54e4e0c6203bf24973815aa780d844a5a267",
+        "refs/remotes/origin/r3/axis-B-trial": "d77a861aefc1b9b889eb28851feb365326684b34"
+      }
+    },
+    "web": {
+      "verified_files": 19,
+      "raw_bytes": 1939465,
+      "archive": {
+        "bytes": 149177,
+        "sha256": "abc9690d4e04fc345d88d2c84708445b882ec65e74c81ad2ba8c8e7523a3587a"
+      },
+      "external_copy_checked": null,
+      "git_ref_checked": "HEAD",
+      "reads_original_worktree": false
+    }
+  },
+  "pr33": {
+    "baseRefName": "main",
+    "headRefOid": "b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1",
+    "mergeCommit": null,
+    "number": 33,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T12:00:35Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/pmixay/ReSense/actions/runs/38897519801/job/116961465923",
+        "name": "checks",
+        "startedAt": "2026-10-16T12:00:15Z",
+        "status": "COMPLETED",
+        "workflowName": "ci"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T12:04:57Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/pmixay/ReSense/actions/runs/38897519801/job/116961605720",
+        "name": "pytest",
+        "startedAt": "2026-10-16T12:00:37Z",
+        "status": "COMPLETED",
+        "workflowName": "ci"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/pmixay/ReSense/actions/runs/38897519801/job/116961605775",
+        "name": "webapp",
+        "startedAt": "2026-10-16T12:00:37Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "ci"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/pmixay/ReSense/actions/runs/38897519801/job/116961605744",
+        "name": "docker",
+        "startedAt": "2026-10-16T12:00:42Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "ci"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T12:06:41Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/pmixay/ReSense/actions/runs/38897519801/job/116961605903",
+        "name": "offline-build",
+        "startedAt": "2026-10-16T12:00:37Z",
+        "status": "COMPLETED",
+        "workflowName": "ci"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "GitBook (./)",
+        "startedAt": "2026-10-16T12:01:35Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://app.gitbook.com/s/O9ppltm51cj3l0yEyyJr/~/diff/~/revisions/kSDQZnkQBkwqm6UXGkNU/"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "GitBook (./) - resense.gitbook.io/resense-docs/",
+        "startedAt": "2026-10-16T12:01:35Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://resense.gitbook.io/resense-docs/~/revisions/kSDQZnkQBkwqm6UXGkNU/"
+      }
+    ]
+  },
+  "refs": [
+    {
+      "location": "local",
+      "ref": "refs/heads/experiment/cross-ring-sparse-evidence",
+      "sha": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/h2/cut-bar",
+      "sha": "7380f650829fd1c64a9b894afcf2868b6ffc2434",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/integration/2026-10-15-16",
+      "sha": "b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/integration/web-ci-20261016",
+      "sha": "f29e212abe933dcfa76ee9b0ea4afb9cd95bf810",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/main",
+      "sha": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+      "decision": "KEEP-MAIN"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/p1/decision-policy-2026-10-15",
+      "sha": "d3aa88414a9927a81a273b8883156198afa9a141",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/p1/offline-rebuild-2026-10-15",
+      "sha": "0cccb7e2bea60716e2cd1d352589b8341055b705",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/p1/start-2026-10-15",
+      "sha": "01e1f669d8b558755cf0c8ebd680c7641d59becf",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/p1/startup-2026-10-15",
+      "sha": "a14ddd1faf53b4477b28c1494995b925ce278746",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/p3/range-screen",
+      "sha": "527a76c4139add1862b7eaaf954129a73d65964f",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/p4/eval-start-2026-10-15",
+      "sha": "ab295b144c67d9ea5a63ef9fa75fd7d72346073a",
+      "decision": "KEEP-ACTIVE-P4"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/p4/heldout-spec-2026-10-15",
+      "sha": "9f6a54e4e0c6203bf24973815aa780d844a5a267",
+      "decision": "KEEP-ACTIVE-P4"
+    },
+    {
+      "location": "local",
+      "ref": "refs/heads/r3/column",
+      "sha": "ccb68c106f562a1768636685f4513c09336dbec6",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/final/silent-misses",
+      "sha": "d0d17bb5dcc2b5b23f9ddd96744a8fd0424e0b5d",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/h2/cut-bar",
+      "sha": "7380f650829fd1c64a9b894afcf2868b6ffc2434",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/integration/2026-10-15-16",
+      "sha": "b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/integration/web-ci-20261016",
+      "sha": "f29e212abe933dcfa76ee9b0ea4afb9cd95bf810",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/main",
+      "sha": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+      "decision": "KEEP-MAIN"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/p1/start-2026-10-15",
+      "sha": "01e1f669d8b558755cf0c8ebd680c7641d59becf",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/p2/docs-and-pitch-20261015",
+      "sha": "90a472e31f225efc7689ce74db6c36c6e4d7fc5c",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/p3/range-screen",
+      "sha": "527a76c4139add1862b7eaaf954129a73d65964f",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/p4/eval-start-2026-10-15",
+      "sha": "ab295b144c67d9ea5a63ef9fa75fd7d72346073a",
+      "decision": "KEEP-ACTIVE-P4"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/r3/axis",
+      "sha": "972edd2b7a9986e277a30a69d4adce6255462103",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/r3/axis-B-trial",
+      "sha": "d77a861aefc1b9b889eb28851feb365326684b34",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    },
+    {
+      "location": "origin",
+      "ref": "refs/heads/r3/column",
+      "sha": "ccb68c106f562a1768636685f4513c09336dbec6",
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check"
+    }
+  ],
+  "all_local_and_tracking_refs": {
+    "refs/heads/experiment/cross-ring-sparse-evidence": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+    "refs/heads/h2/cut-bar": "7380f650829fd1c64a9b894afcf2868b6ffc2434",
+    "refs/heads/integration/2026-10-15-16": "b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1",
+    "refs/heads/integration/web-ci-20261016": "f29e212abe933dcfa76ee9b0ea4afb9cd95bf810",
+    "refs/heads/main": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+    "refs/heads/p1/decision-policy-2026-10-15": "d3aa88414a9927a81a273b8883156198afa9a141",
+    "refs/heads/p1/offline-rebuild-2026-10-15": "0cccb7e2bea60716e2cd1d352589b8341055b705",
+    "refs/heads/p1/start-2026-10-15": "01e1f669d8b558755cf0c8ebd680c7641d59becf",
+    "refs/heads/p1/startup-2026-10-15": "a14ddd1faf53b4477b28c1494995b925ce278746",
+    "refs/heads/p3/range-screen": "527a76c4139add1862b7eaaf954129a73d65964f",
+    "refs/heads/p4/eval-start-2026-10-15": "ab295b144c67d9ea5a63ef9fa75fd7d72346073a",
+    "refs/heads/p4/heldout-spec-2026-10-15": "9f6a54e4e0c6203bf24973815aa780d844a5a267",
+    "refs/heads/r3/column": "ccb68c106f562a1768636685f4513c09336dbec6",
+    "refs/remotes/origin/HEAD": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+    "refs/remotes/origin/final/silent-misses": "d0d17bb5dcc2b5b23f9ddd96744a8fd0424e0b5d",
+    "refs/remotes/origin/h2/cut-bar": "7380f650829fd1c64a9b894afcf2868b6ffc2434",
+    "refs/remotes/origin/integration/2026-10-15-16": "b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1",
+    "refs/remotes/origin/integration/web-ci-20261016": "f29e212abe933dcfa76ee9b0ea4afb9cd95bf810",
+    "refs/remotes/origin/main": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+    "refs/remotes/origin/p1/start-2026-10-15": "01e1f669d8b558755cf0c8ebd680c7641d59becf",
+    "refs/remotes/origin/p2/docs-and-pitch-20261015": "90a472e31f225efc7689ce74db6c36c6e4d7fc5c",
+    "refs/remotes/origin/p3/range-screen": "527a76c4139add1862b7eaaf954129a73d65964f",
+    "refs/remotes/origin/p4/eval-start-2026-10-15": "ab295b144c67d9ea5a63ef9fa75fd7d72346073a",
+    "refs/remotes/origin/r3/axis": "972edd2b7a9986e277a30a69d4adce6255462103",
+    "refs/remotes/origin/r3/axis-B-trial": "d77a861aefc1b9b889eb28851feb365326684b34",
+    "refs/remotes/origin/r3/column": "ccb68c106f562a1768636685f4513c09336dbec6"
+  },
+  "live_origin_heads": {
+    "refs/heads/final/silent-misses": "d0d17bb5dcc2b5b23f9ddd96744a8fd0424e0b5d",
+    "refs/heads/h2/cut-bar": "7380f650829fd1c64a9b894afcf2868b6ffc2434",
+    "refs/heads/integration/2026-10-15-16": "b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1",
+    "refs/heads/integration/web-ci-20261016": "f29e212abe933dcfa76ee9b0ea4afb9cd95bf810",
+    "refs/heads/main": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+    "refs/heads/p1/start-2026-10-15": "01e1f669d8b558755cf0c8ebd680c7641d59becf",
+    "refs/heads/p2/docs-and-pitch-20261015": "90a472e31f225efc7689ce74db6c36c6e4d7fc5c",
+    "refs/heads/p3/range-screen": "527a76c4139add1862b7eaaf954129a73d65964f",
+    "refs/heads/p4/eval-start-2026-10-15": "ab295b144c67d9ea5a63ef9fa75fd7d72346073a",
+    "refs/heads/r3/axis": "972edd2b7a9986e277a30a69d4adce6255462103",
+    "refs/heads/r3/axis-B-trial": "d77a861aefc1b9b889eb28851feb365326684b34",
+    "refs/heads/r3/column": "ccb68c106f562a1768636685f4513c09336dbec6"
+  },
+  "worktrees": [
+    {
+      "worktree": "C:/Users/alikh/OneDrive/Desktop/projects/ReSense",
+      "HEAD": "3fdc87957f5d09ff32573eabe6637924b91ea376",
+      "branch": "refs/heads/main",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/lastfailed"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/16462351986997156729"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/17867480703864620640"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/1792140303150672777"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/4843696721387261325"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/5072320271784281966"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/5163252616572441770"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/6215232379556026876"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/6260353946903949250"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/7164781315257055948"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/7928756523414932912"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/8456401580857224106"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/9177893092061332917"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/9331774969813942553"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/9692354951773487230"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": "docker/__pycache__/fastdds_shm_share.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/judge_runner.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/probe.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/range_test.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/cli.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/metrics.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/pointcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/synthetic.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/viz.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/_resense_native.pyd"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/detector_node.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/fastcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/analyze_cross_ring_measurement.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/analyze_fresh_support.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/analyze_local_body_support.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/analyze_quality_candidates.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/analyze_residual_events.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/bench_node_path.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/build_deck.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_extended_ride.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_frames.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_to_bag.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/calib_check.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/check_dry_run.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/check_no_network.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/compare_complete_timing.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/compare_health_gate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/compare_history_stress.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/compare_raw_positive_configs.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/compare_setf.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/consistency_check.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/detector_freeze.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/diagnose_oracle_accumulation.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/diagnose_oracle_full_returns.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/diagnose_range_metric.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/diagnose_synthetic_sensitivity.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/eval_real.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/evaluate_monitoring_candidate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/evaluate_thin_monitoring.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/far_range_eval.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/hero_view.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/history_stress.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/label_fake_objects.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/make_overview_video.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/make_smoke_bag.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/mine_objects.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/ml_dataset.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/ml_second_opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/mount_survey.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/novel_placement_eval.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/quality_acceptance.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/quality_screen.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/regression_gate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/release_meta.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/render_false_targets.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/replay_node_frames.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/ride_event_scenes.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/score_clear_distance.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/score_fake_objects.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/start_offsets.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/summarize_false_target_trace.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/synthetic_geometry.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/synthetic_sensitivity.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/trace_detector_stages.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/trace_false_targets.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/trace_fresh_support.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/trace_object_failures.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/track_opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/unpack_dataset.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_algorithm.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_algorithm.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cache_extended_ride.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cache_frames.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cache_io.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_calibration.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_check_no_network.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_clear_cap.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_clear_cap_persist.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cli.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cli.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_compare_setf.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_complete_timing_parity.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_core.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_core.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cpu_savings.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cross_ring.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_dds_transport.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_detector_freeze.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_detector_timing.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_edge_axis.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_envelope.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_envelope.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_envelope_reference.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_evidence_coherence.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_evidence_coherence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fake_objects.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_false_target_trace.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_far_range_eval.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_far_range_placement.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_far_range_placement.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_far_structure.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_far_thin.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fastcloud.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_floating_free.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fresh_stop_evidence.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fresh_stop_evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fresh_support_analysis.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fresh_support_trace.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_health_gate_parity.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_health_histogram.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_history_robustness.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_history_stress_acceptance.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_late_candidates.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_load_image.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_local_body_support.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_low_height_keep.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_low_local_support.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_lowobj_near.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_lowobj_near.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_metrics.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_metrics.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_modules.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_modules.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_native.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_near_escalation.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_node.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_node.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_novel_placement.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_oracle_accumulation_diagnostic.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_oracle_full_return_diagnostic.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_overview_video.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_quality_acceptance.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_quality_candidate_analysis.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_quality_screen.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_rail_start.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_range_metric_diagnostic.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_range_shape_support.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_range_shape_support.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_raw_positive_configs.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_regression_gate.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_release.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_reseed_safety.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_residual_events.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_residual_events.cpython-311-pytest-9.0.3.pyc.22780"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_ride_event_scenes.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_shipped_defaults.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_shipped_defaults.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_speed_eval_helpers.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_stage_trace.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_startup.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_stop_keep.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_synthetic_diagnosis.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_synthetic_import_layout.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_synthetic_sensitivity.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_thin_hanging.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_thin_monitoring.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_track_opinion.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_unpack_dataset.cpython-311-pytest-9.0.3.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 203
+      },
+      "decision": "KEEP-MAIN"
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-cross-ring-base",
+      "HEAD": "df24c18edbebf83360b0d8bf2e100cf73ec84108",
+      "detached": true,
+      "prunable": "gitdir file points to non-existent location",
+      "decision": "KEEP-EXCLUDED-missing-prunable-registration-do-not-touch"
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-h1",
+      "HEAD": "ccb68c106f562a1768636685f4513c09336dbec6",
+      "branch": "refs/heads/r3/column",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/column_hardening_2026-10-15/scripts/__pycache__/hooks.py.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/judge_runner.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/probe.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/range_test.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/metrics.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/pointcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/synthetic.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/_resense_native.pyd"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/fastcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/eval_real.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/score_fake_objects.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_column_free_top.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_native.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_structure_cut.cpython-311-pytest-9.0.3.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 39
+      },
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check",
+      "blockers": [],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-h1.manifest.json",
+        "manifest_sha256": "0a7f82004cab9a393e0612d337d299901148c30cdf3a3dab0dddd225f027079e",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-h1.zip",
+        "sha256": "d1d0fe8be97c48404f8234a2ab2fe08dffadb693ce39fa544d3476ad1d799c60",
+        "archive_bytes": 591862,
+        "files": 39,
+        "raw_bytes": 1219161
+      }
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-h2",
+      "HEAD": "7380f650829fd1c64a9b894afcf2868b6ffc2434",
+      "branch": "refs/heads/h2/cut-bar",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/lastfailed"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/16836786959061522995"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/17479684153629721671"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/judge_runner.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/probe.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/range_test.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/cli.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/metrics.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/pointcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/synthetic.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/_resense_native.pyd"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/fastcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/analyze_cross_ring_measurement.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/check_dry_run.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/eval_real.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/score_fake_objects.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_column_free_top.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cross_ring.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_envelope.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_late_candidates.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_modules.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_native.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_structure_cut.cpython-311-pytest-9.0.3.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 51
+      },
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check",
+      "blockers": [],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-h2.manifest.json",
+        "manifest_sha256": "398b9d05d4360dba46b0ca3cbd8364dadfdcdc264d25baa7c73003a6bb671716",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-h2.zip",
+        "sha256": "a5d0a0ffdb4365f3f21480be5903c77648c529a2157baf2d91b6d519652b3a9d",
+        "archive_bytes": 781922,
+        "files": 51,
+        "raw_bytes": 1837297
+      }
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-20261016",
+      "HEAD": "b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1",
+      "branch": "refs/heads/integration/2026-10-15-16",
+      "exists": true,
+      "status": [
+        {
+          "status": "??",
+          "path": "docs/evidence/integration_2026-10-16/retirement/README.md"
+        },
+        {
+          "status": "??",
+          "path": "docs/evidence/integration_2026-10-16/retirement/prepare.py"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/10721612562158397998"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/13649059259392168080"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/13928496996611827512"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/18074202073975847283"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/6506284236131444538"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.15.8/15358644354157673447"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.15.8/3178518042947065280"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.15.8/9913514873245658380"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/h4_correctness/__pycache__/evidence_audit.cpython-310.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/h4_correctness/__pycache__/independent_checks.cpython-310.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/h4_correctness/__pycache__/run_linux.cpython-310.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/check_archived_lint.cpython-311.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 2,
+        "ignored": 14
+      },
+      "decision": "KEEP-BLOCKED-uncommitted-or-unrecognized-owner-work",
+      "blockers": [
+        {
+          "status": "??",
+          "path": "docs/evidence/integration_2026-10-16/retirement/README.md"
+        },
+        {
+          "status": "??",
+          "path": "docs/evidence/integration_2026-10-16/retirement/prepare.py"
+        }
+      ],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-integration-20261016.manifest.json",
+        "manifest_sha256": "36e26169450a94f2469406cd3feac7d9e9433652b3086425d4714efbe7273c1f",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-integration-20261016.zip",
+        "sha256": "1a9cf54d69f39c8514c95504cdc98eb25bfe7259b30ef2f2e6624951a4229fb7",
+        "archive_bytes": 141980,
+        "files": 16,
+        "raw_bytes": 78437
+      }
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-integration-web-20261016",
+      "HEAD": "f29e212abe933dcfa76ee9b0ea4afb9cd95bf810",
+      "branch": "refs/heads/integration/web-ci-20261016",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-ci-events.raw.jsonl"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-ci.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-events.jsonl"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.jsonl"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid-events.raw.jsonl"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline-valid.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/baseline.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/browser-followup.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/checks.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-green-2.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-green.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/controlled-red.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/frontend-tests.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/navigation-red.log"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-1-events.jsonl"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/targeted-2-events.jsonl"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-1-events.jsonl"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-2-events.jsonl"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/integration_2026-10-16/web_ci/results/upload-3-events.jsonl"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 19
+      },
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check",
+      "blockers": [],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-integration-web-20261016.manifest.json",
+        "manifest_sha256": "e22b61284a082d3178f2a72d1973abd16317fac4e7fa379694ecc3f1c4234443",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-integration-web-20261016.zip",
+        "sha256": "b42d7a5e1960914e49c8611644b0856fbb4ccd120f20b124a522b9c13ed5bc45",
+        "archive_bytes": 234829,
+        "files": 19,
+        "raw_bytes": 1939465
+      }
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-p1-offline",
+      "HEAD": "0cccb7e2bea60716e2cd1d352589b8341055b705",
+      "branch": "refs/heads/p1/offline-rebuild-2026-10-15",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/lastfailed"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/7616570041420771390"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/97162733720102808"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/release_meta.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_release.cpython-311-pytest-9.0.3.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 30
+      },
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check",
+      "blockers": [],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-p1-offline.manifest.json",
+        "manifest_sha256": "b24a39d83b3b0ecd12443f514a5e293beff7512769da8253c848c73e45cfd716",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-p1-offline.zip",
+        "sha256": "42b447870493839ff473f8b9730d58cf30b1788101133b3bc184a29b9f8c0ba4",
+        "archive_bytes": 357149,
+        "files": 30,
+        "raw_bytes": 646069
+      }
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-p1-policy",
+      "HEAD": "d3aa88414a9927a81a273b8883156198afa9a141",
+      "branch": "refs/heads/p1/decision-policy-2026-10-15",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/lastfailed"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/17370247064569115599"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/5085089218030123157"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/7835081657299377806"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/7994927015612600283"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/metrics.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/pointcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/synthetic.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/decision_policy.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/detector_node.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/fastcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/analyze_cross_ring_measurement.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/eval_real.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/evaluate_monitoring_candidate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/evaluate_thin_monitoring.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/hero_view.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/quality_acceptance.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/rescore_decisions.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/score_clear_distance.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/synthetic_geometry.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/synthetic_sensitivity.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cross_ring.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_decision_policy.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fastcloud.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_node.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_quality_acceptance.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_rescore_decisions.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_synthetic_import_layout.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_synthetic_sensitivity.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_thin_monitoring.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/clouds.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/decision.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/evaluation.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/results.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/settings.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/summary.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/util.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/worker.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/tests/__pycache__/test_evaluation.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/tests/__pycache__/test_pure.cpython-311-pytest-9.0.3.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 69
+      },
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check",
+      "blockers": [],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-p1-policy.manifest.json",
+        "manifest_sha256": "c9bd7e87120e3f3190ebe8e3e8d6d8c77501a4c351611bc7f75aaad08fbb0b72",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-p1-policy.zip",
+        "sha256": "f31e96385f0a42c5928481cdfe611a10a71e1554e165bf80050c76c7910e3603",
+        "archive_bytes": 824752,
+        "files": 69,
+        "raw_bytes": 1905269
+      }
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-p1-start",
+      "HEAD": "01e1f669d8b558755cf0c8ebd680c7641d59becf",
+      "branch": "refs/heads/p1/start-2026-10-15",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/lastfailed"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/10218123362374158414"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/10800865988486477804"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/10876127775361395248"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/11007169964416278433"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/11444962416700056810"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/11456216456156893278"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/12077911633030506988"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/12711456509152041232"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/12897194837070337082"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/13095882797099986912"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/13113787723380115033"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/13172269977956400346"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/13417048800813086161"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/13813360742874388568"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/14297405916790500068"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/14599494788313254527"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/16210246271292242938"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/16576940216542892316"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/16938383516619356111"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/17001430521431847076"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/1746716827208039929"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/17618857440006703743"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/17710209734099880191"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/17757713794882404818"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/17962145337604132906"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/18207001855699407107"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/18401981998998162192"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/18425643411116588047"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/2043934821386274304"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/2131099457417560491"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/2359855899684129320"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/2594294931655980462"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/2883406950652122342"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/3255736427026164610"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/3496143394701269122"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/4174302239271065390"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/4729166201940469116"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/4861637830978574918"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/4904367449343826754"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/5335909202176480120"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/5388463263780836268"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/5564758118047070308"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/5613307225637545541"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/5886575258855907227"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/6129619793966036024"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/6619287785857293595"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/6738314757702974299"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/6753208913139821616"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/7756044176262670045"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/7972507099546999847"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/7975506748099734237"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/8049959826586890767"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/8112507654990875259"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/8303410073150388984"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/8796041948531105758"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/9340987780128833685"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/9569338896762043170"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/9676449990241503937"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/node_startup_2026-10-15/docker_tools/__pycache__/bags_volume.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/node_startup_2026-10-15/docker_tools/__pycache__/launch_matrix.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/node_startup_2026-10-15/docker_tools/__pycache__/publish_report.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/offline_rebuild_2026-10-15/__pycache__/verify.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/metrics.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/pointcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/synthetic.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/_resense_native.pyd"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/decision_policy.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/detector_node.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/fastcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/analyze_cross_ring_measurement.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/decision_policy_import.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/hero_view.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/rescore_decisions.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/score_clear_distance.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/startup_acceptance.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/synthetic_geometry.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/synthetic_sensitivity.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_decision_policy.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_docker_fixtures.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fastcloud.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_node.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_node.cpython-311-pytest-9.0.3.pyc.25296"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_rescore_decisions.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_startup_acceptance.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_synthetic_import_layout.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "webapp/backend/resense_web/__pycache__/decision.cpython-311.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 115
+      },
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check",
+      "blockers": [],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-p1-start.manifest.json",
+        "manifest_sha256": "81450bb61697269368b0d0ebe4ecc18866d920c3156df29161b0a82ced9021c0",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-p1-start.zip",
+        "sha256": "fd0aa7706a0d3535d8e693102af5a85aac9f382bb80b59f456a224fb91e037ab",
+        "archive_bytes": 1080661,
+        "files": 115,
+        "raw_bytes": 2729425
+      }
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-p1-startup",
+      "HEAD": "a14ddd1faf53b4477b28c1494995b925ce278746",
+      "branch": "refs/heads/p1/startup-2026-10-15",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/lastfailed"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/pointcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/synthetic.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/_resense_native.pyd"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/detector_node.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/fastcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_fastcloud.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_node.cpython-311-pytest-9.0.3.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 32
+      },
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check",
+      "blockers": [],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-p1-startup.manifest.json",
+        "manifest_sha256": "46e34a43e0c49ebbcc5e9ae0429361f8535a630856d94b7d8721c80f18646865",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-p1-startup.zip",
+        "sha256": "7be79a72a27f4af8f70d1fe7aa4083e9c8022e36989f8e8130281f4b63c199ea",
+        "archive_bytes": 600618,
+        "files": 32,
+        "raw_bytes": 1331905
+      }
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-p4-baseline-707ea9c",
+      "HEAD": "707ea9cda051369326fb9407c42488c1033dad76",
+      "detached": true,
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/judge_runner.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/metrics.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/pointcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/synthetic.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/_resense_native.pyd"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/fastcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_extended_ride.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_frames.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/eval_real.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/regression_gate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/score_fake_objects.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cache_extended_ride.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_cache_io.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_native.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_regression_gate.cpython-311-pytest-9.0.3.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 41
+      },
+      "decision": "KEEP-ACTIVE-P4"
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-p4-eval",
+      "HEAD": "ab295b144c67d9ea5a63ef9fa75fd7d72346073a",
+      "branch": "refs/heads/p4/eval-start-2026-10-15",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": ".pytest_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/README.md"
+        },
+        {
+          "status": "!!",
+          "path": ".pytest_cache/v/cache/nodeids"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/.gitignore"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/12726422467541889789"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/0.11.13/396788864209055872"
+        },
+        {
+          "status": "!!",
+          "path": ".ruff_cache/CACHEDIR.TAG"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/judge_runner.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/probe.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/range_test.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/robustness_battery.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.3.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "tests/__pycache__/test_robustness_battery.cpython-311-pytest-9.0.3.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 14
+      },
+      "decision": "KEEP-ACTIVE-P4"
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-p4-heldout",
+      "HEAD": "9f6a54e4e0c6203bf24973815aa780d844a5a267",
+      "branch": "refs/heads/p4/heldout-spec-2026-10-15",
+      "exists": true,
+      "status": [],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 0
+      },
+      "decision": "KEEP-ACTIVE-P4"
+    },
+    {
+      "worktree": "C:/Users/alikh/AppData/Local/Temp/opencode/rs-range-screen",
+      "HEAD": "527a76c4139add1862b7eaaf954129a73d65964f",
+      "branch": "refs/heads/p3/range-screen",
+      "exists": true,
+      "status": [
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/judge_runner.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/probe.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "docs/evidence/judgement_2026-10-13/scripts/__pycache__/range_test.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/_native.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/accumulate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/calibration.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/clustering.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/config.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/detector.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/egomotion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/evidence.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/farrails.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/frame.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/gauge.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/health.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/lowobj.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/metrics.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/opinion.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/pointcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/sensor.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/synthetic.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/track.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/__pycache__/tracking.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "resense/_resense_native.pyd"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/__init__.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "ros2_ws/src/resense_ros/resense_ros/__pycache__/fastcloud.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_frames.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/cache_io.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/eval_real.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/regression_gate.cpython-311.pyc"
+        },
+        {
+          "status": "!!",
+          "path": "scripts/__pycache__/score_fake_objects.cpython-311.pyc"
+        }
+      ],
+      "counts": {
+        "tracked": 0,
+        "untracked": 0,
+        "ignored": 33
+      },
+      "decision": "CANDIDATE-after-green-merge-and-fresh-preservation-check",
+      "blockers": [],
+      "backup": {
+        "manifest": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-range-screen.manifest.json",
+        "manifest_sha256": "20ad2f59b788fa4b9484d6694bcf27a749b37870be9715beb5591cab9dd6fafd",
+        "archive": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01/rs-range-screen.zip",
+        "sha256": "663511091990fa7fc7040999553fc23cdfdd8b78599c7cbae50f5332d225332f",
+        "archive_bytes": 526227,
+        "files": 33,
+        "raw_bytes": 956884
+      }
+    }
+  ],
+  "source_refs_unchanged": true,
+  "deletion_performed": false,
+  "snapshot_directory": "C:/Users/alikh/AppData/Local/Temp/opencode/resense-retirement-20261016/premerge-01"
+}

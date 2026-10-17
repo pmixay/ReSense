@@ -1,0 +1,4 @@
+resense: /upload-followup02-e6cf5f2/resense/__init__.py version: 1.1.0
+native: /upload-followup02-e6cf5f2/resense/_native.py native (_resense_native.so)
+{'playwright': '1.64.0', 'pytest': '9.1.1', 'open3d': '0.19.0', 'numpy': '1.26.4'}
+chromium: 156.0.8078.4

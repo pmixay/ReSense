@@ -31,7 +31,7 @@
   алгоритм увидел за X метров». Длительность не подтверждена — готовим 5 минут.
   На 15.10 [сообщение O1](QUESTIONS.md#o1--message-ready-for-the-captain-to-send-1510)
   о времени выступления/Q&A, демонстрации экрана и допустимости версии 1.1.x подготовлено;
-  отправка капитаном и ответ ожидаются ([журнал](organizers/answers.md#10-o1-pitch-format-post-submission-updates-and-results-prepared-1510)).
+  отправка капитаном и ответ ожидаются ([журнал](organizers/answers.md#11-o1-pitch-format-post-submission-updates-and-results-prepared-1510)).
 * **Демонстрация (ТЗ §4):** контейнер → bag → облако → обнаружение → расстояние; показ в реальном
   времени приветствуется, удалённый допустим.
 * **Видео (ТЗ §5, §7.2):** короткий ролик работы алгоритма — [`video/README.md`](video/README.md).

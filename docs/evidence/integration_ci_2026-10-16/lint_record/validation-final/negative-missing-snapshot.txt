@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-56b0okh9\scripts\check_archived_lint.py", line 163, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-56b0okh9\scripts\check_archived_lint.py", line 150, in main
+    exclusions = verify(ROOT, lock)
+                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alikh\AppData\Local\Temp\opencode\ci-lint-clean-56b0okh9\scripts\check_archived_lint.py", line 59, in verify
+    data = safe_path(root, name).read_bytes()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alikh\AppData\Local\Programs\Python\Python311\Lib\pathlib.py", line 1050, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alikh\AppData\Local\Programs\Python\Python311\Lib\pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\ci-lint-clean-56b0okh9\\docs\\evidence\\cycle_2026-09-28\\complete_timing\\default\\run_gate.py'

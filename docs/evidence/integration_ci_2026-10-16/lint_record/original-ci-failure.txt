@@ -1,0 +1,302 @@
+checks	lint (ruff, pinned)	﻿2026-10-16T11:43:51.5285412Z ##[group]Run pipx run ruff==0.15.8 check --output-format github --exclude docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py .
+checks	lint (ruff, pinned)	2026-10-16T11:43:51.5286252Z [36;1mpipx run ruff==0.15.8 check --output-format github --exclude docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py .[0m
+checks	lint (ruff, pinned)	2026-10-16T11:43:51.6596333Z shell: /usr/bin/bash -e {0}
+checks	lint (ruff, pinned)	2026-10-16T11:43:51.6596815Z ##[endgroup]
+checks	lint (ruff, pinned)	2026-10-16T11:43:52.4837577Z creating virtual environment...
+checks	lint (ruff, pinned)	2026-10-16T11:43:52.7326348Z installing ruff from spec 'ruff==0.15.8'...
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4780282Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/analyze_h3.py:11:8: F401 `sys` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `sys`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4790397Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/finish_h3_analysis.py:22:20: F541 f-string without any placeholders
+checks	lint (ruff, pinned)	  help: Remove extraneous `f` prefix
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4793240Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py:10:8: F401 `os` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `os`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4795312Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py:21:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4796819Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py:22:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4798569Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py:23:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4800094Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py:24:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4801622Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py:25:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4803103Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py:26:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4804599Z ##[error]docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py:27:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4806210Z ##[error]docs/evidence/integration_2026-10-16/h3_selected/helpers/analyze_h3.py:11:8: F401 `sys` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `sys`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4808436Z ##[error]docs/evidence/integration_2026-10-16/h3_selected/helpers/check_withdrawn_config.py:15:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4810045Z ##[error]docs/evidence/integration_2026-10-16/h3_selected/helpers/check_withdrawn_config.py:16:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4811604Z ##[error]docs/evidence/integration_2026-10-16/h3_selected/helpers/check_withdrawn_config.py:17:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4813144Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/compare_scenes.py:27:44: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4814659Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/compare_scenes.py:33:32: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4816266Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/diagnose_witness.py:21:61: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4818066Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/diagnose_witness.py:21:91: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4819607Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:22:52: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4821091Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:30:76: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4822615Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:42:40: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4824146Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:43:17: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4825846Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:45:28: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4827635Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:46:43: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4829155Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:47:16: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4830629Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:52:37: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4912726Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:54:28: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4915660Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:55:59: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4918286Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:71:39: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4920749Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:118:39: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4923275Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:127:52: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4925739Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py:149:26: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4928580Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py:3:8: F401 `hashlib` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `hashlib`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4931219Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py:14:66: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4933730Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py:14:111: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4935983Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py:38:37: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4938916Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py:38:56: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4941411Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py:39:45: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4943869Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/followup_checks.py:25:30: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4946336Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/followup_checks.py:25:75: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4949133Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:12:8: F401 `math` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `math`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4951712Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:115:23: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4954627Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:151:9: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `other` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4957689Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:155:19: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4960414Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:224:28: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4962813Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:237:27: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4964689Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:248:13: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4966231Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:262:30: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4967965Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:263:32: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4969493Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:308:15: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4971066Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:332:28: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4972601Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:350:54: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4974119Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:368:48: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4975607Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:389:12: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4977303Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:390:26: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4978849Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:391:13: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4980327Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:393:8: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4981828Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:394:22: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4983291Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:395:9: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4984778Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py:432:30: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4986297Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/inventory_evidence.py:12:87: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4988165Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/inventory_evidence.py:15:43: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4989725Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/inventory_evidence.py:18:105: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4991251Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_continuation.py:16:66: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4992796Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_continuation.py:16:94: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4994330Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_followup.py:11:50: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4995872Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_followup.py:11:89: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4997593Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_followup.py:13:57: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.4999102Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_followup.py:13:136: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5000599Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_followup02.py:12:52: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5002086Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_followup02.py:12:91: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5003721Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_followup02.py:14:59: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5005215Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/launch_followup02.py:14:138: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5006690Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/resume_linux.py:20:51: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5008339Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/resume_linux.py:40:26: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5009806Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/run_followup.py:18:38: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5011277Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/run_followup02.py:20:38: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5012902Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:3:25: F401 `dataclasses.fields` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5014574Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:3:32: F401 `dataclasses.is_dataclass` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5016224Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:4:8: F401 `hashlib` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `hashlib`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5018043Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:8:8: F401 `itertools` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `itertools`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5020017Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:13:28: F401 `resense.config.DetectorConfig` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `resense.config.DetectorConfig`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5021994Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:14:30: F401 `resense.detector.Detector` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `resense.detector.Detector`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5023844Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:15:27: F401 `resense.frame.Frame` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `resense.frame.Frame`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5025528Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:23:10: F821 Undefined name `scenes`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5026941Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:24:38: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5028522Z ##[error]docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py:24:83: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5030141Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/columns/compare.py:23:5: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `stop` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5031828Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/columns/compare.py:35:9: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `relevant` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5033569Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/details.py:17:5: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `natural` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5035347Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/package.py:164:9: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `hits` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5036860Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py:19:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5038320Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py:20:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5039687Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py:21:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5041190Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py:22:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5042545Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py:23:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5043929Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py:47:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5045384Z ##[error]docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py:48:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5046806Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:8:29: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5048295Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:8:70: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5049680Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:9:18: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5051072Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:9:34: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5052404Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:9:36: E741 Ambiguous variable name: `O`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5053762Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:9:49: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5055132Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:19:22: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5056545Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:21:8: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5058256Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:23:43: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5059683Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:24:39: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5061100Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:25:21: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5062513Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:25:36: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5064064Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:25:54: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5065458Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:28:57: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5066817Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:31:43: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5068441Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:32:42: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5069855Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:43:22: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5071231Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:47:43: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5072804Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:55:21: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `dist` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5074314Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:64:34: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5075731Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:66:13: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5077217Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:66:27: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5078619Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:70:25: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5080149Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:70:44: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5081533Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:73:61: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5082904Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:75:47: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5084268Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:77:63: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5085801Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:83:21: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `dist` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5087383Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:108:36: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5088773Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:110:28: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5090160Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:114:22: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5091537Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:121:47: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5092908Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:121:91: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5094284Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:121:98: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5095645Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:124:26: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5097033Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:124:43: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5098528Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:130:32: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5100072Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:132:17: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `stop` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5101740Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:134:32: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5103112Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:152:38: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5104496Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:155:21: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5105892Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:157:74: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5107384Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:158:22: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5108782Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:159:20: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5110178Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:161:23: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5111559Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:162:54: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5112927Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:163:47: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5114312Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:171:40: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5115681Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:191:12: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5117288Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:191:41: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5118679Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:194:47: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5120043Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:194:62: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5121424Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:194:83: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5122803Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:196:23: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5124180Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:197:54: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5125550Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:200:35: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5126916Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:206:74: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5128406Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:212:52: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5129809Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:223:30: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5131186Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:227:57: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5132553Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/analyze.py:236:60: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5133924Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/common.py:20:33: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5135290Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/common.py:21:33: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5136636Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/common.py:22:27: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5138069Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/common.py:23:36: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5139543Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/common.py:49:20: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5140950Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/common.py:76:5: E401 Multiple imports on one line
+checks	lint (ruff, pinned)	  help: Split imports
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5142346Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/common.py:80:76: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5143742Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:19:59: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5145154Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:21:31: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5146586Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:28:35: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5148101Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:29:38: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5149521Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:31:28: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5150922Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:41:16: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5152354Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:41:33: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5153745Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:49:24: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5155329Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:54:29: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5156753Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:54:37: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5158244Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:76:33: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5159643Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:78:17: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5161048Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:89:30: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5162472Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:105:23: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5163907Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:111:72: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5165345Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:116:26: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5166759Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:122:29: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5168280Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:123:45: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5169689Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:131:19: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5171104Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:131:41: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5172513Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:146:35: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5173921Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:158:43: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5175326Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:169:46: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5176732Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:180:42: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5178492Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:193:37: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5179962Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:195:44: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5181406Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:199:22: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5182831Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:199:48: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5184241Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:199:79: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5185640Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:204:15: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5187051Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:204:36: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5188580Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:208:31: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5190019Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:216:33: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5191430Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:216:74: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5192829Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:218:17: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5194398Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/components.py:218:60: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5195837Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/derive.py:2:1: E401 Multiple imports on one line
+checks	lint (ruff, pinned)	  help: Split imports
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5197350Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/derive.py:4:29: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5198749Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/derive.py:4:54: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5200111Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/derive.py:4:73: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5227492Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/derive.py:19:45: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5229856Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/derive.py:20:36: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5232050Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/derive.py:22:36: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5233927Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:2:1: E401 Multiple imports on one line
+checks	lint (ruff, pinned)	  help: Split imports
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5235539Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:2:17: F401 `hashlib` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `hashlib`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5237263Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:4:29: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5238880Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:4:70: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5240556Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:5:18: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5242120Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:5:34: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5243477Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:5:36: E741 Ambiguous variable name: `O`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5244873Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:9:37: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5246477Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:9:52: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5249004Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:15:36: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5251631Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:21:22: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5255062Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:24:45: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5258150Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/finalize.py:24:70: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5261303Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/launch.py:2:1: E401 Multiple imports on one line
+checks	lint (ruff, pinned)	  help: Split imports
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5264831Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/package.py:2:1: E401 Multiple imports on one line
+checks	lint (ruff, pinned)	  help: Split imports
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5266316Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/package.py:8:23: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5267815Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/package.py:18:25: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5270624Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:9:33: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5273393Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:21:55: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5277051Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:24:53: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5281379Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:34:25: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5284081Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:49:50: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5286218Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:50:23: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5287695Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:53:26: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5289123Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:62:17: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5291887Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:62:30: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5293464Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:62:46: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5294871Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:69:43: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5296276Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:75:40: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5297716Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:82:53: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5299103Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:93:30: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5300456Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:94:29: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5301785Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/replay.py:98:28: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5303227Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/verify_package.py:2:1: E401 Multiple imports on one line
+checks	lint (ruff, pinned)	  help: Split imports
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5304705Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/worker.py:1:1: E401 Multiple imports on one line
+checks	lint (ruff, pinned)	  help: Split imports
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5306252Z ##[error]docs/evidence/integration_2026-10-16/h4_safety/worker.py:3:31: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5307905Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/audit.py:96:9: E731 Do not assign a `lambda` expression, use a `def`
+checks	lint (ruff, pinned)	  help: Rewrite `hit` as a `def`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5309382Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/audit.py:135:31: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5310771Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/audit.py:196:34: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5313437Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py:41:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5314796Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py:42:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5316487Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py:43:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5319276Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py:44:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5321197Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py:45:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5322754Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py:46:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5324996Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py:47:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5326565Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/probes.py:145:29: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5328075Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/probes.py:203:44: E702 Multiple statements on one line (semicolon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5329474Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/probes.py:204:26: E701 Multiple statements on one line (colon)
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5331176Z ##[error]docs/evidence/integration_2026-10-16/h4_selected/probes.py:230:5: F841 Local variable `required` is assigned to but never used
+checks	lint (ruff, pinned)	  help: Remove assignment to unused variable `required`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5332828Z ##[error]docs/evidence/integration_2026-10-16/h5/helpers/analyze_h3.py:11:8: F401 `sys` imported but unused
+checks	lint (ruff, pinned)	  help: Remove unused import: `sys`
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5334307Z ##[error]docs/evidence/integration_2026-10-16/h5/helpers/check_final_config.py:18:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5335744Z ##[error]docs/evidence/integration_2026-10-16/h5/helpers/check_final_config.py:19:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5337279Z ##[error]docs/evidence/integration_2026-10-16/h5/helpers/check_final_config.py:20:1: E402 Module level import not at top of file
+checks	lint (ruff, pinned)	2026-10-16T11:43:57.5343157Z ##[error]Process completed with exit code 1.

@@ -25,7 +25,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import time
 
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 INDEX = os.path.join(_ROOT, "web", "index.html")
@@ -81,7 +80,7 @@ def media_duration_s(path: str) -> float | None:
 
 def check(jsonl: str, screenshot: str | None, video: str | None, speed: float, min_dist: float,
           max_dist: float, chromium: str | None = None, timeout_s: float = 120.0) -> dict:
-    from playwright.sync_api import sync_playwright
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_playwright
 
     jsonl = os.path.abspath(jsonl)
     if not os.path.exists(jsonl):
@@ -106,22 +105,39 @@ def check(jsonl: str, screenshot: str | None, video: str | None, speed: float, m
         page.wait_for_function("window.resense.state.frames.length > 0")
         n = page.evaluate("window.resense.state.frames.length")
         report["frames"] = n
-        banner0 = banner_text(page)
-        report["observed"].append((0, banner0))
+        # At speed 10 a frame lasts 10 ms: Python polling (and even two successive
+        # evaluate calls for idx/title) can skip alarms or pair a title with the wrong
+        # index. Observe the actual rendered title in the browser, at each replay
+        # task's mutation checkpoint. Never infer displayed alarms from input flags.
+        page.evaluate("""() => {
+            const title = document.getElementById('banner-title');
+            const observed = [];
+            const capture = () => {
+                const pair = [window.resense.state.idx, title.textContent.trim()];
+                const last = observed[observed.length - 1];
+                if (!last || last[0] !== pair[0] || last[1] !== pair[1]) observed.push(pair);
+            };
+            const observer = new MutationObserver(capture);
+            observer.observe(title, {childList: true, characterData: true, subtree: true});
+            capture();
+            window.__dashboardPlaybackEvidence = {observed, observer, capture};
+        }""")
         page.select_option("#speed", "%g" % speed)
         page.click("#play")
-        t_end = time.time() + timeout_s
-        last_idx = -1
-        while time.time() < t_end:
-            st = page.evaluate("({idx: window.resense.state.idx, playing: window.resense.state.playing})")
-            if st["idx"] != last_idx:
-                last_idx = st["idx"]
-                report["observed"].append((last_idx, banner_text(page)))
-            if not st["playing"] and st["idx"] >= n - 1:
-                break
-            time.sleep(0.02)
-        else:
+        try:
+            page.wait_for_function("!resense.state.playing && resense.state.idx >= resense.state.frames.length - 1",
+                                   timeout=timeout_s * 1000)
+        except PlaywrightTimeoutError:
             report["errors"].append("playback did not finish in time")
+        # Stop recording BEFORE screenshot seeking: a later seek must not rescue a
+        # failed playback assertion or insert reconstructed intermediate frame titles.
+        report["observed"] = page.evaluate("""() => {
+            const evidence = window.__dashboardPlaybackEvidence;
+            evidence.capture();
+            evidence.observer.disconnect();
+            delete window.__dashboardPlaybackEvidence;
+            return evidence.observed;
+        }""")
         # deterministic screenshot: the frame with the nearest confirmed obstacle
         best = page.evaluate("""() => { const f = window.resense.state.frames; let b = -1, d = Infinity;
             f.forEach((r, i) => { if (r.obstacle && r.nearest_distance != null && r.nearest_distance < d) { d = r.nearest_distance; b = i; } });

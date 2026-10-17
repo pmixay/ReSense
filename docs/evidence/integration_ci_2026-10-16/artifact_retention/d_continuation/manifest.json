@@ -1,0 +1,3680 @@
+{
+  "archive_roots": [
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016",
+    "D:\\ReSense-actions-archive-20261016"
+  ],
+  "prior_completed_ids": [
+    "10900957428",
+    "10903142103",
+    "10903397684",
+    "10903579782",
+    "10903679999",
+    "10903746609",
+    "10904853559",
+    "10905092857",
+    "10905146476",
+    "10908332273",
+    "10909594385",
+    "10910412582",
+    "10910862598",
+    "10911031354"
+  ],
+  "records": {
+    "10900957428": {
+      "absence_checked_at": "2026-10-16T13:37:57.963138+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10900957428/zip",
+        "created_at": "2026-09-26T07:23:08Z",
+        "digest": "sha256:6fa4107d757d47ee8c3f07424e8887caeead706288ee63a69563ba65c7fc9ca1",
+        "expired": false,
+        "expires_at": "2026-10-26T07:23:02Z",
+        "id": 10900957428,
+        "name": "resense-image-1.0.0-00143b0",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwMDk1NzQyOA==",
+        "size_in_bytes": 521417463,
+        "updated_at": "2026-09-26T07:23:08Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10900957428",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "00143b0a79425199c05fb54401aa311c9f31641d",
+          "id": 36226409296,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:37:55.915898+00:00",
+      "delete_succeeded_at": "2026-10-16T13:37:57.060839+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521417006,
+            "checksum_member": "resense-image-1.0.0-00143b0.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-00143b0.tar.gz",
+            "sha256": "e466e2639bc2ec2c0ee0175248a790ee049d58e1bb6b9b0699e183e9d905b0a8"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10900957428--resense-image-1.0.0-00143b0.zip",
+        "verified_at": "2026-10-16T13:37:55.110540+00:00",
+        "zip_bytes": 521417463,
+        "zip_crc_all_members": true,
+        "zip_sha256": "6fa4107d757d47ee8c3f07424e8887caeead706288ee63a69563ba65c7fc9ca1"
+      }
+    },
+    "10903142103": {
+      "absence_checked_at": "2026-10-16T13:43:04.195588+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903142103/zip",
+        "created_at": "2026-09-26T09:47:05Z",
+        "digest": "sha256:8202825dc9992d3a88d1ccac01f6845a602616a892850c2345d3515a1311dc6e",
+        "expired": false,
+        "expires_at": "2026-10-26T09:47:00Z",
+        "id": 10903142103,
+        "name": "resense-image-1.0.0-f8d9eed",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwMzE0MjEwMw==",
+        "size_in_bytes": 521515766,
+        "updated_at": "2026-09-26T09:47:05Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903142103",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "f8d9eed3131d948ff35796a770f1fab13c1ec3f7",
+          "id": 36233628351,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:43:02.427352+00:00",
+      "delete_succeeded_at": "2026-10-16T13:43:03.453130+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521515309,
+            "checksum_member": "resense-image-1.0.0-f8d9eed.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-f8d9eed.tar.gz",
+            "sha256": "23aad2042b1fcf9085d70ae698d279d017cfb043e2632c2b960d081152c7d7a8"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903142103--resense-image-1.0.0-f8d9eed.zip",
+        "verified_at": "2026-10-16T13:43:01.585726+00:00",
+        "zip_bytes": 521515766,
+        "zip_crc_all_members": true,
+        "zip_sha256": "8202825dc9992d3a88d1ccac01f6845a602616a892850c2345d3515a1311dc6e"
+      }
+    },
+    "10903397684": {
+      "absence_checked_at": "2026-10-16T13:41:20.481294+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903397684/zip",
+        "created_at": "2026-09-26T09:43:13Z",
+        "digest": "sha256:043c607b8a1c229005dbe5f2df8a4bf0651e20f6b50a84309d4d386d1bb14066",
+        "expired": false,
+        "expires_at": "2026-10-26T09:43:10Z",
+        "id": 10903397684,
+        "name": "resense-image-1.0.0-208152d",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwMzM5NzY4NA==",
+        "size_in_bytes": 521524649,
+        "updated_at": "2026-09-26T09:43:13Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903397684",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "208152dd4a171c80b49cbed10be15791be7b471d",
+          "id": 36233436060,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:41:18.716647+00:00",
+      "delete_succeeded_at": "2026-10-16T13:41:19.681778+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521524192,
+            "checksum_member": "resense-image-1.0.0-208152d.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-208152d.tar.gz",
+            "sha256": "0924efeedb40d91e36c4b288760905207920659d22951c9583994e018c2feed3"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903397684--resense-image-1.0.0-208152d.zip",
+        "verified_at": "2026-10-16T13:41:17.864076+00:00",
+        "zip_bytes": 521524649,
+        "zip_crc_all_members": true,
+        "zip_sha256": "043c607b8a1c229005dbe5f2df8a4bf0651e20f6b50a84309d4d386d1bb14066"
+      }
+    },
+    "10903579782": {
+      "absence_checked_at": "2026-10-16T13:47:25.298383+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903579782/zip",
+        "created_at": "2026-09-26T10:43:27Z",
+        "digest": "sha256:a2a9a41001314694f9ec92d18827b4d1782a18b805c67698ad117ca13c77bff9",
+        "expired": false,
+        "expires_at": "2026-10-26T10:43:24Z",
+        "id": 10903579782,
+        "name": "resense-image-1.0.0-e5f0f02",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwMzU3OTc4Mg==",
+        "size_in_bytes": 521515771,
+        "updated_at": "2026-09-26T10:43:27Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903579782",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "e5f0f0297e986c8116874ad4627aa235a674916a",
+          "id": 36236456379,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:47:23.364800+00:00",
+      "delete_succeeded_at": "2026-10-16T13:47:24.412421+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521515314,
+            "checksum_member": "resense-image-1.0.0-e5f0f02.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-e5f0f02.tar.gz",
+            "sha256": "ed345d36971fdd143ae540b19b85f9a9b43aa65a1e36fcc69069143bb99f3adc"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903579782--resense-image-1.0.0-e5f0f02.zip",
+        "verified_at": "2026-10-16T13:47:22.515690+00:00",
+        "zip_bytes": 521515771,
+        "zip_crc_all_members": true,
+        "zip_sha256": "a2a9a41001314694f9ec92d18827b4d1782a18b805c67698ad117ca13c77bff9"
+      }
+    },
+    "10903679999": {
+      "absence_checked_at": "2026-10-16T13:49:25.787638+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903679999/zip",
+        "created_at": "2026-09-26T10:47:02Z",
+        "digest": "sha256:fba49b2551330bc12978305a88224ba8265bf6b247f4eb58a0628246746ec666",
+        "expired": false,
+        "expires_at": "2026-10-26T10:46:56Z",
+        "id": 10903679999,
+        "name": "resense-image-1.0.0-ee65c46",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwMzY3OTk5OQ==",
+        "size_in_bytes": 521522512,
+        "updated_at": "2026-09-26T10:47:02Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903679999",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "ee65c463c80dbbe857459cbbf992d7e9f9811f2d",
+          "id": 36236621693,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:49:24.103339+00:00",
+      "delete_succeeded_at": "2026-10-16T13:49:25.025309+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521522055,
+            "checksum_member": "resense-image-1.0.0-ee65c46.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-ee65c46.tar.gz",
+            "sha256": "4ff2f7895c6cce66aaea7ff515acdc663969b48e1841c48f62eb4c369163609a"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903679999--resense-image-1.0.0-ee65c46.zip",
+        "verified_at": "2026-10-16T13:49:23.279786+00:00",
+        "zip_bytes": 521522512,
+        "zip_crc_all_members": true,
+        "zip_sha256": "fba49b2551330bc12978305a88224ba8265bf6b247f4eb58a0628246746ec666"
+      }
+    },
+    "10903746609": {
+      "absence_checked_at": "2026-10-16T13:45:41.074260+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903746609/zip",
+        "created_at": "2026-09-26T09:51:47Z",
+        "digest": "sha256:e208c81b27d2be94f16e4ae458379e8990803737449348644995b71064995539",
+        "expired": false,
+        "expires_at": "2026-10-26T09:51:43Z",
+        "id": 10903746609,
+        "name": "resense-image-1.0.0-d7c6047",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwMzc0NjYwOQ==",
+        "size_in_bytes": 521513816,
+        "updated_at": "2026-09-26T09:51:47Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10903746609",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "d7c6047d8b8e766f71e8905a37ad3c073e27db51",
+          "id": 36233851724,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:45:38.987701+00:00",
+      "delete_succeeded_at": "2026-10-16T13:45:40.191467+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521513359,
+            "checksum_member": "resense-image-1.0.0-d7c6047.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-d7c6047.tar.gz",
+            "sha256": "3de90d062a5b9025773971c54b39899b8c8ead6677b7ee3bad157a8834073ba4"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10903746609--resense-image-1.0.0-d7c6047.zip",
+        "verified_at": "2026-10-16T13:45:38.212595+00:00",
+        "zip_bytes": 521513816,
+        "zip_crc_all_members": true,
+        "zip_sha256": "e208c81b27d2be94f16e4ae458379e8990803737449348644995b71064995539"
+      }
+    },
+    "10904853559": {
+      "absence_checked_at": "2026-10-16T13:54:49.854329+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10904853559/zip",
+        "created_at": "2026-09-26T11:51:17Z",
+        "digest": "sha256:3b82e5d96f5ff9c70d436d3daf2d055e046822612e2a0cc898049b0bf22b4741",
+        "expired": false,
+        "expires_at": "2026-10-26T11:51:11Z",
+        "id": 10904853559,
+        "name": "resense-image-1.0.0-57ef16f",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwNDg1MzU1OQ==",
+        "size_in_bytes": 521547620,
+        "updated_at": "2026-09-26T11:51:17Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10904853559",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "57ef16ffb03b4e03a65a392b1c29d8ff779b0e03",
+          "id": 36239900549,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:54:48.123273+00:00",
+      "delete_succeeded_at": "2026-10-16T13:54:49.096663+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521547163,
+            "checksum_member": "resense-image-1.0.0-57ef16f.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-57ef16f.tar.gz",
+            "sha256": "3fc7769e79ce24c6ca5513b64a161ba9598643f4b2baec41c0026c2b8bf40d6b"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10904853559--resense-image-1.0.0-57ef16f.zip",
+        "verified_at": "2026-10-16T13:54:46.973073+00:00",
+        "zip_bytes": 521547620,
+        "zip_crc_all_members": true,
+        "zip_sha256": "3b82e5d96f5ff9c70d436d3daf2d055e046822612e2a0cc898049b0bf22b4741"
+      }
+    },
+    "10905092857": {
+      "absence_checked_at": "2026-10-16T13:52:53.815149+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10905092857/zip",
+        "created_at": "2026-09-26T11:44:30Z",
+        "digest": "sha256:77ebcf11b5502af35237e1c8880a367d2da510c5516b181cf7784aa43a8570c9",
+        "expired": false,
+        "expires_at": "2026-10-26T11:44:24Z",
+        "id": 10905092857,
+        "name": "resense-image-1.0.0-f99687f",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwNTA5Mjg1Nw==",
+        "size_in_bytes": 521565136,
+        "updated_at": "2026-09-26T11:44:30Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10905092857",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "f99687fe996cc0b9b2fbae45ad60d8fe3115fc13",
+          "id": 36239558355,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:52:51.979977+00:00",
+      "delete_succeeded_at": "2026-10-16T13:52:53.070849+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521564679,
+            "checksum_member": "resense-image-1.0.0-f99687f.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-f99687f.tar.gz",
+            "sha256": "08eb963ea76c0c38eff2fbcdaec504ba4af83f546cb6cbbb98019b716d8a9546"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10905092857--resense-image-1.0.0-f99687f.zip",
+        "verified_at": "2026-10-16T13:52:51.084479+00:00",
+        "zip_bytes": 521565136,
+        "zip_crc_all_members": true,
+        "zip_sha256": "77ebcf11b5502af35237e1c8880a367d2da510c5516b181cf7784aa43a8570c9"
+      }
+    },
+    "10905146476": {
+      "absence_checked_at": "2026-10-16T13:51:06.077969+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10905146476/zip",
+        "created_at": "2026-09-26T11:10:57Z",
+        "digest": "sha256:f4cdf79eb1477c58468a3649b636ba37284b951e5f1d59f10b125e782546ef03",
+        "expired": false,
+        "expires_at": "2026-10-26T11:10:53Z",
+        "id": 10905146476,
+        "name": "resense-image-1.0.0-dcf7f90",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwNTE0NjQ3Ng==",
+        "size_in_bytes": 521518821,
+        "updated_at": "2026-09-26T11:10:57Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10905146476",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "dcf7f90f730c675db238691d79357469b489d13f",
+          "id": 36237830615,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:51:04.162681+00:00",
+      "delete_succeeded_at": "2026-10-16T13:51:05.181234+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521518364,
+            "checksum_member": "resense-image-1.0.0-dcf7f90.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-dcf7f90.tar.gz",
+            "sha256": "ba9ce13f17cb509e99df47e87d157f6b5c02aaf90fd9eff49c383a629f4ccde0"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10905146476--resense-image-1.0.0-dcf7f90.zip",
+        "verified_at": "2026-10-16T13:51:03.355985+00:00",
+        "zip_bytes": 521518821,
+        "zip_crc_all_members": true,
+        "zip_sha256": "f4cdf79eb1477c58468a3649b636ba37284b951e5f1d59f10b125e782546ef03"
+      }
+    },
+    "10908332273": {
+      "absence_checked_at": "2026-10-16T13:56:19.731555+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10908332273/zip",
+        "created_at": "2026-09-26T14:22:46Z",
+        "digest": "sha256:ad5076a62f00dae5d83a03656fc433c4206a5cc49ea2fd352a23f25b75bd2872",
+        "expired": false,
+        "expires_at": "2026-10-26T14:22:40Z",
+        "id": 10908332273,
+        "name": "resense-image-1.0.0-be5f5fc",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwODMzMjI3Mw==",
+        "size_in_bytes": 521531141,
+        "updated_at": "2026-09-26T14:22:46Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10908332273",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "be5f5fce104b8f246c80effd33debcdf8f66424d",
+          "id": 36248096431,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:56:17.750682+00:00",
+      "delete_succeeded_at": "2026-10-16T13:56:18.796117+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521530684,
+            "checksum_member": "resense-image-1.0.0-be5f5fc.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-be5f5fc.tar.gz",
+            "sha256": "00b85e904ee729f5b084d92e9520491d75101ae4cee451357fa3e1856a5d05a0"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10908332273--resense-image-1.0.0-be5f5fc.zip",
+        "verified_at": "2026-10-16T13:56:16.659664+00:00",
+        "zip_bytes": 521531141,
+        "zip_crc_all_members": true,
+        "zip_sha256": "ad5076a62f00dae5d83a03656fc433c4206a5cc49ea2fd352a23f25b75bd2872"
+      }
+    },
+    "10909594385": {
+      "absence_checked_at": "2026-10-16T13:58:15.637451+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10909594385/zip",
+        "created_at": "2026-09-26T16:20:36Z",
+        "digest": "sha256:9a80e6fc4f540b06abd123dfeec1163473f11be207c70789da919cabac260ef5",
+        "expired": false,
+        "expires_at": "2026-10-26T16:20:30Z",
+        "id": 10909594385,
+        "name": "resense-image-1.0.0-4974242",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkwOTU5NDM4NQ==",
+        "size_in_bytes": 521550629,
+        "updated_at": "2026-09-26T16:20:36Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10909594385",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "49742422b2df1f6703c4257ada9da51ec5df05c8",
+          "id": 36254892690,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T13:58:13.467576+00:00",
+      "delete_succeeded_at": "2026-10-16T13:58:14.881504+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521550172,
+            "checksum_member": "resense-image-1.0.0-4974242.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-4974242.tar.gz",
+            "sha256": "141f5aad21fdd03f574f9d546583596a4e1421841a973e71843c4abd7239a99c"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10909594385--resense-image-1.0.0-4974242.zip",
+        "verified_at": "2026-10-16T13:58:12.602417+00:00",
+        "zip_bytes": 521550629,
+        "zip_crc_all_members": true,
+        "zip_sha256": "9a80e6fc4f540b06abd123dfeec1163473f11be207c70789da919cabac260ef5"
+      }
+    },
+    "10910412582": {
+      "absence_checked_at": "2026-10-16T14:00:07.351769+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10910412582/zip",
+        "created_at": "2026-09-26T16:34:45Z",
+        "digest": "sha256:42f3fe622453b0638cf8c874860d6afe8c17be2a9a68bdff7c46fd79a66efbfe",
+        "expired": false,
+        "expires_at": "2026-10-26T16:34:39Z",
+        "id": 10910412582,
+        "name": "resense-image-1.0.0-a55f27e",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxMDQxMjU4Mg==",
+        "size_in_bytes": 521548462,
+        "updated_at": "2026-09-26T16:34:45Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10910412582",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "a55f27e3c128e10a42798ffe2f4a8a19a074608f",
+          "id": 36255730275,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:00:05.014277+00:00",
+      "delete_succeeded_at": "2026-10-16T14:00:06.460149+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521548005,
+            "checksum_member": "resense-image-1.0.0-a55f27e.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-a55f27e.tar.gz",
+            "sha256": "f77f8213d34359d0119b471f2dfec539da1da3d728ced3f96f1840fed80e91fa"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10910412582--resense-image-1.0.0-a55f27e.zip",
+        "verified_at": "2026-10-16T14:00:03.958877+00:00",
+        "zip_bytes": 521548462,
+        "zip_crc_all_members": true,
+        "zip_sha256": "42f3fe622453b0638cf8c874860d6afe8c17be2a9a68bdff7c46fd79a66efbfe"
+      }
+    },
+    "10910862598": {
+      "absence_checked_at": "2026-10-16T14:04:00.054612+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10910862598/zip",
+        "created_at": "2026-09-26T17:01:27Z",
+        "digest": "sha256:6c2745cd6633cd2893bd38765fd7d0abaf50b5263af4e9f0e4d8bdedf9c3f671",
+        "expired": false,
+        "expires_at": "2026-10-26T17:01:21Z",
+        "id": 10910862598,
+        "name": "resense-image-1.0.0-b3f2535",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxMDg2MjU5OA==",
+        "size_in_bytes": 521534738,
+        "updated_at": "2026-09-26T17:01:27Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10910862598",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "b3f253546b722dcd42f792bb93d39ea905f67889",
+          "id": 36257309538,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:03:58.336154+00:00",
+      "delete_succeeded_at": "2026-10-16T14:03:59.302694+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521534281,
+            "checksum_member": "resense-image-1.0.0-b3f2535.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-b3f2535.tar.gz",
+            "sha256": "7ed1f182ef140a3abc03190f1e20b4573197c86d1d5ea0824cd20def3b8d9131"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10910862598--resense-image-1.0.0-b3f2535.zip",
+        "verified_at": "2026-10-16T14:03:57.381027+00:00",
+        "zip_bytes": 521534738,
+        "zip_crc_all_members": true,
+        "zip_sha256": "6c2745cd6633cd2893bd38765fd7d0abaf50b5263af4e9f0e4d8bdedf9c3f671"
+      }
+    },
+    "10911031354": {
+      "absence_checked_at": "2026-10-16T14:02:07.007323+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10911031354/zip",
+        "created_at": "2026-09-26T16:44:11Z",
+        "digest": "sha256:2fed63ffedf213cdec601e2bbe11ae5144e8dd5a4ecfe4fb3047c136d5ff1226",
+        "expired": false,
+        "expires_at": "2026-10-26T16:44:08Z",
+        "id": 10911031354,
+        "name": "resense-image-1.0.0-1f8b8ff",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxMTAzMTM1NA==",
+        "size_in_bytes": 521547442,
+        "updated_at": "2026-09-26T16:44:11Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10911031354",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "1f8b8ffef55c00820ee0f30ebaa16c1d60cd44bc",
+          "id": 36256287382,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:02:05.147795+00:00",
+      "delete_succeeded_at": "2026-10-16T14:02:06.090670+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521546985,
+            "checksum_member": "resense-image-1.0.0-1f8b8ff.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-1f8b8ff.tar.gz",
+            "sha256": "b13c0724613e68c7ddebf22c03aceda06a2d786393a8ad592817b5f610ecc6b9"
+          }
+        ],
+        "path": "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\resense-actions-artifact-archive-20261016\\10911031354--resense-image-1.0.0-1f8b8ff.zip",
+        "verified_at": "2026-10-16T14:02:04.322186+00:00",
+        "zip_bytes": 521547442,
+        "zip_crc_all_members": true,
+        "zip_sha256": "2fed63ffedf213cdec601e2bbe11ae5144e8dd5a4ecfe4fb3047c136d5ff1226"
+      }
+    },
+    "10913468780": {
+      "absence_checked_at": "2026-10-16T14:41:24.314006+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10913468780/zip",
+        "created_at": "2026-09-26T19:46:11Z",
+        "digest": "sha256:7512e328bdbe3d9506573944b8643332929cc2dba85c4d170eeb7e323598ba65",
+        "expired": false,
+        "expires_at": "2026-10-26T19:46:07Z",
+        "id": 10913468780,
+        "name": "resense-image-1.0.0-8a10449",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxMzQ2ODc4MA==",
+        "size_in_bytes": 521555426,
+        "updated_at": "2026-09-26T19:46:11Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10913468780",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "8a10449f0bc76fd9791c711d4d194b2c471aa321",
+          "id": 36266983143,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:41:21.784695+00:00",
+      "delete_succeeded_at": "2026-10-16T14:41:23.424764+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521554969,
+            "checksum_member": "resense-image-1.0.0-8a10449.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-8a10449.tar.gz",
+            "sha256": "4aa2ba16a240a016e37dcd7f16f0135c04c8e2025bda10332ec9b7bf2eb02749"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10913468780--resense-image-1.0.0-8a10449.zip",
+        "verified_at": "2026-10-16T14:41:20.806937+00:00",
+        "zip_bytes": 521555426,
+        "zip_crc_all_members": true,
+        "zip_sha256": "7512e328bdbe3d9506573944b8643332929cc2dba85c4d170eeb7e323598ba65"
+      }
+    },
+    "10914339357": {
+      "absence_checked_at": "2026-10-16T14:40:36.930250+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10914339357/zip",
+        "created_at": "2026-09-26T19:53:55Z",
+        "digest": "sha256:13c42f7991d18735f558f070f252af5dfae33ef568202d05b1508a8a9e59d892",
+        "expired": false,
+        "expires_at": "2026-10-26T19:53:50Z",
+        "id": 10914339357,
+        "name": "resense-image-1.0.0-1dccdec",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNDMzOTM1Nw==",
+        "size_in_bytes": 521544876,
+        "updated_at": "2026-09-26T19:53:55Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10914339357",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "1dccdecb3f919ef411adfcec077e803364c9902d",
+          "id": 36267438927,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:40:34.984872+00:00",
+      "delete_succeeded_at": "2026-10-16T14:40:36.184719+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521544419,
+            "checksum_member": "resense-image-1.0.0-1dccdec.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-1dccdec.tar.gz",
+            "sha256": "bc93b8b75c2a91e5c68df285ee567fd8893a2a2f24ba8e5ae98d46c96bebaba7"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10914339357--resense-image-1.0.0-1dccdec.zip",
+        "verified_at": "2026-10-16T14:40:34.181371+00:00",
+        "zip_bytes": 521544876,
+        "zip_crc_all_members": true,
+        "zip_sha256": "13c42f7991d18735f558f070f252af5dfae33ef568202d05b1508a8a9e59d892"
+      }
+    },
+    "10914764440": {
+      "absence_checked_at": "2026-10-16T14:44:04.029022+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10914764440/zip",
+        "created_at": "2026-09-26T20:40:19Z",
+        "digest": "sha256:858e9d1265359004397e28faa04c1c66944fbcb7abcf070d48eb4b313b2f25aa",
+        "expired": false,
+        "expires_at": "2026-10-26T20:40:14Z",
+        "id": 10914764440,
+        "name": "resense-image-1.0.0-2019fdb",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNDc2NDQ0MA==",
+        "size_in_bytes": 521564228,
+        "updated_at": "2026-09-26T20:40:19Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10914764440",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "2019fdb67c4340343411cd362b2fa57172bb9de4",
+          "id": 36270097035,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:44:01.855358+00:00",
+      "delete_succeeded_at": "2026-10-16T14:44:03.178732+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521563771,
+            "checksum_member": "resense-image-1.0.0-2019fdb.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-2019fdb.tar.gz",
+            "sha256": "2e0fbe04148bcb79c98c9c00f141ce129921b1923cd7d6de4a5fb16415e0441e"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10914764440--resense-image-1.0.0-2019fdb.zip",
+        "verified_at": "2026-10-16T14:44:00.679530+00:00",
+        "zip_bytes": 521564228,
+        "zip_crc_all_members": true,
+        "zip_sha256": "858e9d1265359004397e28faa04c1c66944fbcb7abcf070d48eb4b313b2f25aa"
+      }
+    },
+    "10914823643": {
+      "absence_checked_at": "2026-10-16T14:43:43.724720+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10914823643/zip",
+        "created_at": "2026-09-26T20:33:04Z",
+        "digest": "sha256:479a8d241a30474b510d335d01e4a6d2568dbebe41ea9762dd132c428d1fb18e",
+        "expired": false,
+        "expires_at": "2026-10-26T20:32:58Z",
+        "id": 10914823643,
+        "name": "resense-image-1.0.0-2d25c13",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNDgyMzY0Mw==",
+        "size_in_bytes": 521571011,
+        "updated_at": "2026-09-26T20:33:04Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10914823643",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "2d25c13501a973c9c21494032ba946a40e1be455",
+          "id": 36269676465,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:43:41.918667+00:00",
+      "delete_succeeded_at": "2026-10-16T14:43:42.892650+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521570554,
+            "checksum_member": "resense-image-1.0.0-2d25c13.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-2d25c13.tar.gz",
+            "sha256": "c4a81b7eeb121e3f3ed2b385365fc7c416ce2f0c387aa8f26c92dcbe519198ee"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10914823643--resense-image-1.0.0-2d25c13.zip",
+        "verified_at": "2026-10-16T14:43:41.101011+00:00",
+        "zip_bytes": 521571011,
+        "zip_crc_all_members": true,
+        "zip_sha256": "479a8d241a30474b510d335d01e4a6d2568dbebe41ea9762dd132c428d1fb18e"
+      }
+    },
+    "10915215353": {
+      "absence_checked_at": "2026-10-16T14:39:54.116693+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915215353/zip",
+        "created_at": "2026-09-26T20:16:31Z",
+        "digest": "sha256:653db33cbef0271d2e69dcaf3018990cf4b4490ca0448422e31e5abf7e7f2c48",
+        "expired": false,
+        "expires_at": "2026-10-26T20:16:27Z",
+        "id": 10915215353,
+        "name": "resense-image-1.0.0-498f280",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNTIxNTM1Mw==",
+        "size_in_bytes": 521587792,
+        "updated_at": "2026-09-26T20:16:31Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915215353",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "498f28042d79ca43233f7db797af625a8f88eec9",
+          "id": 36268719619,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:39:52.030196+00:00",
+      "delete_succeeded_at": "2026-10-16T14:39:53.390721+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521587335,
+            "checksum_member": "resense-image-1.0.0-498f280.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-498f280.tar.gz",
+            "sha256": "705b4f3eb32c6c1267b9781dc4ded7eacd4b57e43fb3b10b4ac4d9b2b0290ba9"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10915215353--resense-image-1.0.0-498f280.zip",
+        "verified_at": "2026-10-16T14:39:51.119177+00:00",
+        "zip_bytes": 521587792,
+        "zip_crc_all_members": true,
+        "zip_sha256": "653db33cbef0271d2e69dcaf3018990cf4b4490ca0448422e31e5abf7e7f2c48"
+      }
+    },
+    "10915331327": {
+      "absence_checked_at": "2026-10-16T14:43:48.270711+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915331327/zip",
+        "created_at": "2026-09-26T20:23:00Z",
+        "digest": "sha256:603330db482e3e3d4d248d7a7f5e49aef9e973e7880d3cf87a18138e88034dd7",
+        "expired": false,
+        "expires_at": "2026-10-26T20:22:55Z",
+        "id": 10915331327,
+        "name": "resense-image-1.0.0-56d3169",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNTMzMTMyNw==",
+        "size_in_bytes": 521579863,
+        "updated_at": "2026-09-26T20:23:00Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915331327",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "56d31696da3abfd5ab84e57831c9564b6e780fdd",
+          "id": 36269074222,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:43:46.207073+00:00",
+      "delete_succeeded_at": "2026-10-16T14:43:47.408293+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521579406,
+            "checksum_member": "resense-image-1.0.0-56d3169.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-56d3169.tar.gz",
+            "sha256": "bf952810877018eb74dc63c658f1f495e3b5d9c362ecf8b865e800968c5e7d8b"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10915331327--resense-image-1.0.0-56d3169.zip",
+        "verified_at": "2026-10-16T14:43:45.466004+00:00",
+        "zip_bytes": 521579863,
+        "zip_crc_all_members": true,
+        "zip_sha256": "603330db482e3e3d4d248d7a7f5e49aef9e973e7880d3cf87a18138e88034dd7"
+      }
+    },
+    "10915572521": {
+      "absence_checked_at": "2026-10-16T14:46:26.274458+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915572521/zip",
+        "created_at": "2026-09-26T21:01:29Z",
+        "digest": "sha256:c97360cbe1258998d6e0ca3a054aa07ef97c8d4943aba0413aea859e54169095",
+        "expired": false,
+        "expires_at": "2026-10-26T21:01:26Z",
+        "id": 10915572521,
+        "name": "resense-image-1.0.0-57bc3dd",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNTU3MjUyMQ==",
+        "size_in_bytes": 521582726,
+        "updated_at": "2026-09-26T21:01:29Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915572521",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "57bc3ddde2bbf93eed1b5243ad11ff8423d747aa",
+          "id": 36271290915,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:46:24.447561+00:00",
+      "delete_succeeded_at": "2026-10-16T14:46:25.425058+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521582269,
+            "checksum_member": "resense-image-1.0.0-57bc3dd.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-57bc3dd.tar.gz",
+            "sha256": "a77a308b6cf901a198586ff16cfb3147bd22e085b07b7fd9b0c8eb8ed6d7fe09"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10915572521--resense-image-1.0.0-57bc3dd.zip",
+        "verified_at": "2026-10-16T14:46:23.610235+00:00",
+        "zip_bytes": 521582726,
+        "zip_crc_all_members": true,
+        "zip_sha256": "c97360cbe1258998d6e0ca3a054aa07ef97c8d4943aba0413aea859e54169095"
+      }
+    },
+    "10915719675": {
+      "absence_checked_at": "2026-10-16T14:48:16.624947+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915719675/zip",
+        "created_at": "2026-09-26T21:20:11Z",
+        "digest": "sha256:c73c717688cc1b611d75a40cd20a0b9460253b3460fa163a64eef1d72d4f6e90",
+        "expired": false,
+        "expires_at": "2026-10-26T21:20:06Z",
+        "id": 10915719675,
+        "name": "resense-image-1.0.0-295ea24",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNTcxOTY3NQ==",
+        "size_in_bytes": 521592082,
+        "updated_at": "2026-09-26T21:20:11Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915719675",
+        "workflow_run": {
+          "head_branch": "claude/p1-p2-completion-20260926",
+          "head_repository_id": 1370982135,
+          "head_sha": "295ea24049e4e943d01753282e54ea1683a847cc",
+          "id": 36272355379,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:48:15.052047+00:00",
+      "delete_succeeded_at": "2026-10-16T14:48:15.920678+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521591625,
+            "checksum_member": "resense-image-1.0.0-295ea24.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-295ea24.tar.gz",
+            "sha256": "493251d21a6674fe2ca0d862a8d4b39217cc12de908bd7160cb3082292876ab2"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10915719675--resense-image-1.0.0-295ea24.zip",
+        "verified_at": "2026-10-16T14:48:14.264760+00:00",
+        "zip_bytes": 521592082,
+        "zip_crc_all_members": true,
+        "zip_sha256": "c73c717688cc1b611d75a40cd20a0b9460253b3460fa163a64eef1d72d4f6e90"
+      }
+    },
+    "10915733892": {
+      "absence_checked_at": "2026-10-16T14:51:39.282317+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915733892/zip",
+        "created_at": "2026-09-26T21:12:18Z",
+        "digest": "sha256:5605507d34c50739925ebfa7c247cf5ef4afd8a393db12549cf01341affdba62",
+        "expired": false,
+        "expires_at": "2026-10-26T21:12:15Z",
+        "id": 10915733892,
+        "name": "resense-image-1.0.0-aa8765a",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNTczMzg5Mg==",
+        "size_in_bytes": 521603880,
+        "updated_at": "2026-09-26T21:12:18Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915733892",
+        "workflow_run": {
+          "head_branch": "claude/p1-p2-completion-20260926",
+          "head_repository_id": 1370982135,
+          "head_sha": "aa8765aa55840df011f7df05f276a5b6932674df",
+          "id": 36271848675,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:51:37.478925+00:00",
+      "delete_succeeded_at": "2026-10-16T14:51:38.507236+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521603423,
+            "checksum_member": "resense-image-1.0.0-aa8765a.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-aa8765a.tar.gz",
+            "sha256": "b7b4578325816f647bceb2b8be39951eef49af1be9a8f5fc448d9bb636562cbd"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10915733892--resense-image-1.0.0-aa8765a.zip",
+        "verified_at": "2026-10-16T14:51:36.400555+00:00",
+        "zip_bytes": 521603880,
+        "zip_crc_all_members": true,
+        "zip_sha256": "5605507d34c50739925ebfa7c247cf5ef4afd8a393db12549cf01341affdba62"
+      }
+    },
+    "10915756656": {
+      "absence_checked_at": "2026-10-16T14:46:05.998125+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915756656/zip",
+        "created_at": "2026-09-26T20:48:44Z",
+        "digest": "sha256:df2d85b273b8627b41dd43dca3d6022b9521fafc6ea5fda3d32da4939effa994",
+        "expired": false,
+        "expires_at": "2026-10-26T20:48:40Z",
+        "id": 10915756656,
+        "name": "resense-image-1.0.0-5f2d0cb",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNTc1NjY1Ng==",
+        "size_in_bytes": 521578052,
+        "updated_at": "2026-09-26T20:48:44Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10915756656",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "5f2d0cbae93af833afcfec8f406de3500f914fa0",
+          "id": 36270584279,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:46:04.153859+00:00",
+      "delete_succeeded_at": "2026-10-16T14:46:05.219709+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521577595,
+            "checksum_member": "resense-image-1.0.0-5f2d0cb.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-5f2d0cb.tar.gz",
+            "sha256": "e8b2be0d8edc46e122e8dce39b013661a6b0df82c1c6d139d2b9b501514bfa1b"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10915756656--resense-image-1.0.0-5f2d0cb.zip",
+        "verified_at": "2026-10-16T14:46:03.234718+00:00",
+        "zip_bytes": 521578052,
+        "zip_crc_all_members": true,
+        "zip_sha256": "df2d85b273b8627b41dd43dca3d6022b9521fafc6ea5fda3d32da4939effa994"
+      }
+    },
+    "10916045813": {
+      "absence_checked_at": "2026-10-16T14:46:14.755736+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916045813/zip",
+        "created_at": "2026-09-26T20:59:17Z",
+        "digest": "sha256:12e4690500aacf90f3335af83dcb568baba1f66138109b0da554e9391b799367",
+        "expired": false,
+        "expires_at": "2026-10-26T20:59:13Z",
+        "id": 10916045813,
+        "name": "resense-image-1.0.0-b04e1d3",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjA0NTgxMw==",
+        "size_in_bytes": 521540235,
+        "updated_at": "2026-09-26T20:59:17Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916045813",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "b04e1d398e5d7e238897bf693597eb4148e4db5b",
+          "id": 36271200222,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:46:12.828878+00:00",
+      "delete_succeeded_at": "2026-10-16T14:46:13.927152+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521539778,
+            "checksum_member": "resense-image-1.0.0-b04e1d3.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-b04e1d3.tar.gz",
+            "sha256": "767eb88fa1e9d7157a9655e2ef0a30b7aeb6cb087b6620dd92b44f9e8686215a"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916045813--resense-image-1.0.0-b04e1d3.zip",
+        "verified_at": "2026-10-16T14:46:12.146910+00:00",
+        "zip_bytes": 521540235,
+        "zip_crc_all_members": true,
+        "zip_sha256": "12e4690500aacf90f3335af83dcb568baba1f66138109b0da554e9391b799367"
+      }
+    },
+    "10916152449": {
+      "absence_checked_at": "2026-10-16T14:53:32.307852+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916152449/zip",
+        "created_at": "2026-09-26T21:21:44Z",
+        "digest": "sha256:7db323ec1ccd53173879b6e1930179136624d1f92835fd3107b835dbbbb15cdd",
+        "expired": false,
+        "expires_at": "2026-10-26T21:21:39Z",
+        "id": 10916152449,
+        "name": "resense-image-1.0.0-56c947c",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjE1MjQ0OQ==",
+        "size_in_bytes": 521606178,
+        "updated_at": "2026-09-26T21:21:44Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916152449",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "56c947ca6eb11742c20e9be6756a20c4f0d86a7f",
+          "id": 36272462620,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:53:30.233200+00:00",
+      "delete_succeeded_at": "2026-10-16T14:53:31.431992+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521605721,
+            "checksum_member": "resense-image-1.0.0-56c947c.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-56c947c.tar.gz",
+            "sha256": "01090cb6cfb9fcdfda6a85c8c5eb33c746d05aeb6416e0715883258f0b264238"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916152449--resense-image-1.0.0-56c947c.zip",
+        "verified_at": "2026-10-16T14:53:29.267270+00:00",
+        "zip_bytes": 521606178,
+        "zip_crc_all_members": true,
+        "zip_sha256": "7db323ec1ccd53173879b6e1930179136624d1f92835fd3107b835dbbbb15cdd"
+      }
+    },
+    "10916159113": {
+      "absence_checked_at": "2026-10-16T14:56:17.429286+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916159113/zip",
+        "created_at": "2026-09-26T21:42:53Z",
+        "digest": "sha256:9019f2ff369b845f603be15c629c954bdadb3c9b9b107b4ad133425f413babce",
+        "expired": false,
+        "expires_at": "2026-10-26T21:42:49Z",
+        "id": 10916159113,
+        "name": "resense-image-1.0.0-dae9504",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjE1OTExMw==",
+        "size_in_bytes": 521620573,
+        "updated_at": "2026-09-26T21:42:53Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916159113",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "dae950444fabbd7776791924ff297f2cba40ec1d",
+          "id": 36273703371,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:56:15.863386+00:00",
+      "delete_succeeded_at": "2026-10-16T14:56:16.698046+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521620116,
+            "checksum_member": "resense-image-1.0.0-dae9504.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-dae9504.tar.gz",
+            "sha256": "03e225acf147bdc9aa83cec26f6e0abebb89f4e64ea5e27454de1f74a504bd49"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916159113--resense-image-1.0.0-dae9504.zip",
+        "verified_at": "2026-10-16T14:56:15.137832+00:00",
+        "zip_bytes": 521620573,
+        "zip_crc_all_members": true,
+        "zip_sha256": "9019f2ff369b845f603be15c629c954bdadb3c9b9b107b4ad133425f413babce"
+      }
+    },
+    "10916233665": {
+      "absence_checked_at": "2026-10-16T14:53:43.923574+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916233665/zip",
+        "created_at": "2026-09-26T21:38:49Z",
+        "digest": "sha256:75806e35d6892b12b9374413c41d03d8f6a504115d58fe0a6fb4a84856dc43e7",
+        "expired": false,
+        "expires_at": "2026-10-26T21:38:44Z",
+        "id": 10916233665,
+        "name": "resense-image-1.0.0-3558a96",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjIzMzY2NQ==",
+        "size_in_bytes": 521611678,
+        "updated_at": "2026-09-26T21:38:49Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916233665",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "3558a96fb546a9f75071a1208d7d504934330ac5",
+          "id": 36273432115,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:53:42.184799+00:00",
+      "delete_succeeded_at": "2026-10-16T14:53:43.212332+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521611221,
+            "checksum_member": "resense-image-1.0.0-3558a96.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-3558a96.tar.gz",
+            "sha256": "a763dc1d042b8293a236200b58d44740063b19486c4610ad492e8792c8ff9fb0"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916233665--resense-image-1.0.0-3558a96.zip",
+        "verified_at": "2026-10-16T14:53:41.423143+00:00",
+        "zip_bytes": 521611678,
+        "zip_crc_all_members": true,
+        "zip_sha256": "75806e35d6892b12b9374413c41d03d8f6a504115d58fe0a6fb4a84856dc43e7"
+      }
+    },
+    "10916371592": {
+      "absence_checked_at": "2026-10-16T14:48:21.151701+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916371592/zip",
+        "created_at": "2026-09-26T21:19:33Z",
+        "digest": "sha256:e27e29ec2732e624282b1b7909c0ed5172ce7d188dc3e04c830c7787d0c36abc",
+        "expired": false,
+        "expires_at": "2026-10-26T21:19:26Z",
+        "id": 10916371592,
+        "name": "resense-image-1.0.0-1cac391",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjM3MTU5Mg==",
+        "size_in_bytes": 521622686,
+        "updated_at": "2026-09-26T21:19:33Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916371592",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "1cac3917fa22cbc404bb8e29aed64dc9c7e942d7",
+          "id": 36272308634,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:48:18.598231+00:00",
+      "delete_succeeded_at": "2026-10-16T14:48:20.151920+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521622229,
+            "checksum_member": "resense-image-1.0.0-1cac391.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-1cac391.tar.gz",
+            "sha256": "8f69b5ddc870d623b81aaf971e1d857af5f3d531c154bb457df12dbae187a9d6"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916371592--resense-image-1.0.0-1cac391.zip",
+        "verified_at": "2026-10-16T14:48:17.927558+00:00",
+        "zip_bytes": 521622686,
+        "zip_crc_all_members": true,
+        "zip_sha256": "e27e29ec2732e624282b1b7909c0ed5172ce7d188dc3e04c830c7787d0c36abc"
+      }
+    },
+    "10916465613": {
+      "absence_checked_at": "2026-10-16T14:54:09.660364+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916465613/zip",
+        "created_at": "2026-09-26T21:30:04Z",
+        "digest": "sha256:6e12ef04c8186d0f2a524ca9aa82e51161295f3981b8eb81d49ec6ff52ddaa2b",
+        "expired": false,
+        "expires_at": "2026-10-26T21:29:58Z",
+        "id": 10916465613,
+        "name": "resense-image-1.0.0-fdfe81a",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjQ2NTYxMw==",
+        "size_in_bytes": 521608101,
+        "updated_at": "2026-09-26T21:30:04Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916465613",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "fdfe81a736a2fd745922651826b74ca8e9e5bbf4",
+          "id": 36272911140,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:54:07.734869+00:00",
+      "delete_succeeded_at": "2026-10-16T14:54:08.672265+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521607644,
+            "checksum_member": "resense-image-1.0.0-fdfe81a.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-fdfe81a.tar.gz",
+            "sha256": "aa2a6f1b5801b70affdfcd1d7b4cc58344508b28978e67293386f70df8659e43"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916465613--resense-image-1.0.0-fdfe81a.zip",
+        "verified_at": "2026-10-16T14:54:06.812309+00:00",
+        "zip_bytes": 521608101,
+        "zip_crc_all_members": true,
+        "zip_sha256": "6e12ef04c8186d0f2a524ca9aa82e51161295f3981b8eb81d49ec6ff52ddaa2b"
+      }
+    },
+    "10916521526": {
+      "absence_checked_at": "2026-10-16T14:59:04.964188+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916521526/zip",
+        "created_at": "2026-09-26T21:56:05Z",
+        "digest": "sha256:000e94541a306578fdb16909e849cd38849cb604d57a4e4f64cc1697481345d6",
+        "expired": false,
+        "expires_at": "2026-10-26T21:56:00Z",
+        "id": 10916521526,
+        "name": "resense-image-1.0.0-635e510",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjUyMTUyNg==",
+        "size_in_bytes": 521598512,
+        "updated_at": "2026-09-26T21:56:05Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916521526",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "635e5101568417f6ab7a075051a0d04a55e83b16",
+          "id": 36274361679,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:59:03.187615+00:00",
+      "delete_succeeded_at": "2026-10-16T14:59:04.184306+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521598055,
+            "checksum_member": "resense-image-1.0.0-635e510.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-635e510.tar.gz",
+            "sha256": "6421a9143b19ac1661e280fcff90537fd16054053af4e71f178f4eb8f6b39652"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916521526--resense-image-1.0.0-635e510.zip",
+        "verified_at": "2026-10-16T14:59:01.973892+00:00",
+        "zip_bytes": 521598512,
+        "zip_crc_all_members": true,
+        "zip_sha256": "000e94541a306578fdb16909e849cd38849cb604d57a4e4f64cc1697481345d6"
+      }
+    },
+    "10916735953": {
+      "absence_checked_at": "2026-10-16T14:58:36.486121+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916735953/zip",
+        "created_at": "2026-09-26T21:53:35Z",
+        "digest": "sha256:4a17098626b5633543453a9f6e19d1f1435333836b4438900766a1c8ffc3a875",
+        "expired": false,
+        "expires_at": "2026-10-26T21:53:31Z",
+        "id": 10916735953,
+        "name": "resense-image-1.0.0-115b471",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjczNTk1Mw==",
+        "size_in_bytes": 521605128,
+        "updated_at": "2026-09-26T21:53:35Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916735953",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "115b471acdbdfd3e1b052024e6e06f919a2a66b7",
+          "id": 36274240128,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:58:34.937017+00:00",
+      "delete_succeeded_at": "2026-10-16T14:58:35.757395+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521604671,
+            "checksum_member": "resense-image-1.0.0-115b471.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-115b471.tar.gz",
+            "sha256": "3066ed907c32340ad8d63441c501a71bfb841a29722598a472bafd4c00d9d344"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916735953--resense-image-1.0.0-115b471.zip",
+        "verified_at": "2026-10-16T14:58:34.234362+00:00",
+        "zip_bytes": 521605128,
+        "zip_crc_all_members": true,
+        "zip_sha256": "4a17098626b5633543453a9f6e19d1f1435333836b4438900766a1c8ffc3a875"
+      }
+    },
+    "10916771642": {
+      "absence_checked_at": "2026-10-16T14:56:06.786421+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916771642/zip",
+        "created_at": "2026-09-26T21:51:32Z",
+        "digest": "sha256:86949a9a7ea36f2065798e9f1ec82044e0394805a100a1306c16af8115fa7cec",
+        "expired": false,
+        "expires_at": "2026-10-26T21:51:29Z",
+        "id": 10916771642,
+        "name": "resense-image-1.0.0-a5fbe7f",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNjc3MTY0Mg==",
+        "size_in_bytes": 521616570,
+        "updated_at": "2026-09-26T21:51:32Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10916771642",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "a5fbe7f4d55c526dfca4e618a8ebae17844cba77",
+          "id": 36274129376,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:56:03.883016+00:00",
+      "delete_succeeded_at": "2026-10-16T14:56:06.034844+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521616113,
+            "checksum_member": "resense-image-1.0.0-a5fbe7f.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-a5fbe7f.tar.gz",
+            "sha256": "a8a659aaa15fde6c2427739defa9fa4f69d4f41c210a9496ff2802f195266405"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10916771642--resense-image-1.0.0-a5fbe7f.zip",
+        "verified_at": "2026-10-16T14:56:02.683373+00:00",
+        "zip_bytes": 521616570,
+        "zip_crc_all_members": true,
+        "zip_sha256": "86949a9a7ea36f2065798e9f1ec82044e0394805a100a1306c16af8115fa7cec"
+      }
+    },
+    "10917080169": {
+      "absence_checked_at": "2026-10-16T14:56:36.156992+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917080169/zip",
+        "created_at": "2026-09-26T21:47:35Z",
+        "digest": "sha256:37bb054f12fabf41f09d9598c0991eff3c40e0772e653bbdc8e474016fda216a",
+        "expired": false,
+        "expires_at": "2026-10-26T21:47:29Z",
+        "id": 10917080169,
+        "name": "resense-image-1.0.0-36a88f0",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNzA4MDE2OQ==",
+        "size_in_bytes": 521615997,
+        "updated_at": "2026-09-26T21:47:35Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917080169",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "36a88f031c5feee5c331678032a4dfdb4b372909",
+          "id": 36273909935,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:56:34.255414+00:00",
+      "delete_succeeded_at": "2026-10-16T14:56:35.286980+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521615540,
+            "checksum_member": "resense-image-1.0.0-36a88f0.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-36a88f0.tar.gz",
+            "sha256": "23f392a5f6f4615e2d40ef9a39f9d3d5aca64a32472462bf4495636b97859cd6"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10917080169--resense-image-1.0.0-36a88f0.zip",
+        "verified_at": "2026-10-16T14:56:33.465616+00:00",
+        "zip_bytes": 521615997,
+        "zip_crc_all_members": true,
+        "zip_sha256": "37bb054f12fabf41f09d9598c0991eff3c40e0772e653bbdc8e474016fda216a"
+      }
+    },
+    "10917252513": {
+      "absence_checked_at": "2026-10-16T15:01:02.653448+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917252513/zip",
+        "created_at": "2026-09-26T22:17:19Z",
+        "digest": "sha256:823f580fffa61faf1904000599f6a6b44aac5b70133a17343e2028106262d9d4",
+        "expired": false,
+        "expires_at": "2026-10-26T22:17:15Z",
+        "id": 10917252513,
+        "name": "resense-image-1.0.0-d480b13",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNzI1MjUxMw==",
+        "size_in_bytes": 521627667,
+        "updated_at": "2026-09-26T22:17:19Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917252513",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "d480b1330491da838d6fb4996e34e37b3c060915",
+          "id": 36275557220,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:01:00.632840+00:00",
+      "delete_succeeded_at": "2026-10-16T15:01:01.961968+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521627210,
+            "checksum_member": "resense-image-1.0.0-d480b13.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-d480b13.tar.gz",
+            "sha256": "385167aa23582ec965347ea75a39d855cd430d533b0a94389dab96042d2f3c73"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10917252513--resense-image-1.0.0-d480b13.zip",
+        "verified_at": "2026-10-16T15:00:59.531933+00:00",
+        "zip_bytes": 521627667,
+        "zip_crc_all_members": true,
+        "zip_sha256": "823f580fffa61faf1904000599f6a6b44aac5b70133a17343e2028106262d9d4"
+      }
+    },
+    "10917388670": {
+      "absence_checked_at": "2026-10-16T15:01:41.369253+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917388670/zip",
+        "created_at": "2026-09-26T22:35:14Z",
+        "digest": "sha256:64434ca5e9f945d7123cc209c00797db9e014745e25021b2fcecbdd98868ce3d",
+        "expired": false,
+        "expires_at": "2026-10-26T22:35:10Z",
+        "id": 10917388670,
+        "name": "resense-image-1.0.0-0684546",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNzM4ODY3MA==",
+        "size_in_bytes": 521595341,
+        "updated_at": "2026-09-26T22:35:14Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917388670",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "06845469065d5b7d093210c61c989c1ef34271e4",
+          "id": 36276559663,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:01:38.904250+00:00",
+      "delete_succeeded_at": "2026-10-16T15:01:40.413932+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521594884,
+            "checksum_member": "resense-image-1.0.0-0684546.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-0684546.tar.gz",
+            "sha256": "33ff36b75fe6611bca6d7695b2918bbb48e8c1e17ec946d846dfc04d940b7b40"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10917388670--resense-image-1.0.0-0684546.zip",
+        "verified_at": "2026-10-16T15:01:38.157736+00:00",
+        "zip_bytes": 521595341,
+        "zip_crc_all_members": true,
+        "zip_sha256": "64434ca5e9f945d7123cc209c00797db9e014745e25021b2fcecbdd98868ce3d"
+      }
+    },
+    "10917475307": {
+      "absence_checked_at": "2026-10-16T14:58:32.147738+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917475307/zip",
+        "created_at": "2026-09-26T21:59:20Z",
+        "digest": "sha256:8a5a01e2a1ea5c0cda476e8ea6ca105b6b78ae05948a6a52c0a71e9bfdc66f07",
+        "expired": false,
+        "expires_at": "2026-10-26T21:59:14Z",
+        "id": 10917475307,
+        "name": "resense-image-1.0.0-446e0ad",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNzQ3NTMwNw==",
+        "size_in_bytes": 521624756,
+        "updated_at": "2026-09-26T21:59:20Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917475307",
+        "workflow_run": {
+          "head_branch": "claude/p1-p2-completion-20260926",
+          "head_repository_id": 1370982135,
+          "head_sha": "446e0aded9f57e49abfff31516a728bd25e5e123",
+          "id": 36274548282,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T14:58:29.924988+00:00",
+      "delete_succeeded_at": "2026-10-16T14:58:31.214707+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521624299,
+            "checksum_member": "resense-image-1.0.0-446e0ad.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-446e0ad.tar.gz",
+            "sha256": "36b231167eb45393983f68f3208d2c2a1536e10de19abcb2743387ff11cdefd6"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10917475307--resense-image-1.0.0-446e0ad.zip",
+        "verified_at": "2026-10-16T14:58:29.050824+00:00",
+        "zip_bytes": 521624756,
+        "zip_crc_all_members": true,
+        "zip_sha256": "8a5a01e2a1ea5c0cda476e8ea6ca105b6b78ae05948a6a52c0a71e9bfdc66f07"
+      }
+    },
+    "10917716629": {
+      "absence_checked_at": "2026-10-16T15:06:06.096679+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917716629/zip",
+        "created_at": "2026-09-26T22:49:20Z",
+        "digest": "sha256:cbfc05c015075165ae4cb68b637b27b9626e278d814f3f8e510bcf01c48a24ce",
+        "expired": false,
+        "expires_at": "2026-10-26T22:49:15Z",
+        "id": 10917716629,
+        "name": "resense-image-1.0.0-c45626f",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNzcxNjYyOQ==",
+        "size_in_bytes": 521608272,
+        "updated_at": "2026-09-26T22:49:20Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917716629",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "c45626fa9d68c4c026655250477a0e5816a642f6",
+          "id": 36277284017,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:06:04.265288+00:00",
+      "delete_succeeded_at": "2026-10-16T15:06:05.252378+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521607815,
+            "checksum_member": "resense-image-1.0.0-c45626f.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-c45626f.tar.gz",
+            "sha256": "ad2804f6a947cc991feb7058886b9beb8d30375121bbd906e32fa1b3101fe1f5"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10917716629--resense-image-1.0.0-c45626f.zip",
+        "verified_at": "2026-10-16T15:06:03.184555+00:00",
+        "zip_bytes": 521608272,
+        "zip_crc_all_members": true,
+        "zip_sha256": "cbfc05c015075165ae4cb68b637b27b9626e278d814f3f8e510bcf01c48a24ce"
+      }
+    },
+    "10917979757": {
+      "absence_checked_at": "2026-10-16T15:08:47.737797+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917979757/zip",
+        "created_at": "2026-09-26T23:49:30Z",
+        "digest": "sha256:4d8aef2f4b7aa826ddb8325c6ed00bf93bcae3d1d0a07f96e4fd4e3926ebe608",
+        "expired": false,
+        "expires_at": "2026-10-26T23:49:25Z",
+        "id": 10917979757,
+        "name": "resense-image-1.0.0-67e456b",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNzk3OTc1Nw==",
+        "size_in_bytes": 521635668,
+        "updated_at": "2026-09-26T23:49:30Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917979757",
+        "workflow_run": {
+          "head_branch": "claude/p1-p2-completion-20260926",
+          "head_repository_id": 1370982135,
+          "head_sha": "67e456b21a7706ad5ea641e3209044bbed625150",
+          "id": 36280434044,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:08:46.208838+00:00",
+      "delete_succeeded_at": "2026-10-16T15:08:47.034619+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521635211,
+            "checksum_member": "resense-image-1.0.0-67e456b.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-67e456b.tar.gz",
+            "sha256": "df8553a51adfc6f8307a0c91f46775f62ac4910413083b4d856d1287dca749af"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10917979757--resense-image-1.0.0-67e456b.zip",
+        "verified_at": "2026-10-16T15:08:45.417737+00:00",
+        "zip_bytes": 521635668,
+        "zip_crc_all_members": true,
+        "zip_sha256": "4d8aef2f4b7aa826ddb8325c6ed00bf93bcae3d1d0a07f96e4fd4e3926ebe608"
+      }
+    },
+    "10917995038": {
+      "absence_checked_at": "2026-10-16T15:03:28.050933+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917995038/zip",
+        "created_at": "2026-09-26T22:48:51Z",
+        "digest": "sha256:c809b0e169dc0180c1393891d91207128cc0ded6c23453168f08fb7830be7670",
+        "expired": false,
+        "expires_at": "2026-10-26T22:48:47Z",
+        "id": 10917995038,
+        "name": "resense-image-1.0.0-914d0a6",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxNzk5NTAzOA==",
+        "size_in_bytes": 521611293,
+        "updated_at": "2026-09-26T22:48:51Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10917995038",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "914d0a69de4d746e627c21fec0041b9cdaa0ea33",
+          "id": 36277262520,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:03:26.342503+00:00",
+      "delete_succeeded_at": "2026-10-16T15:03:27.286949+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521610836,
+            "checksum_member": "resense-image-1.0.0-914d0a6.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-914d0a6.tar.gz",
+            "sha256": "9a244ea9bf7588d002282335963a0a19ca063accd98ea908abe07b654481d8d6"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10917995038--resense-image-1.0.0-914d0a6.zip",
+        "verified_at": "2026-10-16T15:03:25.503925+00:00",
+        "zip_bytes": 521611293,
+        "zip_crc_all_members": true,
+        "zip_sha256": "c809b0e169dc0180c1393891d91207128cc0ded6c23453168f08fb7830be7670"
+      }
+    },
+    "10918270065": {
+      "absence_checked_at": "2026-10-16T15:05:58.392838+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10918270065/zip",
+        "created_at": "2026-09-26T22:55:01Z",
+        "digest": "sha256:e829ced1e2b21dad2ee25c5f93cb060759a231d2351920207c3475756cab2c70",
+        "expired": false,
+        "expires_at": "2026-10-26T22:54:58Z",
+        "id": 10918270065,
+        "name": "resense-image-1.0.0-90158e8",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODI3MDA2NQ==",
+        "size_in_bytes": 521610491,
+        "updated_at": "2026-09-26T22:55:01Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10918270065",
+        "workflow_run": {
+          "head_branch": "claude/p1-p2-completion-20260926",
+          "head_repository_id": 1370982135,
+          "head_sha": "90158e8a441e7157bd7eabe235ac56c0e24225b2",
+          "id": 36277608569,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:05:56.717788+00:00",
+      "delete_succeeded_at": "2026-10-16T15:05:57.540009+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521610034,
+            "checksum_member": "resense-image-1.0.0-90158e8.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-90158e8.tar.gz",
+            "sha256": "fe854408227531343d8b5be435b007f0a916cf7310757a9740c8a4e94f12c1c6"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10918270065--resense-image-1.0.0-90158e8.zip",
+        "verified_at": "2026-10-16T15:05:55.798530+00:00",
+        "zip_bytes": 521610491,
+        "zip_crc_all_members": true,
+        "zip_sha256": "e829ced1e2b21dad2ee25c5f93cb060759a231d2351920207c3475756cab2c70"
+      }
+    },
+    "10918568545": {
+      "absence_checked_at": "2026-10-16T15:10:11.256677+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10918568545/zip",
+        "created_at": "2026-09-27T00:09:56Z",
+        "digest": "sha256:1f571b2791a031fcf77c9b495192dd75efb73e8dba6aa15036f2eab785962700",
+        "expired": false,
+        "expires_at": "2026-10-27T00:09:54Z",
+        "id": 10918568545,
+        "name": "resense-image-1.0.0-43b6793",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODU2ODU0NQ==",
+        "size_in_bytes": 521611902,
+        "updated_at": "2026-09-27T00:09:56Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10918568545",
+        "workflow_run": {
+          "head_branch": "claude/p1-p2-completion-20260926",
+          "head_repository_id": 1370982135,
+          "head_sha": "43b679352a151a53473fc2221a246bec725ccf66",
+          "id": 36281462241,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:10:09.089834+00:00",
+      "delete_succeeded_at": "2026-10-16T15:10:10.199402+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521611445,
+            "checksum_member": "resense-image-1.0.0-43b6793.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-43b6793.tar.gz",
+            "sha256": "a69b26f80f7c65df6aebad279d6f86cd4a7f641d5246c9c9a42ec7a4fcd5f767"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10918568545--resense-image-1.0.0-43b6793.zip",
+        "verified_at": "2026-10-16T15:10:08.352153+00:00",
+        "zip_bytes": 521611902,
+        "zip_crc_all_members": true,
+        "zip_sha256": "1f571b2791a031fcf77c9b495192dd75efb73e8dba6aa15036f2eab785962700"
+      }
+    },
+    "10918736364": {
+      "absence_checked_at": "2026-10-16T15:05:41.499060+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10918736364/zip",
+        "created_at": "2026-09-26T23:21:41Z",
+        "digest": "sha256:98a7513cdd8df60747201dfd1455d2320ca3424bb18d429fae6a28098ad48896",
+        "expired": false,
+        "expires_at": "2026-10-26T23:21:37Z",
+        "id": 10918736364,
+        "name": "resense-image-1.0.0-adcd3b8",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODczNjM2NA==",
+        "size_in_bytes": 521612580,
+        "updated_at": "2026-09-26T23:21:41Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10918736364",
+        "workflow_run": {
+          "head_branch": "claude/p1-p2-completion-20260926",
+          "head_repository_id": 1370982135,
+          "head_sha": "adcd3b874ada88cf5a227f50e33afd6435beea0f",
+          "id": 36278988540,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:05:39.222347+00:00",
+      "delete_succeeded_at": "2026-10-16T15:05:40.579314+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521612123,
+            "checksum_member": "resense-image-1.0.0-adcd3b8.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-adcd3b8.tar.gz",
+            "sha256": "88c897fb80e68cc28ab3a78f46a566e190a89994b7c3be49e596efd437698b47"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10918736364--resense-image-1.0.0-adcd3b8.zip",
+        "verified_at": "2026-10-16T15:05:38.384948+00:00",
+        "zip_bytes": 521612580,
+        "zip_crc_all_members": true,
+        "zip_sha256": "98a7513cdd8df60747201dfd1455d2320ca3424bb18d429fae6a28098ad48896"
+      }
+    },
+    "10918819624": {
+      "absence_checked_at": "2026-10-16T15:08:08.096741+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10918819624/zip",
+        "created_at": "2026-09-27T00:35:15Z",
+        "digest": "sha256:289b2c9b49f752d641ad76077de4fc4243f908aac29a1b9d947a7fbea042e9a0",
+        "expired": false,
+        "expires_at": "2026-10-27T00:35:10Z",
+        "id": 10918819624,
+        "name": "resense-image-1.0.0-9540d66",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODgxOTYyNA==",
+        "size_in_bytes": 521612584,
+        "updated_at": "2026-09-27T00:35:15Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10918819624",
+        "workflow_run": {
+          "head_branch": "claude/p1-p2-completion-20260926",
+          "head_repository_id": 1370982135,
+          "head_sha": "9540d66ed3dc1208e11dda847424e4ccce32df37",
+          "id": 36282745429,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:08:06.585645+00:00",
+      "delete_succeeded_at": "2026-10-16T15:08:07.454474+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521612127,
+            "checksum_member": "resense-image-1.0.0-9540d66.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-9540d66.tar.gz",
+            "sha256": "f5aec59a31f12f7bede5811226ad92fe44931070aa938e254e17c78893665836"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10918819624--resense-image-1.0.0-9540d66.zip",
+        "verified_at": "2026-10-16T15:08:05.640135+00:00",
+        "zip_bytes": 521612584,
+        "zip_crc_all_members": true,
+        "zip_sha256": "289b2c9b49f752d641ad76077de4fc4243f908aac29a1b9d947a7fbea042e9a0"
+      }
+    },
+    "10925552590": {
+      "absence_checked_at": "2026-10-16T15:11:57.356637+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10925552590/zip",
+        "created_at": "2026-09-27T06:58:29Z",
+        "digest": "sha256:f0c61793a84c795d80f5145b08758a96003ce731e4881d22c8c894f0c7be2d4b",
+        "expired": false,
+        "expires_at": "2026-10-27T06:58:17Z",
+        "id": 10925552590,
+        "name": "resense-image-1.0.0-5fc668f",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkyNTU1MjU5MA==",
+        "size_in_bytes": 521620722,
+        "updated_at": "2026-09-27T06:58:29Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10925552590",
+        "workflow_run": {
+          "head_branch": "claude/nifty-pascal-lzgl78",
+          "head_repository_id": 1370982135,
+          "head_sha": "5fc668f2f4c707599934fa982950e9bd01fcb28e",
+          "id": 36301468840,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:11:55.615180+00:00",
+      "delete_succeeded_at": "2026-10-16T15:11:56.615382+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521620265,
+            "checksum_member": "resense-image-1.0.0-5fc668f.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-5fc668f.tar.gz",
+            "sha256": "f03e61884ea9cebf6792028d143554a108c6aad1867a0c019d13b47e6e189265"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10925552590--resense-image-1.0.0-5fc668f.zip",
+        "verified_at": "2026-10-16T15:11:54.837953+00:00",
+        "zip_bytes": 521620722,
+        "zip_crc_all_members": true,
+        "zip_sha256": "f0c61793a84c795d80f5145b08758a96003ce731e4881d22c8c894f0c7be2d4b"
+      }
+    },
+    "10926802943": {
+      "absence_checked_at": "2026-10-16T15:12:51.365665+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10926802943/zip",
+        "created_at": "2026-09-27T08:08:19Z",
+        "digest": "sha256:8c4aa355823e3d534eec21bc856c06a20401b9537a9bb4d3e5b80721e72dedee",
+        "expired": false,
+        "expires_at": "2026-10-27T08:08:15Z",
+        "id": 10926802943,
+        "name": "resense-image-1.0.0-054a8ea",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkyNjgwMjk0Mw==",
+        "size_in_bytes": 521605991,
+        "updated_at": "2026-09-27T08:08:19Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10926802943",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "054a8eaa8cf87a1f2b4d7941a22e63d4c65d369d",
+          "id": 36305037203,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:12:49.344255+00:00",
+      "delete_succeeded_at": "2026-10-16T15:12:50.355212+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521605534,
+            "checksum_member": "resense-image-1.0.0-054a8ea.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-054a8ea.tar.gz",
+            "sha256": "a3bc8c20b948c602e432636c0e47e6f14fc1d1b5beb0149515d353cb7f23dc39"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10926802943--resense-image-1.0.0-054a8ea.zip",
+        "verified_at": "2026-10-16T15:12:48.584931+00:00",
+        "zip_bytes": 521605991,
+        "zip_crc_all_members": true,
+        "zip_sha256": "8c4aa355823e3d534eec21bc856c06a20401b9537a9bb4d3e5b80721e72dedee"
+      }
+    },
+    "10929906924": {
+      "absence_checked_at": "2026-10-16T15:12:58.405603+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10929906924/zip",
+        "created_at": "2026-09-27T10:49:29Z",
+        "digest": "sha256:7586fe44045dba98704407ab5c477ad8a48189acaacd3b95350a7928e901203a",
+        "expired": false,
+        "expires_at": "2026-10-27T10:49:25Z",
+        "id": 10929906924,
+        "name": "resense-image-1.0.0-09629f5",
+        "node_id": "MDg6QXJ0aWZhY3QxMDkyOTkwNjkyNA==",
+        "size_in_bytes": 521614793,
+        "updated_at": "2026-09-27T10:49:29Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10929906924",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "09629f5a981fa7e9ab5a789abecb13e8544c99d0",
+          "id": 36313587896,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:12:56.681055+00:00",
+      "delete_succeeded_at": "2026-10-16T15:12:57.653339+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521614336,
+            "checksum_member": "resense-image-1.0.0-09629f5.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-09629f5.tar.gz",
+            "sha256": "b87b07fe944bdd79b0aef9875ae913dc0d2c4015b479b416dca3d82913e8d7be"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10929906924--resense-image-1.0.0-09629f5.zip",
+        "verified_at": "2026-10-16T15:12:55.775630+00:00",
+        "zip_bytes": 521614793,
+        "zip_crc_all_members": true,
+        "zip_sha256": "7586fe44045dba98704407ab5c477ad8a48189acaacd3b95350a7928e901203a"
+      }
+    },
+    "10952821720": {
+      "absence_checked_at": "2026-10-16T15:15:07.230096+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10952821720/zip",
+        "created_at": "2026-09-28T05:13:54Z",
+        "digest": "sha256:2a988652ba42e8022fd551b390dc1a947450c489b19fc7ddffad7c834030b6c5",
+        "expired": false,
+        "expires_at": "2026-10-28T05:13:48Z",
+        "id": 10952821720,
+        "name": "resense-image-1.0.0-df24c18",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk1MjgyMTcyMA==",
+        "size_in_bytes": 521800778,
+        "updated_at": "2026-09-28T05:13:54Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10952821720",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "df24c18edbebf83360b0d8bf2e100cf73ec84108",
+          "id": 36380714035,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:15:05.574168+00:00",
+      "delete_succeeded_at": "2026-10-16T15:15:06.487725+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521800321,
+            "checksum_member": "resense-image-1.0.0-df24c18.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-df24c18.tar.gz",
+            "sha256": "e20d7ab8323d1bbdf1d50628452cc37aa0d84a17b1f51b32d9cb2ae9a0c77cc0"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10952821720--resense-image-1.0.0-df24c18.zip",
+        "verified_at": "2026-10-16T15:15:04.710782+00:00",
+        "zip_bytes": 521800778,
+        "zip_crc_all_members": true,
+        "zip_sha256": "2a988652ba42e8022fd551b390dc1a947450c489b19fc7ddffad7c834030b6c5"
+      }
+    },
+    "10955046027": {
+      "absence_checked_at": "2026-10-16T15:14:47.352915+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10955046027/zip",
+        "created_at": "2026-09-28T06:28:26Z",
+        "digest": "sha256:6fac8e84c1f5c9e3431916286c3afde1ef52f3a01c42b40549086b005dfae9ad",
+        "expired": false,
+        "expires_at": "2026-10-28T06:28:21Z",
+        "id": 10955046027,
+        "name": "resense-image-1.0.0-8f23284",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk1NTA0NjAyNw==",
+        "size_in_bytes": 521801150,
+        "updated_at": "2026-09-28T06:28:26Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10955046027",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
+          "id": 36386260778,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:14:45.610191+00:00",
+      "delete_succeeded_at": "2026-10-16T15:14:46.533247+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521800693,
+            "checksum_member": "resense-image-1.0.0-8f23284.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-8f23284.tar.gz",
+            "sha256": "150f5ff41e8fc2271012ae5a6d601d404eb8d8eda899426d7adcc4f6216a0980"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10955046027--resense-image-1.0.0-8f23284.zip",
+        "verified_at": "2026-10-16T15:14:44.824574+00:00",
+        "zip_bytes": 521801150,
+        "zip_crc_all_members": true,
+        "zip_sha256": "6fac8e84c1f5c9e3431916286c3afde1ef52f3a01c42b40549086b005dfae9ad"
+      }
+    },
+    "10955130453": {
+      "absence_checked_at": "2026-10-16T15:15:22.161747+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10955130453/zip",
+        "created_at": "2026-09-28T06:27:54Z",
+        "digest": "sha256:5996ed9bd6e976a1a756d6f59efa13c132a0c0709e69e4f664ca946713b5be18",
+        "expired": false,
+        "expires_at": "2026-10-28T06:27:47Z",
+        "id": 10955130453,
+        "name": "resense-image-1.0.0-8f23284",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk1NTEzMDQ1Mw==",
+        "size_in_bytes": 521776971,
+        "updated_at": "2026-09-28T06:27:54Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10955130453",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "8f232847477aaabc9c5f4965e6466af70b7d5d47",
+          "id": 36386231662,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:15:19.595003+00:00",
+      "delete_succeeded_at": "2026-10-16T15:15:21.025542+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521776514,
+            "checksum_member": "resense-image-1.0.0-8f23284.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-8f23284.tar.gz",
+            "sha256": "b583cc668c995bc0c680051884ee310124b4141576f4edc01c3a18aa90c80256"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10955130453--resense-image-1.0.0-8f23284.zip",
+        "verified_at": "2026-10-16T15:15:18.787560+00:00",
+        "zip_bytes": 521776971,
+        "zip_crc_all_members": true,
+        "zip_sha256": "5996ed9bd6e976a1a756d6f59efa13c132a0c0709e69e4f664ca946713b5be18"
+      }
+    },
+    "10958484541": {
+      "absence_checked_at": "2026-10-16T15:18:12.128580+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10958484541/zip",
+        "created_at": "2026-09-28T08:32:17Z",
+        "digest": "sha256:5fddbd0443ac771ef2f4c5611fcf592033f8eacf9a3ae2200b4aaf35d7b1176c",
+        "expired": false,
+        "expires_at": "2026-10-28T08:32:12Z",
+        "id": 10958484541,
+        "name": "resense-image-1.0.0-806b6c4",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk1ODQ4NDU0MQ==",
+        "size_in_bytes": 521774358,
+        "updated_at": "2026-09-28T08:32:17Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10958484541",
+        "workflow_run": {
+          "head_branch": "claude/amazing-fermi-t67v8g",
+          "head_repository_id": 1370982135,
+          "head_sha": "806b6c4912d0a2bd92f5f4cc726fba87758e6548",
+          "id": 36397511351,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:18:10.054486+00:00",
+      "delete_succeeded_at": "2026-10-16T15:18:11.132907+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521773901,
+            "checksum_member": "resense-image-1.0.0-806b6c4.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-806b6c4.tar.gz",
+            "sha256": "feb05f4b28f9caa40ae519fc8693f6d8c051eb742d97bffb79b29a2a944cbc17"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10958484541--resense-image-1.0.0-806b6c4.zip",
+        "verified_at": "2026-10-16T15:18:09.227976+00:00",
+        "zip_bytes": 521774358,
+        "zip_crc_all_members": true,
+        "zip_sha256": "5fddbd0443ac771ef2f4c5611fcf592033f8eacf9a3ae2200b4aaf35d7b1176c"
+      }
+    },
+    "10961895814": {
+      "absence_checked_at": "2026-10-16T15:17:11.200715+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10961895814/zip",
+        "created_at": "2026-09-28T09:35:23Z",
+        "digest": "sha256:9f0bbce37c1ede22815add389458f225de57e07f25fedca097cb05a6092855f8",
+        "expired": false,
+        "expires_at": "2026-10-28T09:35:17Z",
+        "id": 10961895814,
+        "name": "resense-image-1.0.0-776d36d",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk2MTg5NTgxNA==",
+        "size_in_bytes": 521814912,
+        "updated_at": "2026-09-28T09:35:23Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10961895814",
+        "workflow_run": {
+          "head_branch": "claude/amazing-fermi-t67v8g",
+          "head_repository_id": 1370982135,
+          "head_sha": "776d36da8a6ceca865e742d2e5bd09369fba301e",
+          "id": 36403868047,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:17:09.485963+00:00",
+      "delete_succeeded_at": "2026-10-16T15:17:10.342708+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521814455,
+            "checksum_member": "resense-image-1.0.0-776d36d.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-776d36d.tar.gz",
+            "sha256": "deb477da8de754b71c528d3516c7a4b35f1086abb13e8120d7d2059c5e79c26e"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10961895814--resense-image-1.0.0-776d36d.zip",
+        "verified_at": "2026-10-16T15:17:08.635324+00:00",
+        "zip_bytes": 521814912,
+        "zip_crc_all_members": true,
+        "zip_sha256": "9f0bbce37c1ede22815add389458f225de57e07f25fedca097cb05a6092855f8"
+      }
+    },
+    "10962074666": {
+      "absence_checked_at": "2026-10-16T15:17:37.824547+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10962074666/zip",
+        "created_at": "2026-09-28T10:05:19Z",
+        "digest": "sha256:c79a5047137e65f2cd3cc7a20b3904e9ceac4f3908190c242b49d82001ace5b9",
+        "expired": false,
+        "expires_at": "2026-10-28T10:05:15Z",
+        "id": 10962074666,
+        "name": "resense-image-1.0.0-d359a06",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk2MjA3NDY2Ng==",
+        "size_in_bytes": 521818114,
+        "updated_at": "2026-09-28T10:05:19Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10962074666",
+        "workflow_run": {
+          "head_branch": "claude/amazing-fermi-t67v8g",
+          "head_repository_id": 1370982135,
+          "head_sha": "d359a06d3cffabf09ec332f99c4ac568e6b627de",
+          "id": 36407122729,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:17:36.093104+00:00",
+      "delete_succeeded_at": "2026-10-16T15:17:36.967394+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521817657,
+            "checksum_member": "resense-image-1.0.0-d359a06.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-d359a06.tar.gz",
+            "sha256": "016228cb7e021d2bfa1642190ba0e9e937de483f7bb61d3eff59166b7d2efea9"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10962074666--resense-image-1.0.0-d359a06.zip",
+        "verified_at": "2026-10-16T15:17:35.387015+00:00",
+        "zip_bytes": 521818114,
+        "zip_crc_all_members": true,
+        "zip_sha256": "c79a5047137e65f2cd3cc7a20b3904e9ceac4f3908190c242b49d82001ace5b9"
+      }
+    },
+    "10963542691": {
+      "absence_checked_at": "2026-10-16T15:20:02.214131+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10963542691/zip",
+        "created_at": "2026-09-28T10:19:09Z",
+        "digest": "sha256:8af791d28f5bec1413fb0d5fdd5fef33f412e2d278b26b0c5202e48d3ff15615",
+        "expired": false,
+        "expires_at": "2026-10-28T10:19:03Z",
+        "id": 10963542691,
+        "name": "resense-image-1.0.0-05862a7",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk2MzU0MjY5MQ==",
+        "size_in_bytes": 521782835,
+        "updated_at": "2026-09-28T10:19:09Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10963542691",
+        "workflow_run": {
+          "head_branch": "claude/amazing-fermi-t67v8g",
+          "head_repository_id": 1370982135,
+          "head_sha": "05862a7bccd285df21fd84b2a1ca4d2b20936d92",
+          "id": 36408572581,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:19:59.575497+00:00",
+      "delete_succeeded_at": "2026-10-16T15:20:01.019622+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521782378,
+            "checksum_member": "resense-image-1.0.0-05862a7.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-05862a7.tar.gz",
+            "sha256": "368199f7f069f641c1e2cb763a936c20f87551ef901124476dec5b9dfacaed47"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10963542691--resense-image-1.0.0-05862a7.zip",
+        "verified_at": "2026-10-16T15:19:58.733227+00:00",
+        "zip_bytes": 521782835,
+        "zip_crc_all_members": true,
+        "zip_sha256": "8af791d28f5bec1413fb0d5fdd5fef33f412e2d278b26b0c5202e48d3ff15615"
+      }
+    },
+    "10964167482": {
+      "absence_checked_at": "2026-10-16T15:20:09.655293+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10964167482/zip",
+        "created_at": "2026-09-28T10:35:35Z",
+        "digest": "sha256:e5d8e8f6224774094c0b976d01f53742589c08961317a75df1b2be85481a34a4",
+        "expired": false,
+        "expires_at": "2026-10-28T10:35:31Z",
+        "id": 10964167482,
+        "name": "resense-image-1.0.0-2583e0d",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk2NDE2NzQ4Mg==",
+        "size_in_bytes": 521781961,
+        "updated_at": "2026-09-28T10:35:35Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10964167482",
+        "workflow_run": {
+          "head_branch": "claude/amazing-fermi-t67v8g",
+          "head_repository_id": 1370982135,
+          "head_sha": "2583e0dc32afff95dc56efb0637fe46020e6dd3e",
+          "id": 36410170877,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:20:07.420276+00:00",
+      "delete_succeeded_at": "2026-10-16T15:20:08.652896+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521781504,
+            "checksum_member": "resense-image-1.0.0-2583e0d.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-2583e0d.tar.gz",
+            "sha256": "38af3a1d44b5ac77d35f107884b507b1975cc1395a683d26f320b0df42548ebe"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10964167482--resense-image-1.0.0-2583e0d.zip",
+        "verified_at": "2026-10-16T15:20:06.499854+00:00",
+        "zip_bytes": 521781961,
+        "zip_crc_all_members": true,
+        "zip_sha256": "e5d8e8f6224774094c0b976d01f53742589c08961317a75df1b2be85481a34a4"
+      }
+    },
+    "10964322913": {
+      "absence_checked_at": "2026-10-16T15:20:29.428059+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10964322913/zip",
+        "created_at": "2026-09-28T10:51:19Z",
+        "digest": "sha256:8cbe69a7d1f5144d41c92a2bdae75a53cb3397a0519feb62b281cd4c60ecdd64",
+        "expired": false,
+        "expires_at": "2026-10-28T10:51:14Z",
+        "id": 10964322913,
+        "name": "resense-image-1.0.0-1e2f700",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk2NDMyMjkxMw==",
+        "size_in_bytes": 521799325,
+        "updated_at": "2026-09-28T10:51:19Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10964322913",
+        "workflow_run": {
+          "head_branch": "claude/amazing-fermi-t67v8g",
+          "head_repository_id": 1370982135,
+          "head_sha": "1e2f70095b5662d965dc62d7b413ac2e76b621fb",
+          "id": 36411664817,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:20:27.444739+00:00",
+      "delete_succeeded_at": "2026-10-16T15:20:28.495337+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521798868,
+            "checksum_member": "resense-image-1.0.0-1e2f700.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-1e2f700.tar.gz",
+            "sha256": "3ef10cdca710e3ff17c501645545328436f40604a91238adfcf6158c0229f7fe"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10964322913--resense-image-1.0.0-1e2f700.zip",
+        "verified_at": "2026-10-16T15:20:26.557767+00:00",
+        "zip_bytes": 521799325,
+        "zip_crc_all_members": true,
+        "zip_sha256": "8cbe69a7d1f5144d41c92a2bdae75a53cb3397a0519feb62b281cd4c60ecdd64"
+      }
+    },
+    "10964359486": {
+      "absence_checked_at": "2026-10-16T15:24:51.970913+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10964359486/zip",
+        "created_at": "2026-09-28T10:53:16Z",
+        "digest": "sha256:5deab200079031119a532d815e3f201520b09cf81f8ebbe7a71ecde69cdd41c1",
+        "expired": false,
+        "expires_at": "2026-10-28T10:53:11Z",
+        "id": 10964359486,
+        "name": "resense-image-1.0.0-e44819d",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk2NDM1OTQ4Ng==",
+        "size_in_bytes": 521801055,
+        "updated_at": "2026-09-28T10:53:16Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10964359486",
+        "workflow_run": {
+          "head_branch": "claude/amazing-fermi-t67v8g",
+          "head_repository_id": 1370982135,
+          "head_sha": "e44819dfc4795021c8acf13805e6f8e26e54b97a",
+          "id": 36411885989,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:24:50.019782+00:00",
+      "delete_succeeded_at": "2026-10-16T15:24:50.988000+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521800598,
+            "checksum_member": "resense-image-1.0.0-e44819d.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-e44819d.tar.gz",
+            "sha256": "1f872b0183425f4585f69883c04c09c7b19736c6c60156f06a8f3dfceb578a58"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10964359486--resense-image-1.0.0-e44819d.zip",
+        "verified_at": "2026-10-16T15:24:49.227865+00:00",
+        "zip_bytes": 521801055,
+        "zip_crc_all_members": true,
+        "zip_sha256": "5deab200079031119a532d815e3f201520b09cf81f8ebbe7a71ecde69cdd41c1"
+      }
+    },
+    "10970422663": {
+      "absence_checked_at": "2026-10-16T15:22:23.361621+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10970422663/zip",
+        "created_at": "2026-09-28T12:55:00Z",
+        "digest": "sha256:5183c6afdeaec3a19c032de3765c5e5fecafc687fa11007161d71e68a0d74563",
+        "expired": false,
+        "expires_at": "2026-10-28T12:54:55Z",
+        "id": 10970422663,
+        "name": "resense-image-1.0.0-464f5bc",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk3MDQyMjY2Mw==",
+        "size_in_bytes": 521771323,
+        "updated_at": "2026-09-28T12:55:00Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10970422663",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "464f5bc6b193ff3dcc4bd7d30b03745d8d260f6a",
+          "id": 36424461052,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:22:21.195818+00:00",
+      "delete_succeeded_at": "2026-10-16T15:22:22.494987+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521770866,
+            "checksum_member": "resense-image-1.0.0-464f5bc.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-464f5bc.tar.gz",
+            "sha256": "5ad49759e7addec1bbd345d57e752ff15710b1c81b047ccc67315f4d9a2dcfda"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10970422663--resense-image-1.0.0-464f5bc.zip",
+        "verified_at": "2026-10-16T15:22:20.281297+00:00",
+        "zip_bytes": 521771323,
+        "zip_crc_all_members": true,
+        "zip_sha256": "5183c6afdeaec3a19c032de3765c5e5fecafc687fa11007161d71e68a0d74563"
+      }
+    },
+    "10984126890": {
+      "absence_checked_at": "2026-10-16T15:22:53.209041+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10984126890/zip",
+        "created_at": "2026-09-28T16:31:06Z",
+        "digest": "sha256:d8aa86b7ec6c730c5b96c608ec594f608a46b7fe8c6ed77dd960d948fc003f96",
+        "expired": false,
+        "expires_at": "2026-10-28T16:31:00Z",
+        "id": 10984126890,
+        "name": "resense-image-1.0.0-2242bc6",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk4NDEyNjg5MA==",
+        "size_in_bytes": 521798532,
+        "updated_at": "2026-09-28T16:31:06Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10984126890",
+        "workflow_run": {
+          "head_branch": "claude/amazing-fermi-t67v8g",
+          "head_repository_id": 1370982135,
+          "head_sha": "2242bc689f37ff4ba51f5f7f8b2cced458477527",
+          "id": 36451076056,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:22:50.770269+00:00",
+      "delete_succeeded_at": "2026-10-16T15:22:52.388923+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521798075,
+            "checksum_member": "resense-image-1.0.0-2242bc6.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-2242bc6.tar.gz",
+            "sha256": "bddc8845afc5248f6dfb34572b2129bdbc7bd7ea5747601d2d433ca80dd61872"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10984126890--resense-image-1.0.0-2242bc6.zip",
+        "verified_at": "2026-10-16T15:22:49.825917+00:00",
+        "zip_bytes": 521798532,
+        "zip_crc_all_members": true,
+        "zip_sha256": "d8aa86b7ec6c730c5b96c608ec594f608a46b7fe8c6ed77dd960d948fc003f96"
+      }
+    },
+    "10988760112": {
+      "absence_checked_at": "2026-10-16T15:26:48.967417+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10988760112/zip",
+        "created_at": "2026-09-28T18:11:56Z",
+        "digest": "sha256:16169fbffe7b3c9cf4fbfac605545b4e46e931c50788828a4353679a46d59ac4",
+        "expired": false,
+        "expires_at": "2026-10-28T18:11:52Z",
+        "id": 10988760112,
+        "name": "resense-image-1.0.0-2d28d2a",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk4ODc2MDExMg==",
+        "size_in_bytes": 521767288,
+        "updated_at": "2026-09-28T18:11:56Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10988760112",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "2d28d2af52a1ac08c64b5843fe3c8f22f3fb9f9b",
+          "id": 36463005912,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:26:47.033455+00:00",
+      "delete_succeeded_at": "2026-10-16T15:26:48.271365+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521766831,
+            "checksum_member": "resense-image-1.0.0-2d28d2a.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-2d28d2a.tar.gz",
+            "sha256": "3ff5cb7f1cdb8c94a6adb6897d56b250b9261fafbaf243016897ccdfbd7bd826"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10988760112--resense-image-1.0.0-2d28d2a.zip",
+        "verified_at": "2026-10-16T15:26:46.337500+00:00",
+        "zip_bytes": 521767288,
+        "zip_crc_all_members": true,
+        "zip_sha256": "16169fbffe7b3c9cf4fbfac605545b4e46e931c50788828a4353679a46d59ac4"
+      }
+    },
+    "10988781281": {
+      "absence_checked_at": "2026-10-16T15:27:20.565392+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10988781281/zip",
+        "created_at": "2026-09-28T18:19:00Z",
+        "digest": "sha256:2a79a8116b9947297bfc72a335074d676443bba3a493b3ad714221208c3515ac",
+        "expired": false,
+        "expires_at": "2026-10-28T18:18:55Z",
+        "id": 10988781281,
+        "name": "resense-image-1.0.0-12f0c55",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk4ODc4MTI4MQ==",
+        "size_in_bytes": 521799814,
+        "updated_at": "2026-09-28T18:19:00Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10988781281",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "12f0c5578597b087f3e03996f447e35ad39af001",
+          "id": 36463728629,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:27:18.931733+00:00",
+      "delete_succeeded_at": "2026-10-16T15:27:19.848755+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521799357,
+            "checksum_member": "resense-image-1.0.0-12f0c55.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-12f0c55.tar.gz",
+            "sha256": "f96a46ebadbb4f0a1ee9edc42a7376c1d34de919e2f25544335080beb4423f53"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10988781281--resense-image-1.0.0-12f0c55.zip",
+        "verified_at": "2026-10-16T15:27:18.244823+00:00",
+        "zip_bytes": 521799814,
+        "zip_crc_all_members": true,
+        "zip_sha256": "2a79a8116b9947297bfc72a335074d676443bba3a493b3ad714221208c3515ac"
+      }
+    },
+    "10988806505": {
+      "absence_checked_at": "2026-10-16T15:28:48.643779+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10988806505/zip",
+        "created_at": "2026-09-28T18:21:07Z",
+        "digest": "sha256:e933ac3ef6b3420f9d61b35dbaa9d7863d47faea2bb9a91b956c1612f925a39c",
+        "expired": false,
+        "expires_at": "2026-10-28T18:21:04Z",
+        "id": 10988806505,
+        "name": "resense-image-1.0.0-9a27bbf",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk4ODgwNjUwNQ==",
+        "size_in_bytes": 521794062,
+        "updated_at": "2026-09-28T18:21:07Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10988806505",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "9a27bbfb69bef2172428a5dec27a86c4047b8d1d",
+          "id": 36464095912,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:28:46.895760+00:00",
+      "delete_succeeded_at": "2026-10-16T15:28:47.860273+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521793605,
+            "checksum_member": "resense-image-1.0.0-9a27bbf.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-9a27bbf.tar.gz",
+            "sha256": "54688726e989cc0dc13ae58ff3aec51350d0d7357c9a75d39458cf79eeb9b688"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10988806505--resense-image-1.0.0-9a27bbf.zip",
+        "verified_at": "2026-10-16T15:28:45.993508+00:00",
+        "zip_bytes": 521794062,
+        "zip_crc_all_members": true,
+        "zip_sha256": "e933ac3ef6b3420f9d61b35dbaa9d7863d47faea2bb9a91b956c1612f925a39c"
+      }
+    },
+    "10989631888": {
+      "absence_checked_at": "2026-10-16T15:31:31.283295+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10989631888/zip",
+        "created_at": "2026-09-28T18:24:42Z",
+        "digest": "sha256:6f668d6a3ce0e121af5bc4726fbd0805d18382c6eac06f0240a4abb42f4662b9",
+        "expired": false,
+        "expires_at": "2026-10-28T18:24:37Z",
+        "id": 10989631888,
+        "name": "resense-image-1.0.0-c7de2bf",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk4OTYzMTg4OA==",
+        "size_in_bytes": 534063118,
+        "updated_at": "2026-09-28T18:24:42Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10989631888",
+        "workflow_run": {
+          "head_branch": "gpt-score-push-20260928",
+          "head_repository_id": 1370982135,
+          "head_sha": "c7de2bf4ea2934745c43613a3b8ad341e037ea2f",
+          "id": 36464476305,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:31:29.609034+00:00",
+      "delete_succeeded_at": "2026-10-16T15:31:30.527372+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534062661,
+            "checksum_member": "resense-image-1.0.0-c7de2bf.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-c7de2bf.tar.gz",
+            "sha256": "a2ba91a75a73cfedc7873572b959ee01c60e27cd8a762a2edd8d3c28bd68f924"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10989631888--resense-image-1.0.0-c7de2bf.zip",
+        "verified_at": "2026-10-16T15:31:28.750218+00:00",
+        "zip_bytes": 534063118,
+        "zip_crc_all_members": true,
+        "zip_sha256": "6f668d6a3ce0e121af5bc4726fbd0805d18382c6eac06f0240a4abb42f4662b9"
+      }
+    },
+    "10990247731": {
+      "absence_checked_at": "2026-10-16T15:30:58.028146+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10990247731/zip",
+        "created_at": "2026-09-28T18:57:28Z",
+        "digest": "sha256:85aa63b4fdd5adde54f373123d8a37aead736282d7939ee4dd8821ebbabb0812",
+        "expired": false,
+        "expires_at": "2026-10-28T18:57:24Z",
+        "id": 10990247731,
+        "name": "resense-image-1.0.0-71cdb50",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5MDI0NzczMQ==",
+        "size_in_bytes": 534094464,
+        "updated_at": "2026-09-28T18:57:28Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10990247731",
+        "workflow_run": {
+          "head_branch": "gpt-score-push-20260928",
+          "head_repository_id": 1370982135,
+          "head_sha": "71cdb5094e44555899d6d8bcd6f130e5151cea81",
+          "id": 36468364551,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:30:56.205110+00:00",
+      "delete_succeeded_at": "2026-10-16T15:30:57.110573+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534094007,
+            "checksum_member": "resense-image-1.0.0-71cdb50.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-71cdb50.tar.gz",
+            "sha256": "bf48ac00e9598796d5a673b729f2dc00176c8a705dcfe1660eb6037d25010fc2"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10990247731--resense-image-1.0.0-71cdb50.zip",
+        "verified_at": "2026-10-16T15:30:55.288451+00:00",
+        "zip_bytes": 534094464,
+        "zip_crc_all_members": true,
+        "zip_sha256": "85aa63b4fdd5adde54f373123d8a37aead736282d7939ee4dd8821ebbabb0812"
+      }
+    },
+    "10990857388": {
+      "absence_checked_at": "2026-10-16T15:33:43.120145+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10990857388/zip",
+        "created_at": "2026-09-28T18:59:53Z",
+        "digest": "sha256:85b0803a27551678b22eb7e8ffcab200eb64d7ddbd35113a23694cfdfaccb61b",
+        "expired": false,
+        "expires_at": "2026-10-28T18:59:46Z",
+        "id": 10990857388,
+        "name": "resense-image-1.0.0-1c2c539",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5MDg1NzM4OA==",
+        "size_in_bytes": 534127831,
+        "updated_at": "2026-09-28T18:59:53Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10990857388",
+        "workflow_run": {
+          "head_branch": "gpt-score-push-20260928",
+          "head_repository_id": 1370982135,
+          "head_sha": "1c2c5397006ecdc0e81da84dacff88aba6c2ecd3",
+          "id": 36468659803,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:33:40.910306+00:00",
+      "delete_succeeded_at": "2026-10-16T15:33:42.142285+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534127374,
+            "checksum_member": "resense-image-1.0.0-1c2c539.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-1c2c539.tar.gz",
+            "sha256": "b7936dd5e8057a3a8acfa9fb80418041135c7cad49d5f65ec898158d9afe0d2e"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10990857388--resense-image-1.0.0-1c2c539.zip",
+        "verified_at": "2026-10-16T15:33:40.221051+00:00",
+        "zip_bytes": 534127831,
+        "zip_crc_all_members": true,
+        "zip_sha256": "85b0803a27551678b22eb7e8ffcab200eb64d7ddbd35113a23694cfdfaccb61b"
+      }
+    },
+    "10991225672": {
+      "absence_checked_at": "2026-10-16T15:30:29.526454+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10991225672/zip",
+        "created_at": "2026-09-28T18:53:50Z",
+        "digest": "sha256:4c65625987f11989b572124075f27ef01e47007987e02b78e945246bba851bd3",
+        "expired": false,
+        "expires_at": "2026-10-28T18:53:44Z",
+        "id": 10991225672,
+        "name": "resense-image-1.0.0-8547009",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5MTIyNTY3Mg==",
+        "size_in_bytes": 534126274,
+        "updated_at": "2026-09-28T18:53:50Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10991225672",
+        "workflow_run": {
+          "head_branch": "gpt-score-push-20260928",
+          "head_repository_id": 1370982135,
+          "head_sha": "854700995ac93f1314d1c62e94c7b00c89ddd986",
+          "id": 36467904812,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:30:27.663412+00:00",
+      "delete_succeeded_at": "2026-10-16T15:30:28.664381+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534125817,
+            "checksum_member": "resense-image-1.0.0-8547009.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-8547009.tar.gz",
+            "sha256": "7510dc6836f70025d9ef0c623bba1300ab304728d1d9895301af27c3dd75c969"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10991225672--resense-image-1.0.0-8547009.zip",
+        "verified_at": "2026-10-16T15:30:26.906426+00:00",
+        "zip_bytes": 534126274,
+        "zip_crc_all_members": true,
+        "zip_sha256": "4c65625987f11989b572124075f27ef01e47007987e02b78e945246bba851bd3"
+      }
+    },
+    "10991547668": {
+      "absence_checked_at": "2026-10-16T15:34:02.068477+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10991547668/zip",
+        "created_at": "2026-09-28T19:25:49Z",
+        "digest": "sha256:228a41e242974183a0a57a87aa6ae6e8bd732e98b222f8f3d5e5162239e29841",
+        "expired": false,
+        "expires_at": "2026-10-28T19:25:43Z",
+        "id": 10991547668,
+        "name": "resense-image-1.0.0-f577a7c",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5MTU0NzY2OA==",
+        "size_in_bytes": 534162786,
+        "updated_at": "2026-09-28T19:25:49Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10991547668",
+        "workflow_run": {
+          "head_branch": "integration/p3-score-sync-20260928",
+          "head_repository_id": 1370982135,
+          "head_sha": "f577a7cac83fef70c0fd2f0a9f071598563108ea",
+          "id": 36471632628,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:33:59.549496+00:00",
+      "delete_succeeded_at": "2026-10-16T15:34:01.056576+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534162329,
+            "checksum_member": "resense-image-1.0.0-f577a7c.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-f577a7c.tar.gz",
+            "sha256": "f8f3f4f17e80a2ba4338d95a25289c60b8bcaf296feb2f273faea25d8af53143"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10991547668--resense-image-1.0.0-f577a7c.zip",
+        "verified_at": "2026-10-16T15:33:58.709154+00:00",
+        "zip_bytes": 534162786,
+        "zip_crc_all_members": true,
+        "zip_sha256": "228a41e242974183a0a57a87aa6ae6e8bd732e98b222f8f3d5e5162239e29841"
+      }
+    },
+    "10992696307": {
+      "absence_checked_at": "2026-10-16T15:36:47.596737+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10992696307/zip",
+        "created_at": "2026-09-28T19:29:15Z",
+        "digest": "sha256:9f56b256fb3faeeb3c84b6636d68bbfe4f373c95f1ffd23d3840fb4da11fd3c5",
+        "expired": false,
+        "expires_at": "2026-10-28T19:29:10Z",
+        "id": 10992696307,
+        "name": "resense-image-1.0.0-25a218a",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5MjY5NjMwNw==",
+        "size_in_bytes": 534136072,
+        "updated_at": "2026-09-28T19:29:15Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10992696307",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "25a218a0a8b4e10089dfcf73b8d557d4a963290e",
+          "id": 36471997066,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:36:45.829791+00:00",
+      "delete_succeeded_at": "2026-10-16T15:36:46.854080+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534135615,
+            "checksum_member": "resense-image-1.0.0-25a218a.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-25a218a.tar.gz",
+            "sha256": "80e2a7e63bea609189e487b0f4ab29c4dd171cfe74cca7fb207002147140b86f"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10992696307--resense-image-1.0.0-25a218a.zip",
+        "verified_at": "2026-10-16T15:36:45.085721+00:00",
+        "zip_bytes": 534136072,
+        "zip_crc_all_members": true,
+        "zip_sha256": "9f56b256fb3faeeb3c84b6636d68bbfe4f373c95f1ffd23d3840fb4da11fd3c5"
+      }
+    },
+    "10992800052": {
+      "absence_checked_at": "2026-10-16T15:33:38.994450+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10992800052/zip",
+        "created_at": "2026-09-28T19:25:57Z",
+        "digest": "sha256:20c4485ea6ecb75b2b6c417b9c146cb431438f09624edf10d2a2e265b60e29e8",
+        "expired": false,
+        "expires_at": "2026-10-28T19:25:50Z",
+        "id": 10992800052,
+        "name": "resense-image-1.0.0-f41d20a",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5MjgwMDA1Mg==",
+        "size_in_bytes": 534187991,
+        "updated_at": "2026-09-28T19:25:57Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10992800052",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "f41d20af0f6716e08e88ce00f3179c938b7ed7fe",
+          "id": 36471670525,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:33:37.482542+00:00",
+      "delete_succeeded_at": "2026-10-16T15:33:38.321250+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534187534,
+            "checksum_member": "resense-image-1.0.0-f41d20a.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-f41d20a.tar.gz",
+            "sha256": "12a673147a0f0a1a53833d93d8318f466557ca23ac122a021773670bd8be669a"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10992800052--resense-image-1.0.0-f41d20a.zip",
+        "verified_at": "2026-10-16T15:33:36.657340+00:00",
+        "zip_bytes": 534187991,
+        "zip_crc_all_members": true,
+        "zip_sha256": "20c4485ea6ecb75b2b6c417b9c146cb431438f09624edf10d2a2e265b60e29e8"
+      }
+    },
+    "10994107678": {
+      "absence_checked_at": "2026-10-16T15:36:38.704020+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10994107678/zip",
+        "created_at": "2026-09-28T20:08:17Z",
+        "digest": "sha256:8f6e39013f0a825f8f06dea2d6906f58a0ae7a475c9b7403b8b473242af41322",
+        "expired": false,
+        "expires_at": "2026-10-28T20:08:10Z",
+        "id": 10994107678,
+        "name": "resense-image-1.0.0-059948a",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5NDEwNzY3OA==",
+        "size_in_bytes": 521742942,
+        "updated_at": "2026-09-28T20:08:17Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10994107678",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "059948aceff069133ba936417f2c6cbeb3bf89df",
+          "id": 36476565549,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:36:36.451975+00:00",
+      "delete_succeeded_at": "2026-10-16T15:36:37.817934+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521742485,
+            "checksum_member": "resense-image-1.0.0-059948a.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-059948a.tar.gz",
+            "sha256": "79952015546aa0b55c214a145366dbb258a5cdf148b5d0827f451eb6dbdb4678"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10994107678--resense-image-1.0.0-059948a.zip",
+        "verified_at": "2026-10-16T15:36:35.577600+00:00",
+        "zip_bytes": 521742942,
+        "zip_crc_all_members": true,
+        "zip_sha256": "8f6e39013f0a825f8f06dea2d6906f58a0ae7a475c9b7403b8b473242af41322"
+      }
+    },
+    "10995945119": {
+      "absence_checked_at": "2026-10-16T15:36:52.945091+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10995945119/zip",
+        "created_at": "2026-09-28T20:19:40Z",
+        "digest": "sha256:43464bd61fb76910ffc75e1004f768145dd6a1a407b506fcf43a98f28eb43d38",
+        "expired": false,
+        "expires_at": "2026-10-28T20:19:36Z",
+        "id": 10995945119,
+        "name": "resense-image-1.0.0-75ef4e2",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5NTk0NTExOQ==",
+        "size_in_bytes": 534086887,
+        "updated_at": "2026-09-28T20:19:40Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10995945119",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "75ef4e20e587203a394e365c4fa601c822adb164",
+          "id": 36477865858,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:36:50.916639+00:00",
+      "delete_succeeded_at": "2026-10-16T15:36:51.960267+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534086430,
+            "checksum_member": "resense-image-1.0.0-75ef4e2.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-75ef4e2.tar.gz",
+            "sha256": "0a81498d0f573a8dda9bc24a4b81daa66ab1a636f34889582d9fc9b805c2ff70"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10995945119--resense-image-1.0.0-75ef4e2.zip",
+        "verified_at": "2026-10-16T15:36:50.116559+00:00",
+        "zip_bytes": 534086887,
+        "zip_crc_all_members": true,
+        "zip_sha256": "43464bd61fb76910ffc75e1004f768145dd6a1a407b506fcf43a98f28eb43d38"
+      }
+    },
+    "10996433249": {
+      "absence_checked_at": "2026-10-16T15:40:09.038079+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10996433249/zip",
+        "created_at": "2026-09-28T20:45:02Z",
+        "digest": "sha256:b02da03a179289431aed0f322c46f5cfff04dd79017e6fbf46f45524a3016433",
+        "expired": false,
+        "expires_at": "2026-10-28T20:44:57Z",
+        "id": 10996433249,
+        "name": "resense-image-1.0.0-20d884b",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5NjQzMzI0OQ==",
+        "size_in_bytes": 534150834,
+        "updated_at": "2026-09-28T20:45:02Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10996433249",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "20d884b6c122d389b803e4bb6a301c6838a82cd1",
+          "id": 36480986298,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:40:07.206277+00:00",
+      "delete_succeeded_at": "2026-10-16T15:40:08.319017+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534150377,
+            "checksum_member": "resense-image-1.0.0-20d884b.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-20d884b.tar.gz",
+            "sha256": "ba4e898f4f79585739ee0c01244677b7f1d6cb8db99d2756af8cb980f7f8b1cb"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10996433249--resense-image-1.0.0-20d884b.zip",
+        "verified_at": "2026-10-16T15:40:06.321221+00:00",
+        "zip_bytes": 534150834,
+        "zip_crc_all_members": true,
+        "zip_sha256": "b02da03a179289431aed0f322c46f5cfff04dd79017e6fbf46f45524a3016433"
+      }
+    },
+    "10998490482": {
+      "absence_checked_at": "2026-10-16T15:40:05.057617+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10998490482/zip",
+        "created_at": "2026-09-28T21:04:25Z",
+        "digest": "sha256:0ef218e08809207d29636f9f38871cccf516f37f26662b42e1ae236617fa21c3",
+        "expired": false,
+        "expires_at": "2026-10-28T21:04:20Z",
+        "id": 10998490482,
+        "name": "resense-image-1.0.0-692820b",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5ODQ5MDQ4Mg==",
+        "size_in_bytes": 521734226,
+        "updated_at": "2026-09-28T21:04:25Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10998490482",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "692820bc7323b417d4f23dd94a16d0a7636e203f",
+          "id": 36483111097,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:40:02.973908+00:00",
+      "delete_succeeded_at": "2026-10-16T15:40:04.183521+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 521733769,
+            "checksum_member": "resense-image-1.0.0-692820b.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-692820b.tar.gz",
+            "sha256": "5778397bdfcdd7167a04d7b43bfb10a803e6fec2f2cf59c5d3d2e7e0b0f36513"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10998490482--resense-image-1.0.0-692820b.zip",
+        "verified_at": "2026-10-16T15:40:01.950390+00:00",
+        "zip_bytes": 521734226,
+        "zip_crc_all_members": true,
+        "zip_sha256": "0ef218e08809207d29636f9f38871cccf516f37f26662b42e1ae236617fa21c3"
+      }
+    },
+    "10998585490": {
+      "absence_checked_at": "2026-10-16T15:40:14.580476+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10998585490/zip",
+        "created_at": "2026-09-28T21:12:52Z",
+        "digest": "sha256:c05f3dd8ef527fd0233d475a01cd5e0a58863cc6d7f4baf0ff8fe0bf2aaf7fba",
+        "expired": false,
+        "expires_at": "2026-10-28T21:12:46Z",
+        "id": 10998585490,
+        "name": "resense-image-1.0.0-2923978",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5ODU4NTQ5MA==",
+        "size_in_bytes": 534150808,
+        "updated_at": "2026-09-28T21:12:52Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10998585490",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "292397833edf9db649a24f16807b2cfb15812194",
+          "id": 36484016040,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:40:12.389576+00:00",
+      "delete_succeeded_at": "2026-10-16T15:40:13.634043+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534150351,
+            "checksum_member": "resense-image-1.0.0-2923978.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-2923978.tar.gz",
+            "sha256": "bdbe47e226ade040e915f49d039960920cfe2d682e37f5829de58843fc73bbf0"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10998585490--resense-image-1.0.0-2923978.zip",
+        "verified_at": "2026-10-16T15:40:11.368273+00:00",
+        "zip_bytes": 534150808,
+        "zip_crc_all_members": true,
+        "zip_sha256": "c05f3dd8ef527fd0233d475a01cd5e0a58863cc6d7f4baf0ff8fe0bf2aaf7fba"
+      }
+    },
+    "10998712804": {
+      "absence_checked_at": "2026-10-16T15:43:47.196297+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10998712804/zip",
+        "created_at": "2026-09-28T21:28:54Z",
+        "digest": "sha256:ea247aed4e7df9c559fcd8734a42155c8c84e0f53ff4eec2725d47f7caa9744f",
+        "expired": false,
+        "expires_at": "2026-10-28T21:28:46Z",
+        "id": 10998712804,
+        "name": "resense-image-1.0.0-60e5e87",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5ODcxMjgwNA==",
+        "size_in_bytes": 534207403,
+        "updated_at": "2026-09-28T21:28:54Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10998712804",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "60e5e8766664e4d3e80d0268139c45247d28975b",
+          "id": 36485844689,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:43:45.433217+00:00",
+      "delete_succeeded_at": "2026-10-16T15:43:46.390366+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534206946,
+            "checksum_member": "resense-image-1.0.0-60e5e87.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-60e5e87.tar.gz",
+            "sha256": "139296227e30d6770265784b4543f3c709fca7be667408afc559d2d1a7b5c82d"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10998712804--resense-image-1.0.0-60e5e87.zip",
+        "verified_at": "2026-10-16T15:43:44.645876+00:00",
+        "zip_bytes": 534207403,
+        "zip_crc_all_members": true,
+        "zip_sha256": "ea247aed4e7df9c559fcd8734a42155c8c84e0f53ff4eec2725d47f7caa9744f"
+      }
+    },
+    "10999563491": {
+      "absence_checked_at": "2026-10-16T15:43:13.679123+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10999563491/zip",
+        "created_at": "2026-09-28T21:41:15Z",
+        "digest": "sha256:af8cc9f99a9f5cb1d8b35ec5e4bb20ad8ad108f5bf00a5d47badc69cc6686a09",
+        "expired": false,
+        "expires_at": "2026-10-28T21:41:05Z",
+        "id": 10999563491,
+        "name": "resense-image-1.0.0-871dbdf",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5OTU2MzQ5MQ==",
+        "size_in_bytes": 534171295,
+        "updated_at": "2026-09-28T21:41:15Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10999563491",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "871dbdf28f6b47c2e23f7f4b95565477ecb84235",
+          "id": 36487256773,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:43:11.684511+00:00",
+      "delete_succeeded_at": "2026-10-16T15:43:12.826260+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534170838,
+            "checksum_member": "resense-image-1.0.0-871dbdf.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-871dbdf.tar.gz",
+            "sha256": "65deb3f2c9ed56f579cd065d2c7f7749967f6b7d0a1b66a47e27ebda0f086ab4"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10999563491--resense-image-1.0.0-871dbdf.zip",
+        "verified_at": "2026-10-16T15:43:10.696857+00:00",
+        "zip_bytes": 534171295,
+        "zip_crc_all_members": true,
+        "zip_sha256": "af8cc9f99a9f5cb1d8b35ec5e4bb20ad8ad108f5bf00a5d47badc69cc6686a09"
+      }
+    },
+    "10999639341": {
+      "absence_checked_at": "2026-10-16T15:42:07.516375+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10999639341/zip",
+        "created_at": "2026-09-28T21:44:37Z",
+        "digest": "sha256:01e51f0f693cb94a82a69aa7da4bc2d502b907d71f2f19cf9b5ed85403cd197e",
+        "expired": false,
+        "expires_at": "2026-10-28T21:44:32Z",
+        "id": 10999639341,
+        "name": "resense-image-1.0.0-407f5b0",
+        "node_id": "MDg6QXJ0aWZhY3QxMDk5OTYzOTM0MQ==",
+        "size_in_bytes": 534369147,
+        "updated_at": "2026-09-28T21:44:37Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/10999639341",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "407f5b05e4d494112f71bc7ff84229e0e6c0b094",
+          "id": 36487617833,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:42:05.542785+00:00",
+      "delete_succeeded_at": "2026-10-16T15:42:06.864919+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534368690,
+            "checksum_member": "resense-image-1.0.0-407f5b0.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-407f5b0.tar.gz",
+            "sha256": "52c0315254b0d7464f81c9c5380a7e41e9f89e8a56d0a0e8c3e32eb094603cf9"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\10999639341--resense-image-1.0.0-407f5b0.zip",
+        "verified_at": "2026-10-16T15:42:04.749781+00:00",
+        "zip_bytes": 534369147,
+        "zip_crc_all_members": true,
+        "zip_sha256": "01e51f0f693cb94a82a69aa7da4bc2d502b907d71f2f19cf9b5ed85403cd197e"
+      }
+    },
+    "11000347595": {
+      "absence_checked_at": "2026-10-16T15:45:33.867627+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11000347595/zip",
+        "created_at": "2026-09-28T22:03:06Z",
+        "digest": "sha256:eb4df36f8a39714980a44ff46ba9aca9d1e459c954c4a16370c7024a7957db7c",
+        "expired": false,
+        "expires_at": "2026-10-28T22:03:00Z",
+        "id": 11000347595,
+        "name": "resense-image-1.0.0-1a05ea7",
+        "node_id": "MDg6QXJ0aWZhY3QxMTAwMDM0NzU5NQ==",
+        "size_in_bytes": 534324035,
+        "updated_at": "2026-09-28T22:03:06Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11000347595",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "1a05ea76498c2160e7c62fa5452bbe1e730b8a4d",
+          "id": 36489557298,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:45:31.661135+00:00",
+      "delete_succeeded_at": "2026-10-16T15:45:32.725017+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534323578,
+            "checksum_member": "resense-image-1.0.0-1a05ea7.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-1a05ea7.tar.gz",
+            "sha256": "2e9553fa01fad99b8e2797f9a9cfeda6f5887f314e39c41c921ba2b17fac5d0f"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\11000347595--resense-image-1.0.0-1a05ea7.zip",
+        "verified_at": "2026-10-16T15:45:30.932666+00:00",
+        "zip_bytes": 534324035,
+        "zip_crc_all_members": true,
+        "zip_sha256": "eb4df36f8a39714980a44ff46ba9aca9d1e459c954c4a16370c7024a7957db7c"
+      }
+    },
+    "11000570779": {
+      "absence_checked_at": "2026-10-16T15:48:41.510556+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11000570779/zip",
+        "created_at": "2026-09-28T21:51:22Z",
+        "digest": "sha256:6d369f7a694b52dfd3b24164671da025651df7f94be1e7d18056fd694041d861",
+        "expired": false,
+        "expires_at": "2026-10-28T21:51:17Z",
+        "id": 11000570779,
+        "name": "resense-image-1.0.0-2acda69",
+        "node_id": "MDg6QXJ0aWZhY3QxMTAwMDU3MDc3OQ==",
+        "size_in_bytes": 534356161,
+        "updated_at": "2026-09-28T21:51:22Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11000570779",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "2acda69e9ed9b47d6b79b674c269ee40a97faf4f",
+          "id": 36488337385,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:48:39.661664+00:00",
+      "delete_succeeded_at": "2026-10-16T15:48:40.751525+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534355704,
+            "checksum_member": "resense-image-1.0.0-2acda69.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-2acda69.tar.gz",
+            "sha256": "b3236061cdcda48baf15a5d66bf98a34be71141aa2aa111296526d5e0780ea8c"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\11000570779--resense-image-1.0.0-2acda69.zip",
+        "verified_at": "2026-10-16T15:48:38.754496+00:00",
+        "zip_bytes": 534356161,
+        "zip_crc_all_members": true,
+        "zip_sha256": "6d369f7a694b52dfd3b24164671da025651df7f94be1e7d18056fd694041d861"
+      }
+    },
+    "11000971714": {
+      "absence_checked_at": "2026-10-16T15:45:59.009675+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11000971714/zip",
+        "created_at": "2026-09-28T21:59:06Z",
+        "digest": "sha256:dc8c27cc717fd22f69e1274e40ef692b55fa131fce270ed810bcc9d94610ab8d",
+        "expired": false,
+        "expires_at": "2026-10-28T21:58:59Z",
+        "id": 11000971714,
+        "name": "resense-image-1.0.0-5fe59dd",
+        "node_id": "MDg6QXJ0aWZhY3QxMTAwMDk3MTcxNA==",
+        "size_in_bytes": 534334962,
+        "updated_at": "2026-09-28T21:59:06Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11000971714",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "5fe59ddc6143f1d99a90b7e5e03b8997fc15e6f8",
+          "id": 36489110774,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:45:57.486009+00:00",
+      "delete_succeeded_at": "2026-10-16T15:45:58.295930+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534334505,
+            "checksum_member": "resense-image-1.0.0-5fe59dd.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-5fe59dd.tar.gz",
+            "sha256": "7c73185a7ad61ea9cd89cae9f8d1482c72a82d11a26b647eafddce8ac0e1a877"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\11000971714--resense-image-1.0.0-5fe59dd.zip",
+        "verified_at": "2026-10-16T15:45:56.615349+00:00",
+        "zip_bytes": 534334962,
+        "zip_crc_all_members": true,
+        "zip_sha256": "dc8c27cc717fd22f69e1274e40ef692b55fa131fce270ed810bcc9d94610ab8d"
+      }
+    },
+    "11010761790": {
+      "absence_checked_at": "2026-10-16T15:50:58.084565+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11010761790/zip",
+        "created_at": "2026-09-29T03:04:09Z",
+        "digest": "sha256:99aea124f0e14cfce420e8ba55ce7af8a98e3a6cf821334d0683c87c5edb877c",
+        "expired": false,
+        "expires_at": "2026-10-29T03:04:06Z",
+        "id": 11010761790,
+        "name": "resense-image-1.0.0-c840c9a",
+        "node_id": "MDg6QXJ0aWZhY3QxMTAxMDc2MTc5MA==",
+        "size_in_bytes": 534345266,
+        "updated_at": "2026-09-29T03:04:09Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11010761790",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "c840c9a634df53622d2d358d20ac9a5e9fe78e05",
+          "id": 36515155615,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:50:55.966417+00:00",
+      "delete_succeeded_at": "2026-10-16T15:50:57.325691+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534344809,
+            "checksum_member": "resense-image-1.0.0-c840c9a.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-c840c9a.tar.gz",
+            "sha256": "8d4787e3630fde386b9acace2ee88d7338c271b4fcb468a3bb9399beafb25974"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\11010761790--resense-image-1.0.0-c840c9a.zip",
+        "verified_at": "2026-10-16T15:50:55.189803+00:00",
+        "zip_bytes": 534345266,
+        "zip_crc_all_members": true,
+        "zip_sha256": "99aea124f0e14cfce420e8ba55ce7af8a98e3a6cf821334d0683c87c5edb877c"
+      }
+    },
+    "11019417761": {
+      "absence_checked_at": "2026-10-16T15:51:02.082086+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11019417761/zip",
+        "created_at": "2026-09-29T07:49:07Z",
+        "digest": "sha256:11b1ff95ee3ef4d8005d27ab730e4e9a58e6ec86e306c27379d9af338388918f",
+        "expired": false,
+        "expires_at": "2026-10-29T07:49:04Z",
+        "id": 11019417761,
+        "name": "resense-image-1.0.0-b34e83d",
+        "node_id": "MDg6QXJ0aWZhY3QxMTAxOTQxNzc2MQ==",
+        "size_in_bytes": 534334791,
+        "updated_at": "2026-09-29T07:49:07Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11019417761",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "b34e83da9a1c9c5896662aeb9f3678cb2b9a49b8",
+          "id": 36538468171,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:51:00.127653+00:00",
+      "delete_succeeded_at": "2026-10-16T15:51:01.201874+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534334334,
+            "checksum_member": "resense-image-1.0.0-b34e83d.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-b34e83d.tar.gz",
+            "sha256": "60f55baf971e407e239a656c2819ec7df849688b1862e05b80bdd5251a5bbba1"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\11019417761--resense-image-1.0.0-b34e83d.zip",
+        "verified_at": "2026-10-16T15:50:59.347542+00:00",
+        "zip_bytes": 534334791,
+        "zip_crc_all_members": true,
+        "zip_sha256": "11b1ff95ee3ef4d8005d27ab730e4e9a58e6ec86e306c27379d9af338388918f"
+      }
+    },
+    "11022736406": {
+      "absence_checked_at": "2026-10-16T15:51:12.600732+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11022736406/zip",
+        "created_at": "2026-09-29T08:59:39Z",
+        "digest": "sha256:b5a9b8c1b58758c71be2d13108fec234623561fd9307b93e0b66b43cf6cb2263",
+        "expired": false,
+        "expires_at": "2026-10-29T08:59:33Z",
+        "id": 11022736406,
+        "name": "resense-image-1.0.0-625197d",
+        "node_id": "MDg6QXJ0aWZhY3QxMTAyMjczNjQwNg==",
+        "size_in_bytes": 534328041,
+        "updated_at": "2026-09-29T08:59:39Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11022736406",
+        "workflow_run": {
+          "head_branch": "experiment/cross-ring-sparse-evidence",
+          "head_repository_id": 1370982135,
+          "head_sha": "625197df44c2f032eec5c61c0c56f0df889b2619",
+          "id": 36545766380,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:51:09.796106+00:00",
+      "delete_succeeded_at": "2026-10-16T15:51:11.255818+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534327584,
+            "checksum_member": "resense-image-1.0.0-625197d.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-625197d.tar.gz",
+            "sha256": "0f434aa0be894b373fc121860a78617b91ef7687d97bd8fb0856c2b4bdd37f3c"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\11022736406--resense-image-1.0.0-625197d.zip",
+        "verified_at": "2026-10-16T15:51:09.036742+00:00",
+        "zip_bytes": 534328041,
+        "zip_crc_all_members": true,
+        "zip_sha256": "b5a9b8c1b58758c71be2d13108fec234623561fd9307b93e0b66b43cf6cb2263"
+      }
+    },
+    "11023760222": {
+      "absence_checked_at": "2026-10-16T15:53:27.594083+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11023760222/zip",
+        "created_at": "2026-09-29T09:15:19Z",
+        "digest": "sha256:d1311d5cc3ef021f6850962ad465e831599f9b04c287e384e71a3ac06507735f",
+        "expired": false,
+        "expires_at": "2026-10-29T09:15:15Z",
+        "id": 11023760222,
+        "name": "resense-image-1.0.0-6cafb28",
+        "node_id": "MDg6QXJ0aWZhY3QxMTAyMzc2MDIyMg==",
+        "size_in_bytes": 534358853,
+        "updated_at": "2026-09-29T09:15:19Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11023760222",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "6cafb282d8a4b2d829051c5f1d98ff80c8d9fe00",
+          "id": 36547463949,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:53:25.548803+00:00",
+      "delete_succeeded_at": "2026-10-16T15:53:26.857701+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534358396,
+            "checksum_member": "resense-image-1.0.0-6cafb28.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-6cafb28.tar.gz",
+            "sha256": "7c8c87615121e2d018482131ae907ad03312761e0fb365b1ce2165d6dc065ec5"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\11023760222--resense-image-1.0.0-6cafb28.zip",
+        "verified_at": "2026-10-16T15:53:24.670787+00:00",
+        "zip_bytes": 534358853,
+        "zip_crc_all_members": true,
+        "zip_sha256": "d1311d5cc3ef021f6850962ad465e831599f9b04c287e384e71a3ac06507735f"
+      }
+    },
+    "11030467604": {
+      "absence_checked_at": "2026-10-16T15:54:07.400718+00:00",
+      "absence_http_status": 404,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11030467604/zip",
+        "created_at": "2026-09-29T11:37:18Z",
+        "digest": "sha256:0197d42b758f259119bf18eccad38047f6da96313de72473c8c818b5a7bcf499",
+        "expired": false,
+        "expires_at": "2026-10-29T11:37:12Z",
+        "id": 11030467604,
+        "name": "resense-image-1.0.0-86e0dc1",
+        "node_id": "MDg6QXJ0aWZhY3QxMTAzMDQ2NzYwNA==",
+        "size_in_bytes": 534345242,
+        "updated_at": "2026-09-29T11:37:18Z",
+        "url": "https://api.github.com/repos/pmixay/ReSense/actions/artifacts/11030467604",
+        "workflow_run": {
+          "head_branch": "main",
+          "head_repository_id": 1370982135,
+          "head_sha": "86e0dc1751fa5bc7926fe6b4ce63c4d4391e528a",
+          "id": 36562317998,
+          "repository_id": 1370982135
+        }
+      },
+      "delete_requested_at": "2026-10-16T15:54:05.344904+00:00",
+      "delete_succeeded_at": "2026-10-16T15:54:06.454831+00:00",
+      "verification": {
+        "api_sha256_match": true,
+        "embedded_tar_checksums": [
+          {
+            "bytes": 534344785,
+            "checksum_member": "resense-image-1.0.0-86e0dc1.tar.gz.sha256",
+            "crc_verified": true,
+            "name": "resense-image-1.0.0-86e0dc1.tar.gz",
+            "sha256": "37b6b7b4f999be9e75193cd53a5ce6ca9dcf6abc8694fca081be52b0b5f76932"
+          }
+        ],
+        "path": "D:\\ReSense-actions-archive-20261016\\11030467604--resense-image-1.0.0-86e0dc1.zip",
+        "verified_at": "2026-10-16T15:54:04.509806+00:00",
+        "zip_bytes": 534345242,
+        "zip_crc_all_members": true,
+        "zip_sha256": "0197d42b758f259119bf18eccad38047f6da96313de72473c8c818b5a7bcf499"
+      }
+    }
+  },
+  "repo": "pmixay/ReSense"
+}

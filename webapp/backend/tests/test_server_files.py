@@ -12,6 +12,7 @@ import zipfile
 import numpy as np
 import pytest
 from conftest import random_clouds, write_bag
+from resense import __version__
 
 
 @pytest.fixture
@@ -125,7 +126,7 @@ def test_labels_upload_and_delete(client, server_tree, env):
 def test_system_and_health(client, env):
     assert client.get("/api/health").json() == {"ok": True}
     s = client.get("/api/system").json()
-    assert s["detector_version"] == "1.0.0" and s["data_dir"] == str(env.data_dir)
+    assert s["detector_version"] == __version__ and s["data_dir"] == str(env.data_dir)
     assert s["server_root_exists"] is True and s["cpu_count"] >= 1 and s["disk_free_bytes"] > 0
     assert set(s["features"]) == {"rosbags", "open3d", "native_kernels", "clouds"} and s["features"]["rosbags"]
     assert s["counts"] == {"recordings": 0, "runs": 0, "jobs_queued": 0, "jobs_running": 0}

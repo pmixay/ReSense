@@ -1,0 +1,60 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 19 items / 17 deselected / 2 selected
+
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[False] FAILED [ 50%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[True] PASSED [100%]
+
+=================================== FAILURES ===================================
+_________ test_dashboard_checker_captures_fast_dom_transitions[False] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-16/test_dashboard_checker_capture0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7135fe87ca00>
+hide_rendered_alarms = False
+
+    @pytest.mark.parametrize("hide_rendered_alarms", [False, True])
+    def test_dashboard_checker_captures_fast_dom_transitions(tmp_path, monkeypatch, hide_rendered_alarms):
+        """Python can miss the entire replay; evidence must still be actual DOM titles, not input flags."""
+        if not _browser_available():
+            pytest.skip("playwright + chromium not available")
+        from playwright.sync_api import Page
+        import check_dashboard
+
+        frames = [{"stamp": i * .1, "frame": i, "obstacle": i in (7, 8), "warning": False,
+                   "nearest_distance": 53.9 if i == 7 else 37.9 if i == 8 else None,
+                   "detections": [], "warnings": [], "timing_ms": {"total": 1}}
+                  for i in range(14)]
+        source = tmp_path / "fast.jsonl"
+        source.write_text("\n".join(json.dumps(f) for f in frames), encoding="utf-8")
+        click = Page.click
+
+        def click_and_wait(page, selector, *args, **kwargs):
+            if selector == "#play" and hide_rendered_alarms:
+                page.evaluate("""() => {
+                    const render = setBanner;
+                    setBanner = (kind, title, detail) => render(kind,
+                        /^ПРЕПЯТСТВИЕ\\s+[\\d.]+/.test(title) ? 'ОЖИДАНИЕ ДАННЫХ' : title, detail);
+                }""")
+            result = click(page, selector, *args, **kwargs)
+            if selector == "#play":
+                # Real timer-driven playback completes before the checker gets another Python turn.
+                page.wait_for_function("!resense.state.playing && resense.state.idx === 13")
+            return result
+
+        monkeypatch.setattr(Page, "click", click_and_wait)
+        report = check_dashboard.check(str(source), None, None, speed=10, min_dist=40, max_dist=72)
+        if hide_rendered_alarms:
+            assert not report["ok"]
+            assert "the banner never showed ПРЕПЯТСТВИЕ during playback" in report["errors"]
+        else:
+>           assert report["ok"], report["errors"]
+E           AssertionError: ['the banner never showed ПРЕПЯТСТВИЕ during playback']
+E           assert False
+
+web/demo/test_web.py:205: AssertionError
+------------------ generated xml file: /tmp/dashboard-red.xml ------------------
+================= 1 failed, 1 passed, 17 deselected in 15.49s ==================

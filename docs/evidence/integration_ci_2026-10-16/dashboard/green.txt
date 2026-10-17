@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 19 items / 17 deselected / 2 selected
+
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[False] PASSED [ 50%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[True] PASSED [100%]
+
+----------------- generated xml file: /tmp/dashboard-green.xml -----------------
+======================= 2 passed, 17 deselected in 4.81s =======================

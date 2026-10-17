@@ -1,8 +1,10 @@
 # Integration checkpoint — 15–16 October 2026
 
-**Передача 16.10:** по указанию пользователя работа этой сессии остановлена;
+**Передача 16.10:** P4 передан отдельному исполнителю;
 [P4_HANDOFF.md](P4_HANDOFF.md) задаёт текущий этап, очередность X3/X1/J1/G3,
-доступ к данным и оставшиеся действия P1 после отдельной команды.
+доступ к данным и границы ролей. После отдельной команды пользователя P1 возобновил
+CI/PR/main/cleanup: [PR #33](https://github.com/pmixay/ReSense/pull/33).
+Работа X3/X1/J1/G3 этой сессией не возобновлялась.
 
 > **Purpose:** selected shipping scope, preserved acceptance history and the checks still needed
 > before version/seal/main completion. **Owner:** P1 · **Language:** EN
@@ -52,8 +54,9 @@ changes** from the reviewed selection, outside the registered timing telemetry.
 | Committed-seal proof publication | `ec81e78a0de835fde321a2d6950f25e2fb1e2439` |
 | Clean LF Linux verification | **PASS before and after native rebuild** of committed seal `d6319c2`; [completion](h5/seal_verify/completion.json), [before](h5/seal_verify/verify_before_native.txt), [after](h5/seal_verify/verify_after_native_or_create.txt) |
 
-These are explicit-new-manifest checks; default-pointer/freeze-overview integration belongs to
-the parent. The current seal does not close inherited **High 8.1**, publish a release, or provide
+These are explicit-new-manifest checks. The default pointer and freeze overview were integrated
+at `492e407`; GitHub's seal and config-sync checks passed on both `492e407` and `b0c9c17`.
+The current seal does not close inherited **High 8.1**, publish a release, or provide
 a new independent judgement. H6 and E1 remain pending.
 
 ## Preserved measured history
@@ -86,7 +89,7 @@ these later publication commits do not identify a different measured detector.
 | H4 revised-scope independent review | **DONE — ACCEPTED for revised difference `707ea9c..c9aea87`:** [fresh independent H4](h4_selected/README.md), published `70072f1`. **306 passed**, no failures/skips/deselections; **36 H2 angular/voxel boundary cases** and **1,344 paired Tracker updates per source**. No supported **NEW medium-or-higher** finding remains. **Inherited High tall miss OPEN 8.1**; original H4 safety **BLOCKED** unchanged |
 | H5 version / final gate / seal | **DONE — PASS:** [H5](h5/README.md), measured `5211565`, all four declarations 1.1.0 before final gate; 208/208 non-latency rows identical, same 146 gated rows passed, all 18,329 frames unchanged vs reviewed `c9aea87` outside registered timing. Current [16.10 manifest](../detector_freeze_2026-10-16_1.1.0.json), source/evidence `21e1d61`, seal `d6319c2`, clean-LF before/after-native proof `ec81e78` |
 | H6 main / CI | **PENDING:** parent supplies complete CI and normal main-merge commit/PR. E1 release tag/archive verification is a separate later operation |
-| Branch retirement | [Verified archive](branch_archive/README.md) exists (20 refs, 47,312,366-byte bundle, restore proof). Web raw preservation is committed at **`f29e212`** on `integration/web-ci-20261016`: [immutable receipt](https://github.com/pmixay/ReSense/blob/f29e212abe933dcfa76ee9b0ea4afb9cd95bf810/docs/evidence/integration_2026-10-16/web_ci/retirement/README.md). At this reconciliation it is not an ancestor of integration HEAD or local main. Final-main inclusion/restore, refreshed refs/worktrees and actual retirement receipt remain parent-owned H6 follow-up |
+| Branch retirement | [Verified archive](branch_archive/README.md) exists (20 refs, 47,312,366-byte bundle, restore proof). Web raw preservation **`f29e212`** was merged at **`b0c9c17`**: [receipt](web_ci/retirement/README.md). [Preparation](retirement/README.md) preserves non-Git files externally and keeps active P4 worktrees/refs. Final-main restore and actual deletion remain pending; no branch/worktree retired |
 | J1 / PT1 | **PENDING** on a shipped new seal. Current independent score remains **66/100, v1.0.0, 13.10** |
 
 ## Stable original handoffs

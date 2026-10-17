@@ -1,0 +1,12 @@
+Processing ./.
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: resense
+  Building wheel for resense (pyproject.toml): started
+  Building wheel for resense (pyproject.toml): finished with status 'done'
+  Created wheel for resense: filename=resense-1.1.0-cp310-cp310-linux_x86_64.whl size=218197 sha256=7329f4e135239e60951d9f95815476a79c0086bfea6fe6d5dac99a61645336c3
+  Stored in directory: /tmp/pip-ephem-wheel-cache-h7tap8rf/wheels/fb/7a/6a/332bb4363c9e6a745ebec069c84b439152b12a9cfa78b9261e
+Successfully built resense
+Installing collected packages: resense
+Successfully installed resense-1.1.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.

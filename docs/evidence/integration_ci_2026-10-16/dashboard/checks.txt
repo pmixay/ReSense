@@ -1,0 +1,217 @@
+resense: /dashboard-ci-b0c9c17/resense/__init__.py
+native: /dashboard-ci-b0c9c17/resense/_native.py native (_resense_native.so)
+{'playwright': '1.64.0', 'pytest': '9.1.1', 'open3d': '0.19.0', 'numpy': '1.26.4'}
+chromium: 156.0.8078.4
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 19 items / 16 deselected / 3 selected
+
+web/demo/test_web.py::test_dashboard_replays_jsonl_in_chromium PASSED    [ 33%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[False] PASSED [ 66%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[True] PASSED [100%]
+
+----- generated xml file: /tmp/dashboard-ci-b0c9c17-results/targeted-1.xml -----
+====================== 3 passed, 16 deselected in 14.96s =======================
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 19 items / 16 deselected / 3 selected
+
+web/demo/test_web.py::test_dashboard_replays_jsonl_in_chromium PASSED    [ 33%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[False] PASSED [ 66%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[True] PASSED [100%]
+
+----- generated xml file: /tmp/dashboard-ci-b0c9c17-results/targeted-2.xml -----
+======================= 3 passed, 16 deselected in 8.88s =======================
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 19 items / 16 deselected / 3 selected
+
+web/demo/test_web.py::test_dashboard_replays_jsonl_in_chromium PASSED    [ 33%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[False] PASSED [ 66%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[True] PASSED [100%]
+
+----- generated xml file: /tmp/dashboard-ci-b0c9c17-results/targeted-3.xml -----
+======================= 3 passed, 16 deselected in 8.76s =======================
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 76 items
+
+web/demo/test_foxglove_probe.py::test_current_status_accepts_current_frames[GO-<] PASSED [  1%]
+web/demo/test_foxglove_probe.py::test_current_status_accepts_current_frames[GO->] PASSED [  2%]
+web/demo/test_foxglove_probe.py::test_current_status_accepts_current_frames[CAUTION-<] PASSED [  3%]
+web/demo/test_foxglove_probe.py::test_current_status_accepts_current_frames[CAUTION->] PASSED [  5%]
+web/demo/test_foxglove_probe.py::test_current_status_accepts_current_frames[STOP-<] PASSED [  6%]
+web/demo/test_foxglove_probe.py::test_current_status_accepts_current_frames[STOP->] PASSED [  7%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change0] PASSED [  9%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change1] PASSED [ 10%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change2] PASSED [ 11%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change3] PASSED [ 13%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change4] PASSED [ 14%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change5] PASSED [ 15%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change6] PASSED [ 17%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change7] PASSED [ 18%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change8] PASSED [ 19%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change9] PASSED [ 21%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change10] PASSED [ 22%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change11] PASSED [ 23%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change12] PASSED [ 25%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change13] PASSED [ 26%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change14] PASSED [ 27%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change15] PASSED [ 28%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change16] PASSED [ 30%]
+web/demo/test_foxglove_probe.py::test_current_status_rejects_invalid_or_expired_frames[change17] PASSED [ 31%]
+web/demo/test_foxglove_probe.py::test_current_status_counts_transport_against_remaining_lifetime PASSED [ 32%]
+web/demo/test_foxglove_probe.py::test_malformed_or_unknown_status_cannot_satisfy_probe[] PASSED [ 34%]
+web/demo/test_foxglove_probe.py::test_malformed_or_unknown_status_cannot_satisfy_probe[\x00\x00\x00\x00\x00\x00\x00\x00\x00] PASSED [ 35%]
+web/demo/test_foxglove_probe.py::test_malformed_or_unknown_status_cannot_satisfy_probe[\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00] PASSED [ 36%]
+web/demo/test_foxglove_probe.py::test_malformed_or_unknown_status_cannot_satisfy_probe[\x00\x01\x00\x00\x03\x00\x00\x00{}] PASSED [ 38%]
+web/demo/test_foxglove_probe.py::test_malformed_or_unknown_status_cannot_satisfy_probe[\x00\x01\x00\x00\x04\x00\x00\x00[1]\x00] PASSED [ 39%]
+web/demo/test_foxglove_probe.py::test_malformed_or_unknown_status_cannot_satisfy_probe[\x00\x01\x00\x00\x14\x00\x00\x00{"freshness": null}\x00] PASSED [ 40%]
+web/demo/test_foxglove_probe.py::test_probe_requires_current_status_after_startup_when_enabled[False-False-True] PASSED [ 42%]
+web/demo/test_foxglove_probe.py::test_probe_requires_current_status_after_startup_when_enabled[True-False-False] PASSED [ 43%]
+web/demo/test_foxglove_probe.py::test_probe_requires_current_status_after_startup_when_enabled[True-True-True] PASSED [ 44%]
+web/demo/test_foxglove_probe.py::test_probe_waits_for_split_channel_advertisements PASSED [ 46%]
+web/demo/test_frontend_boundaries.py::test_replay_controls_cannot_publish_old_frames_into_live_view PASSED [ 47%]
+web/demo/test_frontend_boundaries.py::test_empty_replay_clears_previous_result_and_can_recover PASSED [ 48%]
+web/demo/test_frontend_boundaries.py::test_result_import_rejects_bad_shapes_and_accepts_unknown_stop_distance PASSED [ 50%]
+web/demo/test_frontend_boundaries.py::test_label_import_roundtrip_preserves_explicit_gauge_and_replaces_clear_frame PASSED [ 51%]
+web/demo/test_frontend_boundaries.py::test_label_import_is_atomic_and_does_not_treat_invalid_data_as_clear PASSED [ 52%]
+web/demo/test_frontend_boundaries.py::test_invalid_live_status_keeps_panels_covered_until_current_result PASSED [ 53%]
+web/demo/test_p2_review.py::test_live_contract_rejects_contradictions_and_preserves_stop PASSED [ 55%]
+web/demo/test_p2_review.py::test_replay_missing_health_uses_offline_decision_and_summary_matches_display PASSED [ 56%]
+web/demo/test_p2_review.py::test_delayed_file_read_cannot_override_new_source PASSED [ 57%]
+web/demo/test_p2_review.py::test_cab_stop_never_extends_published_monitoring_cap PASSED [ 59%]
+web/demo/test_p2_review.py::test_bundled_roslib_subscribes_expires_and_recovers_through_websocket PASSED [ 60%]
+web/demo/test_p2_review.py::test_label_results_need_absolute_indices_and_a_new_recording_resets_labels PASSED [ 61%]
+web/demo/test_p2_review.py::test_label_numeric_edits_cannot_export_invalid_or_blank_measurements PASSED [ 63%]
+web/demo/test_p2_review.py::test_label_import_preserves_evaluator_metadata_and_obstacle_extensions PASSED [ 64%]
+web/demo/test_p2_review.py::test_label_tool_phone_table_scrolls_without_widening_the_page PASSED [ 65%]
+web/demo/test_p2_review.py::test_label_file_reads_are_applied_in_selection_order PASSED [ 67%]
+web/demo/test_p2_review.py::test_hero_render_decision_matches_node_health_priority[health0-False-False-FAULT] PASSED [ 68%]
+web/demo/test_p2_review.py::test_hero_render_decision_matches_node_health_priority[health1-True-False-STOP] PASSED [ 69%]
+web/demo/test_p2_review.py::test_hero_render_decision_matches_node_health_priority[health2-False-False-CAUTION] PASSED [ 71%]
+web/demo/test_p2_review.py::test_hero_render_decision_matches_node_health_priority[health3-False-False-GO] PASSED [ 72%]
+web/demo/test_p2_review.py::test_hero_render_decision_matches_node_health_priority[health4-False-True-CAUTION] PASSED [ 73%]
+web/demo/test_p2_review.py::test_hero_missing_requested_frame_does_not_render_another_frame PASSED [ 75%]
+web/demo/test_web.py::test_rviz_layout_parses_and_covers_both_bags PASSED [ 76%]
+web/demo/test_web.py::test_foxglove_layout_parses_and_has_the_panels PASSED [ 77%]
+web/demo/test_web.py::test_make_demo_run_writes_resense_run_format PASSED [ 78%]
+web/demo/test_web.py::test_dashboard_replays_jsonl_in_chromium PASSED    [ 80%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[False] PASSED [ 81%]
+web/demo/test_web.py::test_dashboard_checker_captures_fast_dom_transitions[True] PASSED [ 82%]
+web/demo/test_web.py::test_dashboard_rejects_garbage_lines PASSED        [ 84%]
+web/demo/test_web.py::test_dashboard_freshness_and_live_stream_stall PASSED [ 85%]
+web/demo/test_web.py::test_dashboard_builtin_demo_and_summary PASSED     [ 86%]
+web/demo/test_web.py::test_dashboard_banner_honors_health_and_explicit_fault PASSED [ 88%]
+web/demo/test_web.py::test_dashboard_reconnect_ignores_old_stream_and_closes_on_replay PASSED [ 89%]
+web/demo/test_web.py::test_dashboard_fits_169_screen_and_cab_view_marks_the_obstacle PASSED [ 90%]
+web/demo/test_web.py::test_dashboard_shortcuts_work_after_clicking_a_control PASSED [ 92%]
+web/demo/test_web.py::test_dashboard_phone_width_has_16px_gutter_and_no_horizontal_scroll PASSED [ 93%]
+web/demo/test_web.py::test_dashboard_cab_view_on_the_real_node_stream PASSED [ 94%]
+web/demo/test_web.py::test_dashboard_uses_supplied_moscow_sans_visual_system PASSED [ 96%]
+web/demo/test_web.py::test_presentation_artifact_uses_the_organizers_slide_sequence PASSED [ 97%]
+web/demo/test_web.py::test_overview_video_cards_follow_the_current_gate_baseline PASSED [ 98%]
+web/demo/test_web.py::test_label_tool_exports_inject_shaped_gt PASSED    [100%]
+
+-------- generated xml file: /tmp/dashboard-ci-b0c9c17-results/full.xml --------
+============================= 76 passed in 53.06s ==============================
+frame    0  gt   clear   ->  clear                35.8 ms
+frame    1  gt   clear   ->  clear                32.1 ms
+frame    2  gt   clear   ->  clear                31.4 ms
+frame    3  gt   clear   ->  clear                32.3 ms
+frame    4  gt   clear   ->  clear                37.0 ms
+frame    5  gt   clear   ->  clear                25.9 ms
+frame    6  gt   clear   ->  clear                22.3 ms
+frame    7  gt   clear   ->  clear                21.9 ms
+frame    8  gt   clear   ->  clear                22.8 ms
+frame    9  gt   clear   ->  clear                24.1 ms
+frame   10  gt  120.0 m  ->  clear                36.8 ms
+frame   11  gt  117.9 m  ->  clear                28.1 ms
+frame   12  gt  115.9 m  ->  clear                26.9 ms
+frame   13  gt  113.8 m  ->  clear                21.1 ms
+frame   14  gt  111.8 m  ->  OBSTACLE  111.7 m    15.0 ms
+frame   15  gt  109.7 m  ->  OBSTACLE  109.7 m    14.5 ms
+frame   16  gt  107.7 m  ->  OBSTACLE  107.6 m    14.0 ms
+frame   17  gt  105.6 m  ->  OBSTACLE  105.6 m    14.0 ms
+frame   18  gt  103.6 m  ->  OBSTACLE  103.5 m    14.0 ms
+frame   19  gt  101.5 m  ->  OBSTACLE  101.4 m    13.7 ms
+frame   20  gt   99.5 m  ->  OBSTACLE   99.4 m    19.4 ms
+frame   21  gt   97.4 m  ->  OBSTACLE   97.4 m    13.7 ms
+frame   22  gt   95.4 m  ->  OBSTACLE   95.3 m    13.9 ms
+frame   23  gt   93.3 m  ->  OBSTACLE   93.2 m    14.3 ms
+frame   24  gt   91.3 m  ->  OBSTACLE   91.2 m    13.8 ms
+frame   25  gt   89.2 m  ->  OBSTACLE   89.2 m    13.6 ms
+frame   26  gt   87.2 m  ->  OBSTACLE   87.1 m    14.6 ms
+frame   27  gt   85.1 m  ->  OBSTACLE   85.0 m    16.0 ms
+frame   28  gt   83.1 m  ->  OBSTACLE   82.9 m    25.0 ms
+frame   29  gt   81.0 m  ->  OBSTACLE   80.9 m    26.6 ms
+frame   30  gt   79.0 m  ->  OBSTACLE   78.8 m    35.9 ms
+frame   31  gt   76.9 m  ->  OBSTACLE   76.8 m    21.5 ms
+frame   32  gt   74.9 m  ->  OBSTACLE   74.8 m    34.6 ms
+frame   33  gt   72.8 m  ->  OBSTACLE   72.7 m    21.5 ms
+frame   34  gt   70.8 m  ->  OBSTACLE   70.7 m    22.5 ms
+frame   35  gt   68.7 m  ->  OBSTACLE   68.6 m    37.9 ms
+frame   36  gt   66.7 m  ->  OBSTACLE   66.6 m    29.1 ms
+frame   37  gt   64.6 m  ->  OBSTACLE   64.5 m    40.2 ms
+frame   38  gt   62.6 m  ->  OBSTACLE   62.5 m    82.9 ms
+frame   39  gt   60.5 m  ->  OBSTACLE   60.4 m    29.6 ms
+frame   40  gt   58.5 m  ->  OBSTACLE   58.4 m    22.6 ms
+frame   41  gt   56.4 m  ->  OBSTACLE   56.3 m    14.2 ms
+frame   42  gt   54.4 m  ->  OBSTACLE   54.3 m    15.4 ms
+frame   43  gt   52.3 m  ->  OBSTACLE   52.2 m    15.5 ms
+frame   44  gt   50.3 m  ->  OBSTACLE   50.2 m    15.8 ms
+frame   45  gt   48.2 m  ->  OBSTACLE   48.1 m    15.8 ms
+frame   46  gt   46.2 m  ->  OBSTACLE   46.1 m    16.0 ms
+frame   47  gt   44.1 m  ->  OBSTACLE   44.0 m    16.1 ms
+frame   48  gt   42.1 m  ->  OBSTACLE   42.0 m    16.6 ms
+frame   49  gt   40.0 m  ->  OBSTACLE   39.9 m    16.9 ms
+frame   50  gt   clear   ->  OBSTACLE   37.8 m    17.5 ms
+frame   51  gt   clear   ->  clear                12.1 ms
+frame   52  gt   clear   ->  clear                12.3 ms
+frame   53  gt   clear   ->  clear                12.1 ms
+frame   54  gt   clear   ->  clear                11.8 ms
+frame   55  gt   clear   ->  clear                12.7 ms
+frame   56  gt   clear   ->  clear                12.5 ms
+frame   57  gt   clear   ->  clear                13.2 ms
+frame   58  gt   clear   ->  clear                12.7 ms
+frame   59  gt   clear   ->  clear                13.1 ms
+{
+ "out": "/tmp/dashboard-ci-b0c9c17-results/demo_run.jsonl",
+ "frames": 60,
+ "alarm_frames": 37,
+ "first_alarm": [
+  14,
+  111.72863006591797,
+  111.7948717948718
+ ],
+ "nearest_min_m": 37.84656524658203,
+ "nearest_max_m": 111.72863006591797,
+ "detect_ms_mean": 21.75538983295458,
+ "detect_ms_p95": 37.08050700042804,
+ "wall_s": 5.742185436996806
+}
+frames: 60  banner states seen: 38  first: 'ПРЕПЯТСТВИЕ НЕ ОБНАРУЖЕНО'
+nearest ПРЕПЯТСТВИЕ shown: 37.9 m  (accepted window 40.0-125.0 m)
+screenshot: /tmp/dashboard-ci-b0c9c17-results/dashboard.png (144774 bytes)
+PASS
+All checks passed!
+full.xml 76 passed; zero skips/errors/failures
+targeted-3.xml 3 passed; zero skips/errors/failures
+targeted-1.xml 3 passed; zero skips/errors/failures
+targeted-2.xml 3 passed; zero skips/errors/failures

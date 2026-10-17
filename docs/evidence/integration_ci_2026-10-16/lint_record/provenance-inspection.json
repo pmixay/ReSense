@@ -1,0 +1,558 @@
+{
+  "baseline": "492e407",
+  "diagnostics": 263,
+  "codes": {
+    "F401": 14,
+    "F541": 1,
+    "E402": 27,
+    "E702": 114,
+    "E701": 87,
+    "E731": 9,
+    "F821": 1,
+    "E741": 2,
+    "E401": 7,
+    "F841": 1
+  },
+  "files": [
+    {
+      "path": "docs/evidence/cycle_2026-09-28/complete_timing/default/run_gate.py",
+      "sha256": "397440bbfeeae04134257e1db48490a17635ec524a2954c9d04178af2fe82076",
+      "git_blob": "17889bc84abbd772704e1720b47481eaecb60962",
+      "bytes": 3672,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/cycle_2026-09-28/complete_timing/default/artifact_manifest.json"
+      ],
+      "diagnostics": {}
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/analyze_h3.py",
+      "sha256": "859b1ac4a32051d6a46e6ace491eb16aca9cceb1a11f99ec1fbaa0d1f5b87011",
+      "git_blob": "74eb9cc964d0734a21b74489657364924ecfa83b",
+      "bytes": 14406,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h3/HASHES.json"
+      ],
+      "diagnostics": {
+        "F401": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/finish_h3_analysis.py",
+      "sha256": "502fceb03363a31ad4a7f11f3f78b16e22d6c605910d88faeaca0d829f5081fc",
+      "git_blob": "4b584c85099c6bd7f9afa42e8f78f191eb2ec9c5",
+      "bytes": 2341,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h3/HASHES.json"
+      ],
+      "diagnostics": {
+        "F541": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3/helpers/trace_h3_candidate.py",
+      "sha256": "58ea9175687ab9c34228f79c1111c5abf91067b263f48b3fd8fcdcc26f126df0",
+      "git_blob": "79e3cf43a4131414a7cf27da3c669f80a6427d6a",
+      "bytes": 5903,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h3/HASHES.json"
+      ],
+      "diagnostics": {
+        "F401": 1,
+        "E402": 7
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/analyze_h3.py",
+      "sha256": "64a1e444741d0c129411d63aad971b58c67423fafe8f2f0a472967493777bd90",
+      "git_blob": "38227e5ae8c61264636b5fe7d4e9ab371565296d",
+      "bytes": 14569,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h3_selected/HASHES.json",
+        "docs/evidence/integration_2026-10-16/h5/HASHES.json"
+      ],
+      "diagnostics": {
+        "F401": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h3_selected/helpers/check_withdrawn_config.py",
+      "sha256": "fb7025a4345c281634962f9529f0c3b9e051d64e2dcb049ce27715464db9a089",
+      "git_blob": "b5dbba4745555ad55d91dad3e20e1648c6b502e6",
+      "bytes": 2210,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h3_selected/HASHES.json"
+      ],
+      "diagnostics": {
+        "E402": 3
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/compare_scenes.py",
+      "sha256": "ccfdd4dd2cd2127f4c6f0f1e68163f2f69eacf19e57acd863a5ce3295a605ccd",
+      "git_blob": "3277d945531da507b908c7d0ed2f57d44eca5886",
+      "bytes": 2304,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E702": 1,
+        "E701": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/diagnose_witness.py",
+      "sha256": "7fdd74a655bdb0ce0e7d81b7b3056ca75b251f1f9b089b830fdab0866c1db6fc",
+      "git_blob": "4c20d36113f0294215c3779d3e7a7fc3bdace1cf",
+      "bytes": 1166,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 1,
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/evidence_audit.py",
+      "sha256": "3a0f6366d195df80f2cc9e591b15fbb87893020d7562a8959693c17b07554900",
+      "git_blob": "712730369a5c4de7b29062c055ce0f30563e4bcd",
+      "bytes": 8181,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 13,
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/finalize_evidence.py",
+      "sha256": "fdbc8024e0c5cacb1694a1b6da00643dc2113c5bed5f6695cbe8405ee8ff264a",
+      "git_blob": "a9ccefd41aba10f1e7e59a5c9baa7170d8b1cffc",
+      "bytes": 4512,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "F401": 1,
+        "E701": 3,
+        "E702": 2
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/followup_checks.py",
+      "sha256": "c6a5281e58f74be182e0c88607d5c27d32e978561510d04ab28d83ea9c254345",
+      "git_blob": "d56bd60f5851dd3bf996288b50e2043a0ba1b825",
+      "bytes": 1216,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 1,
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/independent_checks.py",
+      "sha256": "86deafdc97ecd835c04605a42d8745f17a82f7928979b94ed905a4cc323a98ce",
+      "git_blob": "fff63454131c80b9c3879938a0d8c30898ebc4a6",
+      "bytes": 24864,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "F401": 1,
+        "E702": 6,
+        "E731": 1,
+        "E701": 12
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/inventory_evidence.py",
+      "sha256": "63fd65f07e4fb4953387cb3f70bca5366fc6ad327849b9c19f1ebd257f2efba5",
+      "git_blob": "417bb13e8706e9d552d27839ea18bcafe403e85c",
+      "bytes": 902,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 1,
+        "E702": 2
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_continuation.py",
+      "sha256": "567cbdd3385321f92f3598b3bb7af2bd7890865bbec43bd50647085ff5478098",
+      "git_blob": "14b41787f7421ca7bebc09a78bce3bfbcdb0af34",
+      "bytes": 1886,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 1,
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_followup.py",
+      "sha256": "8a7e59837da807e17eeceb3888b2a5a86b0e11de61c41fcaa4be749d799ecc92",
+      "git_blob": "d5e380fd6ff62ee037967b7347e8e5d7159e9c93",
+      "bytes": 947,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 2,
+        "E702": 2
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/launch_followup02.py",
+      "sha256": "208cdaf6587816218b30e42dec74227356a350e7e25f3ec46015994832e08c9d",
+      "git_blob": "982cd2629632c58fe0f327953387fb40b2b77b58",
+      "bytes": 1098,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 2,
+        "E702": 2
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/resume_linux.py",
+      "sha256": "0df345f84781a019faf236d0a6adeab3488ea47772ffa6db8fb05f27bf4d08ef",
+      "git_blob": "16dec1f3f54461d2138b4e8589a50b9a40fc9c94",
+      "bytes": 1933,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 2
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/run_followup.py",
+      "sha256": "730d833cfc4a13b2c8db17f66cae61737c20f2f25e6e3787b4c00034b2f6fe49",
+      "git_blob": "62902dcd2c92540b318058d48c5038088c0db51e",
+      "bytes": 1035,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/run_followup02.py",
+      "sha256": "ca9482dd95e9935819bc65a736a9fbdb2dd0daae5fc5960c46cd54bb9e597695",
+      "git_blob": "2c759c55572bc91b574150fa4f6b804c8e5a6f8c",
+      "bytes": 1205,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_correctness/scene_runner.py",
+      "sha256": "fe0cee7e071456e9069d5aea0e25ab0598046ec4f4e7b9610181060e4f93a27e",
+      "git_blob": "b6894d32bb0ff8957cd108628e8cb7cf14d1a2c3",
+      "bytes": 1133,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_correctness/HASHES.json"
+      ],
+      "diagnostics": {
+        "F401": 7,
+        "F821": 1,
+        "E701": 1,
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/compare.py",
+      "sha256": "197d772702f2df97627dc5800d349ce472b9625ee36c510f5f155013a93181b6",
+      "git_blob": "347c89fc15778f81170d4af1adbf44b840890d2f",
+      "bytes": 2545,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_fixes/columns/HASHES.json"
+      ],
+      "diagnostics": {
+        "E731": 2
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/details.py",
+      "sha256": "1113fe83b21799b7f39c7ef54cefc5a7c6e2d220e528678cfcae4adcb4d02c47",
+      "git_blob": "275b3a7949382970817eca19e442b3f9a7e2fd78",
+      "bytes": 2777,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/PACKAGE_HASHES.json"
+      ],
+      "diagnostics": {
+        "E731": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/package.py",
+      "sha256": "e76f3029d2fedc392e6d2671ac90b290658540fc1d00f283b69680665d554c9c",
+      "git_blob": "e58c934cf6a9699a7c0c18b29a18474fd09ee735",
+      "bytes": 18396,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_fixes/columns/withdrawal/PACKAGE_HASHES.json"
+      ],
+      "diagnostics": {
+        "E731": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_fixes/rearm/verify.py",
+      "sha256": "e2e742bf59b8b3f65ef11730aa81403f6b871a4fd314801bdb985d8314b5c5bf",
+      "git_blob": "924726e14e77ac089cee477624ed5967ca6ccda9",
+      "bytes": 4013,
+      "worktree_exact": true,
+      "indexes": [],
+      "diagnostics": {
+        "E402": 7
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/analyze.py",
+      "sha256": "e53a55bdf10c802c12b87653e7dcec1a479c8afdae8074bc2fe64d67e4dae971",
+      "git_blob": "30f8bfb3a5f2936e9a70fe97e89384b168c50506",
+      "bytes": 15962,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E702": 39,
+        "E741": 1,
+        "E701": 18,
+        "E731": 3
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/common.py",
+      "sha256": "ccb4bc4e1e7d9b674e8bc6f6fd16f6aca6685812bc6fac8755c3c3f4df9781ed",
+      "git_blob": "d9eb496fbd9c3ab8d23ada3a924fdf8342c67bd9",
+      "bytes": 4122,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 6,
+        "E401": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/components.py",
+      "sha256": "253e219672d1ab15b7bd518d0bc3a4da508e73e4963283330f56c911ec371b9a",
+      "git_blob": "e8aa282d4dbcbce4ecf791b70b4ea4e167948030",
+      "bytes": 12928,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E701": 10,
+        "E702": 26
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/derive.py",
+      "sha256": "ed9c97c160a6f28c05d1690b943680aa01000c6a6e953219cfb4218e6f9f6364",
+      "git_blob": "f84153fddfcf73ea02e7646191921b7c814ad465",
+      "bytes": 1405,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E401": 1,
+        "E702": 3,
+        "E701": 3
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/finalize.py",
+      "sha256": "12f2eabdfc84dcc4601aa9f2f54070085aedf48c6b9849cbfe411f0f8ca3b43a",
+      "git_blob": "83a53252c31d161a6d30c4a5dbbcff9c4532af04",
+      "bytes": 3701,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E401": 1,
+        "F401": 1,
+        "E702": 8,
+        "E741": 1,
+        "E701": 2
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/launch.py",
+      "sha256": "be946d51ce90aad480133e75cb6f3d0f6fc5f88e98535c8b57cc0a9784c8a95d",
+      "git_blob": "a106d49f7c7bd7184c6b650194879ce9cdd4c5e7",
+      "bytes": 2499,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E401": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/package.py",
+      "sha256": "74bd0d19a95b87725c0da0d71225a195ff4afcf928ccdfd87a0f8b25170a0e5d",
+      "git_blob": "aa586c192498b2679155c1f9e1a7aebe3245314d",
+      "bytes": 1058,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E401": 1,
+        "E702": 2
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/replay.py",
+      "sha256": "c772069e053b45566ccdffcbec1b9bc5ce8263dd96c0da3504df94d5ec844f07",
+      "git_blob": "04053dbc7ab0bf6b1debef3c81879716151aa4da",
+      "bytes": 6130,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E702": 10,
+        "E701": 6
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/verify_package.py",
+      "sha256": "582b02f40260976e918c10bef2b7041ded9fdc9da851d3a0889d40813743b139",
+      "git_blob": "c2364c0d7dc3cbfe58c244bb5109473dd4c19cfd",
+      "bytes": 1121,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E401": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_safety/worker.py",
+      "sha256": "a824a3a5f6adf811519d2c6f40273735f3994640233a6aedcace4f219f1e51cf",
+      "git_blob": "f160b24bfacc251188bce42f37591750badba16d",
+      "bytes": 856,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_safety/HASHES.json"
+      ],
+      "diagnostics": {
+        "E401": 1,
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/audit.py",
+      "sha256": "57c54e0f3e739abde52cc2d00f489c35ef1153b6243b0e12ef715596b05c29d9",
+      "git_blob": "364979b75ffc5f6493dbbd150db979f3acdc0ccc",
+      "bytes": 11046,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_selected/HASHES.json"
+      ],
+      "diagnostics": {
+        "E731": 1,
+        "E701": 1,
+        "E702": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/paired_h2.py",
+      "sha256": "ab76b8671c310bc1cc43533a4dae516cf90998ecc98ae741a6341ebdb42dfbbc",
+      "git_blob": "ee0b59e0e2db00954e16847d8217fa2d1ab858bb",
+      "bytes": 4981,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_selected/HASHES.json"
+      ],
+      "diagnostics": {
+        "E402": 7
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h4_selected/probes.py",
+      "sha256": "9219d15eaa7b29639c6a0a8ef787e1438629f2930c7ff59b748ef9d3a522a3b3",
+      "git_blob": "ca43ec914c70408117722e00b7cccb7b773a6eb3",
+      "bytes": 14151,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h4_selected/HASHES.json"
+      ],
+      "diagnostics": {
+        "E702": 2,
+        "E701": 1,
+        "F841": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/analyze_h3.py",
+      "sha256": "64a1e444741d0c129411d63aad971b58c67423fafe8f2f0a472967493777bd90",
+      "git_blob": "38227e5ae8c61264636b5fe7d4e9ab371565296d",
+      "bytes": 14569,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h3_selected/HASHES.json",
+        "docs/evidence/integration_2026-10-16/h5/HASHES.json"
+      ],
+      "diagnostics": {
+        "F401": 1
+      }
+    },
+    {
+      "path": "docs/evidence/integration_2026-10-16/h5/helpers/check_final_config.py",
+      "sha256": "d47659eab8560a1814feefc041fbcf201fad21f4ebb88646634263c54a603b2c",
+      "git_blob": "6aed7f87283dd03db1f302bc6ec36dac8f440169",
+      "bytes": 2583,
+      "worktree_exact": true,
+      "indexes": [
+        "docs/evidence/integration_2026-10-16/h5/HASHES.json"
+      ],
+      "diagnostics": {
+        "E402": 3
+      }
+    }
+  ]
+}
