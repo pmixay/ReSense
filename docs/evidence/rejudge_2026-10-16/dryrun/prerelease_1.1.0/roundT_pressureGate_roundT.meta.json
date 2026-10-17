@@ -1,0 +1,10 @@
+{
+ "frames": 268,
+ "wall_s": 13.9,
+ "cpu_s": 11.2,
+ "rss_peak_mb": 122.7,
+ "resets": [],
+ "bags": [
+  "/home/user/rs-data/raw/for_hackathon/roundT_pressureGate_roundT"
+ ]
+}

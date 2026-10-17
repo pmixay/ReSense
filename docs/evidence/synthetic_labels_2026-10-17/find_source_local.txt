@@ -1,0 +1,22 @@
+cloud_with_fake_obj
+doubleT_obstacle
+doubleT_platform
+roundT_doubleT
+roundT_pressureGate_roundT
+roundT_squareT_pressureGate_squareT
+squareT_platform_squareT_switch
+('synthetic_platform', 0, 386) (300, 'cloud_with_fake_obj/f_01195.npz')
+('synthetic_platform', 96, 386) (300, 'cloud_with_fake_obj/f_01291.npz')
+('synthetic_platform', 193, 386) (300, 'cloud_with_fake_obj/f_01388.npz')
+('synthetic_platform', 289, 386) (300, 'cloud_with_fake_obj/f_01484.npz')
+('synthetic_platform', 385, 386) (11, 'cloud_with_fake_obj/f_01500.npz')
+('synthetic_switch', 0, 736) (8, 'cloud_with_fake_obj/f_01392.npz')
+('synthetic_switch', 184, 736) (17, 'cloud_with_fake_obj/f_01166.npz')
+('synthetic_switch', 368, 736) (9, 'cloud_with_fake_obj/f_00444.npz')
+('synthetic_switch', 552, 736) (7, 'cloud_with_fake_obj/f_00184.npz')
+('synthetic_switch', 735, 736) (9, 'cloud_with_fake_obj/f_00475.npz')
+('synthetic_tunnels', 0, 545) (7, 'cloud_with_fake_obj/f_00284.npz')
+('synthetic_tunnels', 136, 545) (9, 'cloud_with_fake_obj/f_00675.npz')
+('synthetic_tunnels', 272, 545) (7, 'cloud_with_fake_obj/f_00560.npz')
+('synthetic_tunnels', 408, 545) (7, 'cloud_with_fake_obj/f_00426.npz')
+('synthetic_tunnels', 544, 545) (5, 'cloud_with_fake_obj/f_00269.npz')

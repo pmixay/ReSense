@@ -1,0 +1,10 @@
+{
+ "frames": 877,
+ "wall_s": 81.8,
+ "cpu_s": 43.4,
+ "rss_peak_mb": 120.0,
+ "resets": [],
+ "bags": [
+  "/home/user/rs-data/raw/for_hackathon/squareT_platform_squareT_switch"
+ ]
+}

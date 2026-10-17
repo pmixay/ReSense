@@ -1,0 +1,22 @@
+{
+ "archive": "https://disk.yandex.ru/d/SfBeRHbs8bNJAQ",
+ "member": "new_data.zst",
+ "splits": 56,
+ "messages": 2856,
+ "sample": 60,
+ "min_frac": 0.9,
+ "bags": {
+  "synthetic_platform": {
+   "query_frames": 386,
+   "matched": 0
+  },
+  "synthetic_switch": {
+   "query_frames": 736,
+   "matched": 0
+  },
+  "synthetic_tunnels": {
+   "query_frames": 545,
+   "matched": 0
+  }
+ }
+}

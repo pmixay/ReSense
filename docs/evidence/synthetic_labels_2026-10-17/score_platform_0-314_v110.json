@@ -1,0 +1,91 @@
+{
+ "objects": {
+  "obj01": {
+   "in_gauge_intent": true,
+   "rows_all": 177,
+   "rows_plausible": 170,
+   "stop_rows": 38,
+   "first_visible_d": 242.0,
+   "first_stop_d": 86.8,
+   "first_stop_frame": 106,
+   "max_stop_d": 86.8,
+   "held_from_d": null,
+   "decisions": {
+    "GO": 59,
+    "CAUTION": 73,
+    "STOP": 38,
+    "FAULT": 0
+   },
+   "caution_on_object": 41,
+   "bins": {
+    "0-30": "17/27",
+    "30-60": "8/24",
+    "60-100": "13/29",
+    "100-150": "0/34",
+    "150-200": "0/34",
+    "200-300": "0/22"
+   }
+  },
+  "obj02": {
+   "in_gauge_intent": false,
+   "rows_all": 190,
+   "rows_plausible": 189,
+   "stop_rows": 0,
+   "first_visible_d": 243.0,
+   "first_stop_d": null,
+   "first_stop_frame": null,
+   "max_stop_d": null,
+   "held_from_d": null,
+   "decisions": {
+    "GO": 7,
+    "CAUTION": 128,
+    "STOP": 54,
+    "FAULT": 0
+   },
+   "caution_on_object": 30,
+   "bins": {
+    "0-30": "0/45",
+    "30-60": "0/35",
+    "60-100": "0/35",
+    "100-150": "0/36",
+    "150-200": "0/32",
+    "200-300": "0/6"
+   }
+  },
+  "obj03": {
+   "in_gauge_intent": true,
+   "rows_all": 258,
+   "rows_plausible": 258,
+   "stop_rows": 76,
+   "first_visible_d": 249.5,
+   "first_stop_d": 44.0,
+   "first_stop_frame": 239,
+   "max_stop_d": 44.0,
+   "held_from_d": 48.48,
+   "decisions": {
+    "GO": 13,
+    "CAUTION": 131,
+    "STOP": 114,
+    "FAULT": 0
+   },
+   "caution_on_object": 127,
+   "bins": {
+    "0-30": "50/50",
+    "30-60": "26/50",
+    "60-100": "0/45",
+    "100-150": "0/43",
+    "150-200": "0/36",
+    "200-300": "0/34"
+   }
+  }
+ },
+ "unmatched_stop_frames": 0,
+ "unmatched_stop_episodes": [],
+ "unmatched_detail": [],
+ "decisions_total": {
+  "GO": 66,
+  "CAUTION": 135,
+  "STOP": 114,
+  "FAULT": 0
+ }
+}

@@ -1,0 +1,324 @@
+{
+ "windows": {
+  "path": "docs/evidence/p4_start_2026-10-15/battery_707ea9c.json",
+  "status": "MEASURED",
+  "commit": "707ea9cda051369326fb9407c42488c1033dad76",
+  "runtime": "Windows-10-10.0.26200-SP0"
+ },
+ "linux": {
+  "path": "/home/user/rs-data/p4out/battery_707ea9c_linux.json",
+  "status": "FAIL",
+  "commit": "707ea9cda051369326fb9407c42488c1033dad76",
+  "runtime": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39"
+ },
+ "same_commit": true,
+ "same_driver": true,
+ "judge_scripts_equal_modulo_crlf": true,
+ "same_labels": true,
+ "source_meta_equal": {
+  "squareT_platform_squareT_switch": true,
+  "doubleT_obstacle": true,
+  "roundT_squareT_pressureGate_squareT": true,
+  "cloud_with_fake_obj": true
+ },
+ "entries": 40,
+ "differences": {
+  "cloud_with_fake_obj/pitch_m2": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 335,
+    "linux": 332
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 720,
+    "linux": 723
+   }
+  ],
+  "cloud_with_fake_obj/pitch_p2": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 332,
+    "linux": 333
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 728,
+    "linux": 732
+   },
+   {
+    "path": "/decisions/STOP",
+    "windows": 448,
+    "linux": 443
+   },
+   {
+    "path": "/objects/big_above/first_stop_frame",
+    "windows": 629,
+    "linux": 628
+   },
+   {
+    "path": "/objects/big_above/first_stop_m",
+    "windows": 107.42,
+    "linux": 109.45
+   },
+   {
+    "path": "/objects/big_above/inside_stop_rows",
+    "windows": 54,
+    "linux": 55
+   },
+   {
+    "path": "/objects/big_above/stop_rows",
+    "windows": 54,
+    "linux": 55
+   },
+   {
+    "path": "/objects/big_outside/outside_stop_episodes",
+    "windows": 2,
+    "linux": 1
+   },
+   {
+    "path": "/objects/big_outside/outside_stop_rows",
+    "windows": 12,
+    "linux": 6
+   },
+   {
+    "path": "/objects/big_outside/stop_rows",
+    "windows": 12,
+    "linux": 6
+   },
+   {
+    "path": "/outside_false_stop_episodes",
+    "windows": 2,
+    "linux": 1
+   },
+   {
+    "path": "/outside_false_stop_frames",
+    "windows": 12,
+    "linux": 6
+   },
+   {
+    "path": "/stop_episodes",
+    "windows": 10,
+    "linux": 9
+   },
+   {
+    "path": "/stop_frames",
+    "windows": 448,
+    "linux": 443
+   }
+  ],
+  "cloud_with_fake_obj/roll_p2": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 283,
+    "linux": 289
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 776,
+    "linux": 770
+   }
+  ],
+  "doubleT_obstacle/dedup": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 3,
+    "linux": 2
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 9,
+    "linux": 8
+   },
+   {
+    "path": "/decisions/STOP",
+    "windows": 189,
+    "linux": 191
+   },
+   {
+    "path": "/objects/object_on_rail/inside_stop_rows",
+    "windows": 148,
+    "linux": 150
+   },
+   {
+    "path": "/objects/object_on_rail/stop_rows",
+    "windows": 148,
+    "linux": 150
+   },
+   {
+    "path": "/stop_episodes",
+    "windows": 5,
+    "linux": 3
+   },
+   {
+    "path": "/stop_frames",
+    "windows": 189,
+    "linux": 191
+   }
+  ],
+  "doubleT_obstacle/drop30_judge7": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 4,
+    "linux": 3
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 43,
+    "linux": 44
+   }
+  ],
+  "doubleT_obstacle/drop30_s1": [
+   {
+    "path": "/decisions/GO",
+    "windows": 20,
+    "linux": 17
+   },
+   {
+    "path": "/decisions/STOP",
+    "windows": 178,
+    "linux": 181
+   },
+   {
+    "path": "/objects/object_on_rail/inside_stop_rows",
+    "windows": 138,
+    "linux": 141
+   },
+   {
+    "path": "/objects/object_on_rail/stop_rows",
+    "windows": 138,
+    "linux": 141
+   },
+   {
+    "path": "/stop_frames",
+    "windows": 178,
+    "linux": 181
+   }
+  ],
+  "roundT_squareT_pressureGate_squareT/pitch_p2": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 193,
+    "linux": 184
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 352,
+    "linux": 361
+   }
+  ],
+  "roundT_squareT_pressureGate_squareT/roll_p2": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 169,
+    "linux": 166
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 376,
+    "linux": 379
+   }
+  ],
+  "squareT_platform_squareT_switch/pitch_m2": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 425,
+    "linux": 422
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 425,
+    "linux": 424
+   },
+   {
+    "path": "/decisions/STOP",
+    "windows": 27,
+    "linux": 31
+   },
+   {
+    "path": "/false_stop_episodes",
+    "windows": 7,
+    "linux": 8
+   },
+   {
+    "path": "/stop_episodes",
+    "windows": 7,
+    "linux": 8
+   },
+   {
+    "path": "/stop_frames",
+    "windows": 27,
+    "linux": 31
+   }
+  ],
+  "squareT_platform_squareT_switch/pitch_p2": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 427,
+    "linux": 433
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 430,
+    "linux": 421
+   },
+   {
+    "path": "/decisions/STOP",
+    "windows": 20,
+    "linux": 23
+   },
+   {
+    "path": "/false_stop_episodes",
+    "windows": 4,
+    "linux": 5
+   },
+   {
+    "path": "/stop_episodes",
+    "windows": 4,
+    "linux": 5
+   },
+   {
+    "path": "/stop_frames",
+    "windows": 20,
+    "linux": 23
+   }
+  ],
+  "squareT_platform_squareT_switch/roll_p2": [
+   {
+    "path": "/decisions/CAUTION",
+    "windows": 439,
+    "linux": 449
+   },
+   {
+    "path": "/decisions/GO",
+    "windows": 401,
+    "linux": 402
+   },
+   {
+    "path": "/decisions/STOP",
+    "windows": 37,
+    "linux": 26
+   },
+   {
+    "path": "/false_stop_episodes",
+    "windows": 7,
+    "linux": 8
+   },
+   {
+    "path": "/stop_episodes",
+    "windows": 7,
+    "linux": 8
+   },
+   {
+    "path": "/stop_frames",
+    "windows": 37,
+    "linux": 26
+   }
+  ]
+ },
+ "judge_reproduction": {
+  "windows": true,
+  "linux": false
+ },
+ "equal": false
+}

@@ -1,0 +1,39 @@
+{
+ "cache": "roundT_squareT_pressureGate_squareT",
+ "obj": [
+  0.05,
+  0.05,
+  2.6
+ ],
+ "lat": 0.0,
+ "base": 0.2,
+ "start": 150,
+ "d0": 230.0,
+ "first_visible_X": 222.61,
+ "first_stop_X": 59.78,
+ "held_from_X": 43.37,
+ "visible_frames": 59,
+ "stop_frames": 29,
+ "bins": {
+  "3-30": "18/18",
+  "30-60": "11/15",
+  "60-100": "0/10",
+  "100-150": "0/6",
+  "150-200": "0/4",
+  "200-260": "0/6"
+ },
+ "decisions_while_visible": {
+  "GO": 27,
+  "CAUTION": 3,
+  "STOP": 29,
+  "FAULT": 0
+ },
+ "go_within_60m": 3,
+ "n_obj_at": {
+  "200": 6,
+  "150": 9,
+  "100": 13,
+  "60": 20,
+  "30": 35
+ }
+}
