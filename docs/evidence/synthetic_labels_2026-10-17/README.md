@@ -18,6 +18,7 @@ intent ([extended data README](../extended_data_2026-10-17/README.md)).
 | inserted objects | **not static in the world**: they approach the train about 12 m/s faster than the train moves, in uneven 0.8–3 m steps per frame |
 | 1.1.0 vs 707ea9c | identical decisions on all 1,667 frames of the three bags, so identical scores |
 | platform 0–314 | person (obj03): first STOP **44.0 m**, visible from 249.5 m; box at the gauge edge (obj01): first STOP 86.8 m; box outside the gauge (obj02): never STOP (correct); no unmatched STOP |
+| why 44 m (A5) | frames 113–238: no wall parallel to the track (platform hall), so the detector trusts its axis only to **45 m** (`rails_range[1]` + margin); the person is demoted `beyond_axis` until it is inside 45 m. Recorded branch, every row checked |
 
 ## How the labels are made
 
@@ -88,6 +89,53 @@ Both versions give byte-identical score files ([v110](score_platform_0-314_v110.
 | obj03 person | STOP | 258 | 249.5 m | **44.0 m** | 76 | 48.5 m | 50/50, 26/50, 0/45, 0/43, 0/36, 0/34 |
 
 There are 0 unmatched STOP frames. Decisions on the 315 frames: GO 66, CAUTION 135, STOP 114.
+
+## A5: why the person gets its STOP only at 44 m
+
+The X1 harness (`scripts/range_attrib.py`, unchanged) ran on platform frames 0–314 with windows
+`obj03:57:314` and `obj01:0:176`, on both versions ([attribution/run_a5.sh](attribution/run_a5.sh)).
+Hooks on equals hooks off, every row and field, on both versions. A first 1.1.0 run in parallel
+with the 707ea9c run differed only in the wall-clock latency health message on frames 10–13, so
+it was rerun alone. 0 rows are unclassified. Causes are identical on 1.1.0 and 707ea9c
+([v110/table.json](attribution/v110/table.json), [v100/table.json](attribution/v100/table.json)):
+
+| person (obj03), visible rows | 0–30 m | 30–60 m | 60–100 m | 100–150 m | 150–200 m | 200–260 m |
+|---|---|---|---|---|---|---|
+| STOP | 50 | 26 | 0 | 0 | 0 | 0 |
+| demoted: beyond_axis | – | 19 | 44 | 43 | 20 | 2 |
+| tracker: zone_vote | – | 5 | 1 | – | – | – |
+| oversize split refused | – | – | – | – | 11 | – |
+| no blob (too few points) | – | – | – | – | 5 | 32 |
+
+**Label check from the full snapshots** (`--keep-frames`, every row, not a sample): on all 147
+`demoted:beyond_axis` rows (obj03 and obj01, both versions), the object's own final cluster
+carries the reason `beyond_axis`, and the object lies beyond that frame's trusted axis range.
+0 wrong labels.
+
+**Which branch set the range, recorded rather than reconstructed**
+([attribution/trace_axis_valid.py](attribution/trace_axis_valid.py): a line tracer on
+`resense.track.estimate_track`; decisions equal a plain run on all 315 frames, both versions;
+per frame in `attribution/<version>/axis_branches.json`):
+
+| platform frames | branch that fired | trusted axis range |
+|---|---|---|
+| 0–56 | `walls_fit`, two tunnel sides | 153–193 m |
+| 57–112 | `walls_fit` (37 frames), one side capped at 120 m (18), no boundary (4), sides disagree (1) | median 149 m |
+| **113–238** | **no boundary parallel to the track** (120 of 122 frames): the range falls 20 m per frame to the floor `rails_range[1] + axis_valid_margin` = 30 + 15 = **45 m** | **45 m** |
+| 239–314 | `walls_fit`, one side (capped at 120 m) | median 120 m |
+
+So while the person approaches from 162 m to 45 m (frames 117–238), it is beyond the 45 m the
+detector trusts. It is seen as an obstacle candidate but demoted to CAUTION. The first STOP comes
+at frame 239, 44.0 m, the first frame inside 45 m. The cause is the scene: the real scan here
+(Set O 1308–1433) is a platform hall with no wall parallel to the track. It is not the synthetic
+object's motion; the tracker's zone vote costs only 6 rows. A static person at the same place in
+this scene would meet the same 45 m limit. The box obj01 has the same pattern, with
+beyond_axis on 19 rows at 30–100 m.
+
+For P3 (card N6): the lever is the no-boundary floor (45 m on a platform). The usual settings
+`rails_range[1]` / `axis_valid_margin` set it, or the rails could be trusted farther where
+they are seen. Any change must be re-measured against the false STOPs it can bring back. P4
+proposes nothing here, and no detector code was changed.
 
 ## Detector decisions without labels (all frames)
 
