@@ -13,7 +13,7 @@ intent ([extended data README](../extended_data_2026-10-17/README.md)).
 | | result |
 |---|---|
 | exact labels | `synthetic_platform` frames **0–314** only (their real scans are Set O frames 1195–1509) |
-| no exact labels yet | platform 315–385, all of `switch` and `tunnels`: their real scans are not in any organizer recording we hold (see [Source search](#source-search)) |
+| no exact labels | platform 315–385, all of `switch` and `tunnels`: their real scans are in no organizer recording, the full 20-minute ride included (searched with a positive control; [Source search](#source-search)); exact labels need the organizers |
 | intensity-1 marker | **not usable as truth**: finds 57 % of the inserted points and makes about 12 false objects per frame |
 | inserted objects | **not static in the world**: they approach the train about 12 m/s faster than the train moves, in uneven 0.8–3 m steps per frame |
 | 1.1.0 vs 707ea9c | identical decisions on all 1,667 frames of the three bags, so identical scores |
@@ -172,10 +172,21 @@ objects per frame and miss the sparse far objects, so the labeller never uses it
   frames per synthetic bag, 300 real points each, searched in all decoded recordings (Set O and the
   six bags). Sampled platform frames 0, 96, 193 and 289 match Set O 1195, 1291, 1388 and 1484 at 300/300. Platform frame 385, every
   switch frame and every tunnels frame match at most 17/300, which is chance.
-* **The 20-minute ride `new_data`** (`scripts/match_source_frames.py`, streamed, never stored):
-  all 1,667 synthetic frames, 60 real points each. Part 1 searched 165 of 221 split files
-  (8,415 messages) and found **0 matches**; the stream then broke. The remaining splits:
-  being searched on 17.10 (resumed with `--skip-members`); this README gets the result.
+* **The 20-minute ride `new_data`** (`scripts/match_source_frames.py`, streamed and never stored):
+  all 1,667 synthetic frames, 60 real points each, match at >= 90 %. All **221 split files /
+  11,271 messages** were searched: part 1 covered 165 splits before the connection dropped
+  ([log](match_new_data_part1.log)); part 2 covered the other 56 with `--skip-members`
+  ([log](match_new_data_part2.log), [summary](match_new_data_part2.json)). **0 matches** in all
+  three bags, platform 0–314 included, so Set O's real scans are not from this ride either.
+* **Positive control:** the same tool on the organizers' original archive (`dataset.zip`), with
+  `roundT_doubleT`'s own decoded cache as the query, matched **252 / 252** frames in its own bag
+  and none beyond that elsewhere ([match_control_dataset_zip.json](match_control_dataset_zip.json)).
+  The zero above is therefore a real result: the scans of platform 315–385, switch and tunnels are
+  in no recording we were given.
+
+**So exact labels for those frames need the organizers**, either the ground truth or the source
+recording. Until then their STOPs cannot be scored as hits or false alarms. The intensity-1
+marker is not a substitute (see above).
 
 ## Reproduce
 

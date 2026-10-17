@@ -1,0 +1,14 @@
+{
+ "archive": "/home/user/rs-data/dl/dataset.zip",
+ "member": "",
+ "splits": 6,
+ "messages": 2488,
+ "sample": 60,
+ "min_frac": 0.9,
+ "bags": {
+  "roundT_doubleT": {
+   "query_frames": 252,
+   "matched": 252
+  }
+ }
+}
