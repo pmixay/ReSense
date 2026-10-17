@@ -1,0 +1,123 @@
+{
+ "results": [
+  "/home/resense/data/c2_acceptance/inputs/small_candidate.jsonl"
+ ],
+ "stats": {
+  "frames": 1510,
+  "decisions": {
+   "GO": 736,
+   "STOP": 452,
+   "FAULT": 2,
+   "CAUTION": 320
+  },
+  "clear_distance_m": {
+   "median": 80.2,
+   "p10": 8.9,
+   "mean": 63.4
+  }
+ },
+ "gt": "labels/cloud_with_fake_obj.json",
+ "overclaim": {
+  "tolerance_m": 0.5,
+  "totals": {
+   "target": 6,
+   "target_frames": 505,
+   "intent": 59,
+   "intent_frames": 801,
+   "go_judge": 59,
+   "go_judge_in_envelope": 18,
+   "target_by_decision": {
+    "GO": 4,
+    "STOP": 2
+   }
+  },
+  "inside_objects": {
+   "big_center": {
+    "frames": 213,
+    "frames_in_envelope": 213,
+    "overclaim": 0,
+    "overclaim_in_envelope": 0,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 0.0
+   },
+   "small_on_rail": {
+    "frames": 49,
+    "frames_in_envelope": 33,
+    "overclaim": 16,
+    "overclaim_in_envelope": 3,
+    "overclaim_in_envelope_go": 3,
+    "max_excess_m": 33.7
+   },
+   "small_center": {
+    "frames": 79,
+    "frames_in_envelope": 63,
+    "overclaim": 1,
+    "overclaim_in_envelope": 1,
+    "overclaim_in_envelope_go": 1,
+    "max_excess_m": 1.9
+   },
+   "small_edge_inside": {
+    "frames": 83,
+    "frames_in_envelope": 16,
+    "overclaim": 17,
+    "overclaim_in_envelope": 0,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 33.4
+   },
+   "big_edge_inside": {
+    "frames": 125,
+    "frames_in_envelope": 8,
+    "overclaim": 14,
+    "overclaim_in_envelope": 1,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 50.6
+   },
+   "big_above": {
+    "frames": 124,
+    "frames_in_envelope": 75,
+    "overclaim": 1,
+    "overclaim_in_envelope": 1,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 1.6
+   },
+   "long_low_on_rails": {
+    "frames": 86,
+    "frames_in_envelope": 77,
+    "overclaim": 0,
+    "overclaim_in_envelope": 0,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 0.0
+   },
+   "thin_hanging": {
+    "frames": 42,
+    "frames_in_envelope": 20,
+    "overclaim": 10,
+    "overclaim_in_envelope": 0,
+    "overclaim_in_envelope_go": 0,
+    "max_excess_m": 48.7
+   }
+  },
+  "outside_objects": {
+   "small_outside_near": {
+    "frames": 112,
+    "clear_stops_at_object": 36
+   },
+   "big_outside": {
+    "frames": 104,
+    "clear_stops_at_object": 12
+   }
+  },
+  "order": [
+   "big_center",
+   "small_center",
+   "small_on_rail",
+   "small_edge_inside",
+   "small_outside_near",
+   "big_edge_inside",
+   "big_outside",
+   "big_above",
+   "long_low_on_rails",
+   "thin_hanging"
+  ]
+ }
+}

@@ -1,0 +1,6300 @@
+{
+  "protocol": {
+    "version": "team-labels-v1",
+    "forward_range_m": [
+      0.0,
+      250.0
+    ],
+    "near_range": "raw decoder radial 2.5 m filter is not a 2.5 m forward-distance threshold",
+    "forward_tolerance": "max(2 m, 3% of target min-forward) + half target forward extent",
+    "lateral_tolerance": "1 m between sensor/vehicle bbox centres",
+    "vertical_tolerance": "0.5 m maximum gap between observed vertical extents",
+    "assignment": "maximum-cardinality one-to-one; all valid assignments retained as bounds",
+    "population": "positive-return annotation rows within range; gauge certainty kept separately",
+    "unmatched": "unresolved unless annotations explicitly declare exhaustive_obstacles=true",
+    "held": "90% of supported rows at that distance or nearer; assignment lower bound"
+  },
+  "frames": 545,
+  "decisions": {
+    "CAUTION": 223,
+    "GO": 196,
+    "STOP": 126
+  },
+  "coverage": {
+    "all_frame_ids_present": true,
+    "reviewed_all_frames": true,
+    "exhaustive_obstacles": false,
+    "unknown_frames": [
+      168,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      178,
+      179,
+      180,
+      181,
+      182,
+      184,
+      187,
+      188,
+      195,
+      196,
+      200,
+      202,
+      211,
+      330,
+      331,
+      332,
+      333,
+      334,
+      335,
+      337,
+      338,
+      339,
+      340,
+      341,
+      342,
+      343,
+      448,
+      460
+    ]
+  },
+  "annotation_gauge_relation_frames": {
+    "boundary_uncertain": 64,
+    "inside": 63,
+    "unknown": 169
+  },
+  "excluded_object_frames": {},
+  "summary": {
+    "true_stop_detections_bounds": [
+      61,
+      118
+    ],
+    "false_stop_detections_bounds": [
+      0,
+      67
+    ],
+    "certain_inside_matched_bounds": [
+      61,
+      61
+    ],
+    "certain_inside_object_frames": 63,
+    "possible_inside_object_frames": 296,
+    "unmatched_stop_detections": 10,
+    "stop_detections": 128,
+    "stop_frames_without_geometry": 0,
+    "certain_inside_recall_bounds": [
+      0.9682539682539683,
+      0.9682539682539683
+    ]
+  },
+  "objects": {
+    "box_left_4": {
+      "point_supported_frames": 50,
+      "first_frame": 446,
+      "last_frame": 495,
+      "first_visible_m": 90.1423,
+      "gauge_relation_frames": {
+        "unknown": 18,
+        "boundary_uncertain": 32
+      },
+      "stop_match_frames_bounds": [
+        0,
+        0
+      ],
+      "first_stop_frame_certain_assignment": null,
+      "first_stop_m_certain_assignment": null,
+      "first_stop_m_possible_assignment": null,
+      "stop_held_from_m_certain_assignment": null,
+      "certain_inside_frames": 0,
+      "certain_inside_stop_frames_bounds": [
+        0,
+        0
+      ],
+      "warning_match_frames_bounds": [
+        7,
+        7
+      ],
+      "bins_m": {
+        "0-30": {
+          "supported": 16,
+          "stop_match_bounds": [
+            0,
+            0
+          ],
+          "gauge_relation_frames": {
+            "boundary_uncertain": 16
+          }
+        },
+        "30-60": {
+          "supported": 16,
+          "stop_match_bounds": [
+            0,
+            0
+          ],
+          "gauge_relation_frames": {
+            "boundary_uncertain": 16
+          }
+        },
+        "60-100": {
+          "supported": 18,
+          "stop_match_bounds": [
+            0,
+            0
+          ],
+          "gauge_relation_frames": {
+            "unknown": 18
+          }
+        }
+      },
+      "observations": [
+        {
+          "frame": 446,
+          "distance": 90.1423,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 447,
+          "distance": 88.87659,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 448,
+          "distance": 87.57338,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 449,
+          "distance": 86.19458,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 450,
+          "distance": 84.03823,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 451,
+          "distance": 82.5664,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 452,
+          "distance": 80.27275,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 453,
+          "distance": 78.85235,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 454,
+          "distance": 76.67784,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 455,
+          "distance": 75.21427,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 456,
+          "distance": 72.0093,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 457,
+          "distance": 70.72252,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 458,
+          "distance": 69.43189,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 459,
+          "distance": 68.06799,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 460,
+          "distance": 64.57893,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 461,
+          "distance": 63.34155,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 462,
+          "distance": 62.22634,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 463,
+          "distance": 61.06022,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 464,
+          "distance": 58.4571,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 465,
+          "distance": 57.35073,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 466,
+          "distance": 53.58174,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 467,
+          "distance": 52.35308,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 468,
+          "distance": 49.95704,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 469,
+          "distance": 48.77172,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 470,
+          "distance": 46.26606,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 471,
+          "distance": 45.05871,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 472,
+          "distance": 43.85735,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 473,
+          "distance": 42.63389,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 474,
+          "distance": 40.15862,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 475,
+          "distance": 38.72439,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 476,
+          "distance": 36.43033,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 477,
+          "distance": 34.76855,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 478,
+          "distance": 32.65254,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 479,
+          "distance": 31.10146,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 480,
+          "distance": 27.95683,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 481,
+          "distance": 26.64384,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 482,
+          "distance": 25.41644,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 483,
+          "distance": 24.24348,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 484,
+          "distance": 22.0627,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 485,
+          "distance": 20.18319,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 486,
+          "distance": 17.99024,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 487,
+          "distance": 16.42291,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 488,
+          "distance": 14.27273,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 489,
+          "distance": 12.70847,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 490,
+          "distance": 10.59092,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 491,
+          "distance": 9.05434,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 492,
+          "distance": 5.67294,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 493,
+          "distance": 4.40487,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 494,
+          "distance": 3.18369,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 495,
+          "distance": 1.62016,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        }
+      ]
+    },
+    "box_right_1": {
+      "point_supported_frames": 102,
+      "first_frame": 166,
+      "last_frame": 288,
+      "first_visible_m": 219.452,
+      "gauge_relation_frames": {
+        "unknown": 70,
+        "boundary_uncertain": 32
+      },
+      "stop_match_frames_bounds": [
+        30,
+        30
+      ],
+      "first_stop_frame_certain_assignment": 259,
+      "first_stop_m_certain_assignment": 54.99849,
+      "first_stop_m_possible_assignment": 54.99849,
+      "stop_held_from_m_certain_assignment": 60.64977,
+      "certain_inside_frames": 0,
+      "certain_inside_stop_frames_bounds": [
+        0,
+        0
+      ],
+      "warning_match_frames_bounds": [
+        0,
+        0
+      ],
+      "bins_m": {
+        "0-30": {
+          "supported": 15,
+          "stop_match_bounds": [
+            15,
+            15
+          ],
+          "gauge_relation_frames": {
+            "boundary_uncertain": 15
+          }
+        },
+        "30-60": {
+          "supported": 17,
+          "stop_match_bounds": [
+            15,
+            15
+          ],
+          "gauge_relation_frames": {
+            "boundary_uncertain": 17
+          }
+        },
+        "60-100": {
+          "supported": 22,
+          "stop_match_bounds": [
+            0,
+            0
+          ],
+          "gauge_relation_frames": {
+            "unknown": 22
+          }
+        },
+        "100-150": {
+          "supported": 27,
+          "stop_match_bounds": [
+            0,
+            0
+          ],
+          "gauge_relation_frames": {
+            "unknown": 27
+          }
+        },
+        "150-250": {
+          "supported": 21,
+          "stop_match_bounds": [
+            0,
+            0
+          ],
+          "gauge_relation_frames": {
+            "unknown": 21
+          }
+        }
+      },
+      "observations": [
+        {
+          "frame": 166,
+          "distance": 219.452,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 167,
+          "distance": 218.13823,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 169,
+          "distance": 214.82225,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 177,
+          "distance": 201.96817,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 183,
+          "distance": 191.38251,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 185,
+          "distance": 187.99135,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 186,
+          "distance": 186.63,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 189,
+          "distance": 181.91762,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 190,
+          "distance": 180.246,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 191,
+          "distance": 178.21106,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 192,
+          "distance": 175.35139,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 193,
+          "distance": 174.29265,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 194,
+          "distance": 171.80444,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 197,
+          "distance": 167.40147,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 198,
+          "distance": 166.22295,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 199,
+          "distance": 164.17508,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 201,
+          "distance": 160.98618,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 203,
+          "distance": 156.85995,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 204,
+          "distance": 154.50122,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 205,
+          "distance": 153.43259,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 206,
+          "distance": 151.17484,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 207,
+          "distance": 149.73488,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 208,
+          "distance": 147.38855,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 209,
+          "distance": 146.01849,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 210,
+          "distance": 145.08855,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 212,
+          "distance": 141.36578,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 213,
+          "distance": 140.33861,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 214,
+          "distance": 137.83844,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 215,
+          "distance": 136.40642,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 216,
+          "distance": 133.04935,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 217,
+          "distance": 131.81227,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 218,
+          "distance": 130.41193,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 219,
+          "distance": 129.11034,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 220,
+          "distance": 125.87263,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 221,
+          "distance": 124.4539,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 222,
+          "distance": 122.32335,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 223,
+          "distance": 120.89959,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 224,
+          "distance": 119.74036,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 225,
+          "distance": 118.282,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 226,
+          "distance": 116.11619,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 227,
+          "distance": 115.01178,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 228,
+          "distance": 111.20556,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 229,
+          "distance": 109.94055,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 230,
+          "distance": 107.27088,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 231,
+          "distance": 106.39809,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 232,
+          "distance": 103.80608,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 233,
+          "distance": 102.46378,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 234,
+          "distance": 100.38814,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 235,
+          "distance": 98.98532,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 236,
+          "distance": 97.65678,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 237,
+          "distance": 95.83212,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 238,
+          "distance": 92.82959,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 239,
+          "distance": 91.68285,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 240,
+          "distance": 89.29527,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 241,
+          "distance": 87.89892,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 242,
+          "distance": 85.40334,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 243,
+          "distance": 84.17489,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 244,
+          "distance": 81.88037,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 245,
+          "distance": 80.65327,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 246,
+          "distance": 79.22927,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 247,
+          "distance": 77.3443,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 248,
+          "distance": 75.64324,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 249,
+          "distance": 74.27392,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 250,
+          "distance": 71.95,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 251,
+          "distance": 70.26717,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 252,
+          "distance": 66.85062,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 253,
+          "distance": 65.82397,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 254,
+          "distance": 63.36502,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 255,
+          "distance": 62.14419,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 256,
+          "distance": 60.64977,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 257,
+          "distance": 59.39214,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 258,
+          "distance": 57.29615,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 259,
+          "distance": 54.99849,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 260,
+          "distance": 53.36369,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 261,
+          "distance": 51.53452,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 262,
+          "distance": 48.76242,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 263,
+          "distance": 47.37171,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 264,
+          "distance": 45.17685,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 265,
+          "distance": 43.85054,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 266,
+          "distance": 41.2162,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 267,
+          "distance": 40.10126,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 268,
+          "distance": 37.8773,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 269,
+          "distance": 36.51063,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 270,
+          "distance": 35.03342,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 271,
+          "distance": 32.61754,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 272,
+          "distance": 31.67922,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 273,
+          "distance": 30.23112,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 274,
+          "distance": 27.60772,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 275,
+          "distance": 26.46307,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 276,
+          "distance": 22.87677,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 277,
+          "distance": 21.65704,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 278,
+          "distance": 20.52206,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 279,
+          "distance": 19.18567,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 280,
+          "distance": 15.35893,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 281,
+          "distance": 14.47193,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 282,
+          "distance": 13.42207,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 283,
+          "distance": 12.13556,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 284,
+          "distance": 9.53568,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 285,
+          "distance": 7.85749,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 286,
+          "distance": 6.11664,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 287,
+          "distance": 4.87468,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 288,
+          "distance": 2.24219,
+          "gauge_relation": "boundary_uncertain",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        }
+      ]
+    },
+    "flat_crossrail_3": {
+      "point_supported_frames": 42,
+      "first_frame": 446,
+      "last_frame": 489,
+      "first_visible_m": 80.19549,
+      "gauge_relation_frames": {
+        "unknown": 11,
+        "inside": 31
+      },
+      "stop_match_frames_bounds": [
+        37,
+        37
+      ],
+      "first_stop_frame_certain_assignment": 452,
+      "first_stop_m_certain_assignment": 70.38702,
+      "first_stop_m_possible_assignment": 70.38702,
+      "stop_held_from_m_certain_assignment": 78.87421,
+      "certain_inside_frames": 31,
+      "certain_inside_stop_frames_bounds": [
+        31,
+        31
+      ],
+      "warning_match_frames_bounds": [
+        0,
+        0
+      ],
+      "bins_m": {
+        "0-30": {
+          "supported": 15,
+          "stop_match_bounds": [
+            15,
+            15
+          ],
+          "gauge_relation_frames": {
+            "inside": 15
+          }
+        },
+        "30-60": {
+          "supported": 16,
+          "stop_match_bounds": [
+            16,
+            16
+          ],
+          "gauge_relation_frames": {
+            "inside": 16
+          }
+        },
+        "60-100": {
+          "supported": 11,
+          "stop_match_bounds": [
+            6,
+            6
+          ],
+          "gauge_relation_frames": {
+            "unknown": 11
+          }
+        }
+      },
+      "observations": [
+        {
+          "frame": 446,
+          "distance": 80.19549,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 447,
+          "distance": 78.87421,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 449,
+          "distance": 76.22552,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 450,
+          "distance": 74.06927,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 451,
+          "distance": 72.63132,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 452,
+          "distance": 70.38702,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 453,
+          "distance": 68.9565,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 454,
+          "distance": 66.77621,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 455,
+          "distance": 65.31805,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 456,
+          "distance": 62.09326,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 457,
+          "distance": 60.80809,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 458,
+          "distance": 59.50931,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 459,
+          "distance": 58.18344,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 461,
+          "distance": 53.4559,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 462,
+          "distance": 52.33362,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 463,
+          "distance": 51.15289,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 464,
+          "distance": 48.57882,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 465,
+          "distance": 47.45702,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 466,
+          "distance": 43.70536,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 467,
+          "distance": 42.45022,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 468,
+          "distance": 40.08875,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 469,
+          "distance": 38.88309,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 470,
+          "distance": 36.39597,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 471,
+          "distance": 35.19458,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 472,
+          "distance": 33.99804,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 473,
+          "distance": 32.76139,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 474,
+          "distance": 30.29792,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 475,
+          "distance": 28.86465,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 476,
+          "distance": 26.57461,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 477,
+          "distance": 24.91938,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 478,
+          "distance": 22.80663,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 479,
+          "distance": 21.25142,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 480,
+          "distance": 18.11616,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 481,
+          "distance": 16.80941,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 482,
+          "distance": 15.58364,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 483,
+          "distance": 14.41268,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 484,
+          "distance": 12.23481,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 485,
+          "distance": 10.35654,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 486,
+          "distance": 8.16523,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 487,
+          "distance": 6.44769,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 488,
+          "distance": 4.3784,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 489,
+          "distance": 2.59816,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        }
+      ]
+    },
+    "panel_2": {
+      "point_supported_frames": 102,
+      "first_frame": 329,
+      "last_frame": 443,
+      "first_visible_m": 201.21309,
+      "gauge_relation_frames": {
+        "unknown": 70,
+        "inside": 32
+      },
+      "stop_match_frames_bounds": [
+        51,
+        51
+      ],
+      "first_stop_frame_certain_assignment": 391,
+      "first_stop_m_certain_assignment": 96.82542,
+      "first_stop_m_possible_assignment": 96.82542,
+      "stop_held_from_m_certain_assignment": 100.37586,
+      "certain_inside_frames": 32,
+      "certain_inside_stop_frames_bounds": [
+        30,
+        30
+      ],
+      "warning_match_frames_bounds": [
+        13,
+        13
+      ],
+      "bins_m": {
+        "0-30": {
+          "supported": 15,
+          "stop_match_bounds": [
+            13,
+            13
+          ],
+          "gauge_relation_frames": {
+            "inside": 15
+          }
+        },
+        "30-60": {
+          "supported": 17,
+          "stop_match_bounds": [
+            17,
+            17
+          ],
+          "gauge_relation_frames": {
+            "inside": 17
+          }
+        },
+        "60-100": {
+          "supported": 23,
+          "stop_match_bounds": [
+            21,
+            21
+          ],
+          "gauge_relation_frames": {
+            "unknown": 23
+          }
+        },
+        "100-150": {
+          "supported": 29,
+          "stop_match_bounds": [
+            0,
+            0
+          ],
+          "gauge_relation_frames": {
+            "unknown": 29
+          }
+        },
+        "150-250": {
+          "supported": 18,
+          "stop_match_bounds": [
+            0,
+            0
+          ],
+          "gauge_relation_frames": {
+            "unknown": 18
+          }
+        }
+      },
+      "observations": [
+        {
+          "frame": 329,
+          "distance": 201.21309,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 336,
+          "distance": 189.20358,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 344,
+          "distance": 176.98401,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 345,
+          "distance": 175.58907,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 346,
+          "distance": 173.9603,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 347,
+          "distance": 172.40506,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 348,
+          "distance": 169.41154,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 349,
+          "distance": 168.2209,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 350,
+          "distance": 165.84616,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 351,
+          "distance": 164.69337,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 352,
+          "distance": 163.62349,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 353,
+          "distance": 162.72127,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 354,
+          "distance": 160.22145,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 355,
+          "distance": 158.74646,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 356,
+          "distance": 156.8226,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 357,
+          "distance": 155.49907,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 358,
+          "distance": 153.43721,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 359,
+          "distance": 151.06653,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 360,
+          "distance": 148.9576,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 361,
+          "distance": 147.76422,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 362,
+          "distance": 145.53008,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 363,
+          "distance": 144.37111,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 364,
+          "distance": 143.29686,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 365,
+          "distance": 142.03117,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 366,
+          "distance": 139.82961,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "GO"
+        },
+        {
+          "frame": 367,
+          "distance": 138.36551,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 368,
+          "distance": 136.44931,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 369,
+          "distance": 134.99994,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 370,
+          "distance": 132.95496,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 371,
+          "distance": 131.60017,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 372,
+          "distance": 128.3826,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 373,
+          "distance": 127.16106,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 374,
+          "distance": 124.81813,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 375,
+          "distance": 123.64632,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 376,
+          "distance": 121.33563,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 377,
+          "distance": 120.14026,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 378,
+          "distance": 119.0181,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 379,
+          "distance": 117.28571,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 380,
+          "distance": 115.34007,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 381,
+          "distance": 113.84949,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 382,
+          "distance": 111.93763,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 383,
+          "distance": 110.63723,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 384,
+          "distance": 107.45869,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 385,
+          "distance": 106.16916,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 386,
+          "distance": 103.609,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 387,
+          "distance": 102.58972,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 388,
+          "distance": 100.37586,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 389,
+          "distance": 99.08431,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 390,
+          "distance": 97.93865,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            1,
+            1
+          ],
+          "decision": "CAUTION"
+        },
+        {
+          "frame": 391,
+          "distance": 96.82542,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 392,
+          "distance": 94.36687,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 393,
+          "distance": 92.66216,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 394,
+          "distance": 90.85544,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 395,
+          "distance": 89.37243,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 396,
+          "distance": 86.29547,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 397,
+          "distance": 85.03926,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 398,
+          "distance": 83.79893,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 399,
+          "distance": 82.10445,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 400,
+          "distance": 80.28778,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 401,
+          "distance": 78.95332,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 402,
+          "distance": 76.81988,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 403,
+          "distance": 75.64574,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 404,
+          "distance": 73.31626,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 405,
+          "distance": 72.14719,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 406,
+          "distance": 69.72399,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 407,
+          "distance": 68.64886,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 408,
+          "distance": 64.8865,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 409,
+          "distance": 63.83268,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 410,
+          "distance": 61.59318,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 411,
+          "distance": 60.32512,
+          "gauge_relation": "unknown",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 412,
+          "distance": 59.05318,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 413,
+          "distance": 57.63414,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 414,
+          "distance": 55.58479,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 415,
+          "distance": 54.43473,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 416,
+          "distance": 51.91493,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 417,
+          "distance": 50.57113,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 418,
+          "distance": 48.38206,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 419,
+          "distance": 46.56615,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 420,
+          "distance": 44.88032,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 421,
+          "distance": 43.75139,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 422,
+          "distance": 41.45755,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 423,
+          "distance": 40.25008,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 424,
+          "distance": 36.57129,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 425,
+          "distance": 35.45115,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 426,
+          "distance": 34.1875,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 427,
+          "distance": 32.57047,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 428,
+          "distance": 30.55903,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 429,
+          "distance": 29.00358,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 430,
+          "distance": 27.0071,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 431,
+          "distance": 25.63334,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 432,
+          "distance": 22.39818,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 433,
+          "distance": 21.02648,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 434,
+          "distance": 18.24632,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 435,
+          "distance": 17.26947,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 436,
+          "distance": 16.39716,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 437,
+          "distance": 15.25014,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 438,
+          "distance": 12.55005,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 439,
+          "distance": 11.43088,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 440,
+          "distance": 9.00427,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 441,
+          "distance": 7.23782,
+          "gauge_relation": "inside",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 442,
+          "distance": 5.52459,
+          "gauge_relation": "inside",
+          "stop_match": [
+            0,
+            0
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        },
+        {
+          "frame": 443,
+          "distance": 4.14119,
+          "gauge_relation": "inside",
+          "stop_match": [
+            1,
+            1
+          ],
+          "warning_match": [
+            0,
+            0
+          ],
+          "decision": "STOP"
+        }
+      ]
+    }
+  },
+  "stop_frames": [
+    {
+      "frame": 147,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        0
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 148,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        0
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 149,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        0
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 259,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 260,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 261,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 262,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 263,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 264,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 265,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 266,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 267,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 268,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 269,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 270,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 271,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 272,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 273,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 274,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 275,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 276,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 277,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 278,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 279,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 280,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 281,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 282,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 283,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 284,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 285,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 286,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 287,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 288,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 367,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        0
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 391,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 392,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 393,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 394,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 395,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 396,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 397,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 398,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 399,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 400,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 401,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 402,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 403,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 404,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 405,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 406,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 407,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 408,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 409,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 410,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 411,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 412,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 413,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 414,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 415,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 416,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 417,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 418,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 419,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 420,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 421,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 422,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 423,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 424,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 425,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 426,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 427,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 428,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 429,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 430,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 431,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 432,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 433,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 434,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 435,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 436,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 437,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 438,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 439,
+      "detections": 2,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 440,
+      "detections": 2,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 441,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        0
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 442,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        0
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 443,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 444,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        0
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 452,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 453,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 454,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 455,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 456,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 457,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        1
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 458,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 459,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 460,
+      "detections": 1,
+      "true_bounds": [
+        0,
+        0
+      ],
+      "false_bounds": [
+        0,
+        1
+      ],
+      "unmatched": 1,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 461,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 462,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 463,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 464,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 465,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 466,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 467,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 468,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 469,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 470,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 471,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 472,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 473,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 474,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 475,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 476,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 477,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 478,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 479,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 480,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 481,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 482,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 483,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 484,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 485,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 486,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 487,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 488,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    },
+    {
+      "frame": 489,
+      "detections": 1,
+      "true_bounds": [
+        1,
+        1
+      ],
+      "false_bounds": [
+        0,
+        0
+      ],
+      "unmatched": 0,
+      "coverage_exhaustive": false
+    }
+  ],
+  "inputs": {
+    "archive": "docs/evidence/synthetic_labels_2026-10-17/runs/detector_runs.tar.xz",
+    "archive_sha256": "3818c8aba25f1bee22fb25bfb9a0ba8c8265ac20dd970e9b5911f9938ab87a47",
+    "member": "v110_synthetic_tunnels.jsonl",
+    "results_sha256": "c6055d653b1c90e81934689befb62e9bd4bf208e25df6f493143555cbe5394ec",
+    "labels": "docs/evidence/n5_labels_2026-10-17/labels_synthetic_tunnels.json",
+    "labels_sha256": "b1e7c5b081914f6bd480b83bafbc551be338dccb93f4615c1a44f5d95da3bc7b",
+    "scorer_sha256": "cec1309bd2e462244e05da379d809ab6b80644975e9ffc1b8c150e85dc1a5bbc"
+  }
+}

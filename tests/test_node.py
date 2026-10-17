@@ -71,7 +71,8 @@ def test_node_and_launch_defaults_match_published_source_baseline():
                 cwd=root, text=True, encoding="utf-8")
             assert _declared_defaults(published) == PUBLISHED_DEFAULTS
     additions = {"decision_policy": "v1", "caution_distance_m": 80.0,
-                 "caution_compact_max_size_m": 3.0}
+                 "caution_compact_max_size_m": 3.0, "clear_range_policy": "legacy",
+                 "range_sensor_model": "unknown"}
     assert _declared_defaults((NODE_PKG / "resense_ros" / "detector_node.py").read_text()) == {
         **PUBLISHED_DEFAULTS, **additions}
     tree = ast.parse((NODE_PKG / "launch" / "detector.launch.py").read_text())
@@ -1057,6 +1058,60 @@ def test_node_selected_policy_keeps_raw_column_warning_and_marker_matches(freshn
     assert result["freshness"]["valid"] and result["clear_distance"] == 100.0
     assert not result["freshness"]["go_allowed"]
     assert node.published["/resense/markers"][-1].markers[-1].text.startswith(expected)
+
+
+@pytest.mark.parametrize("freshness_driver", [{"clear_range_policy": "small_candidate",
+                                             "range_sensor_model": "pandar128"},
+                                            {"clear_range_policy": "conservative",
+                                             "range_sensor_model": "pandar128"}], indirect=True)
+def test_c2_candidate_node_ranges_match_scalar_status_and_freshness_latch(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0)
+    result = send(20.1)
+    assert result["decision"] == "GO"
+    assert result["clear_distance"] == result["monitored_small"] == 88.7
+    assert result["clear_distance"] == node.published["/resense/clear_distance"][-1].data
+    assert result["detector_clear_distance"] == 100.0
+    if node.clear_range_policy == "conservative":
+        assert result["range_policy"] == "c2_conservative_2026_10_17"
+    clock["warnings"] = [_advisory("column", 40.06)]
+    result = send(20.2)
+    assert result["decision"] == "CAUTION" and result["clear_distance"] == 40.0
+    assert result["warnings"] == [clock["warnings"][0].to_dict()]
+    clock["obstacle"] = True
+    assert send(20.3)["decision"] == "STOP"
+    clock.update(obstacle=False, warnings=[])
+    stale = send(20.4, age=2.0)
+    assert stale["decision"] == "STOP" and stale["stop_held"]
+    assert stale["clear_distance"] == stale["monitored_small"] == stale["health"]["monitored_range"] == 0.0
+    assert stale["clear_distance"] == node.published["/resense/clear_distance"][-1].data
+    clock["mono"] += 2.0
+    clock["wall"] += 2.0
+    node.on_watchdog()
+    watchdog = json.loads(node.published["/resense/status"][-1].data)
+    assert watchdog["snapshot_kind"] == "watchdog" and watchdog["decision"] == "STOP"
+    assert watchdog["clear_distance"] == watchdog["monitored_small"] == 0.0
+    assert watchdog["range_policy"] == result["range_policy"]
+
+
+@pytest.mark.parametrize("freshness_driver", [{"clear_range_policy": "small_candidate",
+                                             "range_sensor_model": "unknown"},
+                                            {"clear_range_policy": "small_candidate",
+                                             "range_sensor_model": "falcon_prime"},
+                                            {"clear_range_policy": "conservative",
+                                             "range_sensor_model": "unknown"},
+                                            {"clear_range_policy": "conservative",
+                                             "range_sensor_model": "falcon_prime"}], indirect=True)
+def test_c2_candidate_unknown_sensor_never_inherits_pandar_prior(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0, topic="/iv_points", frame_id="falcon")
+    result = send(20.1, topic="/iv_points", frame_id="falcon")
+    # The configured profile, not a spoofable topic/frame name, controls applicability.
+    assert result["monitored_small"] is None
+    assert result["monitored_small_model"]["available"] is False
+    assert result["freshness"]["valid"] and result["decision"] == "GO"
+    assert result["clear_distance"] == node.published["/resense/clear_distance"][-1].data == 0.0
+    assert result["detector_clear_distance"] == 100.0
 
 
 def test_node_caution_reasons_are_sorted_unique_and_empty_off_caution(freshness_driver):

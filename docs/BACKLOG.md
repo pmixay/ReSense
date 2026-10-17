@@ -125,7 +125,7 @@ Whether anything after v1.0.0 can still count is the organizers' answer (card O1
 | F1 | Near-field low-object false STOPs at the rail-head plane (5 of 6 ride episodes below 40 m) | 8.1, 8.4 | P3 | A | M | +0.5 to +1 | 18–20.10 |
 | S2 | 360° per-frame cost: native single-pass decode, per-stage profile | 8.3 | P3 + P1 | A | M | +0.5 to +1 | 19–20.10 if time |
 | S3 | Cap the orientation-search cost while the configured mount has not passed | 8.3, 8.4 | P3 | A | S | protects ~1 | 18–19.10 |
-| S5 | 8-core stand-in bench of the final node incl. the literal player | 8.3 | P2 (or whoever has ≥ 8 cores) | H | S | ~+0.5 | 21.10 |
+| S5 | Measure the selected node on available hardware, including the literal player; 8-core host optional (captain, 17.10) | 8.3 | P2 / available operator | H | S | ~+0.5 | 21.10 |
 | D1 | Fix ~28 stale or contradictory statements in 13 docs; SCORECARD and ownership map current | 8.5, 8.8 | P2 (agent; P1 approves the PR) | A | S | ~+0.5 | 15–16.10, 21.10 |
 | PT1 | Pitch content for the shipped seal: lighter deck, honest range by track shape, node-path numbers | 8.8 | P1 | H+A | M | up to +1 | 18–21.10 |
 | PT2 | Live demo on the shipped image and two timed rehearsals with a fallback | 8.8 | P1 | H | M | protects 1–2 | 19.10, 22.10 |
@@ -167,8 +167,9 @@ conditional; the calendar's original H5 date below is superseded by the actual H
 * **20.10, noon cut-off:** P3 combined gate on `det/1.2.0`; P4 independent safety review; P1
   reseals with the version bump, tags `v1.2.0`, releases if accepted. E2/shared v1 are selected;
   S1 and C1 v2 require new passing acceptance before any later shipping decision.
-* **21.10:** P4: J1 run 2 on the final seal and the G3 run (a fresh agent). P2: D1 pass 2, S5 on an
-  8-core machine, final video cards. P1: final numbers in the deck and the speech.
+* **21.10:** P4: J1 run 2 on the final seal and the G3 run (a fresh agent). P2: D1 pass 2, S5 on
+  available hardware (2–4 cores are acceptable; no 8-core prerequisite), final video cards.
+  P1: final numbers in the deck and the speech. New release timing follows the CI repair.
 * **22.10:** rehearsal 2 on the final image with the fallback and Q&A drills (P3, P4 as mock jury).
 * **After 23.10** (or earlier only if O1 says updates count and CPU allows): K2 unless round 3 (B)
   shipped, X2 then F2, S4, G1 and G2 then T1, D2, J1's raw-path gate mode.
@@ -366,20 +367,28 @@ protects ~1 if the control data uses another mount or starts without a rail pair
   cached doubleT_obstacle frame 50 rotated 90° ≤ 60 ms on an idle 4 vCPU; gate exit 0 with
   identical rows.
 
-#### S5 · 8-core stand-in bench of the final node incl. the literal player
-**Criteria** 8.3 · **Owner** P2, or whoever has an 8-core machine (an agent writes the summary;
+#### S5 · Available-hardware bench of the selected node including the literal player
+**Captain update 17.10:** an 8-core VPS is not required now. Measurements on available hardware,
+including 2–4 cores, are accepted with the actual resources and results recorded. More cores
+are a possible later comparison, not a prerequisite or an inferred benchmark result.
+The captain handles GitHub quota/billing; release waits until CI is fixed. Source-checkout
+measurements can proceed now and remain labelled as such until release identity is verified.
+
+**Criteria** 8.3 · **Owner** P2, or the available machine operator (an agent writes the summary;
 P1 quotes it) · **Mode** H · **Size** S · **Points** ~+0.5 through confidence · **Depends on** S1, S2,
 the final image
 * **Evidence:** the judge timed on 4 vCPU only (8.3 confidence "medium"); the stand is an
   i7-9700E with 8 cores; the team VM of 28.09 (4C/8T) gave 360° node mean 52.9 / p95 62.8 ms against
   the judge's 88/111 ms; `scripts/bench_8core.sh` (CAPTAIN §3 item 9) was never run.
-* **Tasks:** on an idle machine with ≥ 8 physical cores run `scripts/bench_8core.sh` with the final
+* **Tasks:** on an idle available machine run `scripts/bench_8core.sh` (historical filename; no
+  minimum core-count check) with the selected
   image plus the 4 Docker chain conditions of S1; record `lscpu`, disk read speed (360° playback
   needs ~225 MB/s) and numpy in the image; commit `docs/evidence/bench_<date>/`; quote the numbers
   with the hardware named in README and ARCHITECTURE (via D1).
 * **Done when:** `RESENSE_DATA=<bags> RESENSE_CACHE=<cache> scripts/bench_8core.sh` exits 0;
   `summary.json` has the 360° node p95 and the four chain summaries (target: README flags p95 ≤ 80
-  ms, fresh ≥ 195/201); `facts.txt` shows `nproc` ≥ 8.
+  ms, fresh ≥ 195/201), each explicitly PASS/FAIL; `facts.txt` records actual CPU topology,
+  affinity/quota and memory. The core count alone neither blocks nor establishes acceptance.
 
 ### Decision outputs
 
@@ -420,6 +429,18 @@ with the next tag; no reseal (the policy module lives outside the sealed directo
   catch-up CAUTION 9 → 0; `tests/test_node.py` and the CI docker job green.
 
 #### C2 · `clear_distance` consistent with the advisory output; publish the overclaim scorer first
+**Progress 17.10: revised conservative profile ACCEPTED.** The captain explicitly approved
+“Use conservative ranges and record the measured loss.” Shared node/offline reporting and the
+scorer are implemented on `work/n5-labels-c2-acceptance`. Select
+`clear_range_policy:=conservative range_sensor_model:=pandar128`; legacy remains the launch
+default until release integration. Revised acceptance retains at least **65%** of each empty-bag
+median (measured worst retention **65.3%**) and gives **GO 4 / CAUTION 0** under the existing
+0.5 m measured-envelope score. Independent review and local checks pass.
+**Original 90% retention acceptance remains FAIL.** The reconstructed historical intended-gauge
+score still has GO 40 / CAUTION 11; these are not claimed fixed. The exact 148/694 control
+reconstruction, both populations, residuals and scoped validation are published in
+[C2 evidence](evidence/c2_acceptance_2026-10-17/README.md). Release/DDS acceptance is deferred.
+
 **Criteria** 8.1 · **Owner** P3 (P1 for node exposure and docs) · **Mode** H+A · **Size** S ·
 **Points** +0.5 (judge −1) · **Depends on** C1 (predicate); round 3's honest monitored range (§2) —
 build on its cap
@@ -439,6 +460,13 @@ build on its cap
 * **Done when:** with `score_clear_distance.py` and the new scorer on set O: overclaims with CAUTION
   0, GO overclaims on in-gauge objects ≤ 5; median clear on the five empty bags within −10 % of
   1.1.0 (the captain sets the limit); gate decision rows unchanged, exit 0; safety review.
+  **Captain-approved revision 17.10:** replace the −10% range budget with the measured conservative
+  outcome, guarded by a **−35%** limit per bag (`conservative_2026_10_17`). The GO/CAUTION
+  criterion uses the existing `score_clear_distance.py` measured-envelope population; preserve
+  the separately reconstructed intended-gauge results. The accepted explicit Pandar profile
+  requires the qualified three-return prior. Canonical-data acceptance exits 0; archived
+  decision/detection parity and actual-node unit integration are checked. A new released-image
+  Docker/DDS gate is not claimed and remains part of the deferred release work.
 
 ### Evaluation tooling (P4 lane)
 
@@ -961,10 +989,10 @@ Proposed by P4 on 17.10 from the material below; P1 owns this file and the sched
 
 | item | state on 17.10 | evidence |
 |---|---|---|
-| `main` | PR #33 merged the integration branch as **one squashed commit** `44b462e`; `main`'s detector = the sealed 1.1.0 (seal verify PASS) | `git show 44b462e` |
-| branch archive | its restore rule needs the frozen seed `e39a011` **in `main`'s history**; after the squash it is not. **Do not retire any branch** (integration, `p1/*`, `p3/*`, `p4/*`, `r3/*`, `h2/*`, `final/*`) until P1 adds a history-preserving merge of `integration/2026-10-15-16` into `main` (no code change) or re-bundles them | [branch archive](evidence/integration_2026-10-16/branch_archive/README.md) |
-| E1 | **no `v1.1.0` tag / release yet**; CI also blocked by the repository's Actions artifact quota (docker / offline-build upload) | CI run of `b0c9c17` |
-| X3, X1, J1 prep | done on 1.1.0 (§3 rows); P4 branch `ccr-027997e8-kqywat` merges cleanly into `main` | [P4 report](evidence/p4_eval_1.1.0_2026-10-16/README.md) |
+| `main` | Live remote checked at `3b7d7aa7cbbf238c21f84330497697da131b7cb9`; PR #35 (P2) and #36 (P4/new data) merged; sealed 1.1.0 source verifies | [execution record](evidence/n5_c2_execution_2026-10-17/README.md) |
+| branch archive | Frozen seed `e39a011` is now reachable from `main`; the missing-history prerequisite is resolved. This check does not establish that every archive restore test has been repeated | [branch archive](evidence/integration_2026-10-16/branch_archive/README.md) |
+| E1 | **no `v1.1.0` release yet**; latest CI job did not start because of billing/spending limits. Captain handles quota/billing; release is deferred until CI is fixed | [job annotation](https://github.com/pmixay/ReSense/actions/runs/39072282773/job/117512188031) |
+| X3, X1, J1 prep | done on 1.1.0 (§3 rows); P4 work is merged through PR #36 | [P4 report](evidence/p4_eval_1.1.0_2026-10-16/README.md) |
 | for P2 | case register / numeric export (proposed format, P2 to confirm), confirmed limitations and caption corrections | [export](evidence/p4_eval_1.1.0_2026-10-16/export/FORMAT.md), [limitations](evidence/p4_eval_1.1.0_2026-10-16/LIMITATIONS.md) |
 
 ### 8b. The extended dataset of 16.10 (measured)
@@ -974,8 +1002,9 @@ Organizers' files: [intake note](organizers/extended_dataset_2026-10-16.md); ana
 The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, it is development data (not G3).
 
 * **`new_synth_data`**: three Pandar128 bags (platform 386, switch 736, tunnels 545 frames), same topic / fields /
-  axes as the six originals. Objects are inserted **in place** (no appended block; intensity 1 marks them), so Set O's
-  `label_fake_objects.py` does not label them; no ground truth. Platform: a box at the rail (STOP from 87 m), a box
+  axes as the six originals. Objects are inserted **in place** (no appended block), so Set O's
+  `label_fake_objects.py` does not label them. Intensity 1 alone is not ground truth. Team annotation and
+  explicit uncertainty now replace the missing-label blocker (N5 below). Platform: a box at the rail (STOP from 87 m), a box
   outside (CAUTION), a **person-shaped object STOP only from 44 m** although visible from 201 m (CAUTION from ~166 m;
   `monitored_range` capped at 45 m at the platform). Switch / tunnels: ≥ 5 and ≥ 3 objects; false STOP on background
   8 frames (switch) and 3 + 1 frames (tunnels). **No dust or suspension in this delivery.**
@@ -1006,9 +1035,20 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
 
 #### N5 · Labels and scoring for the new synthetic bags
 **Owner** P4 · **Size** S–M · **Depends on** nothing
-* **Tasks:** per-object labels from the intensity-1 marker (exact against Set O for platform frames 0–314), then
-  first-STOP / held distance per object and false STOP per bag on 1.1.0 (and on every candidate). Feeds criterion 1
-  (first-detect range) and 4–5; registered as **development** data before any tuning use.
+**Progress 17.10: DONE for team annotation and bounded development scoring.** All 1,667 frames,
+12 tracks and 1,684 supported object/frame rows are recorded. Independent review found an
+additional tunnel box and corrected a near-pass tracker attachment before freezing labels.
+The two archived detector versions score identically. Uncertain gauge placement and unsupported
+intervals remain explicit; this completion does not imply exact organizer truth or fixed detector misses.
+* **Captain direction 17.10:** annotate the data ourselves; missing organizer labels do not block N5.
+  Intensity 1 is only a candidate feature. Use exact Set O differences for platform frames 0–314,
+  reviewed raw geometry and temporal continuity elsewhere, and explicitly retain sparse support,
+  boundary/unknown gauge membership and incomplete negative knowledge.
+* **Deliverable:** all **1,667 frame keys**, reviewed object records, first matched STOP / held distance
+  per object, and per-bag false-STOP bounds on 1.1.0 and the recorded control. The scoring code
+  rejects missing frames and incompatible coordinates; unknown labels are not negatives. Feeds
+  criteria 1 and 4–5. This remains **development** data, not G3 or a release score.
+  See [team labels and independent scoring](evidence/n5_labels_2026-10-17/README.md).
 
 #### N6 · Late STOP on the synthetic person at the platform (criterion 1)
 **Owner** P3 · **Size** M · **Depends on** N5, X1-style attribution
@@ -1017,9 +1057,11 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
 
 ### 8d. Order up to 23.10 (replaces §4 from 17.10)
 
-* **17.10:** P1: keep all branches; add the history-preserving merge (or re-bundle); free the Actions artifact quota;
-  tag `v1.1.0` and release (E1); merge the P4 branch. P1: ask the organizers about dust, ground truth for the new
-  synthetic objects, and the Falcon recording (N2 / N3 questions). P4: N5 labels; Falcon remaining windows.
+* **17.10 captain update:** history preservation and P2/P4 merges are complete. The captain handles GitHub
+  billing/quota; release (E1) waits for repaired CI. N5 proceeds by team annotation with explicit uncertainty,
+  without waiting for organizer ground truth. C2 implementation and acceptance evidence proceed on the remote
+  work branch. Dust and Falcon questions remain separate N2/N3 work; no organizer contact was made by this task.
+  P4: N5 scoring; Falcon remaining windows.
   P2: confirm the export format; N1 gauge display can start (no seal).
 * **18.10:** P4: J1 on the release (~3–4 h after E1; runbook ready). P1: N4 + the Falcon launch line (N2 task 1).
   P3: X1-style attribution of the Falcon warnings (N2 task 3) and the platform person (N6), then the 1.2.0 bundle

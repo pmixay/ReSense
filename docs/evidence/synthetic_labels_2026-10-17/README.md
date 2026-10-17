@@ -1,5 +1,11 @@
 # Labels and scores for the organizers' new synthetic recordings (B1 / BACKLOG N5) — 17.10
 
+**Later 17.10 update:** the captain requested team annotation of the remaining data.
+[Complete-frame team labels and bounded scoring](../n5_labels_2026-10-17/README.md)
+now extend this exact-reference work. The reference limitations below remain true,
+but missing organizer labels no longer block N5. Team annotations distinguish
+reviewed geometry, sparse support and uncertain gauge membership from exact point truth.
+
 > **Development data (observation only).** These are not G3, not a J1 result and not a release
 > score. No detector code was changed. Owner: P4.
 

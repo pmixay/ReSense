@@ -1,0 +1,482 @@
+{
+  "scope": "all 1.1.0-named archived JSONL, including X3 and superseded attribution captures; no new detector gate",
+  "archive_sha256": "417e701deca4bdfe24f7c9d1530c4b78cb8f3d07804386554bda3be44e10223a",
+  "reporting_profile": "conservative_2026_10_17",
+  "captures": 59,
+  "frames": 42536,
+  "passed": true,
+  "cases": [
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/pitch_m2/probe.jsonl",
+      "sha256": "f5682404a595327477261ff51821f1f5bdba36fb4ccb8ad70cd39c9a1d2f6ec4",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/drop30_s3/probe.jsonl",
+      "sha256": "c1bdc409f28ac2c50e02ea0072eff0891d6e84c219219450daa000089a610ec3",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/drop30_s2/probe.jsonl",
+      "sha256": "16a24584a1a04c2775003baf274742d612aca29b50e5e1f2d2bacccfcf3d8f90",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/pitch_p2/probe.jsonl",
+      "sha256": "ec75ea3abef97a434909369272c7ad8718f455a31f53760ecd6bc0dd870890ea",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/drop30_s1/probe.jsonl",
+      "sha256": "2b7b4c93c4bafb524ef35bba3bcbdd7bcb5fa5bf361cf3bfce8ba58248e6a950",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/dedup/probe.jsonl",
+      "sha256": "2768fe7d1ec5576e2b49f25d4314a5257855d5d0dae0e50e8ba8a9685012415a",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/nominal/probe.jsonl",
+      "sha256": "a556a1ecab88ad8eecca02badb29cb35959a5cf05e15dbca52693f036197552b",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/roll_p2/probe.jsonl",
+      "sha256": "e42d0acf3fa1a00611004c8a9689c72c439ca4a6a01bdae8c1b9c9240942e78c",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/drop30_judge7/probe.jsonl",
+      "sha256": "4a74658d3fe6eaae35d2720991323bef44eefcf319a68f25a5751b633a16ad69",
+      "frames": 1510,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/hz5/probe.jsonl",
+      "sha256": "64c1f7b8c25bbab11e463f60aae14963605d002dff45f19f290b16801f12a97a",
+      "frames": 755,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/pitch_m2/probe.jsonl",
+      "sha256": "3d4d6c0a4996df8038cadd163fdfc0cda5cea1fb5c30ef4bf80c3b21163ded1e",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/drop30_s3/probe.jsonl",
+      "sha256": "d6f3c20e5f1d907a7812a93353f5b2369f38006390de8d4414681ec57c06419b",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/drop30_s2/probe.jsonl",
+      "sha256": "6436c79de83630e0a8b5779f058fb5d9cf60872f44757f33bcadff85b49299d7",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/pitch_p2/probe.jsonl",
+      "sha256": "b4563ea8e1725d5b4dabe7d92232146e5b3af6b2f7af48bf944b3227f8675871",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/drop30_s1/probe.jsonl",
+      "sha256": "fc2557b8de4280e5aca7e3878fe1accb248ab66e8247576dc0e5038804544ea4",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/dedup/probe.jsonl",
+      "sha256": "365f0112dea2cac7a3b329f74385b0eb5789867d186ad68b82f39f163e1ba6c3",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/nominal/probe.jsonl",
+      "sha256": "3dd92857eb299caee7636eab056d2d137b0ed70f51f8ec01853d38ff0387bfe3",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/roll_p2/probe.jsonl",
+      "sha256": "bc8fd91a13df9a1011e828bb04597f13683e9caaf7df7b31860e62caa194499b",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/drop30_judge7/probe.jsonl",
+      "sha256": "8eeaf1ca4d1229f295d72594c506c1e79f219f4263538289e73e2b589d7261db",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/squareT_platform_squareT_switch/hz5/probe.jsonl",
+      "sha256": "abce47389bfbc098d6aa32cc6446d517250893950440cf0bcdc77eec585deb38",
+      "frames": 439,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/pitch_m2/probe.jsonl",
+      "sha256": "2b327b408d9be17c3df5089bf56cbeae521159396adced9ca40ef36931f0ea1c",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/drop30_s3/probe.jsonl",
+      "sha256": "22a3975b4ee10bf55f2f9d3755086aaa6fbcde18c6fe1ac30909b58b55dc8582",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/drop30_s2/probe.jsonl",
+      "sha256": "7c8fe71b278c5aab97422fba1fff2083ff34c35dfa4692de961a945aa90d170f",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/pitch_p2/probe.jsonl",
+      "sha256": "e1115b2f57fb303a3aaec2c800dd6cfc1de9b9df206be28042c5487d5bef65f6",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/drop30_s1/probe.jsonl",
+      "sha256": "24449da0c8980f89a79d3550f923ac1ba9ed07d509df5ea86f623a637aadf44c",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/dedup/probe.jsonl",
+      "sha256": "f48c43493d3df902535b2f28a5291cd56bd21bd1b7de6544e5a55cc8d1dc918e",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/nominal/probe.jsonl",
+      "sha256": "26149057ccf7c2a3773b3737478321de1946b71015f1353de3b2b8da32226b8a",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/roll_p2/probe.jsonl",
+      "sha256": "2bf8439a46a6eeac177d5a97332ee8179b1bfed8e8083ea0b2cfb2397fc9391e",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/drop30_judge7/probe.jsonl",
+      "sha256": "583061a7efee292a41b95308da5108e246e2790b793424f7e3a2b2cb3e44a472",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/roundT_squareT_pressureGate_squareT/hz5/probe.jsonl",
+      "sha256": "d308299bf8b7a67ebd5c128e4cabed744eec48a3cc9d3e5431d8b818e9cbffae",
+      "frames": 273,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/pitch_m2/probe.jsonl",
+      "sha256": "14589ea1ae2f239c2c237edf2b10ff2eacd4331340c3a8d724aea669727f86f4",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/drop30_s3/probe.jsonl",
+      "sha256": "442eeb333b26021c9524f19697709e8d77f6764ae0a6754715c06e8d11390e30",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/drop30_s2/probe.jsonl",
+      "sha256": "411ab4aec3907c09c994ce2696d02d4dfa50aa92c1dce49b4116e913445cf6bb",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/pitch_p2/probe.jsonl",
+      "sha256": "4b9a78359b49ae8d93b7dddc327a14c79fc57b08ef230396e42a5e0b83f62a9b",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/drop30_s1/probe.jsonl",
+      "sha256": "94b33b7369fa92d572a07fabc2541a2f370e752bc80a10a12bc92fe6916fa2a1",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/dedup/probe.jsonl",
+      "sha256": "c72c772920a0c358d9285eaf2351691de1c355b007814bfa490422b2bad111f1",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/nominal/probe.jsonl",
+      "sha256": "75fab7f6c5c9c6eb71636bb3f5b9046b98cdeb9b743eb20675c37bcea4943696",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/roll_p2/probe.jsonl",
+      "sha256": "92b05bd3c90bd5b9c3d6900d186dc7915442ba85d115a53648efd3a915abf730",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/drop30_judge7/probe.jsonl",
+      "sha256": "5a2843b74fb9c5580f17737fc43d48e12ee1169efa5a8fd27b4c29c79acb3611",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/doubleT_obstacle/hz5/probe.jsonl",
+      "sha256": "0ad7a7543279ffdc211c8ad289011d04922170ddf03eb0e6aef8c6f9b8017941",
+      "frames": 101,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "j1/prerelease_1.1.0/doubleT_obstacle.jsonl",
+      "sha256": "a75beedf12baae6e1c3e6d1dffcbe16ce397f3cbc7227a453c9461faff6e7bc5",
+      "frames": 201,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "j1/prerelease_1.1.0/roundT_pressureGate_roundT.jsonl",
+      "sha256": "d7aaeb000be335e0d30e0100fdad74b8160bd382f2f3f8eb9aca7389a57dcf89",
+      "frames": 268,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "j1/prerelease_1.1.0/roundT_squareT_pressureGate_squareT.jsonl",
+      "sha256": "508279ddd00bf0a224fe3a2c42f9475414e81e095599a7252c18a85e6431e4f6",
+      "frames": 545,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "j1/prerelease_1.1.0/doubleT_platform.jsonl",
+      "sha256": "79f9c8a2d2104ed32d4dc47bcdce1710929d724e5e735acfe878ff8ca0b4a280",
+      "frames": 345,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "j1/prerelease_1.1.0/squareT_platform_squareT_switch.jsonl",
+      "sha256": "3b608bb27ba47682606df53aae4e3ebcda5003541a5bc5f4f355ca1dcf98c54c",
+      "frames": 877,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "j1/prerelease_1.1.0/roundT_doubleT.jsonl",
+      "sha256": "e1611c446c7c0470cdc7f759cccc48ee36077926fba985e9e4bf6494aa0f66ba",
+      "frames": 252,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/1.1.0/setO.off.jsonl",
+      "sha256": "318ff365ad724d5a7e5a8fb989e0aefc54fc54926aa84ae52242f248a3cff265",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/1.1.0/setO.on.jsonl",
+      "sha256": "21b112879b42a39dc99aa214b4406a196215e3ac216fe986b2a092dde393dee4",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/check_1.1.0/setO.rerun.jsonl",
+      "sha256": "18365efa4933fdeabd2c4ddfeef55fab83531bcf7455915fbfea0f4037ff2031",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/1.1.0_run1/setO.off.jsonl",
+      "sha256": "e33a88966869b3dc1ac3bbb5a51fec5f284030ada06eb91991a2fcb71da1e3bc",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/1.1.0_run1/setO.on.jsonl",
+      "sha256": "753e62a6a81839599e70a54a532aa17c012eb17f42310b1d1552ff62a256392c",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/1.1.0_run3/setO.off.jsonl",
+      "sha256": "a8193533b4b5706b5b7f37ffa15d38e0fb8658cd9624a776bb12497ae122f95f",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/1.1.0_run3/setO.on.jsonl",
+      "sha256": "3439b7460a2a66b3cc49e62b0b5264faf6e09f5b10d5aa33c2774fe34bdc3031",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/1.1.0_run2/setO.off.jsonl",
+      "sha256": "44452e78429767e531d6324bd8f6098766d49a8a6eba8d08bc20858a9c35f974",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/1.1.0_run2/setO.on.jsonl",
+      "sha256": "6f97a4f07a9468db8cc39fff7d20205b6fbc91de8352b1e5e2790d302dd427b6",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/1.1.0_run4/setO.off.jsonl",
+      "sha256": "4a743d57d2fc855cd2c163d8fd175135d3ad6bc4d41ef6a044c7d27310beb4b7",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/1.1.0_run4/setO.on.jsonl",
+      "sha256": "4f4f96b9de7c7f51edad8cf96cd8b6c71d9b343e921a54cd635a6546b7d2db1a",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/check_1.1.0_run4/setO.rerun.jsonl",
+      "sha256": "6f2a3157afa69840ac2f57bbc04633ee898a1552981354b265376be4aee904e0",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    },
+    {
+      "member": "x1/superseded/check_1.1.0/setO.rerun.jsonl",
+      "sha256": "47b962b490589b746089f88ec7f62160771dfe1590a97f08af3a271e7acd9afe",
+      "frames": 791,
+      "decision_rows_unchanged": true,
+      "detections_and_warnings_unchanged": true,
+      "clear_never_lengthens": true
+    }
+  ]
+}

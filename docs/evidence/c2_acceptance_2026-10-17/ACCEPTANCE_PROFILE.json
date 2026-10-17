@@ -1,0 +1,40 @@
+{
+  "profile": "conservative_2026_10_17",
+  "authorization": {
+    "kind": "explicit user instruction during branch work",
+    "date": "2026-10-17",
+    "instruction": "Use conservative ranges and record the measured loss",
+    "implemented_guard": "The approval question disclosed up to 35% median clear-range loss. The implementation requires at least 65% retained median on each of the five complete empty recordings; measured worst loss is 34.6667%."
+  },
+  "original_profile_preserved": {
+    "minimum_empty_median_retention": 0.9,
+    "result": "FAIL",
+    "reports": ["baseline.json", "advisory_candidate.json", "small_candidate.json"]
+  },
+  "selected_profile": {
+    "minimum_empty_median_retention": 0.65,
+    "maximum_target_GO_overclaims": 5,
+    "maximum_target_CAUTION_overclaims": 0,
+    "tolerance_m": 0.5,
+    "target_definition": "visible plausible organizer-intended in-gauge object-frames with measured rail-envelope returns",
+    "sensor_model": "pandar128",
+    "min_points_far": 3,
+    "range_rule": "min(original clear, active CAUTION advisory, monitored_small)",
+    "required_complete_recordings": [
+      "cloud_with_fake_obj",
+      "doubleT_platform",
+      "roundT_doubleT",
+      "roundT_pressureGate_roundT",
+      "roundT_squareT_pressureGate_squareT",
+      "squareT_platform_squareT_switch"
+    ],
+    "decision_policy": "v1",
+    "decision_and_detection_rows": "unchanged"
+  },
+  "limits": [
+    "The size-qualified limit is an ideal return-density prior, not measured obstacle detection or a clear-track guarantee.",
+    "Falcon Prime and unknown sensors have no calibrated small-target prior and must not silently use the Pandar model.",
+    "Historical intended-in-gauge scoring is retained separately: 52/694 overclaim scan frames remain, including 40 GO and 11 CAUTION.",
+    "Release, GitHub CI and real DDS playback are separate from this branch acceptance."
+  ]
+}

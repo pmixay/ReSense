@@ -74,6 +74,14 @@ Decision policy is shared with offline consumers (``resense_ros.decision_policy`
 ``decision_policy`` is ``v1``; runtime ``v2`` is rejected until accepted. Offline evaluation
 retains v2 with ``caution_distance_m`` 80 m and ``caution_compact_max_size_m`` 3 m. Status adds
 ``decision_policy`` and a sorted, deduplicated ``caution_reason`` array, empty off CAUTION.
+
+C2 range candidates are opt-in via ``clear_range_policy`` (``legacy`` by default).
+``advisory_candidate`` caps active CAUTION advisories; ``small_candidate`` also
+caps the reported range by the explicit ``range_sensor_model`` density prior.
+``monitored_small`` is null when that model is unavailable; a requested small-target
+range is then zero. These candidates have not passed the original C2 coverage gate.
+The explicit ``conservative`` profile uses that qualified cap under the approved
+17.10 coverage tradeoff; ``legacy`` remains default pending release integration.
 Raw flags and health are validated before latch release or health projection. Policy is evaluated
 after freshness health projection and the STOP latch; raw detector warnings remain available.
 
@@ -167,7 +175,8 @@ from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
 
 from resense_ros import fastcloud
-from resense_ros.decision_policy import DecisionPolicy, decision as policy_decision, evaluate_decision
+from resense_ros.decision_policy import (DecisionPolicy, decision as policy_decision,
+                                         evaluate_decision, candidate_ranges)
 
 
 UNSET = -999.0   # sentinel of the mount_*_deg parameters: keep the value of the parameter file
@@ -231,6 +240,9 @@ class DetectorNode(Node):
         self.declare_parameter("decision_policy", "v1")     # runtime v2 rejected pending acceptance
         self.declare_parameter("caution_distance_m", 80.0)
         self.declare_parameter("caution_compact_max_size_m", 3.0)
+        # Approved conservative reporting remains an explicit opt-in until release integration.
+        self.declare_parameter("clear_range_policy", "legacy")
+        self.declare_parameter("range_sensor_model", "unknown")
         # --- v0.6.1: several recordings / topic names through one running node
         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
         self.declare_parameter("new_input_gap", 30.0)         # s of forward stamp jump that means a new recording (full reset)
@@ -273,6 +285,12 @@ class DetectorNode(Node):
             compact_max_size_m=self.get_parameter("caution_compact_max_size_m").get_parameter_value().double_value)
         if self.decision_policy.version != "v1":
             raise ValueError("runtime decision_policy must be v1; v2 has not passed acceptance (offline only)")
+        self.clear_range_policy = self.get_parameter("clear_range_policy").get_parameter_value().string_value
+        self.range_sensor_model = self.get_parameter("range_sensor_model").get_parameter_value().string_value
+        if self.clear_range_policy not in ("legacy", "advisory_candidate", "small_candidate", "conservative"):
+            raise ValueError("clear_range_policy must be legacy, advisory_candidate, small_candidate or conservative")
+        if self.range_sensor_model not in ("unknown", "pandar128", "falcon_prime"):
+            raise ValueError("range_sensor_model must be unknown, pandar128 or falcon_prime")
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
         for axis in ("forward", "left", "up"):
@@ -1101,6 +1119,16 @@ class DetectorNode(Node):
                           "go_allowed": False, "source_age_s": None, "acquisition_age_s": None,
                           "publication_age_s": None, "residence_age_s": None, "queue_lag_s": None},
         }
+        if self.clear_range_policy != "legacy":
+            fault_status.update(
+                range_policy=("c2_conservative_2026_10_17" if self.clear_range_policy == "conservative" else
+                              "c2_small_candidate_not_accepted" if self.clear_range_policy == "small_candidate"
+                              else "c2_advisory_candidate_not_accepted"),
+                monitored_small=0.0 if self.range_sensor_model == "pandar128" else None,
+                advisory_clear_cap=None,
+                range_sensor_model=self.range_sensor_model)
+            fault_status["health"].update(monitored_range=0.0, clear_distance=0.0,
+                                          monitored_small=fault_status["monitored_small"])
         if held:
             fault_status["stop_source_stamp"] = self.stop_latch["stamp"]
             fault_status["stop_source_frame_id"] = self.stop_latch["frame_id"]
@@ -1159,7 +1187,8 @@ class DetectorNode(Node):
         st = DiagnosticStatus(level=lv.get(h.get("level", "ok"), DiagnosticStatus.OK), name="resense/detector",
                               message="; ".join(h.get("messages", [])) or "ok", hardware_id=hdr.frame_id or "lidar")
         for k in ("points", "near_fraction", "blocked_sectors", "visibility", "rail_lock", "latency_p95_ms",
-                  "monitored_range", "clear_distance", "decision_level", "freshness_valid", "freshness_reason"):
+                  "monitored_range", "monitored_small", "clear_distance", "decision_level",
+                  "freshness_valid", "freshness_reason"):
             if k in h:
                 st.values.append(KeyValue(key=k, value=str(h[k])))
         m = getattr(res, "mount", {}) or {}
@@ -1212,6 +1241,19 @@ class DetectorNode(Node):
         answer = evaluate_decision(res, self.decision_policy)
         decision = answer.decision
         freshness["go_allowed"] = freshness["valid"] and decision == "GO"
+        if self.clear_range_policy != "legacy":
+            projected = candidate_ranges(
+                {**status, "obstacle": bool(res.obstacle), "warning": bool(res.warning),
+                 "health": res.health, "clear_distance": float(res.clear_distance), "freshness": freshness},
+                self.decision_policy, sensor_model=self.range_sensor_model,
+                min_points_far=self.cfg.cluster.min_points_far,
+                max_range=self.cfg.sensor.max_range,
+                cap_small_target=self.clear_range_policy in ("small_candidate", "conservative"),
+                profile="conservative_2026_10_17" if self.clear_range_policy == "conservative" else "candidate")
+            res.clear_distance, res.health = projected["clear_distance"], projected["health"]
+            for key in ("range_policy", "advisory_clear_cap", "monitored_small", "monitored_small_model"):
+                status[key] = projected[key]
+            status["range_sensor_model"] = self.range_sensor_model
         # the answer first (28.09): flag, distance and decision before the JSON and the visualisation
         self.pub_flag.publish(Bool(data=bool(res.obstacle)))
         self.pub_dist.publish(Float32(data=float(res.nearest_distance) if res.nearest_distance is not None else -1.0))

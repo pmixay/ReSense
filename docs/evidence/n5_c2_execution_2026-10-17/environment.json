@@ -1,0 +1,23 @@
+{
+  "base_commit": "3b7d7aa7cbbf238c21f84330497697da131b7cb9",
+  "branch": "work/n5-labels-c2-acceptance",
+  "python": "3.12.3",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "scikit_learn": "1.5.2",
+  "cpu_count": 1,
+  "affinity": [
+    0
+  ],
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "native_backend": "native (_resense_native.cpython-312-x86_64-linux-gnu.so)",
+  "evaluation_environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_CORETYPE": "Haswell"
+  },
+  "scope": "development source checkout; no release or 8-core claim",
+  "open3d": "0.20.0",
+  "ruff_ci": "0.15.8",
+  "final_validation_scope": "local full pytest plus targeted final source checks; no Docker/DDS runtime"
+}
