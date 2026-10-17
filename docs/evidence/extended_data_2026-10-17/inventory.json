@@ -1,0 +1,1588 @@
+{
+ "_meta": {
+  "author": "P4 (data / evaluation)",
+  "date": "2026-10-17",
+  "detector": "sealed 1.1.0 checkout /home/user/rs-1.1.0, judge_runner.py (rejudge_2026-10-16, unmodified), OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1",
+  "status": "observation only: no detector, config or label change; if anyone tunes on this data it becomes development data (it is NOT the registered G3 held-out set)",
+  "measured_vs_inferred": "values are measured unless the key name or text says inferred"
+ },
+ "archives": {
+  "new_synth_data.zst": {
+   "source": "https://disk.yandex.ru/d/SfBeRHbs8bNJAQ /new_synth_data.zst",
+   "bytes": 2532818915,
+   "sha256": "e09336cb939e6b5a6fdb35ccacce59f3808d875a4084142a02cbd1cf88a26bc7",
+   "sha256_matches_yandex_api": true,
+   "md5_yandex": "3dcbf3136443fe7ec847a5558aa20150",
+   "modified_utc": "2026-10-16T18:43:35+00:00",
+   "members": [
+    [
+     "synthetic_platform_cloud_only/synthetic_platform_cloud_only_0.db3",
+     3085340672
+    ],
+    [
+     "synthetic_platform_cloud_only/metadata.yaml",
+     1031
+    ],
+    [
+     "synthetic_switch_cloud_only/synthetic_switch_cloud_only_0.db3",
+     5882982400
+    ],
+    [
+     "synthetic_switch_cloud_only/metadata.yaml",
+     1027
+    ],
+    [
+     "synthetic_tunnels_cloud_only/synthetic_tunnels_cloud_only_0.db3",
+     4355866624
+    ],
+    [
+     "synthetic_tunnels_cloud_only/metadata.yaml",
+     1029
+    ]
+   ],
+   "unpacked_bytes": 13324196783,
+   "ground_truth_files": "none in the archive"
+  },
+  "falcon_test.zst": {
+   "source": "https://disk.yandex.ru/d/SfBeRHbs8bNJAQ /falcon_test.zst (also https://disk.yandex.ru/d/DK6H3Lxiyi-M-Q)",
+   "bytes": 6758209772,
+   "sha256": "90dea27d8636bcb2e5cdddf9bc15add3eae0e05196c2b3de959482da7e505611",
+   "sha256_matches_yandex_api": true,
+   "md5_yandex": "7c26ce9fb15b7660a1de843b856498b1",
+   "modified_utc": "2026-10-16T14:41:08+00:00",
+   "members": [
+    [
+     "falcon_test_second_dark/metadata.yaml",
+     5111
+    ],
+    [
+     "falcon_test_second_dark/falcon_test_second_dark_0.db3",
+     20281548800
+    ]
+   ],
+   "unpacked_bytes": 20281553911
+  },
+  "unchanged_relisted": {
+   "cloud_with_fake_obj.zst": {
+    "bytes": 1746145824,
+    "sha256_yandex": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9"
+   },
+   "new_data.zst": {
+    "bytes": 17078961996,
+    "sha256_yandex": "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec"
+   }
+  }
+ },
+ "bags": {
+  "synthetic_platform": {
+   "topic": "/lidar_points",
+   "frame_id": "hesai_lidar",
+   "type": "sensor_msgs/msg/PointCloud2",
+   "layout": {
+    "fields": [
+     [
+      "x",
+      0,
+      7,
+      1
+     ],
+     [
+      "y",
+      4,
+      7,
+      1
+     ],
+     [
+      "z",
+      8,
+      7,
+      1
+     ],
+     [
+      "intensity",
+      12,
+      7,
+      1
+     ],
+     [
+      "ring",
+      16,
+      4,
+      1
+     ],
+     [
+      "timestamp",
+      18,
+      8,
+      1
+     ]
+    ],
+    "point_step": 26,
+    "row_step": 7987200,
+    "height": 1,
+    "is_bigendian": false,
+    "is_dense": false,
+    "width_first": 307200
+   },
+   "frames_read": 386,
+   "frames_with_point_stats": 386,
+   "width_min_max": [
+    271872,
+    307200
+   ],
+   "valid_points_min_median_max": [
+    157334,
+    163741,
+    189534
+   ],
+   "range_max_median_m": 206.3,
+   "range_max_overall_m": 334.9,
+   "range_min_m": 0.6,
+   "points_beyond_m_median_per_frame": {
+    "100": 387.5,
+    "150": 81.0,
+    "200": 8.0,
+    "250": 0.0,
+    "300": 0.0
+   },
+   "duplicate_xyz_fraction_median": 0.481,
+   "intensity_frame0": {
+    "min": 0.0,
+    "p01": 0.0,
+    "p50": 8.0,
+    "p99": 20.0,
+    "max": 255.0,
+    "n_unique": 108
+   },
+   "stamp_interval_s": {
+    "median": 0.0999990701675415,
+    "min": 0.09997999668121338,
+    "max": 0.10002195835113525,
+    "n_gt_0.15": 0,
+    "n_nonpos": 0,
+    "first": 946685906.433457,
+    "last": 946685944.933444
+   },
+   "bag_t_interval_s": {
+    "median": 0.09981465339660645,
+    "min": 0.05652213096618652,
+    "max": 0.14258503913879395,
+    "n_gt_0.15": 0,
+    "n_nonpos": 0,
+    "first": 1792160749.4412115,
+    "last": 1792160787.9635184
+   },
+   "ring": {
+    "name": "ring",
+    "min": 0,
+    "max": 127,
+    "distinct": 128
+   },
+   "axes": {
+    "forward": "-y",
+    "left": "+x",
+    "up": "+z",
+    "same_as": "Pandar128 recordings"
+   },
+   "fov_deg": {
+    "azimuth_about_forward": [
+     -50,
+     50
+    ],
+    "elevation": [
+     -25.1,
+     14.4
+    ]
+   },
+   "insertion_convention": "in place: inserted points occupy the slots of the organized 1-D grid (ring, per-point timestamp consistent with the ray), the hidden real returns are removed; no block appended after the last no-return zero (Set O appended one); inserted points have intensity exactly 1 (1440 of 1444 in frame 300)",
+   "reference": "frames 0-314 are cloud_with_fake_obj frames 1195-1509 (identical header stamps; frame 0 identical point for point in 2.5-201.7 m); frames 315-385 continue the same real recording past the end of Set O (no reference on disk)",
+   "scene": "station platform; the train decelerates and stands ~7.8 m before the person from frame ~345",
+   "objects_measured_by_diff_vs_reference": [
+    {
+     "id": "A",
+     "what": "small box ~0.5 x 0.4 x 0.45 m at the right rail (sensor x -1.05..-1.36 m, bottom at rail-bed level)",
+     "frames": [
+      31,
+      174
+     ],
+     "first_visible_m": 197.1,
+     "last_m": 3.8
+    },
+    {
+     "id": "B",
+     "what": "small box ~0.55 x 0.55 x 0.45 m on the left, outside the gauge (sensor x +2.1 -> +1.4 m)",
+     "frames": [
+      68,
+      252
+     ],
+     "first_visible_m": 200.5,
+     "last_m": 3.7
+    },
+    {
+     "id": "C",
+     "what": "person-shaped: 0.6 m wide, 0.24 m deep, 1.72 m tall, standing on the track bed; sensor x 0.0 -> -1.0 m during the approach",
+     "frames": [
+      90,
+      314
+     ],
+     "first_visible_m": 200.9,
+     "last_m": 12.0,
+     "note": "still present in frames 315-385 (detector holds it at 7.84 m)"
+    }
+   ],
+   "points_added_per_frame": "0-2294 (object points), points removed behind them 0-2000 (occlusion), unclustered additions <= 6 per frame",
+   "dust": "none: in frames 0-314 every added point belongs to an object cluster",
+   "metadata_yaml": {
+    "storage": "sqlite3",
+    "version": 5,
+    "qos": "reliable, volatile, depth 10",
+    "message_count": 386,
+    "duration_s": 38.522,
+    "starting_time_ns": 1792160749441211378,
+    "topics": {
+     "/lidar_points": 386
+    }
+   }
+  },
+  "synthetic_switch": {
+   "topic": "/lidar_points",
+   "frame_id": "hesai_lidar",
+   "type": "sensor_msgs/msg/PointCloud2",
+   "layout": {
+    "fields": [
+     [
+      "x",
+      0,
+      7,
+      1
+     ],
+     [
+      "y",
+      4,
+      7,
+      1
+     ],
+     [
+      "z",
+      8,
+      7,
+      1
+     ],
+     [
+      "intensity",
+      12,
+      7,
+      1
+     ],
+     [
+      "ring",
+      16,
+      4,
+      1
+     ],
+     [
+      "timestamp",
+      18,
+      8,
+      1
+     ]
+    ],
+    "point_step": 26,
+    "row_step": 7987200,
+    "height": 1,
+    "is_bigendian": false,
+    "is_dense": false,
+    "width_first": 307200
+   },
+   "frames_read": 736,
+   "frames_with_point_stats": 736,
+   "width_min_max": [
+    242688,
+    307200
+   ],
+   "valid_points_min_median_max": [
+    142870,
+    189258,
+    193002
+   ],
+   "range_max_median_m": 199.8,
+   "range_max_overall_m": 319.7,
+   "range_min_m": 1.63,
+   "points_beyond_m_median_per_frame": {
+    "100": 396.0,
+    "150": 50.0,
+    "200": 0.0,
+    "250": 0.0,
+    "300": 0.0
+   },
+   "duplicate_xyz_fraction_median": 0.492,
+   "intensity_frame0": {
+    "min": 0.0,
+    "p01": 0.0,
+    "p50": 4.0,
+    "p99": 41.0,
+    "max": 255.0,
+    "n_unique": 122
+   },
+   "stamp_interval_s": {
+    "median": 0.10000097751617432,
+    "min": 0.09997403621673584,
+    "max": 0.10002398490905762,
+    "n_gt_0.15": 0,
+    "n_nonpos": 0,
+    "first": 946685971.333394,
+    "last": 946686044.833301
+   },
+   "bag_t_interval_s": {
+    "median": 0.10011816024780273,
+    "min": 0.05420112609863281,
+    "max": 0.13726305961608887,
+    "n_gt_0.15": 0,
+    "n_nonpos": 0,
+    "first": 1792160858.6882732,
+    "last": 1792160932.1699424
+   },
+   "ring": {
+    "name": "ring",
+    "min": 0,
+    "max": 127,
+    "distinct": 128
+   },
+   "axes": {
+    "forward": "-y",
+    "left": "+x",
+    "up": "+z",
+    "same_as": "Pandar128 recordings"
+   },
+   "fov_deg": {
+    "azimuth_about_forward": [
+     -50,
+     50
+    ],
+    "elevation": [
+     -25.1,
+     14.4
+    ]
+   },
+   "insertion_convention": "in place: inserted points occupy the slots of the organized 1-D grid (ring, per-point timestamp consistent with the ray), the hidden real returns are removed; no block appended after the last no-return zero (Set O appended one); inserted points have intensity exactly 1 (1440 of 1444 in frame 300)",
+   "reference": "none on disk: header stamps 946685971.3-946686044.8 continue the Set O source ride (inferred same ride) between synthetic_platform and synthetic_tunnels",
+   "scene": "tunnel with a switch",
+   "objects_inferred_from_intensity_1_and_detector": [
+    {
+     "what": "small box on the right rail",
+     "frames": [
+      60,
+      80
+     ],
+     "m": "152->145"
+    },
+    {
+     "what": "small box ~0.45 x 0.3 x 0.3 m near the right rail",
+     "frames": [
+      141,
+      251
+     ],
+     "m": "113->6.6"
+    },
+    {
+     "what": "low object, lateral +2.6 -> +0.9 m (switch geometry or motion: not settled)",
+     "frames": [
+      304,
+      352
+     ],
+     "m": "72->3"
+    },
+    {
+     "what": "thin object hanging from above: 0.2-0.47 m wide, bottom ~1.7 m above the rail head, up to ~4 m",
+     "frames": [
+      324,
+      415
+     ],
+     "m": "143->3"
+    },
+    {
+     "what": "small box near the right rail (sensor x -1.4..-1.6)",
+     "frames": [
+      611,
+      681
+     ],
+     "m": "112->6"
+    }
+   ],
+   "dust": "not found (no volume-filling cloud of returns in the free corridor; heuristic, no reference)",
+   "metadata_yaml": {
+    "storage": "sqlite3",
+    "version": 5,
+    "qos": "reliable, volatile, depth 10",
+    "message_count": 736,
+    "duration_s": 73.482,
+    "starting_time_ns": 1792160858688273105,
+    "topics": {
+     "/lidar_points": 736
+    }
+   }
+  },
+  "synthetic_tunnels": {
+   "topic": "/lidar_points",
+   "frame_id": "hesai_lidar",
+   "type": "sensor_msgs/msg/PointCloud2",
+   "layout": {
+    "fields": [
+     [
+      "x",
+      0,
+      7,
+      1
+     ],
+     [
+      "y",
+      4,
+      7,
+      1
+     ],
+     [
+      "z",
+      8,
+      7,
+      1
+     ],
+     [
+      "intensity",
+      12,
+      7,
+      1
+     ],
+     [
+      "ring",
+      16,
+      4,
+      1
+     ],
+     [
+      "timestamp",
+      18,
+      8,
+      1
+     ]
+    ],
+    "point_step": 26,
+    "row_step": 7987200,
+    "height": 1,
+    "is_bigendian": false,
+    "is_dense": false,
+    "width_first": 307200
+   },
+   "frames_read": 545,
+   "frames_with_point_stats": 545,
+   "width_min_max": [
+    242944,
+    307200
+   ],
+   "valid_points_min_median_max": [
+    158582,
+    189606,
+    271890
+   ],
+   "range_max_median_m": 199.0,
+   "range_max_overall_m": 739.1,
+   "range_min_m": 0.65,
+   "points_beyond_m_median_per_frame": {
+    "100": 591.0,
+    "150": 52.0,
+    "200": 0.0,
+    "250": 0.0,
+    "300": 0.0
+   },
+   "duplicate_xyz_fraction_median": 0.491,
+   "intensity_frame0": {
+    "min": 0.0,
+    "p01": 0.0,
+    "p50": 11.0,
+    "p99": 27.0,
+    "max": 255.0,
+    "n_unique": 98
+   },
+   "stamp_interval_s": {
+    "median": 0.10000002384185791,
+    "min": 0.09997296333312988,
+    "max": 0.10002005100250244,
+    "n_gt_0.15": 0,
+    "n_nonpos": 0,
+    "first": 946686044.933313,
+    "last": 946686099.333419
+   },
+   "bag_t_interval_s": {
+    "median": 0.10014641284942627,
+    "min": 0.047356367111206055,
+    "max": 0.17341971397399902,
+    "n_gt_0.15": 1,
+    "n_nonpos": 0,
+    "first": 1792160962.678575,
+    "last": 1792161017.069792
+   },
+   "ring": {
+    "name": "ring",
+    "min": 0,
+    "max": 127,
+    "distinct": 128
+   },
+   "axes": {
+    "forward": "-y",
+    "left": "+x",
+    "up": "+z",
+    "same_as": "Pandar128 recordings"
+   },
+   "fov_deg": {
+    "azimuth_about_forward": [
+     -50,
+     50
+    ],
+    "elevation": [
+     -25.1,
+     14.4
+    ]
+   },
+   "insertion_convention": "in place: inserted points occupy the slots of the organized 1-D grid (ring, per-point timestamp consistent with the ray), the hidden real returns are removed; no block appended after the last no-return zero (Set O appended one); inserted points have intensity exactly 1 (1440 of 1444 in frame 300)",
+   "reference": "none on disk: stamps 946686044.9-946686099.3 directly follow synthetic_switch",
+   "scene": "tunnels with curves",
+   "objects_inferred_from_detector_boxes_with_intensity_1": [
+    {
+     "what": "small object ~0.3 x 0.5 x 0.3 m, lateral -0.9..-1.1 m (track frame)",
+     "stop_frames": [
+      259,
+      287
+     ]
+    },
+    {
+     "what": "vertical panel ~2.0 m wide x 1.6-1.9 m tall, lateral -0.5 m",
+     "stop_frames": [
+      391,
+      443
+     ]
+    },
+    {
+     "what": "flat object ~2.2 m wide lying across the rails (height ~0.1 m)",
+     "stop_frames": [
+      452,
+      489
+     ]
+    }
+   ],
+   "dust": "not found (heuristic, no reference)",
+   "metadata_yaml": {
+    "storage": "sqlite3",
+    "version": 5,
+    "qos": "reliable, volatile, depth 10",
+    "message_count": 545,
+    "duration_s": 54.391,
+    "starting_time_ns": 1792160962678574977,
+    "topics": {
+     "/lidar_points": 545
+    }
+   }
+  },
+  "falcon_prefix": {
+   "topic": "/iv_points",
+   "frame_id": "seyond",
+   "type": "sensor_msgs/msg/PointCloud2",
+   "layout": {
+    "fields": [
+     [
+      "x",
+      0,
+      7,
+      1
+     ],
+     [
+      "y",
+      4,
+      7,
+      1
+     ],
+     [
+      "z",
+      8,
+      7,
+      1
+     ],
+     [
+      "timestamp",
+      16,
+      8,
+      1
+     ],
+     [
+      "intensity",
+      24,
+      7,
+      1
+     ],
+     [
+      "flags",
+      28,
+      2,
+      1
+     ],
+     [
+      "elongation",
+      29,
+      2,
+      1
+     ],
+     [
+      "scan_id",
+      30,
+      4,
+      1
+     ],
+     [
+      "scan_idx",
+      32,
+      4,
+      1
+     ],
+     [
+      "is_2nd_return",
+      34,
+      2,
+      1
+     ]
+    ],
+    "point_step": 48,
+    "row_step": 4552704,
+    "height": 1,
+    "is_bigendian": false,
+    "is_dense": true,
+    "width_first": 94848
+   },
+   "frames_read": 985,
+   "frames_with_point_stats": 201,
+   "width_min_max": [
+    94424,
+    95360
+   ],
+   "valid_points_min_median_max": [
+    94497,
+    94934,
+    95319
+   ],
+   "range_max_median_m": 380.8,
+   "range_max_overall_m": 508.7,
+   "range_min_m": 3.25,
+   "points_beyond_m_median_per_frame": {
+    "100": 665.0,
+    "150": 132.0,
+    "200": 48.0,
+    "250": 16.0,
+    "300": 4.0
+   },
+   "duplicate_xyz_fraction_median": 0.0,
+   "intensity_frame0": {
+    "min": 0.0,
+    "p01": 0.0,
+    "p50": 10.0,
+    "p99": 96.0,
+    "max": 215.0,
+    "n_unique": 190
+   }
+  },
+  "falcon_window": {
+   "topic": "/iv_points",
+   "frame_id": "seyond",
+   "type": "sensor_msgs/msg/PointCloud2",
+   "layout": {
+    "fields": [
+     [
+      "x",
+      0,
+      7,
+      1
+     ],
+     [
+      "y",
+      4,
+      7,
+      1
+     ],
+     [
+      "z",
+      8,
+      7,
+      1
+     ],
+     [
+      "timestamp",
+      16,
+      8,
+      1
+     ],
+     [
+      "intensity",
+      24,
+      7,
+      1
+     ],
+     [
+      "flags",
+      28,
+      2,
+      1
+     ],
+     [
+      "elongation",
+      29,
+      2,
+      1
+     ],
+     [
+      "scan_id",
+      30,
+      4,
+      1
+     ],
+     [
+      "scan_idx",
+      32,
+      4,
+      1
+     ],
+     [
+      "is_2nd_return",
+      34,
+      2,
+      1
+     ]
+    ],
+    "point_step": 48,
+    "row_step": 4569312,
+    "height": 1,
+    "is_bigendian": false,
+    "is_dense": true,
+    "width_first": 95194
+   },
+   "frames_read": 874,
+   "frames_with_point_stats": 176,
+   "width_min_max": [
+    94366,
+    95386
+   ],
+   "valid_points_min_median_max": [
+    94518,
+    94970,
+    95295
+   ],
+   "range_max_median_m": 373.5,
+   "range_max_overall_m": 506.3,
+   "range_min_m": 3.26,
+   "points_beyond_m_median_per_frame": {
+    "100": 706.0,
+    "150": 142.0,
+    "200": 47.0,
+    "250": 14.0,
+    "300": 4.0
+   },
+   "duplicate_xyz_fraction_median": 0.0,
+   "intensity_frame0": {
+    "min": 0.0,
+    "p01": 0.0,
+    "p50": 10.0,
+    "p99": 96.0,
+    "max": 195.0,
+    "n_unique": 180
+   }
+  },
+  "falcon_test_second_dark": {
+   "metadata_yaml": {
+    "storage": "sqlite3",
+    "version": 5,
+    "ros_distro": "humble",
+    "message_count": 4658,
+    "duration_s": 444.289,
+    "starting_time_ns": 1791508466900664779,
+    "topics": {
+     "/iv_points": 4443,
+     "/rosout": 215,
+     "/parameter_events": 0,
+     "/initialpose": 0,
+     "/goal_pose": 0,
+     "/clicked_point": 0,
+     "/events/write_split": 0
+    }
+   },
+   "analysed_parts": {
+    "prefix": {
+     "frames": 985,
+     "t_s": [
+      0.0,
+      98.4
+     ],
+     "how": "first 4.5 GB of the split streamed out of the archive, readable rows copied into a valid bag (scripts/prefix_bag.py)"
+    },
+    "window": {
+     "frames": 874,
+     "t_s": [
+      241.2,
+      328.5
+     ],
+     "how": "bytes 11.0-15.0 GB of the split, message blobs recovered from sqlite overflow chains (scripts/window_bag.py, byte-identical to sqlite on a test)"
+    },
+    "not_seen_s": [
+     [
+      98.4,
+      241.2
+     ],
+     [
+      328.5,
+      444.3
+     ]
+    ]
+   },
+   "characterization": {
+    "bag": "falcon_test_second_dark/falcon_test_second_dark_0.db3 (rosbag2 v5, sqlite3, ROS humble, one 20,281,548,800 B split, no compression)",
+    "topic": "/iv_points",
+    "type": "sensor_msgs/msg/PointCloud2",
+    "message_count": 4443,
+    "duration_s": 444.29,
+    "other_topics": {
+     "/rosout": 215,
+     "/parameter_events": 0,
+     "/initialpose": 0,
+     "/goal_pose": 0,
+     "/clicked_point": 0,
+     "/events/write_split": 0
+    },
+    "frame_id": "seyond",
+    "header_stamp": "sensor clock since power-up (sec ~3105 at the start, not UTC/epoch); bag receive time 2026-10-09 ~11:14 UTC (1791508466.9)",
+    "rate": {
+     "stamp_interval_median_s": 0.1,
+     "min": 0.09999,
+     "max": 0.10001,
+     "gaps_gt_0.15s": 0
+    },
+    "height": 1,
+    "width": "94366-95386 (varies per frame; 94848 in the first frame); every slot is a valid point",
+    "organized": false,
+    "is_dense": true,
+    "is_bigendian": false,
+    "point_step": 48,
+    "row_step": "width * 48",
+    "fields": [
+     [
+      "x",
+      0,
+      "FLOAT32",
+      1
+     ],
+     [
+      "y",
+      4,
+      "FLOAT32",
+      1
+     ],
+     [
+      "z",
+      8,
+      "FLOAT32",
+      1
+     ],
+     [
+      "timestamp",
+      16,
+      "FLOAT64",
+      1
+     ],
+     [
+      "intensity",
+      24,
+      "FLOAT32",
+      1
+     ],
+     [
+      "flags",
+      28,
+      "UINT8",
+      1
+     ],
+     [
+      "elongation",
+      29,
+      "UINT8",
+      1
+     ],
+     [
+      "scan_id",
+      30,
+      "UINT16",
+      1
+     ],
+     [
+      "scan_idx",
+      32,
+      "UINT16",
+      1
+     ],
+     [
+      "is_2nd_return",
+      34,
+      "UINT8",
+      1
+     ]
+    ],
+    "ring_field": "none. scan_id 0..37 (38 values) is a scan line of the polygon-mirror pattern, each spanning several degrees of elevation (e.g. scan_id 10: -4.0..+2.7 deg), not a fixed-elevation ring; scan_idx 0..1272 is the position along the line",
+    "points_per_frame": {
+     "min": 94497,
+     "median": 94950,
+     "max": 95319,
+     "zeros_or_nan": 0,
+     "frames_sampled": 377
+    },
+    "returns": "single return in practice: 94847 distinct xyz of 94848; ~2 % of points flagged is_2nd_return=1 but never a duplicate xyz (the Pandar bags hold 96-98 % identical pairs)",
+    "intensity": {
+     "min": 0,
+     "p50": 10,
+     "p90": 22,
+     "p99": 93,
+     "max": 215
+    },
+    "per_point_timestamp": "float64 seconds in the sensor clock, spans ~95 ms per frame, ends ~5 ms before the header stamp",
+    "axes": {
+     "forward": "+x",
+     "left": "+y",
+     "up": "+z",
+     "handedness": "right-handed (x forward, y left, z up)",
+     "evidence": "all points have x > 0 (x 1.8..400 m, median 9.3 m); azimuth atan2(y,x) spans -60..+60 deg around +x; z is the vertical axis (floor below the sensor, elevations -13.8..+12.4 deg)",
+     "pandar_for_comparison": "forward = -y, left = +x, up = +z (configs/default.yaml)",
+     "detector_1.1.0_auto_calibration": "adopts 'forward=+y left=-x up=+z' relative to the configured vehicle frame at frame 1 (two votes), i.e. sensor forward=+x, left=+y, up=+z; mount 'ok' at frame 192: height 1.77 m above the rail head, pitch -2.39 deg, lateral 0.77 m",
+     "vs_manual": "the Seyond manual (UM p.8) gives the native sensor frame as x up, y right, z forward; this bag is NOT in the native frame: the driver already publishes the ROS convention x forward, y left, z up"
+    },
+    "fov_deg": {
+     "azimuth": [
+      -59.6,
+      59.6
+     ],
+     "elevation": [
+      -13.8,
+      12.4
+     ]
+    },
+    "range_m": {
+     "min": 3.3,
+     "p50": 10.4,
+     "p99": 88.8,
+     "max": 400,
+     "points_per_frame_beyond": {
+      "100": 697,
+      "150": 119,
+      "200": 46,
+      "250": 17,
+      "300": 6
+     }
+    },
+    "scene_in_prefix": "the train stands still in both analysed parts (frame 984 vs frame 100 of the prefix: median nearest-neighbour distance 0.015 m; the window's static warnings stay at the same distances); a moving object walks from ~127 m to ~97 m and back in the window (inferred: a person)",
+    "driver": "Seyond ROS driver (rosout node 'seyond'), ~0.95 M points/s, polygon facets, reports points_2nd_return=0; one firmware WARN 'channel A correlation coefficient 0.9866 < 0.99'",
+    "frame_id_note": "'seyond' (the ROS 1 manual names 'innovusion')"
+   }
+  }
+ },
+ "detector_1.1.0_observation": {
+  "synthetic_platform": {
+   "frames": 386,
+   "decisions": {
+    "GO": 66,
+    "CAUTION": 135,
+    "STOP": 185
+   },
+   "caution_share": 0.35,
+   "first_non_fault_frame": 0,
+   "stop_episodes": [
+    {
+     "first": 106,
+     "last": 118,
+     "n": 13,
+     "d_first": 86.76,
+     "d_min": 69.98,
+     "d_max": 86.76,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    },
+    {
+     "first": 142,
+     "last": 166,
+     "n": 25,
+     "d_first": 38.84,
+     "d_min": 12.49,
+     "d_max": 38.84,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    },
+    {
+     "first": 239,
+     "last": 385,
+     "n": 147,
+     "d_first": 44.01,
+     "d_min": 7.84,
+     "d_max": 44.01,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    }
+   ],
+   "level": {
+    "ok": 336,
+    "warn": 50
+   },
+   "mount": {
+    "pending": 190,
+    "identity": 196
+   },
+   "mount_h_last": 1.09,
+   "monitored_median": 80.0,
+   "total_ms_p50": 28.29,
+   "total_ms_p95": 44.15,
+   "frame_ids": {
+    "hesai_lidar": 386
+   },
+   "wall_s": 13.5,
+   "resets": [],
+   "caution_breakdown": {
+    "caution_frames": 135,
+    "caution_with_inserted_object_warning": 110,
+    "caution_background_only": 25,
+    "caution_without_warning(health)": 0
+   }
+  },
+  "synthetic_switch": {
+   "frames": 736,
+   "decisions": {
+    "GO": 300,
+    "CAUTION": 294,
+    "STOP": 142
+   },
+   "caution_share": 0.399,
+   "first_non_fault_frame": 0,
+   "stop_episodes": [
+    {
+     "first": 7,
+     "last": 14,
+     "n": 8,
+     "d_first": 147.11,
+     "d_min": 142.4,
+     "d_max": 147.11,
+     "int1_median": 0.055,
+     "class": "background (false STOP)"
+    },
+    {
+     "first": 145,
+     "last": 155,
+     "n": 11,
+     "d_first": 110.59,
+     "d_min": 102.87,
+     "d_max": 110.59,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    },
+    {
+     "first": 318,
+     "last": 352,
+     "n": 35,
+     "d_first": 51.38,
+     "d_min": 3.34,
+     "d_max": 51.38,
+     "int1_median": 0.86,
+     "class": "inserted object"
+    },
+    {
+     "first": 374,
+     "last": 416,
+     "n": 43,
+     "d_first": 69.13,
+     "d_min": 1.6,
+     "d_max": 69.13,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    },
+    {
+     "first": 540,
+     "last": 541,
+     "n": 2,
+     "d_first": 23.5,
+     "d_min": 21.98,
+     "d_max": 23.5,
+     "int1_median": 0.765,
+     "class": "background (false STOP)"
+    },
+    {
+     "first": 544,
+     "last": 545,
+     "n": 2,
+     "d_first": 16.65,
+     "d_min": 14.72,
+     "d_max": 16.65,
+     "int1_median": 0.495,
+     "class": "background (false STOP)"
+    },
+    {
+     "first": 616,
+     "last": 621,
+     "n": 6,
+     "d_first": 104.02,
+     "d_min": 96.3,
+     "d_max": 104.02,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    },
+    {
+     "first": 624,
+     "last": 639,
+     "n": 16,
+     "d_first": 92.92,
+     "d_min": 70.37,
+     "d_max": 92.92,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    },
+    {
+     "first": 641,
+     "last": 659,
+     "n": 19,
+     "d_first": 66.46,
+     "d_min": 39.36,
+     "d_max": 66.46,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    }
+   ],
+   "level": {
+    "ok": 736
+   },
+   "mount": {
+    "pending": 190,
+    "identity": 546
+   },
+   "mount_h_last": 1.12,
+   "monitored_median": 124.5,
+   "total_ms_p50": 29.12,
+   "total_ms_p95": 39.95,
+   "frame_ids": {
+    "hesai_lidar": 736
+   },
+   "wall_s": 25.5,
+   "resets": [],
+   "caution_breakdown": {
+    "caution_frames": 294,
+    "caution_with_inserted_object_warning": 144,
+    "caution_background_only": 150,
+    "caution_without_warning(health)": 0
+   }
+  },
+  "synthetic_tunnels": {
+   "frames": 545,
+   "decisions": {
+    "GO": 196,
+    "CAUTION": 223,
+    "STOP": 126
+   },
+   "caution_share": 0.409,
+   "first_non_fault_frame": 0,
+   "stop_episodes": [
+    {
+     "first": 147,
+     "last": 149,
+     "n": 3,
+     "d_first": 70.08,
+     "d_min": 66.6,
+     "d_max": 70.08,
+     "int1_median": 0.11,
+     "class": "background (false STOP)"
+    },
+    {
+     "first": 259,
+     "last": 288,
+     "n": 30,
+     "d_first": 55.0,
+     "d_min": 3.35,
+     "d_max": 55.0,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    },
+    {
+     "first": 367,
+     "last": 367,
+     "n": 1,
+     "d_first": 131.53,
+     "d_min": 131.53,
+     "d_max": 131.53,
+     "int1_median": 0.17,
+     "class": "background (false STOP)"
+    },
+    {
+     "first": 391,
+     "last": 444,
+     "n": 54,
+     "d_first": 96.83,
+     "d_min": 1.76,
+     "d_max": 96.83,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    },
+    {
+     "first": 452,
+     "last": 489,
+     "n": 38,
+     "d_first": 70.39,
+     "d_min": 2.48,
+     "d_max": 70.39,
+     "int1_median": 1.0,
+     "class": "inserted object"
+    }
+   ],
+   "level": {
+    "ok": 540,
+    "warn": 4,
+    "error": 1
+   },
+   "mount": {
+    "pending": 190,
+    "identity": 355
+   },
+   "mount_h_last": 1.11,
+   "monitored_median": 119.4,
+   "total_ms_p50": 31.77,
+   "total_ms_p95": 44.19,
+   "frame_ids": {
+    "hesai_lidar": 545
+   },
+   "wall_s": 21.1,
+   "resets": [],
+   "caution_breakdown": {
+    "caution_frames": 223,
+    "caution_with_inserted_object_warning": 19,
+    "caution_background_only": 204,
+    "caution_without_warning(health)": 0
+   }
+  },
+  "falcon_prefix": {
+   "frames": 985,
+   "decisions": {
+    "FAULT": 1,
+    "GO": 8,
+    "CAUTION": 975,
+    "STOP": 1
+   },
+   "caution_share": 0.99,
+   "first_non_fault_frame": 1,
+   "stop_episodes": [
+    {
+     "first": 159,
+     "last": 159,
+     "n": 1,
+     "d_first": 115.05,
+     "d_min": 115.05,
+     "d_max": 115.05
+    }
+   ],
+   "level": {
+    "error": 1,
+    "ok": 984
+   },
+   "mount": {
+    "pending": 192,
+    "ok": 793
+   },
+   "mount_h_last": 1.77,
+   "monitored_median": 111.0,
+   "total_ms_p50": 16.22,
+   "total_ms_p95": 23.47,
+   "frame_ids": {
+    "seyond": 985
+   },
+   "wall_s": 19.6,
+   "resets": [],
+   "calibration": {
+    "orientation_adopted": "forward=+y left=-x up=+z (relative to the configured vehicle frame) = sensor forward +x, left +y, up +z",
+    "adopted_at_frame": 1,
+    "mount_ok_at_frame": 192,
+    "height_m": 1.77,
+    "pitch_deg": -2.39,
+    "lateral_m": 0.77,
+    "frame0": "FAULT: '6 of 6 central 10 deg sectors without returns: view blocked', 'track visible to 3 m only (< 60 m)'"
+   }
+  },
+  "falcon_window": {
+   "frames": 874,
+   "decisions": {
+    "FAULT": 1,
+    "GO": 8,
+    "CAUTION": 569,
+    "STOP": 296
+   },
+   "caution_share": 0.651,
+   "first_non_fault_frame": 1,
+   "stop_episodes": [
+    {
+     "first": 104,
+     "last": 111,
+     "n": 8,
+     "d_first": 115.03,
+     "d_min": 114.96,
+     "d_max": 115.06
+    },
+    {
+     "first": 122,
+     "last": 123,
+     "n": 2,
+     "d_first": 114.98,
+     "d_min": 114.98,
+     "d_max": 114.98
+    },
+    {
+     "first": 126,
+     "last": 126,
+     "n": 1,
+     "d_first": 114.97,
+     "d_min": 114.97,
+     "d_max": 114.97
+    },
+    {
+     "first": 129,
+     "last": 129,
+     "n": 1,
+     "d_first": 115.05,
+     "d_min": 115.05,
+     "d_max": 115.05
+    },
+    {
+     "first": 483,
+     "last": 483,
+     "n": 1,
+     "d_first": 152.84,
+     "d_min": 152.84,
+     "d_max": 152.84
+    },
+    {
+     "first": 568,
+     "last": 590,
+     "n": 23,
+     "d_first": 123.92,
+     "d_min": 121.35,
+     "d_max": 123.92
+    },
+    {
+     "first": 597,
+     "last": 626,
+     "n": 30,
+     "d_first": 120.45,
+     "d_min": 114.97,
+     "d_max": 120.45
+    },
+    {
+     "first": 640,
+     "last": 641,
+     "n": 2,
+     "d_first": 115.17,
+     "d_min": 115.09,
+     "d_max": 115.17
+    },
+    {
+     "first": 646,
+     "last": 873,
+     "n": 228,
+     "d_first": 114.45,
+     "d_min": 96.92,
+     "d_max": 114.45
+    }
+   ],
+   "level": {
+    "error": 1,
+    "ok": 873
+   },
+   "mount": {
+    "pending": 192,
+    "ok": 682
+   },
+   "mount_h_last": 1.76,
+   "monitored_median": 115.0,
+   "total_ms_p50": 15.99,
+   "total_ms_p95": 23.71,
+   "frame_ids": {
+    "seyond": 874
+   },
+   "wall_s": 17.4,
+   "resets": [],
+   "note": "static scene (train standing); STOP from frame 568 on an object that comes from ~127 m to ~97 m at ~1.2 m/s and turns back (inferred: a person walking in the track); STOPs at ~115 m in frames 104-129 and 640-641 on a static trackside object that is CAUTION in the prefix"
+  },
+  "falcon_prefix_axes_xyz (variant: sensor.forward=+x left=+y)": {
+   "frames": 985,
+   "decisions": {
+    "GO": 12,
+    "CAUTION": 968,
+    "STOP": 5
+   },
+   "caution_share": 0.983,
+   "first_non_fault_frame": 0,
+   "stop_episodes": [
+    {
+     "first": 25,
+     "last": 28,
+     "n": 4,
+     "d_first": 114.92,
+     "d_min": 114.92,
+     "d_max": 115.03
+    },
+    {
+     "first": 125,
+     "last": 125,
+     "n": 1,
+     "d_first": 114.97,
+     "d_min": 114.97,
+     "d_max": 114.97
+    }
+   ],
+   "level": {
+    "ok": 985
+   },
+   "mount": {
+    "pending": 190,
+    "ok": 795
+   },
+   "mount_h_last": 1.77,
+   "monitored_median": 115.0,
+   "total_ms_p50": 16.11,
+   "total_ms_p95": 21.93,
+   "frame_ids": {
+    "seyond": 985
+   },
+   "wall_s": null,
+   "resets": []
+  },
+  "falcon_window_axes_xyz (variant)": {
+   "frames": 874,
+   "decisions": {
+    "GO": 8,
+    "CAUTION": 559,
+    "STOP": 307
+   },
+   "caution_share": 0.64,
+   "first_non_fault_frame": 0,
+   "stop_episodes": [
+    {
+     "first": 107,
+     "last": 114,
+     "n": 8,
+     "d_first": 115.06,
+     "d_min": 114.91,
+     "d_max": 115.06
+    },
+    {
+     "first": 126,
+     "last": 132,
+     "n": 7,
+     "d_first": 114.97,
+     "d_min": 114.91,
+     "d_max": 115.05
+    },
+    {
+     "first": 134,
+     "last": 135,
+     "n": 2,
+     "d_first": 115.01,
+     "d_min": 115.01,
+     "d_max": 115.03
+    },
+    {
+     "first": 312,
+     "last": 313,
+     "n": 2,
+     "d_first": 115.16,
+     "d_min": 115.1,
+     "d_max": 115.16
+    },
+    {
+     "first": 540,
+     "last": 540,
+     "n": 1,
+     "d_first": 126.92,
+     "d_min": 126.92,
+     "d_max": 126.92
+    },
+    {
+     "first": 544,
+     "last": 545,
+     "n": 2,
+     "d_first": 126.65,
+     "d_min": 126.51,
+     "d_max": 126.65
+    },
+    {
+     "first": 562,
+     "last": 563,
+     "n": 2,
+     "d_first": 123.87,
+     "d_min": 123.87,
+     "d_max": 124.03
+    },
+    {
+     "first": 565,
+     "last": 591,
+     "n": 27,
+     "d_first": 123.87,
+     "d_min": 121.2,
+     "d_max": 124.15
+    },
+    {
+     "first": 595,
+     "last": 628,
+     "n": 34,
+     "d_first": 120.74,
+     "d_min": 114.97,
+     "d_max": 120.74
+    },
+    {
+     "first": 646,
+     "last": 686,
+     "n": 41,
+     "d_first": 114.38,
+     "d_min": 109.52,
+     "d_max": 114.38
+    },
+    {
+     "first": 690,
+     "last": 693,
+     "n": 4,
+     "d_first": 109.03,
+     "d_min": 108.64,
+     "d_max": 109.03
+    },
+    {
+     "first": 697,
+     "last": 873,
+     "n": 177,
+     "d_first": 108.14,
+     "d_min": 96.92,
+     "d_max": 108.14
+    }
+   ],
+   "level": {
+    "ok": 874
+   },
+   "mount": {
+    "pending": 190,
+    "ok": 684
+   },
+   "mount_h_last": 1.76,
+   "monitored_median": 119.0,
+   "total_ms_p50": 15.34,
+   "total_ms_p95": 20.709999999999997,
+   "frame_ids": {
+    "seyond": 874
+   },
+   "wall_s": null,
+   "resets": []
+  }
+ },
+ "outputs": {
+  "runs": "/home/user/rs-data/extended/runs/",
+  "per_frame_stats": "/home/user/rs-data/extended/char/",
+  "sample_frames": "/home/user/rs-data/extended/samples/",
+  "falcon_fields": "/home/user/rs-data/extended/falcon_fields.json"
+ }
+}

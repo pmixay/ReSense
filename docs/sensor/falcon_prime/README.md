@@ -7,6 +7,15 @@
 > rosbag2 `.db3`, from the archive member listing) has not been decoded yet, so every statement about its actual fields,
 > axes and ROI is **open** until that decode is done (§3.3).
 
+> **Measured on the recording (17.10), supersedes the open items below:** the bag publishes `/iv_points`, `frame_id`
+> `seyond`, in the **ROS convention (x forward, y left, z up)**, not the manual's native x-up frame. 48-byte points
+> (`x y z timestamp intensity flags elongation scan_id scan_idx is_2nd_return`), no `ring`, single return, ~95 k
+> points per frame, header stamp = sensor uptime. With the default launch the sealed 1.1.0 runs: 1 `FAULT` frame,
+> orientation adopted at frame 1, mount ok at frame 192. **So the "blind detector" risk of §3 (native frame) does
+> not occur with this bag**; the explicit values are `sensor_forward:=+x sensor_left:=+y sensor_up:=+z`. The real
+> problem measured is different: CAUTION on 65–99 % of frames at two static gauge-edge warnings (105.6 m and
+> 115 m) on a standing train. Details: [`../../evidence/extended_data_2026-10-17/`](../../evidence/extended_data_2026-10-17/README.md).
+
 Each statement has one of three tags:
 * **[doc]**: from the Falcon documents.
 * **[code]**: read from our source, with `file:line`.
