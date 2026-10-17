@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="26.524" timestamp="2026-10-16T16:33:29.702022+00:00" hostname="533b28cef8f8"><testcase classname="webapp.e2e.test_upload_resume" name="test_big_upload_pause_drop_reload_resume" time="26.464" /></testsuite></testsuites>

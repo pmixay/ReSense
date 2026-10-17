@@ -1,0 +1,108 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 47 items
+
+webapp/e2e/test_analysis.py::test_player_link_waits_for_rendered_destination PASSED [  2%]
+webapp/e2e/test_analysis.py::test_empty_states PASSED                    [  4%]
+webapp/e2e/test_analysis.py::test_runs_list_search_filters_sort_and_back PASSED [  6%]
+webapp/e2e/test_analysis.py::test_runs_selection_opens_compare PASSED    [  8%]
+webapp/e2e/test_analysis.py::test_runs_rename_and_delete_with_errors PASSED [ 10%]
+webapp/e2e/test_analysis.py::test_run_page_timeline_chart_events_and_downloads PASSED [ 12%]
+webapp/e2e/test_analysis.py::test_run_page_preset_rename_and_delete FAILED [ 14%]
+webapp/e2e/test_analysis.py::test_run_page_loading_offline_and_retry PASSED [ 17%]
+webapp/e2e/test_analysis.py::test_compare_deep_link_table_strips_chart_and_diff PASSED [ 19%]
+webapp/e2e/test_analysis.py::test_compare_edit_selection PASSED          [ 21%]
+webapp/e2e/test_analysis.py::test_analysis_pages_fit_the_viewport[size0] PASSED [ 23%]
+webapp/e2e/test_analysis.py::test_analysis_pages_fit_the_viewport[size1] PASSED [ 25%]
+webapp/e2e/test_analysis.py::test_analysis_pages_fit_the_viewport[size2] PASSED [ 27%]
+webapp/e2e/test_analysis.py::test_analysis_pages_fit_the_viewport[size3] PASSED [ 29%]
+webapp/e2e/test_data.py::test_queue_reload_with_a_pending_nonblocking_resource PASSED [ 31%]
+webapp/e2e/test_data.py::test_empty_states PASSED                        [ 34%]
+webapp/e2e/test_data.py::test_overview_demo_to_queue_and_run PASSED      [ 36%]
+webapp/e2e/test_data.py::test_upload_files_labels_and_process PASSED     [ 38%]
+webapp/e2e/test_data.py::test_server_folder_preset_and_options PASSED    [ 40%]
+webapp/e2e/test_data.py::test_demo_source_survives_navigation PASSED     [ 42%]
+webapp/e2e/test_data.py::test_folder_upload_and_drop PASSED              [ 44%]
+webapp/e2e/test_data.py::test_queue_cancel_retry_log_and_clear PASSED    [ 46%]
+webapp/e2e/test_data.py::test_recordings_list_deep_links_and_errors PASSED [ 48%]
+webapp/e2e/test_data.py::test_pages_fit_the_viewport[size0] PASSED       [ 51%]
+webapp/e2e/test_data.py::test_pages_fit_the_viewport[size1] PASSED       [ 53%]
+webapp/e2e/test_data.py::test_pages_fit_the_viewport[size2] PASSED       [ 55%]
+webapp/e2e/test_player.py::test_empty_picker_and_unknown_run PASSED      [ 57%]
+webapp/e2e/test_player.py::test_picker_lists_runs_with_clouds_first PASSED [ 59%]
+webapp/e2e/test_player.py::test_autoplay_keyboard_and_url PASSED         [ 61%]
+webapp/e2e/test_player.py::test_events_scrubber_loop_and_end PASSED      [ 63%]
+webapp/e2e/test_player.py::test_deep_link_shows_real_values PASSED       [ 65%]
+webapp/e2e/test_player.py::test_paused_steps_bring_their_clouds PASSED   [ 68%]
+webapp/e2e/test_player.py::test_run_menu_switch_and_browser_back PASSED  [ 70%]
+webapp/e2e/test_player.py::test_schematic_and_fault_runs PASSED          [ 72%]
+webapp/e2e/test_player.py::test_loading_and_backend_errors PASSED        [ 74%]
+webapp/e2e/test_player.py::test_lost_3d_view_keeps_the_console PASSED    [ 76%]
+webapp/e2e/test_player.py::test_fullscreen_orbit_and_back PASSED         [ 78%]
+webapp/e2e/test_player.py::test_cab_fits_small_viewports PASSED          [ 80%]
+webapp/e2e/test_system.py::test_fresh_stand_empty_states PASSED          [ 82%]
+webapp/e2e/test_system.py::test_live_simulation_transport PASSED         [ 85%]
+webapp/e2e/test_system.py::test_live_seek_before_start_uses_the_chosen_transport PASSED [ 87%]
+webapp/e2e/test_system.py::test_live_simulation_errors_and_loading PASSED [ 89%]
+webapp/e2e/test_system.py::test_live_ros_node PASSED                     [ 91%]
+webapp/e2e/test_system.py::test_presets_editor PASSED                    [ 93%]
+webapp/e2e/test_system.py::test_presets_errors_and_deep_link PASSED      [ 95%]
+webapp/e2e/test_system.py::test_about_page PASSED                        [ 97%]
+webapp/e2e/test_upload_resume.py::test_big_upload_pause_drop_reload_resume PASSED [100%]
+
+=================================== FAILURES ===================================
+____________________ test_run_page_preset_rename_and_delete ____________________
+
+app = App(page=<Page url='http://127.0.0.1:53181/runs'>, base='http://127.0.0.1:53181', errors=['Failed to load resource: the server responded with a status of 404 (Not Found)'])
+backend = Backend(url='http://127.0.0.1:53181', data_dir=PosixPath('/tmp/pytest-of-root/pytest-31/webapp0/data'), server_root=Po...ver'), log=PosixPath('/tmp/pytest-of-root/pytest-31/webapp0/backend.log'), api=<conftest.Api object at 0x75b3696b9d80>)
+seeded = {'ids': {'approach': 'jpz10pdihj', 'cross': 'zxkscte44a', 'cross_sens': '0x331i1o1f', 'clear': 'qsfmlviimu', ...}, 'na...'Черновик 1', ...}, 'preset': {'id': '4ynz5psir0', 'name': 'Чувствительный', 'description': '', 'builtin': False, ...}}
+
+    def test_run_page_preset_rename_and_delete(app, backend, seeded):
+        page, api, ids = app.page, backend.api, seeded["ids"]
+        sens = ids["cross_sens"]
+        app.goto(f"/runs/{sens}")
+        # the default name's « · preset» suffix is left to the preset chip, whose «?» lists the overrides
+        expect(page.get_by_role("heading", name="demo_crossing")).to_be_visible()
+        chip = page.locator("[class*=_preset_]").filter(has_text="Чувствительный")
+        chip.get_by_role("button", name="Подсказка").hover()
+        expect(page.get_by_role("tooltip").filter(has_text="Время подтверждения")).to_contain_text(re.compile(r"0,1\s?с"))
+    
+        page.get_by_role("button", name="Действия с прогоном").click()
+        page.get_by_role("menuitem", name="Переименовать").click()
+        dialog = page.get_by_role("dialog", name="Переименовать прогон")
+        dialog.get_by_label("Название прогона").fill("  ")
+        expect(dialog.get_by_role("button", name="Сохранить")).to_be_disabled()
+        dialog.get_by_label("Название прогона").fill("Пересечение, быстрый трекер")
+        dialog.get_by_role("button", name="Сохранить").click()
+        expect(dialog).to_have_count(0)
+        expect(page.get_by_role("heading", name="Пересечение, быстрый трекер")).to_be_visible()
+        api.call("PATCH", f"/runs/{sens}", {"name": seeded["names"][sens]})
+    
+        # delete from the run page: back to the list, the run is gone
+        app.goto(f"/runs/{ids['scratch3']}")
+        expect(page.get_by_role("heading", name="Черновик 3")).to_be_visible()
+        page.get_by_role("button", name="Действия с прогоном").click()
+        page.get_by_role("menuitem", name="Удалить").click()
+        page.get_by_role("dialog").get_by_role("button", name="Удалить").click()
+        expect(page).to_have_url(re.compile(r"/runs$"))
+        expect(page.locator("tbody tr").first).to_be_visible()
+        expect(page.get_by_role("link", name="Черновик 3", exact=True)).to_have_count(0)
+>       assert real_errors(app.errors) == []
+E       AssertionError: assert ['Failed to load resource: the server responded with a status of 404 (Not Found)'] == []
+E         
+E         Left contains one more item: 'Failed to load resource: the server responded with a status of 404 (Not Found)'
+E         
+E         Full diff:
+E         - []
+E         + [
+E         +     'Failed to load resource: the server responded with a status of 404 (Not '
+E         +     'Found)',
+E         + ]
+
+webapp/e2e/test_analysis.py:362: AssertionError
+--------- generated xml file: /tmp/webapp-ci-b0c9c17-results/full.xml ----------
+=================== 1 failed, 46 passed in 683.01s (0:11:23) ===================

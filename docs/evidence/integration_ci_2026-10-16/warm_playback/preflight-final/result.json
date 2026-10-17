@@ -1,0 +1,86 @@
+{
+  "result": "PASS",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--network",
+    "none",
+    "--entrypoint",
+    "python3",
+    "-e",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "-v",
+    "C:\\Users\\alikh\\AppData\\Local\\Temp\\opencode\\rs-integration-20261016:/work:ro",
+    "-w",
+    "/work",
+    "resense:h4-fixture-fixed-1cfe8de-20261016",
+    "/work/docs/evidence/integration_ci_2026-10-16/warm_playback/preflight.py",
+    "--linux"
+  ],
+  "unit_tests": 12,
+  "warm_commands_unchanged": [
+    [
+      "IMAGE=$IMAGE",
+      "SKIP_BUILD=1",
+      "OFFLINE=1",
+      "RATE=1.0",
+      "BAG_READ_AHEAD_QUEUE_SIZE=10",
+      "OUT=$OUT/warm_positive",
+      "scripts/dry_run.sh",
+      "$BAG",
+      "--expect-obstacle",
+      "--distance",
+      "50:62",
+      "--min-frames",
+      "201",
+      "--max-p95-latency",
+      "100",
+      "--max-dropped",
+      "0",
+      "--min-playback-rate",
+      "0.9",
+      "|",
+      "tee",
+      "$OUT/warm_positive.txt"
+    ],
+    [
+      "IMAGE=$IMAGE",
+      "SKIP_BUILD=1",
+      "OFFLINE=1",
+      "RATE=1.0",
+      "BAG_READ_AHEAD_QUEUE_SIZE=10",
+      "OUT=$OUT/warm_clear",
+      "scripts/dry_run.sh",
+      "$CLEAR_BAG",
+      "--expect-clear",
+      "--max-alarm-frames",
+      "0",
+      "--min-frames",
+      "252",
+      "--max-p95-latency",
+      "100",
+      "--max-dropped",
+      "0",
+      "--min-playback-rate",
+      "0.9",
+      "|",
+      "tee",
+      "$OUT/warm_clear.txt"
+    ]
+  ],
+  "shell": {
+    "shell_gate": [
+      {
+        "valid_bag": false,
+        "exit": 1,
+        "player_called": false
+      },
+      {
+        "valid_bag": true,
+        "exit": 0,
+        "player_called": true
+      }
+    ]
+  }
+}

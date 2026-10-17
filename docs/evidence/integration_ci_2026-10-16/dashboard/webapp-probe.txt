@@ -1,0 +1,104 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 2 items
+
+webapp/e2e/test_analysis.py::test_run_page_timeline_chart_events_and_downloads FAILED [ 50%]
+webapp/e2e/test_data.py::test_queue_cancel_retry_log_and_clear PASSED    [100%]
+
+=================================== FAILURES ===================================
+______________ test_run_page_timeline_chart_events_and_downloads _______________
+
+app = App(page=<Page url='http://127.0.0.1:45149/runs/h42lptqlpm'>, base='http://127.0.0.1:45149', errors=[])
+backend = Backend(url='http://127.0.0.1:45149', data_dir=PosixPath('/tmp/pytest-of-root/pytest-22/webapp0/data'), server_root=Po...ver'), log=PosixPath('/tmp/pytest-of-root/pytest-22/webapp0/backend.log'), api=<conftest.Api object at 0x7b0db0b610c0>)
+seeded = {'ids': {'approach': '9kjm80o0tr', 'cross': 'h42lptqlpm', 'cross_sens': 'vlbto5zl5t', 'clear': 'jybbmm5vnz', ...}, 'na...'Черновик 1', ...}, 'preset': {'id': '7k73n5lr32', 'name': 'Чувствительный', 'description': '', 'builtin': False, ...}}
+
+    def test_run_page_timeline_chart_events_and_downloads(app, backend, seeded):
+        page, api = app.page, backend.api
+        rid = seeded["ids"]["cross"]
+        detail = api.get(f"/runs/{rid}")
+        series = api.get(f"/runs/{rid}/series")
+        frames = series["frame"]
+        fs = detail["summary"]["first_stop"]
+        assert fs is not None, "the crossing demo stops"
+        first_pos = frames.index(fs["frame"])
+    
+        app.goto(f"/runs/{rid}")
+        expect(page.get_by_role("heading", name="demo_crossing")).to_be_visible()
+        expect(page.locator("main")).to_contain_text(f"с кадра {fs['frame']}")
+        for label in ("Кадров", "Длительность", "СТОП-эпизоды", "Первый СТОП", "Мин. дистанция", "Пропуски", "p95 задержка", "Ложные тревоги"):
+            expect(page.get_by_text(label, exact=True).first).to_be_visible()
+        expect(page.get_by_role("heading", name="Оценка по разметке")).to_be_visible()
+        expect(page.locator("main")).to_contain_text("разметка: в габарите")  # the labels lane legend
+        # every KPI explains itself: hovering a «?» opens its tooltip
+        page.get_by_text("Пропуски", exact=True).locator("xpath=..").get_by_role("button", name="Подсказка").hover()
+        expect(page.get_by_role("tooltip").filter(has_text="Объект в габарите по разметке")).to_be_visible()
+    
+        # the strip: keyboard from the playhead (the first STOP), Enter opens the player there
+        strip = page.get_by_role("slider", name=re.compile("^Решения по кадрам: выберите кадр"))
+        strip.focus()
+        page.keyboard.press("ArrowRight")
+        page.keyboard.press("ArrowRight")
+        expect(strip).to_have_attribute("aria-valuenow", str(first_pos + 2))
+        page.keyboard.press("Enter")
+        assert player_pos(page, rid) == first_pos + 2
+        back_to(page, rf"/runs/{rid}$")
+        # a click on a frame opens that frame
+        strip = page.get_by_role("slider", name=re.compile("^Решения по кадрам: выберите кадр"))
+        box = box_of(strip)
+        target = len(frames) // 4
+        page.mouse.click(box["x"] + (target + 0.5) / len(frames) * box["width"], box["y"] + box["height"] / 2)
+        assert player_pos(page, rid) == target
+        back_to(page, rf"/runs/{rid}$")
+    
+        # the distance chart: hover reads frame / time / decision, a click opens the player
+        chart = page.get_by_role("group", name="График: детектор по времени")
+>       cb = box_of(chart)
+
+webapp/e2e/test_analysis.py:268: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+webapp/e2e/e2e_helpers.py:36: in box_of
+    locator.scroll_into_view_if_needed(timeout=timeout)
+/usr/local/lib/python3.10/dist-packages/playwright/sync_api/_generated.py:13092: in scroll_into_view_if_needed
+    self._sync(
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_locator.py:636: in scroll_into_view_if_needed
+    return await self._with_element(
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_locator.py:127: in _with_element
+    return await task(
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_element_handle.py:112: in scroll_into_view_if_needed
+    await self._channel.send(
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:78: in send
+    return await self._connection.wrap_api_call(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <playwright._impl._connection.Connection object at 0x7b0db0b62890>
+cb = <function Channel.send.<locals>.<lambda> at 0x7b0dabe40550>
+is_internal = False, title = None
+
+    async def wrap_api_call(
+        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None
+    ) -> Any:
+        if self._api_zone.get():
+            return await cb()
+        task = asyncio.current_task(self._loop)
+        parsed_st = _attach_api_call_information(
+            getattr(task, "__pw_stack__", None) or _capture_stack_trace(),
+            is_internal,
+            title,
+        )
+        self._api_zone.set(parsed_st)
+        try:
+            return await cb()
+        except Exception as error:
+>           raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E           playwright._impl._errors.Error: Locator.scroll_into_view_if_needed: Element is not attached to the DOM
+E           Call log:
+E             - attempting scroll into view action
+E               - waiting for element to be stable
+
+/usr/local/lib/python3.10/dist-packages/playwright/_impl/_connection.py:636: Error
+-------------- generated xml file: /tmp/webapp-current-probe.xml ---------------
+==================== 1 failed, 1 passed in 84.88s (0:01:24) ====================

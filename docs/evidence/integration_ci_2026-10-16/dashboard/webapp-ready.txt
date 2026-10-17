@@ -1,0 +1,72 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 3 items
+
+webapp/e2e/test_analysis.py::test_player_link_waits_for_rendered_destination PASSED [ 33%]
+webapp/e2e/test_analysis.py::test_run_page_timeline_chart_events_and_downloads FAILED [ 66%]
+webapp/e2e/test_data.py::test_queue_cancel_retry_log_and_clear PASSED    [100%]
+
+=================================== FAILURES ===================================
+______________ test_run_page_timeline_chart_events_and_downloads _______________
+
+app = App(page=<Page url='http://127.0.0.1:50947/runs/847v4mjj3n'>, base='http://127.0.0.1:50947', errors=[])
+backend = Backend(url='http://127.0.0.1:50947', data_dir=PosixPath('/tmp/pytest-of-root/pytest-24/webapp0/data'), server_root=Po...ver'), log=PosixPath('/tmp/pytest-of-root/pytest-24/webapp0/backend.log'), api=<conftest.Api object at 0x7aa9639b17e0>)
+seeded = {'ids': {'approach': 'qsh04oq3yx', 'cross': '847v4mjj3n', 'cross_sens': '7i6tmz65qh', 'clear': '1qafh049zy', ...}, 'na...'Черновик 1', ...}, 'preset': {'id': '9gbopy6vk3', 'name': 'Чувствительный', 'description': '', 'builtin': False, ...}}
+
+    def test_run_page_timeline_chart_events_and_downloads(app, backend, seeded):
+        page, api = app.page, backend.api
+        rid = seeded["ids"]["cross"]
+        detail = api.get(f"/runs/{rid}")
+        series = api.get(f"/runs/{rid}/series")
+        frames = series["frame"]
+        fs = detail["summary"]["first_stop"]
+        assert fs is not None, "the crossing demo stops"
+        first_pos = frames.index(fs["frame"])
+    
+        app.goto(f"/runs/{rid}")
+        expect(page.get_by_role("heading", name="demo_crossing")).to_be_visible()
+        expect(page.locator("main")).to_contain_text(f"с кадра {fs['frame']}")
+        for label in ("Кадров", "Длительность", "СТОП-эпизоды", "Первый СТОП", "Мин. дистанция", "Пропуски", "p95 задержка", "Ложные тревоги"):
+            expect(page.get_by_text(label, exact=True).first).to_be_visible()
+        expect(page.get_by_role("heading", name="Оценка по разметке")).to_be_visible()
+        expect(page.locator("main")).to_contain_text("разметка: в габарите")  # the labels lane legend
+        # every KPI explains itself: hovering a «?» opens its tooltip
+        page.get_by_text("Пропуски", exact=True).locator("xpath=..").get_by_role("button", name="Подсказка").hover()
+        expect(page.get_by_role("tooltip").filter(has_text="Объект в габарите по разметке")).to_be_visible()
+    
+        # the strip: keyboard from the playhead (the first STOP), Enter opens the player there
+        strip = page.get_by_role("slider", name=re.compile("^Решения по кадрам: выберите кадр"))
+        strip.focus()
+        page.keyboard.press("ArrowRight")
+        page.keyboard.press("ArrowRight")
+        expect(strip).to_have_attribute("aria-valuenow", str(first_pos + 2))
+        page.keyboard.press("Enter")
+        assert player_pos(page, rid) == first_pos + 2
+>       back_to(page, rf"/runs/{rid}$")
+
+webapp/e2e/test_analysis.py:282: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+page = <Page url='http://127.0.0.1:50947/runs/847v4mjj3n'>
+pattern = '/runs/847v4mjj3n$'
+
+    def back_to(page, pattern: str) -> None:
+        page.go_back()
+        expect(page).to_have_url(re.compile(pattern))
+        # React transitions can retain the outgoing DOM after history already changed.
+>       expect(page.get_by_role("slider", name="Кадр прогона")).to_have_count(0)
+E       AssertionError: Locator expected to have count '0'
+E       Actual value: 1 
+E       Call log:
+E         - Expect "to_have_count" get_by_role("slider", name="Кадр прогона") with timeout 5000ms
+E         - waiting for get_by_role("slider", name="Кадр прогона")
+E           2 × locator resolved to 1 element
+E             - unexpected value "1"
+
+webapp/e2e/test_analysis.py:36: AssertionError
+------------------ generated xml file: /tmp/webapp-ready.xml -------------------
+=================== 1 failed, 2 passed in 142.13s (0:02:22) ====================

@@ -1,0 +1,6 @@
+[INFO] [launch]: All log files can be found below /tmp/.ros/log/2026-10-16-14-19-54-096505-66a2f24aa1f9-62
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [detector_node-1]: process started with pid [74]
+[detector_node-1] [INFO] [1792160394.881956148] [resense_detector]: sensor mount: forward=-y left=+x up=+z roll/pitch/yaw=0.0/0.0/0.0 deg; auto-calibration on
+[detector_node-1] [INFO] [1792160395.570435442] [resense_detector]: warm-up: 640 ms
+[detector_node-1] [INFO] [1792160395.575360832] [resense_detector]: ReSense detector listening on /lidar_points, /sensing/lidar/hesai128/pointcloud (+ auto-discovery); input reliability auto; per-frame kernels: native (_resense_native.cpython-310-x86_64-linux-gnu.so); resense 1.1.0

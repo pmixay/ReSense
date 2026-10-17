@@ -1,0 +1,60 @@
+
+> resense-web-frontend@0.1.0 test
+> vitest run --maxWorkers=1 src/pages/Live/feed.test.ts -t in-flight
+
+
+ RUN  v3.2.7 /dashboard-ci-b0c9c17/webapp/frontend
+
+ ❯ src/pages/Live/feed.test.ts (14 tests | 1 failed | 13 skipped) 28ms
+   ↓ LiveFeedStore — simulation > goes connecting → waiting → live, then stale after 0,5 s without a message
+   ↓ LiveFeedStore — simulation > sends pause / play / seek / speed to an open replay
+   ↓ LiveFeedStore — simulation > reconnects at the current frame when loop changes
+   × LiveFeedStore — simulation > holds the paused simulation frame against in-flight messages but permits an explicit seek 26ms
+     → expected { link: 'open', view: 'paused', …(9) } to match object { paused: true, count: 1, …(1) }
+(20 matching properties omitted from actual)
+   ↓ LiveFeedStore — simulation > reports the backend close codes in Russian and ignores the old socket after a restart
+   ↓ LiveFeedStore — simulation > keeps a paused replay paused when a seek lands while it reconnects (loop toggled)
+   ↓ LiveFeedStore — simulation > starts a seek on an idle page with the speed and loop chosen there
+   ↓ LiveFeedStore — simulation > drops the frames sent before a seek landed (no flash of the old position)
+   ↓ LiveFeedStore — simulation > gives up waiting for a seek that never lands after a bounded number of frames
+   ↓ LiveFeedStore — simulation > reset forgets the frames of the previous source
+   ↓ LiveFeedStore — simulation > stop keeps the last message on screen but is no longer live
+   ↓ LiveFeedStore — ROS node > connects, receives, and retries every 2 s after an established link drops
+   ↓ LiveFeedStore — ROS node > shows an error when the first connection fails, and keeps a malformed message from breaking the link
+   ↓ LiveFeedStore — ROS node > uses the receive time for the node (its messages carry no recording time)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/Live/feed.test.ts > LiveFeedStore — simulation > holds the paused simulation frame against in-flight messages but permits an explicit seek
+AssertionError: expected { link: 'open', view: 'paused', …(9) } to match object { paused: true, count: 1, …(1) }
+(20 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "count": 1,[39m
+[31m+   "count": 2,[39m
+[2m    "msg": {[22m
+[32m-     "pos": 30,[39m
+[31m+     "pos": 31,[39m
+[2m    },[22m
+[2m    "paused": true,[22m
+[2m  }[22m
+
+ ❯ src/pages/Live/feed.test.ts:102:33
+    100|     sims[0].h.onMessage(frame({ pos: 31, t: 3.1 }) as never);
+    101|     tick(TICK_MS);
+    102|     expect(store.getSnapshot()).toMatchObject({ paused: true, count: 1…
+       |                                 ^
+    103|     expect(store.getSnapshot().samples).toHaveLength(1);
+    104|     store.seek(42);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  13:16:20
+   Duration  1.13s (transform 247ms, setup 321ms, collect 176ms, tests 28ms, environment 0ms, prepare 224ms)
+

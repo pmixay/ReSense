@@ -1,0 +1,12 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /dashboard-ci-b0c9c17
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 2 items
+
+webapp/e2e/test_analysis.py::test_run_page_timeline_chart_events_and_downloads PASSED [ 50%]
+webapp/e2e/test_data.py::test_queue_cancel_retry_log_and_clear PASSED    [100%]
+
+======================== 2 passed in 133.52s (0:02:13) =========================

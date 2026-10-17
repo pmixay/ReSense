@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-16T16:51:40.735859+00:00",
+  "cumulative_archived_image_bytes": 45133154952,
+  "cumulative_archived_image_count": 86,
+  "deleted_bytes": 529881425,
+  "deleted_count": 1,
+  "disk_free_bytes": 86731923456,
+  "errors": [],
+  "prior_proof_unchanged": true,
+  "protected_missing_ids": [],
+  "protected_original_count": 60,
+  "quota_note": "Deletion verified; quota availability not verified. GitHub recalculation may take 6-12 hours.",
+  "release_v1_0_0_unchanged": true,
+  "remaining_artifact_bytes": 7059109,
+  "remaining_artifact_count": 60,
+  "remaining_image_bytes": 0,
+  "remaining_image_count": 0,
+  "remaining_log_count": 60,
+  "reserve_bytes": 5368709120,
+  "verified_zip_bytes": 529881425,
+  "verified_zip_count": 1
+}

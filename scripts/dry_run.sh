@@ -17,6 +17,8 @@
 #   RATE=1.0         bag playback rate passed to `ros2 bag play`
 #   BAG_READ_AHEAD_QUEUE_SIZE=10 messages buffered by rosbag2 before publication;
 #                            override only for a separately tested playback setup
+#   WARM_CACHE=1     bounded read + mapped page faults; require full Linux residency before play;
+#                    retain before/after residency and resource receipts (default 0, cold cache policy unchanged)
 #   OUT=out/dry_run  where status.jsonl and node.log are written on the host
 #   DOCKER_ARGS=""   extra `docker run` arguments, split on whitespace, e.g. "-e RESENSE_NATIVE=0"
 #                    (the node on the numpy path) or "--name resense_bench_dry" (scripts/bench_8core.sh)
@@ -62,6 +64,11 @@ BAG_DIR="$(cd "$(dirname "$BAG_PATH")" && pwd)"
 BAG_NAME="$(basename "$BAG_PATH")"
 RATE="${RATE:-1.0}"
 BAG_READ_AHEAD_QUEUE_SIZE="${BAG_READ_AHEAD_QUEUE_SIZE:-10}"
+WARM_CACHE="${WARM_CACHE:-0}"
+if [[ "$WARM_CACHE" != 0 && "$WARM_CACHE" != 1 ]]; then
+  echo "ERROR: WARM_CACHE must be 0 or 1" >&2
+  exit 2
+fi
 if ! [[ "$BAG_READ_AHEAD_QUEUE_SIZE" =~ ^[1-9][0-9]*$ ]]; then
   echo "ERROR: BAG_READ_AHEAD_QUEUE_SIZE must be a positive integer" >&2
   exit 2
@@ -70,6 +77,10 @@ read -r -a EXTRA_ARGS <<< "${DOCKER_ARGS:-}"
 OUT="${OUT:-out/dry_run}"
 mkdir -p "$OUT"
 OUT_ABS="$(cd "$OUT" && pwd)"
+if [[ "$WARM_CACHE" == 1 ]] && [[ -e "$OUT_ABS/warm_cache_before.json" || -e "$OUT_ABS/warm_cache_after.json" ]]; then
+  echo "ERROR: warm-cache evidence already exists in $OUT_ABS; choose a fresh OUT" >&2
+  exit 2
+fi
 rm -f "$OUT_ABS/status.jsonl" "$OUT_ABS/node.log"
 
 if [ -n "$IMAGE_TAR" ]; then
@@ -104,6 +115,7 @@ docker run --rm -i "${NET_ARGS[@]}" ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
   -v "$OUT_ABS":/out \
   -e BAG_NAME="$BAG_NAME" -e RATE="$RATE" \
   -e BAG_READ_AHEAD_QUEUE_SIZE="$BAG_READ_AHEAD_QUEUE_SIZE" \
+  -e WARM_CACHE="$WARM_CACHE" \
   "$IMAGE" bash -s <<'INNER'
 set -euo pipefail
 ros2 launch resense_ros detector.launch.py rviz:=false freshness_mode:=replay >/out/node.log 2>&1 &
@@ -127,9 +139,16 @@ ros2 topic echo /resense/status --field data >/out/status.jsonl 2>/dev/null &
 ECHO_PID=$!
 sleep 2
 
+if [[ "$WARM_CACHE" == 1 ]]; then
+  python3 scripts/check_warm_cache.py "/data/$BAG_NAME" --out /out/warm_cache_before.json
+fi
 ros2 bag play "/data/$BAG_NAME" --rate "$RATE" --clock --delay 3 \
-  --read-ahead-queue-size "$BAG_READ_AHEAD_QUEUE_SIZE" --disable-keyboard-controls   # --delay: let DDS discovery finish before the first frame
+  --read-ahead-queue-size "$BAG_READ_AHEAD_QUEUE_SIZE" --disable-keyboard-controls \
+  2>&1 | tee /out/player.log   # --delay: let DDS discovery finish before the first frame
 sleep 3        # let the last frames finish and one more stats tick land
+if [[ "$WARM_CACHE" == 1 ]]; then
+  python3 scripts/check_warm_cache.py "/data/$BAG_NAME" --observe-only --out /out/warm_cache_after.json
+fi
 
 kill "$ECHO_PID" "$LAUNCH_PID" 2>/dev/null || true
 wait "$ECHO_PID" 2>/dev/null || true

@@ -369,6 +369,10 @@ export class LiveFeedStore {
       return;
     }
     let raw: StatusMessage = input;
+    // Pause freezes the simulation view immediately. A frame already on the wire
+    // must not advance it after the paused snapshot; an explicit paused seek still
+    // owns one requested frame. Real ROS status is never filtered by this control.
+    if (this.source?.kind === 'sim' && this.paused && this.seekTo === null) return;
     if (this.seekTo !== null) {
       // frames sent before the server took the seek: not the position asked for
       if (typeof raw.pos === 'number' && raw.pos !== this.seekTo && this.seekSkip > 0) {

@@ -1,0 +1,8 @@
+{
+  "result": "PASS",
+  "setup_status": "WARM_VERIFIED",
+  "all_pages_resident_after_3s": true,
+  "setup_attempts": 1,
+  "playback_attempts": 0,
+  "scope": "one local warm-setup case; not Actions or runtime acceptance"
+}

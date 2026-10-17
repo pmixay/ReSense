@@ -1,0 +1,38 @@
+resense: /upload-followup02-e6cf5f2/resense/__init__.py version: 1.1.0
+native: /upload-followup02-e6cf5f2/resense/_native.py native (_resense_native.so)
+{'playwright': '1.64.0', 'pytest': '9.1.1', 'open3d': '0.19.0', 'numpy': '1.26.4'}
+chromium: 156.0.8078.4
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /upload-followup02-e6cf5f2
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 1 item
+
+webapp/e2e/test_upload_resume.py::test_big_upload_pause_drop_reload_resume UPLOAD_BOUNDARY_INJECTION {"snapshot": [0, 1], "after_release": [0, 1, 2], "server_bytes": 25165824}
+PASSED
+
+------- generated xml file: /tmp/upload-followup02-results/boundary.xml --------
+============================== 1 passed in 28.61s ==============================
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /upload-followup02-e6cf5f2
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 1 item
+
+webapp/e2e/test_upload_resume.py::test_big_upload_pause_drop_reload_resume PASSED [100%]
+
+------- generated xml file: /tmp/upload-followup02-results/focused-1.xml -------
+============================== 1 passed in 27.43s ==============================
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /upload-followup02-e6cf5f2
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.4, dash-4.4.1, colcon-core-0.21.3
+collecting ... collected 1 item
+
+webapp/e2e/test_upload_resume.py::test_big_upload_pause_drop_reload_resume 

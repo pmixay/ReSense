@@ -166,6 +166,48 @@ def test_dashboard_replays_jsonl_in_chromium(tiny_run, tmp_path):
     assert not r["errors"]
 
 
+@pytest.mark.parametrize("hide_rendered_alarms", [False, True])
+def test_dashboard_checker_captures_fast_dom_transitions(tmp_path, monkeypatch, hide_rendered_alarms):
+    """Python can miss the entire replay; evidence must still be actual DOM titles, not input flags."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import Page
+    import check_dashboard
+
+    frames = [{"stamp": i * .1, "frame": i, "obstacle": i in (7, 8), "warning": False,
+               "nearest_distance": 53.9 if i == 7 else 37.9 if i == 8 else None,
+               "detections": [], "warnings": [], "timing_ms": {"total": 1}}
+              for i in range(14)]
+    source = tmp_path / "fast.jsonl"
+    source.write_text("\n".join(json.dumps(f) for f in frames), encoding="utf-8")
+    click = Page.click
+
+    def click_and_wait(page, selector, *args, **kwargs):
+        if selector == "#play" and hide_rendered_alarms:
+            page.evaluate("""() => {
+                const render = setBanner;
+                setBanner = (kind, title, detail) => render(kind,
+                    /^ПРЕПЯТСТВИЕ\\s+[\\d.]+/.test(title) ? 'ОЖИДАНИЕ ДАННЫХ' : title, detail);
+            }""")
+        result = click(page, selector, *args, **kwargs)
+        if selector == "#play":
+            # Real timer-driven playback completes before the checker gets another Python turn.
+            page.wait_for_function("!resense.state.playing && resense.state.idx === 13")
+        return result
+
+    monkeypatch.setattr(Page, "click", click_and_wait)
+    report = check_dashboard.check(str(source), None, None, speed=10, min_dist=40, max_dist=72)
+    if hide_rendered_alarms:
+        assert not report["ok"]
+        assert "the banner never showed ПРЕПЯТСТВИЕ during playback" in report["errors"]
+    else:
+        assert report["ok"], report["errors"]
+        assert [i for i, _ in report["observed"]] == list(range(14))
+        assert report["observed"][7][1] == "ПРЕПЯТСТВИЕ  53.9 м"
+        assert report["observed"][8][1] == "ПРЕПЯТСТВИЕ  37.9 м"
+        assert report["nearest_min_m"] == 37.9
+
+
 def test_dashboard_rejects_garbage_lines(tmp_path):
     """A results file with blank / broken lines still loads the good frames (page logic only)."""
     if not _browser_available():

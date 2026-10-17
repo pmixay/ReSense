@@ -67,7 +67,10 @@ function RunDetail({ id }: { id: string }) {
   // deleted from this page: its queries are dropped, so stop reading the run while the list opens
   // (a re-render would otherwise fetch the removed run again and log a 404)
   const [gone, setGone] = useState(false);
-  const run = useRun(gone ? null : id, { retry: (n, err) => err.status !== 404 && !err.offline && n < 1, refetchInterval: reconnect });
+  const [deleting, setDeleting] = useState(false);
+  // The delete mutation evicts its cache before onDeleted runs. Stop owning a live
+  // detail query while the dialog is open, not after eviction has already refetched it.
+  const run = useRun(gone ? null : id, { enabled: !gone && !deleting, retry: (n, err) => err.status !== 404 && !err.offline && n < 1, refetchInterval: reconnect });
   const kept = useRef<RunDetailT | undefined>(undefined);
   if (run.data) kept.current = run.data;
   const r = run.data ?? (gone ? kept.current : undefined);
@@ -79,7 +82,6 @@ function RunDetail({ id }: { id: string }) {
   const runs = useRuns({ retry: false, refetchInterval: reconnect });
   const [hoverPos, setHoverPos] = useState<number | null>(null);
   const [renaming, setRenaming] = useState(false);
-  const [deleting, setDeleting] = useState(false);
   useRailSub(r?.name);
   const narrow = useMedia('(max-width: 1320px)');
   const compact = useMedia('(max-width: 1400px)');

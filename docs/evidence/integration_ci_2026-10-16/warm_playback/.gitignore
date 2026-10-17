@@ -1,0 +1,3 @@
+!local-once/**/*.log
+!local-once/baseline/status.jsonl
+!local-once/guarded/status.jsonl
