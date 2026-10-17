@@ -2,19 +2,23 @@
 """Labels for the organizers' synthetic bags of 16.10 (objects inserted in place, intensity 1).
 
     label_marked_objects.py <decoded cache> --out <labels.json>
-        [--reference <decoded cache> --ref-offset N --ref-frames A:B]
+        --reference <decoded cache> [--ref-offset N] [--ref-frames A:B] [--no-stamp-check] [--marker]
 
 Set O (``cloud_with_fake_obj``) appended its object points after the last no-return zero, which
 ``label_fake_objects.py`` reads. The bags of 16.10 (``new_synth_data``) insert the object points in
 place in the organized scan and remove the real returns they hide; the inserted points still carry
-intensity exactly 1 (docs/evidence/extended_data_2026-10-17/README.md §5). So the object points of
-a frame are taken, in order of preference, from:
+intensity exactly 1 (docs/evidence/extended_data_2026-10-17/README.md §5). The object points of a
+frame are the points absent from the real scan it was made from (``exact``): ``--reference`` is a
+decoded cache holding that scan as ``f_<k + ref-offset>.npz`` (Set O for ``synthetic_platform``
+frames 0-314 = Set O 1195-1509, ``--ref-offset 1195``; or the frames found in the ride by
+``match_source_frames.py``). Frames without a reference get **no label row** and are listed in
+``_meta.unlabelled_frames``; score only the labelled frames.
 
-* ``exact``: the points absent from a reference recording of the same frame (``--reference``, e.g.
-  Set O for ``synthetic_platform`` frames 0-314 = Set O frames 1195-1509, ``--ref-offset 1195``);
-* ``marker``: intensity-1 points clustered in the sensor frame (DBSCAN 0.5 m, >= 4 points) whose
-  bounding box grown by 0.15 m holds at least 85 % intensity-1 points (a real dark patch is mixed
-  with other intensities). Where both are available the agreement of the two is reported.
+The intensity-1 marker (``--marker``: DBSCAN 0.5 m / 4 points on intensity-1 points, grown box
+>= 85 % intensity 1) is a diagnostic only. Checked against the exact points of 105 platform
+frames it found 57 % of the inserted points, took 6,607 real points as inserted and made 1,223
+false clusters (real dark patches are often 100 % intensity 1), so it never makes labels; with
+``--marker`` its agreement with ``exact`` is reported.
 
 The input is the node-decoded cache (``cache_decoded.py``: sensor-frame float32 xyz, intensity,
 ring); the frame is run through the judge's node replica so that every position is in the
@@ -100,9 +104,11 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("cache")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--reference")
+    ap.add_argument("--reference", required=True)
     ap.add_argument("--ref-offset", type=int, default=0)
-    ap.add_argument("--ref-frames", default="", help="A:B, frames of the cache that have a reference")
+    ap.add_argument("--ref-frames", default="", help="A:B, only these frames of the cache use the reference")
+    ap.add_argument("--no-stamp-check", action="store_true", help="reference stamps differ (ride frames)")
+    ap.add_argument("--marker", action="store_true", help="also report the intensity-1 marker (diagnostic)")
     ap.add_argument("--group-eps", type=float, default=1.0, help="m, object points of one frame -> objects")
     ap.add_argument("--min-track", type=int, default=5)
     a = ap.parse_args()
@@ -113,12 +119,9 @@ def main():
 
     meta = json.loads(Path(a.cache, "meta.json").read_text())
     files = sorted(glob.glob(os.path.join(a.cache, "f_*.npz")))
-    ref_meta = ref_files = None
-    r0 = r1 = -1
-    if a.reference:
-        ref_files = sorted(glob.glob(os.path.join(a.reference, "f_*.npz")))
-        ref_meta = json.loads(Path(a.reference, "meta.json").read_text())
-        r0, r1 = (int(v) for v in a.ref_frames.split(":"))
+    ref_meta = {int(r["i"]): r for r in json.loads(Path(a.reference, "meta.json").read_text())}
+    r0, r1 = (int(v) for v in a.ref_frames.split(":")) if a.ref_frames else (0, len(meta))
+    unlabelled = []
     rep = NodeReplica()
     cfg = rep.detector.cfg
     half_w = max(abs(float(v[0])) for v in cfg.gauge.profile)
@@ -129,17 +132,18 @@ def main():
         xyz, inten, ring = d["xyz"], d["inten"], d["ring"]
         run_frame(rep, xyz, inten, ring, m, k)
         det = rep.detector
-        mk = marker_points(xyz, inten)
-        src = "marker"
-        idx = mk
-        if ref_files is not None and r0 <= k < r1:
-            j = k + a.ref_offset
-            if abs(ref_meta[j]["stamp"] - m["stamp"]) > 1e-6:
-                raise SystemExit(f"frame {k}: reference stamp differs")
-            ex = exact_points(xyz, np.load(ref_files[j])["xyz"])
-            agree.append({"k": k, "exact": int(ex.size), "marker": int(mk.size),
-                          "both": int(np.intersect1d(ex, mk).size)})
-            idx, src = ex, "exact"
+        j = k + a.ref_offset
+        if not (r0 <= k < r1 and j in ref_meta):
+            unlabelled.append(k)
+            continue
+        if not a.no_stamp_check and abs(ref_meta[j]["stamp"] - m["stamp"]) > 1e-6:
+            raise SystemExit(f"frame {k}: reference stamp differs")
+        idx = exact_points(xyz, np.load(os.path.join(a.reference, f"f_{j:05d}.npz"))["xyz"])
+        src = "exact"
+        if a.marker:
+            mk = marker_points(xyz, inten)
+            agree.append({"k": k, "exact": int(idx.size), "marker": int(mk.size),
+                          "both": int(np.intersect1d(idx, mk).size)})
         if not idx.size:
             continue
         xyz_v = xyz[idx].astype(np.float64) @ rep.R_vs.T.astype(np.float64)
@@ -181,7 +185,7 @@ def main():
         near = [r for r in plaus if r["distance"] < 60.0] or plaus
         intent = bool(near) and float(np.mean([r["n_in_envelope"] > 0 for r in near])) >= 0.5
         for k, row in rows:
-            row["in_gauge"] = intent and row["plausible"]
+            row["in_gauge"] = intent  # object intent, as in Set O; per-row plausibility is "plausible"
             gt.setdefault(f"{k:05d}", []).append(row)
         big = [r for _, r in rows if r["distance"] < 60.0] or [r for _, r in rows]
         summary[name] = {
@@ -193,16 +197,18 @@ def main():
             "frames_in_envelope": sum(1 for r in plaus if r["n_in_envelope"] > 0),
             "sources": sorted({r["source"] for _, r in rows})}
     for k in range(len(meta)):
-        gt.setdefault(f"{k:05d}", [])
+        if k not in unlabelled:
+            gt.setdefault(f"{k:05d}", [])
     tot = {key: sum(r[key] for r in agree) for key in ("exact", "marker", "both")} if agree else None
     meta_out = {
         "bag": os.path.basename(os.path.normpath(a.cache)), "frames": len(meta),
-        "source": "scripts/label_marked_objects.py: inserted points (exact difference against a reference "
-                  "where given, else the intensity-1 marker), linked into tracks",
+        "source": "scripts/label_marked_objects.py: inserted points = exact difference against the real "
+                  "source scan, linked into tracks",
+        "labelled_frames": len(meta) - len(unlabelled), "unlabelled_frames": unlabelled,
         "coords": "vehicle (mount-calibrated by the detector of RESENSE_REPO, node replica)",
         "detector_repo": os.environ.get("RESENSE_REPO", ""),
         "in_gauge": "measured (no organizers' intent): most plausible rows nearer than 60 m have envelope points",
-        "reference": {"path": a.reference, "offset": a.ref_offset, "frames": a.ref_frames} if a.reference else None,
+        "reference": {"path": a.reference, "offset": a.ref_offset, "frames": a.ref_frames},
         "marker_vs_exact_points": tot, "objects": summary}
     with open(a.out, "w", encoding="utf-8") as fh:
         fh.write('{\n "_meta": ' + json.dumps(meta_out, ensure_ascii=False, indent=1).replace("\n", "\n ") + ",\n")
