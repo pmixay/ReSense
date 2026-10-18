@@ -35,8 +35,9 @@ def main():
     w = Path(sys.argv[1])
     res = []
     f = w / "freeze_verify.txt"
-    res.append(line(f.exists() and "PASS" in f.read_text() if f.exists() else None, "detector_freeze verify",
-                    f.read_text().strip().splitlines()[-1] if f.exists() else "not run"))
+    txt = f.read_text().strip() if f.exists() else ""
+    res.append(line(("PASS" in txt.splitlines()[0]) if txt else None, "detector_freeze verify",
+                    txt.splitlines()[0] if txt else "not run"))
     tar = EV / "synthetic_labels_2026-10-17/runs/detector_runs.tar.xz"
     for b in ("synthetic_platform", "synthetic_switch", "synthetic_tunnels"):
         p = w / f"synth_{b}.jsonl"
@@ -56,7 +57,7 @@ def main():
     else:
         res.append(line(None, "synthetic_platform score", "not run"))
     p = w / "falcon_full.jsonl"
-    if p.exists():
+    if p.exists() and (w / "falcon_full.meta.json").exists():   # the meta file is written when the stream ends
         new = decisions(map(json.loads, open(p)))
         ref = decisions(committed_jsonl(EV / "falcon_full_2026-10-18/falcon_full_runs.tar.xz", "falcon_full_v110.jsonl"))
         same = sum(a == b_ for a, b_ in zip(new, ref))

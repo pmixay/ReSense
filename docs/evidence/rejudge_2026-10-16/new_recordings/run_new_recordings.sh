@@ -40,7 +40,7 @@ unpack() {  # unpack_dataset.py arguments...: up to three tries, each from a cle
 }
 for s in $STEPS; do case $s in
 verify)
-  log "detector_freeze verify"; $PY "$R/scripts/detector_freeze.py" verify | tee "$W/freeze_verify.txt" | tail -2 ;;
+  log "detector_freeze verify"; $PY "$R/scripts/detector_freeze.py" verify > "$W/freeze_verify.txt" 2>&1; tail -2 "$W/freeze_verify.txt" ;;
 synth)
   for b in synthetic_platform synthetic_switch synthetic_tunnels; do
     if [ ! -f "$DECODED/$b/meta.json" ]; then
