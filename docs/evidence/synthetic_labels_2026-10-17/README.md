@@ -77,6 +77,10 @@ toward the train, in jerky steps of up to 3 m per 0.1 s. A detector that checks 
 against the scene, or requires stable tracks, sees a fast, jerky moving object, not a static one.
 This is relevant to the late person STOP (A5) and is a question for the organizers.
 
+Set O, made with the organizers' earlier tool, behaves differently. Over Set O frames 0–799 the ten objects approach
+exactly as fast as the train drives (±0.3 m/s, ICP fitness 0.98–0.99; [icp_setO_0-799.json](icp_setO_0-799.json),
+[axis profile](../axis_profile_2026-10-16/README.md) §1). Only the 16.10 insertion moves its objects.
+
 ## Scores (platform frames 0–314, the jury's `score_objects.py`)
 
 Both versions give byte-identical score files ([v110](score_platform_0-314_v110.json),
