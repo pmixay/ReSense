@@ -174,3 +174,30 @@ def test_one_ring_cannot_pair_rail_heads_far_apart_longitudinally():
     near = ring_pairs(xyz, ring, zero, rail_z, 26.5,
                      FarRailParams(pair_max_forward_gap=5., pair_use_nearer_forward=True))
     assert len(near) == 1 and near[0, 0] == 35.
+
+
+@pytest.mark.parametrize(('base', 'support', 'expected'), [(45., 50., 45.), (0., 50., 0.), (0., 0., 65.)])
+def test_actual_detector_low_stage_keeps_pre_extension_admission(monkeypatch, base, support, expected):
+    from resense.config import DetectorConfig
+    from resense.detector import Detector
+    from resense.frame import Frame
+    cfg = DetectorConfig()
+    detector = Detector(cfg)
+    model = default_track_model(cfg.track)
+    model.axis_valid = 65.
+    model.axis_valid_without_rails = base
+    model.rail_axis_support = support
+    detector.track = model
+    monkeypatch.setattr(detector, '_fit_track', lambda xyz, periods: xyz)
+    original = detector._low_stage
+    seen = []
+
+    def capture(*args):
+        seen.append(args[-1])
+        return original(*args)
+
+    monkeypatch.setattr(detector, '_low_stage', capture)
+    xyz = np.column_stack((np.linspace(4., 70., 100), np.zeros(100), np.full(100, -1.5))).astype(np.float32)
+    frame = Frame(xyz=xyz, intensity=np.ones(100), stamp=.1)
+    detector.process(frame, ego_speed=0.)
+    assert seen == [expected]

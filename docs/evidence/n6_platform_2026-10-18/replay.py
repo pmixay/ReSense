@@ -6,15 +6,18 @@ import argparse
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import time
+from dataclasses import asdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 os.environ.setdefault('RESENSE_REPO', str(ROOT))
+DETECTOR_ROOT = Path(os.environ['RESENSE_REPO'])
 for variable in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS'):
     os.environ.setdefault(variable, '1')
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(DETECTOR_ROOT))
 sys.path.insert(0, str(ROOT / 'docs/evidence/judgement_2026-10-13/scripts'))
 
 import numpy as np  # noqa: E402
@@ -38,7 +41,9 @@ def main():
         raise ValueError('incomplete cache')
     rep = NodeReplica(overrides={'track.rails_axis_extension': args.candidate})
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    sources = {name: digest(ROOT / name) for name in ('resense/track.py', 'resense/config.py', 'resense/detector.py')}
+    sources = {name: digest(DETECTOR_ROOT / name) for name in ('resense/track.py', 'resense/config.py', 'resense/detector.py', 'resense/farrails.py')}
+    commit = os.environ.get('RESENSE_MEASURED_COMMIT') or subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=DETECTOR_ROOT, text=True).strip()
+    replay_hash = digest(Path(__file__))
     start = time.perf_counter()
     supported = []
     with args.out.open('w') as stream:
@@ -54,8 +59,10 @@ def main():
             if i % 100 == 0:
                 print(f'{args.cache.name} frame {i}/{len(meta)}', flush=True)
     report = {'cache': str(args.cache), 'frames': len(meta), 'candidate': args.candidate,
+              'commit': commit, 'detector_root': str(DETECTOR_ROOT), 'config': asdict(rep.cfg),
+              'replay_sha256': replay_hash,
               'elapsed_s': time.perf_counter() - start, 'source_sha256': sources,
-              'source_unchanged': all(digest(ROOT / name) == value for name, value in sources.items()),
+              'source_unchanged': all(digest(DETECTOR_ROOT / name) == value for name, value in sources.items()),
               'support_frames': supported, 'output_sha256': digest(args.out),
               'metadata_sha256': digest(args.cache / 'meta.json'), 'resets': rep.resets}
     args.out.with_suffix('.meta.json').write_text(json.dumps(report, indent=2) + '\n')

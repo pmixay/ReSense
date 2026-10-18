@@ -275,8 +275,13 @@ class Detector:
         self._frame_hd = (dy_all, h_all)
         trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
+        # Paired rails support lateral axis placement, not a farther bed-anomaly
+        # model. Preserve low/straddle/near candidate admission and its history at
+        # the pre-extension range; N6 extends only the above-rail corridor.
+        low_axis_valid = (min(axis_valid, self.track.axis_valid_without_rails)
+                          if self.track.rail_axis_support > 0 else axis_valid)
         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
-                                               min(axis_valid, floor_valid))
+                                               min(low_axis_valid, floor_valid))
         t2 = time.perf_counter()
         speed, source, est = self._speed(xyz, dy_rail, h_all, dt, ego_speed)
         if cfg.tracking.ego_veto_min_speed > 0 and est is None and ego_speed is None:
