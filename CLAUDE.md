@@ -36,5 +36,6 @@ or was corrected. Anything not checked is reported as unverified.
   and write their output to a log file.
 * Evidence runs: set `RESENSE_REPO` to the checkout being evaluated and
   `OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1` (P4 protocol, amendment 1).
-* Never modify detector code (`resense/`, `native/`, `configs/`, the ROS package) for an
-  evaluation; never run or touch the held-out G3 set.
+* Evaluation and judging runs (P4, J1, X-series) never modify detector code (`resense/`,
+  `native/`, `configs/`, the ROS package); detector changes are P3's, made and sealed separately.
+* Nobody runs or tunes on the held-out G3 set except the fresh agent of the final check.
