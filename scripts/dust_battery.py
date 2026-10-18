@@ -33,6 +33,8 @@ def main():
     p.add_argument("--levels", default="clean,low,medium,high")
     p.add_argument("--seed", type=int, default=20261018)
     p.add_argument("--set", action="append", default=[])
+    p.add_argument("--dust-support", action="store_true", help="experimental pre-tracker advisory qualification")
+    p.add_argument("--dim-labels", type=float, help="set source GT-bbox returns to this intensity before clean/dust runs")
     a = p.parse_args()
     if not a.levels.startswith("clean"):
         p.error("clean must be first to provide the unchanged placement reference")
@@ -49,12 +51,43 @@ def main():
     dust = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = dust
     spec.loader.exec_module(dust)
+    detector_class = Detector
+    if a.dust_support:
+        support_spec = importlib.util.spec_from_file_location("diffuse_support_module", ROOT / "resense/dust_health.py")
+        support_module = importlib.util.module_from_spec(support_spec)
+        support_spec.loader.exec_module(support_module)
+
+        class SupportDetector(Detector):
+            def process(self, frame, ego_speed=None):
+                if not np.isfinite(frame.xyz).all():
+                    raise ValueError("prototype requires finite node-decoded XYZ for index alignment")
+                self._dust_intensity = frame.intensity
+                result = super().process(frame, ego_speed=ego_speed)
+                started = time.perf_counter()
+                result.health = support_module.mark_degraded_health(result.health, self._dust_evidence, self._dust_support)
+                result.clear_distance = result.health["clear_distance"]
+                result.timing_ms["total"] += (time.perf_counter() - started) * 1000
+                self._previous_latency_ms = result.timing_ms["total"]
+                return result
+
+            def _confirm(self, clusters, speed, dt):
+                dy, h = self._frame_hd
+                self._dust_evidence = support_module.diffuse_evidence(
+                    self._frame_xyz, self._dust_intensity, dy, h, self.track.axis_valid)
+                self._dust_support = support_module.mark_unsupported_clusters(
+                    clusters, self._frame_xyz, self._dust_intensity, dy, h, self._dust_evidence)
+                return super()._confirm(clusters, speed, dt)
+
+        detector_class = SupportDetector
     a.out.mkdir(parents=True, exist_ok=True)
     sources = {str(f.relative_to(a.detector_root)): hashlib.sha256(f.read_bytes()).hexdigest()
                for f in sorted((a.detector_root / "resense").glob("*.py"))}
     report = {"schema": "dust-battery-v1", "seed": a.seed, "detector_root": str(a.detector_root),
               "source_hashes": sources, "config_overrides": a.set,
               "generator_sha256": hashlib.sha256((ROOT / "resense/dust.py").read_bytes()).hexdigest(),
+              "dust_support": a.dust_support,
+              "dim_label_intensity": a.dim_labels,
+              "support_sha256": hashlib.sha256((ROOT / "resense/dust_health.py").read_bytes()).hexdigest() if a.dust_support else None,
               "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "cpu_affinity": sorted(os.sched_getaffinity(0)), "recordings": {}}
     for bag in a.bags.split(","):
@@ -80,7 +113,7 @@ def main():
                 key, val = override.split("=", 1)
                 section, key = key.split(".", 1)
                 setattr(getattr(cfg, section), key, yaml.safe_load(val))
-            detector = Detector(cfg)
+            detector = detector_class(cfg)
             rotation = axis_matrix(cfg.sensor).astype(np.float32)
             counts, objects = Counter(), defaultdict(lambda: {"visible_inside_frames": 0, "stop_frames": [],
                                                                "first_stop_frame": None, "first_stop_m": None})
@@ -97,10 +130,17 @@ def main():
                     if last_stamp is not None:
                         gap = fr.stamp - last_stamp
                         if gap < -.5 or gap > 30:
-                            detector = Detector(cfg)
+                            detector = detector_class(cfg)
                         elif gap > 1:
                             detector.reset()
                     last_stamp = fr.stamp
+                    if a.dim_labels is not None:
+                        for label in labels.get(f"{i:05d}", []):
+                            if label.get("bbox") is None or label.get("n_points", 1) <= 0:
+                                continue
+                            lo, hi = np.asarray(label["bbox"])
+                            inside = ((fr.xyz >= lo) & (fr.xyz <= hi)).all(axis=1)
+                            fr.intensity[inside] = a.dim_labels
                     audit = None
                     if level != "clean":
                         fr, audit, _ = dust.augment_dust(fr, dust.PRESETS[level], rail_z=clean_rail[i],
