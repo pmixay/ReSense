@@ -1,0 +1,19 @@
+{
+  "reason": "Exact opt-in-default source full suite and actual DDS integration",
+  "source_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "paused_utc": "2026-10-18T10:45:02.690017+00:00",
+  "groups": {
+    "60932": [
+      "  60932       1   60932 SNs  /home/resense/.venv/bin/python /home/resense/data/dust/run_corrected_regular.py",
+      "  60933   60932   60932 RN   /home/resense/.venv/bin/python /home/resense/data/dust/harness_b9ad5f4/scripts/dust_battery.py --cache /home/resense/data/decoded --out /home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed --detector-root /home/resense/data/n2/baseline_9b92df5"
+    ],
+    "61130": [
+      "  61130       1   61130 SNs  /home/resense/.venv/bin/python /home/resense/data/dust/run_set_f_corrected.py",
+      "  61131   61130   61130 SN   /home/resense/.venv/bin/python /home/resense/data/dust/harness_b9ad5f4/scripts/dust_set_f.py --cache /home/resense/data/gate_cache/new_data --bank /home/resense/data/dust/set_f_bank_pose_fixed --out /home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed --placement-root /home/resense/data/n2/baseline_9b92df5 --detector-root /home/resense/data/n2/baseline_9b92df5",
+      "  65935   61131   61130 RN   /home/resense/.venv/bin/python /home/resense/data/dust/harness_b9ad5f4/scripts/dust_set_f.py --cache /home/resense/data/gate_cache/new_data --bank /home/resense/data/dust/set_f_bank_pose_fixed --out /home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed --placement-root /home/resense/data/n2/baseline_9b92df5 --detector-root /home/resense/data/n2/baseline_9b92df5 --mode evaluate --levels clean,low,medium,high --seed 20261018"
+    ],
+    "61529": [
+      "  61529       1   61529 SNs  /home/resense/.venv/bin/python /home/resense/data/dust/finalize_corrected.py"
+    ]
+  }
+}

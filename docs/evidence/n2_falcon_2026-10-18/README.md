@@ -3,15 +3,21 @@
 The entire organizer Falcon recording is now available as a verified float32 cache:
 **4,443 frames over 444.209 seconds**, including the previously unseen remainder.
 Explicit ROS and manufacturer-native profiles produce identical full-recording
-decisions and detections. The supported eight automatic orientations now preserve
+decisions and detections. With explicit opt-in startup replay, the supported eight automatic orientations preserve
 all **193 STOP frames, first STOP at frame 8**, on `doubleT_obstacle`; unconfirmed
 orientation cannot report clear space. The remaining far static-support alarms
 and sampling sensitivity are recorded below, not suppressed by target-specific rules.
 
+Startup replay is **opt-in**, following the user's decision to preserve baseline
+Falcon STOP behavior. The replay candidate loses 13 existing Falcon STOP frames,
+including person-associated frames 2972–2975, despite detecting the approach earlier
+in aggregate. This violates the unrestricted no-loss protocol; the passing Pandar
+gate and X3 measurements do not cancel that failure. The selected default is zero
+replay frames; its fresh full-recording and gate checks are separate integration evidence.
+
 This is development evidence on `work/n5-labels-c2-acceptance`, not a release or
-an independent hidden-set score. The sensor proxy full gate and final combined
-default gate are separate experiments; completion links are added when their
-complete input receipts and results are available.
+an independent hidden-set score. The complete sensor proxy experiment below is
+separate from the untransformed default gate.
 Completed raw JSONL captures are portable in the [verified raw archive](raw/README.md);
 extract it to restore the paths used by these reports and reproduction scripts.
 
@@ -62,6 +68,9 @@ reports unavailable small-target range as null and clear range zero.
 The corrected-core `7b7b02c` image repeats the same 140-input DDS test. Its
 [independent Falcon prefix comparison](actual_dds_prefix_7b7b02c.json) also passes
 all 100 frames with the same four STOP frames and no stale held result.
+The selected default-zero `cecab1b` image then repeated all 140 actual DDS inputs;
+[its complete payload comparison](../n1_n4_2026-10-18/final_core_cecab1b/payload_comparison.json)
+finds no non-timing semantic differences versus that verified run.
 
 ## Input profiles and startup behavior
 
@@ -74,13 +83,13 @@ through N4's generation boundary. The profile sets the range sensor model to
 Falcon, so the Pandar small-target prior is not silently reused.
 
 ```sh
-docker run --rm -it --net=host --ipc=host resense:lidar-7b7b02c \
+docker run --rm -it --net=host --ipc=host resense:lidar-cecab1b \
   ros2 launch resense_ros detector.launch.py freshness_mode:=replay \
   sensor_profile:=falcon_ros input_topic:=/iv_points clear_range_policy:=conservative
 ```
 
 This is the development image already built and tested on this host, not a
-published release tag; its [image identity and source receipt](../n1_n4_2026-10-18/final_core_7b7b02c/image_receipt.json)
+published release tag; its [image identity and source receipt](../n1_n4_2026-10-18/final_core_cecab1b/image_receipt.json)
 are retained with the actual DDS test.
 
 Use `falcon_native` for actual manufacturer-native coordinates. Explicit mappings
@@ -132,8 +141,10 @@ Four remounts have tiny unrounded track-coefficient differences (at most 3.71e�
 in the floor coefficients) without changed emitted detections or ranges.
 Concurrent wall times of 2.05–3.32 seconds for the adoption call, and a 4.29-second
 maximum outer call including orientation search, are not an idle-host benchmark.
-Default four-frame replay was enabled by the parent integration in `5b8bbfd`,
-subject to the unhooked combined gate.
+Four-frame replay was provisionally enabled in `5b8bbfd`. It was subsequently
+rejected as a global default because full Falcon comparison loses existing STOP
+frames. The user selected opt-in replay; `cecab1b` restores the class/YAML default
+to zero. The four-frame results remain measured opt-in evidence, not default acceptance.
 
 An independent review then found that `deepcopy` can allocate larger nested-list
 containers than their source. The original 32 MiB accounting was therefore not a
@@ -273,6 +284,32 @@ as default-input freeze evidence.** The paired sealed reference is
 `e0b2c76f61d6b65b1f6d3901af91c96d6370e76c125b5192735399b889a5547a`;
 `git diff 5211565 9b92df5 -- resense configs native setup.py` is empty.
 Current intake receipts establish the cache provenance separately.
+
+The **complete full proxy run has finished**: 15,269 ordinary rows plus 3,060 Set F
+rows, all 18,329 input calls verified by identity, timestamp and multiplicity.
+It retained 793,332,761 of 3,381,101,101 processed points (23.5%), always passed
+`ring=None`, and preserved the original raw-health metadata. The
+[same-runtime comparison](full_proxy_same_runtime_summary.json) revalidates all
+stored ordinary summaries and Set F scoring rows against the completed untransformed
+`9b92df5` control. Evaluation label/speed hashes match the pinned control.
+
+| Full compact-input gate | Baseline STOP | Proxy STOP | Lost rows | Added rows |
+|---|---:|---:|---:|---:|
+| Six original recordings, combined | 232 | 221 | 156 | 145 |
+| Set O | 447 | 309 | 145 | 7 |
+| Ride, all 11,271 frames | 126 | 168 | 108 | 150 |
+| All ordinary rows | 805 | 698 | 409 | 302 |
+
+There are **36 gated metric regressions**, with no allowances: the rail-object
+label has 129→0 matched hit rows, Set O's large central object has 208→89 STOP rows,
+and ride alarm events rise 27→38. Set F loses 123 prior hit rows and adds 113;
+its 2,253 changed legacy placement rows mean these are not paired measurements
+of identical injected geometry. Median first detection falls from 151.0→146.7 m
+for the person, 64.4→55.3 m for the 0.5 m box, and 151.4→125.3 m for the trolley.
+Cable detections fall from six sequences to five. These results reject a claim
+of sampling robustness; they do not establish real-Falcon recall or justify
+loosening thresholds. Complete input/hook provenance and serialized evidence are
+preserved in the [full proxy archive](raw/README.md).
 
 ## Reproduction
 

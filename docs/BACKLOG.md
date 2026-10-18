@@ -1047,10 +1047,13 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
 * **18.10 progress:** profiles, documented commands, full recording, static-cause attribution and startup history
   correction are implemented and measured. All eight supported automatic orientations preserve 193 overall
   STOP frames on the real obstacle recording, first at frame8. Person and rail-object matches are separate metrics.
-  Missing rings and field/intensity layouts preserve those results. Sampling changes
-  do not: deduplication loses4 STOP rows, half-channel sampling loses128, and the Falcon proxy adds empty-bag
-  alarms as well as losing detections. The corrected-core full default gate passes without waivers;
-  independent review, final corrected-core X3 and the full proxy gate remain pending.
+  Those eight-orientation results require explicitly enabled startup replay. Missing rings and field/intensity
+  layouts preserve those results. Sampling changes do not: deduplication loses4 STOP rows, half-channel
+  sampling loses128, and the complete Falcon proxy fails36 gated comparisons. Original-recording full gate
+  and X3 pass on candidate7b, but actual Falcon replay loses13 prior STOP rows, including four person-associated
+  rows. Independent review blocks default4; the captain selected **replay opt-in**. Sourcececab1b restores
+  default0, passes239 focused and1,906 full tests plus12 subtests, and passes140/140 actualDDS inputs.
+  Its exact full default gate, X3 and full automatic-Falcon parity checks are running; no new seal is claimed.
 
 #### N3 · Dust / suspension (revised 17.10: the organizers' data contains none)
 **Owner** P4 + P3 · **Size** M · **Depends on** O1-style question to the organizers

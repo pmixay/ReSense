@@ -2,6 +2,27 @@
 
 Implementation and operator instructions are in [HOWTO.md](HOWTO.md). This directory preserves successful checks, rejected display settings, complete display replays and actual DDS results with their separate source versions.
 
+## Selected default with startup replay opt-in
+
+The captain retained the previous default after the full Falcon replay exposed lost STOP
+frames. Core `cecab1b` sets `orientation_replay_frames=0`; explicit profiles remain supported.
+Image `eb53df868b16` overlays only that class default and the synchronized configurations on
+`acbd890efa86`. Its [identity receipt](final_core_cecab1b/image_receipt.json) verifies all 43
+relevant source files, the installed default0 configuration and the unchanged native binary.
+
+The isolated [actual DDS run](final_core_cecab1b/report.json) passes **40/40 Pandar then
+100/100 actual Falcon frames**, with no restart, drop or catch-up skip. Pause/resume, rate
+0.5→0.4 and reset/expiry checks pass. [Exact comparison](final_core_cecab1b/payload_comparison.json)
+preserves all 140 semantic payloads and nonframe reset/stale transitions from the earlier7b
+profile run; only enumerated measured time/resource values are excluded. Both runs explicitly
+select sensor profiles, so this does not substitute for the separate full automatic-Falcon check.
+
+The [status summary](final_core_cecab1b/status_summary.json), raw logs, command, exact wrapper
+and initial isolation snapshot are retained. The [completed isolation receipt](../lidar_adaptation_2026-10-18/default_off/isolated_window.json)
+records all resumed quality jobs. The selected-default host suite passes 1,906 tests plus12
+subtests, with seven unavailable historical-fixture deselections. Earlier software-RViz and
+2,308-frame display measurements below keep their measured source; they were not rerun here.
+
 ## Display development and honest range cost
 
 `unbounded_display_v1/` records the rejected initial smoother: visually low jitter but as much as 3.49 m lateral lag. `lag_bounded_v2/` adds a 0.25 m lateral agreement cap with 6 m smoothing distance; curve at 40 m p90 remained 0.0615 m, above the 0.05 m target. Both are rejected as the final display contract.

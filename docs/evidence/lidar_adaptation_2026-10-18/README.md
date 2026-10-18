@@ -6,20 +6,37 @@ Remote `main` was fetched again and remains `3b7d7aa7cbbf238c21f84330497697da131
 an ancestor of this branch. This is development integration, not a release. The captain's
 standalone map remains `/home/resense/P1_work_map_2026-10-17.md`, outside this repository.
 
+## Selected default after independent Falcon review
+
+The captain selected **startup replay opt-in**, retaining the previous default. The earlier
+`7b7b02c` candidate passes the original full gate and X3, but the full actual-Falcon replay
+changes 13 previous STOP rows to other decisions, including four person-associated rows.
+This violates the registered no-loss requirement despite earlier first detection. The
+[explicit independent verdict](INDEPENDENT_RESEAL_VERDICT.md) retains those losses and blocks
+unconditional replay4 acceptance; no criterion was waived.
+
+Source `cecab1b` changes only the class default and both synchronized YAML files to
+`calibration.orientation_replay_frames=0`. Bounded replay remains available only by explicit
+opt-in; sensor profiles and the unconfirmed-orientation guard remain. Independent source
+review and 239 focused tests pass. The isolated full suite passes **1,906 tests plus 12 subtests**,
+with seven unavailable historical-fixture deselections. The current Docker/DDS image passes all140 inputs with exact semantic parity. Fresh default
+gate, X3 and all4,443 automatic Falcon frames are being verified before a new seal.
+Earlier candidate captures keep their original identities and are not selected-default evidence.
+
 ## Work other members can use
 
 | Dependency | Delivered | Remaining acceptance |
 |---|---|---|
 | P2 display/demo | Shared bounded gauge/status contract; complete 2,308-frame display replay; 140/140-frame same-node Pandar→actual-Falcon check; measured software RViz at rate 0.5; operator commands | Far-range display coverage cost is explicit; hosted CI/release remain deferred |
-| P4 evaluation | Complete verified Falcon cache, reviewed raw target associations, immutable comparison harnesses, all N6 control captures and an independently reviewed passing full default gate | Corrected-core X3 and Falcon proxy gate |
-| P1 integration | Explicit sensor profiles, orientation readiness guard and bounded startup history replay | Complete independent acceptance review and new source seal |
+| P4 evaluation | Complete verified Falcon cache, reviewed raw target associations, immutable comparison harnesses, all N6 control captures and an independently reviewed passing full default gate | Exact opt-in-default acceptance; complete proxy retains measured regressions |
+| P1 integration | Explicit sensor profiles, orientation readiness guard and opt-in startup replay | Exact selected-default full gate/X3/Falcon and reviewed source seal |
 | Release | Branch work and local validation | Captain's hosted CI/quota repair and later release decision |
 
 ## Current result by card
 
 | Card | Implemented and measured | Limit or regression |
 |---|---|---|
-| [N2 Falcon](../n2_falcon_2026-10-18/README.md) | All 4,443 frames verified; explicit ROS/native profiles agree throughout; automatic mapping matches after initial unconfirmed FAULT. Eight supported automatic orientations retain all 193 real-obstacle STOP frames, first at frame 8. | Reviewed person first STOP improves about 124.67→127.07 m, while static 115 m structure STOP associations increase 13→29. No surveyed corridor truth resolves those static alarms. Deduplication/channel thinning and the Falcon sampling proxy lose STOP rows; these are retained regressions. |
+| [N2 Falcon](../n2_falcon_2026-10-18/README.md) | All 4,443 frames verified; explicit ROS/native profiles agree throughout; explicitly enabled replay matches after initial unconfirmed FAULT. The eight supported automatic orientations retain all 193 real-obstacle STOP frames, first at frame 8, with replay enabled. | Explicit axes / experimental replay improve reviewed person first STOP about 124.67→127.07 m, while static 115 m structure STOP associations increase 13→29. Thirteen lost overall STOPs block replay as the default. No surveyed corridor truth resolves those static alarms. Deduplication/channel thinning and the Falcon sampling proxy lose STOP rows; these are retained regressions. |
 | [N4 playback](../n1_n4_2026-10-18/HOWTO.md) | Conservative-profile Docker/Humble DDS and native PTY controls pass: 40/40 Pandar then 100/100 actual Falcon frames in one node; pause/resume, rate 0.5→0.4, reset/expiry and no inherited STOP. Known `/iv_points` is subscribed before playback. | Actual Falcon has null small-target coverage/zero qualified clear range. Hosted CI is not claimed. Failed schema and 94/100 discovery attempts are preserved before the corrected strict-count pass. |
 | [N1 gauge](../n1_n4_2026-10-18/README.md) | Shared rail-relative box, supported extent, bounded 0.25 m 3D lag, explicit invalid hold and RViz lifetime. All 2,308 immutable replay frames pass visible-edge jitter/bounds/result-preservation checks; no GO/STOP outline disappears. 83 real-browser checks and actual software RViz pass. | Median displayed/support ranges are Set O 86/130.15 m, person 139/151 m, curve 52/141.9 m and platform 45/120 m. Only 11/251 curve pairs show the 120 m edge; hidden far geometry is not claimed accurate. |
 | [N3 dust](../n3_dust_2026-10-18/README.md) | Deterministic return/attenuation generator and frozen-placement Set F harness. Independent review corrected a coordinate mismatch in the original regular test; harness `b9ad5f4` freezes each clean applied transform and preserves retained source points exactly. Thirty focused tests pass. | Earlier configured-box stresses and rejected filters are historical evidence. Fresh complete seven-recording, Set F and matched dark/health controls are running. No physical-dust validation or production classifier is claimed. |
@@ -31,9 +48,9 @@ recording reaches 509.97 m; the default runtime crop remains 250 m. Falcon small
 is uncalibrated, so the approved conservative C2 policy keeps its small-object-qualified clear
 range at zero. It never borrows the Pandar density prior.
 
-## Immutable integration source and validation
+## Earlier immutable candidate source and validation
 
-The corrected detector/configuration are frozen at `7b7b02c`, exported as a detached worktree at
+The earlier replay4 detector/configuration are fixed at `7b7b02c`, exported as a detached worktree at
 `/home/resense/data/final_lidar_7b7b02c`. Orientation history is enabled with a four-frame/32 MiB
 budget. N6 remains off and dust classification remains experimental. The final node/launch
 intake correction is `00ee76f`: pre-subscribe known `/iv_points` and require exact bag frame
@@ -93,15 +110,17 @@ placement/scoring rows and all 1,064 hit rows match exactly; complete detections
 from the legacy Set F artifact, so independent hit reassignment is not claimed. All 224
 fresh-control metric comparisons pass; the 15 changed metrics concern latency only.
 The [raw comparison](gate_independent_review.json), [execution receipt](gate_execution_status.json)
-and [verified archive](raw/README.md) retain the complete evidence. Corrected-core X3 remains
-required before the new source seal.
+and [verified archive](raw/README.md) retain the complete evidence. These results remain
+valid for candidate7b; the selected default0 requires its own measured gate.
 
 The earlier-core `f5ff15f` X3 completed all **40 cases / 29,765 rows**. Independent review
 reconstructed **260/260 passing checks** and exact equality of every shared non-timing output
 against the original 1.1.0 reference, including no lost, added or delayed STOPs. Its
 [review](x3_preboundary_independent_review.json) and [verified raw archive](raw/README.md)
-remain explicitly earlier-core evidence. The separate corrected-core X3 started at 09:51:04 UTC
-and is still running; earlier captures are not relabeled as the corrected source.
+remain explicitly earlier-core evidence. The separate7b X3 finished at 10:36:38 UTC, exit0, across all40 cases/29,765 rows.
+Independent strict review preserves all6,284 STOP frames/204 episodes and all shared non-timing
+outputs, with260/260 directional checks passing. Its [archive](raw/README.md) and
+[verdict](INDEPENDENT_RESEAL_VERDICT.md) remain candidate4 evidence, not default0 acceptance.
 
 X3 uses the existing complete 1.1.0 baseline:
 [reference preparation](x3_reference_preparation.json) reproduces every archived hash for all

@@ -1,0 +1,205 @@
+{
+  "status": "ALL_MEMBERS_AND_RETAINED_ORIGINALS_VERIFIED",
+  "verified_utc": "2026-10-18T10:50:02.190080+00:00",
+  "archive": "raw_full_proxy.tar.gz",
+  "archive_bytes": 3485622,
+  "archive_sha256": "1e2c9308cd1d53adf3380a1c65d6b8eff38c69cdaba56128b4b983a1ac12a718",
+  "member_count": 32,
+  "uncompressed_bytes": 33846862,
+  "input_list_sha256": "1b1f9197b97561fc9f0d446f72d46ce0ea91bceee611458df1baae5550b45cfb",
+  "archiver_sha256": "2d7e665b88c58cf347b690f5cb39fe738082385740c2f32aae08d1d4202766fa",
+  "members": [
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/gate.json",
+      "member": "full_proxy_gate_verified/gate.json",
+      "bytes": 24398,
+      "sha256": "9287fb422764f2897915a974f4c32818bdbce089f5a210487a85c8528469a285"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/gate.log",
+      "member": "full_proxy_gate_verified/gate.log",
+      "bytes": 15142,
+      "sha256": "d896b04b84215357250cd5f0df973cf00c12f920aa7891e1b71d0632e57bc99b"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/hook/lidar_input_variants.py",
+      "member": "full_proxy_gate_verified/hook/lidar_input_variants.py",
+      "bytes": 3608,
+      "sha256": "a06194d7a1bafde0873d5f0c8bc8df3f6a3ff718bd8279ece04a0a37810ad1a4"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/hook/proxy_input_hook.py",
+      "member": "full_proxy_gate_verified/hook/proxy_input_hook.py",
+      "bytes": 3203,
+      "sha256": "c63a6fd52ad4e076f26ac79afeb48786d33e8f0a80b99413a2917f34048e23be"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/hook/sitecustomize.py",
+      "member": "full_proxy_gate_verified/hook/sitecustomize.py",
+      "bytes": 468,
+      "sha256": "c63c9cb714c8fb7436075c0d2cc928022369284d5de8d927b745ba2084f9f425"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/input_receipts/activated_54706.json",
+      "member": "full_proxy_gate_verified/input_receipts/activated_54706.json",
+      "bytes": 881,
+      "sha256": "e5721d35c967c410879425a90c1b4634d18849c54c0b3b2be7dcb5af56bf8609"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/input_receipts/activated_66196.json",
+      "member": "full_proxy_gate_verified/input_receipts/activated_66196.json",
+      "bytes": 947,
+      "sha256": "4fc7136684b1c951c6e763b413c531a96b82365748da3d50fb4c0b5d38a7b4d6"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/input_receipts/frames_54743.jsonl",
+      "member": "full_proxy_gate_verified/input_receipts/frames_54743.jsonl",
+      "bytes": 3407839,
+      "sha256": "baf552d2df694c3190b7531bcdd8be40f770788a3272dda3457c90a00fffd9ea"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/input_receipts/frames_66199.jsonl",
+      "member": "full_proxy_gate_verified/input_receipts/frames_66199.jsonl",
+      "bytes": 669720,
+      "sha256": "57b3fad8c6da8f63ab70bb5caa57d9f2456177eb62e7c4570e6477d922e256e9"
+    },
+    {
+      "source": "/home/resense/data/n2/full_proxy_gate_verified.log",
+      "member": "full_proxy_gate_verified/outer_wrapper.log",
+      "bytes": 180,
+      "sha256": "ce6eaeb4290b8b55b026e6cb7588f017f7191f5b1f720378a9d051443fb84512"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/priority_change.json",
+      "member": "full_proxy_gate_verified/priority_change.json",
+      "bytes": 2352,
+      "sha256": "e31215da4e8ec6c7ca688ab4d6d2e0379ead36d67825fb6a13daf876a6eb4cc6"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/receipt.json",
+      "member": "full_proxy_gate_verified/receipt.json",
+      "bytes": 11772,
+      "sha256": "2d680422f71dbc5c2210bcb61f22468f969f538cdcef14eac630112c9912b7e8"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/cloud_with_fake_obj.jsonl",
+      "member": "full_proxy_gate_verified/work/cloud_with_fake_obj.jsonl",
+      "bytes": 2746508,
+      "sha256": "f5d668e92c6ba9a5ece89b7014c7e2e9f0a8c35f28a7420c4376844118936a04"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/config.yaml",
+      "member": "full_proxy_gate_verified/work/config.yaml",
+      "bytes": 9363,
+      "sha256": "1d74a25fedb2cfe99d0885f38dd3168f184958a3c89e4740d773d750f5376865"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/doubleT_obstacle.jsonl",
+      "member": "full_proxy_gate_verified/work/doubleT_obstacle.jsonl",
+      "bytes": 354771,
+      "sha256": "06e6abb3d4646327d0f6c8e7eaa721b76047b58b1bb7df7572f70c104fbd0f3b"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/doubleT_platform.jsonl",
+      "member": "full_proxy_gate_verified/work/doubleT_platform.jsonl",
+      "bytes": 662905,
+      "sha256": "01af599c1e1adc343b35b5f9b4b2697424c700d1bcd58414647e117e3e43a4cc"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_0.jsonl",
+      "member": "full_proxy_gate_verified/work/new_data_0.jsonl",
+      "bytes": 2548333,
+      "sha256": "fa643785362cc994ee4d8e2e7d72732879990bf740487dcf84627e3719bae2c9"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_1.jsonl",
+      "member": "full_proxy_gate_verified/work/new_data_1.jsonl",
+      "bytes": 2716684,
+      "sha256": "46bb8b089494ad1b7ae543f568d7562af9067b518e17b1af1194b886a55442a2"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_2.jsonl",
+      "member": "full_proxy_gate_verified/work/new_data_2.jsonl",
+      "bytes": 2491773,
+      "sha256": "2fee9279cb0a3511842e33f6f165caadf577537a1ae23c677559839b15e532b6"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_3.jsonl",
+      "member": "full_proxy_gate_verified/work/new_data_3.jsonl",
+      "bytes": 2526581,
+      "sha256": "7c251fb012c6bbd1fe1508b2d667454f4b16a8465a7afd26889d0d4c924dd5f3"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_4.jsonl",
+      "member": "full_proxy_gate_verified/work/new_data_4.jsonl",
+      "bytes": 2777697,
+      "sha256": "8eb3169b97bcf21fb6d34b4bf48226297fc7aefd47f3101a2b861ecbb6b3f180"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_5.jsonl",
+      "member": "full_proxy_gate_verified/work/new_data_5.jsonl",
+      "bytes": 2426259,
+      "sha256": "c389c9dccda882376f750589ae298fe62c92ab644648bac0263594640fcba716"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_6.jsonl",
+      "member": "full_proxy_gate_verified/work/new_data_6.jsonl",
+      "bytes": 2502510,
+      "sha256": "640dcf3e58919d676863baf43ed15b2268799a04c98d9c2465c9cfe8855558f1"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_7.jsonl",
+      "member": "full_proxy_gate_verified/work/new_data_7.jsonl",
+      "bytes": 2347777,
+      "sha256": "d0d9fa65a84b220c8a500b3df6e45c8a78678a454169d965948fdd7f9362a202"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/roundT_doubleT.jsonl",
+      "member": "full_proxy_gate_verified/work/roundT_doubleT.jsonl",
+      "bytes": 454140,
+      "sha256": "cd4e3663c2e42020f405755b02566d46cc2dc0c4db7ad0a6a712e14ba272067f"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/roundT_pressureGate_roundT.jsonl",
+      "member": "full_proxy_gate_verified/work/roundT_pressureGate_roundT.jsonl",
+      "bytes": 472821,
+      "sha256": "2c08c87151924de11790c53a0720b796b6cf08394539b0e31e3eaba32ec26462"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/roundT_squareT_pressureGate_squareT.jsonl",
+      "member": "full_proxy_gate_verified/work/roundT_squareT_pressureGate_squareT.jsonl",
+      "bytes": 945044,
+      "sha256": "becabcf8d8f79271b4fe7b4be5e9e7da5d6ffd9688d880ad864585b5298bb722"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/setF_straight.json",
+      "member": "full_proxy_gate_verified/work/setF_straight.json",
+      "bytes": 1817426,
+      "sha256": "45265b0fb886816ba3e9ee8017c0e9ce5f8be8a8d3eb73fa8148673462f42e79"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/squareT_platform_squareT_switch.jsonl",
+      "member": "full_proxy_gate_verified/work/squareT_platform_squareT_switch.jsonl",
+      "bytes": 1669528,
+      "sha256": "8fa79f7df7122d6c56ac2c26a7001b008c3d1b3d13a1c0490614c3f36fe1402d"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_same_runtime_summary.json",
+      "member": "full_proxy_same_runtime_summary.json",
+      "bytes": 216150,
+      "sha256": "25465238a1736a2cb696621e51f0987038abdf14cc67258cd6d4ffe0a724ed8d"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/run_proxy_gate.py",
+      "member": "run_proxy_gate.py",
+      "bytes": 8788,
+      "sha256": "57bdd8fd9c9e60ab7df8048d4ff177496a62596b3d1e76e364aeb68b03b90330"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/summarize_full_proxy.py",
+      "member": "summarize_full_proxy.py",
+      "bytes": 11294,
+      "sha256": "1b6f48c911fe32e58208178cbfc5a90aeecdd6ef7345d2583312e721a8e6f5d1"
+    }
+  ]
+}
