@@ -1,0 +1,10 @@
+{
+ "frames": 201,
+ "wall_s": 12.6,
+ "cpu_s": 12.5,
+ "rss_peak_mb": 226.4,
+ "resets": [],
+ "bags": [
+  "/home/user/rs-data/b3/pandar/for_hackathon/doubleT_obstacle"
+ ]
+}
