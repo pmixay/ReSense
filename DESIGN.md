@@ -129,13 +129,13 @@ components:
 
 ReSense inherits a cool, compact engineering application: saturated metro-red chrome, a white station rail, pale continuous page ground and explicit emerald, amber, STOP-red and violet signal states. Self-hosted Raleway supports both Russian labels and tabular telemetry. The approved refinement strengthens color and control definition within this existing identity.
 
-The Player is a code-led, inherited-world integration. Its pinned physical display now reveals depth through a slight tilt, simulated pixels and light emitted from the live image; compact camera and transport controls remain in the shared application flow. The Player's Operate contract lives in `.impeccable/surfaces/webapp-frontend-src-pages-player.md`.
+The Player is a code-led, inherited-world integration. Its pinned onboard display is recessed into a modeled metro saloon wall, with a slight physical tilt, rounded industrial metal housing, protective cover glass and restrained powered-LCD optics. The train interior is confined to the primary visualization; camera controls, telemetry and transport remain in the shared application flow. The Player's Operate contract lives in `.impeccable/surfaces/webapp-frontend-src-pages-player.md`.
 
 **Key Characteristics:**
 - One shared header and metro navigation.
 - Cool neutral work surfaces, saturated red actions and distinct decision colors.
 - Native-size controls and responsive, vertically flowing content.
-- A tilted modeled display with live-image pixel optics and content-driven light.
+- A recessed train-wall display with physical glass, subtle pixel optics and restrained content-driven light.
 
 ## Colors
 
@@ -168,15 +168,19 @@ Player composition is a flowing column with gaps (12px): **modeled live scene â†
 
 The display height responds to available viewport height (`clamp(280px, calc(100dvh - var(--site-chrome-h, 148px) - 342px), 720px)`). At widths up to 1100px, telemetry becomes three columns, navigation wraps into text destinations, and the timeline gets its own row. At widths up to 700px, telemetry becomes two columns with distance spanning both; view tools and transport wrap into additional rows. Narrow screens scroll vertically with native-size controls rather than shrinking the page.
 
+Within that display region, responsive side/top/bottom margins reserve visible train-wall context around the enclosure. The opaque interior fills the visualization canvas; the application ground continues outside it. This internal scene framing preserves the existing outer display-height and telemetry layout.
+
 ## Elevation & Depth
 
 The shared system combines neutral tonal layering with soft card, popover and primary-action shadows; it is not shadow-free. Card, popover and red-action shadow tokens, keyboard rings and state transitions are preserved in the sidecar. CSS reduced-motion handling suppresses CSS animation/transition durations; it does not imply all WebGL camera motion is disabled.
 
-The Player's depth is actual Three.js geometry: beveled rear, thin silver housing and rounded black cover glass, with the live LiDAR render target mapped to the active face. A fixed body pitch/yaw (-0.075/-0.17 radians) and increased rear extrusion expose the sidewall without tilting application controls. The outer renderer remains transparent over the continuous application ground. `images (1).jpg` (introduced in commit `5118a17`) pins the material/form reference; the model is a parametric reconstruction, not a dimensional scan.
+The Player's depth is actual Three.js geometry: a beveled rear and rounded metallic industrial housing sit in an extruded laminate wall's real opening, seated in a recessed rubber mounting ring. `trainInterior.ts` supplies panel joints, flush fasteners, a stainless grab rail and fixing bosses, aluminium door/window reveal with dark glazing, ceiling valance/louvers, a linear luminaire and lower dado trim. Wall and enclosure share the fixed pitch/yaw (-0.075/-0.17 radians), exposing volume while preserving their installation alignment. `images (1).jpg` (introduced in commit `5118a17`) remains the material/form authority; this is a parametric reconstruction, not a photographic scan or a claim to depict a particular train.
 
-`screenEffects.ts` continuously samples the live source beneath a simulated RGB aperture (approximately 1.85 CSS-pixel pitch), local highlight bloom and diffused emission. Two low-resolution GPU passes extract/filter the image with hue-preserving compression; their emission map drives the screen, glass and surrounding light pool. Rendering stays on demand while paused, with no extra animation loop or runtime CPU pixel readback. Replaced geometry and all owned targets/materials are disposed.
+The opaque train-wall scene replaces the floating display over page ground. Deterministic procedural DataTexture grain supplies subtle laminate bump and steel roughness without image assets. A warm directional key, hemispheric ambient light and cooler fill illuminate the interior; the housing casts real cached PCF soft contact shadows onto the wall. Shadow maps refresh after geometry/size changes rather than each playback frame. A transparent clear-coated MeshPhysicalMaterial cover plane sits above the live face (z 0.205 versus 0.175 in model coordinates), with low-amplitude ceiling-light glare in the display shader.
 
-**The Content-Driven Light Rule.** Player light spill and pixel optics derive from the live display texture; their rendering constants do not become shared UI colors or generic glow treatments.
+`screenEffects.ts` continuously samples the live source beneath a subtle simulated RGB aperture (approximately 1.85 CSS-pixel pitch), mild local highlight bloom and diffused emission. Brightness, glass emission and wall spill are softened for a lit train interior. Two low-resolution GPU passes extract/filter the image with hue-preserving compression; their emission map drives the screen, black glass and a wall-local light pool. Rendering stays on demand while paused, with no extra animation loop or runtime CPU pixel readback. Replaced geometry and all owned materials, render targets, procedural textures and shadow resources are disposed.
+
+**The Content-Driven Light Rule.** Player light spill and pixel optics derive from the live display texture and stay restrained within the lit train-wall scene; environment and rendering constants do not become shared UI colors or generic glow treatments.
 
 ## Shapes
 
@@ -190,7 +194,7 @@ Retain the inherited radius ladder: inputs use `r-xs`; selects/tooltips and loca
 
 **Navigation.** TopBar owns the ReSense identity, grouped destinations and backend status; its logo's inner circle follows the shared red token. LineRail owns the station sequence and System branch. Current stations combine an enlarged ring, heavier label and red underline. Compact navigation wraps destinations while preserving the active underline; it is the same application navigation.
 
-**Player display and annotations.** `World.tsx` observes available size and updates `PlayerScene`, the modeled surface/render targets, camera aspect, HUD bounds and close-up; MiniMap observes its own region. `screenDisplay.ts` rebuilds the housing aspect parametrically and exports the orthographic active face's exact affine projection. `Hud.tsx` applies that matrix to the annotation plane, including its close-up, so labels follow the tilted face rather than an axis-aligned approximation. The close-up reserves a ruler gutter (44px) and caption gutter (24px); adaptive caption detail never moves object pixels under those gutters.
+**Player display and annotations.** `World.tsx` observes available size and updates `PlayerScene`, the modeled surface/render targets, camera aspect, HUD bounds and close-up; MiniMap observes its own region. `screenGeometry.ts` shares the rounded-rectangle construction between the enclosure and wall aperture. `screenDisplay.ts` rebuilds the housing, wall installation and internal margins parametrically, then exports the live face's exact orthographic affine projection. `Hud.tsx` applies that matrix to the annotation plane, including its close-up, so labels follow the installed, tilted face independently of the cover glass and wall. The close-up reserves a ruler gutter (44px) and caption gutter (24px); adaptive caption detail never moves object pixels under those gutters.
 
 **Player controls and data.** The compact run selector, locally styled shared camera Segmented, decision status and fullscreen control precede five single-level telemetry regions (minimum height 132px, padding 12px 14px). Camera options have icons, a neutral-well rounded-rectangle group and red selected state; speed selection and primary play/pause also use brand red. Tool/transport buttons retain native sizes with rounded-square local overrides. White telemetry uses crisp outlines; map and decision regions keep their dark/signal surfaces. The scene retains orbit and reset; timeline/transport retain seeking, frame/event stepping, speed, looping and keyboard operation. Picker, loading, errors, retry and lost-GPU recovery use the same page flow. The existing API hooks, detector contracts, PlayerEngine clock and URL position/speed/camera behavior remain authoritative.
 
@@ -208,4 +212,4 @@ Retain the inherited radius ladder: inputs use `r-xs`; selects/tooltips and loca
 - **Don't** extend the modeled display housing into a separate instrument/cab mini-site.
 - **Don't** substitute brand red for STOP or imply unverified distance is clear.
 
-Evidence sources: `webapp/frontend/src/styles/{tokens,base,fonts}.css`, shared components, `lib/decisions.ts`, `pages/Player/{index.tsx,Player.module.css,World.tsx,Hud.tsx,ViewControls.tsx,Scrubber.tsx,Tiles.tsx}`, and `player/{screenDisplay,screenEffects,scene}.ts`. Reviewed captures: `.impeccable/review/{user-1366,desktop,user-1920,mobile}.png` and `docs/images/player-workspace/{caution-1366,clear-1440,picker-1440,app-overview-1440,app-upload-390}.png`. Provenance/architecture and measured optical checks remain in that directory's `README.md` and `optics-verification.json`.
+Evidence sources: `webapp/frontend/src/styles/{tokens,base,fonts}.css`, shared components, `lib/decisions.ts`, `pages/Player/{index.tsx,Player.module.css,World.tsx,Hud.tsx,ViewControls.tsx,Scrubber.tsx,Tiles.tsx}`, and `player/{screenDisplay,screenEffects,screenGeometry,trainInterior,scene}.ts`. Current installation captures reviewed: `.impeccable/review/{desktop,user-1366,user-1920,mobile}.png` and `docs/images/player-workspace/{installed-display-1440,clear-1920,caution-1366}.png`. Provenance/architecture and measured optical checks remain in that directory's `README.md` and `optics-verification.json`.
