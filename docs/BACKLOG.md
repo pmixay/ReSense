@@ -1045,8 +1045,9 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
 * **Done when:** the README shows the Falcon command; the whole recording is characterised; the CAUTION and false-STOP
   cause on the Falcon is attributed (X1-style); a decision on a fix or an honest limitation for the pitch.
 * **18.10 progress:** profiles, documented commands, full recording, static-cause attribution and startup history
-  correction are implemented and measured. All eight supported automatic orientations preserve193 real-person
-  STOP frames, first at frame8. Missing rings and field/intensity layouts preserve those results. Sampling changes
+  correction are implemented and measured. All eight supported automatic orientations preserve 193 overall
+  STOP frames on the real obstacle recording, first at frame8. Person and rail-object matches are separate metrics.
+  Missing rings and field/intensity layouts preserve those results. Sampling changes
   do not: deduplication loses4 STOP rows, half-channel sampling loses128, and the Falcon proxy adds empty-bag
   alarms as well as losing detections. Full proxy gate and combined-source regression acceptance remain pending.
 

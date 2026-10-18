@@ -59,6 +59,9 @@ detection/warning payloads and post-initial decisions versus the offline prefix.
 STOP occurs at frames 25–28 for the 115 m support, with no held stale STOP.
 The initial epoch guard remains FAULT; the selected conservative Falcon policy
 reports unavailable small-target range as null and clear range zero.
+The corrected-core `7b7b02c` image repeats the same 140-input DDS test. Its
+[independent Falcon prefix comparison](actual_dds_prefix_7b7b02c.json) also passes
+all 100 frames with the same four STOP frames and no stale held result.
 
 ## Input profiles and startup behavior
 
@@ -127,6 +130,19 @@ Concurrent wall times of 2.05–3.32 seconds for the adoption call, and a 4.29-s
 maximum outer call including orientation search, are not an idle-host benchmark.
 Default four-frame replay was enabled by the parent integration in `5b8bbfd`,
 subject to the unhooked combined gate.
+
+An independent review then found that `deepcopy` can allocate larger nested-list
+containers than their source. The original 32 MiB accounting was therefore not a
+hard bound for arbitrary supported metadata, although the measured decoder inputs
+remained within budget. Commit `7b7b02c` reserves container expansion before copying,
+charges independently copied array aliases separately, and checks actual retained
+storage afterward. The original failing case now stops before allocation. The
+[independent review](INDEPENDENT_ORIENTATION_REVIEW.md) includes a 216-case container
+sweep and unchanged storage/acceptance for the real obstacle and Falcon inputs.
+The [focused corrected-source checks](orientation_replay_candidate/bound_fix_tests.json)
+pass 149 tests. Original results above retain their original source identities;
+the corrected-source eight-orientation replay and combined gates are captured
+separately under `orientation_bound_fix/` and the integration evidence.
 
 ## Full recording: static supports and the person
 

@@ -1,6 +1,6 @@
 # N1/N4 evidence — 18 October 2026
 
-Implementation and operator instructions are in [HOWTO.md](HOWTO.md). This directory preserves both successful checks and rejected display settings. Final combined-core and actual DDS results will be recorded separately from the initial isolated display comparison.
+Implementation and operator instructions are in [HOWTO.md](HOWTO.md). This directory preserves successful checks, rejected display settings, complete display replays and actual DDS results with their separate source versions.
 
 ## Display development and honest range cost
 
@@ -26,7 +26,7 @@ Final measurements, source hashes and local tests are added below as they comple
 
 ## Final local transport and graphics checks
 
-The immutable detector core is `f5ff15f`, with bounded orientation replay enabled (four frames) and N6 rail extension explicitly **off**. The matched curve runs use image `a018d39a2369`; the later node intake correction is commit `00ee76f`, image `3ddf27362e5d`, with the same detector core. `final_core_f5ff15f/runtime.json` and the follow-up receipt distinguish these versions.
+The detector core for these measurements is `f5ff15f`, with bounded orientation replay enabled (four frames) and N6 rail extension explicitly **off**. The matched curve runs use image `a018d39a2369`; the later node intake correction is commit `00ee76f`, image `3ddf27362e5d`, with the same detector core. `final_core_f5ff15f/runtime.json` and the follow-up receipt distinguish these versions. The later corrected-core transport check is recorded below.
 
 Heavy quality jobs were paused on the actual one-CPU host for the local checks. The unchanged accumulation timing test passed: mean 8.2 ms, p95 10.4 ms, maximum 10.6 ms over 19 measured synthetic frames. The earlier contended full-suite p95 was 289.8 ms; the 150 ms limit was not relaxed. This short synthetic test is not a full ROS throughput claim.
 
@@ -49,6 +49,33 @@ The documented wrapper also played the same 70 preserved curve frames at rate 0.
 | Detector container peak memory |156 MiB|478 MiB|
 
 The RViz container includes the renderer; cgroup values exclude the player, observer, Xvfb and screenshot capture. These are single local runs with quality jobs paused, not a multi-core extrapolation. All 70 corresponding decisions, detections, warnings, track fields, clear ranges and gauge fields were exactly equal between the two modes. Every published solid gauge stayed within axis support. The retained screenshot is the actual unedited window. Rate 0.5 (about five input frames per second for this bag) is demonstrated on this host; no 10 Hz claim is made.
+
+## Corrected-core transport confirmation
+
+Independent N2 review found that copied nested metadata could exceed the startup
+history memory estimate. The correction is core commit `7b7b02c`; node, gauge,
+configuration and thresholds are unchanged. Image `acbd890efa86` overlays only
+`calibration.py` onto the accepted `3ddf27362e5d` image. The
+[image receipt](final_core_7b7b02c/image_receipt.json) verifies all 43 relevant
+source files and the identical native Python 3.10 extension in the node import
+context.
+
+With nine heavy quality process groups paused, the corrected image passed the
+[strict same-node run](final_core_7b7b02c/report.json): 40/40 Pandar plus 100/100
+actual Falcon frames, zero restarts/drops/catch-up skips, pause/resume, rate
+0.5→0.4 and explicit profile/reset boundaries. The
+[independent comparison](final_core_7b7b02c/payload_comparison.json) matches all
+140 frame payloads against the earlier accepted run with **zero semantic
+mismatches**. It includes every decision, range, health severity/message,
+freshness validity/reason, detector payload, gauge state and reset generation;
+only enumerated measured time/rate/resource values are excluded. Nonframe
+reset/stale transitions also match. The comparator detects deliberate changes
+to decision, clear range, generation and solid gauge range.
+
+Raw logs, compressed status, exact command and counters are retained under
+`final_core_7b7b02c/`. The container was stopped before the corrected-source host
+suite. This narrow confirmation does not relabel the earlier software-RViz,
+2,308-frame display or full-suite measurements as the new source version.
 
 ## Final full-precision display replay
 

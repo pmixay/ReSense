@@ -66,22 +66,37 @@ def main():
               'code_sha256': {str(path.relative_to(ROOT)): digest(path) for path in
                               (Path(__file__), ROOT / 'resense/metrics.py', ROOT / 'scripts/score_fake_objects.py')},
               'event_counts': None, 'event_count_reason': 'capture contains no persistent detection IDs',
+              'legacy_aggregate_limit': 'The baseline/candidate legacy scorer collapses each object to one gauge value. Its aggregate verdict is not authoritative for an object whose gauge relation changes over time; use the per-frame relation breakdown in top-level objects.',
               'new_unmatched_stop_frames': [i for i in range(len(baseline)) if pairs[1][1][i] > pairs[0][1][i]]}
     for label in pairs[0][0]:
         a, b = [pair[0][label] for pair in pairs]
         before = {i for i, row in a.items() if row['matched']}
         after = {i for i, row in b.items() if row['matched']}
         report['objects'][label] = {'matched_stop_rows': [len(before), len(after)],
-                                    'first_stop_m': [max((rows[i]['distance'] for i in hits), default=None)
+                                    'first_stop_m': [rows[min(hits)]['distance'] if hits else None
                                                      for rows, hits in ((a, before), (b, after))],
+                                    'maximum_matched_distance_m': [max((rows[i]['distance'] for i in hits), default=None)
+                                                                   for rows, hits in ((a, before), (b, after))],
                                     'lost_stop_rows': sorted(before - after),
                                     'new_stop_rows': sorted(after - before),
-                                    'new_outside_stop_rows': sorted(i for i in after - before if not b[i]['in_gauge'])}
+                                    'new_outside_stop_rows': sorted(i for i in after - before if b[i]['in_gauge'] is False)}
+        item = report['objects'][label]
+        item['first_stop_frame'] = [min(hits) if hits else None for hits in (before, after)]
+        for relation, value in (('inside', True), ('outside', False), ('unknown', None)):
+            first = {i for i in before if a[i]['in_gauge'] is value}
+            second = {i for i in after if b[i]['in_gauge'] is value}
+            item[f'{relation}_matched_stop_rows'] = [len(first), len(second)]
+            item[f'lost_{relation}_stop_rows'] = sorted(first - second)
+            item[f'new_{relation}_stop_rows'] = sorted(second - first)
+        item['gauge_relation_changes_by_frame'] = len({row['in_gauge'] for row in a.values()}) > 1
     for variant, rows in (('baseline', baseline), ('candidate', candidate)):
         objects, background = score(rows, labels)
         background.pop('background_alarm_ids')
         background['persistent_event_count'] = None
         report[variant] = {'objects': objects, 'background': background}
+        for label, obj in objects.items():
+            if report['objects'][label]['gauge_relation_changes_by_frame']:
+                obj['aggregate_verdict_not_authoritative'] = True
     if args.labels.name == 'cloud_with_fake_obj.json':
         report['exact_source_interval'] = {'first_frame': 1308, 'last_frame': 1433,
                                           'baseline_stop_frames': [r['frame'] for r in baseline[1308:1434] if r['obstacle']],

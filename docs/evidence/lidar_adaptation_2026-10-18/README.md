@@ -40,6 +40,11 @@ intake correction is `00ee76f`: pre-subscribe known `/iv_points` and require exa
 counts in the integration harness. Initial display/transport and full-host results used core
 `f5ff15f`. Accepted actual Falcon transport uses image `3ddf27362e5d`; matched headless/RViz
 measurements use the preceding `a018d39a2369` image with the same f5 detector and gauge implementation.
+The corrected-core image `acbd890efa86` also passes the strict 140-frame check. Independent
+comparison preserves every semantic frame payload and reset transition against `3ddf27362e5d`;
+only measured time/resource values are excluded. Its 100 actual Falcon frames separately match
+the full offline explicit-ROS capture. The [corrected-image evidence](../n1_n4_2026-10-18/final_core_7b7b02c/payload_comparison.json)
+retains exact image/source identities and every comparison field.
 The [source/image receipt](../n1_n4_2026-10-18/final_core_f5ff15f/node_intake_followup.json)
 keeps these phases distinct. The [registered protocol](PROTOCOL.md)
 predates candidate measurements and retains failed hypotheses.
@@ -62,6 +67,11 @@ with quality jobs paused; it was not waived. The quiet full host suite before th
 in 108.57 s, exit 0. The full node suite separately passed all 146 tests after the intake
 correction. [Final JUnit](junit-core-final.xml) and [source/command receipt](core_final_receipt.json)
 retain the tested scope; the original failed report remains available.
+
+After the metadata correction, the complete quiet suite passes **1,890 tests plus 12 subtests**,
+with the same seven unavailable historical-fixture deselections, in 108.20 s, exit 0.
+See [corrected-source JUnit](junit-core-metadata-final.xml), [command/source receipt](core_metadata_final_receipt.json)
+and the [second isolated window](isolated_window_metadata_fixed.json). All quality jobs resumed afterward.
 
 The N1 replay wrapper returned external SIGTERM/exit143 when collected, while all four
 reports and complete gzip streams were present. Independent artifact validation confirms

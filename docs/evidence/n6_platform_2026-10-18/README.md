@@ -95,14 +95,25 @@ covers **5,665 frames**, each replayed with the candidate off and on.
 | synthetic_switch | 736 | 142 → 142 | Every detection, warning and range unchanged |
 | synthetic_tunnels | 545 | 126 → 126 | Every detection, warning and range unchanged |
 | cloud_with_fake_obj (Set O) | 1,510 | 452 → 452 | Every detection, warning and range unchanged; all ten object results unchanged |
-| doubleT_obstacle | 201 | 193 → 193 | Every detection, warning and range unchanged; crossing person first STOP stays 56.55 m |
+| doubleT_obstacle | 201 | 193 → 193 | Every detection, warning and range unchanged; crossing person first STOP stays 55.51 m |
 
 The [real-person object comparison](doubleT_obstacle_v3_legacy.json) preserves
-all 67 crossing-person and 128 rail-object matches; the outside walkway person
+all 67 crossing-person matches (61 inside, 6 outside) and 128 inside rail-object
+matches; the outside walkway person
 has no STOP before or after. The [Set O comparison](cloud_with_fake_obj_v3_legacy.json)
 preserves every object match, including existing outside-object detections.
 The exact platform-source interval 1308–1433 has no STOP before or after.
 These are parity results, not claims that baseline false alarms were zero.
+For the nonmonotonic real-person crossing, the temporal first matched distance
+is 55.51 m; the maximum matched distance is 56.55 m. The legacy helper reports
+these separately rather than calling the maximum distance the first STOP.
+The [correction receipt](metric_correction_receipt.json) preserves hashes and
+[exact committed originals](metric_correction_originals_c6ec863/receipt.json).
+The retained legacy aggregate scorer collapses changing gauge relation to one
+value, so its crossing-person verdict is explicitly non-authoritative; the
+comparison's per-frame inside/outside/unknown breakdown governs that object.
+Neither this reporting correction nor the gauge breakdown changes the measured
+synthetic-platform improvement or any detector output.
 
 Trusted range changes on 6 empty-platform frames and 91 empty-switch frames;
 the other three empty controls have identical ranges. The current

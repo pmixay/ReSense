@@ -7,12 +7,38 @@
         67
       ],
       "first_stop_m": [
+        55.51,
+        55.51
+      ],
+      "maximum_matched_distance_m": [
         56.55,
         56.55
       ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        8,
+        8
+      ],
+      "inside_matched_stop_rows": [
+        61,
+        61
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        6,
+        6
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": true
     },
     "object_on_rail": {
       "matched_stop_rows": [
@@ -23,9 +49,35 @@
         56.13,
         56.13
       ],
+      "maximum_matched_distance_m": [
+        56.13,
+        56.13
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        73,
+        73
+      ],
+      "inside_matched_stop_rows": [
+        128,
+        128
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "person_walkway": {
       "matched_stop_rows": [
@@ -36,9 +88,35 @@
         null,
         null
       ],
+      "maximum_matched_distance_m": [
+        null,
+        null
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        null,
+        null
+      ],
+      "inside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     }
   },
   "input_sha256": {
@@ -47,12 +125,13 @@
     "labels/doubleT_obstacle.json": "070bf3596ae42b682362aa97d8812b53155e288b03a79aff204441fa1c700402"
   },
   "code_sha256": {
-    "docs/evidence/n6_platform_2026-10-18/compare_legacy.py": "3c37bbe39481ba64e5b3241f1d8c5fe757f4aeb96204fd40fcdf89303934df6b",
+    "docs/evidence/n6_platform_2026-10-18/compare_legacy.py": "86397cd1617f79b191df9fd5f14a1506adda0a194084134820ba102d6d634529",
     "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
     "scripts/score_fake_objects.py": "300660b7e77be1356e7be2fd239c3fe5689a6c990b63c654e207df43fbc7833a"
   },
   "event_counts": null,
   "event_count_reason": "capture contains no persistent detection IDs",
+  "legacy_aggregate_limit": "The baseline/candidate legacy scorer collapses each object to one gauge value. Its aggregate verdict is not authoritative for an object whose gauge relation changes over time; use the per-frame relation breakdown in top-level objects.",
   "new_unmatched_stop_frames": [],
   "baseline": {
     "objects": {
@@ -73,7 +152,8 @@
         },
         "false_alarm_frames": 67,
         "false_alarm_from_m": 56.5,
-        "verdict": "false alarm"
+        "verdict": "false alarm",
+        "aggregate_verdict_not_authoritative": true
       },
       "object_on_rail": {
         "in_gauge": true,
@@ -158,7 +238,8 @@
         },
         "false_alarm_frames": 67,
         "false_alarm_from_m": 56.5,
-        "verdict": "false alarm"
+        "verdict": "false alarm",
+        "aggregate_verdict_not_authoritative": true
       },
       "object_on_rail": {
         "in_gauge": true,

@@ -1,0 +1,7 @@
+# The base is the accepted 00ee76f node / f5ff15f detector image, recorded by ID.
+# The sole production source difference at 7b7b02c is owned-history accounting.
+FROM resense:n1n4-check
+COPY resense/calibration.py /opt/resense/resense/calibration.py
+COPY resense/calibration.py /usr/local/lib/python3.10/dist-packages/resense/calibration.py
+LABEL resense.detector.commit="7b7b02c9b535d2b03d053df1b309301b619269ad" \
+      resense.node.commit="00ee76fcf9e995b18d12e0981da96c7f27cb19e0"

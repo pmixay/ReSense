@@ -1,0 +1,80 @@
+{
+  "reason": "Isolated corrected7b image actualDDS and final full host suite",
+  "started_utc": "2026-10-18T09:14:17Z",
+  "groups": {
+    "27063": {
+      "members_before": [
+        "27070   27063 RN   /home/resense/.venv/bin/python scripts/dust_battery.py --cache /home/resense/data/decoded --out docs/evidence/n3_dust_2026-10-18/baseline --detector-root /home/resense/data/n2/baseline_9b92df5"
+      ],
+      "paused": true,
+      "resumed": true
+    },
+    "32682": {
+      "members_before": [
+        "32687   32682 SN   /home/resense/.venv/bin/python -u -",
+        "55444   32682 RN   /home/resense/.venv/bin/python docs/evidence/n2_falcon_2026-10-18/replay_inputs.py --source /home/resense/data/n2/baseline_9b92df5 --cache /home/resense/data/decoded/synthetic_switch --out docs/evidence/n2_falcon_2026-10-18/proxy/synthetic_switch --suite proxy"
+      ],
+      "paused": true,
+      "resumed": true
+    },
+    "47935": {
+      "members_before": [
+        "47935   47935 SNs  /home/resense/.venv/bin/python /home/resense/data/dust/run_set_f_when_ready.py",
+        "53965   47935 SN   /home/resense/.venv/bin/python /home/resense/ReSense/scripts/dust_set_f.py --cache /home/resense/data/gate_cache/new_data --bank /home/resense/data/dust/set_f_bank --out /home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline --placement-root /home/resense/data/n2/baseline_9b92df5 --detector-root /home/resense/data/n2/baseline_9b92df5",
+        "53966   47935 RN   /home/resense/.venv/bin/python /home/resense/ReSense/scripts/dust_set_f.py --cache /home/resense/data/gate_cache/new_data --bank /home/resense/data/dust/set_f_bank --out /home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline --placement-root /home/resense/data/n2/baseline_9b92df5 --detector-root /home/resense/data/n2/baseline_9b92df5 --mode prepare"
+      ],
+      "paused": true,
+      "resumed": true
+    },
+    "48050": {
+      "members_before": [
+        "48050   48050 Ssl  /home/resense/.venv/bin/python /home/resense/data/final_lidar_f5ff15f/scripts/robustness_battery.py --repo /home/resense/data/final_lidar_f5ff15f --cache /home/resense/data/x3_reference/cache --reference /home/resense/data/x3_reference/reference.json --out /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/x3_candidate.json -j 1",
+        "56481   48050 R    /home/resense/.venv/bin/python /home/resense/data/final_lidar_f5ff15f/scripts/robustness_battery.py --worker /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/x3_candidate.raw/roundT_squareT_pressureGate_squareT/dedup/job.json"
+      ],
+      "paused": true,
+      "resumed": true
+    },
+    "54682": {
+      "members_before": [
+        "54682   54682 SNs  /home/resense/.venv/bin/python docs/evidence/n2_falcon_2026-10-18/run_proxy_gate.py --source /home/resense/data/n2/baseline_9b92df5 --cache /home/resense/data/gate_cache --out /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified --baseline docs/evidence/integration_2026-10-16/h5/candidate/gate.json",
+        "54706   54682 SNl  /home/resense/.venv/bin/python /home/resense/ReSense/scripts/regression_gate.py --cache /home/resense/data/gate_cache --config /home/resense/data/n2/baseline_9b92df5/configs/default.yaml --jobs 1 --chunks 8 --work /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work --out /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/gate.json --baseline /home/resense/ReSense/docs/evidence/integration_2026-10-16/h5/candidate/gate.json --changed-only",
+        "54743   54682 RN   /home/resense/.venv/bin/python /home/resense/ReSense/scripts/regression_gate.py --cache /home/resense/data/gate_cache --config /home/resense/data/n2/baseline_9b92df5/configs/default.yaml --jobs 1 --chunks 8 --work /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work --out /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/gate.json --baseline /home/resense/ReSense/docs/evidence/integration_2026-10-16/h5/candidate/gate.json --changed-only"
+      ],
+      "paused": true,
+      "resumed": true
+    },
+    "56467": {
+      "members_before": [
+        "56467   56467 Ss   /home/resense/.venv/bin/python /home/resense/data/run_final_gate_7b7b02c.py",
+        "56468   56467 Sl   /home/resense/.venv/bin/python /home/resense/data/final_lidar_7b7b02c/scripts/regression_gate.py --cache /home/resense/data/gate_cache --jobs 1 --baseline /home/resense/data/final_lidar_7b7b02c/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --out /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/gate.json --work /home/resense/data/final_gate_work_7b7b02c",
+        "56469   56467 R    /home/resense/.venv/bin/python /home/resense/data/final_lidar_7b7b02c/scripts/regression_gate.py --cache /home/resense/data/gate_cache --jobs 1 --baseline /home/resense/data/final_lidar_7b7b02c/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --out /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/gate.json --work /home/resense/data/final_gate_work_7b7b02c"
+      ],
+      "paused": true,
+      "resumed": true
+    },
+    "56525": {
+      "members_before": [
+        "56525   56525 Ss   /home/resense/.venv/bin/python docs/evidence/lidar_adaptation_2026-10-18/run_gate_control.py --source /home/resense/data/control_lidar_9b92df5 --candidate-source /home/resense/data/final_lidar_f5ff15f --cache /home/resense/data/gate_cache --out /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native",
+        "56541   56525 Sl   /home/resense/.venv/bin/python /home/resense/data/control_lidar_9b92df5/scripts/regression_gate.py --cache /home/resense/data/gate_cache --jobs 1 --chunks 8 --baseline /home/resense/data/control_lidar_9b92df5/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --out /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/gate.json --work /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work",
+        "56542   56525 R    /home/resense/.venv/bin/python /home/resense/data/control_lidar_9b92df5/scripts/regression_gate.py --cache /home/resense/data/gate_cache --jobs 1 --chunks 8 --baseline /home/resense/data/control_lidar_9b92df5/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json --out /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/gate.json --work /home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work"
+      ],
+      "paused": true,
+      "resumed": true
+    },
+    "56526": {
+      "members_before": [
+        "56526   56526 Rs   /home/resense/.venv/bin/python docs/evidence/n2_falcon_2026-10-18/replay_inputs.py --source /home/resense/data/n2/candidate_7b7b02c --cache /home/resense/data/decoded/doubleT_obstacle --out /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/orientation_bound_fix --suite orientation --upright-only --replay-frames 4"
+      ],
+      "paused": true,
+      "resumed": true
+    },
+    "56664": {
+      "members_before": [
+        "56664   56664 Ss   /home/resense/.venv/bin/python /home/resense/data/run_x3_metadata_fixed.py"
+      ],
+      "paused": true,
+      "resumed": true
+    }
+  },
+  "finished_utc": "2026-10-18T09:18:34Z"
+}

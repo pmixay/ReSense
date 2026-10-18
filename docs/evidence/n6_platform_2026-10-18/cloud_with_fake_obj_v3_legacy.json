@@ -10,9 +10,35 @@
         98.16,
         98.16
       ],
+      "maximum_matched_distance_m": [
+        98.16,
+        98.16
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        4,
+        4
+      ],
+      "inside_matched_stop_rows": [
+        209,
+        209
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "small_on_rail": {
       "matched_stop_rows": [
@@ -23,9 +49,35 @@
         47.96,
         47.96
       ],
+      "maximum_matched_distance_m": [
+        47.96,
+        47.96
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        400,
+        400
+      ],
+      "inside_matched_stop_rows": [
+        26,
+        26
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "small_center": {
       "matched_stop_rows": [
@@ -36,9 +88,35 @@
         55.84,
         55.84
       ],
+      "maximum_matched_distance_m": [
+        55.84,
+        55.84
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        337,
+        337
+      ],
+      "inside_matched_stop_rows": [
+        32,
+        32
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "small_edge_inside": {
       "matched_stop_rows": [
@@ -49,9 +127,35 @@
         34.97,
         34.97
       ],
+      "maximum_matched_distance_m": [
+        34.97,
+        34.97
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        462,
+        462
+      ],
+      "inside_matched_stop_rows": [
+        18,
+        18
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "small_outside_near": {
       "matched_stop_rows": [
@@ -62,9 +166,35 @@
         null,
         null
       ],
+      "maximum_matched_distance_m": [
+        null,
+        null
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        null,
+        null
+      ],
+      "inside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "big_edge_inside": {
       "matched_stop_rows": [
@@ -75,9 +205,35 @@
         18.26,
         18.26
       ],
+      "maximum_matched_distance_m": [
+        18.26,
+        18.26
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        574,
+        574
+      ],
+      "inside_matched_stop_rows": [
+        7,
+        7
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "big_outside": {
       "matched_stop_rows": [
@@ -88,9 +244,35 @@
         142.29,
         142.29
       ],
+      "maximum_matched_distance_m": [
+        142.29,
+        142.29
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        563,
+        563
+      ],
+      "inside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        7,
+        7
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "big_above": {
       "matched_stop_rows": [
@@ -101,9 +283,35 @@
         111.42,
         111.42
       ],
+      "maximum_matched_distance_m": [
+        111.42,
+        111.42
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        627,
+        627
+      ],
+      "inside_matched_stop_rows": [
+        56,
+        56
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "long_low_on_rails": {
       "matched_stop_rows": [
@@ -114,9 +322,35 @@
         88.97,
         88.97
       ],
+      "maximum_matched_distance_m": [
+        88.97,
+        88.97
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        692,
+        692
+      ],
+      "inside_matched_stop_rows": [
+        53,
+        53
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     },
     "thin_hanging": {
       "matched_stop_rows": [
@@ -127,9 +361,35 @@
         30.12,
         30.12
       ],
+      "maximum_matched_distance_m": [
+        30.12,
+        30.12
+      ],
       "lost_stop_rows": [],
       "new_stop_rows": [],
-      "new_outside_stop_rows": []
+      "new_outside_stop_rows": [],
+      "first_stop_frame": [
+        789,
+        789
+      ],
+      "inside_matched_stop_rows": [
+        15,
+        15
+      ],
+      "lost_inside_stop_rows": [],
+      "new_inside_stop_rows": [],
+      "outside_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_outside_stop_rows": [],
+      "unknown_matched_stop_rows": [
+        0,
+        0
+      ],
+      "lost_unknown_stop_rows": [],
+      "new_unknown_stop_rows": [],
+      "gauge_relation_changes_by_frame": false
     }
   },
   "input_sha256": {
@@ -138,12 +398,13 @@
     "labels/cloud_with_fake_obj.json": "4cdb5afe4a57ce7476ff88a1ee0b74bb6faed18862447c1361d8e824b238c545"
   },
   "code_sha256": {
-    "docs/evidence/n6_platform_2026-10-18/compare_legacy.py": "3c37bbe39481ba64e5b3241f1d8c5fe757f4aeb96204fd40fcdf89303934df6b",
+    "docs/evidence/n6_platform_2026-10-18/compare_legacy.py": "86397cd1617f79b191df9fd5f14a1506adda0a194084134820ba102d6d634529",
     "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
     "scripts/score_fake_objects.py": "300660b7e77be1356e7be2fd239c3fe5689a6c990b63c654e207df43fbc7833a"
   },
   "event_counts": null,
   "event_count_reason": "capture contains no persistent detection IDs",
+  "legacy_aggregate_limit": "The baseline/candidate legacy scorer collapses each object to one gauge value. Its aggregate verdict is not authoritative for an object whose gauge relation changes over time; use the per-frame relation breakdown in top-level objects.",
   "new_unmatched_stop_frames": [],
   "baseline": {
     "objects": {
