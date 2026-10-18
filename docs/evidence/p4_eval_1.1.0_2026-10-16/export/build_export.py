@@ -228,6 +228,111 @@ def j1_range(ex):
                        f"{base}/decisions_while_visible/{k}", "frames", status, "in-sample", LINUX)
 
 
+NEW = "MEASURED (development data, observation)"
+B6_BAGS = ["doubleT_obstacle", "doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT",
+           "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch", "cloud_with_fake_obj",
+           "synthetic_platform", "synthetic_switch", "synthetic_tunnels"]
+SHORT = {"v1.0.0": "v100", "1.1.0": "v110"}
+
+
+def syn(ex):
+    """B1 / A5 (17.10): the organizers' 16.10 synthetic platform, frames 0-314 with exact labels."""
+    for version in ("v1.0.0", "1.1.0"):
+        commit = VERSIONS["707ea9c" if version == "v1.0.0" else "1.1.0"][1]
+        rel = f"docs/evidence/synthetic_labels_2026-10-17/score_platform_0-314_{SHORT[version]}.json"
+        doc, _ = load(rel)
+        for obj, o in doc["objects"].items():
+            cid = f"syn/synthetic_platform/{obj}"
+            ex.case(case_id=cid, stage="SYN", recording="synthetic_platform (frames 0-314)", alias="synthetic 16.10",
+                    object=obj, variant="nominal, node path from decoded cache", version=version, commit=commit,
+                    runtime=LINUX, status=NEW, scope="development data (organizers' 16.10 synthetic)",
+                    result=f"first STOP {o['first_stop_d']} m, STOP rows {o['stop_rows']}/{o['rows_plausible']}, "
+                           f"intent (measured) {'STOP' if o['in_gauge_intent'] else 'no STOP'}", evidence=rel)
+            base = f"/objects/{esc(obj)}"
+            for k, unit in (("first_visible_d", "m"), ("first_stop_d", "m"), ("held_from_d", "m"),
+                            ("stop_rows", "rows"), ("rows_plausible", "rows")):
+                if o[k] is not None:
+                    ex.num("SYN", cid, version, f"object.{obj}.{k}", rel, f"{base}/{k}", unit, NEW, "in-sample", LINUX)
+        ex.num("SYN", "syn/synthetic_platform/unmatched", version, "unmatched_stop_frames", rel,
+               "/unmatched_stop_frames", "frames", NEW, "in-sample", LINUX)
+        rel = f"docs/evidence/synthetic_labels_2026-10-17/attribution/{SHORT[version]}/table.json"
+        doc, _ = load(rel)
+        for cause, bins in doc["cases"]["plat"]["causes"].items():
+            for b in bins:
+                ex.num("SYN", "syn/synthetic_platform/attribution", version, f"cause.{cause}.{b}m", rel,
+                       f"/cases/plat/causes/{esc(cause)}/{esc(b)}", "rows", NEW, "in-sample", LINUX)
+
+
+def falcon(ex):
+    """B2 (whole Falcon recording, one detector) and B3 / B8 (switch and timing), 18.10."""
+    rel = "docs/evidence/falcon_full_2026-10-18/check_v110.json"
+    doc, _ = load(rel)
+    ex.case(case_id="b2/falcon_test_second_dark", stage="B2", recording="falcon_test_second_dark (whole)",
+            alias="Falcon", object="walking person (real)", variant="whole recording, one detector, streamed",
+            version="1.1.0", commit=VERSIONS["1.1.0"][1], runtime=LINUX, status=NEW,
+            scope="development data (second lidar)", result=f"{doc['frames']} frames, prefix equal "
+            f"{doc['prefix_equal_frames']}/{doc['prefix_frames']} decisions", evidence=rel)
+    for k in ("frames", "prefix_equal_frames", "window_times_found"):
+        ex.num("B2", "b2/falcon_test_second_dark", "1.1.0", k, rel, f"/{k}", "frames", NEW, "in-sample", LINUX)
+    for part, p in doc["parts"].items():
+        key = part.split(" ")[0]
+        for d in p["decisions"]:
+            ex.num("B2", "b2/falcon_test_second_dark", "1.1.0", f"part.{key}.decisions.{d}", rel,
+                   f"/parts/{esc(part)}/decisions/{d}", "frames", NEW, "in-sample", LINUX)
+        ex.num("B2", "b2/falcon_test_second_dark", "1.1.0", f"part.{key}.caution_share", rel,
+               f"/parts/{esc(part)}/caution_share", "share", NEW, "in-sample", LINUX)
+    for version in ("v1.0.0", "1.1.0"):
+        rel = f"docs/evidence/falcon_switch_2026-10-18/{SHORT[version]}/compare.json"
+        doc, _ = load(rel)
+        commit = VERSIONS["707ea9c" if version == "v1.0.0" else "1.1.0"][1]
+        for order in ("p2f", "f2p"):
+            cid = f"b3/{order}"
+            ex.case(case_id=cid, stage="B3", recording="doubleT_obstacle + falcon prefix", alias="switch",
+                    object="", variant=" then ".join(doc[order]["order"]), version=version, commit=commit,
+                    runtime=LINUX, status=NEW, scope="development data", result=f"frames differing from stand-alone: "
+                    f"{doc[order]['first_part_differs']} + {doc[order]['second_part_differs']}", evidence=rel)
+            for k in ("first_part_differs", "second_part_differs"):
+                ex.num("B3", cid, version, k, rel, f"/{order}/{k}", "frames", NEW, "in-sample", LINUX)
+        for sensor in ("pandar", "falcon"):
+            for t in ("decode_ms", "detect_ms"):
+                for q in ("p50", "p95"):
+                    ex.num("B8", f"b8/{sensor}", version, f"{t}.{q}", rel, f"/alone/{sensor}/timing/{t}/{q}", "ms",
+                           NEW, "in-sample", LINUX)
+
+
+def gauge(ex):
+    """B6 (18.10): gauge range and stability against the driven path, ten recordings, both versions."""
+    mon_rel = "docs/evidence/gauge_stability_2026-10-18/monitored.json"
+    mon, _ = load(mon_rel)
+    for version in ("v1.0.0", "1.1.0"):
+        commit = VERSIONS["707ea9c" if version == "v1.0.0" else "1.1.0"][1]
+        for bag in B6_BAGS:
+            cid = f"b6/{bag}"
+            rel = f"docs/evidence/gauge_stability_2026-10-18/{SHORT[version]}/measure_{bag}.json"
+            doc, _ = load(rel)
+            ex.case(case_id=cid, stage="B6", recording=bag, alias=ALIAS.get(bag, "synthetic 16.10"), object="gauge",
+                    variant="nominal; truth = driven path (ICP)", version=version, commit=commit, runtime=LINUX,
+                    status=NEW, scope="development data (in-sample)",
+                    result=f"trusted range p50 {doc['range']['p50']} m, blinks {doc['blinks']}", evidence=rel)
+            ex.num("B6", cid, version, "trusted_range.p50", rel, "/range/p50", "m", NEW, "in-sample", LINUX)
+            ex.num("B6", cid, version, "blinks", rel, "/blinks", "events", NEW, "in-sample", LINUX)
+            for x in ("40m", "80m", "120m"):
+                ex.num("B6", cid, version, f"flicker_compensated.{x}.p90", rel, f"/jitter_compensated/{x}/p90", "m",
+                       NEW, "in-sample", LINUX)
+            for b in ("40-60", "80-100", "120-150"):
+                if doc["offtrack"][b]["within_trusted"].get("p50") is not None:
+                    ex.num("B6", cid, version, f"offtrack.{b}m.p50", rel, f"/offtrack/{b}/within_trusted/p50", "m",
+                           NEW, "in-sample", LINUX)
+            vals = sorted(mon[f"{bag}|{SHORT[version]}"])
+            n = len(vals)
+            ex.derived("B6", cid, version, "reported_range.p50", (vals[(n - 1) // 2] + vals[n // 2]) / 2, "m", NEW,
+                       "in-sample", LINUX, f"median of {mon_rel}[{bag}|{SHORT[version]}]")
+            hrel = f"docs/evidence/gauge_stability_2026-10-18/{SHORT[version]}/honesty_{bag}.json"
+            if (ROOT / hrel).exists():
+                ex.num("B6", cid, version, "reported_range.share_off_over_1.05m", hrel, "/inside_over_1.05m", "share",
+                       NEW, "in-sample", LINUX)
+
+
 def g3(ex):
     rel = "docs/evidence/heldout_2026-10-15/spec.json"
     doc, _ = load(rel)
@@ -265,7 +370,7 @@ def write(rows, cols, stem):
 
 def main():
     ex = Export()
-    for part in (x3, x1, j1, j1_range, g3):
+    for part in (x3, x1, j1, j1_range, syn, falcon, gauge, g3):
         part(ex)
     if "--check" not in sys.argv:
         write(ex.cases, RECORD_COLS, "case_register")
