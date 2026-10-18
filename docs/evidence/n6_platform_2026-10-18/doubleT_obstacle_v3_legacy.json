@@ -1,0 +1,227 @@
+{
+  "frames": 201,
+  "objects": {
+    "person_crossing": {
+      "matched_stop_rows": [
+        67,
+        67
+      ],
+      "first_stop_m": [
+        56.55,
+        56.55
+      ],
+      "lost_stop_rows": [],
+      "new_stop_rows": [],
+      "new_outside_stop_rows": []
+    },
+    "object_on_rail": {
+      "matched_stop_rows": [
+        128,
+        128
+      ],
+      "first_stop_m": [
+        56.13,
+        56.13
+      ],
+      "lost_stop_rows": [],
+      "new_stop_rows": [],
+      "new_outside_stop_rows": []
+    },
+    "person_walkway": {
+      "matched_stop_rows": [
+        0,
+        0
+      ],
+      "first_stop_m": [
+        null,
+        null
+      ],
+      "lost_stop_rows": [],
+      "new_stop_rows": [],
+      "new_outside_stop_rows": []
+    }
+  },
+  "input_sha256": {
+    "/home/resense/data/n6/doubleT_obstacle_baseline.jsonl": "80fe2f5303a55952f7905ea5cf19bed8a4eb6e3b1cd4fca908f541e00861d51f",
+    "/home/resense/data/n6/doubleT_obstacle_candidate_v3.jsonl": "f722708d73cfe0ec8882446431f04f2274e308c98777fb6d3a251d154536ca89",
+    "labels/doubleT_obstacle.json": "070bf3596ae42b682362aa97d8812b53155e288b03a79aff204441fa1c700402"
+  },
+  "code_sha256": {
+    "docs/evidence/n6_platform_2026-10-18/compare_legacy.py": "3c37bbe39481ba64e5b3241f1d8c5fe757f4aeb96204fd40fcdf89303934df6b",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "scripts/score_fake_objects.py": "300660b7e77be1356e7be2fd239c3fe5689a6c990b63c654e207df43fbc7833a"
+  },
+  "event_counts": null,
+  "event_count_reason": "capture contains no persistent detection IDs",
+  "new_unmatched_stop_frames": [],
+  "baseline": {
+    "objects": {
+      "person_crossing": {
+        "in_gauge": false,
+        "visible_frames": 201,
+        "first_visible_m": 56.7,
+        "alarm_frames": 67,
+        "advisory_only_frames": 0,
+        "frames_in_envelope": 201,
+        "alarm_frames_in_envelope": 67,
+        "bins": {
+          "50-100": {
+            "alarm": 67,
+            "advisory_only": 0,
+            "visible": 201
+          }
+        },
+        "false_alarm_frames": 67,
+        "false_alarm_from_m": 56.5,
+        "verdict": "false alarm"
+      },
+      "object_on_rail": {
+        "in_gauge": true,
+        "visible_frames": 185,
+        "first_visible_m": 56.5,
+        "alarm_frames": 128,
+        "advisory_only_frames": 0,
+        "frames_in_envelope": 185,
+        "alarm_frames_in_envelope": 128,
+        "bins": {
+          "50-100": {
+            "alarm": 128,
+            "advisory_only": 0,
+            "visible": 185
+          }
+        },
+        "missed_intervals": [
+          {
+            "start_frame": 1,
+            "end_frame": 11,
+            "frames": 11,
+            "from_m": 56.5,
+            "to_m": 56.1
+          },
+          {
+            "start_frame": 27,
+            "end_frame": 72,
+            "frames": 46,
+            "from_m": 56.4,
+            "to_m": 55.9
+          }
+        ],
+        "first_alarm_m": 56.1,
+        "first_alarm_frame": 73,
+        "alarm_held_from_m": null,
+        "first_advisory_or_alarm_m": 56.1,
+        "verdict": "detected"
+      },
+      "person_walkway": {
+        "in_gauge": false,
+        "visible_frames": 55,
+        "first_visible_m": 15.8,
+        "alarm_frames": 0,
+        "advisory_only_frames": 0,
+        "frames_in_envelope": 55,
+        "alarm_frames_in_envelope": 0,
+        "bins": {
+          "0-50": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 55
+          }
+        },
+        "false_alarm_frames": 0,
+        "false_alarm_from_m": null,
+        "verdict": "ignored (correct)"
+      }
+    },
+    "background": {
+      "frames": 201,
+      "alarm_frames": 193,
+      "background_alarm_frames": 0,
+      "persistent_event_count": null
+    }
+  },
+  "candidate": {
+    "objects": {
+      "person_crossing": {
+        "in_gauge": false,
+        "visible_frames": 201,
+        "first_visible_m": 56.7,
+        "alarm_frames": 67,
+        "advisory_only_frames": 0,
+        "frames_in_envelope": 201,
+        "alarm_frames_in_envelope": 67,
+        "bins": {
+          "50-100": {
+            "alarm": 67,
+            "advisory_only": 0,
+            "visible": 201
+          }
+        },
+        "false_alarm_frames": 67,
+        "false_alarm_from_m": 56.5,
+        "verdict": "false alarm"
+      },
+      "object_on_rail": {
+        "in_gauge": true,
+        "visible_frames": 185,
+        "first_visible_m": 56.5,
+        "alarm_frames": 128,
+        "advisory_only_frames": 0,
+        "frames_in_envelope": 185,
+        "alarm_frames_in_envelope": 128,
+        "bins": {
+          "50-100": {
+            "alarm": 128,
+            "advisory_only": 0,
+            "visible": 185
+          }
+        },
+        "missed_intervals": [
+          {
+            "start_frame": 1,
+            "end_frame": 11,
+            "frames": 11,
+            "from_m": 56.5,
+            "to_m": 56.1
+          },
+          {
+            "start_frame": 27,
+            "end_frame": 72,
+            "frames": 46,
+            "from_m": 56.4,
+            "to_m": 55.9
+          }
+        ],
+        "first_alarm_m": 56.1,
+        "first_alarm_frame": 73,
+        "alarm_held_from_m": null,
+        "first_advisory_or_alarm_m": 56.1,
+        "verdict": "detected"
+      },
+      "person_walkway": {
+        "in_gauge": false,
+        "visible_frames": 55,
+        "first_visible_m": 15.8,
+        "alarm_frames": 0,
+        "advisory_only_frames": 0,
+        "frames_in_envelope": 55,
+        "alarm_frames_in_envelope": 0,
+        "bins": {
+          "0-50": {
+            "alarm": 0,
+            "advisory_only": 0,
+            "visible": 55
+          }
+        },
+        "false_alarm_frames": 0,
+        "false_alarm_from_m": null,
+        "verdict": "ignored (correct)"
+      }
+    },
+    "background": {
+      "frames": 201,
+      "alarm_frames": 193,
+      "background_alarm_frames": 0,
+      "persistent_event_count": null
+    }
+  }
+}

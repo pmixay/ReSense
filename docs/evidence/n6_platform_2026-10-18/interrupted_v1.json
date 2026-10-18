@@ -1,0 +1,7 @@
+{
+  "status": "interrupted_not_a_complete_measurement",
+  "completed_frames": 133,
+  "reason": "Independent review identified unbounded forward separation of a same-ring pair; aborted before result evaluation and replaced with nearer-head station plus 5m pair separation bound. New analytic geometry positive controls initially had default axis center -0.1m while scene center was0m; fixture corrected before v2.",
+  "output_sha256": "008020cd18434923725414affbaf2e7e3bdaff84054ddd954cd1dadc4b4eab5f",
+  "source_hash_receipt": "not finalized because interrupted; this output must not be used for acceptance"
+}

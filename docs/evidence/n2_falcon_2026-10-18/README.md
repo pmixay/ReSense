@@ -12,6 +12,8 @@ This is development evidence on `work/n5-labels-c2-acceptance`, not a release or
 an independent hidden-set score. The sensor proxy full gate and final combined
 default gate are separate experiments; completion links are added when their
 complete input receipts and results are available.
+Completed raw JSONL captures are portable in the [verified raw archive](raw/README.md);
+extract it to restore the paths used by these reports and reproduction scripts.
 
 ## Data and actual sensor contract
 
