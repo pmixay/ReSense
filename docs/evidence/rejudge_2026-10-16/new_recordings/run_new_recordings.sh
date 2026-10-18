@@ -6,7 +6,9 @@
 # Environment (all optional): PY (python with numpy 1.26 / scipy / sklearn / open3d / rosbags / zstandard, default
 # python3), DECODED (decoded caches, default <work>/decoded), DATASET_ZIP (the organizers' original archive, for the
 # six bags; default: none, then the gauge step skips them), LINK (the organizers' Yandex Disk folder).
-# Needs: ~13 GB peak disk for "switch" (Pandar bag + Falcon prefix), ~8 GB for decoded caches. Runtime ~1.5 h.
+# Disk: decoded caches ~8 GB in all; peaks on top: "synth" ~13 GB (the three raw synthetic bags), "switch" ~14 GB (Falcon
+# prefix 4.5 GB + its truncated source 4.5 GB, Pandar bag 4.8 GB), "gauge" one raw bag at a time (<= 5 GB). Raw data is
+# deleted as soon as it is decoded. With less than ~15 GB free, run the steps one by one. Runtime ~1 h plus downloads.
 set -u
 R=$(cd "$1" && pwd); W=$(mkdir -p "$2" && cd "$2" && pwd); shift 2
 STEPS=${*:-verify synth score falcon switch gauge compare}
@@ -47,7 +49,8 @@ synth)
       decode "$W/raw_synth/${b}_cloud_only" "$b" && rm -rf "$W/raw_synth/${b}_cloud_only"
     fi
     log "synthetic $b"; $PY "$J/probe.py" "$DECODED/$b" "$W/synth_$b" > "$W/logs/synth_$b.log" 2>&1
-  done ;;
+  done
+  rm -rf "$W/raw_synth" ;;
 score)
   log "score synthetic_platform 0-314"
   $PY "$EV/synthetic_labels_2026-10-17/scripts/score_platform.py" "$W/synth_synthetic_platform.jsonl" \
@@ -75,13 +78,16 @@ switch)
   fi
   log "switch runs"; PY=$PY "$EV/falcon_switch_2026-10-18/run_b3.sh" new "$R" "$W/switch" \
     "$W/pandar/for_hackathon/doubleT_obstacle" "$W/falcon_prefix" > "$W/logs/switch.log" 2>&1
-  $PY "$EV/falcon_switch_2026-10-18/compare_b3.py" "$W/switch" "$W/switch/compare.json" > /dev/null ;;
+  $PY "$EV/falcon_switch_2026-10-18/compare_b3.py" "$W/switch" "$W/switch/compare.json" > /dev/null
+  rm -rf "$W/falcon_prefix" ;;
 gauge)
   mkdir -p "$W/gauge"; tar -xJf "$EV/gauge_stability_2026-10-18/b6_raw.tar.xz" -C "$W/gauge" --wildcards 'poses_*'
   for b in doubleT_obstacle doubleT_platform roundT_doubleT roundT_pressureGate_roundT roundT_squareT_pressureGate_squareT \
            squareT_platform_squareT_switch cloud_with_fake_obj synthetic_platform synthetic_switch synthetic_tunnels; do
     if [ ! -f "$DECODED/$b/meta.json" ]; then               # decode one bag at a time, then delete the raw bag
-      if [ "$b" = cloud_with_fake_obj ]; then
+      if [ -f "$W/pandar/for_hackathon/$b/metadata.yaml" ]; then   # unpacked by the switch step
+        mkdir -p "$W/raw_bag"; mv "$W/pandar/for_hackathon/$b" "$W/raw_bag/"
+      elif [ "$b" = cloud_with_fake_obj ]; then
         unpack "$LINK" --member cloud_with_fake_obj.zst --out "$W/raw_bag"
       elif [ -n "${DATASET_ZIP:-}" ] && [ "${b#synthetic}" = "$b" ]; then
         unpack "$DATASET_ZIP" --only "$b" --out "$W/raw_bag"
