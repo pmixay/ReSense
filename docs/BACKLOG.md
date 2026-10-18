@@ -980,6 +980,14 @@ Two documents were added on 16.10; neither changes a card above, they attach evi
   `scripts/axis_error_profile.py`: the axis error, per-frame jitter and point counts by range from the organizers'
   synthetic objects (label-only, reproducible). Input for K1 / K2 and for N1's acceptance numbers.
 
+**18.10 N1/N4 implementation:** the shared RViz/web gauge is a rail-relative box bounded by supported geometry,
+with stable marker identities, bounded3D smoothing lag, explicit grey invalid hold and independent marker expiry.
+The interactive wrapper supports pause, rate changes and explicit same-node sensor-profile resets. Actual Docker/
+Humble DDS and keyboard checks delivered80/80 synthetic frames across Pandar and Falcon profiles;83 real-browser
+tests passed. Source-final replay and isolated graphics/performance checks remain pending. Far-range display
+coverage and hold expiry are reported alongside jitter, not omitted from acceptance.
+[Implementation, measurements and operator commands](evidence/n1_n4_2026-10-18/README.md).
+
 
 ## 8. Update of 17.10: release state, the extended dataset and the second lidar
 
@@ -1008,11 +1016,18 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
   outside (CAUTION), a **person-shaped object STOP only from 44 m** although visible from 201 m (CAUTION from ~166 m;
   `monitored_range` capped at 45 m at the platform). Switch / tunnels: ≥ 5 and ≥ 3 objects; false STOP on background
   8 frames (switch) and 3 + 1 frames (tunnels). **No dust or suspension in this delivery.**
-* **`falcon_test`** (second lidar, real, standing train in a dark tunnel, 444 s): topic `/iv_points`, `frame_id`
-  `seyond`, **ROS axes** (x forward, y left, z up), no `ring`, single return, ~95 k points per frame, header stamp =
+* **`falcon_test`** (initial 17.10 observation; superseded by the full 18.10 replay below): topic `/iv_points`, `frame_id`
+  `seyond`, **ROS axes** (x forward, y left, z up), no `ring`, ~95 k points per frame, header stamp =
   sensor uptime. The default launch works: 1 `FAULT` frame, orientation adopted at frame 1, mount 1.77 m / −2.4°.
   **But CAUTION on 65–99 % of frames** (two static gauge-edge warnings at 105.6 / 115 m) and short false STOPs at
   115 m; a walking person (97–127 m) gets STOP from 123 m. Only 187 of 444 s were read (disk); the rest is unseen.
+  **18.10 correction:** all 4,443 frames are now decoded and verified. About 2.1% of points carry second-return
+  flags; the recording is not literally single-return. Raw range reaches 509.97 m; the default runtime crop is250 m.
+  Explicit ROS and native-axis profiles have identical detections, warnings and decisions throughout. Bounded
+  startup replay restores that parity for automatic orientation after its initial unconfirmed FAULT frame.
+  Reviewed person-associated first STOP improves approximately124.67→127.07 m, while static115 m structure
+  STOP associations increase13→29. These are geometric associations with reviewed uncertainty, not surveyed
+  corridor truth; the extra static detections are not silently labelled false. See [full N2 evidence](evidence/n2_falcon_2026-10-18/README.md).
 
 ### 8c. Cards: N2 and N3 revised, N5 and N6 new (format of §6)
 
@@ -1027,11 +1042,22 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
   ring-free and single-return effects. Sealed changes only from those measurements.
 * **Done when:** the README shows the Falcon command; the whole recording is characterised; the CAUTION and false-STOP
   cause on the Falcon is attributed (X1-style); a decision on a fix or an honest limitation for the pitch.
+* **18.10 progress:** profiles, documented commands, full recording, static-cause attribution and startup history
+  correction are implemented and measured. All eight supported automatic orientations preserve193 real-person
+  STOP frames, first at frame8. Missing rings and field/intensity layouts preserve those results. Sampling changes
+  do not: deduplication loses4 STOP rows, half-channel sampling loses128, and the Falcon proxy adds empty-bag
+  alarms as well as losing detections. Full proxy gate and combined-source regression acceptance remain pending.
 
 #### N3 · Dust / suspension (revised 17.10: the organizers' data contains none)
 **Owner** P4 + P3 · **Size** M · **Depends on** O1-style question to the organizers
 * **Tasks:** (1) P1 asks whether dust data is still to come; (2) P4 builds the generator and measures as in
   [FINALS_BRIEF](FINALS_BRIEF_2026-10-16.md) N3, so the answer exists if the hidden set has dust.
+* **18.10 progress:** deterministic generator and frozen-placement Set F harness implemented; paired clean/low/
+  medium/high measurements are running. The first two complete empty recordings fail medium/high false-STOP
+  acceptance. Two suppression candidates are rejected; protections for sparse/dark real objects remain intact.
+  A separate health-only platform experiment preserves all detection/STOP rows and marks all medium/high frames
+  degraded, but does not fix false alarms. No production dust classifier is enabled, no physical-dust validation
+  is claimed, and no organizer message was authorized or sent. [Evidence](evidence/n3_dust_2026-10-18/README.md).
 
 #### N5 · Labels and scoring for the new synthetic bags
 **Owner** P4 · **Size** S–M · **Depends on** nothing
@@ -1054,6 +1080,12 @@ intervals remain explicit; this completion does not imply exact organizer truth 
 **Owner** P3 · **Size** M · **Depends on** N5, X1-style attribution
 * **Evidence:** visible from 201 m, CAUTION from ~166 m, STOP only at 44 m, `monitored_range` capped at 45 m at the
   platform (the honest-range cap of 1.1.0). **Tasks:** attribute the frames (X1 harness) before any change; then K1 / K2.
+* **18.10 progress:** revision3 improves first person STOP44.01→51.12 m and preserves all147 baseline matched rows.
+  All ten complete control recordings preserve baseline STOP rows; five empty recordings have no added STOP.
+  The60 m target remains unmet and nine added STOP rows on an uncertain-gauge box widen the false-alarm upper
+  bound38→47. Revision2's six new empty-platform STOP rows were rejected and fixed by retaining the original
+  low-bed boundary. Original-scene rail-support attribution, final default gate and independent review remain
+  required before activation. [Evidence](evidence/n6_platform_2026-10-18/README.md).
 
 ### 8d. Order up to 23.10 (replaces §4 from 17.10)
 
