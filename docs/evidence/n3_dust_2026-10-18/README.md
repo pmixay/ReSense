@@ -1,49 +1,77 @@
-# N3 dust stress — development evidence
+# N3 dust stress — complete development measurements
 
-No physical dust recording was present in the two new deliveries. The generator is a deterministic volumetric-return and ray-attenuation stress, not a calibrated model of airborne dust. Thresholds and acceptance were registered before measurement in [the protocol](../lidar_adaptation_2026-10-18/PROTOCOL.md).
+**Generator and registered measurement deliverables are complete. Dust robustness acceptance fails.** All corrected batteries finished and passed completeness, source, frame and raw-result verification: **30,875 evaluated frame-runs**, archived in **159 raw gzip files**. No dust suppression or health-only classifier is enabled in production.
 
-**Coordinate correction, 18 October:** independent review found that the original regular harness mixed configured-frame points with calibrated rail height. The measurements below remain historical configured-box stresses; they do not satisfy the intended rail-relative placement contract. The partial Set F bank had no evaluated dust levels and lacked the common audited transform contract. Both earlier captures are preserved. Corrected measurements use the immutable harness `b9ad5f4` and fresh `*_pose_fixed` directories.
+The evaluated detector is immutable **`9b92df5`**, with native acceleration, through immutable harness **`b9ad5f4`**. The matched health-only controls add the explicit offline hook to that same detector source. These results do **not** measure the later production defaults or establish their dust acceptance. No physical dust recording was supplied; this is deterministic volumetric-return and ray-attenuation stress, not measured dust physics.
 
-The corrected helper captures the actual last clean `MountCalibrator.apply` matrix, including identity shortcuts and startup replay. Attenuation and generated returns use those clean model axes and a flat height anchored at clean `rail_z(20 m)`. Only generated returns are transformed back; retained real XYZ, intensity and ring values are restored byte for byte. Every frame records its source and reference hashes, and the reference is never passed to the evaluated detector. This is not a graded or surveyed rail plane. Thirty focused tests passed, including real orientation adoption/replay and noncommuting rotations; a 32-frame baseline smoke completed all four levels.
+## Coverage and provenance
 
-The immutable detector reference is `9b92df5` (sealed 1.1.0 core). Each complete recording runs clean, low, medium and high with a fresh detector, all original timestamps and fixed seed 20261018. Corrected regular runs record harness, helper, generator, YAML and native-library identities at start/end. The seven-recording battery, dark baseline versus health-only controls, and all 30 fixed-placement Set F sequences are being rerun. Timings are under concurrent load and do not establish throughput.
+| Corrected battery | Coverage | Evaluated frames |
+|---|---|---:|
+| [Regular baseline](baseline_pose_fixed/RESULTS.md) | Five empty recordings, real obstacle and Set O; clean/low/medium/high | 15,992 |
+| [Dimmed positive baseline](dark_baseline_pose_fixed/verified_complete.json) | Real obstacle, labeled returns set to intensity 1; four levels | 804 |
+| [Matched dimmed health control](dark_health_pose_fixed/verified_complete.json) | Identical source, intensity and inputs; four levels | 804 |
+| [Matched platform health control](health_platform_pose_fixed/verified_complete.json) | Identical source and inputs; clean/medium/high | 1,035 |
+| [Fixed-placement Set F](set_f_baseline_pose_fixed/RESULTS.md) | Six ride starts × five object kinds × four levels | 12,240 |
 
-## Superseded coordinate stress: completed levels
+The [execution receipt](corrected_execution_receipt.json) records every raw-file hash, all complete report hashes, exact detached wrapper/status/log bytes and the recorded pause. All 30 frozen Set F placement banks are archived with their manifest. Source, native library, configuration, generator, helper and per-frame reference identities are verified. Measurements shared a single-CPU host and include a pause; their wall timings do not establish throughput.
 
-| Recording | Density | STOP frames | STOP episodes | GO frames | Degraded frames | Empty acceptance |
-|---|---|---:|---:|---:|---:|---|
-| doubleT_platform | clean | 0 | 0 | 144 | 9 | reference |
-| doubleT_platform | low | 4 | 1 | 120 | 6 | PASS |
-| doubleT_platform | medium | 167 | 25 | 60 | 32 | FAIL |
-| doubleT_platform | high | 20 | 3 | 210 | 21 | FAIL |
-| roundT_doubleT | clean | 0 | 0 | 83 | 0 | reference |
-| roundT_doubleT | low | 0 | 0 | 72 | 0 | PASS |
-| roundT_doubleT | medium | 171 | 25 | 21 | 0 | FAIL |
-| roundT_doubleT | high | 13 | 3 | 168 | 9 | FAIL |
-| roundT_pressureGate_roundT | clean | 2 | 1 | 150 | 0 | reference |
-| roundT_pressureGate_roundT | low | 3 | 1 | 150 | 0 | PASS |
+## Registered acceptance results
 
-This historical table contains completed levels from the original coordinate convention. It is neither the complete seven-bag result nor corrected acceptance. The original regular run was stopped after four complete recordings and the fifth clean level; partial files are preserved separately. A missing row is not a pass.
+Each empty recording may add at most one STOP episode over its own clean run. The corrected counts are:
 
-## Historical suppression experiments, rejected
+| Empty recording | Clean | Low | Medium | High | Failing levels |
+|---|---:|---:|---:|---:|---|
+| doubleT_platform | 0 | 1 | 25 | 3 | medium, high |
+| roundT_doubleT | 0 | 0 | 25 | 3 | medium, high |
+| roundT_pressureGate_roundT | 1 | 1 | 22 | 1 | medium |
+| roundT_squareT_pressureGate_squareT | 0 | 0 | 58 | 13 | medium, high |
+| squareT_platform_squareT_switch | 3 | 12 | 71 | 12 | low, medium, high |
 
-1. The post-tracker prototype reduced medium-density empty-platform STOP frames167→62 but fragmented alarms into33 episodes versus25 baseline. It is rejected. The original probe and report remain available.
-2. The pre-tracker candidate `406ffaa` protects strong echoes, up to three distinct returns, thin lines/planes, held evidence and objects outside the observed clutter volume. Medium:167→11 false STOP frames and25→4 episodes; high:20→18 frames and3→2 episodes. Both exceed the registered maximum of one extra episode versus clean. It is rejected for runtime activation.
+The low-density real crossing-person first inside STOP remains **55.51 m → 55.51 m**, passing the registered 90% first-range criterion. All **61/61 inside** person STOP rows remain. The one lost person association is outside the gauge. The nearby rail object retains its first range, **56.13 m → 56.11 m**, but loses **24/128 inside STOP rows**; first distance alone hides that regression.
 
-The remaining medium alarms include real strong far background at104–110m admitted by perturbed geometry, a mixed strong cluster around32m, and two-/three-return hanging shapes. Independent review found that suppressing those sparse shapes could also suppress real cables. We retain the failure instead of relaxing their protections. Dark-positive controls set original labeled object returns to intensity1; their results remain separate from the original intensity baseline.
+At medium and high density, **no real crossing-person or rail-object STOP matches remain**, despite 133 and 20 total STOP frames respectively: those alarms are unmatched. Set O loses 9, 126 and 406 clean inside-object STOP rows at low, medium and high density, with new matches reported separately. The [complete object tables](baseline_pose_fixed/RESULTS.md) and [raw-verified report](baseline_pose_fixed/verified_complete.json) retain every first range, exact lost/new frame, and inside/outside/unknown relation.
 
-## Historical health-only follow-up
+High-density baseline health also fails: **2,119/3,998 frames report GO without degradation** across the seven recordings. Only 429 frames are degraded; the real-obstacle high run has 163 GO and zero degraded frames. These counts are separate from the false-alarm and object-retention criteria.
 
-The high-density pre-tracker experiment marked all345 first-platform frames degraded. One medium-density frame still reported GO because its trusted axis shrank to20m and the six-station observer stopped looking. `da8c3ce` separates broad observed-volume health from trusted-range cluster qualification. `scripts/dust_battery.py --health-only` changes health/range reporting only and leaves clusters, confirmation and STOP evidence unchanged. It is a measured experiment, not an enabled production dust classifier. Falcon intensity units are not assumed to match the Pandar stress ceiling5.
+## Set F: identical objects across all densities
 
-The earlier health-only platform check covers **1,035 frames** (clean, medium and high). [Independent parity](health_only_platform/independent_parity.json) finds identical input augmentation, detections, warnings, obstacle flags, nearest distance and track geometry on every frame, with no lost or added STOP. Medium and high each produce **345/345 degraded frames, zero GO and zero nonzero clear range**. Clean retains its 144 GO and nine already degraded frames. False STOP episodes remain25/3, so this visibility-reporting result did **not** pass the dust false-alarm criterion. It also uses the superseded coordinate convention; matched baseline and health-only controls are being repeated with the corrected reference before drawing current conclusions.
+The bank freezes all object specifications, clean render hashes and clean dust reference transforms before evaluation. The six original starts, five kinds, seed-0 placements, 110-frame maximum and 8 m cutoff remain unchanged. Each density evaluates the same 3,060 source/object rows; clean physical labels remain in the denominator when attenuation removes returns.
 
-## Reproduce
+| Level | Matched object STOP rows | Lost clean STOP rows | New STOP rows | Unmatched STOP frames / episodes | GO | Degraded |
+|---|---:|---:|---:|---:|---:|---:|
+| clean | 1064 | 0 | 0 | 23 / 11 | 1501 | 0 |
+| low | 1027 | 61 | 24 | 18 / 13 | 1533 | 0 |
+| medium | 752 | 392 | 80 | 1480 / 275 | 385 | 0 |
+| high | 14 | 1050 | 0 | 183 / 58 | 2311 | 0 |
 
-```bash
-OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 OPENBLAS_CORETYPE=Haswell \
-  python scripts/dust_battery.py --cache /home/resense/data/decoded \
-  --detector-root /home/resense/data/n2/baseline_9b92df5 --out /tmp/dust-baseline
-```
+Low density loses all clean matches for `46_box0.5`; its clean first STOP was 76.94 m. The `68_person` first STOP falls from 144.10 to 117.98 m. High density loses all matches in 21 of the 26 sequences that had clean matches, while four other sequences had no clean detection to retain. Every sequence, including those clean misses, is shown in the [Set F result table](set_f_baseline_pose_fixed/RESULTS.md).
 
-For the frozen Set F placement bank and identical objects across densities, see [SET_F_PROTOCOL.md](SET_F_PROTOCOL.md). No organizer message was sent by this task. Physical-data validation, a passing false-STOP criterion and any production activation remain distinct from implementing the harness.
+Unmatched detections use the unchanged approximate legacy association. Real ride backgrounds are not exhaustively annotated, so these unmatched counts are **not proof of false obstacles**. Serialized geometry has 1 cm precision; the independent verifier uses explicit 5 mm matching bounds; no boundary-ambiguous rows occurred in [aggregate.json](set_f_baseline_pose_fixed/aggregate.json).
+
+## Matched health-only experiment
+
+The [paired comparison](corrected_health_parity.json) verifies identical augmentation/reference, detections, warnings, obstacle flags, nearest distance, track geometry, point/candidate/accumulation counts, ego speed and mount on all **1,839 paired frames**. There are no added or lost detections. The dimmed intervention is applied to both baseline and health control, so source or intensity differences cannot explain the comparison.
+
+| Matched control | Level | Degraded / all frames | GO | STOP frames / episodes |
+|---|---|---:|---:|---:|
+| Dimmed real obstacle | medium | 201 / 201 | 0 | 133 / 22 |
+| Dimmed real obstacle | high | 201 / 201 | 0 | 20 / 5 |
+| Empty platform | medium | 345 / 345 | 0 | 167 / 25 |
+| Empty platform | high | 345 / 345 | 0 | 20 / 3 |
+
+The offline health hook correctly exposes reduced visibility in these controls and sets clear range to zero. It cannot recover missed objects or remove false STOP episodes; robustness acceptance still fails. Clean and low positive detections remain identical to their matched baselines. Intensity 1 is a controlled intervention, not a measured reflectivity model; the Pandar-specific intensity ceiling is not assumed valid for Falcon.
+
+## Coordinate correction and retained failed experiments
+
+Independent review found that the original regular harness combined configured-frame points with calibrated rail height. The correction was registered before new runs. The shared helper now captures the actual last clean `MountCalibrator.apply` matrix, including identity shortcuts and startup replay, and anchors a flat cloud at clean `rail_z(20 m)`. Only generated returns are inverse-mapped; retained original XYZ, intensity and ring values are restored exactly. This is an audited clean model frame, not a surveyed or graded rail plane. Thirty focused tests cover the contract.
+
+Historical configured-coordinate captures remain in the [inventory](historical_capture_inventory.json), including the explicitly incomplete original low-density gzip, which is excluded from acceptance. The original Set F attempt had 15 prepared banks and **no evaluated dusty levels**. Its [placement comparison](placement_correction_parity.json) verifies that all 1,570 preserved clean object specifications and render hashes are unchanged by the correction.
+
+The historical post-tracker suppression prototype increased medium-platform episodes from 25 to 33. The pre-tracker candidate `406ffaa` reduced them to 4 and high episodes to 2, still failing the limit. Both remain rejected and are not rerun or promoted by the corrected results. The [historical dark-positive review](DARK_PERSON_REVIEW.md) preserves their separate limitations.
+
+## Review and reproduction
+
+Acceptance, fixed densities/extinction and seed 20261018 were declared in [the protocol](../lidar_adaptation_2026-10-18/PROTOCOL.md). [SET_F_PROTOCOL.md](SET_F_PROTOCOL.md) gives immutable reproduction commands and placement details. The [regular independent review](INDEPENDENT_CORRECTED_REGULAR_REVIEW.md) independently recomputes associations and gauge partitions across all 18,635 rows. The [completed Set F independent review](INDEPENDENT_COMPLETED_SET_F_REVIEW.md) checks all 12,240 raw rows and the 30 placement banks. The [verifier review](INDEPENDENT_REVIEW.md) preserves tamper probes and the coordinate finding.
+
+The remaining performance work is to satisfy the unchanged false-alarm, retained-object and high-density-health criteria, then validate with physical dust data. Harness completion and complete failed measurements do not constitute production dust acceptance.

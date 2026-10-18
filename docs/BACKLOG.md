@@ -11,7 +11,8 @@
 > `resense/` have shifted with the 1.1.0 reseal (§2): search for the named function.
 > **Updated:** 2026-10-18: selected LiDAR source `cecab1b` sealed after full gate, X3 and complete
 > Falcon preservation checks; startup replay remains opt-in. N1/N4 local acceptance passes;
-> N3 corrected measurements continue, N6 remains off. CI/release are deferred by the captain.
+> N3 generator/measurements are complete but robustness acceptance fails; N6 remains off.
+> CI/release are deferred by the captain.
 > 2026-10-16: selected scope `c9aea87`, H1 DROP; replacement H3/probes and fresh
 > independent H4 complete; H5 DONE at `5211565`, 1.1.0 sealed 16.10. Inherited High 8.1 OPEN;
 > H6/CI/main and E1 PENDING.
@@ -1065,16 +1066,22 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
   characterization complete; measured sampling and static-support limitations retained.** Release is deferred.
 
 #### N3 · Dust / suspension (revised 17.10: the organizers' data contains none)
-**Owner** P4 + P3 · **Size** M · **Depends on** O1-style question to the organizers
-* **Tasks:** (1) P1 asks whether dust data is still to come; (2) P4 builds the generator and measures as in
-  [FINALS_BRIEF](FINALS_BRIEF_2026-10-16.md) N3, so the answer exists if the hidden set has dust.
-* **18.10 progress:** deterministic generator and frozen-placement Set F harness implemented. Independent review
-  found a coordinate mismatch in the original regular harness; those measurements and rejected suppression
-  candidates remain historical stresses. Corrected harness `b9ad5f4` freezes the actual clean applied rotation
-  and rail reference, preserving retained source points exactly. Thirty focused tests pass. The seven complete
-  recordings, all 30 Set F sequences and matched dark/health-only controls are being rerun in fresh directories.
-  Protections for sparse/dark real objects remain intact. No production dust classifier is enabled, no physical-dust validation
-  is claimed, and no organizer message was authorized or sent. [Evidence](evidence/n3_dust_2026-10-18/README.md).
+**Owner** P4 + P3 · **Size** M · **Depends on** nothing for the registered synthetic measurements;
+physical validation needs actual dust recordings.
+* **18.10 measurement deliverable COMPLETE; robustness acceptance FAIL.** The deterministic generator and
+  corrected frozen-placement harness `b9ad5f4` preserve clean reference coordinates and retained source points.
+  All seven recordings at four densities, all 30 Set F sequences at four densities and matched dark/health
+  controls are complete: **30,875 processed rows**. Complete-only provenance/coverage checks pass; 30 focused
+  harness tests pass. The detector under stress is immutable `9b92df5`, not a new `cecab1b` stress claim.
+* **Results:** low-density crossing-person first STOP stays 55.51 m, with all 61 inside matches retained;
+  the rail object loses 24/128 inside matches. Medium/high lose all matched crossing-person/rail-object STOPs
+  despite unrelated alarms. All five medium empty-recording episode limits fail; one also fails at low density.
+  Set F loses 61/392/1,050 clean matched STOP rows at low/medium/high. Health-only controls remove silent GO
+  in their noisy cases but recover no detections and retain false alarms. No production classifier is enabled.
+* Earlier coordinate-mismatched measurements and rejected suppression candidates remain historical evidence.
+  Sparse/dark-object protections remain intact. Actual physical dust and sensor echo behavior are unvalidated;
+  whether more data will arrive remains a captain/organizer question, with no message authorized or sent here.
+  [Complete evidence and limitations](evidence/n3_dust_2026-10-18/README.md).
 
 #### N5 · Labels and scoring for the new synthetic bags
 **Owner** P4 · **Size** S–M · **Depends on** nothing

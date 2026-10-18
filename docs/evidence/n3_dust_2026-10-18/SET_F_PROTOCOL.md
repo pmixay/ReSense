@@ -76,8 +76,9 @@ changing an injector or sensor mapping cannot silently change the test.
 Focused tests cover the original random schedule, timestamp/near-pass bounds,
 removal of oracle metadata, per-frame loss/episode accounting, and a real Open3D
 full-precision bank round trip with intentional rendering-drift rejection.
-The complete ride cache is verified; corrected measurements are running. No pass
-is implied by successful harness tests. The complete-only
+The complete ride cache and all 30 sequences at four levels are verified: **12,240
+evaluated frames**. The [results](set_f_baseline_pose_fixed/RESULTS.md) preserve the
+measured failures; successful harness tests do not imply robustness acceptance. The complete-only
 [verifier](summarize_set_f.py) checks all 30 sequences/four levels, exact source
 cadence and the 8 m cutoff, recomputes every aggregate from captured rows, and
 checks matching independently within the serialized geometry's 5 mm rounding

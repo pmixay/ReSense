@@ -1,0 +1,1128 @@
+{
+  "status": "COMPLETED_CORRECTED_EVIDENCE_VERIFIED_ACCEPTANCE_FAIL",
+  "checked_utc": "2026-10-18T11:51:16.294024+00:00",
+  "detector_commit": "9b92df56e802d9d63f83f2fc5e5b07374db669c7",
+  "harness_commit": "b9ad5f4348e1ffd882bb6a503961a9768384c416",
+  "frames_rechecked": 18635,
+  "raw_files_rechecked": 39,
+  "results": {
+    "baseline_pose_fixed": {
+      "doubleT_platform": {
+        "clean": {
+          "counts": {
+            "GO": 144,
+            "CAUTION": 201
+          },
+          "stop_episodes": 0,
+          "degraded_frames": 9,
+          "unmatched_detection_frames": 0,
+          "objects": {}
+        },
+        "low": {
+          "counts": {
+            "GO": 120,
+            "CAUTION": 221,
+            "STOP": 4
+          },
+          "stop_episodes": 1,
+          "degraded_frames": 6,
+          "unmatched_detection_frames": 4,
+          "objects": {}
+        },
+        "medium": {
+          "counts": {
+            "GO": 60,
+            "STOP": 167,
+            "CAUTION": 118
+          },
+          "stop_episodes": 25,
+          "degraded_frames": 32,
+          "unmatched_detection_frames": 167,
+          "objects": {}
+        },
+        "high": {
+          "counts": {
+            "GO": 210,
+            "CAUTION": 115,
+            "STOP": 20
+          },
+          "stop_episodes": 3,
+          "degraded_frames": 21,
+          "unmatched_detection_frames": 20,
+          "objects": {}
+        }
+      },
+      "roundT_doubleT": {
+        "clean": {
+          "counts": {
+            "GO": 83,
+            "CAUTION": 169
+          },
+          "stop_episodes": 0,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {}
+        },
+        "low": {
+          "counts": {
+            "GO": 72,
+            "CAUTION": 180
+          },
+          "stop_episodes": 0,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {}
+        },
+        "medium": {
+          "counts": {
+            "GO": 21,
+            "STOP": 171,
+            "CAUTION": 60
+          },
+          "stop_episodes": 25,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 171,
+          "objects": {}
+        },
+        "high": {
+          "counts": {
+            "GO": 168,
+            "CAUTION": 71,
+            "STOP": 13
+          },
+          "stop_episodes": 3,
+          "degraded_frames": 9,
+          "unmatched_detection_frames": 13,
+          "objects": {}
+        }
+      },
+      "roundT_pressureGate_roundT": {
+        "clean": {
+          "counts": {
+            "GO": 150,
+            "CAUTION": 116,
+            "STOP": 2
+          },
+          "stop_episodes": 1,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 2,
+          "objects": {}
+        },
+        "low": {
+          "counts": {
+            "GO": 150,
+            "CAUTION": 115,
+            "STOP": 3
+          },
+          "stop_episodes": 1,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 3,
+          "objects": {}
+        },
+        "medium": {
+          "counts": {
+            "GO": 33,
+            "CAUTION": 87,
+            "STOP": 148
+          },
+          "stop_episodes": 22,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 148,
+          "objects": {}
+        },
+        "high": {
+          "counts": {
+            "GO": 174,
+            "CAUTION": 92,
+            "STOP": 2
+          },
+          "stop_episodes": 1,
+          "degraded_frames": 64,
+          "unmatched_detection_frames": 2,
+          "objects": {}
+        }
+      },
+      "roundT_squareT_pressureGate_squareT": {
+        "clean": {
+          "counts": {
+            "GO": 354,
+            "CAUTION": 191
+          },
+          "stop_episodes": 0,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {}
+        },
+        "low": {
+          "counts": {
+            "GO": 356,
+            "CAUTION": 189
+          },
+          "stop_episodes": 0,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {}
+        },
+        "medium": {
+          "counts": {
+            "GO": 68,
+            "CAUTION": 154,
+            "STOP": 323
+          },
+          "stop_episodes": 58,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 323,
+          "objects": {}
+        },
+        "high": {
+          "counts": {
+            "GO": 329,
+            "STOP": 66,
+            "CAUTION": 150
+          },
+          "stop_episodes": 13,
+          "degraded_frames": 76,
+          "unmatched_detection_frames": 66,
+          "objects": {}
+        }
+      },
+      "squareT_platform_squareT_switch": {
+        "clean": {
+          "counts": {
+            "GO": 420,
+            "CAUTION": 446,
+            "STOP": 11
+          },
+          "stop_episodes": 3,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 11,
+          "objects": {}
+        },
+        "low": {
+          "counts": {
+            "GO": 417,
+            "CAUTION": 393,
+            "STOP": 67
+          },
+          "stop_episodes": 12,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 67,
+          "objects": {}
+        },
+        "medium": {
+          "counts": {
+            "GO": 88,
+            "STOP": 624,
+            "CAUTION": 165
+          },
+          "stop_episodes": 71,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 624,
+          "objects": {}
+        },
+        "high": {
+          "counts": {
+            "GO": 226,
+            "CAUTION": 618,
+            "STOP": 33
+          },
+          "stop_episodes": 12,
+          "degraded_frames": 26,
+          "unmatched_detection_frames": 33,
+          "objects": {}
+        }
+      },
+      "doubleT_obstacle": {
+        "clean": {
+          "counts": {
+            "GO": 8,
+            "STOP": 193
+          },
+          "stop_episodes": 1,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {
+            "person_crossing": {
+              "inside": 61,
+              "outside": 6,
+              "unknown": 0,
+              "first_inside_stop_m": 55.51
+            },
+            "object_on_rail": {
+              "inside": 128,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 56.13
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "low": {
+          "counts": {
+            "GO": 19,
+            "STOP": 170,
+            "CAUTION": 12
+          },
+          "stop_episodes": 5,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {
+            "person_crossing": {
+              "inside": 61,
+              "outside": 5,
+              "unknown": 0,
+              "first_inside_stop_m": 55.51
+            },
+            "object_on_rail": {
+              "inside": 104,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 56.11
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "medium": {
+          "counts": {
+            "GO": 49,
+            "CAUTION": 19,
+            "STOP": 133
+          },
+          "stop_episodes": 22,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 133,
+          "objects": {
+            "person_crossing": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "object_on_rail": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "high": {
+          "counts": {
+            "GO": 163,
+            "STOP": 20,
+            "CAUTION": 18
+          },
+          "stop_episodes": 5,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 20,
+          "objects": {
+            "person_crossing": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "object_on_rail": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        }
+      },
+      "cloud_with_fake_obj": {
+        "clean": {
+          "counts": {
+            "GO": 736,
+            "STOP": 452,
+            "FAULT": 2,
+            "CAUTION": 320
+          },
+          "stop_episodes": 8,
+          "degraded_frames": 15,
+          "unmatched_detection_frames": 30,
+          "objects": {
+            "big_center": {
+              "inside": 209,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 98.16
+            },
+            "small_on_rail": {
+              "inside": 26,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 47.96
+            },
+            "small_center": {
+              "inside": 32,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 55.84
+            },
+            "small_edge_inside": {
+              "inside": 18,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 34.97
+            },
+            "small_outside_near": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_edge_inside": {
+              "inside": 7,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 18.26
+            },
+            "big_outside": {
+              "inside": 0,
+              "outside": 7,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_above": {
+              "inside": 56,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 111.42
+            },
+            "long_low_on_rails": {
+              "inside": 53,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 88.97
+            },
+            "thin_hanging": {
+              "inside": 15,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 30.12
+            }
+          }
+        },
+        "low": {
+          "counts": {
+            "GO": 737,
+            "STOP": 447,
+            "CAUTION": 325,
+            "FAULT": 1
+          },
+          "stop_episodes": 8,
+          "degraded_frames": 15,
+          "unmatched_detection_frames": 31,
+          "objects": {
+            "big_center": {
+              "inside": 209,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 98.16
+            },
+            "small_on_rail": {
+              "inside": 24,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 44.42
+            },
+            "small_center": {
+              "inside": 33,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 57.49
+            },
+            "small_edge_inside": {
+              "inside": 18,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 34.97
+            },
+            "small_outside_near": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_edge_inside": {
+              "inside": 2,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 18.26
+            },
+            "big_outside": {
+              "inside": 0,
+              "outside": 7,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_above": {
+              "inside": 56,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 111.42
+            },
+            "long_low_on_rails": {
+              "inside": 52,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 90.75
+            },
+            "thin_hanging": {
+              "inside": 15,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 30.12
+            }
+          }
+        },
+        "medium": {
+          "counts": {
+            "GO": 155,
+            "STOP": 1090,
+            "CAUTION": 264,
+            "FAULT": 1
+          },
+          "stop_episodes": 97,
+          "degraded_frames": 208,
+          "unmatched_detection_frames": 1000,
+          "objects": {
+            "big_center": {
+              "inside": 167,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 98.16
+            },
+            "small_on_rail": {
+              "inside": 16,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 30.21
+            },
+            "small_center": {
+              "inside": 13,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 23.84
+            },
+            "small_edge_inside": {
+              "inside": 9,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 18.25
+            },
+            "small_outside_near": {
+              "inside": 0,
+              "outside": 8,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_edge_inside": {
+              "inside": 5,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 10.27
+            },
+            "big_outside": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_above": {
+              "inside": 40,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 111.42
+            },
+            "long_low_on_rails": {
+              "inside": 31,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 88.97
+            },
+            "thin_hanging": {
+              "inside": 9,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 20.13
+            }
+          }
+        },
+        "high": {
+          "counts": {
+            "GO": 849,
+            "CAUTION": 487,
+            "STOP": 173,
+            "FAULT": 1
+          },
+          "stop_episodes": 39,
+          "degraded_frames": 233,
+          "unmatched_detection_frames": 163,
+          "objects": {
+            "big_center": {
+              "inside": 2,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 62.17
+            },
+            "small_on_rail": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "small_center": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "small_edge_inside": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "small_outside_near": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_edge_inside": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_outside": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "big_above": {
+              "inside": 8,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 101.32
+            },
+            "long_low_on_rails": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "thin_hanging": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        }
+      }
+    },
+    "dark_baseline_pose_fixed": {
+      "doubleT_obstacle": {
+        "clean": {
+          "counts": {
+            "GO": 8,
+            "STOP": 193
+          },
+          "stop_episodes": 1,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {
+            "person_crossing": {
+              "inside": 61,
+              "outside": 6,
+              "unknown": 0,
+              "first_inside_stop_m": 55.51
+            },
+            "object_on_rail": {
+              "inside": 128,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 56.13
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "low": {
+          "counts": {
+            "GO": 19,
+            "STOP": 170,
+            "CAUTION": 12
+          },
+          "stop_episodes": 5,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {
+            "person_crossing": {
+              "inside": 61,
+              "outside": 5,
+              "unknown": 0,
+              "first_inside_stop_m": 55.51
+            },
+            "object_on_rail": {
+              "inside": 104,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 56.11
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "medium": {
+          "counts": {
+            "GO": 49,
+            "CAUTION": 19,
+            "STOP": 133
+          },
+          "stop_episodes": 22,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 133,
+          "objects": {
+            "person_crossing": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "object_on_rail": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "high": {
+          "counts": {
+            "GO": 163,
+            "STOP": 20,
+            "CAUTION": 18
+          },
+          "stop_episodes": 5,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 20,
+          "objects": {
+            "person_crossing": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "object_on_rail": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        }
+      }
+    },
+    "dark_health_pose_fixed": {
+      "doubleT_obstacle": {
+        "clean": {
+          "counts": {
+            "GO": 8,
+            "STOP": 193
+          },
+          "stop_episodes": 1,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {
+            "person_crossing": {
+              "inside": 61,
+              "outside": 6,
+              "unknown": 0,
+              "first_inside_stop_m": 55.51
+            },
+            "object_on_rail": {
+              "inside": 128,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 56.13
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "low": {
+          "counts": {
+            "GO": 19,
+            "STOP": 170,
+            "CAUTION": 12
+          },
+          "stop_episodes": 5,
+          "degraded_frames": 0,
+          "unmatched_detection_frames": 0,
+          "objects": {
+            "person_crossing": {
+              "inside": 61,
+              "outside": 5,
+              "unknown": 0,
+              "first_inside_stop_m": 55.51
+            },
+            "object_on_rail": {
+              "inside": 104,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": 56.11
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "medium": {
+          "counts": {
+            "CAUTION": 68,
+            "STOP": 133
+          },
+          "stop_episodes": 22,
+          "degraded_frames": 201,
+          "unmatched_detection_frames": 133,
+          "objects": {
+            "person_crossing": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "object_on_rail": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        },
+        "high": {
+          "counts": {
+            "CAUTION": 181,
+            "STOP": 20
+          },
+          "stop_episodes": 5,
+          "degraded_frames": 201,
+          "unmatched_detection_frames": 20,
+          "objects": {
+            "person_crossing": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "object_on_rail": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            },
+            "person_walkway": {
+              "inside": 0,
+              "outside": 0,
+              "unknown": 0,
+              "first_inside_stop_m": null
+            }
+          }
+        }
+      }
+    },
+    "health_platform_pose_fixed": {
+      "doubleT_platform": {
+        "clean": {
+          "counts": {
+            "GO": 144,
+            "CAUTION": 201
+          },
+          "stop_episodes": 0,
+          "degraded_frames": 9,
+          "unmatched_detection_frames": 0,
+          "objects": {}
+        },
+        "medium": {
+          "counts": {
+            "CAUTION": 178,
+            "STOP": 167
+          },
+          "stop_episodes": 25,
+          "degraded_frames": 345,
+          "unmatched_detection_frames": 167,
+          "objects": {}
+        },
+        "high": {
+          "counts": {
+            "CAUTION": 325,
+            "STOP": 20
+          },
+          "stop_episodes": 3,
+          "degraded_frames": 345,
+          "unmatched_detection_frames": 20,
+          "objects": {}
+        }
+      }
+    }
+  },
+  "health_only_parity": {
+    "dark_health_pose_fixed/clean": {
+      "rows": 201,
+      "all_other_serialized_fields_exact": true
+    },
+    "dark_health_pose_fixed/low": {
+      "rows": 201,
+      "all_other_serialized_fields_exact": true
+    },
+    "dark_health_pose_fixed/medium": {
+      "rows": 201,
+      "all_other_serialized_fields_exact": true
+    },
+    "dark_health_pose_fixed/high": {
+      "rows": 201,
+      "all_other_serialized_fields_exact": true
+    },
+    "health_platform_pose_fixed/clean": {
+      "rows": 345,
+      "all_other_serialized_fields_exact": true
+    },
+    "health_platform_pose_fixed/medium": {
+      "rows": 345,
+      "all_other_serialized_fields_exact": true
+    },
+    "health_platform_pose_fixed/high": {
+      "rows": 345,
+      "all_other_serialized_fields_exact": true
+    }
+  },
+  "source_samples": [
+    {
+      "bag": "doubleT_platform",
+      "frame": 0,
+      "dark_intervention": false,
+      "cache_sha256": "12f7187f0fccd0864279124ca98ec414f80b6a819846cda43a530f5e3b680116",
+      "source_frame_sha256": "81e23bfa9e5e9751985e66009b51501cf263a6197c0672758280feebb92f26c5"
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 8,
+      "dark_intervention": false,
+      "cache_sha256": "6d13b2839a3888dec6d5e23a826b45da16c5bdad8d4115afcc983b1b00262f2d",
+      "source_frame_sha256": "9b6c886087d66cd358c0241ddc698f3a2dd9100c4661c278db7caa81de649b0a"
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 344,
+      "dark_intervention": false,
+      "cache_sha256": "ec32eeceb18f579a9a078836d3c9be2cb58083502677653ef050072f3c8c4bc6",
+      "source_frame_sha256": "0b6ca77553320e153c708b635ecdb462fd3bd3368994e724f484a9f420ef1f5c"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "dark_intervention": false,
+      "cache_sha256": "4b35fa78cae50b9fa2cb08e85f83239bfec147b4cbd610faf2cc81a65347b29d",
+      "source_frame_sha256": "48dcc11fdc3efeb778a5215f89c3ff99ed835283bf4fd806b42c3fd19fd932db"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 8,
+      "dark_intervention": false,
+      "cache_sha256": "3dcd24c2ac0f489c12ad51a97b03a78dbdc8c764b8f9c491d386b331768f0bd7",
+      "source_frame_sha256": "7ff5d24bcc87a67790a1272efa440e40e8f4b3338d4eb7f9670e383cef51d5d1"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 200,
+      "dark_intervention": false,
+      "cache_sha256": "aaf43cb88ee4ca934f9ab38280f3ca3ccba74087c3c556870eb0a90d0f7c1387",
+      "source_frame_sha256": "6e90465fd20294194aabd20d24a7678fd8d9ca7373a86e3b679e0d4cabd05218"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "dark_intervention": true,
+      "cache_sha256": "4b35fa78cae50b9fa2cb08e85f83239bfec147b4cbd610faf2cc81a65347b29d",
+      "source_frame_sha256": "87887f199de9d0e4cf930a3be12e3560e1ed94e2480fe10bd8e4c33a223cc132"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 8,
+      "dark_intervention": true,
+      "cache_sha256": "3dcd24c2ac0f489c12ad51a97b03a78dbdc8c764b8f9c491d386b331768f0bd7",
+      "source_frame_sha256": "b1e338f17a8f451cd13058438f841776c494323788110d0a8a4617e752e2a5a8"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 200,
+      "dark_intervention": true,
+      "cache_sha256": "aaf43cb88ee4ca934f9ab38280f3ca3ccba74087c3c556870eb0a90d0f7c1387",
+      "source_frame_sha256": "51fbaac9bc3cf956903ee2510a2687e8f4e8cd11362975f95ab3d6af730cd51c"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "dark_intervention": true,
+      "cache_sha256": "4b35fa78cae50b9fa2cb08e85f83239bfec147b4cbd610faf2cc81a65347b29d",
+      "source_frame_sha256": "87887f199de9d0e4cf930a3be12e3560e1ed94e2480fe10bd8e4c33a223cc132"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 8,
+      "dark_intervention": true,
+      "cache_sha256": "3dcd24c2ac0f489c12ad51a97b03a78dbdc8c764b8f9c491d386b331768f0bd7",
+      "source_frame_sha256": "b1e338f17a8f451cd13058438f841776c494323788110d0a8a4617e752e2a5a8"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 200,
+      "dark_intervention": true,
+      "cache_sha256": "aaf43cb88ee4ca934f9ab38280f3ca3ccba74087c3c556870eb0a90d0f7c1387",
+      "source_frame_sha256": "51fbaac9bc3cf956903ee2510a2687e8f4e8cd11362975f95ab3d6af730cd51c"
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 0,
+      "dark_intervention": false,
+      "cache_sha256": "12f7187f0fccd0864279124ca98ec414f80b6a819846cda43a530f5e3b680116",
+      "source_frame_sha256": "81e23bfa9e5e9751985e66009b51501cf263a6197c0672758280feebb92f26c5"
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 8,
+      "dark_intervention": false,
+      "cache_sha256": "6d13b2839a3888dec6d5e23a826b45da16c5bdad8d4115afcc983b1b00262f2d",
+      "source_frame_sha256": "9b6c886087d66cd358c0241ddc698f3a2dd9100c4661c278db7caa81de649b0a"
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 344,
+      "dark_intervention": false,
+      "cache_sha256": "ec32eeceb18f579a9a078836d3c9be2cb58083502677653ef050072f3c8c4bc6",
+      "source_frame_sha256": "0b6ca77553320e153c708b635ecdb462fd3bd3368994e724f484a9f420ef1f5c"
+    }
+  ],
+  "max_serialized_rail_height_rounding_error_m": 0.0004997164028019974,
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/verified_complete.json": "841e54abd6a5b7c9ed54e432d99fa01ec3ed2cc3f6a72e1afc91d7235af70154",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/summary.json": "486c2ab390d05d516302b32f81d4decd50ca66ac9765d2236a9744590ad76b2e",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/doubleT_platform_clean.jsonl.gz": "786bc61bf5826b6a71fe2dff5c4ec9dc2dabad2ac9423edd5f2f4a8a43650773",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/doubleT_platform_low.jsonl.gz": "98a5d2f6d9d4b11c0ff7290d570f14327c306d0f143097514903d6308f263328",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/doubleT_platform_medium.jsonl.gz": "0b5f254af0811a193dd031a62acee4d15b184c6d6d168fb7c4f880b26b898d6d",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/doubleT_platform_high.jsonl.gz": "332316782f8de889c233293bf6792db3ef0016a19aa4ed003447b24d616fcb34",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_doubleT_clean.jsonl.gz": "ef07502f04cbf2408af1731a51407ab80696296953d6d66ac7e0a4f255b7df38",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_doubleT_low.jsonl.gz": "da94de1b85c521b091e6bfcf1996b5a73f5da295c67aff13c57557a89220a0dd",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_doubleT_medium.jsonl.gz": "656e9321cefb01552d845644c4a3616805e66279f256508ef69768c916305f7b",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_doubleT_high.jsonl.gz": "93ee78f097d20010920b6bdb95f33580d383df2a8063d599e14847636f6d82dd",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_pressureGate_roundT_clean.jsonl.gz": "3f663b9b34f6eada6b515a2f69b36d7f3c583f85463df5810f80c8e869d7235b",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_pressureGate_roundT_low.jsonl.gz": "350b0582c6e43f491ed2957222a4ec170d1145751d0515f09361a342e1732752",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_pressureGate_roundT_medium.jsonl.gz": "65d196af5bdbd8a2043041cc28bc2acbbd0223085803456cd4650a7f3fdcf950",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_pressureGate_roundT_high.jsonl.gz": "ff7778d3b281bd0e77645b4eeb83d398409ef3dab8949c42207a1a2b67756bbf",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_squareT_pressureGate_squareT_clean.jsonl.gz": "ec19578cba1bc85fcae09780113231f102f8efd3ff8c35b94d4ba81ff278d803",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_squareT_pressureGate_squareT_low.jsonl.gz": "78bdf9d8ea5d18ef38dc007eb6dd8f7ce52c9e14577993e89972748ef62ff344",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_squareT_pressureGate_squareT_medium.jsonl.gz": "a57e9e80714364278c3427eb6002ca251091453e1e1158d85cdb6147569b0942",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/roundT_squareT_pressureGate_squareT_high.jsonl.gz": "b7aae255745cda492194acbcc1b5590d5143b4be631f7386be18bde4ca38399a",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/squareT_platform_squareT_switch_clean.jsonl.gz": "f399bf0547b9eb00a4330e1b8576f0e4732d155fbf3ef23131089d06cc0aec80",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/squareT_platform_squareT_switch_low.jsonl.gz": "257435a1825eef0b11e53e99a4a40f9b8580549564f45ac76d3ce5620da9436e",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/squareT_platform_squareT_switch_medium.jsonl.gz": "beac3a7cd9480f9dbc3931b664b3e295a4c34e12c38062fcfb1928501479e63b",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/squareT_platform_squareT_switch_high.jsonl.gz": "12042409c9d14f9489eb0880c71fae85a8e5408dd6323bf13175f2becd05b281",
+    "/home/resense/ReSense/labels/doubleT_obstacle.json": "070bf3596ae42b682362aa97d8812b53155e288b03a79aff204441fa1c700402",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/doubleT_obstacle_clean.jsonl.gz": "47f9fa5907cbd5f47329c3733ce44c284a144813ab64c4400b33ecd84af5afbc",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/doubleT_obstacle_low.jsonl.gz": "c757db8ace072ea7ef22c10ab22390177752ef5d60bb9795b341bfd1f527f4e4",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/doubleT_obstacle_medium.jsonl.gz": "f763d8865b492775e8450245fbfc3fca2ba9ba86b9c92ad18882f9d26f472e20",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/doubleT_obstacle_high.jsonl.gz": "e9b519e5bcb5d66659eb29d22eacace8e0e8fe9c16c5de564e9c0c74cf18bf21",
+    "/home/resense/ReSense/labels/cloud_with_fake_obj.json": "4cdb5afe4a57ce7476ff88a1ee0b74bb6faed18862447c1361d8e824b238c545",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/cloud_with_fake_obj_clean.jsonl.gz": "fa9d72bc690500cf8d11a7e07d5b4e6f433f258b2222782237ba7e6ebc9607d3",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/cloud_with_fake_obj_low.jsonl.gz": "d3d155610b7d849f4e68a2b1052fc5ac408b2939d4356e45f74f429383b356d9",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/cloud_with_fake_obj_medium.jsonl.gz": "77035ad31674831251169fa47d26a5ba45b7d28e8881d8eeb3d3024c24f79387",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed/cloud_with_fake_obj_high.jsonl.gz": "3f9abdca5c8e684b440a30aea0543c027dc819578a0525cda7f3c1f90227568e",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_baseline_pose_fixed/verified_complete.json": "bbbdb6cd8282dcc5cce61cb5efea2475a466ff8c6be13216ee4aa506bfdbd238",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_baseline_pose_fixed/summary.json": "8de0cc1469db136d63be80f7573f3f97933933b6a4b78521c40bc4797f2580a0",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_baseline_pose_fixed/doubleT_obstacle_clean.jsonl.gz": "e93cfbe3123d8e0b977fc0d98343487a22eea505328104eb40285529f1e6ce7e",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_baseline_pose_fixed/doubleT_obstacle_low.jsonl.gz": "15a322ec3e550037af5a42a3b394bc67bc66c4fc2de13196b008cc43ac8352a4",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_baseline_pose_fixed/doubleT_obstacle_medium.jsonl.gz": "c760ff78108fd6dbdd303adf850326a69d7291803637c97d8953533deaa16c33",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_baseline_pose_fixed/doubleT_obstacle_high.jsonl.gz": "16d530a5bcdec2ca18e52784d700fd34d76a4eaf3fa39f4bfd5a66f6ce75ffcd",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_health_pose_fixed/verified_complete.json": "1369eeea30cadbe356d4b92061a3ed1dd85985a1b69da0dd24c7bae177600719",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_health_pose_fixed/summary.json": "3a75ab1ddfc470a3f19963c3b602e9e31db418f42c40f6192ab012d588f8b47c",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_health_pose_fixed/doubleT_obstacle_clean.jsonl.gz": "d86b9ceb6ae37d2ea713fa45c3f2479216b41962129e7b747d05b903cd011590",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_health_pose_fixed/doubleT_obstacle_low.jsonl.gz": "f3af6ef9dfa4e5ba891a0efa3611c611b6f9753a2414ef692944ea58b1815569",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_health_pose_fixed/doubleT_obstacle_medium.jsonl.gz": "e5bcef8e4d2521053becb5bfac89c67d000f3212b0434efb1c012478651a791d",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_health_pose_fixed/doubleT_obstacle_high.jsonl.gz": "eb3bc13f21b338dd3d82c4a39477dddd4049bfc5ccaed98c798f4806392a05f6",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/health_platform_pose_fixed/verified_complete.json": "fd47807d87bf58435f2fe8706cfe5c4f503a33c053fb1b920b944d4fbab76586",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/health_platform_pose_fixed/summary.json": "9da77ffd3b884ebf426aa5fe96912133dafa34d44d44dec88a4669e2db7ea73f",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/health_platform_pose_fixed/doubleT_platform_clean.jsonl.gz": "a4e67f6d0b5236718f392667a343df059081c214f44053caf2c73bb227482be7",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/health_platform_pose_fixed/doubleT_platform_medium.jsonl.gz": "b709d48ece4517114de75da4a1e8ad3320a1e755e8a9414512d2d64dccd945a8",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/health_platform_pose_fixed/doubleT_platform_high.jsonl.gz": "6127734675ec979e65b31a82e588c8dcac0c2e616955b8b3a05aaa516001fcbe",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/review_corrected_regular.py": "306d600fde4410cdfd3cd6a1cf2f09eba89462f8fe3489d629261574fe136b8c",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/summarize_regular_dust.py": "caf68e63a18abf34e1ee9fd2b40291667af4d89f25fc44332a01e63e5e86c734"
+  },
+  "limits": [
+    "No detector rerun; exact original source payload hashing sampled 15 frame/intervention combinations, not an independent rehash of every NPZ.",
+    "Association uses recorded distance/lateral tolerances and legacy per-frame gauge labels; it is not surveyed truth.",
+    "Pinned9b detector and b9 harness, not a new selected-cecab stress test.",
+    "Frozen flat clean rail_z(20m) placement is synthetic; actual physical dust remains unvalidated.",
+    "Health-only experiment is not enabled production behavior and does not recover missed objects."
+  ]
+}

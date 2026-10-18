@@ -1,0 +1,92 @@
+{
+  "complete": true,
+  "detector_source": "/home/resense/data/n2/baseline_9b92df5",
+  "scope": "Exact health-only detection parity against matching intensity/source/coordinate controls; health, clear-range and timing fields may change.",
+  "verified_capture_sha256": {
+    "baseline": "841e54abd6a5b7c9ed54e432d99fa01ec3ed2cc3f6a72e1afc91d7235af70154",
+    "dark_baseline": "bbbdb6cd8282dcc5cce61cb5efea2475a466ff8c6be13216ee4aa506bfdbd238",
+    "dark_health": "1369eeea30cadbe356d4b92061a3ed1dd85985a1b69da0dd24c7bae177600719",
+    "health_platform": "fd47807d87bf58435f2fe8706cfe5c4f503a33c053fb1b920b944d4fbab76586"
+  },
+  "cases": {
+    "dark_health/clean": {
+      "frames": 201,
+      "changed_detection_fields": {},
+      "changed_augmentation_or_reference_frames": [],
+      "exact_parity": true,
+      "health_counts": {
+        "GO": 8,
+        "STOP": 193
+      },
+      "health_degraded_frames": 0
+    },
+    "dark_health/low": {
+      "frames": 201,
+      "changed_detection_fields": {},
+      "changed_augmentation_or_reference_frames": [],
+      "exact_parity": true,
+      "health_counts": {
+        "GO": 19,
+        "STOP": 170,
+        "CAUTION": 12
+      },
+      "health_degraded_frames": 0
+    },
+    "dark_health/medium": {
+      "frames": 201,
+      "changed_detection_fields": {},
+      "changed_augmentation_or_reference_frames": [],
+      "exact_parity": true,
+      "health_counts": {
+        "CAUTION": 68,
+        "STOP": 133
+      },
+      "health_degraded_frames": 201
+    },
+    "dark_health/high": {
+      "frames": 201,
+      "changed_detection_fields": {},
+      "changed_augmentation_or_reference_frames": [],
+      "exact_parity": true,
+      "health_counts": {
+        "CAUTION": 181,
+        "STOP": 20
+      },
+      "health_degraded_frames": 201
+    },
+    "health_platform/clean": {
+      "frames": 345,
+      "changed_detection_fields": {},
+      "changed_augmentation_or_reference_frames": [],
+      "exact_parity": true,
+      "health_counts": {
+        "GO": 144,
+        "CAUTION": 201
+      },
+      "health_degraded_frames": 9
+    },
+    "health_platform/medium": {
+      "frames": 345,
+      "changed_detection_fields": {},
+      "changed_augmentation_or_reference_frames": [],
+      "exact_parity": true,
+      "health_counts": {
+        "CAUTION": 178,
+        "STOP": 167
+      },
+      "health_degraded_frames": 345
+    },
+    "health_platform/high": {
+      "frames": 345,
+      "changed_detection_fields": {},
+      "changed_augmentation_or_reference_frames": [],
+      "exact_parity": true,
+      "health_counts": {
+        "CAUTION": 325,
+        "STOP": 20
+      },
+      "health_degraded_frames": 345
+    }
+  },
+  "all_detection_inputs_and_outputs_identical": true
+}
