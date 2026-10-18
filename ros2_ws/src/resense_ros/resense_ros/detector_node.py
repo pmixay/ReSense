@@ -1488,6 +1488,13 @@ class DetectorNode(Node):
                 markers.append(Marker(header=hdr, ns="resense_gauge", id=index, action=Marker.DELETE))
                 continue
             line = Marker(header=hdr, ns="resense_gauge", id=index, type=Marker.LINE_STRIP, action=Marker.ADD)
+            # RViz must expire geometry even if the detector executor is blocked.
+            # Re-publishing a grey hold cannot restart its original hold budget.
+            lifetime = self.gauge_display.hold_seconds
+            if not self.gauge_display.last_status["valid"] and self.gauge_display.last_good_clock is not None:
+                lifetime -= self.gauge_display.clock() - self.gauge_display.last_good_clock
+            line.lifetime.sec = 0
+            line.lifetime.nanosec = int(max(.001, min(.5, lifetime)) * 1e9)
             line.scale.x = 0.06
             line.pose.orientation.w = 1.0
             if self.gauge_display.last_status["valid"]:

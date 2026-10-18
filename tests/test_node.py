@@ -1802,9 +1802,15 @@ def test_gauge_status_and_marker_geometry_share_exact_vertices_and_expire(freshn
     markers = node.published['/resense/markers'][-1].markers
     assert all(marker.action != 3 for marker in markers)
     outline = [marker for marker in markers if marker.ns == 'resense_gauge' and marker.id == 0][0]
+    assert outline.lifetime.sec == 0 and outline.lifetime.nanosec == 500_000_000
     drawn_sensor = np.array([[p.x, p.y, p.z] for p in outline.points])
     offset = np.r_[0., node.cfg.gauge.profile[0]]
     assert np.allclose(drawn_sensor @ node.last_marker_rotation, centres + offset)
+    clock['mono'] += .2
+    node.gauge_display.invalidate('paused')
+    held = node.gauge_markers(node.make_header(0, 0, 'lidar'), node.last_marker_rotation)
+    assert 0 < held[0].lifetime.nanosec <= 300_000_001
+    assert held[0].color.r == held[0].color.g == held[0].color.b
     clock['mono'] += .6
     clock['wall'] += .6
     node.on_watchdog()
