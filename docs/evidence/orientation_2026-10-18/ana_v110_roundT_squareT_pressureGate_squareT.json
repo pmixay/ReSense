@@ -1,0 +1,627 @@
+{
+ "battery": "v110_roundT_squareT_pressureGate_squareT.json",
+ "plain": "plain_v110_roundT_squareT_pressureGate_squareT.jsonl",
+ "cases": [
+  {
+   "index": 0,
+   "expected": "forward=+x left=+y up=+z",
+   "up_vertical": true,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": true,
+   "first_frame_correct": 0,
+   "status_end": "identity",
+   "statuses": {
+    "pending": 190,
+    "identity": 355
+   },
+   "decisions_before": {},
+   "silent_go_before": 0,
+   "after_frames": 545,
+   "after_equal_plain": 545,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": []
+  },
+  {
+   "index": 1,
+   "expected": "forward=+x left=-y up=-z",
+   "up_vertical": true,
+   "native_falcon": false,
+   "adopted": "forward=+x left=-y up=-z",
+   "correct": true,
+   "first_frame_correct": 1,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 192,
+    "ok": 353
+   },
+   "decisions_before": {
+    "GO": 1
+   },
+   "silent_go_before": 1,
+   "after_frames": 544,
+   "after_equal_plain": 534,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": []
+  },
+  {
+   "index": 2,
+   "expected": "forward=-x left=+y up=-z",
+   "up_vertical": true,
+   "native_falcon": false,
+   "adopted": "forward=-x left=+y up=-z",
+   "correct": true,
+   "first_frame_correct": 1,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 192,
+    "ok": 353
+   },
+   "decisions_before": {
+    "FAULT": 1
+   },
+   "silent_go_before": 0,
+   "after_frames": 544,
+   "after_equal_plain": 534,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 3,
+   "expected": "forward=-x left=-y up=+z",
+   "up_vertical": true,
+   "native_falcon": false,
+   "adopted": "forward=-x left=-y up=+z",
+   "correct": true,
+   "first_frame_correct": 1,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 192,
+    "ok": 353
+   },
+   "decisions_before": {
+    "FAULT": 1
+   },
+   "silent_go_before": 0,
+   "after_frames": 544,
+   "after_equal_plain": 534,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 4,
+   "expected": "forward=+x left=-z up=+y",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 202,
+    "ok": 343
+   },
+   "decisions_before": {
+    "CAUTION": 150,
+    "STOP": 395
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 395,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "1 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 5,
+   "expected": "forward=+x left=+z up=-y",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 192,
+    "ok": 353
+   },
+   "decisions_before": {
+    "CAUTION": 34,
+    "STOP": 509,
+    "GO": 2
+   },
+   "silent_go_before": 2,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 509,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "1 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 6,
+   "expected": "forward=-x left=+z up=+y",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "forward=-x left=-y up=+z",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 6,
+    "provisional": 192,
+    "ok": 347
+   },
+   "decisions_before": {
+    "FAULT": 1,
+    "CAUTION": 39,
+    "STOP": 505
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 505,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "1 of 6 central 10 deg sectors without returns: view blocked",
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 7,
+   "expected": "forward=-x left=-z up=-y",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "forward=-x left=+y up=-z",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 6,
+    "provisional": 192,
+    "ok": 347
+   },
+   "decisions_before": {
+    "FAULT": 1,
+    "CAUTION": 39,
+    "STOP": 505
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 505,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "1 of 6 central 10 deg sectors without returns: view blocked",
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 8,
+   "expected": "forward=+y left=+x up=-z",
+   "up_vertical": true,
+   "native_falcon": false,
+   "adopted": "forward=+y left=+x up=-z",
+   "correct": true,
+   "first_frame_correct": 1,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 192,
+    "ok": 353
+   },
+   "decisions_before": {
+    "FAULT": 1
+   },
+   "silent_go_before": 0,
+   "after_frames": 544,
+   "after_equal_plain": 534,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 9,
+   "expected": "forward=-y left=+x up=+z",
+   "up_vertical": true,
+   "native_falcon": false,
+   "adopted": "forward=-y left=+x up=+z",
+   "correct": true,
+   "first_frame_correct": 1,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 192,
+    "ok": 353
+   },
+   "decisions_before": {
+    "FAULT": 1
+   },
+   "silent_go_before": 0,
+   "after_frames": 544,
+   "after_equal_plain": 534,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 10,
+   "expected": "forward=+y left=-x up=+z",
+   "up_vertical": true,
+   "native_falcon": false,
+   "adopted": "forward=+y left=-x up=+z",
+   "correct": true,
+   "first_frame_correct": 1,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 192,
+    "ok": 353
+   },
+   "decisions_before": {
+    "FAULT": 1
+   },
+   "silent_go_before": 0,
+   "after_frames": 544,
+   "after_equal_plain": 534,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 11,
+   "expected": "forward=-y left=-x up=-z",
+   "up_vertical": true,
+   "native_falcon": false,
+   "adopted": "forward=-y left=-x up=-z",
+   "correct": true,
+   "first_frame_correct": 1,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 192,
+    "ok": 353
+   },
+   "decisions_before": {
+    "FAULT": 1
+   },
+   "silent_go_before": 0,
+   "after_frames": 544,
+   "after_equal_plain": 534,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 12,
+   "expected": "forward=+z left=+x up=+y",
+   "up_vertical": false,
+   "native_falcon": true,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "fallback",
+   "statuses": {
+    "pending": 399,
+    "fallback": 146
+   },
+   "decisions_before": {
+    "CAUTION": 545
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "track visible to 3 m only (< 60 m)"
+   ]
+  },
+  {
+   "index": 13,
+   "expected": "forward=-z left=+x up=-y",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "fallback",
+   "statuses": {
+    "pending": 399,
+    "fallback": 146
+   },
+   "decisions_before": {
+    "CAUTION": 545
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "track visible to 3 m only (< 60 m)"
+   ]
+  },
+  {
+   "index": 14,
+   "expected": "forward=-z left=-x up=+y",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "fallback",
+   "statuses": {
+    "pending": 399,
+    "fallback": 146
+   },
+   "decisions_before": {
+    "CAUTION": 545
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "track visible to 3 m only (< 60 m)"
+   ]
+  },
+  {
+   "index": 15,
+   "expected": "forward=+z left=-x up=-y",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "fallback",
+   "statuses": {
+    "pending": 399,
+    "fallback": 146
+   },
+   "decisions_before": {
+    "CAUTION": 545
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "track visible to 3 m only (< 60 m)"
+   ]
+  },
+  {
+   "index": 16,
+   "expected": "forward=+y left=+z up=+x",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "forward=+y left=-x up=+z",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 6,
+    "provisional": 191,
+    "ok": 348
+   },
+   "decisions_before": {
+    "FAULT": 1,
+    "CAUTION": 35,
+    "STOP": 509
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 509,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "1 of 6 central 10 deg sectors without returns: view blocked",
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 17,
+   "expected": "forward=-y left=-z up=+x",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "forward=-y left=-x up=-z",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 6,
+    "provisional": 191,
+    "ok": 348
+   },
+   "decisions_before": {
+    "FAULT": 1,
+    "CAUTION": 35,
+    "STOP": 509
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 509,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "1 of 6 central 10 deg sectors without returns: view blocked",
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 18,
+   "expected": "forward=+y left=-z up=-x",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "forward=+y left=+x up=-z",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 6,
+    "provisional": 191,
+    "ok": 348
+   },
+   "decisions_before": {
+    "FAULT": 1,
+    "CAUTION": 35,
+    "STOP": 509
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 509,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "1 of 6 central 10 deg sectors without returns: view blocked",
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 19,
+   "expected": "forward=-y left=+z up=-x",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "forward=-y left=+x up=+z",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "ok",
+   "statuses": {
+    "pending": 6,
+    "provisional": 191,
+    "ok": 348
+   },
+   "decisions_before": {
+    "FAULT": 1,
+    "CAUTION": 35,
+    "STOP": 509
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 509,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "1 of 6 central 10 deg sectors without returns: view blocked",
+    "6 of 6 central 10 deg sectors without returns: view blocked"
+   ]
+  },
+  {
+   "index": 20,
+   "expected": "forward=-z left=+y up=+x",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "fallback",
+   "statuses": {
+    "pending": 399,
+    "fallback": 146
+   },
+   "decisions_before": {
+    "CAUTION": 545
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "track visible to 3 m only (< 60 m)"
+   ]
+  },
+  {
+   "index": 21,
+   "expected": "forward=+z left=-y up=+x",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "fallback",
+   "statuses": {
+    "pending": 399,
+    "fallback": 146
+   },
+   "decisions_before": {
+    "CAUTION": 545
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "track visible to 3 m only (< 60 m)"
+   ]
+  },
+  {
+   "index": 22,
+   "expected": "forward=+z left=+y up=-x",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "fallback",
+   "statuses": {
+    "pending": 399,
+    "fallback": 146
+   },
+   "decisions_before": {
+    "CAUTION": 545
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "track visible to 2 m only (< 60 m)"
+   ]
+  },
+  {
+   "index": 23,
+   "expected": "forward=-z left=-y up=-x",
+   "up_vertical": false,
+   "native_falcon": false,
+   "adopted": "configured",
+   "correct": false,
+   "first_frame_correct": null,
+   "status_end": "fallback",
+   "statuses": {
+    "pending": 399,
+    "fallback": 146
+   },
+   "decisions_before": {
+    "CAUTION": 545
+   },
+   "silent_go_before": 0,
+   "after_frames": 0,
+   "after_equal_plain": 0,
+   "stop_frames": 0,
+   "stop_frames_plain": 0,
+   "first_msgs": [
+    "track visible to 2 m only (< 60 m)"
+   ]
+  }
+ ]
+}
