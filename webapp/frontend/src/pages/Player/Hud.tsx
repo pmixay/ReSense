@@ -185,7 +185,7 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
         ) : null}
       </div>
 
-      <svg className={styles.brk} width="1600" height="700" aria-hidden>
+      <svg className={styles.brk} width="1600" height="600" aria-hidden>
         <path ref={brkRef} fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style={{ visibility: 'hidden' }} />
       </svg>
 
@@ -256,7 +256,7 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
                 >
                   <line x1="22" x2={big ? 32 : 28} y1="0" y2="0" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
                   {big && (
-                    <text x="36" y="4.2" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#fff">
+                    <text x="36" y="4.2" fontFamily="var(--f-body)" fontWeight="800" fontSize="12" fill="#fff">
                       {h === 2 ? '2 м' : h}
                     </text>
                   )}

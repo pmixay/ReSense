@@ -22,8 +22,7 @@ export function envelopeText(): string {
   return `${fmtNumTrim(b.yMax - b.yMin, 1)} × ${fmtNum(b.hMax, 1)} м`;
 }
 
-/** Benzin size of the decision tile's word, so «СВОБОДНО» fits the 230 px tile like «СТОП»
- *  (Benzin 800 capitals run about 1 em wide; 190 px of text width inside the padding). */
+/** Conservative size of a decision label inside the 230 px console tile (190 px text area). */
 export function decisionWordSize(word: string): number {
   return Math.min(46, Math.floor(190 / Math.max(1, word.length)));
 }
@@ -159,7 +158,7 @@ export function distanceModel(frame: FrameResultDict | null, decision: Decision 
   return { obstacle: false, unverified: false, title: 'Дальность контроля ≈', value: clear, free: clear ?? 0, monitored };
 }
 
-/** Approximate width of a label under the distance bar (Montserrat 800 12 px). */
+/** Conservative width of a label under the distance bar (Raleway 800 12 px). */
 const labelWidth = (s: string): number => s.length * 7.8;
 
 export interface DistanceLabels {
@@ -202,7 +201,7 @@ export function distanceLabels(w: number, free: string, value: string | null, fx
 
 /** Width of the scrubber's strip in stage px (1600 − the controls around it). */
 export const SCRUB_LANE_W = 670;
-/** Approximate width of a pin pill (DecisionStrip: Montserrat 800 11 px, 7 px padding). */
+/** Conservative width of a pin pill (DecisionStrip: Raleway 800 11 px, 7 px padding). */
 export const pinWidth = (label: string): number => 14 + 7 * label.length;
 
 type PinAlign = NonNullable<StripMarker['align']>;

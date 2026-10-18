@@ -104,3 +104,7 @@
     font-size: min(0.84em, calc(100cqi / (var(--n) * 0.8)));
   }
 }
+
+@media (max-width: 1100px) {
+  .kpis { grid-column: 1; grid-row: auto; grid-template-rows: repeat(2, minmax(180px, auto)); }
+}

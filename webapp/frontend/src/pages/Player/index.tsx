@@ -1,5 +1,4 @@
-// Плеер — a fullscreen route outside the AppShell: the drive through a run from the cab of a future
-// train (webapp/design/mockup/player.html made live). The 1600×1000 composition is scaled to fit;
+// Плеер — the 16:9 train cab inside the persistent site navigation. The 1600×900 stage fits whole;
 // the 3D view behind the glass is driven by the playback engine (src/player), the console tiles and
 // the scrubber read its snapshot. Deep links: /player/<runId>?pos=<n>&speed=<x>&cam=cab|top|chase.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
@@ -38,7 +37,7 @@ function useBack(runId?: string) {
 
 type Fullscreen = ReturnType<typeof useFullscreen>;
 interface CabChrome {
-  /** scale of the 1600×1000 stage */
+  /** scale of the 1600×900 stage */
   k: number;
   fs: Fullscreen;
 }
@@ -53,7 +52,7 @@ interface StageProps {
   stageRef?: React.RefObject<HTMLDivElement>;
 }
 
-/** The fixed 1600×1000 cab, scaled to the window (inside the route's fullscreen root). */
+/** The fixed 16:9 cab, uniformly scaled to its available container. */
 function Stage({ children, state, stageRef }: StageProps) {
   const { k } = useContext(ChromeContext);
   return (
@@ -113,7 +112,7 @@ function CabShell({ runId, runName, glass, console: cons }: { runId?: string; ru
 export default function Player() {
   const { runId } = useParams();
   const rootRef = useRef<HTMLDivElement>(null);
-  const k = useStageScale();
+  const k = useStageScale(rootRef);
   const fs = useFullscreen(rootRef);
   const chrome = useMemo(() => ({ k, fs }), [k, fs]);
   useEffect(() => {

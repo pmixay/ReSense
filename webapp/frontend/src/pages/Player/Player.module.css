@@ -1,17 +1,20 @@
-/* The cab of the player (webapp/design/mockup/player.html): one 1600×1000 composition scaled to fit. */
+/* The dimensional cab: one 1600×900 composition, contained beneath the pinned navigation. */
 .root {
-  position: fixed;
-  inset: 0;
+  position: relative;
+  width: min(100%, calc(max(0px, 100dvh - var(--site-chrome-h, 148px) - 44px) * 16 / 9));
+  aspect-ratio: 16 / 9;
   background: var(--cab-2);
+  border-radius: 16px;
   overflow: hidden;
   color: var(--ink);
+  box-shadow: 0 12px 32px -16px rgba(23, 27, 32, 0.5);
 }
 .stage {
   position: absolute;
   left: 50%;
   top: 50%;
   width: 1600px;
-  height: 1000px;
+  height: 900px;
   overflow: hidden;
   transform: translate(-50%, -50%) scale(var(--k, 1));
   transform-origin: center;
@@ -24,13 +27,13 @@
   left: 0;
   top: 0;
   width: 1600px;
-  height: 700px;
+  height: 600px;
   background: #04060c;
 }
 .canvas {
   display: block;
   width: 1600px;
-  height: 700px;
+  height: 600px;
   cursor: grab;
   touch-action: none;
 }
@@ -42,7 +45,7 @@
   left: 0;
   top: 0;
   width: 1600px;
-  height: 700px;
+  height: 600px;
   background: radial-gradient(90% 80% at 50% 45%, #122038 0%, #05070d 70%);
 }
 .cab {
@@ -62,7 +65,7 @@
   left: 0;
   top: 0;
   width: 1600px;
-  height: 700px;
+  height: 600px;
   pointer-events: none;
   /* its own layer: the labels move every render; sharing a layer with the blurred cab SVG left
      stale copies of them on screen after repaints (Chromium) */
@@ -254,7 +257,7 @@
 .glassBanner {
   position: absolute;
   left: 50%;
-  top: 520px;
+  top: 420px;
   transform: translateX(-50%);
   width: 560px;
 }
@@ -263,14 +266,14 @@
   left: 0;
   top: 0;
   width: 1600px;
-  height: 700px;
+  height: 600px;
 }
 .glassCenter {
   position: absolute;
   left: 110px;
   right: 110px;
   top: 110px;
-  height: 490px;
+  height: 390px;
   display: grid;
   place-items: center;
 }
@@ -556,14 +559,13 @@
 /* ---------------------------------------------------------------- console tiles */
 .tile {
   position: absolute;
-  top: 694px;
+  top: 594px;
   height: 180px;
-  border-radius: 22px;
+  border-radius: 16px;
   transform-origin: 50% 0;
   padding: 15px 18px;
-  background: radial-gradient(130% 110% at 0% 0%, #fff 0%, rgba(255, 255, 255, 0) 52%),
-    linear-gradient(118deg, rgba(255, 255, 255, 0) 58%, rgba(255, 255, 255, 0.75) 63%, rgba(255, 255, 255, 0) 71%), linear-gradient(180deg, #fbfaf8, #f0ece6);
-  box-shadow: 0 0 0 1px rgba(22, 21, 26, 0.08), inset 0 1.5px 0 #fff, 0 12px 20px -12px rgba(40, 30, 20, 0.55);
+  background: linear-gradient(165deg, #FFFFFF, #E2E7EC);
+  box-shadow: inset 0 1.5px 0 #fff, 0 10px 18px -8px rgba(20, 31, 42, 0.55);
 }
 .tt {
   display: flex;
@@ -665,7 +667,7 @@
 .decFrame {
   font-weight: 800;
   font-size: 12px;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   padding: 5px 10px;
 }
@@ -808,11 +810,11 @@
   position: absolute;
   left: 40px;
   right: 40px;
-  top: 896px;
+  top: 796px;
   height: 80px;
   border-radius: 40px;
-  background: radial-gradient(60% 140% at 0% 0%, #fff 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(180deg, #fdfcfa, #f2eee9);
-  box-shadow: 0 0 0 1px rgba(22, 21, 26, 0.08), inset 0 1.5px 0 #fff, 0 10px 18px -12px rgba(40, 30, 20, 0.5);
+  background: linear-gradient(180deg, #FFFFFF, #E2E7EC);
+  box-shadow: inset 0 1.5px 0 #fff, 0 10px 18px -10px rgba(20, 31, 42, 0.5);
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -918,7 +920,7 @@
   left: 140px;
   right: 140px;
   top: 136px;
-  height: 462px;
+  height: 362px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1000,7 +1002,7 @@
   left: 800px;
   width: auto;
   height: auto;
-  top: 704px;
+  top: 604px;
   padding: 16px 22px 20px;
   transform: translateX(-50%);
 }

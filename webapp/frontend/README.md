@@ -24,7 +24,7 @@ renders: the top bar shows «бэкенд офлайн» and cards show empty / 
 
 ```
 src/
-  main.tsx, App.tsx       QueryClient, router (every page lazy; /player is fullscreen, outside the shell)
+  main.tsx, App.tsx       QueryClient, router (every page lazy, inside the pinned AppShell)
   styles/                 fonts.css (local @font-face), tokens.css (all design tokens), base.css
   components/<Name>/      the UI kit: <Name>.tsx + <Name>.module.css (+ tests); barrel components/index.ts
   api/                    types.ts (API.md), client.ts (fetch → ApiError with the Russian detail),
@@ -42,22 +42,21 @@ screenshots/              local review screenshots (git-ignored)
 ```
 
 Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/player`, `/player/:runId`
-(fullscreen) · `/compare` · `/live` · `/presets` · `/about` · `/_ui` · `*` NotFound. The Overview's
+(16:9 cab, optional fullscreen) · `/compare` · `/live` · `/presets` · `/about` · `/_ui` · `*` NotFound. The Overview's
 «Демо» generates a demo recording, queues it and opens `/queue`. Deep links into Загрузка:
 `/upload?source=file|server|demo|list&rec=<recordingId>&preset=<presetId>` (source, chosen recording, preset).
 
 ## Conventions
 
-- **Fonts.** Benzin (400–800) for page titles, card titles, big numbers and decision labels;
-  Montserrat (400–900) for everything else. Both are local woff2 files (`src/assets/fonts`), no
-  network fonts. Use `var(--f-head)` / `var(--f-body)`.
+- **Fonts.** Raleway (100–900), self-hosted with Latin and Cyrillic in `src/assets/fonts`;
+  no network fonts. Use `var(--f-head)` / `var(--f-body)` and lining, tabular numerals.
 - **Tokens.** Colours, radii, spacing and shadows come from `styles/tokens.css` — no raw hex in
   components except canvas / SVG drawing. Brand red (`--red`) is for chrome, the line and the one
   main call to action per page (`<Button variant="primary">`).
 - **Safety colours.** GO `--go` (`--go-deep` under white text), CAUTION `--caution` with ink text,
   STOP `--stop` always with the white 45° hatch (`var(--hatch)`) and the octagon icon, FAULT
   `--fault`. STOP is never drawn in brand red. Use `DecisionChip`, `DecisionStrip`, `lib/decisions.ts`.
-- **No grey text.** Text is ink `#16151A` or white. De-emphasise with weight and size, never with
+- **No grey text.** Text is ink `#171B20` or white. De-emphasise with weight and size, never with
   a grey colour or opacity; disabled controls switch to a `--well-2` fill with ink text.
 - **Minimal text, explanations in «?».** Put explanations in `<Help>` (round «?» + tooltip): opens on
   hover and keyboard focus, click pins it, Escape closes, one open per screen, `aria-describedby`
@@ -72,3 +71,7 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
 - **Layout.** 12-column bento (`.grid-12`), cards radius 28, the page fills 1600×1000 down to
   1440×900 without scrolling (`.fill-viewport` = `100vh − 256px`). A page on the line may add a sub
   label to its station with `useRailSub(name)`.
+- **Pinned navigation.** The top bar and category rail stay above the independently scrolling
+  page on every route, including loading/error states and the player. Fullscreen targets the
+  shared shell so both bars remain accessible. The player contains the entire 1600×900 cab;
+  its canvas is rendered at 1600×600 with a matching camera aspect, never clipped to fit.

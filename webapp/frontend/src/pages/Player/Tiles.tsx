@@ -15,7 +15,7 @@ import styles from './Player.module.css';
 /** Tiles ride the console arc: the top on the curve, skewed to its slope; the outer ones turn to the driver. */
 export function tileStyle(left: number, width: number, ry = 0): CSSProperties {
   const cx = left + width / 2;
-  const top = 694 - 40 * ((cx - 800) / 800) ** 2;
+  const top = 594 - 40 * ((cx - 800) / 800) ** 2;
   const a = (Math.atan((-80 * (cx - 800)) / 640000) * 180) / Math.PI;
   return {
     left,
@@ -103,30 +103,30 @@ function DistanceBar({
     <svg width={W} height="42" viewBox={`0 0 ${W} 42`} className={styles.dbar} aria-hidden>
       <defs>
         <pattern id="pl-mh" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <rect width="7" height="7" fill="#EDE9E4" />
-          <rect width="2.5" height="7" fill="#D6CFC6" />
+          <rect width="7" height="7" fill="var(--well)" />
+          <rect width="2.5" height="7" fill="var(--hair-2)" />
         </pattern>
       </defs>
-      <rect x="0" y="5" width={W} height="14" rx="7" fill={unverified ? '#5B4E9C' : '#E7E2DB'} />
+      <rect x="0" y="5" width={W} height="14" rx="7" fill={unverified ? 'var(--fault)' : 'var(--well)'} />
       {mon !== null && <rect x="0" y="5" width={Math.max(14, mon + 1.5)} height="14" rx="7" fill="url(#pl-mh)" />}
-      {fx > 0.5 && <rect x="0" y="5" width={Math.max(14, fx)} height="14" rx="7" fill="#12A150" />}
+      {fx > 0.5 && <rect x="0" y="5" width={Math.max(14, fx)} height="14" rx="7" fill="var(--go)" />}
       {mon !== null && <rect x={Math.max(0, mon - 1.5)} y="0" width="3" height="24" rx="1.5" fill="#16151A" />}
       {obstacle && (
         <g>
-          <circle cx={fx} cy="12" r="10" fill="#D0001B" stroke="#fff" strokeWidth="3" />
+          <circle cx={fx} cy="12" r="10" fill="var(--stop)" stroke="#fff" strokeWidth="3" />
           <path d={`M${fx - 4.5} 12h9`} stroke="#fff" strokeWidth="2.6" strokeLinecap="round" />
         </g>
       )}
-      <text x="0" y="39" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
+      <text x="0" y="39" fontFamily="var(--f-body)" fontWeight="800" fontSize="12" fill="var(--ink)">
         {labels.free}
       </text>
       {labels.value && (
-        <text x={labels.valueX} y="39" textAnchor="middle" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
+        <text x={labels.valueX} y="39" textAnchor="middle" fontFamily="var(--f-body)" fontWeight="800" fontSize="12" fill="var(--ink)">
           {labels.value}
         </text>
       )}
       {labels.mon && (
-        <text x={labels.monEnd} y="39" textAnchor="end" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
+        <text x={labels.monEnd} y="39" textAnchor="end" fontFamily="var(--f-body)" fontWeight="800" fontSize="12" fill="var(--ink)">
           {labels.mon}
         </text>
       )}
@@ -208,7 +208,7 @@ export function MetricsTile({
         </div>
         <div className={styles.spark} aria-hidden>
           {bars.map((v, i) => (
-            <i key={i} style={{ height: Math.max(3, (v / maxBar) * 30), background: i === bars.length - 1 ? '#16151A' : '#D6CFC6' }} />
+            <i key={i} style={{ height: Math.max(3, (v / maxBar) * 30), background: i === bars.length - 1 ? 'var(--ink)' : 'var(--hair-2)' }} />
           ))}
         </div>
       </div>

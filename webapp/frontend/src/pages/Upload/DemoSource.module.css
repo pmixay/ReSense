@@ -156,3 +156,11 @@
     padding: 12px 16px 14px;
   }
 }
+
+@media (max-width: 560px) {
+  .cards { grid-template-columns: minmax(0, 1fr); max-height: none; flex: none; }
+  .sc { min-height: 120px; }
+  .controls { flex-wrap: wrap; }
+  .facts { flex-wrap: wrap; }
+  .progLine { flex-wrap: wrap; white-space: normal; }
+}

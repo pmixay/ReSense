@@ -490,16 +490,19 @@ def test_lost_3d_view_keeps_the_console(app, seeded):
 def test_fullscreen_orbit_and_back(app, seeded):
     page, rid = app.page, seeded["ids"]["approach"]
     open_player(app, f"/player/{rid}?pos=25")
-    # F: the real Fullscreen API on the cab
+    # Fullscreen preserves the shared top bar and category navigation.
     page.keyboard.press("f")
     page.wait_for_function("() => !!document.fullscreenElement")
+    assert page.evaluate('document.fullscreenElement.hasAttribute("data-app-shell")')
+    expect(page.get_by_role("navigation", name="Линия: путь работы с записью")).to_be_visible()
     expect(page.get_by_role("button", name="Выйти из полноэкранного режима (F)")).to_be_visible()
     page.get_by_role("button", name="Выйти из полноэкранного режима (F)").click()
     page.wait_for_function("() => !document.fullscreenElement")
-    # a browser that refuses fullscreen: the cab hides its navigation instead, Esc brings it back
+    # A refused Fullscreen API keeps the same shell in fallback mode; Esc exits it.
     page.evaluate("() => { Element.prototype.requestFullscreen = () => Promise.reject(new Error('denied')); }")
     page.get_by_role("button", name="Во весь экран (F)").click()
     expect(page.get_by_role("button", name="Назад", exact=True)).to_have_count(0)
+    expect(page.get_by_role("navigation", name="Линия: путь работы с записью")).to_be_visible()
     expect(page.get_by_role("button", name="Выйти из полноэкранного режима (F)")).to_be_visible()
     page.keyboard.press("Escape")
     expect(page.get_by_role("button", name="Назад", exact=True)).to_be_visible()
@@ -534,10 +537,22 @@ def test_fullscreen_orbit_and_back(app, seeded):
 
 def test_cab_fits_small_viewports(app, seeded):
     page, rid = app.page, seeded["ids"]["approach"]
-    for w, h in ((1440, 900), (1280, 800), (1280, 720)):
+    for w, h in ((1920, 1080), (1440, 900), (1280, 800), (1280, 720), (390, 844)):
         page.set_viewport_size({"width": w, "height": h})
         open_player(app, f"/player/{rid}?pos=30")
         assert page.evaluate("document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth")
+        nav = page.get_by_role("navigation", name="Линия: путь работы с записью")
+        expect(nav).to_be_visible()
+        canvas = page.get_by_role("img", name="3D-вид из кабины")
+        world = canvas.locator("..")
+        stage = world.locator("..")
+        stage_box = box_of(stage, scroll=False)
+        assert abs(stage_box["width"] / stage_box["height"] - 16 / 9) < 0.01
+        nav_box = box_of(nav, scroll=False)
+        assert stage_box["y"] >= nav_box["y"] + nav_box["height"]
+        assert stage_box["x"] >= 0 and stage_box["x"] + stage_box["width"] <= w + 1
+        assert stage_box["y"] + stage_box["height"] <= h + 1
+        assert abs(box_of(canvas, scroll=False)["height"] - box_of(world, scroll=False)["height"]) < 1
         for name in ("Схема пути", "Решение", "До препятствия", "Задержка и частота", "Исправность"):
             b = box_of(page.get_by_role("region", name=name), scroll=False)
             assert b and b["x"] >= 0 and b["y"] >= 0 and b["x"] + b["width"] <= w and b["y"] + b["height"] <= h, (w, h, name, b)

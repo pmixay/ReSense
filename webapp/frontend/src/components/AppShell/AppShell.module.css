@@ -1,18 +1,41 @@
 .shell {
-  min-height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+.chrome {
+  position: relative;
+  z-index: 30;
+  flex: none;
+}
+.shell[data-kiosk] {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
 }
 .page {
   flex: 1;
   padding: 16px var(--pad) 28px;
   min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--hair-2) var(--bg);
+}
+.playerPage {
+  display: grid;
+  place-items: center;
+}
+@media (max-width: 1100px) {
+  .playerPage { align-items: start; }
 }
 .page:focus-visible {
   box-shadow: none;
 }
 .skip {
-  position: absolute;
+  position: fixed;
   left: 12px;
   top: -60px;
   z-index: 100;

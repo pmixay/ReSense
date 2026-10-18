@@ -1,21 +1,22 @@
-// Small hooks of the cab: the 1600×1000 composition scaled to fit the viewport, the Fullscreen API
+// Small hooks of the cab: the 16:9 composition scaled to fit its container, the Fullscreen API
 // with a fallback when the browser refuses it, and the player's keyboard map.
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 
 export const STAGE_W = 1600;
-export const STAGE_H = 1000;
+export const STAGE_H = 900;
 
-const fitScale = (): number =>
-  typeof window === 'undefined' ? 1 : Math.max(0.3, Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H));
-
-/** Scale of the fixed 1600×1000 cab so it fits the window (both ways, letterboxed). */
-export function useStageScale(): number {
-  const [k, setK] = useState(fitScale);
+/** Fit both dimensions without a minimum scale that would crop narrow viewports. */
+export function useStageScale(ref: RefObject<HTMLElement>): number {
+  const [k, setK] = useState(0);
   useEffect(() => {
-    const on = () => setK(fitScale());
-    window.addEventListener('resize', on);
-    return () => window.removeEventListener('resize', on);
-  }, []);
+    const el = ref.current;
+    if (!el) return;
+    const on = () => setK(Math.min(el.clientWidth / STAGE_W, el.clientHeight / STAGE_H));
+    on();
+    const observer = new ResizeObserver(on);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref]);
   return k;
 }
 
@@ -25,13 +26,21 @@ export function useFullscreen(ref: RefObject<HTMLElement>) {
   const [pseudo, setPseudo] = useState(false);
 
   useEffect(() => {
-    const on = () => setReal(!!document.fullscreenElement && document.fullscreenElement === ref.current);
+    const on = () => setReal(!!document.fullscreenElement && document.fullscreenElement === ref.current?.closest('[data-app-shell]'));
+    on();
     document.addEventListener('fullscreenchange', on);
     return () => document.removeEventListener('fullscreenchange', on);
   }, [ref]);
 
+  useEffect(() => {
+    const shell = ref.current?.closest('[data-app-shell]');
+    if (pseudo) shell?.setAttribute('data-kiosk', '');
+    return () => shell?.removeAttribute('data-kiosk');
+  }, [pseudo, ref]);
+
   const enter = useCallback(async () => {
-    const el = ref.current;
+    // Keep the category selector and top bar visible in real and fallback fullscreen.
+    const el = ref.current?.closest<HTMLElement>('[data-app-shell]');
     if (el && typeof el.requestFullscreen === 'function' && document.fullscreenEnabled !== false) {
       try {
         await el.requestFullscreen();

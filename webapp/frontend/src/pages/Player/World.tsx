@@ -9,7 +9,7 @@ import { PIP_RECT, type OverlaySink } from './Hud';
 import styles from './Player.module.css';
 
 export const WORLD_W = 1600;
-export const WORLD_H = 700;
+export const WORLD_H = 600;
 
 export interface WorldProps {
   engine: PlayerEngine;

@@ -36,7 +36,7 @@ Data lives in `webapp/data/` (`RESENSE_WEB_DATA`); «Папка на серве�
 | `/queue` | Очередь | the running job (stage, %, frames/s, ETA), waiting and finished jobs, logs, cancel / retry |
 | `/runs` | Прогоны | every run with its decision strip and verdict; search, filters, rename, delete, pick for compare |
 | `/runs/:id` | Прогон | one run: KPIs, decisions per frame against labels, distance chart, events, 3D preview, downloads |
-| `/player`, `/player/:id` | Плеер | fullscreen 3D cab: point cloud, envelope, objects, HUD tiles, scrubber with events, keyboard |
+| `/player`, `/player/:id` | Плеер | 16:9 3D cab with pinned site navigation: point cloud, envelope, objects, HUD, scrubber, keyboard, fullscreen |
 | `/compare?runs=a,b` | Сравнение | 2–4 runs side by side: KPI table with the best values, aligned strips, distances, preset diff |
 | `/live` | Прямой эфир | the ROS 2 node through rosbridge, or a replay of a run over the WebSocket, as the driver sees it |
 | `/presets` | Параметры | the sealed «Стандарт 1.0» and user presets of the detector's tunable parameters |

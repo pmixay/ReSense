@@ -142,7 +142,7 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
     }
 
     // visibility
-    ctx.font = '800 12px Montserrat, system-ui, sans-serif';
+    ctx.font = '800 12px Raleway, system-ui, sans-serif';
     if (vis !== null) {
       const vx = X(vis);
       ctx.setLineDash([4, 4]);
