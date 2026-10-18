@@ -12,8 +12,9 @@
 > unreleased 1.2.0 candidate. Hosted CI, P4 final candidate approval and release remain pending.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
-are team labels; package 1.0.0 dates from 25.09. `main` retains sealed **1.1.0**;
-this work branch declares **1.2.0**, an unreleased candidate.
+are team labels; package 1.0.0 dates from 25.09. `main` now contains the merged **1.2.0** candidate (PR #37);
+`det/b4-orientation` integrates B4 and P4 work. The selected next J1 source remains
+pinned sealed **1.1.0 `3b7d7aa`**, not the moving main branch.
 The published release remains v1.0.0. Figures are the team's, measured when a change
 landed (detector figures on the 1 cm frame cache). Current results: [`README.md`](README.md),
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
@@ -21,11 +22,20 @@ landed (detector figures on the 1 cm frame cache). Current results: [`README.md`
 
 ## [1.2.0] — unreleased LiDAR integration candidate, 18.10
 
-This candidate continues `work/n5-labels-c2-acceptance`; it is not a new release or a
-completed P4/J1 judgement. The four version declarations change together. A fresh gate on
+This candidate continues on `det/b4-orientation` after merging main and P4; the
+previous `work/n5-labels-c2-acceptance` is merged into main. It is not a new release
+or a completed P4/J1 judgement. The four version declarations change together. A fresh gate on
 the committed version and its source identity are recorded in the
 [candidate acceptance record](docs/evidence/version_1.2.0_2026-10-18/PLAN.md).
 
+- B4 channel-axis orientation checks and observation cadence now retain main's readiness
+  guard and obstacle STOP priority. Committed merged source `0779db7` passes fresh paired
+  full gates, X3 and 24-mount sweeps with the same native build. Empty-recording false STOPs
+  fall to zero across all 24 tested mounts; newly recovered sideways positive cases retain
+  the correctly oriented control's matched detections. [Evidence and limits](docs/evidence/b4_merge_reseal_2026-10-18/README.md).
+  A new candidate seal passes before and after native compilation in a clean checkout.
+  Physical horizontal scanners, missing/late channel evidence and P4 S1–S4 remain open;
+  final P4 review of the merged source is pending.
 - Falcon ROS/native sensor profiles and explicit orientation readiness; unconfirmed GO is
   held at CAUTION. Startup orientation replay remains **opt-in**: enabling it lost 13 prior
   Falcon STOP frames, including four person-associated frames, so it is not the default.
@@ -40,7 +50,7 @@ the committed version and its source identity are recorded in the
   [Results and exact source identities](docs/evidence/lidar_adaptation_2026-10-18/README.md).
 - Dust measurements are complete but robustness acceptance fails. N6's candidate reaches
   51.12 m, below 60 m, and fails farther-geometry review. Both production experiments remain
-  off. Side-mounted automatic orientation (L16), curve-axis bias (L10/K2), inherited tall-object
+  off. L16 coverage beyond the tested B4 channel-evidence scope, curve-axis bias (L10/K2), inherited tall-object
   misses and the historical Windows Set O frame 332 provenance gap remain unresolved.
 
 P4's development check of `b423562` is not final approval of this version. P1 owns integration

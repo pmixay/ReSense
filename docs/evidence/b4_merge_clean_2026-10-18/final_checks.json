@@ -1,0 +1,62 @@
+[
+  {
+    "name": "seal_tests",
+    "command": [
+      "/home/resense/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_detector_freeze.py",
+      "--junitxml=docs/evidence/b4_merge_clean_2026-10-18/seal_tests.xml"
+    ],
+    "exit": 0,
+    "log": "seal_tests.log",
+    "sha256": "89b9455156171ac5f30a51d49e1bcd945634c7acb3ef3cb29d9a40a85acb3b1d"
+  },
+  {
+    "name": "lint",
+    "command": [
+      "/home/resense/.venv/bin/python",
+      "scripts/check_archived_lint.py",
+      "--lint",
+      "--ruff",
+      "/home/resense/.tools/ruff0158/bin/ruff"
+    ],
+    "exit": 0,
+    "log": "lint.log",
+    "sha256": "70bb576ed7cc8c087e5ce34b8d38308e927470b55d438c16edaa162947351541"
+  },
+  {
+    "name": "params",
+    "command": [
+      "bash",
+      "scripts/sync_params.sh",
+      "--check"
+    ],
+    "exit": 0,
+    "log": "params.log",
+    "sha256": "21cb1bb4757cfbdc97cd5d5ad77942748a1f6b11de557f8eba64641b5dd52ca6"
+  },
+  {
+    "name": "seal",
+    "command": [
+      "/usr/bin/python3",
+      "scripts/detector_freeze.py",
+      "verify"
+    ],
+    "exit": 0,
+    "log": "seal.log",
+    "sha256": "c9e603855b5790181cfe7e918160b735aa2ee875e66b37ce81eb7796fcde4777"
+  },
+  {
+    "name": "diff",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "log": "diff.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]
