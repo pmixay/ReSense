@@ -50,6 +50,8 @@ class TrackModel:
     axis_valid_both: float = 1e9     # 25.09: X up to which BOTH fitted boundaries support the axis (= axis_valid with one or none); read only with cluster.far_axis_both_sides 1, not serialised
     axis_valid_bent: float = 1e9     # 25.09: the same without the straight bonus, on a bent axis with two boundaries only (1e9 otherwise); cluster.far_axis_both_sides 2, not serialised
     wall_drift: float = 1e9          # 15.10 (axis_wall_drift): X where a near tunnel boundary has come axis_wall_drift nearer the axis than in the rail range (1e9 = none): the monitored range ends there
+    axis_valid_without_rails: float = 0.0  # N6: pre-extension range, restored before the next frame
+    rail_axis_support: float = 0.0   # N6: last observed paired-rail station supporting an extension
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -105,6 +107,9 @@ class TrackModel:
                if self.floor_shadow > 0 else {}),
             # 15.10 (additive, only in a frame with a wall drift)
             **({"wall_drift": round(float(self.wall_drift), 1)} if self.wall_drift < 1e9 else {}),
+            **({"axis_valid_without_rails": round(float(self.axis_valid_without_rails), 2),
+                "rail_axis_support": round(float(self.rail_axis_support), 2)}
+               if self.rail_axis_support > 0 else {}),
         }
 
 
@@ -862,6 +867,41 @@ def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near:
             model.axis_valid = min(model.axis_valid, end + cfg.axis_valid_margin)
 
 
+def _extend_axis_from_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
+                            near: Optional[RailsFit], ring: Optional[np.ndarray]) -> None:
+    """Support the existing axis after wall loss with current, agreeing paired rails.
+
+    This does not fit or change the axis. Actual supplied ring IDs keep two rail heads on
+    one scan line even under mount correction; missing rings provide no evidence. The
+    accepted stations retain the existing observation margin, with no straight bonus.
+    ``estimate_track`` removes this extension before processing the next frame, so stale
+    rail evidence cannot enter the ordinary wall-range decay or a failed floor-fit hold.
+    """
+    if (not cfg.rails_axis_extension or model.axis_sides != 0 or ring is None or near is None
+            or near.score < cfg.rails_min_score or near.n_slabs < cfg.rails_yaw_min_slabs
+            or near.xm is None or near.mids is None or near.tan_yaw is None):
+        return
+    from resense.farrails import FarRailParams, far_rails
+    params = FarRailParams(x_max=80.0, gauge=cfg.rails_spacing, height_band=0.3, cant=0.1,
+                           max_gap=10.0, min_stations=3, pair_max_forward_gap=5.0,
+                           pair_use_nearer_forward=True)
+    rails = far_rails(xyz, ring, model, (float(near.xm[-1]), float(near.mids[-1])), params)
+    beyond = rails.x > cfg.rails_range[1]
+    x = rails.x[beyond]
+    # Three distinct metre stations, spanning at least five metres, cannot be supplied
+    # by duplicate echoes or a single short switch fitting. Every consensus-chosen
+    # station must agree with the axis; the consensus itself can reject other pairs.
+    if (x.size < 3 or np.unique(np.floor(x)).size < 3 or np.ptp(x) < 5.0
+            or np.any(np.abs(rails.y - model.center_y(rails.x)) > 0.10)):
+        return
+    end = float(np.max(x))
+    supported = end + cfg.axis_valid_margin
+    if supported > model.axis_valid:
+        model.axis_valid_without_rails = model.axis_valid
+        model.rail_axis_support = end
+        model.axis_valid = supported
+
+
 def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackModel:
     """The same bed, rail head and axis seen through a change of the mount correction ``dR``
     (``p_new = dR @ p_old``; 26.09, ``calibration.reseed_keep_max_deg``). Points on the bed
@@ -889,7 +929,8 @@ def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackM
 
 
 def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None,
-                   periods: int = 1, ring: Optional[np.ndarray] = None) -> TrackModel:
+                   periods: int = 1, ring: Optional[np.ndarray] = None,
+                   axis_ring: Optional[np.ndarray] = None) -> TrackModel:
     """Fit floor + rails + boundary-based yaw/curvature for one frame, smoothing against the
     previous model. ``periods`` is the number of nominal frame periods since ``prev`` (1 at
     the nominal rate); with ``cfg.rates_per_period`` the yaw / curvature rate limits and the
@@ -903,6 +944,13 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     k = max(1, int(periods)) if cfg.rates_per_period else 1
     kw = max(1, int(periods)) if cfg.walls_smoothing_per_period else 1
     prior = prev if prev is not None else default_track_model(cfg)
+    if prior.rail_axis_support > 0:
+        # A previous rail extension is not a wall observation and must never be held
+        # through a missing rail/floor frame or fed into the ordinary 20 m decay.
+        prior = replace(prior, axis_valid=prior.axis_valid_without_rails,
+                        axis_valid_without_rails=0.0, rail_axis_support=0.0)
+        if prev is not None:
+            prev = prior
     shadow_ref = (prev if cfg.floor_shadow_height > 0 and prev is not None and prev.age >= cfg.axis_warmup_frames
                   else None)
     # review 25.09: a held bed becomes the next frame's reference, so nothing in the rule itself ends
@@ -1016,6 +1064,8 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             model.curvature = float(np.clip(model.curvature, prev.curvature - r, prev.curvature + r))
     if cfg.rails_far_check_enabled and rails is not None and cfg.walls_enabled:
         _check_far_rails(xyz, model, cfg, rails, ring)
+    if cfg.walls_enabled:
+        _extend_axis_from_rails(xyz, model, cfg, rails, axis_ring)
     if bounds:
         # 15.10: against the final axis (smoothed, rate-limited), the one the corridor uses
         model.wall_drift = wall_drift_range(bounds, model, cfg)

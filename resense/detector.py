@@ -361,7 +361,10 @@ class Detector:
         # longer a constant elevation (resense/farrails.py); only the opt-in far rail evidence needs it
         ring = (ring_index(xyz_cfg, band=(cfg.track.rails_range[1] - 10.0, 100.0, 6.0, 0.5))
                 if cfg.track.rails_far_check_enabled and cfg.track.rails_far_rings else None)
-        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring)
+        # N6 uses supplied scan-line IDs only, never a Pandar table inferred for an
+        # unknown sensor. Keep the older experimental curvature-refit path separate.
+        rail_args = {"axis_ring": self._frame_ring} if cfg.track.rails_axis_extension else {}
+        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring, **rail_args)
         R_old = self.calib.R.copy()
         if self.calib.update(xyz_cfg, xyz, self.track, periods=periods):
             xyz = self.calib.apply(xyz_cfg)
