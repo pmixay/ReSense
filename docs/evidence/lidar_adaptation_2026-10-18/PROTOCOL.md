@@ -2,7 +2,7 @@
 
 Registered on 2026-10-18 before modified sealed-detector candidate runs.
 Baseline: `9b92df56e802d9d63f83f2fc5e5b07374db669c7` (sealed 1.1.0 detector).
-Work branch: `work/lidar-n2-n4-n1-n3-n6`. No release is authorized in this task.
+Work branch: `work/n5-labels-c2-acceptance` (continued on the previous branch at the user's request; registration commit47b42be retained). No release is authorized in this task.
 This protocol records defects, hypotheses and acceptance tests; an implementation is not accepted merely because it exists.
 
 ## N2 — Falcon Prime
