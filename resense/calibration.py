@@ -56,13 +56,99 @@ in ``max_frames`` frames the calibrator gives up and keeps the configured mappin
 from __future__ import annotations
 
 import itertools
+from copy import deepcopy
 from dataclasses import dataclass, field
+import math
+import sys
 from typing import List, Optional
 
 import numpy as np
 
 from resense.config import CalibrationConfig, TrackConfig
 from resense.track import TrackModel, _fit_floor, default_track_model, estimate_rails
+
+
+class OrientationReplayBuffer:
+    """Owned, bounded startup inputs; any discontinuity permanently disables this attempt.
+
+    Only plain metadata containers/scalars and numeric arrays are copied. The byte
+    estimate is conservative and includes array payloads, metadata, and containers.
+    The current frame counts toward both limits, so adoption after the budget cannot
+    reconstruct a selectively truncated history.
+    """
+    MAX_BYTES = 32 * 1024 * 1024
+
+    def __init__(self, max_frames: int):
+        if type(max_frames) is not int or not 0 <= max_frames <= 4:
+            raise ValueError("calibration.orientation_replay_frames must be an integer from 0 to 4")
+        self.max_frames = max_frames
+        self.frames = []
+        self.used_bytes = 0
+        self.peak_bytes = 0
+        self.finished = max_frames == 0
+        self.reason = "disabled" if self.finished else "pending"
+
+    def stop(self, reason: str):
+        self.frames.clear()
+        self.used_bytes = 0
+        self.finished, self.reason = True, reason
+
+    @classmethod
+    def _size(cls, value, seen):
+        if id(value) in seen:
+            return 0
+        seen.add(id(value))
+        size = sys.getsizeof(value)
+        if type(value) in (str, bytes, int, float, bool, type(None)):
+            return size
+        if isinstance(value, np.generic):
+            if value.dtype.hasobject:
+                raise ValueError("startup metadata scalar contains Python objects")
+            return size + value.nbytes
+        if type(value) is np.ndarray and not value.dtype.hasobject:
+            return size + value.nbytes
+        if type(value) in (dict, list, tuple):
+            items = itertools.chain.from_iterable(value.items()) if type(value) is dict else value
+            for item in items:
+                size += cls._size(item, seen)
+                if size > cls.MAX_BYTES:
+                    return size
+            return size
+        raise ValueError("unsupported startup metadata type")
+
+    def capture(self, frame, ego_speed):
+        if self.finished:
+            return False
+        if len(self.frames) >= self.max_frames:
+            self.stop("frame_budget")
+            return False
+        try:
+            stamp = float(frame.stamp)
+            if not math.isfinite(stamp):
+                self.stop("invalid_stamp")
+                return False
+            if self.frames:
+                previous = self.frames[-1][0]
+                gap = stamp - previous.stamp
+                if not 0 < gap <= 1.0 or frame.frame_id != previous.frame_id:
+                    self.stop("input_discontinuity")
+                    return False
+            size = self._size((frame.xyz, frame.intensity, frame.ring, frame.meta,
+                               frame.stamp, frame.frame_id, ego_speed), set()) + 1024
+            if size + self.used_bytes > self.MAX_BYTES:
+                self.stop("byte_budget")
+                return False
+            from resense.frame import Frame
+            saved = Frame(xyz=frame.xyz.copy(), intensity=frame.intensity.copy(),
+                          ring=None if frame.ring is None else frame.ring.copy(),
+                          stamp=stamp, frame_id=frame.frame_id, meta=deepcopy(frame.meta))
+        except (TypeError, ValueError, OverflowError, RecursionError):
+            self.stop("unsupported_input")
+            return False
+        self.frames.append((saved, ego_speed))
+        self.used_bytes += size
+        self.peak_bytes = max(self.peak_bytes, self.used_bytes)
+        return True
 
 
 def orientation_candidates(keep_up_axis: bool = False) -> List[np.ndarray]:

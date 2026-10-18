@@ -9,7 +9,7 @@ from typing import List, Optional
 import numpy as np
 
 from resense.accumulate import CandidateBuffer
-from resense.calibration import MountCalibrator
+from resense.calibration import MountCalibrator, OrientationReplayBuffer
 from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
@@ -197,6 +197,7 @@ class Detector:
         self._low_frame_dt: Optional[float] = None  # actual positive stamp interval for the bounded low continuation
         self._evidence_dt: Optional[float] = None  # validated sensor interval for sparse clear-distance evidence
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
+        self._orientation_replay = OrientationReplayBuffer(self.cfg.calibration.orientation_replay_frames)
 
     @property
     def mount_rotation(self) -> np.ndarray:
@@ -223,6 +224,7 @@ class Detector:
         self._low_frame_dt = None
         self._evidence_dt = None
         self._gaps.clear()
+        self._orientation_replay.stop("scene_reset")
 
     def _frame_dt(self, stamp: float) -> float:
         """Time since the previous frame from the stamps when they are sane, else the nominal
@@ -246,6 +248,60 @@ class Detector:
         return dt
 
     def process(self, frame: Frame, ego_speed: Optional[float] = None) -> FrameResult:
+        """Process one current input; optional bounded startup replay never publishes old inputs."""
+        pending = self._orientation_replay
+        if pending.finished or not self.cfg.calibration.enabled or self.calib._config_passed:
+            return self._process_once(frame, ego_speed)
+        wall_start, cpu_start = time.perf_counter(), time.process_time()
+        if type(self) is not Detector:
+            pending.stop("unsupported_subclass")
+        else:
+            pending.capture(frame, ego_speed)
+        result = self._process_once(frame, ego_speed)
+        event = None
+        if self.calib.last_change_orientation and pending.frames and not pending.finished:
+            # Only the validated discrete orientation is installed. The correct initial
+            # observations rebuild tilt, tracking, accumulation and health in original
+            # order; no synthetic confirmations or history in the old axes survive.
+            rotation = self.calib._R_orient.copy()
+            orientation = self.calib.state.orientation
+            replay_start = time.perf_counter()
+            fresh = Detector(self.cfg)
+            fresh._orientation_replay.stop("replay_complete")
+            fresh.calib._R_orient = rotation.copy()
+            fresh.calib.state.R = rotation.copy()
+            fresh.calib.state.orientation = orientation
+            fresh.calib.state.orientation_confirmed = True
+            fresh.calib._config_passed = True
+            fresh.calib.state.message = f"sensor orientation found from the data: {orientation}"
+            for saved, speed in pending.frames:
+                replayed = fresh._process_once(saved, speed)
+            # Health latency describes physical calls. During this <=4-call startup
+            # no latency warning is eligible (10 samples required); retain that history
+            # and put the complete current replay cost into the next physical sample.
+            fresh.health._lat = self.health._lat.copy()
+            replayed.health["latency_p95_ms"] = result.health["latency_p95_ms"]
+            replayed.health["latency_sample_age_frames"] = result.health["latency_sample_age_frames"]
+            event = {"status": "replayed", "frames": len(pending.frames), "bytes": pending.used_bytes,
+                     "first_stamp": pending.frames[0][0].stamp, "published_stamp": frame.stamp,
+                     "replay_ms": (time.perf_counter() - replay_start) * 1000}
+            pending.stop("replay_complete")
+            self.__dict__.update(fresh.__dict__)
+            result = replayed
+        elif pending.finished:
+            event = {"status": "skipped", "reason": pending.reason, "peak_bytes": pending.peak_bytes}
+        elif self.calib._config_passed:
+            pending.stop("configured_mapping")
+        elapsed = (time.perf_counter() - wall_start) * 1000
+        self._previous_latency_ms = elapsed
+        result.timing_ms["total"] = elapsed
+        if event is not None:
+            event["physical_call_ms"] = elapsed
+            event["physical_cpu_ms"] = (time.process_time() - cpu_start) * 1000
+            result.mount["orientation_replay"] = event
+        return result
+
+    def _process_once(self, frame: Frame, ego_speed: Optional[float] = None) -> FrameResult:
         """Detect obstacles in one frame.
 
         ``ego_speed`` is the train speed in m/s when the caller knows it (odometry topic or a
