@@ -542,7 +542,7 @@ class CalibrationConfig:
                                    # a spinning LiDAR is mounted with its spin axis vertical; false = all 24 (a flat
                                    # tunnel wall with cable trays then competes with the bed, EXPERIMENTS.md section 6)
     orientation_votes: int = 2     # frames on which the same candidate orientation must win before it is adopted
-    orientation_replay_frames: int = 0  # N2 candidate, off: replay up to 4 original startup frames after validated adoption; 32 MiB maximum, current frame included
+    orientation_replay_frames: int = 4  # replay original startup frames after validated discrete adoption; 32 MiB maximum, current included; 0 disables
     min_rail_score: float = 0.05   # m, ridge prominence of the rail pair (as track.rails_min_score)
     apply_min_deg: float = 0.75    # roll / pitch corrections below this are not applied: 1.5x the p90 error of the 20-observation median on a moving train (0.5 deg; at 0.5 a noise-level +0.51 deg roll was applied on a ride piece and added 6 false events, review 23.09)
     min_yaw_deg: float = 3.0       # the mount yaw is corrected only above this (the track model follows smaller / dynamic yaw, and the rails' tangent at the sensor includes the chord angle of the car in a curve)
