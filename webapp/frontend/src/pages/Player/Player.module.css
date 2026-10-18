@@ -1,13 +1,11 @@
-/* The dimensional cab: one 1600×900 composition, contained beneath the pinned navigation. */
+/* A borderless 1600×900 player with a rounded window beneath the pinned navigation. */
 .root {
   position: relative;
   width: min(100%, calc(max(0px, 100dvh - var(--site-chrome-h, 148px) - 44px) * 16 / 9));
   aspect-ratio: 16 / 9;
   background: var(--cab-2);
-  border-radius: 16px;
   overflow: hidden;
   color: var(--ink);
-  box-shadow: 0 12px 32px -16px rgba(23, 27, 32, 0.5);
 }
 .stage {
   position: absolute;
@@ -53,12 +51,6 @@
   inset: 0;
   pointer-events: none;
 }
-/* the obstacle on the dash line (CabFrame.tsx), outside the cab SVG */
-.dashMark {
-  position: absolute;
-  pointer-events: none;
-}
-
 /* ---------------------------------------------------------------- HUD in the glass */
 .hud {
   position: absolute;

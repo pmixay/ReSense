@@ -13,14 +13,15 @@ Each view was captured at 1920×1080, 1280×720, 820×1180 and 390×844:
 - `overview-*`: Raleway, metro-red actions, cool neutral surfaces, responsive overview.
 - `upload-*`: source selector, upload controls and processing options beneath pinned navigation.
 - `about-*`: system category and its navigation branch; the processing diagram becomes vertical on phones.
-- `picker-*`: run selection inside the dimensional cab.
+- `picker-*`: run selection inside the borderless, rounded player window.
 - `player-clear-*`, `player-caution-*`, `player-stop-*`: real GO, CAUTION and STOP frames.
 
 The complete cab is uniformly scaled from 1600×900 to its available container. Its
 WebGL canvas is rendered at 1600×600 with the corresponding camera aspect; the glass,
 HUD, curved console, five instrument panels and scrubber share that coordinate
-system. There is no oversized canvas hidden behind a shorter viewport. The molded
-screen surround and instrument perspective are retained with cooler metal surfaces.
+system. There is no oversized canvas hidden behind a shorter viewport. The window
+is a rounded rectangle with straight edges and no bezel, outline or raised surround.
+The existing steel backdrop, top controls and instrument perspective remain.
 
 The top bar and category rail remain outside the scrolling content on every route,
 including the player picker, loading/error states and both real/fallback fullscreen.

@@ -99,7 +99,7 @@ function CabShell({ runId, runName, glass, console: cons }: { runId?: string; ru
   return (
     <Stage>
       <div className={styles.glassFill} />
-      <CabFrame className={styles.cab} stop={false} obstacleM={null} />
+      <CabFrame className={styles.cab} stop={false} />
       <div className={styles.glassArea}>{glass}</div>
       <Roof runId={runId} runName={runName} decision={null} fullscreen={fs.active} kiosk={fs.pseudo} onFullscreen={fs.toggle} onBack={back} />
       {cons}
@@ -277,7 +277,6 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
   const lastFrameNo = (seriesFrames?.[n - 1] ?? n - 1) + 1;
   const confirmS = confirmTime(run, schema.data?.find((p) => p.key === 'tracking.confirm_time_s')?.default as number | undefined);
   const minVis = minVisibility(run, schema.data?.find((p) => p.key === 'health.min_visibility')?.default as number | undefined);
-  const nearestObstacle = frame?.obstacle ? (frame.nearest_distance ?? null) : null;
 
   // controls
   const { k, fs } = useContext(ChromeContext);
@@ -361,7 +360,7 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
         />
       )}
       {webglError && <div className={styles.glassFill} />}
-      <CabFrame className={styles.cab} stop={decision === 'STOP'} obstacleM={nearestObstacle} />
+      <CabFrame className={styles.cab} stop={decision === 'STOP'} />
       <Hud
         frame={frame}
         mode={mode}
