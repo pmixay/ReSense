@@ -28,6 +28,21 @@ observed-return hits are also reported separately. The detector receives neither
 the bank nor the injector's `obstacles` metadata. No suppression candidate is
 integrated into this harness.
 
+The corrected coordinate protocol was registered before fresh measurements in
+commit `7e05aeb`; the immutable harness is `b9ad5f4`. Preparation additionally
+freezes the clean detector's **actual applied** input-to-model rotation and its
+rail height at 20 m, with source-payload and reference hashes. Attenuation and
+new returns are generated in those same clean axes. Only new returns are inverse
+mapped; retained source XYZ, intensity and ring values are restored exactly by
+original indices. All densities use the identical reference. This is a flat
+cloud height anchored at `rail_z(20 m)`, not a surveyed or graded rail plane.
+
+The old partial preparation stopped after 15 banks and **before any evaluated
+dusty level**. It used the pre-process legacy-placement model and did not record
+the actual applied clean transform. The [interruption receipt](set_f_precoordinate_interruption.json)
+preserves its provenance separately; no measured Set F coordinate error or dust
+result is inferred from that unfinished attempt.
+
 Per sequence and level the report includes first matched STOP/frame, every hit,
 lost clean STOP frames, unmatched detections, false STOP frames and consecutive
 false STOP episodes, CAUTION/FAULT/GO counts, and degraded frames. Matching keeps
@@ -39,10 +54,10 @@ Prepare and evaluate from the immutable baseline:
 
 ```sh
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 \
-  python scripts/dust_set_f.py \
+  /home/resense/.venv/bin/python /home/resense/data/dust/harness_b9ad5f4/scripts/dust_set_f.py \
   --cache /home/resense/data/gate_cache/new_data \
-  --bank /home/resense/data/dust/set_f_bank \
-  --out docs/evidence/n3_dust_2026-10-18/set_f_baseline \
+  --bank /home/resense/data/dust/set_f_bank_pose_fixed \
+  --out /home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed \
   --placement-root /home/resense/data/n2/baseline_9b92df5 \
   --detector-root /home/resense/data/n2/baseline_9b92df5
 ```
@@ -56,13 +71,19 @@ changing an injector or sensor mapping cannot silently change the test.
 Focused tests cover the original random schedule, timestamp/near-pass bounds,
 removal of oracle metadata, per-frame loss/episode accounting, and a real Open3D
 full-precision bank round trip with intentional rendering-drift rejection.
-Production measurements await the complete ride cache; no pass is implied by
-successful harness tests.
+The complete ride cache is verified; corrected measurements are running. No pass
+is implied by successful harness tests. The complete-only
+[verifier](summarize_set_f.py) checks all 30 sequences/four levels, exact source
+cadence and the 8 m cutoff, recomputes every aggregate from captured rows, and
+checks matching independently within the serialized geometry's 5 mm rounding
+bounds. Boundary ambiguities remain explicit; a missing or partial sequence is
+an error. Independent artificial-fixture tamper probes test the verifier's
+bookkeeping and are separate from detector evidence.
 
-The detached [queue wrapper](run_set_f_when_ready.py) waits for the complete
+The detached [corrected wrapper](run_set_f_corrected.py) requires the complete
 `ride_receipt.json`, verifies the organizer archive SHA-256/size and all 221 × 51
 frame counts, and independently validates cache stamps before starting the full
 baseline battery. It keeps a process lock and records state in
-`/home/resense/data/dust/set_f_queue_status.json`; the current queue log is
-`/home/resense/data/dust/set_f_queue.log`. The evaluated source remains immutable
+`/home/resense/data/dust/set_f_corrected_status.json`; the current queue log is
+`/home/resense/data/dust/set_f_corrected.log`. The evaluated source remains immutable
 `baseline_9b92df5`, with one numeric-library thread and process priority 5.

@@ -1,0 +1,36 @@
+{
+  "status": "superseded_partial_not_registered_acceptance",
+  "reason": "Clean model rail height was combined with pre-calibration input coordinates. Corrected transform-aware battery will use a new directory.",
+  "stopped_utc": "2026-10-18T09:23:04Z",
+  "pgid": 27063,
+  "complete_levels": {
+    "doubleT_platform": [
+      "clean",
+      "low",
+      "medium",
+      "high"
+    ],
+    "roundT_doubleT": [
+      "clean",
+      "low",
+      "medium",
+      "high"
+    ],
+    "roundT_pressureGate_roundT": [
+      "clean",
+      "low",
+      "medium",
+      "high"
+    ],
+    "roundT_squareT_pressureGate_squareT": [
+      "clean",
+      "low",
+      "medium",
+      "high"
+    ],
+    "squareT_platform_squareT_switch": [
+      "clean"
+    ]
+  },
+  "summary_sha256": "39fb7c791e37edd3b8c027e0e359a69f18bb3bf70d69418634093079e75c19da"
+}

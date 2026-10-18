@@ -1,0 +1,96 @@
+{
+  "scope": "Regular v1 harness only. Set F used a separate pre-process legacy model; this specific mismatch is not established for Set F.",
+  "finding": "The v1 regular harness supplies post-mount clean rail_z to the pre-mount configured input cloud.",
+  "precision": "Diagnostic uses recorded mount angles rounded to 0.01 degree and rail offset/center rounded to 0.001m. At20m angular rounding contributes up to roughly2mm here. Exact source-level frame mismatch does not depend on these diagnostic approximations.",
+  "clean_raw_sha256": "d67f3c5d7b6174dd6343a76af2efa793be96493f7704b5b531a6cc7daf4fa050",
+  "medium_raw_sha256": "dd5a7df25a3d35198a3338fb16344b617b70d3e42dd2f16bd96a4fa00a21bfdc",
+  "archived_harness": {
+    "source_path": "scripts/dust_battery.py",
+    "source_sha256": "8c0c868fe85ec91f341400e7cf783f5d118f8aee40705efa51108c29774c6a0c",
+    "archive_sha256": "f5fcea239907515b0cd0f52079800a46c937719d04be8a38120310706ad8696d",
+    "reason": "Preserve exact v1 configured-box harness before calibrated reference correction; original run did not record harness identity at startup."
+  },
+  "rows": [
+    {
+      "frame": 5,
+      "recorded_dust_rail_z": -1.5063797496335274,
+      "serialized_clean_model_rail_xyz": [
+        20.0,
+        -0.3788508792923559,
+        -1.506708271387256
+      ],
+      "estimated_same_point_input_xyz": [
+        19.97670156154448,
+        -0.4910688692206321,
+        -1.7618013198076858
+      ],
+      "estimated_height_mismatch_m": 0.25542157017415845,
+      "rounded_mount_angles_deg": {
+        "roll_deg": 3.62,
+        "pitch_deg": -0.81,
+        "yaw_deg": 0.0
+      }
+    },
+    {
+      "frame": 50,
+      "recorded_dust_rail_z": -1.5404080963356601,
+      "serialized_clean_model_rail_xyz": [
+        20.0,
+        -0.392050978276903,
+        -1.5408976211457768
+      ],
+      "estimated_same_point_input_xyz": [
+        19.976218237099207,
+        -0.5064010926773163,
+        -1.7950856039590268
+      ],
+      "estimated_height_mismatch_m": 0.2546775076233667,
+      "rounded_mount_angles_deg": {
+        "roll_deg": 3.62,
+        "pitch_deg": -0.81,
+        "yaw_deg": 0.0
+      }
+    },
+    {
+      "frame": 100,
+      "recorded_dust_rail_z": -1.5172646756448356,
+      "serialized_clean_model_rail_xyz": [
+        20.0,
+        -0.3937211557928708,
+        -1.517101795335542
+      ],
+      "estimated_same_point_input_xyz": [
+        19.97655463145566,
+        -0.5065656458134572,
+        -1.7712341767474695
+      ],
+      "estimated_height_mismatch_m": 0.25396950110263394,
+      "rounded_mount_angles_deg": {
+        "roll_deg": 3.62,
+        "pitch_deg": -0.81,
+        "yaw_deg": 0.0
+      }
+    },
+    {
+      "frame": 200,
+      "recorded_dust_rail_z": -1.5102953765951295,
+      "serialized_clean_model_rail_xyz": [
+        20.0,
+        -0.40545256414041925,
+        -1.509886405249358
+      ],
+      "estimated_same_point_input_xyz": [
+        19.97571536011093,
+        -0.49956544434052724,
+        -1.779151190083095
+      ],
+      "estimated_height_mismatch_m": 0.2688558134879655,
+      "rounded_mount_angles_deg": {
+        "roll_deg": 3.01,
+        "pitch_deg": -0.84,
+        "yaw_deg": 0.0
+      }
+    }
+  ],
+  "review_script_sha256": "63918d1d4ed366f540d998d0e96f8ab60bdefe5684f1a02fc51aa23ed42a04f6"
+}

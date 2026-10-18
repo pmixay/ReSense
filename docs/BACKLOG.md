@@ -1055,11 +1055,12 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
 **Owner** P4 + P3 · **Size** M · **Depends on** O1-style question to the organizers
 * **Tasks:** (1) P1 asks whether dust data is still to come; (2) P4 builds the generator and measures as in
   [FINALS_BRIEF](FINALS_BRIEF_2026-10-16.md) N3, so the answer exists if the hidden set has dust.
-* **18.10 progress:** deterministic generator and frozen-placement Set F harness implemented; paired clean/low/
-  medium/high measurements are running. The first two complete empty recordings fail medium/high false-STOP
-  acceptance. Two suppression candidates are rejected; protections for sparse/dark real objects remain intact.
-  A separate health-only platform experiment preserves all detection/STOP rows and marks all medium/high frames
-  degraded, but does not fix false alarms. No production dust classifier is enabled, no physical-dust validation
+* **18.10 progress:** deterministic generator and frozen-placement Set F harness implemented. Independent review
+  found a coordinate mismatch in the original regular harness; those measurements and rejected suppression
+  candidates remain historical stresses. Corrected harness `b9ad5f4` freezes the actual clean applied rotation
+  and rail reference, preserving retained source points exactly. Thirty focused tests pass. The seven complete
+  recordings, all 30 Set F sequences and matched dark/health-only controls are being rerun in fresh directories.
+  Protections for sparse/dark real objects remain intact. No production dust classifier is enabled, no physical-dust validation
   is claimed, and no organizer message was authorized or sent. [Evidence](evidence/n3_dust_2026-10-18/README.md).
 
 #### N5 · Labels and scoring for the new synthetic bags

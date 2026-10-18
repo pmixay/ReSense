@@ -79,7 +79,7 @@ on the committed corrected source. Do not waive the limit or relabel earlier sou
 
 Independent review found that the regular dust harness used a rail height from the clean
 detector's calibrated model with configured-frame input points before that mount correction.
-In the dark-person frame100 example, the vertical inconsistency is approximately 0.252 m
+In the dark-person frame100 example, the vertical inconsistency is approximately 0.254 m
 (estimated from the rounded recorded mount angles). Those captures remain reproducible
 configured-coordinate stresses, but cannot claim the registered rail-relative cloud geometry.
 Set F used its separate, pre-process legacy placement model for the rail height; the same
