@@ -11,8 +11,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 
-def diffuse_evidence(xyz, intensity, dy, h, axis_valid, intensity_max=5.0):
-    end = min(60.0, float(axis_valid))
+def _volume_coverage(xyz, intensity, dy, h, end, intensity_max):
     bins_x = max(0, int((end - 5.0) // 5.0)) if np.isfinite(end) else 0
     end = 5.0 + bins_x * 5.0
     x = xyz[:, 0]
@@ -25,7 +24,19 @@ def diffuse_evidence(xyz, intensity, dy, h, axis_valid, intensity_max=5.0):
     stations = int(np.unique(occupied[:, 0]).size) if len(occupied) else 0
     return {"active": bool(fraction >= .45 and stations >= 6),
             "occupied_fraction": float(fraction), "stations": stations,
-            "low_intensity_returns": int(take.sum()), "examined_range": end,
+            "low_intensity_returns": int(take.sum()), "examined_range": end}
+
+
+def diffuse_evidence(xyz, intensity, dy, h, axis_valid, intensity_max=5.0):
+    """Separate observed clutter from the range where geometry may qualify clusters.
+
+    A shrinking trusted axis cannot make an observed broad clutter field disappear
+    from health. The wider health observation does not extend trusted geometry and
+    cannot authorize additional cluster demotions.
+    """
+    trusted = _volume_coverage(xyz, intensity, dy, h, min(float(axis_valid), 60.0), intensity_max)
+    observed = _volume_coverage(xyz, intensity, dy, h, 60.0, intensity_max)
+    return {**trusted, "health_active": observed["active"], "observed_volume": observed,
             "intensity_ceiling": float(intensity_max), "identity": "diffuse_returns_not_dust_classification"}
 
 
@@ -94,7 +105,7 @@ def mark_degraded_health(health, evidence, support):
     """Retain severity and STOP evidence while declining clear/monitored range claims."""
     out = dict(health)
     out["diffuse_returns"] = {**evidence, **support}
-    if evidence["active"]:
+    if evidence.get("health_active", evidence["active"]):
         out["level"] = "error" if out.get("level") == "error" else "warn"
         out["decision_level"] = "error" if out.get("decision_level") == "error" else "warn"
         out["messages"] = list(out.get("messages", [])) + [

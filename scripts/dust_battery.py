@@ -34,6 +34,7 @@ def main():
     p.add_argument("--seed", type=int, default=20261018)
     p.add_argument("--set", action="append", default=[])
     p.add_argument("--dust-support", action="store_true", help="experimental pre-tracker advisory qualification")
+    p.add_argument("--health-only", action="store_true", help="observe diffuse returns without changing any cluster")
     p.add_argument("--dim-labels", type=float, help="set source GT-bbox returns to this intensity before clean/dust runs")
     a = p.parse_args()
     if not a.levels.startswith("clean"):
@@ -52,7 +53,7 @@ def main():
     sys.modules[spec.name] = dust
     spec.loader.exec_module(dust)
     detector_class = Detector
-    if a.dust_support:
+    if a.dust_support or a.health_only:
         support_spec = importlib.util.spec_from_file_location("diffuse_support_module", ROOT / "resense/dust_health.py")
         support_module = importlib.util.module_from_spec(support_spec)
         support_spec.loader.exec_module(support_module)
@@ -74,7 +75,7 @@ def main():
                 dy, h = self._frame_hd
                 self._dust_evidence = support_module.diffuse_evidence(
                     self._frame_xyz, self._dust_intensity, dy, h, self.track.axis_valid)
-                self._dust_support = support_module.mark_unsupported_clusters(
+                self._dust_support = {} if a.health_only else support_module.mark_unsupported_clusters(
                     clusters, self._frame_xyz, self._dust_intensity, dy, h, self._dust_evidence)
                 return super()._confirm(clusters, speed, dt)
 
@@ -86,8 +87,9 @@ def main():
               "source_hashes": sources, "config_overrides": a.set,
               "generator_sha256": hashlib.sha256((ROOT / "resense/dust.py").read_bytes()).hexdigest(),
               "dust_support": a.dust_support,
+              "health_only": a.health_only,
               "dim_label_intensity": a.dim_labels,
-              "support_sha256": hashlib.sha256((ROOT / "resense/dust_health.py").read_bytes()).hexdigest() if a.dust_support else None,
+              "support_sha256": hashlib.sha256((ROOT / "resense/dust_health.py").read_bytes()).hexdigest() if a.dust_support or a.health_only else None,
               "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "cpu_affinity": sorted(os.sched_getaffinity(0)), "recordings": {}}
     for bag in a.bags.split(","):

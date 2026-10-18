@@ -79,3 +79,19 @@ def test_broad_volume_is_flagged_without_dust_truth_or_intensity_units_inference
     health = mark_degraded_health({"level": "error", "decision_level": "error", "clear_distance": 80}, evidence, {})
     assert health["level"] == health["decision_level"] == "error"
     assert health["clear_distance"] == health["monitored_range"] == 0
+
+
+@pytest.mark.parametrize("axis_valid", [0, 20, float("nan")])
+def test_lost_axis_cannot_clear_observed_clutter_or_authorize_cluster_changes(axis_valid):
+    rng = np.random.default_rng(0)
+    xyz = rng.uniform([5, -1, .3], [60, 1, 2.7], (5000, 3))
+    evidence = diffuse_evidence(xyz, np.ones(len(xyz)), xyz[:, 1], xyz[:, 2], axis_valid)
+    assert evidence["health_active"]
+    assert not evidence["active"]
+    c = cluster(len(xyz))
+    marked = mark_unsupported_clusters([c], xyz, np.ones(len(xyz)), xyz[:, 1], xyz[:, 2], evidence)
+    assert c.zone == "gauge" and marked["marked"] == 0
+    original = {"level": "ok", "decision_level": "ok", "clear_distance": 20, "monitored_range": 20}
+    health = mark_degraded_health(original, evidence, {})
+    assert health["decision_level"] == "warn" and health["clear_distance"] == 0
+    assert original["clear_distance"] == 20
