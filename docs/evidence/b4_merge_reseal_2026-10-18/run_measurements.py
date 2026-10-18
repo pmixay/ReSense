@@ -18,13 +18,13 @@ def sha(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True)
-    parser.add_argument('--stage', choices=('tests', 'gate', 'x3', 'b4'), required=True)
+    parser.add_argument('--stage', choices=('tests', 'gate', 'gate-reference', 'x3', 'x3-reference', 'b4'), required=True)
     args = parser.parse_args()
     source = args.source.resolve()
     out = Path(__file__).resolve().parent
     data = Path('/home/resense/data')
     work = data / 'b4_merge_reseal'
-    baseline = data / 'version_1_2_0_candidate'
+    baseline = work / 'reference'
     sys.path.insert(0, str(source / 'scripts'))
     from detector_freeze import source_hashes, source_digest
 
@@ -48,6 +48,9 @@ def main():
     receipt = {'source': identity, 'runner_sha256': sha(Path(__file__)),
                'environment': {k: env[k] for k in ('OPENBLAS_CORETYPE', 'OPENBLAS_NUM_THREADS',
                                'OMP_NUM_THREADS', 'MKL_NUM_THREADS', 'NUMEXPR_NUM_THREADS')},
+               'reference': {'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=baseline, text=True).strip(),
+                             'files': source_hashes(baseline),
+                             'native': {p.name: sha(p) for p in (baseline / 'resense').glob('*.so')}},
                'runs': [], 'status': 'running'}
 
     def save():
@@ -89,14 +92,17 @@ def main():
         run('directed', [sys.executable, source / 'docs/evidence/b4_release_2026-10-18/p4/directed_checks.py',
                          '--repo', source, '--cache', data / 'decoded/roundT_squareT_pressureGate_squareT',
                          '--assert-no-loss', '--out', out / 'directed.json'])
-    elif args.stage == 'gate':
-        run('gate', [sys.executable, source / 'scripts/regression_gate.py', '--cache', data / 'gate_cache',
+    elif args.stage in ('gate', 'gate-reference'):
+        selected = baseline if args.stage == 'gate-reference' else source
+        run(args.stage, [sys.executable, selected / 'scripts/regression_gate.py', '--cache', data / 'gate_cache',
                      '--jobs', '1', '--baseline', source / 'docs/evidence/results/regression_baseline_2026-09-29_shell_off.json',
-                     '--out', out / 'gate.json', '--work', work / 'gate'])
-    elif args.stage == 'x3':
-        run('x3', [sys.executable, source / 'scripts/robustness_battery.py', '--repo', source,
-                   '--cache', data / 'x3_reference/cache', '--reference', data / 'x3_reference/reference.json',
-                   '--out', work / 'x3.json', '-j', '1'])
+                     '--out', out / f'{args.stage}.json', '--work', work / args.stage], selected)
+    elif args.stage in ('x3', 'x3-reference'):
+        selected = baseline if args.stage == 'x3-reference' else source
+        reference = data / 'x3_reference/reference.json' if args.stage == 'x3-reference' else work / 'x3-reference.json'
+        run(args.stage, [sys.executable, source / 'scripts/robustness_battery.py', '--repo', selected,
+                   '--cache', data / 'x3_reference/cache', '--reference', reference,
+                   '--out', work / f'{args.stage}.json', '-j', '1'], selected)
     elif args.stage == 'b4':
         runner = source / 'docs/evidence/b4_orientation_fix_2026-10-18/run_b4.py'
         raw = work / 'b4'

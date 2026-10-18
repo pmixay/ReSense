@@ -56,3 +56,17 @@ and one replay worker. Runs are serial; latency is informational. Existing
 same-host baseline gate/X3 evidence is reused with explicit source/native/input
 identity checks; this is not a claim of rerunning the older protocol's entire
 fresh baseline/candidate gate and X3 pair. P4's final review remains pending.
+
+## Native-build preflight amendment, before recording measurements
+
+The standard build script produced native SHA-256 `67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394`,
+whereas the previous local package build used `511f7766...`. Both pre/post-build
+source fingerprints equal `68dee667f19e862913575c72fada3820199ec29cf497697cd7194b9e897f16d3`.
+To avoid assuming binary equivalence, create a fresh reference checkout at
+`e9d8fc6` (frozen source identical to main), build with the same script and
+require identical native hashes. Run fresh reference gate and X3 before the
+candidate, serially. Reference X3 must pass against the established Linux 1.1
+reference, then candidate against this fresh reference. The fresh reference
+gate replaces the earlier planned reused gate as the primary frame comparator.
+Historical reports retain their original identities. This adds measurements
+without relaxing acceptance.
