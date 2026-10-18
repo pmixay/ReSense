@@ -24,6 +24,8 @@ def digest(path):
 def verify_raw_row(row, frozen):
     """Audit serialized decisions and bound matching with the captured 1cm precision."""
     result = row['result']
+    if type(result['obstacle']) is not bool or bool(result['detections']) != result['obstacle']:
+        raise ValueError('captured obstacle flag disagrees with confirmed detections')
     health = result['health']
     decision = ('STOP' if result['obstacle'] else 'FAULT' if health.get('level') == 'error'
                 else 'CAUTION' if result['warning'] or health.get('decision_level') == 'warn' else 'GO')

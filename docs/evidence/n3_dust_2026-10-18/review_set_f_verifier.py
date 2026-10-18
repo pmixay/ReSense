@@ -1,6 +1,7 @@
 """Independent schema/tamper probes with artificial records, never detector evidence."""
 from __future__ import annotations
 
+import argparse
 from copy import deepcopy
 import gzip
 import hashlib
@@ -108,7 +109,11 @@ def run(verifier, cache, bank, out):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--contradiction-only", action="store_true")
+    args = parser.parse_args()
     sys.path.insert(0, str(ROOT))
+    from scripts.dust_set_f import summarize
     verifier = load_verifier()
     outcomes = {}
     with tempfile.TemporaryDirectory(prefix="set_f_verifier_review_") as directory:
@@ -118,7 +123,9 @@ def main():
         name = "46_person"
         original_raw = (out / f"{name}_clean.jsonl.gz").read_bytes()
         original_bank = (bank / f"{name}.json").read_bytes()
-        for case in ("summary_hits", "summary_counts", "raw_hit", "raw_decision", "missing_sequence", "shortened_bank", "reference_changed", "placement_helper_changed"):
+        cases = (("confirmed_detection_contradiction",) if args.contradiction_only else
+                 ("summary_hits", "summary_counts", "raw_hit", "raw_decision", "missing_sequence", "shortened_bank", "reference_changed", "placement_helper_changed"))
+        for case in cases:
             altered = deepcopy(report)
             if case == "summary_hits":
                 altered["sequences"][name]["levels"]["clean"]["hit_frames"].pop()
@@ -143,6 +150,10 @@ def main():
                     rows[0]["hit"] = False
                 elif case == "raw_decision":
                     rows[0]["decision"] = "GO"
+                elif case == "confirmed_detection_contradiction":
+                    rows[0]["result"]["obstacle"] = False
+                    rows[0]["decision"] = "GO"
+                    altered["sequences"][name]["levels"]["clean"] = summarize(rows)
                 else:
                     rows[0]["augmentation"]["placement_reference"]["rail_z_at20"] = -2.
                 with gzip.open(out / f"{name}_clean.jsonl.gz", "wt") as stream:
@@ -159,17 +170,22 @@ def main():
             (out / f"{name}_clean.jsonl.gz").write_bytes(original_raw)
             (bank / f"{name}.json").write_bytes(original_bank)
             save(bank / "manifest.json", manifest)
-        (cache / "new_data_48_0007.npy.zst").unlink()
-        try:
-            verifier.expected_paths(manifest, cache)
-        except ValueError as error:
-            outcomes["missing_required_110th_source"] = str(error)
-        else:
-            raise AssertionError("missing required source accepted")
+        if not args.contradiction_only:
+            (cache / "new_data_48_0007.npy.zst").unlink()
+            try:
+                verifier.expected_paths(manifest, cache)
+            except ValueError as error:
+                outcomes["missing_required_110th_source"] = str(error)
+            else:
+                raise AssertionError("missing required source accepted")
     result = {"scope": "Artificial schema fixtures only; no cloud decoding or detector calls and no measurement claim.",
               "verifier_sha256": sha(HERE / "summarize_set_f.py"), "probe_sha256": sha(Path(__file__)),
               "outcomes": outcomes}
-    save(HERE / "independent_set_f_verifier_probes.json", result)
+    result["mode"] = "contradiction_only" if args.contradiction_only else "historical_suite"
+    if args.contradiction_only:
+        result["mutation"] = "Keep confirmed detections and matches; set obstacle=false and decision=GO, recompute summary counts and update raw SHA."
+        result["prior_suite_receipt_sha256"] = sha(HERE / "independent_set_f_verifier_probes.json")
+    save(HERE / ("independent_set_f_contradiction_probe.json" if args.contradiction_only else "independent_set_f_verifier_probes.json"), result)
     print(json.dumps(result, indent=2))
 
 

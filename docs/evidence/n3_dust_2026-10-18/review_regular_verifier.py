@@ -1,6 +1,7 @@
 """Independent verifier probes on artificial three-frame inputs; no detector calls."""
 from __future__ import annotations
 
+import argparse
 from copy import deepcopy
 import gzip
 import hashlib
@@ -30,6 +31,9 @@ def write_raw(path, rows):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--contradiction-only', action='store_true')
+    args = parser.parse_args()
     sys.path.insert(0, str(ROOT))
     import numpy as np
     from resense.config import DetectorConfig
@@ -101,7 +105,9 @@ def main():
         assert obj['first_stop_ratio'] == 1. and obj['first_inside_stop_ratio'] == .8
         assert obj['lost_clean_inside_stop_frames'] == [1] and obj['lost_clean_outside_stop_frames'] == []
         results['unaltered_artificial_fixture'] = 'accepted; first-any ratio1.0 and first-inside ratio0.8 remain distinct'
-        for case in ('summary_count', 'inside_first_distance', 'raw_match', 'wrong_reference_source', 'changed_level_reference', 'wrong_density', 'truncated_raw'):
+        cases = (('confirmed_detection_contradiction',) if args.contradiction_only else
+                 ('summary_count', 'inside_first_distance', 'raw_match', 'wrong_reference_source', 'changed_level_reference', 'wrong_density', 'truncated_raw'))
+        for case in cases:
             altered = deepcopy(report)
             rows = deepcopy(original_rows['low' if case in ('changed_level_reference', 'wrong_density') else 'clean'])
             level = 'low' if case in ('changed_level_reference', 'wrong_density') else 'clean'
@@ -121,6 +127,11 @@ def main():
                 rows[0]['clean_reference']['reference_sha256'] = _digest(payload)
             elif case == 'wrong_density':
                 rows[0]['augmentation']['spec']['density'] = 0.
+            elif case == 'confirmed_detection_contradiction':
+                rows[0]['obstacle'] = False
+                rows[0]['decision'] = 'GO'
+                altered['recordings'][bag]['levels']['clean']['STOP'] -= 1
+                altered['recordings'][bag]['levels']['clean']['GO'] += 1
             else:
                 rows.pop()
             path = folder / f'{bag}_{level}.jsonl.gz'
@@ -137,7 +148,11 @@ def main():
             report['recordings'][bag]['levels'][level]['raw_sha256'] = sha(path)
     output = {'scope': 'Artificial3-frame cache/schema fixture, no detector processing and no measured-data claim.',
               'verifier_sha256': sha(HERE / 'summarize_regular_dust.py'), 'probe_sha256': sha(Path(__file__)), 'outcomes': results}
-    save(HERE / 'independent_regular_verifier_probes.json', output)
+    output['mode'] = 'contradiction_only' if args.contradiction_only else 'historical_suite'
+    if args.contradiction_only:
+        output['mutation'] = 'Keep confirmed detections and matches; set obstacle=false and decision=GO, recompute summary counts and update raw SHA.'
+        output['prior_suite_receipt_sha256'] = sha(HERE / 'independent_regular_verifier_probes.json')
+    save(HERE / ('independent_regular_contradiction_probe.json' if args.contradiction_only else 'independent_regular_verifier_probes.json'), output)
     print(json.dumps(output, indent=2))
 
 

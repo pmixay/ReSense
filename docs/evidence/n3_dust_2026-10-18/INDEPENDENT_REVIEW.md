@@ -33,6 +33,14 @@ density and missing rows. A valid artificial case with first-any ratio **1.0**
 and first-inside ratio **0.8** confirms that an early outside association cannot
 mask an inside-range regression. See [independent_regular_verifier_probes.json](independent_regular_verifier_probes.json).
 
+A later narrow guard rejects an `obstacle=false`/GO row that still contains a
+confirmed detection. Both verifiers independently reject this contradiction even
+after the raw hash and summary counts are updated; valid fixtures still pass.
+See [regular](independent_regular_contradiction_probe.json) and
+[Set F](independent_set_f_contradiction_probe.json) receipts for the final verifier
+hashes. The previous 16 broader probes remain historical receipts and were not
+rerun for this isolated guard.
+
 The original experiments remain separately labeled historical evidence. Their
 raw data were not altered and their failed criteria were not promoted to passes.
 

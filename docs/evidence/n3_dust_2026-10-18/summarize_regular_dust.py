@@ -173,6 +173,8 @@ def verify(directory, expected_bags, dark=False, health_only=False, levels=LEVEL
                         raise ValueError(f'{bag}/{level}: nonconsecutive frame or wrong timestamp {i}')
                     rows_read += 1
                     health = row['health'] or {}
+                    if type(row['obstacle']) is not bool or bool(row.get('detections', [])) != row['obstacle']:
+                        raise ValueError('raw obstacle flag disagrees with confirmed detections')
                     decision = ('STOP' if row['obstacle'] else 'FAULT' if health.get('level') == 'error'
                                 else 'CAUTION' if row['warning'] or health.get('decision_level', health.get('level')) == 'warn'
                                 else 'GO')
