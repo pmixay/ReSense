@@ -1,0 +1,670 @@
+[
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/dedup/job.json",
+    "member": "x3/cloud_with_fake_obj/dedup/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/dedup/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/dedup/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/dedup/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/dedup/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/dedup/process.log",
+    "member": "x3/cloud_with_fake_obj/dedup/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_judge7/job.json",
+    "member": "x3/cloud_with_fake_obj/drop30_judge7/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_judge7/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/drop30_judge7/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_judge7/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/drop30_judge7/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_judge7/process.log",
+    "member": "x3/cloud_with_fake_obj/drop30_judge7/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s1/job.json",
+    "member": "x3/cloud_with_fake_obj/drop30_s1/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s1/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/drop30_s1/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s1/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/drop30_s1/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s1/process.log",
+    "member": "x3/cloud_with_fake_obj/drop30_s1/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s2/job.json",
+    "member": "x3/cloud_with_fake_obj/drop30_s2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s2/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/drop30_s2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s2/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/drop30_s2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s2/process.log",
+    "member": "x3/cloud_with_fake_obj/drop30_s2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s3/job.json",
+    "member": "x3/cloud_with_fake_obj/drop30_s3/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s3/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/drop30_s3/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s3/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/drop30_s3/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/drop30_s3/process.log",
+    "member": "x3/cloud_with_fake_obj/drop30_s3/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/hz5/job.json",
+    "member": "x3/cloud_with_fake_obj/hz5/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/hz5/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/hz5/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/hz5/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/hz5/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/hz5/process.log",
+    "member": "x3/cloud_with_fake_obj/hz5/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/nominal/job.json",
+    "member": "x3/cloud_with_fake_obj/nominal/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/nominal/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/nominal/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/nominal/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/nominal/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/nominal/process.log",
+    "member": "x3/cloud_with_fake_obj/nominal/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/pitch_m2/job.json",
+    "member": "x3/cloud_with_fake_obj/pitch_m2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/pitch_m2/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/pitch_m2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/pitch_m2/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/pitch_m2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/pitch_m2/process.log",
+    "member": "x3/cloud_with_fake_obj/pitch_m2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/pitch_p2/job.json",
+    "member": "x3/cloud_with_fake_obj/pitch_p2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/pitch_p2/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/pitch_p2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/pitch_p2/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/pitch_p2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/pitch_p2/process.log",
+    "member": "x3/cloud_with_fake_obj/pitch_p2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/roll_p2/job.json",
+    "member": "x3/cloud_with_fake_obj/roll_p2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/roll_p2/probe.complete.json",
+    "member": "x3/cloud_with_fake_obj/roll_p2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/roll_p2/probe.jsonl",
+    "member": "x3/cloud_with_fake_obj/roll_p2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/cloud_with_fake_obj/roll_p2/process.log",
+    "member": "x3/cloud_with_fake_obj/roll_p2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/dedup/job.json",
+    "member": "x3/doubleT_obstacle/dedup/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/dedup/probe.complete.json",
+    "member": "x3/doubleT_obstacle/dedup/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/dedup/probe.jsonl",
+    "member": "x3/doubleT_obstacle/dedup/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/dedup/process.log",
+    "member": "x3/doubleT_obstacle/dedup/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_judge7/job.json",
+    "member": "x3/doubleT_obstacle/drop30_judge7/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_judge7/probe.complete.json",
+    "member": "x3/doubleT_obstacle/drop30_judge7/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_judge7/probe.jsonl",
+    "member": "x3/doubleT_obstacle/drop30_judge7/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_judge7/process.log",
+    "member": "x3/doubleT_obstacle/drop30_judge7/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s1/job.json",
+    "member": "x3/doubleT_obstacle/drop30_s1/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s1/probe.complete.json",
+    "member": "x3/doubleT_obstacle/drop30_s1/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s1/probe.jsonl",
+    "member": "x3/doubleT_obstacle/drop30_s1/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s1/process.log",
+    "member": "x3/doubleT_obstacle/drop30_s1/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s2/job.json",
+    "member": "x3/doubleT_obstacle/drop30_s2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s2/probe.complete.json",
+    "member": "x3/doubleT_obstacle/drop30_s2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s2/probe.jsonl",
+    "member": "x3/doubleT_obstacle/drop30_s2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s2/process.log",
+    "member": "x3/doubleT_obstacle/drop30_s2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s3/job.json",
+    "member": "x3/doubleT_obstacle/drop30_s3/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s3/probe.complete.json",
+    "member": "x3/doubleT_obstacle/drop30_s3/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s3/probe.jsonl",
+    "member": "x3/doubleT_obstacle/drop30_s3/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/drop30_s3/process.log",
+    "member": "x3/doubleT_obstacle/drop30_s3/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/hz5/job.json",
+    "member": "x3/doubleT_obstacle/hz5/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/hz5/probe.complete.json",
+    "member": "x3/doubleT_obstacle/hz5/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/hz5/probe.jsonl",
+    "member": "x3/doubleT_obstacle/hz5/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/hz5/process.log",
+    "member": "x3/doubleT_obstacle/hz5/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/nominal/job.json",
+    "member": "x3/doubleT_obstacle/nominal/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/nominal/probe.complete.json",
+    "member": "x3/doubleT_obstacle/nominal/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/nominal/probe.jsonl",
+    "member": "x3/doubleT_obstacle/nominal/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/nominal/process.log",
+    "member": "x3/doubleT_obstacle/nominal/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/pitch_m2/job.json",
+    "member": "x3/doubleT_obstacle/pitch_m2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/pitch_m2/probe.complete.json",
+    "member": "x3/doubleT_obstacle/pitch_m2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/pitch_m2/probe.jsonl",
+    "member": "x3/doubleT_obstacle/pitch_m2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/pitch_m2/process.log",
+    "member": "x3/doubleT_obstacle/pitch_m2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/pitch_p2/job.json",
+    "member": "x3/doubleT_obstacle/pitch_p2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/pitch_p2/probe.complete.json",
+    "member": "x3/doubleT_obstacle/pitch_p2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/pitch_p2/probe.jsonl",
+    "member": "x3/doubleT_obstacle/pitch_p2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/pitch_p2/process.log",
+    "member": "x3/doubleT_obstacle/pitch_p2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/roll_p2/job.json",
+    "member": "x3/doubleT_obstacle/roll_p2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/roll_p2/probe.complete.json",
+    "member": "x3/doubleT_obstacle/roll_p2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/roll_p2/probe.jsonl",
+    "member": "x3/doubleT_obstacle/roll_p2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/doubleT_obstacle/roll_p2/process.log",
+    "member": "x3/doubleT_obstacle/roll_p2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/dedup/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/dedup/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/dedup/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/dedup/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/dedup/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/dedup/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/dedup/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/dedup/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_judge7/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_judge7/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_judge7/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_judge7/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_judge7/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_judge7/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_judge7/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_judge7/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s1/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s1/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s1/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s1/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s1/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s1/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s1/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s1/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s2/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s2/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s2/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s2/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s3/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s3/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s3/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s3/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s3/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s3/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/drop30_s3/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/drop30_s3/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/hz5/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/hz5/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/hz5/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/hz5/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/hz5/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/hz5/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/hz5/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/hz5/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/nominal/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/nominal/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/nominal/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/nominal/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/nominal/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/nominal/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/nominal/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/nominal/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/pitch_m2/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/pitch_m2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/pitch_m2/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/pitch_m2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/pitch_m2/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/pitch_m2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/pitch_m2/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/pitch_m2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/pitch_p2/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/pitch_p2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/pitch_p2/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/pitch_p2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/pitch_p2/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/pitch_p2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/pitch_p2/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/pitch_p2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/roll_p2/job.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/roll_p2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/roll_p2/probe.complete.json",
+    "member": "x3/roundT_squareT_pressureGate_squareT/roll_p2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/roll_p2/probe.jsonl",
+    "member": "x3/roundT_squareT_pressureGate_squareT/roll_p2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/roundT_squareT_pressureGate_squareT/roll_p2/process.log",
+    "member": "x3/roundT_squareT_pressureGate_squareT/roll_p2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/dedup/job.json",
+    "member": "x3/squareT_platform_squareT_switch/dedup/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/dedup/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/dedup/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/dedup/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/dedup/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/dedup/process.log",
+    "member": "x3/squareT_platform_squareT_switch/dedup/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_judge7/job.json",
+    "member": "x3/squareT_platform_squareT_switch/drop30_judge7/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_judge7/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/drop30_judge7/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_judge7/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/drop30_judge7/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_judge7/process.log",
+    "member": "x3/squareT_platform_squareT_switch/drop30_judge7/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s1/job.json",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s1/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s1/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s1/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s1/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s1/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s1/process.log",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s1/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s2/job.json",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s2/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s2/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s2/process.log",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s3/job.json",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s3/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s3/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s3/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s3/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s3/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/drop30_s3/process.log",
+    "member": "x3/squareT_platform_squareT_switch/drop30_s3/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/hz5/job.json",
+    "member": "x3/squareT_platform_squareT_switch/hz5/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/hz5/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/hz5/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/hz5/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/hz5/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/hz5/process.log",
+    "member": "x3/squareT_platform_squareT_switch/hz5/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/nominal/job.json",
+    "member": "x3/squareT_platform_squareT_switch/nominal/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/nominal/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/nominal/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/nominal/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/nominal/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/nominal/process.log",
+    "member": "x3/squareT_platform_squareT_switch/nominal/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/pitch_m2/job.json",
+    "member": "x3/squareT_platform_squareT_switch/pitch_m2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/pitch_m2/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/pitch_m2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/pitch_m2/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/pitch_m2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/pitch_m2/process.log",
+    "member": "x3/squareT_platform_squareT_switch/pitch_m2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/pitch_p2/job.json",
+    "member": "x3/squareT_platform_squareT_switch/pitch_p2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/pitch_p2/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/pitch_p2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/pitch_p2/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/pitch_p2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/pitch_p2/process.log",
+    "member": "x3/squareT_platform_squareT_switch/pitch_p2/process.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/roll_p2/job.json",
+    "member": "x3/squareT_platform_squareT_switch/roll_p2/job.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/roll_p2/probe.complete.json",
+    "member": "x3/squareT_platform_squareT_switch/roll_p2/probe.complete.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/roll_p2/probe.jsonl",
+    "member": "x3/squareT_platform_squareT_switch/roll_p2/probe.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.raw/squareT_platform_squareT_switch/roll_p2/process.log",
+    "member": "x3/squareT_platform_squareT_switch/roll_p2/process.log"
+  },
+  {
+    "source": "/home/resense/data/run_x3_default_off.py",
+    "member": "x3/run/wrapper.py"
+  },
+  {
+    "source": "/home/resense/data/x3_default_off_status.json",
+    "member": "x3/run/status.json"
+  },
+  {
+    "source": "/home/resense/data/logs/x3_default_off.log",
+    "member": "x3/run/driver.log"
+  },
+  {
+    "source": "/home/resense/data/logs/x3_default_off_wrapper.log",
+    "member": "x3/run/wrapper.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.json",
+    "member": "x3.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3_independent_review.json",
+    "member": "x3_independent_review.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3_execution.json",
+    "member": "x3_execution.json"
+  }
+]

@@ -54,7 +54,7 @@
   "comparator_sha256": "ec9def6f68e985dbaf4999aa49638c12901f9da698d54a73264725031e8d4d10",
   "comparison_sha256": "ad67967f24c3015e95507cb39b14b1214104be040d1a76aaedb9f9561cc54c90",
   "scope": [
-    "All140unique profile/stamp frame payloads retain every non-timing field; all original control-report fields compared.",
+    "All 140 unique profile/stamp frame payloads retain every non-timing field; all original control-report fields compared.",
     "Non-frame publications are checked as selected safety-state transitions with identical duplicates collapsed; this is not full watchdog-diagnostic payload equality.",
     "Exact retained compressed artifacts were decompressed and matched against their completed execution hashes.",
     "The actual locally tagged image ID and installed Python package bytes were independently read; no detector/player replay was run.",

@@ -1,0 +1,24 @@
+# Independent verdict: selected default may be resealed
+
+The measured default in `cecab1b696b8c2e101207601acd8faed96c8bfb8` passes the registered preservation checks. I recommend creating its replacement source seal, subject to independently reviewing the actual manifest. This is a source-integrity recommendation, not release or deployment approval.
+
+The [joint independent review](independent_acceptance.json) rechecks all 38 frozen files against Git, the immutable measured checkout and the live tree. The digest is `5eae5197cc6497b029665a19e85b28fb217e934d8a80928cba6c1d2c5ad51700`. The canonical and ROS configuration agree: startup replay defaults to zero and N6 rail-axis extension is off. The measured native binary matches the control. No gate override, waiver, missing gated row or acceptance relaxation is present.
+
+| Evidence | Independent result |
+|---|---|
+| Full original gate | 15,269 ordinary rows preserve all 805 STOP frames and 51 complete intervals; no changed or missing prior detection/warning payload. All 3,060 Set F scoring and placement rows are identical. |
+| Final-source X3 | All 40 cases and 29,765 rows match the original archived Linux reference in every serialized non-timing field. All 260 comparisons pass; all 6,284 STOP frames and 204 intervals are identical. |
+| Full actual Falcon | All 4,443 shared non-timing outputs match a fresh baseline with the same native binary and BLAS dispatch. All 1,372 STOP frames and eight intervals are identical. |
+| Durable evidence | Independently verified the 27 gate archive members and all 167 X3 members against their manifests and retained originals, including producer commands, completed exit-zero receipts and source identities. |
+
+X3 preserves the first nominal STOP at frame 8 for the real obstacle, frame 4 for Set O and frame 313 for the platform. Comparing the complete intervals, rather than only counts or first detections, finds no lost, added, delayed or shortened STOP. The [X3 producer/archive review](independent_x3_archive.json) also verifies the exact 40-case member inventory. The two archives have SHA-256 `504d8151517d805971401b6bc5788547ff5d2b28932a5d47f557c7c3989a00bb` (gate) and `be17205f6fc720761a8e086e05d61125b6b5b676022a1e86ea21a9fb02080d9f` (X3).
+
+The protocol's requirement to preserve every prior STOP applies to actual Falcon as well as the original gate and X3. The rejected replay4 default lost 13 Falcon STOP frames, including person-associated frames 2972–2975, and could not pass merely because other detections improved. The user selected opt-in replay. The new default-zero measurement retains every one of those frames without waiving that requirement. [Historical rejection evidence](../INDEPENDENT_RESEAL_VERDICT.md) remains unchanged; replay4 gains and losses remain an explicit opt-in result, not a claim about the accepted default.
+
+The first exact-field Falcon comparison against an older capture failed on tiny unrounded geometric coefficients. That failure remains preserved. A fresh immutable baseline with the same runtime matches exactly without tolerance; [the Falcon report](../../n2_falcon_2026-10-18/falcon_default_off/README.md) documents the distinction. Only documented readiness additions and measured timing diagnostics are excluded from shared-field comparisons. Existing static-support alarms and other baseline limitations are retained rather than relabeled as corrected.
+
+The separate current-source [host-suite receipt](core_receipt.json) records 1,906 passing tests plus 12 subtests, with seven unavailable historical-fixture tests explicitly deselected. The [independent installed-image/DDS review](INDEPENDENT_DDS_REVIEW.md) covers 40 Pandar and 100 actual Falcon inputs, exact non-timing frame payloads and selected pause/rate/reset transitions. It does not assert equality of every watchdog publication or timing diagnostic.
+
+These checks establish serialized behavior preservation, not surveyed obstacle truth or full-precision numerical equivalence. Set F records omit full detection payloads, so independent hit reassignment is not claimed. X3 uses the archived Linux reference; the missing historical Windows Set O frame 332 remains a provenance limitation. Shared-host latency differences establish no throughput gain. N3 dust suppression, the transformed Falcon sampling proxy and N6 extension do not pass their separate targets; they must not be represented as accepted runtime improvements. No physical-dust validation, universal 10 Hz claim, release, tag or deployment follows from this verdict.
+
+The review is reproducible with [review_acceptance.py](review_acceptance.py) and [review_x3_archive.py](review_x3_archive.py). No detector was rerun during these independent reviews. The new manifest must bind this measured source and evidence and retain the preceding authorization and decision history.
