@@ -42,7 +42,9 @@ def semantic(row):
     if any(m.startswith("latency p95 ") for m in messages):
         health["messages"] = [m for m in messages if not m.startswith("latency p95 ")]
         if health.get("level") == "warn":
-            health["level"] = health.get("decision_level", "ok")
+            if health.get("decision_level") not in ("ok", "warn", "error"):
+                raise ValueError("latency normalization requires explicit decision health")
+            health["level"] = health["decision_level"]
     replay = result.get("mount", {}).get("orientation_replay", {})
     for key in ("replay_ms", "physical_call_ms", "physical_cpu_ms"):
         replay.pop(key, None)
@@ -100,19 +102,65 @@ def validate_capture(report, work, cache, source):
     return by_name, hashes
 
 
-def validate_set_f(report, gate_report):
+def validate_set_f(report, gate_report, cache, source):
     spec = importlib.util.spec_from_file_location("gate_review_far", ROOT / "scripts/far_range_eval.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
+    parameters = report["parameters"]
+    if (parameters["files"] != "46,68,98,140,168,172"
+            or parameters["kinds"] != "person,box1.0,box0.5,trolley,cable"
+            or parameters["frames"] != 110 or parameters["start_m"] != 220
+            or parameters["seed"] != 0 or parameters["placement_mode"] != "legacy"):
+        raise ValueError("Set F membership or placement protocol changed")
+    speed_path = source / "docs/extended_dataset_intake.json"
+    if sha(speed_path) != parameters["speeds_sha256"]:
+        raise ValueError("Set F speed input changed")
+    speeds = {entry["n"]: (entry.get("speed_tracks") or 0.0) for entry in read(speed_path)["files"]}
+    all_files = cache_files(str(cache / gate.RIDE))
+    stamps = load_cache_stamps(str(cache / gate.RIDE))
+    expected, selected_files = {}, []
+    for split in (46, 68, 98, 140, 168, 172):
+        start = next(i for i, path in enumerate(all_files) if Path(path).name.startswith(f"new_data_{split}_"))
+        paths = module.consecutive_files(all_files, start, 110)
+        expected_frames, distance, previous_stamp = [], 220.0, None
+        for path in paths:
+            stem = cache_file_stem(path)
+            stamp = stamps.get(stem)
+            if previous_stamp is not None and stamp is not None:
+                dt = stamp - previous_stamp
+                distance -= speeds.get(int(Path(path).name.split("_")[2]), 0.0) * (dt if 0 < dt < 10 else .1)
+            previous_stamp = stamp
+            if distance < 8:
+                break
+            expected_frames.append(stem)
+        for kind in parameters["kinds"].split(","):
+            expected[(kind, Path(paths[0]).name)] = expected_frames
+            selected_files.extend(Path(p).name for p in paths)
+    if selected_files != parameters["cache_files"]:
+        raise ValueError("Set F selected input files differ")
+    selected_stamps = module.selected_stamps_of(selected_files, stamps)
+    if hashlib.sha256(json.dumps(selected_stamps, sort_keys=True).encode()).hexdigest() != parameters["selected_stamps_sha256"]:
+        raise ValueError("Set F selected input stamps differ")
     by_kind = {}
+    seen = set()
     for sequence in report["sequences"]:
         if sequence.get("skipped"):
             raise ValueError("Set F skipped sequence")
+        if sequence["d0"] != 220 or sequence["placement_mode"] != "legacy":
+            raise ValueError("Set F sequence placement protocol changed")
         rows = sequence["rows"]
+        identity = sequence["kind"], sequence["file0"]
+        if identity in seen or identity not in expected or not rows:
+            raise ValueError("duplicate, unknown or empty Set F sequence")
+        seen.add(identity)
+        if [row["frame"] for row in rows] != expected[identity]:
+            raise ValueError("Set F row identity/consecutive source membership differs")
         first = next((row["gt"]["distance"] for row in rows if row["hit"]), None)
         if first != sequence["first"] or sum(len(row["fp_dets"]) for row in rows) != sequence["fp"]:
             raise ValueError("Set F sequence first hit/false detection summary mismatch")
         by_kind.setdefault(sequence["kind"], []).append(sequence)
+    if seen != expected.keys():
+        raise ValueError("incomplete Set F membership")
     for kind, sequences in by_kind.items():
         firsts = [s["first"] for s in sequences if s["first"] is not None]
         sustained = [v for s in sequences if (v := module.sustained_range(s["rows"])) is not None]
@@ -163,15 +211,15 @@ def main():
                 lost_dets.append(identity)
             if right.get("mount", {}).get("orientation_confirmed") is False:
                 health = right.get("health", {})
-                if right.get("clear_distance", 0) != 0 or health.get("decision_level") == "ok":
+                if right.get("clear_distance") != 0 or health.get("decision_level") not in ("warn", "error"):
                     guard_violations.append(identity)
         cases[name] = {"frames": len(a[name]), "changed_fields": fields,
                        "lost_stop_frames": lost_stop, "added_stop_frames": added_stop,
                        "frames_with_changed_or_missing_old_detection_payload": lost_dets,
                        "unconfirmed_orientation_guard_violations": guard_violations}
     af, bf = (read(work / "setF_straight.json") for work in (args.reference_work, args.candidate_work))
-    validate_set_f(af, old)
-    validate_set_f(bf, new)
+    validate_set_f(af, old, args.cache, args.reference_source)
+    validate_set_f(bf, new, args.cache, args.candidate_source)
     parameter_changes = list(changed(af["parameters"], bf["parameters"]))
     if any(field != "config_sha256" for field, _ in parameter_changes):
         raise ValueError(f"Set F input parameters differ: {parameter_changes}")
@@ -203,6 +251,7 @@ def main():
               "reference_raw_hashes": ah, "candidate_raw_hashes": bh,
               "set_F_parameter_changes": parameter_changes,
               "scope": "All serialized ordinary-gate fields plus Set F scoring and placement rows. No full-precision internal observer was used.",
+              "set_F_limit": "Recomputes aggregate counters from stored hit/fp scoring rows and validates all input identities/placements. The sealed Set F rows omit complete detections, so hit/fp assignment cannot be independently rebuilt from these artifacts.",
               "exclusions": "Timing values and latency-only health messages/promotion; new readiness fields remain explicit differences.",
               "input_sha256": {str(p): sha(p) for p in (
                   args.reference, args.candidate, args.reference_work / "setF_straight.json",
