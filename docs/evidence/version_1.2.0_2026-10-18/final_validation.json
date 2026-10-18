@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "recorded_utc": "2026-10-18T13:05:26.914913+00:00",
+  "source_commit": "e9d8fc649f2dd51dd5cd1e4b04ac8c306cc02569",
+  "source_sha256": "b85a93064e79e932df4f7045af21effdf43f0858963204db5d30fc1de37a5e3a",
+  "manifest_sha256": "99b1f8e079a37a875feb098ebc67107c5f6a1ada7327a3ce95c5875339f74caa",
+  "checks": [
+    {
+      "command": "python -m pytest tests/test_release.py -q",
+      "passed": 53,
+      "duration_s": 1.28,
+      "junit": "junit-release.xml"
+    },
+    {
+      "command": "python -m pytest tests/test_detector_freeze.py -q",
+      "passed": 12,
+      "subtests_passed": 6,
+      "duration_s": 0.06,
+      "junit": "junit-freeze.xml"
+    },
+    {
+      "command": "python scripts/check_archived_lint.py --lint --ruff /home/resense/.tools/ruff0158/bin/ruff",
+      "exit_code": 0,
+      "ruff_version": "0.15.8",
+      "immutable_files": 139,
+      "exact_ruff_exclusions": 39,
+      "live_files_audited": 351
+    },
+    {
+      "command": "bash scripts/sync_params.sh --check",
+      "exit_code": 0
+    },
+    {
+      "command": "python scripts/detector_freeze.py verify",
+      "exit_code": 0,
+      "files": 38
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "output_provenance": "Terminal outputs captured in this task; pytest JUnit retained. Full lint/stdout transcribed here, not separately retained.",
+  "scope": "Version/seal tooling and repository checks. Prior 1906-test suite retains cecab1b identity; full suite was not rerun for metadata-only bump.",
+  "P4_final_acceptance": "PENDING",
+  "release_authorized": false
+}

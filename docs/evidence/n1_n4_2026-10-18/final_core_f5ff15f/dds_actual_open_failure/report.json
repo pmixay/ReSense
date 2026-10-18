@@ -1,0 +1,28 @@
+{
+  "passed": false,
+  "scope": "real ROS2 DDS node and PTY rosbag2 player, no mocks",
+  "error": "TimeoutError('integration condition timed out')",
+  "controls": {
+    "initial_rate": 0.5,
+    "space_pauses": true,
+    "pause_invalidates_monitoring": true,
+    "no_frames_while_paused": true,
+    "keyboard_reduced_rate": 0.4,
+    "space_resumes": true,
+    "pandar128": {
+      "frames": 40,
+      "input": "/bags/pandar128",
+      "synthetic_obstacle_truth_asserted": true,
+      "recordings": [
+        1
+      ],
+      "first_decision": "FAULT",
+      "first_freshness": "epoch_unconfirmed",
+      "go": 17,
+      "stop": 21,
+      "generations": [
+        2
+      ]
+    }
+  }
+}

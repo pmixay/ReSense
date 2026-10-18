@@ -1,0 +1,369 @@
+{
+  "status": "INDEPENDENT_VERSION_GATE_REVIEW_PASS",
+  "checked_utc": "2026-10-18T12:57:47.402103+00:00",
+  "source_commit": "e9d8fc649f2dd51dd5cd1e4b04ac8c306cc02569",
+  "source_sha256": "b85a93064e79e932df4f7045af21effdf43f0858963204db5d30fc1de37a5e3a",
+  "ordinary_rows": 15269,
+  "ordinary_stop_frames": 805,
+  "ordinary_stop_intervals": 51,
+  "pieces": [
+    {
+      "name": "doubleT_obstacle",
+      "rows": 201,
+      "stop_frames": 193,
+      "stop_intervals": [
+        [
+          8,
+          200
+        ]
+      ],
+      "reference_sha256": "492818f1f4f73af4b6f2802d07b4351d0de93c742230987581a28cb7524ff532",
+      "candidate_sha256": "f405c52ee46a944c96e05303b9de53858d753e679e01be4d07fc35449522dc14"
+    },
+    {
+      "name": "doubleT_platform",
+      "rows": 345,
+      "stop_frames": 2,
+      "stop_intervals": [
+        [
+          36,
+          37
+        ]
+      ],
+      "reference_sha256": "9f629e52a7a06ea40adfccb5d4dfcb6d7059ba8550ffcbffb9fc65bddbeb3a7c",
+      "candidate_sha256": "373238c77888158bdb771fe7d0ff6004bd85c97bdfb5e7e1a8bd3760739d0a19"
+    },
+    {
+      "name": "roundT_doubleT",
+      "rows": 252,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "reference_sha256": "4265463acfc4b40ab4ba2c299a33b4e302cff6b65f23a85a57333fb13e977ed6",
+      "candidate_sha256": "e5ab0f64dfc8b578ca3846423ba551473bd614f2af680c3b08138575c161c961"
+    },
+    {
+      "name": "roundT_pressureGate_roundT",
+      "rows": 268,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "reference_sha256": "afb8dbce853fb9cbe71a5e0fe9678f845f31d5376478c61e7659f64ffbf0a049",
+      "candidate_sha256": "9dff4f88269e1877aafaac628bf4dad32e8f194854c2a0f60ba329070e1472c3"
+    },
+    {
+      "name": "roundT_squareT_pressureGate_squareT",
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "reference_sha256": "f340d6d1ecdfabf54ea831f88e8f5003112ba076fdc56f4e4f1d74e3949df278",
+      "candidate_sha256": "bd4b2dad9503c59d7c8527011459275a50b5b753e0dee7665eb0261c325741d2"
+    },
+    {
+      "name": "squareT_platform_squareT_switch",
+      "rows": 877,
+      "stop_frames": 37,
+      "stop_intervals": [
+        [
+          312,
+          313
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          437,
+          438
+        ],
+        [
+          490,
+          490
+        ],
+        [
+          500,
+          501
+        ],
+        [
+          522,
+          524
+        ],
+        [
+          527,
+          528
+        ],
+        [
+          580,
+          580
+        ],
+        [
+          612,
+          613
+        ],
+        [
+          640,
+          642
+        ],
+        [
+          692,
+          708
+        ]
+      ],
+      "reference_sha256": "9d7cc7668fbf07eb5da6d8c82bd16961004fccf62cebf8967ba16437d689be34",
+      "candidate_sha256": "6b6b6900af2330cbde778771c74aa2c1407cec67ed1b1f3754d6bee4ca14a787"
+    },
+    {
+      "name": "cloud_with_fake_obj",
+      "rows": 1510,
+      "stop_frames": 447,
+      "stop_intervals": [
+        [
+          5,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          403,
+          426
+        ],
+        [
+          462,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          627,
+          683
+        ],
+        [
+          693,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "reference_sha256": "3d076c37746c18b6ce88be8e4d629d2a8f697c559661c19fa0be05c2d93da4c7",
+      "candidate_sha256": "d589d3a70834e8ad078e89ad35a45748df7fcef35138e1f92230b1f66f58eeb7"
+    },
+    {
+      "name": "new_data_0",
+      "rows": 1409,
+      "stop_frames": 12,
+      "stop_intervals": [
+        [
+          23,
+          30
+        ],
+        [
+          1378,
+          1378
+        ],
+        [
+          1393,
+          1395
+        ]
+      ],
+      "reference_sha256": "a2ead6cb823fd4775d6844fec9211c83dbf0059f34bae3e8831f9d40817ddd8e",
+      "candidate_sha256": "54c770075d59ac643eadad831b129affd63a6f086b1e34042e872b77a5f4cb99"
+    },
+    {
+      "name": "new_data_1",
+      "rows": 1409,
+      "stop_frames": 14,
+      "stop_intervals": [
+        [
+          438,
+          438
+        ],
+        [
+          1259,
+          1269
+        ],
+        [
+          1320,
+          1321
+        ]
+      ],
+      "reference_sha256": "8350a429c5895edf474c88a2b60068cf55f0fa770c962cf62b3633af0eab39db",
+      "candidate_sha256": "1ce862fa16c8a7da5e1cc20d52698bea6549f0e4423d8523e09d481ac44c88cf"
+    },
+    {
+      "name": "new_data_2",
+      "rows": 1409,
+      "stop_frames": 6,
+      "stop_intervals": [
+        [
+          242,
+          243
+        ],
+        [
+          1334,
+          1337
+        ]
+      ],
+      "reference_sha256": "7217cc66817b8e3fab5df71af724572dd6a6ae89c8039b9ea609d6594aa0feda",
+      "candidate_sha256": "4f0fe4dcfdfd9e091f1d9ec9117e43be36684ca5c5011ffa74122fddc028df65"
+    },
+    {
+      "name": "new_data_3",
+      "rows": 1409,
+      "stop_frames": 2,
+      "stop_intervals": [
+        [
+          838,
+          839
+        ]
+      ],
+      "reference_sha256": "47ddac8599ad7d5741ee4a4d722155e065232f9dc4c46ad414832c1391b4c5ce",
+      "candidate_sha256": "30f9b0f9e36106b38c97bc0dfaa586a42c3f9319f2d7ad461e0225f390d85582"
+    },
+    {
+      "name": "new_data_4",
+      "rows": 1409,
+      "stop_frames": 20,
+      "stop_intervals": [
+        [
+          63,
+          68
+        ],
+        [
+          78,
+          81
+        ],
+        [
+          265,
+          268
+        ],
+        [
+          1223,
+          1228
+        ]
+      ],
+      "reference_sha256": "66256908bd397c37aa5898d995d17a63e9669c70219046b9008f7508b64b5521",
+      "candidate_sha256": "25495258aef3bff7364760f058c9eaf447cfc5972c0082cf3d8edf10ffd69588"
+    },
+    {
+      "name": "new_data_5",
+      "rows": 1409,
+      "stop_frames": 36,
+      "stop_intervals": [
+        [
+          293,
+          298
+        ],
+        [
+          302,
+          306
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          319,
+          320
+        ],
+        [
+          814,
+          821
+        ],
+        [
+          823,
+          824
+        ],
+        [
+          898,
+          908
+        ]
+      ],
+      "reference_sha256": "b19de3629b164c0c75dae94f26e677ef53fca186f7ea8d96480a6d1c6ae8e52f",
+      "candidate_sha256": "6f2d6332c1cd6e9ab844064a42a8a4ad310c14ab95a1c7478386b5e0ae2c6401"
+    },
+    {
+      "name": "new_data_6",
+      "rows": 1409,
+      "stop_frames": 27,
+      "stop_intervals": [
+        [
+          671,
+          672
+        ],
+        [
+          809,
+          814
+        ],
+        [
+          817,
+          820
+        ],
+        [
+          830,
+          832
+        ],
+        [
+          1332,
+          1333
+        ],
+        [
+          1346,
+          1355
+        ]
+      ],
+      "reference_sha256": "5f97d3f0b58ae3f00bfa3f1785339af766dc0eb6f1d39a06a9f77ab8043fbb68",
+      "candidate_sha256": "7631d291d41b83e8d36d8a3551fddecece0d171460916d03d181e3118b1ac86d"
+    },
+    {
+      "name": "new_data_7",
+      "rows": 1408,
+      "stop_frames": 9,
+      "stop_intervals": [
+        [
+          623,
+          624
+        ],
+        [
+          643,
+          644
+        ],
+        [
+          781,
+          783
+        ],
+        [
+          785,
+          786
+        ]
+      ],
+      "reference_sha256": "ad41b6e2447fb0adbc5483708583e4f6bec64506500ea85f15a48921915d9f0b",
+      "candidate_sha256": "785605cbf0af1d03f3eb0a14df0978a57bc18d9ff4faf7aca62cd85cd9c96772"
+    }
+  ],
+  "set_F_sequences": 30,
+  "set_F_rows": 3060,
+  "set_F_hits": 1064,
+  "archive_members": 25,
+  "archive_sha256": "8f762fdae5c2e62c3397c749ccfcd7bb534b0405ca8fbb547c189a5ffab66941",
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/p4_followup_2026-10-18/review_version_gate.py": "8198cfcc1fc908e9d4287387c0b600016f75d6f14c62b2323344ac7923dd23bc",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/finalize_gate.py": "66939fa211a4efcc0a8dbd61f61bcde99d0eb2d62f19260fb9d781d283c0a819",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/gate.json": "9d37c94dfb09914bfd5981d08544b84b5d37630bafb09896d5cba651dc5eb692",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/gate_execution.json": "ca0fb8bd11eea1ea141a774ff0ef0918fa30f5f32aec54125627b967850bc0ff",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/gate_acceptance.json": "ea19f3ff8d52ff702a70f605db3d3d1500defedd0373c05b72bca40a3a2ce4ee",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/gate_frame_review.json": "9ae1f309e2b766cd014db83abd7f11a2c7ef813a649b4c82543ef1a72ad3b9b1",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/raw/gate_manifest.json": "117d9aae8ed47a4004966ce6c3fd849b1dd3923e12bf94311c2bcf9ac51ca730",
+    "/home/resense/ReSense/docs/evidence/p4_followup_2026-10-18/source_continuity.json": "55ce062f6be13e9fa05ba052b37977abd05a3c8d7f7e7cece48395157704325a"
+  },
+  "limits": [
+    "Final P4 acceptance remains pending; this is an agent evidence-integrity and parity review.",
+    "No detector was run. Recorded rows are serialized outputs, not all full-precision internals.",
+    "Set F is shared scoring/placement equality; full detections are absent, so no independent reassociation.",
+    "Only recorded latency telemetry was normalized; shared-host timing proves no throughput gain.",
+    "Existing X3/Falcon/DDS retain their prior identities; this is the fresh default gate only."
+  ]
+}

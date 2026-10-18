@@ -1,0 +1,175 @@
+{
+  "status": "ALL_MEMBERS_AND_RETAINED_ORIGINALS_VERIFIED",
+  "verified_utc": "2026-10-18T11:20:50.081858+00:00",
+  "archive": "gate.tar.gz",
+  "archive_bytes": 3117653,
+  "archive_sha256": "504d8151517d805971401b6bc5788547ff5d2b28932a5d47f557c7c3989a00bb",
+  "member_count": 27,
+  "uncompressed_bytes": 30339360,
+  "input_list_sha256": "22cb9a620667a8a13afcb3ef9f66c8b766713139c5c2252c3424d16638d410c6",
+  "archiver_sha256": "2d7e665b88c58cf347b690f5cb39fe738082385740c2f32aae08d1d4202766fa",
+  "members": [
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate.json",
+      "member": "candidate/gate.json",
+      "bytes": 20003,
+      "sha256": "dd799f78dd55b7797f581754777f41b68f5db035c8336220a9ab188f33772517"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_console.txt",
+      "member": "candidate/gate_console.txt",
+      "bytes": 26181,
+      "sha256": "427bcb47f85fccbc3e2a5569e801f6c1cc0145e2045f89c4c4737845e404c8c4"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_execution_status.json",
+      "member": "candidate/gate_execution_status.json",
+      "bytes": 1210,
+      "sha256": "7a2c268d9acb090354d4056c0460f5f08703c8348217d9dcd7e21879fd0f09af"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_originals.json",
+      "member": "candidate/gate_intake_originals.json",
+      "bytes": 425,
+      "sha256": "6c2f2b31f1b4c288fc01996af1f6dc0a7f9b418a10f5b09abeec6d9f1a6ef27e"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_ride.json",
+      "member": "candidate/gate_intake_ride.json",
+      "bytes": 5773,
+      "sha256": "89e6b448c7d6108a34ef2fe16453f28573a88aa1e4711fb46ef6665e4bca8752"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_set_o.json",
+      "member": "candidate/gate_intake_set_o.json",
+      "bytes": 228,
+      "sha256": "7f036e7d0016d7bdc114a2aaa2bef942133a0f63c1b574833a6ecac79b8ba1f9"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_launch.json",
+      "member": "candidate/gate_launch.json",
+      "bytes": 183,
+      "sha256": "f8d93510b3fccf2b9d0d5ac25ea81e63c3ed1c9ecd89dff74c14a350bbeccf87"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/runtime_identity.json",
+      "member": "candidate/runtime_identity.json",
+      "bytes": 4507,
+      "sha256": "cf9c62f2e40e7132f5ab146257ff0a93aed23f78e93f3d9345a05238c0edc462"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/cloud_with_fake_obj.jsonl",
+      "member": "candidate_work/cloud_with_fake_obj.jsonl",
+      "bytes": 2790121,
+      "sha256": "3d076c37746c18b6ce88be8e4d629d2a8f697c559661c19fa0be05c2d93da4c7"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/config.yaml",
+      "member": "candidate_work/config.yaml",
+      "bytes": 9396,
+      "sha256": "d7750028009e9db06ded33546349f48bf183befd216321ca960e1b67067c62cf"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/doubleT_obstacle.jsonl",
+      "member": "candidate_work/doubleT_obstacle.jsonl",
+      "bytes": 418319,
+      "sha256": "492818f1f4f73af4b6f2802d07b4351d0de93c742230987581a28cb7524ff532"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/doubleT_platform.jsonl",
+      "member": "candidate_work/doubleT_platform.jsonl",
+      "bytes": 635985,
+      "sha256": "9f629e52a7a06ea40adfccb5d4dfcb6d7059ba8550ffcbffb9fc65bddbeb3a7c"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/new_data_0.jsonl",
+      "member": "candidate_work/new_data_0.jsonl",
+      "bytes": 2584444,
+      "sha256": "a2ead6cb823fd4775d6844fec9211c83dbf0059f34bae3e8831f9d40817ddd8e"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/new_data_1.jsonl",
+      "member": "candidate_work/new_data_1.jsonl",
+      "bytes": 2845072,
+      "sha256": "8350a429c5895edf474c88a2b60068cf55f0fa770c962cf62b3633af0eab39db"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/new_data_2.jsonl",
+      "member": "candidate_work/new_data_2.jsonl",
+      "bytes": 2638092,
+      "sha256": "7217cc66817b8e3fab5df71af724572dd6a6ae89c8039b9ea609d6594aa0feda"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/new_data_3.jsonl",
+      "member": "candidate_work/new_data_3.jsonl",
+      "bytes": 2710648,
+      "sha256": "47ddac8599ad7d5741ee4a4d722155e065232f9dc4c46ad414832c1391b4c5ce"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/new_data_4.jsonl",
+      "member": "candidate_work/new_data_4.jsonl",
+      "bytes": 2687541,
+      "sha256": "66256908bd397c37aa5898d995d17a63e9669c70219046b9008f7508b64b5521"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/new_data_5.jsonl",
+      "member": "candidate_work/new_data_5.jsonl",
+      "bytes": 2502277,
+      "sha256": "b19de3629b164c0c75dae94f26e677ef53fca186f7ea8d96480a6d1c6ae8e52f"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/new_data_6.jsonl",
+      "member": "candidate_work/new_data_6.jsonl",
+      "bytes": 2524048,
+      "sha256": "5f97d3f0b58ae3f00bfa3f1785339af766dc0eb6f1d39a06a9f77ab8043fbb68"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/new_data_7.jsonl",
+      "member": "candidate_work/new_data_7.jsonl",
+      "bytes": 2433076,
+      "sha256": "ad41b6e2447fb0adbc5483708583e4f6bec64506500ea85f15a48921915d9f0b"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/roundT_doubleT.jsonl",
+      "member": "candidate_work/roundT_doubleT.jsonl",
+      "bytes": 482501,
+      "sha256": "4265463acfc4b40ab4ba2c299a33b4e302cff6b65f23a85a57333fb13e977ed6"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/roundT_pressureGate_roundT.jsonl",
+      "member": "candidate_work/roundT_pressureGate_roundT.jsonl",
+      "bytes": 489680,
+      "sha256": "afb8dbce853fb9cbe71a5e0fe9678f845f31d5376478c61e7659f64ffbf0a049"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/roundT_squareT_pressureGate_squareT.jsonl",
+      "member": "candidate_work/roundT_squareT_pressureGate_squareT.jsonl",
+      "bytes": 974496,
+      "sha256": "f340d6d1ecdfabf54ea831f88e8f5003112ba076fdc56f4e4f1d74e3949df278"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/setF_straight.json",
+      "member": "candidate_work/setF_straight.json",
+      "bytes": 1817191,
+      "sha256": "26c869b71fc68a735f9c0392ccd5b08ae5099953bf954c72e042fc0a4cdb4f49"
+    },
+    {
+      "source": "/home/resense/data/final_gate_work_cecab1b/squareT_platform_squareT_switch.jsonl",
+      "member": "candidate_work/squareT_platform_squareT_switch.jsonl",
+      "bytes": 1731166,
+      "sha256": "9d7cc7668fbf07eb5da6d8c82bd16961004fccf62cebf8967ba16437d689be34"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/finalize_gate.py",
+      "member": "producer/finalize_gate.py",
+      "bytes": 4186,
+      "sha256": "da958c218ff55bbb5f7884a14b92783988347e21727de49a2273b027e0b49c16"
+    },
+    {
+      "source": "/home/resense/data/run_default_off_gate.py",
+      "member": "producer/run_default_off_gate.py",
+      "bytes": 2611,
+      "sha256": "969fcaa39f46b718e6bf1c7eb1da1d25d7bb2f7d68ff3bd8e55adddf4f5473c0"
+    }
+  ]
+}

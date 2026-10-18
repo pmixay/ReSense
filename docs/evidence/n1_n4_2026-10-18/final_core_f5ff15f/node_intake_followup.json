@@ -1,0 +1,87 @@
+{
+  "frozen_detector_commit": "f5ff15ff01f728f9053d5d63e21338662de9afbd",
+  "final_node_commit": "00ee76fcf9e995b18d12e0981da96c7f27cb19e0",
+  "matched_curve_image": "sha256:a018d39a2369ffb962c4ab595347957085f18bab62df1964e9004ccd57f59f9b",
+  "final_actual_falcon_image": "sha256:3ddf27362e5d9e65f84095111edeeb04d3ae34737cc3b56c1474d5df98fbf8b4",
+  "node_followup": "Initial candidate subscriptions add /iv_points before playback; no sensor inference or detector configuration change. Integration now requires exact metadata frame count.",
+  "N6_rails_axis_extension": false,
+  "orientation_replay_frames": 4,
+  "runtime_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "828377a2cf7e677b4677cf5411784e972f2c864dcfba96db14d2dd48a1c07690",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "805bce047394041039a54b4a9e58bc97a09f0bc6dbb38d8d0e4dd484377d9fb2",
+    "scripts/check_interactive_replay.py": "fd5511051eb2a49c0da97a840a7f608266e5ae7fa07139add42441f14a667227",
+    "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b",
+    "ros2_ws/src/resense_ros/resense_ros/sensor_profiles.py": "cfa534489de593f8e12a8e82f4b85292a763d5bb33121042edcde9b4fcad99af"
+  },
+  "actual_falcon_subset_db_sha256": "ab07398f65e9984762abac5bd60826bf4e3978f431c46fcde561fcfafd264696",
+  "attempt_assessment": {
+    "dds_actual_open_failure": {
+      "accepted": false,
+      "reason": "Humble could not open subset with missing schema row; no actual Falcon frames processed"
+    },
+    "dds_actual_discovery_loss": {
+      "accepted": false,
+      "reason": "Old functional harness passed but only94/100 actual frames arrived; completeness failed, first six inputs preceded discovery"
+    },
+    "dds_actual_complete": {
+      "accepted": true,
+      "expected": 140,
+      "observed": 140,
+      "detector_restarts": 0
+    }
+  },
+  "selected_screenshot": {
+    "source": "/home/resense/data/n1_final_rviz_05/capture_10.png",
+    "retained": "curve_rviz_rate_05/curve_rviz.png",
+    "sha256": "dea788501d77f3699f284188a23a759bed6f7730ee22df7dbffbf09ebda70236",
+    "editing": "none"
+  },
+  "commands": {
+    "synthetic": [
+      "docker",
+      "run",
+      "--rm",
+      "--network",
+      "none",
+      "--ipc=host",
+      "-v",
+      "/home/resense/data/n4_smoke:/bags:ro",
+      "-v",
+      "/home/resense/data/n4_final_synthetic:/out",
+      "resense:n1n4-check",
+      "python3",
+      "scripts/check_interactive_replay.py",
+      "/bags",
+      "--out",
+      "/out"
+    ],
+    "actual": [
+      "docker",
+      "run",
+      "--rm",
+      "--network",
+      "none",
+      "--ipc=host",
+      "-v",
+      "/home/resense/data/n4_smoke:/bags:ro",
+      "-v",
+      "/home/resense/data/n2/falcon_first100:/falcon:ro",
+      "-v",
+      "/home/resense/data/n4_final_complete_falcon:/out",
+      "resense:n1n4-check",
+      "python3",
+      "scripts/check_interactive_replay.py",
+      "/bags",
+      "--out",
+      "/out",
+      "--falcon-bag",
+      "/falcon"
+    ]
+  },
+  "caveats": [
+    "Timing and graphics are single local runs on one exposed CPU with heavy quality jobs paused. Light artifact/SQLite metadata verification also occurred.",
+    "No10Hz capability or2/4/8-core extrapolation is asserted.",
+    "Cgroup CPU/memory comparison covers detector+optionalRViz, excludes player/observer/Xvfb/capture.",
+    "Actual Falcon100-frame integration asserts transport/profile/range parity, not new human-object ground truth."
+  ]
+}

@@ -1,0 +1,207 @@
+...........F...................................................... [  3%]
+........................................................................ [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 15%]
+............................................F..................... [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 26%]
+........................................................................ [ 30%]
+........................................................................ [ 33%]
+.....F.................................................................. [ 37%]
+........................................................................ [ 41%]
+........................................................................ [ 45%]
+........................................................................ [ 49%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 64%]
+........................................................................ [ 68%]
+........................................................................ [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 79%]
+........................................................................ [ 83%]
+.......................................FF............................... [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 95%]
+........................................................................ [ 98%]
+....................                                                     [100%]
+=================================== FAILURES ===================================
+________________________ test_timing_with_accumulation _________________________
+
+tunnel = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],
+       [ 2.0674713 , -2.4552011 ,  0.8242414 ],
+       [ 2....0000000.0, axis_valid_bent=1000000000.0, wall_drift=1000000000.0, axis_valid_without_rails=0.0, rail_axis_support=0.0))
+
+    def test_timing_with_accumulation(tunnel):
+        det = Detector(acc_cfg())
+        totals = []
+        for d, fr in approach(tunnel, 200.0, 20, seed=5):
+            res = det.process(fr, ego_speed=EGO)
+            totals.append(res.timing_ms["total"])
+        totals = np.array(totals[1:])                              # the first frame warms caches
+        mean, p95 = totals.mean(), np.percentile(totals, 95)
+        print("\n[synthetic, this machine] detector with accumulation: mean %.1f ms, p95 %.1f ms, max %.1f ms over %d frames; last frame stages: %s"
+              % (mean, p95, totals.max(), totals.size, {k: round(v, 1) for k, v in res.timing_ms.items()}))
+>       assert p95 < 150.0
+E       assert 289.789682697301 < 150.0
+
+tests/test_algorithm.py:264: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+[synthetic, this machine] detector with accumulation: mean 245.5 ms, p95 289.8 ms, max 318.0 ms over 19 frames; last frame stages: {'track': 140.5, 'corridor': 39.3, 'egomotion': 0.0, 'accumulate': 0.2, 'cluster': 51.4, 'tracking': 18.1, 'stages': 249.5, 'health': 22.4, 'result': 0.0, 'total': 271.9}
+____ test_default_nonlatency_results_match_previous_supplied_stage_latency _____
+
+tunnel = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],
+       [ 2.0674713 , -2.4552011 ,  0.8242414 ],
+       [ 2....0000000.0, axis_valid_bent=1000000000.0, wall_drift=1000000000.0, axis_valid_without_rails=0.0, rail_axis_support=0.0))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7880eed725a0>
+
+    def test_default_nonlatency_results_match_previous_supplied_stage_latency(tunnel, monkeypatch):
+        clock = Clock()
+        monkeypatch.setattr(detector_module, "time", SimpleNamespace(perf_counter=clock.read))
+        previous, current = Detector(), Detector()
+        supplied_update, complete_update = previous.health.update, current.health.update
+    
+        def stage_latency(*args, **kwargs):
+            args = list(args)
+            args[6] = 6.0  # the six original intervals on this deterministic clock
+            return supplied_update(*args, **kwargs)
+    
+        def complete_latency(*args, **kwargs):
+            out = complete_update(*args, **kwargs)
+            clock.ms += 200.0
+            return out
+    
+        monkeypatch.setattr(previous.health, "update", stage_latency)
+        monkeypatch.setattr(current.health, "update", complete_latency)
+        frame = tunnel[0]
+        dirty = Frame(frame.xyz, frame.intensity, meta={"n_raw": 2 * frame.n, "n_near": frame.n})
+        few = Frame(frame.xyz[:500], frame.intensity[:500])
+        empty = Frame(frame.xyz[:0], frame.intensity[:0])
+        levels, saw_latency_difference = set(), False
+        for index, source in enumerate([frame] * 12 + [dirty, few, empty]):
+            value = Frame(source.xyz, source.intensity, stamp=index * 0.1, meta=dict(source.meta))
+>           before, after = previous.process(value).to_dict(), current.process(value).to_dict()
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_detector_timing.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <resense.detector.Detector object at 0x7880ee48f3e0>
+frame = Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],
+       [ 2.0674713 , -2.4552011 ,  0.8242414 ],
+       [ 2.0....., 12.445117, 11.921144,
+       12.240438], dtype=float32), ring=None, stamp=0.0, frame_id='', meta={'obstacles': []})
+ego_speed = None
+
+    def process(self, frame: Frame, ego_speed: Optional[float] = None) -> FrameResult:
+        """Process one current input; optional bounded startup replay never publishes old inputs."""
+        pending = self._orientation_replay
+        if pending.finished or not self.cfg.calibration.enabled or self.calib._config_passed:
+            return self._process_once(frame, ego_speed)
+>       wall_start, cpu_start = time.perf_counter(), time.process_time()
+                                                     ^^^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'process_time'
+
+resense/detector.py:255: AttributeError
+____ test_direct_observer_preserves_stateful_outputs_and_actual_note_calls _____
+
+    def test_direct_observer_preserves_stateful_outputs_and_actual_note_calls():
+        cloud, labels, _ = synthetic_tunnel_frame(rng=np.random.default_rng(12), specs=[
+            ObstacleSpec(kind="box", size=(.3, .3, .3), distance=25, lateral=0, base_z=-.2)])
+        cfg = DetectorConfig()
+        cfg.tracking.fresh_stop_evidence = True
+        # The fixture exercises ordinary/low descriptor routing, not the separate hanging stage.
+        cfg.cluster.hanging_enabled = False
+        plain = Detector(cfg)
+        traced = SupportTraceDetector(DetectorConfig.from_dict(cfg.to_dict()))
+        original = clustering._corridor_cluster
+        observed = []
+        for k in range(8):
+            frame = Frame(cloud.xyz, cloud.intensity, stamp=.1 * k, frame_id=str(k))
+            result, records = traced.process_observed(frame, range(1, 100))
+>           assert semantic(result.to_dict()) == semantic(plain.process(frame).to_dict())
+E           AssertionError: assert {'stamp': 0.0...e': None, ...} == {'stamp': 0.0...e': None, ...}
+E             
+E             Omitting 18 identical items, use -vv to show
+E             Differing items:
+E             {'mount': {'status': 'pending', 'orientation': 'configured', 'orientation_confirmed': True, 'roll_deg': 0.0, ...}} != {'mount': {'status': 'pending', 'orientation': 'configured', 'orientation_confirmed': True, 'roll_deg': 0.0, ...}}
+E             Use -v to get more diff
+
+tests/test_fresh_support_trace.py:81: AssertionError
+____________ test_tracing_preserves_stateful_detector_output[False] ____________
+
+fresh = False
+
+    @pytest.mark.synthetic
+    @pytest.mark.parametrize("fresh", [False, True])
+    def test_tracing_preserves_stateful_detector_output(fresh):
+        cloud, labels, _ = synthetic_tunnel_frame(rng=np.random.default_rng(12), specs=[
+            ObstacleSpec(kind="box", size=(0.3, 0.3, 0.3), distance=25, lateral=0, base_z=-0.2)])
+        cfg = DetectorConfig()
+        cfg.tracking.fresh_stop_evidence = fresh
+        plain, traced = Detector(cfg), TraceDetector(DetectorConfig.from_dict(cfg.to_dict()))
+        original = clustering._corridor_cluster
+        targets = np.flatnonzero(labels == 1)
+        assert len(targets) > 0
+        for k in range(8):
+            current = Frame(cloud.xyz, cloud.intensity, stamp=0.1 * k)
+            actual = traced.process_target(current, {"cube": targets}).to_dict()
+            expected = plain.process(current).to_dict()
+>           assert module.semantic(actual) == module.semantic(expected)
+E           AssertionError: assert {'obstacle': ...ons': [], ...} == {'obstacle': ...ons': [], ...}
+E             
+E             Omitting 9 identical items, use -vv to show
+E             Differing items:
+E             {'mount': {'status': 'pending', 'orientation': 'configured', 'orientation_confirmed': True, 'roll_deg': 0.0, ...}} != {'mount': {'status': 'pending', 'orientation': 'configured', 'orientation_confirmed': True, 'roll_deg': 0.0, ...}}
+E             Use -v to get more diff
+
+tests/test_stage_trace.py:89: AssertionError
+____________ test_tracing_preserves_stateful_detector_output[True] _____________
+
+fresh = True
+
+    @pytest.mark.synthetic
+    @pytest.mark.parametrize("fresh", [False, True])
+    def test_tracing_preserves_stateful_detector_output(fresh):
+        cloud, labels, _ = synthetic_tunnel_frame(rng=np.random.default_rng(12), specs=[
+            ObstacleSpec(kind="box", size=(0.3, 0.3, 0.3), distance=25, lateral=0, base_z=-0.2)])
+        cfg = DetectorConfig()
+        cfg.tracking.fresh_stop_evidence = fresh
+        plain, traced = Detector(cfg), TraceDetector(DetectorConfig.from_dict(cfg.to_dict()))
+        original = clustering._corridor_cluster
+        targets = np.flatnonzero(labels == 1)
+        assert len(targets) > 0
+        for k in range(8):
+            current = Frame(cloud.xyz, cloud.intensity, stamp=0.1 * k)
+            actual = traced.process_target(current, {"cube": targets}).to_dict()
+            expected = plain.process(current).to_dict()
+>           assert module.semantic(actual) == module.semantic(expected)
+E           AssertionError: assert {'obstacle': ...ons': [], ...} == {'obstacle': ...ons': [], ...}
+E             
+E             Omitting 9 identical items, use -vv to show
+E             Differing items:
+E             {'mount': {'status': 'pending', 'orientation': 'configured', 'orientation_confirmed': True, 'roll_deg': 0.0, ...}} != {'mount': {'status': 'pending', 'orientation': 'configured', 'orientation_confirmed': True, 'roll_deg': 0.0, ...}}
+E             Use -v to get more diff
+
+tests/test_stage_trace.py:89: AssertionError
+=============================== warnings summary ===============================
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data_127.db3-expected1]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[doubleT_obstacle-expected2]
+  /usr/lib/python3.12/tarfile.py:2301: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+--------- 8 test(s) deselected: their recorded data cache is not here ----------
+  tests/test_evidence_coherence.py::test_measured_remaining_inventory_is_133_track_frames (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_interval_rule_is_not_a_single_false_history_separator (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_293_fields_and_reference_change_are_not_identity_evidence (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_association_residuals_do_not_prove_wrong_association (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_sparse_edge_positive_rows_are_unchanged_by_fresh_onset_replay (no C:/Users/alikh/AppData/Local/Temp/opencode/fresh-stop-positive-stress)
+  tests/test_evidence_coherence.py::test_all_saved_stop_rows_validate_against_base_and_source (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_fresh_support_analysis.py::test_direct_fresh_selected_events_and_positive_counterexample_when_capture_available (no C:/Users/alikh/AppData/Local/Temp/opencode/direct-fresh-support-all)
+  tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop (no /data/cache/new_data)
+5 failed, 1875 passed, 8 deselected, 5 warnings, 12 subtests passed in 1456.63s (0:24:16)

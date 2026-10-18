@@ -1,0 +1,97 @@
+{
+  "reviewer": "c2_implementation",
+  "scope": "Source review and narrow independent tests; corrected full N3 measurements pending.",
+  "source_hashes": {
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+    "scripts/dust_battery.py": "04382f7d59d0c56cd651f809927f9095bec1722d346a6ff836d1f4f35fbc1d6d",
+    "scripts/dust_set_f.py": "713e2006eb92aba4363c604c3052c38c9a41da11e4ec1e459c884e6d96c8296b",
+    "scripts/dust_reference.py": "15d95f1d4b4ca2f8ed2db284624d64e08e18a71ab01deff9cc8cf060accf5eeb",
+    "docs/evidence/n3_dust_2026-10-18/summarize_set_f.py": "f90f823cd4dca16507b5e0c7a988cd34d2d6b6fc14f86a6057406798f51ca45e",
+    "tests/test_dust_reference_observation.py": "fcb046ac77094c4a14aaee4289092f6a41c6163fb6f404fd3584142660c3b8fb",
+    "tests/test_dust_reference.py": "38334846eff5d79bbe162565d2982c85fbe4255cd4269f2bb304e19d9f5b4f1c",
+    "tests/test_dust.py": "fff53d109510cde1aca5365116d166a2c67e3674b30b8722ce5cda748e356187",
+    "tests/test_dust_set_f.py": "2d3c37c87a669acf412acc4d8a57ce67f0cd41a20f3930b15f59abac9cfafca9",
+    "docs/evidence/n3_dust_2026-10-18/review_completed_artifacts.py": "dee1c7645eee0e7ceef7eeec738793898911914ceea7011633c4c9848ccfeff5",
+    "docs/evidence/n3_dust_2026-10-18/review_dust_coordinates.py": "63918d1d4ed366f540d998d0e96f8ab60bdefe5684f1a02fc51aa23ed42a04f6",
+    "docs/evidence/n3_dust_2026-10-18/review_set_f_verifier.py": "b49467958cab9d1cd23da0a169255e86b96b706b2834a5b65ea419c0e77e7935",
+    "docs/evidence/n3_dust_2026-10-18/summarize_regular_dust.py": "caf68e63a18abf34e1ee9fd2b40291667af4d89f25fc44332a01e63e5e86c734",
+    "docs/evidence/n3_dust_2026-10-18/review_regular_verifier.py": "841db4938fc90fe4c1ab8987e7183bd18770a4782a8f4b48a4083e39b41216d5",
+    "docs/evidence/n3_dust_2026-10-18/review_corrected_clean.py": "7f10ed2a20602012702996974ce5b2a3f593e814f605864054e80eafe402f13a"
+  },
+  "checks": [
+    {
+      "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 /home/resense/.venv/bin/python -m pytest tests/test_dust_reference_observation.py -q --strict-markers",
+      "result": "3 passed in 3.80s",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/resense/.tools/ruff0158/bin/ruff check tests/test_dust_reference_observation.py docs/evidence/n3_dust_2026-10-18/review_completed_artifacts.py docs/evidence/n3_dust_2026-10-18/review_dust_coordinates.py docs/evidence/n3_dust_2026-10-18/review_set_f_verifier.py",
+      "result": "All checks passed",
+      "exit_code": 0,
+      "tested_verifier_sha256": "94339e64c768e8d6661961aad9177b4c16ce168d63f898e6890c9142996329a3",
+      "tested_probe_sha256": "c52fe3bd270a20246a28d8bce90a9b5e5b27b5e704bd344e8e36557349485383",
+      "historical_scope": "Historical broader fixture suite committed f2546fb; not repeated after the isolated confirmed-detection consistency guard."
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 nice -n 5 /home/resense/.venv/bin/python docs/evidence/n3_dust_2026-10-18/review_set_f_verifier.py",
+      "result": "Complete artificial schema fixture accepted; all9 mutations/missing coverage rejected; no detector calls",
+      "exit_code": 0,
+      "tested_verifier_sha256": "94339e64c768e8d6661961aad9177b4c16ce168d63f898e6890c9142996329a3",
+      "tested_probe_sha256": "c52fe3bd270a20246a28d8bce90a9b5e5b27b5e704bd344e8e36557349485383",
+      "historical_scope": "Historical broader fixture suite committed f2546fb; not repeated after the isolated confirmed-detection consistency guard."
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 nice -n 5 /home/resense/.venv/bin/python docs/evidence/n3_dust_2026-10-18/review_regular_verifier.py",
+      "result": "Artificial3-frame fixture accepted; inside-first0.8 and any-first1.0 correctly distinct; all7 mutations rejected; no detector calls",
+      "exit_code": 0,
+      "tested_verifier_sha256": "a71bd992697d37be514d32367670873d8fda4149ec99ccda37613a18d981c68a",
+      "tested_probe_sha256": "e6e090331b52667cbe7c26c7e9493e8442a924f02b295bc88ca7ce2df8afe387",
+      "historical_scope": "Historical broader fixture suite committed f2546fb; not repeated after the isolated confirmed-detection consistency guard."
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 nice -n 5 /home/resense/.venv/bin/python docs/evidence/n3_dust_2026-10-18/review_corrected_clean.py",
+      "result": "345 source hashes/cache/native identities pass; decisions/ranges/geometry unchanged;335 explicit timing-derived health level/message differences retained; strict non-timing JSON equality FALSE",
+      "exit_code": 0
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 nice -n 5 /home/resense/.venv/bin/python docs/evidence/n3_dust_2026-10-18/review_set_f_verifier.py --contradiction-only",
+      "result": "Valid fixture accepted; confirmed detection with obstacle=false and GO rejected despite corrected summary counts/raw SHA. No detector processing.",
+      "tested_verifier_sha256": "f90f823cd4dca16507b5e0c7a988cd34d2d6b6fc14f86a6057406798f51ca45e",
+      "tested_probe_sha256": "b49467958cab9d1cd23da0a169255e86b96b706b2834a5b65ea419c0e77e7935",
+      "exit_code": 0
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 nice -n 5 /home/resense/.venv/bin/python docs/evidence/n3_dust_2026-10-18/review_regular_verifier.py --contradiction-only",
+      "result": "Valid fixture accepted; confirmed detection with obstacle=false and GO rejected despite corrected summary counts/raw SHA. No detector processing.",
+      "tested_verifier_sha256": "caf68e63a18abf34e1ee9fd2b40291667af4d89f25fc44332a01e63e5e86c734",
+      "tested_probe_sha256": "841db4938fc90fe4c1ab8987e7183bd18770a4782a8f4b48a4083e39b41216d5",
+      "exit_code": 0
+    }
+  ],
+  "artifact_sha256": {
+    "docs/evidence/n3_dust_2026-10-18/independent_completed_artifact_review.json": "5cfe339b48a5d45f35ffc3d505814a01eafe33e8469e7edd69690ef039cb2000",
+    "docs/evidence/n3_dust_2026-10-18/independent_coordinate_review.json": "3b38f3b2023998f86db1148956dc186675a7d2f6f93dc6568efe8a299c806829",
+    "docs/evidence/n3_dust_2026-10-18/independent_corrected_clean_comparison.json": "2e39eb82193d0d92d53fcaab3c668e59e14acf1e0f312a2472e2a04dd49a7b49",
+    "docs/evidence/n3_dust_2026-10-18/independent_regular_contradiction_probe.json": "f30e2a27a254dcdf560b5f1987e6fabe602bb879231e9686ff71e5a13e348d3a",
+    "docs/evidence/n3_dust_2026-10-18/independent_regular_verifier_probes.json": "f8229022732c11f9c97e316642151f7654ace9e71073d208e5905a200b4b5227",
+    "docs/evidence/n3_dust_2026-10-18/independent_set_f_contradiction_probe.json": "db58189fe276bbad60d2b7e9504026b780d0204b36b79eb92d5033cdf457139b",
+    "docs/evidence/n3_dust_2026-10-18/independent_set_f_verifier_probes.json": "caafa643a18aa994d19cb06ada7134d1a893ca250a4b7eb40732061997822f45"
+  },
+  "historical_suite_receipts": {
+    "set_f": {
+      "path": "docs/evidence/n3_dust_2026-10-18/independent_set_f_verifier_probes.json",
+      "sha256": "caafa643a18aa994d19cb06ada7134d1a893ca250a4b7eb40732061997822f45",
+      "tested_verifier_sha256": "94339e64c768e8d6661961aad9177b4c16ce168d63f898e6890c9142996329a3",
+      "tested_probe_sha256": "c52fe3bd270a20246a28d8bce90a9b5e5b27b5e704bd344e8e36557349485383",
+      "note": "Historical broader fixture suite committed f2546fb; not repeated after the isolated confirmed-detection consistency guard."
+    },
+    "regular": {
+      "path": "docs/evidence/n3_dust_2026-10-18/independent_regular_verifier_probes.json",
+      "sha256": "f8229022732c11f9c97e316642151f7654ace9e71073d208e5905a200b4b5227",
+      "tested_verifier_sha256": "a71bd992697d37be514d32367670873d8fda4149ec99ccda37613a18d981c68a",
+      "tested_probe_sha256": "e6e090331b52667cbe7c26c7e9493e8442a924f02b295bc88ca7ce2df8afe387",
+      "note": "Historical broader fixture suite committed f2546fb; not repeated after the isolated confirmed-detection consistency guard."
+    }
+  }
+}

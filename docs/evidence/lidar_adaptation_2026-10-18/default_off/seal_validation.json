@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "recorded_utc": "2026-10-18T11:40:53.010072+00:00",
+  "scope": "Selected core source seal and repository hygiene; corrected N3 measurements still running.",
+  "manifest": "docs/evidence/detector_freeze_2026-10-18_lidar.json",
+  "manifest_sha256": "f75231a9d52124620ec7f23ee7ecf0050bf4e668ee2e10fdb660c3dba06bbc3c",
+  "source_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "checks": [
+    {
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_detector_freeze.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "passed": 12,
+      "subtests_passed": 6,
+      "reported_duration_s": 0.12,
+      "provenance": "Captured terminal output in this task; no separate pytest stdout file was retained."
+    },
+    {
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "scripts/check_archived_lint.py",
+        "--lint",
+        "--ruff",
+        "/home/resense/.tools/ruff0158/bin/ruff"
+      ],
+      "exit_code": 0,
+      "output": "final_archival_lint.txt",
+      "output_sha256": "63674c02b79924004720c6f409ca61b832808c9cdae218f8f0bac76f4a68a5f4",
+      "immutable_files_verified": 139,
+      "exact_ruff_exclusions": 39,
+      "live_dependency_files_audited": 351
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/sync_params.sh",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "parameter files in sync"
+    },
+    {
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "scripts/detector_freeze.py",
+        "verify"
+      ],
+      "exit_code": 0,
+      "files": 38,
+      "source_sha256": "5eae5197cc6497b029665a19e85b28fb217e934d8a80928cba6c1d2c5ad51700"
+    }
+  ]
+}

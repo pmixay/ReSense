@@ -791,3 +791,36 @@ def test_label_tool_exports_inject_shaped_gt(tiny_run, tmp_path):
     assert len(o["size"]) == 3 and all(isinstance(v, (int, float)) for v in o["size"])
     g = GTObstacle.from_dict(o)                                   # what resense eval reads
     assert g.distance == o["distance"] and g.in_gauge is False
+
+
+def test_dashboard_shared_gauge_range_hold_and_invalid_contract():
+    """The display box uses supplied geometry/range, separate from clear distance."""
+    if not _browser_available():
+        pytest.skip("playwright + chromium not available")
+    from playwright.sync_api import sync_playwright
+    import check_dashboard
+    row = {'obstacle': True, 'decision': 'STOP', 'nearest_distance': 40.,
+           'clear_distance': 0., 'detections': [], 'warnings': [],
+           'track': {'axis_valid': 150., 'floor_coef': [0., 0., -1.6], 'floor_range': [3., 100.]},
+           'gauge': {'valid': True, 'held': False, 'drawn_range_m': 60., 'solid_range_m': 60.,
+                     'axis_valid_m': 150., 'centerline': [[3., 0., -1.25], [30., .2, -1.25], [60., 1., -1.25]]}}
+    with sync_playwright() as p:
+        browser = _launch(p)
+        page = browser.new_page(viewport={'width': 1600, 'height': 900})
+        page.goto('file://' + check_dashboard.INDEX, wait_until='domcontentloaded')
+        page.wait_for_function('window.resense !== undefined')
+        assert page.evaluate('r => resenseFormat.result(r)', row)
+        page.evaluate('r => resense.applyResult(r)', row)
+        assert page.evaluate('resense.state.cab.envEnd') == 60.
+        assert page.evaluate('resense.state.cab.clearEnd') == 0.
+        assert '60 м' in page.text_content('#display-gauge')
+        row['gauge'].update(valid=False, held=True, solid_range_m=0.)
+        page.evaluate('r => resense.applyResult(r)', row)
+        assert 'удерживается' in page.text_content('#display-gauge')
+        assert page.evaluate('resense.state.cab.envEnd') == 60.
+        row['gauge'].update(held=False, drawn_range_m=0., centerline=[])
+        page.evaluate('r => resense.applyResult(r)', row)
+        assert page.evaluate('resense.state.cab.envEnd') == 0.
+        row['gauge'].update(solid_range_m=150.)
+        assert not page.evaluate('r => resenseFormat.result(r)', row)
+        browser.close()

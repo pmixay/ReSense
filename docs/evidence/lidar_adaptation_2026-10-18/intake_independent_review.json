@@ -1,0 +1,89 @@
+{
+  "review": "Independent read-only source/provenance review; no detector, cache, gate or threshold changes made",
+  "baseline_commit": "9b92df56e802d9d63f83f2fc5e5b07374db669c7",
+  "source_identity": {
+    "resense/io.py": {
+      "identical_to_baseline": true,
+      "sha256": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34"
+    },
+    "resense/pointcloud.py": {
+      "identical_to_baseline": true,
+      "sha256": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053"
+    },
+    "scripts/cache_frames.py": {
+      "identical_to_baseline": true,
+      "sha256": "f10196daac1e9f19fbd94158958f176354b92e90448fe7a2e233932e0214bc3c"
+    },
+    "scripts/cache_io.py": {
+      "identical_to_baseline": true,
+      "sha256": "6368aa168712a11e07562bbc71f39fffb373e60bbacec54ef7907a5080165793"
+    },
+    "scripts/cache_extended_ride.py": {
+      "identical_to_baseline": true,
+      "sha256": "b023d86f139868fcad42aa82b2c84e33d2d447c6788a8cf8d7904096cb156bb0"
+    },
+    "scripts/regression_gate.py": {
+      "identical_to_baseline": true,
+      "sha256": "bb8d22bb5b7261e332d19ffa9d7b2d25830f3f74193581e908565a7414e3370d"
+    }
+  },
+  "custom_prepare_script": {
+    "archived_exactly": true,
+    "lines": 61,
+    "decompressed_sha256": "28aa83c21d157a9a15c35a32f0433d6e57e483381312b06b6893a23b6a78f0b8",
+    "path": "prepare_gate.py.gz"
+  },
+  "ride_log": {
+    "path": "gate_intake_ride.log.gz",
+    "decompressed_sha256": "4111f9699708c24ea872d025e685aad7be963c16f8043e26aa46022015acfff1",
+    "fresh_decoded_splits": 221,
+    "resume_entries": 0,
+    "exact_ids_0_through_220": true,
+    "frames_per_split": 51
+  },
+  "finalizer_sha256": "8675c57357cdfa294e1389db2a366321f1995dfd38832569b22721270c4a73df",
+  "receipt_sha256": "89e6b448c7d6108a34ef2fe16453f28573a88aa1e4711fb46ef6665e4bca8752",
+  "archive_receipt": {
+    "sha256": "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec",
+    "bytes": 17078961996,
+    "note": "Finalizer independently resolved published metadata and required exact equality with retained full-stream checksum receipt. Reviewer verified code, receipt bindings and logged completion; did not download the archive again."
+  },
+  "independent_live_inventory": {
+    "splits": 221,
+    "frames": 11271,
+    "compressed_bytes": 5258708521,
+    "duration_s": 1199.8834691047668,
+    "max_interval_s": 7.09865140914917,
+    "intervals_over_0_15_s": 55,
+    "same_as_manifest": true
+  },
+  "independent_array_samples": {
+    "new_data_0_0000": {
+      "points": 159162,
+      "array_bytes_sha256": "b497b76fbe3f729458e0b8d46bcc5d6c1ae0910bdcf78e1465b2e26af5039141"
+    },
+    "new_data_110_0025": {
+      "points": 189848,
+      "array_bytes_sha256": "66a784d3a7f579f68dce3c2334fa1e6c7b27c28b90532f21dd7ec7bed4213fec"
+    },
+    "new_data_220_0050": {
+      "points": 189594,
+      "array_bytes_sha256": "96944d3f664ec9c347699cab77ac5ba284debec191ae4c6bfa1a00b7759749a0"
+    }
+  },
+  "checks": {
+    "decoder_is_unchanged_baseline_compact16": true,
+    "timestamps_use_original_bag_receive_time": true,
+    "no_nominal_time_snapping": true,
+    "full_gate_default8_chunks_matches_baseline": true,
+    "set_F_not_disabled": true,
+    "no_allow_waivers": true,
+    "no_acceptance_threshold_changes": true
+  },
+  "limitations": [
+    "metadata.yaml was not retained; manifest explicitly records null metadata hash.",
+    "No historical cache byte-for-byte comparison was performed. Equivalence is of the verified source and identical deterministic decoder invocation, not a claim that this review re-read original DB3 payloads.",
+    "The custom resume shortcut trusts a stamp marker before final validation, unlike canonical per-split validation. Actual retained ride log contains zero resumed splits; all221 were freshly decoded and finalizer subsequently validated all11271 arrays. Use canonical intake for future general resumption.",
+    "Finalizer checks array shape/dtype/count and timestamp coverage, not per-frame original-source hashes; source association relies on the audited intake and full archive receipt."
+  ]
+}

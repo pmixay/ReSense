@@ -50,6 +50,8 @@ class FarRailParams:
     min_stations: int = 2
     max_gap: float = 15.0        # a chain broken for longer is not the same rails any more
     ring_tol_deg: float = 0.04   # a return further than this from every ring elevation has no ring
+    pair_max_forward_gap: float = 0.0  # N6 opt-in: bound the longitudinal separation of paired heads
+    pair_use_nearer_forward: bool = False  # N6: station is no farther than either supporting head
 
 
 @dataclass
@@ -155,8 +157,11 @@ def ring_pairs(xyz: np.ndarray, ring: np.ndarray, ref_y: Callable, rail_z: Calla
         gap = o[None, :] - o[:, None]
         ok = (np.triu(np.ones((c.size, c.size), bool), 1) & (np.abs(gap - p.gauge) < p.gauge_tol)
               & (np.abs(hh[None, :] - hh[:, None]) < p.cant))
+        if p.pair_max_forward_gap > 0:
+            ok &= np.abs(xx[None, :] - xx[:, None]) <= p.pair_max_forward_gap
         for i, j in zip(*np.nonzero(ok)):
-            out.append(((xx[i] + xx[j]) / 2.0, (o[i] + o[j]) / 2.0, gap[i, j]))
+            station = min(xx[i], xx[j]) if p.pair_use_nearer_forward else (xx[i] + xx[j]) / 2.0
+            out.append((station, (o[i] + o[j]) / 2.0, gap[i, j]))
     if not out:
         return np.empty((0, 3))
     cand = np.array(out)

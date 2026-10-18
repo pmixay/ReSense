@@ -1,0 +1,3 @@
+[31m[ERROR] [1792312725.993605954] [rosbag2_storage]: Could not open '/falcon/falcon_first100_0.db3' with 'sqlite3'. Error: Cannot dereference iterator at end of result set![0m
+[31m[ERROR] [1792312725.993684120] [rosbag2_storage]: Could not load/open plugin with storage id 'sqlite3'[0m
+No storage could be initialized. Abort

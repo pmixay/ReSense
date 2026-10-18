@@ -1,0 +1,35 @@
+{
+  "exec_wrapper_exit_code": 143,
+  "reports_and_gzip_rows_complete": true,
+  "note": "All four per-recording reports and complete gzip rows were written, all checks pass; no traceback in log. Wrapper termination investigated separately; not represented as exit0.",
+  "recordings": [
+    {
+      "recording": "cloud_with_fake_obj",
+      "frames": 1510,
+      "sha256_matches": true,
+      "source_unchanged": true,
+      "numeric_screen_passed": true
+    },
+    {
+      "recording": "doubleT_obstacle",
+      "frames": 201,
+      "sha256_matches": true,
+      "source_unchanged": true,
+      "numeric_screen_passed": true
+    },
+    {
+      "recording": "roundT_doubleT",
+      "frames": 252,
+      "sha256_matches": true,
+      "source_unchanged": true,
+      "numeric_screen_passed": true
+    },
+    {
+      "recording": "doubleT_platform",
+      "frames": 345,
+      "sha256_matches": true,
+      "source_unchanged": true,
+      "numeric_screen_passed": true
+    }
+  ]
+}

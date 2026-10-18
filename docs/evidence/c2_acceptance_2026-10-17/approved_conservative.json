@@ -1,0 +1,749 @@
+{
+  "acceptance": "numerical screen only; detector integrity, node validation, review and release are separate",
+  "acceptance_profile": "conservative_2026_10_17",
+  "checks": {
+    "canonical_set_O_labels": "pass",
+    "caution_target_overclaims_eq_0": "pass",
+    "complete_five_empty_recordings": "pass",
+    "complete_set_O": "pass",
+    "empty_median_clear_retained_ge_65pct": "pass",
+    "go_target_overclaims_le_5": "pass",
+    "observed_decision_rows_unchanged": "pass",
+    "observed_detection_and_warning_rows_unchanged": "pass",
+    "original_tolerance_0_5m": "pass",
+    "qualified_pandar_cap_with_measured_threshold": "pass"
+  },
+  "decision_policy": "v1",
+  "definition": {
+    "eligible": "n_points > 0, plausible, organizer in_gauge intent",
+    "legacy_scorer": "scripts/score_clear_distance.py:overclaim (unchanged)",
+    "missing_legacy_visibility_fields": "legacy defaults: visible/plausible/in-envelope",
+    "overclaim": "clear_distance > object nearest X + tolerance_m",
+    "target": "eligible and n_in_envelope > 0 (rail-envelope labels)",
+    "tolerance_m": 0.5,
+    "unit": "object-frame"
+  },
+  "empty_recordings": {
+    "doubleT_platform": {
+      "against_base": {
+        "base_clear_median_m": 120.0,
+        "base_clear_p10_m": 40.0,
+        "base_decisions": {
+          "CAUTION": 201,
+          "GO": 144
+        },
+        "decision_changed_frames": 0,
+        "frames_lengthened": 0,
+        "frames_pushed_under_60m": 27,
+        "frames_shortened": 202,
+        "frames_shortened_gt_10m": 194,
+        "frames_shortened_gt_20pct": 190,
+        "median_change_pct": -34.7
+      },
+      "clear_distance_m": {
+        "mean": 63.4,
+        "median": 78.4,
+        "p10": 40.0
+      },
+      "complete_recording": true,
+      "decision_rows_unchanged": true,
+      "decisions": {
+        "CAUTION": 201,
+        "GO": 144
+      },
+      "detections_and_warnings_unchanged": true,
+      "frames": 345,
+      "median_after_m_exact": 78.4,
+      "median_before_m_exact": 120.0,
+      "median_retention_ratio_exact": 0.6533333333333334
+    },
+    "roundT_doubleT": {
+      "against_base": {
+        "base_clear_median_m": 127.0,
+        "base_clear_p10_m": 60.0,
+        "base_decisions": {
+          "CAUTION": 169,
+          "GO": 83
+        },
+        "decision_changed_frames": 0,
+        "frames_lengthened": 0,
+        "frames_pushed_under_60m": 68,
+        "frames_shortened": 228,
+        "frames_shortened_gt_10m": 215,
+        "frames_shortened_gt_20pct": 200,
+        "median_change_pct": -30.2
+      },
+      "clear_distance_m": {
+        "mean": 69.1,
+        "median": 88.7,
+        "p10": 35.0
+      },
+      "complete_recording": true,
+      "decision_rows_unchanged": true,
+      "decisions": {
+        "CAUTION": 169,
+        "GO": 83
+      },
+      "detections_and_warnings_unchanged": true,
+      "frames": 252,
+      "median_after_m_exact": 88.7,
+      "median_before_m_exact": 127.0,
+      "median_retention_ratio_exact": 0.6984251968503937
+    },
+    "roundT_pressureGate_roundT": {
+      "against_base": {
+        "base_clear_median_m": 98.0,
+        "base_clear_p10_m": 74.0,
+        "base_decisions": {
+          "CAUTION": 116,
+          "GO": 150,
+          "STOP": 2
+        },
+        "decision_changed_frames": 0,
+        "frames_lengthened": 0,
+        "frames_pushed_under_60m": 34,
+        "frames_shortened": 212,
+        "frames_shortened_gt_10m": 158,
+        "frames_shortened_gt_20pct": 124,
+        "median_change_pct": -13.0
+      },
+      "clear_distance_m": {
+        "mean": 75.2,
+        "median": 85.3,
+        "p10": 54.0
+      },
+      "complete_recording": true,
+      "decision_rows_unchanged": true,
+      "decisions": {
+        "CAUTION": 116,
+        "GO": 150,
+        "STOP": 2
+      },
+      "detections_and_warnings_unchanged": true,
+      "frames": 268,
+      "median_after_m_exact": 85.30000000000001,
+      "median_before_m_exact": 98.0,
+      "median_retention_ratio_exact": 0.8704081632653062
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "against_base": {
+        "base_clear_median_m": 120.0,
+        "base_clear_p10_m": 82.0,
+        "base_decisions": {
+          "CAUTION": 191,
+          "GO": 354
+        },
+        "decision_changed_frames": 0,
+        "frames_lengthened": 0,
+        "frames_pushed_under_60m": 109,
+        "frames_shortened": 497,
+        "frames_shortened_gt_10m": 395,
+        "frames_shortened_gt_20pct": 381,
+        "median_change_pct": -26.1
+      },
+      "clear_distance_m": {
+        "mean": 70.0,
+        "median": 88.7,
+        "p10": 5.9
+      },
+      "complete_recording": true,
+      "decision_rows_unchanged": true,
+      "decisions": {
+        "CAUTION": 191,
+        "GO": 354
+      },
+      "detections_and_warnings_unchanged": true,
+      "frames": 545,
+      "median_after_m_exact": 88.7,
+      "median_before_m_exact": 120.0,
+      "median_retention_ratio_exact": 0.7391666666666666
+    },
+    "squareT_platform_squareT_switch": {
+      "against_base": {
+        "base_clear_median_m": 84.4,
+        "base_clear_p10_m": 45.0,
+        "base_decisions": {
+          "CAUTION": 446,
+          "GO": 420,
+          "STOP": 11
+        },
+        "decision_changed_frames": 0,
+        "frames_lengthened": 0,
+        "frames_pushed_under_60m": 266,
+        "frames_shortened": 680,
+        "frames_shortened_gt_10m": 621,
+        "frames_shortened_gt_20pct": 592,
+        "median_change_pct": -1.8
+      },
+      "clear_distance_m": {
+        "mean": 57.2,
+        "median": 82.9,
+        "p10": 7.3
+      },
+      "complete_recording": true,
+      "decision_rows_unchanged": true,
+      "decisions": {
+        "CAUTION": 446,
+        "GO": 420,
+        "STOP": 11
+      },
+      "detections_and_warnings_unchanged": true,
+      "frames": 877,
+      "median_after_m_exact": 82.9,
+      "median_before_m_exact": 84.4,
+      "median_retention_ratio_exact": 0.9822274881516587
+    }
+  },
+  "minimum_empty_median_retention": 0.65,
+  "numerical_screen": "pass",
+  "range_candidate_applied": true,
+  "reconstructed_judge_definition": {
+    "after": {
+      "definition": "any visible plausible organizer-intended in-gauge object exceeded by more than 2 m",
+      "eligible_object_frames": 801,
+      "eligible_scan_frames": 694,
+      "overclaim_frames": 52,
+      "overclaim_frames_by_decision": {
+        "CAUTION": 11,
+        "GO": 40,
+        "STOP": 1
+      },
+      "provenance": "reconstructed count-compatible definition; original 13.10 scorer unavailable",
+      "tolerance_m": 2.0,
+      "unit": "unique scan frame"
+    },
+    "before": {
+      "definition": "any visible plausible organizer-intended in-gauge object exceeded by more than 2 m",
+      "eligible_object_frames": 801,
+      "eligible_scan_frames": 694,
+      "overclaim_frames": 147,
+      "overclaim_frames_by_decision": {
+        "CAUTION": 56,
+        "GO": 90,
+        "STOP": 1
+      },
+      "provenance": "reconstructed count-compatible definition; original 13.10 scorer unavailable",
+      "tolerance_m": 2.0,
+      "unit": "unique scan frame"
+    }
+  },
+  "schema": "resense.overclaim.c2_screen.v1",
+  "sensor_model": "pandar128",
+  "set_O": {
+    "after": {
+      "all_measured_diagnostic": {
+        "includes_intended_outside": true,
+        "object_frames": 658,
+        "overclaims_by_decision": {
+          "CAUTION": 4,
+          "GO": 15,
+          "STOP": 2
+        }
+      },
+      "inside_objects": {
+        "big_above": {
+          "frames": 124,
+          "frames_in_envelope": 75,
+          "max_excess_m": 1.6,
+          "overclaim": 1,
+          "overclaim_in_envelope": 1,
+          "overclaim_in_envelope_go": 0
+        },
+        "big_center": {
+          "frames": 213,
+          "frames_in_envelope": 213,
+          "max_excess_m": 0.0,
+          "overclaim": 0,
+          "overclaim_in_envelope": 0,
+          "overclaim_in_envelope_go": 0
+        },
+        "big_edge_inside": {
+          "frames": 125,
+          "frames_in_envelope": 8,
+          "max_excess_m": 50.6,
+          "overclaim": 14,
+          "overclaim_in_envelope": 1,
+          "overclaim_in_envelope_go": 0
+        },
+        "long_low_on_rails": {
+          "frames": 86,
+          "frames_in_envelope": 77,
+          "max_excess_m": 0.0,
+          "overclaim": 0,
+          "overclaim_in_envelope": 0,
+          "overclaim_in_envelope_go": 0
+        },
+        "small_center": {
+          "frames": 79,
+          "frames_in_envelope": 63,
+          "max_excess_m": 1.9,
+          "overclaim": 1,
+          "overclaim_in_envelope": 1,
+          "overclaim_in_envelope_go": 1
+        },
+        "small_edge_inside": {
+          "frames": 83,
+          "frames_in_envelope": 16,
+          "max_excess_m": 33.4,
+          "overclaim": 17,
+          "overclaim_in_envelope": 0,
+          "overclaim_in_envelope_go": 0
+        },
+        "small_on_rail": {
+          "frames": 49,
+          "frames_in_envelope": 33,
+          "max_excess_m": 33.7,
+          "overclaim": 16,
+          "overclaim_in_envelope": 3,
+          "overclaim_in_envelope_go": 3
+        },
+        "thin_hanging": {
+          "frames": 42,
+          "frames_in_envelope": 20,
+          "max_excess_m": 48.7,
+          "overclaim": 10,
+          "overclaim_in_envelope": 0,
+          "overclaim_in_envelope_go": 0
+        }
+      },
+      "outside_objects": {
+        "big_outside": {
+          "clear_stops_at_object": 12,
+          "frames": 104
+        },
+        "small_outside_near": {
+          "clear_stops_at_object": 36,
+          "frames": 112
+        }
+      },
+      "residual_target_object_frames": [
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 88.7,
+          "decision": "GO",
+          "distance_m": 86.83,
+          "excess_m": 1.87,
+          "frame": 318,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 88.7,
+          "decision": "GO",
+          "distance_m": 62.1,
+          "excess_m": 26.6,
+          "frame": 392,
+          "label": "small_on_rail"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 88.7,
+          "decision": "GO",
+          "distance_m": 58.57,
+          "excess_m": 30.13,
+          "frame": 394,
+          "label": "small_on_rail"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 88.7,
+          "decision": "GO",
+          "distance_m": 55.03,
+          "excess_m": 33.67,
+          "frame": 396,
+          "label": "small_on_rail"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 3.0,
+          "decision": "STOP",
+          "distance_m": 2.27,
+          "excess_m": 0.73,
+          "frame": 582,
+          "label": "big_edge_inside"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 42.1,
+          "decision": "STOP",
+          "distance_m": 40.51,
+          "excess_m": 1.59,
+          "frame": 663,
+          "label": "big_above"
+        }
+      ],
+      "tolerance_m": 0.5,
+      "totals": {
+        "go_judge": 59,
+        "go_judge_in_envelope": 18,
+        "intent": 59,
+        "intent_frames": 801,
+        "target": 6,
+        "target_by_decision": {
+          "GO": 4,
+          "STOP": 2
+        },
+        "target_frames": 505
+      }
+    },
+    "before": {
+      "all_measured_diagnostic": {
+        "includes_intended_outside": true,
+        "object_frames": 658,
+        "overclaims_by_decision": {
+          "CAUTION": 27,
+          "GO": 40,
+          "STOP": 2
+        }
+      },
+      "inside_objects": {
+        "big_above": {
+          "frames": 124,
+          "frames_in_envelope": 75,
+          "max_excess_m": 51.0,
+          "overclaim": 19,
+          "overclaim_in_envelope": 2,
+          "overclaim_in_envelope_go": 1
+        },
+        "big_center": {
+          "frames": 213,
+          "frames_in_envelope": 213,
+          "max_excess_m": 0.0,
+          "overclaim": 0,
+          "overclaim_in_envelope": 0,
+          "overclaim_in_envelope_go": 0
+        },
+        "big_edge_inside": {
+          "frames": 125,
+          "frames_in_envelope": 8,
+          "max_excess_m": 123.0,
+          "overclaim": 53,
+          "overclaim_in_envelope": 1,
+          "overclaim_in_envelope_go": 0
+        },
+        "long_low_on_rails": {
+          "frames": 86,
+          "frames_in_envelope": 77,
+          "max_excess_m": 92.5,
+          "overclaim": 2,
+          "overclaim_in_envelope": 2,
+          "overclaim_in_envelope_go": 2
+        },
+        "small_center": {
+          "frames": 79,
+          "frames_in_envelope": 63,
+          "max_excess_m": 49.6,
+          "overclaim": 26,
+          "overclaim_in_envelope": 11,
+          "overclaim_in_envelope_go": 10
+        },
+        "small_edge_inside": {
+          "frames": 83,
+          "frames_in_envelope": 16,
+          "max_excess_m": 128.2,
+          "overclaim": 24,
+          "overclaim_in_envelope": 0,
+          "overclaim_in_envelope_go": 0
+        },
+        "small_on_rail": {
+          "frames": 49,
+          "frames_in_envelope": 33,
+          "max_excess_m": 126.0,
+          "overclaim": 16,
+          "overclaim_in_envelope": 3,
+          "overclaim_in_envelope_go": 3
+        },
+        "thin_hanging": {
+          "frames": 42,
+          "frames_in_envelope": 20,
+          "max_excess_m": 136.5,
+          "overclaim": 13,
+          "overclaim_in_envelope": 0,
+          "overclaim_in_envelope_go": 0
+        }
+      },
+      "outside_objects": {
+        "big_outside": {
+          "clear_stops_at_object": 3,
+          "frames": 104
+        },
+        "small_outside_near": {
+          "clear_stops_at_object": 21,
+          "frames": 112
+        }
+      },
+      "residual_target_object_frames": [
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 133.4,
+          "decision": "GO",
+          "distance_m": 127.46,
+          "excess_m": 5.94,
+          "frame": 291,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": 121.97,
+          "clear_distance_m": 136.2,
+          "decision": "CAUTION",
+          "distance_m": 126.07,
+          "excess_m": 10.13,
+          "frame": 292,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 133.5,
+          "decision": "GO",
+          "distance_m": 110.12,
+          "excess_m": 23.38,
+          "frame": 303,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 133.7,
+          "decision": "GO",
+          "distance_m": 102.55,
+          "excess_m": 31.15,
+          "frame": 308,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 109.2,
+          "decision": "GO",
+          "distance_m": 99.44,
+          "excess_m": 9.76,
+          "frame": 310,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 137.8,
+          "decision": "GO",
+          "distance_m": 97.9,
+          "excess_m": 39.9,
+          "frame": 311,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 138.1,
+          "decision": "GO",
+          "distance_m": 96.33,
+          "excess_m": 41.77,
+          "frame": 312,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 135.2,
+          "decision": "GO",
+          "distance_m": 91.62,
+          "excess_m": 43.58,
+          "frame": 315,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 139.6,
+          "decision": "GO",
+          "distance_m": 90.02,
+          "excess_m": 49.58,
+          "frame": 316,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 137.9,
+          "decision": "GO",
+          "distance_m": 88.43,
+          "excess_m": 49.47,
+          "frame": 317,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 131.7,
+          "decision": "GO",
+          "distance_m": 86.83,
+          "excess_m": 44.87,
+          "frame": 318,
+          "label": "small_center"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 185.0,
+          "decision": "GO",
+          "distance_m": 62.1,
+          "excess_m": 122.9,
+          "frame": 392,
+          "label": "small_on_rail"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 182.0,
+          "decision": "GO",
+          "distance_m": 58.57,
+          "excess_m": 123.43,
+          "frame": 394,
+          "label": "small_on_rail"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 181.0,
+          "decision": "GO",
+          "distance_m": 55.03,
+          "excess_m": 125.97,
+          "frame": 396,
+          "label": "small_on_rail"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 3.0,
+          "decision": "STOP",
+          "distance_m": 2.27,
+          "excess_m": 0.73,
+          "frame": 582,
+          "label": "big_edge_inside"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 182.5,
+          "decision": "GO",
+          "distance_m": 131.7,
+          "excess_m": 50.8,
+          "frame": 617,
+          "label": "big_above"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 42.1,
+          "decision": "STOP",
+          "distance_m": 40.51,
+          "excess_m": 1.59,
+          "frame": 663,
+          "label": "big_above"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 191.9,
+          "decision": "GO",
+          "distance_m": 99.42,
+          "excess_m": 92.48,
+          "frame": 686,
+          "label": "long_low_on_rails"
+        },
+        {
+          "active_advisory_distance_m": null,
+          "clear_distance_m": 186.8,
+          "decision": "GO",
+          "distance_m": 97.67,
+          "excess_m": 89.13,
+          "frame": 687,
+          "label": "long_low_on_rails"
+        }
+      ],
+      "tolerance_m": 0.5,
+      "totals": {
+        "go_judge": 122,
+        "go_judge_in_envelope": 39,
+        "intent": 153,
+        "intent_frames": 801,
+        "target": 19,
+        "target_by_decision": {
+          "CAUTION": 1,
+          "GO": 16,
+          "STOP": 2
+        },
+        "target_frames": 505
+      }
+    },
+    "extra_frames": [],
+    "missing_frames": [],
+    "stats": {
+      "against_base": {
+        "base_clear_median_m": 91.4,
+        "base_clear_p10_m": 28.4,
+        "base_decisions": {
+          "CAUTION": 320,
+          "FAULT": 2,
+          "GO": 736,
+          "STOP": 452
+        },
+        "decision_changed_frames": 0,
+        "frames_lengthened": 0,
+        "frames_pushed_under_60m": 136,
+        "frames_shortened": 872,
+        "frames_shortened_gt_10m": 633,
+        "frames_shortened_gt_20pct": 588,
+        "median_change_pct": -12.3
+      },
+      "clear_distance_m": {
+        "mean": 63.4,
+        "median": 80.2,
+        "p10": 8.9
+      },
+      "decision_rows_unchanged": true,
+      "decisions": {
+        "CAUTION": 320,
+        "FAULT": 2,
+        "GO": 736,
+        "STOP": 452
+      },
+      "detections_and_warnings_unchanged": true,
+      "frames": 1510,
+      "median_after_m_exact": 80.2,
+      "median_before_m_exact": 91.4,
+      "median_retention_ratio_exact": 0.8774617067833698
+    }
+  },
+  "small_target_cap_applied": true,
+  "sources": {
+    "acceptance_authorization": {
+      "path": "/home/resense/ReSense/docs/evidence/c2_acceptance_2026-10-17/ACCEPTANCE_PROFILE.json",
+      "sha256": "b852e6c8a4bf96ae1a96355e8b8eb8909465a22faabfb269e1a458ec9811aacc"
+    },
+    "decision_policy": {
+      "path": "/home/resense/ReSense/ros2_ws/src/resense_ros/resense_ros/decision_policy.py",
+      "sha256": "7003f70146290666450b8ef8f21630cba3b7457fbb8f588af65badf3d6033fa4"
+    },
+    "doubleT_platform": {
+      "path": "/home/resense/data/c2_acceptance/inputs/doubleT_platform.jsonl",
+      "sha256": "79f9c8a2d2104ed32d4dc47bcdce1710929d724e5e735acfe878ff8ca0b4a280"
+    },
+    "labels": {
+      "path": "/home/resense/ReSense/labels/cloud_with_fake_obj.json",
+      "sha256": "4cdb5afe4a57ce7476ff88a1ee0b74bb6faed18862447c1361d8e824b238c545"
+    },
+    "objects": {
+      "path": "/home/resense/data/c2_acceptance/inputs/cloud_with_fake_obj.jsonl",
+      "sha256": "a556a1ecab88ad8eecca02badb29cb35959a5cf05e15dbca52693f036197552b"
+    },
+    "range_reporting": {
+      "path": "/home/resense/ReSense/scripts/range_reporting.py",
+      "sha256": "90a8d8d2cdf0953d52c3e6d0142cc955cce1b2f439ecc4ac111016f97069d7ea"
+    },
+    "roundT_doubleT": {
+      "path": "/home/resense/data/c2_acceptance/inputs/roundT_doubleT.jsonl",
+      "sha256": "e1611c446c7c0470cdc7f759cccc48ee36077926fba985e9e4bf6494aa0f66ba"
+    },
+    "roundT_pressureGate_roundT": {
+      "path": "/home/resense/data/c2_acceptance/inputs/roundT_pressureGate_roundT.jsonl",
+      "sha256": "d7aaeb000be335e0d30e0100fdad74b8160bd382f2f3f8eb9aca7389a57dcf89"
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "path": "/home/resense/data/c2_acceptance/inputs/roundT_squareT_pressureGate_squareT.jsonl",
+      "sha256": "508279ddd00bf0a224fe3a2c42f9475414e81e095599a7252c18a85e6431e4f6"
+    },
+    "scorer": {
+      "path": "/home/resense/ReSense/scripts/score_overclaim.py",
+      "sha256": "51be206b7296378655e1fd69d54fe38abcdec76695c85de64b9f89a73e83be51"
+    },
+    "squareT_platform_squareT_switch": {
+      "path": "/home/resense/data/c2_acceptance/inputs/squareT_platform_squareT_switch.jsonl",
+      "sha256": "3b608bb27ba47682606df53aae4e3ebcda5003541a5bc5f4f355ca1dcf98c54c"
+    }
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "archive_sha256": "8f762fdae5c2e62c3397c749ccfcd7bb534b0405ca8fbb547c189a5ffab66941",
+  "archive_bytes": 2781316,
+  "members": [
+    {
+      "member": "gate/intake/originals_receipt.json",
+      "source": "/home/resense/data/gate_cache/originals_receipt.json",
+      "bytes": 425,
+      "sha256": "6c2f2b31f1b4c288fc01996af1f6dc0a7f9b418a10f5b09abeec6d9f1a6ef27e"
+    },
+    {
+      "member": "gate/intake/ride_receipt.json",
+      "source": "/home/resense/data/gate_cache/ride_receipt.json",
+      "bytes": 5773,
+      "sha256": "89e6b448c7d6108a34ef2fe16453f28573a88aa1e4711fb46ef6665e4bca8752"
+    },
+    {
+      "member": "gate/intake/set_o_receipt.json",
+      "source": "/home/resense/data/gate_cache/set_o_receipt.json",
+      "bytes": 228,
+      "sha256": "7f036e7d0016d7bdc114a2aaa2bef942133a0f63c1b574833a6ecac79b8ba1f9"
+    },
+    {
+      "member": "gate/report.json",
+      "source": "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/gate.json",
+      "bytes": 20004,
+      "sha256": "9d37c94dfb09914bfd5981d08544b84b5d37630bafb09896d5cba651dc5eb692"
+    },
+    {
+      "member": "gate/run/console.txt",
+      "source": "/home/resense/data/logs/version_1_2_0_gate.log",
+      "bytes": 26171,
+      "sha256": "28f7a0b29c30a9fd963091265e8fafb63f2748911df6ef930a8b6fb6d9ae5744"
+    },
+    {
+      "member": "gate/run/status.json",
+      "source": "/home/resense/data/version_1_2_0_gate_status.json",
+      "bytes": 5956,
+      "sha256": "ca0fb8bd11eea1ea141a774ff0ef0918fa30f5f32aec54125627b967850bc0ff"
+    },
+    {
+      "member": "gate/run/wrapper.py",
+      "source": "/home/resense/data/run_version_1_2_0_gate.py",
+      "bytes": 4237,
+      "sha256": "517e3de4688bd0ca085b61b830b04caa391d31ffb31929377f9844814f667cfd"
+    },
+    {
+      "member": "gate/run/wrapper_console.txt",
+      "source": "/home/resense/data/logs/version_1_2_0_wrapper.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "gate/work/cloud_with_fake_obj.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/cloud_with_fake_obj.jsonl",
+      "bytes": 2787824,
+      "sha256": "d589d3a70834e8ad078e89ad35a45748df7fcef35138e1f92230b1f66f58eeb7"
+    },
+    {
+      "member": "gate/work/config.yaml",
+      "source": "/home/resense/data/version_1_2_0_gate_work/config.yaml",
+      "bytes": 9396,
+      "sha256": "d7750028009e9db06ded33546349f48bf183befd216321ca960e1b67067c62cf"
+    },
+    {
+      "member": "gate/work/doubleT_obstacle.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/doubleT_obstacle.jsonl",
+      "bytes": 418049,
+      "sha256": "f405c52ee46a944c96e05303b9de53858d753e679e01be4d07fc35449522dc14"
+    },
+    {
+      "member": "gate/work/doubleT_platform.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/doubleT_platform.jsonl",
+      "bytes": 635289,
+      "sha256": "373238c77888158bdb771fe7d0ff6004bd85c97bdfb5e7e1a8bd3760739d0a19"
+    },
+    {
+      "member": "gate/work/new_data_0.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/new_data_0.jsonl",
+      "bytes": 2581121,
+      "sha256": "54c770075d59ac643eadad831b129affd63a6f086b1e34042e872b77a5f4cb99"
+    },
+    {
+      "member": "gate/work/new_data_1.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/new_data_1.jsonl",
+      "bytes": 2840795,
+      "sha256": "1ce862fa16c8a7da5e1cc20d52698bea6549f0e4423d8523e09d481ac44c88cf"
+    },
+    {
+      "member": "gate/work/new_data_2.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/new_data_2.jsonl",
+      "bytes": 2634612,
+      "sha256": "4f0fe4dcfdfd9e091f1d9ec9117e43be36684ca5c5011ffa74122fddc028df65"
+    },
+    {
+      "member": "gate/work/new_data_3.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/new_data_3.jsonl",
+      "bytes": 2708045,
+      "sha256": "30f9b0f9e36106b38c97bc0dfaa586a42c3f9319f2d7ad461e0225f390d85582"
+    },
+    {
+      "member": "gate/work/new_data_4.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/new_data_4.jsonl",
+      "bytes": 2678118,
+      "sha256": "25495258aef3bff7364760f058c9eaf447cfc5972c0082cf3d8edf10ffd69588"
+    },
+    {
+      "member": "gate/work/new_data_5.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/new_data_5.jsonl",
+      "bytes": 2500004,
+      "sha256": "6f2d6332c1cd6e9ab844064a42a8a4ad310c14ab95a1c7478386b5e0ae2c6401"
+    },
+    {
+      "member": "gate/work/new_data_6.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/new_data_6.jsonl",
+      "bytes": 2521853,
+      "sha256": "7631d291d41b83e8d36d8a3551fddecece0d171460916d03d181e3118b1ac86d"
+    },
+    {
+      "member": "gate/work/new_data_7.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/new_data_7.jsonl",
+      "bytes": 2431228,
+      "sha256": "785605cbf0af1d03f3eb0a14df0978a57bc18d9ff4faf7aca62cd85cd9c96772"
+    },
+    {
+      "member": "gate/work/roundT_doubleT.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/roundT_doubleT.jsonl",
+      "bytes": 482100,
+      "sha256": "e5ab0f64dfc8b578ca3846423ba551473bd614f2af680c3b08138575c161c961"
+    },
+    {
+      "member": "gate/work/roundT_pressureGate_roundT.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/roundT_pressureGate_roundT.jsonl",
+      "bytes": 489315,
+      "sha256": "9dff4f88269e1877aafaac628bf4dad32e8f194854c2a0f60ba329070e1472c3"
+    },
+    {
+      "member": "gate/work/roundT_squareT_pressureGate_squareT.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/roundT_squareT_pressureGate_squareT.jsonl",
+      "bytes": 973881,
+      "sha256": "bd4b2dad9503c59d7c8527011459275a50b5b753e0dee7665eb0261c325741d2"
+    },
+    {
+      "member": "gate/work/setF_straight.json",
+      "source": "/home/resense/data/version_1_2_0_gate_work/setF_straight.json",
+      "bytes": 1817191,
+      "sha256": "75db322de49af485925feb9a54bdaa58e6520a7015691096a37b5ea5ccdf82c3"
+    },
+    {
+      "member": "gate/work/squareT_platform_squareT_switch.jsonl",
+      "source": "/home/resense/data/version_1_2_0_gate_work/squareT_platform_squareT_switch.jsonl",
+      "bytes": 1729761,
+      "sha256": "6b6b6900af2330cbde778771c74aa2c1407cec67ed1b1f3754d6bee4ca14a787"
+    }
+  ],
+  "member_count": 25,
+  "all_members_reopened_and_verified": true
+}

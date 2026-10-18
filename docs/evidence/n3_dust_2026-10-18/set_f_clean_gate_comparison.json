@@ -1,0 +1,309 @@
+{
+  "status": "ALL3060_SHARED_CLEAN_PLACEMENT_AND_SCORING_ROWS_EXACT",
+  "checked_utc": "2026-10-18T11:59:47.063959+00:00",
+  "sequences": 30,
+  "rows": 3060,
+  "matched_rows": 1064,
+  "per_sequence": {
+    "46_person": {
+      "rows": 102,
+      "matched_rows": 55,
+      "first_match_m": 169.21513825419802,
+      "unmatched_detections": 2,
+      "all_compared_fields_exact": true
+    },
+    "46_box1.0": {
+      "rows": 102,
+      "matched_rows": 37,
+      "first_match_m": 146.02216128597644,
+      "unmatched_detections": 1,
+      "all_compared_fields_exact": true
+    },
+    "46_box0.5": {
+      "rows": 102,
+      "matched_rows": 3,
+      "first_match_m": 76.93622179303496,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "46_trolley": {
+      "rows": 102,
+      "matched_rows": 47,
+      "first_match_m": 156.60342737679764,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "46_cable": {
+      "rows": 102,
+      "matched_rows": 8,
+      "first_match_m": 56.42330566502429,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "68_person": {
+      "rows": 106,
+      "matched_rows": 54,
+      "first_match_m": 144.10411691379912,
+      "unmatched_detections": 2,
+      "all_compared_fields_exact": true
+    },
+    "68_box1.0": {
+      "rows": 106,
+      "matched_rows": 51,
+      "first_match_m": 109.93179787404264,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "68_box0.5": {
+      "rows": 106,
+      "matched_rows": 0,
+      "first_match_m": null,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "68_trolley": {
+      "rows": 106,
+      "matched_rows": 52,
+      "first_match_m": 112.0249610088801,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "68_cable": {
+      "rows": 106,
+      "matched_rows": 23,
+      "first_match_m": 107.97488553778187,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "98_person": {
+      "rows": 106,
+      "matched_rows": 72,
+      "first_match_m": 152.04458009308337,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "98_box1.0": {
+      "rows": 106,
+      "matched_rows": 50,
+      "first_match_m": 108.00085485545888,
+      "unmatched_detections": 6,
+      "all_compared_fields_exact": true
+    },
+    "98_box0.5": {
+      "rows": 106,
+      "matched_rows": 0,
+      "first_match_m": null,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "98_trolley": {
+      "rows": 106,
+      "matched_rows": 48,
+      "first_match_m": 103.87502584064566,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "98_cable": {
+      "rows": 106,
+      "matched_rows": 29,
+      "first_match_m": 103.87502584064566,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "140_person": {
+      "rows": 110,
+      "matched_rows": 72,
+      "first_match_m": 149.5663297829377,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "140_box1.0": {
+      "rows": 110,
+      "matched_rows": 57,
+      "first_match_m": 149.5663297829377,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "140_box0.5": {
+      "rows": 110,
+      "matched_rows": 0,
+      "first_match_m": null,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "140_trolley": {
+      "rows": 110,
+      "matched_rows": 54,
+      "first_match_m": 193.99496672565937,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "140_cable": {
+      "rows": 110,
+      "matched_rows": 21,
+      "first_match_m": 93.83378925254479,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "168_person": {
+      "rows": 78,
+      "matched_rows": 39,
+      "first_match_m": 166.2778753377155,
+      "unmatched_detections": 1,
+      "all_compared_fields_exact": true
+    },
+    "168_box1.0": {
+      "rows": 78,
+      "matched_rows": 26,
+      "first_match_m": 131.78268064398253,
+      "unmatched_detections": 5,
+      "all_compared_fields_exact": true
+    },
+    "168_box0.5": {
+      "rows": 78,
+      "matched_rows": 0,
+      "first_match_m": null,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "168_trolley": {
+      "rows": 78,
+      "matched_rows": 40,
+      "first_match_m": 154.76542178578927,
+      "unmatched_detections": 4,
+      "all_compared_fields_exact": true
+    },
+    "168_cable": {
+      "rows": 78,
+      "matched_rows": 3,
+      "first_match_m": 12.614668585106639,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "172_person": {
+      "rows": 110,
+      "matched_rows": 72,
+      "first_match_m": 149.90791223132757,
+      "unmatched_detections": 1,
+      "all_compared_fields_exact": true
+    },
+    "172_box1.0": {
+      "rows": 110,
+      "matched_rows": 55,
+      "first_match_m": 116.09511258017089,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "172_box0.5": {
+      "rows": 110,
+      "matched_rows": 20,
+      "first_match_m": 51.87277514515446,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    },
+    "172_trolley": {
+      "rows": 110,
+      "matched_rows": 58,
+      "first_match_m": 148.05972270339538,
+      "unmatched_detections": 1,
+      "all_compared_fields_exact": true
+    },
+    "172_cable": {
+      "rows": 110,
+      "matched_rows": 18,
+      "first_match_m": 112.52125894427063,
+      "unmatched_detections": 0,
+      "all_compared_fields_exact": true
+    }
+  },
+  "effective_configuration_identical": true,
+  "source_speed_and_stamp_identity_equal": true,
+  "fields_compared": [
+    "source frame",
+    "distance/path distance",
+    "serialized target spec",
+    "vehicle target y",
+    "axis error",
+    "clean object return count",
+    "hit",
+    "unmatched detection count",
+    "monitored range",
+    "visibility",
+    "sequence first matched range"
+  ],
+  "limits": [
+    "Gate scoring rows omit full detections and timestamps; this is exact shared-field equality, not complete output/payload equivalence.",
+    "Gate candidate-hit flag has no matching serialized candidate list in dust rows and is not independently compared.",
+    "Gate stores unmatched detection geometry at different precision; counts match, full-precision reassignment is not claimed.",
+    "Background cache provenance and speed/stamp hashes match; injected point bytes are not stored by the gate, so input cloud byte equality is not independently proven."
+  ],
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/46_person.json.gz": "ac63ea5d652a9d2d24c0c81cd87e98e1d4751c7b039504b48075d8e5c9a38198",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/46_person_clean.jsonl.gz": "6e20de5a41130b9b1b8c87bffaf88d8233ca30b5c77eb9cc5014656ff7e5e265",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/46_box1.0.json.gz": "5641f4ef7cd36842e70318f9b883dfde74c9d0c3b1190bef6ecc441600cecf73",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/46_box1.0_clean.jsonl.gz": "444613788aa2bebd8b955ae9f16c2b5db34c56a4a264d9e38be1b5baba41f78f",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/46_box0.5.json.gz": "6dabd1d3c2f3ecdf89c4448aa41e9a30af2a22173b823a9488316314a1be53d8",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/46_box0.5_clean.jsonl.gz": "8fb2e1f499bc72bab6c15ea2cc249433c9e209e8a3098fae3a2510ad02906cf0",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/46_trolley.json.gz": "ebe85b51b6b17c0121042f3ba018b7d2178d45f50c47ebecb62cc9a5c768640f",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/46_trolley_clean.jsonl.gz": "c67e6eeb1ba391d608e971a6ea688cb3352a08b62a392c51818e1b328765a088",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/46_cable.json.gz": "0b0e4629ef0007e8cc44617c00206b6dd0285dac62fb556af7d1b4661befc19d",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/46_cable_clean.jsonl.gz": "aa15c33716625a352061cdc1ad424cb9d89e5148a1bd2883076b519392303cf6",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/68_person.json.gz": "b6abf1356ad233b7a16b50847178a2fa2bf801574843bfad5e2739f852f0be80",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/68_person_clean.jsonl.gz": "afabd9ebe9d56ae0ffe70755abf545ab9db140bfcd242c0c59c2e9cf58936825",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/68_box1.0.json.gz": "72897f0a17cda3218e40e9f46798ea13fb1adbc31f3f19f5a0ea5f5f2aa6b0f8",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/68_box1.0_clean.jsonl.gz": "785b83083ba4fa491e73bc10ec5a6eacc12c2b4c8de2128ae22c240862ca89cd",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/68_box0.5.json.gz": "cf8ef774af74695c5f40cb7d92c7f2d57e9131d5b22f393e02eefba3504c0393",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/68_box0.5_clean.jsonl.gz": "397f91c97f1df4d2e875676f0348c5825d1d1d5f26743c518407dfd8ce450ea1",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/68_trolley.json.gz": "49915be25a97f35f2a5d52ec7e3f3d92ae8cd9ba3709c3537a172257964cede1",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/68_trolley_clean.jsonl.gz": "e482aab34e30d76b6fd0b94de627512f52b5ac476d6eae955792b4c9b8073689",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/68_cable.json.gz": "ecf2d271b9cb36c920e719342eeaedf2c19e1fd5c7c4d041f4d370de7fd17315",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/68_cable_clean.jsonl.gz": "a01e40a8cae58f1c970938f159f68a70cfcada87ef9d73e3f1ddda2bb5d97436",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/98_person.json.gz": "a54ef86031a3d08074f95c839380dcc04d7a9c7555a652a0cbeafa45ec457175",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/98_person_clean.jsonl.gz": "2851218d9a09fb0b0f730cc5c58c53390319ab4fb3c94ab62314fbc84e630bb1",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/98_box1.0.json.gz": "2b1a9af0624f522a893847b8c247225a211daf45d8b44895ecac7e05d698e0c3",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/98_box1.0_clean.jsonl.gz": "84640495910a3cfdef8835d7ddb3c3161ce6c8af322ef5587674ac7ab011b24d",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/98_box0.5.json.gz": "24ca28b2e251c28feb55a588ca9b8aeb559439baece556739c00f096039fcf8b",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/98_box0.5_clean.jsonl.gz": "4230a241d281013dd8871d98150429b91187801b639dd9046b7edc3bc5187f82",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/98_trolley.json.gz": "e3d431b632758e1a8cba65e684b626fa37f9601cc3f34590de2aacff678e14a8",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/98_trolley_clean.jsonl.gz": "eda552e91f8ebd34840a5ece7629269c5ed9bdd663ae36d72bf5b3323541f157",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/98_cable.json.gz": "be85b69c8bf4182f25463f29f0ba2ea8d3d2dc104f301c8a4c67085661048e5a",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/98_cable_clean.jsonl.gz": "2b1c39e3c4f6c7248ad16a386c707aa0c2a61c6190646d5c4b172bd4d9ae7437",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/140_person.json.gz": "fd51e4c60a840f64e6966d5d2564907e0c2224e2c4bf2a761084e8bce6cdc098",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/140_person_clean.jsonl.gz": "f67f78a8a7edcdd7c279d0fbc7324b13df58fb474a53d894d474a4342dc7ae6b",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/140_box1.0.json.gz": "6c51e7f638db2542ce984967d662a764449657ec0199b5392e44f55212eddf0c",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/140_box1.0_clean.jsonl.gz": "7f5e2ba2360565ba5d7d3b5329d0d8482e80391d35c1db83c541e955900b799b",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/140_box0.5.json.gz": "c334db8c118554d56b06c8464c6e361e9ddc31761e1abe4bdb25ead28e49e4e8",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/140_box0.5_clean.jsonl.gz": "7cf5fd42f7ea003e8a01838384e6e39a30f8b1711e9cc68873ee9157148a2305",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/140_trolley.json.gz": "4e8536d3446b169bfb8aa717fc375e0f9eed21888fd5d1f66228ecc57ac790e1",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/140_trolley_clean.jsonl.gz": "253d1d55de41bc030b21f7e10f61e9c92e0fa6e6363de43cd2a9bd2341d54eb3",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/140_cable.json.gz": "1e98fd0929ac46fbceb9c6369e44e75dde50de0b4d8a43c1a1563f27a15fb909",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/140_cable_clean.jsonl.gz": "1f34981845a22ef67515fed784d9fa345d7a4ad1b76e0fc844db55f7d31301b5",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/168_person.json.gz": "333cda98e4b31e52618a64e967f4def0682e77b933952b9697e2d94325125627",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/168_person_clean.jsonl.gz": "b0e584db174477ae8db745d258d2fe6abfd7218ad3a3482d8e244c6508f235a6",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/168_box1.0.json.gz": "39781142556e97078306cd3da90ea2ccde644f0377825062ed326c79dc9d1c66",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/168_box1.0_clean.jsonl.gz": "102d2912cd1e78954f681be4a58b7d5d154fcfce25c545b80b7fd9e48c51086b",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/168_box0.5.json.gz": "b9624a7531ba2d06c3de37de24407db1f207ac2aff231e6e48f6fc6e760145bf",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/168_box0.5_clean.jsonl.gz": "91c474205662709f08fc7f12f30ca9ad4f7a15f6987a48cebde6103446870e12",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/168_trolley.json.gz": "e69c48d4f4fd2df126905351d8640b77cd891a7a4a206aad32108c44aab35cfb",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/168_trolley_clean.jsonl.gz": "08f2bdaf871be6a3bcec75f72c317ad974991aa46cf4de74ffca99a07a14be32",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/168_cable.json.gz": "00dda0d0476941b3ca5821e2f42e33b3bca408db30db6cf51a18ecf3541c7e9b",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/168_cable_clean.jsonl.gz": "e1f313320249bd2ca6671eb216599f569c5894ee7e736445c5dc0cfbe771dabe",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/172_person.json.gz": "0d48e0e3050b0643ede0c3ce69e0da5e8eefb623e7e7925e4d3ac07a4bc0554d",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/172_person_clean.jsonl.gz": "68c8f984bec1c6db8d9c35c5ad689bd52c2851dca4f7fa2ad95138bf9a6f7ff9",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/172_box1.0.json.gz": "e1e8681e0a2835ff2f2a16d77a0a18e15f86de29a5b9a9147e517ea7402c47fb",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/172_box1.0_clean.jsonl.gz": "b0df6e53b0a812eefcf39786092b9270c28fa9228be9b201f24cd279036dc288",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/172_box0.5.json.gz": "78a04c22305cdbc749bf5d1f0d07afffb357b9bb7951308ee7bfe384b7da7bc4",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/172_box0.5_clean.jsonl.gz": "21dd3a94beb2a4a5fb4f77f779a3f302ed195f411fa8946cd7d403bf87fb1814",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/172_trolley.json.gz": "db560f8afb2fbaddbdd1f6c672d1fe392e9692c4c9b0eb2b5004eb3346c7662f",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/172_trolley_clean.jsonl.gz": "90a23eb1c89767c85a03a13e615416e96f664d5179a5bf2305f7195a0648f011",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_bank/172_cable.json.gz": "d973222e47a506d5ba50907acfd7ec4fe8daef9e9f7a58a62b085095b1ce9183",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/172_cable_clean.jsonl.gz": "3289531e44a408ec1b385f05272f99a7d523cbeae95c0c1e7ed671badecfdc21",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/compare_set_f_clean_gate.py": "9ac1b23bcf4e5bb032a8e0645a5db4ad5e2a94de6ea49a8af95868c3786d146c",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/setF_straight.json": "668da7037fdf787a7f3226b4437e6e1b72ec67c37f3b1a7b4dfacb8cc4893d28",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/receipt.json": "071c57a82e3a36fde7a56a9407a4c99d115f0086552225f86bca28153990b0c5",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/config.yaml": "1d74a25fedb2cfe99d0885f38dd3168f184958a3c89e4740d773d750f5376865",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/summary.json": "3a09680297bda5c6a1a2f3f4bec29040b9db04c158a079ca3713695d4afc2a58",
+    "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed/placement_manifest.json": "1227f7d3d5429da74b252aa1031c768711b41f194c71f7c91d71916389dc8966",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_independent_review.json": "b56665aaf018ac30440d47972efd3fadb81b849abc9e059b4a62a86430a12e58"
+  }
+}

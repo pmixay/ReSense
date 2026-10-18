@@ -26,13 +26,13 @@ from launch_ros.parameter_descriptions import ParameterValue
 # node parameter -> (default, python type, description). The type matters: a LaunchConfiguration
 # substitutes to a string, and rclpy rejects a string for a parameter declared bool or double.
 PARAMS = {
-    "input_topic": ("/lidar_points,/sensing/lidar/hesai128/pointcloud", str,
+    "input_topic": ("/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points", str,
                     "comma-separated candidate input topics"),
     "auto_discover": ("true", bool, "also subscribe to PointCloud2 topics found on the graph"),
     "discover_period": ("2.0", float, "s between discovery scans while the input is silent"),
     "publish_markers": ("true", bool, "RViz MarkerArray"),
     "publish_corridor_cloud": ("true", bool, "points inside the corridor, for debugging"),
-    "marker_x_max": ("250.0", float, "m, how far the corridor outline is drawn"),
+    "marker_x_max": ("250.0", float, "m, display limit; solid gauge also capped by observed axis and monitored range"),
     "output_frame": ("", str, "frame_id of the published markers/detections; empty = the input's"),
     "stats_period": ("2.0", float, "s between fps / latency log lines"),
     "ego_speed_mps": ("-1.0", float, "train speed in m/s for multi-frame accumulation; < 0 = unknown "
@@ -46,6 +46,8 @@ PARAMS = {
     "sensor_forward": ("", str, "sensor axis pointing forward, e.g. -y (hackathon mount) or +x; empty = config file"),
     "sensor_left": ("", str, "sensor axis pointing left; empty = config file"),
     "sensor_up": ("", str, "sensor axis pointing up; empty = config file"),
+    "sensor_profile": ("manual", str, "explicit profile: manual | pandar128 | falcon_ros | falcon_native"),
+    "keep_up_axis": ("true", bool, "upright/inverted calibration search; false explicitly enables all 24 orientations"),
     "mount_roll_deg": ("-999.0", float, "fixed roll correction in deg (-999 = config file)"),
     "mount_pitch_deg": ("-999.0", float, "fixed pitch correction in deg (-999 = config file)"),
     "mount_yaw_deg": ("-999.0", float, "fixed yaw correction in deg (-999 = config file)"),
@@ -58,6 +60,8 @@ PARAMS = {
     "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),
     "decision_policy": ("v1", str, "shared decision policy: runtime accepts v1 only; v2 is offline-only pending acceptance"),
     "caution_distance_m": ("80.0", float, "reserved for future accepted policy: margin-advisory distance, inclusive"),
+    "clear_range_policy": ("legacy", str, "legacy | conservative (approved 17.10) | advisory_candidate | small_candidate"),
+    "range_sensor_model": ("unknown", str, "explicit sensor prior: unknown | pandar128 | falcon_prime"),
     "caution_compact_max_size_m": ("3.0", float, "reserved for future accepted policy: compact box extent, inclusive"),
     # v0.6.1: several recordings / topic names through one running node
     "input_switch_timeout": ("1.0", float, "s the active input topic must be silent before another topic is taken"),

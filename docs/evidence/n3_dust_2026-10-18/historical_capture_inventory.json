@@ -1,0 +1,234 @@
+{
+  "status": "SUPERSEDED_COORDINATE_MEASUREMENTS",
+  "meaning": "Inventory certifies only the completeness/hash consistency of preserved original captures, not registered clean-aligned dust geometry or acceptance. Raw files and original summaries are unchanged.",
+  "directories": {
+    "baseline": {
+      "summary_sha256": "39fb7c791e37edd3b8c027e0e359a69f18bb3bf70d69418634093079e75c19da",
+      "recorded_schema": "dust-battery-v1",
+      "recorded_source": "/home/resense/data/n2/baseline_9b92df5",
+      "recorded_generator_sha256": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+      "recorded_support_sha256": null,
+      "recordings": {
+        "doubleT_platform": {
+          "expected_frames_per_level": 345,
+          "completed_levels": {
+            "clean": {
+              "frames": 345,
+              "raw_sha256": "ede28a1df520a13e87e4d71ab1f3353bc921ab254d708188830e9496ac97bdd1",
+              "raw_path": "baseline/doubleT_platform_clean.jsonl.gz"
+            },
+            "low": {
+              "frames": 345,
+              "raw_sha256": "c8928e3c1596deecfe76d0dfee0af1b49385e369c6a68b4d0660fb63f5222b0c",
+              "raw_path": "baseline/doubleT_platform_low.jsonl.gz"
+            },
+            "medium": {
+              "frames": 345,
+              "raw_sha256": "39ba5ce61b0aa22ffeb758a14387f60e53c8bab2f5062b5b95bda48b52c109d3",
+              "raw_path": "baseline/doubleT_platform_medium.jsonl.gz"
+            },
+            "high": {
+              "frames": 345,
+              "raw_sha256": "602e90fee39231ea28faeb8b52c11c19372d2c2162911db9271ca9087543b618",
+              "raw_path": "baseline/doubleT_platform_high.jsonl.gz"
+            }
+          }
+        },
+        "roundT_doubleT": {
+          "expected_frames_per_level": 252,
+          "completed_levels": {
+            "clean": {
+              "frames": 252,
+              "raw_sha256": "368c9a5d7260a160b5a6dbe789a82d2173c0383eb5041161041242e445603edc",
+              "raw_path": "baseline/roundT_doubleT_clean.jsonl.gz"
+            },
+            "low": {
+              "frames": 252,
+              "raw_sha256": "a480e1ad35475fd4a8d7263b8d8e52c1af60ee2ca4232780542886431ef49303",
+              "raw_path": "baseline/roundT_doubleT_low.jsonl.gz"
+            },
+            "medium": {
+              "frames": 252,
+              "raw_sha256": "a084f0dec3d5783679b956c36b442c65426668d461c3dfcdf8e2bcda10afbfb2",
+              "raw_path": "baseline/roundT_doubleT_medium.jsonl.gz"
+            },
+            "high": {
+              "frames": 252,
+              "raw_sha256": "f6a529d2ae1217b54d4b6f1e79e94c902102734838ce5e54b44d0677dbdde8e6",
+              "raw_path": "baseline/roundT_doubleT_high.jsonl.gz"
+            }
+          }
+        },
+        "roundT_pressureGate_roundT": {
+          "expected_frames_per_level": 268,
+          "completed_levels": {
+            "clean": {
+              "frames": 268,
+              "raw_sha256": "997c725eb823e631e77744b4397bfe696f5189dec3d028f14c5c0e6759ee1fde",
+              "raw_path": "baseline/roundT_pressureGate_roundT_clean.jsonl.gz"
+            },
+            "low": {
+              "frames": 268,
+              "raw_sha256": "18a26df15f4be0521e8cf76a971fe78c99fd88a70777d951178c822b9c735f80",
+              "raw_path": "baseline/roundT_pressureGate_roundT_low.jsonl.gz"
+            },
+            "medium": {
+              "frames": 268,
+              "raw_sha256": "46923f81bbc21c7b086a0e65fad7b0368036f2ac307ec3b30c80a67f997d4840",
+              "raw_path": "baseline/roundT_pressureGate_roundT_medium.jsonl.gz"
+            },
+            "high": {
+              "frames": 268,
+              "raw_sha256": "b007e934b0e7cc8e005b819ff99a0bfa8803b441446585f21defcbfccfb738c5",
+              "raw_path": "baseline/roundT_pressureGate_roundT_high.jsonl.gz"
+            }
+          }
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "expected_frames_per_level": 545,
+          "completed_levels": {
+            "clean": {
+              "frames": 545,
+              "raw_sha256": "d5af60a3d994708d03dcbb9b64fb254efcb8ced26c861b035f133fa71295e37c",
+              "raw_path": "baseline/roundT_squareT_pressureGate_squareT_clean.jsonl.gz"
+            },
+            "low": {
+              "frames": 545,
+              "raw_sha256": "ee25a28d1e7d52226a84ffc0a749f189b65281756818a707b1cf4125f39bc2d5",
+              "raw_path": "baseline/roundT_squareT_pressureGate_squareT_low.jsonl.gz"
+            },
+            "medium": {
+              "frames": 545,
+              "raw_sha256": "d131cdd75eb114bd2c8096ec9971d2885b4e5febb24c75559f4853a6b2e37820",
+              "raw_path": "baseline/roundT_squareT_pressureGate_squareT_medium.jsonl.gz"
+            },
+            "high": {
+              "frames": 545,
+              "raw_sha256": "47496954ce151d255ffb524140bda04de0dec9d2f2fe7af98bf28f0da257dfc7",
+              "raw_path": "baseline/roundT_squareT_pressureGate_squareT_high.jsonl.gz"
+            }
+          }
+        },
+        "squareT_platform_squareT_switch": {
+          "expected_frames_per_level": 877,
+          "completed_levels": {
+            "clean": {
+              "frames": 877,
+              "raw_sha256": "3a1dc118b4994c930d13d24de3b834c5674782ab797622047e7f42a20d6222e3",
+              "raw_path": "baseline/squareT_platform_squareT_switch_clean.jsonl.gz"
+            }
+          }
+        }
+      },
+      "unlisted_raw_files": [
+        {
+          "path": "baseline/squareT_platform_squareT_switch_low.jsonl.gz",
+          "bytes": 76008,
+          "sha256": "ee4a75d27afe929c74ada2d124d7d664bb7d728387e69546e2ed5bc0763b2a31",
+          "status": "incomplete_or_uncommitted_level_not_acceptance"
+        }
+      ],
+      "completed_processed_frames": 6517
+    },
+    "candidate_dark_person": {
+      "summary_sha256": "4786b13ccb26faca31e12a6596cc5b507dbe74a4933d7a0873d3049137d8b7f0",
+      "recorded_schema": "dust-battery-v1",
+      "recorded_source": "/home/resense/data/dust/source_406ffaa",
+      "recorded_generator_sha256": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+      "recorded_support_sha256": "a1c0761a713d6e089c420d383c153b0ce52f503405e6c4c0020bcb1e08ffdb16",
+      "recordings": {
+        "doubleT_obstacle": {
+          "expected_frames_per_level": 201,
+          "completed_levels": {
+            "clean": {
+              "frames": 201,
+              "raw_sha256": "d67f3c5d7b6174dd6343a76af2efa793be96493f7704b5b531a6cc7daf4fa050",
+              "raw_path": "candidate_dark_person/doubleT_obstacle_clean.jsonl.gz"
+            },
+            "low": {
+              "frames": 201,
+              "raw_sha256": "0acd3df6b9e60f94fbd046eb21dbeb31a796544d3adbf8b307229ada94f28831",
+              "raw_path": "candidate_dark_person/doubleT_obstacle_low.jsonl.gz"
+            },
+            "medium": {
+              "frames": 201,
+              "raw_sha256": "dd5a7df25a3d35198a3338fb16344b617b70d3e42dd2f16bd96a4fa00a21bfdc",
+              "raw_path": "candidate_dark_person/doubleT_obstacle_medium.jsonl.gz"
+            },
+            "high": {
+              "frames": 201,
+              "raw_sha256": "c742663d035c702a57cc0b514822987893905b4c1e369fb0ccd6bd38d20d5e39",
+              "raw_path": "candidate_dark_person/doubleT_obstacle_high.jsonl.gz"
+            }
+          }
+        }
+      },
+      "unlisted_raw_files": [],
+      "completed_processed_frames": 804
+    },
+    "candidate_platform": {
+      "summary_sha256": "f81d8724ac8e6d7455cdb4681da08dd1dbf26f6a6719f9a350701ce3d4e47a58",
+      "recorded_schema": "dust-battery-v1",
+      "recorded_source": "/home/resense/data/dust/source_406ffaa",
+      "recorded_generator_sha256": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+      "recorded_support_sha256": "a1c0761a713d6e089c420d383c153b0ce52f503405e6c4c0020bcb1e08ffdb16",
+      "recordings": {
+        "doubleT_platform": {
+          "expected_frames_per_level": 345,
+          "completed_levels": {
+            "clean": {
+              "frames": 345,
+              "raw_sha256": "d8f19586d9924e68fb247ae623d936a1fd62cc1056c602e49e26114837ee65c8",
+              "raw_path": "candidate_platform/doubleT_platform_clean.jsonl.gz"
+            },
+            "medium": {
+              "frames": 345,
+              "raw_sha256": "8fe49c7f2aa1996933045169b843541f5c35be3e364c1895a935b94952407ac7",
+              "raw_path": "candidate_platform/doubleT_platform_medium.jsonl.gz"
+            },
+            "high": {
+              "frames": 345,
+              "raw_sha256": "f1d31c6e141d09c82514c0809ef7fb178f132a5fecf38c4efde4f273696c63de",
+              "raw_path": "candidate_platform/doubleT_platform_high.jsonl.gz"
+            }
+          }
+        }
+      },
+      "unlisted_raw_files": [],
+      "completed_processed_frames": 1035
+    },
+    "health_only_platform": {
+      "summary_sha256": "6ef48a21014f87d351ab2963bd27339cc2484cb4453232bc319ba01adf3bccad",
+      "recorded_schema": "dust-battery-v1",
+      "recorded_source": "/home/resense/data/dust/source_406ffaa",
+      "recorded_generator_sha256": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+      "recorded_support_sha256": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+      "recordings": {
+        "doubleT_platform": {
+          "expected_frames_per_level": 345,
+          "completed_levels": {
+            "clean": {
+              "frames": 345,
+              "raw_sha256": "2ee3a4d607fdd353be658163e2d69eb3a2cf5700681eeb439c534ce4a9657211",
+              "raw_path": "health_only_platform/doubleT_platform_clean.jsonl.gz"
+            },
+            "medium": {
+              "frames": 345,
+              "raw_sha256": "4532c434a7306588f3d59a832cc705f580072dc8981fb9fe2ae249f22edb7869",
+              "raw_path": "health_only_platform/doubleT_platform_medium.jsonl.gz"
+            },
+            "high": {
+              "frames": 345,
+              "raw_sha256": "f4428d8514daa9ed07176c6623a7daf2e4d5411e41a676ab1def59ec44f8ec0c",
+              "raw_path": "health_only_platform/doubleT_platform_high.jsonl.gz"
+            }
+          }
+        }
+      },
+      "unlisted_raw_files": [],
+      "completed_processed_frames": 1035
+    }
+  },
+  "set_f_partial_preparation_receipt_sha256": "aff2c57cc16befeb9ae46e71a37f6e49d1dd34a037397fdab017c50b2e201379",
+  "set_f_evaluated_levels": 0
+}

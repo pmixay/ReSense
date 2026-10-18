@@ -1,0 +1,10 @@
+{
+  "commit": "f5ff15ff01f728f9053d5d63e21338662de9afbd",
+  "export": "/home/resense/data/n1_source_f5ff15f",
+  "extra_script_sha256": "fec29d2ddab4adebc39ebe8970f553992e56a2bfb29a0044604052dfa0c9b36a",
+  "native_extension_sha256": {
+    "_resense_native.cpython-312-x86_64-linux-gnu.so": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8"
+  },
+  "interrupted_live_source_rows": "/home/resense/data/n1_interrupted_live_f5ff15f",
+  "reason": "Restarted from immutable export before concurrent default-off N6 experiment edits; no completed live-source result was accepted."
+}

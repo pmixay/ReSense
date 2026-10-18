@@ -1,13 +1,16 @@
 """Versioned, stateless base decision on a FrameResult or its serialized mapping.
 
-No ROS or detector imports. Freshness evaluation, watchdogs, range invalidation and
+Decision APIs have no ROS or detector imports. The optional C2 range screen loads
+the existing sensor-density prior on demand. Freshness evaluation, watchdogs and
 the STOP latch belong to the caller. v1 is the compatibility default; v2 is a
 proposal to measure on final 1.1.0, not an accepted deployment default.
 """
 from __future__ import annotations
 
 from collections.abc import Mapping
+from copy import deepcopy
 from dataclasses import dataclass
+from functools import lru_cache
 import math
 from numbers import Real
 
@@ -155,3 +158,135 @@ def evaluate_decision(res, policy: DecisionPolicy | str = "v1") -> PolicyDecisio
 def decision(res, policy: DecisionPolicy | str = "v1") -> str:
     """Compatibility word-only API; use evaluate_decision for additive status fields."""
     return evaluate_decision(res, policy).decision
+
+
+def caution_advisory_distance(res, policy: DecisionPolicy | str = "v1") -> float | None:
+    """Nearest advisory responsible for CAUTION, for the unaccepted C2 range screen.
+
+    This shares the decision predicate, including v2's deliberate suppressions; it
+    does not change decisions or the published runtime. ``None`` means CAUTION
+    has no active object advisory (or the frame is not CAUTION). An aggregate or
+    malformed active advisory whose distance is unknown returns 0, never an
+    invented clear range. Health-only CAUTION supplies no geometric cap.
+    """
+    if isinstance(policy, str):
+        policy = DecisionPolicy(version=policy)
+    if evaluate_decision(res, policy).decision != "CAUTION":
+        return None
+    if not _flag(_get(res, "warning", False)):
+        return None
+    warnings = _get(res, "warnings")
+    if not isinstance(warnings, (list, tuple)) or not warnings:
+        return 0.0
+    distances = []
+    for item in warnings:
+        if policy.version == "v2" and _warning_reason(item, policy) is None:
+            continue
+        value = _get(item, "distance")
+        if not _positive_finite(value):
+            return 0.0
+        distances.append(float(value))
+    return min(distances) if distances else None
+
+
+def _nonnegative(value, name):
+    if (not isinstance(value, Real) or isinstance(value, bool)
+            or not math.isfinite(value) or value < 0):
+        raise ValueError(f"{name} must be finite and nonnegative")
+    return float(value)
+
+
+@lru_cache(maxsize=64, typed=True)
+def small_target_limit(sensor_model: str, min_points_far: int = 3,
+                       max_range: float = 250.0) -> float | None:
+    """Largest distance satisfying the existing 0.3 x 0.3 m expected-return prior.
+
+    Scan the piecewise angular-resolution model before refining its last crossing;
+    the elevation-density jump means a single global bisection is not valid.
+    """
+    if sensor_model not in ("pandar128", "unknown", "falcon_prime"):
+        raise ValueError(f"unsupported sensor model: {sensor_model}")
+    if (not isinstance(min_points_far, int) or isinstance(min_points_far, bool)
+            or min_points_far < 1):
+        raise ValueError("min_points_far must be a positive integer")
+    max_range = _nonnegative(max_range, "max_range")
+    if sensor_model != "pandar128":
+        return None
+    if max_range == 0:
+        return 0.0
+    import numpy as np
+    from resense.sensor import expected_points
+    grid = np.linspace(0.0, max_range, 4097)
+    eligible = np.flatnonzero(expected_points(grid, 0.3, 0.3) >= min_points_far)
+    if not eligible.size:
+        return 0.0
+    last = int(eligible[-1])
+    if last == len(grid) - 1:
+        return max_range
+    lo, hi = float(grid[last]), float(grid[last + 1])
+    for _ in range(48):
+        mid = (lo + hi) / 2.0
+        if expected_points(mid, 0.3, 0.3) >= min_points_far:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+def candidate_ranges(row: dict, policy="v1", *, sensor_model="unknown",
+                     min_points_far=3, max_range=250.0, cap_small_target=False,
+                     profile="candidate") -> dict:
+    """Return a copy with the C2 candidate fields; decisions/detections are intact.
+
+    ``cap_small_target`` explicitly requests a size-qualified range, changing the
+    meaning of clear distance. The conservative_2026_10_17 profile records the
+    user's approved coverage tradeoff; the original C2 profile still fails.
+    Without a validated sensor prior that requested range is unavailable (0).
+    The advisory cap is rounded down to decimetres so serialization cannot extend
+    it beyond the object. An invalid freshness record invalidates both ranges.
+    """
+    if profile not in ("candidate", "conservative_2026_10_17"):
+        raise ValueError(f"unknown range reporting profile: {profile}")
+    if profile != "candidate" and not cap_small_target:
+        raise ValueError("the conservative profile requires the small-target cap")
+    if profile != "candidate" and min_points_far != 3:
+        raise ValueError("the accepted conservative profile requires measured min_points_far=3")
+    out = deepcopy(row)
+    health = out.get("health")
+    if not isinstance(health, dict):
+        raise ValueError("candidate ranges require a health mapping")
+    clear = _nonnegative(out.get("clear_distance"), "clear_distance")
+    out.setdefault("detector_clear_distance", clear)
+    monitored = _nonnegative(health.get("monitored_range"), "monitored_range")
+    cap = caution_advisory_distance(out, policy)
+    if cap is not None:
+        clear = min(clear, math.floor(cap * 10.0) / 10.0)
+    freshness = out.get("freshness")
+    invalid = (isinstance(freshness, dict) and freshness.get("valid") is False)
+    if (invalid or health.get("freshness_valid") is False
+            or evaluate_decision(out, policy).decision == "FAULT"
+            or evaluate_decision({"health": health}, policy).decision == "FAULT"):
+        clear, monitored = 0.0, 0.0
+        health["monitored_range"] = 0.0
+    limit = small_target_limit(sensor_model, min_points_far, max_range)
+    small = None if limit is None else math.floor(min(monitored, limit) * 10.0) / 10.0
+    if cap_small_target:
+        clear = min(clear, small) if small is not None else 0.0
+    out["clear_distance"] = health["clear_distance"] = clear
+    if "clear" in out:  # preserve consistency for expanded judge_runner aliases
+        out["clear"] = clear
+    if "monitored" in out:
+        out["monitored"] = health["monitored_range"]
+    out["advisory_clear_cap"] = cap
+    out["monitored_small"] = health["monitored_small"] = small
+    out["monitored_small_model"] = {
+        "sensor": sensor_model, "available": limit is not None,
+        "target_width_m": 0.3, "target_height_m": 0.3,
+        "min_points_far": min_points_far,
+        "density_limit_m": limit,
+        "meaning": "expected return density only; not measured detection or clear-track guarantee",
+    }
+    out["range_policy"] = ("c2_conservative_2026_10_17" if profile != "candidate" else
+                           "c2_small_candidate_not_accepted" if cap_small_target else
+                           "c2_advisory_candidate_not_accepted")
+    return out

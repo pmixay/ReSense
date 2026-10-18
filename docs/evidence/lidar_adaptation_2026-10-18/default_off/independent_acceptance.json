@@ -1,0 +1,1447 @@
+{
+  "status": "DEFAULT0_RESEAL_RECOMMENDED_PENDING_MANIFEST_REVIEW",
+  "checked_utc": "2026-10-18T11:30:21.839583+00:00",
+  "source_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "source_sha256": "5eae5197cc6497b029665a19e85b28fb217e934d8a80928cba6c1d2c5ad51700",
+  "source_files": 38,
+  "default_replay_frames": 0,
+  "rail_axis_extension": false,
+  "gate_no_waivers_or_overrides": true,
+  "ordinary_rows": 15269,
+  "set_F_rows": 3060,
+  "ordinary_boundaries": {
+    "doubleT_obstacle.jsonl": {
+      "rows": 201,
+      "stop_frames": 193,
+      "stop_intervals": [
+        [
+          8,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_platform.jsonl": {
+      "rows": 345,
+      "stop_frames": 2,
+      "stop_intervals": [
+        [
+          36,
+          37
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "roundT_doubleT.jsonl": {
+      "rows": 252,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_pressureGate_roundT.jsonl": {
+      "rows": 268,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT.jsonl": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch.jsonl": {
+      "rows": 877,
+      "stop_frames": 37,
+      "stop_intervals": [
+        [
+          312,
+          313
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          437,
+          438
+        ],
+        [
+          490,
+          490
+        ],
+        [
+          500,
+          501
+        ],
+        [
+          522,
+          524
+        ],
+        [
+          527,
+          528
+        ],
+        [
+          580,
+          580
+        ],
+        [
+          612,
+          613
+        ],
+        [
+          640,
+          642
+        ],
+        [
+          692,
+          708
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj.jsonl": {
+      "rows": 1510,
+      "stop_frames": 447,
+      "stop_intervals": [
+        [
+          5,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          403,
+          426
+        ],
+        [
+          462,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          627,
+          683
+        ],
+        [
+          693,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_0.jsonl": {
+      "rows": 1409,
+      "stop_frames": 12,
+      "stop_intervals": [
+        [
+          23,
+          30
+        ],
+        [
+          1378,
+          1378
+        ],
+        [
+          1393,
+          1395
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_1.jsonl": {
+      "rows": 1409,
+      "stop_frames": 14,
+      "stop_intervals": [
+        [
+          438,
+          438
+        ],
+        [
+          1259,
+          1269
+        ],
+        [
+          1320,
+          1321
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_2.jsonl": {
+      "rows": 1409,
+      "stop_frames": 6,
+      "stop_intervals": [
+        [
+          242,
+          243
+        ],
+        [
+          1334,
+          1337
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_3.jsonl": {
+      "rows": 1409,
+      "stop_frames": 2,
+      "stop_intervals": [
+        [
+          838,
+          839
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_4.jsonl": {
+      "rows": 1409,
+      "stop_frames": 20,
+      "stop_intervals": [
+        [
+          63,
+          68
+        ],
+        [
+          78,
+          81
+        ],
+        [
+          265,
+          268
+        ],
+        [
+          1223,
+          1228
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_5.jsonl": {
+      "rows": 1409,
+      "stop_frames": 36,
+      "stop_intervals": [
+        [
+          293,
+          298
+        ],
+        [
+          302,
+          306
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          319,
+          320
+        ],
+        [
+          814,
+          821
+        ],
+        [
+          823,
+          824
+        ],
+        [
+          898,
+          908
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_6.jsonl": {
+      "rows": 1409,
+      "stop_frames": 27,
+      "stop_intervals": [
+        [
+          671,
+          672
+        ],
+        [
+          809,
+          814
+        ],
+        [
+          817,
+          820
+        ],
+        [
+          830,
+          832
+        ],
+        [
+          1332,
+          1333
+        ],
+        [
+          1346,
+          1355
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_7.jsonl": {
+      "rows": 1408,
+      "stop_frames": 9,
+      "stop_intervals": [
+        [
+          623,
+          624
+        ],
+        [
+          643,
+          644
+        ],
+        [
+          781,
+          783
+        ],
+        [
+          785,
+          786
+        ]
+      ],
+      "exact_boundaries": true
+    }
+  },
+  "x3_rows": 29765,
+  "x3_cases": {
+    "squareT_platform_squareT_switch/nominal": {
+      "rows": 877,
+      "stop_frames": 11,
+      "stop_intervals": [
+        [
+          313,
+          313
+        ],
+        [
+          489,
+          490
+        ],
+        [
+          693,
+          700
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/pitch_p2": {
+      "rows": 877,
+      "stop_frames": 20,
+      "stop_intervals": [
+        [
+          309,
+          310
+        ],
+        [
+          439,
+          440
+        ],
+        [
+          627,
+          627
+        ],
+        [
+          685,
+          699
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/pitch_m2": {
+      "rows": 877,
+      "stop_frames": 27,
+      "stop_intervals": [
+        [
+          310,
+          313
+        ],
+        [
+          318,
+          318
+        ],
+        [
+          407,
+          408
+        ],
+        [
+          604,
+          610
+        ],
+        [
+          627,
+          628
+        ],
+        [
+          639,
+          640
+        ],
+        [
+          692,
+          700
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/roll_p2": {
+      "rows": 877,
+      "stop_frames": 37,
+      "stop_intervals": [
+        [
+          309,
+          310
+        ],
+        [
+          313,
+          314
+        ],
+        [
+          407,
+          408
+        ],
+        [
+          410,
+          413
+        ],
+        [
+          637,
+          640
+        ],
+        [
+          672,
+          681
+        ],
+        [
+          685,
+          697
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/hz5": {
+      "rows": 439,
+      "stop_frames": 19,
+      "stop_intervals": [
+        [
+          310,
+          316
+        ],
+        [
+          352,
+          354
+        ],
+        [
+          446,
+          448
+        ],
+        [
+          460,
+          462
+        ],
+        [
+          522,
+          524
+        ],
+        [
+          612,
+          614
+        ],
+        [
+          636,
+          636
+        ],
+        [
+          672,
+          676
+        ],
+        [
+          680,
+          680
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/drop30_s1": {
+      "rows": 877,
+      "stop_frames": 56,
+      "stop_intervals": [
+        [
+          310,
+          311
+        ],
+        [
+          490,
+          491
+        ],
+        [
+          493,
+          494
+        ],
+        [
+          498,
+          499
+        ],
+        [
+          504,
+          506
+        ],
+        [
+          533,
+          534
+        ],
+        [
+          536,
+          537
+        ],
+        [
+          556,
+          561
+        ],
+        [
+          565,
+          566
+        ],
+        [
+          587,
+          607
+        ],
+        [
+          689,
+          690
+        ],
+        [
+          696,
+          705
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/drop30_s2": {
+      "rows": 877,
+      "stop_frames": 55,
+      "stop_intervals": [
+        [
+          307,
+          314
+        ],
+        [
+          316,
+          324
+        ],
+        [
+          439,
+          442
+        ],
+        [
+          451,
+          453
+        ],
+        [
+          467,
+          469
+        ],
+        [
+          515,
+          516
+        ],
+        [
+          548,
+          550
+        ],
+        [
+          577,
+          586
+        ],
+        [
+          617,
+          625
+        ],
+        [
+          694,
+          697
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/drop30_s3": {
+      "rows": 877,
+      "stop_frames": 51,
+      "stop_intervals": [
+        [
+          308,
+          309
+        ],
+        [
+          324,
+          326
+        ],
+        [
+          340,
+          345
+        ],
+        [
+          352,
+          353
+        ],
+        [
+          372,
+          375
+        ],
+        [
+          378,
+          381
+        ],
+        [
+          385,
+          385
+        ],
+        [
+          389,
+          389
+        ],
+        [
+          415,
+          417
+        ],
+        [
+          442,
+          448
+        ],
+        [
+          488,
+          488
+        ],
+        [
+          574,
+          582
+        ],
+        [
+          695,
+          702
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/drop30_judge7": {
+      "rows": 877,
+      "stop_frames": 61,
+      "stop_intervals": [
+        [
+          309,
+          309
+        ],
+        [
+          311,
+          316
+        ],
+        [
+          365,
+          376
+        ],
+        [
+          378,
+          382
+        ],
+        [
+          387,
+          393
+        ],
+        [
+          462,
+          463
+        ],
+        [
+          501,
+          502
+        ],
+        [
+          532,
+          536
+        ],
+        [
+          557,
+          558
+        ],
+        [
+          571,
+          581
+        ],
+        [
+          584,
+          586
+        ],
+        [
+          669,
+          670
+        ],
+        [
+          691,
+          692
+        ],
+        [
+          699,
+          699
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch/dedup": {
+      "rows": 877,
+      "stop_frames": 20,
+      "stop_intervals": [
+        [
+          309,
+          319
+        ],
+        [
+          575,
+          581
+        ],
+        [
+          584,
+          585
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/nominal": {
+      "rows": 201,
+      "stop_frames": 193,
+      "stop_intervals": [
+        [
+          8,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/pitch_p2": {
+      "rows": 201,
+      "stop_frames": 192,
+      "stop_intervals": [
+        [
+          8,
+          117
+        ],
+        [
+          119,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/pitch_m2": {
+      "rows": 201,
+      "stop_frames": 193,
+      "stop_intervals": [
+        [
+          8,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/roll_p2": {
+      "rows": 201,
+      "stop_frames": 192,
+      "stop_intervals": [
+        [
+          9,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/hz5": {
+      "rows": 101,
+      "stop_frames": 95,
+      "stop_intervals": [
+        [
+          12,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/drop30_s1": {
+      "rows": 201,
+      "stop_frames": 178,
+      "stop_intervals": [
+        [
+          8,
+          72
+        ],
+        [
+          75,
+          153
+        ],
+        [
+          165,
+          170
+        ],
+        [
+          172,
+          176
+        ],
+        [
+          178,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/drop30_s2": {
+      "rows": 201,
+      "stop_frames": 178,
+      "stop_intervals": [
+        [
+          8,
+          73
+        ],
+        [
+          76,
+          170
+        ],
+        [
+          183,
+          196
+        ],
+        [
+          198,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/drop30_s3": {
+      "rows": 201,
+      "stop_frames": 178,
+      "stop_intervals": [
+        [
+          9,
+          108
+        ],
+        [
+          119,
+          160
+        ],
+        [
+          164,
+          172
+        ],
+        [
+          174,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/drop30_judge7": {
+      "rows": 201,
+      "stop_frames": 154,
+      "stop_intervals": [
+        [
+          8,
+          73
+        ],
+        [
+          76,
+          81
+        ],
+        [
+          84,
+          108
+        ],
+        [
+          133,
+          151
+        ],
+        [
+          153,
+          165
+        ],
+        [
+          174,
+          181
+        ],
+        [
+          183,
+          195
+        ],
+        [
+          197,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_obstacle/dedup": {
+      "rows": 201,
+      "stop_frames": 189,
+      "stop_intervals": [
+        [
+          8,
+          137
+        ],
+        [
+          139,
+          164
+        ],
+        [
+          166,
+          181
+        ],
+        [
+          183,
+          195
+        ],
+        [
+          197,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/nominal": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/pitch_p2": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/pitch_m2": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/roll_p2": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/hz5": {
+      "rows": 273,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s1": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s2": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s3": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_judge7": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT/dedup": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/nominal": {
+      "rows": 1510,
+      "stop_frames": 452,
+      "stop_intervals": [
+        [
+          4,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          400,
+          426
+        ],
+        [
+          462,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          627,
+          683
+        ],
+        [
+          692,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/pitch_p2": {
+      "rows": 1510,
+      "stop_frames": 448,
+      "stop_intervals": [
+        [
+          9,
+          69
+        ],
+        [
+          73,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          400,
+          426
+        ],
+        [
+          462,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          585,
+          590
+        ],
+        [
+          629,
+          683
+        ],
+        [
+          692,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/pitch_m2": {
+      "rows": 1510,
+      "stop_frames": 453,
+      "stop_intervals": [
+        [
+          4,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          400,
+          426
+        ],
+        [
+          459,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          629,
+          683
+        ],
+        [
+          692,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/roll_p2": {
+      "rows": 1510,
+      "stop_frames": 449,
+      "stop_intervals": [
+        [
+          4,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          400,
+          426
+        ],
+        [
+          465,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          627,
+          683
+        ],
+        [
+          692,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/hz5": {
+      "rows": 755,
+      "stop_frames": 216,
+      "stop_intervals": [
+        [
+          4,
+          230
+        ],
+        [
+          334,
+          370
+        ],
+        [
+          402,
+          426
+        ],
+        [
+          472,
+          480
+        ],
+        [
+          574,
+          584
+        ],
+        [
+          630,
+          632
+        ],
+        [
+          638,
+          684
+        ],
+        [
+          696,
+          746
+        ],
+        [
+          792,
+          804
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/drop30_s1": {
+      "rows": 1510,
+      "stop_frames": 434,
+      "stop_intervals": [
+        [
+          4,
+          229
+        ],
+        [
+          343,
+          369
+        ],
+        [
+          403,
+          416
+        ],
+        [
+          418,
+          426
+        ],
+        [
+          464,
+          480
+        ],
+        [
+          564,
+          583
+        ],
+        [
+          631,
+          683
+        ],
+        [
+          691,
+          745
+        ],
+        [
+          791,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/drop30_s2": {
+      "rows": 1510,
+      "stop_frames": 438,
+      "stop_intervals": [
+        [
+          4,
+          229
+        ],
+        [
+          266,
+          266
+        ],
+        [
+          344,
+          369
+        ],
+        [
+          403,
+          426
+        ],
+        [
+          462,
+          480
+        ],
+        [
+          565,
+          583
+        ],
+        [
+          631,
+          683
+        ],
+        [
+          691,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/drop30_s3": {
+      "rows": 1510,
+      "stop_frames": 433,
+      "stop_intervals": [
+        [
+          4,
+          229
+        ],
+        [
+          342,
+          369
+        ],
+        [
+          403,
+          426
+        ],
+        [
+          463,
+          480
+        ],
+        [
+          565,
+          583
+        ],
+        [
+          631,
+          683
+        ],
+        [
+          691,
+          745
+        ],
+        [
+          789,
+          790
+        ],
+        [
+          796,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/drop30_judge7": {
+      "rows": 1510,
+      "stop_frames": 428,
+      "stop_intervals": [
+        [
+          4,
+          69
+        ],
+        [
+          74,
+          229
+        ],
+        [
+          343,
+          369
+        ],
+        [
+          403,
+          426
+        ],
+        [
+          465,
+          480
+        ],
+        [
+          569,
+          583
+        ],
+        [
+          631,
+          683
+        ],
+        [
+          692,
+          745
+        ],
+        [
+          789,
+          803
+        ],
+        [
+          1268,
+          1269
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj/dedup": {
+      "rows": 1510,
+      "stop_frames": 434,
+      "stop_intervals": [
+        [
+          4,
+          8
+        ],
+        [
+          17,
+          81
+        ],
+        [
+          83,
+          229
+        ],
+        [
+          338,
+          369
+        ],
+        [
+          400,
+          426
+        ],
+        [
+          464,
+          480
+        ],
+        [
+          565,
+          583
+        ],
+        [
+          632,
+          683
+        ],
+        [
+          691,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    }
+  },
+  "x3_checks_passed": 260,
+  "falcon_rows": 4443,
+  "falcon_checks": {
+    "complete_original_stamps_and_frames": true,
+    "no_stop_added_or_lost": true,
+    "no_decision_changes": true,
+    "all_stop_intervals_exact": true,
+    "all_other_non_timing_fields_exact": true
+  },
+  "lost_added_delayed_shortened_stop_frames": 0,
+  "fresh_gate_metric_verdicts": {
+    "same": 208,
+    "better": 16
+  },
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/review_acceptance.py": "7adfa097ab85d7dbaee686f33f6793bd89acd149e0b1ae9c515ec063bd95509e",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/runtime_identity.json": "cf9c62f2e40e7132f5ab146257ff0a93aed23f78e93f3d9345a05238c0edc462",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate.json": "dd799f78dd55b7797f581754777f41b68f5db035c8336220a9ab188f33772517",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_independent_review.json": "b56665aaf018ac30440d47972efd3fadb81b849abc9e059b4a62a86430a12e58",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/gate.json": "9ad69a9c30f2e8709fa2aab37e9eb750505c5057b1e0470cf435cfc52b89f2aa",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/receipt.json": "071c57a82e3a36fde7a56a9407a4c99d115f0086552225f86bca28153990b0c5",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_execution_status.json": "7a2c268d9acb090354d4056c0460f5f08703c8348217d9dcd7e21879fd0f09af",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_execution_manifest.json": "73e779b616ad44d8ee97e4383e4a8532665bf3459ed29ba1ba78b7fe9c8427e7",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/raw/gate_manifest.json": "7aca9fcd26bc9c6a3d55d8954c29ead56e616d5eb202851a41310bd4b1a3cf0c",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/raw/gate.tar.gz": "504d8151517d805971401b6bc5788547ff5d2b28932a5d47f557c7c3989a00bb",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.json": "fed905cb46cefa99c101b659d5aecaf5efa30f0feed3caef39fda3a8f7bff3b9",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3_independent_review.json": "61d6c9c4e941219fcfbf25ace3488835fb4c9cf680a5bf5519ac0e7427422b70",
+    "/home/resense/data/x3_reference/reference.json": "750256522b673bdf7428bf136747aa0e06e0fdedc628a99a82e5222d9975f535",
+    "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/independent_review.json": "61e4f0c16cabf9c130b48a1831feb87540d1e2a923978bc4d836fe15c4d81050",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/review_x3_boundaries.py": "440f1477a1bdbad9affeb72ba430a7c1b233b4c83ba9f1cff18a63c6b3a907b0"
+  },
+  "limits": [
+    "Original serialized and actual Falcon auto-baseline preservation; not full-precision or surveyed obstacle truth.",
+    "Set F scoring rows omit full detections; stored associations cannot be independently reassigned.",
+    "Replay4 remains explicit opt-in with its known13 lost Falcon STOP rows; its gains are not claimed for default0.",
+    "N3 dust suppression and N6 extension remain unaccepted. No release/deployment approval or timing claim.",
+    "The actual new manifest still requires independent review and successful verification."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/home/resense/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-rs",
+    "tests/test_range_reporting.py",
+    "tests/test_score_overclaim.py",
+    "tests/test_decision_policy.py",
+    "tests/test_rescore_decisions.py",
+    "tests/test_node.py",
+    "--junitxml=docs/evidence/c2_acceptance_2026-10-17/approved_profile_tests.xml"
+  ],
+  "exit_code": 0,
+  "elapsed_s": 7.047688007354736,
+  "source_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "7003f70146290666450b8ef8f21630cba3b7457fbb8f588af65badf3d6033fa4",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "f47f0ff9d0712d5ddb80e984645dab92c421dea128bd55611ad37b40ebd09515",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "cc017d2397f7aea36d035fd63683dbeac7c75f6499d2b6bedffd9ed61db19840",
+    "scripts/range_reporting.py": "90a8d8d2cdf0953d52c3e6d0142cc955cce1b2f439ecc4ac111016f97069d7ea",
+    "scripts/score_overclaim.py": "51be206b7296378655e1fd69d54fe38abcdec76695c85de64b9f89a73e83be51",
+    "tests/test_node.py": "edbc39976f4458a10fd850ccd725133a471c2ec25f677eb6f71853c546e741d4",
+    "tests/test_range_reporting.py": "ecb27d1693e97fd29091d14933875ac62b83d626374b96df1dd464345bc8f6b3",
+    "tests/test_score_overclaim.py": "4ccca975e895eee5069ceb9f0a15c1e627ca93c498bf5b7c19a2ce6308abe642"
+  },
+  "environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_CORETYPE": "Haswell",
+    "RESENSE_REQUIRE_SYNTHETIC": "1"
+  },
+  "scope": "postapproval affected suite; actual node class with ROS transport stand-ins, no DDS/docker playback"
+}

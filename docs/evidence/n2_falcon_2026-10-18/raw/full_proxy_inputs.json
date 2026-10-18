@@ -1,0 +1,130 @@
+[
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/gate.json",
+    "member": "full_proxy_gate_verified/gate.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/gate.log",
+    "member": "full_proxy_gate_verified/gate.log"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/hook/lidar_input_variants.py",
+    "member": "full_proxy_gate_verified/hook/lidar_input_variants.py"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/hook/proxy_input_hook.py",
+    "member": "full_proxy_gate_verified/hook/proxy_input_hook.py"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/hook/sitecustomize.py",
+    "member": "full_proxy_gate_verified/hook/sitecustomize.py"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/input_receipts/activated_54706.json",
+    "member": "full_proxy_gate_verified/input_receipts/activated_54706.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/input_receipts/activated_66196.json",
+    "member": "full_proxy_gate_verified/input_receipts/activated_66196.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/input_receipts/frames_54743.jsonl",
+    "member": "full_proxy_gate_verified/input_receipts/frames_54743.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/input_receipts/frames_66199.jsonl",
+    "member": "full_proxy_gate_verified/input_receipts/frames_66199.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/priority_change.json",
+    "member": "full_proxy_gate_verified/priority_change.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/receipt.json",
+    "member": "full_proxy_gate_verified/receipt.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/cloud_with_fake_obj.jsonl",
+    "member": "full_proxy_gate_verified/work/cloud_with_fake_obj.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/config.yaml",
+    "member": "full_proxy_gate_verified/work/config.yaml"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/doubleT_obstacle.jsonl",
+    "member": "full_proxy_gate_verified/work/doubleT_obstacle.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/doubleT_platform.jsonl",
+    "member": "full_proxy_gate_verified/work/doubleT_platform.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_0.jsonl",
+    "member": "full_proxy_gate_verified/work/new_data_0.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_1.jsonl",
+    "member": "full_proxy_gate_verified/work/new_data_1.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_2.jsonl",
+    "member": "full_proxy_gate_verified/work/new_data_2.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_3.jsonl",
+    "member": "full_proxy_gate_verified/work/new_data_3.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_4.jsonl",
+    "member": "full_proxy_gate_verified/work/new_data_4.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_5.jsonl",
+    "member": "full_proxy_gate_verified/work/new_data_5.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_6.jsonl",
+    "member": "full_proxy_gate_verified/work/new_data_6.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/new_data_7.jsonl",
+    "member": "full_proxy_gate_verified/work/new_data_7.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/roundT_doubleT.jsonl",
+    "member": "full_proxy_gate_verified/work/roundT_doubleT.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/roundT_pressureGate_roundT.jsonl",
+    "member": "full_proxy_gate_verified/work/roundT_pressureGate_roundT.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/roundT_squareT_pressureGate_squareT.jsonl",
+    "member": "full_proxy_gate_verified/work/roundT_squareT_pressureGate_squareT.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/setF_straight.json",
+    "member": "full_proxy_gate_verified/work/setF_straight.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work/squareT_platform_squareT_switch.jsonl",
+    "member": "full_proxy_gate_verified/work/squareT_platform_squareT_switch.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_same_runtime_summary.json",
+    "member": "full_proxy_same_runtime_summary.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/summarize_full_proxy.py",
+    "member": "summarize_full_proxy.py"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/run_proxy_gate.py",
+    "member": "run_proxy_gate.py"
+  },
+  {
+    "source": "/home/resense/data/n2/full_proxy_gate_verified.log",
+    "member": "full_proxy_gate_verified/outer_wrapper.log"
+  }
+]

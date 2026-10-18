@@ -227,10 +227,13 @@ permitted released image, checksum, approved demo route and hardware.
 56 m within 30 s of playback, forced fallback ≤30 s in rehearsal 2, and local media available
 on both devices. Historical instructions or a prerecorded video alone do not close rehearsal.
 
-### P2-05 · S5 final-image 8-core benchmark — reserve hardware now, run by 21 October
+### P2-05 · S5 benchmark on available hardware — run by 21 October
 
-**Budget:** 2 h plus machine time. **Inputs:** ≥8 physical-core idle host, raw bags/caches,
-final selected release, P1/P4-agreed protocol. Local i5-8250U is **4 cores / 8 threads**.
+**Budget:** 2 h plus machine time. **Inputs:** available idle host, raw bags/caches,
+selected source/image, P1/P4-agreed protocol. Local i5-8250U is **4 cores / 8 threads**.
+**Captain decision 17.10:** no 8-core VPS prerequisite; 2–4-core measurements are acceptable
+with the actual hardware and measured result named. Source runs can proceed while the captain
+resolves GitHub billing/quota; release remains deferred until CI is fixed.
 
 1. Register machine/image/input identities and conditions before measuring. Record topology,
    affinity/quotas, RAM, disk sequential-read throughput, DDS/player settings, native backend,
@@ -245,7 +248,7 @@ final selected release, P1/P4-agreed protocol. Local i5-8250U is **4 cores / 8 t
    processed vs input frames, source age, first STOP lag, STOP frames, drops/skips, CPU/RSS.
    Explain cold/warm conditions and machine differences; do not extrapolate to i7-9700E.
 
-**Done:** kit exit 0, complete four-condition summaries and raw evidence, physical-core proof;
+**Done:** kit exit 0, complete four-condition summaries and raw evidence, actual hardware record;
 S5 targets **README 360° p95 ≤80 ms, fresh ≥195/201** explicitly PASS/FAIL. Also report S1
 thresholds from BACKLOG without relaxing them. S1/S2 may remain unshipped: benchmark the final
 selected runtime anyway and retain any failures. P1/P3 own corrective runtime work.
@@ -325,8 +328,9 @@ date in P2_STATUS; a calendar date never changes a pending task to DONE.
   version; swap only after E1 verification and repeat affected checks.
 * **J1/X3 late:** final visual work can use explicitly dated v1.0.0 evidence; no inferred new
   score or invented range values. **G3 late:** say “registered, not executed”; no held-out gain.
-* **No ≥8-core machine:** P1 assigns a qualifying host/operator; local 4-core measurements
-  remain diagnostic and S5 stays blocked. Do not multiply timings by a core-count ratio.
+* **No ≥8-core machine:** proceed on available hardware, including 2–4 cores, under the captain's
+  17.10 decision. Keep source runs distinct from final-image runs and report the actual topology,
+  affinity/quota and PASS/FAIL. Do not multiply timings by a core-count ratio.
 * **P1 marker change late:** web C1 can finish; RViz subtask remains open and uses the existing
   decision display. **Live connection fails:** measured local fallback within 30 s.
 

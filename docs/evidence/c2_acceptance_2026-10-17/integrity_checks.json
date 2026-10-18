@@ -1,0 +1,39 @@
+[
+  {
+    "command": [
+      "python3",
+      "scripts/check_archived_lint.py",
+      "--lint",
+      "--ruff",
+      "/home/resense/.tools/ruff0158/bin/ruff"
+    ],
+    "exit_code": 0,
+    "output": "{\"result\": \"PASS\", \"immutable_files\": 139, \"exact_ruff_exclusions\": 39, \"live_files_audited\": 326}\n"
+  },
+  {
+    "command": [
+      "./scripts/sync_params.sh",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": "parameter files in sync\n"
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/detector_freeze.py",
+      "verify"
+    ],
+    "exit_code": 0,
+    "output": "Detector freeze PASS: 36 files; source db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751\nIntegrity check only; no recordings replayed.\n"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  }
+]

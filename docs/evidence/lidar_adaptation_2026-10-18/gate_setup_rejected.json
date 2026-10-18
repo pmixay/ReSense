@@ -1,0 +1,37 @@
+{
+  "pid": 48215,
+  "pgid": 48215,
+  "source_commit": "f5ff15f",
+  "status": "finished",
+  "started_utc": "2026-10-18T08:31:48Z",
+  "command": [
+    "/home/resense/.venv/bin/python",
+    "/home/resense/data/final_lidar_f5ff15f/scripts/regression_gate.py",
+    "--cache",
+    "/home/resense/data/gate_cache",
+    "--jobs",
+    "1",
+    "--baseline",
+    "/home/resense/data/final_lidar_f5ff15f/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+    "--out",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/gate.json",
+    "--work",
+    "/home/resense/data/final_gate_work"
+  ],
+  "ride_validation": {
+    "splits": 221,
+    "frames": 11271,
+    "arrays_read": 0,
+    "compressed_bytes": 5258708521,
+    "first_frame": "new_data_0_0000",
+    "first_stamp": 1789642926.1610787,
+    "last_frame": "new_data_220_0050",
+    "last_stamp": 1789644126.0445478,
+    "duration_s": 1199.8834691047668,
+    "max_interval_s": 7.09865140914917,
+    "intervals_over_0_15_s": 55
+  },
+  "wrapper_sha256": "63fefec5e6de78a09dde07d488453edf3c16a7547816117840b2bec8f9dd7f82",
+  "returncode": 2,
+  "finished_utc": "2026-10-18T08:49:38Z"
+}

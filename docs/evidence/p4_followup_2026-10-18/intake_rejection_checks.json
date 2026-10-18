@@ -1,0 +1,18 @@
+{
+  "status": "INTAKE_REJECTION_CHECKS_PASS",
+  "checked_utc": "2026-10-18T12:48:34.580271+00:00",
+  "checker_sha256": "389b082d2ae6165845e7a9ace825266a57a3cf760b5fa33192a36e25509ec30c",
+  "checks": [
+    {
+      "probe": "modified_original_bytes",
+      "rejected": true,
+      "reason": "modified P4 report"
+    },
+    {
+      "probe": "duplicate_intake_member",
+      "rejected": true,
+      "reason": "intake inventory mismatch"
+    }
+  ],
+  "scope": "Temporary copied evidence only; original files and immutable Git commits unchanged; no detector executed."
+}

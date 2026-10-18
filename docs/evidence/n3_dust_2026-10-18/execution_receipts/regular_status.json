@@ -1,0 +1,93 @@
+{
+  "pid": 60932,
+  "pgid": 60932,
+  "harness_commit": "b9ad5f4",
+  "detector_source": "9b92df5",
+  "started_utc": "2026-10-18T09:32:28.482722+00:00",
+  "jobs": [
+    {
+      "name": "baseline_pose_fixed",
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "/home/resense/data/dust/harness_b9ad5f4/scripts/dust_battery.py",
+        "--cache",
+        "/home/resense/data/decoded",
+        "--out",
+        "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/baseline_pose_fixed",
+        "--detector-root",
+        "/home/resense/data/n2/baseline_9b92df5"
+      ],
+      "started_utc": "2026-10-18T09:32:28.482811+00:00",
+      "status": "complete",
+      "returncode": 0,
+      "finished_utc": "2026-10-18T11:34:03.308654+00:00"
+    },
+    {
+      "name": "dark_baseline_pose_fixed",
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "/home/resense/data/dust/harness_b9ad5f4/scripts/dust_battery.py",
+        "--cache",
+        "/home/resense/data/decoded",
+        "--out",
+        "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_baseline_pose_fixed",
+        "--detector-root",
+        "/home/resense/data/n2/baseline_9b92df5",
+        "--bags",
+        "doubleT_obstacle",
+        "--dim-labels",
+        "1"
+      ],
+      "started_utc": "2026-10-18T11:34:03.347712+00:00",
+      "status": "complete",
+      "returncode": 0,
+      "finished_utc": "2026-10-18T11:37:20.959051+00:00"
+    },
+    {
+      "name": "dark_health_pose_fixed",
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "/home/resense/data/dust/harness_b9ad5f4/scripts/dust_battery.py",
+        "--cache",
+        "/home/resense/data/decoded",
+        "--out",
+        "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/dark_health_pose_fixed",
+        "--detector-root",
+        "/home/resense/data/n2/baseline_9b92df5",
+        "--bags",
+        "doubleT_obstacle",
+        "--dim-labels",
+        "1",
+        "--health-only"
+      ],
+      "started_utc": "2026-10-18T11:37:20.961261+00:00",
+      "status": "complete",
+      "returncode": 0,
+      "finished_utc": "2026-10-18T11:40:46.803299+00:00"
+    },
+    {
+      "name": "health_platform_pose_fixed",
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "/home/resense/data/dust/harness_b9ad5f4/scripts/dust_battery.py",
+        "--cache",
+        "/home/resense/data/decoded",
+        "--out",
+        "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/health_platform_pose_fixed",
+        "--detector-root",
+        "/home/resense/data/n2/baseline_9b92df5",
+        "--bags",
+        "doubleT_platform",
+        "--levels",
+        "clean,medium,high",
+        "--health-only"
+      ],
+      "started_utc": "2026-10-18T11:40:46.803590+00:00",
+      "status": "complete",
+      "returncode": 0,
+      "finished_utc": "2026-10-18T11:43:04.663921+00:00"
+    }
+  ],
+  "status": "complete",
+  "finished_utc": "2026-10-18T11:43:04.664562+00:00"
+}

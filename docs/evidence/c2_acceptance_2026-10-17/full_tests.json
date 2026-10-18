@@ -1,0 +1,32 @@
+{
+  "command": [
+    "/home/resense/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-rs",
+    "--junitxml=docs/evidence/c2_acceptance_2026-10-17/full_tests.xml"
+  ],
+  "exit_code": 0,
+  "elapsed_s": 120.7386167049408,
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "open3d": "0.20.0",
+  "environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_CORETYPE": "Haswell",
+    "RESENSE_REQUIRE_SYNTHETIC": "1"
+  },
+  "cpu_affinity": [
+    0
+  ],
+  "scope": "full pytest tests/ on local source, no DDS/Docker/browser suite",
+  "source_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "01a1efae54f5f63886d7a55fea1aaf562335dd7a24d69de824ea0c6e72f76265",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "163ea8cc956556226194ed8d8ad767f8f120705e7c6fc99ad95be3aea624b388",
+    "scripts/score_overclaim.py": "e0f04bd2380259647f675f1db14345f13477d581d77401c4898d02424ec5fecf"
+  }
+}

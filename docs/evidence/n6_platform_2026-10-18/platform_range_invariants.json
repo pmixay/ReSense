@@ -1,0 +1,11 @@
+{
+  "frames": 386,
+  "extension_frames": 84,
+  "unsupported_extension_rounded_bound_violations": [],
+  "extension_without_wall_loss": [],
+  "floor_shape_changed": [],
+  "range_reverts_on_person_frame229": 45.0,
+  "retained_stop_frame229_reason": "beyond_axis",
+  "maximum_range_increase_m": 22.799999999999997,
+  "note": "Per-frame ranges rounded in serialized evidence; exact helper equation is unit-tested. Existing tracker STOP hold can retain an already confirmed object when current axis support disappears."
+}

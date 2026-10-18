@@ -1,0 +1,11 @@
+........................................................................ [ 30%]
+............................sss.ss..s.................ssssssss.s........ [ 61%]
+........................................................................ [ 92%]
+.....ss.s........                                                        [100%]
+=========================== short test summary info ============================
+SKIPPED [13] tests/conftest.py:74: open3d not importable (ModuleNotFoundError: No module named 'open3d')
+SKIPPED [1] tests/test_node.py:298: could not import 'open3d': No module named 'open3d'
+SKIPPED [1] tests/test_node.py:315: could not import 'open3d': No module named 'open3d'
+SKIPPED [2] tests/test_node.py:538: could not import 'open3d': No module named 'open3d'
+SKIPPED [1] tests/test_node.py:1576: could not import 'open3d': No module named 'open3d'
+215 passed, 18 skipped in 2.96s

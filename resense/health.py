@@ -17,7 +17,9 @@ per frame and without touching any detection:
 * ``latency_p95_ms`` against the frame budget. The detector supplies the previous completed
   process interval, including health, and labels this basis and one-frame age in its result.
   Its first call/reset has no sample: p95 is 0 until a completed call is supplied;
-* the mount calibration status and drift (``resense/calibration.py``);
+* the mount calibration status and drift (``resense/calibration.py``); an unconfirmed
+  axis orientation warns and reports zero monitored/clear range until observation or
+  adoption confirms it, without suppressing obstacle evidence;
 * ``floor_shadow_frames`` / ``floor_held_frames`` / ``floor_released_frames`` (review 25.09) -
   since the start (or a reset), the frames in which the floor-shadow rule of the track model
   (``track.floor_shadow_height``) found the shadow of a large near object, held the previous bed,
@@ -203,8 +205,17 @@ class HealthMonitor:
             flag(1, f"latency p95 {p95:.0f} ms over the {cfg.latency_budget_ms:.0f} ms budget",
                  decision=cfg.latency_affects_decision)
 
+        orientation_confirmed = None
         if calibration:
             st = calibration.get("status")
+            # Orientation readiness is separate from the final tilt fit. An inverted
+            # sensor can otherwise produce GO before the search adopts a valid map.
+            # Legacy external status dictionaries have no readiness field; completed
+            # or provisional fits imply an observed map, while pending/fallback do not.
+            orientation_confirmed = calibration.get(
+                "orientation_confirmed", st in ("ok", "identity", "provisional", "disabled")) is True
+            if not orientation_confirmed:
+                flag(1, "sensor orientation unconfirmed: waiting for a supported axis mapping")
             if st == "fallback":
                 flag(1, "mount calibration: " + calibration.get("message", "fallback"))
             if calibration.get("drift_deg", 0.0) > 0 and "drift" in calibration.get("message", ""):
@@ -213,8 +224,8 @@ class HealthMonitor:
         monitored = float(max(0.0, min(vis, trusted_range, gauge.range_max)))
         if wall_drift is not None:              # 15.10: the corridor beyond is not where the track is
             monitored = float(max(0.0, min(monitored, wall_drift)))
-        if level >= 2:
-            monitored = 0.0                     # an input fault: nothing is verified
+        if level >= 2 or orientation_confirmed is False:
+            monitored = 0.0                     # input fault or unconfirmed coordinates: no range is verified
         clear = monitored if obstacle_distance is None else float(min(obstacle_distance, monitored))
         if candidate_distance is not None:     # clear_cap (25.09): an unconfirmed / advisory object in the envelope
             clear = float(max(0.0, min(clear, candidate_distance)))
@@ -230,4 +241,6 @@ class HealthMonitor:
             out["candidate_distance"] = None if candidate_distance is None else round(float(candidate_distance), 1)
         if wall_drift is not None:
             out["wall_drift"] = round(float(wall_drift), 1)
+        if orientation_confirmed is not None:
+            out["orientation_confirmed"] = orientation_confirmed
         return out

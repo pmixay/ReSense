@@ -1,0 +1,7 @@
+{
+  "original": "run_corrected_regular.original.txt",
+  "original_sha256": "8f5e94530fc06b5d44763729a813196169bf3790a4943fc2012bf924fe2f706f",
+  "readable_copy": "run_corrected_regular.py",
+  "readable_copy_sha256": "0aec306a7edba6e036144e74bd372a6bc8dba6702adf578b5407f69644aeba3e",
+  "changes": "Pinned Ruff formatting, split imports and removal of unused time import only; the running local wrapper and frozen measurement harness were not changed."
+}

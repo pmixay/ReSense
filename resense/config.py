@@ -100,6 +100,7 @@ class TrackConfig:
     rails_yaw_max_dev: float = 0.3                   # m, a slab's rail may sit this far from the global rail position
     rails_far_check_enabled: bool = False            # experimental station-wall curvature correction; opt-in until real-data A/B and timing
     rails_far_rings: bool = False                    # 29.09 (experimental, off; needs rails_far_check_enabled): the far rail evidence of that check comes from single LiDAR ring crossings (resense/farrails.py; assumes no fixed sensor tilt, sensor.roll/pitch/yaw_deg 0, the default: a configured tilt smears the rings and no far evidence is found) instead of the slab profile that never finds a pair beyond rails_range[1]; opt-in until the full gate
+    rails_axis_extension: bool = False               # 18.10 (N6 candidate, off): current paired rails can support the unchanged axis beyond the near fit after wall loss; requires supplied ring IDs, no curvature refit or unsupported carryover
     axis_max_yaw_rate: float = 0.003                 # rad per frame (0.17 deg; a train at 15 m/s on R = 700 m yaws 0.12 deg per frame); larger changes are clipped; 0 = off
     axis_max_curvature_rate: float = 1.0e-4          # 1/m per frame, larger changes of the smoothed curvature are clipped; 0 = off
     axis_warmup_frames: int = 5                      # frames after a (re)seed of the track model during which the rate limits do not apply (v0.6)
@@ -541,6 +542,7 @@ class CalibrationConfig:
                                    # a spinning LiDAR is mounted with its spin axis vertical; false = all 24 (a flat
                                    # tunnel wall with cable trays then competes with the bed, EXPERIMENTS.md section 6)
     orientation_votes: int = 2     # frames on which the same candidate orientation must win before it is adopted
+    orientation_replay_frames: int = 0  # opt-in only: replay changed existing Falcon STOPs; maximum 4 frames / 32 MiB, current included
     min_rail_score: float = 0.05   # m, ridge prominence of the rail pair (as track.rails_min_score)
     apply_min_deg: float = 0.75    # roll / pitch corrections below this are not applied: 1.5x the p90 error of the 20-observation median on a moving train (0.5 deg; at 0.5 a noise-level +0.51 deg roll was applied on a ride piece and added 6 false events, review 23.09)
     min_yaw_deg: float = 3.0       # the mount yaw is corrected only above this (the track model follows smaller / dynamic yaw, and the rails' tangent at the sensor includes the chord angle of the car in a curve)

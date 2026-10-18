@@ -1,5 +1,11 @@
 # Role 2 owner handoffs — 16 October 2026
 
+**Superseding captain decision, 17.10:** the request below for an 8-physical-core host is no
+longer a prerequisite. Available-hardware measurements, including 2–4 cores, are acceptable
+with resources and results recorded; no performance extrapolation is an acceptance result.
+The captain handles GitHub quota/billing and release is deferred until CI is fixed.
+The dated handoff below is retained as history; current S5 instructions are in BACKLOG.
+
 Base: `cfae4ba9334df6912c9e2c336dea4eb1c1865935`, branch `role-2`.
 User authorized the coordinated webapp/backend and marker-text changes **for P1 review**.
 No external inputs beyond the repository were supplied. This file records requests,

@@ -1,0 +1,107 @@
+{
+  "status_sha256": "6d57001ae7415cc1b4aa03ec46e9c56c2970bb73c94fa3fe31a8072e450cff7f",
+  "snapshots": 160,
+  "processed_frame_snapshots": 140,
+  "scope": "Actual DDS status at requested playback rates; see control report for intentional pauses; not 10 Hz throughput",
+  "profiles": {
+    "falcon_ros": {
+      "frames": 100,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 4,
+        "CAUTION": 91,
+        "STOP": 4
+      },
+      "freshness_reasons": {
+        "epoch_unconfirmed": 1,
+        "current": 99
+      },
+      "valid_freshness_frames": 99,
+      "node_decode_detect_latency_ms": {
+        "p50": 13.165,
+        "p95": 23.4025,
+        "p99": 27.57920000000005,
+        "p100": 37.4
+      },
+      "complete_detector_call_ms": {
+        "p50": 10.71,
+        "p95": 20.785,
+        "p99": 23.83060000000005,
+        "p100": 33.79
+      },
+      "source_age_at_publication_s": {
+        "p50": 0.021668434143066406,
+        "p95": 0.03601502180099487,
+        "p99": 0.04263913631439212,
+        "p100": 0.04850459098815918
+      },
+      "peak_rss_mb": 125.1,
+      "reported_node_cpu_cores": {
+        "p50": 0.08,
+        "p95": 0.11,
+        "p99": 0.11,
+        "p100": 0.11
+      },
+      "maximum_node_dropped_counter": 0,
+      "maximum_catchup_skipped_counter": 0,
+      "gauge_valid_frames": 99,
+      "gauge_solid_range_within_axis": true,
+      "clear_distance_m": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "p100": 0.0
+      },
+      "monitored_small_null_frames": 100
+    },
+    "pandar128": {
+      "frames": 40,
+      "decisions": {
+        "FAULT": 2,
+        "GO": 17,
+        "STOP": 21
+      },
+      "freshness_reasons": {
+        "epoch_unconfirmed": 2,
+        "current": 38
+      },
+      "valid_freshness_frames": 38,
+      "node_decode_detect_latency_ms": {
+        "p50": 19.455,
+        "p95": 32.203999999999986,
+        "p99": 39.991899999999994,
+        "p100": 42.25
+      },
+      "complete_detector_call_ms": {
+        "p50": 16.875,
+        "p95": 26.43049999999998,
+        "p99": 34.2933,
+        "p100": 35.67
+      },
+      "source_age_at_publication_s": {
+        "p50": 0.023192405700683594,
+        "p95": 0.04462587833404541,
+        "p99": 0.053665378093719476,
+        "p100": 0.05932164192199707
+      },
+      "peak_rss_mb": 110.3,
+      "reported_node_cpu_cores": {
+        "p50": 0.08,
+        "p95": 0.09,
+        "p99": 0.09,
+        "p100": 0.09
+      },
+      "maximum_node_dropped_counter": 0,
+      "maximum_catchup_skipped_counter": 0,
+      "gauge_valid_frames": 38,
+      "gauge_solid_range_within_axis": true,
+      "clear_distance_m": {
+        "p50": 39.9,
+        "p95": 88.7,
+        "p99": 88.7,
+        "p100": 88.7
+      },
+      "monitored_small_null_frames": 0
+    }
+  }
+}

@@ -40,6 +40,66 @@ scripts/play_bag.sh <bag directory> --archive resense-image-<version>.tar.gz
 [Результаты и ограничения](../reference/results.md)). Код выхода 2 — неверный аргумент, 3 — нет
 Docker, нет образа или нода не запустилась.
 
+## Интерактивный запуск и Falcon (рабочая ветка 18.10)
+
+Нужен образ из текущего исходного кода; старый релизный архив новых профилей не содержит.
+
+```bash
+docker build -t resense:lidar-work -f docker/Dockerfile .
+IMAGE=resense:lidar-work scripts/play_bag.sh --interactive --rate 0.5 \
+  --clear-range-policy conservative \
+  --sensor-profile pandar128 /data/PANDAR_BAG \
+  --sensor-profile falcon_ros /data/falcon_test_second_dark
+```
+
+Space — пауза/продолжение, Right — следующее сообщение на паузе, Up/Down — изменение скорости.
+Профиль относится к следующим за ним бэгам. Все бэги проходят через одну ноду; между ними
+скрипт дожидается тишины, выбирает профиль и вызывает `/resense/reset_input`. Это очищает
+очереди, треки, калибровку, прежний STOP и временную эпоху даже при одинаковых топике, frame id
+и метках времени. При поступлении данных или недообработанной очереди сброс запрещён;
+перед границей остановите плеер. Следующая запись должна подтвердить собственную свежесть. Для пакетного запуска уберите `--interactive`.
+
+Имя контейнера ноды печатается при старте; в другой консоли:
+
+```bash
+docker exec -it <напечатанное-имя-контейнера> bash
+```
+
+Поставленный Falcon публикует `/iv_points`, frame id `seyond`, в ROS-осях +X/+Y/+Z
+(`falcon_ros`). Для нативных осей производителя выбирайте `falcon_native` (+Z/−Y/+X).
+`pandar128` задаёт −Y/+X/+Z; `manual` сохраняет явную конфигурацию. Профиль не угадывается
+по топику. Не смешивайте именованный профиль с ручными осями/углами крепления.
+
+Прямой запуск ноды для поставленного Falcon:
+
+```bash
+docker run --rm -it --net=host --ipc=host resense:lidar-work \
+  ros2 launch resense_ros detector.launch.py freshness_mode:=replay \
+  sensor_profile:=falcon_ros input_topic:=/iv_points clear_range_policy:=conservative
+```
+
+Консервативный C2 не переносит модель плотности Pandar на Falcon: `monitored_small=null`,
+`clear_distance=0`, при этом детектор продолжает выдавать обнаружения и STOP.
+
+Для графики используйте ту же очередь с `scripts/run_demo.sh`. При отсутствии GPU:
+
+```bash
+IMAGE=resense:lidar-work LIBGL_ALWAYS_SOFTWARE=1 scripts/run_demo.sh \
+  --rate 0.5 --sensor-profile falcon_ros /data/falcon_test_second_dark
+# Без физического экрана, для проверки X11/RViz:
+IMAGE=resense:lidar-work xvfb-run -a scripts/run_demo.sh --software-rendering \
+  --rate 0.5 --sensor-profile falcon_ros /data/falcon_test_second_dark
+```
+
+Бокс габарита ограничен поддержанной дальностью оси и контроля. Отображение сглаживается,
+но при расхождении с текущей геометрией больше 0,25 м сокращается. Это не меняет решения
+детектора. При невалидном входе серый контур имеет нулевую доверенную дальность и исчезает
+после трёх пропущенных обновлений либо при проверке возраста ≥0,5 с. Отдельный срок жизни
+маркера в RViz — не более 0,5 с от получения; даже заблокированная нода не оставляет постоянный
+зелёный контур. При обновлении реже 2 Гц контур может исчезать между кадрами — это ограничение
+свежести. Веб-интерфейс также снимает доверие к просроченным данным. Значения доступны в `status.gauge`.
+[Контракт и доказательства](../../docs/evidence/n1_n4_2026-10-18/HOWTO.md).
+
 ## Пошагово (консоль организаторов)
 
 Три консоли на одной машине.
@@ -122,7 +182,7 @@ ros2 topic echo /resense/nearest_distance --field data  # м вдоль пути
 Нода слушает обе известные пары топика и системы координат (`/lidar_points` в `hesai_lidar`,
 `/sensing/lidar/hesai128/pointcloud` в `lidar_livox`) и, если не задано `auto_discover:=false`,
 любой другой топик `PointCloud2`. Для новой записи (другой топик или frame id либо метки времени,
-скачущие больше чем на `new_input_gap`, 30 с) создаётся свежий детектор, поэтому бэги можно
+скачущие больше чем на `new_input_gap`, 30 с вперёд или 0,5 с назад) создаётся свежий детектор, поэтому бэги можно
 проигрывать один за другим в одну запущенную ноду без её перезапуска.
 
 ## Через docker compose
@@ -143,7 +203,7 @@ RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile too
 ## Другие обёртки
 
 ```bash
-./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT         # нода + RViz + проигрывание в одном контейнере (X11)
+./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT         # нода + RViz и отдельный плеер (X11)
 ./scripts/run_headless.sh /data/for_hackathon/doubleT_obstacle   # то же без X11, печатает "OBSTACLE 55.7 m"
 ```
 

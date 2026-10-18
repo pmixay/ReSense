@@ -1,0 +1,42 @@
+{
+  "status": "COMPLETED_REVALIDATED_AND_ARCHIVED",
+  "verified_utc": "2026-10-18T11:20:50.103786+00:00",
+  "producer_source_sha256": "969fcaa39f46b718e6bf1c7eb1da1d25d7bb2f7d68ff3bd8e55adddf4f5473c0",
+  "finalizer_sha256": "da958c218ff55bbb5f7884a14b92783988347e21727de49a2273b027e0b49c16",
+  "review_command": [
+    "/home/resense/.venv/bin/python",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/review_gate_frames.py",
+    "--reference",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/gate.json",
+    "--candidate",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate.json",
+    "--reference-work",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work",
+    "--candidate-work",
+    "/home/resense/data/final_gate_work_cecab1b",
+    "--reference-source",
+    "/home/resense/data/control_lidar_9b92df5",
+    "--candidate-source",
+    "/home/resense/data/final_lidar_cecab1b",
+    "--cache",
+    "/home/resense/data/gate_cache",
+    "--out",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_independent_review.json"
+  ],
+  "files": {
+    "gate.json": "dd799f78dd55b7797f581754777f41b68f5db035c8336220a9ab188f33772517",
+    "gate_execution_status.json": "7a2c268d9acb090354d4056c0460f5f08703c8348217d9dcd7e21879fd0f09af",
+    "gate_console.txt": "427bcb47f85fccbc3e2a5569e801f6c1cc0145e2045f89c4c4737845e404c8c4",
+    "run_default_off_gate.py.gz": "3d976a27b4eb7b8ac5ff02f1eeb9106c6f4e735c84feebdab5e5191408f821ff",
+    "gate_independent_review.json": "b56665aaf018ac30440d47972efd3fadb81b849abc9e059b4a62a86430a12e58",
+    "raw/gate_inputs.json": "22cb9a620667a8a13afcb3ef9f66c8b766713139c5c2252c3424d16638d410c6",
+    "raw/gate.tar.gz": "504d8151517d805971401b6bc5788547ff5d2b28932a5d47f557c7c3989a00bb",
+    "raw/gate_manifest.json": "7aca9fcd26bc9c6a3d55d8954c29ead56e616d5eb202851a41310bd4b1a3cf0c"
+  },
+  "control_archive": {
+    "path": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/raw/gate_control_and_7b.tar.gz",
+    "sha256": "697a3636f1148a628db466c8103bd15640bc15c8ec5da73987a12de1093ccc08"
+  },
+  "scope": "Fresh selected-default source. Earlier same-runtime native control reused unchanged.",
+  "timing_scope": "Concurrent replay; wall time and latency are not throughput benchmarks."
+}

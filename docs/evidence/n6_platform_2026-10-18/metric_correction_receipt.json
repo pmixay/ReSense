@@ -1,0 +1,39 @@
+{
+  "recovery": "Recovered byte-for-byte from committed c6ec863 after the initial correction had already overwritten working copies. These are exact committed originals, not an earlier working-copy backup.",
+  "files": {
+    "compare_legacy.py": {
+      "original_sha256": "3c37bbe39481ba64e5b3241f1d8c5fe757f4aeb96204fd40fcdf89303934df6b",
+      "source_commit": "c6ec863",
+      "source_path": "docs/evidence/n6_platform_2026-10-18/compare_legacy.py",
+      "corrected_sha256": "86397cd1617f79b191df9fd5f14a1506adda0a194084134820ba102d6d634529"
+    },
+    "doubleT_obstacle_v3_legacy.json": {
+      "original_sha256": "c3f6c85230903c59702f6bb8c8c910a22326b1c95235939cce3d8d47384263b2",
+      "source_commit": "c6ec863",
+      "source_path": "docs/evidence/n6_platform_2026-10-18/doubleT_obstacle_v3_legacy.json",
+      "corrected_sha256": "6e4a2ecf59d4bcbef2cdb199f5ec5b3c70ab67066c8bebdb89b48533f3f256f3"
+    },
+    "cloud_with_fake_obj_v3_legacy.json": {
+      "original_sha256": "93616dc866f91489994889fa5a4e1149fa7f7f223c5129e13ade5a1ee9a8deac",
+      "source_commit": "c6ec863",
+      "source_path": "docs/evidence/n6_platform_2026-10-18/cloud_with_fake_obj_v3_legacy.json",
+      "corrected_sha256": "90644f7d4bcf8526615c2f644d438c911d7cf3d9b908a43e2d5e948a0dfb4d13"
+    }
+  },
+  "correction": {
+    "reason": "Original first_stop_m used maximum associated distance, which differs from temporal first on the nonmonotonic real-person crossing. Changed to the earliest matched frame, adding maximum_matched_distance_m and per-frame gauge relation breakdown.",
+    "doubleT_obstacle_person_crossing": {
+      "old_mislabeled_first_stop_m": 56.55,
+      "correct_temporal_first_stop_m": 55.51,
+      "first_frame": 8,
+      "maximum_matched_distance_m": 56.55,
+      "matches_each_variant": {
+        "inside": 61,
+        "outside": 6,
+        "unknown": 0
+      }
+    },
+    "unchanged": "No raw captures, labels, matching assignments, candidate decisions, lost/new match results, Set O temporal first distances, or synthetic platform first STOP 44.01\u219251.12m changed.",
+    "legacy_aggregate": "The unchanged legacy scorer collapses dynamic gauge relation to one final value. This retained aggregate now has an explicit non-authoritative warning for the crossing object; top-level per-frame relation breakdown is authoritative for this comparison."
+  }
+}

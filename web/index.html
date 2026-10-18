@@ -85,6 +85,7 @@
           <span>Ось пути, м (+ влево)</span><b id="axis">—</b>
           <span>Радиус кривой</span><b id="radius">—</b>
           <span>Дальность модели оси</span><b id="valid">—</b>
+          <span>Отображаемый габарит</span><b id="display-gauge">—</b>
           <span>Точек / внутри габарита</span><b id="points">—</b>
           <span>Время обработки</span><b id="timing">—</b>
           <span>Путь / габарит / кластеры</span><b id="stages">—</b>
@@ -254,6 +255,16 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
   const { F, u0, v0, cx, cy, cz, tp } = cam, t = r ? (r.track || {}) : {};
   const Pabs = (X, Y, Z) => { const d = Math.max(X - cx, 0.5); return [u0 - F * (Y - cy) / d, v0 - F * ((Z - cz) / d - tp)]; };
   const P = (X, dy, h) => Pabs(X, tm.y(X) + dy, tm.z(X) + h);
+  const gauge = r?.gauge, centreline = gauge?.centerline || [];
+  const displayed = (X, column, fallback) => {
+    if (!centreline.length) return fallback(X);
+    let hi = centreline.findIndex(p => p[0] >= X);
+    if (hi < 0) hi = centreline.length - 1;
+    if (hi === 0) return centreline[0][column];
+    const a = centreline[hi - 1], b = centreline[hi];
+    return a[column] + (b[column] - a[column]) * (X - a[0]) / (b[0] - a[0]);
+  };
+  const Penv = (X, dy, h) => Pabs(X, displayed(X, 1, tm.y) + dy, displayed(X, 2, tm.z) + h);
   const fade = X => Math.max(0.18, 1 - X / 280);
   const line = (pts, color, width) => { ctx.strokeStyle = color; ctx.lineWidth = width; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); };
   const band = (from, to, dyL, dyR, h, color) => {
@@ -264,8 +275,9 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
     xs.slice().reverse().forEach(X => { const p = P(X, dyR, h); ctx.lineTo(p[0], p[1]); });
     ctx.closePath(); ctx.fill();
   };
-  const envEnd = Math.min(CAB.far, Math.max(t.axis_valid ?? 150, 20));
-  const trackEnd = Math.min(CAB.far, envEnd + 60);        // the fitted axis is extrapolated beyond envEnd: faded, then cut
+  const trackSupport = Math.min(CAB.far, Math.max(t.axis_valid ?? 150, 20));
+  const envEnd = gauge ? Math.min(CAB.far, gauge.valid ? gauge.solid_range_m : gauge.drawn_range_m) : trackSupport;
+  const trackEnd = Math.min(CAB.far, trackSupport + 60);  // extrapolated raw rails are faded independently of the box
   ctx.fillStyle = '#12151b'; ctx.fillRect(0, 0, W, H);
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   // schematic tunnel: a ring every 10 m and its longitudinal edges
@@ -288,20 +300,21 @@ function cabScene(ctx, W, H, r, tm, cam, opts) {
   for (const side of [-RAIL_HALF, RAIL_HALF]) {
     for (let i = 1; i < xsRail.length; i++) {
       const X = xsRail[i];
-      line([P(xsRail[i - 1], side, 0), P(X, side, 0)], `rgba(196,204,218,${(X > envEnd ? 0.3 : 0.9) * fade(X)})`, Math.max(0.5, Math.min(5, F * 0.08 / (X - cx))));
+      line([P(xsRail[i - 1], side, 0), P(X, side, 0)], `rgba(196,204,218,${(X > trackSupport ? 0.3 : 0.9) * fade(X)})`, Math.max(0.5, Math.min(5, F * 0.08 / (X - cx))));
     }
   }
   // the train envelope the detector checks: floor and roof edges, a cross-section every 20 m
-  const env = a => `rgba(47,208,122,${a})`, xsEnv = cabSteps(CAB.rangeMin, envEnd);
+  const env = a => gauge && !gauge.valid ? `rgba(128,128,128,${a * .45})` : `rgba(47,208,122,${a})`;
+  const xsEnv = envEnd > CAB.rangeMin ? cabSteps(CAB.rangeMin, envEnd) : [];
   for (const dy of [-ENVELOPE.half, ENVELOPE.half]) {
-    line(xsEnv.map(X => P(X, dy, ENVELOPE.bottom)), env(0.85), 1.6);
-    line(xsEnv.map(X => P(X, dy, ENVELOPE.top)), env(0.4), 1);
+    line(xsEnv.map(X => Penv(X, dy, ENVELOPE.bottom)), env(0.85), 1.6);
+    line(xsEnv.map(X => Penv(X, dy, ENVELOPE.top)), env(0.4), 1);
   }
-  const frames = [];
+  const frames = envEnd > CAB.rangeMin ? [CAB.rangeMin, envEnd] : [];
   if (opts.hud) for (let X = 10; X < envEnd; X += 20) frames.push(X);
   if (opts.frameAt != null && opts.frameAt < envEnd) frames.push(opts.frameAt);
   for (const X of frames) {
-    const rect = [[-1, 0], [1, 0], [1, 1], [-1, 1], [-1, 0]].map(([sd, up]) => P(X, sd * ENVELOPE.half, up ? ENVELOPE.top : ENVELOPE.bottom));
+    const rect = [[-1, 0], [1, 0], [1, 1], [-1, 1], [-1, 0]].map(([sd, up]) => Penv(X, sd * ENVELOPE.half, up ? ENVELOPE.top : ENVELOPE.bottom));
     line(rect, env(X === opts.frameAt ? 0.9 : 0.45 * fade(X)), X === opts.frameAt ? 1.6 : 1);
   }
   if (opts.hud) {
@@ -432,7 +445,7 @@ function drawCab(res) {
     ctx.fillStyle = '#fff'; ctx.fillText(caption, ix + 16, iy + 23);
     inset = { x: ix, y: iy, width: iw, height: ih, distance: Xo, zone: target.zone };
   }
-  state.cab = { width: W, height: H, focal: cam.F, clearEnd: main.clearEnd, boxes: main.boxes, inset };
+  state.cab = { width: W, height: H, focal: cam.F, clearEnd: main.clearEnd, envEnd: main.envEnd, boxes: main.boxes, inset };
 }
 function timelineNow() {
   if (state.mode === 'replay') { const f = state.last; return f ? stampOf(f) : 0; }
@@ -537,6 +550,7 @@ function applySafety(res) {
   $('decision').textContent = DECISION_RU[decision] || decision;
   $('decision').className = { STOP: 'bad', FAULT: 'bad', CAUTION: 'warn' }[decision] || '';
   $('clear').textContent = res.freshness?.valid === false || decision === 'FAULT' ? 'не определена' : res.clear_distance == null ? '—' : res.clear_distance.toFixed(0) + ' м';
+  $('display-gauge').textContent = !res.gauge ? '—' : `${res.gauge.drawn_range_m.toFixed(0)} м · ${res.gauge.valid ? 'подтверждён' : res.gauge.held ? 'удерживается' : 'нет данных'}`;
   const fresh = res.freshness;
   $('freshness').textContent = !fresh ? 'не проверялась' : fresh.valid ? 'проверена при обработке' : fresh.reason === 'catchup' ? 'обработка очереди' : 'нет актуальных данных';
   $('freshness').className = !fresh || fresh.reason === 'catchup' ? 'warn' : fresh.valid ? '' : 'bad';
@@ -631,6 +645,7 @@ function onStatus(msg, source = ros, generation = rosGeneration) {
     res.freshness = { ...(f || {}), valid: false, go_allowed: false, reason: invalid };
     if (invalid !== 'status_transport_stale') res.freshness.source_age_s = null;
     res.clear_distance = 0;
+    if (res.gauge) res.gauge = { ...res.gauge, valid: false, held: false, drawn_range_m: 0, solid_range_m: 0 };
     res.health = { ...(res.health || {}), level: 'error', decision_level: 'error', clear_distance: 0,
       messages: ['Возраст результата неизвестен, срок истёк или часы не синхронизированы'] };
     res.decision = res.obstacle || res.decision === 'STOP' ? 'STOP' : 'FAULT';
@@ -666,6 +681,7 @@ function checkLiveStream(now = performance.now(), disconnected = false) {
   res.snapshot_kind = 'browser_transport_stale';
   res.decision = held ? 'STOP' : 'FAULT'; res.obstacle = held; res.stop_held = held;
   res.clear_distance = 0;
+  if (res.gauge) res.gauge = { ...res.gauge, valid: false, held: false, drawn_range_m: 0, solid_range_m: 0 };
   res.freshness = { ...(res.freshness || {}), valid: false, go_allowed: false,
     source_age_s: null, reason: 'status_stream_stale' };
   res.health = { ...(res.health || {}), level: 'error', decision_level: 'error', clear_distance: 0,

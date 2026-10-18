@@ -1,0 +1,123 @@
+{
+  "frames": 345,
+  "baseline_sha256": "98d6a12413c2ff333d5991cd051138f65e72c3348a2884ff60984dc8b44ce312",
+  "candidate_sha256": "0c59b06f54e53bfea9f506c7c242485f2f65b89c1918ca186524fd18b2501ce6",
+  "comparison_sha256": "faec5ac3806c6e589faeaa0e48916c6b8a344ffbcc8cdd5603a5625601025c44",
+  "stop_frames": [
+    0,
+    0
+  ],
+  "new_stop_frames": [],
+  "lost_stop_frames": [],
+  "changed_detection_counts": [],
+  "changed_detection_geometry_frames": [],
+  "changed_warning_frames": [],
+  "decision_changes": [],
+  "health_level_change_frames": [],
+  "non_latency_health_message_change_frames": [],
+  "latency_warning_frame_counts": [
+    335,
+    335
+  ],
+  "range_changes": [
+    {
+      "frame": 23,
+      "clear": [
+        45.0,
+        61.8
+      ],
+      "monitored": [
+        45.0,
+        61.8
+      ],
+      "axis_valid": [
+        45.0,
+        61.8
+      ]
+    },
+    {
+      "frame": 24,
+      "clear": [
+        45.0,
+        62.0
+      ],
+      "monitored": [
+        45.0,
+        62.0
+      ],
+      "axis_valid": [
+        45.0,
+        62.0
+      ]
+    },
+    {
+      "frame": 25,
+      "clear": [
+        45.0,
+        55.7
+      ],
+      "monitored": [
+        45.0,
+        55.7
+      ],
+      "axis_valid": [
+        45.0,
+        55.7
+      ]
+    },
+    {
+      "frame": 26,
+      "clear": [
+        45.0,
+        56.6
+      ],
+      "monitored": [
+        45.0,
+        56.6
+      ],
+      "axis_valid": [
+        45.0,
+        56.6
+      ]
+    },
+    {
+      "frame": 27,
+      "clear": [
+        45.0,
+        57.4
+      ],
+      "monitored": [
+        45.0,
+        57.4
+      ],
+      "axis_valid": [
+        45.0,
+        57.4
+      ]
+    },
+    {
+      "frame": 28,
+      "clear": [
+        45.0,
+        57.7
+      ],
+      "monitored": [
+        45.0,
+        57.7
+      ],
+      "axis_valid": [
+        45.0,
+        57.7
+      ]
+    }
+  ],
+  "shape_changed_frames": [],
+  "extended_axis_frames": [
+    23,
+    24,
+    25,
+    26,
+    27,
+    28
+  ]
+}

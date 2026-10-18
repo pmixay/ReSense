@@ -1,0 +1,3515 @@
+{
+  "measured_commit": "745096f0ee3c9a0fb1076735f877f950144ba5ba",
+  "default_activation": "rejected; keep track.rails_axis_extension false",
+  "recordings": {
+    "doubleT_platform": {
+      "frames": 345,
+      "stop_frames": [
+        0,
+        0
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [
+        {
+          "frame": 23,
+          "clear": [
+            45.0,
+            61.8
+          ],
+          "monitored": [
+            45.0,
+            61.8
+          ],
+          "axis_valid": [
+            45.0,
+            61.8
+          ]
+        },
+        {
+          "frame": 24,
+          "clear": [
+            45.0,
+            62.0
+          ],
+          "monitored": [
+            45.0,
+            62.0
+          ],
+          "axis_valid": [
+            45.0,
+            62.0
+          ]
+        },
+        {
+          "frame": 25,
+          "clear": [
+            45.0,
+            55.7
+          ],
+          "monitored": [
+            45.0,
+            55.7
+          ],
+          "axis_valid": [
+            45.0,
+            55.7
+          ]
+        },
+        {
+          "frame": 26,
+          "clear": [
+            45.0,
+            56.6
+          ],
+          "monitored": [
+            45.0,
+            56.6
+          ],
+          "axis_valid": [
+            45.0,
+            56.6
+          ]
+        },
+        {
+          "frame": 27,
+          "clear": [
+            45.0,
+            57.4
+          ],
+          "monitored": [
+            45.0,
+            57.4
+          ],
+          "axis_valid": [
+            45.0,
+            57.4
+          ]
+        },
+        {
+          "frame": 28,
+          "clear": [
+            45.0,
+            57.7
+          ],
+          "monitored": [
+            45.0,
+            57.7
+          ],
+          "axis_valid": [
+            45.0,
+            57.7
+          ]
+        }
+      ],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "comparison_sha256": "3ee176a4682078c4d2486a10e55c0ffa2de7ad4bd108b5783b1fe7f8328c639a"
+    },
+    "roundT_doubleT": {
+      "frames": 252,
+      "stop_frames": [
+        0,
+        0
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [],
+      "comparison_sha256": "e177ccaefa1903d3a4d2fe382a6fe1ba2b4cf83f33444fa49283eb2e563f56fe"
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "stop_frames": [
+        2,
+        2
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [],
+      "comparison_sha256": "1b45c19e62f167d5398ea0424989360e3b90e00c21b320e31c52dc811004b41b"
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "stop_frames": [
+        0,
+        0
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [],
+      "comparison_sha256": "393128930a363cdd1e6a277f6b11ded0d7adad7b5b17024abd60f89329b70d15"
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "stop_frames": [
+        11,
+        11
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [
+        {
+          "frame": 101,
+          "clear": [
+            45.0,
+            55.8
+          ],
+          "monitored": [
+            45.0,
+            55.8
+          ],
+          "axis_valid": [
+            45.0,
+            55.8
+          ]
+        },
+        {
+          "frame": 103,
+          "clear": [
+            45.0,
+            61.8
+          ],
+          "monitored": [
+            45.0,
+            61.8
+          ],
+          "axis_valid": [
+            45.0,
+            61.8
+          ]
+        },
+        {
+          "frame": 104,
+          "clear": [
+            45.0,
+            59.7
+          ],
+          "monitored": [
+            45.0,
+            59.7
+          ],
+          "axis_valid": [
+            45.0,
+            59.7
+          ]
+        },
+        {
+          "frame": 105,
+          "clear": [
+            45.0,
+            52.7
+          ],
+          "monitored": [
+            45.0,
+            52.7
+          ],
+          "axis_valid": [
+            45.0,
+            52.7
+          ]
+        },
+        {
+          "frame": 106,
+          "clear": [
+            45.0,
+            58.7
+          ],
+          "monitored": [
+            45.0,
+            58.7
+          ],
+          "axis_valid": [
+            45.0,
+            58.7
+          ]
+        },
+        {
+          "frame": 107,
+          "clear": [
+            45.0,
+            58.1
+          ],
+          "monitored": [
+            45.0,
+            58.1
+          ],
+          "axis_valid": [
+            45.0,
+            58.1
+          ]
+        },
+        {
+          "frame": 108,
+          "clear": [
+            45.0,
+            57.0
+          ],
+          "monitored": [
+            45.0,
+            57.0
+          ],
+          "axis_valid": [
+            45.0,
+            57.0
+          ]
+        },
+        {
+          "frame": 110,
+          "clear": [
+            45.0,
+            58.6
+          ],
+          "monitored": [
+            45.0,
+            58.6
+          ],
+          "axis_valid": [
+            45.0,
+            58.6
+          ]
+        },
+        {
+          "frame": 111,
+          "clear": [
+            45.0,
+            55.7
+          ],
+          "monitored": [
+            45.0,
+            55.7
+          ],
+          "axis_valid": [
+            45.0,
+            55.7
+          ]
+        },
+        {
+          "frame": 112,
+          "clear": [
+            45.0,
+            55.9
+          ],
+          "monitored": [
+            45.0,
+            55.9
+          ],
+          "axis_valid": [
+            45.0,
+            55.9
+          ]
+        },
+        {
+          "frame": 113,
+          "clear": [
+            45.0,
+            54.5
+          ],
+          "monitored": [
+            45.0,
+            54.5
+          ],
+          "axis_valid": [
+            45.0,
+            54.5
+          ]
+        },
+        {
+          "frame": 114,
+          "clear": [
+            45.0,
+            56.2
+          ],
+          "monitored": [
+            45.0,
+            56.2
+          ],
+          "axis_valid": [
+            45.0,
+            56.2
+          ]
+        },
+        {
+          "frame": 119,
+          "clear": [
+            45.0,
+            58.2
+          ],
+          "monitored": [
+            45.0,
+            58.2
+          ],
+          "axis_valid": [
+            45.0,
+            58.2
+          ]
+        },
+        {
+          "frame": 120,
+          "clear": [
+            45.0,
+            59.7
+          ],
+          "monitored": [
+            45.0,
+            59.7
+          ],
+          "axis_valid": [
+            45.0,
+            59.7
+          ]
+        },
+        {
+          "frame": 121,
+          "clear": [
+            45.0,
+            57.9
+          ],
+          "monitored": [
+            45.0,
+            57.9
+          ],
+          "axis_valid": [
+            45.0,
+            57.9
+          ]
+        },
+        {
+          "frame": 122,
+          "clear": [
+            45.0,
+            62.0
+          ],
+          "monitored": [
+            45.0,
+            62.0
+          ],
+          "axis_valid": [
+            45.0,
+            62.0
+          ]
+        },
+        {
+          "frame": 123,
+          "clear": [
+            45.0,
+            51.5
+          ],
+          "monitored": [
+            45.0,
+            51.5
+          ],
+          "axis_valid": [
+            45.0,
+            51.5
+          ]
+        },
+        {
+          "frame": 124,
+          "clear": [
+            45.0,
+            58.9
+          ],
+          "monitored": [
+            45.0,
+            58.9
+          ],
+          "axis_valid": [
+            45.0,
+            58.9
+          ]
+        },
+        {
+          "frame": 125,
+          "clear": [
+            45.0,
+            61.2
+          ],
+          "monitored": [
+            45.0,
+            61.2
+          ],
+          "axis_valid": [
+            45.0,
+            61.2
+          ]
+        },
+        {
+          "frame": 126,
+          "clear": [
+            45.0,
+            58.6
+          ],
+          "monitored": [
+            45.0,
+            58.6
+          ],
+          "axis_valid": [
+            45.0,
+            58.6
+          ]
+        },
+        {
+          "frame": 127,
+          "clear": [
+            45.0,
+            59.1
+          ],
+          "monitored": [
+            45.0,
+            59.1
+          ],
+          "axis_valid": [
+            45.0,
+            59.1
+          ]
+        },
+        {
+          "frame": 128,
+          "clear": [
+            45.0,
+            58.6
+          ],
+          "monitored": [
+            45.0,
+            58.6
+          ],
+          "axis_valid": [
+            45.0,
+            58.6
+          ]
+        },
+        {
+          "frame": 129,
+          "clear": [
+            45.0,
+            55.2
+          ],
+          "monitored": [
+            45.0,
+            55.2
+          ],
+          "axis_valid": [
+            45.0,
+            55.2
+          ]
+        },
+        {
+          "frame": 130,
+          "clear": [
+            45.0,
+            55.3
+          ],
+          "monitored": [
+            45.0,
+            55.3
+          ],
+          "axis_valid": [
+            45.0,
+            55.3
+          ]
+        },
+        {
+          "frame": 131,
+          "clear": [
+            45.0,
+            58.2
+          ],
+          "monitored": [
+            45.0,
+            58.2
+          ],
+          "axis_valid": [
+            45.0,
+            58.2
+          ]
+        },
+        {
+          "frame": 132,
+          "clear": [
+            45.0,
+            55.7
+          ],
+          "monitored": [
+            45.0,
+            55.7
+          ],
+          "axis_valid": [
+            45.0,
+            55.7
+          ]
+        },
+        {
+          "frame": 133,
+          "clear": [
+            45.0,
+            58.4
+          ],
+          "monitored": [
+            45.0,
+            58.4
+          ],
+          "axis_valid": [
+            45.0,
+            58.4
+          ]
+        },
+        {
+          "frame": 134,
+          "clear": [
+            45.0,
+            55.7
+          ],
+          "monitored": [
+            45.0,
+            55.7
+          ],
+          "axis_valid": [
+            45.0,
+            55.7
+          ]
+        },
+        {
+          "frame": 135,
+          "clear": [
+            45.0,
+            58.9
+          ],
+          "monitored": [
+            45.0,
+            58.9
+          ],
+          "axis_valid": [
+            45.0,
+            58.9
+          ]
+        },
+        {
+          "frame": 136,
+          "clear": [
+            45.0,
+            55.3
+          ],
+          "monitored": [
+            45.0,
+            55.3
+          ],
+          "axis_valid": [
+            45.0,
+            55.3
+          ]
+        },
+        {
+          "frame": 138,
+          "clear": [
+            45.0,
+            55.1
+          ],
+          "monitored": [
+            45.0,
+            55.1
+          ],
+          "axis_valid": [
+            45.0,
+            55.1
+          ]
+        },
+        {
+          "frame": 139,
+          "clear": [
+            45.0,
+            58.1
+          ],
+          "monitored": [
+            45.0,
+            58.1
+          ],
+          "axis_valid": [
+            45.0,
+            58.1
+          ]
+        },
+        {
+          "frame": 140,
+          "clear": [
+            45.0,
+            57.7
+          ],
+          "monitored": [
+            45.0,
+            57.7
+          ],
+          "axis_valid": [
+            45.0,
+            57.7
+          ]
+        },
+        {
+          "frame": 142,
+          "clear": [
+            45.0,
+            55.6
+          ],
+          "monitored": [
+            45.0,
+            55.6
+          ],
+          "axis_valid": [
+            45.0,
+            55.6
+          ]
+        },
+        {
+          "frame": 143,
+          "clear": [
+            45.0,
+            58.3
+          ],
+          "monitored": [
+            45.0,
+            58.3
+          ],
+          "axis_valid": [
+            45.0,
+            58.3
+          ]
+        },
+        {
+          "frame": 151,
+          "clear": [
+            45.0,
+            62.2
+          ],
+          "monitored": [
+            45.0,
+            62.2
+          ],
+          "axis_valid": [
+            45.0,
+            62.2
+          ]
+        },
+        {
+          "frame": 152,
+          "clear": [
+            45.0,
+            61.5
+          ],
+          "monitored": [
+            45.0,
+            61.5
+          ],
+          "axis_valid": [
+            45.0,
+            61.5
+          ]
+        },
+        {
+          "frame": 153,
+          "clear": [
+            45.0,
+            58.0
+          ],
+          "monitored": [
+            45.0,
+            58.0
+          ],
+          "axis_valid": [
+            45.0,
+            58.0
+          ]
+        },
+        {
+          "frame": 154,
+          "clear": [
+            45.0,
+            58.5
+          ],
+          "monitored": [
+            45.0,
+            58.5
+          ],
+          "axis_valid": [
+            45.0,
+            58.5
+          ]
+        },
+        {
+          "frame": 155,
+          "clear": [
+            45.0,
+            57.6
+          ],
+          "monitored": [
+            45.0,
+            57.6
+          ],
+          "axis_valid": [
+            45.0,
+            57.6
+          ]
+        },
+        {
+          "frame": 157,
+          "clear": [
+            45.0,
+            55.4
+          ],
+          "monitored": [
+            45.0,
+            55.4
+          ],
+          "axis_valid": [
+            45.0,
+            55.4
+          ]
+        },
+        {
+          "frame": 158,
+          "clear": [
+            45.0,
+            55.2
+          ],
+          "monitored": [
+            45.0,
+            55.2
+          ],
+          "axis_valid": [
+            45.0,
+            55.2
+          ]
+        },
+        {
+          "frame": 159,
+          "clear": [
+            45.0,
+            58.0
+          ],
+          "monitored": [
+            45.0,
+            58.0
+          ],
+          "axis_valid": [
+            45.0,
+            58.0
+          ]
+        },
+        {
+          "frame": 160,
+          "clear": [
+            45.0,
+            51.9
+          ],
+          "monitored": [
+            45.0,
+            51.9
+          ],
+          "axis_valid": [
+            45.0,
+            51.9
+          ]
+        },
+        {
+          "frame": 161,
+          "clear": [
+            45.0,
+            58.1
+          ],
+          "monitored": [
+            45.0,
+            58.1
+          ],
+          "axis_valid": [
+            45.0,
+            58.1
+          ]
+        },
+        {
+          "frame": 162,
+          "clear": [
+            45.0,
+            58.8
+          ],
+          "monitored": [
+            45.0,
+            58.8
+          ],
+          "axis_valid": [
+            45.0,
+            58.8
+          ]
+        },
+        {
+          "frame": 163,
+          "clear": [
+            45.0,
+            51.7
+          ],
+          "monitored": [
+            45.0,
+            51.7
+          ],
+          "axis_valid": [
+            45.0,
+            51.7
+          ]
+        },
+        {
+          "frame": 164,
+          "clear": [
+            45.0,
+            58.6
+          ],
+          "monitored": [
+            45.0,
+            58.6
+          ],
+          "axis_valid": [
+            45.0,
+            58.6
+          ]
+        },
+        {
+          "frame": 166,
+          "clear": [
+            45.0,
+            59.2
+          ],
+          "monitored": [
+            45.0,
+            59.2
+          ],
+          "axis_valid": [
+            45.0,
+            59.2
+          ]
+        },
+        {
+          "frame": 167,
+          "clear": [
+            45.0,
+            61.9
+          ],
+          "monitored": [
+            45.0,
+            61.9
+          ],
+          "axis_valid": [
+            45.0,
+            61.9
+          ]
+        },
+        {
+          "frame": 168,
+          "clear": [
+            45.0,
+            55.0
+          ],
+          "monitored": [
+            45.0,
+            55.0
+          ],
+          "axis_valid": [
+            45.0,
+            55.0
+          ]
+        },
+        {
+          "frame": 169,
+          "clear": [
+            45.0,
+            59.2
+          ],
+          "monitored": [
+            45.0,
+            59.2
+          ],
+          "axis_valid": [
+            45.0,
+            59.2
+          ]
+        },
+        {
+          "frame": 170,
+          "clear": [
+            45.0,
+            58.9
+          ],
+          "monitored": [
+            45.0,
+            58.9
+          ],
+          "axis_valid": [
+            45.0,
+            58.9
+          ]
+        },
+        {
+          "frame": 172,
+          "clear": [
+            45.0,
+            55.4
+          ],
+          "monitored": [
+            45.0,
+            55.4
+          ],
+          "axis_valid": [
+            45.0,
+            55.4
+          ]
+        },
+        {
+          "frame": 174,
+          "clear": [
+            45.0,
+            53.9
+          ],
+          "monitored": [
+            45.0,
+            53.9
+          ],
+          "axis_valid": [
+            45.0,
+            53.9
+          ]
+        },
+        {
+          "frame": 176,
+          "clear": [
+            45.0,
+            54.9
+          ],
+          "monitored": [
+            45.0,
+            54.9
+          ],
+          "axis_valid": [
+            45.0,
+            54.9
+          ]
+        },
+        {
+          "frame": 177,
+          "clear": [
+            45.0,
+            54.6
+          ],
+          "monitored": [
+            45.0,
+            54.6
+          ],
+          "axis_valid": [
+            45.0,
+            54.6
+          ]
+        },
+        {
+          "frame": 178,
+          "clear": [
+            45.0,
+            53.9
+          ],
+          "monitored": [
+            45.0,
+            53.9
+          ],
+          "axis_valid": [
+            45.0,
+            53.9
+          ]
+        },
+        {
+          "frame": 179,
+          "clear": [
+            45.0,
+            51.0
+          ],
+          "monitored": [
+            45.0,
+            51.0
+          ],
+          "axis_valid": [
+            45.0,
+            51.0
+          ]
+        },
+        {
+          "frame": 180,
+          "clear": [
+            45.0,
+            55.2
+          ],
+          "monitored": [
+            45.0,
+            55.2
+          ],
+          "axis_valid": [
+            45.0,
+            55.2
+          ]
+        },
+        {
+          "frame": 181,
+          "clear": [
+            45.0,
+            53.8
+          ],
+          "monitored": [
+            45.0,
+            53.8
+          ],
+          "axis_valid": [
+            45.0,
+            53.8
+          ]
+        },
+        {
+          "frame": 182,
+          "clear": [
+            45.0,
+            54.8
+          ],
+          "monitored": [
+            45.0,
+            54.8
+          ],
+          "axis_valid": [
+            45.0,
+            54.8
+          ]
+        },
+        {
+          "frame": 183,
+          "clear": [
+            45.0,
+            55.2
+          ],
+          "monitored": [
+            45.0,
+            55.2
+          ],
+          "axis_valid": [
+            45.0,
+            55.2
+          ]
+        },
+        {
+          "frame": 184,
+          "clear": [
+            45.0,
+            61.2
+          ],
+          "monitored": [
+            45.0,
+            61.2
+          ],
+          "axis_valid": [
+            45.0,
+            61.2
+          ]
+        },
+        {
+          "frame": 185,
+          "clear": [
+            45.0,
+            54.5
+          ],
+          "monitored": [
+            45.0,
+            54.5
+          ],
+          "axis_valid": [
+            45.0,
+            54.5
+          ]
+        },
+        {
+          "frame": 187,
+          "clear": [
+            45.0,
+            54.9
+          ],
+          "monitored": [
+            45.0,
+            54.9
+          ],
+          "axis_valid": [
+            45.0,
+            54.9
+          ]
+        },
+        {
+          "frame": 188,
+          "clear": [
+            45.0,
+            58.0
+          ],
+          "monitored": [
+            45.0,
+            58.0
+          ],
+          "axis_valid": [
+            45.0,
+            58.0
+          ]
+        },
+        {
+          "frame": 189,
+          "clear": [
+            45.0,
+            51.2
+          ],
+          "monitored": [
+            45.0,
+            51.2
+          ],
+          "axis_valid": [
+            45.0,
+            51.2
+          ]
+        },
+        {
+          "frame": 190,
+          "clear": [
+            45.0,
+            58.1
+          ],
+          "monitored": [
+            45.0,
+            58.1
+          ],
+          "axis_valid": [
+            45.0,
+            58.1
+          ]
+        },
+        {
+          "frame": 191,
+          "clear": [
+            45.0,
+            55.4
+          ],
+          "monitored": [
+            45.0,
+            55.4
+          ],
+          "axis_valid": [
+            45.0,
+            55.4
+          ]
+        },
+        {
+          "frame": 192,
+          "clear": [
+            45.0,
+            54.8
+          ],
+          "monitored": [
+            45.0,
+            54.8
+          ],
+          "axis_valid": [
+            45.0,
+            54.8
+          ]
+        },
+        {
+          "frame": 194,
+          "clear": [
+            45.0,
+            62.3
+          ],
+          "monitored": [
+            45.0,
+            62.3
+          ],
+          "axis_valid": [
+            45.0,
+            62.3
+          ]
+        },
+        {
+          "frame": 195,
+          "clear": [
+            45.0,
+            55.5
+          ],
+          "monitored": [
+            45.0,
+            55.5
+          ],
+          "axis_valid": [
+            45.0,
+            55.5
+          ]
+        },
+        {
+          "frame": 196,
+          "clear": [
+            45.0,
+            62.2
+          ],
+          "monitored": [
+            45.0,
+            62.2
+          ],
+          "axis_valid": [
+            45.0,
+            62.2
+          ]
+        },
+        {
+          "frame": 197,
+          "clear": [
+            45.0,
+            68.9
+          ],
+          "monitored": [
+            45.0,
+            68.9
+          ],
+          "axis_valid": [
+            45.0,
+            68.9
+          ]
+        },
+        {
+          "frame": 198,
+          "clear": [
+            45.0,
+            56.0
+          ],
+          "monitored": [
+            45.0,
+            56.0
+          ],
+          "axis_valid": [
+            45.0,
+            56.0
+          ]
+        },
+        {
+          "frame": 199,
+          "clear": [
+            45.0,
+            51.9
+          ],
+          "monitored": [
+            45.0,
+            51.9
+          ],
+          "axis_valid": [
+            45.0,
+            51.9
+          ]
+        },
+        {
+          "frame": 200,
+          "clear": [
+            45.0,
+            54.8
+          ],
+          "monitored": [
+            45.0,
+            54.8
+          ],
+          "axis_valid": [
+            45.0,
+            54.8
+          ]
+        },
+        {
+          "frame": 201,
+          "clear": [
+            45.0,
+            63.0
+          ],
+          "monitored": [
+            45.0,
+            63.0
+          ],
+          "axis_valid": [
+            45.0,
+            63.0
+          ]
+        },
+        {
+          "frame": 202,
+          "clear": [
+            45.0,
+            52.3
+          ],
+          "monitored": [
+            45.0,
+            52.3
+          ],
+          "axis_valid": [
+            45.0,
+            52.3
+          ]
+        },
+        {
+          "frame": 204,
+          "clear": [
+            45.0,
+            54.9
+          ],
+          "monitored": [
+            45.0,
+            54.9
+          ],
+          "axis_valid": [
+            45.0,
+            54.9
+          ]
+        },
+        {
+          "frame": 205,
+          "clear": [
+            45.0,
+            55.3
+          ],
+          "monitored": [
+            45.0,
+            55.3
+          ],
+          "axis_valid": [
+            45.0,
+            55.3
+          ]
+        },
+        {
+          "frame": 206,
+          "clear": [
+            45.0,
+            63.5
+          ],
+          "monitored": [
+            45.0,
+            63.5
+          ],
+          "axis_valid": [
+            45.0,
+            63.5
+          ]
+        },
+        {
+          "frame": 207,
+          "clear": [
+            45.0,
+            72.3
+          ],
+          "monitored": [
+            45.0,
+            72.3
+          ],
+          "axis_valid": [
+            45.0,
+            72.3
+          ]
+        },
+        {
+          "frame": 212,
+          "clear": [
+            45.0,
+            55.8
+          ],
+          "monitored": [
+            45.0,
+            55.8
+          ],
+          "axis_valid": [
+            45.0,
+            55.8
+          ]
+        },
+        {
+          "frame": 213,
+          "clear": [
+            45.0,
+            57.7
+          ],
+          "monitored": [
+            45.0,
+            57.7
+          ],
+          "axis_valid": [
+            45.0,
+            57.7
+          ]
+        },
+        {
+          "frame": 214,
+          "clear": [
+            45.0,
+            51.5
+          ],
+          "monitored": [
+            45.0,
+            51.5
+          ],
+          "axis_valid": [
+            45.0,
+            51.5
+          ]
+        },
+        {
+          "frame": 215,
+          "clear": [
+            45.0,
+            55.9
+          ],
+          "monitored": [
+            45.0,
+            55.9
+          ],
+          "axis_valid": [
+            45.0,
+            55.9
+          ]
+        },
+        {
+          "frame": 216,
+          "clear": [
+            45.0,
+            54.7
+          ],
+          "monitored": [
+            45.0,
+            54.7
+          ],
+          "axis_valid": [
+            45.0,
+            54.7
+          ]
+        },
+        {
+          "frame": 217,
+          "clear": [
+            45.0,
+            55.8
+          ],
+          "monitored": [
+            45.0,
+            55.8
+          ],
+          "axis_valid": [
+            45.0,
+            55.8
+          ]
+        },
+        {
+          "frame": 221,
+          "clear": [
+            60.0,
+            60.7
+          ],
+          "monitored": [
+            60.0,
+            60.7
+          ],
+          "axis_valid": [
+            60.0,
+            60.7
+          ]
+        }
+      ],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [
+        101,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        110,
+        111,
+        112,
+        113,
+        114,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        138,
+        139,
+        140,
+        142,
+        143,
+        151,
+        152,
+        153,
+        154,
+        155,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        166,
+        167,
+        168,
+        169,
+        170,
+        172,
+        174,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        204,
+        205,
+        206,
+        207,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        221
+      ],
+      "comparison_sha256": "a5b9c827566434d31643b40cc287454d1e03a1240eff619b86eefbf523f2cab1"
+    },
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "stop_frames": [
+        452,
+        452
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [],
+      "comparison_sha256": "a22f21f02cb24c222f830c02a627e9e2d00810d08d6e88346a0ac670ca87d4bf"
+    },
+    "synthetic_platform": {
+      "frames": 386,
+      "stop_frames": [
+        185,
+        205
+      ],
+      "new_stop_frames": [
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238
+      ],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238
+      ],
+      "changed_warning_frames": [
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        220,
+        222,
+        223,
+        225,
+        226,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238
+      ],
+      "decision_changes": [
+        {
+          "frame": 133,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 134,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 135,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 136,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 137,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 138,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 139,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 140,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 141,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 228,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 229,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 230,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 231,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 232,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 233,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 234,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 235,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 236,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 237,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        },
+        {
+          "frame": 238,
+          "baseline": {
+            "decision": "CAUTION",
+            "dlevel": "ok"
+          },
+          "candidate": {
+            "decision": "STOP",
+            "dlevel": "ok"
+          }
+        }
+      ],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [
+        {
+          "frame": 116,
+          "clear": [
+            45.0,
+            63.9
+          ],
+          "monitored": [
+            45.0,
+            63.9
+          ],
+          "axis_valid": [
+            45.0,
+            63.9
+          ]
+        },
+        {
+          "frame": 118,
+          "clear": [
+            45.0,
+            57.2
+          ],
+          "monitored": [
+            45.0,
+            57.2
+          ],
+          "axis_valid": [
+            45.0,
+            57.2
+          ]
+        },
+        {
+          "frame": 119,
+          "clear": [
+            45.0,
+            51.4
+          ],
+          "monitored": [
+            45.0,
+            51.4
+          ],
+          "axis_valid": [
+            45.0,
+            51.4
+          ]
+        },
+        {
+          "frame": 120,
+          "clear": [
+            45.0,
+            52.7
+          ],
+          "monitored": [
+            45.0,
+            52.7
+          ],
+          "axis_valid": [
+            45.0,
+            52.7
+          ]
+        },
+        {
+          "frame": 121,
+          "clear": [
+            45.0,
+            54.4
+          ],
+          "monitored": [
+            45.0,
+            54.4
+          ],
+          "axis_valid": [
+            45.0,
+            54.4
+          ]
+        },
+        {
+          "frame": 122,
+          "clear": [
+            45.0,
+            53.7
+          ],
+          "monitored": [
+            45.0,
+            53.7
+          ],
+          "axis_valid": [
+            45.0,
+            53.7
+          ]
+        },
+        {
+          "frame": 125,
+          "clear": [
+            45.0,
+            53.7
+          ],
+          "monitored": [
+            45.0,
+            53.7
+          ],
+          "axis_valid": [
+            45.0,
+            53.7
+          ]
+        },
+        {
+          "frame": 126,
+          "clear": [
+            45.0,
+            52.0
+          ],
+          "monitored": [
+            45.0,
+            52.0
+          ],
+          "axis_valid": [
+            45.0,
+            52.0
+          ]
+        },
+        {
+          "frame": 128,
+          "clear": [
+            45.0,
+            56.5
+          ],
+          "monitored": [
+            45.0,
+            56.7
+          ],
+          "axis_valid": [
+            45.0,
+            56.7
+          ]
+        },
+        {
+          "frame": 129,
+          "clear": [
+            45.0,
+            54.9
+          ],
+          "monitored": [
+            45.0,
+            58.1
+          ],
+          "axis_valid": [
+            45.0,
+            58.1
+          ]
+        },
+        {
+          "frame": 130,
+          "clear": [
+            45.0,
+            54.0
+          ],
+          "monitored": [
+            45.0,
+            56.8
+          ],
+          "axis_valid": [
+            45.0,
+            56.8
+          ]
+        },
+        {
+          "frame": 131,
+          "clear": [
+            45.0,
+            53.1
+          ],
+          "monitored": [
+            45.0,
+            67.8
+          ],
+          "axis_valid": [
+            45.0,
+            67.8
+          ]
+        },
+        {
+          "frame": 132,
+          "clear": [
+            45.0,
+            52.3
+          ],
+          "monitored": [
+            45.0,
+            57.1
+          ],
+          "axis_valid": [
+            45.0,
+            57.1
+          ]
+        },
+        {
+          "frame": 133,
+          "clear": [
+            45.0,
+            50.5
+          ],
+          "monitored": [
+            45.0,
+            56.0
+          ],
+          "axis_valid": [
+            45.0,
+            56.0
+          ]
+        },
+        {
+          "frame": 134,
+          "clear": [
+            45.0,
+            49.5
+          ],
+          "monitored": [
+            45.0,
+            55.2
+          ],
+          "axis_valid": [
+            45.0,
+            55.2
+          ]
+        },
+        {
+          "frame": 135,
+          "clear": [
+            45.0,
+            47.1
+          ],
+          "monitored": [
+            45.0,
+            56.3
+          ],
+          "axis_valid": [
+            45.0,
+            56.3
+          ]
+        },
+        {
+          "frame": 136,
+          "clear": [
+            45.0,
+            46.2
+          ],
+          "monitored": [
+            45.0,
+            51.1
+          ],
+          "axis_valid": [
+            45.0,
+            51.1
+          ]
+        },
+        {
+          "frame": 139,
+          "clear": [
+            42.2,
+            42.2
+          ],
+          "monitored": [
+            45.0,
+            57.3
+          ],
+          "axis_valid": [
+            45.0,
+            57.3
+          ]
+        },
+        {
+          "frame": 140,
+          "clear": [
+            41.3,
+            41.3
+          ],
+          "monitored": [
+            45.0,
+            57.6
+          ],
+          "axis_valid": [
+            45.0,
+            57.6
+          ]
+        },
+        {
+          "frame": 141,
+          "clear": [
+            39.6,
+            39.6
+          ],
+          "monitored": [
+            45.0,
+            58.1
+          ],
+          "axis_valid": [
+            45.0,
+            58.1
+          ]
+        },
+        {
+          "frame": 142,
+          "clear": [
+            38.8,
+            38.8
+          ],
+          "monitored": [
+            45.0,
+            57.4
+          ],
+          "axis_valid": [
+            45.0,
+            57.4
+          ]
+        },
+        {
+          "frame": 143,
+          "clear": [
+            37.3,
+            37.3
+          ],
+          "monitored": [
+            45.0,
+            54.5
+          ],
+          "axis_valid": [
+            45.0,
+            54.5
+          ]
+        },
+        {
+          "frame": 145,
+          "clear": [
+            35.7,
+            35.7
+          ],
+          "monitored": [
+            45.0,
+            54.6
+          ],
+          "axis_valid": [
+            45.0,
+            54.6
+          ]
+        },
+        {
+          "frame": 146,
+          "clear": [
+            35.0,
+            35.0
+          ],
+          "monitored": [
+            45.0,
+            54.6
+          ],
+          "axis_valid": [
+            45.0,
+            54.6
+          ]
+        },
+        {
+          "frame": 147,
+          "clear": [
+            32.6,
+            32.6
+          ],
+          "monitored": [
+            45.0,
+            54.7
+          ],
+          "axis_valid": [
+            45.0,
+            54.7
+          ]
+        },
+        {
+          "frame": 150,
+          "clear": [
+            29.6,
+            29.6
+          ],
+          "monitored": [
+            45.0,
+            51.9
+          ],
+          "axis_valid": [
+            45.0,
+            51.9
+          ]
+        },
+        {
+          "frame": 151,
+          "clear": [
+            28.0,
+            28.0
+          ],
+          "monitored": [
+            45.0,
+            53.5
+          ],
+          "axis_valid": [
+            45.0,
+            53.5
+          ]
+        },
+        {
+          "frame": 153,
+          "clear": [
+            25.8,
+            25.8
+          ],
+          "monitored": [
+            45.0,
+            52.6
+          ],
+          "axis_valid": [
+            45.0,
+            52.6
+          ]
+        },
+        {
+          "frame": 154,
+          "clear": [
+            25.0,
+            25.0
+          ],
+          "monitored": [
+            45.0,
+            55.9
+          ],
+          "axis_valid": [
+            45.0,
+            55.9
+          ]
+        },
+        {
+          "frame": 156,
+          "clear": [
+            23.5,
+            23.5
+          ],
+          "monitored": [
+            45.0,
+            60.2
+          ],
+          "axis_valid": [
+            45.0,
+            60.2
+          ]
+        },
+        {
+          "frame": 157,
+          "clear": [
+            22.1,
+            22.1
+          ],
+          "monitored": [
+            45.0,
+            56.3
+          ],
+          "axis_valid": [
+            45.0,
+            56.3
+          ]
+        },
+        {
+          "frame": 158,
+          "clear": [
+            21.4,
+            21.4
+          ],
+          "monitored": [
+            45.0,
+            57.7
+          ],
+          "axis_valid": [
+            45.0,
+            57.7
+          ]
+        },
+        {
+          "frame": 159,
+          "clear": [
+            19.2,
+            19.2
+          ],
+          "monitored": [
+            45.0,
+            52.3
+          ],
+          "axis_valid": [
+            45.0,
+            52.3
+          ]
+        },
+        {
+          "frame": 160,
+          "clear": [
+            18.4,
+            18.4
+          ],
+          "monitored": [
+            45.0,
+            57.7
+          ],
+          "axis_valid": [
+            45.0,
+            57.7
+          ]
+        },
+        {
+          "frame": 161,
+          "clear": [
+            17.1,
+            17.1
+          ],
+          "monitored": [
+            45.0,
+            57.1
+          ],
+          "axis_valid": [
+            45.0,
+            57.1
+          ]
+        },
+        {
+          "frame": 162,
+          "clear": [
+            16.3,
+            16.3
+          ],
+          "monitored": [
+            45.0,
+            51.6
+          ],
+          "axis_valid": [
+            45.0,
+            51.6
+          ]
+        },
+        {
+          "frame": 165,
+          "clear": [
+            13.4,
+            13.4
+          ],
+          "monitored": [
+            45.0,
+            52.0
+          ],
+          "axis_valid": [
+            45.0,
+            52.0
+          ]
+        },
+        {
+          "frame": 166,
+          "clear": [
+            12.5,
+            12.5
+          ],
+          "monitored": [
+            45.0,
+            51.8
+          ],
+          "axis_valid": [
+            45.0,
+            51.8
+          ]
+        },
+        {
+          "frame": 167,
+          "clear": [
+            45.0,
+            62.1
+          ],
+          "monitored": [
+            45.0,
+            62.1
+          ],
+          "axis_valid": [
+            45.0,
+            62.1
+          ]
+        },
+        {
+          "frame": 174,
+          "clear": [
+            45.0,
+            54.1
+          ],
+          "monitored": [
+            45.0,
+            54.1
+          ],
+          "axis_valid": [
+            45.0,
+            54.1
+          ]
+        },
+        {
+          "frame": 175,
+          "clear": [
+            45.0,
+            56.0
+          ],
+          "monitored": [
+            45.0,
+            56.0
+          ],
+          "axis_valid": [
+            45.0,
+            56.0
+          ]
+        },
+        {
+          "frame": 178,
+          "clear": [
+            45.0,
+            51.0
+          ],
+          "monitored": [
+            45.0,
+            51.0
+          ],
+          "axis_valid": [
+            45.0,
+            51.0
+          ]
+        },
+        {
+          "frame": 179,
+          "clear": [
+            45.0,
+            55.4
+          ],
+          "monitored": [
+            45.0,
+            55.4
+          ],
+          "axis_valid": [
+            45.0,
+            55.4
+          ]
+        },
+        {
+          "frame": 180,
+          "clear": [
+            45.0,
+            61.9
+          ],
+          "monitored": [
+            45.0,
+            61.9
+          ],
+          "axis_valid": [
+            45.0,
+            61.9
+          ]
+        },
+        {
+          "frame": 181,
+          "clear": [
+            45.0,
+            57.9
+          ],
+          "monitored": [
+            45.0,
+            57.9
+          ],
+          "axis_valid": [
+            45.0,
+            57.9
+          ]
+        },
+        {
+          "frame": 182,
+          "clear": [
+            45.0,
+            51.4
+          ],
+          "monitored": [
+            45.0,
+            51.4
+          ],
+          "axis_valid": [
+            45.0,
+            51.4
+          ]
+        },
+        {
+          "frame": 184,
+          "clear": [
+            45.0,
+            55.5
+          ],
+          "monitored": [
+            45.0,
+            55.5
+          ],
+          "axis_valid": [
+            45.0,
+            55.5
+          ]
+        },
+        {
+          "frame": 185,
+          "clear": [
+            45.0,
+            56.1
+          ],
+          "monitored": [
+            45.0,
+            56.1
+          ],
+          "axis_valid": [
+            45.0,
+            56.1
+          ]
+        },
+        {
+          "frame": 186,
+          "clear": [
+            45.0,
+            51.3
+          ],
+          "monitored": [
+            45.0,
+            51.3
+          ],
+          "axis_valid": [
+            45.0,
+            51.3
+          ]
+        },
+        {
+          "frame": 187,
+          "clear": [
+            45.0,
+            59.3
+          ],
+          "monitored": [
+            45.0,
+            59.3
+          ],
+          "axis_valid": [
+            45.0,
+            59.3
+          ]
+        },
+        {
+          "frame": 188,
+          "clear": [
+            45.0,
+            51.5
+          ],
+          "monitored": [
+            45.0,
+            51.5
+          ],
+          "axis_valid": [
+            45.0,
+            51.5
+          ]
+        },
+        {
+          "frame": 190,
+          "clear": [
+            45.0,
+            58.9
+          ],
+          "monitored": [
+            45.0,
+            58.9
+          ],
+          "axis_valid": [
+            45.0,
+            58.9
+          ]
+        },
+        {
+          "frame": 191,
+          "clear": [
+            45.0,
+            52.2
+          ],
+          "monitored": [
+            45.0,
+            52.2
+          ],
+          "axis_valid": [
+            45.0,
+            52.2
+          ]
+        },
+        {
+          "frame": 192,
+          "clear": [
+            45.0,
+            54.3
+          ],
+          "monitored": [
+            45.0,
+            54.3
+          ],
+          "axis_valid": [
+            45.0,
+            54.3
+          ]
+        },
+        {
+          "frame": 194,
+          "clear": [
+            45.0,
+            58.6
+          ],
+          "monitored": [
+            45.0,
+            58.6
+          ],
+          "axis_valid": [
+            45.0,
+            58.6
+          ]
+        },
+        {
+          "frame": 195,
+          "clear": [
+            45.0,
+            51.6
+          ],
+          "monitored": [
+            45.0,
+            51.6
+          ],
+          "axis_valid": [
+            45.0,
+            51.6
+          ]
+        },
+        {
+          "frame": 196,
+          "clear": [
+            45.0,
+            54.9
+          ],
+          "monitored": [
+            45.0,
+            54.9
+          ],
+          "axis_valid": [
+            45.0,
+            54.9
+          ]
+        },
+        {
+          "frame": 198,
+          "clear": [
+            45.0,
+            57.4
+          ],
+          "monitored": [
+            45.0,
+            57.4
+          ],
+          "axis_valid": [
+            45.0,
+            57.4
+          ]
+        },
+        {
+          "frame": 199,
+          "clear": [
+            45.0,
+            51.9
+          ],
+          "monitored": [
+            45.0,
+            51.9
+          ],
+          "axis_valid": [
+            45.0,
+            51.9
+          ]
+        },
+        {
+          "frame": 201,
+          "clear": [
+            45.0,
+            56.8
+          ],
+          "monitored": [
+            45.0,
+            56.8
+          ],
+          "axis_valid": [
+            45.0,
+            56.8
+          ]
+        },
+        {
+          "frame": 202,
+          "clear": [
+            45.0,
+            57.4
+          ],
+          "monitored": [
+            45.0,
+            57.4
+          ],
+          "axis_valid": [
+            45.0,
+            57.4
+          ]
+        },
+        {
+          "frame": 204,
+          "clear": [
+            45.0,
+            57.7
+          ],
+          "monitored": [
+            45.0,
+            57.7
+          ],
+          "axis_valid": [
+            45.0,
+            57.7
+          ]
+        },
+        {
+          "frame": 209,
+          "clear": [
+            45.0,
+            63.6
+          ],
+          "monitored": [
+            45.0,
+            63.6
+          ],
+          "axis_valid": [
+            45.0,
+            63.6
+          ]
+        },
+        {
+          "frame": 211,
+          "clear": [
+            45.0,
+            53.9
+          ],
+          "monitored": [
+            45.0,
+            53.9
+          ],
+          "axis_valid": [
+            45.0,
+            53.9
+          ]
+        },
+        {
+          "frame": 212,
+          "clear": [
+            45.0,
+            58.3
+          ],
+          "monitored": [
+            45.0,
+            58.3
+          ],
+          "axis_valid": [
+            45.0,
+            58.3
+          ]
+        },
+        {
+          "frame": 214,
+          "clear": [
+            45.0,
+            57.3
+          ],
+          "monitored": [
+            45.0,
+            57.3
+          ],
+          "axis_valid": [
+            45.0,
+            57.3
+          ]
+        },
+        {
+          "frame": 216,
+          "clear": [
+            45.0,
+            51.7
+          ],
+          "monitored": [
+            45.0,
+            51.7
+          ],
+          "axis_valid": [
+            45.0,
+            51.7
+          ]
+        },
+        {
+          "frame": 219,
+          "clear": [
+            45.0,
+            55.8
+          ],
+          "monitored": [
+            45.0,
+            55.8
+          ],
+          "axis_valid": [
+            45.0,
+            55.8
+          ]
+        },
+        {
+          "frame": 220,
+          "clear": [
+            45.0,
+            56.1
+          ],
+          "monitored": [
+            45.0,
+            62.4
+          ],
+          "axis_valid": [
+            45.0,
+            62.4
+          ]
+        },
+        {
+          "frame": 222,
+          "clear": [
+            45.0,
+            54.6
+          ],
+          "monitored": [
+            45.0,
+            56.0
+          ],
+          "axis_valid": [
+            45.0,
+            56.0
+          ]
+        },
+        {
+          "frame": 223,
+          "clear": [
+            45.0,
+            53.7
+          ],
+          "monitored": [
+            45.0,
+            55.5
+          ],
+          "axis_valid": [
+            45.0,
+            55.5
+          ]
+        },
+        {
+          "frame": 225,
+          "clear": [
+            45.0,
+            52.9
+          ],
+          "monitored": [
+            45.0,
+            55.6
+          ],
+          "axis_valid": [
+            45.0,
+            55.6
+          ]
+        },
+        {
+          "frame": 226,
+          "clear": [
+            45.0,
+            52.4
+          ],
+          "monitored": [
+            45.0,
+            55.9
+          ],
+          "axis_valid": [
+            45.0,
+            55.9
+          ]
+        },
+        {
+          "frame": 228,
+          "clear": [
+            45.0,
+            51.1
+          ],
+          "monitored": [
+            45.0,
+            51.8
+          ],
+          "axis_valid": [
+            45.0,
+            51.8
+          ]
+        },
+        {
+          "frame": 230,
+          "clear": [
+            45.0,
+            49.8
+          ],
+          "monitored": [
+            45.0,
+            55.6
+          ],
+          "axis_valid": [
+            45.0,
+            55.6
+          ]
+        },
+        {
+          "frame": 231,
+          "clear": [
+            45.0,
+            48.5
+          ],
+          "monitored": [
+            45.0,
+            59.1
+          ],
+          "axis_valid": [
+            45.0,
+            59.1
+          ]
+        },
+        {
+          "frame": 232,
+          "clear": [
+            45.0,
+            48.1
+          ],
+          "monitored": [
+            45.0,
+            59.3
+          ],
+          "axis_valid": [
+            45.0,
+            59.3
+          ]
+        },
+        {
+          "frame": 233,
+          "clear": [
+            45.0,
+            47.7
+          ],
+          "monitored": [
+            45.0,
+            62.9
+          ],
+          "axis_valid": [
+            45.0,
+            62.9
+          ]
+        },
+        {
+          "frame": 237,
+          "clear": [
+            44.8,
+            44.8
+          ],
+          "monitored": [
+            59.0,
+            63.8
+          ],
+          "axis_valid": [
+            59.0,
+            63.8
+          ]
+        },
+        {
+          "frame": 238,
+          "clear": [
+            44.4,
+            44.4
+          ],
+          "monitored": [
+            45.0,
+            51.4
+          ],
+          "axis_valid": [
+            45.0,
+            51.4
+          ]
+        },
+        {
+          "frame": 239,
+          "clear": [
+            44.0,
+            44.0
+          ],
+          "monitored": [
+            45.0,
+            55.4
+          ],
+          "axis_valid": [
+            45.0,
+            55.4
+          ]
+        },
+        {
+          "frame": 240,
+          "clear": [
+            43.6,
+            43.6
+          ],
+          "monitored": [
+            45.0,
+            52.2
+          ],
+          "axis_valid": [
+            45.0,
+            52.2
+          ]
+        },
+        {
+          "frame": 251,
+          "clear": [
+            37.1,
+            37.1
+          ],
+          "monitored": [
+            51.0,
+            56.8
+          ],
+          "axis_valid": [
+            51.0,
+            56.8
+          ]
+        },
+        {
+          "frame": 252,
+          "clear": [
+            36.7,
+            36.7
+          ],
+          "monitored": [
+            45.0,
+            56.2
+          ],
+          "axis_valid": [
+            45.0,
+            56.2
+          ]
+        }
+      ],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [
+        116,
+        118,
+        119,
+        120,
+        121,
+        122,
+        125,
+        126,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        139,
+        140,
+        141,
+        142,
+        143,
+        145,
+        146,
+        147,
+        150,
+        151,
+        153,
+        154,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        165,
+        166,
+        167,
+        174,
+        175,
+        178,
+        179,
+        180,
+        181,
+        182,
+        184,
+        185,
+        186,
+        187,
+        188,
+        190,
+        191,
+        192,
+        194,
+        195,
+        196,
+        198,
+        199,
+        201,
+        202,
+        204,
+        209,
+        211,
+        212,
+        214,
+        216,
+        219,
+        220,
+        222,
+        223,
+        225,
+        226,
+        228,
+        230,
+        231,
+        232,
+        233,
+        237,
+        238,
+        239,
+        240,
+        251,
+        252
+      ],
+      "comparison_sha256": "42707e9d321153699948ab5a660170ec8114b745566eaed8912d7395d32f28e9"
+    },
+    "synthetic_switch": {
+      "frames": 736,
+      "stop_frames": [
+        142,
+        142
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [],
+      "comparison_sha256": "1ff0e6b3cb4511e66c5b2763fdd1846fccdf95ceb3b8d63cbdb49d2bd3dd9c1e"
+    },
+    "synthetic_tunnels": {
+      "frames": 545,
+      "stop_frames": [
+        126,
+        126
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [],
+      "comparison_sha256": "c8bced8d92d0d41880ed13df587d3534358557f7007cfb4485bdd1d9dcf45922"
+    },
+    "doubleT_obstacle": {
+      "frames": 201,
+      "stop_frames": [
+        193,
+        193
+      ],
+      "new_stop_frames": [],
+      "lost_stop_frames": [],
+      "changed_detection_geometry_frames": [],
+      "changed_warning_frames": [],
+      "decision_changes": [],
+      "non_latency_health_message_change_frames": [],
+      "range_changes": [],
+      "shape_changed_frames": [],
+      "extended_axis_frames": [],
+      "comparison_sha256": "58bbe86a000f46759ab157c433561313302b6b1a5bcf312b842704906ca802d3"
+    }
+  },
+  "captures": {
+    "doubleT_platform_baseline": {
+      "raw_path": "/home/resense/data/n6/doubleT_platform_baseline.jsonl",
+      "raw_sha256": "98d6a12413c2ff333d5991cd051138f65e72c3348a2884ff60984dc8b44ce312",
+      "gzip_name": "doubleT_platform_baseline.jsonl.gz",
+      "gzip_sha256": "0bcfa0bd4dc0d593eef839ae7fd5480ff04749f975f1642fc68c40a570669e3b",
+      "metadata_name": "doubleT_platform_baseline.meta.json"
+    },
+    "doubleT_platform_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/doubleT_platform_candidate_v3.jsonl",
+      "raw_sha256": "0c59b06f54e53bfea9f506c7c242485f2f65b89c1918ca186524fd18b2501ce6",
+      "gzip_name": "doubleT_platform_candidate_v3.jsonl.gz",
+      "gzip_sha256": "70a2417957788863f66b1fa818ba20e117aba4abe3b31a18dca18e1f3909d78e",
+      "metadata_name": "doubleT_platform_candidate_v3.meta.json"
+    },
+    "roundT_doubleT_baseline": {
+      "raw_path": "/home/resense/data/n6/roundT_doubleT_baseline.jsonl",
+      "raw_sha256": "0eae67a23d6d638cf40f137c37c60880cfba87ac8bd98c54dbedd0d865f295ea",
+      "gzip_name": "roundT_doubleT_baseline.jsonl.gz",
+      "gzip_sha256": "7cb4dd7c6f5ee2ff00c136f83fa90d4616764c174f5c9cf6d0efefcbaa3620d4",
+      "metadata_name": "roundT_doubleT_baseline.meta.json"
+    },
+    "roundT_doubleT_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/roundT_doubleT_candidate_v3.jsonl",
+      "raw_sha256": "308c323bf9fcb89fbb53c289d401fe048e3965effdba89d4db59aa33244693ba",
+      "gzip_name": "roundT_doubleT_candidate_v3.jsonl.gz",
+      "gzip_sha256": "9e8c523b54167f5fe18cb66e73dfda6b6d8a1fa91854fae5db9ee8ec74cae846",
+      "metadata_name": "roundT_doubleT_candidate_v3.meta.json"
+    },
+    "roundT_pressureGate_roundT_baseline": {
+      "raw_path": "/home/resense/data/n6/roundT_pressureGate_roundT_baseline.jsonl",
+      "raw_sha256": "4778861aab59da6b0b88fd5b3f5941a3169d641e0487d042546cfdf7e8b3b8ae",
+      "gzip_name": "roundT_pressureGate_roundT_baseline.jsonl.gz",
+      "gzip_sha256": "f3bb4f28cfa7433d9c672f3c6f1eb2ef799c674b931c39007dd7949b5fbc0ea1",
+      "metadata_name": "roundT_pressureGate_roundT_baseline.meta.json"
+    },
+    "roundT_pressureGate_roundT_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/roundT_pressureGate_roundT_candidate_v3.jsonl",
+      "raw_sha256": "d4b7f8ae924fba6c36fd72eb3dfe20c20f94504290223fb41c46115d1636ad70",
+      "gzip_name": "roundT_pressureGate_roundT_candidate_v3.jsonl.gz",
+      "gzip_sha256": "69b2ba1da4235a673c354b90f10c6647c976cf99617ef94793d3cabd30a90d48",
+      "metadata_name": "roundT_pressureGate_roundT_candidate_v3.meta.json"
+    },
+    "roundT_squareT_pressureGate_squareT_baseline": {
+      "raw_path": "/home/resense/data/n6/roundT_squareT_pressureGate_squareT_baseline.jsonl",
+      "raw_sha256": "d5aaa7a8e1be256f03f831d193a8c210066b1f30a214c2285517b778c231612a",
+      "gzip_name": "roundT_squareT_pressureGate_squareT_baseline.jsonl.gz",
+      "gzip_sha256": "7739b2362062097f4a06c60ad9a6c17ead5fc81fcb9da00e6b9e00d398c7375d",
+      "metadata_name": "roundT_squareT_pressureGate_squareT_baseline.meta.json"
+    },
+    "roundT_squareT_pressureGate_squareT_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/roundT_squareT_pressureGate_squareT_candidate_v3.jsonl",
+      "raw_sha256": "9b9f1867652a3f3afd52f4dedb2543c57d96bb62898b3c3acaa360ed801c839d",
+      "gzip_name": "roundT_squareT_pressureGate_squareT_candidate_v3.jsonl.gz",
+      "gzip_sha256": "929714e704b9f60ccd700255e6c320dafda63af0f2c62a132bee65d8131fa1d3",
+      "metadata_name": "roundT_squareT_pressureGate_squareT_candidate_v3.meta.json"
+    },
+    "squareT_platform_squareT_switch_baseline": {
+      "raw_path": "/home/resense/data/n6/squareT_platform_squareT_switch_baseline.jsonl",
+      "raw_sha256": "a3d40646e251ccff15eb0397e478d96b857d9b36575cc735d6bcf245326f569d",
+      "gzip_name": "squareT_platform_squareT_switch_baseline.jsonl.gz",
+      "gzip_sha256": "dec891e5fb522de24baba394e13dd1cc631da97f5e28321f8328f86196a73b06",
+      "metadata_name": "squareT_platform_squareT_switch_baseline.meta.json"
+    },
+    "squareT_platform_squareT_switch_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/squareT_platform_squareT_switch_candidate_v3.jsonl",
+      "raw_sha256": "e766aff7434cfb0cb0034148b637f3a16d4f315e6fa92109bf9e46e9ee02f787",
+      "gzip_name": "squareT_platform_squareT_switch_candidate_v3.jsonl.gz",
+      "gzip_sha256": "22f341a9de0c42225a691503e5ae44808846a9680ec93f6d3a3bd87137820bbf",
+      "metadata_name": "squareT_platform_squareT_switch_candidate_v3.meta.json"
+    },
+    "cloud_with_fake_obj_baseline": {
+      "raw_path": "/home/resense/data/n6/cloud_with_fake_obj_baseline.jsonl",
+      "raw_sha256": "e7e2291866605fdda571789f816ad54f6009fcb50372cf4a96b0176430030b3a",
+      "gzip_name": "cloud_with_fake_obj_baseline.jsonl.gz",
+      "gzip_sha256": "7cb8532b5b6134061157ea7578e52c95d43fc12f640ef4a7c3873b44f1823eb3",
+      "metadata_name": "cloud_with_fake_obj_baseline.meta.json"
+    },
+    "cloud_with_fake_obj_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/cloud_with_fake_obj_candidate_v3.jsonl",
+      "raw_sha256": "b4b52ff8a292fd6c6a806a7ab96f78dd377bc3cb782c2c411348be9151b3062e",
+      "gzip_name": "cloud_with_fake_obj_candidate_v3.jsonl.gz",
+      "gzip_sha256": "970b7e9d7eee4d85bbacd14c1e37ff95c56918b74dfef059fc544ee2ae30838e",
+      "metadata_name": "cloud_with_fake_obj_candidate_v3.meta.json"
+    },
+    "platform_baseline": {
+      "raw_path": "/home/resense/data/n6/platform_baseline.jsonl",
+      "raw_sha256": "c3d907c390b850518b09afe5bc7c51937ba80ab4b809ec909de62b55782c20f0",
+      "gzip_name": "platform_baseline.jsonl.gz",
+      "gzip_sha256": "854b10755d2798f327daca9e96ebbbb05e8d305b7fc999a138b0bbc22b093ba4",
+      "metadata_name": null
+    },
+    "synthetic_platform_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/synthetic_platform_candidate_v3.jsonl",
+      "raw_sha256": "0c81185b6a5857858abd40c33a9c0ef2ddf174a8665687f39c5ecf5bdba12e55",
+      "gzip_name": "synthetic_platform_candidate_v3.jsonl.gz",
+      "gzip_sha256": "b3775c06c15c4ff53b38df1d74463e645e03fdd1443eb1d5bfff08927e3e5bf1",
+      "metadata_name": "synthetic_platform_candidate_v3.meta.json"
+    },
+    "synthetic_switch_baseline": {
+      "raw_path": "/home/resense/data/n6/synthetic_switch_baseline.jsonl",
+      "raw_sha256": "6059170c8c249ed900abc09fd069b1b4f293ad4810735e6b3035a6946770014c",
+      "gzip_name": "synthetic_switch_baseline.jsonl.gz",
+      "gzip_sha256": "35bc224ce5f28c450ce09f6654f12fd830b128b15730823e163d553a97ca3b75",
+      "metadata_name": "synthetic_switch_baseline.meta.json"
+    },
+    "synthetic_switch_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/synthetic_switch_candidate_v3.jsonl",
+      "raw_sha256": "2aee05a34bc26bd61ded755581befd57fb207b2f77410152fc3b07906bbd8a4a",
+      "gzip_name": "synthetic_switch_candidate_v3.jsonl.gz",
+      "gzip_sha256": "69fef7fe829275a101be2f9aefffaed56f0541459a79a2ca107072b206a1d73f",
+      "metadata_name": "synthetic_switch_candidate_v3.meta.json"
+    },
+    "synthetic_tunnels_baseline": {
+      "raw_path": "/home/resense/data/n6/synthetic_tunnels_baseline.jsonl",
+      "raw_sha256": "872ce4a594570227cf0223978ac05bad3642c897742fe1c60da3249604632bdd",
+      "gzip_name": "synthetic_tunnels_baseline.jsonl.gz",
+      "gzip_sha256": "2e9e4b252fd3189cf14c8c8d4dd00c82a05a0ebf16c6c691e3911762041ce1f2",
+      "metadata_name": "synthetic_tunnels_baseline.meta.json"
+    },
+    "synthetic_tunnels_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/synthetic_tunnels_candidate_v3.jsonl",
+      "raw_sha256": "c6fe9a112f5b2ede0993d72d7b27cc2794c22fb590c88be639de50f49969d6df",
+      "gzip_name": "synthetic_tunnels_candidate_v3.jsonl.gz",
+      "gzip_sha256": "11ae18535924f148f9177483fe66975a0aab473640efd4cc5e1af85d9a1b96a3",
+      "metadata_name": "synthetic_tunnels_candidate_v3.meta.json"
+    },
+    "doubleT_obstacle_baseline": {
+      "raw_path": "/home/resense/data/n6/doubleT_obstacle_baseline.jsonl",
+      "raw_sha256": "80fe2f5303a55952f7905ea5cf19bed8a4eb6e3b1cd4fca908f541e00861d51f",
+      "gzip_name": "doubleT_obstacle_baseline.jsonl.gz",
+      "gzip_sha256": "62460c6765e5e6ad08a869149977907885bc2d9b980115723e92064797487ab7",
+      "metadata_name": "doubleT_obstacle_baseline.meta.json"
+    },
+    "doubleT_obstacle_candidate_v3": {
+      "raw_path": "/home/resense/data/n6/doubleT_obstacle_candidate_v3.jsonl",
+      "raw_sha256": "f722708d73cfe0ec8882446431f04f2274e308c98777fb6d3a251d154536ca89",
+      "gzip_name": "doubleT_obstacle_candidate_v3.jsonl.gz",
+      "gzip_sha256": "2b7faeb7cdd022d8ca1bff8503d58a00ffb5e6b4bb7c95cc57ff0e14c2a2557c",
+      "metadata_name": "doubleT_obstacle_candidate_v3.meta.json"
+    }
+  },
+  "total_frames": 5665
+}

@@ -114,11 +114,12 @@ def test_escalation_needs_the_last_hits_in_a_row():
     assert zones.index("gauge") == 9                                 # hits at 35, 34, 33, 32, 31 m
 
 
-@pytest.mark.parametrize("reason", ["beyond_axis", "beyond_height_ref"])
+@pytest.mark.parametrize("reason", ["beyond_axis", "beyond_height_ref", "diffuse_low_support"])
 def test_untrusted_reference_is_never_escalated(reason):
     """Safety review of 26.09: a cluster demoted because the corridor's axis (``beyond_axis``) or
     height reference (``beyond_height_ref``) is not trusted there never counts as a near hit: its
-    strict voxels are not trusted either."""
+    strict voxels are not trusted either. Diffuse-return support advisories are
+    likewise not overridden by a large count of nearby unqualified returns."""
     assert set(z for _, z in _track_zones([(30.0, 120, reason)] * 10)) == {"warning"}
     assert not Tracker(TrackingConfig(near_escalate_voxels=10))._near(_cluster(30.0, 120, reason))
 

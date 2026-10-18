@@ -1,0 +1,11 @@
+{
+  "status": "COMPLETED_EXIT_ZERO",
+  "producer_source_sha256": "af963755af5f78f283681c7cb3f50cafad23f8aa7e4a9e1c446f8cfecbccbfcc",
+  "files": {
+    "run_final_gate_7b7b02c.py.gz": "69f35d0d04bbba1cadf49f813abd8769a9e903af4a99213af863c4dd3d2b3d27",
+    "gate_execution_status.json": "a31737adb701522b65512e24cab03ac6808f9e269d4d86b3df96a86caa356124",
+    "gate_console.txt": "ecf46bc18ab52188becbf9ade559263e7bb1d1c82644626e1013455d0b0589fa",
+    "gate.json": "7762ceeb49eba008af222effc4d6116a1d3b5af259e156f94f881a655b0f6408"
+  },
+  "timing_scope": "Concurrent replay with an explicitly recorded quiet-window pause; wall time is not a throughput benchmark."
+}

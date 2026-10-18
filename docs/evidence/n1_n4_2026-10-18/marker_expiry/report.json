@@ -1,0 +1,16 @@
+{
+  "scope": "actual node gauge_markers ROS messages and RViz/Xvfb software renderer; publisher stays alive but sends no DELETE",
+  "image": "sha256:5d8059d3d4d076a89793d0e1e30b20b92ea989e38f19986c108b01019df00593",
+  "exit_code": 0,
+  "captures": {
+    "publishing": {
+      "green_pixels": 2850,
+      "phase_age_s": 1.509669542312622
+    },
+    "silent_no_delete": {
+      "green_pixels": 0,
+      "phase_age_s": 1.5172228813171387
+    }
+  },
+  "passed": true
+}

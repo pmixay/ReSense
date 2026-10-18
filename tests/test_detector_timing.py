@@ -26,7 +26,8 @@ class Clock:
 @pytest.fixture
 def timed_detector(monkeypatch, request):
     clock = Clock()
-    monkeypatch.setattr(detector_module, "time", SimpleNamespace(perf_counter=clock.read))
+    monkeypatch.setattr(detector_module, "time", SimpleNamespace(
+        perf_counter=clock.read, process_time=lambda: clock.ms / 1000.0))
     cfg = DetectorConfig()
     assert cfg.health.latency_affects_decision is False
     # Isolate the latency warning while exercising the real detector and health update.
@@ -150,7 +151,8 @@ def test_failed_call_does_not_leave_an_old_or_partial_pending_sample(timed_detec
 
 def test_default_nonlatency_results_match_previous_supplied_stage_latency(tunnel, monkeypatch):
     clock = Clock()
-    monkeypatch.setattr(detector_module, "time", SimpleNamespace(perf_counter=clock.read))
+    monkeypatch.setattr(detector_module, "time", SimpleNamespace(
+        perf_counter=clock.read, process_time=lambda: clock.ms / 1000.0))
     previous, current = Detector(), Detector()
     supplied_update, complete_update = previous.health.update, current.health.update
 

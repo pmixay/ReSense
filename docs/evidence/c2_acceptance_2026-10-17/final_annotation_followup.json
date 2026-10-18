@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/home/resense/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-rs",
+    "tests/test_team_annotation_builder.py",
+    "--junitxml=docs/evidence/c2_acceptance_2026-10-17/final_annotation_followup.xml"
+  ],
+  "exit_code": 0,
+  "elapsed_s": 0.5611248919994978,
+  "scope": "affected N5 annotation builder/tests after final full-suite source drift; two changed files only",
+  "owner_change_description": "formatting/import fixes only; no semantic change, source frozen by N5 owner",
+  "environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_CORETYPE": "Haswell",
+    "RESENSE_REQUIRE_SYNTHETIC": "1"
+  },
+  "source_sha256": {
+    "scripts/annotate_synthetic_tracks.py": "cb9b65681ffb7f6edfadcc79f066b27fb2063ba7419b487a36667ab276de7317",
+    "tests/test_team_annotation_builder.py": "29447dca132bd12b3e130fc6ddb68b1037157656c4e9b21764047a78cf81f108"
+  },
+  "source_unchanged_during_run": true
+}

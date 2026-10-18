@@ -70,7 +70,7 @@ artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) �
 | 6 | Answer the organizers daily during the expertise 30.09–14.10; new answers into `organizers/answers.md` (no question open). | H |
 | 7 | Pitch on 23.10: two rehearsals, the live remote demo from a second device ([`../web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md)), the speech of [`PRESENTATION.md`](PRESENTATION.md). | P1 + team |
 | 8 | A human read of the safety review of 29.09 night (the agent review: `shell` BLOCKING → switched off; `explained_run`, the ego veto NON-BLOCKING with documented limits). | P1, P3 |
-| 9 | If an 8-core machine is available: `scripts/bench_8core.sh` on both original bags, evidence committed. | H (+ A) |
+| 9 | On available hardware: `scripts/bench_8core.sh` on both original bags, recording actual cores/quota and results. Captain, 17.10: 2–4 cores are acceptable; no 8-core prerequisite. Release waits for repaired CI. | H (+ A) |
 
 ## 4. Branches other than `main` (15.10)
 

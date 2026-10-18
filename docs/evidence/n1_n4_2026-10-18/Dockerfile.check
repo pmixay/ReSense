@@ -1,0 +1,9 @@
+# Local integration overlay on the freshly built runtime image. The installed
+# Python3.10 native extension survives these Python-source-only COPY overlays.
+FROM resense:lidar-work
+COPY resense/ /opt/resense/resense/
+COPY resense/ /usr/local/lib/python3.10/dist-packages/resense/
+COPY configs/ /opt/resense/configs/
+COPY scripts/ /opt/resense/scripts/
+COPY ros2_ws/src/resense_ros/ /opt/resense/ros2_ws/src/resense_ros/
+RUN . /opt/ros/humble/setup.sh && cd /opt/resense/ros2_ws && colcon build --packages-select resense_ros --symlink-install

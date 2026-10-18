@@ -1,0 +1,6 @@
+{
+  "source_path": "scripts/dust_battery.py",
+  "source_sha256": "8c0c868fe85ec91f341400e7cf783f5d118f8aee40705efa51108c29774c6a0c",
+  "archive_sha256": "f5fcea239907515b0cd0f52079800a46c937719d04be8a38120310706ad8696d",
+  "reason": "Preserve exact v1 configured-box harness before calibrated reference correction; original run did not record harness identity at startup."
+}

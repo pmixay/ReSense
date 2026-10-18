@@ -56,13 +56,117 @@ in ``max_frames`` frames the calibrator gives up and keeps the configured mappin
 from __future__ import annotations
 
 import itertools
+from copy import deepcopy
 from dataclasses import dataclass, field
+import math
+import sys
 from typing import List, Optional
 
 import numpy as np
 
 from resense.config import CalibrationConfig, TrackConfig
 from resense.track import TrackModel, _fit_floor, default_track_model, estimate_rails
+
+
+class OrientationReplayBuffer:
+    """Owned, bounded startup inputs; any discontinuity permanently disables this attempt.
+
+    Only plain metadata containers/scalars and numeric arrays are copied. The byte
+    estimate is conservative and includes array payloads, metadata, and containers.
+    The current frame counts toward both limits, so adoption after the budget cannot
+    reconstruct a selectively truncated history.
+    """
+    MAX_BYTES = 32 * 1024 * 1024
+
+    def __init__(self, max_frames: int):
+        if type(max_frames) is not int or not 0 <= max_frames <= 4:
+            raise ValueError("calibration.orientation_replay_frames must be an integer from 0 to 4")
+        self.max_frames = max_frames
+        self.frames = []
+        self.used_bytes = 0
+        self.peak_bytes = 0
+        self.finished = max_frames == 0
+        self.reason = "disabled" if self.finished else "pending"
+
+    def stop(self, reason: str):
+        self.frames.clear()
+        self.used_bytes = 0
+        self.finished, self.reason = True, reason
+
+    @classmethod
+    def _size(cls, value, seen, *, copy_reserve=True):
+        if id(value) in seen:
+            return 0
+        seen.add(id(value))
+        size = sys.getsizeof(value)
+        if type(value) in (str, bytes, int, float, bool, type(None)):
+            return size
+        if isinstance(value, np.generic):
+            if value.dtype.hasobject:
+                raise ValueError("startup metadata scalar contains Python objects")
+            return size + value.nbytes
+        if type(value) is np.ndarray and not value.dtype.hasobject:
+            return size + (value.nbytes if copy_reserve or not value.flags.owndata else 0)
+        if type(value) in (dict, list, tuple):
+            if copy_reserve:
+                # deepcopy builds containers incrementally: a copied list can
+                # have more allocated slots than its source. Reserve a whole
+                # one-entry container per item before allocating the copy.
+                unit = {dict: {None: None}, list: [None], tuple: (None,)}[type(value)]
+                size += len(value) * sys.getsizeof(unit)
+            items = itertools.chain.from_iterable(value.items()) if type(value) is dict else value
+            for item in items:
+                size += cls._size(item, seen, copy_reserve=copy_reserve)
+                if size > cls.MAX_BYTES:
+                    return size
+            return size
+        raise ValueError("unsupported startup metadata type")
+
+    def capture(self, frame, ego_speed):
+        if self.finished:
+            return False
+        if len(self.frames) >= self.max_frames:
+            self.stop("frame_budget")
+            return False
+        try:
+            stamp = float(frame.stamp)
+            if not math.isfinite(stamp):
+                self.stop("invalid_stamp")
+                return False
+            if self.frames:
+                previous = self.frames[-1][0]
+                gap = stamp - previous.stamp
+                if not 0 < gap <= 1.0 or frame.frame_id != previous.frame_id:
+                    self.stop("input_discontinuity")
+                    return False
+            # These arrays and metadata are copied separately, so aliases
+            # across fields do not share deepcopy's memo or the byte charge.
+            size = sum(self._size(value, set()) for value in (
+                frame.xyz, frame.intensity, frame.ring, frame.meta,
+                stamp, frame.frame_id, ego_speed)) + 1024
+            if size + self.used_bytes > self.MAX_BYTES:
+                self.stop("byte_budget")
+                return False
+            from resense.frame import Frame
+            saved = Frame(xyz=frame.xyz.copy(), intensity=frame.intensity.copy(),
+                          ring=None if frame.ring is None else frame.ring.copy(),
+                          stamp=stamp, frame_id=frame.frame_id, meta=deepcopy(frame.meta))
+            owned = self._size((saved.xyz, saved.intensity, saved.ring, saved.meta,
+                                saved.stamp, saved.frame_id, ego_speed), set(),
+                               copy_reserve=False) + 1024
+            # Verify the actual retained allocation independently of the
+            # pre-copy reservation, including container capacity and aliases.
+            size = max(size, owned)
+            if size + self.used_bytes > self.MAX_BYTES:
+                self.stop("byte_budget")
+                return False
+        except (TypeError, ValueError, OverflowError, RecursionError):
+            self.stop("unsupported_input")
+            return False
+        self.frames.append((saved, ego_speed))
+        self.used_bytes += size
+        self.peak_bytes = max(self.peak_bytes, self.used_bytes)
+        return True
 
 
 def orientation_candidates(keep_up_axis: bool = False) -> List[np.ndarray]:
@@ -165,6 +269,7 @@ class MountCalibration:
     R: np.ndarray = field(default_factory=lambda: np.eye(3))
     status: str = "pending"         # pending | provisional | ok | identity | fallback | disabled
     orientation: str = "configured"  # 'configured' or the adopted axis mapping, e.g. 'forward=+x left=+y up=+z'
+    orientation_confirmed: bool = False  # an observed/adopted mapping; distinct from unfinished tilt calibration
     roll_deg: float = 0.0
     pitch_deg: float = 0.0
     yaw_deg: float = 0.0
@@ -177,6 +282,7 @@ class MountCalibration:
     def to_dict(self) -> dict:
         return {
             "status": self.status, "orientation": self.orientation,
+            "orientation_confirmed": bool(self.orientation_confirmed),
             "roll_deg": round(self.roll_deg, 2), "pitch_deg": round(self.pitch_deg, 2),
             "yaw_deg": round(self.yaw_deg, 2),
             "height": None if self.height is None else round(self.height, 2),
@@ -192,7 +298,8 @@ class MountCalibrator:
     def __init__(self, cfg: CalibrationConfig, tcfg: TrackConfig):
         self.cfg = cfg
         self.tcfg = tcfg
-        self.state = MountCalibration(status="pending" if cfg.enabled else "disabled")
+        self.state = MountCalibration(status="pending" if cfg.enabled else "disabled",
+                                      orientation_confirmed=not cfg.enabled)
         self._R_orient = np.eye(3)
         self._orient_votes: dict = {}
         self._config_passed = False
@@ -316,9 +423,11 @@ class MountCalibrator:
                     self._recent.clear()
                     self._since_obs = 0
                     self._config_passed = True          # stop searching
+                    self.state.orientation_confirmed = True
                     return True
         if ob.ok:
             self._config_passed = True
+            self.state.orientation_confirmed = True
             # absolute estimate = the tilt already applied + the residual seen through it (small angles)
             a_r, a_p, a_y = self._applied
             est = (ob.roll + a_r, ob.pitch + a_p, (ob.yaw + a_y) if np.isfinite(ob.yaw) else float("nan"),

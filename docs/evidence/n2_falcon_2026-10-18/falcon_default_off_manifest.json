@@ -1,0 +1,133 @@
+{
+  "status": "ALL_MEMBERS_AND_RETAINED_ORIGINALS_VERIFIED",
+  "verified_utc": "2026-10-18T11:16:52.311894+00:00",
+  "archive": "falcon_default_off.tar.gz",
+  "archive_bytes": 2699307,
+  "archive_sha256": "6200fbd392d4362beb0e147d5e11550a8578f9797bbf55136da8bebb0084fb3c",
+  "member_count": 20,
+  "uncompressed_bytes": 24890038,
+  "input_list_sha256": "60d195d0163147fe7bf9beb93174c6496bf49240847887bab937f3d098dc8408",
+  "archiver_sha256": "2d7e665b88c58cf347b690f5cb39fe738082385740c2f32aae08d1d4202766fa",
+  "members": [
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/README.md",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/README.md",
+      "bytes": 2916,
+      "sha256": "11f8f9a30bafb90ccb9d3a6bebd705b439cc091ebb999a0cbeb9687628d0c536"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/baseline.jsonl",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/baseline.jsonl",
+      "bytes": 8276768,
+      "sha256": "4238a70d85bcf83e9a4b854fbbd7bc2865711f977a788ef43a5574f549cdc432"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/execution.json",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/execution.json",
+      "bytes": 5434,
+      "sha256": "490c41b573a81524edea42b79b1db159a378991c7782771460ff49dfad6b7d0e"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/historical_baseline_review.json",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/historical_baseline_review.json",
+      "bytes": 300868,
+      "sha256": "77f7c246fc9c55bf9a790c2eccda409b4ff90c2e55000fc0cae1b126de0d4feb"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/historical_numeric_differences.json",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/historical_numeric_differences.json",
+      "bytes": 2484,
+      "sha256": "bcbd3de2d92c1c512f79d51a4045a1577851889a9fc120ee3100e8d0eab4d593"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/historical_review_source.py",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/historical_review_source.py",
+      "bytes": 7475,
+      "sha256": "08f233bb130c5a08fbbc4eff841935ca6b5a840279ecbb4ba09d2a94e4a4d997"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/independent_review.json",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/independent_review.json",
+      "bytes": 55431,
+      "sha256": "61e4f0c16cabf9c130b48a1831feb87540d1e2a923978bc4d836fe15c4d81050"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/run.log",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/run.log",
+      "bytes": 2378,
+      "sha256": "310f52397ac4a623b49f14433c6b79418f8ff1d037e3a2d2c7cb9138e4494d1d"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/summary.json",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off/summary.json",
+      "bytes": 4239,
+      "sha256": "d5092ad7d15583375611bec2d57cc757f039066f7d9938819c17c5eb7b4dac10"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off_control/baseline.jsonl",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off_control/baseline.jsonl",
+      "bytes": 8148426,
+      "sha256": "7484c3d75a9616e20a88b297c247e57cb41417e574248a17206c2e73f0517668"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off_control/execution.json",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off_control/execution.json",
+      "bytes": 5257,
+      "sha256": "2c64901b681a427663b201063af6346431e7a3132c87eec5948d0dd82cc4951b"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off_control/run.log",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off_control/run.log",
+      "bytes": 2378,
+      "sha256": "00e3a81ad70e8a72d170220a109395e3959728138ac3c7b14cdbedb07bd91a40"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off_control/summary.json",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_default_off_control/summary.json",
+      "bytes": 4054,
+      "sha256": "b5fe398bca86162a06d06ad482d19150781aa1687f4e91edb8ba991534d0ac7a"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_full/baseline.jsonl",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_full/baseline.jsonl",
+      "bytes": 8030686,
+      "sha256": "86da569df6f9dbf29c1683d5cc20b2af7b780aa4613bec24201d8a59cfa100a7"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_full/summary.json",
+      "member": "docs/evidence/n2_falcon_2026-10-18/falcon_full/summary.json",
+      "bytes": 6980,
+      "sha256": "e1c8f2f6553610be20b6df2eb67d126699b0657dc9112eadd776686e0593a967"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/quantify_falcon_historical_drift.py",
+      "member": "docs/evidence/n2_falcon_2026-10-18/quantify_falcon_historical_drift.py",
+      "bytes": 2629,
+      "sha256": "88a23415cbfef991330d1918947ed89e3b82c5dace428b7cd4650daffa576cc2"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/replay_inputs.py",
+      "member": "docs/evidence/n2_falcon_2026-10-18/replay_inputs.py",
+      "bytes": 14516,
+      "sha256": "1ab5ff9cec792a24e7f7f4f4f087372e674fe148a816ee8ef2065afbc7ae6306"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/review_falcon_default_off.py",
+      "member": "docs/evidence/n2_falcon_2026-10-18/review_falcon_default_off.py",
+      "bytes": 9248,
+      "sha256": "5d61b4d56035763684e93d65e12d219b0fb098cf98834f7229ef9e5eaf86eccd"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/run_falcon_default_off.py",
+      "member": "docs/evidence/n2_falcon_2026-10-18/run_falcon_default_off.py",
+      "bytes": 3931,
+      "sha256": "8b8ef276eda4beafb27adfbdbe1e61d78fc8da5b72c25c30a5060452ead602de"
+    },
+    {
+      "source": "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/run_falcon_default_off_control.py",
+      "member": "docs/evidence/n2_falcon_2026-10-18/run_falcon_default_off_control.py",
+      "bytes": 3940,
+      "sha256": "4198d1a04d7fbbf4b7c9a33ad145d6503b37075720b75570d5429ddc6e56699c"
+    }
+  ]
+}

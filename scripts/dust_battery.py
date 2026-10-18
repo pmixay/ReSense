@@ -1,0 +1,226 @@
+#!/usr/bin/env python3
+"""Run clean/dust paired measurements on complete node-decoded recordings.
+
+Each level gets a fresh detector and every source frame. The clean rail reference
+places the simulation; no augmentation truth enters runtime health/decisions.
+Use --detector-root for an immutable baseline export. Raw results are gzip JSONL.
+"""
+from __future__ import annotations
+
+import argparse
+from collections import Counter, defaultdict
+import gzip
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parents[1]
+EMPTY = ["doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT",
+         "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch"]
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--cache", type=Path, required=True)
+    p.add_argument("--out", type=Path, required=True)
+    p.add_argument("--detector-root", type=Path, default=ROOT)
+    p.add_argument("--bags", default=",".join(EMPTY + ["doubleT_obstacle", "cloud_with_fake_obj"]))
+    p.add_argument("--levels", default="clean,low,medium,high")
+    p.add_argument("--seed", type=int, default=20261018)
+    p.add_argument("--set", action="append", default=[])
+    p.add_argument("--dust-support", action="store_true", help="experimental pre-tracker advisory qualification")
+    p.add_argument("--health-only", action="store_true", help="observe diffuse returns without changing any cluster")
+    p.add_argument("--dim-labels", type=float, help="set source GT-bbox returns to this intensity before clean/dust runs")
+    a = p.parse_args()
+    if not a.levels.startswith("clean"):
+        p.error("clean must be first to provide the unchanged placement reference")
+    for k in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+        os.environ[k] = "1"
+    sys.path.insert(0, str(a.detector_root.resolve()))
+    import numpy as np
+    from resense.config import DetectorConfig
+    from resense.detector import Detector
+    from resense.frame import Frame, axis_matrix
+    from resense.metrics import _assign_detections, gt_objects, load_gt
+    from resense import _native
+    from dust_reference import augment_in_reference, process_clean_reference
+    import yaml
+    spec = importlib.util.spec_from_file_location("dust_stress_module", ROOT / "resense/dust.py")
+    dust = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = dust
+    spec.loader.exec_module(dust)
+    detector_class = Detector
+    if a.dust_support or a.health_only:
+        support_spec = importlib.util.spec_from_file_location("diffuse_support_module", ROOT / "resense/dust_health.py")
+        support_module = importlib.util.module_from_spec(support_spec)
+        support_spec.loader.exec_module(support_module)
+
+        class SupportDetector(Detector):
+            def process(self, frame, ego_speed=None):
+                if not np.isfinite(frame.xyz).all():
+                    raise ValueError("prototype requires finite node-decoded XYZ for index alignment")
+                self._dust_intensity = frame.intensity
+                result = super().process(frame, ego_speed=ego_speed)
+                started = time.perf_counter()
+                result.health = support_module.mark_degraded_health(result.health, self._dust_evidence, self._dust_support)
+                result.clear_distance = result.health["clear_distance"]
+                result.timing_ms["total"] += (time.perf_counter() - started) * 1000
+                self._previous_latency_ms = result.timing_ms["total"]
+                return result
+
+            def _confirm(self, clusters, speed, dt):
+                dy, h = self._frame_hd
+                self._dust_evidence = support_module.diffuse_evidence(
+                    self._frame_xyz, self._dust_intensity, dy, h, self.track.axis_valid)
+                self._dust_support = {} if a.health_only else support_module.mark_unsupported_clusters(
+                    clusters, self._frame_xyz, self._dust_intensity, dy, h, self._dust_evidence)
+                return super()._confirm(clusters, speed, dt)
+
+        detector_class = SupportDetector
+    a.out.mkdir(parents=True, exist_ok=True)
+    if any(a.out.iterdir()):
+        raise ValueError("output directory must be empty; preserve earlier captures separately")
+    identity_paths = [Path(__file__), ROOT / "scripts/dust_reference.py", ROOT / "resense/dust.py",
+                      a.detector_root / "configs/default.yaml", *sorted((a.detector_root / "resense").glob("*.so"))]
+    if a.dust_support or a.health_only:
+        identity_paths.append(ROOT / "resense/dust_health.py")
+    def identities():
+        return {str(path.resolve()): hashlib.sha256(path.read_bytes()).hexdigest() for path in identity_paths}
+    runtime_identity = identities()
+    sources = {str(f.relative_to(a.detector_root)): hashlib.sha256(f.read_bytes()).hexdigest()
+               for f in sorted((a.detector_root / "resense").glob("*.py"))}
+    report = {"schema": "dust-battery-v2", "seed": a.seed, "detector_root": str(a.detector_root),
+              "placement": "frozen clean actual calibrated axes; flat rail_z(20m) reference",
+              "runtime_identity_start": runtime_identity,
+              "python": sys.version, "numpy": np.__version__, "native_enabled": _native.enabled(),
+              "native_description": _native.status(),
+              "source_hashes": sources, "config_overrides": a.set,
+              "generator_sha256": hashlib.sha256((ROOT / "resense/dust.py").read_bytes()).hexdigest(),
+              "dust_support": a.dust_support,
+              "health_only": a.health_only,
+              "dim_label_intensity": a.dim_labels,
+              "support_sha256": hashlib.sha256((ROOT / "resense/dust_health.py").read_bytes()).hexdigest() if a.dust_support or a.health_only else None,
+              "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+              "cpu_affinity": sorted(os.sched_getaffinity(0)), "recordings": {}}
+    for bag in a.bags.split(","):
+        folder = a.cache / bag
+        meta_path = folder / "meta.json"
+        meta = json.loads(meta_path.read_text())
+        paths = sorted(folder.glob("f_*.npz"))
+        if len(paths) != len(meta) or any(f.name != f"f_{i:05d}.npz" for i, f in enumerate(paths)):
+            raise ValueError(f"{bag}: incomplete/misaligned cache")
+        labels_path = ROOT / "labels" / f"{bag}.json"
+        labels = load_gt(str(labels_path)) if labels_path.exists() else {}
+        source_hash = hashlib.sha256(meta_path.read_bytes())
+        for path in paths:
+            source_hash.update(path.name.encode())
+            source_hash.update(hashlib.sha256(path.read_bytes()).digest())
+        bag_report = {"cache_sha256": source_hash.hexdigest(), "frames": len(paths), "levels": {},
+                      "labels_sha256": hashlib.sha256(labels_path.read_bytes()).hexdigest() if labels_path.exists() else None}
+        report["recordings"][bag] = bag_report
+        clean_references = []
+        for level in a.levels.split(","):
+            cfg = DetectorConfig.from_yaml(str(a.detector_root / "configs/default.yaml"))
+            cfg.calibration.enabled = True
+            for override in a.set:
+                key, val = override.split("=", 1)
+                section, key = key.split(".", 1)
+                setattr(getattr(cfg, section), key, yaml.safe_load(val))
+            detector = detector_class(cfg)
+            rotation = axis_matrix(cfg.sensor).astype(np.float32)
+            counts, objects = Counter(), defaultdict(lambda: {"visible_inside_frames": 0, "stop_frames": [],
+                                                               "first_stop_frame": None, "first_stop_m": None})
+            last_stop = False
+            elapsed, last_stamp = [], None
+            output = a.out / f"{bag}_{level}.jsonl.gz"
+            started = time.perf_counter()
+            with gzip.open(output, "wt", encoding="utf-8") as fh:
+                for i, (path, m) in enumerate(zip(paths, meta)):
+                    with np.load(path) as d:
+                        fr = Frame(d["xyz"] @ rotation.T, d["inten"],
+                                   d["ring"] if m["has_ring"] else None, m["stamp"], m["frame_id"],
+                                   {"n_raw": m["n_raw"], "n_near": m["n_near"]})
+                    if last_stamp is not None:
+                        gap = fr.stamp - last_stamp
+                        if gap < -.5 or gap > 30:
+                            detector = detector_class(cfg)
+                        elif gap > 1:
+                            detector.reset()
+                    last_stamp = fr.stamp
+                    if a.dim_labels is not None:
+                        for label in labels.get(f"{i:05d}", []):
+                            if label.get("bbox") is None or label.get("n_points", 1) <= 0:
+                                continue
+                            lo, hi = np.asarray(label["bbox"])
+                            inside = ((fr.xyz >= lo) & (fr.xyz <= hi)).all(axis=1)
+                            fr.intensity[inside] = a.dim_labels
+                    audit = None
+                    if level != "clean":
+                        fr, audit, _ = augment_in_reference(fr, dust.PRESETS[level], clean_references[i],
+                                                           seed=a.seed, frame_index=i, augment=dust.augment_dust)
+                        counts["injected_returns"] += audit["added_returns"]
+                        counts["attenuated_returns"] += audit["removed_returns"]
+                    t0 = time.perf_counter()
+                    if level == "clean":
+                        result, reference = process_clean_reference(detector, fr)
+                        clean_references.append(reference)
+                    else:
+                        result = detector.process(fr)
+                    elapsed.append((time.perf_counter() - t0) * 1000)
+                    row = result.to_dict()
+                    row["frame"] = i
+                    health = row.get("health") or {}
+                    decision = ("STOP" if result.obstacle else "FAULT" if health.get("level") == "error"
+                                else "CAUTION" if result.warning or health.get("decision_level", health.get("level")) == "warn"
+                                else "GO")
+                    row["decision"] = decision
+                    row["augmentation"] = audit
+                    row["clean_reference"] = clean_references[i]
+                    counts[decision] += 1
+                    counts["stop_episodes"] += int(decision == "STOP" and not last_stop)
+                    counts["degraded_frames"] += int(health.get("decision_level", health.get("level")) in ("warn", "error"))
+                    last_stop = decision == "STOP"
+                    visible = [r for r in labels.get(f"{i:05d}", []) if r.get("n_points", 1) > 0 and r.get("plausible", True)]
+                    gt = gt_objects(visible)
+                    assignment = _assign_detections(row.get("detections", []), gt)
+                    row["matched_labels"] = [visible[k].get("label", "obstacle") for k in assignment]
+                    for gi, label in enumerate(visible):
+                        if not label.get("in_gauge", True):
+                            continue
+                        obj = objects[label.get("label", "obstacle")]
+                        obj["visible_inside_frames"] += 1
+                        if gi in assignment:
+                            obj["stop_frames"].append(i)
+                            if obj["first_stop_frame"] is None:
+                                obj["first_stop_frame"] = i
+                                obj["first_stop_m"] = float(label["distance"])
+                    fh.write(json.dumps(row, separators=(",", ":")) + "\n")
+            measurement = {**dict(counts), "objects": dict(objects), "frames": len(paths),
+                           "timing_ms": {"median": float(np.median(elapsed)), "p95": float(np.percentile(elapsed, 95))},
+                           "wall_seconds": time.perf_counter() - started,
+                           "raw_sha256": hashlib.sha256(output.read_bytes()).hexdigest()}
+            if level != "clean":
+                clean = bag_report["levels"]["clean"]
+                measurement["extra_stop_episodes"] = counts["stop_episodes"] - clean.get("stop_episodes", 0)
+                if bag in EMPTY:
+                    measurement["empty_episode_acceptance"] = measurement["extra_stop_episodes"] <= 1
+                for name, obj in objects.items():
+                    base = clean["objects"].get(name, {})
+                    obj["lost_clean_stop_frames"] = sorted(set(base.get("stop_frames", [])) - set(obj["stop_frames"]))
+                    old = base.get("first_stop_m")
+                    obj["first_stop_ratio"] = obj["first_stop_m"] / old if old and obj["first_stop_m"] is not None else None
+            bag_report["levels"][level] = measurement
+            report["runtime_identity_end"] = identities()
+            if report["runtime_identity_end"] != runtime_identity:
+                raise ValueError("measurement source changed during capture")
+            (a.out / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
+            print(f"{bag}/{level}: {dict(counts)} p95={measurement['timing_ms']['p95']:.1f}ms", flush=True)
+
+
+if __name__ == "__main__":
+    main()

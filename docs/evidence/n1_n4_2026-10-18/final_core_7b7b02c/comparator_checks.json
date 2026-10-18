@@ -1,0 +1,10 @@
+{
+  "same_input_self_comparison_passed": true,
+  "deliberate_mutations_detected": {
+    "decision": true,
+    "clear_distance": true,
+    "node.input_generation": true,
+    "gauge.solid_range_m": true
+  },
+  "comparator_sha256": "ec9def6f68e985dbaf4999aa49638c12901f9da698d54a73264725031e8d4d10"
+}

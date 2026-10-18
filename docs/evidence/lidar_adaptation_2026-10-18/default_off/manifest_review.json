@@ -1,0 +1,27 @@
+{
+  "status": "INDEPENDENT_MANIFEST_REVIEW_PASS",
+  "checked_utc": "2026-10-18T11:36:00.485810+00:00",
+  "manifest": "docs/evidence/detector_freeze_2026-10-18_lidar.json",
+  "manifest_sha256": "f75231a9d52124620ec7f23ee7ecf0050bf4e668ee2e10fdb660c3dba06bbc3c",
+  "measured_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "evidence_commit": "113231d59557fb5bc5c50c76117a84b978264505",
+  "source_sha256": "5eae5197cc6497b029665a19e85b28fb217e934d8a80928cba6c1d2c5ad51700",
+  "source_files": 38,
+  "supporting_references_verified": 15,
+  "builtin_verification_errors": [],
+  "all_supporting_bytes_committed_at_evidence_commit": true,
+  "lineage_and_inherited_decisions_retained": true,
+  "default_replay_frames": 0,
+  "rail_axis_extension": false,
+  "column_free_max_top": 0,
+  "manual_scope_review": "Current user opt-in choice, rejection of default4 without waiver, explicit C2 profile, N3/N6/H1 limitations, separate node/image checks and no release/deployment all retained.",
+  "builtin_verifier_limit_acknowledged": "Additional15 hashes verified here; built-in verifier validates only source/baseline/gate and never replays data.",
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/review_manifest.py": "326b9beb093fa9e6ec326675f6e57cbb6926524521aa90e43910a9aa93fa0387",
+    "/home/resense/ReSense/docs/evidence/detector_freeze_2026-10-18_lidar.json": "f75231a9d52124620ec7f23ee7ecf0050bf4e668ee2e10fdb660c3dba06bbc3c",
+    "/home/resense/ReSense/docs/evidence/detector_freeze_2026-10-16_1.1.0.json": "523b5eefaed42882c6a9c6974f3ac16ebd791472d7c831da245ad2827d8cc648",
+    "/home/resense/ReSense/scripts/detector_freeze.py": "9158e2b05d0b72bc1bc9cee9e6f24a0ce4a681c9a2671cbe8e346a13024c9399",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/independent_acceptance.json": "94d66487d2d59c5ce388a156b7b6126ba0f487f09167afcc9ef501846fff06ac",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/independent_x3_archive.json": "fb52ec7cbbcb1e04e64f9236e6fcc5853963c61dcf49535e7d2649bba819729a"
+  }
+}

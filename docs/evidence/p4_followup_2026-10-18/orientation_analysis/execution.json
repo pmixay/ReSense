@@ -1,0 +1,19 @@
+{
+  "started_utc": "2026-10-18T12:49:03.581956+00:00",
+  "command": [
+    "nice",
+    "-n",
+    "5",
+    "/home/resense/.venv/bin/python",
+    "/home/resense/ReSense/docs/evidence/p4_followup_2026-10-18/orientation_analysis/run_mapping.py",
+    "run"
+  ],
+  "pid": 80637,
+  "registration_sha256": "aec0db665d105e447335872957ca51bc37772e734ba612ac57224526801b7748",
+  "wrapper_sha256": "dc0ba8509c2b0d6108bf4d9fa69d8ec17397588cf6721fbbe46316e4741cd4b7",
+  "status": "COMPLETE",
+  "completed_utc": "2026-10-18T12:56:44.754477+00:00",
+  "returncode": 0,
+  "log_sha256": "a5c50e809623a4501b247a177294df7c68f05b85608bcb905e91994427912184",
+  "summary_sha256": "3da9e1b7b51c4f895e930332413d25dcb02effa90875f389e3ec1390f8a516ec"
+}

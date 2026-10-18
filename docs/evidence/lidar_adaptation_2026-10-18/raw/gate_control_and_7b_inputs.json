@@ -1,0 +1,158 @@
+[
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/cloud_with_fake_obj.jsonl",
+    "member": "control_work/cloud_with_fake_obj.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/doubleT_obstacle.jsonl",
+    "member": "control_work/doubleT_obstacle.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/doubleT_platform.jsonl",
+    "member": "control_work/doubleT_platform.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/new_data_0.jsonl",
+    "member": "control_work/new_data_0.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/new_data_1.jsonl",
+    "member": "control_work/new_data_1.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/new_data_2.jsonl",
+    "member": "control_work/new_data_2.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/new_data_3.jsonl",
+    "member": "control_work/new_data_3.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/new_data_4.jsonl",
+    "member": "control_work/new_data_4.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/new_data_5.jsonl",
+    "member": "control_work/new_data_5.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/new_data_6.jsonl",
+    "member": "control_work/new_data_6.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/new_data_7.jsonl",
+    "member": "control_work/new_data_7.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/roundT_doubleT.jsonl",
+    "member": "control_work/roundT_doubleT.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/roundT_pressureGate_roundT.jsonl",
+    "member": "control_work/roundT_pressureGate_roundT.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/roundT_squareT_pressureGate_squareT.jsonl",
+    "member": "control_work/roundT_squareT_pressureGate_squareT.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/squareT_platform_squareT_switch.jsonl",
+    "member": "control_work/squareT_platform_squareT_switch.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/config.yaml",
+    "member": "control_work/config.yaml"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/work/setF_straight.json",
+    "member": "control_work/setF_straight.json"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/cloud_with_fake_obj.jsonl",
+    "member": "candidate_work/cloud_with_fake_obj.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/doubleT_obstacle.jsonl",
+    "member": "candidate_work/doubleT_obstacle.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/doubleT_platform.jsonl",
+    "member": "candidate_work/doubleT_platform.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/new_data_0.jsonl",
+    "member": "candidate_work/new_data_0.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/new_data_1.jsonl",
+    "member": "candidate_work/new_data_1.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/new_data_2.jsonl",
+    "member": "candidate_work/new_data_2.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/new_data_3.jsonl",
+    "member": "candidate_work/new_data_3.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/new_data_4.jsonl",
+    "member": "candidate_work/new_data_4.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/new_data_5.jsonl",
+    "member": "candidate_work/new_data_5.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/new_data_6.jsonl",
+    "member": "candidate_work/new_data_6.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/new_data_7.jsonl",
+    "member": "candidate_work/new_data_7.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/roundT_doubleT.jsonl",
+    "member": "candidate_work/roundT_doubleT.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/roundT_pressureGate_roundT.jsonl",
+    "member": "candidate_work/roundT_pressureGate_roundT.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/roundT_squareT_pressureGate_squareT.jsonl",
+    "member": "candidate_work/roundT_squareT_pressureGate_squareT.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/squareT_platform_squareT_switch.jsonl",
+    "member": "candidate_work/squareT_platform_squareT_switch.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/config.yaml",
+    "member": "candidate_work/config.yaml"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_7b7b02c/setF_straight.json",
+    "member": "candidate_work/setF_straight.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/gate.json",
+    "member": "control/gate.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/receipt.json",
+    "member": "control/receipt.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/gate.json",
+    "member": "candidate/gate.json"
+  },
+  {
+    "source": "/home/resense/data/final_gate_status.json",
+    "member": "candidate/producer_receipt.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/gate_independent_review.json",
+    "member": "gate_independent_review.json"
+  }
+]

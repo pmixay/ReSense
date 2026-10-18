@@ -1,0 +1,115 @@
+{
+  "status": "ALL_PRESERVED_PARTIAL_BANK_PLACEMENTS_IDENTICAL",
+  "scope": "Every completed original pre-coordinate bank,15sequences; corrected30-sequence measurement remains separate and may still be running. Compare full precision fields, not detector result summaries.",
+  "old_manifest_sha256": "f103bf2cd90d0c30dc3aee048cf286ff17681e431e5ce1bb92705782c37f4d08",
+  "interruption_receipt_sha256": "aff2c57cc16befeb9ae46e71a37f6e49d1dd34a037397fdab017c50b2e201379",
+  "corrected_harness_commit": "b9ad5f4",
+  "sequences": {
+    "46_box0.5": {
+      "rows": 102,
+      "original_sha256": "fee5528a6af8d075551c7a3fdf00328227d8afc7132e52b3707e622bb172e7b4",
+      "corrected_sha256": "7d0aab7a291d449a5d5db4a2a03d5a05daf9a20dbf31ab927e130e3f6e2af337",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.017977999018808033,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "46_box1.0": {
+      "rows": 102,
+      "original_sha256": "0b9564e8deab415da57198b204acf87fce2201a0c734950881537b07ca478b9f",
+      "corrected_sha256": "b1947bcbe54c60621122268111c13ad3357f2d378b5774040f4fedd7cd6de7dd",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.07201273516841233,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "46_cable": {
+      "rows": 102,
+      "original_sha256": "e7249282034dba78e2545f69b62bcb618f4ae586c5ce262c8f59600c91c22f9b",
+      "corrected_sha256": "1d6f7f43e0b5a78dc64be91ac3e277247f8b866e48e7fc8ffb17678488918b9f",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.008158990448846382,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "46_person": {
+      "rows": 102,
+      "original_sha256": "cb0115115a65f969ba9dfb5499e85e73e9fc9431310b11fed5681a1ed07092ea",
+      "corrected_sha256": "2be12b2c9f5ac41d6316544ef7c5a7f07e4af71fb6fc155c0218af21855a77be",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.04249674271263171,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "46_trolley": {
+      "rows": 102,
+      "original_sha256": "9ec0da56842e7e6c8a1cc9b9fda13fb34dc83a73fec7ee42bb2d999041248698",
+      "corrected_sha256": "a46ce43a4b472a071db11ebc61a7f8f15a736b44d404bfd7a129bf34550f8d79",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.061053197729576514,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "68_box0.5": {
+      "rows": 106,
+      "original_sha256": "575521424913469dc04e3b6acf6c941cc50cb6ca31e13fbb8da416451c7d2cc5",
+      "corrected_sha256": "71146549cdbe67799096f205e945e194a8b62d09bf6876003394042e8b7e9196",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.024421376193940247,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "68_box1.0": {
+      "rows": 106,
+      "original_sha256": "98a86a774721f9a0866ec2b7d8aad611554bfd7f50e65b35a9700d1015d9d864",
+      "corrected_sha256": "a486c0536d25655e854e7ae4a51c54ae430730f3731ecf63a2e88607bd21e25a",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.050353382367770205,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "68_cable": {
+      "rows": 106,
+      "original_sha256": "b8a85c25081dbd15a58b393002789b58f1ea873b45855aa182b7608b67fc094f",
+      "corrected_sha256": "31989586acfa17c983cf25c46df02f9271e263d26e721de68484243fae23667a",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.009012801716138608,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "68_person": {
+      "rows": 106,
+      "original_sha256": "bb4973834c1c3edc0f7d27ccd70fc634cb752e08ee99cf4b121a6c0582aaf82c",
+      "corrected_sha256": "8f91c3ca645c5a477b9fa18dfdf911ccaa18a7a395dfcda3370c923bdbadb47c",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.03752845228359036,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "68_trolley": {
+      "rows": 106,
+      "original_sha256": "16d3d207ff5023d1486aa0508d763017351ebe3e77368e47f44641a1e3e418ef",
+      "corrected_sha256": "5d431ee8b4904bbac1652a443dcc60c43a4cf0fcafa0e0b6f851b076e1d3c897",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.05688366835650127,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "98_box0.5": {
+      "rows": 106,
+      "original_sha256": "019002bc9377b13739c17c4ebb72e39b6129d64d176238558f31606c145c6765",
+      "corrected_sha256": "0b91da67b4039a6d1856080093e0b71b3a0badaf07580edc8abe26760b375644",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.016101981345325145,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "98_box1.0": {
+      "rows": 106,
+      "original_sha256": "97df6efb2234dc1b6d01a6183bfbcd66f480be706e348dbeb86a01f69732848f",
+      "corrected_sha256": "9bc2beb5addf97b0270f4f267f4a4fb8d51680d709d5c59e399f9fe44dda0cbb",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.09622643673772346,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "98_cable": {
+      "rows": 106,
+      "original_sha256": "88a931f3358c355541486c41eccc4b3a54c92ad59680e079752100b15aad79fb",
+      "corrected_sha256": "84c4c652e74c6d9536175f5f208ce2bc0d0653d435478bde17c9d1adaa6ec0d0",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.010390783134917703,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "98_person": {
+      "rows": 106,
+      "original_sha256": "38a916db9abb5869f619b4b7e8d0be294d75ed53be9b0156ff027dbe3c844010",
+      "corrected_sha256": "8ba70074d352384c3a97fc9b96d95da2caa825c37b715878432e77d0751e0d28",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.04090839911199162,
+      "nonidentity_clean_reference_rows": 0
+    },
+    "98_trolley": {
+      "rows": 106,
+      "original_sha256": "6de6e04cf239e3bee464823acb08f37ecca39646dc4b60a2c35795efeaa0660a",
+      "corrected_sha256": "4fec662b393b8aee0030ec3c7baa244b43debe66de95e4a1e98bc99939c69dba",
+      "maximum_old_placement_vs_new_clean_rail_z_difference_m": 0.04789068088346182,
+      "nonidentity_clean_reference_rows": 0
+    }
+  },
+  "total_rows": 1570
+}

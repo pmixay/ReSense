@@ -1,0 +1,319 @@
+{
+  "command": [
+    "/home/resense/ReSense/scripts/run_demo.sh",
+    "--sensor-profile",
+    "pandar128",
+    "--clear-range-policy",
+    "conservative",
+    "/home/resense/data/n4_curve_preview",
+    "--rate",
+    "0.5"
+  ],
+  "observer_command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "resense_n1_observer",
+    "--net=host",
+    "--ipc=host",
+    "-v",
+    "/home/resense/data/n1_final_rviz_05:/out",
+    "-v",
+    "/home/resense/ReSense/docs/evidence/n1_n4_2026-10-18/capture_status.py:/capture.py:ro",
+    "resense:n1n4-check",
+    "python3",
+    "/capture.py",
+    "/out/status.jsonl"
+  ],
+  "exit_code": 0,
+  "display": ":99",
+  "image": "sha256:a018d39a2369ffb962c4ab595347957085f18bab62df1964e9004ccd57f59f9b",
+  "software_rendering": true,
+  "captures": [
+    "/home/resense/data/n1_final_rviz_05/capture_00.png",
+    "/home/resense/data/n1_final_rviz_05/capture_01.png",
+    "/home/resense/data/n1_final_rviz_05/capture_02.png",
+    "/home/resense/data/n1_final_rviz_05/capture_03.png",
+    "/home/resense/data/n1_final_rviz_05/capture_04.png",
+    "/home/resense/data/n1_final_rviz_05/capture_05.png",
+    "/home/resense/data/n1_final_rviz_05/capture_06.png",
+    "/home/resense/data/n1_final_rviz_05/capture_07.png",
+    "/home/resense/data/n1_final_rviz_05/capture_08.png",
+    "/home/resense/data/n1_final_rviz_05/capture_09.png",
+    "/home/resense/data/n1_final_rviz_05/capture_10.png",
+    "/home/resense/data/n1_final_rviz_05/capture_11.png",
+    "/home/resense/data/n1_final_rviz_05/capture_12.png",
+    "/home/resense/data/n1_final_rviz_05/capture_13.png",
+    "/home/resense/data/n1_final_rviz_05/capture_14.png",
+    "/home/resense/data/n1_final_rviz_05/capture_15.png",
+    "/home/resense/data/n1_final_rviz_05/capture_16.png",
+    "/home/resense/data/n1_final_rviz_05/capture_17.png",
+    "/home/resense/data/n1_final_rviz_05/capture_18.png",
+    "/home/resense/data/n1_final_rviz_05/capture_19.png",
+    "/home/resense/data/n1_final_rviz_05/capture_20.png",
+    "/home/resense/data/n1_final_rviz_05/capture_21.png",
+    "/home/resense/data/n1_final_rviz_05/capture_22.png",
+    "/home/resense/data/n1_final_rviz_05/capture_23.png"
+  ],
+  "cpu_affinity": [
+    0
+  ],
+  "cgroup_samples": [
+    {
+      "mono": 41158.344283821,
+      "cpu_usage_usec": 270517,
+      "memory_current_bytes": 13787136,
+      "memory_peak_bytes": 13934592
+    },
+    {
+      "mono": 41158.870951137,
+      "cpu_usage_usec": 683444,
+      "memory_current_bytes": 148611072,
+      "memory_peak_bytes": 148832256
+    },
+    {
+      "mono": 41159.39761654,
+      "cpu_usage_usec": 1120132,
+      "memory_current_bytes": 275615744,
+      "memory_peak_bytes": 276611072
+    },
+    {
+      "mono": 41159.943384398,
+      "cpu_usage_usec": 1555837,
+      "memory_current_bytes": 395427840,
+      "memory_peak_bytes": 395669504
+    },
+    {
+      "mono": 41160.472885733,
+      "cpu_usage_usec": 1874350,
+      "memory_current_bytes": 329539584,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41161.004055675,
+      "cpu_usage_usec": 2072248,
+      "memory_current_bytes": 329539584,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41161.521595032,
+      "cpu_usage_usec": 2276463,
+      "memory_current_bytes": 329793536,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41162.049398567,
+      "cpu_usage_usec": 2696601,
+      "memory_current_bytes": 334331904,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41162.563392813,
+      "cpu_usage_usec": 3008332,
+      "memory_current_bytes": 357588992,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41163.076922318,
+      "cpu_usage_usec": 3216380,
+      "memory_current_bytes": 357990400,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41163.606920165,
+      "cpu_usage_usec": 3381970,
+      "memory_current_bytes": 330166272,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41164.121659988,
+      "cpu_usage_usec": 3517810,
+      "memory_current_bytes": 330280960,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41164.636077738,
+      "cpu_usage_usec": 3641505,
+      "memory_current_bytes": 330285056,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41165.150862215,
+      "cpu_usage_usec": 3779047,
+      "memory_current_bytes": 330289152,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41165.663836982,
+      "cpu_usage_usec": 3904165,
+      "memory_current_bytes": 330289152,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41166.176080509,
+      "cpu_usage_usec": 4022850,
+      "memory_current_bytes": 330289152,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41166.689955522,
+      "cpu_usage_usec": 4151442,
+      "memory_current_bytes": 330289152,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41167.20304773,
+      "cpu_usage_usec": 4278425,
+      "memory_current_bytes": 330289152,
+      "memory_peak_bytes": 401879040
+    },
+    {
+      "mono": 41167.727050006,
+      "cpu_usage_usec": 4668422,
+      "memory_current_bytes": 421085184,
+      "memory_peak_bytes": 436101120
+    },
+    {
+      "mono": 41168.350614026,
+      "cpu_usage_usec": 5167155,
+      "memory_current_bytes": 430936064,
+      "memory_peak_bytes": 461692928
+    },
+    {
+      "mono": 41168.963475037,
+      "cpu_usage_usec": 5646493,
+      "memory_current_bytes": 466497536,
+      "memory_peak_bytes": 469512192
+    },
+    {
+      "mono": 41169.578463192,
+      "cpu_usage_usec": 6157318,
+      "memory_current_bytes": 465653760,
+      "memory_peak_bytes": 473026560
+    },
+    {
+      "mono": 41170.204321332,
+      "cpu_usage_usec": 6647547,
+      "memory_current_bytes": 467009536,
+      "memory_peak_bytes": 478973952
+    },
+    {
+      "mono": 41170.825394617,
+      "cpu_usage_usec": 7152930,
+      "memory_current_bytes": 467554304,
+      "memory_peak_bytes": 481898496
+    },
+    {
+      "mono": 41171.440276093,
+      "cpu_usage_usec": 7639681,
+      "memory_current_bytes": 480362496,
+      "memory_peak_bytes": 487014400
+    },
+    {
+      "mono": 41172.10194001,
+      "cpu_usage_usec": 8124574,
+      "memory_current_bytes": 482471936,
+      "memory_peak_bytes": 489025536
+    },
+    {
+      "mono": 41172.714168878,
+      "cpu_usage_usec": 8627923,
+      "memory_current_bytes": 488763392,
+      "memory_peak_bytes": 495849472
+    },
+    {
+      "mono": 41173.33733216,
+      "cpu_usage_usec": 9120774,
+      "memory_current_bytes": 488341504,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41173.952080007,
+      "cpu_usage_usec": 9626886,
+      "memory_current_bytes": 488345600,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41174.568336811,
+      "cpu_usage_usec": 10132593,
+      "memory_current_bytes": 488361984,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41175.207388018,
+      "cpu_usage_usec": 10646783,
+      "memory_current_bytes": 488370176,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41175.825800119,
+      "cpu_usage_usec": 11147028,
+      "memory_current_bytes": 490909696,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41176.448404945,
+      "cpu_usage_usec": 11654717,
+      "memory_current_bytes": 490606592,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41177.073541195,
+      "cpu_usage_usec": 12159484,
+      "memory_current_bytes": 490614784,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41177.692655173,
+      "cpu_usage_usec": 12650032,
+      "memory_current_bytes": 490618880,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41178.310479043,
+      "cpu_usage_usec": 13156711,
+      "memory_current_bytes": 490618880,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41178.922904049,
+      "cpu_usage_usec": 13648224,
+      "memory_current_bytes": 479440896,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41179.534374859,
+      "cpu_usage_usec": 14168842,
+      "memory_current_bytes": 485167104,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41180.14638521,
+      "cpu_usage_usec": 14677876,
+      "memory_current_bytes": 485171200,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41180.762386876,
+      "cpu_usage_usec": 15201361,
+      "memory_current_bytes": 485175296,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41181.388408325,
+      "cpu_usage_usec": 15588300,
+      "memory_current_bytes": 485175296,
+      "memory_peak_bytes": 501714944
+    },
+    {
+      "mono": 41182.003408337,
+      "cpu_usage_usec": 16118104,
+      "memory_current_bytes": 485175296,
+      "memory_peak_bytes": 501714944
+    }
+  ],
+  "node_container_cpu_cores_mean": 0.6698298151009991,
+  "node_container_memory_peak_mb": 478.47265625,
+  "scope": "actual Docker wrapper, optional RViz on Xvfb; decoded curve geometry; cgroup includes detector+RViz, not player/observer/Xvfb"
+}
