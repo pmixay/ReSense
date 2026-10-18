@@ -1,5 +1,11 @@
 # Extended dataset of 16.10: intake, characterization, sealed 1.1.0 observation
 
+**18.10 correction to the historical partial observation below:** the complete verified Falcon decode now
+covers all 4,443 frames. Its valid `is_2nd_return` flags show a median 2,005 second-return points per frame;
+the earlier blanket "single return" description is superseded. Raw maximum range is 509.97 m. The original
+partial replay measurements below remain historical results. See the
+[complete characterization](../n2_falcon_2026-10-18/characterization_summary.json) and its source/cache receipts.
+
 > **Owner:** P4 · **Date:** 2026-10-17 · **Audience:** P1, P3, P4 · **Status:** observation only
 > **Data:** `new_synth_data.zst` (three synthetic bags) and `falcon_test.zst` (real recording from the second lidar,
 > Seyond / Innovusion Falcon Prime), from the organizers' folder [SfBeRHbs8bNJAQ](https://disk.yandex.ru/d/SfBeRHbs8bNJAQ)

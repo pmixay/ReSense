@@ -1,0 +1,64 @@
+[
+  {
+    "file": "/home/resense/data/downloads/new_synth_data.zst",
+    "receipt": {
+      "archive": "new_synth_data.zst",
+      "bytes": 2532818915,
+      "sha256": "e09336cb939e6b5a6fdb35ccacce59f3808d875a4084142a02cbd1cf88a26bc7",
+      "verified": true
+    },
+    "decoded_caches": {
+      "synthetic_platform": {
+        "frames": 386,
+        "metadata_sha256": "7ffbfa989f6fadb2e0762766ab60af161b7528ab8b886b41202923571ffea2f0"
+      },
+      "synthetic_switch": {
+        "frames": 736,
+        "metadata_sha256": "8e329e62c0559e2bfc5156153705350987695d64e97bb56d4376b28a048bdbc9"
+      },
+      "synthetic_tunnels": {
+        "frames": 545,
+        "metadata_sha256": "581cbb6874451a1b40f8dbf7b94782b4aa913eb1aeadc91beebec780b927e8bc"
+      }
+    },
+    "deleted_authorization": "Root authorized reproducible session-created duplicate archive deletion to make room for verified Falcon decode; user originals untouched.",
+    "source_note": "Source URLs and re-fetch commands remain in organizer intake and unpack_dataset.py documentation."
+  },
+  {
+    "file": "/home/resense/data/downloads/dataset.zip",
+    "receipt": {
+      "archive": "dataset.zip",
+      "sha256": "e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be",
+      "bytes": 3940746006,
+      "verified": true
+    },
+    "decoded_caches": {
+      "doubleT_obstacle": {
+        "frames": 201,
+        "metadata_sha256": "67358d464c52a242eac4ce8777b9ba8d833755395019581fee58db1e9eef34c9"
+      },
+      "doubleT_platform": {
+        "frames": 345,
+        "metadata_sha256": "1335688bbd73ef2e092aca4e59e32b52be9f4ed027540595ef942ce0cea0a3c0"
+      },
+      "roundT_doubleT": {
+        "frames": 252,
+        "metadata_sha256": "51004f10044870d65574a3b9b1f0025f082c6ece10f93e9b1feccb9e95f6e621"
+      },
+      "roundT_pressureGate_roundT": {
+        "frames": 268,
+        "metadata_sha256": "4f039fb28c8148096caa14e80002b627c9d674691a1209a6dfb6b846d328e41f"
+      },
+      "roundT_squareT_pressureGate_squareT": {
+        "frames": 545,
+        "metadata_sha256": "ad930fe594c02da7e26260d66e53c19bd9d864abbfe8e6784e4f15f0aa4b7438"
+      },
+      "squareT_platform_squareT_switch": {
+        "frames": 877,
+        "metadata_sha256": "b3996437b21104398ba19ae80c05f9183935174b76ec1960eb561756476aa361"
+      }
+    },
+    "deleted_authorization": "Root authorized reproducible session-created duplicate archive deletion to make room for verified Falcon decode; user originals untouched.",
+    "source_note": "Source URLs and re-fetch commands remain in organizer intake and unpack_dataset.py documentation."
+  }
+]

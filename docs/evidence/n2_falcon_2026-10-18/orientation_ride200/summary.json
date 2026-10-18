@@ -1,0 +1,514 @@
+{
+  "source": "/home/resense/data/n2/candidate_71d3067",
+  "source_hashes": {
+    "resense/__init__.py": "26224b26e3748484752d554049a2e3efdea00270e37a6c093df333151ab8eb04",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/_resense_native.cpython-312-x86_64-linux-gnu.so": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "4111dc469812066d0675f9ed57f185d04deca4861c4c5ce566c5e040b46dabad",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+    "resense/config.py": "774c54921234f9747620e3b63f9b7a15e5dab060a8209d59fa87e42f0d0649d9",
+    "resense/detector.py": "97cf9acf8d9206b489b475c75c7ab425675d0bfc43d3443c1891a3962bb3e0f8",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "a1c0761a713d6e089c420d383c153b0ce52f503405e6c4c0020bcb1e08ffdb16",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "211502e2c826cdc61f60d091ed0e0df414567d1b4497661eeb2e00c56c813ddc",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+    "resense/tracking.py": "4c6d6176e06749a544eceb06e60ab2f276b991fca32dcc862685eac95778eca3",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "configs/default.yaml": "3936780252f00cf0dc34c9205b5633738368a0d5c3bdc4f07200d21d3de6143c",
+    "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+    "configs/experimental_far_rail_rings.yaml": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+    "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+    "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b"
+  },
+  "cache": "/home/resense/data/gate_cache/new_data",
+  "cache_meta_sha256": "e0f4417122e726103c96d92d1fdbb1256a50d116b99392324a75d4e7ef38f04d",
+  "selected_input_sha256": {
+    "new_data_200_0000.npy.zst": "8702d8f034e5e269baeb944963fd6266b1a746a0f1626d9ed681f86f174f3f94",
+    "new_data_200_0001.npy.zst": "7b6d109f54f0c9172134f7ef6bf6e5251ef095ee12d2506713086367e160703f",
+    "new_data_200_0002.npy.zst": "a68e6c6496b91f0ad8d230387af7f5a5e7a0cbafee9342892ca3208883a1564b",
+    "new_data_200_0003.npy.zst": "76f1bc3ca5b5eb6cfc8875764c2acb92fafe6fa94f0e6903063d49725ad5d7aa",
+    "new_data_200_0004.npy.zst": "724fe0b9be17f395415224841342483b93377f7ba1b2034519b494002fb32540",
+    "new_data_200_0005.npy.zst": "1d471677717fc9d2d7219a54ee798324b9f33ece226f6a4faaeb5bd6f825a880",
+    "new_data_200_0006.npy.zst": "3118cad79f9007f3e985eb4dd9af8975e93ee204006f242a4d86d9451c038911",
+    "new_data_200_0007.npy.zst": "83ab86146b344393825b6de13b5babc58ccb9f7083058287cbeb080e6d4352ba",
+    "new_data_200_0008.npy.zst": "931de50f01c6d67c827bbd8a97ad214cdd9f192b73382b354fe5dbdcd892c807",
+    "new_data_200_0009.npy.zst": "3122be1ab56c9e7b05386e0e905aa24462fdaba511d4444b8774d9860d118f59",
+    "new_data_200_0010.npy.zst": "4adab1868e8e8dae8a5a3f640443ad912d29fd14c9a26eed22ff3accbd5ab1ea",
+    "new_data_200_0011.npy.zst": "b3f422a9a7c7d34c1674c6fc89a97d67da0f8e6a03c22812ee6e4a12cda58887",
+    "new_data_200_0012.npy.zst": "c288d2d56b5b5add6d08467344ed582c1e11486cc397af1bf7bd6a23ebca38cf",
+    "new_data_200_0013.npy.zst": "216ef3bb848890df8203a7fb9217f4e4e39c0b8ac9ad659115c4037f891236dc",
+    "new_data_200_0014.npy.zst": "d19057798faaadb3fdd1f5292f134e7fdadb5ed199caa03650506d1f888caf48",
+    "new_data_200_0015.npy.zst": "608c4675f6c3f990fdd104a332879235710a12fa0ea0f3ffb6200d8593235cf9",
+    "new_data_200_0016.npy.zst": "3ed09f1b3b35590f063b094dd6fc972e03bdfe9a26350f9027b4f6e9c12350d7",
+    "new_data_200_0017.npy.zst": "4ec7f4efb297bb47947b15a0da86018d6cd1088280124d7caca77480cbb522ed",
+    "new_data_200_0018.npy.zst": "5af83bf7f183fa688339806684e8637a4884f93991d95e26b2cf3e3c1f19d9fe",
+    "new_data_200_0019.npy.zst": "bad4ac52875c500824ccd7cb909db78d4d34815be3d3d92b9bce47d4eb85c45c",
+    "new_data_200_0020.npy.zst": "b6329ad6efa81b61a4ae986df94b59740a1d9649e4e4a05897190babf60e778c",
+    "new_data_200_0021.npy.zst": "3ef3fab96e1834584525a75c5ccd77059dd407711f1e1f53d003978ff1484124",
+    "new_data_200_0022.npy.zst": "5282fd21b04049805cf8c089d40afdf9009e248df469768c3716d585e9d71290",
+    "new_data_200_0023.npy.zst": "43b7093eb79e7068a2692a240eee9b9c31a762208b2d5c9d7d9959bf0ae85570",
+    "new_data_200_0024.npy.zst": "ef0814113c9407bc89abd8d5323bf2c21f149f296f2e0be2bd5f4c469d7ca6e7",
+    "new_data_200_0025.npy.zst": "232358e132e77cd409b817da3f9ba127701db94ce48e32df753dfdbea45e5cb9",
+    "new_data_200_0026.npy.zst": "3c894a9c4c21dd195f445fd354533f72793e84635da589ea7c4378b85a2ddfb9",
+    "new_data_200_0027.npy.zst": "772cb5dab3436d1093bb5ddf23b79970c9c1fadabc5c60e62273482856ceb52a",
+    "new_data_200_0028.npy.zst": "56bc9142e1b5409cdce359502046f7c35ef994e09a424878c7db6f0b63461240",
+    "new_data_200_0029.npy.zst": "483ad8ab9d5cc59e0b4af37d4ed61b38a5bc1cbcca4bbc05c4fa5569bd15ab32",
+    "new_data_200_0030.npy.zst": "8f84ac713c210e45b1b8835db40878b438342f1994b907d03a23855885d3abec",
+    "new_data_200_0031.npy.zst": "bb86e1d280c98b667bccf35201df9c5b76f8260984211729b22cb4f56c6a5d2e",
+    "new_data_200_0032.npy.zst": "da420b7b478e8b0ff6dcd428ef9ba184b7a66a94d379c836b4336bcdb629d3da",
+    "new_data_200_0033.npy.zst": "d53577b39d65aec38f4e43e21643f42de59e0c5f8b3980e65570be1d33d4f0e4",
+    "new_data_200_0034.npy.zst": "77e4bf1cf51f58ee47f50e40cdcccc42a0fa59b0fcafa39568e09c81ef477ad6",
+    "new_data_200_0035.npy.zst": "390e61b4f356bf5fea63d71ef1119b24752298f731b998e58440a30599f9d50b",
+    "new_data_200_0036.npy.zst": "92d8ec515e7e7cae5067a8b826259562078360ce329065154bff22cf147948c1",
+    "new_data_200_0037.npy.zst": "57ea024e0a0df7109bc457bf71339376df1e3a01c3c2e5063eaa9d182084032b",
+    "new_data_200_0038.npy.zst": "cf66fe771d8b23a054cbe52ef8a4e63eaa79e4836dba840eec990971ebf711fd",
+    "new_data_200_0039.npy.zst": "d6f37a318dda5b07d574d686a1587ac7b895d518bb16e2b75f930a8f71d6eb61",
+    "new_data_200_0040.npy.zst": "6f357fa501ee9d2a2b8712e4d491c1638e4b8c49acf6d7d837922f63018537fa",
+    "new_data_200_0041.npy.zst": "4a55163feed637c5a401a0349ee979bfd3e0a7534481fb62815662de231b851f",
+    "new_data_200_0042.npy.zst": "33de88b4752b09b6922f9bfd00258b5480527290abc78efa2072ac0441bf8fe6",
+    "new_data_200_0043.npy.zst": "c78a339ce8bddb990516bb86abf33bbe4b3c34d2a808303052fb434c3833c140",
+    "new_data_200_0044.npy.zst": "62cd43b3d9dca03cf35b5c9886a10affabe8a4ae51215748d6952bcf2667ff61",
+    "new_data_200_0045.npy.zst": "7fb845c0136608fc35a36507e5383cbd6f240c443749011bf3ba9d83d2f8f230",
+    "new_data_200_0046.npy.zst": "ab25540eef1b6860cfc7127fc7ecf7e33bef03f127f233b2e3bac1fca2bf5354",
+    "new_data_200_0047.npy.zst": "ba5ac6fcf807ee4e0f1d26939bdbd582ffd73a60759af0bb283b33d173b7830e",
+    "new_data_200_0048.npy.zst": "bc6703f07460a8b2df4321a28829c21175d95c80035a77cda135a6c74703e8c4",
+    "new_data_200_0049.npy.zst": "86b65f4e63724007be1c650124f6711659ecf7d8692ccfcb3759737a48c14974",
+    "new_data_200_0050.npy.zst": "a58119987d0d63857a533834bc95e60871ea2165f1b3660a78b8a1e1dab9b9ff"
+  },
+  "timestamp_source": "bag receive stamps, preserved",
+  "suite": "orientation",
+  "cases": [
+    {
+      "name": "baseline",
+      "kind": "baseline",
+      "overrides": {
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "GO": 51
+      },
+      "first_correct_orientation": 0,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        123.5,
+        216.58499999999998,
+        278.34000000000003
+      ],
+      "output_sha256": "e73adb88abd5f9c49335c9243834462cc681a3c6d13cef958692716c66771f46"
+    },
+    {
+      "name": "auto_00",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true,
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "GO": 51
+      },
+      "first_correct_orientation": 0,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        120.39,
+        181.39,
+        192.925
+      ],
+      "output_sha256": "7c053359c2225a47ea67ae11a1a1b8505092f0e5fcc9303dcc5d201c9e1d6004",
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_01",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true,
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "CAUTION": 1,
+        "GO": 50
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0
+      ],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        127.42,
+        213.33499999999998,
+        808.3199999999999
+      ],
+      "output_sha256": "2518d250e86fbcae5d5f5ca746e38628fc24196e7da3c79cce50bdc3e9ee69a4",
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_02",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true,
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 50
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0
+      ],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        124.8,
+        181.97000000000003,
+        473.06
+      ],
+      "output_sha256": "462f0c6e9cf05eab2f17c326745d0352de46e45580c61eb91fc3c13768a50fd6",
+      "rotation": [
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_03",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true,
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 50
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0
+      ],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        129.44,
+        200.235,
+        468.16499999999996
+      ],
+      "output_sha256": "630bc6b62eb805a9bec3cbbf7d092acb41459878fa0531913ec9c2a80d75b43f",
+      "rotation": [
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_08",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true,
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 50
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0
+      ],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        122.25,
+        202.555,
+        496.01
+      ],
+      "output_sha256": "6b152d1c733376679c5c6402c361a91cf0dde8fe003a387b689ae00226dad01d",
+      "rotation": [
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_09",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true,
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 50
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0
+      ],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        130.31,
+        200.305,
+        545.61
+      ],
+      "output_sha256": "d8d62efb8b62e700065cf8566e7c8178fbd6dce580366cc19d93cf4d9a927da8",
+      "rotation": [
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_10",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true,
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 50
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0
+      ],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        125.43,
+        207.625,
+        558.51
+      ],
+      "output_sha256": "f4c16ad495c4025ff18aeadacfa06ed642fc405bf5260d52053b962c71eb02a1",
+      "rotation": [
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_11",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true,
+        "calibration.orientation_replay_frames": 4
+      },
+      "frames": 51,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 50
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0
+      ],
+      "lost_baseline_stop": [],
+      "first_stop": null,
+      "detect_ms_quantiles": [
+        122.54,
+        221.75,
+        522.65
+      ],
+      "output_sha256": "52f6cb112ab0588073554fd8dae330d6ef1f7fe2ad54df88b33ca5f6aecd2fc0",
+      "rotation": [
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    }
+  ],
+  "wall_s": 86.45675978600048,
+  "cpu_s": 11.991209844,
+  "peak_rss_mb": 204.99609375,
+  "timing_is_shared_host_diagnostic": true,
+  "explicit_24_exact_vehicle_point_equivalence_all_frames": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ]
+}

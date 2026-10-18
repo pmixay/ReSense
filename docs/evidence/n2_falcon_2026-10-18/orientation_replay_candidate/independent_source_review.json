@@ -1,0 +1,49 @@
+{
+  "reviewer": "c2_implementation; independent of N2 source author",
+  "date": "2026-10-18",
+  "corrected_commit": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+  "approved_scope": "Source/bound correction only; complete final gate and seal remain required",
+  "source_hashes": {
+    "resense/calibration.py": "29674696d08a41c56e9c402568a04af0096ba92f98b56a1225743b7c51b38f08",
+    "resense/detector.py": "97cf9acf8d9206b489b475c75c7ab425675d0bfc43d3443c1891a3962bb3e0f8",
+    "resense/health.py": "211502e2c826cdc61f60d091ed0e0df414567d1b4497661eeb2e00c56c813ddc",
+    "resense/config.py": "e727bd53bee8f982f746f04f8c3bb6ca07b16235c1361a64e9398036028dc4dc",
+    "configs/default.yaml": "36ea22708cc5a33785ae3bf565b2caf49eaaaeeb9b390d74dad5575964ed6b03",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "36ea22708cc5a33785ae3bf565b2caf49eaaaeeb9b390d74dad5575964ed6b03",
+    "ros2_ws/src/resense_ros/resense_ros/sensor_profiles.py": "cfa534489de593f8e12a8e82f4b85292a763d5bb33121042edcde9b4fcad99af",
+    "tests/test_orientation_replay.py": "eba50bbf8bf73836b3378cf5b7e94bcf4387e47eedd99065a4ac61103151e013",
+    "tests/test_orientation_health.py": "5105c22505b61bc80b91f9c5ea8d03a910e3aa760de9e387a9d5c0286fcd26dd",
+    "tests/test_sensor_profiles.py": "e53c56be5aab6b0443c94c5ba7ffb02890c2fd02767fcd7a23dfc2c3c5db527b"
+  },
+  "evidence_hashes": {
+    "independent_artifact_check.json": "4fcfba4037473277b93effdc2cacd45f80621439c8248eaa49f4632a6077415e",
+    "independent_memory_before.json": "3daa014f6b1355592a298f5067a99c1ebc87a5b720a1b74a18c371a3d444488c",
+    "independent_memory_after.json": "99d4ea5798aaa70a174329698bd7d60a7b52b219a65132eb01442c0a8f07d774",
+    "independent_memory_containers.json": "ab03790b16a4048957c7eadb09a7542c341e8fe131f58fa9aca7197ec4e60c8b",
+    "independent_memory_input_parity.json": "1f1455f075a734f22b07510651798924d30945bd7f95f3bcac3469d3e9f68309"
+  },
+  "blocking_finding": "Copied metadata container growth exceeded source-only history estimate",
+  "finding_status": "Corrected and independently approved in7b7b02c",
+  "independent_artifact_rows": 1809,
+  "independent_container_cases": 216,
+  "ordinary_buffer_parity": "All4initial obstacle and4initialFalcon capture/discard reasons and stored arrays identical, only charge differs",
+  "full_detector_replay_repeated_by_this_reviewer": false,
+  "focused_test_receipt": {
+    "file": "bound_fix_tests.json",
+    "sha256": "8c9c4a4a741ceff53b1d327527b2e33c94e1b4ac50c658582b9ab4f5d1fcb301",
+    "result": "149passed36.90s, reported by author with exact command/source hashes",
+    "run_by": "acceptance_audit"
+  },
+  "corrected_core_real_orientation_artifact_check": {
+    "source": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+    "file": "orientation_bound_fix/independent_artifact_check.json",
+    "sha256": "fbc39dc48673a110b5c9ae929f724555e9e286ab1df7bb1bf3b0125d403da1ad",
+    "rows": 1809,
+    "cases": 9,
+    "STOP_frames_per_case": 193,
+    "first_STOP_frame": 8,
+    "safety_field_mismatches": 0,
+    "detector_run_by": "acceptance_audit",
+    "artifact_check_by": "c2_implementation"
+  }
+}

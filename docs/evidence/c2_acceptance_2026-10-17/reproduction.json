@@ -1,0 +1,143 @@
+{
+  "archive": "docs/evidence/p4_eval_1.1.0_2026-10-16/raw/p4_raw_2026-10-16.tar.xz",
+  "archive_sha256": "417e701deca4bdfe24f7c9d1530c4b78cb8f3d07804386554bda3be44e10223a",
+  "members": {
+    "cloud_with_fake_obj": {
+      "member": "p4out/battery_1.1.0_linux_haswell.raw/cloud_with_fake_obj/nominal/probe.jsonl",
+      "bytes": 917105,
+      "sha256": "a556a1ecab88ad8eecca02badb29cb35959a5cf05e15dbca52693f036197552b"
+    },
+    "cloud_with_fake_obj_control": {
+      "member": "p4out/battery_707ea9c_linux_haswell.raw/cloud_with_fake_obj/nominal/probe.jsonl",
+      "bytes": 917293,
+      "sha256": "04ed5db657e43cebf5b13fbf546a3a461f70d6e835fdd03ff12a37a779faf5ce"
+    },
+    "doubleT_platform": {
+      "member": "j1/prerelease_1.1.0/doubleT_platform.jsonl",
+      "bytes": 217370,
+      "sha256": "79f9c8a2d2104ed32d4dc47bcdce1710929d724e5e735acfe878ff8ca0b4a280"
+    },
+    "roundT_doubleT": {
+      "member": "j1/prerelease_1.1.0/roundT_doubleT.jsonl",
+      "bytes": 169740,
+      "sha256": "e1611c446c7c0470cdc7f759cccc48ee36077926fba985e9e4bf6494aa0f66ba"
+    },
+    "roundT_pressureGate_roundT": {
+      "member": "j1/prerelease_1.1.0/roundT_pressureGate_roundT.jsonl",
+      "bytes": 157579,
+      "sha256": "d7aaeb000be335e0d30e0100fdad74b8160bd382f2f3f8eb9aca7389a57dcf89"
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "member": "j1/prerelease_1.1.0/roundT_squareT_pressureGate_squareT.jsonl",
+      "bytes": 315989,
+      "sha256": "508279ddd00bf0a224fe3a2c42f9475414e81e095599a7252c18a85e6431e4f6"
+    },
+    "squareT_platform_squareT_switch": {
+      "member": "j1/prerelease_1.1.0/squareT_platform_squareT_switch.jsonl",
+      "bytes": 646743,
+      "sha256": "3b608bb27ba47682606df53aae4e3ebcda5003541a5bc5f4f355ca1dcf98c54c"
+    }
+  },
+  "commands": {
+    "baseline": [
+      "/home/resense/.venv/bin/python",
+      "/home/resense/ReSense/scripts/score_overclaim.py",
+      "/home/resense/data/c2_acceptance/inputs/cloud_with_fake_obj.jsonl",
+      "--sensor-model",
+      "pandar128",
+      "--require-c2",
+      "--out",
+      "/home/resense/ReSense/docs/evidence/c2_acceptance_2026-10-17/baseline.json",
+      "--empty",
+      "doubleT_platform=/home/resense/data/c2_acceptance/inputs/doubleT_platform.jsonl",
+      "--empty",
+      "roundT_doubleT=/home/resense/data/c2_acceptance/inputs/roundT_doubleT.jsonl",
+      "--empty",
+      "roundT_pressureGate_roundT=/home/resense/data/c2_acceptance/inputs/roundT_pressureGate_roundT.jsonl",
+      "--empty",
+      "roundT_squareT_pressureGate_squareT=/home/resense/data/c2_acceptance/inputs/roundT_squareT_pressureGate_squareT.jsonl",
+      "--empty",
+      "squareT_platform_squareT_switch=/home/resense/data/c2_acceptance/inputs/squareT_platform_squareT_switch.jsonl"
+    ],
+    "advisory_candidate": [
+      "/home/resense/.venv/bin/python",
+      "/home/resense/ReSense/scripts/score_overclaim.py",
+      "/home/resense/data/c2_acceptance/inputs/cloud_with_fake_obj.jsonl",
+      "--sensor-model",
+      "pandar128",
+      "--require-c2",
+      "--out",
+      "/home/resense/ReSense/docs/evidence/c2_acceptance_2026-10-17/advisory_candidate.json",
+      "--apply-advisory-cap",
+      "--write-candidate",
+      "/home/resense/data/c2_acceptance/inputs/advisory_candidate.jsonl",
+      "--empty",
+      "doubleT_platform=/home/resense/data/c2_acceptance/inputs/doubleT_platform.jsonl",
+      "--empty",
+      "roundT_doubleT=/home/resense/data/c2_acceptance/inputs/roundT_doubleT.jsonl",
+      "--empty",
+      "roundT_pressureGate_roundT=/home/resense/data/c2_acceptance/inputs/roundT_pressureGate_roundT.jsonl",
+      "--empty",
+      "roundT_squareT_pressureGate_squareT=/home/resense/data/c2_acceptance/inputs/roundT_squareT_pressureGate_squareT.jsonl",
+      "--empty",
+      "squareT_platform_squareT_switch=/home/resense/data/c2_acceptance/inputs/squareT_platform_squareT_switch.jsonl"
+    ],
+    "small_candidate": [
+      "/home/resense/.venv/bin/python",
+      "/home/resense/ReSense/scripts/score_overclaim.py",
+      "/home/resense/data/c2_acceptance/inputs/cloud_with_fake_obj.jsonl",
+      "--sensor-model",
+      "pandar128",
+      "--require-c2",
+      "--out",
+      "/home/resense/ReSense/docs/evidence/c2_acceptance_2026-10-17/small_candidate.json",
+      "--apply-advisory-cap",
+      "--cap-small-target",
+      "--write-candidate",
+      "/home/resense/data/c2_acceptance/inputs/small_candidate.jsonl",
+      "--empty",
+      "doubleT_platform=/home/resense/data/c2_acceptance/inputs/doubleT_platform.jsonl",
+      "--empty",
+      "roundT_doubleT=/home/resense/data/c2_acceptance/inputs/roundT_doubleT.jsonl",
+      "--empty",
+      "roundT_pressureGate_roundT=/home/resense/data/c2_acceptance/inputs/roundT_pressureGate_roundT.jsonl",
+      "--empty",
+      "roundT_squareT_pressureGate_squareT=/home/resense/data/c2_acceptance/inputs/roundT_squareT_pressureGate_squareT.jsonl",
+      "--empty",
+      "squareT_platform_squareT_switch=/home/resense/data/c2_acceptance/inputs/squareT_platform_squareT_switch.jsonl"
+    ],
+    "approved_conservative": [
+      "/home/resense/.venv/bin/python",
+      "/home/resense/ReSense/scripts/score_overclaim.py",
+      "/home/resense/data/c2_acceptance/inputs/cloud_with_fake_obj.jsonl",
+      "--sensor-model",
+      "pandar128",
+      "--require-c2",
+      "--out",
+      "/home/resense/ReSense/docs/evidence/c2_acceptance_2026-10-17/approved_conservative.json",
+      "--apply-advisory-cap",
+      "--cap-small-target",
+      "--acceptance-profile",
+      "conservative_2026_10_17",
+      "--write-candidate",
+      "/home/resense/data/c2_acceptance/inputs/approved_conservative.jsonl",
+      "--empty",
+      "doubleT_platform=/home/resense/data/c2_acceptance/inputs/doubleT_platform.jsonl",
+      "--empty",
+      "roundT_doubleT=/home/resense/data/c2_acceptance/inputs/roundT_doubleT.jsonl",
+      "--empty",
+      "roundT_pressureGate_roundT=/home/resense/data/c2_acceptance/inputs/roundT_pressureGate_roundT.jsonl",
+      "--empty",
+      "roundT_squareT_pressureGate_squareT=/home/resense/data/c2_acceptance/inputs/roundT_squareT_pressureGate_squareT.jsonl",
+      "--empty",
+      "squareT_platform_squareT_switch=/home/resense/data/c2_acceptance/inputs/squareT_platform_squareT_switch.jsonl"
+    ]
+  },
+  "exit_codes": {
+    "baseline": 1,
+    "advisory_candidate": 1,
+    "small_candidate": 1,
+    "approved_conservative": 0
+  },
+  "scope": "saved raw results from sealed 1.1.0; deterministic policy projection, not a new detector gate"
+}

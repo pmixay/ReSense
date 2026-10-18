@@ -1,0 +1,51 @@
+{
+  "schema": "p4-exact-report-intake-v1",
+  "copied_utc": "2026-10-18T12:42:49.564749+00:00",
+  "source_ref_at_intake": "origin/ccr-027997e8-kqywat",
+  "source_commit": "1b880168ce2dbeec2071838892ac05eed5a9166a",
+  "source_directory": "docs/evidence/p1_branch_check_2026-10-18",
+  "checked_work_commit": "b4235623327f084e84b2a8c582655548b29140c9",
+  "members": [
+    {
+      "source_path": "docs/evidence/p1_branch_check_2026-10-18/README.md",
+      "destination": "p4_original/README.md",
+      "bytes": 2317,
+      "sha256": "c7e2419df92641b8dacb4a980fd6da7208189b0021290a298bb08e40f3588fc3",
+      "git_blob": "06c50bee2ea9e7412e90567fe14884d5e3ce43b2"
+    },
+    {
+      "source_path": "docs/evidence/p1_branch_check_2026-10-18/ana_p1_doubleT_obstacle.json",
+      "destination": "p4_original/ana_p1_doubleT_obstacle.json",
+      "bytes": 13368,
+      "sha256": "3913f55758ea145c158592e888484e2c9c8c4e7695bab196d2c7b2a9ab50f27b",
+      "git_blob": "29d671fa7f24817b3227fae51e305057f39c2963"
+    },
+    {
+      "source_path": "docs/evidence/p1_branch_check_2026-10-18/ana_p1_roundT_squareT_pressureGate_squareT.json",
+      "destination": "p4_original/ana_p1_roundT_squareT_pressureGate_squareT.json",
+      "bytes": 13995,
+      "sha256": "49b0af2b42d14e8b4ff2e9960774972844ee873074337b576eae67f4455b6339",
+      "git_blob": "d03327b769ff9d93ab240b46d954f8fdd0a49076"
+    },
+    {
+      "source_path": "docs/evidence/p1_branch_check_2026-10-18/compare_b423562.txt",
+      "destination": "p4_original/compare_b423562.txt",
+      "bytes": 2439,
+      "sha256": "175604b8bb0939783a6ed245e88fda08b9c6c4fbd7a91495790a65ef97cc5fac",
+      "git_blob": "8786b7e5e29ecf1f42bdf9825c1c523a1cd7baa9"
+    },
+    {
+      "source_path": "docs/evidence/p1_branch_check_2026-10-18/freeze_verify_b423562.txt",
+      "destination": "p4_original/freeze_verify_b423562.txt",
+      "bytes": 652,
+      "sha256": "1c3c2cfc17974580225c516a9e1fa1ae82c5fdffe916414f5c8fc2e228d3b735",
+      "git_blob": "192d541fc40a5770005f7a3fc18dad5ffbefd068"
+    }
+  ],
+  "limits": [
+    "Exact copies of five committed report files; no raw external P4 capture was imported.",
+    "Original relative links are preserved byte-for-byte; use the handoff README for links in this relocated folder.",
+    "Historical seal failure is preserved; it is not an assertion about a later source manifest.",
+    "No external message, P4 final acceptance, release or deployment is implied."
+  ]
+}

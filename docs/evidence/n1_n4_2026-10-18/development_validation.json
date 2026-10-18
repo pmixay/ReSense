@@ -1,0 +1,36 @@
+{
+  "commit": "65a0a187586577275b52fcfe837b602a9a514bb2",
+  "runtime_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "2596ad47320ec7145fbc5dc8441bbcbfa707f6cb0246c19fa77edf2f2e0fdbb3",
+    "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b",
+    "ros2_ws/src/resense_ros/resense_ros/sensor_profiles.py": "cfa534489de593f8e12a8e82f4b85292a763d5bb33121042edcde9b4fcad99af",
+    "scripts/check_interactive_replay.py": "c3edbcd35034ab468641098eac7c605a4dbbe37d084a5d1ebd42466d5ddceab8",
+    "scripts/play_bag.sh": "b983e2a08b6b4836227424122ee32314adcd47c021ecb913dfc3168b15626e4c",
+    "scripts/run_demo.sh": "38fef67a32c30023072c07f3084daa95dc35a689dee162ff847f005815aea8a2",
+    "scripts/reset_replay.py": "36a270ab635468fa7dc8c81788d139e50e95566589234f021d47a77e6ddbf326",
+    "scripts/make_profile_smoke_bags.py": "08099134a5da83baf0c82d40c9d37b1a5f32a49e435110a93127e2339ed2051a",
+    "web/index.html": "326e10687b3a41f2c88d566563715662342cb824adabe1b31d9f222199a4c3d7",
+    "web/assets/result-format.js": "59d65d47e15049b2826d80385a0c3e4a0b67342158bfdd05cdd3ae9a61b38201"
+  },
+  "checks": {
+    "junit-affected-final.xml": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "junit-web.xml": {
+      "tests": 83,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "notes": [
+    "Full focused run:158passed/1failure in existing CDR parity test caused by uncontrolled wall clocks; identical deterministic clocks now used for decoder comparison.",
+    "Affected final9 tests pass; full Chromium83 tests pass. Earlier failed reports retained.",
+    "Final combined-core/DDS runs pending default decisions; these are development checks, not final hardware evidence."
+  ],
+  "overlay_image": "sha256:ad2bee6485fb22c2833d645fa1dd3078f5aa9e84e1e8de5bd3de763f0a02ca84",
+  "phase": "65a0a18 development checks, before later RViz marker lifetime hardening"
+}

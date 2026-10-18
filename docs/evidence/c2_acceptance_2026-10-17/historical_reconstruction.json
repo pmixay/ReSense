@@ -1,0 +1,59 @@
+{
+  "v1.0.0_707ea9c": {
+    "unit": "unique scan frame",
+    "eligible_scan_frames": 694,
+    "eligible_object_frames": 801,
+    "tolerance_m": 2.0,
+    "definition": "any visible plausible organizer-intended in-gauge object exceeded by more than 2 m",
+    "overclaim_frames": 148,
+    "overclaim_frames_by_decision": {
+      "CAUTION": 57,
+      "GO": 90,
+      "STOP": 1
+    },
+    "provenance": "reconstructed count-compatible definition; original 13.10 scorer unavailable"
+  },
+  "v1.1.0": {
+    "unit": "unique scan frame",
+    "eligible_scan_frames": 694,
+    "eligible_object_frames": 801,
+    "tolerance_m": 2.0,
+    "definition": "any visible plausible organizer-intended in-gauge object exceeded by more than 2 m",
+    "overclaim_frames": 147,
+    "overclaim_frames_by_decision": {
+      "CAUTION": 56,
+      "GO": 90,
+      "STOP": 1
+    },
+    "provenance": "reconstructed count-compatible definition; original 13.10 scorer unavailable"
+  },
+  "c2_advisory_candidate": {
+    "unit": "unique scan frame",
+    "eligible_scan_frames": 694,
+    "eligible_object_frames": 801,
+    "tolerance_m": 2.0,
+    "definition": "any visible plausible organizer-intended in-gauge object exceeded by more than 2 m",
+    "overclaim_frames": 106,
+    "overclaim_frames_by_decision": {
+      "CAUTION": 15,
+      "GO": 90,
+      "STOP": 1
+    },
+    "provenance": "reconstructed count-compatible definition; original 13.10 scorer unavailable"
+  },
+  "c2_small_candidate": {
+    "unit": "unique scan frame",
+    "eligible_scan_frames": 694,
+    "eligible_object_frames": 801,
+    "tolerance_m": 2.0,
+    "definition": "any visible plausible organizer-intended in-gauge object exceeded by more than 2 m",
+    "overclaim_frames": 52,
+    "overclaim_frames_by_decision": {
+      "CAUTION": 11,
+      "GO": 40,
+      "STOP": 1
+    },
+    "provenance": "reconstructed count-compatible definition; original 13.10 scorer unavailable"
+  },
+  "warning": "compatible reconstruction; original 13.10 scorer was not available"
+}

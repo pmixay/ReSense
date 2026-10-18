@@ -1,0 +1,25 @@
+{
+  "frames": 252,
+  "baseline_sha256": "0eae67a23d6d638cf40f137c37c60880cfba87ac8bd98c54dbedd0d865f295ea",
+  "candidate_sha256": "308c323bf9fcb89fbb53c289d401fe048e3965effdba89d4db59aa33244693ba",
+  "comparison_sha256": "faec5ac3806c6e589faeaa0e48916c6b8a344ffbcc8cdd5603a5625601025c44",
+  "stop_frames": [
+    0,
+    0
+  ],
+  "new_stop_frames": [],
+  "lost_stop_frames": [],
+  "changed_detection_counts": [],
+  "changed_detection_geometry_frames": [],
+  "changed_warning_frames": [],
+  "decision_changes": [],
+  "health_level_change_frames": [],
+  "non_latency_health_message_change_frames": [],
+  "latency_warning_frame_counts": [
+    242,
+    242
+  ],
+  "range_changes": [],
+  "shape_changed_frames": [],
+  "extended_axis_frames": []
+}

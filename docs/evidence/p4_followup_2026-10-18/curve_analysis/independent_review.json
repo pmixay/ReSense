@@ -1,0 +1,74 @@
+{
+  "status": "SAVED_ROW_ARITHMETIC_AND_SCOPE_REVIEW_PASS",
+  "checked_utc": "2026-10-18T12:57:22.696050+00:00",
+  "reviewer": "c2_implementation; independent of crosswalk author",
+  "checks": {
+    "B": {
+      "raw_axis_error_all_reference_points": {
+        "n": 7571,
+        "p90": 19.1373544803999
+      },
+      "raw_axis_error_within_axis_range": {
+        "n": 5716,
+        "p90": 11.368838497701597
+      },
+      "raw_axis_error_within_monitored_v110": {
+        "n": 5108,
+        "p90": 7.552654389490733
+      },
+      "same_display_visible_raw_axis_error": {
+        "n": 2233,
+        "p90": 0.7987304405602434
+      },
+      "same_display_visible_display_error": {
+        "n": 2233,
+        "p90": 0.8964617967301628
+      }
+    },
+    "C": {
+      "raw_axis_error_all_reference_points": {
+        "n": 7725,
+        "p90": 5.098925197568319
+      },
+      "raw_axis_error_within_axis_range": {
+        "n": 6337,
+        "p90": 1.8523880572700828
+      },
+      "raw_axis_error_within_monitored_v110": {
+        "n": 4877,
+        "p90": 0.42471454472101416
+      }
+    }
+  },
+  "N1_visible_pairs": {
+    "40": {
+      "pairs": 161,
+      "all_pairs": 251,
+      "display_3D_p90_m": 0.03253131320519
+    },
+    "80": {
+      "pairs": 44,
+      "all_pairs": 251,
+      "display_3D_p90_m": 0.030551169136923288
+    },
+    "120": {
+      "pairs": 11,
+      "all_pairs": 251,
+      "display_3D_p90_m": 0.028455158237050707
+    }
+  },
+  "input_sha256": {
+    "analyze.py": "a359ca65b27b219fdc03ae2bbc808fed58601e8c0e466c1d6b113d464761dec5",
+    "report.json": "87673d565c508fc840d441dcc782d4cc9fa8077d8e53549bd2c96d63b64df0b9",
+    "crosswalk_rows.json.gz": "56ec3c1ffdc38c18896f2d7d6592e2e2e4facbffa33d1a19b0f7b70b9af8bf32",
+    "README.md": "f04ae129694562c32a49bb940bb66a6b1b634a58c59b20aa512434d60cb9edc3",
+    "P3_HANDOFF.md": "6990afd8ff87942f8b617baf2d87776ac6ecbb7b8a12f0a4c2fa514c06b02dff",
+    "review_crosswalk.py": "622bbbedc773ee18cd9f4b923867a1dd7c8148df7a6b2f56226b333ca1ba740f"
+  },
+  "limits": [
+    "No detector, renderer or ICP was run; no surveyed truth claim.",
+    "Source/matrix/EMA method inspected; saved point arithmetic independently recomputed.",
+    "40m compensated jitter and same-point path error regress; limited far coverage is explicit.",
+    "C display remains missing; N1 uncompensated3D and B6 compensated lateral metrics are distinct."
+  ]
+}

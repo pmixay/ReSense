@@ -36,12 +36,14 @@ Dates: upload 29.09 by 23:59 MSK; technical expertise 30.09–14.10; pitch 23.10
 | **C1 display** | implemented for P1 review in both clients, backend metadata flow and marker text; consumer verification in execution receipt | actual selected-image ROS/RViz/Foxglove and visual acceptance remain open; runtime v2 remains rejected |
 | **PT1 range chart / final numbers** | historical cache graph clearly labelled as preparation; context from 13.10 is labelled separately | P4 J1 on released v1.1.0 / final seal: first STOP by straight, curve, double-track, platform × person/1 m/0.3 m; P2 renders ≥3 geometries; P1 chooses version under O1 |
 | **PT2 fallback / second device** | runbook prepared; existing 69 s clip is explicitly the 23.09 archive | P1-selected permitted release image/checksum (v1.0.0 fallback if O1/E1 pending), captain's machine + second device; record commit/image ID, STOP/distance and forced switch ≤30 s |
-| **D1 pass 2 / S5 / video cards (21.10)** | final shipped image/J1 pending; reserve a qualifying host now | S5 measures selected shipping runtime even if S1/S2 remain unshipped; ≥8 physical cores, separate four-condition matrix; render cards from accepted results |
+| **D1 pass 2 / S5 / video cards (21.10)** | final shipped image/J1 pending; available hardware accepted by captain 17.10 | S5 measures selected runtime even if S1/S2 remain unshipped; 2–4 cores acceptable, separate four-condition matrix; identify source versus release runs and render cards from accepted results |
 | Dashboard / label tool / layouts | C1 reason display and boundary regressions implemented; legacy label compatibility covered by web suite | actual viewer/device checks and P1 marker-text approval |
 | **D2 archival cleanup** | scheduled after 23.10 in BACKLOG; not brought forward | after D1 and the session's docs commits; P1 approval, P4-lane coordination |
 
-S5 hardware check: this workstation exposes **4 physical cores / 8 threads** (`lscpu -e`),
-so it does not meet the ≥8-physical-core requirement, regardless of `nproc` reporting 8.
+S5 hardware check recorded 16.10: that workstation exposed **4 physical cores / 8 threads**
+(`lscpu -e`). The captain removed the 8-core prerequisite on 17.10: proceed on available
+hardware with topology/quota and measured results recorded. CI billing/quota is the captain's
+task; release waits until CI is fixed, while development and source measurements continue.
 
 ## Final PDF sign-off
 

@@ -1,0 +1,33 @@
+{
+  "changed_utc": "2026-10-18T10:00:46.592942+00:00",
+  "reason": "Parent authorized elevating the existing required full-proxy process group after both ordinary gate/control including Set F finished; no restart or source change.",
+  "timings_informational_shared_load": true,
+  "pgid": 54682,
+  "processes": [
+    {
+      "pid": 54682,
+      "pgid": 54682,
+      "nice_before": 5,
+      "command": "/home/resense/.venv/bin/python docs/evidence/n2_falcon_2026-10-18/run_proxy_gate.py --source /home/resense/data/n2/baseline_9b92df5 --cache /home/resense/data/gate_cache --out /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified --baseline docs/evidence/integration_2026-10-16/h5/candidate/gate.json",
+      "nice_after": 0
+    },
+    {
+      "pid": 54706,
+      "pgid": 54682,
+      "nice_before": 5,
+      "command": "/home/resense/.venv/bin/python /home/resense/ReSense/scripts/regression_gate.py --cache /home/resense/data/gate_cache --config /home/resense/data/n2/baseline_9b92df5/configs/default.yaml --jobs 1 --chunks 8 --work /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work --out /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/gate.json --baseline /home/resense/ReSense/docs/evidence/integration_2026-10-16/h5/candidate/gate.json --changed-only",
+      "nice_after": 0
+    },
+    {
+      "pid": 54743,
+      "pgid": 54682,
+      "nice_before": 5,
+      "command": "/home/resense/.venv/bin/python /home/resense/ReSense/scripts/regression_gate.py --cache /home/resense/data/gate_cache --config /home/resense/data/n2/baseline_9b92df5/configs/default.yaml --jobs 1 --chunks 8 --work /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/work --out /home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/full_proxy_gate_verified/gate.json --baseline /home/resense/ReSense/docs/evidence/integration_2026-10-16/h5/candidate/gate.json --changed-only",
+      "nice_after": 0
+    }
+  ],
+  "completed_producer_receipt_sha256": {
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/receipt.json": "071c57a82e3a36fde7a56a9407a4c99d115f0086552225f86bca28153990b0c5",
+    "/home/resense/data/final_gate_status.json": "a31737adb701522b65512e24cab03ac6808f9e269d4d86b3df96a86caa356124"
+  }
+}

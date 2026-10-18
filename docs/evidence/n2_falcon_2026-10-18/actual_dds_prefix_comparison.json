@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "frames": 100,
+  "mismatches": [],
+  "first_epoch_guard": true,
+  "actual_stop_frames": [
+    25,
+    26,
+    27,
+    28
+  ],
+  "offline_stop_frames": [
+    25,
+    26,
+    27,
+    28
+  ],
+  "scope": "Exact shared detection/warning geometry, counts, confidence, ages, reasons and zones; point counts, rounded original stamps, flags and post-initial decisions",
+  "intentional_differences": [
+    "First input remains FAULT until the new recording epoch is confirmed",
+    "Runtime selected conservative Falcon policy reports unavailable small-target range as null and clear range zero; archived prefix uses legacy range policy"
+  ],
+  "limitations": "Offline capture omits persistent IDs and intensity, so neither is compared; this is not physical obstacle/gauge ground truth",
+  "input_sha256": {
+    "/home/resense/data/n4_final_complete_falcon/status.jsonl": "6d9494e3bfc23d4381256931542b38b35d3922be6552633775c67bb6c44fb8ca",
+    "docs/evidence/n2_falcon_2026-10-18/falcon_full/explicit_ros.jsonl": "e8e519718840c4bad8ba291f48ca1405ac2d431f80eaad9b37a0321c92ac8fc7",
+    "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/compare_falcon_dds.py": "7b441a4ebf5de0a6c49f0bf4ac191d627060cad612bb050e2edd8bd7a0588c99"
+  }
+}

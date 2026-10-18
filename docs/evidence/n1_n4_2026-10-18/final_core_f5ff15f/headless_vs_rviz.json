@@ -1,0 +1,19 @@
+{
+  "frames_each": [
+    70,
+    70
+  ],
+  "identical_published_fields": {
+    "stamp": true,
+    "decision": true,
+    "clear_distance": true,
+    "nearest_distance": true,
+    "track": true,
+    "detections": true,
+    "warnings": true,
+    "gauge": true
+  },
+  "matched_input": "same70 preserved decoded curve frames130-199 at rate0.5",
+  "image": "sha256:a018d39a2369ffb962c4ab595347957085f18bab62df1964e9004ccd57f59f9b",
+  "note": "One local run each; quality jobs paused. CPU cgroup measurements exclude player, observer, Xvfb and screenshot capture."
+}

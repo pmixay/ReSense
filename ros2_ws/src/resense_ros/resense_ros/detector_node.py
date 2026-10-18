@@ -74,6 +74,14 @@ Decision policy is shared with offline consumers (``resense_ros.decision_policy`
 ``decision_policy`` is ``v1``; runtime ``v2`` is rejected until accepted. Offline evaluation
 retains v2 with ``caution_distance_m`` 80 m and ``caution_compact_max_size_m`` 3 m. Status adds
 ``decision_policy`` and a sorted, deduplicated ``caution_reason`` array, empty off CAUTION.
+
+C2 range candidates are opt-in via ``clear_range_policy`` (``legacy`` by default).
+``advisory_candidate`` caps active CAUTION advisories; ``small_candidate`` also
+caps the reported range by the explicit ``range_sensor_model`` density prior.
+``monitored_small`` is null when that model is unavailable; a requested small-target
+range is then zero. These candidates have not passed the original C2 coverage gate.
+The explicit ``conservative`` profile uses that qualified cap under the approved
+17.10 coverage tradeoff; ``legacy`` remains default pending release integration.
 Raw flags and health are validated before latch release or health projection. Policy is evaluated
 after freshness health projection and the STOP latch; raw detector warnings remain available.
 
@@ -156,6 +164,8 @@ from rclpy.executors import SingleThreadedExecutor, await_or_execute
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 from sensor_msgs.msg import PointCloud2, PointField
 from std_msgs.msg import Bool, Float32, String, Header
+from std_srvs.srv import Trigger
+from rcl_interfaces.msg import SetParametersResult
 from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from vision_msgs.msg import Detection3D, Detection3DArray, ObjectHypothesisWithPose
 from visualization_msgs.msg import Marker, MarkerArray
@@ -167,7 +177,10 @@ from resense.detector import Detector, FrameResult
 from resense.frame import Frame, axis_matrix
 
 from resense_ros import fastcloud
-from resense_ros.decision_policy import DecisionPolicy, decision as policy_decision, evaluate_decision
+from resense_ros.gauge_display import GaugeDisplay
+from resense_ros.sensor_profiles import apply_sensor_profile, PROFILE_NAMES
+from resense_ros.decision_policy import (DecisionPolicy, decision as policy_decision,
+                                         evaluate_decision, candidate_ranges)
 
 
 UNSET = -999.0   # sentinel of the mount_*_deg parameters: keep the value of the parameter file
@@ -198,7 +211,7 @@ class SourceInfoExecutor(SingleThreadedExecutor):
 class DetectorNode(Node):
     def __init__(self) -> None:
         super().__init__("resense_detector")
-        self.declare_parameter("input_topic", "/lidar_points,/sensing/lidar/hesai128/pointcloud")
+        self.declare_parameter("input_topic", "/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points")
         self.declare_parameter("auto_discover", True)    # also take PointCloud2 topics found on the graph
         self.declare_parameter("discover_period", 2.0)   # s, how often to look while the input is silent
         self.declare_parameter("config_file", "")
@@ -217,6 +230,8 @@ class DetectorNode(Node):
         self.declare_parameter("sensor_forward", "")    # e.g. "-y" / "+x"; empty = the parameter file
         self.declare_parameter("sensor_left", "")
         self.declare_parameter("sensor_up", "")
+        self.declare_parameter("sensor_profile", "manual")
+        self.declare_parameter("keep_up_axis", True)
         self.declare_parameter("mount_roll_deg", UNSET)    # UNSET (-999) = the parameter file
         self.declare_parameter("mount_pitch_deg", UNSET)
         self.declare_parameter("mount_yaw_deg", UNSET)
@@ -231,6 +246,9 @@ class DetectorNode(Node):
         self.declare_parameter("decision_policy", "v1")     # runtime v2 rejected pending acceptance
         self.declare_parameter("caution_distance_m", 80.0)
         self.declare_parameter("caution_compact_max_size_m", 3.0)
+        # Approved conservative reporting remains an explicit opt-in until release integration.
+        self.declare_parameter("clear_range_policy", "legacy")
+        self.declare_parameter("range_sensor_model", "unknown")
         # --- v0.6.1: several recordings / topic names through one running node
         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
         self.declare_parameter("new_input_gap", 30.0)         # s of forward stamp jump that means a new recording (full reset)
@@ -273,6 +291,12 @@ class DetectorNode(Node):
             compact_max_size_m=self.get_parameter("caution_compact_max_size_m").get_parameter_value().double_value)
         if self.decision_policy.version != "v1":
             raise ValueError("runtime decision_policy must be v1; v2 has not passed acceptance (offline only)")
+        self.clear_range_policy = self.get_parameter("clear_range_policy").get_parameter_value().string_value
+        self.range_sensor_model = self.get_parameter("range_sensor_model").get_parameter_value().string_value
+        if self.clear_range_policy not in ("legacy", "advisory_candidate", "small_candidate", "conservative"):
+            raise ValueError("clear_range_policy must be legacy, advisory_candidate, small_candidate or conservative")
+        if self.range_sensor_model not in ("unknown", "pandar128", "falcon_prime"):
+            raise ValueError("range_sensor_model must be unknown, pandar128 or falcon_prime")
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
         self.cfg = DetectorConfig.from_yaml(cfg_file) if cfg_file else DetectorConfig()
         for axis in ("forward", "left", "up"):
@@ -284,9 +308,34 @@ class DetectorNode(Node):
             if not math.isnan(v) and v > UNSET + 1.0:
                 setattr(self.cfg.sensor, f"{ang}_deg", float(v))
         self.cfg.calibration.enabled = self.get_parameter("auto_calibrate").get_parameter_value().bool_value
+        self.manual_cfg = copy.deepcopy(self.cfg)
+        self.manual_range_model = self.range_sensor_model
+        self.sensor_profile = self.get_parameter("sensor_profile").get_parameter_value().string_value
+        if self.sensor_profile != "manual" and any(
+                self.get_parameter("sensor_" + axis).get_parameter_value().string_value
+                for axis in ("forward", "left", "up")):
+            raise ValueError("named sensor_profile cannot be combined with sensor axis overrides; use manual")
+        if self.sensor_profile != "manual" and any(
+                self.get_parameter("mount_" + angle + "_deg").get_parameter_value().double_value > UNSET + 1
+                for angle in ("roll", "pitch", "yaw")):
+            raise ValueError("named sensor_profile cannot be combined with fixed mount overrides; use manual")
+        if self.sensor_profile != "manual" and not self.cfg.calibration.enabled:
+            raise ValueError("named sensor_profile requires auto_calibrate; use manual to disable it")
+        self.cfg, model = apply_sensor_profile(self.cfg, self.sensor_profile)
+        if model is not None and self.range_sensor_model not in ("unknown", model):
+            raise ValueError("range_sensor_model conflicts with named sensor_profile")
+        if model is not None:
+            self.range_sensor_model = model
+        self.cfg.calibration.keep_up_axis = self.get_parameter("keep_up_axis").get_parameter_value().bool_value
+        self.manual_cfg.calibration.keep_up_axis = self.cfg.calibration.keep_up_axis
         self.detector = Detector(self.cfg)
         self.R_vs = axis_matrix(self.cfg.sensor)            # sensor -> configured vehicle frame
         self.R_sv = self.R_vs.T                              # configured vehicle frame -> sensor (for markers)
+        self.gauge_display = GaugeDisplay(self.cfg.gauge.range_min,
+                                         min(self.cfg.gauge.range_max,
+                                             self.get_parameter("marker_x_max").get_parameter_value().double_value))
+        self.last_marker_rotation = self.R_sv
+        self.marker_detection_count = 0
         self.get_logger().info(
             f"sensor mount: forward={self.cfg.sensor.forward} left={self.cfg.sensor.left} up={self.cfg.sensor.up} "
             f"roll/pitch/yaw={self.cfg.sensor.roll_deg}/{self.cfg.sensor.pitch_deg}/{self.cfg.sensor.yaw_deg} deg; "
@@ -349,6 +398,7 @@ class DetectorNode(Node):
         self.sub_rel = {}              # topic -> "reliable" | "best_effort" of its subscription
         topic = self.get_parameter("input_topic").get_parameter_value().string_value
         self.subs = {}                 # topic -> Subscription (all kept: a later recording may use another name)
+        self.input_generation = 0      # invalidates callbacks already taken before an explicit boundary
         self.active_topic = None       # the topic being processed; frames on the others are ignored while it is live
         self.active_frame_id = None
         self.n_inputs = 0              # recordings seen (a new topic, frame id or a stamp discontinuity)
@@ -406,6 +456,8 @@ class DetectorNode(Node):
                                + f"; input reliability {self.input_reliability}; per-frame kernels: {_native.status()}"
                                + f"; resense {RESENSE_VERSION}")
         self.check_socket_buffers()
+        self.reset_service = self.create_service(Trigger, "/resense/reset_input", self.on_reset_input)
+        self.add_on_set_parameters_callback(self.on_profile_parameters)
 
     # ------------------------------------------------------------------
     @staticmethod
@@ -523,8 +575,10 @@ class DetectorNode(Node):
             reliability = (self.input_reliability if self.input_reliability in ("reliable", "best_effort")
                            else self.publisher_reliability(topic) or "reliable")
         self.sub_rel[topic] = reliability
+        generation = self.input_generation
         self.subs[topic] = self.create_subscription(
-            PointCloud2, topic, lambda msg, info=None, t=topic: self.on_cloud(msg, t, info),
+            PointCloud2, topic, lambda msg, info=None, t=topic: (
+                self.on_cloud(msg, t, info) if generation == self.input_generation else None),
             self.input_qos(reliability), raw=self.raw_input)
         self.subs[topic]._resense_with_info = True
 
@@ -669,6 +723,7 @@ class DetectorNode(Node):
                 "ego_speed_mps": None if self.last_speed is None else round(float(self.last_speed), 2),
                 "ego_speed_source": self.last_speed_source,
                 "input_topic": self.active_topic, "recording": self.n_inputs,
+                "input_generation": self.input_generation,
                 "decode_ms": round(self.last_decode_ms, 2), "detect_ms": round(self.last_detect_ms, 2),
                 "cpu_cores": round(self.cpu_cores, 2),
                 "rss_peak_mb": round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0, 1)}
@@ -683,6 +738,7 @@ class DetectorNode(Node):
         self.active_topic = topic or self.active_topic
         self.active_frame_id = msg.header.frame_id
         self.n_inputs += 1
+        self.gauge_display.reset()
         if not first:
             self.detector = Detector(self.cfg)
             self.consecutive_errors = 0
@@ -694,6 +750,66 @@ class DetectorNode(Node):
         self.get_logger().info(
             f"input {self.n_inputs}: {self.active_topic} (frame_id={msg.header.frame_id}, "
             f"{msg.width * msg.height} points){'' if first else ' - ' + why + ': detector restarted'}")
+
+    def reset_input(self, why="explicit recording boundary"):
+        """Called between publishers: drop DDS/Python queues and all prior-recording state."""
+        self.input_generation += 1
+        topics = list(self.sub_rel.items())
+        for subscription in self.subs.values():
+            self.destroy_subscription(subscription)
+        self.subs.clear()
+        self.pending.clear()
+        self.arrivals.clear()
+        self.skipped.clear()
+        self.pending_last = self.current_arrival = None
+        self.current_queue_lag = 0.0
+        self.catchup = None
+        self.frame_in_catchup = False
+        self.input_period = 0.1
+        self.startup_catchup_active = False
+        self.active_topic = self.active_frame_id = None
+        self.last_stamp = self.freshness_previous = self.last_frame_wall = None
+        self.stop_latch = self.stop_ros = self.last_result_clock = None
+        self.speed_value = self.speed_time = self.last_speed = self.last_speed_source = None
+        self.consecutive_errors = 0
+        self.mount_logged = ""
+        self.detector = Detector(self.cfg)
+        self.R_vs = axis_matrix(self.cfg.sensor)
+        self.R_sv = self.R_vs.T
+        self.last_marker_rotation = self.R_sv
+        self.gauge_display.reset()
+        for topic, reliability in topics:
+            self.subscribe(topic, reliability)
+        self.publish_fault(self.make_header(0, 0, "resense_lidar"), why)
+        self.get_logger().info(f"input reset: {why}; profile={self.sensor_profile}; generation={self.input_generation}")
+
+    def on_reset_input(self, request, response):
+        if self.pending or not self.input_silent(
+                self.get_parameter("input_switch_timeout").get_parameter_value().double_value):
+            response.success, response.message = False, "stop the publisher and let queued frames drain before resetting"
+            return response
+        self.reset_input()
+        response.success, response.message = True, "recording state and queues reset; awaiting fresh input"
+        return response
+
+    def on_profile_parameters(self, parameters):
+        protected = {"sensor_forward", "sensor_left", "sensor_up", "mount_roll_deg", "mount_pitch_deg",
+                     "mount_yaw_deg", "keep_up_axis", "range_sensor_model", "auto_calibrate"}
+        if any(p.name in protected for p in parameters):
+            return SetParametersResult(successful=False, reason="restart for manual mount edits; switch sensor_profile between bags")
+        profiles = [p.value for p in parameters if p.name == "sensor_profile"]
+        if not profiles:
+            return SetParametersResult(successful=True)
+        if len(profiles) != 1 or profiles[0] not in PROFILE_NAMES:
+            return SetParametersResult(successful=False, reason=f"sensor_profile must be one of {PROFILE_NAMES}")
+        if self.pending or not self.input_silent(self.get_parameter("input_switch_timeout").get_parameter_value().double_value):
+            return SetParametersResult(successful=False, reason="stop the bag publisher before switching sensor_profile")
+        self.cfg, model = apply_sensor_profile(self.manual_cfg, profiles[0])
+        self.cfg.calibration.keep_up_axis = self.get_parameter("keep_up_axis").get_parameter_value().bool_value
+        self.sensor_profile = profiles[0]
+        self.range_sensor_model = model if model is not None else self.manual_range_model
+        self.reset_input("sensor profile selected")
+        return SetParametersResult(successful=True)
 
     def check_continuity(self, topic: str, msg: PointCloud2) -> bool:
         """Decide what a frame means for the input state; False = ignore the frame."""
@@ -1101,6 +1217,18 @@ class DetectorNode(Node):
                           "go_allowed": False, "source_age_s": None, "acquisition_age_s": None,
                           "publication_age_s": None, "residence_age_s": None, "queue_lag_s": None},
         }
+        fault_status.update(gauge=self.display_status(self.gauge_display.invalidate(level_name.lower())),
+                            sensor_profile=self.sensor_profile, range_sensor_model=self.range_sensor_model)
+        if self.clear_range_policy != "legacy":
+            fault_status.update(
+                range_policy=("c2_conservative_2026_10_17" if self.clear_range_policy == "conservative" else
+                              "c2_small_candidate_not_accepted" if self.clear_range_policy == "small_candidate"
+                              else "c2_advisory_candidate_not_accepted"),
+                monitored_small=0.0 if self.range_sensor_model == "pandar128" else None,
+                advisory_clear_cap=None,
+                range_sensor_model=self.range_sensor_model)
+            fault_status["health"].update(monitored_range=0.0, clear_distance=0.0,
+                                          monitored_small=fault_status["monitored_small"])
         if held:
             fault_status["stop_source_stamp"] = self.stop_latch["stamp"]
             fault_status["stop_source_frame_id"] = self.stop_latch["frame_id"]
@@ -1109,6 +1237,7 @@ class DetectorNode(Node):
         if self.get_parameter("publish_markers").get_parameter_value().bool_value:
             clear = Marker(header=header, ns="resense", id=0, action=Marker.DELETEALL)
             markers = [clear]
+            markers.extend(self.gauge_markers(header, self.last_marker_rotation))
             if held:
                 label = Marker(header=header, ns="resense", id=1, type=Marker.TEXT_VIEW_FACING, action=Marker.ADD)
                 label.pose.orientation.w = 1.0
@@ -1159,7 +1288,8 @@ class DetectorNode(Node):
         st = DiagnosticStatus(level=lv.get(h.get("level", "ok"), DiagnosticStatus.OK), name="resense/detector",
                               message="; ".join(h.get("messages", [])) or "ok", hardware_id=hdr.frame_id or "lidar")
         for k in ("points", "near_fraction", "blocked_sectors", "visibility", "rail_lock", "latency_p95_ms",
-                  "monitored_range", "clear_distance", "decision_level", "freshness_valid", "freshness_reason"):
+                  "monitored_range", "monitored_small", "clear_distance", "decision_level",
+                  "freshness_valid", "freshness_reason"):
             if k in h:
                 st.values.append(KeyValue(key=k, value=str(h[k])))
         m = getattr(res, "mount", {}) or {}
@@ -1212,6 +1342,19 @@ class DetectorNode(Node):
         answer = evaluate_decision(res, self.decision_policy)
         decision = answer.decision
         freshness["go_allowed"] = freshness["valid"] and decision == "GO"
+        if self.clear_range_policy != "legacy":
+            projected = candidate_ranges(
+                {**status, "obstacle": bool(res.obstacle), "warning": bool(res.warning),
+                 "health": res.health, "clear_distance": float(res.clear_distance), "freshness": freshness},
+                self.decision_policy, sensor_model=self.range_sensor_model,
+                min_points_far=self.cfg.cluster.min_points_far,
+                max_range=self.cfg.sensor.max_range,
+                cap_small_target=self.clear_range_policy in ("small_candidate", "conservative"),
+                profile="conservative_2026_10_17" if self.clear_range_policy == "conservative" else "candidate")
+            res.clear_distance, res.health = projected["clear_distance"], projected["health"]
+            for key in ("range_policy", "advisory_clear_cap", "monitored_small", "monitored_small_model"):
+                status[key] = projected[key]
+            status["range_sensor_model"] = self.range_sensor_model
         # the answer first (28.09): flag, distance and decision before the JSON and the visualisation
         self.pub_flag.publish(Bool(data=bool(res.obstacle)))
         self.pub_dist.publish(Float32(data=float(res.nearest_distance) if res.nearest_distance is not None else -1.0))
@@ -1227,10 +1370,17 @@ class DetectorNode(Node):
                       stop_held=held, detector_obstacle=raw_obstacle, detector_clear_distance=raw_range,
                       clear_distance=float(res.clear_distance), health=res.health)
         status.update(answer.to_dict())
+        speed = self.last_speed
+        if speed is None and getattr(res, "ego_speed_confidence", 0) >= 0.5:
+            speed = getattr(res, "ego_speed_estimate", None)
+        status.update(gauge=self.display_status(self.gauge_display.update(
+            res.track, header.stamp.sec + header.stamp.nanosec * 1e-9, res.health, speed)),
+                      sensor_profile=self.sensor_profile, range_sensor_model=self.range_sensor_model)
         self.pub_status.publish(String(data=json.dumps(status)))
         self.pub_health.publish(self.health_msg(hdr, res))
         # vehicle frame of the detector (after the mount calibration) -> sensor frame
         R_out = self.R_sv @ np.asarray(getattr(self.detector, "mount_rotation", np.eye(3))).T
+        self.last_marker_rotation = R_out
 
         det_msg = Detection3DArray(header=hdr)
         for d in res.detections + res.warnings:
@@ -1277,8 +1427,6 @@ class DetectorNode(Node):
     def make_markers(self, hdr: Header, res: FrameResult, R_out=None) -> MarkerArray:
         R_out = self.R_sv if R_out is None else R_out
         arr = MarkerArray()
-        clear = Marker(header=hdr, ns="resense", id=0, action=Marker.DELETEALL)
-        arr.markers.append(clear)
         mid = 1
         for d in res.detections + res.warnings:
             box = Marker(header=hdr, ns="resense", id=mid, type=Marker.CUBE, action=Marker.ADD)
@@ -1302,26 +1450,11 @@ class DetectorNode(Node):
             txt.text = f"{'OBSTACLE' if d.zone == 'gauge' else 'warning'} {d.distance:.1f} m  p={d.confidence:.2f}"
             arr.markers.append(txt)
             mid += 1
-        # corridor outline: left/right edges of the strict gauge at rail-head + 1 m
-        x_max = self.get_parameter("marker_x_max").get_parameter_value().double_value
-        prof = np.asarray(self.cfg.gauge.profile)
-        half = float(prof[:, 0].max())
-        xs = np.linspace(self.cfg.gauge.range_min, x_max, 60)
-        axis = np.stack([xs, np.broadcast_to(np.asarray(res.track.center_y(xs), dtype=float), xs.shape),
-                         np.broadcast_to(np.asarray(res.track.rail_z(xs), dtype=float) + 1.0, xs.shape)], axis=1)
-        for k, side in enumerate((half, -half)):
-            line = Marker(header=hdr, ns="resense", id=mid, type=Marker.LINE_STRIP, action=Marker.ADD)
-            line.scale.x = 0.08
-            if (getattr(res, "health", {}) or {}).get("freshness_valid") is False:
-                line.color.r, line.color.g, line.color.b, line.color.a = 0.5, 0.5, 0.5, 0.4
-            else:
-                line.color.r, line.color.g, line.color.b, line.color.a = 0.2, 1.0, 0.3, 0.8
-            line.pose.orientation.w = 1.0
-            edge = (axis + np.array([0.0, side, 0.0])) @ R_out.T      # the whole edge at once
-            line.points = [Point(x=a, y=b, z=c) for a, b, c in edge.tolist()]
-            arr.markers.append(line)
-            mid += 1
-        status = Marker(header=hdr, ns="resense", id=mid, type=Marker.TEXT_VIEW_FACING, action=Marker.ADD)
+        for old in range(mid, self.marker_detection_count + 1):
+            arr.markers.append(Marker(header=hdr, ns="resense", id=old, action=Marker.DELETE))
+        self.marker_detection_count = mid - 1
+        arr.markers.extend(self.gauge_markers(hdr, R_out))
+        status = Marker(header=hdr, ns="resense_status", id=0, type=Marker.TEXT_VIEW_FACING, action=Marker.ADD)
         p_s = R_out @ np.array([8.0, 0.0, 3.5])
         status.pose.position.x, status.pose.position.y, status.pose.position.z = map(float, p_s)
         status.pose.orientation.w = 1.0
@@ -1345,6 +1478,44 @@ class DetectorNode(Node):
             status.color.r, status.color.g, status.color.b, status.color.a = 0.2, 1.0, 0.3, 1.0
         arr.markers.append(status)
         return arr
+
+    def gauge_markers(self, hdr, rotation):
+        """Stable marker identities; grey held geometry never claims a trusted solid range."""
+        edges = self.gauge_display.outline(self.cfg.gauge.profile)
+        markers = []
+        for index in range(len(self.cfg.gauge.profile) + 2):
+            if index >= len(edges):
+                markers.append(Marker(header=hdr, ns="resense_gauge", id=index, action=Marker.DELETE))
+                continue
+            line = Marker(header=hdr, ns="resense_gauge", id=index, type=Marker.LINE_STRIP, action=Marker.ADD)
+            # RViz must expire geometry even if the detector executor is blocked.
+            # Re-publishing a grey hold cannot restart its original hold budget.
+            lifetime = self.gauge_display.hold_seconds
+            if not self.gauge_display.last_status["valid"] and self.gauge_display.last_good_clock is not None:
+                lifetime -= self.gauge_display.clock() - self.gauge_display.last_good_clock
+            line.lifetime.sec = 0
+            line.lifetime.nanosec = int(max(.001, min(.5, lifetime)) * 1e9)
+            line.scale.x = 0.06
+            line.pose.orientation.w = 1.0
+            if self.gauge_display.last_status["valid"]:
+                line.color.r, line.color.g, line.color.b, line.color.a = 0.2, 1.0, 0.3, 0.8
+            else:
+                line.color.r = line.color.g = line.color.b = 0.5
+                line.color.a = 0.15 if self.gauge_display.last_status["hold_expired"] else 0.4
+            line.points = [Point(x=x, y=y, z=z) for x, y, z in (edges[index] @ rotation.T).tolist()]
+            markers.append(line)
+        return markers
+
+    def display_status(self, state):
+        """Export exactly the centreline used by RViz for other display consumers."""
+        gauge = self.gauge_display
+        centreline = []
+        if gauge.center is not None and gauge.extent > gauge.range_min:
+            xs = np.unique(np.r_[gauge.range_min,
+                                 gauge.x[(gauge.x > gauge.range_min) & (gauge.x < gauge.extent)], gauge.extent])
+            centreline = np.column_stack((xs, np.interp(xs, gauge.x, gauge.center),
+                                         np.interp(xs, gauge.x, gauge.rail))).tolist()
+        return {**state, "centerline": centreline}
 
     @staticmethod
     def make_cloud(hdr: Header, xyz: np.ndarray, intensity: np.ndarray) -> PointCloud2:

@@ -1,0 +1,74 @@
+[
+  {
+    "frame": 133,
+    "distance_m": 50.47,
+    "observed_inner_edge_sensor_left_m": -1.09,
+    "detector_axis_gauge_edge_m": -1.2713505136421193,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  },
+  {
+    "frame": 134,
+    "distance_m": 49.41,
+    "observed_inner_edge_sensor_left_m": -1.09,
+    "detector_axis_gauge_edge_m": -1.2660114715936235,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  },
+  {
+    "frame": 135,
+    "distance_m": 47.09,
+    "observed_inner_edge_sensor_left_m": -1.1,
+    "detector_axis_gauge_edge_m": -1.2773560873235943,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  },
+  {
+    "frame": 136,
+    "distance_m": 46.19,
+    "observed_inner_edge_sensor_left_m": -1.08,
+    "detector_axis_gauge_edge_m": -1.2938426754704828,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  },
+  {
+    "frame": 137,
+    "distance_m": 44.58,
+    "observed_inner_edge_sensor_left_m": -1.08,
+    "detector_axis_gauge_edge_m": -1.2759998145453348,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  },
+  {
+    "frame": 138,
+    "distance_m": 43.69,
+    "observed_inner_edge_sensor_left_m": -1.09,
+    "detector_axis_gauge_edge_m": -1.315129060036528,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  },
+  {
+    "frame": 139,
+    "distance_m": 42.14,
+    "observed_inner_edge_sensor_left_m": -1.09,
+    "detector_axis_gauge_edge_m": -1.2844727088231076,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  },
+  {
+    "frame": 140,
+    "distance_m": 41.23,
+    "observed_inner_edge_sensor_left_m": -1.1,
+    "detector_axis_gauge_edge_m": -1.2914874484459693,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  },
+  {
+    "frame": 141,
+    "distance_m": 39.58,
+    "observed_inner_edge_sensor_left_m": -1.1,
+    "detector_axis_gauge_edge_m": -1.270386476879946,
+    "gauge_relation": "boundary_uncertain",
+    "note": "Blue axis is detector geometry, not surveyed truth. The box has the same boundary uncertainty as frozen N5 labels."
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "comparison": "health-only experiment versus untouched baseline under identical fixed dust",
+  "levels": {
+    "clean": {
+      "frames": 345,
+      "raw_sha256": [
+        "ede28a1df520a13e87e4d71ab1f3353bc921ab254d708188830e9496ac97bdd1",
+        "2ee3a4d607fdd353be658163e2d69eb3a2cf5700681eeb439c534ce4a9657211"
+      ],
+      "changed_detection_geometry_input_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "go_frames_after": 144,
+      "degraded_frames_after": 9,
+      "clear_nonzero_after": 345
+    },
+    "medium": {
+      "frames": 345,
+      "raw_sha256": [
+        "39ba5ce61b0aa22ffeb758a14387f60e53c8bab2f5062b5b95bda48b52c109d3",
+        "4532c434a7306588f3d59a832cc705f580072dc8981fb9fe2ae249f22edb7869"
+      ],
+      "changed_detection_geometry_input_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "go_frames_after": 0,
+      "degraded_frames_after": 345,
+      "clear_nonzero_after": 0
+    },
+    "high": {
+      "frames": 345,
+      "raw_sha256": [
+        "602e90fee39231ea28faeb8b52c11c19372d2c2162911db9271ca9087543b618",
+        "f4428d8514daa9ed07176c6623a7daf2e4d5411e41a676ab1def59ec44f8ec0c"
+      ],
+      "changed_detection_geometry_input_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "go_frames_after": 0,
+      "degraded_frames_after": 345,
+      "clear_nonzero_after": 0
+    }
+  }
+}

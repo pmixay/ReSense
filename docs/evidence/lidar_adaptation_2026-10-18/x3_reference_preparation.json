@@ -1,0 +1,36 @@
+{
+  "method": "Recreate byte-identical historical X3 cache ZIPs and relocate verified raw evidence.\n\nOnly ZIP version/size headers change. Every output must match the archived whole-file\nSHA-256 before it is written; point arrays and compressed data are never modified.\n",
+  "original_reference_sha256": "50a0804e3da47e8908aa7f0fa99d662b347162b971ca9f84dbee059ef727e7b7",
+  "script_sha256": "6a17a8d84570ec9e325ddc253b4774eaf8979b07f8ff3a55efb35d6a4f8c23bc",
+  "bags": {
+    "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "payload_sha256": "fef16fdb6bc6328b2d0c5dfaec6faa3af275c9331f41565468f65a7cb6bfb09a",
+      "meta_sha256": "b3996437b21104398ba19ae80c05f9183935174b76ec1960eb561756476aa361",
+      "all_files_exact": true
+    },
+    "doubleT_obstacle": {
+      "frames": 201,
+      "payload_sha256": "3c3fb579d09dde4d875460d153f60ea5800278fe6c76d636885b23f7a7278e84",
+      "meta_sha256": "67358d464c52a242eac4ce8777b9ba8d833755395019581fee58db1e9eef34c9",
+      "all_files_exact": true
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "payload_sha256": "9c453a7e0c2e1fb77fb65b512b20633a7a03a141eb41773fb5d2dc031b4fff3c",
+      "meta_sha256": "ad930fe594c02da7e26260d66e53c19bd9d864abbfe8e6784e4f15f0aa4b7438",
+      "all_files_exact": true
+    },
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "payload_sha256": "5a47d3845beb90f00a21f0879decc5480d5997f097391e4403c0e846550a1e4f",
+      "meta_sha256": "479122b72837d7b220a984d114da6778cf2a2816f848f0dfa621d02074af0115",
+      "all_files_exact": true
+    }
+  },
+  "status": "PASS",
+  "raw_entries_revalidated": 40,
+  "portable_reference_sha256": "750256522b673bdf7428bf136747aa0e06e0fdedc628a99a82e5222d9975f535",
+  "relocated_fields": "entries.*.raw_path only; all source/evaluation identities preserved",
+  "raw_archive_sha256": "417e701deca4bdfe24f7c9d1530c4b78cb8f3d07804386554bda3be44e10223a"
+}

@@ -1,0 +1,1551 @@
+{
+  "schema": "offline-curve-crosswalk-v1",
+  "complete": true,
+  "no_detector_or_ICP_rerun": true,
+  "P4_evidence_commit": "1b880168ce2dbeec2071838892ac05eed5a9166a",
+  "N1_evidence_commit": "cf188486f5c2339cd74adcb52ecdd21a59f8fad0",
+  "N1_measured_source": "f5ff15f",
+  "script_sha256": "a359ca65b27b219fdc03ae2bbc808fed58601e8c0e466c1d6b113d464761dec5",
+  "inputs": {
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/b6_raw.tar.xz": {
+      "sha256": "e0bd5ba9c44f7c9dc3413deb0f0b02ac289f7c9f77f0e2551cfc2ddb77827ab9",
+      "bytes": 366444
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/SHA256SUMS": {
+      "sha256": "38d303433c1f8a6738d84263254703cc3cc22c43c984ac3dea295fe9bcfe4bd0",
+      "bytes": 140
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:scripts/gauge_stability.py": {
+      "sha256": "933e819294dde7a56caffd1c5ed5ee672363273f988cc595a589109490764ed5",
+      "bytes": 12714
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/README.md": {
+      "sha256": "db7854e5d27bca35db77ecd8cfdfe8757e05f64d59a765624aeb760ec61ec7be",
+      "bytes": 8932
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/monitored.json": {
+      "sha256": "f55ed6615031ea62898ec74044e85ffcfdf0dcad5b44b7ce7f022418995a37a6",
+      "bytes": 76957
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/v110/measure_roundT_doubleT.json": {
+      "sha256": "b1f4365c07f6823174475a0a75580721238ba5fb3e2082abc3acdec60b1c4645",
+      "bytes": 3118
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/v110/honesty_roundT_doubleT.json": {
+      "sha256": "34987a3ca9f7607a7ac4c35e5201137436df5aab8e07eeae420570f3fadc9bf6",
+      "bytes": 286
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/v100/measure_roundT_doubleT.json": {
+      "sha256": "07337a2f7cb9f2b2675bfcde5029db97d3b23a5ee90da96dd89aa42bcf39171f",
+      "bytes": 3118
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/v100/honesty_roundT_doubleT.json": {
+      "sha256": "4dec4979273b97b8e72018a924f907728af77dfde5bd843f654d40013ca98bd4",
+      "bytes": 277
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/v110/measure_roundT_pressureGate_roundT.json": {
+      "sha256": "4b340762f507f48c8da5bd5f080e39f34a6fffb1683da22cfc8c89d657f695bb",
+      "bytes": 3079
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/v110/honesty_roundT_pressureGate_roundT.json": {
+      "sha256": "682dafaca0383fba91cbfc1fa92a14fe3688319aec9ad114a6bb9932c9e425fc",
+      "bytes": 298
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/v100/measure_roundT_pressureGate_roundT.json": {
+      "sha256": "a44402fd16c385d2f47e60fa2037480a8c89c67e7e1f234d8d6b3eaa9c1f335d",
+      "bytes": 3079
+    },
+    "1b880168ce2dbeec2071838892ac05eed5a9166a:docs/evidence/gauge_stability_2026-10-18/v100/honesty_roundT_pressureGate_roundT.json": {
+      "sha256": "d690a63c496016b62d14dc61be81b589ac68969e2cdb2629377ec751a4afc11c",
+      "bytes": 289
+    },
+    "cf188486f5c2339cd74adcb52ecdd21a59f8fad0:docs/evidence/n1_n4_2026-10-18/final_core_f5ff15f/rows/roundT_doubleT.jsonl.gz": {
+      "sha256": "e9b3ea4d52d7bfdb0c1688a350939c67fdef8aa3a4e1b7d83ce8a548be42cdd1",
+      "bytes": 102752
+    },
+    "cf188486f5c2339cd74adcb52ecdd21a59f8fad0:docs/evidence/n1_n4_2026-10-18/final_core_f5ff15f/roundT_doubleT.json": {
+      "sha256": "88f24c58ecb4d13981093a6a6e7cf90ce3a011ba1b0861b0b58d811f63afdf2c",
+      "bytes": 13922
+    },
+    "cf188486f5c2339cd74adcb52ecdd21a59f8fad0:ros2_ws/src/resense_ros/resense_ros/gauge_display.py": {
+      "sha256": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b",
+      "bytes": 7791
+    },
+    "local_cache_meta": {
+      "original_path": "/home/resense/data/decoded/roundT_doubleT/meta.json",
+      "sha256": "51004f10044870d65574a3b9b1f0025f082c6ece10f93e9b1feccb9e95f6e621",
+      "archived_gzip_sha256": "984227770378a0a194e81225283cb6652b835a9ae94d79783e7a5961b06eaa29"
+    },
+    "selected_B6_members": {
+      "poses_roundT_doubleT.json": {
+        "sha256": "505b4ff6df70c233bc8a86ebe5ac8543827e689fd31d9df377e4865a9ce25bfa",
+        "bytes": 50212
+      },
+      "v110/track_roundT_doubleT.json": {
+        "sha256": "eb6731e3d5d3fb5032529e70a154d629e4791c3d4952147255ebe3e812350fa4",
+        "bytes": 54277
+      },
+      "v100/track_roundT_doubleT.json": {
+        "sha256": "f10874e34b8958a6bf9d1a8c48d6e416a71bb8148446e052f30b21e59a3b9668",
+        "bytes": 54279
+      },
+      "poses_roundT_pressureGate_roundT.json": {
+        "sha256": "a970a451e4906d7689a004a9867dc5a43b9914b58e5704c893162d568ad80c23",
+        "bytes": 53171
+      },
+      "v110/track_roundT_pressureGate_roundT.json": {
+        "sha256": "fbbe78db8d9aa883888ba022e0edfe663983f8a4fd66d80586f66a5af2a60286",
+        "bytes": 57383
+      },
+      "v100/track_roundT_pressureGate_roundT.json": {
+        "sha256": "e70d400df40e4a3d795ec1ae2bd39824921d3d8a50dbeaec33335c3dc4136459",
+        "bytes": 57385
+      }
+    },
+    "selected_subset_gzip_sha256": "ab6742ebad135a1041ae9b08ec3d0aa1337c4d8b3fcad234627f25f51273554f"
+  },
+  "row_archive_sha256": "56ec3c1ffdc38c18896f2d7d6592e2e2e4facbffa33d1a19b0f7b70b9af8bf32",
+  "B_alignment": {
+    "frames": 252,
+    "exact_raw_axis_samples": 756,
+    "maximum_raw_axis_sample_delta_m": 0.0,
+    "axis_valid_exact_all_frames": true,
+    "B6_rotation_identity_all_frames": true,
+    "N1_mount_configured_zero_angles_all_frames": true,
+    "N1_stamp_and_frame_match_hash_verified_cache_meta": true,
+    "display_quadratic_EMA_recurrence_checked_all_frames": true,
+    "maximum_display_EMA_sample_recurrence_error_m": 4.440892098500626e-16,
+    "monitored_range_differing_frames": [],
+    "scope": "Exact frame-index/geometry fingerprint, verified N1 timestamps and configured-axis correspondence. B6 stores no timestamps or point-payload hashes; byte-identical raw input cannot be proven from these B6 files. No new ICP or detector run."
+  },
+  "recordings": {
+    "B": {
+      "recording": "roundT_doubleT",
+      "frames": 252,
+      "path_segments": 1,
+      "ICP_fitness": {
+        "n": 251,
+        "p50": 0.9689,
+        "p90": 0.981,
+        "p99": 0.98745,
+        "p100": 0.9887
+      },
+      "path_reference_frames": 251,
+      "raw_axis_range_m": {
+        "n": 252,
+        "p50": 157.0,
+        "p90": 217.0,
+        "p99": 225.0,
+        "p100": 225.0
+      },
+      "monitored_v110_range_m": {
+        "n": 252,
+        "p50": 141.9,
+        "p90": 185.0,
+        "p99": 197.0,
+        "p100": 202.7
+      },
+      "monitored_v100_range_m": {
+        "n": 252,
+        "p50": 147.0,
+        "p90": 185.57999999999998,
+        "p99": 197.09799999999998,
+        "p100": 202.7
+      },
+      "raw_axis_error_all_reference_points": {
+        "n": 7571,
+        "p50": 2.4667991459005405,
+        "p90": 19.1373544803999,
+        "p99": 29.170398292017982,
+        "p100": 41.61829489392585,
+        "share_over_0.5m": 0.6580372473913618,
+        "share_over_1.05m": 0.5933166028265751
+      },
+      "raw_axis_error_within_axis_range": {
+        "n": 5716,
+        "p50": 0.7690852988409158,
+        "p90": 11.368838497701597,
+        "p99": 25.725463789410814,
+        "p100": 34.43018177602765,
+        "share_over_0.5m": 0.5475857242827152,
+        "share_over_1.05m": 0.4625612316305108
+      },
+      "raw_axis_error_within_monitored_v100": {
+        "n": 5226,
+        "p50": 0.521616976589313,
+        "p90": 7.690338041400967,
+        "p99": 19.77240092350605,
+        "p100": 28.207053642683167,
+        "share_over_0.5m": 0.505166475315729,
+        "share_over_1.05m": 0.4121699196326062
+      },
+      "raw_axis_error_within_monitored_v110": {
+        "n": 5108,
+        "p50": 0.4732974613805061,
+        "p90": 7.552654389490733,
+        "p99": 19.36716667698172,
+        "p100": 28.207053642683167,
+        "share_over_0.5m": 0.49510571652310104,
+        "share_over_1.05m": 0.40133124510571655
+      },
+      "raw_axis_error_at_fixed_distance_within_axis": {
+        "40": {
+          "n": 231,
+          "p50": 0.15748519216624685,
+          "p90": 0.5272792287418393,
+          "p99": 0.7626844080191909,
+          "p100": 0.7741644814154353,
+          "share_over_0.5m": 0.11688311688311688,
+          "share_over_1.05m": 0.0
+        },
+        "80": {
+          "n": 175,
+          "p50": 1.0957415185986887,
+          "p90": 3.7507791525144163,
+          "p99": 4.046843625734422,
+          "p100": 4.090511392185655,
+          "share_over_0.5m": 0.6171428571428571,
+          "share_over_1.05m": 0.52
+        },
+        "90": {
+          "n": 169,
+          "p50": 1.7796152979461803,
+          "p90": 5.098774445246318,
+          "p99": 5.4303761545406015,
+          "p100": 5.4708725452542195,
+          "share_over_0.5m": 0.7633136094674556,
+          "share_over_1.05m": 0.6272189349112426
+        },
+        "120": {
+          "n": 142,
+          "p50": 5.425326060291016,
+          "p90": 10.574445849260702,
+          "p99": 10.997133059523023,
+          "p100": 11.033776215980122,
+          "share_over_0.5m": 0.9929577464788732,
+          "share_over_1.05m": 0.9788732394366197
+        },
+        "135": {
+          "n": 102,
+          "p50": 7.417523777578165,
+          "p90": 11.386921143980974,
+          "p99": 13.895867607989718,
+          "p100": 14.370895920723758,
+          "share_over_0.5m": 1.0,
+          "share_over_1.05m": 1.0
+        }
+      },
+      "prior_documented_curve_window": {
+        "first_frame": 140,
+        "last_frame": 170,
+        "raw_error_where_path_available_regardless_of_trust": {
+          "80": {
+            "n": 31,
+            "p50": 3.6597724678800425,
+            "p90": 3.9394978785426114,
+            "p99": 3.994704850616764,
+            "p100": 3.994966863406492,
+            "share_over_0.5m": 1.0,
+            "share_over_1.05m": 1.0
+          },
+          "90": {
+            "n": 31,
+            "p50": 4.692970868936861,
+            "p90": 5.299297212449407,
+            "p99": 5.3452691523346925,
+            "p100": 5.351186489749701,
+            "share_over_0.5m": 1.0,
+            "share_over_1.05m": 1.0
+          },
+          "100": {
+            "n": 31,
+            "p50": 5.834866072269014,
+            "p90": 6.752383771617355,
+            "p99": 6.795348124182882,
+            "p100": 6.804867159934899,
+            "share_over_0.5m": 1.0,
+            "share_over_1.05m": 1.0
+          },
+          "120": {
+            "n": 31,
+            "p50": 7.9741954023603885,
+            "p90": 9.765045443729646,
+            "p99": 9.863574640148336,
+            "p100": 9.874263161550692,
+            "share_over_0.5m": 1.0,
+            "share_over_1.05m": 1.0
+          },
+          "135": {
+            "n": 31,
+            "p50": 9.411827123239286,
+            "p90": 11.949775303698514,
+            "p99": 12.197160579878656,
+            "p100": 12.24979253275878,
+            "share_over_0.5m": 1.0,
+            "share_over_1.05m": 1.0
+          }
+        }
+      },
+      "display_available": true,
+      "N1_monitored_range_m": {
+        "n": 252,
+        "p50": 141.9,
+        "p90": 185.0,
+        "p99": 197.0,
+        "p100": 202.7
+      },
+      "display_solid_range_m": {
+        "n": 252,
+        "p50": 52.0,
+        "p90": 101.9,
+        "p99": 139.621,
+        "p100": 142.0
+      },
+      "same_display_visible_raw_axis_error": {
+        "n": 2233,
+        "p50": 0.09691701861248364,
+        "p90": 0.7987304405602434,
+        "p99": 3.2384811211569215,
+        "p100": 5.275276084595732,
+        "share_over_0.5m": 0.14599193909538738,
+        "share_over_1.05m": 0.07299596954769369
+      },
+      "same_display_visible_display_error": {
+        "n": 2233,
+        "p50": 0.15745678500094518,
+        "p90": 0.8964617967301628,
+        "p99": 3.330858188051688,
+        "p100": 5.178517947810149,
+        "share_over_0.5m": 0.1768920734437976,
+        "share_over_1.05m": 0.07836990595611286
+      },
+      "display_self_origin_alignment_sensitivity": {
+        "n": 2233,
+        "p50": 0.15870771424689079,
+        "p90": 0.8886454655822199,
+        "p99": 3.321242850489778,
+        "p100": 5.1808413002742375,
+        "share_over_0.5m": 0.17375727720555306,
+        "share_over_1.05m": 0.07836990595611286
+      },
+      "jitter_metrics_kept_separate": {
+        "40": {
+          "all_adjacent_pairs": 251,
+          "raw_all_ICP_pairs_lateral_compensated_m": {
+            "n": 251,
+            "p50": 0.02058148247873451,
+            "p90": 0.09034195859285443,
+            "p99": 0.1782535564035359,
+            "p100": 0.1870522714593701
+          },
+          "same_visible_pairs": [
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              10
+            ],
+            [
+              28,
+              29
+            ],
+            [
+              29,
+              30
+            ],
+            [
+              30,
+              31
+            ],
+            [
+              31,
+              32
+            ],
+            [
+              32,
+              33
+            ],
+            [
+              33,
+              34
+            ],
+            [
+              34,
+              35
+            ],
+            [
+              35,
+              36
+            ],
+            [
+              36,
+              37
+            ],
+            [
+              37,
+              38
+            ],
+            [
+              38,
+              39
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              40,
+              41
+            ],
+            [
+              41,
+              42
+            ],
+            [
+              42,
+              43
+            ],
+            [
+              43,
+              44
+            ],
+            [
+              44,
+              45
+            ],
+            [
+              45,
+              46
+            ],
+            [
+              46,
+              47
+            ],
+            [
+              47,
+              48
+            ],
+            [
+              48,
+              49
+            ],
+            [
+              49,
+              50
+            ],
+            [
+              50,
+              51
+            ],
+            [
+              51,
+              52
+            ],
+            [
+              52,
+              53
+            ],
+            [
+              53,
+              54
+            ],
+            [
+              54,
+              55
+            ],
+            [
+              55,
+              56
+            ],
+            [
+              56,
+              57
+            ],
+            [
+              57,
+              58
+            ],
+            [
+              58,
+              59
+            ],
+            [
+              59,
+              60
+            ],
+            [
+              60,
+              61
+            ],
+            [
+              61,
+              62
+            ],
+            [
+              62,
+              63
+            ],
+            [
+              63,
+              64
+            ],
+            [
+              64,
+              65
+            ],
+            [
+              65,
+              66
+            ],
+            [
+              66,
+              67
+            ],
+            [
+              67,
+              68
+            ],
+            [
+              68,
+              69
+            ],
+            [
+              69,
+              70
+            ],
+            [
+              70,
+              71
+            ],
+            [
+              71,
+              72
+            ],
+            [
+              72,
+              73
+            ],
+            [
+              73,
+              74
+            ],
+            [
+              74,
+              75
+            ],
+            [
+              75,
+              76
+            ],
+            [
+              76,
+              77
+            ],
+            [
+              77,
+              78
+            ],
+            [
+              78,
+              79
+            ],
+            [
+              79,
+              80
+            ],
+            [
+              80,
+              81
+            ],
+            [
+              81,
+              82
+            ],
+            [
+              82,
+              83
+            ],
+            [
+              83,
+              84
+            ],
+            [
+              84,
+              85
+            ],
+            [
+              85,
+              86
+            ],
+            [
+              86,
+              87
+            ],
+            [
+              87,
+              88
+            ],
+            [
+              88,
+              89
+            ],
+            [
+              89,
+              90
+            ],
+            [
+              90,
+              91
+            ],
+            [
+              91,
+              92
+            ],
+            [
+              92,
+              93
+            ],
+            [
+              93,
+              94
+            ],
+            [
+              94,
+              95
+            ],
+            [
+              95,
+              96
+            ],
+            [
+              128,
+              129
+            ],
+            [
+              129,
+              130
+            ],
+            [
+              130,
+              131
+            ],
+            [
+              131,
+              132
+            ],
+            [
+              132,
+              133
+            ],
+            [
+              133,
+              134
+            ],
+            [
+              134,
+              135
+            ],
+            [
+              135,
+              136
+            ],
+            [
+              136,
+              137
+            ],
+            [
+              137,
+              138
+            ],
+            [
+              138,
+              139
+            ],
+            [
+              139,
+              140
+            ],
+            [
+              140,
+              141
+            ],
+            [
+              141,
+              142
+            ],
+            [
+              142,
+              143
+            ],
+            [
+              143,
+              144
+            ],
+            [
+              144,
+              145
+            ],
+            [
+              145,
+              146
+            ],
+            [
+              146,
+              147
+            ],
+            [
+              147,
+              148
+            ],
+            [
+              148,
+              149
+            ],
+            [
+              149,
+              150
+            ],
+            [
+              150,
+              151
+            ],
+            [
+              151,
+              152
+            ],
+            [
+              152,
+              153
+            ],
+            [
+              153,
+              154
+            ],
+            [
+              154,
+              155
+            ],
+            [
+              155,
+              156
+            ],
+            [
+              156,
+              157
+            ],
+            [
+              157,
+              158
+            ],
+            [
+              158,
+              159
+            ],
+            [
+              159,
+              160
+            ],
+            [
+              160,
+              161
+            ],
+            [
+              161,
+              162
+            ],
+            [
+              162,
+              163
+            ],
+            [
+              163,
+              164
+            ],
+            [
+              164,
+              165
+            ],
+            [
+              165,
+              166
+            ],
+            [
+              166,
+              167
+            ],
+            [
+              167,
+              168
+            ],
+            [
+              168,
+              169
+            ],
+            [
+              169,
+              170
+            ],
+            [
+              170,
+              171
+            ],
+            [
+              171,
+              172
+            ],
+            [
+              172,
+              173
+            ],
+            [
+              173,
+              174
+            ],
+            [
+              174,
+              175
+            ],
+            [
+              175,
+              176
+            ],
+            [
+              176,
+              177
+            ],
+            [
+              177,
+              178
+            ],
+            [
+              178,
+              179
+            ],
+            [
+              179,
+              180
+            ],
+            [
+              180,
+              181
+            ],
+            [
+              181,
+              182
+            ],
+            [
+              182,
+              183
+            ],
+            [
+              183,
+              184
+            ],
+            [
+              217,
+              218
+            ],
+            [
+              218,
+              219
+            ],
+            [
+              219,
+              220
+            ],
+            [
+              220,
+              221
+            ],
+            [
+              221,
+              222
+            ],
+            [
+              222,
+              223
+            ],
+            [
+              223,
+              224
+            ],
+            [
+              224,
+              225
+            ],
+            [
+              225,
+              226
+            ],
+            [
+              226,
+              227
+            ],
+            [
+              227,
+              228
+            ],
+            [
+              228,
+              229
+            ],
+            [
+              229,
+              230
+            ],
+            [
+              230,
+              231
+            ],
+            [
+              231,
+              232
+            ],
+            [
+              232,
+              233
+            ],
+            [
+              233,
+              234
+            ],
+            [
+              234,
+              235
+            ],
+            [
+              235,
+              236
+            ],
+            [
+              236,
+              237
+            ],
+            [
+              237,
+              238
+            ],
+            [
+              238,
+              239
+            ],
+            [
+              239,
+              240
+            ],
+            [
+              240,
+              241
+            ],
+            [
+              241,
+              242
+            ],
+            [
+              242,
+              243
+            ],
+            [
+              243,
+              244
+            ],
+            [
+              244,
+              245
+            ],
+            [
+              245,
+              246
+            ],
+            [
+              246,
+              247
+            ],
+            [
+              247,
+              248
+            ],
+            [
+              248,
+              249
+            ],
+            [
+              249,
+              250
+            ],
+            [
+              250,
+              251
+            ]
+          ],
+          "raw_visible_lateral_compensated_m": {
+            "n": 161,
+            "p50": 0.020282481375251016,
+            "p90": 0.09016510734619265,
+            "p99": 0.1845125548125279,
+            "p100": 0.1870522714593701
+          },
+          "display_visible_lateral_compensated_m": {
+            "n": 161,
+            "p50": 0.02080342142316427,
+            "p90": 0.09818022105817992,
+            "p99": 0.11353084085546875,
+            "p100": 0.1171769734981214
+          },
+          "raw_visible_3D_uncompensated_m": {
+            "n": 161,
+            "p50": 0.02501656564911013,
+            "p90": 0.06185957276167662,
+            "p99": 0.09981964117529607,
+            "p100": 0.10220719949071425
+          },
+          "display_visible_3D_uncompensated_m": {
+            "n": 161,
+            "p50": 0.0097820802179912,
+            "p90": 0.03253131320519,
+            "p99": 0.04552564323818119,
+            "p100": 0.04880554722454595
+          }
+        },
+        "80": {
+          "all_adjacent_pairs": 251,
+          "raw_all_ICP_pairs_lateral_compensated_m": {
+            "n": 251,
+            "p50": 0.05409859959072444,
+            "p90": 0.2413228792697657,
+            "p99": 0.5620573778269047,
+            "p100": 0.5895540493743896
+          },
+          "same_visible_pairs": [
+            [
+              37,
+              38
+            ],
+            [
+              38,
+              39
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              40,
+              41
+            ],
+            [
+              41,
+              42
+            ],
+            [
+              42,
+              43
+            ],
+            [
+              43,
+              44
+            ],
+            [
+              44,
+              45
+            ],
+            [
+              45,
+              46
+            ],
+            [
+              46,
+              47
+            ],
+            [
+              47,
+              48
+            ],
+            [
+              48,
+              49
+            ],
+            [
+              49,
+              50
+            ],
+            [
+              50,
+              51
+            ],
+            [
+              51,
+              52
+            ],
+            [
+              52,
+              53
+            ],
+            [
+              53,
+              54
+            ],
+            [
+              54,
+              55
+            ],
+            [
+              55,
+              56
+            ],
+            [
+              56,
+              57
+            ],
+            [
+              57,
+              58
+            ],
+            [
+              58,
+              59
+            ],
+            [
+              59,
+              60
+            ],
+            [
+              60,
+              61
+            ],
+            [
+              61,
+              62
+            ],
+            [
+              62,
+              63
+            ],
+            [
+              63,
+              64
+            ],
+            [
+              64,
+              65
+            ],
+            [
+              65,
+              66
+            ],
+            [
+              66,
+              67
+            ],
+            [
+              67,
+              68
+            ],
+            [
+              68,
+              69
+            ],
+            [
+              229,
+              230
+            ],
+            [
+              233,
+              234
+            ],
+            [
+              234,
+              235
+            ],
+            [
+              235,
+              236
+            ],
+            [
+              236,
+              237
+            ],
+            [
+              237,
+              238
+            ],
+            [
+              238,
+              239
+            ],
+            [
+              239,
+              240
+            ],
+            [
+              240,
+              241
+            ],
+            [
+              241,
+              242
+            ],
+            [
+              242,
+              243
+            ],
+            [
+              243,
+              244
+            ]
+          ],
+          "raw_visible_lateral_compensated_m": {
+            "n": 44,
+            "p50": 0.04733027094929895,
+            "p90": 0.08700208526271117,
+            "p99": 0.16771293377844473,
+            "p100": 0.17068843682929707
+          },
+          "display_visible_lateral_compensated_m": {
+            "n": 44,
+            "p50": 0.023309622147066916,
+            "p90": 0.06146042348827242,
+            "p99": 0.08334546101749866,
+            "p100": 0.0893533276033236
+          },
+          "raw_visible_3D_uncompensated_m": {
+            "n": 44,
+            "p50": 0.05898767174247209,
+            "p90": 0.13911298461177365,
+            "p99": 0.17894943376644665,
+            "p100": 0.186694673816624
+          },
+          "display_visible_3D_uncompensated_m": {
+            "n": 44,
+            "p50": 0.015100318967506458,
+            "p90": 0.030551169136923288,
+            "p99": 0.040458953602964545,
+            "p100": 0.04236265339589431
+          }
+        },
+        "120": {
+          "all_adjacent_pairs": 251,
+          "raw_all_ICP_pairs_lateral_compensated_m": {
+            "n": 251,
+            "p50": 0.11888312164911063,
+            "p90": 0.4156314439702946,
+            "p99": 1.1071622736444953,
+            "p100": 1.153615236450218
+          },
+          "same_visible_pairs": [
+            [
+              45,
+              46
+            ],
+            [
+              46,
+              47
+            ],
+            [
+              47,
+              48
+            ],
+            [
+              48,
+              49
+            ],
+            [
+              49,
+              50
+            ],
+            [
+              50,
+              51
+            ],
+            [
+              51,
+              52
+            ],
+            [
+              52,
+              53
+            ],
+            [
+              53,
+              54
+            ],
+            [
+              54,
+              55
+            ],
+            [
+              55,
+              56
+            ]
+          ],
+          "raw_visible_lateral_compensated_m": {
+            "n": 11,
+            "p50": 0.10358547756352754,
+            "p90": 0.14806115271932263,
+            "p99": 0.1826865432977022,
+            "p100": 0.18653380891752214
+          },
+          "display_visible_lateral_compensated_m": {
+            "n": 11,
+            "p50": 0.01715137016933055,
+            "p90": 0.04842862247752877,
+            "p99": 0.09385976933748255,
+            "p100": 0.09890767454414406
+          },
+          "raw_visible_3D_uncompensated_m": {
+            "n": 11,
+            "p50": 0.12474998624704357,
+            "p90": 0.20454499419640698,
+            "p99": 0.2425367767861038,
+            "p100": 0.24675808596273677
+          },
+          "display_visible_3D_uncompensated_m": {
+            "n": 11,
+            "p50": 0.016653891342328836,
+            "p90": 0.028455158237050707,
+            "p99": 0.028879058020750442,
+            "p100": 0.028926157996717078
+          }
+        }
+      },
+      "archived_B6_numeric_results_reproduced": true
+    },
+    "C": {
+      "recording": "roundT_pressureGate_roundT",
+      "frames": 268,
+      "path_segments": 1,
+      "ICP_fitness": {
+        "n": 267,
+        "p50": 0.9868,
+        "p90": 0.9894,
+        "p99": 0.9914339999999999,
+        "p100": 0.9923
+      },
+      "path_reference_frames": 267,
+      "raw_axis_range_m": {
+        "n": 268,
+        "p50": 143.0,
+        "p90": 202.20000000000005,
+        "p99": 221.0,
+        "p100": 221.0
+      },
+      "monitored_v110_range_m": {
+        "n": 268,
+        "p50": 102.0,
+        "p90": 165.86,
+        "p99": 178.82399999999996,
+        "p100": 180.9
+      },
+      "monitored_v100_range_m": {
+        "n": 268,
+        "p50": 130.4,
+        "p90": 166.41,
+        "p99": 178.82399999999996,
+        "p100": 180.9
+      },
+      "raw_axis_error_all_reference_points": {
+        "n": 7725,
+        "p50": 0.24200122104073096,
+        "p90": 5.098925197568319,
+        "p99": 10.573792695061213,
+        "p100": 15.6870509051666,
+        "share_over_0.5m": 0.3755339805825243,
+        "share_over_1.05m": 0.29449838187702265
+      },
+      "raw_axis_error_within_axis_range": {
+        "n": 6337,
+        "p50": 0.13525816603478413,
+        "p90": 1.8523880572700828,
+        "p99": 5.995129014529694,
+        "p100": 10.405451756889606,
+        "share_over_0.5m": 0.25295881331860504,
+        "share_over_1.05m": 0.1667981694808269
+      },
+      "raw_axis_error_within_monitored_v100": {
+        "n": 5891,
+        "p50": 0.11248045826316577,
+        "p90": 1.3238920738946165,
+        "p99": 3.603404848178723,
+        "p100": 4.414865300766799,
+        "share_over_0.5m": 0.20794432184688508,
+        "share_over_1.05m": 0.12544559497538618
+      },
+      "raw_axis_error_within_monitored_v110": {
+        "n": 4877,
+        "p50": 0.07561184532679288,
+        "p90": 0.42471454472101416,
+        "p99": 1.8948766346124444,
+        "p100": 3.9538024026784573,
+        "share_over_0.5m": 0.06069304900553619,
+        "share_over_1.05m": 0.021734672954685258
+      },
+      "raw_axis_error_at_fixed_distance_within_axis": {
+        "40": {
+          "n": 241,
+          "p50": 0.04173368918650716,
+          "p90": 0.11789845735878446,
+          "p99": 0.21578549883056908,
+          "p100": 0.2384796500506967,
+          "share_over_0.5m": 0.0,
+          "share_over_1.05m": 0.0
+        },
+        "80": {
+          "n": 209,
+          "p50": 0.22759623084935487,
+          "p90": 0.6856863035278793,
+          "p99": 0.827270139285226,
+          "p100": 0.8565220782624161,
+          "share_over_0.5m": 0.17703349282296652,
+          "share_over_1.05m": 0.0
+        },
+        "90": {
+          "n": 207,
+          "p50": 0.30611776179238936,
+          "p90": 1.1208476769774482,
+          "p99": 1.3599659098399672,
+          "p100": 1.4132469482282697,
+          "share_over_0.5m": 0.3188405797101449,
+          "share_over_1.05m": 0.12077294685990338
+        },
+        "120": {
+          "n": 183,
+          "p50": 1.234432111327779,
+          "p90": 2.8901851904378755,
+          "p99": 3.297043817004634,
+          "p100": 3.3935039915286604,
+          "share_over_0.5m": 0.6775956284153005,
+          "share_over_1.05m": 0.546448087431694
+        },
+        "135": {
+          "n": 144,
+          "p50": 1.5800254973309187,
+          "p90": 3.412821107366271,
+          "p99": 4.314817807769696,
+          "p100": 4.37335806365182,
+          "share_over_0.5m": 0.6597222222222222,
+          "share_over_1.05m": 0.5625
+        }
+      },
+      "prior_documented_curve_window": {
+        "first_frame": 57,
+        "last_frame": 117,
+        "raw_error_where_path_available_regardless_of_trust": {
+          "80": {
+            "n": 61,
+            "p50": 0.4591314476936481,
+            "p90": 0.7845959390782711,
+            "p99": 0.8503686185012198,
+            "p100": 0.8565220782624161,
+            "share_over_0.5m": 0.4098360655737705,
+            "share_over_1.05m": 0.0
+          },
+          "90": {
+            "n": 61,
+            "p50": 0.7321823167489798,
+            "p90": 1.1998993969817437,
+            "p99": 1.3089000111280482,
+            "p100": 1.3245788206806486,
+            "share_over_0.5m": 0.639344262295082,
+            "share_over_1.05m": 0.2786885245901639
+          },
+          "100": {
+            "n": 61,
+            "p50": 0.9773989637989526,
+            "p90": 1.7534521526096762,
+            "p99": 1.885946007109555,
+            "p100": 1.8998471370677743,
+            "share_over_0.5m": 0.7213114754098361,
+            "share_over_1.05m": 0.45901639344262296
+          },
+          "120": {
+            "n": 61,
+            "p50": 1.922236021432894,
+            "p90": 3.2026611361140005,
+            "p99": 3.3509302894405018,
+            "p100": 3.3935039915286604,
+            "share_over_0.5m": 0.9508196721311475,
+            "share_over_1.05m": 0.7868852459016393
+          },
+          "135": {
+            "n": 61,
+            "p50": 2.863012661640912,
+            "p90": 4.37335806365182,
+            "p99": 4.718083386923274,
+            "p100": 4.780923875851357,
+            "share_over_0.5m": 0.9508196721311475,
+            "share_over_1.05m": 0.8524590163934426
+          }
+        }
+      },
+      "display_available": false,
+      "N1_monitored_range_m": null,
+      "display_solid_range_m": null,
+      "same_display_visible_raw_axis_error": null,
+      "same_display_visible_display_error": null,
+      "display_self_origin_alignment_sensitivity": null,
+      "jitter_metrics_kept_separate": {
+        "40": {
+          "all_adjacent_pairs": 267,
+          "raw_all_ICP_pairs_lateral_compensated_m": {
+            "n": 267,
+            "p50": 0.01220899157576888,
+            "p90": 0.03827706061329713,
+            "p99": 0.0707877327587677,
+            "p100": 0.09984314228132996
+          },
+          "same_visible_pairs": null,
+          "raw_visible_lateral_compensated_m": null,
+          "display_visible_lateral_compensated_m": null,
+          "raw_visible_3D_uncompensated_m": null,
+          "display_visible_3D_uncompensated_m": null
+        },
+        "80": {
+          "all_adjacent_pairs": 267,
+          "raw_all_ICP_pairs_lateral_compensated_m": {
+            "n": 267,
+            "p50": 0.041203816382293645,
+            "p90": 0.1462540121682123,
+            "p99": 0.26037437374094063,
+            "p100": 0.29563972913935643
+          },
+          "same_visible_pairs": null,
+          "raw_visible_lateral_compensated_m": null,
+          "display_visible_lateral_compensated_m": null,
+          "raw_visible_3D_uncompensated_m": null,
+          "display_visible_3D_uncompensated_m": null
+        },
+        "120": {
+          "all_adjacent_pairs": 267,
+          "raw_all_ICP_pairs_lateral_compensated_m": {
+            "n": 267,
+            "p50": 0.10961988495941988,
+            "p90": 0.3757104230045773,
+            "p99": 0.5999609762194386,
+            "p100": 0.6809439083293913
+          },
+          "same_visible_pairs": null,
+          "raw_visible_lateral_compensated_m": null,
+          "display_visible_lateral_compensated_m": null,
+          "raw_visible_3D_uncompensated_m": null,
+          "display_visible_3D_uncompensated_m": null
+        }
+      },
+      "archived_B6_numeric_results_reproduced": true
+    }
+  },
+  "method": "Archived B6 ICP path, relative to the current raw axis center at x=0. Lateral error is shape/trajectory error, not surveyed absolute track-center error. Saved N1 display lateral profiles remain quadratic under the hash-verified spatially uniform EMA/reset; reconstruct them from three full-precision saved samples. Common current-raw-center anchoring retains display-center lag; a self-origin sensitivity is separate. Integer 5m samples match display grid nodes.",
+  "limits": [
+    "C has no saved N1 display capture; its display metrics are unavailable, not zero or passing.",
+    "B6 lacks source payload hashes and timestamps. Exact raw geometry matches at all252 B frames support correspondence; byte-identical source-point inputs are not established.",
+    "ICP is a future driven-sensor path proxy, independently corroborated in prior B6 review, not a surveyed track center. No truth is extrapolated beyond the saved forward path or across segment breaks.",
+    "Motion-compensated lateral centerline steps use the B6 z=0 convention and are not the N1 uncorrected 3D vertex metric. Only identical visible frame pairs are compared within each metric.",
+    "N1 rows retain their measured f5ff15f source; this offline crosswalk is not a new replay of the later selected detector/version.",
+    "A reduced error fraction after hiding far range is not improved detector curvature; availability and same-point errors are reported separately."
+  ]
+}

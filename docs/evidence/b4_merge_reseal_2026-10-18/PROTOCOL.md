@@ -1,0 +1,58 @@
+# B4 + main integration and candidate reseal
+
+User requested switching to `det/b4-orientation`, fetching/merging main and
+resealing with verification in a clean checkout before and after native build.
+Fetched main is `9917851` (PR #37); B4 tip is `6cc27be`. This record is saved
+before the committed merged-source recording measurements.
+
+Two merge conflicts combine channel-axis conflict/cadence handling with main's
+orientation readiness. Both confirmation paths must set readiness and clear
+conflict. A channel conflict remains a health error; actual obstacles retain
+STOP priority. The search mock in the readiness test follows B4's tuple return.
+New combined assertions cover the adopted mapping and health/decision contract.
+Initial focused tests: 165 passed and six subtests; no recording measurements
+were used to select this merge resolution.
+
+Keep main's 1.2.0 candidate version and default configuration, including replay
+opt-in. This supersedes the older B4 protocol's pre-merge 1.1.0 version choice.
+The older B4 source, failures and P4 blocking review remain historical records.
+This task creates a candidate integrity seal; independent P4 acceptance and
+release approval are not inferred from it. The user has explicitly requested
+the reseal; no release, tag or integration back into main is authorized here.
+
+## Checks on the exact committed merged source
+
+1. Create a detached clean worktree. Record source fingerprint and expected old
+   seal rejection, build native from source, require native actually loads and
+   require the fingerprint/inventory remain unchanged. Record the binary hash.
+2. Run affected calibration, readiness/replay, reseed, health, native, timing,
+   decision and gate/X3 tests, config sync and pinned Ruff checks. Run P4's real
+   short-window reproduction on local original float32 caches with no lost
+   matched STOP; retain inherited late-ring limitations.
+3. Full default regression gate: six recordings, Set O, full ride, Set F;
+   historical shell-off baseline; no overrides, waivers or missing rows. Verify
+   all 18,329 rows and compare complete serialized non-timing output against the
+   existing same-host 1.2.0 gate at `e9d8fc6`, whose frozen sources equal main.
+   Additive false `orientation_conflict` metadata may be reported separately;
+   no changed decisions or geometry are normalized away.
+4. Fresh merged-source X3, 40 cases, unchanged battery and verified float32
+   inputs, against the established raw-validated Linux 1.1 reference. Also
+   compare against the previously measured default-off `cecab1b` candidate
+   where possible; preserve the old identities, never relabel them as new runs.
+5. Replay all 24 B4 rotations on both full empty and positive recordings for
+   baseline `e9d8fc6` and merged candidate, same runtime/native and inputs. Use
+   the original B4 summarizer: no wrong acceptance, no empty STOP, no GO before
+   confirmation and no lost matched positive STOP versus the appropriate
+   same-rotation or correctly oriented comparator. This is transformed Pandar
+   coverage, not proof for physical horizontal scanners or ring-free Falcon.
+6. Commit passing evidence before seal creation. Preserve all old manifests.
+   Create a new candidate manifest from the committed-source gate, switch the
+   default manifest, then verify the actual resulting seal in a second clean
+   checkout before/after a fresh native build. Record identical fingerprints,
+   binary loading, clean tracked state, manifest/evidence hashes and commands.
+
+Use the available shared one-CPU machine, Haswell BLAS, one numerical thread
+and one replay worker. Runs are serial; latency is informational. Existing
+same-host baseline gate/X3 evidence is reused with explicit source/native/input
+identity checks; this is not a claim of rerunning the older protocol's entire
+fresh baseline/candidate gate and X3 pair. P4's final review remains pending.

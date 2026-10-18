@@ -58,7 +58,7 @@ from resense.opinion import OBS_KEEP, load_opinion, observation, track_features
 
 # 26.09: demotions a near escalation never overrides (Tracker._near): a column, and a cluster outside
 # the range where the corridor's axis or height reference is trusted
-_NOT_ESCALATED = ("column", "beyond_axis", "beyond_height_ref")
+_NOT_ESCALATED = ("column", "beyond_axis", "beyond_height_ref", "diffuse_low_support")
 
 
 @dataclass
@@ -202,7 +202,9 @@ class Tracker:
         row seen through a wrong axis at a crossover has 50-150 such voxels at 20-40 m on the ride;
         the column hold keeps precedence too) and a cluster demoted because the corridor's axis or
         height reference is not trusted there (``beyond_axis``, ``beyond_height_ref``; safety review
-        of 26.09: its strict voxels are not trusted either)."""
+        of 26.09: its strict voxels are not trusted either). Experimental
+        ``diffuse_low_support`` also remains advisory: voxel count alone cannot
+        override the measured lack of local support in volumetric clutter."""
         c = self.cfg
         return (c.near_escalate_voxels > 0 and cl.kind == "" and cl.n_gauge >= c.near_escalate_voxels
                 and cl.distance <= c.near_escalate_distance and cl.reason not in _NOT_ESCALATED)

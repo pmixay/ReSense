@@ -1,0 +1,4931 @@
+{
+  "bag": "doubleT_platform",
+  "level": "medium",
+  "frames": 345,
+  "diffuse_frames": 344,
+  "stop_frames": 62,
+  "stop_episodes": 33,
+  "demoted_detections": 195,
+  "rows": [
+    {
+      "frame": 0,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 1,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 2,
+      "diffuse": true,
+      "occupation": 0.6272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 3,
+      "diffuse": true,
+      "occupation": 0.6181818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 4,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 5,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        4
+      ],
+      "support": [
+        {
+          "id": 4,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 6,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 7,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 8,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 9,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 10,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 11,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 12,
+      "diffuse": true,
+      "occupation": 0.6590909090909091,
+      "stations": 11,
+      "demoted": [
+        14
+      ],
+      "support": [
+        {
+          "id": 14,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 13,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 14,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 15,
+      "diffuse": true,
+      "occupation": 0.740909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 16,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 17,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 18,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 19,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 20,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        72
+      ],
+      "support": [
+        {
+          "id": 72,
+          "points": 3,
+          "supported": 1
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 21,
+      "diffuse": true,
+      "occupation": 0.6090909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 22,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 23,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 24,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 25,
+      "diffuse": true,
+      "occupation": 0.71875,
+      "stations": 8,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 26,
+      "diffuse": true,
+      "occupation": 0.6875,
+      "stations": 8,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 27,
+      "diffuse": true,
+      "occupation": 0.7125,
+      "stations": 8,
+      "demoted": [
+        27
+      ],
+      "support": [
+        {
+          "id": 27,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 28,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 29,
+      "diffuse": true,
+      "occupation": 0.7363636363636363,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 30,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 31,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 32,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 33,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 34,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 35,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 36,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 37,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [
+        144
+      ],
+      "support": [
+        {
+          "id": 144,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 38,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        144
+      ],
+      "support": [
+        {
+          "id": 144,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 39,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 40,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 41,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 42,
+      "diffuse": true,
+      "occupation": 0.6409090909090909,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 43,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 44,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 45,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 46,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [
+        180
+      ],
+      "support": [
+        {
+          "id": 180,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 47,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 48,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 49,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 50,
+      "diffuse": true,
+      "occupation": 0.740909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 51,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 52,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 53,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 54,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 55,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 56,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [
+        209
+      ],
+      "support": [
+        {
+          "id": 209,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 57,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 58,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 59,
+      "diffuse": true,
+      "occupation": 0.75,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 60,
+      "diffuse": true,
+      "occupation": 0.6272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 61,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 62,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        211
+      ],
+      "support": [
+        {
+          "id": 211,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 63,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        211
+      ],
+      "support": [
+        {
+          "id": 211,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 64,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        211
+      ],
+      "support": [
+        {
+          "id": 211,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 65,
+      "diffuse": true,
+      "occupation": 0.6590909090909091,
+      "stations": 11,
+      "demoted": [
+        211
+      ],
+      "support": [
+        {
+          "id": 211,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 66,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 67,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 68,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 69,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 70,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 71,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 72,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 73,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 74,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 75,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 76,
+      "diffuse": true,
+      "occupation": 0.695,
+      "stations": 10,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 77,
+      "diffuse": true,
+      "occupation": 0.6416666666666667,
+      "stations": 6,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 78,
+      "diffuse": false,
+      "occupation": 0.6333333333333333,
+      "stations": 3,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 79,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 80,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 81,
+      "diffuse": true,
+      "occupation": 0.715,
+      "stations": 10,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 82,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 6,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 83,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 84,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 85,
+      "diffuse": true,
+      "occupation": 0.740909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 86,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 87,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 88,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 89,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 90,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 91,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 92,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 93,
+      "diffuse": true,
+      "occupation": 0.7545454545454545,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 94,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 95,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 96,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 97,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 98,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 99,
+      "diffuse": true,
+      "occupation": 0.6272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 100,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 101,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 102,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 103,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 104,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 105,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 106,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 107,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 108,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 109,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 110,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 111,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 112,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 113,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 114,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 115,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 116,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 117,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 118,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 119,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 120,
+      "diffuse": true,
+      "occupation": 0.7636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 121,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 122,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 123,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [
+        435
+      ],
+      "support": [
+        {
+          "id": 435,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 124,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [
+        435
+      ],
+      "support": [
+        {
+          "id": 435,
+          "points": 12,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 125,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        435
+      ],
+      "support": [
+        {
+          "id": 435,
+          "points": 10,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 126,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [
+        435
+      ],
+      "support": [
+        {
+          "id": 435,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 127,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        435
+      ],
+      "support": [
+        {
+          "id": 435,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 128,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 129,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [
+        435
+      ],
+      "support": [
+        {
+          "id": 435,
+          "points": 17,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 130,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [
+        435
+      ],
+      "support": [
+        {
+          "id": 435,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 131,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        435
+      ],
+      "support": [
+        {
+          "id": 435,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 132,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 133,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 134,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 135,
+      "diffuse": true,
+      "occupation": 0.7363636363636363,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 136,
+      "diffuse": true,
+      "occupation": 0.7363636363636363,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 137,
+      "diffuse": true,
+      "occupation": 0.740909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 138,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 139,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 140,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 141,
+      "diffuse": true,
+      "occupation": 0.75,
+      "stations": 11,
+      "demoted": [],
+      "support": [
+        {
+          "id": 485,
+          "points": 3,
+          "supported": 2
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 142,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 143,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 144,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 145,
+      "diffuse": true,
+      "occupation": 0.759090909090909,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 146,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [
+        501
+      ],
+      "support": [
+        {
+          "id": 501,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 147,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [
+        501
+      ],
+      "support": [
+        {
+          "id": 501,
+          "points": 22,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 148,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 149,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [
+        501
+      ],
+      "support": [
+        {
+          "id": 501,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 150,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        501
+      ],
+      "support": [
+        {
+          "id": 501,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 151,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 152,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 153,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 154,
+      "diffuse": true,
+      "occupation": 0.6318181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 155,
+      "diffuse": true,
+      "occupation": 0.6181818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 156,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 157,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 158,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 159,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 160,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 161,
+      "diffuse": true,
+      "occupation": 0.7636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 162,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 163,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 164,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 165,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 166,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 167,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 168,
+      "diffuse": true,
+      "occupation": 0.7636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 169,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 170,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 171,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 172,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 173,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 174,
+      "diffuse": true,
+      "occupation": 0.7363636363636363,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 175,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 176,
+      "diffuse": true,
+      "occupation": 0.6272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 177,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 178,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 179,
+      "diffuse": true,
+      "occupation": 0.7772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 180,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 181,
+      "diffuse": true,
+      "occupation": 0.75,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 182,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 183,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 184,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 185,
+      "diffuse": true,
+      "occupation": 0.7363636363636363,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 186,
+      "diffuse": true,
+      "occupation": 0.7636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 187,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 188,
+      "diffuse": true,
+      "occupation": 0.6454545454545455,
+      "stations": 11,
+      "demoted": [
+        610
+      ],
+      "support": [
+        {
+          "id": 610,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 189,
+      "diffuse": true,
+      "occupation": 0.6590909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 190,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [
+        622
+      ],
+      "support": [
+        {
+          "id": 622,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 191,
+      "diffuse": true,
+      "occupation": 0.6318181818181818,
+      "stations": 11,
+      "demoted": [
+        622
+      ],
+      "support": [
+        {
+          "id": 622,
+          "points": 57,
+          "supported": 1
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 192,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        622
+      ],
+      "support": [
+        {
+          "id": 622,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 193,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        622
+      ],
+      "support": [
+        {
+          "id": 622,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 194,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [
+        622
+      ],
+      "support": [
+        {
+          "id": 622,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 195,
+      "diffuse": true,
+      "occupation": 0.740909090909091,
+      "stations": 11,
+      "demoted": [
+        623,
+        622
+      ],
+      "support": [
+        {
+          "id": 623,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 622,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 196,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [
+        623,
+        622
+      ],
+      "support": [
+        {
+          "id": 623,
+          "points": 2,
+          "supported": 0
+        },
+        {
+          "id": 622,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 197,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 198,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 199,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        630
+      ],
+      "support": [
+        {
+          "id": 630,
+          "points": 10,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 200,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [
+        630,
+        661
+      ],
+      "support": [
+        {
+          "id": 630,
+          "points": 3,
+          "supported": 0
+        },
+        {
+          "id": 661,
+          "points": 10,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 201,
+      "diffuse": true,
+      "occupation": 0.6590909090909091,
+      "stations": 11,
+      "demoted": [
+        665,
+        661
+      ],
+      "support": [
+        {
+          "id": 665,
+          "points": 2,
+          "supported": 0
+        },
+        {
+          "id": 661,
+          "points": 9,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 202,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [
+        630
+      ],
+      "support": [
+        {
+          "id": 630,
+          "points": 8,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 203,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [
+        630,
+        661
+      ],
+      "support": [
+        {
+          "id": 630,
+          "points": 1,
+          "supported": 0
+        },
+        {
+          "id": 661,
+          "points": 5,
+          "supported": 1
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 204,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [
+        630,
+        661
+      ],
+      "support": [
+        {
+          "id": 630,
+          "points": 11,
+          "supported": 0
+        },
+        {
+          "id": 661,
+          "points": 9,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 205,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [
+        630
+      ],
+      "support": [
+        {
+          "id": 630,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 206,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 207,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        683
+      ],
+      "support": [
+        {
+          "id": 683,
+          "points": 8,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 208,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 209,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 210,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 211,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 212,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [
+        694,
+        697
+      ],
+      "support": [
+        {
+          "id": 694,
+          "points": 14,
+          "supported": 0
+        },
+        {
+          "id": 697,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 213,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        694,
+        697
+      ],
+      "support": [
+        {
+          "id": 694,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 697,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 214,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [
+        694
+      ],
+      "support": [
+        {
+          "id": 694,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 215,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 216,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 217,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 218,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [
+        721
+      ],
+      "support": [
+        {
+          "id": 721,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 219,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        721
+      ],
+      "support": [
+        {
+          "id": 721,
+          "points": 21,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 220,
+      "diffuse": true,
+      "occupation": 0.7363636363636363,
+      "stations": 11,
+      "demoted": [
+        721
+      ],
+      "support": [
+        {
+          "id": 721,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 221,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [
+        721
+      ],
+      "support": [
+        {
+          "id": 721,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 222,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 223,
+      "diffuse": true,
+      "occupation": 0.6590909090909091,
+      "stations": 11,
+      "demoted": [
+        736
+      ],
+      "support": [
+        {
+          "id": 736,
+          "points": 9,
+          "supported": 1
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 224,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [
+        736
+      ],
+      "support": [
+        {
+          "id": 736,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 225,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 226,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 227,
+      "diffuse": true,
+      "occupation": 0.6227272727272727,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 228,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 229,
+      "diffuse": true,
+      "occupation": 0.740909090909091,
+      "stations": 11,
+      "demoted": [
+        760
+      ],
+      "support": [
+        {
+          "id": 760,
+          "points": 4,
+          "supported": 1
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 230,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [
+        734
+      ],
+      "support": [
+        {
+          "id": 734,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 231,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 232,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        755
+      ],
+      "support": [
+        {
+          "id": 755,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 233,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        757,
+        755
+      ],
+      "support": [
+        {
+          "id": 757,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 755,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 234,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        755
+      ],
+      "support": [
+        {
+          "id": 755,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 235,
+      "diffuse": true,
+      "occupation": 0.7681818181818182,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 236,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 237,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 238,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 239,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 240,
+      "diffuse": true,
+      "occupation": 0.740909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 241,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 242,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 243,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [
+        780
+      ],
+      "support": [
+        {
+          "id": 780,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 244,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [
+        780
+      ],
+      "support": [
+        {
+          "id": 780,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 245,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [
+        780
+      ],
+      "support": [
+        {
+          "id": 780,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 246,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 247,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 248,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 249,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 250,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 251,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        823
+      ],
+      "support": [
+        {
+          "id": 823,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 252,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 253,
+      "diffuse": true,
+      "occupation": 0.6590909090909091,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 254,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 255,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 256,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 13,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 257,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 258,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 259,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 15,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 260,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [
+        830
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 261,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        830,
+        809
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 8,
+          "supported": 0
+        },
+        {
+          "id": 809,
+          "points": 13,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 262,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [
+        830,
+        809
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 8,
+          "supported": 0
+        },
+        {
+          "id": 809,
+          "points": 11,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 263,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [
+        830,
+        809,
+        858
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 809,
+          "points": 7,
+          "supported": 0
+        },
+        {
+          "id": 858,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 264,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [
+        830,
+        858,
+        880
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 5,
+          "supported": 1
+        },
+        {
+          "id": 809,
+          "points": 12,
+          "supported": 3
+        },
+        {
+          "id": 858,
+          "points": 5,
+          "supported": 1
+        },
+        {
+          "id": 880,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 265,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        809
+      ],
+      "support": [
+        {
+          "id": 809,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 266,
+      "diffuse": true,
+      "occupation": 0.6363636363636364,
+      "stations": 11,
+      "demoted": [
+        809
+      ],
+      "support": [
+        {
+          "id": 809,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 267,
+      "diffuse": true,
+      "occupation": 0.7363636363636363,
+      "stations": 11,
+      "demoted": [
+        880,
+        809
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 5,
+          "supported": 3
+        },
+        {
+          "id": 880,
+          "points": 7,
+          "supported": 0
+        },
+        {
+          "id": 809,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 268,
+      "diffuse": true,
+      "occupation": 0.75,
+      "stations": 11,
+      "demoted": [
+        830,
+        880,
+        809
+      ],
+      "support": [
+        {
+          "id": 830,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 880,
+          "points": 3,
+          "supported": 0
+        },
+        {
+          "id": 809,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 269,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [
+        893
+      ],
+      "support": [
+        {
+          "id": 893,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 270,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        893,
+        880
+      ],
+      "support": [
+        {
+          "id": 893,
+          "points": 2,
+          "supported": 0
+        },
+        {
+          "id": 880,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 271,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 272,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 273,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 274,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 275,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 276,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 277,
+      "diffuse": true,
+      "occupation": 0.740909090909091,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 278,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [
+        934
+      ],
+      "support": [
+        {
+          "id": 934,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 279,
+      "diffuse": true,
+      "occupation": 0.6454545454545455,
+      "stations": 11,
+      "demoted": [
+        934
+      ],
+      "support": [
+        {
+          "id": 934,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 280,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [
+        934
+      ],
+      "support": [
+        {
+          "id": 934,
+          "points": 11,
+          "supported": 1
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 281,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        934
+      ],
+      "support": [
+        {
+          "id": 934,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 282,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [
+        934
+      ],
+      "support": [
+        {
+          "id": 934,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 283,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [
+        934
+      ],
+      "support": [
+        {
+          "id": 934,
+          "points": 21,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 284,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        908,
+        934
+      ],
+      "support": [
+        {
+          "id": 908,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 934,
+          "points": 13,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 285,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        934
+      ],
+      "support": [
+        {
+          "id": 934,
+          "points": 26,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 286,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [],
+      "support": [
+        {
+          "id": 934,
+          "points": 5,
+          "supported": 3
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 287,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [
+        934
+      ],
+      "support": [
+        {
+          "id": 934,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 288,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 289,
+      "diffuse": true,
+      "occupation": 0.6772727272727272,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 290,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 291,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 292,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 293,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 294,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 295,
+      "diffuse": true,
+      "occupation": 0.7045454545454546,
+      "stations": 11,
+      "demoted": [
+        990,
+        972
+      ],
+      "support": [
+        {
+          "id": 990,
+          "points": 2,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 296,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [
+        990,
+        972,
+        995
+      ],
+      "support": [
+        {
+          "id": 990,
+          "points": 2,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 6,
+          "supported": 0
+        },
+        {
+          "id": 995,
+          "points": 22,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 297,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        972,
+        995
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 5,
+          "supported": 0
+        },
+        {
+          "id": 995,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 298,
+      "diffuse": true,
+      "occupation": 0.6590909090909091,
+      "stations": 11,
+      "demoted": [
+        990,
+        972,
+        995
+      ],
+      "support": [
+        {
+          "id": 990,
+          "points": 6,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 995,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 299,
+      "diffuse": true,
+      "occupation": 0.6681818181818182,
+      "stations": 11,
+      "demoted": [
+        978,
+        990,
+        995,
+        972
+      ],
+      "support": [
+        {
+          "id": 978,
+          "points": 6,
+          "supported": 0
+        },
+        {
+          "id": 990,
+          "points": 2,
+          "supported": 0
+        },
+        {
+          "id": 995,
+          "points": 12,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 8,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 300,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [
+        978,
+        990,
+        995,
+        972
+      ],
+      "support": [
+        {
+          "id": 978,
+          "points": 1,
+          "supported": 0
+        },
+        {
+          "id": 990,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 995,
+          "points": 5,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 301,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [
+        990,
+        995
+      ],
+      "support": [
+        {
+          "id": 990,
+          "points": 2,
+          "supported": 0
+        },
+        {
+          "id": 995,
+          "points": 6,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 39,
+          "supported": 3
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 302,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [
+        1004,
+        995,
+        972
+      ],
+      "support": [
+        {
+          "id": 1004,
+          "points": 3,
+          "supported": 0
+        },
+        {
+          "id": 995,
+          "points": 3,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 303,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 304,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 305,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 306,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 307,
+      "diffuse": true,
+      "occupation": 0.7272727272727273,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 31,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 308,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 18,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 309,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [
+        972
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 13,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 310,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [
+        1047,
+        972
+      ],
+      "support": [
+        {
+          "id": 1047,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 8,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 311,
+      "diffuse": true,
+      "occupation": 0.7136363636363636,
+      "stations": 11,
+      "demoted": [
+        1047
+      ],
+      "support": [
+        {
+          "id": 1047,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 312,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        1047
+      ],
+      "support": [
+        {
+          "id": 1047,
+          "points": 28,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 313,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        1047
+      ],
+      "support": [
+        {
+          "id": 1047,
+          "points": 13,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 314,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [
+        972,
+        1047,
+        1056
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 6,
+          "supported": 0
+        },
+        {
+          "id": 1047,
+          "points": 5,
+          "supported": 0
+        },
+        {
+          "id": 1056,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 315,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [
+        1046,
+        972,
+        1047
+      ],
+      "support": [
+        {
+          "id": 1046,
+          "points": 5,
+          "supported": 0
+        },
+        {
+          "id": 972,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 1047,
+          "points": 10,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 316,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [
+        972,
+        1047
+      ],
+      "support": [
+        {
+          "id": 972,
+          "points": 1,
+          "supported": 0
+        },
+        {
+          "id": 1047,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 317,
+      "diffuse": true,
+      "occupation": 0.6454545454545455,
+      "stations": 11,
+      "demoted": [
+        1047,
+        1056
+      ],
+      "support": [
+        {
+          "id": 1047,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 1056,
+          "points": 2,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 318,
+      "diffuse": true,
+      "occupation": 0.6727272727272727,
+      "stations": 11,
+      "demoted": [
+        1047,
+        1046,
+        1056
+      ],
+      "support": [
+        {
+          "id": 1047,
+          "points": 6,
+          "supported": 0
+        },
+        {
+          "id": 1046,
+          "points": 8,
+          "supported": 0
+        },
+        {
+          "id": 1056,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 319,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        1047,
+        1046,
+        1071
+      ],
+      "support": [
+        {
+          "id": 1047,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 1046,
+          "points": 2,
+          "supported": 0
+        },
+        {
+          "id": 1071,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 320,
+      "diffuse": true,
+      "occupation": 0.6818181818181818,
+      "stations": 11,
+      "demoted": [
+        1046
+      ],
+      "support": [
+        {
+          "id": 1071,
+          "points": 2,
+          "supported": 2
+        },
+        {
+          "id": 1046,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 321,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [
+        1047
+      ],
+      "support": [
+        {
+          "id": 1047,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 322,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        1074
+      ],
+      "support": [
+        {
+          "id": 1074,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 323,
+      "diffuse": true,
+      "occupation": 0.6272727272727273,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 324,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [
+        1074
+      ],
+      "support": [
+        {
+          "id": 1074,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 325,
+      "diffuse": true,
+      "occupation": 0.65,
+      "stations": 11,
+      "demoted": [
+        1074
+      ],
+      "support": [
+        {
+          "id": 1074,
+          "points": 1,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 326,
+      "diffuse": true,
+      "occupation": 0.7454545454545455,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 327,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": false,
+      "old_stop": false
+    },
+    {
+      "frame": 328,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        1074
+      ],
+      "support": [
+        {
+          "id": 1074,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 329,
+      "diffuse": true,
+      "occupation": 0.7227272727272728,
+      "stations": 11,
+      "demoted": [
+        1074
+      ],
+      "support": [
+        {
+          "id": 1074,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 330,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        1106,
+        1074
+      ],
+      "support": [
+        {
+          "id": 1106,
+          "points": 9,
+          "supported": 0
+        },
+        {
+          "id": 1074,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 331,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        1106,
+        1111,
+        1074
+      ],
+      "support": [
+        {
+          "id": 1106,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 1111,
+          "points": 7,
+          "supported": 0
+        },
+        {
+          "id": 1074,
+          "points": 34,
+          "supported": 1
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 332,
+      "diffuse": true,
+      "occupation": 0.7090909090909091,
+      "stations": 11,
+      "demoted": [
+        1106,
+        1074
+      ],
+      "support": [
+        {
+          "id": 1106,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 1074,
+          "points": 17,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 333,
+      "diffuse": true,
+      "occupation": 0.7318181818181818,
+      "stations": 11,
+      "demoted": [
+        1106,
+        1074
+      ],
+      "support": [
+        {
+          "id": 1106,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 1074,
+          "points": 18,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 334,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [
+        1106,
+        1074
+      ],
+      "support": [
+        {
+          "id": 1106,
+          "points": 9,
+          "supported": 0
+        },
+        {
+          "id": 1074,
+          "points": 16,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 335,
+      "diffuse": true,
+      "occupation": 0.6909090909090909,
+      "stations": 11,
+      "demoted": [
+        1106,
+        1074
+      ],
+      "support": [
+        {
+          "id": 1106,
+          "points": 3,
+          "supported": 0
+        },
+        {
+          "id": 1074,
+          "points": 10,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 336,
+      "diffuse": true,
+      "occupation": 0.6863636363636364,
+      "stations": 11,
+      "demoted": [],
+      "support": [],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 337,
+      "diffuse": true,
+      "occupation": 0.6409090909090909,
+      "stations": 11,
+      "demoted": [
+        1110
+      ],
+      "support": [
+        {
+          "id": 1110,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 338,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [
+        1110
+      ],
+      "support": [
+        {
+          "id": 1110,
+          "points": 3,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 339,
+      "diffuse": true,
+      "occupation": 0.7181818181818181,
+      "stations": 11,
+      "demoted": [
+        1110,
+        1138
+      ],
+      "support": [
+        {
+          "id": 1110,
+          "points": 3,
+          "supported": 0
+        },
+        {
+          "id": 1138,
+          "points": 16,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 340,
+      "diffuse": true,
+      "occupation": 0.6636363636363637,
+      "stations": 11,
+      "demoted": [
+        1110,
+        1138
+      ],
+      "support": [
+        {
+          "id": 1110,
+          "points": 15,
+          "supported": 0
+        },
+        {
+          "id": 1138,
+          "points": 7,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 341,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [
+        1128,
+        1138
+      ],
+      "support": [
+        {
+          "id": 1128,
+          "points": 8,
+          "supported": 0
+        },
+        {
+          "id": 1138,
+          "points": 40,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 342,
+      "diffuse": true,
+      "occupation": 0.6954545454545454,
+      "stations": 11,
+      "demoted": [
+        1128,
+        1110,
+        1138
+      ],
+      "support": [
+        {
+          "id": 1128,
+          "points": 5,
+          "supported": 0
+        },
+        {
+          "id": 1110,
+          "points": 6,
+          "supported": 0
+        },
+        {
+          "id": 1138,
+          "points": 6,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    },
+    {
+      "frame": 343,
+      "diffuse": true,
+      "occupation": 0.6545454545454545,
+      "stations": 11,
+      "demoted": [
+        1128,
+        1138
+      ],
+      "support": [
+        {
+          "id": 1128,
+          "points": 3,
+          "supported": 0
+        },
+        {
+          "id": 1138,
+          "points": 5,
+          "supported": 0
+        }
+      ],
+      "stop": true,
+      "old_stop": true
+    },
+    {
+      "frame": 344,
+      "diffuse": true,
+      "occupation": 0.7,
+      "stations": 11,
+      "demoted": [
+        1128,
+        1138,
+        1146
+      ],
+      "support": [
+        {
+          "id": 1128,
+          "points": 13,
+          "supported": 0
+        },
+        {
+          "id": 1138,
+          "points": 4,
+          "supported": 0
+        },
+        {
+          "id": 1146,
+          "points": 4,
+          "supported": 0
+        }
+      ],
+      "stop": false,
+      "old_stop": true
+    }
+  ]
+}

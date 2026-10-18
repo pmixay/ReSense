@@ -1,0 +1,300 @@
+{
+  "command": [
+    "/home/resense/ReSense/scripts/play_bag.sh",
+    "--sensor-profile",
+    "pandar128",
+    "--clear-range-policy",
+    "conservative",
+    "/home/resense/data/n4_curve_preview",
+    "--rate",
+    "0.5"
+  ],
+  "observer_command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "resense_n1_observer",
+    "--net=host",
+    "--ipc=host",
+    "-v",
+    "/home/resense/data/n1_final_headless_05:/out",
+    "-v",
+    "/home/resense/ReSense/docs/evidence/n1_n4_2026-10-18/capture_status.py:/capture.py:ro",
+    "resense:n1n4-check",
+    "python3",
+    "/capture.py",
+    "/out/status.jsonl"
+  ],
+  "exit_code": 0,
+  "display": null,
+  "image": "sha256:a018d39a2369ffb962c4ab595347957085f18bab62df1964e9004ccd57f59f9b",
+  "software_rendering": false,
+  "captures": [],
+  "cpu_affinity": [
+    0
+  ],
+  "cgroup_samples": [
+    {
+      "mono": 41120.835210726,
+      "cpu_usage_usec": 301883,
+      "memory_current_bytes": 16650240,
+      "memory_peak_bytes": 16838656
+    },
+    {
+      "mono": 41121.360495061,
+      "cpu_usage_usec": 709765,
+      "memory_current_bytes": 67796992,
+      "memory_peak_bytes": 67956736
+    },
+    {
+      "mono": 41121.871804196,
+      "cpu_usage_usec": 1150990,
+      "memory_current_bytes": 91348992,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41122.394310296,
+      "cpu_usage_usec": 1153594,
+      "memory_current_bytes": 91348992,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41122.908828143,
+      "cpu_usage_usec": 1161995,
+      "memory_current_bytes": 91545600,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41123.42117937,
+      "cpu_usage_usec": 1165328,
+      "memory_current_bytes": 91545600,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41123.94533443,
+      "cpu_usage_usec": 1218741,
+      "memory_current_bytes": 98201600,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41124.467953766,
+      "cpu_usage_usec": 1531829,
+      "memory_current_bytes": 91770880,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41124.981474884,
+      "cpu_usage_usec": 1539242,
+      "memory_current_bytes": 91836416,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41125.494067504,
+      "cpu_usage_usec": 1542984,
+      "memory_current_bytes": 91836416,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41126.00678629,
+      "cpu_usage_usec": 1547103,
+      "memory_current_bytes": 91844608,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41126.520285108,
+      "cpu_usage_usec": 1551962,
+      "memory_current_bytes": 91848704,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41127.03389796,
+      "cpu_usage_usec": 1555372,
+      "memory_current_bytes": 91848704,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41127.546190469,
+      "cpu_usage_usec": 1559160,
+      "memory_current_bytes": 91848704,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41128.070629422,
+      "cpu_usage_usec": 1590444,
+      "memory_current_bytes": 113123328,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41128.596282289,
+      "cpu_usage_usec": 1724107,
+      "memory_current_bytes": 120795136,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41129.110131494,
+      "cpu_usage_usec": 1799746,
+      "memory_current_bytes": 122269696,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41129.623463471,
+      "cpu_usage_usec": 1894041,
+      "memory_current_bytes": 124616704,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41130.14924496,
+      "cpu_usage_usec": 1967857,
+      "memory_current_bytes": 125440000,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41130.663268652,
+      "cpu_usage_usec": 2051992,
+      "memory_current_bytes": 125440000,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41131.175571571,
+      "cpu_usage_usec": 2143373,
+      "memory_current_bytes": 129085440,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41131.688129868,
+      "cpu_usage_usec": 2203748,
+      "memory_current_bytes": 129085440,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41132.20147471,
+      "cpu_usage_usec": 2297017,
+      "memory_current_bytes": 129085440,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41132.715828321,
+      "cpu_usage_usec": 2360687,
+      "memory_current_bytes": 129085440,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41133.228129467,
+      "cpu_usage_usec": 2450080,
+      "memory_current_bytes": 129089536,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41133.757431642,
+      "cpu_usage_usec": 2523115,
+      "memory_current_bytes": 129089536,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41134.269817547,
+      "cpu_usage_usec": 2607488,
+      "memory_current_bytes": 129093632,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41134.783359619,
+      "cpu_usage_usec": 2697009,
+      "memory_current_bytes": 129097728,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41135.297598777,
+      "cpu_usage_usec": 2768682,
+      "memory_current_bytes": 129101824,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41135.811089081,
+      "cpu_usage_usec": 2861570,
+      "memory_current_bytes": 129105920,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41136.32941249,
+      "cpu_usage_usec": 2930920,
+      "memory_current_bytes": 129114112,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41136.842888999,
+      "cpu_usage_usec": 3020515,
+      "memory_current_bytes": 129126400,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41137.381983058,
+      "cpu_usage_usec": 3108508,
+      "memory_current_bytes": 129126400,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41137.897415793,
+      "cpu_usage_usec": 3171345,
+      "memory_current_bytes": 129146880,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41138.409506065,
+      "cpu_usage_usec": 3266660,
+      "memory_current_bytes": 129150976,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41138.924504587,
+      "cpu_usage_usec": 3325681,
+      "memory_current_bytes": 131473408,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41139.438137259,
+      "cpu_usage_usec": 3411005,
+      "memory_current_bytes": 129163264,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41139.984774702,
+      "cpu_usage_usec": 3503755,
+      "memory_current_bytes": 129167360,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41140.49909951,
+      "cpu_usage_usec": 3560250,
+      "memory_current_bytes": 129171456,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41141.012765775,
+      "cpu_usage_usec": 3647789,
+      "memory_current_bytes": 127328256,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41141.538596251,
+      "cpu_usage_usec": 3713278,
+      "memory_current_bytes": 127332352,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41142.05148547,
+      "cpu_usage_usec": 3768003,
+      "memory_current_bytes": 127332352,
+      "memory_peak_bytes": 163713024
+    },
+    {
+      "mono": 41142.563956127,
+      "cpu_usage_usec": 3772714,
+      "memory_current_bytes": 127332352,
+      "memory_peak_bytes": 163713024
+    }
+  ],
+  "node_container_cpu_cores_mean": 0.15973453303200075,
+  "node_container_memory_peak_mb": 156.12890625,
+  "scope": "actual Docker wrapper, optional RViz on Xvfb; decoded curve geometry; cgroup includes detector+RViz, not player/observer/Xvfb"
+}

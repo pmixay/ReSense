@@ -1,0 +1,46 @@
+.................................................................. [  3%]
+........................................................................ [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+.................................................................. [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 26%]
+........................................................................ [ 29%]
+........................................................................ [ 33%]
+........................................................................ [ 37%]
+........................................................................ [ 41%]
+........................................................................ [ 45%]
+........................................................................ [ 49%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 64%]
+........................................................................ [ 68%]
+........................................................................ [ 71%]
+........................................................................ [ 75%]
+........................................................................ [ 79%]
+........................................................................ [ 83%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 98%]
+........................                                                 [100%]
+=============================== warnings summary ===============================
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data_127.db3-expected1]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[doubleT_obstacle-expected2]
+  /usr/lib/python3.12/tarfile.py:2301: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+--------- 7 test(s) deselected: their recorded data cache is not here ----------
+  tests/test_evidence_coherence.py::test_measured_remaining_inventory_is_133_track_frames (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_interval_rule_is_not_a_single_false_history_separator (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_293_fields_and_reference_change_are_not_identity_evidence (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_association_residuals_do_not_prove_wrong_association (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_sparse_edge_positive_rows_are_unchanged_by_fresh_onset_replay (no C:/Users/alikh/AppData/Local/Temp/opencode/fresh-stop-positive-stress)
+  tests/test_evidence_coherence.py::test_all_saved_stop_rows_validate_against_base_and_source (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_fresh_support_analysis.py::test_direct_fresh_selected_events_and_positive_counterexample_when_capture_available (no C:/Users/alikh/AppData/Local/Temp/opencode/direct-fresh-support-all)
+1884 passed, 7 deselected, 5 warnings, 12 subtests passed in 108.57s (0:01:48)

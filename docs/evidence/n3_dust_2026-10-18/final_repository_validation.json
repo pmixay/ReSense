@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "recorded_utc": "2026-10-18T12:03:59.420475+00:00",
+  "scope": "Final completed N3 evidence and current documentation; no detector reruns or production changes. This is repository hygiene, not dust robustness acceptance.",
+  "precommit_head": "ed6327f2a5f0048fbd52efed5ff59fe7de318871",
+  "checks": [
+    {
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "scripts/check_archived_lint.py",
+        "--lint",
+        "--ruff",
+        "/home/resense/.tools/ruff0158/bin/ruff"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "result": "PASS",
+        "immutable_files": 139,
+        "exact_ruff_exclusions": 39,
+        "live_files_audited": 351
+      }
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/sync_params.sh",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "parameter files in sync"
+    },
+    {
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "scripts/detector_freeze.py",
+        "verify"
+      ],
+      "exit_code": 0,
+      "files": 38,
+      "source_sha256": "5eae5197cc6497b029665a19e85b28fb217e934d8a80928cba6c1d2c5ad51700"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "manifest_sha256": "f75231a9d52124620ec7f23ee7ecf0050bf4e668ee2e10fdb660c3dba06bbc3c",
+  "output_provenance": "Commands and output captured in task terminal; this receipt transcribes those outputs. No separate stdout file was retained."
+}

@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/home/resense/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-rs",
+    "--junitxml=/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/junit-core.xml"
+  ],
+  "commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "started_utc": "2026-10-18T10:45:02Z",
+  "isolated_cpu": true,
+  "cpu_affinity": [
+    0
+  ],
+  "tested_helper_hashes": {
+    "docs/evidence/n2_falcon_2026-10-18/retain_playback_subset.py": "10ff31ad5c5c2bcc42e658acd3bbce48a408a8e84ea5def02c8591f6b838777a",
+    "tests/test_falcon_playback_subset.py": "975f6030e594787dd588a95201e85ddf75096134ceaebb3afd58919308cd8353"
+  },
+  "returncode": 0,
+  "finished_utc": "2026-10-18T10:46:51Z"
+}

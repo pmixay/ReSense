@@ -1,0 +1,33 @@
+{
+  "recorded_utc": "2026-10-18T09:37:09.716299+00:00",
+  "harness_commit": "b9ad5f4",
+  "detector_core": "7b7b02c",
+  "focused_tests": {
+    "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_CORETYPE=Haswell /home/resense/.venv/bin/python -m pytest -q tests/test_dust_reference.py tests/test_dust_reference_observation.py tests/test_dust.py tests/test_dust_set_f.py",
+    "passed": 30,
+    "failed": 0,
+    "elapsed_s": 6.36,
+    "exit_code": 0,
+    "scope": "Final committed harness b9ad5f4: offline coordinate/reference/Set F tests, overlapping prior generator tests; not an additional whole-suite count.",
+    "raw_log": "docs/evidence/n3_dust_2026-10-18/dust_reference_tests.txt",
+    "raw_log_sha256": "333d17a6a48251c185a04979b20a82f9e9564f82c3c01fc6c04d2bd99944b495"
+  },
+  "lint": {
+    "command": "/home/resense/.venv/bin/python scripts/check_archived_lint.py --lint --ruff /home/resense/.tools/ruff0158/bin/ruff",
+    "result": "PASS",
+    "immutable_files": 139,
+    "exact_ruff_exclusions": 39,
+    "live_files_audited": 351
+  },
+  "source_hashes": {
+    "scripts/dust_reference.py": "15d95f1d4b4ca2f8ed2db284624d64e08e18a71ab01deff9cc8cf060accf5eeb",
+    "scripts/dust_battery.py": "04382f7d59d0c56cd651f809927f9095bec1722d346a6ff836d1f4f35fbc1d6d",
+    "scripts/dust_set_f.py": "713e2006eb92aba4363c604c3052c38c9a41da11e4ec1e459c884e6d96c8296b",
+    "tests/test_dust_reference.py": "38334846eff5d79bbe162565d2982c85fbe4255cd4269f2bb304e19d9f5b4f1c",
+    "tests/test_dust_reference_observation.py": "fcb046ac77094c4a14aaee4289092f6a41c6163fb6f404fd3584142660c3b8fb",
+    "tests/test_dust_set_f.py": "2d3c37c87a669acf412acc4d8a57ce67f0cd41a20f3930b15f59abac9cfafca9"
+  },
+  "frozen_production_files_checked": 38,
+  "production_source_changes": [],
+  "capture": "Test result recorded from completed machine-console execution; no replacement of prior raw reports."
+}

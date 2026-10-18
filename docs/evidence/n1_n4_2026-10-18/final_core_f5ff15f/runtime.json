@@ -1,0 +1,34 @@
+{
+  "resense_import": "/usr/local/lib/python3.10/dist-packages/resense/__init__.py",
+  "native_enabled": true,
+  "orientation_replay_frames": 4,
+  "N6_rails_axis_extension": false,
+  "source_sha256": {
+    "/opt/resense/ros2_ws/src/resense_ros/resense_ros/detector_node.py": "922b3e7e1404e3aa524c933721cc7e15b394168b3e8fd434aa37aff51bd04b01",
+    "/opt/resense/ros2_ws/src/resense_ros/resense_ros/gauge_display.py": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b",
+    "/opt/resense/resense/config.py": "e727bd53bee8f982f746f04f8c3bb6ca07b16235c1361a64e9398036028dc4dc",
+    "/opt/resense/configs/default.yaml": "36ea22708cc5a33785ae3bf565b2caf49eaaaeeb9b390d74dad5575964ed6b03"
+  },
+  "commit": "f5ff15ff01f728f9053d5d63e21338662de9afbd",
+  "image_id": "sha256:a018d39a2369ffb962c4ab595347957085f18bab62df1964e9004ccd57f59f9b",
+  "runtime_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "922b3e7e1404e3aa524c933721cc7e15b394168b3e8fd434aa37aff51bd04b01",
+    "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b",
+    "ros2_ws/src/resense_ros/resense_ros/sensor_profiles.py": "cfa534489de593f8e12a8e82f4b85292a763d5bb33121042edcde9b4fcad99af",
+    "scripts/check_interactive_replay.py": "c3edbcd35034ab468641098eac7c605a4dbbe37d084a5d1ebd42466d5ddceab8",
+    "scripts/play_bag.sh": "b983e2a08b6b4836227424122ee32314adcd47c021ecb913dfc3168b15626e4c",
+    "scripts/run_demo.sh": "38fef67a32c30023072c07f3084daa95dc35a689dee162ff847f005815aea8a2",
+    "scripts/reset_replay.py": "36a270ab635468fa7dc8c81788d139e50e95566589234f021d47a77e6ddbf326",
+    "scripts/make_profile_smoke_bags.py": "08099134a5da83baf0c82d40c9d37b1a5f32a49e435110a93127e2339ed2051a",
+    "configs/default.yaml": "36ea22708cc5a33785ae3bf565b2caf49eaaaeeb9b390d74dad5575964ed6b03",
+    "resense/config.py": "e727bd53bee8f982f746f04f8c3bb6ca07b16235c1361a64e9398036028dc4dc"
+  },
+  "host": {
+    "cpu_count": 1,
+    "affinity": [
+      0
+    ],
+    "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39"
+  },
+  "scope": "Frozen final N1/N4 runtime at f5ff15f, startup replay enabled4, N6 extension explicitly off. Integration/performance measurements are separate artifacts."
+}

@@ -71,7 +71,9 @@ def test_node_and_launch_defaults_match_published_source_baseline():
                 cwd=root, text=True, encoding="utf-8")
             assert _declared_defaults(published) == PUBLISHED_DEFAULTS
     additions = {"decision_policy": "v1", "caution_distance_m": 80.0,
-                 "caution_compact_max_size_m": 3.0}
+                 "caution_compact_max_size_m": 3.0, "clear_range_policy": "legacy",
+                 "range_sensor_model": "unknown", "sensor_profile": "manual", "keep_up_axis": True,
+                 "input_topic": "/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points"}
     assert _declared_defaults((NODE_PKG / "resense_ros" / "detector_node.py").read_text()) == {
         **PUBLISHED_DEFAULTS, **additions}
     tree = ast.parse((NODE_PKG / "launch" / "detector.launch.py").read_text())
@@ -165,6 +167,12 @@ class _Node:
     def create_timer(self, period, cb):
         return types.SimpleNamespace(cancel=lambda: None, cb=cb)
 
+    def create_service(self, service_type, name, cb):
+        return types.SimpleNamespace(name=name, cb=cb)
+
+    def add_on_set_parameters_callback(self, cb):
+        self.parameter_callback = cb
+
     def create_guard_condition(self, cb):
         gc = types.SimpleNamespace(cb=cb, triggered=0)
         gc.trigger = lambda: setattr(gc, "triggered", gc.triggered + 1)
@@ -214,6 +222,8 @@ def _stub_modules():
                             PointField=_msg("PointField", FLOAT32=7, UINT16=4))
     mod("std_msgs"), mod("std_msgs.msg", Bool=_msg("Bool"), Float32=_msg("Float32"), String=_msg("String"),
                          Header=_msg("Header"))
+    mod("std_srvs"), mod("std_srvs.srv", Trigger=_msg("Trigger"))
+    mod("rcl_interfaces"), mod("rcl_interfaces.msg", SetParametersResult=_msg("SetParametersResult"))
     mod("diagnostic_msgs"), mod("diagnostic_msgs.msg", DiagnosticArray=_msg("DiagnosticArray", ["status"]),
                                 DiagnosticStatus=_msg("DiagnosticStatus", ["values"], OK=0, WARN=1, ERROR=2, STALE=3),
                                 KeyValue=_msg("KeyValue"))
@@ -221,7 +231,7 @@ def _stub_modules():
                             Detection3DArray=_msg("Detection3DArray", ["detections"]),
                             ObjectHypothesisWithPose=_msg("ObjectHypothesisWithPose"))
     mod("visualization_msgs"), mod("visualization_msgs.msg", Marker=_msg("Marker", ["points"], ADD=0, CUBE=1,
-                                                                        LINE_STRIP=4, TEXT_VIEW_FACING=9, DELETEALL=3),
+                                                                        LINE_STRIP=4, TEXT_VIEW_FACING=9, DELETEALL=3, DELETE=2),
                                    MarkerArray=_msg("MarkerArray", ["markers"]))
     mod("tf2_ros", StaticTransformBroadcaster=lambda node: types.SimpleNamespace(sendTransform=lambda t: None))
     return m
@@ -607,7 +617,8 @@ def test_input_reliability_follows_the_publishers(node_cls, monkeypatch):
     publishers' reliability when they are known (a best-effort driver would give a reliable reader
     nothing)."""
     node = node_cls()
-    assert node.sub_rel == {"/lidar_points": "reliable", "/sensing/lidar/hesai128/pointcloud": "reliable"}
+    assert node.sub_rel == {"/lidar_points": "reliable", "/sensing/lidar/hesai128/pointcloud": "reliable",
+                            "/iv_points": "reliable"}
     assert node.subs["/lidar_points"].qos["reliability"] == 1
     def pub(rel):
         return types.SimpleNamespace(qos_profile=types.SimpleNamespace(reliability=rel))
@@ -1059,6 +1070,60 @@ def test_node_selected_policy_keeps_raw_column_warning_and_marker_matches(freshn
     assert node.published["/resense/markers"][-1].markers[-1].text.startswith(expected)
 
 
+@pytest.mark.parametrize("freshness_driver", [{"clear_range_policy": "small_candidate",
+                                             "range_sensor_model": "pandar128"},
+                                            {"clear_range_policy": "conservative",
+                                             "range_sensor_model": "pandar128"}], indirect=True)
+def test_c2_candidate_node_ranges_match_scalar_status_and_freshness_latch(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0)
+    result = send(20.1)
+    assert result["decision"] == "GO"
+    assert result["clear_distance"] == result["monitored_small"] == 88.7
+    assert result["clear_distance"] == node.published["/resense/clear_distance"][-1].data
+    assert result["detector_clear_distance"] == 100.0
+    if node.clear_range_policy == "conservative":
+        assert result["range_policy"] == "c2_conservative_2026_10_17"
+    clock["warnings"] = [_advisory("column", 40.06)]
+    result = send(20.2)
+    assert result["decision"] == "CAUTION" and result["clear_distance"] == 40.0
+    assert result["warnings"] == [clock["warnings"][0].to_dict()]
+    clock["obstacle"] = True
+    assert send(20.3)["decision"] == "STOP"
+    clock.update(obstacle=False, warnings=[])
+    stale = send(20.4, age=2.0)
+    assert stale["decision"] == "STOP" and stale["stop_held"]
+    assert stale["clear_distance"] == stale["monitored_small"] == stale["health"]["monitored_range"] == 0.0
+    assert stale["clear_distance"] == node.published["/resense/clear_distance"][-1].data
+    clock["mono"] += 2.0
+    clock["wall"] += 2.0
+    node.on_watchdog()
+    watchdog = json.loads(node.published["/resense/status"][-1].data)
+    assert watchdog["snapshot_kind"] == "watchdog" and watchdog["decision"] == "STOP"
+    assert watchdog["clear_distance"] == watchdog["monitored_small"] == 0.0
+    assert watchdog["range_policy"] == result["range_policy"]
+
+
+@pytest.mark.parametrize("freshness_driver", [{"clear_range_policy": "small_candidate",
+                                             "range_sensor_model": "unknown"},
+                                            {"clear_range_policy": "small_candidate",
+                                             "range_sensor_model": "falcon_prime"},
+                                            {"clear_range_policy": "conservative",
+                                             "range_sensor_model": "unknown"},
+                                            {"clear_range_policy": "conservative",
+                                             "range_sensor_model": "falcon_prime"}], indirect=True)
+def test_c2_candidate_unknown_sensor_never_inherits_pandar_prior(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0, topic="/iv_points", frame_id="falcon")
+    result = send(20.1, topic="/iv_points", frame_id="falcon")
+    # The configured profile, not a spoofable topic/frame name, controls applicability.
+    assert result["monitored_small"] is None
+    assert result["monitored_small_model"]["available"] is False
+    assert result["freshness"]["valid"] and result["decision"] == "GO"
+    assert result["clear_distance"] == node.published["/resense/clear_distance"][-1].data == 0.0
+    assert result["detector_clear_distance"] == 100.0
+
+
 def test_node_caution_reasons_are_sorted_unique_and_empty_off_caution(freshness_driver):
     node, clock, send = freshness_driver
     clock["warnings"] = [_advisory(r) for r in ("doubt", "column", "doubt", "", "beyond_axis")]
@@ -1438,12 +1503,16 @@ def test_invalid_rviz_range_is_gray_and_logs_use_published_decision(freshness_dr
     invalid = send(20.0, age=1.0)
     assert invalid["decision"] == "FAULT" and node.last_status.startswith("FAULT")
     outlines = [m for m in node.published["/resense/markers"][-1].markers if getattr(m, "type", None) == 4]
-    assert len(outlines) == 2
-    assert all(m.color.r == m.color.g == m.color.b for m in outlines)
+    assert not outlines  # no previously supported geometry: do not invent a gauge
     send(20.1)
     assert send(20.2)["decision"] == "GO"
     outlines = [m for m in node.published["/resense/markers"][-1].markers if getattr(m, "type", None) == 4]
+    assert len(outlines) == 6
     assert all(m.color.g > m.color.r for m in outlines)
+    held = send(20.3, age=1.0)
+    outlines = [m for m in node.published["/resense/markers"][-1].markers if getattr(m, "type", None) == 4]
+    assert len(outlines) == 6 and all(m.color.r == m.color.g == m.color.b for m in outlines)
+    assert held["gauge"]["held"] and held["gauge"]["solid_range_m"] == 0
 
 
 def test_result_carries_evaluation_clock_and_configured_expiry_for_consumers(freshness_driver):
@@ -1474,16 +1543,30 @@ def _stable(status):
     return out
 
 
-def test_raw_cdr_input_gives_the_same_results_as_messages(node_cls, tunnel, box_scene):
+def test_raw_cdr_input_gives_the_same_results_as_messages(node_cls, tunnel, box_scene, monkeypatch):
     """The raw subscription's bytes (``resense_ros/fastcloud.py``) and rclpy's message of the same
     cloud give the same decision, distances, objects, track model and health on every frame."""
     from test_fastcloud import _cdr
+    # Decoder parity needs identical acquisition/processing clocks. Real elapsed
+    # scheduling on a loaded host can independently expire one of the two inputs;
+    # freshness timing and hold expiry are covered by their dedicated tests.
+    now = [1000.]
+    ticks = [0]
+    def perf():
+        ticks[0] += 1
+        return now[0] + ticks[0] * .00001
+    monkeypatch.setattr(time, 'time', lambda: now[0])
+    monkeypatch.setattr(time, 'perf_counter', perf)
     for scene in (tunnel[0].xyz, box_scene[0].xyz):
         by_msg, by_raw = node_cls(), node_cls()
+        by_msg.gauge_display.clock = by_raw.gauge_display.clock = lambda: now[0]
         for k in range(7):
+            now[0] += .1
             msg, _ = _cloud(scene, 0.1 * k)
-            by_msg.on_cloud(msg, "/lidar_points", {"source_timestamp": time.time_ns()})
-            by_raw.on_cloud(_cdr(msg), "/lidar_points", {"source_timestamp": time.time_ns()})
+            ticks[0] = 0
+            by_msg.on_cloud(msg, "/lidar_points", {"source_timestamp": int(now[0] * 1e9)})
+            ticks[0] = 0
+            by_raw.on_cloud(_cdr(msg), "/lidar_points", {"source_timestamp": int(now[0] * 1e9)})
         a, b = _frames(by_msg), _frames(by_raw)
         assert len(a) == len(b) == 7
         assert [_stable(x) for x in a] == [_stable(x) for x in b]
@@ -1548,8 +1631,8 @@ def test_decision_goes_out_before_the_json_and_visualisation_only_for_subscriber
     node.pub_corridor.get_subscription_count = lambda: 2
     _feed(node, box_scene[0].xyz, 1, t0=0.3)
     assert order[-2:] == ["pub_markers", "pub_corridor"]
-    edge = node.published["/resense/markers"][-1].markers[-3]
-    assert len(edge.points) == 60 and all(isinstance(p.x, float) for p in edge.points)
+    edges = [m for m in node.published["/resense/markers"][-1].markers if m.ns == "resense_gauge" and m.action == 0]
+    assert len(edges) == 6 and all(isinstance(p.x, float) for edge in edges for p in edge.points)
 
 
 def test_every_node_parameter_is_a_launch_argument_with_the_same_default(node_cls):
@@ -1567,6 +1650,14 @@ def test_every_node_parameter_is_a_launch_argument_with_the_same_default(node_cl
     for name, (default, typ) in launch.items():
         if name not in ("freshness_mode", "warmup"):  # the stand-in's own defaults (replay, no warm-up)
             assert cast[typ](default) == declared[name], name
+
+
+def test_supplied_falcon_topic_is_subscribed_before_graph_discovery(node_cls):
+    node = node_cls()
+    assert "/iv_points" in node.subs
+    # A known input topic does not infer sensor coordinates or a Pandar prior.
+    assert node.sensor_profile == "manual"
+    assert node.range_sensor_model == "unknown"
 
 
 def test_the_node_default_stays_the_live_clock(node_cls, monkeypatch):
@@ -1659,3 +1750,96 @@ def test_truncated_padded_cloud_faults_before_detection_and_recovers(freshness_d
     assert send(20.3)["decision"] == "FAULT"
     recovered = send(20.4)
     assert recovered["decision"] == "GO" and recovered["freshness"]["valid"]
+
+
+def test_explicit_recording_reset_flushes_queues_latch_mount_and_old_callbacks(freshness_driver):
+    node, clock, send = freshness_driver
+    send(20.0)
+    clock['obstacle'] = True
+    assert send(20.1)['decision'] == 'STOP'
+    old = node.subs['/lidar_points']
+    node.pending.append(('/lidar_points', object()))
+    node.skipped.append((('/lidar_points', 'lidar'), 20.2))
+    old_detector = node.detector
+    assert not node.on_reset_input(None, _Msg()).success
+    node.reset_input()  # internal boundary also invalidates already-taken callbacks
+    assert node.detector is not old_detector
+    assert not node.pending and not node.skipped and not node.arrivals
+    assert node.stop_latch is None and node.gauge_display.center is None
+    assert node.active_topic is None and node.freshness_previous is None
+    old.cb(object())  # an already-taken callback from the old DDS generation is ignored
+    assert not node.pending
+    status = json.loads(node.published['/resense/status'][-1].data)
+    assert status['decision'] == 'FAULT' and not status['gauge']['valid']
+
+
+def test_named_sensor_profile_switch_is_atomic_and_rejects_active_publisher(node_cls):
+    _Node.overrides = {'sensor_profile': 'pandar128', 'clear_range_policy': 'conservative'}
+    node = node_cls()
+    assert node.range_sensor_model == 'pandar128'
+    old = node.detector
+    node.last_frame_wall = time.perf_counter()
+    parameter = types.SimpleNamespace(name='sensor_profile', value='falcon_ros')
+    assert not node.on_profile_parameters([parameter]).successful
+    assert node.detector is old and node.sensor_profile == 'pandar128'
+    node.last_frame_wall -= 2.
+    assert node.on_profile_parameters([parameter]).successful
+    assert node.detector is not old and node.cfg.sensor.forward == '+x'
+    assert node.range_sensor_model == 'falcon_prime' and node.stop_latch is None
+    assert node.cfg.calibration.keep_up_axis
+    assert not node.on_profile_parameters([types.SimpleNamespace(name='sensor_up', value='+y')]).successful
+
+
+@pytest.mark.parametrize('overrides', [
+    {'sensor_profile': 'falcon_ros', 'sensor_forward': '-y'},
+    {'sensor_profile': 'falcon_ros', 'mount_roll_deg': 10.},
+    {'sensor_profile': 'falcon_ros', 'range_sensor_model': 'pandar128'},
+    {'sensor_profile': 'falcon_ros', 'auto_calibrate': False},
+])
+def test_named_profiles_reject_contradictory_manual_overrides(node_cls, overrides):
+    _Node.overrides = overrides
+    with pytest.raises(ValueError):
+        node_cls()
+
+
+def test_gauge_status_and_marker_geometry_share_exact_vertices_and_expire(freshness_driver):
+    node, clock, send = freshness_driver
+    node.gauge_display.clock = lambda: clock['mono']
+    send(20.0)
+    status = send(20.1)
+    centres = np.array(status['gauge']['centerline'])
+    assert status['gauge']['valid'] and len(centres) > 1
+    markers = node.published['/resense/markers'][-1].markers
+    assert all(marker.action != 3 for marker in markers)
+    outline = [marker for marker in markers if marker.ns == 'resense_gauge' and marker.id == 0][0]
+    assert outline.lifetime.sec == 0 and outline.lifetime.nanosec == 500_000_000
+    drawn_sensor = np.array([[p.x, p.y, p.z] for p in outline.points])
+    offset = np.r_[0., node.cfg.gauge.profile[0]]
+    assert np.allclose(drawn_sensor @ node.last_marker_rotation, centres + offset)
+    clock['mono'] += .2
+    node.gauge_display.invalidate('paused')
+    held = node.gauge_markers(node.make_header(0, 0, 'lidar'), node.last_marker_rotation)
+    assert 0 < held[0].lifetime.nanosec <= 300_000_001
+    assert held[0].color.r == held[0].color.g == held[0].color.b
+    clock['mono'] += .6
+    clock['wall'] += .6
+    node.on_watchdog()
+    expired = json.loads(node.published['/resense/status'][-1].data)['gauge']
+    assert expired['hold_expired'] and expired['drawn_range_m'] == 0 and expired['centerline'] == []
+
+
+def test_orientation_readiness_warning_retains_stop_and_fault_precedence(freshness_driver):
+    node, clock, send = freshness_driver
+    clock['health'] = {'level': 'warn', 'decision_level': 'warn',
+                       'orientation_confirmed': False, 'monitored_range': 0., 'clear_distance': 0.}
+    send(20.)
+    status = send(20.1)
+    assert status['decision'] == 'CAUTION'
+    assert status['health']['orientation_confirmed'] is False
+    assert status['gauge']['solid_range_m'] == 0
+    clock['obstacle'] = True
+    assert send(20.2)['decision'] == 'STOP'
+    node.reset_input('test independent input')
+    clock.update(obstacle=False, health={'level': 'error', 'orientation_confirmed': False})
+    send(30.)
+    assert send(30.1)['decision'] == 'FAULT'

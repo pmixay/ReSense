@@ -181,8 +181,10 @@ def test_recovered_sideways_mount_keeps_its_real_voting_observations(monkeypatch
     cal = MountCalibrator(cfg.calibration, cfg.track)
     assert not cal.update(xyz, xyz, None, ring=ring)
     assert cal.state.orientation_conflict
+    assert not cal.state.orientation_confirmed
     assert cal.update(xyz, xyz, None, ring=ring)
     assert np.allclose(cal.R, rotation.T)
+    assert cal.state.orientation_confirmed
     assert not cal.state.orientation_conflict
     assert len(cal._recent) == 2
     assert len(cal._obs) == 1 and cal._since_obs == 1

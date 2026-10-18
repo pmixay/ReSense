@@ -1,0 +1,27 @@
+{
+  "frames": 345,
+  "baseline_sha256": "98d6a12413c2ff333d5991cd051138f65e72c3348a2884ff60984dc8b44ce312",
+  "candidate_sha256": "960556820bb7e485fc9f1e330407dee8d3af9d7f4ccf1aab6861c62f999fbcf1",
+  "stop_frames": [
+    0,
+    6
+  ],
+  "new_stop_frames": [
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+  ],
+  "lost_stop_frames": [],
+  "shape_changed_frames": [],
+  "extended_axis_frames": [
+    23,
+    24,
+    25,
+    26,
+    27,
+    28
+  ]
+}

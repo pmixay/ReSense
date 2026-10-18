@@ -1,0 +1,117 @@
+{
+  "scope": "display-only projection on saved rounded detector rows; full source unchanged detector replay follows",
+  "gauge_sha256": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b",
+  "bags": {
+    "cloud_with_fake_obj.jsonl.gz": {
+      "frames": 1510,
+      "jitter": {
+        "40": {
+          "visible_pairs": 1394,
+          "all_adjacent_pairs": 1509,
+          "raw_supported_pairs": 1498,
+          "visible_raw_3d_p90_m": 0.04185371385182139,
+          "visible_display_3d_p90_m": 0.018133540627436225,
+          "all_state_raw_3d_p90_m": 0.05110167519069265,
+          "all_state_display_3d_p90_m": 0.02570461400234102
+        },
+        "80": {
+          "visible_pairs": 842,
+          "all_adjacent_pairs": 1509,
+          "raw_supported_pairs": 1262,
+          "visible_raw_3d_p90_m": 0.11383978574697629,
+          "visible_display_3d_p90_m": 0.029708390990317343,
+          "all_state_raw_3d_p90_m": 0.1985637988822347,
+          "all_state_display_3d_p90_m": 0.07901213004663009
+        },
+        "120": {
+          "visible_pairs": 255,
+          "all_adjacent_pairs": 1509,
+          "raw_supported_pairs": 856,
+          "visible_raw_3d_p90_m": 0.13285629465067525,
+          "visible_display_3d_p90_m": 0.04024612026061564,
+          "all_state_raw_3d_p90_m": 0.4489983228183482,
+          "all_state_display_3d_p90_m": 0.1705335514569491
+        }
+      },
+      "median_drawn_m": 86.0,
+      "median_support_m": 130.14999999999998,
+      "max_spatial_lag_m": 0.25,
+      "missing_GO_STOP_outline_frames": [],
+      "source_rows_sha256": "f91e94131e06c721cfb722ff9fe9c75601b3452f9a86b19245d6a5f1c15da63c"
+    },
+    "doubleT_obstacle.jsonl.gz": {
+      "frames": 201,
+      "jitter": {
+        "40": {
+          "visible_pairs": 188,
+          "all_adjacent_pairs": 200,
+          "raw_supported_pairs": 200,
+          "visible_raw_3d_p90_m": 0.018965829755575248,
+          "visible_display_3d_p90_m": 0.003935352607066435,
+          "all_state_raw_3d_p90_m": 0.020139206523286584,
+          "all_state_display_3d_p90_m": 0.009942724769006565
+        },
+        "80": {
+          "visible_pairs": 180,
+          "all_adjacent_pairs": 200,
+          "raw_supported_pairs": 200,
+          "visible_raw_3d_p90_m": 0.06680450856557804,
+          "visible_display_3d_p90_m": 0.012412434391779662,
+          "all_state_raw_3d_p90_m": 0.07111281314409762,
+          "all_state_display_3d_p90_m": 0.019264737813868362
+        },
+        "120": {
+          "visible_pairs": 143,
+          "all_adjacent_pairs": 200,
+          "raw_supported_pairs": 198,
+          "visible_raw_3d_p90_m": 0.18328025882718965,
+          "visible_display_3d_p90_m": 0.021843240245711066,
+          "all_state_raw_3d_p90_m": 0.2039777450506935,
+          "all_state_display_3d_p90_m": 0.03645024464315815
+        }
+      },
+      "median_drawn_m": 139.0,
+      "median_support_m": 151.0,
+      "max_spatial_lag_m": 0.2493,
+      "missing_GO_STOP_outline_frames": [],
+      "source_rows_sha256": "de8e939f6f2cd88314f1fff78bb7146db38dc119ebe59ff253969dae8a9a9503"
+    },
+    "roundT_doubleT.jsonl.gz": {
+      "frames": 252,
+      "jitter": {
+        "40": {
+          "visible_pairs": 161,
+          "all_adjacent_pairs": 251,
+          "raw_supported_pairs": 251,
+          "visible_raw_3d_p90_m": 0.06125011347130359,
+          "visible_display_3d_p90_m": 0.03254449289273055,
+          "all_state_raw_3d_p90_m": 0.07925579138781469,
+          "all_state_display_3d_p90_m": 0.06320718043951656
+        },
+        "80": {
+          "visible_pairs": 44,
+          "all_adjacent_pairs": 251,
+          "raw_supported_pairs": 202,
+          "visible_raw_3d_p90_m": 0.13969922588247194,
+          "visible_display_3d_p90_m": 0.03052792728316506,
+          "all_state_raw_3d_p90_m": 0.2495638039574085,
+          "all_state_display_3d_p90_m": 0.15886770081268328
+        },
+        "120": {
+          "visible_pairs": 11,
+          "all_adjacent_pairs": 251,
+          "raw_supported_pairs": 157,
+          "visible_raw_3d_p90_m": 0.20461084615414685,
+          "visible_display_3d_p90_m": 0.028442477164026023,
+          "all_state_raw_3d_p90_m": 0.5451851395658447,
+          "all_state_display_3d_p90_m": 0.3167891222859427
+        }
+      },
+      "median_drawn_m": 52.0,
+      "median_support_m": 141.9,
+      "max_spatial_lag_m": 0.2498,
+      "missing_GO_STOP_outline_frames": [],
+      "source_rows_sha256": "1272d5a65ed2d8f8415a9dd55dccbb668316ebfcf1d99022c95ce180ca9541f9"
+    }
+  }
+}

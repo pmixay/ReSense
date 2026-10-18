@@ -1,0 +1,53 @@
+{
+  "core_commit": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+  "node_commit": "00ee76fcf9e995b18d12e0981da96c7f27cb19e0",
+  "image_id": "sha256:acbd890efa868cb4cd37531182735b85ec4eb978185fae79ff030ff755c85306",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "resense-n4-7b7b02c",
+    "--network",
+    "none",
+    "--ipc=host",
+    "-v",
+    "/home/resense/data/n4_smoke:/bags:ro",
+    "-v",
+    "/home/resense/data/n2/falcon_first100:/falcon:ro",
+    "-v",
+    "/home/resense/data/n4_final_7b7b02c:/out",
+    "resense:lidar-7b7b02c",
+    "python3",
+    "scripts/check_interactive_replay.py",
+    "/bags",
+    "--out",
+    "/out",
+    "--falcon-bag",
+    "/falcon"
+  ],
+  "returncode": 0,
+  "cpu_affinity": [
+    0
+  ],
+  "heavy_quality_groups_paused": 9,
+  "isolation_receipt_sha256": "ca22132a02dc74b429d4184e9756b5a0411f0586a47f00437ad2dcf0320853c7",
+  "container_stopped_and_removed": true,
+  "expected_frames": {
+    "pandar128": 40,
+    "falcon_ros": 100
+  },
+  "prior_accepted_status": "/home/resense/data/n4_final_complete_falcon/status.jsonl",
+  "prior_accepted_image": "sha256:3ddf27362e5d9e65f84095111edeeb04d3ae34737cc3b56c1474d5df98fbf8b4",
+  "comparison": "Exact semantic140-framepayloads and nonframe reset/stale transitions; only explicitly listed time/rate/resource fields excluded",
+  "measurement_scope": "Functional integration at0.5 playback with Pandar pause/rate0.4 transition. Single1CPUhost run, not10Hz throughput. No graphics or2308-frame display replay repeated. Earlier measurements retain original source identity.",
+  "raw_hashes": {
+    "report.json": "0eaf6c5e0d1444edabef61304247b3057b2185167adb7eb76e43c5247ee60c1d",
+    "falcon_ros_player.log": "edd5136ed3912edfbecd6fbd0c232a27aa3aa4f84b0525d50f6bf2a18c2812f5",
+    "status_summary.json": "20d91710e345b784b0d7b97c090dea05577f8642082b3c875b0fc1a07ccab07e",
+    "node.log": "23611d0bda0bd2975cee003c7ed2d08865458e85610f6814e472a4d385aa6afb",
+    "runner.log": "e4878cf3c51dc3b89c8c179f20f0cd4a84af5af41846c1fabaeda494a0659991",
+    "pandar128_player.log": "4356775d8ac8c5c664cd24f43561e8bb644b804d2b02648dba0784b5d47995ad",
+    "status.jsonl": "6d57001ae7415cc1b4aa03ec46e9c56c2970bb73c94fa3fe31a8072e450cff7f"
+  }
+}

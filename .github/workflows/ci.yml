@@ -174,10 +174,15 @@ jobs:
           mkdir -p /tmp/bags && chmod 777 /tmp/bags
           docker run --rm -v /tmp/bags:/bags resense:ci bash -lc "python3 scripts/make_smoke_bag.py /bags/smoke_bag && python3 scripts/make_smoke_bag.py /bags/smoke_bag2 --topic /sensing/lidar/hesai128/pointcloud --frame-id lidar_livox --distance 45"
           IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/console_test.sh /tmp/bags/smoke_bag /tmp/bags/smoke_bag2
-      - name: the one-command wrapper for the jury (scripts/play_bag.sh) prints the decision changes, STOP included
+      - name: the jury wrapper plays two bags against one node with explicit reset boundaries
         run: |
-          IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/play_bag.sh /tmp/bags/smoke_bag | tee out_play_bag.txt
+          IMAGE=resense:ci PLAYER_USER=1000:1000 scripts/play_bag.sh --rate 0.5 --sensor-profile pandar128 /tmp/bags/smoke_bag /tmp/bags/smoke_bag2 | tee out_play_bag.txt
           grep -q "STOP" out_play_bag.txt
+          test "$(grep -c 'recording boundary confirmed' out_play_bag.txt)" = 2
+      - name: real keyboard pause/rate and Pandar-to-Falcon reset with identical topic/frame/stamps
+        run: |
+          mkdir -p out/interactive_check
+          docker run --rm --network none -v "$PWD/out/interactive_check:/out" resense:ci bash -lc "python3 scripts/make_profile_smoke_bags.py /tmp/profile_bags && python3 scripts/check_interactive_replay.py /tmp/profile_bags --out /out"
       - name: the jury's console with stock Fast DDS — a uid-1000 player and listener without our profile, shared memory on
         # the organizers play from a host console with Humble's default rmw_fastrtps_cpp (no XML profile: shared
         # memory + UDPv4). PLAYER_DDS=stock unsets the image's FASTRTPS_DEFAULT_PROFILES_FILE in the player and in a

@@ -1,0 +1,996 @@
+{
+  "archive": "docs/evidence/synthetic_labels_2026-10-17/runs/detector_runs.tar.xz",
+  "archive_sha256": "3818c8aba25f1bee22fb25bfb9a0ba8c8265ac20dd970e9b5911f9938ab87a47",
+  "scorer_sha256": "cec1309bd2e462244e05da379d809ab6b80644975e9ffc1b8c150e85dc1a5bbc",
+  "bags": {
+    "synthetic_platform": {
+      "frames": 386,
+      "labels_sha256": "03578bd979d5a10d1067f4b83759d0863ccfa20e7e01c5c809d790d69e210ad7",
+      "v100_v110_scores_identical": true,
+      "summary": {
+        "true_stop_detections_bounds": [
+          147,
+          185
+        ],
+        "false_stop_detections_bounds": [
+          0,
+          38
+        ],
+        "certain_inside_matched_bounds": [
+          147,
+          147
+        ],
+        "certain_inside_object_frames": 171,
+        "possible_inside_object_frames": 616,
+        "unmatched_stop_detections": 0,
+        "stop_detections": 185,
+        "stop_frames_without_geometry": 0,
+        "certain_inside_recall_bounds": [
+          0.8596491228070176,
+          0.8596491228070176
+        ]
+      },
+      "objects": {
+        "obj01": {
+          "point_supported_frames": 177,
+          "first_frame": 0,
+          "last_frame": 176,
+          "first_visible_m": 243.85,
+          "gauge_relation_frames": {
+            "unknown": 126,
+            "boundary_uncertain": 51
+          },
+          "stop_match_frames_bounds": [
+            38,
+            38
+          ],
+          "first_stop_frame_certain_assignment": 106,
+          "first_stop_m_certain_assignment": 86.76,
+          "first_stop_m_possible_assignment": 86.76,
+          "stop_held_from_m_certain_assignment": null,
+          "certain_inside_frames": 0,
+          "certain_inside_stop_frames_bounds": [
+            0,
+            0
+          ],
+          "warning_match_frames_bounds": [
+            41,
+            41
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 27,
+              "stop_match_bounds": [
+                17,
+                17
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 27
+              }
+            },
+            "30-60": {
+              "supported": 24,
+              "stop_match_bounds": [
+                8,
+                8
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 24
+              }
+            },
+            "60-100": {
+              "supported": 29,
+              "stop_match_bounds": [
+                13,
+                13
+              ],
+              "gauge_relation_frames": {
+                "unknown": 29
+              }
+            },
+            "100-150": {
+              "supported": 34,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 34
+              }
+            },
+            "150-250": {
+              "supported": 63,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 63
+              }
+            }
+          }
+        },
+        "obj02": {
+          "point_supported_frames": 190,
+          "first_frame": 35,
+          "last_frame": 255,
+          "first_visible_m": 249.26,
+          "gauge_relation_frames": {
+            "unknown": 110,
+            "outside": 80
+          },
+          "stop_match_frames_bounds": [
+            0,
+            0
+          ],
+          "first_stop_frame_certain_assignment": null,
+          "first_stop_m_certain_assignment": null,
+          "first_stop_m_possible_assignment": null,
+          "stop_held_from_m_certain_assignment": null,
+          "certain_inside_frames": 0,
+          "certain_inside_stop_frames_bounds": [
+            0,
+            0
+          ],
+          "warning_match_frames_bounds": [
+            30,
+            30
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 45,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "outside": 45
+              }
+            },
+            "30-60": {
+              "supported": 35,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "outside": 35
+              }
+            },
+            "60-100": {
+              "supported": 35,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 35
+              }
+            },
+            "100-150": {
+              "supported": 36,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 36
+              }
+            },
+            "150-250": {
+              "supported": 39,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 39
+              }
+            }
+          }
+        },
+        "obj03": {
+          "point_supported_frames": 329,
+          "first_frame": 57,
+          "last_frame": 385,
+          "first_visible_m": 249.46,
+          "gauge_relation_frames": {
+            "unknown": 158,
+            "inside": 171
+          },
+          "stop_match_frames_bounds": [
+            147,
+            147
+          ],
+          "first_stop_frame_certain_assignment": 239,
+          "first_stop_m_certain_assignment": 44.01,
+          "first_stop_m_possible_assignment": 44.01,
+          "stop_held_from_m_certain_assignment": 53.74,
+          "certain_inside_frames": 171,
+          "certain_inside_stop_frames_bounds": [
+            147,
+            147
+          ],
+          "warning_match_frames_bounds": [
+            127,
+            127
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 121,
+              "stop_match_bounds": [
+                121,
+                121
+              ],
+              "gauge_relation_frames": {
+                "inside": 121
+              }
+            },
+            "30-60": {
+              "supported": 50,
+              "stop_match_bounds": [
+                26,
+                26
+              ],
+              "gauge_relation_frames": {
+                "inside": 50
+              }
+            },
+            "60-100": {
+              "supported": 45,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 45
+              }
+            },
+            "100-150": {
+              "supported": 43,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 43
+              }
+            },
+            "150-250": {
+              "supported": 70,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 70
+              }
+            }
+          }
+        }
+      }
+    },
+    "synthetic_switch": {
+      "frames": 736,
+      "labels_sha256": "b6307eb801525ad5da4ac89cc3425ff337a02569effa0608b137e7e836fc49e6",
+      "v100_v110_scores_identical": true,
+      "summary": {
+        "true_stop_detections_bounds": [
+          36,
+          130
+        ],
+        "false_stop_detections_bounds": [
+          0,
+          106
+        ],
+        "certain_inside_matched_bounds": [
+          36,
+          36
+        ],
+        "certain_inside_object_frames": 36,
+        "possible_inside_object_frames": 692,
+        "unmatched_stop_detections": 12,
+        "stop_detections": 142,
+        "stop_frames_without_geometry": 0,
+        "certain_inside_recall_bounds": [
+          1.0,
+          1.0
+        ]
+      },
+      "objects": {
+        "box_left_2": {
+          "point_supported_frames": 102,
+          "first_frame": 213,
+          "last_frame": 352,
+          "first_visible_m": 188.21518,
+          "gauge_relation_frames": {
+            "unknown": 62,
+            "boundary_uncertain": 40
+          },
+          "stop_match_frames_bounds": [
+            32,
+            32
+          ],
+          "first_stop_frame_certain_assignment": 318,
+          "first_stop_m_certain_assignment": 51.38465,
+          "first_stop_m_possible_assignment": 51.38465,
+          "stop_held_from_m_certain_assignment": 51.38465,
+          "certain_inside_frames": 0,
+          "certain_inside_stop_frames_bounds": [
+            0,
+            0
+          ],
+          "warning_match_frames_bounds": [
+            9,
+            9
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 18,
+              "stop_match_bounds": [
+                18,
+                18
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 18
+              }
+            },
+            "30-60": {
+              "supported": 22,
+              "stop_match_bounds": [
+                14,
+                14
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 22
+              }
+            },
+            "60-100": {
+              "supported": 29,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 29
+              }
+            },
+            "100-150": {
+              "supported": 29,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 29
+              }
+            },
+            "150-250": {
+              "supported": 4,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 4
+              }
+            }
+          }
+        },
+        "box_left_4": {
+          "point_supported_frames": 54,
+          "first_frame": 469,
+          "last_frame": 553,
+          "first_visible_m": 132.75163,
+          "gauge_relation_frames": {
+            "unknown": 27,
+            "boundary_uncertain": 27
+          },
+          "stop_match_frames_bounds": [
+            4,
+            4
+          ],
+          "first_stop_frame_certain_assignment": 540,
+          "first_stop_m_certain_assignment": 23.38265,
+          "first_stop_m_possible_assignment": 23.38265,
+          "stop_held_from_m_certain_assignment": null,
+          "certain_inside_frames": 0,
+          "certain_inside_stop_frames_bounds": [
+            0,
+            0
+          ],
+          "warning_match_frames_bounds": [
+            0,
+            0
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 18,
+              "stop_match_bounds": [
+                4,
+                4
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 18
+              }
+            },
+            "30-60": {
+              "supported": 18,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 9,
+                "boundary_uncertain": 9
+              }
+            },
+            "60-100": {
+              "supported": 14,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 14
+              }
+            },
+            "100-150": {
+              "supported": 4,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 4
+              }
+            }
+          }
+        },
+        "box_right_1": {
+          "point_supported_frames": 256,
+          "first_frame": 0,
+          "last_frame": 255,
+          "first_visible_m": 161.78825,
+          "gauge_relation_frames": {
+            "unknown": 205,
+            "boundary_uncertain": 51
+          },
+          "stop_match_frames_bounds": [
+            11,
+            11
+          ],
+          "first_stop_frame_certain_assignment": 145,
+          "first_stop_m_certain_assignment": 110.58591,
+          "first_stop_m_possible_assignment": 110.58591,
+          "stop_held_from_m_certain_assignment": null,
+          "certain_inside_frames": 0,
+          "certain_inside_stop_frames_bounds": [
+            0,
+            0
+          ],
+          "warning_match_frames_bounds": [
+            101,
+            101
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 24,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 24
+              }
+            },
+            "30-60": {
+              "supported": 27,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 27
+              }
+            },
+            "60-100": {
+              "supported": 45,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 45
+              }
+            },
+            "100-150": {
+              "supported": 93,
+              "stop_match_bounds": [
+                11,
+                11
+              ],
+              "gauge_relation_frames": {
+                "unknown": 93
+              }
+            },
+            "150-250": {
+              "supported": 67,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 67
+              }
+            }
+          }
+        },
+        "box_right_5": {
+          "point_supported_frames": 141,
+          "first_frame": 526,
+          "last_frame": 684,
+          "first_visible_m": 242.97499,
+          "gauge_relation_frames": {
+            "unknown": 102,
+            "boundary_uncertain": 39
+          },
+          "stop_match_frames_bounds": [
+            41,
+            41
+          ],
+          "first_stop_frame_certain_assignment": 616,
+          "first_stop_m_certain_assignment": 104.02412,
+          "first_stop_m_possible_assignment": 104.02412,
+          "stop_held_from_m_certain_assignment": null,
+          "certain_inside_frames": 0,
+          "certain_inside_stop_frames_bounds": [
+            0,
+            0
+          ],
+          "warning_match_frames_bounds": [
+            31,
+            31
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 19,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 19
+              }
+            },
+            "30-60": {
+              "supported": 20,
+              "stop_match_bounds": [
+                14,
+                14
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 20
+              }
+            },
+            "60-100": {
+              "supported": 26,
+              "stop_match_bounds": [
+                23,
+                23
+              ],
+              "gauge_relation_frames": {
+                "unknown": 26
+              }
+            },
+            "100-150": {
+              "supported": 33,
+              "stop_match_bounds": [
+                4,
+                4
+              ],
+              "gauge_relation_frames": {
+                "unknown": 33
+              }
+            },
+            "150-250": {
+              "supported": 43,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 43
+              }
+            }
+          }
+        },
+        "hanging_3": {
+          "point_supported_frames": 139,
+          "first_frame": 248,
+          "last_frame": 415,
+          "first_visible_m": 246.68094,
+          "gauge_relation_frames": {
+            "unknown": 103,
+            "inside": 36
+          },
+          "stop_match_frames_bounds": [
+            42,
+            42
+          ],
+          "first_stop_frame_certain_assignment": 374,
+          "first_stop_m_certain_assignment": 69.1269,
+          "first_stop_m_possible_assignment": 69.1269,
+          "stop_held_from_m_certain_assignment": 75.27563,
+          "certain_inside_frames": 36,
+          "certain_inside_stop_frames_bounds": [
+            36,
+            36
+          ],
+          "warning_match_frames_bounds": [
+            5,
+            5
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 17,
+              "stop_match_bounds": [
+                17,
+                17
+              ],
+              "gauge_relation_frames": {
+                "inside": 17
+              }
+            },
+            "30-60": {
+              "supported": 19,
+              "stop_match_bounds": [
+                19,
+                19
+              ],
+              "gauge_relation_frames": {
+                "inside": 19
+              }
+            },
+            "60-100": {
+              "supported": 27,
+              "stop_match_bounds": [
+                6,
+                6
+              ],
+              "gauge_relation_frames": {
+                "unknown": 27
+              }
+            },
+            "100-150": {
+              "supported": 33,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 33
+              }
+            },
+            "150-250": {
+              "supported": 43,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 43
+              }
+            }
+          }
+        }
+      }
+    },
+    "synthetic_tunnels": {
+      "frames": 545,
+      "labels_sha256": "b1e7c5b081914f6bd480b83bafbc551be338dccb93f4615c1a44f5d95da3bc7b",
+      "v100_v110_scores_identical": true,
+      "summary": {
+        "true_stop_detections_bounds": [
+          61,
+          118
+        ],
+        "false_stop_detections_bounds": [
+          0,
+          67
+        ],
+        "certain_inside_matched_bounds": [
+          61,
+          61
+        ],
+        "certain_inside_object_frames": 63,
+        "possible_inside_object_frames": 296,
+        "unmatched_stop_detections": 10,
+        "stop_detections": 128,
+        "stop_frames_without_geometry": 0,
+        "certain_inside_recall_bounds": [
+          0.9682539682539683,
+          0.9682539682539683
+        ]
+      },
+      "objects": {
+        "box_left_4": {
+          "point_supported_frames": 50,
+          "first_frame": 446,
+          "last_frame": 495,
+          "first_visible_m": 90.1423,
+          "gauge_relation_frames": {
+            "unknown": 18,
+            "boundary_uncertain": 32
+          },
+          "stop_match_frames_bounds": [
+            0,
+            0
+          ],
+          "first_stop_frame_certain_assignment": null,
+          "first_stop_m_certain_assignment": null,
+          "first_stop_m_possible_assignment": null,
+          "stop_held_from_m_certain_assignment": null,
+          "certain_inside_frames": 0,
+          "certain_inside_stop_frames_bounds": [
+            0,
+            0
+          ],
+          "warning_match_frames_bounds": [
+            7,
+            7
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 16,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 16
+              }
+            },
+            "30-60": {
+              "supported": 16,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 16
+              }
+            },
+            "60-100": {
+              "supported": 18,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 18
+              }
+            }
+          }
+        },
+        "box_right_1": {
+          "point_supported_frames": 102,
+          "first_frame": 166,
+          "last_frame": 288,
+          "first_visible_m": 219.452,
+          "gauge_relation_frames": {
+            "unknown": 70,
+            "boundary_uncertain": 32
+          },
+          "stop_match_frames_bounds": [
+            30,
+            30
+          ],
+          "first_stop_frame_certain_assignment": 259,
+          "first_stop_m_certain_assignment": 54.99849,
+          "first_stop_m_possible_assignment": 54.99849,
+          "stop_held_from_m_certain_assignment": 60.64977,
+          "certain_inside_frames": 0,
+          "certain_inside_stop_frames_bounds": [
+            0,
+            0
+          ],
+          "warning_match_frames_bounds": [
+            0,
+            0
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 15,
+              "stop_match_bounds": [
+                15,
+                15
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 15
+              }
+            },
+            "30-60": {
+              "supported": 17,
+              "stop_match_bounds": [
+                15,
+                15
+              ],
+              "gauge_relation_frames": {
+                "boundary_uncertain": 17
+              }
+            },
+            "60-100": {
+              "supported": 22,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 22
+              }
+            },
+            "100-150": {
+              "supported": 27,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 27
+              }
+            },
+            "150-250": {
+              "supported": 21,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 21
+              }
+            }
+          }
+        },
+        "flat_crossrail_3": {
+          "point_supported_frames": 42,
+          "first_frame": 446,
+          "last_frame": 489,
+          "first_visible_m": 80.19549,
+          "gauge_relation_frames": {
+            "unknown": 11,
+            "inside": 31
+          },
+          "stop_match_frames_bounds": [
+            37,
+            37
+          ],
+          "first_stop_frame_certain_assignment": 452,
+          "first_stop_m_certain_assignment": 70.38702,
+          "first_stop_m_possible_assignment": 70.38702,
+          "stop_held_from_m_certain_assignment": 78.87421,
+          "certain_inside_frames": 31,
+          "certain_inside_stop_frames_bounds": [
+            31,
+            31
+          ],
+          "warning_match_frames_bounds": [
+            0,
+            0
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 15,
+              "stop_match_bounds": [
+                15,
+                15
+              ],
+              "gauge_relation_frames": {
+                "inside": 15
+              }
+            },
+            "30-60": {
+              "supported": 16,
+              "stop_match_bounds": [
+                16,
+                16
+              ],
+              "gauge_relation_frames": {
+                "inside": 16
+              }
+            },
+            "60-100": {
+              "supported": 11,
+              "stop_match_bounds": [
+                6,
+                6
+              ],
+              "gauge_relation_frames": {
+                "unknown": 11
+              }
+            }
+          }
+        },
+        "panel_2": {
+          "point_supported_frames": 102,
+          "first_frame": 329,
+          "last_frame": 443,
+          "first_visible_m": 201.21309,
+          "gauge_relation_frames": {
+            "unknown": 70,
+            "inside": 32
+          },
+          "stop_match_frames_bounds": [
+            51,
+            51
+          ],
+          "first_stop_frame_certain_assignment": 391,
+          "first_stop_m_certain_assignment": 96.82542,
+          "first_stop_m_possible_assignment": 96.82542,
+          "stop_held_from_m_certain_assignment": 100.37586,
+          "certain_inside_frames": 32,
+          "certain_inside_stop_frames_bounds": [
+            30,
+            30
+          ],
+          "warning_match_frames_bounds": [
+            13,
+            13
+          ],
+          "bins_m": {
+            "0-30": {
+              "supported": 15,
+              "stop_match_bounds": [
+                13,
+                13
+              ],
+              "gauge_relation_frames": {
+                "inside": 15
+              }
+            },
+            "30-60": {
+              "supported": 17,
+              "stop_match_bounds": [
+                17,
+                17
+              ],
+              "gauge_relation_frames": {
+                "inside": 17
+              }
+            },
+            "60-100": {
+              "supported": 23,
+              "stop_match_bounds": [
+                21,
+                21
+              ],
+              "gauge_relation_frames": {
+                "unknown": 23
+              }
+            },
+            "100-150": {
+              "supported": 29,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 29
+              }
+            },
+            "150-250": {
+              "supported": 18,
+              "stop_match_bounds": [
+                0,
+                0
+              ],
+              "gauge_relation_frames": {
+                "unknown": 18
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

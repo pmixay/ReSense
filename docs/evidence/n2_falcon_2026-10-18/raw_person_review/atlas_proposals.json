@@ -1,0 +1,4529 @@
+{
+  "coordinate_frame": "raw_ROS_FLU",
+  "anchors": [
+    {
+      "frame": 1200,
+      "episode": "early_uncertain",
+      "discovery_center": [
+        247.94509887695312,
+        -0.10696573555469513,
+        -11.148664474487305
+      ],
+      "discovery_bbox": [
+        [
+          247.87557983398438,
+          -0.3802894055843353,
+          -11.359834671020508
+        ],
+        [
+          248.00486755371094,
+          -0.023769056424498558,
+          -10.817852020263672
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          247.8142852783203,
+          -0.3802894055843353,
+          -12.023674011230469
+        ],
+        [
+          248.00486755371094,
+          -0.023769056424498558,
+          -10.817852020263672
+        ]
+      ],
+      "raw_crop_points": 5,
+      "novel_points": 5,
+      "source_sha256": "10b975411b840b1557f7b3efb50d94c23bb086e876298232093091088aacbc0f",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "uncertain early upright moving target; not linked across gap"
+    },
+    {
+      "frame": 1225,
+      "episode": "early_uncertain",
+      "discovery_center": [
+        245.3877410888672,
+        -0.1881982386112213,
+        -11.036977767944336
+      ],
+      "discovery_bbox": [
+        [
+          245.28309631347656,
+          -0.6117817163467407,
+          -11.24211597442627
+        ],
+        [
+          245.4569854736328,
+          0.04703056439757347,
+          -10.704501152038574
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          245.19735717773438,
+          -0.6117817163467407,
+          -11.896872520446777
+        ],
+        [
+          245.4569854736328,
+          0.04703056439757347,
+          -10.704501152038574
+        ]
+      ],
+      "raw_crop_points": 6,
+      "novel_points": 6,
+      "source_sha256": "67f83404c255057d3668c9de94ee1516264b618dc13d16f56e6bc5f53fd0d34e",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "uncertain early upright moving target; not linked across gap"
+    },
+    {
+      "frame": 1250,
+      "episode": "early_uncertain",
+      "discovery_center": [
+        245.20797729492188,
+        -0.09403415769338608,
+        -11.026885986328125
+      ],
+      "discovery_bbox": [
+        [
+          245.0823974609375,
+          -0.4466172456741333,
+          -11.237772941589355
+        ],
+        [
+          245.38739013671875,
+          0.0,
+          -10.690577507019043
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          245.0823974609375,
+          -0.4466172456741333,
+          -11.897598266601562
+        ],
+        [
+          245.38739013671875,
+          0.0,
+          -10.690577507019043
+        ]
+      ],
+      "raw_crop_points": 6,
+      "novel_points": 6,
+      "source_sha256": "61c6a632633686408d960b09e241cb994966273f96bb853877f8c253bd4c23fc",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "uncertain early upright moving target; not linked across gap"
+    },
+    {
+      "frame": 1275,
+      "episode": "early_uncertain",
+      "discovery_center": [
+        246.2272491455078,
+        -1.7460315227508545,
+        -11.067479133605957
+      ],
+      "discovery_bbox": [
+        [
+          246.00527954101562,
+          -2.0073652267456055,
+          -11.290346145629883
+        ],
+        [
+          246.34901428222656,
+          -1.369652509689331,
+          -10.731043815612793
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          246.00527954101562,
+          -2.0073652267456055,
+          -11.290346145629883
+        ],
+        [
+          246.34901428222656,
+          -1.369652509689331,
+          -10.731043815612793
+        ]
+      ],
+      "raw_crop_points": 5,
+      "novel_points": 5,
+      "source_sha256": "b9186209e77bd3c2c14ba34ca66504ebd3bf50a0532de25c3255bd177c7dcae9",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "uncertain early upright moving target; not linked across gap"
+    },
+    {
+      "frame": 1300,
+      "episode": "early_uncertain",
+      "discovery_center": [
+        248.3703155517578,
+        -2.0715742111206055,
+        -11.171764373779297
+      ],
+      "discovery_bbox": [
+        [
+          248.35543823242188,
+          -2.357053279876709,
+          -11.334844589233398
+        ],
+        [
+          248.52821350097656,
+          -1.7868659496307373,
+          -10.78589916229248
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          248.35543823242188,
+          -2.357053279876709,
+          -12.103739738464355
+        ],
+        [
+          248.52821350097656,
+          -1.7868659496307373,
+          -10.78589916229248
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "e9ab6618b30a15d9bfecb655e9be84f3a3cc536edab195b354b854b2d88063a1",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "uncertain early upright moving target; not linked across gap"
+    },
+    {
+      "frame": 1725,
+      "episode": "main_approach",
+      "discovery_center": [
+        249.44064331054688,
+        -0.19146251678466797,
+        -11.215721130371094
+      ],
+      "discovery_bbox": [
+        [
+          249.34849548339844,
+          -0.5021515488624573,
+          -11.38879108428955
+        ],
+        [
+          249.6582794189453,
+          -0.07173529267311096,
+          -10.889866828918457
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          249.34849548339844,
+          -0.5021515488624573,
+          -12.100141525268555
+        ],
+        [
+          249.6582794189453,
+          -0.07173529267311096,
+          -10.889866828918457
+        ]
+      ],
+      "raw_crop_points": 6,
+      "novel_points": 6,
+      "source_sha256": "cf2db809517f183355ebf7b6ca1186995934560b517f69fae2daafa80611a626",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1750,
+      "episode": "main_approach",
+      "discovery_center": [
+        247.46531677246094,
+        -0.14233970642089844,
+        -11.08326244354248
+      ],
+      "discovery_bbox": [
+        [
+          247.39736938476562,
+          -0.5217539072036743,
+          -11.351834297180176
+        ],
+        [
+          247.70077514648438,
+          0.33204972743988037,
+          -10.794355392456055
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          247.32957458496094,
+          -0.5217539072036743,
+          -12.000201225280762
+        ],
+        [
+          247.70077514648438,
+          0.33204972743988037,
+          -10.794355392456055
+        ]
+      ],
+      "raw_crop_points": 8,
+      "novel_points": 8,
+      "source_sha256": "a58edf0566b2adebf58ce8f87dcf4f613527d46785ec38a0ab6bd33047e423ae",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1775,
+      "episode": "main_approach",
+      "discovery_center": [
+        244.71754455566406,
+        -0.023463808000087738,
+        -11.133035659790039
+      ],
+      "discovery_bbox": [
+        [
+          244.69346618652344,
+          -0.21113722026348114,
+          -11.271242141723633
+        ],
+        [
+          244.91146850585938,
+          0.21129949390888214,
+          -11.002664566040039
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          244.69346618652344,
+          -0.21113722026348114,
+          -11.922017097473145
+        ],
+        [
+          244.91146850585938,
+          0.21129949390888214,
+          -11.002664566040039
+        ]
+      ],
+      "raw_crop_points": 5,
+      "novel_points": 5,
+      "source_sha256": "2dcc131eea31654b8c31fa28fc5cdfb722bc3403afd61711fe73ba591915c208",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1800,
+      "episode": "main_approach",
+      "discovery_center": [
+        243.52345275878906,
+        -0.11672466993331909,
+        -10.948840141296387
+      ],
+      "discovery_bbox": [
+        [
+          243.44894409179688,
+          -0.39677122235298157,
+          -11.121790885925293
+        ],
+        [
+          243.697021484375,
+          0.2102515995502472,
+          -10.619433403015137
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          243.33392333984375,
+          -0.5598362684249878,
+          -11.823551177978516
+        ],
+        [
+          243.697021484375,
+          0.2102515995502472,
+          -10.619433403015137
+        ]
+      ],
+      "raw_crop_points": 8,
+      "novel_points": 8,
+      "source_sha256": "df92544b8e01e974bd46dd67085ab0148c41eff00c8a591ecbfab711511b7674",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1825,
+      "episode": "main_approach",
+      "discovery_center": [
+        243.53506469726562,
+        -0.18676608800888062,
+        -10.953998565673828
+      ],
+      "discovery_bbox": [
+        [
+          243.46083068847656,
+          -0.6071137189865112,
+          -11.166685104370117
+        ],
+        [
+          243.6549530029297,
+          0.2335289865732193,
+          -10.573190689086914
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          243.46083068847656,
+          -0.6071137189865112,
+          -11.817984580993652
+        ],
+        [
+          243.6549530029297,
+          0.2335289865732193,
+          -10.573190689086914
+        ]
+      ],
+      "raw_crop_points": 9,
+      "novel_points": 9,
+      "source_sha256": "fa4e7ad3f992fc5ff3430c88b5dc50cbccb9077a298460e0160e4e824f12967e",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1850,
+      "episode": "main_approach",
+      "discovery_center": [
+        243.4846954345703,
+        -0.07002292573451996,
+        -10.947046279907227
+      ],
+      "discovery_bbox": [
+        [
+          243.4347686767578,
+          -0.49016016721725464,
+          -11.158913612365723
+        ],
+        [
+          243.6011199951172,
+          0.0,
+          -10.579256057739258
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          243.4347686767578,
+          -0.49016016721725464,
+          -11.866625785827637
+        ],
+        [
+          243.60682678222656,
+          0.0,
+          -10.579256057739258
+        ]
+      ],
+      "raw_crop_points": 6,
+      "novel_points": 6,
+      "source_sha256": "dfdf0ae04c58030eab7f51f51d1eb443cb0bc348e931511d4abc1b3df59c2ca8",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1875,
+      "episode": "main_approach",
+      "discovery_center": [
+        243.53170776367188,
+        -0.186735138297081,
+        -10.949289321899414
+      ],
+      "discovery_bbox": [
+        [
+          243.46945190429688,
+          -0.443549245595932,
+          -11.213627815246582
+        ],
+        [
+          243.65786743164062,
+          0.09343011677265167,
+          -10.622696876525879
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          243.46945190429688,
+          -0.443549245595932,
+          -11.866140365600586
+        ],
+        [
+          243.65786743164062,
+          0.09343011677265167,
+          -10.622696876525879
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "7677241b15e26e6a92502d97a39c8b50d0b71a77d93069687a70d23dcd43996a",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1900,
+      "episode": "main_approach",
+      "discovery_center": [
+        243.4871368408203,
+        -0.3034352660179138,
+        -10.951083183288574
+      ],
+      "discovery_bbox": [
+        [
+          243.38392639160156,
+          -0.41996321082115173,
+          -11.116783142089844
+        ],
+        [
+          243.58721923828125,
+          0.09340301901102066,
+          -10.616604804992676
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          243.38392639160156,
+          -0.41996321082115173,
+          -11.818952560424805
+        ],
+        [
+          243.58924865722656,
+          0.09340301901102066,
+          -10.616604804992676
+        ]
+      ],
+      "raw_crop_points": 6,
+      "novel_points": 6,
+      "source_sha256": "3215225aede996249bbfa52f7c3f41a45ead3806434dae7fc79db943cdcd383f",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1925,
+      "episode": "main_approach",
+      "discovery_center": [
+        243.45993041992188,
+        -0.21008558571338654,
+        -10.945700645446777
+      ],
+      "discovery_bbox": [
+        [
+          243.24069213867188,
+          -0.6300492286682129,
+          -11.170342445373535
+        ],
+        [
+          243.7349395751953,
+          0.13994787633419037,
+          -10.56365966796875
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          243.24069213867188,
+          -0.6300492286682129,
+          -11.818952560424805
+        ],
+        [
+          243.7349395751953,
+          0.13994787633419037,
+          -10.56365966796875
+        ]
+      ],
+      "raw_crop_points": 8,
+      "novel_points": 8,
+      "source_sha256": "c951e34820f7ad80203d46a54179f5391865ec572f9ccc5f4f01a62cd812f998",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1950,
+      "episode": "main_approach",
+      "discovery_center": [
+        243.44972229003906,
+        -0.1866818070411682,
+        -10.949064254760742
+      ],
+      "discovery_bbox": [
+        [
+          243.31394958496094,
+          -0.49031007289886475,
+          -11.156170845031738
+        ],
+        [
+          243.5591583251953,
+          0.28010836243629456,
+          -10.613558769226074
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          243.31394958496094,
+          -0.49031007289886475,
+          -11.860552787780762
+        ],
+        [
+          243.5591583251953,
+          0.28010836243629456,
+          -10.613558769226074
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "aacadee0c0b90c7e595118234af2a517d7f29fe257275e3d115a5a03c38ad86a",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 1975,
+      "episode": "main_approach",
+      "discovery_center": [
+        241.92581176757812,
+        -0.34813037514686584,
+        -10.878419876098633
+      ],
+      "discovery_bbox": [
+        [
+          241.88633728027344,
+          -0.4870215654373169,
+          -11.051000595092773
+        ],
+        [
+          242.14370727539062,
+          -0.06956306099891663,
+          -10.560908317565918
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          241.88633728027344,
+          -0.4870215654373169,
+          -11.737887382507324
+        ],
+        [
+          242.14370727539062,
+          -0.06956306099891663,
+          -10.560908317565918
+        ]
+      ],
+      "raw_crop_points": 6,
+      "novel_points": 6,
+      "source_sha256": "559bcd4b22d43472507f34d86324da5ef3c36394a91729aa6b9d2e1fada471e0",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2000,
+      "episode": "main_approach",
+      "discovery_center": [
+        239.56369018554688,
+        -0.022962668910622597,
+        -10.772339820861816
+      ],
+      "discovery_bbox": [
+        [
+          239.53842163085938,
+          -0.3674015998840332,
+          -10.992279052734375
+        ],
+        [
+          239.84376525878906,
+          0.34487807750701904,
+          -10.453866958618164
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          239.46401977539062,
+          -0.3674015998840332,
+          -11.619071960449219
+        ],
+        [
+          239.84376525878906,
+          0.34487807750701904,
+          -10.453866958618164
+        ]
+      ],
+      "raw_crop_points": 6,
+      "novel_points": 6,
+      "source_sha256": "4e914f80d3ae47a8d33387c097422375bba2eba367a6e51a89f8fb12750de46d",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2025,
+      "episode": "main_approach",
+      "discovery_center": [
+        237.0222625732422,
+        -0.113606758415699,
+        -10.661551475524902
+      ],
+      "discovery_bbox": [
+        [
+          237.00169372558594,
+          -0.4318400025367737,
+          -10.871131896972656
+        ],
+        [
+          237.19677734375,
+          0.022738080471754074,
+          -10.293984413146973
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          237.00169372558594,
+          -0.43215060234069824,
+          -11.512598037719727
+        ],
+        [
+          237.2662811279297,
+          0.022738080471754074,
+          -10.293984413146973
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "041011cd7e04eef2c698f2dbd4fef5bf62e2ad8c381f4746107f8efcad636186",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2050,
+      "episode": "main_approach",
+      "discovery_center": [
+        234.37278747558594,
+        -0.12355498969554901,
+        -10.497962951660156
+      ],
+      "discovery_bbox": [
+        [
+          234.30569458007812,
+          -0.3818356394767761,
+          -10.746785163879395
+        ],
+        [
+          234.53053283691406,
+          0.33723708987236023,
+          -10.178749084472656
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          234.30569458007812,
+          -0.3818356394767761,
+          -11.370551109313965
+        ],
+        [
+          234.53053283691406,
+          0.33723708987236023,
+          -10.178749084472656
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "136108d1679832935e641c9034779de71355f672dd1bceee9b14d5392995f421",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2075,
+      "episode": "main_approach",
+      "discovery_center": [
+        231.62657165527344,
+        -0.3107917606830597,
+        -10.519256591796875
+      ],
+      "discovery_bbox": [
+        [
+          231.53884887695312,
+          -0.6443333625793457,
+          -11.012602806091309
+        ],
+        [
+          231.775634765625,
+          0.08881621062755585,
+          -10.415976524353027
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          231.53884887695312,
+          -0.6443333625793457,
+          -11.239636421203613
+        ],
+        [
+          231.775634765625,
+          0.08881621062755585,
+          -10.415976524353027
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "44211349e8071ea462c97b1fb49be98604f3e0f402ceddbba2d8ce360c8cdef2",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2100,
+      "episode": "main_approach",
+      "discovery_center": [
+        228.91236877441406,
+        -0.19749444723129272,
+        -10.293524742126465
+      ],
+      "discovery_bbox": [
+        [
+          228.8644561767578,
+          -0.28525349497795105,
+          -10.45554256439209
+        ],
+        [
+          229.12460327148438,
+          0.15371741354465485,
+          -9.951528549194336
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          228.81658935546875,
+          -0.28525349497795105,
+          -11.105575561523438
+        ],
+        [
+          229.12460327148438,
+          0.15371741354465485,
+          -9.951528549194336
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "5facbcf6b8e9f071ad6ec7fa97455484eb453e727ac716daaf7f2167642e2fcd",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2125,
+      "episode": "main_approach",
+      "discovery_center": [
+        226.2781982421875,
+        -0.13015560805797577,
+        -10.176456451416016
+      ],
+      "discovery_bbox": [
+        [
+          226.20310974121094,
+          -0.520610511302948,
+          -10.371458053588867
+        ],
+        [
+          226.29200744628906,
+          0.19518598914146423,
+          -10.173989295959473
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          226.10430908203125,
+          -0.520610511302948,
+          -10.97925853729248
+        ],
+        [
+          226.29200744628906,
+          0.19518598914146423,
+          -10.173989295959473
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "17068881ff626b917d9a844fd100a5e6d77b71ffb2b6031318ff19aeef72f09c",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2150,
+      "episode": "main_approach",
+      "discovery_center": [
+        223.38656616210938,
+        -0.1284155249595642,
+        -10.197192192077637
+      ],
+      "discovery_bbox": [
+        [
+          223.20310974121094,
+          -0.47121739387512207,
+          -10.83116340637207
+        ],
+        [
+          223.6627655029297,
+          0.2572863698005676,
+          -10.045482635498047
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          223.20310974121094,
+          -0.47121739387512207,
+          -10.83116340637207
+        ],
+        [
+          223.6627655029297,
+          0.2572863698005676,
+          -10.045482635498047
+        ]
+      ],
+      "raw_crop_points": 6,
+      "novel_points": 6,
+      "source_sha256": "09776908ba48fe66d54bc66f032a8e5f29525039e6225fc98e387b672171d184",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2175,
+      "episode": "main_approach",
+      "discovery_center": [
+        220.62506103515625,
+        -0.09513886272907257,
+        -9.922022819519043
+      ],
+      "discovery_bbox": [
+        [
+          220.4627227783203,
+          -0.401904821395874,
+          -10.123220443725586
+        ],
+        [
+          220.85377502441406,
+          0.295872300863266,
+          -9.62777328491211
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          220.4627227783203,
+          -0.401904821395874,
+          -10.742280006408691
+        ],
+        [
+          220.85377502441406,
+          0.295872300863266,
+          -9.62777328491211
+        ]
+      ],
+      "raw_crop_points": 7,
+      "novel_points": 7,
+      "source_sha256": "857512374a545e0671c440e428e0961ca478c34549bc3205f3c3dd385b798c44",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2200,
+      "episode": "main_approach",
+      "discovery_center": [
+        217.7056884765625,
+        -0.08347758650779724,
+        -9.790937423706055
+      ],
+      "discovery_bbox": [
+        [
+          217.5694580078125,
+          -0.43819671869277954,
+          -10.566187858581543
+        ],
+        [
+          217.98680114746094,
+          0.2504039704799652,
+          -9.498757362365723
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          217.5694580078125,
+          -0.43819671869277954,
+          -10.566187858581543
+        ],
+        [
+          217.98680114746094,
+          0.2504039704799652,
+          -9.498757362365723
+        ]
+      ],
+      "raw_crop_points": 9,
+      "novel_points": 9,
+      "source_sha256": "81e8227da615211b45190e4e7c1901157fedb18274fbd419604c1d2b79ec7d4e",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2225,
+      "episode": "main_approach",
+      "discovery_center": [
+        214.85935974121094,
+        -0.08237947523593903,
+        -9.849611282348633
+      ],
+      "discovery_bbox": [
+        [
+          214.5809326171875,
+          -0.4326555132865906,
+          -10.466537475585938
+        ],
+        [
+          215.1844482421875,
+          0.39192625880241394,
+          -9.65973949432373
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          214.5809326171875,
+          -0.4326555132865906,
+          -10.466537475585938
+        ],
+        [
+          215.1844482421875,
+          0.39192625880241394,
+          -9.65973949432373
+        ]
+      ],
+      "raw_crop_points": 8,
+      "novel_points": 8,
+      "source_sha256": "7725f3b62b7fbb0e06833b698515f7c708a8e27cc7522391c9fd487a024380d0",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2250,
+      "episode": "main_approach",
+      "discovery_center": [
+        211.92959594726562,
+        -0.1727084517478943,
+        -9.714178085327148
+      ],
+      "discovery_bbox": [
+        [
+          211.59632873535156,
+          -0.5893381237983704,
+          -10.288628578186035
+        ],
+        [
+          212.2427520751953,
+          0.24414782226085663,
+          -9.528990745544434
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          211.59632873535156,
+          -0.5893381237983704,
+          -10.288628578186035
+        ],
+        [
+          212.2427520751953,
+          0.24414782226085663,
+          -9.528990745544434
+        ]
+      ],
+      "raw_crop_points": 8,
+      "novel_points": 8,
+      "source_sha256": "5c23d6ceb7670be4b9f0f7d552750e5afafed59287178c1b494bb99097ffe745",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2275,
+      "episode": "main_approach",
+      "discovery_center": [
+        209.00210571289062,
+        -0.15026235580444336,
+        -9.511224746704102
+      ],
+      "discovery_bbox": [
+        [
+          208.8995361328125,
+          -0.5210510492324829,
+          -10.14416217803955
+        ],
+        [
+          209.07435607910156,
+          0.1402059942483902,
+          -9.12062931060791
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          208.8995361328125,
+          -0.5210510492324829,
+          -10.14416217803955
+        ],
+        [
+          209.07435607910156,
+          0.1402059942483902,
+          -9.12062931060791
+        ]
+      ],
+      "raw_crop_points": 8,
+      "novel_points": 8,
+      "source_sha256": "9b02d520be6695ae1dabf003b43de3cd178dde970b44db2e9ab194a179295a80",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2300,
+      "episode": "main_approach",
+      "discovery_center": [
+        206.22952270507812,
+        -0.08891517668962479,
+        -9.492329597473145
+      ],
+      "discovery_bbox": [
+        [
+          206.10317993164062,
+          -0.375636488199234,
+          -10.00260066986084
+        ],
+        [
+          206.3220672607422,
+          0.2966702878475189,
+          -9.276238441467285
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          206.0022430419922,
+          -0.4344421625137329,
+          -10.402485847473145
+        ],
+        [
+          206.3220672607422,
+          0.2966702878475189,
+          -9.276238441467285
+        ]
+      ],
+      "raw_crop_points": 9,
+      "novel_points": 9,
+      "source_sha256": "ce5c78c39b91208f061b7ba2237b25dab14bae82ecfc3bb01dbfdc9bf43beb49",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2325,
+      "episode": "main_approach",
+      "discovery_center": [
+        203.19540405273438,
+        -0.2921857237815857,
+        -9.321249961853027
+      ],
+      "discovery_bbox": [
+        [
+          203.1266632080078,
+          -0.6626495122909546,
+          -9.860312461853027
+        ],
+        [
+          203.5805206298828,
+          0.1366061568260193,
+          -9.13965892791748
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          202.14630126953125,
+          -1.5308642387390137,
+          -9.860312461853027
+        ],
+        [
+          203.5805206298828,
+          0.1366061568260193,
+          -7.385707855224609
+        ]
+      ],
+      "raw_crop_points": 13,
+      "novel_points": 10,
+      "source_sha256": "a781236c2e77165f67e07b58a56eaad06132f3113c9e3ec6ba033eeaae257d3c",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2350,
+      "episode": "main_approach",
+      "discovery_center": [
+        200.3131561279297,
+        -0.12479612231254578,
+        -9.18478775024414
+      ],
+      "discovery_bbox": [
+        [
+          200.16490173339844,
+          -0.499516099691391,
+          -9.71899127960205
+        ],
+        [
+          200.5200958251953,
+          0.23042291402816772,
+          -9.010030746459961
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          200.16490173339844,
+          -0.499516099691391,
+          -9.71899127960205
+        ],
+        [
+          200.5200958251953,
+          0.23042291402816772,
+          -9.010030746459961
+        ]
+      ],
+      "raw_crop_points": 8,
+      "novel_points": 8,
+      "source_sha256": "997b5d30e9e7bc8efb567695d595538c06a74f803d5737f89362d1830e71da3c",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2375,
+      "episode": "main_approach",
+      "discovery_center": [
+        197.271240234375,
+        -0.1512821614742279,
+        -9.041583061218262
+      ],
+      "discovery_bbox": [
+        [
+          197.1334686279297,
+          -0.4539150893688202,
+          -9.571621894836426
+        ],
+        [
+          197.5231170654297,
+          0.2650819718837738,
+          -8.608263969421387
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          197.1334686279297,
+          -0.4539150893688202,
+          -9.571621894836426
+        ],
+        [
+          197.5231170654297,
+          0.2650819718837738,
+          -8.608263969421387
+        ]
+      ],
+      "raw_crop_points": 9,
+      "novel_points": 9,
+      "source_sha256": "03d0a5eac53a6cde7a275314aec1cd95dcc40a4585b6ba3ec95d818a8fb16ba6",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2400,
+      "episode": "main_approach",
+      "discovery_center": [
+        194.28317260742188,
+        -0.13035492599010468,
+        -8.945917129516602
+      ],
+      "discovery_bbox": [
+        [
+          194.14675903320312,
+          -0.4472045600414276,
+          -9.430059432983398
+        ],
+        [
+          194.38436889648438,
+          0.186325803399086,
+          -8.737768173217773
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          194.14675903320312,
+          -0.4472045600414276,
+          -9.430059432983398
+        ],
+        [
+          194.38436889648438,
+          0.186325803399086,
+          -8.737768173217773
+        ]
+      ],
+      "raw_crop_points": 8,
+      "novel_points": 8,
+      "source_sha256": "2c2e41630c4899caadeecd5c8032397e94767842a3e983d534efa23c8936d542",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2425,
+      "episode": "main_approach",
+      "discovery_center": [
+        191.24237060546875,
+        -0.3296157419681549,
+        -8.771173477172852
+      ],
+      "discovery_bbox": [
+        [
+          191.02061462402344,
+          -0.6414433717727661,
+          -9.476705551147461
+        ],
+        [
+          191.49461364746094,
+          0.0367128811776638,
+          -8.60029125213623
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          191.02061462402344,
+          -0.6414433717727661,
+          -9.655848503112793
+        ],
+        [
+          191.49461364746094,
+          0.0367128811776638,
+          -8.60029125213623
+        ]
+      ],
+      "raw_crop_points": 11,
+      "novel_points": 11,
+      "source_sha256": "3bbd806effc19ee9d3be2273b964f91712723d331f317c943fd30404e0bb5860",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2450,
+      "episode": "main_approach",
+      "discovery_center": [
+        188.1822052001953,
+        -0.23456543684005737,
+        -8.626482963562012
+      ],
+      "discovery_bbox": [
+        [
+          187.88406372070312,
+          -0.6133309602737427,
+          -9.336017608642578
+        ],
+        [
+          188.4738311767578,
+          0.2523709237575531,
+          -8.216212272644043
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          187.88406372070312,
+          -0.6133309602737427,
+          -9.776351928710938
+        ],
+        [
+          188.4738311767578,
+          0.2523709237575531,
+          -8.216212272644043
+        ]
+      ],
+      "raw_crop_points": 14,
+      "novel_points": 14,
+      "source_sha256": "e9436c133ee2b789b4cafdd082db9aaa702d0590930faa78d32b3f50ad8dfce0",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2475,
+      "episode": "main_approach",
+      "discovery_center": [
+        185.08285522460938,
+        -0.15971918404102325,
+        -8.486364364624023
+      ],
+      "discovery_bbox": [
+        [
+          184.9283447265625,
+          -0.4612237811088562,
+          -9.174561500549316
+        ],
+        [
+          185.13345336914062,
+          0.3016636073589325,
+          -8.325112342834473
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          184.8150177001953,
+          -0.49605032801628113,
+          -9.583291053771973
+        ],
+        [
+          185.13345336914062,
+          0.3016636073589325,
+          -8.325112342834473
+        ]
+      ],
+      "raw_crop_points": 12,
+      "novel_points": 12,
+      "source_sha256": "a9b79b69eea46f3550f4b255fb095a4a03895f30042488c5720822f0ccc4115d",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2500,
+      "episode": "main_approach",
+      "discovery_center": [
+        181.9440460205078,
+        -0.1919374316930771,
+        -8.344416618347168
+      ],
+      "discovery_bbox": [
+        [
+          181.83836364746094,
+          -0.47101524472236633,
+          -9.022006034851074
+        ],
+        [
+          182.0281219482422,
+          0.12211606651544571,
+          -8.145597457885742
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          181.81666564941406,
+          -0.47101524472236633,
+          -9.422392845153809
+        ],
+        [
+          182.0281219482422,
+          0.12211606651544571,
+          -8.145597457885742
+        ]
+      ],
+      "raw_crop_points": 11,
+      "novel_points": 11,
+      "source_sha256": "e478e59b631e32f716e3ec8a75bfb496e643b9d34fddcdc2e3a5317ad808cf87",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2525,
+      "episode": "main_approach",
+      "discovery_center": [
+        178.94342041015625,
+        -0.3258622884750366,
+        -8.20806884765625
+      ],
+      "discovery_bbox": [
+        [
+          178.87562561035156,
+          -0.6349979639053345,
+          -8.876126289367676
+        ],
+        [
+          179.0696258544922,
+          0.20587097108364105,
+          -8.051279067993164
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          178.75335693359375,
+          -0.6349979639053345,
+          -9.274406433105469
+        ],
+        [
+          179.0696258544922,
+          0.20587097108364105,
+          -8.051279067993164
+        ]
+      ],
+      "raw_crop_points": 13,
+      "novel_points": 13,
+      "source_sha256": "5be90ee1ac94fd6bc99bc63882048c5c1ae5058e1dc03ed60f0b29806fc822d5",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2550,
+      "episode": "main_approach",
+      "discovery_center": [
+        175.87701416015625,
+        -0.3203617334365845,
+        -8.064977645874023
+      ],
+      "discovery_bbox": [
+        [
+          175.67974853515625,
+          -0.6240957379341125,
+          -8.72554874420166
+        ],
+        [
+          175.98422241210938,
+          -0.01686045713722706,
+          -7.88119649887085
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          175.6500701904297,
+          -0.6240957379341125,
+          -9.118673324584961
+        ],
+        [
+          175.98422241210938,
+          -0.01686045713722706,
+          -7.88119649887085
+        ]
+      ],
+      "raw_crop_points": 14,
+      "novel_points": 14,
+      "source_sha256": "b3dab0d8e9ad0207ccdfcce6a971e51472c6f6cc445f8b7f210560459b682c3b",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2575,
+      "episode": "main_approach",
+      "discovery_center": [
+        172.8743896484375,
+        -0.17392349243164062,
+        -8.175995826721191
+      ],
+      "discovery_bbox": [
+        [
+          172.6983642578125,
+          -0.4803819954395294,
+          -8.723810195922852
+        ],
+        [
+          173.19515991210938,
+          0.1659868359565735,
+          -7.782155990600586
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          172.6440887451172,
+          -0.4803819954395294,
+          -8.947959899902344
+        ],
+        [
+          173.19515991210938,
+          0.1659868359565735,
+          -7.782155990600586
+        ]
+      ],
+      "raw_crop_points": 13,
+      "novel_points": 13,
+      "source_sha256": "6a4c7f8143ba0d6b58b4fd0204e9e6837478fa3acea4b05d7b58d0b0e96bfc2c",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2600,
+      "episode": "main_approach",
+      "discovery_center": [
+        169.76730346679688,
+        -0.2438596785068512,
+        -8.239484786987305
+      ],
+      "discovery_bbox": [
+        [
+          169.59979248046875,
+          -0.6838616132736206,
+          -8.569853782653809
+        ],
+        [
+          170.03054809570312,
+          0.11390013247728348,
+          -7.640866279602051
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          169.59979248046875,
+          -0.6838616132736206,
+          -9.018152236938477
+        ],
+        [
+          170.03054809570312,
+          0.11390013247728348,
+          -7.640866279602051
+        ]
+      ],
+      "raw_crop_points": 15,
+      "novel_points": 15,
+      "source_sha256": "07b86865bedf50f80f5c11bfbf7cc054fbbe2bdcc4f46fd23edb381f65f4bdec",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2625,
+      "episode": "main_approach",
+      "discovery_center": [
+        166.64210510253906,
+        -0.19972530007362366,
+        -7.866471290588379
+      ],
+      "discovery_bbox": [
+        [
+          166.3839874267578,
+          -0.4634043276309967,
+          -8.415393829345703
+        ],
+        [
+          166.9725341796875,
+          0.1440487653017044,
+          -7.241991996765137
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          166.31182861328125,
+          -0.4634043276309967,
+          -8.854963302612305
+        ],
+        [
+          166.9725341796875,
+          0.1440487653017044,
+          -7.241991996765137
+        ]
+      ],
+      "raw_crop_points": 18,
+      "novel_points": 18,
+      "source_sha256": "ec2b1ca0a56412d94a9521d7b96940ea5f7a78323742a82e138c8b3e620b0715",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2650,
+      "episode": "main_approach",
+      "discovery_center": [
+        163.5103302001953,
+        -0.203761026263237,
+        -7.938937187194824
+      ],
+      "discovery_bbox": [
+        [
+          163.34286499023438,
+          -0.48595142364501953,
+          -8.24936294555664
+        ],
+        [
+          163.82260131835938,
+          0.2826618254184723,
+          -7.137961387634277
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          163.34286499023438,
+          -0.48595142364501953,
+          -8.685161590576172
+        ],
+        [
+          163.82260131835938,
+          0.2826618254184723,
+          -7.137961387634277
+        ]
+      ],
+      "raw_crop_points": 18,
+      "novel_points": 18,
+      "source_sha256": "e1350fb133d857968a659c647ecb9f3041e2a16bd2be8d40adf3e8ec347e60f1",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2675,
+      "episode": "main_approach",
+      "discovery_center": [
+        160.4034881591797,
+        -0.24607862532138824,
+        -7.785033226013184
+      ],
+      "discovery_bbox": [
+        [
+          160.18585205078125,
+          -0.6155405640602112,
+          -8.095406532287598
+        ],
+        [
+          160.73146057128906,
+          0.29226091504096985,
+          -6.970150470733643
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          160.18585205078125,
+          -0.6155405640602112,
+          -8.518269538879395
+        ],
+        [
+          160.73146057128906,
+          0.29226091504096985,
+          -6.970150470733643
+        ]
+      ],
+      "raw_crop_points": 21,
+      "novel_points": 21,
+      "source_sha256": "d759193763b080b8917ea3282aae5667fbe587550fcf32e2e5a8d7fc6e37cf8f",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2700,
+      "episode": "main_approach",
+      "discovery_center": [
+        157.3549346923828,
+        -0.2262149155139923,
+        -7.672677516937256
+      ],
+      "discovery_bbox": [
+        [
+          157.070068359375,
+          -0.55754154920578,
+          -7.944217681884766
+        ],
+        [
+          157.69847106933594,
+          0.15116281807422638,
+          -7.084453582763672
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          157.070068359375,
+          -0.55754154920578,
+          -8.330179214477539
+        ],
+        [
+          157.69847106933594,
+          0.15116281807422638,
+          -7.084453582763672
+        ]
+      ],
+      "raw_crop_points": 16,
+      "novel_points": 16,
+      "source_sha256": "d2151bc5c2ca9f8112f7c41d24029f10459a3e253b0e0d5705c96f19fa95bc7a",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2725,
+      "episode": "main_approach",
+      "discovery_center": [
+        154.29067993164062,
+        -0.19964289665222168,
+        -7.490293502807617
+      ],
+      "discovery_bbox": [
+        [
+          154.0440673828125,
+          -0.5176634192466736,
+          -7.79000997543335
+        ],
+        [
+          154.6933135986328,
+          0.2669071555137634,
+          -6.944061279296875
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          153.9883270263672,
+          -0.5176634192466736,
+          -8.20114803314209
+        ],
+        [
+          154.6933135986328,
+          0.2669071555137634,
+          -6.944061279296875
+        ]
+      ],
+      "raw_crop_points": 18,
+      "novel_points": 18,
+      "source_sha256": "0b94797fe04496121af81452855917fb3c649aa697c497865725551dbf7df43e",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2750,
+      "episode": "main_approach",
+      "discovery_center": [
+        151.1988525390625,
+        -0.2898099422454834,
+        -7.357782363891602
+      ],
+      "discovery_bbox": [
+        [
+          151.039306640625,
+          -0.5795302987098694,
+          -7.63278341293335
+        ],
+        [
+          151.45083618164062,
+          0.17420758306980133,
+          -6.804790019989014
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          150.82907104492188,
+          -0.5933830142021179,
+          -8.269116401672363
+        ],
+        [
+          151.45083618164062,
+          0.17420758306980133,
+          -6.804790019989014
+        ]
+      ],
+      "raw_crop_points": 17,
+      "novel_points": 17,
+      "source_sha256": "02fe707f66e48f169fd1bdbefc7e2d73a6ba1229f97af39e7d90d9a49afe25f0",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2775,
+      "episode": "main_approach",
+      "discovery_center": [
+        147.99546813964844,
+        -0.29795485734939575,
+        -7.202813148498535
+      ],
+      "discovery_bbox": [
+        [
+          147.8064422607422,
+          -0.6389058232307434,
+          -7.6778130531311035
+        ],
+        [
+          148.32080078125,
+          0.25590991973876953,
+          -6.463075160980225
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          147.8064422607422,
+          -0.6389058232307434,
+          -7.861280918121338
+        ],
+        [
+          148.32080078125,
+          0.25590991973876953,
+          -6.463075160980225
+        ]
+      ],
+      "raw_crop_points": 23,
+      "novel_points": 23,
+      "source_sha256": "534b5cf3b75801682b2aa1443ede099041cdd3d414924cfc7a99ada4bb4557ee",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2800,
+      "episode": "main_approach",
+      "discovery_center": [
+        144.80245971679688,
+        -0.26381051540374756,
+        -7.033422470092773
+      ],
+      "discovery_bbox": [
+        [
+          144.6713104248047,
+          -0.568952202796936,
+          -7.5063252449035645
+        ],
+        [
+          145.12973022460938,
+          0.166531041264534,
+          -6.322963237762451
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          144.6621551513672,
+          -0.568952202796936,
+          -7.944122791290283
+        ],
+        [
+          145.12973022460938,
+          0.166531041264534,
+          -6.322963237762451
+        ]
+      ],
+      "raw_crop_points": 23,
+      "novel_points": 23,
+      "source_sha256": "32a386943bd0e33b8e9cfab7ce2e080b95ce4b0831ab1bc1b6975a5deeca774f",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2825,
+      "episode": "main_approach",
+      "discovery_center": [
+        141.5621795654297,
+        -0.23074139654636383,
+        -7.022466659545898
+      ],
+      "discovery_bbox": [
+        [
+          141.38458251953125,
+          -0.582809567451477,
+          -7.368954181671143
+        ],
+        [
+          141.8433837890625,
+          0.2583278715610504,
+          -6.372174263000488
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          141.3268280029297,
+          -0.582809567451477,
+          -7.772339820861816
+        ],
+        [
+          141.8433837890625,
+          0.2583278715610504,
+          -6.372174263000488
+        ]
+      ],
+      "raw_crop_points": 22,
+      "novel_points": 22,
+      "source_sha256": "272902c4ab90f27c350151eb36502c3e9381bb65ae7eebaeb317d49dd26d068b",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2850,
+      "episode": "main_approach",
+      "discovery_center": [
+        138.39981079101562,
+        -0.21884620189666748,
+        -6.865213394165039
+      ],
+      "discovery_bbox": [
+        [
+          138.14395141601562,
+          -0.5840209126472473,
+          -7.190090656280518
+        ],
+        [
+          138.56430053710938,
+          0.21249839663505554,
+          -6.204349517822266
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          138.0913543701172,
+          -0.5840209126472473,
+          -7.580620765686035
+        ],
+        [
+          138.56430053710938,
+          0.21249839663505554,
+          -6.204349517822266
+        ]
+      ],
+      "raw_crop_points": 23,
+      "novel_points": 23,
+      "source_sha256": "f59322c089d4bc4c0ece3bfc845044160e0c2558a4a4642d5083d721ed4a634d",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2875,
+      "episode": "main_approach",
+      "discovery_center": [
+        135.34339904785156,
+        -0.2724336087703705,
+        -6.714883327484131
+      ],
+      "discovery_bbox": [
+        [
+          135.11703491210938,
+          -0.5310063362121582,
+          -7.04388952255249
+        ],
+        [
+          135.67576599121094,
+          0.15605857968330383,
+          -5.908502578735352
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          135.11428833007812,
+          -0.5957518815994263,
+          -7.657702445983887
+        ],
+        [
+          135.67576599121094,
+          0.15605857968330383,
+          -5.908502578735352
+        ]
+      ],
+      "raw_crop_points": 25,
+      "novel_points": 25,
+      "source_sha256": "6747b2926084c63b92cf3f67b179df62c42cb4f908a1709f49bb27c8e59471e2",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2900,
+      "episode": "main_approach",
+      "discovery_center": [
+        132.4405517578125,
+        -0.26653116941452026,
+        -6.447088241577148
+      ],
+      "discovery_bbox": [
+        [
+          132.22564697265625,
+          -0.6603966951370239,
+          -7.033432960510254
+        ],
+        [
+          132.78912353515625,
+          0.1781938225030899,
+          -5.755851745605469
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          132.22564697265625,
+          -0.6603966951370239,
+          -7.498249530792236
+        ],
+        [
+          132.78912353515625,
+          0.1781938225030899,
+          -5.755851745605469
+        ]
+      ],
+      "raw_crop_points": 29,
+      "novel_points": 29,
+      "source_sha256": "51a1a60d52eacf3d1dacd93a7362483e97ea479a1dd7e70286b227c7d14828b1",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2925,
+      "episode": "main_approach",
+      "discovery_center": [
+        129.5018768310547,
+        -0.23576492071151733,
+        -6.428316593170166
+      ],
+      "discovery_bbox": [
+        [
+          129.32766723632812,
+          -0.5466954112052917,
+          -6.880823135375977
+        ],
+        [
+          129.7962646484375,
+          0.27370646595954895,
+          -5.654604434967041
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          129.2909698486328,
+          -0.5466954112052917,
+          -7.327527046203613
+        ],
+        [
+          129.7962646484375,
+          0.27370646595954895,
+          -5.654604434967041
+        ]
+      ],
+      "raw_crop_points": 28,
+      "novel_points": 28,
+      "source_sha256": "c2ccf2838dd6dbad72a7e3aeeb880607adcc393acc747f1d5fd225404b8d012f",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2950,
+      "episode": "main_approach",
+      "discovery_center": [
+        127.18362426757812,
+        0.06703675538301468,
+        -6.425283432006836
+      ],
+      "discovery_bbox": [
+        [
+          127.07173156738281,
+          -0.28038617968559265,
+          -6.763125896453857
+        ],
+        [
+          127.59265899658203,
+          0.4027445912361145,
+          -6.178483486175537
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          127.00012969970703,
+          -0.30465060472488403,
+          -7.635995864868164
+        ],
+        [
+          127.59265899658203,
+          0.4027445912361145,
+          -6.178483486175537
+        ]
+      ],
+      "raw_crop_points": 29,
+      "novel_points": 29,
+      "source_sha256": "4ed0832baf28cb476fbac3bf1ba0484fc54205c8730c3e8f6d3327bbd19364e4",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 2975,
+      "episode": "main_approach",
+      "discovery_center": [
+        124.44105529785156,
+        0.1790195256471634,
+        -6.28591775894165
+      ],
+      "discovery_bbox": [
+        [
+          124.34568786621094,
+          -0.2981247305870056,
+          -6.625856876373291
+        ],
+        [
+          124.76434326171875,
+          0.6447497606277466,
+          -6.0724029541015625
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          123.76700592041016,
+          -0.2981247305870056,
+          -7.464997291564941
+        ],
+        [
+          124.76434326171875,
+          1.3898181915283203,
+          -6.0724029541015625
+        ]
+      ],
+      "raw_crop_points": 40,
+      "novel_points": 40,
+      "source_sha256": "98d11e86b6576047750f4376f361fbfd3906f14972f93ee46f4e82826bfaccf1",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3000,
+      "episode": "main_approach",
+      "discovery_center": [
+        121.53840637207031,
+        0.19808371365070343,
+        -6.136615753173828
+      ],
+      "discovery_bbox": [
+        [
+          121.35475158691406,
+          -0.20974045991897583,
+          -6.470602035522461
+        ],
+        [
+          121.80354309082031,
+          0.5815976858139038,
+          -5.898988723754883
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          121.33320617675781,
+          -0.24432702362537384,
+          -7.301174163818359
+        ],
+        [
+          121.80354309082031,
+          0.5815976858139038,
+          -5.898988723754883
+        ]
+      ],
+      "raw_crop_points": 34,
+      "novel_points": 34,
+      "source_sha256": "b4fcf56f953168dbdaa44f4d873d3e1ea960be40b5b1abbfb38fb0167895de37",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3025,
+      "episode": "main_approach",
+      "discovery_center": [
+        118.48368835449219,
+        0.11355762183666229,
+        -5.985300540924072
+      ],
+      "discovery_bbox": [
+        [
+          118.36944580078125,
+          -0.3403705060482025,
+          -6.314025402069092
+        ],
+        [
+          118.84725952148438,
+          0.5240105986595154,
+          -5.7603302001953125
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          118.1382064819336,
+          -0.3403705060482025,
+          -7.122104167938232
+        ],
+        [
+          118.84725952148438,
+          0.535352349281311,
+          -5.7603302001953125
+        ]
+      ],
+      "raw_crop_points": 37,
+      "novel_points": 37,
+      "source_sha256": "fb70784cfdcfc4f5fe12843a4b1ec699d2396bfaaa3d5ccb4d96d5e90e7157e2",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3050,
+      "episode": "main_approach",
+      "discovery_center": [
+        115.3985824584961,
+        0.12163710594177246,
+        -5.982820510864258
+      ],
+      "discovery_bbox": [
+        [
+          115.28767395019531,
+          -0.23247754573822021,
+          -6.34673547744751
+        ],
+        [
+          115.68580627441406,
+          0.5433337092399597,
+          -5.63194465637207
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          115.13162231445312,
+          -0.23247754573822021,
+          -7.150792598724365
+        ],
+        [
+          115.73535919189453,
+          0.5433337092399597,
+          -5.63194465637207
+        ]
+      ],
+      "raw_crop_points": 37,
+      "novel_points": 37,
+      "source_sha256": "5ca3b599460f188bb679d99e6cbf119c3592a6c94ae7458032478a656557be51",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3075,
+      "episode": "main_approach",
+      "discovery_center": [
+        112.33456420898438,
+        0.05924341082572937,
+        -5.750439643859863
+      ],
+      "discovery_bbox": [
+        [
+          112.23699188232422,
+          -0.3444930613040924,
+          -6.176044940948486
+        ],
+        [
+          112.7856674194336,
+          0.5297092795372009,
+          -5.460266590118408
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          112.16085052490234,
+          -0.3444930613040924,
+          -6.9431891441345215
+        ],
+        [
+          112.7856674194336,
+          0.5297092795372009,
+          -5.460266590118408
+        ]
+      ],
+      "raw_crop_points": 42,
+      "novel_points": 42,
+      "source_sha256": "4946fc39829d53e0a0fa77e45009d1b1a891544664f4243f4706ecf30caafc5e",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3100,
+      "episode": "main_approach",
+      "discovery_center": [
+        109.21653747558594,
+        0.11518099904060364,
+        -5.684267997741699
+      ],
+      "discovery_bbox": [
+        [
+          108.91178894042969,
+          -0.30272918939590454,
+          -6.005900859832764
+        ],
+        [
+          109.49076843261719,
+          0.5454366207122803,
+          -5.424962043762207
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          108.91178894042969,
+          -0.30272918939590454,
+          -6.762035846710205
+        ],
+        [
+          109.49076843261719,
+          0.5454366207122803,
+          -5.424962043762207
+        ]
+      ],
+      "raw_crop_points": 42,
+      "novel_points": 42,
+      "source_sha256": "1618edac0b6870dced96875b1c058bf9058f62be67511591ff8e19b61847b085",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3125,
+      "episode": "main_approach",
+      "discovery_center": [
+        106.06612396240234,
+        0.11181578040122986,
+        -5.504513740539551
+      ],
+      "discovery_bbox": [
+        [
+          105.97645568847656,
+          -0.36622703075408936,
+          -5.834664821624756
+        ],
+        [
+          106.3248519897461,
+          0.5095484852790833,
+          -5.27042818069458
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          105.84769439697266,
+          -0.36622703075408936,
+          -6.750363349914551
+        ],
+        [
+          106.43809509277344,
+          1.3303914070129395,
+          -5.27042818069458
+        ]
+      ],
+      "raw_crop_points": 42,
+      "novel_points": 40,
+      "source_sha256": "58b5485ed711b0747a41a411a0e7f31f825c80b60927d51d6cdfdae44b226562",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3150,
+      "episode": "main_approach",
+      "discovery_center": [
+        103.01573181152344,
+        0.1233658492565155,
+        -5.3747758865356445
+      ],
+      "discovery_bbox": [
+        [
+          102.90668487548828,
+          -0.2565147876739502,
+          -5.66998291015625
+        ],
+        [
+          103.31443786621094,
+          0.5824033617973328,
+          -5.119603633880615
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          102.57235717773438,
+          -0.2565147876739502,
+          -6.6730570793151855
+        ],
+        [
+          103.43263244628906,
+          0.5824033617973328,
+          -5.119603633880615
+        ]
+      ],
+      "raw_crop_points": 50,
+      "novel_points": 50,
+      "source_sha256": "fbf476395a392eb289aa544a3523f52b85731e461500ae5c9f93a6bd6f2a4f0e",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3175,
+      "episode": "main_approach",
+      "discovery_center": [
+        99.90485382080078,
+        0.11486830562353134,
+        -5.215313911437988
+      ],
+      "discovery_bbox": [
+        [
+          99.76620483398438,
+          -0.34478768706321716,
+          -5.671860694885254
+        ],
+        [
+          100.17945098876953,
+          0.5276888608932495,
+          -4.963339328765869
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.65519714355469,
+          -0.34478768706321716,
+          -6.4557671546936035
+        ],
+        [
+          100.17945098876953,
+          0.5276888608932495,
+          -4.963339328765869
+        ]
+      ],
+      "raw_crop_points": 48,
+      "novel_points": 48,
+      "source_sha256": "fd489505ffdb0e40052ac24a50f650b68a64f499cf990c864720d521a5d1b946",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3200,
+      "episode": "main_approach",
+      "discovery_center": [
+        97.204833984375,
+        0.08851639926433563,
+        -5.117727279663086
+      ],
+      "discovery_bbox": [
+        [
+          97.0443115234375,
+          -0.223364919424057,
+          -5.5276198387146
+        ],
+        [
+          97.62422943115234,
+          0.4200476109981537,
+          -4.8300700187683105
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          96.72598266601562,
+          -0.223364919424057,
+          -6.380177974700928
+        ],
+        [
+          97.62422943115234,
+          0.5580741167068481,
+          -4.8300700187683105
+        ]
+      ],
+      "raw_crop_points": 45,
+      "novel_points": 45,
+      "source_sha256": "acc224afb77f821500af7d92deb6e3283ff9a5803d832f0b931cec94be5f72d6",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3225,
+      "episode": "main_approach",
+      "discovery_center": [
+        97.13090515136719,
+        -0.09762115776538849,
+        -5.052033424377441
+      ],
+      "discovery_bbox": [
+        [
+          96.9238510131836,
+          -0.5500893592834473,
+          -5.5205769538879395
+        ],
+        [
+          97.4990463256836,
+          0.24152962863445282,
+          -4.738152027130127
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          96.8556900024414,
+          -0.5500893592834473,
+          -6.393303394317627
+        ],
+        [
+          97.4990463256836,
+          0.24152962863445282,
+          -4.738152027130127
+        ]
+      ],
+      "raw_crop_points": 49,
+      "novel_points": 49,
+      "source_sha256": "87fed11fe67f9ed7d4096916a9e0377a24c13adc89cf99c3bb1217dad84ebe9d",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3250,
+      "episode": "main_approach",
+      "discovery_center": [
+        98.9867935180664,
+        -0.06639442592859268,
+        -5.175723075866699
+      ],
+      "discovery_bbox": [
+        [
+          98.85189819335938,
+          -0.4459224045276642,
+          -5.605374813079834
+        ],
+        [
+          99.17378234863281,
+          0.3986872136592865,
+          -4.9195756912231445
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          98.75032806396484,
+          -0.4952588975429535,
+          -6.396944522857666
+        ],
+        [
+          99.37029266357422,
+          0.3986872136592865,
+          -4.9195756912231445
+        ]
+      ],
+      "raw_crop_points": 53,
+      "novel_points": 53,
+      "source_sha256": "f122d4dce442e21831f8f4a49bf37e14b96f97f4327262b73a9027e0953c4d70",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3275,
+      "episode": "main_approach",
+      "discovery_center": [
+        99.76530456542969,
+        0.014354031533002853,
+        -5.219303131103516
+      ],
+      "discovery_bbox": [
+        [
+          99.66280364990234,
+          -0.4880779981613159,
+          -5.656365871429443
+        ],
+        [
+          100.0019302368164,
+          0.5266680121421814,
+          -4.9529547691345215
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.37026977539062,
+          -0.4880779981613159,
+          -6.566228866577148
+        ],
+        [
+          100.0019302368164,
+          0.5266680121421814,
+          -4.9529547691345215
+        ]
+      ],
+      "raw_crop_points": 54,
+      "novel_points": 54,
+      "source_sha256": "d03fef689f46cfe6bad7b565bff4a2fbba2578aec6ce01ca0c2dfd4562f023a7",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3300,
+      "episode": "main_approach",
+      "discovery_center": [
+        99.85840606689453,
+        -0.01914185844361782,
+        -5.215270519256592
+      ],
+      "discovery_bbox": [
+        [
+          99.73456573486328,
+          -0.49805042147636414,
+          -5.66735315322876
+        ],
+        [
+          100.09988403320312,
+          0.3446193337440491,
+          -4.855057716369629
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.70507049560547,
+          -0.49805042147636414,
+          -6.446866035461426
+        ],
+        [
+          100.11927795410156,
+          0.3446193337440491,
+          -4.855057716369629
+        ]
+      ],
+      "raw_crop_points": 50,
+      "novel_points": 50,
+      "source_sha256": "d85fdcf5ad9d20c5fc605b1ed2df95a9b1c5280b4949c99337736c9ad42b6b22",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3325,
+      "episode": "main_approach",
+      "discovery_center": [
+        100.09736633300781,
+        -0.004797640256583691,
+        -5.230751037597656
+      ],
+      "discovery_bbox": [
+        [
+          99.98534393310547,
+          -0.5180030465126038,
+          -5.684537887573242
+        ],
+        [
+          100.40481567382812,
+          0.40276673436164856,
+          -4.884161949157715
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.7454605102539,
+          -0.5180030465126038,
+          -6.580338478088379
+        ],
+        [
+          100.40481567382812,
+          0.40276673436164856,
+          -4.884161949157715
+        ]
+      ],
+      "raw_crop_points": 49,
+      "novel_points": 49,
+      "source_sha256": "0d8bd897af584cdaf088cbe5772668762d2738ecb35c7513dc03211f0c20f9d1",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3350,
+      "episode": "main_approach",
+      "discovery_center": [
+        100.08256530761719,
+        -0.023967858403921127,
+        -5.222204208374023
+      ],
+      "discovery_bbox": [
+        [
+          99.89334869384766,
+          -0.4897867739200592,
+          -5.68651008605957
+        ],
+        [
+          100.43970489501953,
+          0.2976907193660736,
+          -4.864979267120361
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.89334869384766,
+          -0.4897867739200592,
+          -6.46701717376709
+        ],
+        [
+          100.43970489501953,
+          0.2976907193660736,
+          -4.864979267120361
+        ]
+      ],
+      "raw_crop_points": 42,
+      "novel_points": 42,
+      "source_sha256": "d58f274c04fe7726e58b3561307b2779f0753d68f2a05b312a25a96cb39287a3",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3375,
+      "episode": "main_approach",
+      "discovery_center": [
+        100.02960205078125,
+        -0.10546209663152695,
+        -5.215075492858887
+      ],
+      "discovery_bbox": [
+        [
+          99.93821716308594,
+          -0.47010987997055054,
+          -5.673551082611084
+        ],
+        [
+          100.30172729492188,
+          0.35482558608055115,
+          -4.970015525817871
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.7406234741211,
+          -0.47010987997055054,
+          -6.44462251663208
+        ],
+        [
+          100.30172729492188,
+          0.35482558608055115,
+          -4.970015525817871
+        ]
+      ],
+      "raw_crop_points": 49,
+      "novel_points": 49,
+      "source_sha256": "ce153692df5ce67442a0fbd868b409db255f31cdc028213404e64c858756bdbc",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3400,
+      "episode": "main_approach",
+      "discovery_center": [
+        100.09225463867188,
+        -0.11993739008903503,
+        -5.222711563110352
+      ],
+      "discovery_bbox": [
+        [
+          99.93047332763672,
+          -0.47043827176094055,
+          -5.678339958190918
+        ],
+        [
+          100.2945785522461,
+          0.22076834738254547,
+          -4.770722389221191
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.93047332763672,
+          -0.47043827176094055,
+          -6.4599456787109375
+        ],
+        [
+          100.2945785522461,
+          0.2586495876312256,
+          -4.770722389221191
+        ]
+      ],
+      "raw_crop_points": 50,
+      "novel_points": 50,
+      "source_sha256": "446bc2595a49e40d81fbb7e632adf0ba7c2ea7d35cf4567895fb29de2cdef9cb",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3425,
+      "episode": "main_approach",
+      "discovery_center": [
+        100.15548706054688,
+        0.0,
+        -5.219741344451904
+      ],
+      "discovery_bbox": [
+        [
+          100.01921844482422,
+          -0.3744683265686035,
+          -5.690454006195068
+        ],
+        [
+          100.5094223022461,
+          0.45114439725875854,
+          -4.974713325500488
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.92906951904297,
+          -0.3744683265686035,
+          -6.459364414215088
+        ],
+        [
+          100.5094223022461,
+          0.45114439725875854,
+          -4.974713325500488
+        ]
+      ],
+      "raw_crop_points": 55,
+      "novel_points": 55,
+      "source_sha256": "d856eb3e261749b31c077c0dd2a9e3cc7612b138891221f2030b24059cec4ec5",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3450,
+      "episode": "main_approach",
+      "discovery_center": [
+        99.849609375,
+        0.2105150818824768,
+        -5.197967052459717
+      ],
+      "discovery_bbox": [
+        [
+          99.65784454345703,
+          -0.1911247819662094,
+          -5.654957294464111
+        ],
+        [
+          100.1380615234375,
+          0.6526556015014648,
+          -4.499748706817627
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.60558319091797,
+          -0.31504181027412415,
+          -6.469940185546875
+        ],
+        [
+          100.4530029296875,
+          0.6526556015014648,
+          -4.499748706817627
+        ]
+      ],
+      "raw_crop_points": 60,
+      "novel_points": 60,
+      "source_sha256": "370406c98a786811416cd3db1c30f9dcc97d4d945082d1e95748e479adb4c261",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3475,
+      "episode": "main_approach",
+      "discovery_center": [
+        99.8603515625,
+        0.1337241232395172,
+        -5.053261756896973
+      ],
+      "discovery_bbox": [
+        [
+          99.65802764892578,
+          -0.26925918459892273,
+          -5.657492637634277
+        ],
+        [
+          100.33245086669922,
+          0.4704250693321228,
+          -4.499748706817627
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.5196533203125,
+          -0.26925918459892273,
+          -6.178901195526123
+        ],
+        [
+          100.33245086669922,
+          0.5627745985984802,
+          -4.499748706817627
+        ]
+      ],
+      "raw_crop_points": 50,
+      "novel_points": 50,
+      "source_sha256": "4be3560334dd049706549db0ccb754d23ba2f9c233c21eb3e84c32b05a157452",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3500,
+      "episode": "main_approach",
+      "discovery_center": [
+        99.87482452392578,
+        0.1626521348953247,
+        -5.061689376831055
+      ],
+      "discovery_bbox": [
+        [
+          99.6695556640625,
+          -0.1921270191669464,
+          -5.6572113037109375
+        ],
+        [
+          100.22775268554688,
+          0.49922260642051697,
+          -4.491226673126221
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.6695556640625,
+          -0.23900312185287476,
+          -6.173672676086426
+        ],
+        [
+          100.22775268554688,
+          0.49922260642051697,
+          -4.491226673126221
+        ]
+      ],
+      "raw_crop_points": 45,
+      "novel_points": 45,
+      "source_sha256": "275aa1d297409c1122dbea2b72a7965128f89a58861a6e2f1b8890c32451d538",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3525,
+      "episode": "main_approach",
+      "discovery_center": [
+        99.86145782470703,
+        0.15311723947525024,
+        -5.179874897003174
+      ],
+      "discovery_bbox": [
+        [
+          99.69203186035156,
+          -0.2776336371898651,
+          -5.655520915985107
+        ],
+        [
+          100.31376647949219,
+          0.6421366930007935,
+          -4.496160507202148
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.69203186035156,
+          -0.2776336371898651,
+          -6.178286075592041
+        ],
+        [
+          100.31376647949219,
+          0.6421366930007935,
+          -4.496160507202148
+        ]
+      ],
+      "raw_crop_points": 58,
+      "novel_points": 58,
+      "source_sha256": "fa67c51fbd6becbfcae479df3a6dea58d2bd8969bcb7cc5ead3f6a7e0fe25c1f",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3550,
+      "episode": "main_approach",
+      "discovery_center": [
+        99.791259765625,
+        0.33456626534461975,
+        -5.045966625213623
+      ],
+      "discovery_bbox": [
+        [
+          99.7095947265625,
+          -0.009564564563333988,
+          -5.650449752807617
+        ],
+        [
+          100.09928894042969,
+          0.7937710285186768,
+          -4.494142055511475
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          99.51544189453125,
+          -0.009564564563333988,
+          -6.173672676086426
+        ],
+        [
+          100.09928894042969,
+          0.7937710285186768,
+          -4.494142055511475
+        ]
+      ],
+      "raw_crop_points": 50,
+      "novel_points": 50,
+      "source_sha256": "5710f8fa6b6f5ad75fae2b082f55b9c1208825eba041f80c6c017efcf8eb671c",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3575,
+      "episode": "main_approach",
+      "discovery_center": [
+        98.68798065185547,
+        -0.2930678725242615,
+        -4.993515968322754
+      ],
+      "discovery_bbox": [
+        [
+          98.53562927246094,
+          -0.6813411116600037,
+          -5.586217880249023
+        ],
+        [
+          99.08435821533203,
+          0.09458748251199722,
+          -4.443905830383301
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          98.53562927246094,
+          -0.6813411116600037,
+          -6.1124677658081055
+        ],
+        [
+          99.08435821533203,
+          0.09458748251199722,
+          -4.443905830383301
+        ]
+      ],
+      "raw_crop_points": 55,
+      "novel_points": 55,
+      "source_sha256": "469bf7472a8b3c428cf2c2e8065fb9842d9c7bac83e564e9595ae2442751dc40",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3600,
+      "episode": "main_approach",
+      "discovery_center": [
+        98.6158218383789,
+        -0.292862206697464,
+        -4.982572555541992
+      ],
+      "discovery_bbox": [
+        [
+          98.47795867919922,
+          -0.5387957096099854,
+          -5.585654258728027
+        ],
+        [
+          99.01123046875,
+          0.1325565129518509,
+          -4.288989543914795
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          98.32247161865234,
+          -0.5387957096099854,
+          -6.091553688049316
+        ],
+        [
+          99.01123046875,
+          0.1325565129518509,
+          -4.288989543914795
+        ]
+      ],
+      "raw_crop_points": 47,
+      "novel_points": 47,
+      "source_sha256": "a94433b0302c7b62c93d06c74c2ad2bedfd4e132291cfcc38e04f7f26dd9f5a4",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3625,
+      "episode": "main_approach",
+      "discovery_center": [
+        98.66104125976562,
+        -0.1890973150730133,
+        -4.996660232543945
+      ],
+      "discovery_bbox": [
+        [
+          98.560302734375,
+          -0.6147264242172241,
+          -5.586781024932861
+        ],
+        [
+          98.98169708251953,
+          0.2655733823776245,
+          -4.441438674926758
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          98.5472183227539,
+          -0.6147264242172241,
+          -6.11984920501709
+        ],
+        [
+          99.0056381225586,
+          0.2655733823776245,
+          -4.441438674926758
+        ]
+      ],
+      "raw_crop_points": 54,
+      "novel_points": 54,
+      "source_sha256": "80b309dc35fd426e4a7c2e58dd186a86472474b901976971a8ce54f5025c2739",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3650,
+      "episode": "main_approach",
+      "discovery_center": [
+        97.905517578125,
+        -0.2627256512641907,
+        -4.950498580932617
+      ],
+      "discovery_bbox": [
+        [
+          97.72435760498047,
+          -0.6947396993637085,
+          -5.547340393066406
+        ],
+        [
+          98.23670196533203,
+          0.12237668037414551,
+          -4.406228542327881
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          97.5398178100586,
+          -0.6947396993637085,
+          -6.057722091674805
+        ],
+        [
+          98.23670196533203,
+          0.12237668037414551,
+          -4.406228542327881
+        ]
+      ],
+      "raw_crop_points": 54,
+      "novel_points": 54,
+      "source_sha256": "c2291309fb000fcdbb09800cc884f0910f06417f157d91740b8c94f217f133c3",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3675,
+      "episode": "main_approach",
+      "discovery_center": [
+        94.70903015136719,
+        -0.2770783603191376,
+        -4.930319786071777
+      ],
+      "discovery_bbox": [
+        [
+          94.4407958984375,
+          -0.6352739334106445,
+          -5.452226161956787
+        ],
+        [
+          95.06787872314453,
+          0.20946450531482697,
+          -4.269872665405273
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          94.4407958984375,
+          -0.6352739334106445,
+          -5.871647834777832
+        ],
+        [
+          95.06787872314453,
+          0.20946450531482697,
+          -4.269872665405273
+        ]
+      ],
+      "raw_crop_points": 57,
+      "novel_points": 57,
+      "source_sha256": "29266fd62beaf7fda45220bfbbb066eb0cf066079cf242003ed51b7fe214d3e8",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3700,
+      "episode": "main_approach",
+      "discovery_center": [
+        91.42122650146484,
+        -0.2674211263656616,
+        -4.76273250579834
+      ],
+      "discovery_bbox": [
+        [
+          91.18148040771484,
+          -0.6669036746025085,
+          -5.260015964508057
+        ],
+        [
+          91.7554702758789,
+          0.18371447920799255,
+          -4.120060443878174
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          90.99723052978516,
+          -0.6669036746025085,
+          -5.874881744384766
+        ],
+        [
+          92.43408966064453,
+          0.47645655274391174,
+          -4.120060443878174
+        ]
+      ],
+      "raw_crop_points": 65,
+      "novel_points": 65,
+      "source_sha256": "2c91d9962423e6f42cb9723c910fcdf2abc514522e47717091ca87b602b2e259",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3725,
+      "episode": "main_approach",
+      "discovery_center": [
+        88.269775390625,
+        -0.2705867290496826,
+        -4.582120895385742
+      ],
+      "discovery_bbox": [
+        [
+          88.10511779785156,
+          -0.7190277576446533,
+          -5.077244281768799
+        ],
+        [
+          88.54266357421875,
+          0.15270566940307617,
+          -3.979219436645508
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          88.07231903076172,
+          -0.7190277576446533,
+          -5.749505996704102
+        ],
+        [
+          89.23599243164062,
+          0.6200339198112488,
+          -3.979219436645508
+        ]
+      ],
+      "raw_crop_points": 71,
+      "novel_points": 71,
+      "source_sha256": "2058ff2f1e03921fe7aed192450f79469bf9cd95ecfa391fedab212aaae9a784",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3750,
+      "episode": "main_approach",
+      "discovery_center": [
+        85.21952819824219,
+        -0.27740994095802307,
+        -4.443629741668701
+      ],
+      "discovery_bbox": [
+        [
+          85.00128936767578,
+          -0.63694828748703,
+          -5.040529251098633
+        ],
+        [
+          85.54878997802734,
+          0.21276545524597168,
+          -3.8424150943756104
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          85.00128936767578,
+          -1.4435290098190308,
+          -5.85563325881958
+        ],
+        [
+          86.21058654785156,
+          0.21276545524597168,
+          -3.8424150943756104
+        ]
+      ],
+      "raw_crop_points": 77,
+      "novel_points": 77,
+      "source_sha256": "8fc0a975f144072e6ee724dc102a0e9f2e0bbbfe9385dc22205b09d84653ce08",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3775,
+      "episode": "main_approach",
+      "discovery_center": [
+        82.15730285644531,
+        -0.2560134530067444,
+        -4.2880964279174805
+      ],
+      "discovery_bbox": [
+        [
+          82.00191497802734,
+          -0.6618158221244812,
+          -4.945465087890625
+        ],
+        [
+          82.53370666503906,
+          0.22847233712673187,
+          -3.7038164138793945
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          81.29890441894531,
+          -1.4039493799209595,
+          -5.487316608428955
+        ],
+        [
+          83.44618225097656,
+          0.9917276501655579,
+          -3.7038164138793945
+        ]
+      ],
+      "raw_crop_points": 83,
+      "novel_points": 82,
+      "source_sha256": "949161098828ada474c73f3d9b4c21e75b924bd3bb0e549ed33133e1678dd388",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3800,
+      "episode": "main_approach",
+      "discovery_center": [
+        78.92955017089844,
+        -0.3026089668273926,
+        -4.194945812225342
+      ],
+      "discovery_bbox": [
+        [
+          78.7673568725586,
+          -0.6822964549064636,
+          -4.746365547180176
+        ],
+        [
+          79.20660400390625,
+          0.12096966803073883,
+          -3.624481678009033
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          78.46508026123047,
+          -0.6822964549064636,
+          -5.281475067138672
+        ],
+        [
+          79.37330627441406,
+          0.9249868392944336,
+          -3.624481678009033
+        ]
+      ],
+      "raw_crop_points": 82,
+      "novel_points": 81,
+      "source_sha256": "ee9f85e0f7ae8516dd0e9958b537cd3a46641098fb724563bd192cfa419c51a7",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3825,
+      "episode": "main_approach",
+      "discovery_center": [
+        75.67595672607422,
+        -0.2610645294189453,
+        -4.024615287780762
+      ],
+      "discovery_bbox": [
+        [
+          75.49459838867188,
+          -0.6746745109558105,
+          -4.671238899230957
+        ],
+        [
+          75.95682525634766,
+          0.1746125966310501,
+          -3.399108409881592
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          74.89933013916016,
+          -0.6746745109558105,
+          -5.183773040771484
+        ],
+        [
+          75.95682525634766,
+          0.36608126759529114,
+          -3.399108409881592
+        ]
+      ],
+      "raw_crop_points": 95,
+      "novel_points": 95,
+      "source_sha256": "2f6f1369e7e9f1b68866f47cb7e921c3b80ff72c418f1df2c219579aa524c83f",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3850,
+      "episode": "main_approach",
+      "discovery_center": [
+        72.40833282470703,
+        -0.2704465687274933,
+        -3.86142635345459
+      ],
+      "discovery_bbox": [
+        [
+          72.24345397949219,
+          -0.6315879225730896,
+          -4.489162921905518
+        ],
+        [
+          72.78563690185547,
+          0.18793398141860962,
+          -3.326185703277588
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          71.25670623779297,
+          -0.6487515568733215,
+          -5.048028945922852
+        ],
+        [
+          72.78563690185547,
+          0.47765833139419556,
+          -3.326185703277588
+        ]
+      ],
+      "raw_crop_points": 95,
+      "novel_points": 95,
+      "source_sha256": "c072e102af5db7ccc4daffeee127fc2081e28eb3e9bc3e6ffbfb62461af1fb09",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3875,
+      "episode": "main_approach",
+      "discovery_center": [
+        69.12369537353516,
+        -0.2517207860946655,
+        -3.798125743865967
+      ],
+      "discovery_bbox": [
+        [
+          68.98641967773438,
+          -0.6488826274871826,
+          -4.3974080085754395
+        ],
+        [
+          69.42481231689453,
+          0.17289653420448303,
+          -3.1085798740386963
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          68.90402221679688,
+          -1.466135025024414,
+          -4.857097625732422
+        ],
+        [
+          69.794921875,
+          0.9357277154922485,
+          -3.1085798740386963
+        ]
+      ],
+      "raw_crop_points": 113,
+      "novel_points": 113,
+      "source_sha256": "56a50dee7efdd2c738dcd7e1d645480be9f10e3222dca7e38197c6f2bd47566b",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3900,
+      "episode": "main_approach",
+      "discovery_center": [
+        65.89666748046875,
+        -0.29671087861061096,
+        -3.7413763999938965
+      ],
+      "discovery_bbox": [
+        [
+          65.67108154296875,
+          -0.7529292702674866,
+          -4.270010471343994
+        ],
+        [
+          66.24738311767578,
+          0.1767084300518036,
+          -2.973146677017212
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          64.79347229003906,
+          -0.7529292702674866,
+          -5.0255608558654785
+        ],
+        [
+          66.24738311767578,
+          0.1767084300518036,
+          -2.973146677017212
+        ]
+      ],
+      "raw_crop_points": 121,
+      "novel_points": 121,
+      "source_sha256": "31fbfd2681d4f4debb2b93adf619a84b114ce5fce4ec190e27f69d8d0de7fefe",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3925,
+      "episode": "main_approach",
+      "discovery_center": [
+        62.65325164794922,
+        -0.2696855366230011,
+        -3.555018663406372
+      ],
+      "discovery_bbox": [
+        [
+          62.503929138183594,
+          -0.7140808701515198,
+          -4.061078071594238
+        ],
+        [
+          63.05241012573242,
+          0.1930990070104599,
+          -2.8781702518463135
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          61.50246810913086,
+          -0.7140808701515198,
+          -4.638132095336914
+        ],
+        [
+          63.25135803222656,
+          0.6188488006591797,
+          -2.8781702518463135
+        ]
+      ],
+      "raw_crop_points": 123,
+      "novel_points": 121,
+      "source_sha256": "6e662ee409b5bee47adb716e7d33c2fb72f1a36aabb10730909b4c8ab2578132",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3950,
+      "episode": "main_approach",
+      "discovery_center": [
+        59.43184280395508,
+        -0.2791329324245453,
+        -3.434251308441162
+      ],
+      "discovery_bbox": [
+        [
+          59.31730270385742,
+          -0.6902399659156799,
+          -3.978323459625244
+        ],
+        [
+          59.75166320800781,
+          0.16593892872333527,
+          -2.7366795539855957
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          58.260459899902344,
+          -0.6902399659156799,
+          -4.79573392868042
+        ],
+        [
+          60.01730728149414,
+          0.9317710995674133,
+          -2.7366795539855957
+        ]
+      ],
+      "raw_crop_points": 133,
+      "novel_points": 132,
+      "source_sha256": "48544630eca22b7b8729d6a462014e08ff2598284dddeca24669e533490f2f0d",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 3975,
+      "episode": "main_approach",
+      "discovery_center": [
+        56.23299789428711,
+        -0.31760889291763306,
+        -3.253451108932495
+      ],
+      "discovery_bbox": [
+        [
+          55.6642951965332,
+          -0.7003886699676514,
+          -3.8687007427215576
+        ],
+        [
+          56.50370407104492,
+          0.16001656651496887,
+          -2.579153060913086
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          55.57078552246094,
+          -0.9825321435928345,
+          -4.401983737945557
+        ],
+        [
+          56.83558654785156,
+          0.612389087677002,
+          -2.579153060913086
+        ]
+      ],
+      "raw_crop_points": 134,
+      "novel_points": 133,
+      "source_sha256": "ab5c71fb73ec62c25a8daeb36037dbe18bb9c5f706e1356dc267be8c96d2def5",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4000,
+      "episode": "main_approach",
+      "discovery_center": [
+        53.00579833984375,
+        -0.3019810914993286,
+        -3.14054012298584
+      ],
+      "discovery_bbox": [
+        [
+          52.8377799987793,
+          -0.704060435295105,
+          -3.7047982215881348
+        ],
+        [
+          53.36298751831055,
+          0.18836335837841034,
+          -2.5325164794921875
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          51.9632568359375,
+          -1.3803482055664062,
+          -4.577291965484619
+        ],
+        [
+          53.575374603271484,
+          0.9406735897064209,
+          -2.5325164794921875
+        ]
+      ],
+      "raw_crop_points": 150,
+      "novel_points": 148,
+      "source_sha256": "7b5f2081cbce4ac238805f83fdde4258ef762485c8cad0240312260bbadb9c2a",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4025,
+      "episode": "main_approach",
+      "discovery_center": [
+        49.77521896362305,
+        -0.23352621495723724,
+        -2.9530227184295654
+      ],
+      "discovery_bbox": [
+        [
+          48.45256423950195,
+          -0.6337935924530029,
+          -3.4689435958862305
+        ],
+        [
+          50.21195602416992,
+          0.31569144129753113,
+          -2.3776259422302246
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          48.674373626708984,
+          -1.448812484741211,
+          -4.1446380615234375
+        ],
+        [
+          51.06920623779297,
+          0.6608840227127075,
+          -2.3776259422302246
+        ]
+      ],
+      "raw_crop_points": 166,
+      "novel_points": 163,
+      "source_sha256": "0b5cfbabf2c6030acf400f19aaf1f96ec489f0cdcbd3a1cefb05c71425ff6350",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4050,
+      "episode": "main_approach",
+      "discovery_center": [
+        46.56754684448242,
+        -0.25237441062927246,
+        -2.8029282093048096
+      ],
+      "discovery_bbox": [
+        [
+          46.36484146118164,
+          -0.6466105580329895,
+          -3.4237468242645264
+        ],
+        [
+          46.91866683959961,
+          0.21527893841266632,
+          -2.2270047664642334
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          45.58252716064453,
+          -1.4166393280029297,
+          -3.998668909072876
+        ],
+        [
+          46.91866683959961,
+          0.5310531854629517,
+          -2.2270047664642334
+        ]
+      ],
+      "raw_crop_points": 175,
+      "novel_points": 172,
+      "source_sha256": "d34620cb6566d15b7632070fe69c06604346ff8ade45c50df410a595f6e77fb4",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4075,
+      "episode": "main_approach",
+      "discovery_center": [
+        43.3658561706543,
+        -0.24107323586940765,
+        -2.618753671646118
+      ],
+      "discovery_bbox": [
+        [
+          43.236839294433594,
+          -0.647556483745575,
+          -3.1886038780212402
+        ],
+        [
+          43.84423828125,
+          0.2674524784088135,
+          -2.1243135929107666
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          42.15986251831055,
+          -1.467536449432373,
+          -4.176143646240234
+        ],
+        [
+          44.510841369628906,
+          0.9252831339836121,
+          -2.1243135929107666
+        ]
+      ],
+      "raw_crop_points": 187,
+      "novel_points": 178,
+      "source_sha256": "38f83f9fa0b9a0676cbe98c77072a8213106402a677100d8e6187bc15ff86dbd",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4100,
+      "episode": "main_approach",
+      "discovery_center": [
+        40.066200256347656,
+        -0.2383599579334259,
+        -2.4198427200317383
+      ],
+      "discovery_bbox": [
+        [
+          38.65443801879883,
+          -0.641980767250061,
+          -3.1095004081726074
+        ],
+        [
+          40.4705924987793,
+          0.3295813798904419,
+          -1.9181722402572632
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          38.7907600402832,
+          -1.4790661334991455,
+          -3.689148187637329
+        ],
+        [
+          41.11252212524414,
+          0.9725684523582458,
+          -1.9181722402572632
+        ]
+      ],
+      "raw_crop_points": 211,
+      "novel_points": 201,
+      "source_sha256": "27121bdea77509a5956c2cbf0ebf5817f491f0f29b36249accb35d0e1d3af920",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4125,
+      "episode": "main_approach",
+      "discovery_center": [
+        37.15963363647461,
+        -0.2238261103630066,
+        -2.2479088306427
+      ],
+      "discovery_bbox": [
+        [
+          35.894309997558594,
+          -0.6422716975212097,
+          -3.022280693054199
+        ],
+        [
+          37.479679107666016,
+          0.3851209282875061,
+          -1.8528902530670166
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          35.894309997558594,
+          -1.3940699100494385,
+          -3.907780170440674
+        ],
+        [
+          38.4531135559082,
+          0.9992673993110657,
+          -1.8528902530670166
+        ]
+      ],
+      "raw_crop_points": 222,
+      "novel_points": 206,
+      "source_sha256": "b5cfde8e8458465c071168bc175da588ad6979f42a0de226ff635452974c6f36",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4150,
+      "episode": "main_approach",
+      "discovery_center": [
+        34.28849792480469,
+        -0.20674388110637665,
+        -2.135401725769043
+      ],
+      "discovery_bbox": [
+        [
+          32.97787857055664,
+          -0.5643286108970642,
+          -2.951293468475342
+        ],
+        [
+          34.662052154541016,
+          0.5560082793235779,
+          -1.7141810655593872
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          33.02284622192383,
+          -1.405938744544983,
+          -3.789116621017456
+        ],
+        [
+          35.51559066772461,
+          1.0261564254760742,
+          -1.7141810655593872
+        ]
+      ],
+      "raw_crop_points": 245,
+      "novel_points": 223,
+      "source_sha256": "ab28bfcc69253e81c9cb16861a91768a0ebb55486b1649a4a22c409165395f79",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4175,
+      "episode": "main_approach",
+      "discovery_center": [
+        31.261743545532227,
+        -0.17671337723731995,
+        -1.9995558261871338
+      ],
+      "discovery_bbox": [
+        [
+          29.94735336303711,
+          -0.524803638458252,
+          -2.813216209411621
+        ],
+        [
+          31.653104782104492,
+          0.5176597833633423,
+          -1.563850998878479
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          30.008216857910156,
+          -1.38877272605896,
+          -3.6341869831085205
+        ],
+        [
+          32.48464584350586,
+          0.9659518003463745,
+          -1.563850998878479
+        ]
+      ],
+      "raw_crop_points": 269,
+      "novel_points": 245,
+      "source_sha256": "c112c206e740307093fbe027649e750fa6d8f7a98fff6737ede4c4526e6db8bd",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4200,
+      "episode": "main_approach",
+      "discovery_center": [
+        28.221162796020508,
+        -0.15115328133106232,
+        -1.8092199563980103
+      ],
+      "discovery_bbox": [
+        [
+          26.826072692871094,
+          -0.49875274300575256,
+          -2.6708316802978516
+        ],
+        [
+          28.58213996887207,
+          0.4547639787197113,
+          -1.4145097732543945
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          26.963306427001953,
+          -1.3622750043869019,
+          -3.517472982406616
+        ],
+        [
+          29.47939109802246,
+          0.9364826679229736,
+          -1.4145097732543945
+        ]
+      ],
+      "raw_crop_points": 310,
+      "novel_points": 273,
+      "source_sha256": "08c47c3c30811551f9a4c7eaba48eebe722e75a3abf92d5bd10654a2aabec9ab",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4225,
+      "episode": "main_approach",
+      "discovery_center": [
+        25.070022583007812,
+        -0.10325382649898529,
+        -1.635852575302124
+      ],
+      "discovery_bbox": [
+        [
+          23.72674560546875,
+          -0.4261951744556427,
+          -2.547107696533203
+        ],
+        [
+          25.502220153808594,
+          0.6317369341850281,
+          -1.254536747932434
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          23.796178817749023,
+          -1.3501571416854858,
+          -3.4128570556640625
+        ],
+        [
+          26.36997413635254,
+          1.0061448812484741,
+          -1.254536747932434
+        ]
+      ],
+      "raw_crop_points": 358,
+      "novel_points": 302,
+      "source_sha256": "cccd1082c0dab3d131ff5b2663933af98be84a0c71700b386cef62b7e6ab458b",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4250,
+      "episode": "main_approach",
+      "discovery_center": [
+        21.974201202392578,
+        -0.08627944439649582,
+        -1.47751784324646
+      ],
+      "discovery_bbox": [
+        [
+          20.637569427490234,
+          -0.3832058310508728,
+          -2.432309865951538
+        ],
+        [
+          22.37445640563965,
+          0.5671765208244324,
+          -1.1789871454238892
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          20.69648551940918,
+          -1.325057029724121,
+          -3.3008882999420166
+        ],
+        [
+          23.188371658325195,
+          1.0823214054107666,
+          -1.1789871454238892
+        ]
+      ],
+      "raw_crop_points": 362,
+      "novel_points": 271,
+      "source_sha256": "d5ec6b3371bae02ac13fcf3b02b5cda92194ce4fcef6d02481d4a0f2eb5ecc5f",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4275,
+      "episode": "main_approach",
+      "discovery_center": [
+        18.80575942993164,
+        -0.06661495566368103,
+        -1.2719565629959106
+      ],
+      "discovery_bbox": [
+        [
+          18.10383415222168,
+          -0.3655664324760437,
+          -2.2633655071258545
+        ],
+        [
+          19.23208236694336,
+          0.5113145112991333,
+          -0.9923673868179321
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          17.519622802734375,
+          -1.2845059633255005,
+          -3.1810803413391113
+        ],
+        [
+          20.07657241821289,
+          1.158730149269104,
+          -0.9923673868179321
+        ]
+      ],
+      "raw_crop_points": 505,
+      "novel_points": 359,
+      "source_sha256": "72f427b31194fd37d2e0f8e46bf458e0b7d4924c42cf276d812359f88e16149b",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4300,
+      "episode": "main_approach",
+      "discovery_center": [
+        15.745970726013184,
+        -0.048227712512016296,
+        -1.2082889080047607
+      ],
+      "discovery_bbox": [
+        [
+          15.502121925354004,
+          -0.35350456833839417,
+          -2.1812262535095215
+        ],
+        [
+          16.085363388061523,
+          0.43622660636901855,
+          -0.9091073870658875
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          14.455024719238281,
+          -1.2919763326644897,
+          -3.05804705619812
+        ],
+        [
+          17.03965187072754,
+          1.1903679370880127,
+          -0.9091073870658875
+        ]
+      ],
+      "raw_crop_points": 655,
+      "novel_points": 391,
+      "source_sha256": "4a554e55048219754b92f1d06cfe63cedfcb32558c9ed51797522312ceb3300a",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent",
+      "secondary_component_note": "Separate9-return patch atraw[14.603,.824,-1.030] has extent[.197,.112,.069]m. Uncertain appendage/background; not body center or body membership."
+    },
+    {
+      "frame": 4325,
+      "episode": "main_approach",
+      "discovery_center": [
+        12.629514694213867,
+        0.0751875564455986,
+        -1.2555770874023438
+      ],
+      "discovery_bbox": [
+        [
+          11.387429237365723,
+          -0.2098478525876999,
+          -2.042025566101074
+        ],
+        [
+          13.044384002685547,
+          0.7086895704269409,
+          -0.7641953825950623
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          11.331162452697754,
+          -1.1653449535369873,
+          -2.9175329208374023
+        ],
+        [
+          13.926136016845703,
+          1.321813941001892,
+          -0.7641953825950623
+        ]
+      ],
+      "raw_crop_points": 781,
+      "novel_points": 453,
+      "source_sha256": "c279d65f466ce33d4d4f889f68e543683ae96899fd6605e5e24f9f49b3309c7e",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4350,
+      "episode": "main_approach",
+      "discovery_center": [
+        9.53271198272705,
+        0.13078978657722473,
+        -1.1918530464172363
+      ],
+      "discovery_bbox": [
+        [
+          8.134605407714844,
+          -0.20608149468898773,
+          -1.9149532318115234
+        ],
+        [
+          9.93382740020752,
+          0.6426147222518921,
+          -0.6229408979415894
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          8.63995361328125,
+          -1.113362431526184,
+          -2.591306686401367
+        ],
+        [
+          10.826193809509277,
+          1.378967046737671,
+          -0.6229408979415894
+        ]
+      ],
+      "raw_crop_points": 790,
+      "novel_points": 647,
+      "source_sha256": "df772ad5f3213a85f40ec70891ba682f5fb0c77940b7b1611b5d3ca7123f5845",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4375,
+      "episode": "main_approach",
+      "discovery_center": [
+        6.6509270668029785,
+        0.24870890378952026,
+        -0.9929450750350952
+      ],
+      "discovery_bbox": [
+        [
+          5.215399265289307,
+          -0.11263783276081085,
+          -1.6864137649536133
+        ],
+        [
+          6.976593017578125,
+          0.714491069316864,
+          -0.45059260725975037
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          5.35930871963501,
+          -0.11263783276081085,
+          -1.6864137649536133
+        ],
+        [
+          6.976593017578125,
+          0.7067785263061523,
+          -0.45059260725975037
+        ]
+      ],
+      "raw_crop_points": 923,
+      "novel_points": 923,
+      "source_sha256": "2758764575d2e84858f2bd17b60bb7413b83e1bcc989d51820f3c3e13594cdf3",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    },
+    {
+      "frame": 4400,
+      "episode": "main_approach",
+      "discovery_center": [
+        3.8447909355163574,
+        0.2553112506866455,
+        -0.7274056673049927
+      ],
+      "discovery_bbox": [
+        [
+          3.636429786682129,
+          -0.04820200428366661,
+          -0.9908711910247803
+        ],
+        [
+          4.050609588623047,
+          0.7257205843925476,
+          -0.3619310259819031
+        ]
+      ],
+      "raw_crop_bbox": [
+        [
+          3.636429786682129,
+          -0.04820200428366661,
+          -0.9908711910247803
+        ],
+        [
+          4.050609588623047,
+          0.7257205843925476,
+          -0.3619310259819031
+        ]
+      ],
+      "raw_crop_points": 874,
+      "novel_points": 874,
+      "source_sha256": "70493efb2c4234d3df878445b6acf43c35f36100821942315be35db7284b3912",
+      "review_status": "reviewed_trajectory_body_core",
+      "membership_note": "Raw crop includes context; bounds are not object segmentation.",
+      "gauge_relation": "unknown",
+      "identity_confidence": "person-body trajectory supported by raw temporal continuity and near shape; sparse far category not independent"
+    }
+  ],
+  "labels_frozen": true,
+  "review_scope": "113 sampled anchors reviewed in10 raw-context front-view atlases; no detector outputs, exact segmentation, surveyed gauge or exhaustive first-visible claim.",
+  "review_method": "Independent raw-context review plus eleven manually bounded positive anchors; use discovery body-core bounds, never raw crop context bounds as object segmentation."
+}

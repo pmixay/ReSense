@@ -1,0 +1,344 @@
+{
+  "status": "DEFAULT0_GATE_PASS_JOINT_RESEAL_PENDING",
+  "checked_utc": "2026-10-18T11:23:49.096629+00:00",
+  "source_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "source_sha256": "5eae5197cc6497b029665a19e85b28fb217e934d8a80928cba6c1d2c5ad51700",
+  "source_files": 38,
+  "default_replay_frames": 0,
+  "rail_axis_extension": false,
+  "gate_no_waivers_or_overrides": true,
+  "ordinary_rows": 15269,
+  "set_F_rows": 3060,
+  "ordinary_boundaries": {
+    "doubleT_obstacle.jsonl": {
+      "rows": 201,
+      "stop_frames": 193,
+      "stop_intervals": [
+        [
+          8,
+          200
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "doubleT_platform.jsonl": {
+      "rows": 345,
+      "stop_frames": 2,
+      "stop_intervals": [
+        [
+          36,
+          37
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "roundT_doubleT.jsonl": {
+      "rows": 252,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_pressureGate_roundT.jsonl": {
+      "rows": 268,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "roundT_squareT_pressureGate_squareT.jsonl": {
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "exact_boundaries": true
+    },
+    "squareT_platform_squareT_switch.jsonl": {
+      "rows": 877,
+      "stop_frames": 37,
+      "stop_intervals": [
+        [
+          312,
+          313
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          437,
+          438
+        ],
+        [
+          490,
+          490
+        ],
+        [
+          500,
+          501
+        ],
+        [
+          522,
+          524
+        ],
+        [
+          527,
+          528
+        ],
+        [
+          580,
+          580
+        ],
+        [
+          612,
+          613
+        ],
+        [
+          640,
+          642
+        ],
+        [
+          692,
+          708
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "cloud_with_fake_obj.jsonl": {
+      "rows": 1510,
+      "stop_frames": 447,
+      "stop_intervals": [
+        [
+          5,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          403,
+          426
+        ],
+        [
+          462,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          627,
+          683
+        ],
+        [
+          693,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_0.jsonl": {
+      "rows": 1409,
+      "stop_frames": 12,
+      "stop_intervals": [
+        [
+          23,
+          30
+        ],
+        [
+          1378,
+          1378
+        ],
+        [
+          1393,
+          1395
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_1.jsonl": {
+      "rows": 1409,
+      "stop_frames": 14,
+      "stop_intervals": [
+        [
+          438,
+          438
+        ],
+        [
+          1259,
+          1269
+        ],
+        [
+          1320,
+          1321
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_2.jsonl": {
+      "rows": 1409,
+      "stop_frames": 6,
+      "stop_intervals": [
+        [
+          242,
+          243
+        ],
+        [
+          1334,
+          1337
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_3.jsonl": {
+      "rows": 1409,
+      "stop_frames": 2,
+      "stop_intervals": [
+        [
+          838,
+          839
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_4.jsonl": {
+      "rows": 1409,
+      "stop_frames": 20,
+      "stop_intervals": [
+        [
+          63,
+          68
+        ],
+        [
+          78,
+          81
+        ],
+        [
+          265,
+          268
+        ],
+        [
+          1223,
+          1228
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_5.jsonl": {
+      "rows": 1409,
+      "stop_frames": 36,
+      "stop_intervals": [
+        [
+          293,
+          298
+        ],
+        [
+          302,
+          306
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          319,
+          320
+        ],
+        [
+          814,
+          821
+        ],
+        [
+          823,
+          824
+        ],
+        [
+          898,
+          908
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_6.jsonl": {
+      "rows": 1409,
+      "stop_frames": 27,
+      "stop_intervals": [
+        [
+          671,
+          672
+        ],
+        [
+          809,
+          814
+        ],
+        [
+          817,
+          820
+        ],
+        [
+          830,
+          832
+        ],
+        [
+          1332,
+          1333
+        ],
+        [
+          1346,
+          1355
+        ]
+      ],
+      "exact_boundaries": true
+    },
+    "new_data_7.jsonl": {
+      "rows": 1408,
+      "stop_frames": 9,
+      "stop_intervals": [
+        [
+          623,
+          624
+        ],
+        [
+          643,
+          644
+        ],
+        [
+          781,
+          783
+        ],
+        [
+          785,
+          786
+        ]
+      ],
+      "exact_boundaries": true
+    }
+  },
+  "set_F_sequences_exact": true,
+  "lost_added_delayed_shortened_stop_frames": 0,
+  "fresh_gate_metric_verdicts": {
+    "same": 208,
+    "better": 16
+  },
+  "verified_archive_members": 27,
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/review_acceptance.py": "7adfa097ab85d7dbaee686f33f6793bd89acd149e0b1ae9c515ec063bd95509e",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/runtime_identity.json": "cf9c62f2e40e7132f5ab146257ff0a93aed23f78e93f3d9345a05238c0edc462",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate.json": "dd799f78dd55b7797f581754777f41b68f5db035c8336220a9ab188f33772517",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_independent_review.json": "b56665aaf018ac30440d47972efd3fadb81b849abc9e059b4a62a86430a12e58",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/gate.json": "9ad69a9c30f2e8709fa2aab37e9eb750505c5057b1e0470cf435cfc52b89f2aa",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/receipt.json": "071c57a82e3a36fde7a56a9407a4c99d115f0086552225f86bca28153990b0c5",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_execution_status.json": "7a2c268d9acb090354d4056c0460f5f08703c8348217d9dcd7e21879fd0f09af",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_execution_manifest.json": "73e779b616ad44d8ee97e4383e4a8532665bf3459ed29ba1ba78b7fe9c8427e7",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/raw/gate_manifest.json": "7aca9fcd26bc9c6a3d55d8954c29ead56e616d5eb202851a41310bd4b1a3cf0c",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/raw/gate.tar.gz": "504d8151517d805971401b6bc5788547ff5d2b28932a5d47f557c7c3989a00bb"
+  },
+  "limits": [
+    "Gate alone cannot authorize reseal; final-source X3 and actual Falcon are separately required.",
+    "Exact serialized STOP intervals and stored Set F rows; not surveyed truth or full-precision equivalence.",
+    "Latency excluded from acceptance; N3/N6 remain unaccepted and replay4 remains opt-in."
+  ]
+}

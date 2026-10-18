@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "scope": "real ROS2 DDS node and PTY rosbag2 player, no mocks",
+  "detector_pid": 30,
+  "detector_restarts": 0,
+  "controls": {
+    "initial_rate": 0.5,
+    "space_pauses": true,
+    "pause_invalidates_monitoring": true,
+    "no_frames_while_paused": true,
+    "keyboard_reduced_rate": 0.4,
+    "space_resumes": true,
+    "pandar128": {
+      "frames": 40,
+      "recordings": [
+        1
+      ],
+      "first_decision": "FAULT",
+      "first_freshness": "epoch_unconfirmed",
+      "go": 17,
+      "stop": 21,
+      "generations": [
+        2
+      ]
+    },
+    "falcon_ros": {
+      "frames": 40,
+      "recordings": [
+        2
+      ],
+      "first_decision": "FAULT",
+      "first_freshness": "epoch_unconfirmed",
+      "go": 18,
+      "stop": 21,
+      "generations": [
+        4
+      ]
+    }
+  }
+}

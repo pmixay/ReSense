@@ -1,0 +1,14 @@
+Detector freeze FAIL:
+- added detector file: resense/dust.py
+- added detector file: resense/dust_health.py
+- changed detector file: configs/default.yaml
+- changed detector file: resense/calibration.py
+- changed detector file: resense/config.py
+- changed detector file: resense/detector.py
+- changed detector file: resense/farrails.py
+- changed detector file: resense/health.py
+- changed detector file: resense/track.py
+- changed detector file: resense/tracking.py
+- changed detector file: ros2_ws/src/resense_ros/config/detector.yaml
+- canonical / ROS config does not match the freeze
+- validation must use the current default config without overrides

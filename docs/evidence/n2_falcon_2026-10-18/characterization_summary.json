@@ -1,0 +1,598 @@
+{
+  "frames": 4443,
+  "duration_header_s": 444.20857176799973,
+  "header_gap_s_min_median_max": [
+    0.09999631099981343,
+    0.10000204399989343,
+    0.10000784000021667
+  ],
+  "topics": {
+    "/iv_points": 4443
+  },
+  "frame_ids": {
+    "seyond": 4443
+  },
+  "all_missing_ring": true,
+  "second_return_flagged_points_total": 8905521,
+  "raw_returns_min_median_max": [
+    94183.0,
+    94991.0,
+    95494.0
+  ],
+  "raw_range_max_m": 509.97052001953125,
+  "scan_id_bounds": [
+    0,
+    37
+  ],
+  "azimuth_bounds_deg": [
+    -59.76178741455078,
+    59.582706451416016
+  ],
+  "elevation_bounds_deg": [
+    -14.202573776245117,
+    12.387115478515625
+  ],
+  "windows": [
+    {
+      "time_s": [
+        0,
+        50
+      ],
+      "frame_indices": [
+        0,
+        499
+      ],
+      "frames": 500,
+      "returns_median": 94930.0,
+      "node_returns_median": 94912.0,
+      "maximum_raw_range_m": 494.1054992675781,
+      "points_beyond250_per_frame_median": 18.0,
+      "intensity_median": 10.0
+    },
+    {
+      "time_s": [
+        50,
+        100
+      ],
+      "frame_indices": [
+        500,
+        999
+      ],
+      "frames": 500,
+      "returns_median": 94964.5,
+      "node_returns_median": 94946.5,
+      "maximum_raw_range_m": 509.97052001953125,
+      "points_beyond250_per_frame_median": 15.0,
+      "intensity_median": 10.0
+    },
+    {
+      "time_s": [
+        100,
+        150
+      ],
+      "frame_indices": [
+        1000,
+        1499
+      ],
+      "frames": 500,
+      "returns_median": 94967.0,
+      "node_returns_median": 94948.0,
+      "maximum_raw_range_m": 503.5254821777344,
+      "points_beyond250_per_frame_median": 17.5,
+      "intensity_median": 10.0
+    },
+    {
+      "time_s": [
+        150,
+        200
+      ],
+      "frame_indices": [
+        1500,
+        1999
+      ],
+      "frames": 500,
+      "returns_median": 94970.5,
+      "node_returns_median": 94954.5,
+      "maximum_raw_range_m": 508.69561767578125,
+      "points_beyond250_per_frame_median": 17.0,
+      "intensity_median": 10.0
+    },
+    {
+      "time_s": [
+        200,
+        250
+      ],
+      "frame_indices": [
+        2000,
+        2499
+      ],
+      "frames": 500,
+      "returns_median": 94965.0,
+      "node_returns_median": 94952.0,
+      "maximum_raw_range_m": 509.7255554199219,
+      "points_beyond250_per_frame_median": 14.0,
+      "intensity_median": 10.0
+    },
+    {
+      "time_s": [
+        250,
+        300
+      ],
+      "frame_indices": [
+        2500,
+        2999
+      ],
+      "frames": 500,
+      "returns_median": 94988.5,
+      "node_returns_median": 94972.5,
+      "maximum_raw_range_m": 506.2657165527344,
+      "points_beyond250_per_frame_median": 15.0,
+      "intensity_median": 10.0
+    },
+    {
+      "time_s": [
+        300,
+        350
+      ],
+      "frame_indices": [
+        3000,
+        3499
+      ],
+      "frames": 500,
+      "returns_median": 95015.5,
+      "node_returns_median": 95000.5,
+      "maximum_raw_range_m": 509.6505126953125,
+      "points_beyond250_per_frame_median": 14.0,
+      "intensity_median": 10.0
+    },
+    {
+      "time_s": [
+        350,
+        400
+      ],
+      "frame_indices": [
+        3500,
+        3999
+      ],
+      "frames": 500,
+      "returns_median": 95038.0,
+      "node_returns_median": 95026.5,
+      "maximum_raw_range_m": 504.810546875,
+      "points_beyond250_per_frame_median": 14.0,
+      "intensity_median": 10.0
+    },
+    {
+      "time_s": [
+        400,
+        444.20857176799973
+      ],
+      "frame_indices": [
+        4000,
+        4442
+      ],
+      "frames": 443,
+      "returns_median": 95125.0,
+      "node_returns_median": 95103.0,
+      "maximum_raw_range_m": 506.0655517578125,
+      "points_beyond250_per_frame_median": 14.0,
+      "intensity_median": 10.0
+    }
+  ],
+  "background_geometry": [
+    {
+      "frame": 0,
+      "voxel_selected_points": 15261,
+      "nearest_reference_distance_median_p90_m": [
+        0.0,
+        0.0
+      ],
+      "fraction_within_0_15_m": 1.0
+    },
+    {
+      "frame": 100,
+      "voxel_selected_points": 15284,
+      "nearest_reference_distance_median_p90_m": [
+        0.0699985323213192,
+        0.22984528071400873
+      ],
+      "fraction_within_0_15_m": 0.7875556137136875
+    },
+    {
+      "frame": 200,
+      "voxel_selected_points": 15338,
+      "nearest_reference_distance_median_p90_m": [
+        0.062425135177275715,
+        0.2137662356186015
+      ],
+      "fraction_within_0_15_m": 0.8081888121006651
+    },
+    {
+      "frame": 300,
+      "voxel_selected_points": 15372,
+      "nearest_reference_distance_median_p90_m": [
+        0.04628605362900494,
+        0.17087296579120362
+      ],
+      "fraction_within_0_15_m": 0.8698282591725215
+    },
+    {
+      "frame": 400,
+      "voxel_selected_points": 15293,
+      "nearest_reference_distance_median_p90_m": [
+        0.055002170577709404,
+        0.20576615987684316
+      ],
+      "fraction_within_0_15_m": 0.8290721245014059
+    },
+    {
+      "frame": 500,
+      "voxel_selected_points": 15241,
+      "nearest_reference_distance_median_p90_m": [
+        0.06290706399194493,
+        0.23043225645988327
+      ],
+      "fraction_within_0_15_m": 0.7983728101830588
+    },
+    {
+      "frame": 600,
+      "voxel_selected_points": 15460,
+      "nearest_reference_distance_median_p90_m": [
+        0.055503677042541395,
+        0.20573860246113654
+      ],
+      "fraction_within_0_15_m": 0.8234152652005174
+    },
+    {
+      "frame": 700,
+      "voxel_selected_points": 15275,
+      "nearest_reference_distance_median_p90_m": [
+        0.0529953239685718,
+        0.19309685997054726
+      ],
+      "fraction_within_0_15_m": 0.8391489361702128
+    },
+    {
+      "frame": 800,
+      "voxel_selected_points": 15198,
+      "nearest_reference_distance_median_p90_m": [
+        0.061652743588302125,
+        0.2186467001052261
+      ],
+      "fraction_within_0_15_m": 0.8101065929727596
+    },
+    {
+      "frame": 900,
+      "voxel_selected_points": 15179,
+      "nearest_reference_distance_median_p90_m": [
+        0.06645741660738755,
+        0.2269673203489232
+      ],
+      "fraction_within_0_15_m": 0.7959022333487055
+    },
+    {
+      "frame": 1000,
+      "voxel_selected_points": 15285,
+      "nearest_reference_distance_median_p90_m": [
+        0.04675547416068564,
+        0.17681188478304471
+      ],
+      "fraction_within_0_15_m": 0.8562643114164213
+    },
+    {
+      "frame": 1100,
+      "voxel_selected_points": 15384,
+      "nearest_reference_distance_median_p90_m": [
+        0.04853216344423428,
+        0.1798109236176891
+      ],
+      "fraction_within_0_15_m": 0.8577093083723349
+    },
+    {
+      "frame": 1200,
+      "voxel_selected_points": 15243,
+      "nearest_reference_distance_median_p90_m": [
+        0.065001082670679,
+        0.2206158923804648
+      ],
+      "fraction_within_0_15_m": 0.8059437118677426
+    },
+    {
+      "frame": 1300,
+      "voxel_selected_points": 15230,
+      "nearest_reference_distance_median_p90_m": [
+        0.06674844680392693,
+        0.22334419133454123
+      ],
+      "fraction_within_0_15_m": 0.7946815495732108
+    },
+    {
+      "frame": 1400,
+      "voxel_selected_points": 15329,
+      "nearest_reference_distance_median_p90_m": [
+        0.05505892178659113,
+        0.19929882920808598
+      ],
+      "fraction_within_0_15_m": 0.8314306216974362
+    },
+    {
+      "frame": 1500,
+      "voxel_selected_points": 15186,
+      "nearest_reference_distance_median_p90_m": [
+        0.052502642897324155,
+        0.1949580925866713
+      ],
+      "fraction_within_0_15_m": 0.8447912551033847
+    },
+    {
+      "frame": 1600,
+      "voxel_selected_points": 15445,
+      "nearest_reference_distance_median_p90_m": [
+        0.06880459923026525,
+        0.22320627764414913
+      ],
+      "fraction_within_0_15_m": 0.8033020394949822
+    },
+    {
+      "frame": 1700,
+      "voxel_selected_points": 15271,
+      "nearest_reference_distance_median_p90_m": [
+        0.06422569485723621,
+        0.2105410687539989
+      ],
+      "fraction_within_0_15_m": 0.8114727260821164
+    },
+    {
+      "frame": 1800,
+      "voxel_selected_points": 15419,
+      "nearest_reference_distance_median_p90_m": [
+        0.05726366533471555,
+        0.20696969326181283
+      ],
+      "fraction_within_0_15_m": 0.8208054997081523
+    },
+    {
+      "frame": 1900,
+      "voxel_selected_points": 15270,
+      "nearest_reference_distance_median_p90_m": [
+        0.05620199257841736,
+        0.19795811885815653
+      ],
+      "fraction_within_0_15_m": 0.833857236411264
+    },
+    {
+      "frame": 2000,
+      "voxel_selected_points": 15174,
+      "nearest_reference_distance_median_p90_m": [
+        0.06509488129405638,
+        0.2188364384595544
+      ],
+      "fraction_within_0_15_m": 0.8038750494266509
+    },
+    {
+      "frame": 2100,
+      "voxel_selected_points": 15267,
+      "nearest_reference_distance_median_p90_m": [
+        0.06285791668478151,
+        0.21250505377806583
+      ],
+      "fraction_within_0_15_m": 0.811554332874828
+    },
+    {
+      "frame": 2200,
+      "voxel_selected_points": 15209,
+      "nearest_reference_distance_median_p90_m": [
+        0.0554261327839002,
+        0.20786918799820261
+      ],
+      "fraction_within_0_15_m": 0.820040765336314
+    },
+    {
+      "frame": 2300,
+      "voxel_selected_points": 15438,
+      "nearest_reference_distance_median_p90_m": [
+        0.05970596714893319,
+        0.21268030104095612
+      ],
+      "fraction_within_0_15_m": 0.8200544111931597
+    },
+    {
+      "frame": 2400,
+      "voxel_selected_points": 15109,
+      "nearest_reference_distance_median_p90_m": [
+        0.06617910808496551,
+        0.2220609152947843
+      ],
+      "fraction_within_0_15_m": 0.8025680058243431
+    },
+    {
+      "frame": 2500,
+      "voxel_selected_points": 15369,
+      "nearest_reference_distance_median_p90_m": [
+        0.06017150107814376,
+        0.2083120631178725
+      ],
+      "fraction_within_0_15_m": 0.8169692237621186
+    },
+    {
+      "frame": 2600,
+      "voxel_selected_points": 15274,
+      "nearest_reference_distance_median_p90_m": [
+        0.055866139121761485,
+        0.21100223762045098
+      ],
+      "fraction_within_0_15_m": 0.8164855309676574
+    },
+    {
+      "frame": 2700,
+      "voxel_selected_points": 15164,
+      "nearest_reference_distance_median_p90_m": [
+        0.06546797244441899,
+        0.2151276344330962
+      ],
+      "fraction_within_0_15_m": 0.8073727248747032
+    },
+    {
+      "frame": 2800,
+      "voxel_selected_points": 15297,
+      "nearest_reference_distance_median_p90_m": [
+        0.07000172587946772,
+        0.2261359527788163
+      ],
+      "fraction_within_0_15_m": 0.7927044518533045
+    },
+    {
+      "frame": 2900,
+      "voxel_selected_points": 15181,
+      "nearest_reference_distance_median_p90_m": [
+        0.050099877388059606,
+        0.196969453623474
+      ],
+      "fraction_within_0_15_m": 0.8369013898952639
+    },
+    {
+      "frame": 3000,
+      "voxel_selected_points": 15443,
+      "nearest_reference_distance_median_p90_m": [
+        0.05499917472484864,
+        0.21025491816697722
+      ],
+      "fraction_within_0_15_m": 0.8238684193485721
+    },
+    {
+      "frame": 3100,
+      "voxel_selected_points": 15221,
+      "nearest_reference_distance_median_p90_m": [
+        0.06695171604512014,
+        0.21729405436161411
+      ],
+      "fraction_within_0_15_m": 0.8057289271401353
+    },
+    {
+      "frame": 3200,
+      "voxel_selected_points": 15341,
+      "nearest_reference_distance_median_p90_m": [
+        0.06360305088640646,
+        0.21442577774823368
+      ],
+      "fraction_within_0_15_m": 0.8070529952415096
+    },
+    {
+      "frame": 3300,
+      "voxel_selected_points": 15381,
+      "nearest_reference_distance_median_p90_m": [
+        0.06251900918929382,
+        0.21472286982404654
+      ],
+      "fraction_within_0_15_m": 0.8089200962226123
+    },
+    {
+      "frame": 3400,
+      "voxel_selected_points": 15333,
+      "nearest_reference_distance_median_p90_m": [
+        0.05804751135087277,
+        0.20882587887432583
+      ],
+      "fraction_within_0_15_m": 0.8198004304441401
+    },
+    {
+      "frame": 3500,
+      "voxel_selected_points": 15275,
+      "nearest_reference_distance_median_p90_m": [
+        0.06619712798096004,
+        0.21154982363832944
+      ],
+      "fraction_within_0_15_m": 0.8083142389525368
+    },
+    {
+      "frame": 3600,
+      "voxel_selected_points": 15306,
+      "nearest_reference_distance_median_p90_m": [
+        0.06142032871912512,
+        0.21193895841339852
+      ],
+      "fraction_within_0_15_m": 0.8107278191558865
+    },
+    {
+      "frame": 3700,
+      "voxel_selected_points": 15390,
+      "nearest_reference_distance_median_p90_m": [
+        0.06351251275143466,
+        0.22432358490598256
+      ],
+      "fraction_within_0_15_m": 0.7953216374269005
+    },
+    {
+      "frame": 3800,
+      "voxel_selected_points": 15253,
+      "nearest_reference_distance_median_p90_m": [
+        0.05687391676146486,
+        0.20753795755604376
+      ],
+      "fraction_within_0_15_m": 0.824821346620337
+    },
+    {
+      "frame": 3900,
+      "voxel_selected_points": 15328,
+      "nearest_reference_distance_median_p90_m": [
+        0.06543663203209724,
+        0.2164247987718036
+      ],
+      "fraction_within_0_15_m": 0.8061064718162839
+    },
+    {
+      "frame": 4000,
+      "voxel_selected_points": 15429,
+      "nearest_reference_distance_median_p90_m": [
+        0.0599175796766113,
+        0.21688240639856285
+      ],
+      "fraction_within_0_15_m": 0.8102923066951844
+    },
+    {
+      "frame": 4100,
+      "voxel_selected_points": 15325,
+      "nearest_reference_distance_median_p90_m": [
+        0.057049965404728155,
+        0.20876105318750987
+      ],
+      "fraction_within_0_15_m": 0.820489396411093
+    },
+    {
+      "frame": 4200,
+      "voxel_selected_points": 15264,
+      "nearest_reference_distance_median_p90_m": [
+        0.06073331458763903,
+        0.21746132023765496
+      ],
+      "fraction_within_0_15_m": 0.813024109014675
+    },
+    {
+      "frame": 4300,
+      "voxel_selected_points": 15111,
+      "nearest_reference_distance_median_p90_m": [
+        0.06263364297863779,
+        0.21006889987497868
+      ],
+      "fraction_within_0_15_m": 0.8154324664151942
+    },
+    {
+      "frame": 4400,
+      "voxel_selected_points": 14906,
+      "nearest_reference_distance_median_p90_m": [
+        0.06116973746315594,
+        0.2086436816037814
+      ],
+      "fraction_within_0_15_m": 0.8192003220179793
+    },
+    {
+      "frame": 4442,
+      "voxel_selected_points": 15469,
+      "nearest_reference_distance_median_p90_m": [
+        0.06130363622350106,
+        0.2144546710703593
+      ],
+      "fraction_within_0_15_m": 0.812916154890426
+    }
+  ],
+  "background_geometry_method": "Every100frames plus final: 0.25m voxel representatives at raw forward4..80m, nearest original frame0 returns. This tests scene consistency, not calibrated odometry or exhaustive motion truth."
+}

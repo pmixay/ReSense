@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/home/resense/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-ra",
+    "tests/test_range_reporting.py",
+    "tests/test_score_overclaim.py",
+    "tests/test_decision_policy.py",
+    "tests/test_rescore_decisions.py",
+    "tests/test_node.py"
+  ],
+  "exit_code": 0,
+  "elapsed_s": 3.286315679550171,
+  "source_sha256": {
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "01a1efae54f5f63886d7a55fea1aaf562335dd7a24d69de824ea0c6e72f76265",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "5301e49cb85b45190890a76c70a209e5ad222342d1cc9c56bf79f8caaa0ea907",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "14f0f786c7df58919446db54e18629766552b270a9863d709a73d83748e49f80",
+    "scripts/range_reporting.py": "90a8d8d2cdf0953d52c3e6d0142cc955cce1b2f439ecc4ac111016f97069d7ea",
+    "scripts/score_overclaim.py": "e0f04bd2380259647f675f1db14345f13477d581d77401c4898d02424ec5fecf",
+    "tests/test_node.py": "ec00821373adbdfb90877d7b2568c07e1cfb7988f75589b3dd4595c176990dfa",
+    "tests/test_range_reporting.py": "06aa354b292c9cd06502e13738843a2aa07a266684c6eff94b80e05d5b5f3f73",
+    "tests/test_score_overclaim.py": "6b3668f7f6eeed86ad5155fe50cc1afcdd27614666fa77b2282f964317875a7b"
+  },
+  "scope": "actual node class with ROS transport stand-ins; no DDS/docker playback"
+}

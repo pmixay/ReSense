@@ -1,0 +1,22 @@
+{
+  "status": "PRODUCER_AND_ALL167_ARCHIVED_AND_RETAINED_MEMBERS_VERIFIED",
+  "checked_utc": "2026-10-18T11:33:12.743867+00:00",
+  "source_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "producer_exit": 0,
+  "source_files": 38,
+  "default_replay_frames": 0,
+  "no_configuration_overrides": true,
+  "cases": 40,
+  "verified_members": 167,
+  "archive_sha256": "be17205f6fc720761a8e086e05d61125b6b5b676022a1e86ea21a9fb02080d9f",
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/review_x3_archive.py": "a92daaab226bc8492ede6c87ea3da561c190ec832e379067202a810952f69153",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/runtime_identity.json": "cf9c62f2e40e7132f5ab146257ff0a93aed23f78e93f3d9345a05238c0edc462",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3_execution.json": "4adad61a4aa934c203bfa8ebaf4540abdfd0895d3bb6ffe8cdee7619a2ce9af0",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.json": "fed905cb46cefa99c101b659d5aecaf5efa30f0feed3caef39fda3a8f7bff3b9",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/x3_independent_review.json": "61d6c9c4e941219fcfbf25ace3488835fb4c9cf680a5bf5519ac0e7427422b70",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/raw/x3_manifest.json": "8b343af090d6e81bd1fd87a19664a249746947338c767d91c531c20e38e3165d",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/raw/x3.tar.gz": "be17205f6fc720761a8e086e05d61125b6b5b676022a1e86ea21a9fb02080d9f"
+  },
+  "limit": "Original archived Linux reference; unavailable historical Windows SetO frame332 is not reconstructed."
+}

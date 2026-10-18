@@ -41,10 +41,20 @@ window.resenseFormat = (() => {
     for (const key of ['detections', 'warnings']) {
       if (r[key] != null && (!Array.isArray(r[key]) || !r[key].every(detection))) return false;
     }
-    for (const key of ['track', 'timing_ms', 'node', 'health', 'mount', 'freshness']) {
+    for (const key of ['track', 'timing_ms', 'node', 'health', 'mount', 'freshness', 'gauge']) {
       if (r[key] != null && !record(r[key])) return false;
     }
     const t = r.track || {}, h = r.health || {}, f = r.freshness || {};
+    const g = r.gauge;
+    if (g != null && (typeof g.valid !== 'boolean' || typeof g.held !== 'boolean'
+        || !numbers(g, ['drawn_range_m', 'solid_range_m', 'axis_valid_m', 'max_lateral_lag_m'])
+        || !finite(g.drawn_range_m) || !finite(g.solid_range_m)
+        || g.solid_range_m < 0 || g.drawn_range_m < g.solid_range_m
+        || (g.valid && g.held) || (finite(g.axis_valid_m) && g.solid_range_m > g.axis_valid_m)
+        || (!g.valid && g.solid_range_m !== 0)
+        || (g.centerline != null && (!Array.isArray(g.centerline)
+          || !g.centerline.every(p => vector(p, 3))
+          || g.centerline.some((p, i) => i > 0 && p[0] <= g.centerline[i - 1][0]))))) return false;
     if (!numbers(t, ['center', 'yaw', 'curvature', 'axis_valid', 'rail_offset'])
         || (t.floor_coef != null && (!Array.isArray(t.floor_coef) || !t.floor_coef.length || !t.floor_coef.every(finite)))
         || (t.floor_range != null && !vector(t.floor_range, 2))

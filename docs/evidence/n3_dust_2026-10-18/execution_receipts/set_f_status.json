@@ -1,0 +1,11 @@
+{
+  "state": "complete",
+  "pid": 61130,
+  "pgid": 61130,
+  "utc_epoch": 1792324437.0090718,
+  "harness_commit": "b9ad5f4",
+  "detector_source": "9b92df5",
+  "returncode": 0,
+  "output": "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline_pose_fixed",
+  "bank": "/home/resense/data/dust/set_f_bank_pose_fixed"
+}

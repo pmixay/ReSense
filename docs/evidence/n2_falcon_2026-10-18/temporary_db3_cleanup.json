@@ -1,0 +1,12 @@
+{
+  "deleted_only_temporary_downloaded_db3": "/home/resense/data/raw/falcon_test_second_dark/falcon_test_second_dark_0.db3",
+  "bytes": 20281548800,
+  "source_archive_sha256": "90dea27d8636bcb2e5cdddf9bc15add3eae0e05196c2b3de959482da7e505611",
+  "verified_cache_frames": 4443,
+  "cache_inventory_sha256": "385f467aa80863ef5e50779f9f065ed90000a7eda66fbb6cda81df33dc05523d",
+  "complete_point_metadata_characterization": true,
+  "raw_playback_subset_retained": "/home/resense/data/n2/falcon_first100",
+  "free_bytes_before": 3771285504,
+  "free_bytes_after": 24052740096,
+  "refetch": "Run fetch_falcon.py using source_receipt.json public URL; existing metadata path must be relocated before extraction. Compressed source is streamed, not retained."
+}

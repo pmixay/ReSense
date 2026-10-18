@@ -1,0 +1,31 @@
+{
+  "status": "aborted_before_evaluation",
+  "reason": "Regular-harness coordinate defect triggered a shared clean-reference correction. SetF used the pre-process legacy-placement model, not the regular harness post-process model, and no dusty SetF level ran. Its bank did not capture the actual applied clean matrix, so stop partial preparation and preserve it before corrected protocol.",
+  "utc_epoch": 1792315385.191189,
+  "stopped_process_group": 47935,
+  "terminated_complete_only_finalizer": 54484,
+  "completed_bank_sequences": [
+    "46_box0.5",
+    "46_box1.0",
+    "46_cable",
+    "46_person",
+    "46_trolley",
+    "68_box0.5",
+    "68_box1.0",
+    "68_cable",
+    "68_person",
+    "68_trolley",
+    "98_box0.5",
+    "98_box1.0",
+    "98_cable",
+    "98_person",
+    "98_trolley"
+  ],
+  "bank_manifest_sha256": "f103bf2cd90d0c30dc3aee048cf286ff17681e431e5ce1bb92705782c37f4d08",
+  "measurement_levels_completed": 0,
+  "harness_sha256": "82224ca0889098509f72c078e8523fac62f24fdedaa39558ed677d96a4a68a48",
+  "bank_directory": "/home/resense/data/dust/set_f_bank",
+  "output_directory": "/home/resense/ReSense/docs/evidence/n3_dust_2026-10-18/set_f_baseline",
+  "runtime_core_unchanged": true,
+  "termination": "Stopped obsolete process group then SIGTERM/SIGCONT to release it before corrected launch; no old process resumed useful work."
+}

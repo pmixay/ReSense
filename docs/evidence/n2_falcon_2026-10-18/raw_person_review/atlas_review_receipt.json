@@ -1,0 +1,25 @@
+{
+  "coordinate_frame": "raw_ROS_FLU",
+  "main_anchors": 108,
+  "early_uncertain_anchors": 5,
+  "first_main_anchor": 1725,
+  "last_main_anchor": 4400,
+  "artifacts": {
+    "raw_person_review/atlas_proposals.json": "acfdbdb4406edcafc9c49ec8a5d33d6d507e0de866c003879973614bf52001fb",
+    "falcon_reviewed_anchors.json": "7eb681c0210b6e299d7e8eda57c6f1e6a48f0a742aaa34552d68d61b6a7385d3",
+    "motion_discovery.json": "a4dfe185127d0b6afcf5831622d036137e1b23dba9a8958343bfe172911151ac",
+    "raw_person_review/atlas_01.png": "8086b7671782446a85738da05707d7ea6864e92258bee79a9d1cd95fb4d458fe",
+    "raw_person_review/atlas_02.png": "cf5650491d6a6f88e35db3e76bbc64737cedf142a20ed7140f83f43b2d8439a7",
+    "raw_person_review/atlas_03.png": "a2033daa5d505f1f2b34bdfa28f84a1f17730579c9b63713ee2191cd2b6fb226",
+    "raw_person_review/atlas_04.png": "f9e8ee83da1b334177cc86cbf4ad641efdd571b212bdeb966fe5001217822b45",
+    "raw_person_review/atlas_05.png": "76145f0c3b5b941c3382fcc8aaecb8cc701f6fb456d890a4cdb2457b097ee010",
+    "raw_person_review/atlas_06.png": "c5c434c8ff03c7321b48ed7a335af27f5b63ac139718d0aa23817e73265fba56",
+    "raw_person_review/atlas_07.png": "8d72992b12c304d652cea5b7e4891e8e081e2bcf6d30fdd417651352edda329a",
+    "raw_person_review/atlas_08.png": "f49c15b411c12952cb6497e1f2ec0d35fd1ef4a364db46fb76cd4c3f8261fac5",
+    "raw_person_review/atlas_09.png": "0567eb7c782c660ec7214c5fb15e8a3dc8a2bb91f85c70bcc00d11023cf0716e",
+    "raw_person_review/atlas_10.png": "de6f616906451cd5a170ea37147c4f5c60f3ae6f9db13ac650e1bf97703c1ab7",
+    "raw_person_review/selected_raw_person_1.png": "9e054347b979ac41cc052c31ad0455fbf68ff192288e3c88e780ecb81b0c8137",
+    "raw_person_review/selected_raw_person_2.png": "e339aaaebed2cb05ab8e377e541d63d62f21d0be971a273054dfdbb855c55a6a",
+    "raw_person_review/selected_raw_person_3.png": "61c3d017aad21d90e7e3926705c81ac15b0b98e65012aa6054e0a45e81eea83f"
+  }
+}

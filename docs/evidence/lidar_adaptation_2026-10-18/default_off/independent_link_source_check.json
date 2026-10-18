@@ -1,0 +1,284 @@
+{
+  "status": "PASS",
+  "checked_utc": "2026-10-18T11:33:29.334442+00:00",
+  "source_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "current_source_files_checked": 38,
+  "current_source_matches_selected_identity": true,
+  "source_identity_sha256": "cf9c62f2e40e7132f5ab146257ff0a93aed23f78e93f3d9345a05238c0edc462",
+  "documents": {
+    "docs/evidence/n2_falcon_2026-10-18/README.md": "84ac864e991c08537cd4733f4d45fa1970ca95fac9a1b858b83d05900420118d",
+    "docs/evidence/n2_falcon_2026-10-18/raw/README.md": "df22e5d5475d0641dcf41b005409f87f5177b4a283a9725079a5eaa16aac1116",
+    "docs/evidence/lidar_adaptation_2026-10-18/default_off/X3_REVIEW.md": "05fa2d048eac30002f48a889e4ce97f8b61c3ccd60c3aecc7360c0676c32e67b",
+    "docs/evidence/lidar_adaptation_2026-10-18/default_off/INDEPENDENT_DDS_REVIEW.md": "59587e1c6b0b866e662e036cb662e786d40779200f0cca971d20b26114a198cf",
+    "docs/evidence/n6_platform_2026-10-18/INDEPENDENT_REVIEW.md": "f38d029ee513c6e1052519d92db804a8fb2638085e369d5cddafb48e7018485e"
+  },
+  "local_link_count": 53,
+  "links": [
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "falcon_default_off/independent_review.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "raw/README.md",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "source_receipt.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "cache_receipt.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "cache_inventory.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "characterization_summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "temporary_db3_cleanup.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "playback_subset_receipt.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "playback_subset_repair.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "playback_subset_failed_player.txt",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "actual_dds_prefix_comparison.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "actual_dds_prefix_7b7b02c.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "../n1_n4_2026-10-18/final_core_cecab1b/payload_comparison.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "../n1_n4_2026-10-18/final_core_cecab1b/image_receipt.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "orientation_obstacle/summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "orientation_candidate/summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "orientation_replay_candidate/summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "orientation_replay_candidate/independent_frame_check.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "orientation_ride200/summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "INDEPENDENT_ORIENTATION_REVIEW.md",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "orientation_replay_candidate/bound_fix_tests.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "orientation_bound_fix/summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "orientation_bound_fix/previous_and_ordinary_comparison.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "falcon_reviewed_anchors.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "raw_person_review/atlas_proposals.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "raw_person_review/atlas_review_receipt.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "STATIC_ATTRIBUTION.md",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "falcon_full_associations.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "falcon_replay_candidate/summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "falcon_default_off/independent_review.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "fields_obstacle/summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "proxy_summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "full_proxy_same_runtime_summary.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "raw/README.md",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "focused_tests.txt",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "focused_tests.xml",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/README.md",
+      "target": "integration_followup.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/raw/README.md",
+      "target": "manifest.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/raw/README.md",
+      "target": "orientation24_manifest.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/raw/README.md",
+      "target": "orientation_bound_fix_manifest.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/raw/README.md",
+      "target": "proxy_decoded_manifest.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n2_falcon_2026-10-18/raw/README.md",
+      "target": "full_proxy_manifest.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/lidar_adaptation_2026-10-18/default_off/X3_REVIEW.md",
+      "target": "x3_independent_review.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/lidar_adaptation_2026-10-18/default_off/X3_REVIEW.md",
+      "target": "x3_execution.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/lidar_adaptation_2026-10-18/default_off/X3_REVIEW.md",
+      "target": "../x3_reference_preparation.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/lidar_adaptation_2026-10-18/default_off/X3_REVIEW.md",
+      "target": "raw/x3_manifest.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/lidar_adaptation_2026-10-18/default_off/INDEPENDENT_DDS_REVIEW.md",
+      "target": "dds_independent_image_review.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/lidar_adaptation_2026-10-18/default_off/INDEPENDENT_DDS_REVIEW.md",
+      "target": "dds_independent_payload_comparison.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n6_platform_2026-10-18/INDEPENDENT_REVIEW.md",
+      "target": "exact_source_rail_support.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n6_platform_2026-10-18/INDEPENDENT_REVIEW.md",
+      "target": "rail_station_provenance.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n6_platform_2026-10-18/INDEPENDENT_REVIEW.md",
+      "target": "synthetic_platform_v3_comparison.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n6_platform_2026-10-18/INDEPENDENT_REVIEW.md",
+      "target": "v3_range_invariants.json",
+      "exists": true
+    },
+    {
+      "document": "docs/evidence/n6_platform_2026-10-18/INDEPENDENT_REVIEW.md",
+      "target": "metric_correction_receipt.json",
+      "exists": true
+    }
+  ],
+  "scope": "Current selected source and local links in the listed documents only; historical source identities remain unchanged. No detector execution."
+}

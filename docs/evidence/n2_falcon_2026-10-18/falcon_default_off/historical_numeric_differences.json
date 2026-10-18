@@ -1,0 +1,73 @@
+{
+  "status": "HISTORICAL_EXACT_FIELD_MISMATCH_QUANTIFIED_NOT_WAIVED",
+  "frames": 4443,
+  "operational_fields_exact": {
+    "decision": true,
+    "obstacle": true,
+    "warning": true,
+    "nearest": true,
+    "clear": true,
+    "monitored": true,
+    "dlevel": true,
+    "dets": true,
+    "warns": true,
+    "n_points": true,
+    "rail_lock": true,
+    "track_center": true,
+    "ego": true,
+    "mount_rotation": true
+  },
+  "numerical_differences": {
+    "curv": {
+      "changed_frames": 4357,
+      "max_absolute_difference": 1.3552527156068805e-17,
+      "maximum_frame": 3573,
+      "example_old_new": [
+        0.0005133762585175356,
+        0.000513376258517522
+      ]
+    },
+    "track_detail.curvature": {
+      "changed_frames": 4357,
+      "max_absolute_difference": 1.3552527156068805e-17,
+      "maximum_frame": 3573,
+      "example_old_new": [
+        0.0005133762585175356,
+        0.000513376258517522
+      ]
+    },
+    "track_detail.yaw": {
+      "changed_frames": 4374,
+      "max_absolute_difference": 5.030698080332741e-16,
+      "maximum_frame": 3591,
+      "example_old_new": [
+        -0.029723795625386993,
+        -0.02972379562538649
+      ]
+    },
+    "track_detail.floor_coef": {
+      "changed_frames": 4108,
+      "max_absolute_difference": 1.7763568394002505e-15,
+      "maximum_frame": 4305,
+      "example_old_new": [
+        [
+          1.999108012193586e-179,
+          0.07532300706090979,
+          -2.9332983517900995
+        ],
+        [
+          1.99910801219358e-179,
+          0.07532300706090975,
+          -2.9332983517900977
+        ]
+      ]
+    }
+  },
+  "hypothesis": "The new wrapper explicitly forces Haswell BLAS dispatch; historical full-Falcon execution did not record its dispatch. A fresh immutable9b control with matching explicit environment is required to attribute these differences.",
+  "acceptance": "No numerical tolerance was applied. The historical exact-field FAIL remains retained separately.",
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/quantify_falcon_historical_drift.py": "88a23415cbfef991330d1918947ed89e3b82c5dace428b7cd4650daffa576cc2",
+    "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_full/baseline.jsonl": "86da569df6f9dbf29c1683d5cc20b2af7b780aa4613bec24201d8a59cfa100a7",
+    "/home/resense/ReSense/docs/evidence/n2_falcon_2026-10-18/falcon_default_off/baseline.jsonl": "4238a70d85bcf83e9a4b854fbbd7bc2865711f977a788ef43a5574f549cdc432"
+  }
+}

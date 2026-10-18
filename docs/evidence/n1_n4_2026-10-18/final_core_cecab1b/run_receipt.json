@@ -1,0 +1,46 @@
+{
+  "source_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "image_id": "sha256:eb53df868b1614937dcacda6dca2e37d32746a70b81f1dde030b8b2bc6b0ae02",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "resense-n4-cecab1b",
+    "--network",
+    "none",
+    "--ipc=host",
+    "-v",
+    "/home/resense/data/n4_smoke:/bags:ro",
+    "-v",
+    "/home/resense/data/n2/falcon_first100:/falcon:ro",
+    "-v",
+    "/home/resense/data/n4_final_cecab1b:/out",
+    "resense:lidar-cecab1b",
+    "python3",
+    "scripts/check_interactive_replay.py",
+    "/bags",
+    "--out",
+    "/out",
+    "--falcon-bag",
+    "/falcon"
+  ],
+  "started_utc": "2026-10-18T10:48:06.327015+00:00",
+  "cpu_affinity": [
+    0
+  ],
+  "isolated_window_sha256": "edec8d7cd0c3d5ffd60c6a02e6810518cdc0d0fde9aab14f09b6b39270437401",
+  "returncode": 0,
+  "finished_utc": "2026-10-18T10:48:47.742961+00:00",
+  "raw_hashes": {
+    "report.json": "0eaf6c5e0d1444edabef61304247b3057b2185167adb7eb76e43c5247ee60c1d",
+    "falcon_ros_player.log": "d91bd626711b4411c7cf55143fb8c0e5515e80b856c2aac18338e3c4420abc88",
+    "node.log": "415fcb320dfe2f8f4c64373b711e0735f8ccaf1b2dfeafe07f20ee080557aa9d",
+    "runner.log": "e4878cf3c51dc3b89c8c179f20f0cd4a84af5af41846c1fabaeda494a0659991",
+    "pandar128_player.log": "e26edad18f7b2b9d63aff30212869414c485d785ce92b557df3f4d10fc6ac197",
+    "status.jsonl": "3d0dc08d254124d98eb32588c62e84222cbd4ad42aa4d9c93c266a434e7efefd"
+  },
+  "isolated_window_snapshot": "isolation_at_dds_start.json",
+  "completed_isolation_receipt": "../../lidar_adaptation_2026-10-18/default_off/isolated_window.json",
+  "wrapper_sha256": "29e8794a620095f9ba7dda30fef480427b2a605f523442c233868501d4eb5aed"
+}

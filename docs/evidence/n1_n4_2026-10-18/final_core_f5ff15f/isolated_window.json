@@ -1,0 +1,38 @@
+{
+  "paused_utc": "2026-10-18T08:36:20Z",
+  "paused_groups": [
+    {
+      "pgid": 27063,
+      "name": "dust_baseline"
+    },
+    {
+      "pgid": 29783,
+      "name": "wide_orientation"
+    },
+    {
+      "pgid": 32682,
+      "name": "proxy_batch"
+    },
+    {
+      "pgid": 41706,
+      "name": "dark_dust"
+    },
+    {
+      "pgid": 47662,
+      "name": "gauge_quality_replay"
+    },
+    {
+      "pgid": 47935,
+      "name": "set_f_queue"
+    },
+    {
+      "pgid": 48050,
+      "name": "final_x3"
+    },
+    {
+      "pgid": 48215,
+      "name": "full_gate_queue"
+    }
+  ],
+  "reason": "Isolated one-core timing, Docker/DDS and software RViz measurements; quality-run timings spanning this pause are informational."
+}

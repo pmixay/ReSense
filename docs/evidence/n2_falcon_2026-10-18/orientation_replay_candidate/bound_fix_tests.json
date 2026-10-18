@@ -1,0 +1,16 @@
+{
+  "commit": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+  "tests": 149,
+  "result": "PASS",
+  "duration_s": 36.9,
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_CORETYPE=Haswell /home/resense/.venv/bin/python -m pytest -q tests/test_orientation_replay.py tests/test_calibration.py tests/test_orientation_health.py tests/test_health_histogram.py tests/test_health_gate_parity.py",
+  "output": "149 passed in 36.90s",
+  "test_output_origin": "captured exec session97140 final output; no standalone pytest stdout file was requested",
+  "source_hashes": {
+    "resense/calibration.py": "29674696d08a41c56e9c402568a04af0096ba92f98b56a1225743b7c51b38f08",
+    "tests/test_orientation_replay.py": "eba50bbf8bf73836b3378cf5b7e94bcf4387e47eedd99065a4ac61103151e013"
+  },
+  "pinned_ruff": "0.15.8 PASS",
+  "diff_check": "PASS",
+  "initial_setup_error": "Earlier command referred to absent tests/test_health.py and exited4 before running tests; corrected command above completed."
+}

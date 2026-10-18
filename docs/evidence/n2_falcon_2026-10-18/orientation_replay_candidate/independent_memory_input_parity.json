@@ -1,0 +1,178 @@
+{
+  "scope": "Four original initial decoded frames each for real obstacle and Falcon; same buffer accept/reject/reset reasons and exact saved arrays before/after. Detector not rerun.",
+  "before": [
+    {
+      "bag": "doubleT_obstacle",
+      "steps": [
+        {
+          "i": 0,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 12273865,
+          "saved_hashes": [
+            "7b2f3b1203474c0dba015765a3bfb50828822d13d547fbbf7ae7db2104396a95"
+          ]
+        },
+        {
+          "i": 1,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 24542114,
+          "saved_hashes": [
+            "7b2f3b1203474c0dba015765a3bfb50828822d13d547fbbf7ae7db2104396a95",
+            "f7910a4d7214815836a2a14d93ecc47882ae0b15920f7243d6f3f067061da53e"
+          ]
+        },
+        {
+          "i": 2,
+          "accepted": false,
+          "reason": "byte_budget",
+          "charged": 0,
+          "saved_hashes": []
+        },
+        {
+          "i": 3,
+          "accepted": false,
+          "reason": "byte_budget",
+          "charged": 0,
+          "saved_hashes": []
+        }
+      ]
+    },
+    {
+      "bag": "falcon_test_second_dark",
+      "steps": [
+        {
+          "i": 0,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 3036372,
+          "saved_hashes": [
+            "670da93c8fd0f6634dcefdaf27bca021fc609391cf3fe324e855c6bdc1cb39d6"
+          ]
+        },
+        {
+          "i": 1,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 6070856,
+          "saved_hashes": [
+            "670da93c8fd0f6634dcefdaf27bca021fc609391cf3fe324e855c6bdc1cb39d6",
+            "d45333e18496cd229e205df4fcbc30d8e29531ea21395968fba5f05654d79b1f"
+          ]
+        },
+        {
+          "i": 2,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 9105980,
+          "saved_hashes": [
+            "670da93c8fd0f6634dcefdaf27bca021fc609391cf3fe324e855c6bdc1cb39d6",
+            "d45333e18496cd229e205df4fcbc30d8e29531ea21395968fba5f05654d79b1f",
+            "590a2d2755b1ee093c6bcd2bfa971969d0b06a1e2ef74cfef256c00b613dc909"
+          ]
+        },
+        {
+          "i": 3,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 12140240,
+          "saved_hashes": [
+            "670da93c8fd0f6634dcefdaf27bca021fc609391cf3fe324e855c6bdc1cb39d6",
+            "d45333e18496cd229e205df4fcbc30d8e29531ea21395968fba5f05654d79b1f",
+            "590a2d2755b1ee093c6bcd2bfa971969d0b06a1e2ef74cfef256c00b613dc909",
+            "695e3e92e264fee871e69bbd2c902e1dd6c86a62c8da1a55a07bbb4c30f0468e"
+          ]
+        }
+      ]
+    }
+  ],
+  "after": [
+    {
+      "bag": "doubleT_obstacle",
+      "steps": [
+        {
+          "i": 0,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 12274217,
+          "saved_hashes": [
+            "7b2f3b1203474c0dba015765a3bfb50828822d13d547fbbf7ae7db2104396a95"
+          ]
+        },
+        {
+          "i": 1,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 24542818,
+          "saved_hashes": [
+            "7b2f3b1203474c0dba015765a3bfb50828822d13d547fbbf7ae7db2104396a95",
+            "f7910a4d7214815836a2a14d93ecc47882ae0b15920f7243d6f3f067061da53e"
+          ]
+        },
+        {
+          "i": 2,
+          "accepted": false,
+          "reason": "byte_budget",
+          "charged": 0,
+          "saved_hashes": []
+        },
+        {
+          "i": 3,
+          "accepted": false,
+          "reason": "byte_budget",
+          "charged": 0,
+          "saved_hashes": []
+        }
+      ]
+    },
+    {
+      "bag": "falcon_test_second_dark",
+      "steps": [
+        {
+          "i": 0,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 3036740,
+          "saved_hashes": [
+            "670da93c8fd0f6634dcefdaf27bca021fc609391cf3fe324e855c6bdc1cb39d6"
+          ]
+        },
+        {
+          "i": 1,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 6071592,
+          "saved_hashes": [
+            "670da93c8fd0f6634dcefdaf27bca021fc609391cf3fe324e855c6bdc1cb39d6",
+            "d45333e18496cd229e205df4fcbc30d8e29531ea21395968fba5f05654d79b1f"
+          ]
+        },
+        {
+          "i": 2,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 9107084,
+          "saved_hashes": [
+            "670da93c8fd0f6634dcefdaf27bca021fc609391cf3fe324e855c6bdc1cb39d6",
+            "d45333e18496cd229e205df4fcbc30d8e29531ea21395968fba5f05654d79b1f",
+            "590a2d2755b1ee093c6bcd2bfa971969d0b06a1e2ef74cfef256c00b613dc909"
+          ]
+        },
+        {
+          "i": 3,
+          "accepted": true,
+          "reason": "pending",
+          "charged": 12141712,
+          "saved_hashes": [
+            "670da93c8fd0f6634dcefdaf27bca021fc609391cf3fe324e855c6bdc1cb39d6",
+            "d45333e18496cd229e205df4fcbc30d8e29531ea21395968fba5f05654d79b1f",
+            "590a2d2755b1ee093c6bcd2bfa971969d0b06a1e2ef74cfef256c00b613dc909",
+            "695e3e92e264fee871e69bbd2c902e1dd6c86a62c8da1a55a07bbb4c30f0468e"
+          ]
+        }
+      ]
+    }
+  ],
+  "unchanged_except_charge": true
+}
