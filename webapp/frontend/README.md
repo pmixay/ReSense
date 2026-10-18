@@ -80,3 +80,7 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   The display housing is a real Three.js mesh based on the supplied `images (1).jpg`; only the
   Player enables this presentation, while existing CloudPreview views retain direct rendering.
   There is no scaled stage, duplicate local header or separate page background.
+- **Display optics.** `screenDisplay.ts` tilts the housing and publishes the active-face affine
+  projection for HUD alignment. `screenEffects.ts` samples the live image for a fine RGB pixel
+  aperture, local bloom and GPU-diffused light emission. Two low-resolution filter targets are
+  disposed with the display; no readback or independent animation loop is used.

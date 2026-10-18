@@ -17,6 +17,32 @@ The housing adapts parametrically to the workspace's aspect ratio; it is a
 reference-based reconstruction rather than a photographic asset or a dimensional
 scan. No reference-image pixels are used as the player UI.
 
+## Tilt, emission and pixel optics
+
+The housing has a small fixed yaw and pitch so the metal sidewall and rear depth are
+visible. The orthographic screen projection is exported as an affine transform; the
+HTML/SVG annotation surface applies that exact transform, including the close-up.
+Projection tests compare real mesh vertices with the transformed HUD on desktop and
+mobile, and ensure the hardware stays within the canvas bounds.
+
+[`screenEffects.ts`](../../../webapp/frontend/src/player/screenEffects.ts) adds a
+fine RGB aperture, local highlight bloom, and light spill driven by the current
+image. The source texture remains continuously sampled. Two small GPU filter passes
+extract/diffuse the live image into an emission map used by the screen, glass and
+surrounding light pool. Hue-preserving compression prevents a bright channel from
+turning a green or blue source into the same color. No runtime pixel readback or
+extra animation loop is required; the existing engine still renders on demand.
+
+An isolated browser check filled the real display target with black/red/green/blue
+frames and verified distinct matching emission colors, matching colored light outside
+the hardware relative to its unlit frame, and an aperture pattern on a uniform gray
+source. Results are in `optics-verification.json`; diagnostic input colors are test
+patterns, not screenshots of application data.
+
+The shared palette now uses more saturated metro red, emerald, amber and violet.
+Player camera/speed selection and primary transport use the brand accent, while
+compact rounded-square tools and single-level telemetry keep the application hierarchy.
+
 The shared AppShell supplies the sole header and stage navigation. The Player has no
 local logo, duplicate title, stage strip or back-navigation bar. Normal responsive
 page layout owns the display, compact scenario/camera/status controls, five telemetry

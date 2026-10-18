@@ -1,0 +1,25 @@
+{
+  "method": "Real ScreenDisplay in Chromium/SwiftShader, 1000x420 at DPR 1; uniform source frames rendered into the live WebGLRenderTarget.",
+  "sourceRGB": {
+    "black": "#000000",
+    "red": "#ff1122",
+    "green": "#11ff55",
+    "blue": "#1155ff",
+    "gray": "#888888"
+  },
+  "emissionCenterRGBA": {
+    "black": [0, 0, 0, 255],
+    "red": [204, 12, 26, 255],
+    "green": [12, 204, 67, 255],
+    "blue": [12, 67, 204, 255],
+    "gray": [173, 173, 173, 255]
+  },
+  "outsideEmittedColorEnergy": {
+    "method": "Sum of matching-channel change minus the average of other-channel changes versus the same unlit frame, at 240 points outside the hardware.",
+    "red": 1056.5,
+    "green": 942.0,
+    "blue": 894.0
+  },
+  "uniformGrayApertureChannelExtrema": [[189, 233], [189, 233], [189, 233]],
+  "consoleErrors": []
+}

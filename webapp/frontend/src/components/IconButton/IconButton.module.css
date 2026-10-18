@@ -47,6 +47,7 @@
   background: var(--red);
   color: var(--white);
 }
+.red:hover:not(:disabled) { background: var(--red-deep); }
 .glass {
   background: var(--glass);
   color: var(--white);

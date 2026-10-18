@@ -1,33 +1,33 @@
 /* «Линия»: cool neutral surfaces, metro red and distinct signal colors. */
 :root {
   /* brand: chrome, the metro line and the main call to action only */
-  --red: #BE1424;
-  --red-deep: #900D1A;
+  --red: #D7133B;
+  --red-deep: #A9092D;
   --red-tint: #E2E5E8;
   --red-tint-2: #CDD2D7;
 
   /* surfaces + ink */
-  --bg: #F1F3F5;
+  --bg: #EDF1F6;
   --card: #FFFFFF;
-  --well: #E2E5E8;
-  --well-2: #CDD2D7;
-  --well-3: #EBEDF0;
-  --ink: #171B20;
+  --well: #E1E7EF;
+  --well-2: #CBD5E1;
+  --well-3: #F7F9FC;
+  --ink: #111827;
   --white: #FFFFFF;
-  --hair: #C6CCD2;
-  --hair-2: #ABB3BC;
+  --hair: #D7DFE9;
+  --hair-2: #B9C5D3;
 
   /* safety states: never brand red for anything but STOP */
-  --go: #078547;
-  --go-deep: #006D38;
+  --go: #009F68;
+  --go-deep: #007D4B;
   --go-tint: var(--well);
-  --caution: #E9A009;
+  --caution: #FFB000;
   --caution-deep: #855400;
   --caution-tint: var(--well);
-  --stop: #CB1830;
+  --stop: #D10C31;
   --stop-deep: #A41022;
   --stop-tint: var(--well);
-  --fault: #645178;
+  --fault: #7739C8;
   --fault-tint: var(--well);
   --fault-line: var(--hair-2);
   --fault-bg: var(--well-3);
@@ -71,7 +71,7 @@
   /* elevation */
   --shadow: 0 1px 0 rgba(22, 21, 26, 0.03), 0 10px 30px -18px rgba(22, 21, 26, 0.28);
   --shadow-pop: 0 2px 4px rgba(22, 21, 26, 0.06), 0 24px 48px -16px rgba(22, 21, 26, 0.35);
-  --shadow-red: 0 8px 20px -10px rgba(228, 0, 13, 0.8);
+  --shadow-red: 0 8px 16px -10px rgba(215, 19, 59, 0.45);
 
   /* STOP hatch: 45° white stripes over --stop */
   --hatch: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0) 0 7px, rgba(255, 255, 255, 0.12) 7px 11px);

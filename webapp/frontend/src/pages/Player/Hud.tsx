@@ -80,8 +80,11 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
     (ov) => {
       const root = rootRef.current;
       if (root) {
-        root.style.left = `${ov.viewport.x}px`;
-        root.style.top = `${ov.viewport.y}px`;
+        const m = ov.viewport.transform;
+        root.style.left = m ? '0px' : `${ov.viewport.x}px`;
+        root.style.top = m ? '0px' : `${ov.viewport.y}px`;
+        root.style.transformOrigin = '0 0';
+        root.style.transform = m ? `matrix(${m.a}, ${m.b}, ${m.c}, ${m.d}, ${m.x}, ${m.y})` : 'none';
         root.style.width = `${ov.viewport.width}px`;
         root.style.height = `${ov.viewport.height}px`;
       }

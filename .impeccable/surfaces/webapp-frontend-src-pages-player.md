@@ -21,6 +21,8 @@ FIRST VIEWPORT: Full-width visualization first; a compact scenario/camera/status
 
 FORM: Brief-pinned engineering workspace; seed: none (user-pinned). Model materials and rounded housing follow the uploaded photograph; the live viewport adapts to available workspace dimensions.
 
+DISPLAY OPTICS: The user requests a slight physical tilt, visible housing depth, image-driven light emission and individual RGB pixel structure. The HUD follows the projected active surface exactly. GPU-only light diffusion samples the live image, remains still when playback/camera are still, and keeps source point sampling continuous. Modernize the surrounding controls and telemetry through the shared radius/type system and stronger, contrast-checked brand and signal colors. Keep the single application shell and full Player functionality.
+
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
 
 Verify 1366×768, 1440×900, 1920×1080 and mobile, all decision/error states, resize, orbit, run switching, fullscreen, speed, stepping and seeking. Preserve the established global design system; document the page architecture without replacing global design artifacts.

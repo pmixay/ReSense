@@ -46,11 +46,15 @@
 
 /* Compact application tools, rather than a second header. */
 .controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; min-width: 0; }
+.cameraModes { border: 1px solid var(--hair); border-radius: var(--r-sm); box-shadow: none; }
+.cameraModes > button { border-radius: var(--r-xs); }
+.cameraModes > button[aria-checked='true'] { background: var(--red); color: var(--white); }
+.toolButton, .pbtn, .sbtn { border-radius: var(--r-xs); }
 .viewTools { display: flex; align-items: center; gap: 10px; margin-left: auto; min-width: 0; }
 .viewReason { font-size: 12px; font-weight: 600; }
 .menuWrap { position: relative; min-width: 0; }
 .nameBtn { display: flex; align-items: center; gap: 10px; height: 40px; max-width: min(360px, 75vw); padding: 0 12px; border: 1px solid var(--hair-2); border-radius: var(--r-xs); background: var(--card); color: var(--ink); font-weight: 700; }
-.nameBtn:hover { border-color: var(--ink); }
+.nameBtn:hover { border-color: var(--red); background: var(--well-3); }
 .nameBtn > svg { flex: none; }
 .runName { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .menu { position: absolute; left: 0; top: calc(100% + 8px); width: min(440px, calc(100vw - 48px)); max-height: min(420px, 60dvh); overflow: auto; z-index: 15; background: var(--card); border-radius: var(--r-sm); box-shadow: var(--shadow-pop); padding: 8px; scrollbar-color: var(--hair-2) var(--card); }
@@ -65,16 +69,16 @@
 
 /* One level of telemetry panels, using the site's surfaces, type and signal tokens. */
 .telemetry { display: grid; grid-template-columns: 1.15fr 1fr 1.55fr 1.15fr 1.2fr; gap: 12px; min-width: 0; }
-.tile { position: relative; min-width: 0; min-height: 132px; padding: 12px 14px; border-radius: var(--r-sm); background: var(--card); color: var(--ink); }
+.tile { position: relative; min-width: 0; min-height: 132px; padding: 12px 14px; border: 1px solid var(--hair); border-radius: var(--r-sm); background: var(--card); color: var(--ink); }
 .tMet, .tHl, .tDist { min-width: 0; }
 .tt { display: flex; align-items: center; gap: 6px; min-width: 0; font-size: 12px; line-height: 1.25; font-weight: 700; }
 .tt > svg { flex: none; }
 .tchip { margin-left: auto; padding: 3px 6px; border-radius: 6px; background: var(--well); font-size: 11px; white-space: nowrap; }
-.tMap { padding: 0; overflow: hidden; background: var(--night-2); color: var(--white); }
+.tMap { padding: 0; overflow: hidden; border-color: var(--night-2); background: var(--night-2); color: var(--white); }
 .mapCanvas { position: absolute; inset: 0; }
 .mapTitle { position: absolute; left: 12px; right: 12px; top: 10px; z-index: 1; }
 .rt { margin-left: auto; font-size: 11px; }
-.tDec { color: var(--white); }
+.tDec { color: var(--white); border-color: transparent; }
 .dec_stop { background: var(--stop) var(--hatch); }
 .dec_go { background: var(--go-deep); }
 .dec_caution { background: var(--caution); color: var(--ink); }
@@ -86,7 +90,7 @@
 .decBig { margin-top: 6px; line-height: 1; font-weight: 800; white-space: nowrap; }
 .decL1 { margin-top: 6px; font-size: 12px; font-weight: 700; }
 .decL2 { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 11px; font-weight: 600; }
-.distNum { margin-top: 8px; font-family: var(--f-head); font-size: 44px; font-weight: 800; line-height: 1; white-space: nowrap; }
+.distNum { margin-top: 8px; font-family: var(--f-head); font-size: 44px; font-weight: 800; letter-spacing: -0.035em; line-height: 1; white-space: nowrap; }
 .distNum small { margin-left: 6px; font-size: 20px; }
 .dbar { display: block; width: 100%; max-width: 100%; height: 40px; margin-top: 8px; }
 .barLabels { position: relative; height: 16px; font-size: 12px; line-height: 16px; font-weight: 700; }
@@ -94,7 +98,7 @@
 .barValue { transform: translateX(-50%); }
 .barMonitored { transform: translateX(-100%); }
 .metRow { display: flex; align-items: flex-end; gap: 8px; margin-top: 7px; }
-.metV { font-size: 22px; font-weight: 800; line-height: 1; white-space: nowrap; }
+.metV { font-size: 22px; font-weight: 800; letter-spacing: -0.025em; line-height: 1; white-space: nowrap; }
 .metV small { margin-left: 4px; font-size: 11px; font-weight: 600; }
 .spark { display: flex; align-items: flex-end; gap: 2px; margin-left: auto; height: 22px; overflow: hidden; }
 .spark i { display: block; width: 3px; border-radius: 2px; }
@@ -118,7 +122,7 @@
 .spd { display: flex; align-items: center; padding: 3px; border-radius: var(--r-xs); background: var(--well); }
 .spd button { display: grid; place-items: center; height: 34px; min-width: 34px; padding: 0 7px; border: 0; border-radius: 8px; background: transparent; color: var(--ink); font-size: 12px; font-weight: 700; }
 .spd button:hover { background: var(--card); }
-.spd button.on { color: var(--white); background: var(--ink); }
+.spd button.on { color: var(--white); background: var(--red); }
 .scrubPick { display: flex; flex-wrap: wrap; gap: 10px; }
 .scrubSkel { display: flex; gap: 12px; }
 .scrubSkel i { background: var(--well); border-radius: var(--r-xs); }
@@ -134,13 +138,13 @@
 .pickTitle { font-size: 24px; font-weight: 800; }
 .pickGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 16px; }
 .pickCard { display: flex; flex-direction: column; gap: 14px; padding: 18px; min-width: 0; border: 1px solid var(--hair); border-radius: var(--r-sm); background: var(--card); }
-.pickCard:hover { border-color: var(--ink); }
+.pickCard:hover { border-color: var(--red); background: var(--well-3); }
 .pickTop, .pickBottom { display: flex; align-items: center; gap: 8px; }
 .pickDate { margin-left: auto; font-size: 12px; }
 .pickName { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; font-weight: 800; }
 .pickMeta { margin-right: auto; font-size: 12px; }
-.pickPlay { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--white); flex: none; }
-.tKeys { padding: 12px 0; min-height: 0; border-radius: 0; background: transparent; }
+.pickPlay { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-xs); background: var(--red); color: var(--white); flex: none; }
+.tKeys { padding: 12px 0; min-height: 0; border: 0; border-radius: 0; background: transparent; }
 .keys { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 12px; }
 .key { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
 .key kbd { padding: 4px 8px; border: 1px solid var(--hair-2); border-radius: 6px; font-family: var(--f-body); font-weight: 700; background: var(--card); }

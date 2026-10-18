@@ -82,7 +82,7 @@ export function Scrubber(p: ScrubberProps) {
       <IconButton
         icon={p.playing ? 'pause' : 'play'}
         label={p.playing ? 'Пауза (пробел)' : 'Воспроизвести (пробел)'}
-        variant="dark"
+        variant="red"
         size="lg"
         className={styles.pbtn}
         onClick={p.onToggle}

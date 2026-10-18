@@ -59,7 +59,7 @@
   box-shadow: var(--shadow-red);
 }
 .primary:hover:not(:disabled) {
-  background: #CC000C;
+  background: var(--red-deep);
 }
 .dark {
   background: var(--ink);

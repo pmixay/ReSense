@@ -129,17 +129,19 @@ export function ViewControls({ runId, runName, decision, reason, mode, onMode, f
         {mode && onMode && (
           <Segmented<CamMode>
             label="Камера"
-            tone="white"
+            tone="well"
+            className={styles.cameraModes}
             size="sm"
             value={mode}
             onChange={onMode}
-            options={CAMERAS.map((c) => ({ value: c, label: CAMERA_LABEL[c], icon: c === 'cab' ? 'train' : undefined }))}
+            options={CAMERAS.map((c) => ({ value: c, label: CAMERA_LABEL[c], icon: c === 'cab' ? 'train' : c === 'top' ? 'view-top' : 'view-back' }))}
           />
         )}
         <IconButton
           icon={fullscreen ? 'exit-fullscreen' : 'fullscreen'}
           label={fullscreen ? 'Выйти из полноэкранного режима (F)' : 'Во весь экран (F)'}
           variant="outline"
+          className={styles.toolButton}
           size="md"
           onClick={onFullscreen}
           tooltip
