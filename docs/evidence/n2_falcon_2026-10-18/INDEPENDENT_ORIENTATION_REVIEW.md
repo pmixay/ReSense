@@ -66,8 +66,11 @@ handling. The source guard/node tests retain STOP/FAULT precedence. No test or
 acceptance threshold was weakened by this review.
 The author's [149 affected tests](orientation_replay_candidate/bound_fix_tests.json)
 passed in 36.90 seconds after the correction. The independent checks above were
-run separately. A new eight-orientation real-recording replay is pending at this
-review point; earlier measurements retain their original source identity.
+run separately. The corrected `7b7b02c` real-recording suite also completed:
+[independent verification](orientation_bound_fix/independent_artifact_check.json)
+rechecked all 1,809 baseline/eight-orientation rows and their hashes. Every case
+again has 193 STOP frames beginning at frame 8, with no post-adoption safety-field
+mismatch. Earlier measurements retain their original source identity.
 
 ## Remaining acceptance limits
 

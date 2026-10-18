@@ -74,10 +74,14 @@ through N4's generation boundary. The profile sets the range sensor model to
 Falcon, so the Pandar small-target prior is not silently reused.
 
 ```sh
-docker run --rm -it --net=host --ipc=host resense:lidar-work \
+docker run --rm -it --net=host --ipc=host resense:lidar-7b7b02c \
   ros2 launch resense_ros detector.launch.py freshness_mode:=replay \
   sensor_profile:=falcon_ros input_topic:=/iv_points clear_range_policy:=conservative
 ```
+
+This is the development image already built and tested on this host, not a
+published release tag; its [image identity and source receipt](../n1_n4_2026-10-18/final_core_7b7b02c/image_receipt.json)
+are retained with the actual DDS test.
 
 Use `falcon_native` for actual manufacturer-native coordinates. Explicit mappings
 for all 24 proper axis permutations produce exactly the same vehicle-frame points
@@ -141,8 +145,14 @@ storage afterward. The original failing case now stops before allocation. The
 sweep and unchanged storage/acceptance for the real obstacle and Falcon inputs.
 The [focused corrected-source checks](orientation_replay_candidate/bound_fix_tests.json)
 pass 149 tests. Original results above retain their original source identities;
-the corrected-source eight-orientation replay and combined gates are captured
-separately under `orientation_bound_fix/` and the integration evidence.
+the [corrected-source eight-orientation replay](orientation_bound_fix/summary.json)
+also completes all 201 frames per case: 193 STOP frames, first at 8, no loss,
+delay or unconfirmed GO. Its two-frame reservation is 24,542,818 bytes.
+[Comparison with the previous replay and ordinary baseline](orientation_bound_fix/previous_and_ordinary_comparison.json)
+finds identical decisions, detections, warnings, ranges and point counts. The
+recorded unrounded coefficient differences are at most 1.33e−15; these are
+disclosed separately from the exact output comparison. Corrected-source combined
+gates remain separate integration evidence.
 
 ## Full recording: static supports and the person
 
@@ -228,7 +238,32 @@ The original gate's visibility and injected-point denominators are also retained
 measured loss can include positive returns removed by the transform, so it is
 not an isolated detector-recall measurement on unchanged observable objects.
 
-The ten decoded-bag stress captures are under `proxy/`. The separate
+The ten decoded-bag stress captures are complete: **5,665 frames per arm**,
+with every raw hash and frame identity checked in [the paired summary](proxy_summary.json).
+The proxy retains median 15.3% of obstacle-recording points and about 24–25% in
+the other recordings. It clearly fails to preserve the baseline behavior:
+
+| Recording | Baseline STOP frames | Proxy STOP frames | Baseline STOP rows lost | Added STOP rows |
+|---|---:|---:|---:|---:|
+| `doubleT_obstacle` | 193 | 68 | 125 | 0 |
+| `doubleT_platform` | 0 | 13 | 0 | 13 |
+| `roundT_doubleT` | 0 | 6 | 0 | 6 |
+| `roundT_pressureGate_roundT` | 2 | 0 | 2 | 0 |
+| `roundT_squareT_pressureGate_squareT` | 0 | 0 | 0 | 0 |
+| `squareT_platform_squareT_switch` | 11 | 58 | 9 | 56 |
+| Set O | 452 | 324 | 140 | 12 |
+| Synthetic platform | 185 | 270 | 10 | 95 |
+| Synthetic switch | 142 | 120 | 34 | 12 |
+| Synthetic tunnels | 126 | 117 | 9 | 0 |
+
+The five known obstacle-free recordings rise from 13 to 77 STOP frames. Increased
+STOP on the synthetic platform is not automatically improved recall: these are
+overall decisions, with uncertain gauge membership and changed visibility/geometry.
+The decoded replay uses original header stamps and the radial crop; its totals
+must not be substituted for the separate compact-input, receive-stamp full gate.
+No detector thresholds are relaxed to make this sampling experiment pass.
+
+The separate
 `run_proxy_gate.py` executes the entire normal gate on transformed input, including
 Set F after object insertion, and refuses an incomplete ride receipt. It records
 per-source-frame before/after point counts, requires child-process hook activation

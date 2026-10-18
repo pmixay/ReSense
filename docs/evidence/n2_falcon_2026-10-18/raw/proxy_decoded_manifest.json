@@ -1,0 +1,112 @@
+{
+  "status": "PASS",
+  "archive": "raw_proxy_decoded.tar.gz",
+  "sha256": "12d6b46d0076ecf930dcdd9ddbe2246ebc445e0755e8b77228e656e6997f9032",
+  "archive_bytes": 1806336,
+  "members": [
+    {
+      "name": "proxy/cloud_with_fake_obj/baseline.jsonl",
+      "bytes": 2137922,
+      "sha256": "059050e5e5c804dfcd1eab2d1e76783ad0a6ea5cfa86eda16f80df77d20aca01"
+    },
+    {
+      "name": "proxy/cloud_with_fake_obj/falcon_proxy.jsonl",
+      "bytes": 2100446,
+      "sha256": "f15497d053c2fe612ad86b83dc538c36141b21f79dea40715120b781d693e5a3"
+    },
+    {
+      "name": "proxy/doubleT_obstacle/baseline.jsonl",
+      "bytes": 339128,
+      "sha256": "fec0af98a159f286d940d4c9456bfc24146cdceb608beb86d4cecf14fb803caa"
+    },
+    {
+      "name": "proxy/doubleT_obstacle/falcon_proxy.jsonl",
+      "bytes": 310904,
+      "sha256": "d3f1f7d8e27a498368da18c5b24dd7088f4c3cf75e1ae85c27fe45abb2daafb0"
+    },
+    {
+      "name": "proxy/doubleT_platform/baseline.jsonl",
+      "bytes": 486397,
+      "sha256": "921b2f87375d4c91e76b4ac9cbd27f4b6704eab8bfbb05f246b76cc8f163e30d"
+    },
+    {
+      "name": "proxy/doubleT_platform/falcon_proxy.jsonl",
+      "bytes": 511329,
+      "sha256": "d5f992c2996591dee4c3f01ea2b638ab6909f9072c6db9641b9292ba5da2c5d1"
+    },
+    {
+      "name": "proxy/roundT_doubleT/baseline.jsonl",
+      "bytes": 367139,
+      "sha256": "ac9c873e82d1697ccaa23d7ce6154579f3c29fe91d3e0d77641ab44a3325fdce"
+    },
+    {
+      "name": "proxy/roundT_doubleT/falcon_proxy.jsonl",
+      "bytes": 398504,
+      "sha256": "93465f216e7e460654eb9d1bf57658f1287422bc32238fee9f6eee3c25f3434b"
+    },
+    {
+      "name": "proxy/roundT_pressureGate_roundT/baseline.jsonl",
+      "bytes": 370662,
+      "sha256": "69694240c4d39d3ffed3b8f9ddbd9df2f932c90969927d162ca0f5a7c327163b"
+    },
+    {
+      "name": "proxy/roundT_pressureGate_roundT/falcon_proxy.jsonl",
+      "bytes": 371037,
+      "sha256": "f481b8e84f2cd3b35256e6187d10be6c07322651ffaee9393e2dc4713b4147b2"
+    },
+    {
+      "name": "proxy/roundT_squareT_pressureGate_squareT/baseline.jsonl",
+      "bytes": 751174,
+      "sha256": "ee76dd4b7211af4c11b12b8b050ecb16a1097118a568040f7ee9d69c3148ce66"
+    },
+    {
+      "name": "proxy/roundT_squareT_pressureGate_squareT/falcon_proxy.jsonl",
+      "bytes": 743117,
+      "sha256": "a29c77917d412d42320dc7259c6c9aa0111aa39a42498a25009984449ed03ec5"
+    },
+    {
+      "name": "proxy/squareT_platform_squareT_switch/baseline.jsonl",
+      "bytes": 1340064,
+      "sha256": "753169b3b0eb0b983cfe01160e62dfd39b88c2d8a7adfec0896915f16e05ccbd"
+    },
+    {
+      "name": "proxy/squareT_platform_squareT_switch/falcon_proxy.jsonl",
+      "bytes": 1233669,
+      "sha256": "88c31808ba1a8575b5b3b1cadcc3eb17183d61c795045ab0c7a69a56785d7cfe"
+    },
+    {
+      "name": "proxy/synthetic_platform/baseline.jsonl",
+      "bytes": 600148,
+      "sha256": "a227bb0efcf5812398b7ffc924d9d3c2ee1085f22a9e6c1f83428796e0fd05a5"
+    },
+    {
+      "name": "proxy/synthetic_platform/falcon_proxy.jsonl",
+      "bytes": 581116,
+      "sha256": "140a41e983d6e197118ffcb351bb43bdd9236cbef06cd464a3dfe9c875747470"
+    },
+    {
+      "name": "proxy/synthetic_switch/baseline.jsonl",
+      "bytes": 1047597,
+      "sha256": "f482f72f0879d12b5efba04df7e9df1ff0c572ee2719cce5ce127953ff0aaa24"
+    },
+    {
+      "name": "proxy/synthetic_switch/falcon_proxy.jsonl",
+      "bytes": 1043491,
+      "sha256": "c876bbfa993958d2378967085ca61974529319cc9b1d9eb76218a369f0fd1221"
+    },
+    {
+      "name": "proxy/synthetic_tunnels/baseline.jsonl",
+      "bytes": 816532,
+      "sha256": "d9a763ed13bb20d867f93df500bc65a86b9082832006ba3d53201cc73b8245b4"
+    },
+    {
+      "name": "proxy/synthetic_tunnels/falcon_proxy.jsonl",
+      "bytes": 808568,
+      "sha256": "c7ca64102450eef7c95760a90094d11fcef05b7524ed3b4ba9286d2b93655950"
+    }
+  ],
+  "frames_per_arm": 5665,
+  "scope": "Paired decoded-bag baseline and transformed-input stress proxy on immutable9b92df5; not the separately running full gate",
+  "every_member_decompressed_and_verified": true,
+  "local_originals_retained_and_reverified": true
+}

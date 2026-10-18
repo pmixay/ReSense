@@ -33,5 +33,17 @@
     "sha256": "8c9c4a4a741ceff53b1d327527b2e33c94e1b4ac50c658582b9ab4f5d1fcb301",
     "result": "149passed36.90s, reported by author with exact command/source hashes",
     "run_by": "acceptance_audit"
+  },
+  "corrected_core_real_orientation_artifact_check": {
+    "source": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+    "file": "orientation_bound_fix/independent_artifact_check.json",
+    "sha256": "fbc39dc48673a110b5c9ae929f724555e9e286ab1df7bb1bf3b0125d403da1ad",
+    "rows": 1809,
+    "cases": 9,
+    "STOP_frames_per_case": 193,
+    "first_STOP_frame": 8,
+    "safety_field_mismatches": 0,
+    "detector_run_by": "acceptance_audit",
+    "artifact_check_by": "c2_implementation"
   }
 }

@@ -78,3 +78,12 @@ Evidence: [full-precision source removal](exact_source_rail_support.json),
 [range invariants](v3_range_invariants.json), and the four positive-control
 comparison files linked in the main evidence folder. Any revised candidate needs
 its own registered hypothesis, tests, immutable replay and acceptance decision.
+
+The later [metric correction receipt](metric_correction_receipt.json) separates
+temporal first STOP from maximum matched range in the nonmonotonic real crossing.
+Both variants first match at frame 8, 55.51 m; their maximum matched range is
+56.55 m. Per-frame gauge labels give 61 inside and six outside matched rows for
+the crossing, rather than one final gauge relation for its entire trajectory.
+The original committed reports are preserved and hashed. This reporting correction
+does not change raw decisions, matched rows, the synthetic person improvement,
+or the recommendation to keep the extension disabled by default.

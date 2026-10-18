@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "archive": "raw_orientation_bound_fix.tar.gz",
+  "sha256": "48f094fe35b11b5f0ac29d9c86f555fde9a29b9beb63db07989ca89661bdfd4f",
+  "archive_bytes": 281094,
+  "members": [
+    {
+      "name": "orientation_bound_fix/auto_00.jsonl",
+      "bytes": 351037,
+      "sha256": "c0dccd4bfda8374af7cd034bc95024e308b4a4136994887db8a0758731bbb610"
+    },
+    {
+      "name": "orientation_bound_fix/auto_01.jsonl",
+      "bytes": 354254,
+      "sha256": "3b5549499d720e972b5aef54f054ae712789de38fe8b0613f4cf73f2ce427b1a"
+    },
+    {
+      "name": "orientation_bound_fix/auto_02.jsonl",
+      "bytes": 354535,
+      "sha256": "31136f34960aa847917aab7aa391c4b9a87b00b192ba5754482ed0ae359cc29d"
+    },
+    {
+      "name": "orientation_bound_fix/auto_03.jsonl",
+      "bytes": 354942,
+      "sha256": "a202c63d4c0430b7914ec81f9c44b2e574eb5894780a3c69a2f948524d46578f"
+    },
+    {
+      "name": "orientation_bound_fix/auto_08.jsonl",
+      "bytes": 354160,
+      "sha256": "7c2b001ee24e034a3034df1f63187090bce9779227bea1eb105bf8963a1d3235"
+    },
+    {
+      "name": "orientation_bound_fix/auto_09.jsonl",
+      "bytes": 354745,
+      "sha256": "4400a18a06756a48b7dacc4f07c06dd00b08b967cccb9112083682af5947ef55"
+    },
+    {
+      "name": "orientation_bound_fix/auto_10.jsonl",
+      "bytes": 354570,
+      "sha256": "396a33cc599bb03faa88806c4d99704df9746988a47ca85697bd689bf4b7f173"
+    },
+    {
+      "name": "orientation_bound_fix/auto_11.jsonl",
+      "bytes": 354767,
+      "sha256": "2713a35f20b40ddd22bee56e3a111dde3d5ab166ba62097e1b0dfcc46965ff10"
+    },
+    {
+      "name": "orientation_bound_fix/baseline.jsonl",
+      "bytes": 345205,
+      "sha256": "a50df8c490427d200f711e58f5b422f81e1abe55015a13a88052e2cb0c52cc8d"
+    }
+  ],
+  "source_commit": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+  "every_member_decompressed_and_verified": true,
+  "local_originals_retained_and_reverified": true
+}

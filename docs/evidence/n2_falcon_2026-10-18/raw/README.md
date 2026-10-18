@@ -33,7 +33,20 @@ captures for the expanded automatic-orientation experiment. Its separate
 `ORIENTATION24_SHA256SUMS` verifies the archive. Restore it from this folder with
 `tar -xzf raw_orientation24.tar.gz -C ..` after checking its checksum. Its known
 wrong-orientation cases are retained; completion does not imply acceptance.
-The remaining proxy experiments are still excluded until complete.
+The full-gate proxy experiment remains excluded until complete.
+
+`raw_orientation_bound_fix.tar.gz` separately preserves all nine completed
+corrected-source `7b7b02c` captures (control plus eight supported mappings).
+[Its manifest](orientation_bound_fix_manifest.json) verifies every member and
+`ORIENTATION_BOUND_FIX_SHA256SUMS` verifies the archive. Restore it with
+`tar -xzf raw_orientation_bound_fix.tar.gz -C ..`. The earlier captures remain
+unchanged, with their original source identity.
+
+`raw_proxy_decoded.tar.gz` contains the 20 completed paired captures for all ten
+decoded recordings (5,665 frames per arm). [Its manifest](proxy_decoded_manifest.json)
+and `PROXY_DECODED_SHA256SUMS` verify every member and archive; restore with
+`tar -xzf raw_proxy_decoded.tar.gz -C ..`. These stress-test records include
+the measured regressions. The separate full-gate hook output is not included.
 
 The archives contain detector/measurement records, not the large raw point-cloud
 datasets. Those retain their separate organizer-source, cache and cleanup receipts.
