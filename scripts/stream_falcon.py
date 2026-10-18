@@ -164,6 +164,7 @@ def main() -> int:
     ap.add_argument("--back", type=int, default=256, help="MB kept behind the read position")
     ap.add_argument("--reorder", type=int, default=50, help="messages held back for timestamp ordering")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--dump", default="", help="comma list of frame numbers whose decoded cloud is saved as <prefix>_f<k>.npz")
     a = ap.parse_args()
 
     rec = Recover(a.frame_id, a.back)
@@ -186,8 +187,11 @@ def main() -> int:
         def emit(topic_id, ts, data):
             dst.execute("INSERT INTO messages (topic_id, timestamp, data) VALUES (?, ?, ?)", (topic_id, ts, data))
     else:
+        import numpy as np
         from judge_runner import CSV_COLS, NodeReplica, csv_row, record
+        from resense_ros import fastcloud
         rep = NodeReplica()
+        dump = {int(v) for v in a.dump.split(",") if v}
         fj, fc = open(a.out + ".jsonl", "w"), open(a.out + ".csv", "w", newline="")
         w = csv.writer(fc)
         w.writerow(CSV_COLS)
@@ -195,6 +199,10 @@ def main() -> int:
         def emit(topic_id, ts, data):
             n = emit.n
             msg, stamp, res, dec_ms, det_ms = rep.process_raw(data, a.topic, n)
+            if n in dump:       # the node decode (sensor frame) and the vehicle-frame rotation of this frame
+                xyz, inten, _, _, _ = fastcloud.decode(fastcloud.packed(fastcloud.parse_pointcloud2(data)), 2.5, 250.0)
+                np.savez_compressed(f"{a.out}_f{n:05d}.npz", xyz=xyz, inten=inten, R_vs=rep.R_vs,
+                                    mount=np.asarray(rep.detector.mount_rotation))
             r = record(n, ts / 1e9, stamp, res, dec_ms, det_ms, msg.header.frame_id, a.topic)
             fj.write(json.dumps(r) + "\n")
             w.writerow(csv_row(r))
