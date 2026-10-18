@@ -1,0 +1,1120 @@
+{
+  "status": "FULL_DEFAULT_GATE_PASS_X3_STILL_REQUIRED",
+  "checked_utc": "2026-10-18T10:06:55.920436+00:00",
+  "scope": "Independent raw STOP/decision/range boundaries, source/defaults and durable archive; no detector execution.",
+  "source_commit": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+  "source_files": 38,
+  "source_digest": "4d57add1f5e255d5aa4a645a2a390eb47204e64893a2b45d1ec6a2a6e1073993",
+  "source_matches_live_immutable_git_and_receipt": true,
+  "native_files": {
+    "resense/_resense_native.cpython-312-x86_64-linux-gnu.so": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8"
+  },
+  "no_waivers_or_overrides": true,
+  "default_orientation_replay_frames": 4,
+  "default_rails_axis_extension": false,
+  "historical_gate": {
+    "baseline": "/home/resense/data/final_lidar_7b7b02c/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+    "baseline_commit": "7464d80ec06f484ce1691b0ca7a87ce1ed82c5a0",
+    "baseline_config_sha256": "873374a221e37da48fbe9d31806f7a26349399ed09f9b58d9768c1ae50a2916e",
+    "allow": [],
+    "passed": true,
+    "worse_gated": [],
+    "missing_gated": [],
+    "worse_allowed": [],
+    "missing_allowed": [],
+    "better": [],
+    "same": 208,
+    "info_changed": [
+      "latency_ms.doubleT_obstacle.mean",
+      "latency_ms.doubleT_obstacle.p95",
+      "latency_ms.doubleT_platform.mean",
+      "latency_ms.doubleT_platform.p95",
+      "latency_ms.roundT_doubleT.mean",
+      "latency_ms.roundT_doubleT.p95",
+      "latency_ms.roundT_pressureGate_roundT.mean",
+      "latency_ms.roundT_pressureGate_roundT.p95",
+      "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+      "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+      "latency_ms.squareT_platform_squareT_switch.mean",
+      "latency_ms.squareT_platform_squareT_switch.p95",
+      "latency_ms.cloud_with_fake_obj.mean",
+      "latency_ms.cloud_with_fake_obj.p95",
+      "latency_ms.new_data.mean",
+      "latency_ms.new_data.p95"
+    ]
+  },
+  "fresh_metric_verdicts": {
+    "same": 209,
+    "better": 5,
+    "worse": 10
+  },
+  "fresh_metric_count": 224,
+  "all_non_latency_metrics_exact": true,
+  "ordinary_rows": 15269,
+  "pieces": [
+    {
+      "capture": "cloud_with_fake_obj.jsonl",
+      "rows": 1510,
+      "decisions": {
+        "GO": 737,
+        "STOP": 447,
+        "FAULT": 2,
+        "CAUTION": 324
+      },
+      "orientation_confirmed": {
+        "True": 1510
+      },
+      "stop_intervals": [
+        [
+          5,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          403,
+          426
+        ],
+        [
+          462,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          627,
+          683
+        ],
+        [
+          693,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "first_stop_frame_id": "cloud_with_fake_obj_0_0005",
+      "first_stop_row": 5,
+      "last_stop_row": 803,
+      "stop_frames": 447,
+      "stop_episodes": 8,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "doubleT_obstacle.jsonl",
+      "rows": 201,
+      "decisions": {
+        "GO": 8,
+        "STOP": 193
+      },
+      "orientation_confirmed": {
+        "True": 201
+      },
+      "stop_intervals": [
+        [
+          8,
+          200
+        ]
+      ],
+      "first_stop_frame_id": "doubleT_obstacle_0_0008",
+      "first_stop_row": 8,
+      "last_stop_row": 200,
+      "stop_frames": 193,
+      "stop_episodes": 1,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "doubleT_platform.jsonl",
+      "rows": 345,
+      "decisions": {
+        "GO": 150,
+        "CAUTION": 193,
+        "STOP": 2
+      },
+      "orientation_confirmed": {
+        "True": 345
+      },
+      "stop_intervals": [
+        [
+          36,
+          37
+        ]
+      ],
+      "first_stop_frame_id": "doubleT_platform_0_0036",
+      "first_stop_row": 36,
+      "last_stop_row": 37,
+      "stop_frames": 2,
+      "stop_episodes": 1,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_0.jsonl",
+      "rows": 1409,
+      "decisions": {
+        "GO": 762,
+        "CAUTION": 635,
+        "STOP": 12
+      },
+      "orientation_confirmed": {
+        "True": 1409
+      },
+      "stop_intervals": [
+        [
+          23,
+          30
+        ],
+        [
+          1378,
+          1378
+        ],
+        [
+          1393,
+          1395
+        ]
+      ],
+      "first_stop_frame_id": "new_data_0_0023",
+      "first_stop_row": 23,
+      "last_stop_row": 1395,
+      "stop_frames": 12,
+      "stop_episodes": 3,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_1.jsonl",
+      "rows": 1409,
+      "decisions": {
+        "GO": 508,
+        "CAUTION": 887,
+        "STOP": 14
+      },
+      "orientation_confirmed": {
+        "True": 1409
+      },
+      "stop_intervals": [
+        [
+          438,
+          438
+        ],
+        [
+          1259,
+          1269
+        ],
+        [
+          1320,
+          1321
+        ]
+      ],
+      "first_stop_frame_id": "new_data_36_0011",
+      "first_stop_row": 438,
+      "last_stop_row": 1321,
+      "stop_frames": 14,
+      "stop_episodes": 3,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_2.jsonl",
+      "rows": 1409,
+      "decisions": {
+        "GO": 746,
+        "CAUTION": 657,
+        "STOP": 6
+      },
+      "orientation_confirmed": {
+        "True": 1409
+      },
+      "stop_intervals": [
+        [
+          242,
+          243
+        ],
+        [
+          1334,
+          1337
+        ]
+      ],
+      "first_stop_frame_id": "new_data_60_0000",
+      "first_stop_row": 242,
+      "last_stop_row": 1337,
+      "stop_frames": 6,
+      "stop_episodes": 2,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_3.jsonl",
+      "rows": 1409,
+      "decisions": {
+        "GO": 558,
+        "CAUTION": 849,
+        "STOP": 2
+      },
+      "orientation_confirmed": {
+        "True": 1409
+      },
+      "stop_intervals": [
+        [
+          838,
+          839
+        ]
+      ],
+      "first_stop_frame_id": "new_data_99_0016",
+      "first_stop_row": 838,
+      "last_stop_row": 839,
+      "stop_frames": 2,
+      "stop_episodes": 1,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_4.jsonl",
+      "rows": 1409,
+      "decisions": {
+        "GO": 630,
+        "CAUTION": 759,
+        "STOP": 20
+      },
+      "orientation_confirmed": {
+        "True": 1409
+      },
+      "stop_intervals": [
+        [
+          63,
+          68
+        ],
+        [
+          78,
+          81
+        ],
+        [
+          265,
+          268
+        ],
+        [
+          1223,
+          1228
+        ]
+      ],
+      "first_stop_frame_id": "new_data_111_0038",
+      "first_stop_row": 63,
+      "last_stop_row": 1228,
+      "stop_frames": 20,
+      "stop_episodes": 4,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_5.jsonl",
+      "rows": 1409,
+      "decisions": {
+        "GO": 1053,
+        "CAUTION": 320,
+        "STOP": 36
+      },
+      "orientation_confirmed": {
+        "True": 1409
+      },
+      "stop_intervals": [
+        [
+          293,
+          298
+        ],
+        [
+          302,
+          306
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          319,
+          320
+        ],
+        [
+          814,
+          821
+        ],
+        [
+          823,
+          824
+        ],
+        [
+          898,
+          908
+        ]
+      ],
+      "first_stop_frame_id": "new_data_143_0045",
+      "first_stop_row": 293,
+      "last_stop_row": 908,
+      "stop_frames": 36,
+      "stop_episodes": 7,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_6.jsonl",
+      "rows": 1409,
+      "decisions": {
+        "GO": 971,
+        "CAUTION": 411,
+        "STOP": 27
+      },
+      "orientation_confirmed": {
+        "True": 1409
+      },
+      "stop_intervals": [
+        [
+          671,
+          672
+        ],
+        [
+          809,
+          814
+        ],
+        [
+          817,
+          820
+        ],
+        [
+          830,
+          832
+        ],
+        [
+          1332,
+          1333
+        ],
+        [
+          1346,
+          1355
+        ]
+      ],
+      "first_stop_frame_id": "new_data_178_0047",
+      "first_stop_row": 671,
+      "last_stop_row": 1355,
+      "stop_frames": 27,
+      "stop_episodes": 6,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_7.jsonl",
+      "rows": 1408,
+      "decisions": {
+        "GO": 1212,
+        "CAUTION": 187,
+        "STOP": 9
+      },
+      "orientation_confirmed": {
+        "True": 1408
+      },
+      "stop_intervals": [
+        [
+          623,
+          624
+        ],
+        [
+          643,
+          644
+        ],
+        [
+          781,
+          783
+        ],
+        [
+          785,
+          786
+        ]
+      ],
+      "first_stop_frame_id": "new_data_205_0031",
+      "first_stop_row": 623,
+      "last_stop_row": 786,
+      "stop_frames": 9,
+      "stop_episodes": 4,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "roundT_doubleT.jsonl",
+      "rows": 252,
+      "decisions": {
+        "GO": 79,
+        "CAUTION": 173
+      },
+      "orientation_confirmed": {
+        "True": 252
+      },
+      "stop_intervals": [],
+      "first_stop_frame_id": null,
+      "first_stop_row": null,
+      "last_stop_row": null,
+      "stop_frames": 0,
+      "stop_episodes": 0,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "roundT_pressureGate_roundT.jsonl",
+      "rows": 268,
+      "decisions": {
+        "GO": 161,
+        "CAUTION": 107
+      },
+      "orientation_confirmed": {
+        "True": 268
+      },
+      "stop_intervals": [],
+      "first_stop_frame_id": null,
+      "first_stop_row": null,
+      "last_stop_row": null,
+      "stop_frames": 0,
+      "stop_episodes": 0,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "roundT_squareT_pressureGate_squareT.jsonl",
+      "rows": 545,
+      "decisions": {
+        "GO": 399,
+        "CAUTION": 146
+      },
+      "orientation_confirmed": {
+        "True": 545
+      },
+      "stop_intervals": [],
+      "first_stop_frame_id": null,
+      "first_stop_row": null,
+      "last_stop_row": null,
+      "stop_frames": 0,
+      "stop_episodes": 0,
+      "all_decisions_and_stop_boundaries_identical": true
+    },
+    {
+      "capture": "squareT_platform_squareT_switch.jsonl",
+      "rows": 877,
+      "decisions": {
+        "GO": 454,
+        "CAUTION": 386,
+        "STOP": 37
+      },
+      "orientation_confirmed": {
+        "True": 877
+      },
+      "stop_intervals": [
+        [
+          312,
+          313
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          437,
+          438
+        ],
+        [
+          490,
+          490
+        ],
+        [
+          500,
+          501
+        ],
+        [
+          522,
+          524
+        ],
+        [
+          527,
+          528
+        ],
+        [
+          580,
+          580
+        ],
+        [
+          612,
+          613
+        ],
+        [
+          640,
+          642
+        ],
+        [
+          692,
+          708
+        ]
+      ],
+      "first_stop_frame_id": "squareT_platform_squareT_switch_0_0312",
+      "first_stop_row": 312,
+      "last_stop_row": 708,
+      "stop_frames": 37,
+      "stop_episodes": 11,
+      "all_decisions_and_stop_boundaries_identical": true
+    }
+  ],
+  "set_F_rows": 3060,
+  "set_F_sequences": [
+    {
+      "kind": "person",
+      "file0": "new_data_46_0000.npy.zst",
+      "rows": 102,
+      "first_hit_row": 24,
+      "hit_rows": 55,
+      "hit_intervals": [
+        [
+          24,
+          27
+        ],
+        [
+          29,
+          38
+        ],
+        [
+          40,
+          41
+        ],
+        [
+          43,
+          44
+        ],
+        [
+          65,
+          101
+        ]
+      ]
+    },
+    {
+      "kind": "box1.0",
+      "file0": "new_data_46_0000.npy.zst",
+      "rows": 102,
+      "first_hit_row": 35,
+      "hit_rows": 37,
+      "hit_intervals": [
+        [
+          35,
+          36
+        ],
+        [
+          67,
+          101
+        ]
+      ]
+    },
+    {
+      "kind": "box0.5",
+      "file0": "new_data_46_0000.npy.zst",
+      "rows": 102,
+      "first_hit_row": 68,
+      "hit_rows": 3,
+      "hit_intervals": [
+        [
+          68,
+          70
+        ]
+      ]
+    },
+    {
+      "kind": "trolley",
+      "file0": "new_data_46_0000.npy.zst",
+      "rows": 102,
+      "first_hit_row": 30,
+      "hit_rows": 47,
+      "hit_intervals": [
+        [
+          30,
+          32
+        ],
+        [
+          37,
+          44
+        ],
+        [
+          66,
+          101
+        ]
+      ]
+    },
+    {
+      "kind": "cable",
+      "file0": "new_data_46_0000.npy.zst",
+      "rows": 102,
+      "first_hit_row": 78,
+      "hit_rows": 8,
+      "hit_intervals": [
+        [
+          78,
+          79
+        ],
+        [
+          82,
+          82
+        ],
+        [
+          84,
+          84
+        ],
+        [
+          98,
+          101
+        ]
+      ]
+    },
+    {
+      "kind": "person",
+      "file0": "new_data_68_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": 38,
+      "hit_rows": 54,
+      "hit_intervals": [
+        [
+          38,
+          39
+        ],
+        [
+          54,
+          105
+        ]
+      ]
+    },
+    {
+      "kind": "box1.0",
+      "file0": "new_data_68_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": 55,
+      "hit_rows": 51,
+      "hit_intervals": [
+        [
+          55,
+          105
+        ]
+      ]
+    },
+    {
+      "kind": "box0.5",
+      "file0": "new_data_68_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": null,
+      "hit_rows": 0,
+      "hit_intervals": []
+    },
+    {
+      "kind": "trolley",
+      "file0": "new_data_68_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": 54,
+      "hit_rows": 52,
+      "hit_intervals": [
+        [
+          54,
+          105
+        ]
+      ]
+    },
+    {
+      "kind": "cable",
+      "file0": "new_data_68_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": 56,
+      "hit_rows": 23,
+      "hit_intervals": [
+        [
+          56,
+          62
+        ],
+        [
+          64,
+          69
+        ],
+        [
+          71,
+          74
+        ],
+        [
+          100,
+          105
+        ]
+      ]
+    },
+    {
+      "kind": "person",
+      "file0": "new_data_98_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": 34,
+      "hit_rows": 72,
+      "hit_intervals": [
+        [
+          34,
+          105
+        ]
+      ]
+    },
+    {
+      "kind": "box1.0",
+      "file0": "new_data_98_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": 56,
+      "hit_rows": 50,
+      "hit_intervals": [
+        [
+          56,
+          105
+        ]
+      ]
+    },
+    {
+      "kind": "box0.5",
+      "file0": "new_data_98_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": null,
+      "hit_rows": 0,
+      "hit_intervals": []
+    },
+    {
+      "kind": "trolley",
+      "file0": "new_data_98_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": 58,
+      "hit_rows": 48,
+      "hit_intervals": [
+        [
+          58,
+          105
+        ]
+      ]
+    },
+    {
+      "kind": "cable",
+      "file0": "new_data_98_0000.npy.zst",
+      "rows": 106,
+      "first_hit_row": 58,
+      "hit_rows": 29,
+      "hit_intervals": [
+        [
+          58,
+          59
+        ],
+        [
+          61,
+          61
+        ],
+        [
+          63,
+          66
+        ],
+        [
+          68,
+          72
+        ],
+        [
+          74,
+          77
+        ],
+        [
+          79,
+          81
+        ],
+        [
+          83,
+          85
+        ],
+        [
+          87,
+          87
+        ],
+        [
+          89,
+          91
+        ],
+        [
+          103,
+          105
+        ]
+      ]
+    },
+    {
+      "kind": "person",
+      "file0": "new_data_140_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 38,
+      "hit_rows": 72,
+      "hit_intervals": [
+        [
+          38,
+          109
+        ]
+      ]
+    },
+    {
+      "kind": "box1.0",
+      "file0": "new_data_140_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 38,
+      "hit_rows": 57,
+      "hit_intervals": [
+        [
+          38,
+          41
+        ],
+        [
+          43,
+          43
+        ],
+        [
+          58,
+          109
+        ]
+      ]
+    },
+    {
+      "kind": "box0.5",
+      "file0": "new_data_140_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": null,
+      "hit_rows": 0,
+      "hit_intervals": []
+    },
+    {
+      "kind": "trolley",
+      "file0": "new_data_140_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 14,
+      "hit_rows": 54,
+      "hit_intervals": [
+        [
+          14,
+          15
+        ],
+        [
+          34,
+          34
+        ],
+        [
+          59,
+          109
+        ]
+      ]
+    },
+    {
+      "kind": "cable",
+      "file0": "new_data_140_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 68,
+      "hit_rows": 21,
+      "hit_intervals": [
+        [
+          68,
+          70
+        ],
+        [
+          72,
+          76
+        ],
+        [
+          78,
+          78
+        ],
+        [
+          95,
+          98
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          103,
+          109
+        ]
+      ]
+    },
+    {
+      "kind": "person",
+      "file0": "new_data_168_0000.npy.zst",
+      "rows": 78,
+      "first_hit_row": 28,
+      "hit_rows": 39,
+      "hit_intervals": [
+        [
+          28,
+          28
+        ],
+        [
+          36,
+          65
+        ],
+        [
+          70,
+          77
+        ]
+      ]
+    },
+    {
+      "kind": "box1.0",
+      "file0": "new_data_168_0000.npy.zst",
+      "rows": 78,
+      "first_hit_row": 46,
+      "hit_rows": 26,
+      "hit_intervals": [
+        [
+          46,
+          54
+        ],
+        [
+          57,
+          65
+        ],
+        [
+          70,
+          77
+        ]
+      ]
+    },
+    {
+      "kind": "box0.5",
+      "file0": "new_data_168_0000.npy.zst",
+      "rows": 78,
+      "first_hit_row": null,
+      "hit_rows": 0,
+      "hit_intervals": []
+    },
+    {
+      "kind": "trolley",
+      "file0": "new_data_168_0000.npy.zst",
+      "rows": 78,
+      "first_hit_row": 34,
+      "hit_rows": 40,
+      "hit_intervals": [
+        [
+          34,
+          65
+        ],
+        [
+          70,
+          77
+        ]
+      ]
+    },
+    {
+      "kind": "cable",
+      "file0": "new_data_168_0000.npy.zst",
+      "rows": 78,
+      "first_hit_row": 75,
+      "hit_rows": 3,
+      "hit_intervals": [
+        [
+          75,
+          77
+        ]
+      ]
+    },
+    {
+      "kind": "person",
+      "file0": "new_data_172_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 37,
+      "hit_rows": 72,
+      "hit_intervals": [
+        [
+          37,
+          51
+        ],
+        [
+          53,
+          109
+        ]
+      ]
+    },
+    {
+      "kind": "box1.0",
+      "file0": "new_data_172_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 55,
+      "hit_rows": 55,
+      "hit_intervals": [
+        [
+          55,
+          109
+        ]
+      ]
+    },
+    {
+      "kind": "box0.5",
+      "file0": "new_data_172_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 90,
+      "hit_rows": 20,
+      "hit_intervals": [
+        [
+          90,
+          109
+        ]
+      ]
+    },
+    {
+      "kind": "trolley",
+      "file0": "new_data_172_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 38,
+      "hit_rows": 58,
+      "hit_intervals": [
+        [
+          38,
+          39
+        ],
+        [
+          54,
+          109
+        ]
+      ]
+    },
+    {
+      "kind": "cable",
+      "file0": "new_data_172_0000.npy.zst",
+      "rows": 110,
+      "first_hit_row": 57,
+      "hit_rows": 18,
+      "hit_intervals": [
+        [
+          57,
+          58
+        ],
+        [
+          60,
+          63
+        ],
+        [
+          79,
+          80
+        ],
+        [
+          90,
+          96
+        ],
+        [
+          107,
+          109
+        ]
+      ]
+    }
+  ],
+  "lost_added_delayed_shortened_stop_frames": 0,
+  "all_stored_set_F_sequences_and_non_timing_summary_exact": true,
+  "archive_sha256": "697a3636f1148a628db466c8103bd15640bc15c8ec5da73987a12de1093ccc08",
+  "archive_members_verified": 39,
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/review_gate_boundaries.py": "1580d0fe3c20fef1951397ee17656de1fb16659d6c084d02ebbd6b38cc75018a",
+    "/home/resense/data/final_lidar_7b7b02c/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json": "8d86d6d19ef00f0ece4fd0c924935887ba6f8b39dbfd7074c2f1577099029b30",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/gate.json": "7762ceeb49eba008af222effc4d6116a1d3b5af259e156f94f881a655b0f6408",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/control_9b_native/gate.json": "9ad69a9c30f2e8709fa2aab37e9eb750505c5057b1e0470cf435cfc52b89f2aa",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/gate_independent_review.json": "90bbf0dce706e2251cbb0787937e68ea3c015c1a570e82a3427332fef87ab151",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/raw/gate_control_and_7b_manifest.json": "8ba14e2efea6fe69795943adf62d3f59104b22cb1cd0290020e9f224b8fa89e9",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/runtime_identity_metadata_fixed.json": "a20519ee94b20a4c8679cb5f2e68d199c47842654b6d9ce37eab853c8df8d0c3",
+    "/home/resense/data/final_lidar_7b7b02c/ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "7003f70146290666450b8ef8f21630cba3b7457fbb8f588af65badf3d6033fa4"
+  },
+  "limits": [
+    "Serialized outputs, not full-precision internal observer state.",
+    "Set F stores hit/fp assignments but omits full detections; reassociation is not independently possible.",
+    "Timing excluded; concurrent runs and pauses prohibit performance conclusions.",
+    "Old f5 X3 is not corrected-core evidence; final 7b X3 and reviewed seal remain required.",
+    "This gate does not accept dust filtering, N6 extension, release or deployment."
+  ]
+}

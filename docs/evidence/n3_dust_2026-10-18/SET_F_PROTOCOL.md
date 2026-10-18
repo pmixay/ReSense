@@ -42,6 +42,11 @@ dusty level**. It used the pre-process legacy-placement model and did not record
 the actual applied clean transform. The [interruption receipt](set_f_precoordinate_interruption.json)
 preserves its provenance separately; no measured Set F coordinate error or dust
 result is inferred from that unfinished attempt.
+The [placement comparison](placement_correction_parity.json) now verifies all
+1,570 rows of those 15 preserved banks: full object specifications, placement
+models, source identity and rendered clean payload hashes remain exactly equal
+after the coordinate correction. Only the separately recorded dust reference
+changes; this comparison is not a completed dust battery result.
 
 Per sequence and level the report includes first matched STOP/frame, every hit,
 lost clean STOP frames, unmatched detections, false STOP frames and consecutive

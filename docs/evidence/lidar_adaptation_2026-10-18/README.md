@@ -11,8 +11,8 @@ standalone map remains `/home/resense/P1_work_map_2026-10-17.md`, outside this r
 | Dependency | Delivered | Remaining acceptance |
 |---|---|---|
 | P2 display/demo | Shared bounded gauge/status contract; complete 2,308-frame display replay; 140/140-frame same-node Pandar→actual-Falcon check; measured software RViz at rate 0.5; operator commands | Far-range display coverage cost is explicit; hosted CI/release remain deferred |
-| P4 evaluation | Complete verified Falcon cache, reviewed raw target associations, immutable comparison harnesses and all N6 control captures | Full default gate, X3 and Falcon proxy gate |
-| P1 integration | Explicit sensor profiles, orientation readiness guard and bounded startup history replay | Final gate, independent review and new source seal |
+| P4 evaluation | Complete verified Falcon cache, reviewed raw target associations, immutable comparison harnesses, all N6 control captures and an independently reviewed passing full default gate | Corrected-core X3 and Falcon proxy gate |
+| P1 integration | Explicit sensor profiles, orientation readiness guard and bounded startup history replay | Complete independent acceptance review and new source seal |
 | Release | Branch work and local validation | Captain's hosted CI/quota repair and later release decision |
 
 ## Current result by card
@@ -82,7 +82,28 @@ reports and complete gzip streams were present. Independent artifact validation 
 all 2,308 frame rows, hashes and numeric checks; the wrapper status is disclosed and is not
 represented as exit0. Replay wall times include an intentional pause and are not benchmarks.
 
-The full default gate and final X3 are pending. X3 uses the existing complete 1.1.0 baseline:
+The full default gate on `7b7b02c` finished at **09:59:21 UTC**, exit 0, with **no gated
+regressions, missing gated rows or waivers**. The same-host native `9b92df5` control also
+passed, finishing at 09:59:19 UTC. Both include all six recordings, Set O, all 11,271 ride
+frames and the 30 Set F sequences. [Independent review](INDEPENDENT_GATE_REVIEW.md) verifies
+all **15,269 ordinary rows and 3,060 Set F rows**, including exact retention of all **805 STOP
+frames and 51 alarm episodes**. Every shared ordinary decision, detection, warning, range
+and geometry field is identical after explicitly excluding latency diagnostics. Set F
+placement/scoring rows and all 1,064 hit rows match exactly; complete detections are absent
+from the legacy Set F artifact, so independent hit reassignment is not claimed. All 224
+fresh-control metric comparisons pass; the 15 changed metrics concern latency only.
+The [raw comparison](gate_independent_review.json), [execution receipt](gate_execution_status.json)
+and [verified archive](raw/README.md) retain the complete evidence. Corrected-core X3 remains
+required before the new source seal.
+
+The earlier-core `f5ff15f` X3 completed all **40 cases / 29,765 rows**. Independent review
+reconstructed **260/260 passing checks** and exact equality of every shared non-timing output
+against the original 1.1.0 reference, including no lost, added or delayed STOPs. Its
+[review](x3_preboundary_independent_review.json) and [verified raw archive](raw/README.md)
+remain explicitly earlier-core evidence. The separate corrected-core X3 started at 09:51:04 UTC
+and is still running; earlier captures are not relabeled as the corrected source.
+
+X3 uses the existing complete 1.1.0 baseline:
 [reference preparation](x3_reference_preparation.json) reproduces every archived hash for all
 3,133 source frames by changing ZIP container headers only, with no array/compressed-stream
 changes, and revalidates all 40 archived raw entries. The live caches are unchanged.

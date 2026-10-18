@@ -1049,7 +1049,8 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
   STOP frames on the real obstacle recording, first at frame8. Person and rail-object matches are separate metrics.
   Missing rings and field/intensity layouts preserve those results. Sampling changes
   do not: deduplication loses4 STOP rows, half-channel sampling loses128, and the Falcon proxy adds empty-bag
-  alarms as well as losing detections. Full proxy gate and combined-source regression acceptance remain pending.
+  alarms as well as losing detections. The corrected-core full default gate passes without waivers;
+  independent review, final corrected-core X3 and the full proxy gate remain pending.
 
 #### N3 · Dust / suspension (revised 17.10: the organizers' data contains none)
 **Owner** P4 + P3 · **Size** M · **Depends on** O1-style question to the organizers
