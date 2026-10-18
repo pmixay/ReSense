@@ -1,0 +1,389 @@
+{
+  "schema": "resense-detector-freeze-v1",
+  "status": "frozen",
+  "created_utc": "2026-10-18T20:13:49.360794+00:00",
+  "authorization": "User explicitly requested switching to det/b4-orientation, merging main, resealing and checking the seal in a clean checkout before/after native build on 2026-10-18. User additionally requested merging P4 branch ccr-027997e8-kqywat and deleting it. No release, deployment, tag or merge back to main is authorized by this seal.",
+  "source_commit": "75958d1a5d6bc48385e7d11e449c38c4f4a59493",
+  "measured_commit": "0779db74beddc07fcb8cb89cda6e2837e31e4d62",
+  "source_sha256": "68dee667f19e862913575c72fada3820199ec29cf497697cd7194b9e897f16d3",
+  "files": {
+    "configs/default.yaml": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+    "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+    "configs/experimental_far_rail_rings.yaml": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+    "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+    "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "bd429ed92c6c9606ee933607c3361548f15e3ba18c6a5415611195ce320b5866",
+    "resense/__init__.py": "0afadc11f9d78b09e83b15805b3b1cb3281e77b51013d74c837781df144bc27a",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "2bcf99e2624b8e6915ea74ed254c94dd8dd378f1afcc376efc0b831bd4992855",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+    "resense/config.py": "7a4136a051a15f85fa81dc68c123577696fecc507cc92ca4b6260df0eb0fadd1",
+    "resense/detector.py": "8d23881ae9a31d230ef369e845995e5008e9fcfb42b3faa35634a5c25e815c5b",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "92f56f03552fc51054b6d6f380bfa769f41eb90d6793e5631cd71278a9676f62",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+    "resense/tracking.py": "4c6d6176e06749a544eceb06e60ab2f276b991fca32dcc862685eac95778eca3",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+    "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "config_file_sha256": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+  "effective_config_sha256": "0c9d663f067e55ffd73fdca774a3da2178c184557a7f9ecee510cb31090dc739",
+  "baseline": {
+    "path": "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+    "sha256": "8d86d6d19ef00f0ece4fd0c924935887ba6f8b39dbfd7074c2f1577099029b30"
+  },
+  "validation": {
+    "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate.json",
+    "sha256": "764698f63d1fbbe33a86074ea36dad89d931a8708b8570c09bac120bb3626ee0",
+    "measured_at": "2026-10-18T19:23:02+00:00",
+    "kind": "committed full regression gate"
+  },
+  "decisions": {
+    "candidate_B": "not shipped: one extra STOP frame at 7.1 m; keep voxel bar 10",
+    "axis_union": "off: the organizers measure the envelope from the rail heads (answer of 29.09); gauge.reference 3 keeps the bounded union",
+    "orientation_replay": "Opt-in only: calibration.orientation_replay_frames=0 in class and both YAML files. Default4 rejected after 13 lost Falcon STOP rows, including four person-associated rows; no preservation criterion waived.",
+    "orientation_readiness": "Unconfirmed orientation remains explicit and cannot claim positive qualified clear range; explicit sensor profiles remain available.",
+    "conservative_range_policy": "C2 conservative range profile remains explicit, with the user-approved measured coverage loss. Falcon has no borrowed Pandar small-object density prior.",
+    "dust": "No production dust classifier or suppression enabled. Synthetic stress measurements and rejected hypotheses do not establish physical-dust robustness.",
+    "rails_axis_extension": "Off. N6 candidate misses the 60 m target and has unresolved contradictory farther rail evidence.",
+    "column_free_top": "H1 remains off as selected on 2026-10-16; the inherited tall-object miss remains open.",
+    "release": "Work branch only; no new tag, published image, release or deployment. Hosted CI awaits the captain.",
+    "package_version": "1.2.0 unreleased candidate; four declarations synchronized.",
+    "next_J1_target": "Captain selected sealed main 1.1.0 at 3b7d7aa7cbbf238c21f84330497697da131b7cb9.",
+    "review_scope": "Candidate source/evidence integrity; parent P4 reviews retained, final merged-source P4 acceptance pending.",
+    "B4": "Recover tested transformed Pandar mounts with channel-axis evidence; preserve readiness and obstacle STOP precedence.",
+    "default_replay": "0; remains opt-in per user decision."
+  },
+  "change_policy": "Blocker fixes only; review the fix, repeat affected checks and the full gate, then replace this seal.",
+  "limits": [
+    "Integrity verification is not a recording replay, release or independent P4 approval.",
+    "B4 covers transformed upright-Pandar clouds with usable genuine channel evidence, not physical horizontal scanners or ring-free Falcon.",
+    "Late/missing channel evidence can leave the original wrong-mount failure; P4 S1-S4 availability/coverage findings remain documented.",
+    "Curves, N3 dust robustness and N6 60 m acceptance remain open; experimental suppression/extension remain off.",
+    "No new Docker/DDS or full Falcon run is claimed for the merged B4 source.",
+    "Historical missing Windows Set O frame 332 remains a provenance limit; X3 uses the verified Linux reference."
+  ],
+  "lineage": {
+    "previous_manifest": "docs/evidence/detector_freeze_2026-10-18_1.2.0_candidate.json",
+    "previous_manifest_sha256": "99b1f8e079a37a875feb098ebc67107c5f6a1ada7327a3ce95c5875339f74caa",
+    "measured_merge_commit": "0779db74beddc07fcb8cb89cda6e2837e31e4d62",
+    "main_merged": "9917851",
+    "b4_parent": "6cc27be",
+    "p4_merged": "8a0af65",
+    "evidence_commit": "75958d1a5d6bc48385e7d11e449c38c4f4a59493",
+    "change": "B4 channel-axis mount check and voting cadence combined with main readiness guard; 1.2.0 defaults retained."
+  },
+  "reviewed_supporting_evidence": [
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/PROTOCOL.md",
+      "sha256": "84f0dc3543fe514709dacc36c9408e2ad76033d70c717ce5e37830a60d213b61"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/README.md",
+      "sha256": "08d353cc2b73dd9e9b92ff07b9434e033428943b1406e39e00311ceeccbc2a91"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/acceptance.json",
+      "sha256": "3687d7541a8afc9b845fbd16d927ad3897cc142c0987089f7dece7a387a9289f"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/affected_tests.log",
+      "sha256": "9d1f36bdacfd6c30b55358534925ef393d18930ed6aaabfdd5754d84714f8eb4"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/affected_tests.xml",
+      "sha256": "7105f555956afc305115bd546cd44225d354d16ee256d8c0786a92598ac37e73"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4-baseline-empty.log",
+      "sha256": "963af224ce734d394badb7c3c1f612f493c01a066ea270c6d0d249d7539f15e1"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4-baseline-positive.log",
+      "sha256": "78c5abf898274f115a880ee80f603f110e3411a867004c429339d5b8fab75079"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4-candidate-empty.log",
+      "sha256": "6c89dccc48ed4924cad125a8979b5797aa0c6564a8beef49a1ee47d150954657"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4-candidate-positive.log",
+      "sha256": "744bceb6601301a109f2bc4dc80e294dc4293981d8059be7183f1a0b54649da2"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4-summary.log",
+      "sha256": "9cb3f9af81fa6b91a20201b5438dabf4716483ae7682f3ae4095f0609bddf00e"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4.tar.gz",
+      "sha256": "7e7233467a18e112fafb438b87bfb94dfe18e4d0911e602dcac2db96c70d0d98"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4_execution.json",
+      "sha256": "9bec5961e5acdf0ca5fa248833fa5c0a6cba0ffb6761c415317cc671309ee191"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4_manifest.json",
+      "sha256": "9bdac91b9dfec464318fbe345eaa19ea623ecfb32566b83cb8723bb1e496b19e"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/b4_summary.json",
+      "sha256": "5f8cef5844717e86cabddc526d99fea61cd156a2f469f30ece185a2e7f935498"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/directed.json",
+      "sha256": "9311fcbcca3d1dad8d6b52e098b21dd0e90447cd505a2c2cd954ee90b7d73e2e"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/directed.log",
+      "sha256": "898c6fe2da1a7ccf91130fd57fc336afcd2d6d453d92148a79fefea84f2b441a"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/finalize.py",
+      "sha256": "79e9fafa6d37b6099fd8217938751ed80ef19e8cae1d635df5fdc23d073b95ab"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate-reference.json",
+      "sha256": "a9cfd9d704434c6d591e29214c404dce009febbd07f8c7b8d25e0f1ced052f59"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate-reference.log",
+      "sha256": "79bc62304d3f1e4c091351f675932e34b7c247869d0e005c15b307758a03a550"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate-reference.tar.gz",
+      "sha256": "e0ed14a525b3269f487b2b9a47fe56279d3d1dfd098611d7db32857bd7fae5bd"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate-reference_execution.json",
+      "sha256": "7a79b22d43f8cc8e41bfc41a49fe3d1efda013aa7912fcceeed66bc27d04aaf4"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate-reference_manifest.json",
+      "sha256": "887236aa7b0b6b7882930fb8fa9410126b45f232b541eab1489631e0c231ce84"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate.json",
+      "sha256": "764698f63d1fbbe33a86074ea36dad89d931a8708b8570c09bac120bb3626ee0"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate.log",
+      "sha256": "7ec04155647decac82efe03c5c7e12d41d85c75de16c053919c7e064f35a8370"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate.tar.gz",
+      "sha256": "f462890f3ea608b3d78c01861007a1f7d6bbfe821c0809b5bfee1c55516f9247"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate_execution.json",
+      "sha256": "8da3bfaaf40c0a0b8c56fced6d7814a5ac8ec12f432efde54ac75a3e3f1aa0e6"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate_frame_review.json",
+      "sha256": "4d48b7965f7e29b471e50d8de319696a2b20822a23e022f15812d6fcd85469ff"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/gate_manifest.json",
+      "sha256": "cdf184cca8281af3b991ab838208675a4584b5a09ef12713319e68996d82f18b"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/initial_clean_build.json",
+      "sha256": "32d947ffa5eeded9b80242456f2be7deca5f8c5a44e71373b4090f921c8a7cf0"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/input_originals.json",
+      "sha256": "6c2f2b31f1b4c288fc01996af1f6dc0a7f9b418a10f5b09abeec6d9f1a6ef27e"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/input_receipt_check.json",
+      "sha256": "fcc81c3e4d9e25c5ce950a753086d5fa969691f37361d7631610961db0c02565"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/input_ride.json",
+      "sha256": "89e6b448c7d6108a34ef2fe16453f28573a88aa1e4711fb46ef6665e4bca8752"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/input_set_o.json",
+      "sha256": "7f036e7d0016d7bdc114a2aaa2bef942133a0f63c1b574833a6ecac79b8ba1f9"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/lint_after_p4.log",
+      "sha256": "5bf7b56e1afc3f2301a0c1644a9b8964d13b3d0b6c902503e6eea56c391ff7bd"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/lint_final.log",
+      "sha256": "70bb576ed7cc8c087e5ce34b8d38308e927470b55d438c16edaa162947351541"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/lint_policy_tests.log",
+      "sha256": "07496263a42c3576dce211071ad3cedf79b02d0b2471dac85255be75d1a4c0c9"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/lint_policy_tests.xml",
+      "sha256": "18b72d6deba6665f5c59fd1118a004a2436df6baf82a05d397c801472a852917"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/native_build.log",
+      "sha256": "e0507f3eea29ae828336952d5f223854ce5f52c04678d8a8523fe5f73d1736f0"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/old_seal_after_build.log",
+      "sha256": "fc3c37a0186ef3d857355a4ad29f2f71ab458300a8a9cf7bb023fadc8d30455f"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/old_seal_before_build.log",
+      "sha256": "fc3c37a0186ef3d857355a4ad29f2f71ab458300a8a9cf7bb023fadc8d30455f"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/p4_helper_provenance.json",
+      "sha256": "84b03af3a7f640a4b47c3bc0faaabc884fc24d2cf11adbae1092cca01ac63629"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/p4_import.json",
+      "sha256": "f7249fcb975d141ab7560b71320791822e9af2bedebbe691dea77a82eb8dc69f"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/p4_integration_validation.json",
+      "sha256": "19e5485a8a4d37f2eb1af720fdda1dee0eecf94004c570014f491081793175e9"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/p4_merge_tests.log",
+      "sha256": "06ede0035a8c77625d0e9dd43e7df837778d622a76909588727779033bb7b175"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/p4_merge_tests.xml",
+      "sha256": "e20c454d785ae6723154e6e979914d15268a7bda8b2fec8edebf13be99e11ea8"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/params.log",
+      "sha256": "21cb1bb4757cfbdc97cd5d5ad77942748a1f6b11de557f8eba64641b5dd52ca6"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/prepare_manifest.py",
+      "sha256": "a41224ddf8235339bb1697ec96b02999d9c35bf7859d31dca0d7a3bfc6b5389d"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/reference_native_build.log",
+      "sha256": "e0507f3eea29ae828336952d5f223854ce5f52c04678d8a8523fe5f73d1736f0"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/run_measurements.py",
+      "sha256": "b026be020f0cd4c727f78b459e69a8e193c74b31654edef3967efced6f994262"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/tests_execution.json",
+      "sha256": "2ecf32bedc7833e6e756217bdc2862c003b0db0285d3636b99469429508a2e5b"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/verify_clean.py",
+      "sha256": "441dabcae6408edc213cd5db9f76869c8614b052a39116aff24e36a1dc1bbc2e"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/working_native_alignment.json",
+      "sha256": "3cd544bd535144468b544dedaf96cd74691e6d3eb3668c79aad2c925b4d5c4a6"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/working_native_build.log",
+      "sha256": "e0507f3eea29ae828336952d5f223854ce5f52c04678d8a8523fe5f73d1736f0"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3-reference.json",
+      "sha256": "c8f89e2e1ad8c616c57a67d05c55b9615e2514ee9fdf4e21cf6ed0ed4d287842"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3-reference.log",
+      "sha256": "aceda36d998e29cf8c0f394feec25f9f0c54eb9def77350bf43dddee64774cea"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3-reference_execution.json",
+      "sha256": "b504b3aa44e4dd173b32c88b3f7c430e6db4e9a45fecf7929dbbbc4f5a23555b"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3-reference_raw.tar.gz",
+      "sha256": "093a3e173f5c339607aad53b73ad129f473097602f7b7785d89b30364c25a17b"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3-reference_raw_manifest.json",
+      "sha256": "88b6a328c6abebace17669c7eb12b14b302b4103a5950fcefa8cae01fb914902"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3.json",
+      "sha256": "7d486c06c29aba98488441746abff3fd6ee9ffa48094d2189189ae51c71a4165"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3.log",
+      "sha256": "c949b1a199efa6bbff205f47b4e5cd3b3180a61acc3501f98aac3a6ac85ae073"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3_execution.json",
+      "sha256": "bff858ffe685f4bcf9b43d89e9671a968911db6f3a806d6dd8b0efcbeac59950"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3_frame_review.json",
+      "sha256": "6fbe1ebbd250e41d13c5d3766f8a42accdde00d3a0f910fabbeba46f0dfea3bc"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3_raw.tar.gz",
+      "sha256": "e13ad61fb8d34aced33ef8bf6374fa76b78d66f35953fe93ac3749a297b3838c"
+    },
+    {
+      "path": "docs/evidence/b4_merge_reseal_2026-10-18/x3_raw_manifest.json",
+      "sha256": "1923eb61a0153e9e1e28cdf43c1bcf29383675ef050eada9a3b36a3167461c32"
+    },
+    {
+      "path": "docs/evidence/p4_audit_b4_6cc27be_2026-10-18/README.md",
+      "sha256": "10c71da2069e107bbef93c8b63d577dfb386e348752e29cfa2572e588e2dc108"
+    },
+    {
+      "path": "docs/evidence/p4_audit_b4_6cc27be_2026-10-18/raw_6cc27be.tar.xz",
+      "sha256": "2db7175bcb65fd05088d56432a014e42815ade8224832b70406b62f2882b5c8c"
+    },
+    {
+      "path": "docs/evidence/p4_review_1.2.0_2026-10-18/README.md",
+      "sha256": "a4652380c45a2b053cf78c53e1deaa3582569d5ee25ef1fa653cf9b33d6a2622"
+    },
+    {
+      "path": "docs/evidence/p4_review_1.2.0_2026-10-18/x3_raw_1.2.0.tar.xz",
+      "sha256": "c48c0c676d22c1b2947b86ab8ec28152f755b9a4871f59b612915258ed2f0839"
+    },
+    {
+      "path": "scripts/check_archived_lint.py",
+      "sha256": "afb4efdfa80f5c818b131b6e6770bfa17523e35a00b438c60c0ae835a03cd880"
+    },
+    {
+      "path": "tests/test_archived_lint.py",
+      "sha256": "cf2b853754dab4aad9d5a7fcff5b89e4ba3615a213a760f5160eddc76806ba3d"
+    },
+    {
+      "path": "docs/evidence/integration_ci_2026-10-16/lint_record/snapshot_lock.json",
+      "sha256": "f7404106697ddb09c6c562fb152b3d08a93c3acef943cb3533b089f9ff0c6378"
+    }
+  ],
+  "release_review": {
+    "kind": "candidate_integrity_only",
+    "P4_final_acceptance": "PENDING_FOR_MERGED_SOURCE",
+    "release_authorized": false,
+    "P4_parent_reviews": "0bbc6ed: no blocking finding; 6cc27be: B1 closed, B4/X3 pass, fresh gate required.",
+    "integration_measurements": "Fresh same-native paired gates/X3/B4; raw-frame audits and affected tests on committed merge."
+  }
+}
