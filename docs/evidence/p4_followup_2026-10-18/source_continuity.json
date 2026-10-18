@@ -1,0 +1,464 @@
+{
+  "status": "SOURCE_CONTINUITY_AND_EXACT_REPORT_INTAKE_PASS",
+  "checked_utc": "2026-10-18T12:46:17.220778+00:00",
+  "p4_report_commit": "1b880168ce2dbeec2071838892ac05eed5a9166a",
+  "checked_commit": "b4235623327f084e84b2a8c582655548b29140c9",
+  "completed_evidence_commit": "cf188486f5c2339cd74adcb52ecdd21a59f8fad0",
+  "measured_core_commit": "cecab1b696b8c2e101207601acd8faed96c8bfb8",
+  "seal": {
+    "path": "docs/evidence/detector_freeze_2026-10-18_lidar.json",
+    "sha256": "f75231a9d52124620ec7f23ee7ecf0050bf4e668ee2e10fdb660c3dba06bbc3c",
+    "source_sha256": "5eae5197cc6497b029665a19e85b28fb217e934d8a80928cba6c1d2c5ad51700"
+  },
+  "groups": {
+    "frozen_source": {
+      "count": 38,
+      "paths": [
+        "configs/default.yaml",
+        "configs/experimental_cross_ring.yaml",
+        "configs/experimental_far_rail_rings.yaml",
+        "configs/experimental_fresh_stop_evidence.yaml",
+        "configs/experimental_low_local_support.yaml",
+        "native/resense_native.cpp",
+        "pyproject.toml",
+        "resense/__init__.py",
+        "resense/_native.py",
+        "resense/accumulate.py",
+        "resense/calibration.py",
+        "resense/cli.py",
+        "resense/clustering.py",
+        "resense/config.py",
+        "resense/detector.py",
+        "resense/dust.py",
+        "resense/dust_health.py",
+        "resense/egomotion.py",
+        "resense/evidence.py",
+        "resense/farrails.py",
+        "resense/frame.py",
+        "resense/gauge.py",
+        "resense/health.py",
+        "resense/io.py",
+        "resense/lowobj.py",
+        "resense/metrics.py",
+        "resense/models/track_opinion.json",
+        "resense/models/track_opinion_report.json",
+        "resense/opinion.py",
+        "resense/pointcloud.py",
+        "resense/sensor.py",
+        "resense/synthetic.py",
+        "resense/track.py",
+        "resense/tracking.py",
+        "resense/viz.py",
+        "ros2_ws/src/resense_ros/config/detector.yaml",
+        "scripts/build_native.sh",
+        "setup.py"
+      ]
+    },
+    "actual_ros_node_launch_display_package": {
+      "count": 13,
+      "paths": [
+        "ros2_ws/src/resense_ros/config/detector.yaml",
+        "ros2_ws/src/resense_ros/launch/detector.launch.py",
+        "ros2_ws/src/resense_ros/package.xml",
+        "ros2_ws/src/resense_ros/resense_ros/__init__.py",
+        "ros2_ws/src/resense_ros/resense_ros/decision_policy.py",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+        "ros2_ws/src/resense_ros/resense_ros/fastcloud.py",
+        "ros2_ws/src/resense_ros/resense_ros/gauge_display.py",
+        "ros2_ws/src/resense_ros/resense_ros/sensor_profiles.py",
+        "ros2_ws/src/resense_ros/resource/resense_ros",
+        "ros2_ws/src/resense_ros/rviz/resense.rviz",
+        "ros2_ws/src/resense_ros/setup.cfg",
+        "ros2_ws/src/resense_ros/setup.py"
+      ]
+    },
+    "replay_and_display_checks": {
+      "count": 7,
+      "paths": [
+        "docs/evidence/n1_n4_2026-10-18/replay_gauge.py",
+        "scripts/check_interactive_replay.py",
+        "scripts/play_bag.sh",
+        "scripts/record_rviz_chain.sh",
+        "scripts/replay_node_frames.py",
+        "scripts/reset_replay.py",
+        "scripts/run_demo.sh"
+      ]
+    },
+    "gauge_contract_and_renderer": {
+      "count": 9,
+      "paths": [
+        "configs/default.yaml",
+        "resense/config.py",
+        "resense/gauge.py",
+        "ros2_ws/src/resense_ros/config/detector.yaml",
+        "ros2_ws/src/resense_ros/launch/detector.launch.py",
+        "ros2_ws/src/resense_ros/resense_ros/decision_policy.py",
+        "ros2_ws/src/resense_ros/resense_ros/detector_node.py",
+        "ros2_ws/src/resense_ros/resense_ros/gauge_display.py",
+        "ros2_ws/src/resense_ros/rviz/resense.rviz"
+      ]
+    }
+  },
+  "unique_compared_files": 57,
+  "files": {
+    "configs/default.yaml": {
+      "sha256": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+      "bytes": 46464,
+      "equal": true
+    },
+    "configs/experimental_cross_ring.yaml": {
+      "sha256": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+      "bytes": 419,
+      "equal": true
+    },
+    "configs/experimental_far_rail_rings.yaml": {
+      "sha256": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+      "bytes": 746,
+      "equal": true
+    },
+    "configs/experimental_fresh_stop_evidence.yaml": {
+      "sha256": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+      "bytes": 274,
+      "equal": true
+    },
+    "configs/experimental_low_local_support.yaml": {
+      "sha256": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
+      "bytes": 385,
+      "equal": true
+    },
+    "docs/evidence/n1_n4_2026-10-18/replay_gauge.py": {
+      "sha256": "fec29d2ddab4adebc39ebe8970f553992e56a2bfb29a0044604052dfa0c9b36a",
+      "bytes": 10653,
+      "equal": true
+    },
+    "native/resense_native.cpp": {
+      "sha256": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+      "bytes": 14635,
+      "equal": true
+    },
+    "pyproject.toml": {
+      "sha256": "870a009351cddd83f144a6fc3276b79bb91c95e09b5c93d8c83526e94922b624",
+      "bytes": 1133,
+      "equal": true
+    },
+    "resense/__init__.py": {
+      "sha256": "26224b26e3748484752d554049a2e3efdea00270e37a6c093df333151ab8eb04",
+      "bytes": 579,
+      "equal": true
+    },
+    "resense/_native.py": {
+      "sha256": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+      "bytes": 14814,
+      "equal": true
+    },
+    "resense/accumulate.py": {
+      "sha256": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+      "bytes": 3674,
+      "equal": true
+    },
+    "resense/calibration.py": {
+      "sha256": "29674696d08a41c56e9c402568a04af0096ba92f98b56a1225743b7c51b38f08",
+      "bytes": 31658,
+      "equal": true
+    },
+    "resense/cli.py": {
+      "sha256": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+      "bytes": 25778,
+      "equal": true
+    },
+    "resense/clustering.py": {
+      "sha256": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+      "bytes": 66570,
+      "equal": true
+    },
+    "resense/config.py": {
+      "sha256": "7a4136a051a15f85fa81dc68c123577696fecc507cc92ca4b6260df0eb0fadd1",
+      "bytes": 72356,
+      "equal": true
+    },
+    "resense/detector.py": {
+      "sha256": "97cf9acf8d9206b489b475c75c7ab425675d0bfc43d3443c1891a3962bb3e0f8",
+      "bytes": 61856,
+      "equal": true
+    },
+    "resense/dust.py": {
+      "sha256": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+      "bytes": 5799,
+      "equal": true
+    },
+    "resense/dust_health.py": {
+      "sha256": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+      "bytes": 5904,
+      "equal": true
+    },
+    "resense/egomotion.py": {
+      "sha256": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+      "bytes": 12039,
+      "equal": true
+    },
+    "resense/evidence.py": {
+      "sha256": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+      "bytes": 10741,
+      "equal": true
+    },
+    "resense/farrails.py": {
+      "sha256": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+      "bytes": 12440,
+      "equal": true
+    },
+    "resense/frame.py": {
+      "sha256": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+      "bytes": 3011,
+      "equal": true
+    },
+    "resense/gauge.py": {
+      "sha256": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+      "bytes": 13285,
+      "equal": true
+    },
+    "resense/health.py": {
+      "sha256": "211502e2c826cdc61f60d091ed0e0df414567d1b4497661eeb2e00c56c813ddc",
+      "bytes": 13564,
+      "equal": true
+    },
+    "resense/io.py": {
+      "sha256": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+      "bytes": 5272,
+      "equal": true
+    },
+    "resense/lowobj.py": {
+      "sha256": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+      "bytes": 17429,
+      "equal": true
+    },
+    "resense/metrics.py": {
+      "sha256": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+      "bytes": 25928,
+      "equal": true
+    },
+    "resense/models/track_opinion.json": {
+      "sha256": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+      "bytes": 36459,
+      "equal": true
+    },
+    "resense/models/track_opinion_report.json": {
+      "sha256": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+      "bytes": 11031,
+      "equal": true
+    },
+    "resense/opinion.py": {
+      "sha256": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+      "bytes": 5707,
+      "equal": true
+    },
+    "resense/pointcloud.py": {
+      "sha256": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+      "bytes": 6860,
+      "equal": true
+    },
+    "resense/sensor.py": {
+      "sha256": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+      "bytes": 3550,
+      "equal": true
+    },
+    "resense/synthetic.py": {
+      "sha256": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+      "bytes": 23039,
+      "equal": true
+    },
+    "resense/track.py": {
+      "sha256": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+      "bytes": 63921,
+      "equal": true
+    },
+    "resense/tracking.py": {
+      "sha256": "4c6d6176e06749a544eceb06e60ab2f276b991fca32dcc862685eac95778eca3",
+      "bytes": 55014,
+      "equal": true
+    },
+    "resense/viz.py": {
+      "sha256": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+      "bytes": 3164,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/config/detector.yaml": {
+      "sha256": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+      "bytes": 46464,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": {
+      "sha256": "805bce047394041039a54b4a9e58bc97a09f0bc6dbb38d8d0e4dd484377d9fb2",
+      "bytes": 10174,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/package.xml": {
+      "sha256": "67ad83a7810481fcf70627317ad8772e2f576b5e6cde735bb3d8114ac8a806be",
+      "bytes": 1192,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/resense_ros/__init__.py": {
+      "sha256": "dcf728222a541706e7746a50f13c25bf8b3a5d8b3c9530b5b66addfc4187462c",
+      "bytes": 678,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": {
+      "sha256": "7003f70146290666450b8ef8f21630cba3b7457fbb8f588af65badf3d6033fa4",
+      "bytes": 12481,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": {
+      "sha256": "828377a2cf7e677b4677cf5411784e972f2c864dcfba96db14d2dd48a1c07690",
+      "bytes": 97107,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/resense_ros/fastcloud.py": {
+      "sha256": "22133bffa0e54654f6798501da1f5102c1fa4680c286f671b0c589ccb0eaa98e",
+      "bytes": 10277,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": {
+      "sha256": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b",
+      "bytes": 7791,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/resense_ros/sensor_profiles.py": {
+      "sha256": "cfa534489de593f8e12a8e82f4b85292a763d5bb33121042edcde9b4fcad99af",
+      "bytes": 1974,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/resource/resense_ros": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/rviz/resense.rviz": {
+      "sha256": "8ebce296c2c8c10d1d33d29eaabf0b98f317891059f1389a2eb20dc9aa5d3bb5",
+      "bytes": 6713,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/setup.cfg": {
+      "sha256": "655fa70a022a008915a2166130235b6014b90fc6668d1e5c77e89c643d87dbc5",
+      "bytes": 91,
+      "equal": true
+    },
+    "ros2_ws/src/resense_ros/setup.py": {
+      "sha256": "2e9230b0a14068dfb5727a6005a60ee92c5f5bff1ddc70a6fccc89780e9c1b99",
+      "bytes": 890,
+      "equal": true
+    },
+    "scripts/build_native.sh": {
+      "sha256": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+      "bytes": 769,
+      "equal": true
+    },
+    "scripts/check_interactive_replay.py": {
+      "sha256": "fd5511051eb2a49c0da97a840a7f608266e5ae7fa07139add42441f14a667227",
+      "bytes": 10300,
+      "equal": true
+    },
+    "scripts/play_bag.sh": {
+      "sha256": "b983e2a08b6b4836227424122ee32314adcd47c021ecb913dfc3168b15626e4c",
+      "bytes": 6364,
+      "equal": true
+    },
+    "scripts/record_rviz_chain.sh": {
+      "sha256": "e62eb73e9c54cb251dd8428bc5f07021338c9036cefe5209277b1c66f85d285f",
+      "bytes": 3805,
+      "equal": true
+    },
+    "scripts/replay_node_frames.py": {
+      "sha256": "9809ec6a40d1f7c598400014bf53968134198aa341a70c25a624bb7145db9465",
+      "bytes": 8154,
+      "equal": true
+    },
+    "scripts/reset_replay.py": {
+      "sha256": "36a270ab635468fa7dc8c81788d139e50e95566589234f021d47a77e6ddbf326",
+      "bytes": 2362,
+      "equal": true
+    },
+    "scripts/run_demo.sh": {
+      "sha256": "38fef67a32c30023072c07f3084daa95dc35a689dee162ff847f005815aea8a2",
+      "bytes": 708,
+      "equal": true
+    },
+    "setup.py": {
+      "sha256": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7",
+      "bytes": 1015,
+      "equal": true
+    }
+  },
+  "version_declarations": {
+    "pyproject.toml": "1.1.0",
+    "resense/__init__.py": "1.1.0",
+    "ros2_ws/src/resense_ros/package.xml": "1.1.0",
+    "ros2_ws/src/resense_ros/setup.py": "1.1.0"
+  },
+  "candidate_version_only": {
+    "status": "EXACT_FOUR_VERSION_LINES_WITH_DOCUMENTATION_ONLY",
+    "baseline_commit": "cf188486f5c2339cd74adcb52ecdd21a59f8fad0",
+    "candidate_commit": "e9d8fc649f2dd51dd5cd1e4b04ac8c306cc02569",
+    "all_changed_paths": [
+      "CHANGELOG.md",
+      "docs/evidence/version_1.2.0_2026-10-18/PLAN.md",
+      "pyproject.toml",
+      "resense/__init__.py",
+      "ros2_ws/src/resense_ros/package.xml",
+      "ros2_ws/src/resense_ros/setup.py"
+    ],
+    "documentation_paths": [
+      "CHANGELOG.md",
+      "docs/evidence/version_1.2.0_2026-10-18/PLAN.md"
+    ],
+    "version_replacements": {
+      "pyproject.toml": {
+        "before_sha256": "870a009351cddd83f144a6fc3276b79bb91c95e09b5c93d8c83526e94922b624",
+        "candidate_sha256": "bd429ed92c6c9606ee933607c3361548f15e3ba18c6a5415611195ce320b5866",
+        "from": "1.1.0",
+        "to": "1.2.0",
+        "changed_lines": 1,
+        "inside_seal": true
+      },
+      "resense/__init__.py": {
+        "before_sha256": "26224b26e3748484752d554049a2e3efdea00270e37a6c093df333151ab8eb04",
+        "candidate_sha256": "0afadc11f9d78b09e83b15805b3b1cb3281e77b51013d74c837781df144bc27a",
+        "from": "1.1.0",
+        "to": "1.2.0",
+        "changed_lines": 1,
+        "inside_seal": true
+      },
+      "ros2_ws/src/resense_ros/package.xml": {
+        "before_sha256": "67ad83a7810481fcf70627317ad8772e2f576b5e6cde735bb3d8114ac8a806be",
+        "candidate_sha256": "5c7cc14ac93aaf5692d5e55e02bcaee5bd5ff76b1995ebc958fe63e5c057bf1d",
+        "from": "1.1.0",
+        "to": "1.2.0",
+        "changed_lines": 1,
+        "inside_seal": false
+      },
+      "ros2_ws/src/resense_ros/setup.py": {
+        "before_sha256": "2e9230b0a14068dfb5727a6005a60ee92c5f5bff1ddc70a6fccc89780e9c1b99",
+        "candidate_sha256": "a5fa427eadb38402e22a22f887e0c565f8e34e506e93a828b56929013230f162",
+        "from": "1.1.0",
+        "to": "1.2.0",
+        "changed_lines": 1,
+        "inside_seal": false
+      }
+    },
+    "changed_frozen_files": [
+      "pyproject.toml",
+      "resense/__init__.py"
+    ],
+    "scope": "Source diff only; fresh committed gate and final P4 review are separate requirements."
+  },
+  "p4_report_files_verified": 5,
+  "input_sha256": {
+    "p4_intake_manifest.json": "cd4d73f60d6dbec7dff7738c28438cb30447c9861ed246ede1d170866087740e",
+    "check_source_continuity.py": "389b082d2ae6165845e7a9ace825266a57a3cf760b5fa33192a36e25509ec30c"
+  },
+  "limits": [
+    "Historical equality is b423562-to-cf18848; e9d8fc6 is checked only for exact version-only edits.",
+    "Source equality does not extend P4's executed replica checks to the actual ROS node or renderer.",
+    "The P4 reports reference external raw captures; those bytes were not imported or reanalysed here.",
+    "This is an integrity/continuity receipt, not P4 final safety approval, J1, release or deployment.",
+    "No detector, renderer, player or regression gate was executed by this checker."
+  ]
+}

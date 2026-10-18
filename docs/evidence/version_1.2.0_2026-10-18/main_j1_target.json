@@ -1,0 +1,21 @@
+{
+  "checked_utc": "2026-10-18T12:48:12.859958+00:00",
+  "selection": "Captain selected sealed main 1.1.0 for next P4 J1; 1.2.0 candidate review is separate.",
+  "main_commit": "3b7d7aa7cbbf238c21f84330497697da131b7cb9",
+  "manifest_path": "docs/evidence/detector_freeze_2026-10-16_1.1.0.json",
+  "manifest_sha256": "523b5eefaed42882c6a9c6974f3ac16ebd791472d7c831da245ad2827d8cc648",
+  "source_commit": "52115654417a660669b8dddfce447692c1d782cc",
+  "source_sha256": "db3f588df59184ad703436996f72bd94a91eca91dfcfe4a02655fcdd4397d751",
+  "source_files": 36,
+  "all_source_git_blobs_match": true,
+  "baseline_and_validation_git_blobs_match": true,
+  "declared_versions": {
+    "pyproject.toml": "1.1.0",
+    "resense/__init__.py": "1.1.0",
+    "ros2_ws/src/resense_ros/setup.py": "1.1.0",
+    "ros2_ws/src/resense_ros/package.xml": "1.1.0"
+  },
+  "validation_passed": true,
+  "release_status": "Deferred until CI and team acceptance; no tag or image published.",
+  "scope": "Git-blob integrity verification, not a fresh J1, detector run or build."
+}

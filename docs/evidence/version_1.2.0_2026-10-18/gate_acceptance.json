@@ -1,0 +1,347 @@
+{
+  "status": "COMPLETE_GATE_AND_VERSION_ONLY_PARITY_PASS",
+  "reviewed_utc": "2026-10-18T12:57:23.075390+00:00",
+  "source_commit": "e9d8fc649f2dd51dd5cd1e4b04ac8c306cc02569",
+  "source_sha256": "b85a93064e79e932df4f7045af21effdf43f0858963204db5d30fc1de37a5e3a",
+  "ordinary_rows": 15269,
+  "set_F_rows": 3060,
+  "ordinary_stop_frames": 805,
+  "ordinary_stop_intervals": 51,
+  "pieces": [
+    {
+      "capture": "cloud_with_fake_obj.jsonl",
+      "rows": 1510,
+      "stop_frames": 447,
+      "stop_intervals": [
+        [
+          5,
+          229
+        ],
+        [
+          337,
+          369
+        ],
+        [
+          403,
+          426
+        ],
+        [
+          462,
+          480
+        ],
+        [
+          563,
+          583
+        ],
+        [
+          627,
+          683
+        ],
+        [
+          693,
+          745
+        ],
+        [
+          789,
+          803
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "doubleT_obstacle.jsonl",
+      "rows": 201,
+      "stop_frames": 193,
+      "stop_intervals": [
+        [
+          8,
+          200
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "doubleT_platform.jsonl",
+      "rows": 345,
+      "stop_frames": 2,
+      "stop_intervals": [
+        [
+          36,
+          37
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_0.jsonl",
+      "rows": 1409,
+      "stop_frames": 12,
+      "stop_intervals": [
+        [
+          23,
+          30
+        ],
+        [
+          1378,
+          1378
+        ],
+        [
+          1393,
+          1395
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_1.jsonl",
+      "rows": 1409,
+      "stop_frames": 14,
+      "stop_intervals": [
+        [
+          438,
+          438
+        ],
+        [
+          1259,
+          1269
+        ],
+        [
+          1320,
+          1321
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_2.jsonl",
+      "rows": 1409,
+      "stop_frames": 6,
+      "stop_intervals": [
+        [
+          242,
+          243
+        ],
+        [
+          1334,
+          1337
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_3.jsonl",
+      "rows": 1409,
+      "stop_frames": 2,
+      "stop_intervals": [
+        [
+          838,
+          839
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_4.jsonl",
+      "rows": 1409,
+      "stop_frames": 20,
+      "stop_intervals": [
+        [
+          63,
+          68
+        ],
+        [
+          78,
+          81
+        ],
+        [
+          265,
+          268
+        ],
+        [
+          1223,
+          1228
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_5.jsonl",
+      "rows": 1409,
+      "stop_frames": 36,
+      "stop_intervals": [
+        [
+          293,
+          298
+        ],
+        [
+          302,
+          306
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          319,
+          320
+        ],
+        [
+          814,
+          821
+        ],
+        [
+          823,
+          824
+        ],
+        [
+          898,
+          908
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_6.jsonl",
+      "rows": 1409,
+      "stop_frames": 27,
+      "stop_intervals": [
+        [
+          671,
+          672
+        ],
+        [
+          809,
+          814
+        ],
+        [
+          817,
+          820
+        ],
+        [
+          830,
+          832
+        ],
+        [
+          1332,
+          1333
+        ],
+        [
+          1346,
+          1355
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "new_data_7.jsonl",
+      "rows": 1408,
+      "stop_frames": 9,
+      "stop_intervals": [
+        [
+          623,
+          624
+        ],
+        [
+          643,
+          644
+        ],
+        [
+          781,
+          783
+        ],
+        [
+          785,
+          786
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "roundT_doubleT.jsonl",
+      "rows": 252,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "roundT_pressureGate_roundT.jsonl",
+      "rows": 268,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "roundT_squareT_pressureGate_squareT.jsonl",
+      "rows": 545,
+      "stop_frames": 0,
+      "stop_intervals": [],
+      "all_stop_boundaries_identical": true
+    },
+    {
+      "capture": "squareT_platform_squareT_switch.jsonl",
+      "rows": 877,
+      "stop_frames": 37,
+      "stop_intervals": [
+        [
+          312,
+          313
+        ],
+        [
+          316,
+          317
+        ],
+        [
+          437,
+          438
+        ],
+        [
+          490,
+          490
+        ],
+        [
+          500,
+          501
+        ],
+        [
+          522,
+          524
+        ],
+        [
+          527,
+          528
+        ],
+        [
+          580,
+          580
+        ],
+        [
+          612,
+          613
+        ],
+        [
+          640,
+          642
+        ],
+        [
+          692,
+          708
+        ]
+      ],
+      "all_stop_boundaries_identical": true
+    }
+  ],
+  "all_shared_non_timing_fields_exact": true,
+  "all_set_F_rows_exact": true,
+  "p4_final_review": "PENDING; this is an agent evidence-integrity review, not P4 approval",
+  "set_F_limit": "Recomputes aggregate counters from stored hit/fp scoring rows and validates all input identities/placements. The sealed Set F rows omit complete detections, so hit/fp assignment cannot be independently rebuilt from these artifacts.",
+  "exclusions": "Timing values and latency-only health messages/promotion; new readiness fields remain explicit differences.",
+  "input_sha256": {
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/finalize_gate.py": "66939fa211a4efcc0a8dbd61f61bcde99d0eb2d62f19260fb9d781d283c0a819",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/review_gate_frames.py": "652b372455d8477e47483a02d8c355ba00ee61417958acda9ea48ad4d7748791",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/gate.json": "9d37c94dfb09914bfd5981d08544b84b5d37630bafb09896d5cba651dc5eb692",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/gate_frame_review.json": "9ae1f309e2b766cd014db83abd7f11a2c7ef813a649b4c82543ef1a72ad3b9b1",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/gate_execution.json": "ca0fb8bd11eea1ea141a774ff0ef0918fa30f5f32aec54125627b967850bc0ff",
+    "/home/resense/ReSense/docs/evidence/version_1.2.0_2026-10-18/raw/gate_manifest.json": "117d9aae8ed47a4004966ce6c3fd849b1dd3923e12bf94311c2bcf9ac51ca730",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate.json": "dd799f78dd55b7797f581754777f41b68f5db035c8336220a9ab188f33772517"
+  }
+}

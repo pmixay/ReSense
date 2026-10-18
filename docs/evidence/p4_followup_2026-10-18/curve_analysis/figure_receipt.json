@@ -1,0 +1,10 @@
+{
+  "script_sha256": "07ba71aaa86fc29f9b6f28d4cf4cd695abb9f6a27fd88f09fe696e31cceab1e1",
+  "report_sha256": "87673d565c508fc840d441dcc782d4cc9fa8077d8e53549bd2c96d63b64df0b9",
+  "rows_sha256": "56ec3c1ffdc38c18896f2d7d6592e2e2e4facbffa33d1a19b0f7b70b9af8bf32",
+  "figures": {
+    "curve_B.png": "4f2d16a550931b236f7813a258ff2204a60cc77cdc8f75651f60cca3bd08a5d5",
+    "curve_C.png": "cba274ddd46570053d60689a101ea0f759078c5fff3bb5e95b2ad1697d86bd12"
+  },
+  "scope": "Plots only archived path-reference errors and saved ranges. Gaps are unavailable path references or distances outside axis trust, not zero error. No detector/ICP rerun."
+}

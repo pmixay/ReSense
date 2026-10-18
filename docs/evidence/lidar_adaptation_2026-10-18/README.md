@@ -6,6 +6,12 @@ Remote `main` was fetched again and remains `3b7d7aa7cbbf238c21f84330497697da131
 an ancestor of this branch. This is development integration, not a release. The captain's
 standalone map remains `/home/resense/P1_work_map_2026-10-17.md`, outside this repository.
 
+After P4's development check of `b423562`, the captain selected **sealed `main` 1.1.0 for
+the next J1 evaluation**. This branch is now the separate **unreleased 1.2.0 candidate** at
+`e9d8fc6`; only four version declarations changed. See the [version acceptance record](../version_1.2.0_2026-10-18/README.md)
+and [P4/P3 handoff](../p4_followup_2026-10-18/README.md). The source-specific measurements
+below retain their original identities. Agent reviews do not substitute for P4's final approval.
+
 ## Selected default after independent Falcon review
 
 The captain selected **startup replay opt-in**, retaining the previous default. The earlier
