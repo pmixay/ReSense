@@ -77,12 +77,16 @@ on the committed corrected source. Do not waive the limit or relabel earlier sou
 
 ### N3 independent coordinate-frame finding, 18 October 09:21 UTC
 
-Independent review found that the regular and Set F dust harnesses used a rail height from
-the clean detector's calibrated model with configured-frame input points before that mount
-correction. In the dark-person frame100 example, the vertical inconsistency is approximately
-0.252 m. Those captures remain reproducible configured-coordinate stresses, but cannot claim
-the registered rail-relative cloud geometry. Preserve them under their original source hashes
-as superseded measurements; do not silently overwrite or promote partial runs.
+Independent review found that the regular dust harness used a rail height from the clean
+detector's calibrated model with configured-frame input points before that mount correction.
+In the dark-person frame100 example, the vertical inconsistency is approximately 0.252 m
+(estimated from the rounded recorded mount angles). Those captures remain reproducible
+configured-coordinate stresses, but cannot claim the registered rail-relative cloud geometry.
+Set F used its separate, pre-process legacy placement model for the rail height; the same
+specific frame-mixing defect has not been demonstrated there. Its partial placement bank had
+no evaluated dust levels and lacked the common auditable clean-frame transform contract.
+Preserve the earlier regular captures and Set F bank under their original source hashes;
+do not silently overwrite or promote partial runs.
 
 Correct the harnesses, not the frozen production core: freeze the exact applied clean input-to-model
 rotation and rail reference per frame, independently of every dusty detector. Perform attenuation

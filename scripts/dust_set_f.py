@@ -103,6 +103,7 @@ def prepare_sequence(files, stamps, speeds, job, cfg, start_distance=220.):
     from resense.synthetic import inject_obstacles
     from scripts.cache_io import cache_file_stem, load_cache_array
     from scripts.far_range_eval import legacy_placement
+    reference_helper = load_module('set_f_dust_reference', ROOT / 'scripts/dust_reference.py')
     # Only this independent baseline instance advances placement. Evaluated dust
     # detectors are constructed later and cannot feed state back into this bank.
     placement = Detector(cfg)
@@ -114,11 +115,12 @@ def prepare_sequence(files, stamps, speeds, job, cfg, start_distance=220.):
         rendered = inject_obstacles(fr, model, [spec],
                                     rng=np.random.default_rng(np.random.SeedSequence([job['render_seed'], index, 1])),
                                     dropout_start=60., dropout_full=200.)
-        placement.process(without_truth(rendered.frame))
+        _, reference = reference_helper.process_clean_reference(placement, without_truth(rendered.frame))
         rows.append({'index': index, 'cache_file': Path(path).name, 'cache_sha256': digest(Path(path)),
                      'stamp': stamp, 'speed': speed, 'distance': distance,
                      'spec': asdict(spec), 'placement_model': asdict(model),
-                     'rail_z': float(model.rail_z(np.array([20.]))[0]),
+                     'placement_rail_z_at20': float(model.rail_z(np.array([20.]))[0]),
+                     'rail_z': reference['rail_z_at20'], 'dust_reference': reference,
                      'clean_returns': int(rendered.n_added[0]), 'clean_frame_sha256': frame_hash(rendered.frame)})
     return {**job, 'requested_frames': len(files), 'frames': rows}
 
@@ -188,6 +190,7 @@ def main():
     source = a.placement_root if a.mode == 'prepare' else a.detector_root
     sys.path.insert(0, str(source.resolve()))
     import numpy as np
+    from resense import _native
     from resense.config import DetectorConfig
     from resense.detector import Detector
     if str(ROOT) not in sys.path:
@@ -195,10 +198,12 @@ def main():
     from scripts.cache_io import cache_files, load_cache_stamps
     from scripts.far_range_eval import consecutive_files, placement_match
     cfg = DetectorConfig.from_yaml(str(source / 'configs/default.yaml'))
+    if not _native.enabled():
+        raise RuntimeError(f'native runtime required for matched baseline measurement: {_native.status()}')
     sources = {str(f.relative_to(source)): digest(f) for f in sorted((source / 'resense').rglob('*'))
                if f.is_file() and f.suffix in ('.py', '.so', '.json')}
     helpers = {str(f.relative_to(ROOT)): digest(f) for f in
-               (ROOT / 'scripts/far_range_eval.py', ROOT / 'scripts/cache_io.py')}
+               (ROOT / 'scripts/far_range_eval.py', ROOT / 'scripts/cache_io.py', ROOT / 'scripts/dust_reference.py')}
     a.bank.mkdir(parents=True, exist_ok=True)
     a.out.mkdir(parents=True, exist_ok=True)
     if a.mode == 'prepare':
@@ -215,13 +220,17 @@ def main():
             if len(planned[start]) != 110:
                 raise ValueError(f'start {start}: all 110 consecutive source frames are required')
         selected_stamps = {cache_file_stem(f): stamps.get(cache_file_stem(f)) for files in planned.values() for f in files}
-        manifest = {'schema': 'set-f-dust-fixed-placement-v1', 'source_root': str(source), 'source_hashes': sources,
+        manifest = {'schema': 'set-f-dust-fixed-placement-v2-clean-reference', 'source_root': str(source), 'source_hashes': sources,
+                    'configuration_yaml_sha256': digest(source / 'configs/default.yaml'),
+                    'native_status': _native.status(),
                     'configuration': asdict(cfg), 'object_seed': 0, 'starts': STARTS, 'kinds': KINDS,
                     'script_sha256': digest(Path(__file__)),
                     'helper_sha256': helpers,
                     'speeds_sha256': digest(ROOT / 'docs/extended_dataset_intake.json'),
                     'selected_stamps_sha256': hashlib.sha256(json.dumps(selected_stamps, sort_keys=True).encode()).hexdigest(),
-                    'placement': 'legacy baseline state, frozen before any dust evaluation', 'sequences': {}}
+                    'placement': 'legacy baseline state, frozen before any dust evaluation',
+                    'dust_coordinates': 'actual applied clean input-to-model matrix and clean rail_z(20), frozen per frame',
+                    'sequences': {}}
         previous_manifest = a.bank / 'manifest.json'
         previous = json.loads(previous_manifest.read_text()) if previous_manifest.exists() else None
         if previous is not None and any(not same_json(previous[key], value)
@@ -247,10 +256,14 @@ def main():
     if set(manifest['sequences']) != {job['id'] for job in canonical_jobs()}:
         raise ValueError('bank must contain all 30 canonical sequences')
     dust = load_module('set_f_dust_generator', ROOT / 'resense/dust.py')
+    reference_helper = load_module('set_f_dust_reference', ROOT / 'scripts/dust_reference.py')
     levels = a.levels.split(',')
     if not levels or levels[0] != 'clean' or any(level not in dust.PRESETS for level in levels):
         raise ValueError('levels must start with clean and use registered dust presets')
-    report = {'schema': 'set-f-dust-battery-v1', 'placement_manifest_sha256': digest(a.bank / 'manifest.json'),
+    if manifest['schema'] != 'set-f-dust-fixed-placement-v2-clean-reference':
+        raise ValueError('corrected clean-reference placement bank required')
+    report = {'schema': 'set-f-dust-battery-v2-clean-reference', 'placement_manifest_sha256': digest(a.bank / 'manifest.json'),
+              'configuration_yaml_sha256': digest(source / 'configs/default.yaml'), 'native_status': _native.status(),
               'detector_root': str(source), 'source_hashes': sources, 'configuration': asdict(cfg),
               'dust_seed': a.seed, 'dust_generator_sha256': digest(ROOT / 'resense/dust.py'),
               'script_sha256': digest(Path(__file__)), 'sequences': {},
@@ -278,8 +291,9 @@ def main():
             with gzip.open(output, 'wt') as stream:
                 for item in bank['frames']:
                     injected, spec, model = render_frozen(item, bank, a.cache, cfg)
-                    frame, audit, origins = dust.augment_dust(injected.frame, dust.PRESETS[level],
-                                                            rail_z=item['rail_z'], seed=a.seed, frame_index=item['index'])
+                    frame, audit, origins = reference_helper.augment_in_reference(
+                        without_truth(injected.frame), dust.PRESETS[level], item['dust_reference'],
+                        seed=a.seed, frame_index=item['index'], augment=dust.augment_dust)
                     retained = int(np.count_nonzero(injected.labels[origins[origins >= 0]] > 0))
                     result = detector.process(without_truth(frame))
                     matches = [placement_match(d, spec.distance, spec, model, result.track, 'legacy') for d in result.detections]
@@ -291,6 +305,7 @@ def main():
                            'hit': bool(any(matches) and item['clean_returns'] > 0),
                            'false_detections': sum(not m for m in matches), 'decision': decision,
                            'degraded': health.get('decision_level') in ('warn', 'error'), 'augmentation': audit,
+                           'dust_reference_sha256': item['dust_reference']['reference_sha256'],
                            'clean_frame_sha256': item['clean_frame_sha256'], 'result': result.to_dict()}
                     rows.append(row)
                     stream.write(json.dumps(row, separators=(',', ':')) + '\n')

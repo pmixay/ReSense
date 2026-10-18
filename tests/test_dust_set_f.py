@@ -64,6 +64,7 @@ def test_lost_positive_and_false_episode_accounting_are_per_frame():
 
 
 def test_full_precision_bank_roundtrip_reproduces_injected_points(synth_npy_dir):
+    from scripts.dust_reference import source_frame_sha256, _validated_rotation
     files = sorted(str(path) for path in synth_npy_dir.glob('*.npy'))
     stamps = {path.rsplit('/', 1)[-1][:-4]: .1 * i for i, path in enumerate(files)}
     cfg = DetectorConfig()
@@ -73,6 +74,9 @@ def test_full_precision_bank_roundtrip_reproduces_injected_points(synth_npy_dir)
     for row in bank['frames']:
         rendered, _, _ = render_frozen(row, bank, synth_npy_dir, cfg)
         assert frame_hash(rendered.frame) == row['clean_frame_sha256']
+        assert row['dust_reference']['source_frame_sha256'] == source_frame_sha256(without_truth(rendered.frame))
+        assert row['dust_reference']['rail_z_at20'] == row['rail_z']
+        _validated_rotation(row['dust_reference'])
     bank['render_seed'] += 1
     with pytest.raises(ValueError, match='rendering drift'):
         render_frozen(bank['frames'][0], bank, synth_npy_dir, cfg)

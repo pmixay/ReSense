@@ -47,6 +47,8 @@ def main():
     from resense.detector import Detector
     from resense.frame import Frame, axis_matrix
     from resense.metrics import _assign_detections, gt_objects, load_gt
+    from resense import _native
+    from dust_reference import augment_in_reference, process_clean_reference
     import yaml
     spec = importlib.util.spec_from_file_location("dust_stress_module", ROOT / "resense/dust.py")
     dust = importlib.util.module_from_spec(spec)
@@ -81,9 +83,22 @@ def main():
 
         detector_class = SupportDetector
     a.out.mkdir(parents=True, exist_ok=True)
+    if any(a.out.iterdir()):
+        raise ValueError("output directory must be empty; preserve earlier captures separately")
+    identity_paths = [Path(__file__), ROOT / "scripts/dust_reference.py", ROOT / "resense/dust.py",
+                      a.detector_root / "configs/default.yaml", *sorted((a.detector_root / "resense").glob("*.so"))]
+    if a.dust_support or a.health_only:
+        identity_paths.append(ROOT / "resense/dust_health.py")
+    def identities():
+        return {str(path.resolve()): hashlib.sha256(path.read_bytes()).hexdigest() for path in identity_paths}
+    runtime_identity = identities()
     sources = {str(f.relative_to(a.detector_root)): hashlib.sha256(f.read_bytes()).hexdigest()
                for f in sorted((a.detector_root / "resense").glob("*.py"))}
-    report = {"schema": "dust-battery-v1", "seed": a.seed, "detector_root": str(a.detector_root),
+    report = {"schema": "dust-battery-v2", "seed": a.seed, "detector_root": str(a.detector_root),
+              "placement": "frozen clean actual calibrated axes; flat rail_z(20m) reference",
+              "runtime_identity_start": runtime_identity,
+              "python": sys.version, "numpy": np.__version__, "native_enabled": _native.enabled(),
+              "native_description": _native.status(),
               "source_hashes": sources, "config_overrides": a.set,
               "generator_sha256": hashlib.sha256((ROOT / "resense/dust.py").read_bytes()).hexdigest(),
               "dust_support": a.dust_support,
@@ -105,9 +120,10 @@ def main():
         for path in paths:
             source_hash.update(path.name.encode())
             source_hash.update(hashlib.sha256(path.read_bytes()).digest())
-        bag_report = {"cache_sha256": source_hash.hexdigest(), "frames": len(paths), "levels": {}}
+        bag_report = {"cache_sha256": source_hash.hexdigest(), "frames": len(paths), "levels": {},
+                      "labels_sha256": hashlib.sha256(labels_path.read_bytes()).hexdigest() if labels_path.exists() else None}
         report["recordings"][bag] = bag_report
-        clean_rail = []
+        clean_references = []
         for level in a.levels.split(","):
             cfg = DetectorConfig.from_yaml(str(a.detector_root / "configs/default.yaml"))
             cfg.calibration.enabled = True
@@ -120,7 +136,7 @@ def main():
             counts, objects = Counter(), defaultdict(lambda: {"visible_inside_frames": 0, "stop_frames": [],
                                                                "first_stop_frame": None, "first_stop_m": None})
             last_stop = False
-            elapsed, rails, last_stamp = [], [], None
+            elapsed, last_stamp = [], None
             output = a.out / f"{bag}_{level}.jsonl.gz"
             started = time.perf_counter()
             with gzip.open(output, "wt", encoding="utf-8") as fh:
@@ -145,12 +161,16 @@ def main():
                             fr.intensity[inside] = a.dim_labels
                     audit = None
                     if level != "clean":
-                        fr, audit, _ = dust.augment_dust(fr, dust.PRESETS[level], rail_z=clean_rail[i],
-                                                       seed=a.seed, frame_index=i)
+                        fr, audit, _ = augment_in_reference(fr, dust.PRESETS[level], clean_references[i],
+                                                           seed=a.seed, frame_index=i, augment=dust.augment_dust)
                         counts["injected_returns"] += audit["added_returns"]
                         counts["attenuated_returns"] += audit["removed_returns"]
                     t0 = time.perf_counter()
-                    result = detector.process(fr)
+                    if level == "clean":
+                        result, reference = process_clean_reference(detector, fr)
+                        clean_references.append(reference)
+                    else:
+                        result = detector.process(fr)
                     elapsed.append((time.perf_counter() - t0) * 1000)
                     row = result.to_dict()
                     row["frame"] = i
@@ -160,12 +180,11 @@ def main():
                                 else "GO")
                     row["decision"] = decision
                     row["augmentation"] = audit
+                    row["clean_reference"] = clean_references[i]
                     counts[decision] += 1
                     counts["stop_episodes"] += int(decision == "STOP" and not last_stop)
                     counts["degraded_frames"] += int(health.get("decision_level", health.get("level")) in ("warn", "error"))
                     last_stop = decision == "STOP"
-                    rail = float(result.track.rail_z(np.array([20.]))[0])
-                    rails.append(rail)
                     visible = [r for r in labels.get(f"{i:05d}", []) if r.get("n_points", 1) > 0 and r.get("plausible", True)]
                     gt = gt_objects(visible)
                     assignment = _assign_detections(row.get("detections", []), gt)
@@ -181,8 +200,6 @@ def main():
                                 obj["first_stop_frame"] = i
                                 obj["first_stop_m"] = float(label["distance"])
                     fh.write(json.dumps(row, separators=(",", ":")) + "\n")
-            if level == "clean":
-                clean_rail = rails
             measurement = {**dict(counts), "objects": dict(objects), "frames": len(paths),
                            "timing_ms": {"median": float(np.median(elapsed)), "p95": float(np.percentile(elapsed, 95))},
                            "wall_seconds": time.perf_counter() - started,
@@ -198,6 +215,9 @@ def main():
                     old = base.get("first_stop_m")
                     obj["first_stop_ratio"] = obj["first_stop_m"] / old if old and obj["first_stop_m"] is not None else None
             bag_report["levels"][level] = measurement
+            report["runtime_identity_end"] = identities()
+            if report["runtime_identity_end"] != runtime_identity:
+                raise ValueError("measurement source changed during capture")
             (a.out / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
             print(f"{bag}/{level}: {dict(counts)} p95={measurement['timing_ms']['p95']:.1f}ms", flush=True)
 
