@@ -14,6 +14,7 @@ import subprocess
 import time
 
 import rclpy
+import yaml
 from rclpy.parameter import Parameter
 from rcl_interfaces.srv import SetParametersAtomically
 from rosbag2_interfaces.srv import GetRate, IsPaused
@@ -101,6 +102,11 @@ def main():
             raise RuntimeError("parameter service unavailable")
         reset = observer.create_client(Trigger, "/resense/reset_input")
         for profile in ("pandar128", "falcon_ros"):
+            bag = args.falcon_bag if profile == "falcon_ros" and args.falcon_bag else args.bags / profile
+            metadata = yaml.safe_load((bag / "metadata.yaml").read_text())["rosbag2_bagfile_information"]
+            expected_frames = sum(item["message_count"] for item in metadata["topics_with_message_count"]
+                                  if item["topic_metadata"]["type"] == "sensor_msgs/msg/PointCloud2")
+            assert expected_frames >= 25, "integration requires at least25 real PointCloud2 frames"
             future = param.call_async(
                 SetParametersAtomically.Request(
                     parameters=[
@@ -120,7 +126,7 @@ def main():
                     "ros2",
                     "bag",
                     "play",
-                    str(args.falcon_bag if profile == "falcon_ros" and args.falcon_bag else args.bags / profile),
+                    str(bag),
                     "--rate",
                     ".5",
                     "--delay",
@@ -170,7 +176,7 @@ def main():
             start = time.monotonic()
             spin_until(lambda: time.monotonic() - start >= 1.2)
             obtained = frames()
-            assert len(obtained) >= 25, (profile, len(obtained))
+            assert len(obtained) == expected_frames, (profile, len(obtained), expected_frames)
             if profile != "falcon_ros" or args.falcon_bag is None:
                 assert any(r["decision"] == "GO" for r in obtained)
                 assert any(
@@ -186,7 +192,8 @@ def main():
                 assert all(r["clear_distance"] == 0 and r["monitored_small"] is None for r in obtained)
             controls[profile] = {
                 "frames": len(obtained),
-                "input": str(args.falcon_bag if profile == "falcon_ros" and args.falcon_bag else args.bags / profile),
+                "expected_frames": expected_frames,
+                "input": str(bag),
                 "synthetic_obstacle_truth_asserted": profile != "falcon_ros" or args.falcon_bag is None,
                 "recordings": sorted({r["node"]["recording"] for r in obtained}),
                 "first_decision": obtained[0]["decision"],

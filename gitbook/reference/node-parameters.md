@@ -16,7 +16,7 @@ docker run --rm -it --net=host --ipc=host resense \
 
 | аргумент | по умолчанию | значение |
 |---|---|---|
-| `input_topic` | `/lidar_points,/sensing/lidar/hesai128/pointcloud` | входные топики-кандидаты через запятую |
+| `input_topic` | `/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points` | входные топики-кандидаты через запятую |
 | `auto_discover` | `true` | также подписываться на топики `PointCloud2`, найденные в графе |
 | `discover_period` | `2.0` | с между поисками топиков, пока вход молчит |
 | `input_switch_timeout` | `1.0` | с молчания активного входа, после которых берётся другой топик |

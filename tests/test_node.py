@@ -72,7 +72,8 @@ def test_node_and_launch_defaults_match_published_source_baseline():
             assert _declared_defaults(published) == PUBLISHED_DEFAULTS
     additions = {"decision_policy": "v1", "caution_distance_m": 80.0,
                  "caution_compact_max_size_m": 3.0, "clear_range_policy": "legacy",
-                 "range_sensor_model": "unknown", "sensor_profile": "manual", "keep_up_axis": True}
+                 "range_sensor_model": "unknown", "sensor_profile": "manual", "keep_up_axis": True,
+                 "input_topic": "/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points"}
     assert _declared_defaults((NODE_PKG / "resense_ros" / "detector_node.py").read_text()) == {
         **PUBLISHED_DEFAULTS, **additions}
     tree = ast.parse((NODE_PKG / "launch" / "detector.launch.py").read_text())
@@ -616,7 +617,8 @@ def test_input_reliability_follows_the_publishers(node_cls, monkeypatch):
     publishers' reliability when they are known (a best-effort driver would give a reliable reader
     nothing)."""
     node = node_cls()
-    assert node.sub_rel == {"/lidar_points": "reliable", "/sensing/lidar/hesai128/pointcloud": "reliable"}
+    assert node.sub_rel == {"/lidar_points": "reliable", "/sensing/lidar/hesai128/pointcloud": "reliable",
+                            "/iv_points": "reliable"}
     assert node.subs["/lidar_points"].qos["reliability"] == 1
     def pub(rel):
         return types.SimpleNamespace(qos_profile=types.SimpleNamespace(reliability=rel))
@@ -1648,6 +1650,14 @@ def test_every_node_parameter_is_a_launch_argument_with_the_same_default(node_cl
     for name, (default, typ) in launch.items():
         if name not in ("freshness_mode", "warmup"):  # the stand-in's own defaults (replay, no warm-up)
             assert cast[typ](default) == declared[name], name
+
+
+def test_supplied_falcon_topic_is_subscribed_before_graph_discovery(node_cls):
+    node = node_cls()
+    assert "/iv_points" in node.subs
+    # A known input topic does not infer sensor coordinates or a Pandar prior.
+    assert node.sensor_profile == "manual"
+    assert node.range_sensor_model == "unknown"
 
 
 def test_the_node_default_stays_the_live_clock(node_cls, monkeypatch):

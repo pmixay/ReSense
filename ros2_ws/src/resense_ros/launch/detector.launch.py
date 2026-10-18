@@ -26,7 +26,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 # node parameter -> (default, python type, description). The type matters: a LaunchConfiguration
 # substitutes to a string, and rclpy rejects a string for a parameter declared bool or double.
 PARAMS = {
-    "input_topic": ("/lidar_points,/sensing/lidar/hesai128/pointcloud", str,
+    "input_topic": ("/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points", str,
                     "comma-separated candidate input topics"),
     "auto_discover": ("true", bool, "also subscribe to PointCloud2 topics found on the graph"),
     "discover_period": ("2.0", float, "s between discovery scans while the input is silent"),

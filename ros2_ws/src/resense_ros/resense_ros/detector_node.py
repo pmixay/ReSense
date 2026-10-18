@@ -211,7 +211,7 @@ class SourceInfoExecutor(SingleThreadedExecutor):
 class DetectorNode(Node):
     def __init__(self) -> None:
         super().__init__("resense_detector")
-        self.declare_parameter("input_topic", "/lidar_points,/sensing/lidar/hesai128/pointcloud")
+        self.declare_parameter("input_topic", "/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points")
         self.declare_parameter("auto_discover", True)    # also take PointCloud2 topics found on the graph
         self.declare_parameter("discover_period", 2.0)   # s, how often to look while the input is silent
         self.declare_parameter("config_file", "")
