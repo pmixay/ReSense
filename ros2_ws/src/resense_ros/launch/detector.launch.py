@@ -32,7 +32,7 @@ PARAMS = {
     "discover_period": ("2.0", float, "s between discovery scans while the input is silent"),
     "publish_markers": ("true", bool, "RViz MarkerArray"),
     "publish_corridor_cloud": ("true", bool, "points inside the corridor, for debugging"),
-    "marker_x_max": ("250.0", float, "m, how far the corridor outline is drawn"),
+    "marker_x_max": ("250.0", float, "m, display limit; solid gauge also capped by observed axis and monitored range"),
     "output_frame": ("", str, "frame_id of the published markers/detections; empty = the input's"),
     "stats_period": ("2.0", float, "s between fps / latency log lines"),
     "ego_speed_mps": ("-1.0", float, "train speed in m/s for multi-frame accumulation; < 0 = unknown "
@@ -46,6 +46,8 @@ PARAMS = {
     "sensor_forward": ("", str, "sensor axis pointing forward, e.g. -y (hackathon mount) or +x; empty = config file"),
     "sensor_left": ("", str, "sensor axis pointing left; empty = config file"),
     "sensor_up": ("", str, "sensor axis pointing up; empty = config file"),
+    "sensor_profile": ("manual", str, "explicit profile: manual | pandar128 | falcon_ros | falcon_native"),
+    "keep_up_axis": ("true", bool, "upright/inverted calibration search; false explicitly enables all 24 orientations"),
     "mount_roll_deg": ("-999.0", float, "fixed roll correction in deg (-999 = config file)"),
     "mount_pitch_deg": ("-999.0", float, "fixed pitch correction in deg (-999 = config file)"),
     "mount_yaw_deg": ("-999.0", float, "fixed yaw correction in deg (-999 = config file)"),

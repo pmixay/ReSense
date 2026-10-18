@@ -1,36 +1,14 @@
 #!/usr/bin/env bash
-# Full demo: detector + RViz + bag playback in one container.
-#   ./scripts/run_demo.sh /path/to/for_hackathon/roundT_doubleT [rate]
-#   RVIZ=0 ./scripts/run_demo.sh <bag> [rate]   # no X11 — delegates to run_headless.sh
-#
-# The directory holding the bag is mounted at /data inside the container, so the bag path on the
-# command line is the only thing that decides where the data comes from (see README, "Where the
-# data lives"). docker compose uses $RESENSE_DATA for the same mount.
+# RViz + interactive player; supports several bags and explicit sensor profiles.
+# scripts/run_demo.sh BAG [rate] or scripts/run_demo.sh --sensor-profile pandar128 BAG1 --sensor-profile falcon_ros BAG2
+# LIBGL_ALWAYS_SOFTWARE=1 scripts/run_demo.sh BAG 0.5  # software OpenGL
 set -euo pipefail
-cd "$(dirname "$0")/.."
-. "$(dirname "${BASH_SOURCE[0]}")/require_docker.sh"
-
-if [ $# -lt 1 ]; then
-  sed -n '2,5p' "$0" >&2
-  exit 2
+HERE="$(cd "$(dirname "$0")" && pwd)"
+ARGS=()
+if [ "${RVIZ:-1}" != 0 ]; then ARGS+=(--rviz); fi
+if [ "${LIBGL_ALWAYS_SOFTWARE:-0}" = 1 ]; then ARGS+=(--software-rendering); fi
+if [ -t 0 ] && [ -t 1 ]; then ARGS+=(--interactive); fi
+if [ "$#" = 2 ] && [[ "$2" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+  exec "$HERE/play_bag.sh" "${ARGS[@]}" --rate "$2" "$1"
 fi
-
-if [ "${RVIZ:-1}" = "0" ]; then
-  exec ./scripts/run_headless.sh "$@"
-fi
-
-BAG_PATH="$1"; RATE="${2:-1.0}"
-if [ ! -d "$BAG_PATH" ] || [ ! -f "$BAG_PATH/metadata.yaml" ]; then
-  echo "ERROR: $BAG_PATH is not a ROS 2 bag directory (no metadata.yaml)" >&2
-  exit 2
-fi
-require_docker_daemon
-BAG_DIR="$(cd "$(dirname "$BAG_PATH")" && pwd)"
-BAG_NAME="$(basename "$BAG_PATH")"
-
-xhost +local:docker >/dev/null 2>&1 || true
-docker run --rm -it --net=host --ipc=host \
-  -e DISPLAY="${DISPLAY:-:0}" -e QT_X11_NO_MITSHM=1 \
-  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-  -v "$BAG_DIR":/data:ro \
-  resense:latest ros2 launch resense_ros detector.launch.py freshness_mode:=replay bag:=/data/"$BAG_NAME" rviz:=true rate:="$RATE"
+exec "$HERE/play_bag.sh" "${ARGS[@]}" "$@"
