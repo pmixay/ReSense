@@ -33,6 +33,15 @@ Version/release-tool validation passes **53 tests** ([JUnit](junit-release.xml))
 The [source-continuity review](../p4_followup_2026-10-18/source_continuity.json) ties the new
 version to P4's checked source and to the already measured default-off source.
 
+The [candidate integrity manifest](../detector_freeze_2026-10-18_1.2.0_candidate.json)
+is now the default verifier target and passes for **38 files**, source SHA-256
+`b85a93064e79e932df4f7045af21effdf43f0858963204db5d30fc1de37a5e3a`.
+Its evidence-containing commit is `abc16e326e01317b2fbc2bf82ab20fda544637d6`;
+manifest SHA-256 is `99b1f8e079a37a875feb098ebc67107c5f6a1ada7327a3ce95c5875339f74caa`.
+All 17 supporting references were committed before creation. The standard verifier and
+[independent manifest review](../p4_followup_2026-10-18/CANDIDATE_MANIFEST_REVIEW.md) pass;
+the seal suite passes **12 tests and six subtests**. Source integrity is not release approval.
+
 ## Supporting runs retain their original identities
 
 | Run | Measured source | Result |
@@ -52,8 +61,8 @@ Set O frame 332 remains a provenance limitation of the Linux X3 reference.
 
 P4's original development check covered `b423562`; it was not a release-seal approval or J1.
 Our source/data reviews are identified as agent reviews. **P4's final 1.2.0 approval remains
-pending**, as does P3's acknowledgement of the proposed integration ownership. A candidate
-integrity manifest will bind reviewable source/evidence bytes without declaring that approval.
+pending**, as does P3's acknowledgement of the proposed integration ownership. The candidate
+integrity manifest binds reviewable source/evidence bytes without declaring that approval.
 
 Replay remains opt-in. N3 robustness fails, N6 remains below 60 m and off, and automatic
 side-mounted orientation and curve-axis bias remain unresolved. The [P4/P3 handoff](../p4_followup_2026-10-18/README.md)

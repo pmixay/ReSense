@@ -40,7 +40,7 @@ intake. We verify their exact report bytes, not every underlying P4 frame.
 
 | Item | Completed source evidence | Separate 1.2.0 candidate requirement |
 |---|---|---|
-| Replacement seal after the old verification failure | [38-file development seal](../detector_freeze_2026-10-18_lidar.json), committed in `ed6327f2a5f0048fbd52efed5ff59fe7de318871`; [actual manifest review](../lidar_adaptation_2026-10-18/default_off/MANIFEST_REVIEW.md) passes | Final candidate integrity manifest must bind its actual measured version and evidence. Preparing it is not final P4 approval. |
+| Replacement seal after the old verification failure | [38-file development seal](../detector_freeze_2026-10-18_lidar.json), committed in `ed6327f2a5f0048fbd52efed5ff59fe7de318871`; [actual manifest review](../lidar_adaptation_2026-10-18/default_off/MANIFEST_REVIEW.md) passes | [1.2.0 candidate integrity manifest](../detector_freeze_2026-10-18_1.2.0_candidate.json) now binds `e9d8fc6` and committed evidence `abc16e3`; default verification passes all 38 files. P4 final approval remains pending. |
 | Complete default gate | `fb7790039aeacf8cb4ed17a68609d649f806ee06`: [18,329-row gate](../lidar_adaptation_2026-10-18/default_off/gate.json), 15,269 ordinary and 3,060 Set F rows; all 805 ordinary STOP frames and 51 intervals preserved | **PASS on `e9d8fc6`**: [fresh 18,329-row gate](../version_1.2.0_2026-10-18/gate.json), exact shared non-timing parity and all STOP boundaries preserved; no overrides, missing rows or waivers |
 | X3 and independent preservation | `113231d59557fb5bc5c50c76117a84b978264505`: [40 cases / 29,765 rows / 260 passing checks](../lidar_adaptation_2026-10-18/default_off/X3_REVIEW.md), all 6,284 STOP frames and 204 intervals preserved | Preserve these source identities; link the version-only continuity proof and whatever new final-source checks the reviewed candidate requires |
 | Full actual Falcon | [Fresh matched-runtime comparison](../n2_falcon_2026-10-18/falcon_default_off/README.md): 4,443 rows, all 1,372 STOP frames/eight intervals preserved | Do not relabel the old capture as a new-version run; final review must state the exact source/continuity scope |
@@ -100,8 +100,9 @@ The user chose **sealed main 1.1.0 as the next J1 target**, with 1.2.0 reviewed
 separately. The new candidate must not silently replace that J1 target. This is
 a target selection, not evidence that J1 has run or that a release is published.
 
-P1 has committed the four-file version bump and completed the fresh default gate. A
-reviewable candidate integrity manifest is being finalized locally while hosted CI is blocked.
+P1 has committed the four-file version bump and completed the fresh default gate. The
+reviewable candidate integrity manifest verifies locally while hosted CI is blocked;
+its [independent agent review](CANDIDATE_MANIFEST_REVIEW.md) also passes.
 P4's final review should bind the exact candidate commit, source/config hashes,
 complete gate and supporting frame-level evidence, with the readiness and
 unsupported-sideways-mount limitations explicit. P3 should base any additional
@@ -124,6 +125,29 @@ the dependent Docker, pytest, offline-build and webapp jobs were skipped. The
 short scheduled start/end timestamps do not establish test execution. That is
 the observed hosted blocker, not a code-test failure or a claim about unobserved
 future runs.
+
+## Checkout for P4's candidate recheck
+
+Use the completed branch checkout that contains the new candidate manifest, and record its
+exact `git rev-parse HEAD` before running P4's harness. The measured detector source is
+`e9d8fc6`; that version-bump-only commit precedes the gate and manifest, so checking out only
+`e9d8fc6` will still find the previous seal pointer. The later evidence/manifest commits do
+not change the measured detector bytes.
+
+```sh
+git fetch origin work/n5-labels-c2-acceptance
+git worktree add --detach /path/to/p4-lidar-review origin/work/n5-labels-c2-acceptance
+git -C /path/to/p4-lidar-review rev-parse HEAD
+python /path/to/p4-lidar-review/scripts/detector_freeze.py verify
+
+# Run P4's existing harness from its own pinned checkout, with its documented environment.
+/path/to/p4-harness/docs/evidence/rejudge_2026-10-16/new_recordings/run_new_recordings.sh \
+  /path/to/p4-lidar-review /path/to/fresh-p4-work
+```
+
+Keep that candidate review separate from the selected next J1 target, main 1.1.0 at
+`3b7d7aa7cbbf238c21f84330497697da131b7cb9`. No P4 harness execution or member acknowledgement
+is asserted by these instructions.
 
 ## Locally completed defect follow-up
 

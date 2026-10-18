@@ -1,0 +1,177 @@
+{
+  "schema": "resense-detector-freeze-v1",
+  "status": "frozen",
+  "created_utc": "2026-10-18T13:03:09.958089+00:00",
+  "authorization": "User requested locally actionable P4 follow-up on 2026-10-18: prepare a separately versioned LiDAR candidate and its reviewable integrity seal. The captain selected sealed main 1.1.0 for next J1. No release/tag/deployment is authorized.",
+  "source_commit": "abc16e326e01317b2fbc2bf82ab20fda544637d6",
+  "measured_commit": "e9d8fc649f2dd51dd5cd1e4b04ac8c306cc02569",
+  "source_sha256": "b85a93064e79e932df4f7045af21effdf43f0858963204db5d30fc1de37a5e3a",
+  "files": {
+    "configs/default.yaml": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+    "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+    "configs/experimental_far_rail_rings.yaml": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+    "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+    "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "bd429ed92c6c9606ee933607c3361548f15e3ba18c6a5415611195ce320b5866",
+    "resense/__init__.py": "0afadc11f9d78b09e83b15805b3b1cb3281e77b51013d74c837781df144bc27a",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "29674696d08a41c56e9c402568a04af0096ba92f98b56a1225743b7c51b38f08",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+    "resense/config.py": "7a4136a051a15f85fa81dc68c123577696fecc507cc92ca4b6260df0eb0fadd1",
+    "resense/detector.py": "97cf9acf8d9206b489b475c75c7ab425675d0bfc43d3443c1891a3962bb3e0f8",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "211502e2c826cdc61f60d091ed0e0df414567d1b4497661eeb2e00c56c813ddc",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+    "resense/tracking.py": "4c6d6176e06749a544eceb06e60ab2f276b991fca32dcc862685eac95778eca3",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+    "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "config_file_sha256": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+  "effective_config_sha256": "0c9d663f067e55ffd73fdca774a3da2178c184557a7f9ecee510cb31090dc739",
+  "baseline": {
+    "path": "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+    "sha256": "8d86d6d19ef00f0ece4fd0c924935887ba6f8b39dbfd7074c2f1577099029b30"
+  },
+  "validation": {
+    "path": "docs/evidence/version_1.2.0_2026-10-18/gate.json",
+    "sha256": "9d37c94dfb09914bfd5981d08544b84b5d37630bafb09896d5cba651dc5eb692",
+    "measured_at": "2026-10-18T12:56:49+00:00",
+    "kind": "committed full regression gate"
+  },
+  "decisions": {
+    "candidate_B": "not shipped: one extra STOP frame at 7.1 m; keep voxel bar 10",
+    "axis_union": "off: the organizers measure the envelope from the rail heads (answer of 29.09); gauge.reference 3 keeps the bounded union",
+    "orientation_replay": "Opt-in only: calibration.orientation_replay_frames=0 in class and both YAML files. Default4 rejected after 13 lost Falcon STOP rows, including four person-associated rows; no preservation criterion waived.",
+    "orientation_readiness": "Unconfirmed orientation remains explicit and cannot claim positive qualified clear range; explicit sensor profiles remain available.",
+    "conservative_range_policy": "C2 conservative range profile remains explicit, with the user-approved measured coverage loss. Falcon has no borrowed Pandar small-object density prior.",
+    "dust": "No production dust classifier or suppression enabled. Synthetic stress measurements and rejected hypotheses do not establish physical-dust robustness.",
+    "rails_axis_extension": "Off. N6 candidate misses the 60 m target and has unresolved contradictory farther rail evidence.",
+    "column_free_top": "H1 remains off as selected on 2026-10-16; the inherited tall-object miss remains open.",
+    "release": "Work branch only; no new tag, published image, release or deployment. Hosted CI awaits the captain.",
+    "package_version": "1.2.0 unreleased candidate; four declarations synchronized.",
+    "next_J1_target": "Captain selected sealed main 1.1.0 at 3b7d7aa7cbbf238c21f84330497697da131b7cb9.",
+    "review_scope": "This manifest freezes bytes for review; final P4 candidate acceptance is pending."
+  },
+  "change_policy": "Blocker fixes only; review the fix, repeat affected checks and the full gate, then replace this seal.",
+  "limits": [
+    "Verification checks source and evidence integrity; it does not replay recordings.",
+    "Node, launch, Docker and documentation have separate acceptance checks.",
+    "A detector freeze is not a release, deployment approval or proof of safety.",
+    "The built-in integrity verifier checks source, baseline and gate. Supporting evidence hashes are recorded for independent manifest review; the built-in verifier does not replay or automatically validate those extra references.",
+    "The X3 input match is to the archived Linux 1.1 reference; the historical Windows Set O frame 332 remains unavailable.",
+    "Set F scoring rows omit complete detections; independent hit reassignment is not established.",
+    "One-CPU shared-host timing is not a 2/4/8-core or universal 10 Hz throughput claim.",
+    "Team labels and development-data comparisons do not constitute organizer truth or held-out evaluation.",
+    "Standard status frozen denotes source/evidence integrity, not a released or P4-approved candidate.",
+    "New 1.2.0 gate is measured at e9d8fc6; earlier X3/Falcon/DDS captures are not newly run 1.2.0 evidence.",
+    "Automatic sideways orientation and curve-axis bias remain unresolved; explicit mapping controls do not prove universal automatic orientation.",
+    "Final P4 acceptance, P3 coordination, hosted CI and release remain pending."
+  ],
+  "lineage": {
+    "previous_manifest": "docs/evidence/detector_freeze_2026-10-18_lidar.json",
+    "previous_manifest_sha256": "f75231a9d52124620ec7f23ee7ecf0050bf4e668ee2e10fdb660c3dba06bbc3c",
+    "previous_authorization": "User requested LiDAR adaptation and validation on the existing remote work branch, and explicitly selected startup replay opt-in on 2026-10-18. This reviewed source seal does not authorize a release or deployment.",
+    "selected_measured_commit": "e9d8fc649f2dd51dd5cd1e4b04ac8c306cc02569",
+    "evidence_commit": "abc16e326e01317b2fbc2bf82ab20fda544637d6",
+    "change": "Exactly four 1.1.0 to 1.2.0 declaration lines; two inside frozen scope. No runtime behavior change."
+  },
+  "reviewed_supporting_evidence": [
+    {
+      "path": "docs/evidence/version_1.2.0_2026-10-18/PLAN.md",
+      "sha256": "8c6899ae997e4fc8c2c23f6924a74f05ae547202784f9bf5d3415e6771927fcc"
+    },
+    {
+      "path": "docs/evidence/version_1.2.0_2026-10-18/gate_execution.json",
+      "sha256": "ca0fb8bd11eea1ea141a774ff0ef0918fa30f5f32aec54125627b967850bc0ff"
+    },
+    {
+      "path": "docs/evidence/version_1.2.0_2026-10-18/gate_frame_review.json",
+      "sha256": "9ae1f309e2b766cd014db83abd7f11a2c7ef813a649b4c82543ef1a72ad3b9b1"
+    },
+    {
+      "path": "docs/evidence/version_1.2.0_2026-10-18/gate_acceptance.json",
+      "sha256": "ea19f3ff8d52ff702a70f605db3d3d1500defedd0373c05b72bca40a3a2ce4ee"
+    },
+    {
+      "path": "docs/evidence/version_1.2.0_2026-10-18/raw/gate_manifest.json",
+      "sha256": "117d9aae8ed47a4004966ce6c3fd849b1dd3923e12bf94311c2bcf9ac51ca730"
+    },
+    {
+      "path": "docs/evidence/version_1.2.0_2026-10-18/raw/gate.tar.gz",
+      "sha256": "8f762fdae5c2e62c3397c749ccfcd7bb534b0405ca8fbb547c189a5ffab66941"
+    },
+    {
+      "path": "docs/evidence/version_1.2.0_2026-10-18/junit-release.xml",
+      "sha256": "65d6ee8da407b3721f4780adf739df4b21ba34700e18bd830c7f01b0f48228b6"
+    },
+    {
+      "path": "docs/evidence/version_1.2.0_2026-10-18/main_j1_target.json",
+      "sha256": "05a070e1f03bd0c49f54087f99c3b1c19fdd668d93ad2f18529b4c305985da9d"
+    },
+    {
+      "path": "docs/evidence/p4_followup_2026-10-18/source_continuity.json",
+      "sha256": "55ce062f6be13e9fa05ba052b37977abd05a3c8d7f7e7cece48395157704325a"
+    },
+    {
+      "path": "docs/evidence/p4_followup_2026-10-18/p4_intake_manifest.json",
+      "sha256": "cd4d73f60d6dbec7dff7738c28438cb30447c9861ed246ede1d170866087740e"
+    },
+    {
+      "path": "docs/evidence/p4_followup_2026-10-18/version_gate_review.json",
+      "sha256": "5fe95e96b154b40d91fe8e06f22ae48a5fb395cf2d5b381f55ee80cfef176649"
+    },
+    {
+      "path": "docs/evidence/p4_followup_2026-10-18/check_source_continuity.py",
+      "sha256": "389b082d2ae6165845e7a9ace825266a57a3cf760b5fa33192a36e25509ec30c"
+    },
+    {
+      "path": "docs/evidence/p4_followup_2026-10-18/review_version_gate.py",
+      "sha256": "8198cfcc1fc908e9d4287387c0b600016f75d6f14c62b2323344ac7923dd23bc"
+    },
+    {
+      "path": "docs/evidence/lidar_adaptation_2026-10-18/default_off/x3.json",
+      "sha256": "fed905cb46cefa99c101b659d5aecaf5efa30f0feed3caef39fda3a8f7bff3b9"
+    },
+    {
+      "path": "docs/evidence/lidar_adaptation_2026-10-18/default_off/independent_x3_archive.json",
+      "sha256": "fb52ec7cbbcb1e04e64f9236e6fcc5853963c61dcf49535e7d2649bba819729a"
+    },
+    {
+      "path": "docs/evidence/lidar_adaptation_2026-10-18/default_off/independent_acceptance.json",
+      "sha256": "94d66487d2d59c5ce388a156b7b6126ba0f487f09167afcc9ef501846fff06ac"
+    },
+    {
+      "path": "docs/evidence/lidar_adaptation_2026-10-18/default_off/INDEPENDENT_DDS_REVIEW.md",
+      "sha256": "59587e1c6b0b866e662e036cb662e786d40779200f0cca971d20b26114a198cf"
+    }
+  ],
+  "release_review": {
+    "kind": "candidate_integrity_only",
+    "P4_final_acceptance": "PENDING",
+    "P3_coordination_acknowledgement": "PENDING",
+    "release_authorized": false,
+    "integrity_review": "Local agent source and raw-evidence reviews; not P4 final approval.",
+    "P4_development_check": "b423562 only; original report1b88016 preserved without relabeling.",
+    "supporting_run_identity": "X3, full Falcon and Docker/DDS remain cecab1b runs; source continuity is proven separately."
+  }
+}
