@@ -32,3 +32,21 @@ Use one runtime throughout and pin `OPENBLAS_CORETYPE=Haswell`
   (SHA-256 in `prebuild/SHA256SUMS`). Each version took ≈ 7.7 min at 2 workers on this container.
 
 These are **pre-release** numbers; the judge score remains v1.0.0's 66/100 until the release J1 is scored.
+
+## New recordings since 16.10 (added 18.10): run on the release too, reported separately
+
+The 13.10 rubric does not cover these recordings, so they are **not part of the J1 score**. They are what the experts
+announced for their own evaluation (criteria 1–3, second lidar), so they should be run on the release checkout with the
+same runtime and reported next to J1 as observations. Every step below has been run on the 1.1.0 tree and 707ea9c.
+Expected values are the pre-release ones; a difference on the release means the release is not the measured tree.
+
+| step | command (release checkout `R`, the env of the P4 protocol) | pre-release result to compare | time |
+|---|---|---|---|
+| synthetic recordings, decisions | `docs/evidence/synthetic_labels_2026-10-17/scripts/run_probe.sh <tag> R <bag>` once per synthetic bag (judge `probe.py`, nominal, on the decoded caches under `/home/user/rs-data/decoded/`; [synthetic labels](../synthetic_labels_2026-10-17/README.md)) | STOP / CAUTION / GO: platform 185 / 135 / 66, switch 142 / 294 / 300, tunnels 126 / 223 / 196 | 1 min each |
+| synthetic platform, scored (frames 0–314) | `score_objects.py` on the run restricted to frames 0–314 with `labels_synthetic_platform_0-314.json` | person first STOP **44.0 m**, edge box 86.8 m, outside box never; 0 unmatched STOP | seconds |
+| Falcon, whole recording, one detector | `python scripts/stream_falcon.py https://disk.yandex.ru/d/SfBeRHbs8bNJAQ --out falcon_full` (streams 6.8 GB, stores nothing), then `check_b2.py` ([B2](../falcon_full_2026-10-18/README.md)) | 4,443 frames; CAUTION 3,062, STOP 1,372, GO 8, FAULT 1; person STOP from 124.8 m | ~5 min |
+| Pandar ↔ Falcon switch in one node | `run_b3.sh` with `doubleT_obstacle` and the Falcon prefix ([B3](../falcon_switch_2026-10-18/README.md)) | second bag equals its stand-alone run on every decision, both orders | ~3 min |
+| gauge range and stability | `scripts/gauge_stability.py track` per recording on R, then `measure` / `honesty` with the stored ICP poses ([B6](../gauge_stability_2026-10-18/README.md); poses in `b6_raw.tar.xz`) | identical track metrics; reported range p50 e.g. Set O 130 m; reported range > 1.05 m off: Set O 1.6 %, `roundT_doubleT` 40.1 % | ~20 min |
+
+Disk: the synthetic caches are 1.8 GB; the Falcon run needs none. Record `detector_freeze.py verify` PASS with these
+runs too.
