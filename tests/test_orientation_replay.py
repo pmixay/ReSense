@@ -1,5 +1,6 @@
 """Bounded real-input startup history, with unchanged confirmation thresholds."""
 from copy import deepcopy
+import sys
 
 import numpy as np
 import pytest
@@ -63,6 +64,79 @@ def test_object_dtype_scalar_cannot_hide_unbounded_metadata():
     buffer = OrientationReplayBuffer(4)
     assert not buffer.capture(frame, None)
     assert buffer.reason == "unsupported_input" and not buffer.frames
+
+
+def _actual_owned_size(value, seen=None):
+    """Independent measurement: owning ndarrays already include their payload."""
+    seen = set() if seen is None else seen
+    if id(value) in seen:
+        return 0
+    seen.add(id(value))
+    total = sys.getsizeof(value)
+    if type(value) is dict:
+        total += sum(_actual_owned_size(item, seen) for pair in value.items() for item in pair)
+    elif type(value) in (tuple, list):
+        total += sum(_actual_owned_size(item, seen) for item in value)
+    elif type(value) is Frame:
+        total += _actual_owned_size(vars(value), seen)
+    return total
+
+
+def test_nested_list_copy_expansion_is_rejected_before_allocation(monkeypatch):
+    monkeypatch.setattr(OrientationReplayBuffer, "MAX_BYTES", 65536)
+    frame = tiny(1)
+    frame.meta = {"nested": [[0] * 5 for _ in range(600)]}
+    # The previous source-size charge was 64,736 bytes, but deepcopy retained
+    # 78,108 bytes even before Frame/list wrapper overhead on Python 3.12.
+    def unexpected_copy(_):
+        pytest.fail("over-budget metadata must be rejected before deepcopy")
+    monkeypatch.setattr("resense.calibration.deepcopy", unexpected_copy)
+    buffer = OrientationReplayBuffer(4)
+    assert not buffer.capture(frame, None)
+    assert buffer.reason == "byte_budget" and not buffer.frames
+
+
+@pytest.mark.parametrize("metadata", [
+    {"nested": [[0] * 5 for _ in range(30)]},
+    {"nested": {str(i): [i] for i in range(30)}},
+    {"nested": tuple([i] for i in range(30))},
+])
+def test_owned_container_storage_fits_reserved_current_inclusive_budget(monkeypatch, metadata):
+    monkeypatch.setattr(OrientationReplayBuffer, "MAX_BYTES", 65536)
+    buffer = OrientationReplayBuffer(4)
+    for i in range(4):
+        frame = tiny(i * .1)
+        frame.meta = deepcopy(metadata)
+        if buffer.capture(frame, None):
+            actual = _actual_owned_size(buffer.frames)
+            assert actual <= buffer.used_bytes <= buffer.MAX_BYTES
+        else:
+            assert buffer.reason == "byte_budget" and not buffer.frames
+            break
+
+
+def test_aliases_across_separately_copied_fields_are_charged_separately(monkeypatch):
+    monkeypatch.setattr(OrientationReplayBuffer, "MAX_BYTES", 65536)
+    shared = np.zeros((3000, 3), np.float32)
+    frame = Frame(shared, shared, stamp=1, meta={"same_array": shared})
+    buffer = OrientationReplayBuffer(4)
+    assert not buffer.capture(frame, None)
+    assert buffer.reason == "byte_budget" and not buffer.frames
+
+
+def test_metadata_cycles_and_shared_children_stay_owned_and_bounded():
+    child = [1, 2]
+    metadata = {"left": child, "right": child}
+    metadata["cycle"] = metadata
+    frame = tiny()
+    frame.meta = metadata
+    buffer = OrientationReplayBuffer(4)
+    assert buffer.capture(frame, None)
+    saved = buffer.frames[0][0]
+    assert saved.meta is not metadata and saved.meta["left"] is not child
+    assert saved.meta["left"] is saved.meta["right"]
+    assert saved.meta["cycle"] is saved.meta
+    assert _actual_owned_size(buffer.frames) <= buffer.used_bytes <= buffer.MAX_BYTES
 
 
 @pytest.mark.parametrize("budget", [-1, 5, 1.5, True])

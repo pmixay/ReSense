@@ -94,7 +94,7 @@ class OrientationReplayBuffer:
         self.finished, self.reason = True, reason
 
     @classmethod
-    def _size(cls, value, seen):
+    def _size(cls, value, seen, *, copy_reserve=True):
         if id(value) in seen:
             return 0
         seen.add(id(value))
@@ -106,11 +106,17 @@ class OrientationReplayBuffer:
                 raise ValueError("startup metadata scalar contains Python objects")
             return size + value.nbytes
         if type(value) is np.ndarray and not value.dtype.hasobject:
-            return size + value.nbytes
+            return size + (value.nbytes if copy_reserve or not value.flags.owndata else 0)
         if type(value) in (dict, list, tuple):
+            if copy_reserve:
+                # deepcopy builds containers incrementally: a copied list can
+                # have more allocated slots than its source. Reserve a whole
+                # one-entry container per item before allocating the copy.
+                unit = {dict: {None: None}, list: [None], tuple: (None,)}[type(value)]
+                size += len(value) * sys.getsizeof(unit)
             items = itertools.chain.from_iterable(value.items()) if type(value) is dict else value
             for item in items:
-                size += cls._size(item, seen)
+                size += cls._size(item, seen, copy_reserve=copy_reserve)
                 if size > cls.MAX_BYTES:
                     return size
             return size
@@ -133,8 +139,11 @@ class OrientationReplayBuffer:
                 if not 0 < gap <= 1.0 or frame.frame_id != previous.frame_id:
                     self.stop("input_discontinuity")
                     return False
-            size = self._size((frame.xyz, frame.intensity, frame.ring, frame.meta,
-                               frame.stamp, frame.frame_id, ego_speed), set()) + 1024
+            # These arrays and metadata are copied separately, so aliases
+            # across fields do not share deepcopy's memo or the byte charge.
+            size = sum(self._size(value, set()) for value in (
+                frame.xyz, frame.intensity, frame.ring, frame.meta,
+                stamp, frame.frame_id, ego_speed)) + 1024
             if size + self.used_bytes > self.MAX_BYTES:
                 self.stop("byte_budget")
                 return False
@@ -142,6 +151,15 @@ class OrientationReplayBuffer:
             saved = Frame(xyz=frame.xyz.copy(), intensity=frame.intensity.copy(),
                           ring=None if frame.ring is None else frame.ring.copy(),
                           stamp=stamp, frame_id=frame.frame_id, meta=deepcopy(frame.meta))
+            owned = self._size((saved.xyz, saved.intensity, saved.ring, saved.meta,
+                                saved.stamp, saved.frame_id, ego_speed), set(),
+                               copy_reserve=False) + 1024
+            # Verify the actual retained allocation independently of the
+            # pre-copy reservation, including container capacity and aliases.
+            size = max(size, owned)
+            if size + self.used_bytes > self.MAX_BYTES:
+                self.stop("byte_budget")
+                return False
         except (TypeError, ValueError, OverflowError, RecursionError):
             self.stop("unsupported_input")
             return False
