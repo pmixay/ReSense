@@ -1,0 +1,8 @@
+{
+  "status": "REJECTED_BEFORE_DETECTOR",
+  "reason": "canonical new_data/intake_manifest.json absent; complete custom ride_receipt.json alone is insufficient",
+  "log_sha256": "53513ada2b861a05bc7a83ed60039a4d260cc19e6c2e1467a4e093e9a0824fd1",
+  "pid": 53994,
+  "processed_frames": 0,
+  "bypass": false
+}

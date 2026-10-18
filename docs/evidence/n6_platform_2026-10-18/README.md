@@ -162,6 +162,16 @@ It also withdraws 32 of the original 84 extension frames. Retaining both broad
 and narrow tests would still preserve the original object-dependent difference,
 so that proposed conjunction is rejected too. No V4 runtime change was made.
 
+A second proposed restriction would require the last directly observed station
+itself to exceed the previous trusted range, so the 15 m margin alone could not
+create an extension. Saved full-precision scalars already disprove it as a remedy
+that preserves this gain: frame 228 has observed support **36.803 m**, below its
+previous **45 m** trust, so it would lose the 51.12 m first STOP. Meanwhile,
+source-near-sensitive frame 167 has observed support **47.076 m**, above its
+previous **45 m**, so that dependence would remain. The rule would exclude
+frames 145/146, but fails both the preserved-gain and complete-dependence-removal
+conditions. No additional detector replay or runtime change was made for it.
+
 **Recommendation: keep N6 off in the integrated defaults and seal.** The opt-in
 experiment improves first person STOP by 7.11 m, preserves all measured baseline
 STOP rows, and has complete positive/negative control evidence. It does not meet

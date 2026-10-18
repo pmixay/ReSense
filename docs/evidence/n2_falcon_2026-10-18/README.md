@@ -44,6 +44,22 @@ playable bag for actual DDS testing ([subset receipt](playback_subset_receipt.js
 The cache is `/home/resense/data/decoded/falcon_test_second_dark`; the short bag is
 `/home/resense/data/n2/falcon_first100`.
 
+The first actual Humble playback found an extraction bug: the auxiliary SQLite
+`schema` table had been created without its required row. The
+[repair receipt](playback_subset_repair.json) supersedes the original subset DB3
+hash and preserves the [failed player log](playback_subset_failed_player.txt).
+The repair inserts the schema row from an identical, playable Humble storage
+layout; it is explicitly reconstructed compatibility metadata. All 100 serialized
+CDR hashes, message timestamps/IDs, topic/QoS and the 100-frame YAML metadata remain
+unchanged. `ros2 bag info` now opens the bag successfully. The builder now copies
+original schema rows. The final actual DDS retry receives all 100 Falcon frames
+after all 40 preceding Pandar frames in one node. An independent
+[100-frame comparison](actual_dds_prefix_comparison.json) finds exact shared
+detection/warning payloads and post-initial decisions versus the offline prefix.
+STOP occurs at frames 25–28 for the 115 m support, with no held stale STOP.
+The initial epoch guard remains FAULT; the selected conservative Falcon policy
+reports unavailable small-target range as null and clear range zero.
+
 ## Input profiles and startup behavior
 
 The node profiles are `manual`, `pandar128`, `falcon_ros` and `falcon_native`.
@@ -65,6 +81,15 @@ for all 24 proper axis permutations produce exactly the same vehicle-frame point
 on every tested obstacle and ride frame. Expanding automatic search to 24 candidates
 remains an experimental option: a wrong orientation can pass a geometric sanity
 check. Explicit mappings are the operational route for sideways mounts.
+
+The completed [24-orientation baseline sweep](orientation_obstacle/summary.json)
+confirms that limitation over all 201 obstacle frames. Two sideways cases
+(`auto_04`, `auto_05`) never recover the correct orientation and produce 8 and
+4 GO frames respectively with the wrong geometry. Fourteen other non-upright
+cases adopt at frame 2 but lose the baseline STOP frames 8–10. These are baseline
+measurements, not a claim that the new readiness guard solves a wrongly accepted
+configured mapping. The corrected eight-orientation results below are the supported
+automatic scope; all 24 explicit mappings preserve exact vehicle coordinates.
 
 The core readiness guard, committed as `63b4c92`, preserves STOP/error priority
 and reports CAUTION with zero clear range until the existing configured-mapping
@@ -183,6 +208,9 @@ documented approximate angular cell, uses the denser central ROI and passes no
 ring. It cannot create denser ROI rays, curved raster geometry, wavelength or
 noise. Inputs are already range-cropped; original `n_raw/n_near` metadata remains
 unchanged, so raw health statistics are not a complete sensor simulation.
+The original gate's visibility and injected-point denominators are also retained:
+measured loss can include positive returns removed by the transform, so it is
+not an isolated detector-recall measurement on unchanged observable objects.
 
 The ten decoded-bag stress captures are under `proxy/`. The separate
 `run_proxy_gate.py` executes the entire normal gate on transformed input, including

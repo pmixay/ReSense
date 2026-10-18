@@ -1,0 +1,318 @@
+{
+  "recording": "cloud_with_fake_obj",
+  "frames": 1510,
+  "elapsed_s": 398.39510153500305,
+  "decisions": {
+    "GO": 736,
+    "STOP": 452,
+    "FAULT": 2,
+    "CAUTION": 320
+  },
+  "detector_results_unchanged": true,
+  "scope": "complete decoded-frame detector replay + actual shared display function; transport freshness not simulated",
+  "jitter": {
+    "40": {
+      "same_supported_adjacent_pairs": 1394,
+      "all_adjacent_pairs": 1509,
+      "raw_supported_adjacent_pairs": 1498,
+      "raw_step_m": {
+        "p50": 0.010455284457279154,
+        "p90": 0.03722113347952432,
+        "p95": 0.05270043862249524,
+        "p100": 0.12579776718096625
+      },
+      "display_step_m": {
+        "p50": 0.0022025911603979764,
+        "p90": 0.014601832700720966,
+        "p95": 0.02411224199575151,
+        "p100": 0.05058142048284081
+      },
+      "display_to_raw_lag_m": {
+        "p50": 0.016278747059378817,
+        "p90": 0.08315227503139072,
+        "p95": 0.1735085467996372,
+        "p100": 0.24629024448087444
+      },
+      "raw_3d_vertex_step_m": {
+        "p50": 0.01741476812421766,
+        "p90": 0.04226919280319544,
+        "p95": 0.055778455062773714,
+        "p100": 0.1258436089185742
+      },
+      "display_3d_vertex_step_m": {
+        "p50": 0.004858126028771096,
+        "p90": 0.018174186788902102,
+        "p95": 0.025090574510284,
+        "p100": 0.05063902501391119
+      },
+      "all_state_raw_step_m": {
+        "p50": 0.0113150135279656,
+        "p90": 0.04665709779006245,
+        "p95": 0.06452448622181121,
+        "p100": 0.12579776718096625
+      },
+      "all_state_display_step_m_not_all_drawn": {
+        "p50": 0.002489279668852845,
+        "p90": 0.024383911001235693,
+        "p95": 0.03680327871669854,
+        "p100": 0.09647114016121883
+      },
+      "all_state_raw_3d_vertex_step_m": {
+        "p50": 0.018146618721468562,
+        "p90": 0.05121531018405173,
+        "p95": 0.06705294379027621,
+        "p100": 0.7557976655215031
+      },
+      "all_state_display_3d_vertex_step_m_not_all_drawn": {
+        "p50": 0.005273480455165209,
+        "p90": 0.02566654246756887,
+        "p95": 0.039965374571707804,
+        "p100": 0.106064528456078
+      }
+    },
+    "80": {
+      "same_supported_adjacent_pairs": 842,
+      "all_adjacent_pairs": 1509,
+      "raw_supported_adjacent_pairs": 1262,
+      "raw_step_m": {
+        "p50": 0.0198504284744922,
+        "p90": 0.05952725739625571,
+        "p95": 0.10398326060362527,
+        "p100": 0.29082879665256733
+      },
+      "display_step_m": {
+        "p50": 0.003525819472345343,
+        "p90": 0.017298629232854253,
+        "p95": 0.022926392954415727,
+        "p100": 0.04544669464901932
+      },
+      "display_to_raw_lag_m": {
+        "p50": 0.029148999891872196,
+        "p90": 0.10670763953282261,
+        "p95": 0.13540641981144277,
+        "p100": 0.2335722511092957
+      },
+      "raw_3d_vertex_step_m": {
+        "p50": 0.042034641693732555,
+        "p90": 0.11435410236061314,
+        "p95": 0.19375582616608042,
+        "p100": 0.3612739797011678
+      },
+      "display_3d_vertex_step_m": {
+        "p50": 0.012240744196385217,
+        "p90": 0.029750554068344145,
+        "p95": 0.03513708585600883,
+        "p100": 0.05013397659792903
+      },
+      "all_state_raw_step_m": {
+        "p50": 0.027309600888326235,
+        "p90": 0.16708967335964378,
+        "p95": 0.228527391453938,
+        "p100": 0.4206215105460691
+      },
+      "all_state_display_step_m_not_all_drawn": {
+        "p50": 0.006701571907150317,
+        "p90": 0.07763960580934431,
+        "p95": 0.13280408830608575,
+        "p100": 0.35283489089000364
+      },
+      "all_state_raw_3d_vertex_step_m": {
+        "p50": 0.05434565987726934,
+        "p90": 0.19869582711260017,
+        "p95": 0.26504302566616617,
+        "p100": 1.7902240659642321
+      },
+      "all_state_display_3d_vertex_step_m_not_all_drawn": {
+        "p50": 0.01736706591590226,
+        "p90": 0.07894397680417814,
+        "p95": 0.13371210965863997,
+        "p100": 0.35284724493092623
+      }
+    },
+    "120": {
+      "same_supported_adjacent_pairs": 255,
+      "all_adjacent_pairs": 1509,
+      "raw_supported_adjacent_pairs": 856,
+      "raw_step_m": {
+        "p50": 0.027824134933476852,
+        "p90": 0.0698557969133451,
+        "p95": 0.0900768938694275,
+        "p100": 0.20670546946427715
+      },
+      "display_step_m": {
+        "p50": 0.005755588826185654,
+        "p90": 0.016012095925415765,
+        "p95": 0.02067026028685346,
+        "p100": 0.03160613277531865
+      },
+      "display_to_raw_lag_m": {
+        "p50": 0.04111629446000997,
+        "p90": 0.10322334213579887,
+        "p95": 0.11505750739296201,
+        "p100": 0.15396066383814033
+      },
+      "raw_3d_vertex_step_m": {
+        "p50": 0.061907478810799575,
+        "p90": 0.13271406852949053,
+        "p95": 0.17563212990784932,
+        "p100": 0.30295937277581925
+      },
+      "display_3d_vertex_step_m": {
+        "p50": 0.01330060896928078,
+        "p90": 0.0402900309782391,
+        "p95": 0.046396843803350386,
+        "p100": 0.06197807082250309
+      },
+      "all_state_raw_step_m": {
+        "p50": 0.05011808188597833,
+        "p90": 0.3586016127883824,
+        "p95": 0.5139037560895963,
+        "p100": 0.876291428570795
+      },
+      "all_state_display_step_m_not_all_drawn": {
+        "p50": 0.012842942057149198,
+        "p90": 0.16681749012609565,
+        "p95": 0.2477148506720467,
+        "p100": 0.7818372251364387
+      },
+      "all_state_raw_3d_vertex_step_m": {
+        "p50": 0.11469551715197922,
+        "p90": 0.44925629117285015,
+        "p95": 0.6026758180787489,
+        "p100": 2.840154717528957
+      },
+      "all_state_display_3d_vertex_step_m_not_all_drawn": {
+        "p50": 0.03306421653061661,
+        "p90": 0.17054860692730497,
+        "p95": 0.25080984922866956,
+        "p100": 0.781866294467582
+      }
+    }
+  },
+  "missing_GO_STOP_outline_frames": [],
+  "missing_supported_GO_STOP_outline_frames": [],
+  "solid_exceeds_axis_valid_frames": [],
+  "valid_display_frames": 1508,
+  "drawn_range_m": {
+    "p50": 86.0,
+    "p90": 133.73000000000002,
+    "p95": 165.0,
+    "p100": 192.9
+  },
+  "support_range_m": {
+    "p50": 130.14999999999998,
+    "p90": 183.14000000000004,
+    "p95": 189.71,
+    "p100": 205.8
+  },
+  "lag_limited_frames": 802,
+  "max_lateral_lag_m": {
+    "p50": 0.06709999999999999,
+    "p90": 0.23813,
+    "p95": 0.243,
+    "p100": 0.2499
+  },
+  "max_vertical_lag_m": {
+    "p50": 0.06025,
+    "p90": 0.22971999999999998,
+    "p95": 0.243,
+    "p100": 0.2499
+  },
+  "max_spatial_lag_m": {
+    "p50": 0.1722,
+    "p90": 0.2474,
+    "p95": 0.2485,
+    "p100": 0.25
+  },
+  "smoothing_sources": {
+    "time_fallback_no_odometry": 703,
+    "distance_with_stationary_settling": 805,
+    "held": 2
+  },
+  "cache_meta_sha256": "479122b72837d7b220a984d114da6778cf2a2816f848f0dfa621d02074af0115",
+  "rows_sha256": "bca52dfb49ffd5c41c9979538433cd619ca44c2583ff88900dc198f77d651fdd",
+  "expected_frame_count": 1510,
+  "numeric_checks": {
+    "complete_expected_recording": true,
+    "detector_results_unchanged": true,
+    "no_missing_supported_GO_STOP_outline": true,
+    "solid_range_within_axis_support": true,
+    "drawn_spatial_lag_at_most_025m": true,
+    "visible_3d_p90_at_40m": true,
+    "visible_3d_p90_at_80m": true,
+    "visible_3d_p90_at_120m": true,
+    "source_unchanged": true
+  },
+  "source_sha256_at_start": {
+    "configs/default.yaml": "36ea22708cc5a33785ae3bf565b2caf49eaaaeeb9b390d74dad5575964ed6b03",
+    "docs/evidence/n1_n4_2026-10-18/replay_gauge.py": "fec29d2ddab4adebc39ebe8970f553992e56a2bfb29a0044604052dfa0c9b36a",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "resense/__init__.py": "26224b26e3748484752d554049a2e3efdea00270e37a6c093df333151ab8eb04",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/_resense_native.cpython-312-x86_64-linux-gnu.so": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "4111dc469812066d0675f9ed57f185d04deca4861c4c5ce566c5e040b46dabad",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+    "resense/config.py": "e727bd53bee8f982f746f04f8c3bb6ca07b16235c1361a64e9398036028dc4dc",
+    "resense/detector.py": "97cf9acf8d9206b489b475c75c7ab425675d0bfc43d3443c1891a3962bb3e0f8",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "211502e2c826cdc61f60d091ed0e0df414567d1b4497661eeb2e00c56c813ddc",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+    "resense/tracking.py": "4c6d6176e06749a544eceb06e60ab2f276b991fca32dcc862685eac95778eca3",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b"
+  },
+  "source_sha256_at_end": {
+    "configs/default.yaml": "36ea22708cc5a33785ae3bf565b2caf49eaaaeeb9b390d74dad5575964ed6b03",
+    "docs/evidence/n1_n4_2026-10-18/replay_gauge.py": "fec29d2ddab4adebc39ebe8970f553992e56a2bfb29a0044604052dfa0c9b36a",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "resense/__init__.py": "26224b26e3748484752d554049a2e3efdea00270e37a6c093df333151ab8eb04",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/_resense_native.cpython-312-x86_64-linux-gnu.so": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "4111dc469812066d0675f9ed57f185d04deca4861c4c5ce566c5e040b46dabad",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+    "resense/config.py": "e727bd53bee8f982f746f04f8c3bb6ca07b16235c1361a64e9398036028dc4dc",
+    "resense/detector.py": "97cf9acf8d9206b489b475c75c7ab425675d0bfc43d3443c1891a3962bb3e0f8",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "211502e2c826cdc61f60d091ed0e0df414567d1b4497661eeb2e00c56c813ddc",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+    "resense/tracking.py": "4c6d6176e06749a544eceb06e60ab2f276b991fca32dcc862685eac95778eca3",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b"
+  },
+  "source_changed_during_run": false,
+  "numeric_screen_passed": true
+}

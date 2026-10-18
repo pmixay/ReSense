@@ -2,10 +2,16 @@
 
 `scripts/dust_set_f.py` leaves the sealed `far_range_eval.py` unchanged. It uses
 its six starts (46, 68, 98, 140, 168, 172), five kinds (person, box1.0, box0.5,
-trolley, cable), 110 consecutive source frames, 220 m start, bed placement,
+trolley, cable), a maximum of 110 consecutive source frames, 220 m start, bed placement,
 lateral range ±0.6 m and original seed-0 object draws. Actual timestamps and
 per-split speeds determine approach distance. No given-speed accumulation is
 introduced. A missing frame or timestamp fails preparation.
+
+All 110 source frames must be available, but the original Set F approach ends
+when the target passes 8 m; the actual evaluated count can therefore be smaller.
+The bank records both `requested_frames` and every evaluated frame. For example,
+start 46 uses 102 frames and ends at 8.903 m. Each dust level uses exactly that
+same frozen sequence, with no density-dependent truncation.
 
 A separate immutable **baseline** detector advances clean legacy placement.
 Before any evaluated dusty detector runs, the bank freezes each object's full
@@ -52,3 +58,11 @@ removal of oracle metadata, per-frame loss/episode accounting, and a real Open3D
 full-precision bank round trip with intentional rendering-drift rejection.
 Production measurements await the complete ride cache; no pass is implied by
 successful harness tests.
+
+The detached [queue wrapper](run_set_f_when_ready.py) waits for the complete
+`ride_receipt.json`, verifies the organizer archive SHA-256/size and all 221 × 51
+frame counts, and independently validates cache stamps before starting the full
+baseline battery. It keeps a process lock and records state in
+`/home/resense/data/dust/set_f_queue_status.json`; the current queue log is
+`/home/resense/data/dust/set_f_queue.log`. The evaluated source remains immutable
+`baseline_9b92df5`, with one numeric-library thread and process priority 5.

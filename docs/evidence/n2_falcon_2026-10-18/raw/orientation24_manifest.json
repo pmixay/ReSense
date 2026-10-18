@@ -1,0 +1,137 @@
+{
+  "status": "PASS",
+  "archive": "raw_orientation24.tar.gz",
+  "sha256": "f4c753f9c212ee0449498733efd4d9b38c3bf332373b6cb96c18f108a2e77a42",
+  "archive_bytes": 812854,
+  "members": [
+    {
+      "name": "orientation_obstacle/auto_00.jsonl",
+      "bytes": 345024,
+      "sha256": "92c2e7a1147b4ff875bed7aa2e3f12de80dbb6f2898ce8398233149542d75b40"
+    },
+    {
+      "name": "orientation_obstacle/auto_01.jsonl",
+      "bytes": 352654,
+      "sha256": "eef543c48fd007c48446a30548bfdf17392495353b2bed1993d98abaf1de04da"
+    },
+    {
+      "name": "orientation_obstacle/auto_02.jsonl",
+      "bytes": 352955,
+      "sha256": "10c5615f9a5245a412f28bddc552e64e4686b56d177fb8cbe5dc83d914ae5709"
+    },
+    {
+      "name": "orientation_obstacle/auto_03.jsonl",
+      "bytes": 353334,
+      "sha256": "529032157da9a6d48b7f6836a35efd4c33049658384d99021df5cfcb80b15070"
+    },
+    {
+      "name": "orientation_obstacle/auto_04.jsonl",
+      "bytes": 627857,
+      "sha256": "a40257b648c3692138682e699f853d20dbb2e6f309ae6667fb200ef348a1a975"
+    },
+    {
+      "name": "orientation_obstacle/auto_05.jsonl",
+      "bytes": 426368,
+      "sha256": "97bf6a6c954038dabd703d4dadf7a57b6f236a85e9db283658312351870118e6"
+    },
+    {
+      "name": "orientation_obstacle/auto_06.jsonl",
+      "bytes": 351725,
+      "sha256": "6e74a3b510372f3492e1d86a9073a0c30c5a5de04a52d7f3e40ab47c0c01e2e5"
+    },
+    {
+      "name": "orientation_obstacle/auto_07.jsonl",
+      "bytes": 351727,
+      "sha256": "cca112f4d06b758bad4bd8174fb0b91ca42a88858340c4f2a540382330c1c00f"
+    },
+    {
+      "name": "orientation_obstacle/auto_08.jsonl",
+      "bytes": 352551,
+      "sha256": "8b1aaf1f335c63e974340e7569b672087dd8d7d1ce42725fbb8eb6e7035634db"
+    },
+    {
+      "name": "orientation_obstacle/auto_09.jsonl",
+      "bytes": 353140,
+      "sha256": "0a75f478fcf8e16d63d70d2e507b8e3f4892b81cabe055e73da871db8f32b2f6"
+    },
+    {
+      "name": "orientation_obstacle/auto_10.jsonl",
+      "bytes": 352963,
+      "sha256": "1e89676a589e02d38fb290b90e25060c253669726ef02443839cabbeba82a922"
+    },
+    {
+      "name": "orientation_obstacle/auto_11.jsonl",
+      "bytes": 353155,
+      "sha256": "11dd390374397d95adb8b7552d854c9917d4e3ba650ed8340a685b8b561bf377"
+    },
+    {
+      "name": "orientation_obstacle/auto_12.jsonl",
+      "bytes": 352884,
+      "sha256": "849ef88e67f8e181f082721c1021b62240cebcc4e820d05977fd9596e1316f53"
+    },
+    {
+      "name": "orientation_obstacle/auto_13.jsonl",
+      "bytes": 353089,
+      "sha256": "d4c9d53e0c1d93f760ffb8436f33e11a9909fa968f69948823cc6fe2db2df633"
+    },
+    {
+      "name": "orientation_obstacle/auto_14.jsonl",
+      "bytes": 353477,
+      "sha256": "96f53c0435dbdc66e8e39a69854dc4ff9bbb19a065ac227323127c5b89ecfb34"
+    },
+    {
+      "name": "orientation_obstacle/auto_15.jsonl",
+      "bytes": 352888,
+      "sha256": "3bc72fc4616e3b8efd7aee7ac6ebd209dc6f6fd7973e4db9617f6a66e24e6440"
+    },
+    {
+      "name": "orientation_obstacle/auto_16.jsonl",
+      "bytes": 351647,
+      "sha256": "05b99f1114f8ad47c16ca3496bd2903fc60aee38e8f018f19f5978011d248716"
+    },
+    {
+      "name": "orientation_obstacle/auto_17.jsonl",
+      "bytes": 352231,
+      "sha256": "c46eae4951ec0990546961eef2ab6201dc9e1eb900b364eaeeeb4f9d3a1784f0"
+    },
+    {
+      "name": "orientation_obstacle/auto_18.jsonl",
+      "bytes": 351649,
+      "sha256": "2dbcf335a94a17c6e716587bb71e8ad35f9c3ca607dd9bce5536ef829540d6f6"
+    },
+    {
+      "name": "orientation_obstacle/auto_19.jsonl",
+      "bytes": 351845,
+      "sha256": "e7a3aee908928454a768d297d80e6f656391aea8b623ea027b681b6cb90c6615"
+    },
+    {
+      "name": "orientation_obstacle/auto_20.jsonl",
+      "bytes": 351147,
+      "sha256": "a458845acde33ad7cc7ad1b822d0bcf5214ba4492318d456201351aaf4523100"
+    },
+    {
+      "name": "orientation_obstacle/auto_21.jsonl",
+      "bytes": 350957,
+      "sha256": "82955dc8d5869a13a49670e31c440d06be18fc049c8c4348366ea5a026b5dd53"
+    },
+    {
+      "name": "orientation_obstacle/auto_22.jsonl",
+      "bytes": 350569,
+      "sha256": "4778d6cbae13e80ab6faf5674137d3162808aef19a5e54d9cc0a3831c6849211"
+    },
+    {
+      "name": "orientation_obstacle/auto_23.jsonl",
+      "bytes": 351165,
+      "sha256": "9bd63f53a4535799cd19bc26d0249cc681d6700242bba1d76cd417a7c5414aad"
+    },
+    {
+      "name": "orientation_obstacle/baseline.jsonl",
+      "bytes": 339210,
+      "sha256": "da114fc8baa4fd19aec0b7e4dd859e6b05cc7fbabfafc557e516f9dc2487e765"
+    }
+  ],
+  "all_members_reloaded_and_sha256_verified": true,
+  "local_originals_retained": true,
+  "scope": "24 automatic orientation baseline cases plus unrotated control, all201frames; all24 explicit mapping equality also verified; known wrong-orientation failures retained",
+  "timing": "Shared host with intentional pause during isolated DDS window; informational only"
+}

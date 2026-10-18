@@ -27,5 +27,13 @@ history; it is never combined with the complete rerun or treated as acceptance.
 Summaries, scripts, source receipts and independent raw-cloud annotations remain
 ordinary committed files outside this archive.
 
-The archive contains detector/measurement records, not the large raw point-cloud
+The later `raw_orientation24.tar.gz` contains all 25 completed baseline/control
+captures for the expanded automatic-orientation experiment. Its separate
+[manifest](orientation24_manifest.json) verifies all member hashes, and
+`ORIENTATION24_SHA256SUMS` verifies the archive. Restore it from this folder with
+`tar -xzf raw_orientation24.tar.gz -C ..` after checking its checksum. Its known
+wrong-orientation cases are retained; completion does not imply acceptance.
+The remaining proxy experiments are still excluded until complete.
+
+The archives contain detector/measurement records, not the large raw point-cloud
 datasets. Those retain their separate organizer-source, cache and cleanup receipts.

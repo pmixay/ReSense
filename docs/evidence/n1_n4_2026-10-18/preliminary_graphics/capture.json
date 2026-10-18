@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/home/resense/ReSense/scripts/run_demo.sh",
+    "--sensor-profile",
+    "pandar128",
+    "/home/resense/data/n4_curve_preview",
+    "--rate",
+    "0.5"
+  ],
+  "exit_code": 0,
+  "display": ":99",
+  "software_rendering": true,
+  "captures": [
+    "/home/resense/data/n1_rviz/capture_00.png",
+    "/home/resense/data/n1_rviz/capture_01.png",
+    "/home/resense/data/n1_rviz/capture_02.png",
+    "/home/resense/data/n1_rviz/capture_03.png",
+    "/home/resense/data/n1_rviz/capture_04.png",
+    "/home/resense/data/n1_rviz/capture_05.png"
+  ],
+  "scope": "actual Docker RViz on Xvfb; decoded curve geometry"
+}

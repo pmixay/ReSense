@@ -1,0 +1,10 @@
+{
+  "purpose": "RViz visual preview only; regenerated CDR/empty slots, original decoded points",
+  "source_recording": "roundT_doubleT",
+  "source_frames": [
+    130,
+    199
+  ],
+  "frames": 70,
+  "cache_metadata_sha256": "51004f10044870d65574a3b9b1f0025f082c6ece10f93e9b1feccb9e95f6e621"
+}

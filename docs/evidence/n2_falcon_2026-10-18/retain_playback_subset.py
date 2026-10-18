@@ -8,9 +8,7 @@ import sqlite3
 import yaml
 
 
-def main():
-    source = Path("/home/resense/data/raw/falcon_test_second_dark")
-    output = Path("/home/resense/data/n2/falcon_first100")
+def retain(source, output, receipt_path):
     output.mkdir(exist_ok=False)
     original = source / "falcon_test_second_dark_0.db3"
     target = output / "falcon_first100_0.db3"
@@ -20,6 +18,14 @@ def main():
         "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
     ):
         writer.execute(sql)
+    # Humble detects the storage format by reading this row, not just by the
+    # table columns. An existing but empty schema table cannot be opened.
+    if reader.execute("SELECT COUNT(*) FROM sqlite_master WHERE name='schema'").fetchone()[0]:
+        schema_rows = reader.execute("SELECT * FROM schema").fetchall()
+        if not schema_rows:
+            raise ValueError("source bag has an empty schema table")
+        for row in schema_rows:
+            writer.execute("INSERT INTO schema VALUES(" + ",".join("?" for _ in row) + ")", row)
     topic = reader.execute("SELECT * FROM topics WHERE name='/iv_points'").fetchone()
     writer.execute(
         "INSERT INTO topics VALUES(" + ",".join("?" for _ in topic) + ")", topic
@@ -81,6 +87,7 @@ def main():
             (output / "metadata.yaml").read_bytes()
         ).hexdigest(),
         "sqlite_integrity": "ok",
+        "storage_schema_preserved": True,
         "preserved": [
             "raw CDR",
             "header stamps",
@@ -90,14 +97,18 @@ def main():
             "frame_id",
         ],
     }
-    (Path(__file__).resolve().parent / "playback_subset_receipt.json").write_text(
-        json.dumps(receipt, indent=2) + "\n"
-    )
+    receipt_path.write_text(json.dumps(receipt, indent=2) + "\n")
     print(
         json.dumps(
             {key: value for key, value in receipt.items() if key != "raw_cdr_sha256"}
         )
     )
+
+
+def main():
+    retain(Path("/home/resense/data/raw/falcon_test_second_dark"),
+           Path("/home/resense/data/n2/falcon_first100"),
+           Path(__file__).resolve().parent / "playback_subset_receipt.json")
 
 
 if __name__ == "__main__":

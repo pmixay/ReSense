@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="9.187" timestamp="2026-10-18T07:50:59.230525+00:00" hostname="lct-hackathon.bisquit.host"><testcase classname="tests.test_node" name="test_raw_cdr_input_gives_the_same_results_as_messages" time="3.242" /><testcase classname="web.demo.test_web" name="test_dashboard_shared_gauge_range_hold_and_invalid_contract" time="4.069"><failure message="AssertionError: assert '60 м' in ''&#10; +  where '' = inner_text('#display-gauge')&#10; +    where inner_text = &lt;Page url='file:///home/resense/ReSense/web/index.html'&gt;.inner_text">def test_dashboard_shared_gauge_range_hold_and_invalid_contract():
+        """The display box uses supplied geometry/range, separate from clear distance."""
+        if not _browser_available():
+            pytest.skip("playwright + chromium not available")
+        from playwright.sync_api import sync_playwright
+        import check_dashboard
+        row = {'obstacle': True, 'decision': 'STOP', 'nearest_distance': 40.,
+               'clear_distance': 0., 'detections': [], 'warnings': [],
+               'track': {'axis_valid': 150., 'floor_coef': [0., 0., -1.6], 'floor_range': [3., 100.]},
+               'gauge': {'valid': True, 'held': False, 'drawn_range_m': 60., 'solid_range_m': 60.,
+                         'axis_valid_m': 150., 'centerline': [[3., 0., -1.25], [30., .2, -1.25], [60., 1., -1.25]]}}
+        with sync_playwright() as p:
+            browser = _launch(p)
+            page = browser.new_page(viewport={'width': 1600, 'height': 900})
+            page.goto('file://' + check_dashboard.INDEX, wait_until='domcontentloaded')
+            page.wait_for_function('window.resense !== undefined')
+            assert page.evaluate('r =&gt; resenseFormat.result(r)', row)
+            page.evaluate('r =&gt; resense.applyResult(r)', row)
+            assert page.evaluate('resense.state.cab.envEnd') == 60.
+            assert page.evaluate('resense.state.cab.clearEnd') == 0.
+&gt;           assert '60 м' in page.inner_text('#display-gauge')
+E           AssertionError: assert '60 м' in ''
+E            +  where '' = inner_text('#display-gauge')
+E            +    where inner_text = &lt;Page url='file:///home/resense/ReSense/web/index.html'&gt;.inner_text
+
+web/demo/test_web.py:816: AssertionError</failure></testcase></testsuite></testsuites>

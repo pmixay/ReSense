@@ -1,0 +1,1446 @@
+{
+  "source": "/home/resense/data/n2/baseline_9b92df5",
+  "source_hashes": {
+    "resense/__init__.py": "26224b26e3748484752d554049a2e3efdea00270e37a6c093df333151ab8eb04",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/_resense_native.cpython-312-x86_64-linux-gnu.so": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+    "resense/config.py": "1113d9989c7b3f292c20901e58be0c0ecf0813e3ea81b3d4ee598a6460034d8d",
+    "resense/detector.py": "930c96c0afb22d4f60f6729235ab34664fb8807c8569ead18a69c42c33bb2a92",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "3055903e3af6ab1036b6bebfbd76caac840415b1b3fedb82cc0fba23613449a7",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "2c99fb716ab9a7d17b0e1ae8033cd6ee13be9585a030c9430f18b46adb74f45f",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "e8bb4e7053bba4785c7f68f1557d7b6e2a4e789a6a03af1bc4277a1248a00386",
+    "resense/tracking.py": "50b7ed6c14d9d00a456f73d61ea8d986e1d02604e3a7943358ac2746492d5c37",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "configs/default.yaml": "3936780252f00cf0dc34c9205b5633738368a0d5c3bdc4f07200d21d3de6143c",
+    "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+    "configs/experimental_far_rail_rings.yaml": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+    "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+    "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b"
+  },
+  "cache": "/home/resense/data/decoded/doubleT_obstacle",
+  "cache_meta_sha256": "67358d464c52a242eac4ce8777b9ba8d833755395019581fee58db1e9eef34c9",
+  "suite": "orientation",
+  "cases": [
+    {
+      "name": "baseline",
+      "kind": "baseline",
+      "overrides": {},
+      "frames": 201,
+      "decisions": {
+        "GO": 8,
+        "STOP": 193
+      },
+      "first_correct_orientation": 0,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [],
+      "lost_baseline_stop": [],
+      "first_stop": 8,
+      "detect_ms_quantiles": [
+        344.51,
+        1271.27,
+        1645.34
+      ],
+      "output_sha256": "da114fc8baa4fd19aec0b7e4dd859e6b05cc7fbabfafc557e516f9dc2487e765"
+    },
+    {
+      "name": "auto_00",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true
+      },
+      "frames": 201,
+      "decisions": {
+        "GO": 8,
+        "STOP": 193
+      },
+      "first_correct_orientation": 0,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [],
+      "lost_baseline_stop": [],
+      "first_stop": 8,
+      "detect_ms_quantiles": [
+        335.97,
+        1202.95,
+        1889.09
+      ],
+      "output_sha256": "92c2e7a1147b4ff875bed7aa2e3f12de80dbb6f2898ce8398233149542d75b40",
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_01",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true
+      },
+      "frames": 201,
+      "decisions": {
+        "GO": 10,
+        "STOP": 191
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [
+        0
+      ],
+      "wrong_orientation_go": [
+        0
+      ],
+      "decision_mismatch": [
+        8,
+        9
+      ],
+      "lost_baseline_stop": [
+        8,
+        9
+      ],
+      "first_stop": 10,
+      "detect_ms_quantiles": [
+        360.03,
+        1305.82,
+        1885.18
+      ],
+      "output_sha256": "eef543c48fd007c48446a30548bfdf17392495353b2bed1993d98abaf1de04da",
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "auto_02",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true
+      },
+      "frames": 201,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 9,
+        "STOP": 191
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        8,
+        9
+      ],
+      "lost_baseline_stop": [
+        8,
+        9
+      ],
+      "first_stop": 10,
+      "detect_ms_quantiles": [
+        348.24,
+        1215.06,
+        1941.89
+      ],
+      "output_sha256": "10c5615f9a5245a412f28bddc552e64e4686b56d177fb8cbe5dc83d914ae5709",
+      "rotation": [
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "auto_03",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true
+      },
+      "frames": 201,
+      "decisions": {
+        "FAULT": 1,
+        "GO": 9,
+        "STOP": 191
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        8,
+        9
+      ],
+      "lost_baseline_stop": [
+        8,
+        9
+      ],
+      "first_stop": 10,
+      "detect_ms_quantiles": [
+        334.48,
+        1252.76,
+        1791.57
+      ],
+      "output_sha256": "529032157da9a6d48b7f6836a35efd4c33049658384d99021df5cfcb80b15070",
+      "rotation": [
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "auto_04",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "GO": 8,
+        "STOP": 193
+      },
+      "first_correct_orientation": null,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "decision_mismatch": [],
+      "lost_baseline_stop": [],
+      "first_stop": 8,
+      "detect_ms_quantiles": [
+        1118.12,
+        3649.57,
+        5013.42
+      ],
+      "output_sha256": "a40257b648c3692138682e699f853d20dbb2e6f309ae6667fb200ef348a1a975",
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_05",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "GO": 4,
+        "CAUTION": 7,
+        "STOP": 190
+      },
+      "first_correct_orientation": null,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "decision_mismatch": [
+        4,
+        5,
+        6,
+        7,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194
+      ],
+      "lost_baseline_stop": [
+        189,
+        190,
+        191,
+        192,
+        193,
+        194
+      ],
+      "first_stop": 5,
+      "detect_ms_quantiles": [
+        2729.82,
+        9192.09,
+        11892.9
+      ],
+      "output_sha256": "97bf6a6c954038dabd703d4dadf7a57b6f236a85e9db283658312351870118e6",
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": []
+    },
+    {
+      "name": "auto_06",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        350.97,
+        1387.01,
+        2078.17
+      ],
+      "output_sha256": "6e74a3b510372f3492e1d86a9073a0c30c5a5de04a52d7f3e40ab47c0c01e2e5",
+      "rotation": [
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_07",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        350.6,
+        1318.04,
+        2279.73
+      ],
+      "output_sha256": "cca112f4d06b758bad4bd8174fb0b91ca42a88858340c4f2a540382330c1c00f",
+      "rotation": [
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_08",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 1,
+        "GO": 9,
+        "STOP": 191
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        8,
+        9
+      ],
+      "lost_baseline_stop": [
+        8,
+        9
+      ],
+      "first_stop": 10,
+      "detect_ms_quantiles": [
+        343.21,
+        1290.22,
+        1700.32
+      ],
+      "output_sha256": "8b1aaf1f335c63e974340e7569b672087dd8d7d1ce42725fbb8eb6e7035634db",
+      "rotation": [
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "auto_09",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 1,
+        "GO": 9,
+        "STOP": 191
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        8,
+        9
+      ],
+      "lost_baseline_stop": [
+        8,
+        9
+      ],
+      "first_stop": 10,
+      "detect_ms_quantiles": [
+        337.15,
+        1287.38,
+        1706.23
+      ],
+      "output_sha256": "0a75f478fcf8e16d63d70d2e507b8e3f4892b81cabe055e73da871db8f32b2f6",
+      "rotation": [
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "auto_10",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 1,
+        "GO": 9,
+        "STOP": 191
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        8,
+        9
+      ],
+      "lost_baseline_stop": [
+        8,
+        9
+      ],
+      "first_stop": 10,
+      "detect_ms_quantiles": [
+        328.89,
+        1217.22,
+        1628.53
+      ],
+      "output_sha256": "1e89676a589e02d38fb290b90e25060c253669726ef02443839cabbeba82a922",
+      "rotation": [
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "auto_11",
+      "kind": "orientation",
+      "supported_8": true,
+      "overrides": {
+        "calibration.keep_up_axis": true
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 1,
+        "GO": 9,
+        "STOP": 191
+      },
+      "first_correct_orientation": 1,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        8,
+        9
+      ],
+      "lost_baseline_stop": [
+        8,
+        9
+      ],
+      "first_stop": 10,
+      "detect_ms_quantiles": [
+        340.03,
+        1258.33,
+        2052.1
+      ],
+      "output_sha256": "11dd390374397d95adb8b7552d854c9917d4e3ba650ed8340a685b8b561bf377",
+      "rotation": [
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "auto_12",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        351.64,
+        1360.94,
+        2684.49
+      ],
+      "output_sha256": "849ef88e67f8e181f082721c1021b62240cebcc4e820d05977fd9596e1316f53",
+      "rotation": [
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_13",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        340.21,
+        1228.62,
+        2759.58
+      ],
+      "output_sha256": "d4c9d53e0c1d93f760ffb8436f33e11a9909fa968f69948823cc6fe2db2df633",
+      "rotation": [
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_14",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        346.08,
+        1440.2,
+        2819.33
+      ],
+      "output_sha256": "96f53c0435dbdc66e8e39a69854dc4ff9bbb19a065ac227323127c5b89ecfb34",
+      "rotation": [
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_15",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        354.52,
+        1495.07,
+        2554.02
+      ],
+      "output_sha256": "3bc72fc4616e3b8efd7aee7ac6ebd209dc6f6fd7973e4db9617f6a66e24e6440",
+      "rotation": [
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_16",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        349.18,
+        1295.58,
+        2204.3
+      ],
+      "output_sha256": "05b99f1114f8ad47c16ca3496bd2903fc60aee38e8f018f19f5978011d248716",
+      "rotation": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_17",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        354.15,
+        1402.8,
+        2665.03
+      ],
+      "output_sha256": "c46eae4951ec0990546961eef2ab6201dc9e1eb900b364eaeeeb4f9d3a1784f0",
+      "rotation": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_18",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        352.24,
+        1361.51,
+        2787.46
+      ],
+      "output_sha256": "2dbcf335a94a17c6e716587bb71e8ad35f9c3ca607dd9bce5536ef829540d6f6",
+      "rotation": [
+        [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_19",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        350.96,
+        1327.92,
+        2710.01
+      ],
+      "output_sha256": "e7a3aee908928454a768d297d80e6f656391aea8b623ea027b681b6cb90c6615",
+      "rotation": [
+        [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_20",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        346.82,
+        1337.89,
+        2761.13
+      ],
+      "output_sha256": "a458845acde33ad7cc7ad1b822d0bcf5214ba4492318d456201351aaf4523100",
+      "rotation": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_21",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        347.17,
+        1335.12,
+        2688.78
+      ],
+      "output_sha256": "82955dc8d5869a13a49670e31c440d06be18fc049c8c4348366ea5a026b5dd53",
+      "rotation": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_22",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        359.66,
+        1336.81,
+        2923.68
+      ],
+      "output_sha256": "4778d6cbae13e80ab6faf5674137d3162808aef19a5e54d9cc0a3831c6849211",
+      "rotation": [
+        [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "name": "auto_23",
+      "kind": "orientation",
+      "supported_8": false,
+      "overrides": {
+        "calibration.keep_up_axis": false
+      },
+      "frames": 201,
+      "decisions": {
+        "CAUTION": 2,
+        "GO": 9,
+        "STOP": 190
+      },
+      "first_correct_orientation": 2,
+      "unconfirmed_go": [],
+      "wrong_orientation_go": [],
+      "decision_mismatch": [
+        0,
+        1,
+        8,
+        9,
+        10
+      ],
+      "lost_baseline_stop": [
+        8,
+        9,
+        10
+      ],
+      "first_stop": 11,
+      "detect_ms_quantiles": [
+        370.85,
+        1358.54,
+        2685.78
+      ],
+      "output_sha256": "9bd63f53a4535799cd19bc26d0249cc681d6700242bba1d76cd417a7c5414aad",
+      "rotation": [
+        [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "post_adoption_mismatch": [
+        8,
+        9,
+        10
+      ]
+    }
+  ],
+  "wall_s": 4905.948225537002,
+  "cpu_s": 193.212539769,
+  "peak_rss_mb": 717.55078125,
+  "timing_is_shared_host_diagnostic": true,
+  "explicit_24_exact_vehicle_point_equivalence_all_frames": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ]
+}

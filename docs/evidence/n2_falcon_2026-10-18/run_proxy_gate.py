@@ -39,11 +39,17 @@ def main():
     )
     folder = Path(__file__).resolve().parent
     root = folder.parents[2]
+    baseline = json.loads(args.baseline.read_text()) if args.baseline else None
+    if baseline and (baseline.get("run", {}).get("nominal_stamps") is not False
+                     or baseline.get("ride", {}).get("chunks") != 8):
+        raise ValueError("Proxy reference must use original receive stamps and eight ride chunks")
     if not args.smoke:
         sys.path.insert(0, str(root))
         from scripts.cache_io import validate_extended_ride_cache, validate_ride_intake_manifest
         ride = str(args.cache / "new_data")
-        validate_ride_intake_manifest(ride, validate_extended_ride_cache(ride))
+        # Intake has already validated every array; match the ordinary gate's
+        # inventory/manifest preflight rather than decoding the full cache twice.
+        validate_ride_intake_manifest(ride, validate_extended_ride_cache(ride, load_arrays=False))
     if args.out.exists():
         raise SystemExit("Use a new output directory; existing evidence is never overwritten")
     args.out.mkdir(parents=True)
@@ -65,7 +71,7 @@ def main():
     command = [
         sys.executable, str(root / "scripts/regression_gate.py"),
         "--cache", str(args.cache), "--config", str(args.source / "configs/default.yaml"),
-        "--jobs", "1", "--chunks", "8", "--nominal-stamps",
+        "--jobs", "1", "--chunks", "8",
         "--work", str(args.out / "work"), "--out", str(args.out / "gate.json"),
     ]
     if args.baseline:
@@ -81,6 +87,7 @@ def main():
         "command": command,
         "blas_coretype": "Haswell",
         "baseline_sha256": hashlib.sha256(args.baseline.read_bytes()).hexdigest() if args.baseline else None,
+        "baseline_run": baseline.get("run") if baseline else None,
         "cache_provenance_hashes": {
             str(p.relative_to(args.cache)): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in [args.cache / "originals_receipt.json", args.cache / "set_o_receipt.json",
@@ -91,6 +98,7 @@ def main():
             "Cached inputs already have the original range crop; no unobserved near returns can be recovered.",
             "Original n_raw/n_near metadata retained; raw health statistics are not a complete simulated sensor.",
             "Set F uses the unchanged legacy placement protocol, which depends on the evaluated detector track; no identical-positive-geometry claim.",
+            "Ground-truth visibility and injected-point counts remain the original harness denominators; apparent loss can include positive returns removed by the stress transform.",
             "Default-source hash equality does not establish default-input behavior: the external hook changes every processed frame.",
         ],
     }

@@ -60,18 +60,17 @@ ring IDs only for returns that exactly match the original source, without
 inferring ring IDs for missing data. A separately recomputed source near fit
 helps distinguish near-model dependence from far-return dependence.
 
-A narrower rail-height window may deserve an independently registered experiment,
-provided its physical error budget is supported across complete controls. Removing
-points is not automatically conservative: discarding the conflicting station can
-enable more range. Preserve the all-selected-stations check; do not simply trim
-a chain at the first disagreement to regain the desired extension.
-
-The subsequent diagnostic of a ±0.15 m height window falsified it as a remedy:
+A narrower rail-height window was explored and rejected as a remedy. Removing
+points is not automatically conservative: discarding a conflicting station can
+enable more range. The diagnostic of a ±0.15 m height window confirms this:
 it removes the contradictory farther source station and allows both variants to
 pass, rather than resolving the original sensitivity. It also loses 32 of the
 84 previously supported frames. No runtime revision or acceptance claim follows
 from this exploratory filter. Recomputing the near fit on source geometry adds
 frame 167 to the lost-extension cases; the first-person frame remains supported.
+Preserve the all-selected-stations check; do not simply trim a chain at the first
+disagreement to regain the desired extension. A future height model needs a
+physical error budget supported across complete independent controls.
 
 Evidence: [full-precision source removal](exact_source_rail_support.json),
 [station provenance](rail_station_provenance.json),

@@ -1,0 +1,96 @@
+{
+  "recording": "doubleT_obstacle",
+  "frames": 201,
+  "elapsed_s": 52.58871204400202,
+  "decisions": {
+    "GO": 8,
+    "STOP": 193
+  },
+  "detector_results_unchanged": true,
+  "scope": "complete decoded-frame detector replay + actual shared display function; transport freshness not simulated",
+  "jitter": {
+    "40": {
+      "same_supported_adjacent_pairs": 193,
+      "raw_step_m": {
+        "p50": 0.004878341123119911,
+        "p90": 0.011729967957184773,
+        "p95": 0.014288527084016945,
+        "p100": 0.023139342874337943
+      },
+      "display_step_m": {
+        "p50": 0.0008213448658567213,
+        "p90": 0.0032276665233475,
+        "p95": 0.005974413047992617,
+        "p100": 0.01979479386182592
+      },
+      "display_to_raw_lag_m": {
+        "p50": 0.006156538498148123,
+        "p90": 0.024243963392364898,
+        "p95": 0.04487683944391807,
+        "p100": 0.14862125831888962
+      }
+    },
+    "80": {
+      "same_supported_adjacent_pairs": 185,
+      "raw_step_m": {
+        "p50": 0.013369430683720207,
+        "p90": 0.03787972932288425,
+        "p95": 0.04969572907689284,
+        "p100": 0.07121154869664781
+      },
+      "display_step_m": {
+        "p50": 0.0021943417398913034,
+        "p90": 0.006000623810157622,
+        "p95": 0.007969365266794703,
+        "p100": 0.011378030910935255
+      },
+      "display_to_raw_lag_m": {
+        "p50": 0.016481999161860994,
+        "p90": 0.043564322811016076,
+        "p95": 0.05938876336005199,
+        "p100": 0.08544470679662775
+      }
+    },
+    "120": {
+      "same_supported_adjacent_pairs": 174,
+      "raw_step_m": {
+        "p50": 0.02761176036263291,
+        "p90": 0.09049539148687609,
+        "p95": 0.1029581849286721,
+        "p100": 0.15397656247464298
+      },
+      "display_step_m": {
+        "p50": 0.0042422187808621725,
+        "p90": 0.013024815239266291,
+        "p95": 0.016616391379166633,
+        "p100": 0.023394038543673723
+      },
+      "display_to_raw_lag_m": {
+        "p50": 0.03142677767381041,
+        "p90": 0.09513878851905778,
+        "p95": 0.12479001096302665,
+        "p100": 0.1756803773693516
+      }
+    }
+  },
+  "missing_GO_STOP_outline_frames": [],
+  "solid_exceeds_axis_valid_frames": [],
+  "valid_display_frames": 201,
+  "max_lateral_lag_m": {
+    "p50": 0.0495,
+    "p90": 0.1488,
+    "p95": 0.1835,
+    "p100": 0.2437
+  },
+  "smoothing_sources": {
+    "time_fallback_no_odometry": 201
+  },
+  "cache_meta_sha256": "67358d464c52a242eac4ce8777b9ba8d833755395019581fee58db1e9eef34c9",
+  "rows_sha256": "0296ee88dce3425d1f5e0653701b655260bfa670a314154d39cb43d16e9f0a73",
+  "source_sha256": {
+    "resense/detector.py": "4b7c14f375237c24770abfc68388e79d9a998e8b063f2509f746b5df3be2b20b",
+    "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": "b023bc3ed278076f7f78497bacb346ac61f1891c99be3a2c699b0955f1687a91",
+    "configs/default.yaml": "3936780252f00cf0dc34c9205b5633738368a0d5c3bdc4f07200d21d3de6143c",
+    "docs/evidence/n1_n4_2026-10-18/replay_gauge.py": "d964327e60ee34f980fb12e4e3cb127c774b20109f001902003679f105a71099"
+  }
+}
