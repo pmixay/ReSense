@@ -40,6 +40,26 @@ announced for their own evaluation (criteria 1–3, second lidar), so they shoul
 same runtime and reported next to J1 as observations. Every step below has been run on the 1.1.0 tree and 707ea9c.
 Expected values are the pre-release ones; a difference on the release means the release is not the measured tree.
 
+**One command does all of it** and checks the result against the committed evidence (frame by frame where there are
+per-frame records):
+
+```
+PY=<python of the P4 runtime> DATASET_ZIP=<organizers' original archive> \
+  docs/evidence/rejudge_2026-10-16/new_recordings/run_new_recordings.sh <release checkout> <work dir>
+```
+
+It ends with one line per check: `PASS`, `DIFF` (the release behaves differently: report it) or `MISSING`. Steps can
+be run one by one (`... <work dir> synth score`), and disk peaks are in the script header. **Dry run 18.10** on the 1.1.0 tree
+from a fresh work folder ([dryrun_2026-10-18_compare.txt](new_recordings/dryrun_2026-10-18_compare.txt)): **28 PASS,
+0 DIFF, 0 MISSING**. It found and fixed two problems that would have broken release day: a broken download was
+silently decoded (now retried and checked against each bag's message count), and the disk ran full (raw data is now
+deleted as soon as it is decoded). The checker was tested with a doctored copy: it reports `DIFF` for one changed
+frame out of 736. Fresh in that dry run: the seal check, the three synthetic downloads and decodes, the Falcon stream
+and prefix, and `doubleT_obstacle` from the zip. Not fresh: the five other original bags and Set O (their caches were
+linked; the same decoder, byte-identical in both versions).
+
+What each step does and what it compares:
+
 | step | command (release checkout `R`, the env of the P4 protocol) | pre-release result to compare | time |
 |---|---|---|---|
 | synthetic recordings, decisions | `docs/evidence/synthetic_labels_2026-10-17/scripts/run_probe.sh <tag> R <bag>` once per synthetic bag (judge `probe.py`, nominal, on the decoded caches under `/home/user/rs-data/decoded/`; [synthetic labels](../synthetic_labels_2026-10-17/README.md)) | STOP / CAUTION / GO: platform 185 / 135 / 66, switch 142 / 294 / 300, tunnels 126 / 223 / 196 | 1 min each |
