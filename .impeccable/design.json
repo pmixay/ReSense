@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-18T22:12:43.548835+00:00",
+  "title": "Design System: ReSense",
+  "extensions": {
+    "colorMeta": {
+      "red": { "role": "primary", "displayName": "Metro Red", "tonalRamp": ["oklch(15.00% 0.1981 24.79)", "oklch(26.43% 0.1981 24.79)", "oklch(37.86% 0.1981 24.79)", "oklch(49.29% 0.1981 24.79)", "oklch(60.71% 0.1981 24.79)", "oklch(72.14% 0.1981 24.79)", "oklch(83.57% 0.1981 24.79)", "oklch(95.00% 0.1981 24.79)"] },
+      "red-deep": { "role": "primary", "displayName": "Open-Group Red", "tonalRamp": ["oklch(15.00% 0.1610 24.44)", "oklch(26.43% 0.1610 24.44)", "oklch(37.86% 0.1610 24.44)", "oklch(49.29% 0.1610 24.44)", "oklch(60.71% 0.1610 24.44)", "oklch(72.14% 0.1610 24.44)", "oklch(83.57% 0.1610 24.44)", "oklch(95.00% 0.1610 24.44)"] },
+      "bg": { "role": "neutral", "displayName": "Continuous Cool Ground", "tonalRamp": ["oklch(15.00% 0.0034 247.86)", "oklch(26.43% 0.0034 247.86)", "oklch(37.86% 0.0034 247.86)", "oklch(49.29% 0.0034 247.86)", "oklch(60.71% 0.0034 247.86)", "oklch(72.14% 0.0034 247.86)", "oklch(83.57% 0.0034 247.86)", "oklch(95.00% 0.0034 247.86)"] },
+      "card": { "role": "neutral", "displayName": "Shared White Surface", "tonalRamp": ["oklch(15.00% 0.0000 0.00)", "oklch(26.43% 0.0000 0.00)", "oklch(37.86% 0.0000 0.00)", "oklch(49.29% 0.0000 0.00)", "oklch(60.71% 0.0000 0.00)", "oklch(72.14% 0.0000 0.00)", "oklch(83.57% 0.0000 0.00)", "oklch(95.00% 0.0000 0.00)"] },
+      "well": { "role": "neutral", "displayName": "Control Well", "tonalRamp": ["oklch(15.00% 0.0052 247.88)", "oklch(26.43% 0.0052 247.88)", "oklch(37.86% 0.0052 247.88)", "oklch(49.29% 0.0052 247.88)", "oklch(60.71% 0.0052 247.88)", "oklch(72.14% 0.0052 247.88)", "oklch(83.57% 0.0052 247.88)", "oklch(95.00% 0.0052 247.88)"] },
+      "well-2": { "role": "neutral", "displayName": "Deep Control Well", "tonalRamp": ["oklch(15.00% 0.0088 247.93)", "oklch(26.43% 0.0088 247.93)", "oklch(37.86% 0.0088 247.93)", "oklch(49.29% 0.0088 247.93)", "oklch(60.71% 0.0088 247.93)", "oklch(72.14% 0.0088 247.93)", "oklch(83.57% 0.0088 247.93)", "oklch(95.00% 0.0088 247.93)"] },
+      "well-3": { "role": "neutral", "displayName": "Light Well", "tonalRamp": ["oklch(15.00% 0.0046 258.32)", "oklch(26.43% 0.0046 258.32)", "oklch(37.86% 0.0046 258.32)", "oklch(49.29% 0.0046 258.32)", "oklch(60.71% 0.0046 258.32)", "oklch(72.14% 0.0046 258.32)", "oklch(83.57% 0.0046 258.32)", "oklch(95.00% 0.0046 258.32)"] },
+      "ink": { "role": "neutral", "displayName": "Engineering Ink", "tonalRamp": ["oklch(15.00% 0.0115 254.08)", "oklch(26.43% 0.0115 254.08)", "oklch(37.86% 0.0115 254.08)", "oklch(49.29% 0.0115 254.08)", "oklch(60.71% 0.0115 254.08)", "oklch(72.14% 0.0115 254.08)", "oklch(83.57% 0.0115 254.08)", "oklch(95.00% 0.0115 254.08)"] },
+      "hair": { "role": "neutral", "displayName": "Surface Divider", "tonalRamp": ["oklch(15.00% 0.0106 247.95)", "oklch(26.43% 0.0106 247.95)", "oklch(37.86% 0.0106 247.95)", "oklch(49.29% 0.0106 247.95)", "oklch(60.71% 0.0106 247.95)", "oklch(72.14% 0.0106 247.95)", "oklch(83.57% 0.0106 247.95)", "oklch(95.00% 0.0106 247.95)"] },
+      "hair-2": { "role": "neutral", "displayName": "Control Stroke", "tonalRamp": ["oklch(15.00% 0.0157 251.20)", "oklch(26.43% 0.0157 251.20)", "oklch(37.86% 0.0157 251.20)", "oklch(49.29% 0.0157 251.20)", "oklch(60.71% 0.0157 251.20)", "oklch(72.14% 0.0157 251.20)", "oklch(83.57% 0.0157 251.20)", "oklch(95.00% 0.0157 251.20)"] },
+      "go": { "role": "secondary", "displayName": "Verified Green", "tonalRamp": ["oklch(15.00% 0.1366 153.29)", "oklch(26.43% 0.1366 153.29)", "oklch(37.86% 0.1366 153.29)", "oklch(49.29% 0.1366 153.29)", "oklch(60.71% 0.1366 153.29)", "oklch(72.14% 0.1366 153.29)", "oklch(83.57% 0.1366 153.29)", "oklch(95.00% 0.1366 153.29)"] },
+      "go-deep": { "role": "secondary", "displayName": "GO Decision Green", "tonalRamp": ["oklch(15.00% 0.1204 153.12)", "oklch(26.43% 0.1204 153.12)", "oklch(37.86% 0.1204 153.12)", "oklch(49.29% 0.1204 153.12)", "oklch(60.71% 0.1204 153.12)", "oklch(72.14% 0.1204 153.12)", "oklch(83.57% 0.1204 153.12)", "oklch(95.00% 0.1204 153.12)"] },
+      "caution": { "role": "secondary", "displayName": "CAUTION Amber", "tonalRamp": ["oklch(15.00% 0.1579 75.82)", "oklch(26.43% 0.1579 75.82)", "oklch(37.86% 0.1579 75.82)", "oklch(49.29% 0.1579 75.82)", "oklch(60.71% 0.1579 75.82)", "oklch(72.14% 0.1579 75.82)", "oklch(83.57% 0.1579 75.82)", "oklch(95.00% 0.1579 75.82)"] },
+      "stop": { "role": "secondary", "displayName": "Hatched STOP Red", "tonalRamp": ["oklch(15.00% 0.2066 22.62)", "oklch(26.43% 0.2066 22.62)", "oklch(37.86% 0.2066 22.62)", "oklch(49.29% 0.2066 22.62)", "oklch(60.71% 0.2066 22.62)", "oklch(72.14% 0.2066 22.62)", "oklch(83.57% 0.2066 22.62)", "oklch(95.00% 0.2066 22.62)"] },
+      "fault": { "role": "secondary", "displayName": "FAULT Violet", "tonalRamp": ["oklch(15.00% 0.0656 306.31)", "oklch(26.43% 0.0656 306.31)", "oklch(37.86% 0.0656 306.31)", "oklch(49.29% 0.0656 306.31)", "oklch(60.71% 0.0656 306.31)", "oklch(72.14% 0.0656 306.31)", "oklch(83.57% 0.0656 306.31)", "oklch(95.00% 0.0656 306.31)"] },
+      "night": { "role": "neutral", "displayName": "Rendered View Night", "tonalRamp": ["oklch(15.00% 0.0150 266.38)", "oklch(26.43% 0.0150 266.38)", "oklch(37.86% 0.0150 266.38)", "oklch(49.29% 0.0150 266.38)", "oklch(60.71% 0.0150 266.38)", "oklch(72.14% 0.0150 266.38)", "oklch(83.57% 0.0150 266.38)", "oklch(95.00% 0.0150 266.38)"] },
+      "night-2": { "role": "neutral", "displayName": "Track Map Night", "tonalRamp": ["oklch(15.00% 0.0156 266.62)", "oklch(26.43% 0.0156 266.62)", "oklch(37.86% 0.0156 266.62)", "oklch(49.29% 0.0156 266.62)", "oklch(60.71% 0.0156 266.62)", "oklch(72.14% 0.0156 266.62)", "oklch(83.57% 0.0156 266.62)", "oklch(95.00% 0.0156 266.62)"] },
+      "glass": { "role": "neutral", "displayName": "Annotation Glass", "tonalRamp": ["oklch(15.00% 0.0174 273.40 / 0.66)", "oklch(26.43% 0.0174 273.40 / 0.66)", "oklch(37.86% 0.0174 273.40 / 0.66)", "oklch(49.29% 0.0174 273.40 / 0.66)", "oklch(60.71% 0.0174 273.40 / 0.66)", "oklch(72.14% 0.0174 273.40 / 0.66)", "oklch(83.57% 0.0174 273.40 / 0.66)", "oklch(95.00% 0.0174 273.40 / 0.66)"] },
+      "online": { "role": "secondary", "displayName": "Live Connectivity Green", "tonalRamp": ["oklch(15.00% 0.1823 152.92)", "oklch(26.43% 0.1823 152.92)", "oklch(37.86% 0.1823 152.92)", "oklch(49.29% 0.1823 152.92)", "oklch(60.71% 0.1823 152.92)", "oklch(72.14% 0.1823 152.92)", "oklch(83.57% 0.1823 152.92)", "oklch(95.00% 0.1823 152.92)"] }
+    },
+    "typographyMeta": {
+      "title": { "displayName": "Shared Page Title", "purpose": "PageHeader titles outside the Player; compact layout uses its existing smaller override." },
+      "card-title": { "displayName": "Card Heading", "purpose": "Shared Card headings; local telemetry headings keep their observed compact treatment." },
+      "nav": { "displayName": "Grouped Navigation", "purpose": "TopBar destinations and menu titles." },
+      "body": { "displayName": "Application Body", "purpose": "Russian application copy with lining, tabular numerals." },
+      "label": { "displayName": "Field Label", "purpose": "Field labels and shared status labels." },
+      "meta": { "displayName": "Shared Metadata", "purpose": "Ordinary chips and supporting application metadata; not the smaller legacy DecisionChip scale." }
+    },
+    "shadows": [
+      { "name": "shadow", "value": "0 1px 0 rgba(22, 21, 26, 0.03), 0 10px 30px -18px rgba(22, 21, 26, 0.28)", "purpose": "Existing global Card elevation, not added to flat local telemetry panels." },
+      { "name": "shadow-pop", "value": "0 2px 4px rgba(22, 21, 26, 0.06), 0 24px 48px -16px rgba(22, 21, 26, 0.35)", "purpose": "Navigation dropdowns and Player run menu." },
+      { "name": "shadow-red", "value": "0 8px 20px -10px rgba(228, 0, 13, 0.8)", "purpose": "Inherited primary-action shadow, retaining its existing literal red." },
+      { "name": "focus", "value": "0 0 0 3px var(--white), 0 0 0 5.5px var(--ink)", "purpose": "Keyboard-only focus with white gap and ink ring." },
+      { "name": "focus-on-red", "value": "0 0 0 2.5px var(--red), 0 0 0 5px var(--white)", "purpose": "Keyboard-only focus in TopBar." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(0.2, 0.7, 0.2, 1)", "purpose": "Shared navigation transitions and dropdown entry." },
+      { "name": "button-transition", "value": "background-color 0.15s, box-shadow 0.15s, transform 0.08s, opacity 0.15s", "purpose": "Shared Button state changes; active press translates down 1px." },
+      { "name": "reduced-motion-css", "value": "@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; } }", "purpose": "Existing CSS reduced-motion behavior; not a claim about WebGL camera interpolation." }
+    ],
+    "breakpoints": [
+      { "name": "topbar-wordmark-hidden-max", "value": "1360px" },
+      { "name": "shared-compact-and-player-three-columns-max", "value": "1100px" },
+      { "name": "player-two-columns-and-wrapped-transport-max", "value": "700px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Shared metro-red primary action, including the inherited action shadow and hover color.",
+      "html": "<button type=\"button\" class=\"ds-btn-primary\">Обработать</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 44px; padding: 0 20px; border: 0; border-radius: var(--pill, 999px); background: var(--red, #BE1424); color: var(--white, #FFFFFF); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: 14px; font-weight: 800; line-height: 1; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow-red, 0 8px 20px -10px rgba(228, 0, 13, 0.8)); transition: background-color 0.15s, box-shadow 0.15s, transform 0.08s, opacity 0.15s; } .ds-btn-primary:hover:not(:disabled) { background: #CC000C; } .ds-btn-primary:focus-visible { outline: none; box-shadow: var(--focus, 0 0 0 3px #FFFFFF, 0 0 0 5.5px #171B20); } .ds-btn-primary:active:not(:disabled) { transform: translateY(1px); } .ds-btn-primary:disabled { background: var(--well-2, #CDD2D7); color: var(--ink, #171B20); box-shadow: none; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-primary { transition-duration: 0.001ms; } }"
+    },
+    {
+      "name": "Dark Button",
+      "kind": "button",
+      "refersTo": "button-dark",
+      "description": "The default shared Button variant; ink fill with white text.",
+      "html": "<button type=\"button\" class=\"ds-btn-dark\">Выбрать прогон</button>",
+      "css": ".ds-btn-dark { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 44px; padding: 0 20px; border: 0; border-radius: var(--pill, 999px); background: var(--ink, #171B20); color: var(--white, #FFFFFF); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: 14px; font-weight: 800; line-height: 1; white-space: nowrap; cursor: pointer; transition: background-color 0.15s, box-shadow 0.15s, transform 0.08s, opacity 0.15s; } .ds-btn-dark:hover:not(:disabled) { background: #2A2930; } .ds-btn-dark:focus-visible { outline: none; box-shadow: var(--focus, 0 0 0 3px #FFFFFF, 0 0 0 5.5px #171B20); } .ds-btn-dark:active:not(:disabled) { transform: translateY(1px); } .ds-btn-dark:disabled { background: var(--well-2, #CDD2D7); color: var(--ink, #171B20); box-shadow: none; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-dark { transition-duration: 0.001ms; } }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "White secondary action with an inset stroke that becomes ink on hover.",
+      "html": "<button type=\"button\" class=\"ds-btn-outline\">Все прогоны</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 44px; padding: 0 20px; border: 0; border-radius: var(--pill, 999px); background: var(--white, #FFFFFF); color: var(--ink, #171B20); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: 14px; font-weight: 800; line-height: 1; white-space: nowrap; cursor: pointer; box-shadow: inset 0 0 0 1.5px var(--hair-2, #ABB3BC); transition: background-color 0.15s, box-shadow 0.15s, transform 0.08s, opacity 0.15s; } .ds-btn-outline:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--ink, #171B20); } .ds-btn-outline:focus-visible { outline: none; box-shadow: inset 0 0 0 1.5px var(--hair-2, #ABB3BC), var(--focus, 0 0 0 3px #FFFFFF, 0 0 0 5.5px #171B20); } .ds-btn-outline:active:not(:disabled) { transform: translateY(1px); } .ds-btn-outline:disabled { background: var(--well-2, #CDD2D7); color: var(--ink, #171B20); box-shadow: none; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-outline { transition-duration: 0.001ms; } }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Flat neutral-well action with a deeper well on hover.",
+      "html": "<button type=\"button\" class=\"ds-btn-ghost\">Повторить</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 44px; padding: 0 20px; border: 0; border-radius: var(--pill, 999px); background: var(--well, #E2E5E8); color: var(--ink, #171B20); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: 14px; font-weight: 800; line-height: 1; white-space: nowrap; cursor: pointer; transition: background-color 0.15s, box-shadow 0.15s, transform 0.08s, opacity 0.15s; } .ds-btn-ghost:hover:not(:disabled) { background: var(--well-2, #CDD2D7); } .ds-btn-ghost:focus-visible { outline: none; box-shadow: var(--focus, 0 0 0 3px #FFFFFF, 0 0 0 5.5px #171B20); } .ds-btn-ghost:active:not(:disabled) { transform: translateY(1px); } .ds-btn-ghost:disabled { background: var(--well-2, #CDD2D7); color: var(--ink, #171B20); box-shadow: none; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-ghost { transition-duration: 0.001ms; } }"
+    },
+    {
+      "name": "Light Button",
+      "kind": "button",
+      "refersTo": "button-light",
+      "description": "Existing white/red action for red or dark surroundings; the wrapper supplies preview context only.",
+      "html": "<div class=\"ds-light-context\"><button type=\"button\" class=\"ds-btn-light\">Загрузить запись</button></div>",
+      "css": ".ds-light-context { padding: 16px; background: var(--red, #BE1424); } .ds-btn-light { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 44px; padding: 0 20px; border: 0; border-radius: var(--pill, 999px); background: var(--white, #FFFFFF); color: var(--red, #BE1424); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: 14px; font-weight: 800; line-height: 1; white-space: nowrap; cursor: pointer; box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.45); transition: background-color 0.15s, box-shadow 0.15s, transform 0.08s, opacity 0.15s; } .ds-btn-light:hover:not(:disabled) { background: #FFF5F5; } .ds-btn-light:focus-visible { outline: none; box-shadow: 0 0 0 2.5px transparent, 0 0 0 4px var(--white, #FFFFFF); } .ds-btn-light:active:not(:disabled) { transform: translateY(1px); } .ds-btn-light:disabled { background: var(--well-2, #CDD2D7); color: var(--ink, #171B20); box-shadow: none; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-light { transition-duration: 0.001ms; } }"
+    },
+    {
+      "name": "Ghost Light Button",
+      "kind": "button",
+      "refersTo": "button-ghost-light",
+      "description": "Translucent white action on red/dark surfaces; the wrapper supplies preview context only.",
+      "html": "<div class=\"ds-ghost-light-context\"><button type=\"button\" class=\"ds-btn-ghost-light\">Подробнее</button></div>",
+      "css": ".ds-ghost-light-context { padding: 16px; background: var(--red, #BE1424); } .ds-btn-ghost-light { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 44px; padding: 0 20px; border: 0; border-radius: var(--pill, 999px); background: rgba(255, 255, 255, 0.14); color: var(--white, #FFFFFF); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: 14px; font-weight: 800; line-height: 1; white-space: nowrap; cursor: pointer; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.55); transition: background-color 0.15s, box-shadow 0.15s, transform 0.08s, opacity 0.15s; } .ds-btn-ghost-light:hover:not(:disabled) { background: rgba(255, 255, 255, 0.22); } .ds-btn-ghost-light:focus-visible { outline: none; box-shadow: 0 0 0 2.5px transparent, 0 0 0 4px var(--white, #FFFFFF); } .ds-btn-ghost-light:active:not(:disabled) { transform: translateY(1px); } .ds-btn-ghost-light:disabled { background: var(--well-2, #CDD2D7); color: var(--ink, #171B20); box-shadow: none; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-ghost-light { transition-duration: 0.001ms; } }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "text-input",
+      "description": "The shared inset text field; focus-within supplies the ink stroke.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Название</span><span class=\"ds-input\"><input class=\"ds-input-native\" placeholder=\"Название записи\" /></span></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; font-family: var(--f-body, 'Raleway', system-ui, sans-serif); color: var(--ink, #171B20); } .ds-field-label { min-height: 20px; font-size: var(--fs-label, 13px); font-weight: 700; } .ds-input { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; border-radius: var(--r-xs, 12px); background: var(--well, #E2E5E8); transition: box-shadow 0.15s; } .ds-input:focus-within { box-shadow: inset 0 0 0 2px var(--ink, #171B20); } .ds-input-native { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; background: transparent; color: var(--ink, #171B20); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: 14px; font-weight: 700; } .ds-input-native:focus-visible { outline: none; box-shadow: none; } .ds-input-native::placeholder { color: var(--ink, #171B20); opacity: 1; font-weight: 500; font-style: italic; } .ds-input-invalid { box-shadow: inset 0 0 0 2px var(--fault, #645178); } .ds-input-disabled { opacity: 0.55; } @media (prefers-reduced-motion: reduce) { .ds-input { transition-duration: 0.001ms; } }"
+    },
+    {
+      "name": "Well Chip",
+      "kind": "chip",
+      "refersTo": "chip-well",
+      "description": "Ordinary non-interactive metadata chip; decision status uses the separate shared DecisionChip.",
+      "html": "<span class=\"ds-chip-well\">60 кадров</span>",
+      "css": ".ds-chip-well { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: var(--pill, 999px); background: var(--well, #E2E5E8); color: var(--ink, #171B20); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: var(--fs-meta, 12.5px); font-weight: 700; white-space: nowrap; flex: none; }"
+    },
+    {
+      "name": "Shared Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Existing global Card with medium padding; do not replace its radius/shadow with local Player telemetry styling.",
+      "html": "<section class=\"ds-card\"><div class=\"ds-card-head\"><h2 class=\"ds-card-title\">Телеметрия</h2></div><p class=\"ds-card-body\">Данные выбранного кадра</p></section>",
+      "css": ".ds-card { position: relative; min-width: 0; padding: 22px 24px; border-radius: var(--r-lg, 28px); background: var(--card, #FFFFFF); color: var(--ink, #171B20); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); font-size: var(--fs-body, 14px); font-weight: 500; line-height: 1.35; box-shadow: var(--shadow, 0 1px 0 rgba(22, 21, 26, 0.03), 0 10px 30px -18px rgba(22, 21, 26, 0.28)); } .ds-card-head { position: relative; display: flex; align-items: center; gap: 10px; min-height: 28px; margin-bottom: 14px; } .ds-card-title { margin: 0; font-family: var(--f-head, 'Raleway', system-ui, sans-serif); font-size: var(--fs-card-title, 15px); font-weight: 700; line-height: 1.05; letter-spacing: 0; white-space: nowrap; } .ds-card-body { margin: 0; }"
+    },
+    {
+      "name": "Metro Navigation",
+      "kind": "nav",
+      "refersTo": "metro-navigation",
+      "description": "The main shared station rail with current Player state and its existing wrapped compact treatment; System branch is documented in DESIGN.md.",
+      "html": "<nav class=\"ds-rail\" aria-label=\"Линия: путь работы с записью\"><div class=\"ds-rail-main\"><div class=\"ds-rail-line\" aria-hidden=\"true\"></div><div class=\"ds-rail-stations\"><a href=\"/\" class=\"ds-st ds-home\"><span class=\"ds-st-circle\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 11l9-7 9 7\"/><path d=\"M5 10v10h14V10\"/><path d=\"M10 20v-6h4v6\"/></svg></span><span class=\"ds-st-label\">Главная</span></a><a href=\"/upload\" class=\"ds-st\"><span class=\"ds-st-circle\"></span><span class=\"ds-st-label\">Загрузка</span></a><a href=\"/queue\" class=\"ds-st\"><span class=\"ds-st-circle\"></span><span class=\"ds-st-label\">Очередь</span></a><a href=\"/runs\" class=\"ds-st\"><span class=\"ds-st-circle\"></span><span class=\"ds-st-label\">Прогоны</span></a><a href=\"/player\" class=\"ds-st ds-current\" aria-current=\"page\"><span class=\"ds-st-circle\"></span><span class=\"ds-st-label\">Плеер</span></a><a href=\"/compare\" class=\"ds-st\"><span class=\"ds-st-circle\"></span><span class=\"ds-st-label\">Сравнение</span></a></div></div></nav>",
+      "css": ".ds-rail { position: relative; height: var(--rail-h, 84px); background: var(--white, #FFFFFF); border-bottom: 1px solid var(--hair, #C6CCD2); color: var(--ink, #171B20); font-family: var(--f-body, 'Raleway', system-ui, sans-serif); } .ds-rail-main { position: absolute; inset: 0 var(--pad, clamp(16px, 2.5vw, 40px)); } .ds-rail-line { position: absolute; left: 0; right: 0; top: 27px; height: 10px; border-radius: 5px; background: var(--red, #BE1424); } .ds-rail-line::before, .ds-rail-line::after { content: ''; position: absolute; top: -9px; width: 8px; height: 28px; border-radius: 4px; background: var(--red, #BE1424); } .ds-rail-line::before { left: -4px; } .ds-rail-line::after { right: -4px; } .ds-rail-stations { position: absolute; inset: 0; display: flex; justify-content: space-between; padding: 0 70px 0 22px; } .ds-st { position: relative; width: 24px; height: 100%; flex: none; border-radius: 12px; color: inherit; text-decoration: none; } .ds-st-circle { position: absolute; top: 21px; left: 50%; transform: translateX(-50%); width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; border: 5px solid var(--red, #BE1424); background: var(--white, #FFFFFF); transition: transform 0.15s; } .ds-st:hover:not(.ds-current) .ds-st-circle { transform: translateX(-50%) scale(1.15); } .ds-st:focus-visible { outline: none; } .ds-st:focus-visible .ds-st-circle { box-shadow: var(--focus, 0 0 0 3px #FFFFFF, 0 0 0 5.5px #171B20); } .ds-st-label { position: absolute; top: 58px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 13.5px; font-weight: 700; line-height: 18px; } .ds-home .ds-st-circle { display: grid; place-items: center; width: 30px; height: 30px; top: 17px; border: 0; background: var(--red, #BE1424); color: var(--white, #FFFFFF); } .ds-current .ds-st-circle { top: 12px; width: 40px; height: 40px; border-width: 9px; box-shadow: 0 0 0 6px rgba(228, 0, 13, 0.12); } .ds-current .ds-st-label { font-weight: 900; text-decoration: underline 3px var(--red, #BE1424); text-underline-offset: 5px; } @media (max-width: 1100px) { .ds-rail { height: auto; padding: 12px 16px; } .ds-rail-main { position: static; } .ds-rail-line, .ds-st .ds-st-circle { display: none; } .ds-rail-stations { position: static; flex-wrap: wrap; justify-content: flex-start; padding: 0; gap: 10px 16px; } .ds-st { width: auto; height: auto; } .ds-st-label { position: static; display: block; transform: none; white-space: normal; } .ds-st:focus-visible { box-shadow: var(--focus, 0 0 0 3px #FFFFFF, 0 0 0 5.5px #171B20); } } @media (prefers-reduced-motion: reduce) { .ds-st-circle { transition-duration: 0.001ms; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Линия",
+    "overview": "ReSense inherits a cool, compact engineering application: metro-red chrome, a white station rail, pale continuous page ground and explicit signal states. Self-hosted Raleway supports both Russian labels and tabular telemetry. This records the existing system, not a replacement identity.\n\nThe Player is a code-led, inherited-world integration. Its pinned physical display belongs to the visualization; scenario selection, cameras, telemetry and transport remain ordinary shared application UI. The Player's Operate contract lives in `.impeccable/surfaces/webapp-frontend-src-pages-player.md`.",
+    "keyCharacteristics": [
+      "One shared header and metro navigation.",
+      "Neutral work surfaces, purposeful red actions and distinct decision colors.",
+      "Native-size controls and responsive, vertically flowing content.",
+      "Real modeled display materials around a live LiDAR surface."
+    ],
+    "rules": [
+      { "name": "The Signal Separation Rule", "body": "Keep brand red and STOP distinct in both token choice and meaning; retain decision words, icons and STOP hatching alongside color.", "section": "colors" },
+      { "name": "The One Shell Rule", "body": "The Player uses the full available main-region width and the existing global header/metro navigation, including fullscreen. It has no repeated logo, local Player title, miniature rail or back-navigation bar.", "section": "layout" }
+    ],
+    "dos": [
+      "**Do** reuse AppShell, TopBar, LineRail and existing shared components/tokens.",
+      "**Do** retain Raleway, Russian formatting and explicit decision semantics.",
+      "**Do** resize the render target, projection, HUD and close-up together; keep map and distance labels responsive at native size.",
+      "**Do** preserve global Card radii and typography when adding local compact panels."
+    ],
+    "donts": [
+      "**Don't** add a second Player identity, header, stage rail or back bar.",
+      "**Don't** scale the entire workspace or impose a fixed design-resolution canvas on application controls.",
+      "**Don't** extend the modeled display housing into a separate instrument/cab mini-site.",
+      "**Don't** substitute brand red for STOP or imply unverified distance is clear."
+    ]
+  }
+}
