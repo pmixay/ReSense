@@ -57,7 +57,7 @@ describe('modeled display projection', () => {
     const bounds = new THREE.Box3().setFromObject(housing);
     expect(bounds.getSize(new THREE.Vector3()).z).toBeGreaterThan(1);
     housing.traverse((object) => {
-      if (!(object instanceof THREE.Mesh)) return;
+      if (!(object instanceof THREE.Mesh) || object.name === 'content-driven-light') return;
       const p = object.geometry.getAttribute('position');
       for (let i = 0; i < p.count; i += 1) {
         const v = new THREE.Vector3().fromBufferAttribute(p, i).applyMatrix4(object.matrixWorld).project(display.camera);
@@ -74,5 +74,23 @@ describe('modeled display projection', () => {
     display.emission.addEventListener('dispose', released);
     display.dispose();
     expect(released).toHaveBeenCalledOnce();
+  });
+
+  it('installs the display through a real wall opening and releases the train material textures', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1366, 320, 1);
+    display.scene.updateMatrixWorld(true);
+    const wall = display.scene.getObjectByName('laminate-wall-with-display-aperture') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
+    const housing = display.scene.getObjectByName('display-housing')!;
+    const interior = display.scene.getObjectByName('train-wall-installation')!;
+    expect(wall).toBeDefined();
+    const localCenter = new THREE.Vector3(0, housing.position.y, 2);
+    const origin = localCenter.applyMatrix4(interior.matrixWorld);
+    const direction = new THREE.Vector3(0, 0, -1).transformDirection(interior.matrixWorld);
+    expect(new THREE.Raycaster(origin, direction).intersectObject(wall)).toHaveLength(0);
+    const disposal = vi.fn();
+    wall.material.bumpMap!.addEventListener('dispose', disposal);
+    display.dispose();
+    expect(disposal).toHaveBeenCalledOnce();
   });
 });

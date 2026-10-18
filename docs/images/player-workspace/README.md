@@ -17,6 +17,27 @@ The housing adapts parametrically to the workspace's aspect ratio; it is a
 reference-based reconstruction rather than a photographic asset or a dimensional
 scan. No reference-image pixels are used as the player UI.
 
+## Train-wall installation
+
+The current display is mounted in a modeled metro interior. [`trainInterior.ts`](../../../webapp/frontend/src/player/trainInterior.ts)
+builds a formed laminate wall with an actual opening, recessed rubber mounting gasket,
+panel joints, flush fasteners, stainless grab rail, aluminium door/window reveal,
+ceiling louvers, linear saloon light and lower wall trim. The wall and housing share
+the same angle; there is no floating monitor on an abstract backdrop. The reference
+photo informs the installation and materials; the environment is reconstructed 3D
+geometry, not a claim that the app is rendering a photograph of a particular train.
+
+The enclosure casts real cached contact shadows onto the wall. Material grain is a
+deterministic small roughness/bump texture, and a physical clear-coated cover-glass
+mesh sits above the active image. Internal brightness, bloom and wall spill are
+restrained for a lit train interior; a mild ceiling-light reflection stays below the
+contrast needed to read the live data. Shadow maps refresh on geometry/size changes,
+while screen emission follows the existing on-demand playback render loop.
+
+[`installed-display-1440.png`](installed-display-1440.png) is a direct element
+screenshot of this train-wall installation from the running Player. The full-page
+captures also show the sole pinned site navigation, telemetry and transport controls.
+
 ## Tilt, emission and pixel optics
 
 The housing has a small fixed yaw and pitch so the metal sidewall and rear depth are
@@ -34,8 +55,8 @@ turning a green or blue source into the same color. No runtime pixel readback or
 extra animation loop is required; the existing engine still renders on demand.
 
 An isolated browser check filled the real display target with black/red/green/blue
-frames and verified distinct matching emission colors, matching colored light outside
-the hardware relative to its unlit frame, and an aperture pattern on a uniform gray
+frames and verified distinct matching emission colors, matching colored light on the
+wall 3–18px outside the projected hardware relative to its unlit frame, and an aperture pattern on a uniform gray
 source. Results are in `optics-verification.json`; diagnostic input colors are test
 patterns, not screenshots of application data.
 

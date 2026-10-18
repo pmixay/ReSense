@@ -84,3 +84,8 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   projection for HUD alignment. `screenEffects.ts` samples the live image for a fine RGB pixel
   aperture, local bloom and GPU-diffused light emission. Two low-resolution filter targets are
   disposed with the display; no readback or independent animation loop is used.
+- **Train installation.** `trainInterior.ts` builds a real wall aperture and recessed gasket,
+  laminate panels, stainless grab rail, door reveal and ceiling fixtures around the device.
+  The housing and wall share their angle, cached shadows anchor the enclosure, and a clear-coated
+  physical cover glass sits above the live surface. Environment geometry, textures, materials and
+  the shadow target are disposed with the display; UI controls still belong to the shared page.

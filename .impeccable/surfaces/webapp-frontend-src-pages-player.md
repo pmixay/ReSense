@@ -23,6 +23,8 @@ FORM: Brief-pinned engineering workspace; seed: none (user-pinned). Model materi
 
 DISPLAY OPTICS: The user requests a slight physical tilt, visible housing depth, image-driven light emission and individual RGB pixel structure. The HUD follows the projected active surface exactly. GPU-only light diffusion samples the live image, remains still when playback/camera are still, and keeps source point sampling continuous. Modernize the surrounding controls and telemetry through the shared radius/type system and stronger, contrast-checked brand and signal colors. Keep the single application shell and full Player functionality.
 
+TRAIN INSTALLATION: The display must now be installed in a believable metro saloon wall, rather than floating on the page ground. Model a wall aperture, recessed gasket, industrial metal housing, laminate panel joints, door/window reveal, stainless grab rail, overhead linear lighting and ventilation details. Match the enclosure and wall angle, use real contact shadows, restrained content-driven spill and mild cover-glass reflections. The train context is confined to the primary visualization; the shared app shell and below-display controls stay functional application UI.
+
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
 
 Verify 1366×768, 1440×900, 1920×1080 and mobile, all decision/error states, resize, orbit, run switching, fullscreen, speed, stepping and seeking. Preserve the established global design system; document the page architecture without replacing global design artifacts.

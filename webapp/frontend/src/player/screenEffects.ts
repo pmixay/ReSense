@@ -29,7 +29,12 @@ export const DISPLAY_FRAGMENT = /* glsl */ `
     vec3 phosphor = stripe < 1.0 ? vec3(1.16, 0.90, 0.90)
       : stripe < 2.0 ? vec3(0.90, 1.16, 0.90) : vec3(0.90, 0.90, 1.16);
     vec3 light = image * mix(0.88, 1.06, aperture) * mix(vec3(1.0), phosphor, 0.42);
-    light = light * 1.12 + bloom * 0.12 + scatter * 0.10;
+    light = light * 1.045 + bloom * 0.065 + scatter * 0.035;
+    // Low-amplitude ceiling-light reflection on the cover glass, not a UI overlay.
+    float reflection = exp(-pow((vUv.x + vUv.y * 0.14 - 0.22) / 0.065, 2.0));
+    reflection += 0.4 * exp(-pow((vUv.x + vUv.y * 0.14 - 0.28) / 0.018, 2.0));
+    float edge = pow(abs(vUv.x - 0.5) * 2.0, 6.0);
+    light += vec3(0.84, 0.91, 0.95) * (reflection * 0.018 + edge * 0.004);
     gl_FragColor = vec4(min(light, vec3(1.0)), 1.0);
   }
 `;
@@ -83,7 +88,7 @@ export const GLOW_FRAGMENT = /* glsl */ `
     vec3 hue = radiance / max(0.025, energy);
     float emitted = clamp(sqrt(energy) * 2.8, 0.0, 1.0);
     vec3 color = mix(vec3(0.10, 0.14, 0.19), hue, emitted);
-    float alpha = falloff * feather * (0.035 + emitted * 0.55);
+    float alpha = falloff * feather * (0.006 + emitted * 0.16);
     gl_FragColor = vec4(color, alpha);
   }
 `;

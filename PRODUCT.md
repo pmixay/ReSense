@@ -29,6 +29,9 @@ keyboard operation and recovery from data/GPU failures.
 The user-supplied `images (1).jpg` is the physical display reference: rounded black
 glass, silver housing and shallow depth. The modeled display belongs to the primary
 visualization, while surrounding controls inherit the application's shared design.
+The display is installed into a believable modeled train wall, with restrained
+internal illumination, cover-glass reflections and physical mounting details; the
+environment is confined to the visualization rather than becoming a second app shell.
 The page must feel like another ReSense stage, with a continuous background and no
 duplicate local logo, title, stage rail or standalone player header.
 
