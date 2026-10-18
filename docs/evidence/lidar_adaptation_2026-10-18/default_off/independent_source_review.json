@@ -1,0 +1,29 @@
+{
+  "status": "MINIMAL_DEFAULT_OFF_SOURCE_REVIEW_PASS_TESTS_PENDING",
+  "baseline_core": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+  "source_sha256": "5eae5197cc6497b029665a19e85b28fb217e934d8a80928cba6c1d2c5ad51700",
+  "source_file_count": 38,
+  "changed_frozen_files": [
+    "configs/default.yaml",
+    "resense/config.py",
+    "ros2_ws/src/resense_ros/config/detector.yaml"
+  ],
+  "only_effective_default_change": "calibration.orientation_replay_frames:4->0",
+  "class_ast_only_change_verified": true,
+  "canonical_and_ros_yaml_equal": true,
+  "all_explicit_profiles_preserve_disabled_default": true,
+  "test_review": "Three default config entry paths fail if capture called; trace fixtures explicitly opt in4 to retain diagnostic assertions; existing replay/adoption tests remain explicit4.",
+  "files": {
+    "configs/default.yaml": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+    "resense/config.py": "7a4136a051a15f85fa81dc68c123577696fecc507cc92ca4b6260df0eb0fadd1",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "cecf5294aef5eb58f033ff50893e93976352b8a4b2e24adf6938d44431a9c11f",
+    "tests/test_orientation_replay.py": "a512ce86711489974dfd36c27a0bce5538792764c535a5359f208cda9db80e74",
+    "tests/test_stage_trace.py": "d80a20fba2ff3a997b2f283b14f5d62b7f45953e468bc4dd68b451af10a8a427",
+    "tests/test_fresh_support_trace.py": "20ebb6f66fd0cc47be610793920475909fdb0d72eee37b1aeed5fad40c4afe58"
+  },
+  "limits": [
+    "Focused suite is running under root; this receipt does not claim its result.",
+    "No full guard-only Falcon capture exists. New measured default source needs full gate/X3 and affected actual-data/DDS checks.",
+    "No detector processing or heavy measurement performed by this source review."
+  ]
+}

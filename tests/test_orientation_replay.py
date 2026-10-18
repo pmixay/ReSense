@@ -1,5 +1,6 @@
 """Bounded real-input startup history, with unchanged confirmation thresholds."""
 from copy import deepcopy
+from pathlib import Path
 import sys
 
 import numpy as np
@@ -14,6 +15,26 @@ from resense.frame import Frame
 def tiny(stamp=0, frame_id="test"):
     return Frame(np.zeros((0, 3), np.float32), np.zeros(0, np.float32), stamp=stamp,
                  frame_id=frame_id, meta={"nested": [1, 2]})
+
+
+@pytest.mark.parametrize("config_path", [None, "configs/default.yaml", "ros2_ws/src/resense_ros/config/detector.yaml"])
+def test_default_preserves_single_input_path_without_startup_history(monkeypatch, config_path):
+    root = Path(__file__).resolve().parents[1]
+    cfg = DetectorConfig() if config_path is None else DetectorConfig.from_yaml(str(root / config_path))
+    assert cfg.calibration.orientation_replay_frames == 0
+
+    def unexpected_capture(*args, **kwargs):
+        pytest.fail("default processing must not copy startup history")
+
+    monkeypatch.setattr(OrientationReplayBuffer, "capture", unexpected_capture)
+    detector = Detector(cfg)
+    for index in range(5):
+        result = detector.process(tiny(stamp=100 + index * .1))
+        assert result.stamp == 100 + index * .1
+        assert "orientation_replay" not in result.mount
+        assert detector._orientation_replay.reason == "disabled"
+        assert detector._orientation_replay.frames == []
+        assert detector._orientation_replay.used_bytes == 0
 
 
 def test_buffer_owns_inputs_and_current_counts_toward_limit():

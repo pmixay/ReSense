@@ -69,6 +69,7 @@ def test_direct_observer_preserves_stateful_outputs_and_actual_note_calls():
         ObstacleSpec(kind="box", size=(.3, .3, .3), distance=25, lateral=0, base_z=-.2)])
     cfg = DetectorConfig()
     cfg.tracking.fresh_stop_evidence = True
+    cfg.calibration.orientation_replay_frames = 4
     # The fixture exercises ordinary/low descriptor routing, not the separate hanging stage.
     cfg.cluster.hanging_enabled = False
     plain = Detector(cfg)

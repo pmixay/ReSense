@@ -78,6 +78,7 @@ def test_tracing_preserves_stateful_detector_output(fresh):
         ObstacleSpec(kind="box", size=(0.3, 0.3, 0.3), distance=25, lateral=0, base_z=-0.2)])
     cfg = DetectorConfig()
     cfg.tracking.fresh_stop_evidence = fresh
+    cfg.calibration.orientation_replay_frames = 4
     plain, traced = Detector(cfg), TraceDetector(DetectorConfig.from_dict(cfg.to_dict()))
     original = clustering._corridor_cluster
     targets = np.flatnonzero(labels == 1)
