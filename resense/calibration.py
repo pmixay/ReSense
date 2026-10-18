@@ -165,6 +165,7 @@ class MountCalibration:
     R: np.ndarray = field(default_factory=lambda: np.eye(3))
     status: str = "pending"         # pending | provisional | ok | identity | fallback | disabled
     orientation: str = "configured"  # 'configured' or the adopted axis mapping, e.g. 'forward=+x left=+y up=+z'
+    orientation_confirmed: bool = False  # an observed/adopted mapping; distinct from unfinished tilt calibration
     roll_deg: float = 0.0
     pitch_deg: float = 0.0
     yaw_deg: float = 0.0
@@ -177,6 +178,7 @@ class MountCalibration:
     def to_dict(self) -> dict:
         return {
             "status": self.status, "orientation": self.orientation,
+            "orientation_confirmed": bool(self.orientation_confirmed),
             "roll_deg": round(self.roll_deg, 2), "pitch_deg": round(self.pitch_deg, 2),
             "yaw_deg": round(self.yaw_deg, 2),
             "height": None if self.height is None else round(self.height, 2),
@@ -192,7 +194,8 @@ class MountCalibrator:
     def __init__(self, cfg: CalibrationConfig, tcfg: TrackConfig):
         self.cfg = cfg
         self.tcfg = tcfg
-        self.state = MountCalibration(status="pending" if cfg.enabled else "disabled")
+        self.state = MountCalibration(status="pending" if cfg.enabled else "disabled",
+                                      orientation_confirmed=not cfg.enabled)
         self._R_orient = np.eye(3)
         self._orient_votes: dict = {}
         self._config_passed = False
@@ -316,9 +319,11 @@ class MountCalibrator:
                     self._recent.clear()
                     self._since_obs = 0
                     self._config_passed = True          # stop searching
+                    self.state.orientation_confirmed = True
                     return True
         if ob.ok:
             self._config_passed = True
+            self.state.orientation_confirmed = True
             # absolute estimate = the tilt already applied + the residual seen through it (small angles)
             a_r, a_p, a_y = self._applied
             est = (ob.roll + a_r, ob.pitch + a_p, (ob.yaw + a_y) if np.isfinite(ob.yaw) else float("nan"),
