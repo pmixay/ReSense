@@ -1,0 +1,174 @@
+{
+  "reviewer": "c2_implementation; independent of N2 implementation author",
+  "method": "Read all archived JSONL independently; verify summary SHA, frame indices, exact safety fields after adoption, every STOP row and current published stamp. This is an artifact check, not a detector rerun.",
+  "checks": [
+    {
+      "case": "baseline",
+      "frames": 201,
+      "sha256": "650272efd5674332d8d16aab66f023003a3014d4f1f6ffacc1f2e458a0d8c8b7",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 0,
+      "replay_event_rows": []
+    },
+    {
+      "case": "auto_00",
+      "frames": 201,
+      "sha256": "e76252884112d9efaae665e22ff084b794dae70b86960eb09c358ec499902e82",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 0,
+      "replay_event_rows": []
+    },
+    {
+      "case": "auto_01",
+      "frames": 201,
+      "sha256": "b3eb0f36c878b46fb2466ab9777294eea781516adf4b1d1ae326a33a6a15c23e",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 1,
+      "replay_event_rows": [
+        1
+      ]
+    },
+    {
+      "case": "auto_02",
+      "frames": 201,
+      "sha256": "d6ba0edfb6f9e8e179ea52bf06553cc8f09ade22790a2a3f8f2d410b15ca4ed4",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 1,
+      "replay_event_rows": [
+        1
+      ]
+    },
+    {
+      "case": "auto_03",
+      "frames": 201,
+      "sha256": "712e170d86db72582b80ef554836685a77c9a6f9b0b522aac246208856eb3165",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 1,
+      "replay_event_rows": [
+        1
+      ]
+    },
+    {
+      "case": "auto_08",
+      "frames": 201,
+      "sha256": "a0176da4c29231ad615d8984e0c92b27b0bae5c400eb9cb09994d3603dfc3d7c",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 1,
+      "replay_event_rows": [
+        1
+      ]
+    },
+    {
+      "case": "auto_09",
+      "frames": 201,
+      "sha256": "906435ba76040963297b410df709e3fc7b4478006225760fcfaedbd289f37d26",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 1,
+      "replay_event_rows": [
+        1
+      ]
+    },
+    {
+      "case": "auto_10",
+      "frames": 201,
+      "sha256": "2bb4eaa7d8bdd656a30cafcb7e1e1c6699c4370d20328186bfd0f8eac6f192bd",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 1,
+      "replay_event_rows": [
+        1
+      ]
+    },
+    {
+      "case": "auto_11",
+      "frames": 201,
+      "sha256": "a4e5a3713f9bd3ebce7cbf4f87bf0554daca3fc93a66186e8bdfd6e92c596ff9",
+      "post_adoption_payload_mismatches": {
+        "decision": [],
+        "dets": [],
+        "warns": [],
+        "nearest": [],
+        "clear": [],
+        "monitored": []
+      },
+      "stop_count": 193,
+      "first_stop": 8,
+      "pending_rows": 1,
+      "replay_event_rows": [
+        1
+      ]
+    }
+  ],
+  "limitations": "Track coefficient floats are excluded from the exact safety-field comparison; their <=3.71e-8 differences remain documented. Shared-host timing is not benchmarked."
+}

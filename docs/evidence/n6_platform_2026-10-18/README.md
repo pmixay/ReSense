@@ -172,6 +172,17 @@ previous **45 m**, so that dependence would remain. The rule would exclude
 frames 145/146, but fails both the preserved-gain and complete-dependence-removal
 conditions. No additional detector replay or runtime change was made for it.
 
+The final [raw range-support assessment](range_support_limit.json), reproduced
+by [inspect_range_support.py](inspect_range_support.py), examines all 15
+previously valid extension frames with the person 60–80 m away. Their largest
+directly supported endpoint is **48.635 m**; neither direct observations nor the
+existing 15 m margin reach the person on any of those frames. Even the
+unclassified raw pair proposals contain no station at or beyond 60 m in this
+sample. The maximum accepted endpoint across all 84 extension frames is
+**52.760 m**. This bounds the current validated paired-rail evidence, not the
+physical LiDAR range or every possible future method. No measured geometry in
+this investigation justifies activating a 60 m fix.
+
 **Recommendation: keep N6 off in the integrated defaults and seal.** The opt-in
 experiment improves first person STOP by 7.11 m, preserves all measured baseline
 STOP rows, and has complete positive/negative control evidence. It does not meet

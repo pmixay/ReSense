@@ -980,12 +980,14 @@ Two documents were added on 16.10; neither changes a card above, they attach evi
   `scripts/axis_error_profile.py`: the axis error, per-frame jitter and point counts by range from the organizers'
   synthetic objects (label-only, reproducible). Input for K1 / K2 and for N1's acceptance numbers.
 
-**18.10 N1/N4 implementation:** the shared RViz/web gauge is a rail-relative box bounded by supported geometry,
-with stable marker identities, bounded3D smoothing lag, explicit grey invalid hold and independent marker expiry.
-The interactive wrapper supports pause, rate changes and explicit same-node sensor-profile resets. Actual Docker/
-Humble DDS and keyboard checks delivered80/80 synthetic frames across Pandar and Falcon profiles;83 real-browser
-tests passed. Source-final replay and isolated graphics/performance checks remain pending. Far-range display
-coverage and hold expiry are reported alongside jitter, not omitted from acceptance.
+**18.10 N1/N4 local acceptance:** the shared RViz/web gauge is a rail-relative box bounded by supported geometry,
+with stable marker identities, bounded 0.25 m 3D lag, explicit grey invalid hold and independent marker expiry.
+All 2,308 immutable replay frames pass visible-edge jitter, bounds and detector-result preservation checks;
+83 real-browser checks pass. Median curve display/support range is 52/141.9 m: improved visible stability costs
+far-range availability. Actual Docker/Humble DDS and native keyboard controls deliver 40/40 Pandar then 100/100
+actual Falcon frames in one unchanged node, with correct profile/reset/expiry. Pre-subscribing `/iv_points` fixes
+the measured six-frame discovery loss. Software RViz at rate 0.5 receives all 70 curve frames, zero drops,
+node latency p95 99.8 ms on one exposed CPU. Hosted CI and release remain deferred by the captain.
 [Implementation, measurements and operator commands](evidence/n1_n4_2026-10-18/README.md).
 
 
@@ -1080,12 +1082,16 @@ intervals remain explicit; this completion does not imply exact organizer truth 
 **Owner** P3 · **Size** M · **Depends on** N5, X1-style attribution
 * **Evidence:** visible from 201 m, CAUTION from ~166 m, STOP only at 44 m, `monitored_range` capped at 45 m at the
   platform (the honest-range cap of 1.1.0). **Tasks:** attribute the frames (X1 harness) before any change; then K1 / K2.
-* **18.10 progress:** revision3 improves first person STOP44.01→51.12 m and preserves all147 baseline matched rows.
+* **18.10 candidate decision — OFF:** revision3 improves first person STOP44.01→51.12 m and preserves all147 baseline matched rows.
   All ten complete control recordings preserve baseline STOP rows; five empty recordings have no added STOP.
   The60 m target remains unmet and nine added STOP rows on an uncertain-gauge box widen the false-alarm upper
   bound38→47. Revision2's six new empty-platform STOP rows were rejected and fixed by retaining the original
-  low-bed boundary. Original-scene rail-support attribution, final default gate and independent review remain
-  required before activation. [Evidence](evidence/n6_platform_2026-10-18/README.md).
+  low-bed boundary. Independent source-removal review finds inserted objects can hide farther contradictory
+  rail evidence even though every accepted head is original background. Narrowing the height band or imposing
+  an endpoint rule does not resolve this. While the person is 60–80 m away, none of the 15 validated-extension
+  frames reaches it even with the existing 15 m margin. Attribution and candidate rejection are complete;
+  this does not deliver a 60 m fix. The combined default gate measures N6 disabled.
+  [Evidence](evidence/n6_platform_2026-10-18/README.md).
 
 ### 8d. Order up to 23.10 (replaces §4 from 17.10)
 

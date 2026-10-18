@@ -1,0 +1,12 @@
+{
+  "source": "/home/resense/data/final_lidar_f5ff15f",
+  "calibration_sha256": "4111dc469812066d0675f9ed57f185d04deca4861c4c5ce566c5e040b46dabad",
+  "scaled_limit_bytes": 65536,
+  "original_limit_bytes": 33554432,
+  "accepted": true,
+  "reason": "pending",
+  "charged_bytes": 64736,
+  "actual_retained_payload_bytes_excluding_frame_header": 78108,
+  "within_bound": false,
+  "method": "600 unique five-element nested lists; source lists use96bytes each, deepcopy may use120. The source-memory estimate must bound retained copies. This scales the limit for a small deterministic probe, not a detector replay."
+}

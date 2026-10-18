@@ -1,0 +1,12 @@
+{
+  "source": "/home/resense/ReSense",
+  "calibration_sha256": "29674696d08a41c56e9c402568a04af0096ba92f98b56a1225743b7c51b38f08",
+  "scaled_limit_bytes": 65536,
+  "original_limit_bytes": 33554432,
+  "accepted": false,
+  "reason": "byte_budget",
+  "charged_bytes": 0,
+  "actual_retained_payload_bytes_excluding_frame_header": null,
+  "within_bound": true,
+  "method": "600 unique five-element nested lists; source lists use96bytes each, deepcopy may use120. The source-memory estimate must bound retained copies. This scales the limit for a small deterministic probe, not a detector replay."
+}

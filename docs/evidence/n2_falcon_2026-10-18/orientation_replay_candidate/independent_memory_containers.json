@@ -1,0 +1,1737 @@
+{
+  "cases": 216,
+  "accepted": 161,
+  "bound_violations": 0,
+  "minimum_charge_minus_owned": 505,
+  "method": "Independent sys.getsizeof recursion across actual retained Frame wrappers, dict/list/tuple families, ndarray ownership; scaled64KiB cap. No source edits.",
+  "checks": [
+    {
+      "length": 0,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1365
+    },
+    {
+      "length": 0,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1333
+    },
+    {
+      "length": 0,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1341
+    },
+    {
+      "length": 0,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2022,
+      "actual_owned": 1405
+    },
+    {
+      "length": 0,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1966,
+      "actual_owned": 1349
+    },
+    {
+      "length": 0,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 2320,
+      "actual_owned": 1511
+    },
+    {
+      "length": 0,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2534,
+      "actual_owned": 1613
+    },
+    {
+      "length": 0,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2414,
+      "actual_owned": 1557
+    },
+    {
+      "length": 0,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 3608,
+      "actual_owned": 1855
+    },
+    {
+      "length": 0,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 4462,
+      "actual_owned": 2533
+    },
+    {
+      "length": 0,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 4094,
+      "actual_owned": 2469
+    },
+    {
+      "length": 0,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 8728,
+      "actual_owned": 3575
+    },
+    {
+      "length": 0,
+      "count": 100,
+      "kind": "list",
+      "accepted": true,
+      "charge": 14734,
+      "actual_owned": 7661
+    },
+    {
+      "length": 0,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 13054,
+      "actual_owned": 7581
+    },
+    {
+      "length": 0,
+      "count": 100,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 37432,
+      "actual_owned": 14359
+    },
+    {
+      "length": 0,
+      "count": 300,
+      "kind": "list",
+      "accepted": true,
+      "charge": 40334,
+      "actual_owned": 20461
+    },
+    {
+      "length": 0,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 35454,
+      "actual_owned": 20381
+    },
+    {
+      "length": 0,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 1,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 1,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 1,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 1,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2122,
+      "actual_owned": 1345
+    },
+    {
+      "length": 1,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2066,
+      "actual_owned": 1305
+    },
+    {
+      "length": 1,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 2420,
+      "actual_owned": 1483
+    },
+    {
+      "length": 1,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2922,
+      "actual_owned": 1729
+    },
+    {
+      "length": 1,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2802,
+      "actual_owned": 1689
+    },
+    {
+      "length": 1,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 3996,
+      "actual_owned": 2003
+    },
+    {
+      "length": 1,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 5930,
+      "actual_owned": 3177
+    },
+    {
+      "length": 1,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 5562,
+      "actual_owned": 3129
+    },
+    {
+      "length": 1,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 10196,
+      "actual_owned": 4243
+    },
+    {
+      "length": 1,
+      "count": 100,
+      "kind": "list",
+      "accepted": true,
+      "charge": 21962,
+      "actual_owned": 10889
+    },
+    {
+      "length": 1,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 20282,
+      "actual_owned": 10809
+    },
+    {
+      "length": 1,
+      "count": 100,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 44660,
+      "actual_owned": 17587
+    },
+    {
+      "length": 1,
+      "count": 300,
+      "kind": "list",
+      "accepted": true,
+      "charge": 61962,
+      "actual_owned": 30089
+    },
+    {
+      "length": 1,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 57082,
+      "actual_owned": 30009
+    },
+    {
+      "length": 1,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 2,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 2,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 2,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 2,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2194,
+      "actual_owned": 1345
+    },
+    {
+      "length": 2,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2138,
+      "actual_owned": 1305
+    },
+    {
+      "length": 2,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 2492,
+      "actual_owned": 1483
+    },
+    {
+      "length": 2,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 3282,
+      "actual_owned": 1729
+    },
+    {
+      "length": 2,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 3162,
+      "actual_owned": 1689
+    },
+    {
+      "length": 2,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 4356,
+      "actual_owned": 2003
+    },
+    {
+      "length": 2,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 7370,
+      "actual_owned": 3177
+    },
+    {
+      "length": 2,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 7002,
+      "actual_owned": 3129
+    },
+    {
+      "length": 2,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 11636,
+      "actual_owned": 4243
+    },
+    {
+      "length": 2,
+      "count": 100,
+      "kind": "list",
+      "accepted": true,
+      "charge": 29162,
+      "actual_owned": 10889
+    },
+    {
+      "length": 2,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 27482,
+      "actual_owned": 10809
+    },
+    {
+      "length": 2,
+      "count": 100,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 51860,
+      "actual_owned": 17587
+    },
+    {
+      "length": 2,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 2,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 2,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 3,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 3,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 3,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 3,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2266,
+      "actual_owned": 1345
+    },
+    {
+      "length": 3,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2210,
+      "actual_owned": 1305
+    },
+    {
+      "length": 3,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 2564,
+      "actual_owned": 1483
+    },
+    {
+      "length": 3,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 3642,
+      "actual_owned": 1729
+    },
+    {
+      "length": 3,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 3522,
+      "actual_owned": 1689
+    },
+    {
+      "length": 3,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 4716,
+      "actual_owned": 2003
+    },
+    {
+      "length": 3,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 8810,
+      "actual_owned": 3177
+    },
+    {
+      "length": 3,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 8442,
+      "actual_owned": 3129
+    },
+    {
+      "length": 3,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 13076,
+      "actual_owned": 4243
+    },
+    {
+      "length": 3,
+      "count": 100,
+      "kind": "list",
+      "accepted": true,
+      "charge": 36362,
+      "actual_owned": 10889
+    },
+    {
+      "length": 3,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 34682,
+      "actual_owned": 10809
+    },
+    {
+      "length": 3,
+      "count": 100,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 59060,
+      "actual_owned": 17587
+    },
+    {
+      "length": 3,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 3,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 3,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 4,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 4,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 4,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 4,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2338,
+      "actual_owned": 1345
+    },
+    {
+      "length": 4,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2282,
+      "actual_owned": 1305
+    },
+    {
+      "length": 4,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 2636,
+      "actual_owned": 1483
+    },
+    {
+      "length": 4,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 4002,
+      "actual_owned": 1729
+    },
+    {
+      "length": 4,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 3882,
+      "actual_owned": 1689
+    },
+    {
+      "length": 4,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 5076,
+      "actual_owned": 2003
+    },
+    {
+      "length": 4,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 10250,
+      "actual_owned": 3177
+    },
+    {
+      "length": 4,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 9882,
+      "actual_owned": 3129
+    },
+    {
+      "length": 4,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 14516,
+      "actual_owned": 4243
+    },
+    {
+      "length": 4,
+      "count": 100,
+      "kind": "list",
+      "accepted": true,
+      "charge": 43562,
+      "actual_owned": 10889
+    },
+    {
+      "length": 4,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 41882,
+      "actual_owned": 10809
+    },
+    {
+      "length": 4,
+      "count": 100,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 4,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 4,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 4,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 5,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 5,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 5,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 5,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2410,
+      "actual_owned": 1377
+    },
+    {
+      "length": 5,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2354,
+      "actual_owned": 1337
+    },
+    {
+      "length": 5,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 2708,
+      "actual_owned": 1515
+    },
+    {
+      "length": 5,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 4362,
+      "actual_owned": 1889
+    },
+    {
+      "length": 5,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 4242,
+      "actual_owned": 1849
+    },
+    {
+      "length": 5,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 5436,
+      "actual_owned": 2163
+    },
+    {
+      "length": 5,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 11690,
+      "actual_owned": 3817
+    },
+    {
+      "length": 5,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 11322,
+      "actual_owned": 3769
+    },
+    {
+      "length": 5,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 15956,
+      "actual_owned": 4883
+    },
+    {
+      "length": 5,
+      "count": 100,
+      "kind": "list",
+      "accepted": true,
+      "charge": 50762,
+      "actual_owned": 14089
+    },
+    {
+      "length": 5,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 49082,
+      "actual_owned": 14009
+    },
+    {
+      "length": 5,
+      "count": 100,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 5,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 5,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 5,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 8,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 8,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 8,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 8,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2626,
+      "actual_owned": 1377
+    },
+    {
+      "length": 8,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2570,
+      "actual_owned": 1337
+    },
+    {
+      "length": 8,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 2924,
+      "actual_owned": 1515
+    },
+    {
+      "length": 8,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 5442,
+      "actual_owned": 1889
+    },
+    {
+      "length": 8,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 5322,
+      "actual_owned": 1849
+    },
+    {
+      "length": 8,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 6516,
+      "actual_owned": 2163
+    },
+    {
+      "length": 8,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 16010,
+      "actual_owned": 3817
+    },
+    {
+      "length": 8,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 15642,
+      "actual_owned": 3769
+    },
+    {
+      "length": 8,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 20276,
+      "actual_owned": 4883
+    },
+    {
+      "length": 8,
+      "count": 100,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 8,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 8,
+      "count": 100,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 8,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 8,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 8,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 9,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 9,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 9,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 9,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 2698,
+      "actual_owned": 1441
+    },
+    {
+      "length": 9,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 2642,
+      "actual_owned": 1401
+    },
+    {
+      "length": 9,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 2996,
+      "actual_owned": 1579
+    },
+    {
+      "length": 9,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 5802,
+      "actual_owned": 2209
+    },
+    {
+      "length": 9,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 5682,
+      "actual_owned": 2169
+    },
+    {
+      "length": 9,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 6876,
+      "actual_owned": 2483
+    },
+    {
+      "length": 9,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 17450,
+      "actual_owned": 5097
+    },
+    {
+      "length": 9,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 17082,
+      "actual_owned": 5049
+    },
+    {
+      "length": 9,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 21716,
+      "actual_owned": 6163
+    },
+    {
+      "length": 9,
+      "count": 100,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 9,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 9,
+      "count": 100,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 9,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 9,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 9,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 16,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 16,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 16,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 16,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 3202,
+      "actual_owned": 1441
+    },
+    {
+      "length": 16,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 3146,
+      "actual_owned": 1401
+    },
+    {
+      "length": 16,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 3500,
+      "actual_owned": 1579
+    },
+    {
+      "length": 16,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 8322,
+      "actual_owned": 2209
+    },
+    {
+      "length": 16,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 8202,
+      "actual_owned": 2169
+    },
+    {
+      "length": 16,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 9396,
+      "actual_owned": 2483
+    },
+    {
+      "length": 16,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 27530,
+      "actual_owned": 5097
+    },
+    {
+      "length": 16,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 27162,
+      "actual_owned": 5049
+    },
+    {
+      "length": 16,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 31796,
+      "actual_owned": 6163
+    },
+    {
+      "length": 16,
+      "count": 100,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 16,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 16,
+      "count": 100,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 16,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 16,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 16,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 17,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 17,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 17,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 17,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 3274,
+      "actual_owned": 1505
+    },
+    {
+      "length": 17,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 3218,
+      "actual_owned": 1465
+    },
+    {
+      "length": 17,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 3572,
+      "actual_owned": 1643
+    },
+    {
+      "length": 17,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 8682,
+      "actual_owned": 2529
+    },
+    {
+      "length": 17,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 8562,
+      "actual_owned": 2489
+    },
+    {
+      "length": 17,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 9756,
+      "actual_owned": 2803
+    },
+    {
+      "length": 17,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 28970,
+      "actual_owned": 6377
+    },
+    {
+      "length": 17,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 28602,
+      "actual_owned": 6329
+    },
+    {
+      "length": 17,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 33236,
+      "actual_owned": 7443
+    },
+    {
+      "length": 17,
+      "count": 100,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 17,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 17,
+      "count": 100,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 17,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 17,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 17,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 25,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 25,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 25,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 25,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 3850,
+      "actual_owned": 1569
+    },
+    {
+      "length": 25,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 3794,
+      "actual_owned": 1529
+    },
+    {
+      "length": 25,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 4148,
+      "actual_owned": 1707
+    },
+    {
+      "length": 25,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 11562,
+      "actual_owned": 2849
+    },
+    {
+      "length": 25,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 11442,
+      "actual_owned": 2809
+    },
+    {
+      "length": 25,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 12636,
+      "actual_owned": 3123
+    },
+    {
+      "length": 25,
+      "count": 20,
+      "kind": "list",
+      "accepted": true,
+      "charge": 40490,
+      "actual_owned": 7657
+    },
+    {
+      "length": 25,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 40122,
+      "actual_owned": 7609
+    },
+    {
+      "length": 25,
+      "count": 20,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 44756,
+      "actual_owned": 8723
+    },
+    {
+      "length": 25,
+      "count": 100,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 25,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 25,
+      "count": 100,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 25,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 25,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 25,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 0,
+      "kind": "list",
+      "accepted": true,
+      "charge": 1870,
+      "actual_owned": 1197
+    },
+    {
+      "length": 50,
+      "count": 0,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 1854,
+      "actual_owned": 1181
+    },
+    {
+      "length": 50,
+      "count": 0,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 1878,
+      "actual_owned": 1205
+    },
+    {
+      "length": 50,
+      "count": 1,
+      "kind": "list",
+      "accepted": true,
+      "charge": 5650,
+      "actual_owned": 1729
+    },
+    {
+      "length": 50,
+      "count": 1,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 5594,
+      "actual_owned": 1689
+    },
+    {
+      "length": 50,
+      "count": 1,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 5948,
+      "actual_owned": 1867
+    },
+    {
+      "length": 50,
+      "count": 5,
+      "kind": "list",
+      "accepted": true,
+      "charge": 20562,
+      "actual_owned": 3649
+    },
+    {
+      "length": 50,
+      "count": 5,
+      "kind": "tuple",
+      "accepted": true,
+      "charge": 20442,
+      "actual_owned": 3609
+    },
+    {
+      "length": 50,
+      "count": 5,
+      "kind": "dict",
+      "accepted": true,
+      "charge": 21636,
+      "actual_owned": 3923
+    },
+    {
+      "length": 50,
+      "count": 20,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 20,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 20,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 100,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 100,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 100,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 300,
+      "kind": "list",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 300,
+      "kind": "tuple",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    },
+    {
+      "length": 50,
+      "count": 300,
+      "kind": "dict",
+      "accepted": false,
+      "charge": 0,
+      "actual_owned": 56
+    }
+  ]
+}
