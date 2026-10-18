@@ -1,0 +1,62 @@
+{
+  "status": "interrupted_not_acceptance",
+  "reason": "Independent review found bounded startup metadata deepcopy could exceed declared cap; supersede f5 core with reviewed bound fix and fresh full gate.",
+  "previous_launch": {
+    "pid": 54666,
+    "pgid": 54666,
+    "source_commit": "f5ff15f",
+    "status": "running",
+    "started_utc": "2026-10-18T08:57:37Z",
+    "command": [
+      "/home/resense/.venv/bin/python",
+      "/home/resense/data/final_lidar_f5ff15f/scripts/regression_gate.py",
+      "--cache",
+      "/home/resense/data/gate_cache",
+      "--jobs",
+      "1",
+      "--baseline",
+      "/home/resense/data/final_lidar_f5ff15f/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+      "--out",
+      "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/gate.json",
+      "--work",
+      "/home/resense/data/final_gate_work_v2"
+    ],
+    "ride_validation": {
+      "splits": 221,
+      "frames": 11271,
+      "arrays_read": 0,
+      "compressed_bytes": 5258708521,
+      "first_frame": "new_data_0_0000",
+      "first_stamp": 1789642926.1610787,
+      "last_frame": "new_data_220_0050",
+      "last_stamp": 1789644126.0445478,
+      "duration_s": 1199.8834691047668,
+      "max_interval_s": 7.09865140914917,
+      "intervals_over_0_15_s": 55
+    },
+    "wrapper_sha256": "83a5978eb04827e5af5e1dc9e8e8c76959aaa0dac104caa2714e7a3d1d2e3731"
+  },
+  "utc": "2026-10-18T09:05:39Z",
+  "partial_captures": {
+    "new_data_2.jsonl": {
+      "complete_lines": 1031,
+      "bytes": 1891316,
+      "sha256": "1ae12f7bfff849a26bc432ca6ea592a55fe35e13b67bc77ee65fbca17523ffac"
+    },
+    "new_data_0.jsonl": {
+      "complete_lines": 1409,
+      "bytes": 2585545,
+      "sha256": "ee8fa52b1c7ad5830a654405090699af5f902ff555198284ce3ab93c2b30442e"
+    },
+    "new_data_1.jsonl": {
+      "complete_lines": 1409,
+      "bytes": 2846641,
+      "sha256": "c880d02ba6b995ab86a7a9af4a88c8c29bae7e01fc6600a2f9c7d25be8ace866"
+    },
+    "cloud_with_fake_obj.jsonl": {
+      "complete_lines": 1510,
+      "bytes": 2793864,
+      "sha256": "32fa114d84ce5bc74ec05b2890fcfa36330e5a5e162700511e0727cf44aee4e0"
+    }
+  }
+}

@@ -56,3 +56,21 @@ The eight automatic orientation cases lose initial tracking evidence after adopt
 ### N3 retained failure and health-only follow-up
 
 The pre-tracker candidate406ffaa reduces medium doubleT_platform false STOP frames167→11 and episodes25→4, still failing the maximum1 extra episode. Residuals include strong far background104–110m, mixed near returns and2–3-return hanging shapes. Independent review rejects weakening sparse/strong protections: those shapes can be real cables. No suppression candidate is accepted for runtime. A separate health-only hypothesis addresses frame78's silent GO: the trusted axis shrank to20m, so the six-station diffuse observer stopped even though the clutter persisted. Measure broad60m observed-volume occupancy independently for health, retaining the trusted-range-bound qualifier only for the rejected advisory experiment. This health flag cannot remove detections or promote GO, must preserve error severity, and must be paired with clean/dark-object controls. Its sensor-specific intensity ceiling remains explicit; physical dust is not identified.
+
+### N2 independent metadata-budget finding, 18 October 09:06 UTC
+
+The independent reviewer reproduced an owned-storage limit violation in the startup buffer:
+at a scaled 65,536-byte limit, 600 distinct five-item metadata lists were charged 64,736 bytes,
+but their copied retained payload occupied 78,108 bytes. `deepcopy` can expand list storage;
+counting the input containers is not a conservative bound for their copies. Ordinary decoded
+metadata uses scalar counts, but the accepted public nested-metadata contract must also obey
+the current-inclusive 32 MiB limit. The interrupted f5 full-gate attempt is retained and is
+not acceptance evidence for a corrected implementation.
+
+Before editing, register this narrow correction: reserve conservative copy-container capacity;
+count independently copied XYZ/intensity/ring separately from the metadata deepcopy memo;
+then independently check owned retained storage before accepting a snapshot. Preserve supported
+plain metadata types and cycles, reset/overflow behavior, timestamps and replay semantics.
+Test the nested-list reproduction, aliases shared between fields and metadata, and actual
+owned-storage bounds. Require independent review, affected replay tests and a fresh full gate
+on the committed corrected source. Do not waive the limit or relabel earlier source captures.
