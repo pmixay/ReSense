@@ -13,7 +13,9 @@ Falcon STOP behavior. The replay candidate loses 13 existing Falcon STOP frames,
 including person-associated frames 2972–2975, despite detecting the approach earlier
 in aggregate. This violates the unrestricted no-loss protocol; the passing Pandar
 gate and X3 measurements do not cancel that failure. The selected default is zero
-replay frames; its fresh full-recording and gate checks are separate integration evidence.
+replay frames. Its [fresh complete Falcon comparison](falcon_default_off/independent_review.json)
+preserves all 1,372 STOP frames and all eight STOP intervals across 4,443 frames.
+The fresh default gate and X3 remain separate integration checks.
 
 This is development evidence on `work/n5-labels-c2-acceptance`, not a release or
 an independent hidden-set score. The complete sensor proxy experiment below is
@@ -221,6 +223,17 @@ frame. That first frame remains FAULT with zero range until orientation is confi
 The new auto totals are 1 FAULT, 12 GO, 3,043 CAUTION and 1,387 STOP. Its person
 and static-support association counts equal explicit ROS, including the disclosed
 increase in static-support alarms. See [candidate capture](falcon_replay_candidate/summary.json).
+
+Following the user's opt-in choice, immutable `cecab1b` was run again over all
+4,443 actual Falcon frames with the zero-replay default and no overrides. A fresh
+`9b92df5` control used the same native binary and Haswell runtime. The
+[independent full-recording review](falcon_default_off/independent_review.json)
+finds exact shared non-timing outputs after the documented readiness additions:
+all **1,372 STOP frames and eight STOP intervals** are preserved, with no added,
+lost, delayed or shortened STOP. All 13 frames lost by the replay-four candidate
+are restored. The earlier comparison against the historical capture found tiny
+unrounded coefficient differences; that result remains preserved and was resolved
+with a fresh matched-runtime control, without a numeric tolerance waiver.
 
 ## Fields and sampling sensitivity
 
