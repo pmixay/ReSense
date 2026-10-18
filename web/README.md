@@ -253,7 +253,7 @@ Known limits:
 The committed real-data clips (v0.6.2; the Docker chain v0.6.3) cover every presentation surface;
 all five are silent:
 
-The 2:50 overview uses these clips as **archival visualization** and labels them as such in its
+The 3:00 overview (180 s measured with `ffprobe`, 16.10) uses these clips as **archival visualization** and labels them as such in its
 source line. Its numerical cards come from the deck's numbers (`N` in `scripts/build_deck.py`: the
 27.09 regression baseline and the 28.09 node captures), not from measurements made in the earlier
 video clips; their sources and where they differ from the independent judgement of 28.09 are in

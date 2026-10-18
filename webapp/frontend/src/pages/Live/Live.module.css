@@ -1,5 +1,6 @@
 .live {
-  grid-template-rows: auto minmax(0, 1.2fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(330px, 1.2fr) minmax(0, 1fr);
+  min-height: 650px;
 }
 .beacon {
   grid-column: 1 / 5;
@@ -112,4 +113,18 @@
   display: grid;
   place-items: center;
   flex: none;
+}
+
+@media (max-width: 700px) {
+  .live {
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+  .live > * { grid-column: 1 / -1; }
+  .bar { height: auto; min-height: 70px; flex-wrap: wrap; padding: 14px; }
+  .url { min-width: 0; flex-basis: 100%; width: 100%; }
+  .chips { flex-wrap: wrap; }
+  .beacon { min-height: 330px; }
+  .view, .node, .timeline, .dets, .health { min-height: 260px; }
 }

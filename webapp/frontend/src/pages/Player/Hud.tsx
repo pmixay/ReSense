@@ -6,6 +6,7 @@
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import type { DetectionDict, FrameResultDict } from '../../api/types';
 import { Icon, IconButton, Spinner } from '../../components';
+import { cautionText } from '../../lib/decisions';
 import { POINTS, fmtCount, fmtMeters, fmtNum, fmtNumTrim, plural } from '../../lib/format';
 import { CAMERA_HUD, envelopeText } from './cab';
 import { RULER_MARKS, type SceneOverlay } from '../../player/scene';
@@ -143,6 +144,7 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
   return (
     <div className={`${styles.hud} ${noView ? styles.hudNoView : ''}`}>
       <div className={styles.hudc}>
+        {frame?.decision === 'CAUTION' && <div className={styles.g} style={{ maxWidth: 700, whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{cautionText(frame)}</div>}
         <div className={styles.g}>
           <Icon name="camera" size={16} />
           {free ? 'свободная камера' : CAMERA_HUD[mode]}

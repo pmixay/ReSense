@@ -215,7 +215,7 @@ LiDAR (`track.rails_far_rings`: шлюз не проходит). Подробн�
 варианты: [`CHANGELOG.md`](CHANGELOG.md).
 
 ![doubleT_obstacle, кадр 24, вид из кабины: габарит поезда (зелёный) вдоль оси пути, точки внутри него (жёлтые) и человек, обнаруженный на 55,8 м (STOP)](docs/img/hero_person.png)
-*Реальные данные: `doubleT_obstacle` из кабины, человек на 55,8 м. Видео: обзор на 2:50
+*Реальные данные: `doubleT_obstacle` из кабины, человек на 55,8 м. Видео: обзор на 3:00
 [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (русские субтитры) и цепочка
 Docker + RViz [`docs/video/docker_chain_rviz.mp4`](docs/video/docker_chain_rviz.mp4).*
 
@@ -338,7 +338,7 @@ ROS содержит проверяемую копию): габарит `gauge.p
 | алгоритм: задача, данные, обработка, решение, параметры, ограничения, математическая модель | [`docs/ALGORITHM.md`](docs/ALGORITHM.md) (модель в формулах — §3), [`docs/SENSOR.md`](docs/SENSOR.md), [`docs/DATASET.md`](docs/DATASET.md) |
 | эксперименты: дальность, задержка, частота кадров, ложные тревоги, трудные случаи, эволюция качества | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), протокол [`docs/EVALUATION.md`](docs/EVALUATION.md), решения [`docs/DECISIONS.md`](docs/DECISIONS.md), [`CHANGELOG.md`](CHANGELOG.md) |
 | карта требований ТЗ, критериев §8 и вклада команды | [`docs/REQUIREMENTS_MAP.md`](docs/REQUIREMENTS_MAP.md) |
-| видео | [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (2:50, субтитры [`.srt`](docs/video/resense_overview.ru.srt)), клипы в [`docs/video/`](docs/video) |
+| видео | [`docs/video/resense_overview.mp4`](docs/video/resense_overview.mp4) (3:00, измерено `ffprobe` 16.10; субтитры [`.srt`](docs/video/resense_overview.ru.srt)), клипы в [`docs/video/`](docs/video) |
 | презентация | [`docs/presentation/`](docs/presentation) (собирается `scripts/build_deck.py`; тексты — [`docs/PRESENTATION.md`](docs/PRESENTATION.md)) |
 | дополнительно: демонстрация в браузере без ROS и Docker (веб-прототип, вне образа и релиза) | онлайн [resense.arbuz.lol](https://resense.arbuz.lol/); [`webapp/README.md`](webapp/README.md), контракт HTTP [`webapp/API.md`](webapp/API.md), GitBook [«Веб-прототип»](https://resense.gitbook.io/resense-docs/visualisation/web-prototype) |
 

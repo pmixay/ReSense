@@ -1,0 +1,82 @@
+
+> resense-web-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /home/pichotiner/ReSense/ReSense/webapp/frontend
+
+ ✓ src/lib/decisions.test.ts (6 tests) 23ms
+ ✓ src/player/geometry.test.ts (14 tests) 352ms
+ ✓ src/pages/Upload/uploadStore.test.ts (13 tests) 111ms
+ ✓ src/pages/Live/feed.test.ts (15 tests) 115ms
+ ✓ src/player/engine.test.ts (9 tests) 103ms
+ ✓ src/api/client.test.ts (6 tests) 61ms
+ ✓ src/player/frameStore.test.ts (5 tests) 52ms
+ ✓ src/player/cloudCache.test.ts (9 tests) 57ms
+ ✓ src/pages/Runs/common/analysis.test.ts (16 tests) 71ms
+ ✓ src/api/chunkCodec.test.ts (7 tests) 2512ms
+   ✓ prepareChunk > gzips what shrinks, with the CRC of the raw bytes from the trailer  1214ms
+   ✓ prepareChunk > sends raw what does not shrink, or when not asked  1196ms
+ ✓ src/pages/Queue/jobs.test.ts (8 tests) 28ms
+ ✓ src/pages/Presets/model.test.ts (10 tests) 73ms
+ ✓ src/api/cloud.test.ts (4 tests) 35ms
+ ✓ src/player/events.test.ts (9 tests) 31ms
+ ✓ src/pages/Player/cab.test.ts (22 tests) 68ms
+ ✓ src/lib/format.test.ts (9 tests) 26ms
+ ✓ src/pages/Live/timeline.test.ts (12 tests) 34ms
+ ✓ src/api/status.test.ts (14 tests) 20ms
+ ✓ src/player/motion.test.ts (11 tests) 67ms
+ ✓ src/pages/Upload/upload.test.ts (8 tests) 63ms
+ ✓ src/player/clock.test.ts (11 tests) 66ms
+ ✓ src/pages/Player/useCab.test.ts (4 tests) 42ms
+ ✓ src/api/hooks.test.ts (2 tests) 27ms
+ ✓ src/pages/Overview/verdict.test.ts (7 tests) 28ms
+ ✓ src/pages/Overview/kpis.test.ts (5 tests) 35ms
+ ✓ src/lib/track.test.ts (10 tests) 25ms
+ ✓ src/api/upload.test.ts (16 tests) 9069ms
+   ✓ uploadRecording > sends small files whole, big ones in checked chunks (gzip when it pays), finalizes in the background  2256ms
+   ✓ uploadRecording > resumes: sends only what the server does not hold  593ms
+   ✓ uploadRecording > retries a dropped connection and a corrupted chunk, showing the wait  4623ms
+   ✓ uploadRecording > a finalize refused while a dead connection still holds the area is retried, never deleted  1041ms
+ ✓ src/pages/Live/Live.test.tsx (14 tests) 1142ms
+   ✓ Beacon > shows a live STOP with the obstacle distance and the freshness  380ms
+ ✓ src/components/TopBar/TopBar.test.tsx (3 tests) 1455ms
+   ✓ TopBar > marks the group of the current page and shows the backend offline  948ms
+ ✓ src/pages/Compare/Compare.test.tsx (3 tests) 2898ms
+   ✓ Сравнение > compares the runs of the URL: KPI table with the best values, strips, what changed  1261ms
+   ✓ Сравнение > removes a run keeping the colour slots in the URL, and asks for more below two  1373ms
+ ✓ src/pages/Presets/Presets.test.tsx (7 tests) 3546ms
+   ✓ Presets page > shows the sealed built-in read-only, grouped by the schema  855ms
+   ✓ Presets page > duplicates the built-in, counts the changes and creates the preset with only the overrides  1134ms
+   ✓ Presets page > shows the backend’s message at the name field on a conflict  514ms
+   ✓ Presets page > shows a validation error at the parameter it names  584ms
+ ✓ src/pages/Runs/Runs.test.tsx (5 tests) 3728ms
+   ✓ Прогоны > lists runs with their facts, filters them and compares a selection  2025ms
+   ✓ Прогоны > renames a run inline and deletes one after confirming  895ms
+   ✓ Прогоны > keeps the ticked runs when the page is opened again (after «back» from /compare)  621ms
+ ✓ src/pages/RunDetail/RunDetail.test.tsx (5 tests) 3952ms
+   ✓ Прогон > shows the verdict, KPIs, events, evaluation and downloads of a run  2042ms
+   ✓ Прогон > opens the player at an event  901ms
+   ✓ Прогон > deletes the run from the menu and returns to the list  920ms
+ ✓ src/pages/About/About.test.tsx (9 tests) 5125ms
+   ✓ О системе > shows the pipeline as a line of stations, each explained in its «?»  1076ms
+   ✓ О системе > shows the four decisions as signals with their rule  723ms
+   ✓ О системе > shows the README results as big numbers, each with its caveat  535ms
+   ✓ О системе > lists the five ROS commands and copies one  924ms
+   ✓ О системе > shows this stand from /api/system: versions and features  592ms
+   ✓ О системе > keeps the page usable when the backend is down  603ms
+   ✓ О системе > links the documentation and names the team  657ms
+ ✓ src/pages/Queue/QueueParts.test.tsx (3 tests) 658ms
+   ✓ ConfirmButton > asks once, then runs the action; disarms by itself  483ms
+ ✓ src/components/LineRail/LineRail.test.tsx (3 tests) 505ms
+   ✓ LineRail > marks the current station, with a sub label  398ms
+ ✓ src/components/Help/Help.test.tsx (3 tests) 464ms
+   ✓ Help > describes the button by its tooltip and opens on hover, closes on Escape  351ms
+ ✓ src/pages/Upload/useDemo.test.tsx (2 tests) 111ms
+ ✓ src/components/DecisionStrip/DecisionStrip.test.tsx (2 tests) 217ms
+ ✓ src/pages/Runs/common/useUrlParams.test.tsx (1 test) 115ms
+
+ Test Files  40 passed (40)
+      Tests  322 passed (322)
+   Start at  14:24:01
+   Duration  21.42s (transform 5.85s, setup 19.74s, collect 17.83s, tests 37.11s, environment 19.08s, prepare 12.36s)

@@ -1,6 +1,7 @@
 // The real node's status via rosbridge. roslib is imported lazily so it only lands in the chunk of
 // the page that connects.
 import type { LiveMessage } from './types';
+import { isStatus } from './status';
 import { STATUS_TOPIC, rosbridgeUrl } from './ws';
 
 export interface RosStatusHandlers {
@@ -23,7 +24,9 @@ export async function subscribeRosStatus(url: string = rosbridgeUrl(), h: RosSta
   const topic = new ROSLIB.Topic<{ data: string }>({ ros, name: STATUS_TOPIC, messageType: 'std_msgs/msg/String' });
   topic.subscribe((m) => {
     try {
-      h.onMessage(JSON.parse(m.data) as LiveMessage);
+      const status: unknown = JSON.parse(m.data);
+      if (!isStatus(status)) throw new Error('Invalid status');
+      h.onMessage(status);
     } catch {
       h.onError?.('Некорректное сообщение узла');
     }

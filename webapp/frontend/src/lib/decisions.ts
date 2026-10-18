@@ -12,7 +12,7 @@ const LETTER_DECISION: Record<string, Decision> = { G: 'GO', C: 'CAUTION', S: 'S
 
 /** Russian labels (lower case, for text and legends). */
 export const DECISION_LABEL: Record<Decision, string> = {
-  GO: 'свободно',
+  GO: 'препятствие не обнаружено',
   CAUTION: 'внимание',
   STOP: 'стоп',
   FAULT: 'ошибка',
@@ -20,7 +20,7 @@ export const DECISION_LABEL: Record<Decision, string> = {
 
 /** Upper-case labels for decision chips and beacons (Benzin). */
 export const DECISION_CHIP_LABEL: Record<Decision, string> = {
-  GO: 'СВОБОДНО',
+  GO: 'GO',
   CAUTION: 'ВНИМАНИЕ',
   STOP: 'СТОП',
   FAULT: 'ОШИБКА',
@@ -59,6 +59,23 @@ export const SEVERITY: Record<Decision, number> = { GO: 0, CAUTION: 1, FAULT: 2,
 
 export function isDecision(v: unknown): v is Decision {
   return v === 'GO' || v === 'CAUTION' || v === 'STOP' || v === 'FAULT';
+}
+
+const REASON_LABEL: Record<string, string> = {
+  advisory_object: 'Предупреждение об объекте',
+  health_warning: 'Снижена достоверность данных',
+  doubt: 'Неоднозначный объект',
+  margin_object: 'Объект у границы габарита',
+  compact_range_object: 'Компактный объект в зоне контроля',
+  incomplete_advisory: 'Недостаточно данных об объекте',
+};
+
+/** Presentation only: the producer's decision always owns the explanation. */
+export function cautionText(r: { decision?: Decision; caution_reason?: string[] } | null | undefined): string {
+  if (r?.decision !== 'CAUTION') return '';
+  if (!r.caution_reason?.length) return 'Причина не передана';
+  return [...new Set(r.caution_reason)].map(code => Object.hasOwn(REASON_LABEL, code)
+    ? REASON_LABEL[code] : `Причина: ${code}`).join(' · ');
 }
 
 /** Letter → decision; anything unknown reads as FAULT (never silently as GO). */
@@ -146,10 +163,20 @@ export function decideFrame(r: {
   warning?: boolean;
   health?: { level?: string; decision_level?: string } | null;
 }): Decision {
-  if (r.obstacle) return 'STOP';
+  if (r.obstacle === true) return 'STOP';
+  if (['obstacle', 'warning'].some(k => {
+    const v = r[k as 'obstacle' | 'warning'];
+    return v !== undefined && typeof v !== 'boolean';
+  })) return 'FAULT';
+  if (r.health != null && (typeof r.health !== 'object' || Array.isArray(r.health))) return 'FAULT';
+  if (['level', 'decision_level'].some(k => {
+    const v = r.health?.[k as 'level' | 'decision_level'];
+    return v !== undefined && !['ok', 'warn', 'error'].includes(v);
+  })) return 'FAULT';
   const level = r.health?.level;
   if (level === 'error') return 'FAULT';
   const dlevel = r.health?.decision_level ?? level;
+  if (dlevel === 'error') return 'FAULT';
   if (r.warning || dlevel === 'warn') return 'CAUTION';
   return 'GO';
 }

@@ -1439,7 +1439,17 @@ def main():
     ap.add_argument("--check-gate", metavar="BASELINE_JSON",
                     help="compare GATE with a regression baseline / gate JSON and exit (no build)")
     ap.add_argument("--audit", metavar="PPTX", help="count visible words and check PT1's 80/slide, 1100 total limits")
+    ap.add_argument("--check-node-source", metavar="DECLARATION_JSON", help="verify explicit P4 node-path source references (separate from GATE)")
+    ap.add_argument("--render-node-chart", metavar="DIRECTORY", help="with --check-node-source: render the complete source table and shared card input")
+    ap.add_argument("--final-node-source", action="store_true", help="require release/raw verification and recorded P1/P4 approvals")
     a = ap.parse_args()
+    if a.check_node_source:
+        from p2_chart_sources import load_sources, render_sources
+        data = load_sources(a.check_node_source, final=a.final_node_source)
+        if a.render_node_chart:
+            render_sources(a.check_node_source, a.render_node_chart, final=a.final_node_source)
+        print(f"node source parity PASS: {len(data['rows'])} rows; declaration {data['declaration_sha256']}")
+        return
     if a.check_gate:
         raise SystemExit(check_gate(a.check_gate))
     if a.audit:

@@ -89,7 +89,7 @@ export const STATIONS: readonly Station[] = [
     key: 'decision',
     name: 'решение',
     icon: 'stop-octagon',
-    help: 'СТОП при подтверждённом препятствии; иначе ОШИБКА, если входу нельзя доверять; иначе ВНИМАНИЕ; иначе СВОБОДНО. Топики /resense/decision и /resense/nearest_distance.',
+    help: 'СТОП при подтверждённом препятствии; иначе ОШИБКА, если входу нельзя доверять; иначе ВНИМАНИЕ; иначе GO — препятствие не обнаружено. Топики /resense/decision и /resense/nearest_distance.',
   },
 ];
 

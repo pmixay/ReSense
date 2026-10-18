@@ -265,3 +265,16 @@
     margin-right: 8px;
   }
 }
+
+@media (max-width: 700px) {
+  .top { height: auto; flex-wrap: wrap; padding: 12px 16px; }
+  .right { gap: 6px; }
+  .right .chip { padding: 0 8px; }
+  .right .chip + .chip { display: none; }
+  .nav { order: 3; width: 100%; height: auto; flex-wrap: wrap; }
+  .pill { padding: 0 12px; }
+  .grpWrap { position: static; }
+  .dd { top: 100%; left: 12px; right: 12px; width: auto; min-width: 0; }
+  .dd::before { display: none; }
+  .ddS { white-space: normal; }
+}

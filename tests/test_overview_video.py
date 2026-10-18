@@ -129,16 +129,13 @@ def test_every_gate_number_has_a_baseline_field():
 # Like the other committed-output checks above, this check belongs to the video checkout.
 if (ROOT / module.OUT_MP4).is_file():
 
-    def _latest_baseline():
-        """The newest gate baseline that measured the ride (by its "created" stamp, as
-        web/demo/test_web.py picks it; since 27.09 not every baseline is named *_ride*)."""
-        baselines = [json.loads(p.read_text()) for p in RESULTS.glob("regression_baseline_*.json")]
-        return max((b for b in baselines if b.get("ride", {}).get("available")), key=lambda b: b["created"])
+    def _declared_baseline():
+        """Historical media must verify its declared source, not a later experiment."""
+        return json.loads((ROOT / module.GATE_SOURCE).read_text())
 
-    def test_gate_block_follows_the_newest_gate_baseline():
-        """Every number of the GATE block equals its field in the newest baseline, so a new baseline
-        without an updated block (and a re-rendered video: the .srt test above) fails here."""
-        latest = _latest_baseline()
+    def test_gate_block_follows_the_declared_gate_baseline():
+        """Every card value equals its explicitly declared historical source."""
+        latest = _declared_baseline()
         wrong = {}
         for key, (path, digits, _, _) in module.GATE_SOURCES.items():
             value = latest
@@ -148,11 +145,11 @@ if (ROOT / module.OUT_MP4).is_file():
                 value = round(value, digits) if digits else int(round(value))
             if module.GATE[key] != value:
                 wrong[key] = (module.GATE[key], value)
-        assert not wrong, f"GATE differs from the newest baseline (block, baseline): {wrong}"
+        assert not wrong, f"GATE differs from the declared baseline (block, baseline): {wrong}"
         assert latest["recordings"]["doubleT_obstacle"]["frames"] == module.FIXED["dt_frames"]
 
     def test_ride_card_follows_the_current_gate_baseline():
-        events = _latest_baseline()["ride"]["alarm_events"]
+        events = _declared_baseline()["ride"]["alarm_events"]
         cards = [c for b in module.BLOCKS for c in b["cards"] if c["kind"] == "num" and "поездке" in c["label"]]
         assert cards, "no ride card in the cut table"
         for c in cards:

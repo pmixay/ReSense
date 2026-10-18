@@ -5,7 +5,6 @@ Run from the repository root:  python -m pytest -q web/demo
 collect this file — add ``web/demo`` there if the team wants it in CI.)  Everything runs
 without the organizers' dataset; the browser tests skip when Playwright or Chromium is missing.
 """
-import glob
 import json
 import os
 import re
@@ -625,15 +624,17 @@ def test_dashboard_uses_supplied_moscow_sans_visual_system():
 
 
 def newest_ride_baseline():
-    """The current gate baseline: the newest one (by its "created" stamp) that measured the ride; since
-    27.09 the baselines are not all named *_ride* (regression_baseline_2026-09-27_quality.json)."""
-    baselines = []
-    for path in glob.glob(os.path.join(ROOT, "docs", "evidence", "results", "regression_baseline_*.json")):
-        with open(path) as source:
-            data = json.load(source)
-        if data.get("ride", {}).get("available"):
-            baselines.append((data["created"], data))
-    return max(baselines, key=lambda item: item[0])[1]
+    """Compatibility name: use the media's declared source, never a later experiment."""
+    import ast
+    sources = []
+    for name in ("build_deck.py", "make_overview_video.py"):
+        with open(os.path.join(ROOT, "scripts", name)) as source:
+            tree = ast.parse(source.read())
+        sources.append(next(ast.literal_eval(n.value) for n in tree.body if isinstance(n, ast.Assign)
+                            and any(getattr(t, "id", "") == "GATE_SOURCE" for t in n.targets)))
+    assert sources[0] == sources[1], "deck and video must explicitly agree on their historical source"
+    with open(os.path.join(ROOT, sources[0])) as source:
+        return json.load(source)
 
 
 def test_presentation_artifact_uses_the_organizers_slide_sequence():

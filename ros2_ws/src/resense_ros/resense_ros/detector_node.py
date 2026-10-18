@@ -1326,7 +1326,8 @@ class DetectorNode(Node):
         status.pose.position.x, status.pose.position.y, status.pose.position.z = map(float, p_s)
         status.pose.orientation.w = 1.0
         status.scale.z = 1.2
-        decision = self.decision(res, self.decision_policy)  # the same policy as /resense/decision
+        answer = evaluate_decision(res, self.decision_policy)  # same evaluated policy as status
+        decision = answer.decision
         clear = float(getattr(res, "clear_distance", -1.0))
         if res.obstacle:
             status.text = f"STOP: OBSTACLE  {res.nearest_distance:.1f} m"
@@ -1335,8 +1336,9 @@ class DetectorNode(Node):
             status.text = "FAULT: input not trusted"
             status.color.r, status.color.g, status.color.b, status.color.a = 0.8, 0.2, 0.8, 1.0
         elif decision == "CAUTION":
-            status.text = (("CAUTION: object near gauge" if res.warning else "CAUTION: degraded")
-                           + f"  monitored {clear:.0f} m (estimate)")
+            labels = {"advisory_object": "object advisory", "health_warning": "degraded data"}
+            reasons = "; ".join(labels.get(code, code) for code in answer.caution_reason)
+            status.text = f"CAUTION: {reasons}\nmonitored {clear:.0f} m (estimate)"
             status.color.r, status.color.g, status.color.b, status.color.a = 1.0, 0.6, 0.0, 1.0
         else:
             status.text = f"GO: NO OBSTACLE DETECTED  monitored {clear:.0f} m (estimate)"

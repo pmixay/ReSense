@@ -41,14 +41,14 @@ describe('texts', () => {
     expect(t.help).toContain('5 кадров');
   });
 
-  it('names the nearest warning of a CAUTION, else the health', () => {
+  it('does not infer a missing CAUTION explanation from boxes', () => {
     const w = decisionText('CAUTION', fr({ warnings: [{ distance: 30.2 }, { distance: 12.34 }] as FrameResultDict['warnings'] }), 0.5);
-    expect(sp(w.line2)).toBe('ближайший 12,3 м');
-    expect(decisionText('CAUTION', fr({ warnings: [] }), 0.5).line1).toBe('исправность снижена');
+    expect(sp(w.line2)).toBe('причины над облаком');
+    expect(decisionText('CAUTION', fr({ warnings: [] }), 0.5).line1).toBe('предупреждение');
   });
 
-  it('says how far the track is clear on GO', () => {
-    expect(sp(decisionText('GO', fr({ clear_distance: 187.4 }), 0.5).line2)).toBe('на 187 м');
+  it('labels GO range as an estimate, not a guarantee', () => {
+    expect(sp(decisionText('GO', fr({ clear_distance: 187.4 }), 0.5).line2)).toBe('контроль ≈ 187 м');
     expect(decisionText('GO', null, 0.5).line2).toBe('—');
   });
 
@@ -68,7 +68,7 @@ describe('distanceModel', () => {
 
   it('shows the free track without an obstacle', () => {
     const m = distanceModel(fr({ obstacle: false, nearest_distance: null, clear_distance: 120, health: { visibility: 150 } }));
-    expect(m).toEqual({ obstacle: false, unverified: false, title: 'Свободный путь', value: 120, free: 120, monitored: 150 });
+    expect(m).toEqual({ obstacle: false, unverified: false, title: 'Дальность контроля ≈', value: 120, free: 120, monitored: 150 });
     expect(distanceModel(null).value).toBeNull();
     // no frame yet: the title follows the run's decision, nothing is claimed
     expect(distanceModel(null, 'STOP')).toMatchObject({ title: 'До препятствия', value: null, free: 0, obstacle: false });

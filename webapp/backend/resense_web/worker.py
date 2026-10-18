@@ -21,7 +21,7 @@ from typing import Iterator
 import numpy as np
 
 from resense_web.clouds import CloudWriter, cloud_stride, pack_frame_cloud
-from resense_web.decision import decision_of, letter_of
+from resense_web.decision import evaluate_decision, import_decision, letter_of
 from resense_web.results import ResultsWriter, iter_results
 from resense_web.settings import get_settings
 from resense_web.summary import SeriesBuilder, episodes_of, events_of, run_summary
@@ -282,7 +282,7 @@ def run_job(spec: dict, progress: Progress) -> dict:
                 else:
                     d["t"] = round(pos * 0.1, 3)
                 d.setdefault("frame_id", "")
-                d["decision"] = decision_of(d)
+                import_decision(d)
                 d["pos"] = pos
                 writer.write(d)
                 series.add(d)
@@ -315,7 +315,7 @@ def run_job(spec: dict, progress: Progress) -> dict:
                 d["frame"] = int(idx)
                 d["frame_id"] = frame.frame_id
                 d["t"] = round(float(frame.stamp) - float(t_first), 3)
-                d["decision"] = decision_of(d)
+                d.update(evaluate_decision(d).to_dict())
                 d["pos"] = pos
                 writer.write(d)
                 series.add(d)

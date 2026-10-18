@@ -23,6 +23,13 @@ export interface NodeFreshness {
   reason?: string;
   go_allowed?: boolean;
   source_age_s?: number | null;
+  residence_age_s?: number | null;
+  evaluated_at_utc_s?: number;
+  max_result_age_s?: number;
+  future_tolerance_s?: number;
+  queue_lag_s?: number;
+  mode?: string;
+  clock_reference?: string;
 }
 
 export type StatusMessage = Omit<LiveMessage, 'node'> & {
@@ -33,6 +40,26 @@ export type StatusMessage = Omit<LiveMessage, 'node'> & {
 };
 
 const num = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null);
+
+/** Receipt activity alone cannot establish current ROS data. Replay simulation is
+ * handled separately by the store and never treated as live detector timing. */
+export function nodeCurrent(msg: StatusMessage | null, utcMs = Date.now()): boolean {
+  const f = msg?.freshness;
+  if (!msg || !f || f.valid !== true || f.reason !== 'current' || msg.stop_held
+    || msg.snapshot_kind !== 'frame' || msg.decision === 'FAULT' || msg.health?.level === 'error'
+    || msg.health?.decision_level === 'error' || msg.node?.catchup
+    || f.go_allowed !== (msg.decision === 'GO')) return false;
+  const clock = f.mode === 'live' ? 'acquisition_utc' : f.mode === 'replay' ? 'publisher_utc' : null;
+  if (!clock || f.clock_reference !== clock) return false;
+  const source = num(f.source_age_s), residence = num(f.residence_age_s);
+  const evaluated = num(f.evaluated_at_utc_s), max = num(f.max_result_age_s);
+  const tolerance = num(f.future_tolerance_s), queue = num(f.queue_lag_s);
+  if (source === null || residence === null || evaluated === null || max === null
+    || tolerance === null || queue === null || max <= 0 || max > .5 || tolerance < 0 || tolerance > .05
+    || queue < 0 || queue > 1e-6 || residence < 0 || source < -tolerance) return false;
+  const transport = utcMs / 1000 - evaluated;
+  return transport >= -tolerance && Math.max(source, residence) + Math.max(0, transport) <= max;
+}
 
 // ---------------------------------------------------------------- feed state
 
