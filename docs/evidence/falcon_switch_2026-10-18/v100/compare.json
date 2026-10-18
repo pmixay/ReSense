@@ -1,0 +1,151 @@
+{
+ "alone": {
+  "pandar": {
+   "decisions": {
+    "GO": 8,
+    "STOP": 193
+   },
+   "timing": {
+    "decode_ms": {
+     "p50": 18.4,
+     "p95": 24.2,
+     "max": 43.5
+    },
+    "detect_ms": {
+     "p50": 28.3,
+     "p95": 40.3,
+     "max": 52.7
+    },
+    "total_ms": {
+     "p50": 28.3,
+     "p95": 40.3,
+     "max": 52.7
+    },
+    "frames": 201,
+    "points_median": 340723,
+    "over_100ms_total": 0
+   }
+  },
+  "falcon": {
+   "decisions": {
+    "FAULT": 1,
+    "GO": 8,
+    "CAUTION": 975,
+    "STOP": 1
+   },
+   "timing": {
+    "decode_ms": {
+     "p50": 2.4,
+     "p95": 3.2,
+     "max": 8.1
+    },
+    "detect_ms": {
+     "p50": 14.3,
+     "p95": 19.7,
+     "max": 52.8
+    },
+    "total_ms": {
+     "p50": 14.3,
+     "p95": 19.7,
+     "max": 52.8
+    },
+    "frames": 985,
+    "points_median": 94929,
+    "over_100ms_total": 0
+   }
+  }
+ },
+ "p2f": {
+  "order": [
+   "pandar",
+   "falcon"
+  ],
+  "frames": 1186,
+  "resets": [
+   [
+    201,
+    "new_input"
+   ]
+  ],
+  "first_part_differs": 0,
+  "second_part_differs": 0,
+  "differences": [],
+  "first_frames_after_switch": [
+   {
+    "i": 201,
+    "decision": "FAULT",
+    "mount": "pending",
+    "frame_id": "seyond",
+    "msgs": [
+     "6 of 6 central 10 deg sectors without returns: view blocked",
+     "track visible to 3 m only (< 60 m)"
+    ]
+   },
+   {
+    "i": 202,
+    "decision": "GO",
+    "mount": "pending",
+    "frame_id": "seyond",
+    "msgs": []
+   },
+   {
+    "i": 203,
+    "decision": "GO",
+    "mount": "pending",
+    "frame_id": "seyond",
+    "msgs": []
+   }
+  ],
+  "decisions": {
+   "GO": 16,
+   "STOP": 194,
+   "FAULT": 1,
+   "CAUTION": 975
+  }
+ },
+ "f2p": {
+  "order": [
+   "falcon",
+   "pandar"
+  ],
+  "frames": 1186,
+  "resets": [
+   [
+    985,
+    "new_input"
+   ]
+  ],
+  "first_part_differs": 0,
+  "second_part_differs": 0,
+  "differences": [],
+  "first_frames_after_switch": [
+   {
+    "i": 985,
+    "decision": "GO",
+    "mount": "pending",
+    "frame_id": "lidar_livox",
+    "msgs": []
+   },
+   {
+    "i": 986,
+    "decision": "GO",
+    "mount": "pending",
+    "frame_id": "lidar_livox",
+    "msgs": []
+   },
+   {
+    "i": 987,
+    "decision": "GO",
+    "mount": "pending",
+    "frame_id": "lidar_livox",
+    "msgs": []
+   }
+  ],
+  "decisions": {
+   "FAULT": 1,
+   "GO": 16,
+   "CAUTION": 975,
+   "STOP": 194
+  }
+ }
+}

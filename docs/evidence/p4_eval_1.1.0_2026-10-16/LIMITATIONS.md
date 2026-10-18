@@ -51,3 +51,31 @@ each limitation below applies to both versions.
 | 1.1.0 fixes tall narrow objects | — | not claimed anywhere; L9 OPEN | **do not claim** |
 
 P4 did not edit the shared documents. P1 / P3 own those files; this table is the proposed set of corrections.
+
+## D. Added 17–18.10: the extended data, the second lidar, the gauge (observation, development data)
+
+Measured by P4 on 1.1.0 **and** 707ea9c with the same node replica and runtime. All decisions and all track-model
+metrics are identical between the two versions. The one difference is the range the node *reports* (L10, L14).
+None of these rows is a held-out result.
+
+| # | limitation | measurement | source |
+|---|---|---|---|
+| L10 | **The gauge does not follow curves.** The fitted curvature is 2–4× too small on a curve of radius ≈ 400 m, so far ahead the gauge runs off the outside of the curve, inside the range the detector trusts and reports | `roundT_doubleT`: walls (raw points) and ICP agree on curvature −0.0023 … −0.0027 /m; detector −0.0006 … −0.0011. Axis off the driven path by **1.8 m at 90 m, 7.4 m at 135 m** (median); **40 % of the reported range is > 1.05 m off** (both versions). Smaller elsewhere: `squareT_platform_squareT_switch` 0.66 / 2.5 m, `synthetic_tunnels` 0.37 / 2.9 m at 90 / 135 m | [B6](../gauge_stability_2026-10-18/README.md) |
+| L11 | **Where no wall runs parallel to the track (platform halls), the trusted axis range falls to 45 m and the heading can follow a converging wall** | synthetic person (`synthetic_platform`): visible from 249.5 m, a candidate from ~200 m, demoted `beyond_axis` until inside 45 m, **first STOP 44.0 m** (147 / 147 demoted rows checked from snapshots; branch traced: no boundary → `rails_range[1] + axis_valid_margin` = 45 m). `doubleT_platform`: heading follows a wall converging at 2° (8–25 m). `synthetic_platform`: 40 % of the reported range > 1.05 m off | [A5](../synthetic_labels_2026-10-17/README.md), [B6](../gauge_stability_2026-10-18/README.md) |
+| L12 | **On the Falcon (second lidar) the node is in CAUTION almost all the time at a standing train in an empty tunnel** | whole recording, one detector: CAUTION **99 % (0–98 s), 99.8 % (98–241 s)** from two static warnings at 105.6 m and 115 m; false STOP 4 frames on the 115 m object; a probable false STOP of 8 frames on a floor patch at 9.4 m at the end (cause unverified). A person walking in the track is a STOP from 121–125 m (warning from 139 m), held to 6 m: correct | [B2](../falcon_full_2026-10-18/README.md), [extended data](../extended_data_2026-10-17/README.md) |
+| L13 | **Thresholds are tuned on doubled Pandar points** (dual-return copies); single-return sensors such as the Falcon get half the evidence per ray | *cited*: judge de-duplication 13.10, doubleT_obstacle STOP 193 → 189, platform CAUTION 51 % → 11 %; reproduced in X3 (`dedup` 189) | [Falcon README](../../sensor/falcon_prime/README.md) F4, X3 |
+| L14 | **The gauge edge flickers at 80–120 m** more than the proposed display target (N1) | Set O, motion-compensated frame-to-frame edge change p90: **0.04 / 0.13 / 0.30 m** at 40 / 80 / 120 m (N1 target ≤ 0.05 / 0.08 / 0.15 m). The trusted range halves and recovers within 1 s 0–22 times per recording; no frame is without a gauge | [B6](../gauge_stability_2026-10-18/README.md) |
+| L16 | **A lidar mounted on its side (rolled 90°) can pass the mount check on a tunnel wall and then STOP almost all the time.** Not always fail-safe (corrected 18.10): one rolled case turns 6 real STOP frames into CAUTION and gives GO on 2 empty frames; holding STOP while `pending` would not fix it (the wrong orientation counts as confirmed) Sideways mounts are outside the 8-candidate search (incl. the Falcon manual's native frame, which needs launch parameters) | 24-orientation battery, both versions: the 8 upright / inverted mounts adopt correctly at frame 1. 8 sideways mounts are never found (`CAUTION` throughout on an empty recording). 8 rolled mounts end `ok` with the wrong orientation: **395–509 of 545 frames STOP** on an empty moving recording | [B4](../orientation_2026-10-18/README.md) |
+| L15 | **Dust / suspension is not measured** | the organizers' 16.10 data contain none (exact difference on `synthetic_platform` 0–314; heuristic elsewhere) | [extended data](../extended_data_2026-10-17/README.md) |
+
+Positive, for balance: 1.1.0's shorter **reported** range (the `wall_drift` cut of 15.10) is the more truthful one on
+every recording where it differs from v1.0.0. The share of the reported range with the axis > 1.05 m off falls, for
+example 12.5 % → 2.2 % (`roundT_pressureGate_roundT`) and 3.0 % → 1.6 % (Set O). A Pandar ↔ Falcon switch inside one
+node is a clean fresh start in both directions (B3), and a Falcon frame costs ≈ 17 ms (B8).
+
+| # | evaluation limitation (added 17–18.10) |
+|---|---|
+| E9 | **The new synthetic recordings are scored only where exact labels exist:** `synthetic_platform` frames 0–314 (real scans = Set O 1195–1509). Platform 315–385, `synthetic_switch` and `synthetic_tunnels` have no source scan in any organizer recording (full 20-minute ride searched, positive control 252 / 252). Their STOPs are unscored. The intensity-1 marker is not a substitute: it found 57 % of the inserted points and about 12 false objects per frame. |
+| E10 | **The 16.10 synthetic objects are not static** (they approach ≈ 12.5 m/s faster than the train, in 0.8–3 m steps; Set O's objects are static, ICP-checked). The edge box `obj01` lies 9 cm inside the gauge, so its intent is uncertain: its 38 STOP rows are hits only if the organizers meant "inside". Both questions are with the organizers. |
+| E11 | **The Falcon is one recording**, replayed through the node replica (not the Docker node). Timing is this container's. |
+| E12 | **The gauge truth (B6) is the path the train drives next (ICP).** It was validated three ways on a curve. Recordings where the train stands (`doubleT_obstacle`, most of `squareT_platform_squareT_switch`) give no off-track numbers. The 8–25 m bin is a detector metric, not a check of the truth. |

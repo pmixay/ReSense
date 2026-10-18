@@ -18,6 +18,13 @@ so its median step is lower. Consequence for the
 the train", so the rule does not suppress them; the shipped gate's 8 of 8 `STOP` agrees. Whether the hidden set is
 generated the same way is not confirmed (the organizers did not answer the question directly).
 
+**Checked 18.10 against the train's own motion:** ICP odometry on the real scans of Set O frames 0–799 (the judge's
+`icp_odometry.py`, median fitness 0.98–0.99) gives the train's travel per frame. For every one of the ten objects the
+label approach per frame equals the train's travel to within ±0.3 m/s (median), so they are static in the world, as
+stated above ([`../synthetic_labels_2026-10-17/icp_setO_0-799.json`](../synthetic_labels_2026-10-17/icp_setO_0-799.json)).
+The 16.10 synthetic bags differ: there the inserted objects move about 12.5 m/s toward the train
+([`../synthetic_labels_2026-10-17/README.md`](../synthetic_labels_2026-10-17/README.md) "The inserted objects move").
+
 | object | size (m) | frames | first / last label distance (m) | median step (m per frame) |
 |---|---|---:|---|---:|
 | big_center | 2.0 x 2.0 x 2.0 | 229 | 98.7 / 3.0 | -0.34 |

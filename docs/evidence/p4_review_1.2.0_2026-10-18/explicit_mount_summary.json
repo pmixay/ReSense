@@ -1,0 +1,38 @@
+{
+ "roundT_squareT_pressureGate_squareT/case0": {
+  "frames": 545,
+  "STOP": 0,
+  "GO": 354,
+  "differing_from_upright": 0
+ },
+ "roundT_squareT_pressureGate_squareT/case4": {
+  "frames": 545,
+  "STOP": 0,
+  "GO": 354,
+  "differing_from_upright": 0
+ },
+ "roundT_squareT_pressureGate_squareT/case5": {
+  "frames": 545,
+  "STOP": 0,
+  "GO": 354,
+  "differing_from_upright": 0
+ },
+ "doubleT_obstacle/case0": {
+  "frames": 201,
+  "STOP": 193,
+  "GO": 8,
+  "differing_from_upright": 0
+ },
+ "doubleT_obstacle/case4": {
+  "frames": 201,
+  "STOP": 193,
+  "GO": 8,
+  "differing_from_upright": 0
+ },
+ "doubleT_obstacle/case5": {
+  "frames": 201,
+  "STOP": 193,
+  "GO": 8,
+  "differing_from_upright": 0
+ }
+}

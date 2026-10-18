@@ -1,0 +1,16 @@
+{
+ "frames": 1186,
+ "wall_s": 32.8,
+ "cpu_s": 32.4,
+ "rss_peak_mb": 258.7,
+ "resets": [
+  [
+   201,
+   "new_input"
+  ]
+ ],
+ "bags": [
+  "/home/user/rs-data/b3/pandar/for_hackathon/doubleT_obstacle",
+  "/home/user/rs-data/b3/falcon_prefix"
+ ]
+}

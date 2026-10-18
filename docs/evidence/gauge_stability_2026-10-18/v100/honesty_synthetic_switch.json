@@ -1,0 +1,11 @@
+{
+ "run": "/home/user/rs-data/synth_runs/v100_synthetic_switch.jsonl",
+ "frames_with_path": 735,
+ "steps_inside": 18240,
+ "steps_beyond": 7709,
+ "inside_over_0.5m": 0.148,
+ "inside_over_1.05m": 0.062,
+ "beyond_over_0.5m": 0.827,
+ "beyond_over_1.05m": 0.675,
+ "inside_error_p90": 0.71
+}
