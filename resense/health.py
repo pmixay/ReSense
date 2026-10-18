@@ -205,6 +205,8 @@ class HealthMonitor:
 
         if calibration:
             st = calibration.get("status")
+            if calibration.get("orientation_conflict", False):
+                flag(2, "mount orientation unconfirmed: " + calibration.get("message", "axis conflict"))
             if st == "fallback":
                 flag(1, "mount calibration: " + calibration.get("message", "fallback"))
             if calibration.get("drift_deg", 0.0) > 0 and "drift" in calibration.get("message", ""):

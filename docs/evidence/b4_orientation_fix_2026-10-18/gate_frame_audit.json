@@ -1,0 +1,29 @@
+{
+ "recording_rows": {
+  "cloud_with_fake_obj.jsonl": 1510,
+  "doubleT_obstacle.jsonl": 201,
+  "doubleT_platform.jsonl": 345,
+  "new_data_0.jsonl": 1409,
+  "new_data_1.jsonl": 1409,
+  "new_data_2.jsonl": 1409,
+  "new_data_3.jsonl": 1409,
+  "new_data_4.jsonl": 1409,
+  "new_data_5.jsonl": 1409,
+  "new_data_6.jsonl": 1409,
+  "new_data_7.jsonl": 1408,
+  "roundT_doubleT.jsonl": 252,
+  "roundT_pressureGate_roundT.jsonl": 268,
+  "roundT_squareT_pressureGate_squareT.jsonl": 545,
+  "squareT_platform_squareT_switch.jsonl": 877
+ },
+ "recording_total": 15269,
+ "set_f_sequences": 30,
+ "set_f_rows": 3060,
+ "all_processed_frames": 18329,
+ "gate_same_non_latency": 208,
+ "source_sha256": {
+  "resense/calibration.py": "b340acda96830a6641b85a4da2172b7138ef0c27bce897341b3b45d9ab514429",
+  "resense/detector.py": "4fa84cf71daac501e811383eed4db18b1f8057af8cd3448fc86265dbff100c84",
+  "resense/health.py": "6b392b75f49c8065d73e120a962954ae1c0dad52b8ecb427c25999e532b45144"
+ }
+}

@@ -363,7 +363,7 @@ class Detector:
                 if cfg.track.rails_far_check_enabled and cfg.track.rails_far_rings else None)
         self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring)
         R_old = self.calib.R.copy()
-        if self.calib.update(xyz_cfg, xyz, self.track, periods=periods):
+        if self.calib.update(xyz_cfg, xyz, self.track, periods=periods, ring=self._frame_ring):
             xyz = self.calib.apply(xyz_cfg)
             dR = self.calib.R @ R_old.T                                 # p_new = dR @ p_old
             change, orient = self.calib.last_change_deg, self.calib.last_change_orientation

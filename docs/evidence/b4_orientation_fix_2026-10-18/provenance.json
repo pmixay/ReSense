@@ -1,0 +1,21 @@
+{
+ "packages": {
+  "numpy": "1.26.4",
+  "scipy": "1.17.1",
+  "scikit-learn": "1.9.1",
+  "open3d": "0.20.0",
+  "pytest": "9.1.1",
+  "rosbags": "0.11.5",
+  "ruff": "0.15.8"
+ },
+ "dataset_zip_sha256": "e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be",
+ "native_sha256": {
+  "candidate": "67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394",
+  "baseline": "67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394"
+ },
+ "source_sha256": {
+  "resense/calibration.py": "b340acda96830a6641b85a4da2172b7138ef0c27bce897341b3b45d9ab514429",
+  "resense/detector.py": "4fa84cf71daac501e811383eed4db18b1f8057af8cd3448fc86265dbff100c84",
+  "resense/health.py": "6b392b75f49c8065d73e120a962954ae1c0dad52b8ecb427c25999e532b45144"
+ }
+}
