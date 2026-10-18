@@ -61,6 +61,9 @@ def main():
         ref = decisions(committed_jsonl(EV / "falcon_full_2026-10-18/falcon_full_runs.tar.xz", "falcon_full_v110.jsonl"))
         same = sum(a == b_ for a, b_ in zip(new, ref))
         res.append(line(new == ref, "Falcon whole recording decisions", f"{same}/{len(ref)} frames equal ({len(new)} run)"))
+        m = json.load(open(w / "falcon_full.meta.json"))
+        res.append(line(m["lost"] == 0 and m["kept"] == m["found"] == 4443, "Falcon stream complete",
+                        f"{m['kept']} of {m['found']} messages, {m['lost']} lost"))
     else:
         res.append(line(None, "Falcon whole recording", "not run"))
     p = w / "switch/compare.json"

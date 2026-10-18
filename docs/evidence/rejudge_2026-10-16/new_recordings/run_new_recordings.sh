@@ -16,8 +16,25 @@ J=$H/docs/evidence/judgement_2026-10-13/scripts; EV=$H/docs/evidence
 export RESENSE_REPO=$R PYTHONPATH=$R:$R/ros2_ws/src/resense_ros OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1
 mkdir -p "$DECODED" "$W/logs"; cd "$R" || exit 1
 log() { echo "[$(date +%H:%M:%S)] $*"; }
-decode() {  # <bag dir> <name>: node-decoded cache, once
-  [ -f "$DECODED/$2/meta.json" ] || $PY "$J/cache_decoded.py" "$1" "$DECODED/$2" > "$W/logs/decode_$2.log" 2>&1
+decode() {  # <bag dir> <name>: node-decoded cache, once; it must hold every point-cloud message of the bag
+  [ -f "$DECODED/$2/meta.json" ] && return 0
+  $PY "$J/cache_decoded.py" "$1" "$DECODED/$2" > "$W/logs/decode_$2.log" 2>&1
+  $PY - "$1/metadata.yaml" "$DECODED/$2/meta.json" <<'PYEOF' || { rm -rf "${DECODED:?}/$2"; echo "FATAL: $2 incomplete"; exit 3; }
+import json, re, sys
+y = open(sys.argv[1]).read()
+counts = [int(m) for m in re.findall(r"message_count: (\d+)", y)]
+got = len(json.load(open(sys.argv[2])))
+print(f"decoded {got} frames; metadata message counts {counts}")
+sys.exit(0 if got in counts else 1)
+PYEOF
+}
+unpack() {  # unpack_dataset.py arguments...: up to three tries, each from a clean output folder
+  local out=${@: -1} k
+  for k in 1 2 3; do
+    rm -rf "$out"; $PY -I "$H/scripts/unpack_dataset.py" "$@" > "$W/logs/unpack_$(basename "$out")_$k.log" 2>&1 && return 0
+    log "unpack try $k failed (see logs)"
+  done
+  echo "FATAL: unpack failed three times: $*"; exit 3
 }
 for s in $STEPS; do case $s in
 verify)
@@ -25,8 +42,8 @@ verify)
 synth)
   for b in synthetic_platform synthetic_switch synthetic_tunnels; do
     if [ ! -f "$DECODED/$b/meta.json" ]; then
-      [ -d "$W/raw_synth/${b}_cloud_only" ] || $PY -I "$H/scripts/unpack_dataset.py" "$LINK" --member new_synth_data.zst \
-        --out "$W/raw_synth" > "$W/logs/unpack_synth.log" 2>&1
+      [ -f "$W/raw_synth/.complete" ] || { unpack "$LINK" --member new_synth_data.zst --out "$W/raw_synth"
+                                           touch "$W/raw_synth/.complete"; }
       decode "$W/raw_synth/${b}_cloud_only" "$b" && rm -rf "$W/raw_synth/${b}_cloud_only"
     fi
     log "synthetic $b"; $PY "$J/probe.py" "$DECODED/$b" "$W/synth_$b" > "$W/logs/synth_$b.log" 2>&1
@@ -54,8 +71,7 @@ switch)
   fi
   if [ ! -d "$W/pandar/for_hackathon/doubleT_obstacle" ]; then
     log "doubleT_obstacle from \$DATASET_ZIP"
-    $PY -I "$H/scripts/unpack_dataset.py" "${DATASET_ZIP:?set DATASET_ZIP to the organizers archive}" --out "$W/pandar" \
-      --only doubleT_obstacle > "$W/logs/pandar.log" 2>&1
+    unpack "${DATASET_ZIP:?set DATASET_ZIP to the organizers archive}" --only doubleT_obstacle --out "$W/pandar"
   fi
   log "switch runs"; PY=$PY "$EV/falcon_switch_2026-10-18/run_b3.sh" new "$R" "$W/switch" \
     "$W/pandar/for_hackathon/doubleT_obstacle" "$W/falcon_prefix" > "$W/logs/switch.log" 2>&1
@@ -66,9 +82,9 @@ gauge)
            squareT_platform_squareT_switch cloud_with_fake_obj synthetic_platform synthetic_switch synthetic_tunnels; do
     if [ ! -f "$DECODED/$b/meta.json" ]; then               # decode one bag at a time, then delete the raw bag
       if [ "$b" = cloud_with_fake_obj ]; then
-        $PY -I "$H/scripts/unpack_dataset.py" "$LINK" --member cloud_with_fake_obj.zst --out "$W/raw_bag" > "$W/logs/unpack_$b.log" 2>&1
+        unpack "$LINK" --member cloud_with_fake_obj.zst --out "$W/raw_bag"
       elif [ -n "${DATASET_ZIP:-}" ] && [ "${b#synthetic}" = "$b" ]; then
-        $PY -I "$H/scripts/unpack_dataset.py" "$DATASET_ZIP" --out "$W/raw_bag" --only "$b" > "$W/logs/unpack_$b.log" 2>&1
+        unpack "$DATASET_ZIP" --only "$b" --out "$W/raw_bag"
       fi
       SRC=$(find "$W/raw_bag" -name metadata.yaml -path "*$b*" 2>/dev/null | head -1)
       [ -n "$SRC" ] && decode "$(dirname "$SRC")" "$b"; rm -rf "$W/raw_bag"
