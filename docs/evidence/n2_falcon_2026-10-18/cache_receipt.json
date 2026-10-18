@@ -1,0 +1,86 @@
+{
+  "frames": 4443,
+  "schema": {
+    "topic": "/iv_points",
+    "frame_id": "seyond",
+    "point_step": 48,
+    "height": 1,
+    "fields": [
+      {
+        "name": "x",
+        "offset": 0,
+        "datatype": 7,
+        "count": 1
+      },
+      {
+        "name": "y",
+        "offset": 4,
+        "datatype": 7,
+        "count": 1
+      },
+      {
+        "name": "z",
+        "offset": 8,
+        "datatype": 7,
+        "count": 1
+      },
+      {
+        "name": "timestamp",
+        "offset": 16,
+        "datatype": 8,
+        "count": 1
+      },
+      {
+        "name": "intensity",
+        "offset": 24,
+        "datatype": 7,
+        "count": 1
+      },
+      {
+        "name": "flags",
+        "offset": 28,
+        "datatype": 2,
+        "count": 1
+      },
+      {
+        "name": "elongation",
+        "offset": 29,
+        "datatype": 2,
+        "count": 1
+      },
+      {
+        "name": "scan_id",
+        "offset": 30,
+        "datatype": 4,
+        "count": 1
+      },
+      {
+        "name": "scan_idx",
+        "offset": 32,
+        "datatype": 4,
+        "count": 1
+      },
+      {
+        "name": "is_2nd_return",
+        "offset": 34,
+        "datatype": 2,
+        "count": 1
+      }
+    ],
+    "ring_semantics": "absent; detector receives None"
+  },
+  "cache": "/home/resense/data/decoded/falcon_test_second_dark",
+  "float_cache": true,
+  "range_filter_m": [
+    2.5,
+    250.0
+  ],
+  "raw_range_characterization_before_crop": true,
+  "all_cache_files_crc_and_shapes_checked": true,
+  "cache_bytes": 5033019371,
+  "cache_inventory_sha256": "385f467aa80863ef5e50779f9f065ed90000a7eda66fbb6cda81df33dc05523d",
+  "cache_meta_sha256": "6eeeb5c988e46698689d655b1905fec2972f676de295da7168a136d3d2b12e09",
+  "source_archive_sha256": "90dea27d8636bcb2e5cdddf9bc15add3eae0e05196c2b3de959482da7e505611",
+  "elapsed_s": 871.5353534550013,
+  "decoder_sha256": "22133bffa0e54654f6798501da1f5102c1fa4680c286f671b0c589ccb0eaa98e"
+}

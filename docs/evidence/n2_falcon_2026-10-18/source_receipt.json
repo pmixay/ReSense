@@ -1,0 +1,22 @@
+{
+  "source": "https://disk.yandex.ru/d/DK6H3Lxiyi-M-Q",
+  "archive": "falcon_test.zst",
+  "bytes": 6758209772,
+  "sha256": "90dea27d8636bcb2e5cdddf9bc15add3eae0e05196c2b3de959482da7e505611",
+  "verified": true,
+  "retained_compressed_archive": false,
+  "members": [
+    {
+      "name": "falcon_test_second_dark/metadata.yaml",
+      "bytes": 5111,
+      "sha256": "44aac464953391196f6ccda7769004b66040a177b222653eec4538b41b947287"
+    },
+    {
+      "name": "falcon_test_second_dark/falcon_test_second_dark_0.db3",
+      "bytes": 20281548800,
+      "sha256": "5a1df8dd6040a2196386cf686356dccc8dcb5e90a3c57a1a0df20d2eb7b2ce31"
+    }
+  ],
+  "elapsed_s": 315.98741442499886,
+  "free_bytes_after_extraction": 11783663616
+}

@@ -9,12 +9,23 @@
 
 > **Measured on the recording (17.10), supersedes the open items below:** the bag publishes `/iv_points`, `frame_id`
 > `seyond`, in the **ROS convention (x forward, y left, z up)**, not the manual's native x-up frame. 48-byte points
-> (`x y z timestamp intensity flags elongation scan_id scan_idx is_2nd_return`), no `ring`, single return, ~95 k
+> (`x y z timestamp intensity flags elongation scan_id scan_idx is_2nd_return`), no `ring`, ~95 k
 > points per frame, header stamp = sensor uptime. With the default launch the sealed 1.1.0 runs: 1 `FAULT` frame,
 > orientation adopted at frame 1, mount ok at frame 192. **So the "blind detector" risk of §3 (native frame) does
 > not occur with this bag**; the explicit values are `sensor_forward:=+x sensor_left:=+y sensor_up:=+z`. The real
 > problem measured is different: CAUTION on 65–99 % of frames at two static gauge-edge warnings (105.6 m and
 > 115 m) on a standing train. Details: [`../../evidence/extended_data_2026-10-17/`](../../evidence/extended_data_2026-10-17/README.md).
+
+> **Full-recording update (18.10):** all **4,443 frames** are now decoded from the verified source archive
+> SHA256 `90dea27d8636bcb2e5cdddf9bc15add3eae0e05196c2b3de959482da7e505611`.
+> The earlier description as entirely single-return is superseded: `is_2nd_return` contains valid 0/1 flags,
+> with a median **2,005 second-return points per frame** (about 2.1% of returns).
+> Raw returns extend to **509.97 m**; the explicit 2.5–250 m node filter removes a median 14–18 points
+> beyond 250 m per 50-second window. A float32 cache preserves the selected coordinates without int16 overflow.
+> No ring identifier is invented from `scan_id`. Recorded axes remain ROS FLU; the manufacturer's native
+> x-up convention requires the separate `falcon_native` profile. Source, cache, field layout, continuous 10 Hz
+> timestamps and all-window statistics are in
+> [`characterization_summary.json`](../../evidence/n2_falcon_2026-10-18/characterization_summary.json).
 
 Each statement has one of three tags:
 * **[doc]**: from the Falcon documents.

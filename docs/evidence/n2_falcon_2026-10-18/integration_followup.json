@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "tests": 51,
+  "wall_seconds": 22.48,
+  "purpose": "Final default replay integration: test clock and explicit unsupported-instrumentation diagnostic contract",
+  "runtime_change": false,
+  "shared_semantic_helpers_changed": false,
+  "independent_review": "c2_implementation reviewed all three test diffs and approved: no runtime/helper change or timing threshold weakening",
+  "source_sha256": {
+    "tests/test_detector_timing.py": "f13375baac02250d6724963124179ed247a60ffa7e5c4097a2c2b749d9fb3aaa",
+    "tests/test_fresh_support_trace.py": "672b47ac135688894a7e7e02f9dd994d17e5737112a5150e728b32db11eb16ed",
+    "tests/test_stage_trace.py": "c2b27115764e42ce37c5eb2fb5b3fac80b80f6c9f2e353cd22207c9509f188a3",
+    "tests/test_orientation_replay.py": "76d575ea25bc48775c734171dd9c0725d379d02f4f230d9c0efef937dd2f0825",
+    "resense/detector.py": "97cf9acf8d9206b489b475c75c7ab425675d0bfc43d3443c1891a3962bb3e0f8",
+    "resense/calibration.py": "4111dc469812066d0675f9ed57f185d04deca4861c4c5ce566c5e040b46dabad",
+    "resense/health.py": "211502e2c826cdc61f60d091ed0e0df414567d1b4497661eeb2e00c56c813ddc",
+    "resense/config.py": "e727bd53bee8f982f746f04f8c3bb6ca07b16235c1361a64e9398036028dc4dc",
+    "scripts/trace_object_failures.py": "8c74167c1e8d3d34bb47d41dad75ca77667de1d08a399a1122aa0f51ad2b7ac8",
+    "scripts/analyze_quality_candidates.py": "ef18f3e50eadba3a8ad7f5f62d63c6a3910e6c09356546f8927c350883e11825"
+  },
+  "evidence_sha256": {
+    "integration_followup.txt": "87c1b5d52585480e48a23738fb232d9349af9c5b1b6c3893d22d42bcd5a59c28",
+    "integration_followup.xml": "328bcc2f0568f9dca9e6f91ae240f00b037f73c782b7309c1dc01fdb9f9720b8"
+  }
+}

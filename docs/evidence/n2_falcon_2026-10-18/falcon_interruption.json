@@ -1,0 +1,6 @@
+{
+  "reason": "tool session SIGTERM143; parent didnotterminate",
+  "complete": false,
+  "last_logged_frame": 1301,
+  "restart": "freshdetectorall4443frames; no appended state discontinuity"
+}

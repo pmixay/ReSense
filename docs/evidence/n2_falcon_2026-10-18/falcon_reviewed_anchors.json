@@ -1,0 +1,397 @@
+{
+  "coordinate_frame": "raw_ROS_FLU",
+  "scope": "Independent raw-cloud review before reading detector outputs. Eleven positive anchors plus one near-pass empty-crop review; no exhaustive first-visible claim.",
+  "anchors": [
+    {
+      "frame": 1200,
+      "bbox_raw": [
+        [
+          247.8142852783203,
+          -0.3802894055843353,
+          -12.023674011230469
+        ],
+        [
+          248.00486755371094,
+          -0.023769056424498558,
+          -10.817852020263672
+        ]
+      ],
+      "point_count": 5,
+      "manual_selection_roi": [
+        [
+          247.5,
+          -0.7,
+          -12.3
+        ],
+        [
+          248.4,
+          0.3,
+          -10.4
+        ]
+      ],
+      "selected_index_sha256": "0b42ff3acb437ca2e09fb009fa3c47cc982207ff5bdba7d031906006dafa066f",
+      "source_sha256": "10b975411b840b1557f7b3efb50d94c23bb086e876298232093091088aacbc0f",
+      "episode": "early_uncertain",
+      "identity_confidence": "sparse upright moving target, person identity uncertain",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 1250,
+      "bbox_raw": [
+        [
+          245.0823974609375,
+          -0.4466172456741333,
+          -11.897598266601562
+        ],
+        [
+          245.38739013671875,
+          0.0,
+          -10.690577507019043
+        ]
+      ],
+      "point_count": 6,
+      "manual_selection_roi": [
+        [
+          244.8,
+          -0.8,
+          -12.2
+        ],
+        [
+          245.8,
+          0.5,
+          -10.2
+        ]
+      ],
+      "selected_index_sha256": "80c4c0bdbf7ea28647ff98a36f37115ba8e2e1dc2e241d7e4813e1bff3060960",
+      "source_sha256": "61c6a632633686408d960b09e241cb994966273f96bb853877f8c253bd4c23fc",
+      "episode": "early_uncertain",
+      "identity_confidence": "sparse upright moving target, person identity uncertain",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 1300,
+      "bbox_raw": [
+        [
+          248.35543823242188,
+          -2.357053279876709,
+          -12.103739738464355
+        ],
+        [
+          248.52821350097656,
+          -1.7868659496307373,
+          -10.78589916229248
+        ]
+      ],
+      "point_count": 7,
+      "manual_selection_roi": [
+        [
+          248,
+          -2.6,
+          -12.4
+        ],
+        [
+          248.7,
+          -1.4,
+          -10.3
+        ]
+      ],
+      "selected_index_sha256": "e76610fc5854f3c2fd0161703ccbed6eca281629a707bb3320088a51fbb80f00",
+      "source_sha256": "e9ab6618b30a15d9bfecb655e9be84f3a3cc536edab195b354b854b2d88063a1",
+      "episode": "early_uncertain",
+      "identity_confidence": "sparse upright moving target, person identity uncertain",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 1725,
+      "bbox_raw": [
+        [
+          249.34849548339844,
+          -0.5021515488624573,
+          -12.100141525268555
+        ],
+        [
+          249.6582794189453,
+          -0.07173529267311096,
+          -10.889866828918457
+        ]
+      ],
+      "point_count": 6,
+      "manual_selection_roi": [
+        [
+          249,
+          -0.8,
+          -12.3
+        ],
+        [
+          249.9,
+          0.5,
+          -10.4
+        ]
+      ],
+      "selected_index_sha256": "c426ebb5491b48f81d40a2b2e139714f0eb84f5e0a764799a48ff51540a0be4a",
+      "source_sha256": "cf2db809517f183355ebf7b6ca1186995934560b517f69fae2daafa80611a626",
+      "episode": "main_approach",
+      "identity_confidence": "coherent approach linked to near person geometry; sparse far shape alone insufficient",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 1800,
+      "bbox_raw": [
+        [
+          243.33392333984375,
+          -0.5598362684249878,
+          -11.823551177978516
+        ],
+        [
+          243.697021484375,
+          0.2102515995502472,
+          -10.619433403015137
+        ]
+      ],
+      "point_count": 8,
+      "manual_selection_roi": [
+        [
+          243.1,
+          -0.9,
+          -12.2
+        ],
+        [
+          243.9,
+          0.6,
+          -10.3
+        ]
+      ],
+      "selected_index_sha256": "5d29c7b51ffc5fc906cfa15f6143b92237be1db84393668fee203bc9e59518af",
+      "source_sha256": "df92544b8e01e974bd46dd67085ab0148c41eff00c8a591ecbfab711511b7674",
+      "episode": "main_approach",
+      "identity_confidence": "coherent approach linked to near person geometry; sparse far shape alone insufficient",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 1900,
+      "bbox_raw": [
+        [
+          243.38392639160156,
+          -0.41996321082115173,
+          -11.818952560424805
+        ],
+        [
+          243.58924865722656,
+          0.09340301901102066,
+          -10.616604804992676
+        ]
+      ],
+      "point_count": 6,
+      "manual_selection_roi": [
+        [
+          243.1,
+          -0.8,
+          -12.2
+        ],
+        [
+          243.9,
+          0.5,
+          -10.4
+        ]
+      ],
+      "selected_index_sha256": "59420411f3f611c2a81e38bdee37cfdfd62ddad6ca29a9f4b88881003343845a",
+      "source_sha256": "3215225aede996249bbfa52f7c3f41a45ead3806434dae7fc79db943cdcd383f",
+      "episode": "main_approach",
+      "identity_confidence": "coherent approach linked to near person geometry; sparse far shape alone insufficient",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 2000,
+      "bbox_raw": [
+        [
+          239.46401977539062,
+          -0.3674015998840332,
+          -11.619071960449219
+        ],
+        [
+          239.84376525878906,
+          0.34487807750701904,
+          -10.453866958618164
+        ]
+      ],
+      "point_count": 6,
+      "manual_selection_roi": [
+        [
+          239.3,
+          -0.7,
+          -12.1
+        ],
+        [
+          240.0,
+          0.7,
+          -10.2
+        ]
+      ],
+      "selected_index_sha256": "dda0ad8840b853ec831064b678eb7cf77de7de65b53efeaa2a1ecd45a1b53559",
+      "source_sha256": "4e914f80d3ae47a8d33387c097422375bba2eba367a6e51a89f8fb12750de46d",
+      "episode": "main_approach",
+      "identity_confidence": "coherent approach linked to near person geometry; sparse far shape alone insufficient",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 3000,
+      "bbox_raw": [
+        [
+          121.33320617675781,
+          -0.24432702362537384,
+          -7.301174163818359
+        ],
+        [
+          121.80354309082031,
+          0.5815976858139038,
+          -5.898988723754883
+        ]
+      ],
+      "point_count": 34,
+      "manual_selection_roi": [
+        [
+          121.1,
+          -0.5,
+          -7.5
+        ],
+        [
+          122.1,
+          0.9,
+          -5.5
+        ]
+      ],
+      "selected_index_sha256": "6255a365fadf6c30deeb8ac2e284c49bd86ed998d5b58979eb7ac1555f6486d4",
+      "source_sha256": "b4fcf56f953168dbdaa44f4d873d3e1ea960be40b5b1abbfb38fb0167895de37",
+      "episode": "main_approach",
+      "identity_confidence": "coherent approach linked to near person geometry; sparse far shape alone insufficient",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 4000,
+      "bbox_raw": [
+        [
+          52.77846908569336,
+          -0.704060435295105,
+          -4.078842639923096
+        ],
+        [
+          53.40034866333008,
+          0.18836335837841034,
+          -2.5325164794921875
+        ]
+      ],
+      "point_count": 142,
+      "manual_selection_roi": [
+        [
+          52.7,
+          -0.9,
+          -4.1
+        ],
+        [
+          53.6,
+          0.4,
+          -2.4
+        ]
+      ],
+      "selected_index_sha256": "2a6b4685ac9e3816befd9a5b9e15d70004de492cb29891e950b7c76e70626113",
+      "source_sha256": "7b5f2081cbce4ac238805f83fdde4258ef762485c8cad0240312260bbadb9c2a",
+      "episode": "main_approach",
+      "identity_confidence": "coherent approach linked to near person geometry; sparse far shape alone insufficient",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    },
+    {
+      "frame": 4200,
+      "bbox_raw": [
+        [
+          28.07244110107422,
+          -0.49875274300575256,
+          -3.031614303588867
+        ],
+        [
+          28.58213996887207,
+          0.307160884141922,
+          -1.4145097732543945
+        ]
+      ],
+      "point_count": 253,
+      "manual_selection_roi": [
+        [
+          28.05,
+          -0.65,
+          -3.1
+        ],
+        [
+          28.65,
+          0.5,
+          -1.3
+        ]
+      ],
+      "selected_index_sha256": "dd3d4a4e408383c38b626bdd8fd1cfc3f25402827029028db6ab96e205ea3d6e",
+      "source_sha256": "08c47c3c30811551f9a4c7eaba48eebe722e75a3abf92d5bd10654a2aabec9ab",
+      "episode": "main_approach",
+      "identity_confidence": "coherent approach linked to near person geometry; sparse far shape alone insufficient",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent. Long forward/lateral appendage excluded from body-core box; attachment uncertain."
+    },
+    {
+      "frame": 4400,
+      "bbox_raw": [
+        [
+          3.636429786682129,
+          -0.04820200428366661,
+          -0.9908711910247803
+        ],
+        [
+          4.050609588623047,
+          0.7257205843925476,
+          -0.3619310259819031
+        ]
+      ],
+      "point_count": 874,
+      "manual_selection_roi": [
+        [
+          3.5,
+          -0.2,
+          -1.1
+        ],
+        [
+          4.2,
+          1.1,
+          -0.2
+        ]
+      ],
+      "selected_index_sha256": "6165661dffcc517c981c3c95a56611b42c0f6864d4b2f471efe075d9eace6571",
+      "source_sha256": "70493efb2c4234d3df878445b6acf43c35f36100821942315be35db7284b3912",
+      "episode": "main_approach",
+      "identity_confidence": "coherent approach linked to near person geometry; sparse far shape alone insufficient",
+      "gauge_relation": "unknown",
+      "review_note": "Observed body support, not exact point segmentation or full physical extent."
+    }
+  ],
+  "near_pass_review": {
+    "frame": 4442,
+    "roi": [
+      [
+        0.0,
+        -1.8,
+        -2.895
+      ],
+      [
+        6.0,
+        1.4,
+        1.105
+      ]
+    ],
+    "returns": 0,
+    "interpretation": "Target left inspected near forward volume; does not certify whole-frame absence. Radial cache minimum2.5m and sensor field-of-view limit support."
+  }
+}

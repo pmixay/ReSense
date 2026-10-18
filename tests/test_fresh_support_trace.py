@@ -78,7 +78,17 @@ def test_direct_observer_preserves_stateful_outputs_and_actual_note_calls():
     for k in range(8):
         frame = Frame(cloud.xyz, cloud.intensity, stamp=.1 * k, frame_id=str(k))
         result, records = traced.process_observed(frame, range(1, 100))
-        assert semantic(result.to_dict()) == semantic(plain.process(frame).to_dict())
+        actual, expected = result.to_dict(), plain.process(frame).to_dict()
+        # Compare all operational fields on this correctly oriented fixture,
+        # while explicitly checking the observer's unsupported replay diagnostic.
+        diagnostic = actual["mount"].pop("orientation_replay", None)
+        if k == 0:
+            assert diagnostic["status"] == "skipped"
+            assert diagnostic["reason"] == "unsupported_subclass"
+        else:
+            assert diagnostic is None
+        assert "orientation_replay" not in expected["mount"]
+        assert semantic(actual) == semantic(expected)
         assert clustering._corridor_cluster is original
         for row in records:
             assert row["hit"]["input_source"] == "ordinary"
