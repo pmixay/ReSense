@@ -19,8 +19,9 @@ Source `cecab1b` changes only the class default and both synchronized YAML files
 `calibration.orientation_replay_frames=0`. Bounded replay remains available only by explicit
 opt-in; sensor profiles and the unconfirmed-orientation guard remain. Independent source
 review and 239 focused tests pass. The isolated full suite passes **1,906 tests plus 12 subtests**,
-with seven unavailable historical-fixture deselections. The current Docker/DDS image passes all140 inputs with exact semantic parity. Fresh default
-gate, X3 and all4,443 automatic Falcon frames are being verified before a new seal.
+with seven unavailable historical-fixture deselections. The current Docker/DDS image passes
+all 140 inputs with exact semantic parity. The fresh default gate, X3 and all 4,443 automatic
+Falcon frames are being verified before a new seal.
 Earlier candidate captures keep their original identities and are not selected-default evidence.
 
 ## Work other members can use
@@ -28,7 +29,7 @@ Earlier candidate captures keep their original identities and are not selected-d
 | Dependency | Delivered | Remaining acceptance |
 |---|---|---|
 | P2 display/demo | Shared bounded gauge/status contract; complete 2,308-frame display replay; 140/140-frame same-node Pandar→actual-Falcon check; measured software RViz at rate 0.5; operator commands | Far-range display coverage cost is explicit; hosted CI/release remain deferred |
-| P4 evaluation | Complete verified Falcon cache, reviewed raw target associations, immutable comparison harnesses, all N6 control captures and an independently reviewed passing full default gate | Exact opt-in-default acceptance; complete proxy retains measured regressions |
+| P4 evaluation | Complete verified Falcon cache, reviewed raw target associations, immutable comparison harnesses, all N6 control captures and an independently reviewed full gate on the earlier candidate | Exact opt-in-default acceptance; complete proxy retains measured regressions |
 | P1 integration | Explicit sensor profiles, orientation readiness guard and opt-in startup replay | Exact selected-default full gate/X3/Falcon and reviewed source seal |
 | Release | Branch work and local validation | Captain's hosted CI/quota repair and later release decision |
 
