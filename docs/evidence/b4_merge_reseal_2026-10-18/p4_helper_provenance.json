@@ -1,0 +1,10 @@
+{
+  "source": {
+    "path": "docs/evidence/p4_review_1.2.0_2026-10-18/explicit_mount.py",
+    "commit": "0db819b99e27b534d20282548591a8a1d156183c",
+    "git_blob": "360bfbd6527a6de995d5ce08f96cac12a28d8b1a",
+    "sha256": "32dac30e62692dd4b0d92dcda8cb3f2319e1611357f543aa059d849ad4e9abeb"
+  },
+  "reason": "Preserve original P4 review helper bytes; historical result remains attributed to this source, including its disclosed distance-field comparison limitation.",
+  "verified_against_original_git_blob": true
+}

@@ -1,5 +1,19 @@
 # P1 CI repair: immutable measured helpers and maintained-code lint
 
+## 18 October P4 integration amendment
+
+The merged P4 review adds one exact archival helper,
+`docs/evidence/p4_review_1.2.0_2026-10-18/explicit_mount.py`. Its original bytes
+are retained, including the review's disclosed distance-field comparison
+limitation. The integration receipt verifies its SHA-256 and Git blob against
+P4 commit `0db819b`; it is not presented as an original execution receipt.
+The locked policy now contains **141 immutable files and 40 exact exclusions**.
+The new `reviewed-git-blob` provenance contract also works without Git and
+rejects changed path, commit, blob or SHA. Every other file remains linted.
+See [receipt](../../b4_merge_reseal_2026-10-18/p4_helper_provenance.json).
+
+The original 16 October figures and acceptance record follow unchanged.
+
 ## Original failure, retained without changing the historical inputs
 
 Push `492e407b76d9dee7852f9e1884200e27939f0fca`, Actions run **38895681129**:
