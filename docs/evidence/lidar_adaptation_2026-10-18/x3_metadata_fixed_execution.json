@@ -1,0 +1,56 @@
+{
+  "measured_utc": "2026-10-18T10:37:47.611743+00:00",
+  "producer_status": {
+    "status": "finished",
+    "pid": 56664,
+    "pgid": 56664,
+    "source_commit": "7b7b02c9b535d2b03d053df1b309301b619269ad",
+    "command": [
+      "/home/resense/.venv/bin/python",
+      "/home/resense/data/final_lidar_7b7b02c/scripts/robustness_battery.py",
+      "--repo",
+      "/home/resense/data/final_lidar_7b7b02c",
+      "--cache",
+      "/home/resense/data/x3_reference/cache",
+      "--reference",
+      "/home/resense/data/x3_reference/reference.json",
+      "--out",
+      "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/x3_metadata_fixed.json",
+      "-j",
+      "1"
+    ],
+    "started_utc": "2026-10-18T09:51:04Z",
+    "wrapper_sha256": "f4c94eef2a11a3af865898ddc33a4b85b0c444fae4f4ac7c60de86da3b8334bd",
+    "returncode": 0,
+    "finished_utc": "2026-10-18T10:36:38Z"
+  },
+  "report_sha256": "5bf8c9378a11619ae6ab85132f00f7e0ac10929b581901644dea169fc851c910",
+  "review_sha256": "0f822ed5f1e186f735a653989baab8b71102f0efcaf9b7997b73e609d89d721f",
+  "originals_retained": true,
+  "artifact_members": [
+    {
+      "source": "/home/resense/data/run_x3_metadata_fixed.py",
+      "member": "x3_metadata_fixed/run/wrapper.py",
+      "bytes": 1588,
+      "sha256": "f4c94eef2a11a3af865898ddc33a4b85b0c444fae4f4ac7c60de86da3b8334bd"
+    },
+    {
+      "source": "/home/resense/data/x3_metadata_fixed_status.json",
+      "member": "x3_metadata_fixed/run/status.json",
+      "bytes": 765,
+      "sha256": "79b63b320472acd206c6533672fe7be1a0f0238e08ae6fbeb49e43fc821a939b"
+    },
+    {
+      "source": "/home/resense/data/logs/x3_metadata_fixed.log",
+      "member": "x3_metadata_fixed/run/driver.log",
+      "bytes": 1710,
+      "sha256": "6cfd459665c5ef494ce26d33239052afb4393e737678f1f67b096b2acb37844f"
+    },
+    {
+      "source": "/home/resense/data/logs/x3_metadata_fixed_wrapper.log",
+      "member": "x3_metadata_fixed/run/wrapper.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

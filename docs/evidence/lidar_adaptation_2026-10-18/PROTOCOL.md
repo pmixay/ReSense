@@ -103,3 +103,27 @@ the Set F verifier to reconstruct decision/hit/count summaries from raw captures
 trusting aggregate counters. Rerun the seven recording/four density baseline and all30 fixed
 Set F sequences with the corrected geometry; repeat dark-object and health-only controls where
 their claimed conclusions depend on that geometry. Earlier acceptance failures remain recorded.
+
+### N2 default replay withdrawal, 18 October — captain decision
+
+The completed default4 candidate passes the original full gate and X3, but full actual
+Falcon comparison loses13 original STOP frames, including person-associated frames2972–2975.
+The same19-return person cluster at2972 changes from STOP to CAUTION as its estimated
+lateral position changes−0.61→−0.84m. Earlier first detection and net gains do not satisfy
+the registered requirement to preserve every existing STOP. Independent review blocks
+unconditional default4 acceptance; all candidate evidence is retained.
+
+The captain explicitly selected **keep replay opt-in**, preserving the previous default.
+Before changing code, register the correction: set orientation_replay_frames to0 in the
+dataclass and both synchronized default configurations; retain the bounded implementation
+for explicit opt-in only. Explicit sensor profiles and the orientation readiness guard remain.
+Test that default processing retains no startup history and does not replay, while existing
+explicit4 adoption/memory tests continue to pass. Instrumentation tests that intentionally
+exercise replay skipping must opt in explicitly.
+
+Commit and independently review the corrected source, then measure its full default gate,
+X3, full4,443-frame actual-Falcon default comparison and affected Docker/DDS path. Require
+no lost/added/delayed/shortened default Falcon STOP relative to the original9b automatic
+control, preserving all shared non-timing outputs except the documented readiness fields
+and initial-unconfirmed guard. Do not relabel default4 captures as default0 evidence.
+This choice does not authorize a release or relax N3/N6 acceptance.

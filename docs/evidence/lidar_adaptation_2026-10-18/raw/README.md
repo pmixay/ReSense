@@ -76,3 +76,33 @@ python docs/evidence/lidar_adaptation_2026-10-18/review_gate_frames.py \
 
 This full gate does not substitute for the separately required final-corrected
 X3 stress capture. All batch timings are informational under shared CPU load.
+
+## Final corrected X3
+
+`x3_metadata_fixed.tar.gz` contains the completed **7b7b02c** X3 run, finished
+at 10:36:38 UTC on 18 October. Its 167 members include all 40 cases/29,765 rows,
+worker completion records/jobs/logs, the unchanged report, independent raw
+comparison, and exact outer wrapper/status/driver-log/wrapper-log bytes. The
+execution receipt binds those files to the recorded wrapper hash. Originals
+remain local.
+
+The raw comparison reconstructed all 260 comparison checks: all pass, all
+metrics and every non-timing serialized field equal the original 1.1.0 reference,
+and no STOP frame is lost or added. This is the corrected-source capture;
+`x3_preboundary` is retained separately under its original source identity.
+
+After extracting `x3_metadata_fixed.tar.gz`, reproduce its standard review:
+
+```sh
+python docs/evidence/lidar_adaptation_2026-10-18/review_x3.py \
+  --reference /home/resense/data/x3_reference/reference.json \
+  --candidate /tmp/lidar-evidence-review/x3_metadata_fixed/report.json \
+  --candidate-raw-root /tmp/lidar-evidence-review/x3_metadata_fixed \
+  --cache /home/resense/data/x3_reference/cache \
+  --out /tmp/lidar-evidence-review/x3_metadata_fixed_review.json
+```
+
+The separate independent reviewer checks the complete STOP episode boundaries,
+native library, all 38 source identities and default configuration before
+recommending a new source seal. That review is distinct from this archive's
+byte-integrity verification.
