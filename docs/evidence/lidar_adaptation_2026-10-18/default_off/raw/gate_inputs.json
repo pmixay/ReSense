@@ -1,0 +1,110 @@
+[
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/cloud_with_fake_obj.jsonl",
+    "member": "candidate_work/cloud_with_fake_obj.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/config.yaml",
+    "member": "candidate_work/config.yaml"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/doubleT_obstacle.jsonl",
+    "member": "candidate_work/doubleT_obstacle.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/doubleT_platform.jsonl",
+    "member": "candidate_work/doubleT_platform.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/new_data_0.jsonl",
+    "member": "candidate_work/new_data_0.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/new_data_1.jsonl",
+    "member": "candidate_work/new_data_1.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/new_data_2.jsonl",
+    "member": "candidate_work/new_data_2.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/new_data_3.jsonl",
+    "member": "candidate_work/new_data_3.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/new_data_4.jsonl",
+    "member": "candidate_work/new_data_4.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/new_data_5.jsonl",
+    "member": "candidate_work/new_data_5.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/new_data_6.jsonl",
+    "member": "candidate_work/new_data_6.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/new_data_7.jsonl",
+    "member": "candidate_work/new_data_7.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/roundT_doubleT.jsonl",
+    "member": "candidate_work/roundT_doubleT.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/roundT_pressureGate_roundT.jsonl",
+    "member": "candidate_work/roundT_pressureGate_roundT.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/roundT_squareT_pressureGate_squareT.jsonl",
+    "member": "candidate_work/roundT_squareT_pressureGate_squareT.jsonl"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/setF_straight.json",
+    "member": "candidate_work/setF_straight.json"
+  },
+  {
+    "source": "/home/resense/data/final_gate_work_cecab1b/squareT_platform_squareT_switch.jsonl",
+    "member": "candidate_work/squareT_platform_squareT_switch.jsonl"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate.json",
+    "member": "candidate/gate.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_execution_status.json",
+    "member": "candidate/gate_execution_status.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_console.txt",
+    "member": "candidate/gate_console.txt"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/runtime_identity.json",
+    "member": "candidate/runtime_identity.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_originals.json",
+    "member": "candidate/gate_intake_originals.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_set_o.json",
+    "member": "candidate/gate_intake_set_o.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_ride.json",
+    "member": "candidate/gate_intake_ride.json"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_launch.json",
+    "member": "candidate/gate_launch.json"
+  },
+  {
+    "source": "/home/resense/data/run_default_off_gate.py",
+    "member": "producer/run_default_off_gate.py"
+  },
+  {
+    "source": "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/default_off/finalize_gate.py",
+    "member": "producer/finalize_gate.py"
+  }
+]
