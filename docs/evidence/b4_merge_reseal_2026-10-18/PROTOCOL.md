@@ -70,3 +70,18 @@ reference, then candidate against this fresh reference. The fresh reference
 gate replaces the earlier planned reused gate as the primary frame comparator.
 Historical reports retain their original identities. This adds measurements
 without relaxing acceptance.
+
+## P4 merge while measurements were running
+
+The user additionally requested merging P4 branch `ccr-027997e8-kqywat` and
+deleting it. Tip `8a0af65` was merged in `eb03c98`, pushed and its remote branch
+deleted only after verifying the merged history was on the target remote. All
+frozen detector files remain byte-identical to the measured merge `0779db7`;
+measurements continue in the detached worktree. `p4_import.json` records the
+merge/deletion and verifies both imported review archives.
+
+This append records the later instruction, not a retroactive preregistration.
+The measurement criteria and native-build amendment were committed in
+`008a7ec` before the recording runs. P4's no-blocker review of `0bbc6ed` and its
+B1-closed/B4-X3-passing review of `6cc27be` retain their original source
+identities. They do not become reviews of `0779db7` by being merged.

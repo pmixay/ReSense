@@ -1,0 +1,4 @@
+Detector freeze FAIL:
+- changed detector file: resense/calibration.py
+- changed detector file: resense/detector.py
+- changed detector file: resense/health.py

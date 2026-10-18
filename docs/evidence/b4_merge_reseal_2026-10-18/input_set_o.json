@@ -1,0 +1,10 @@
+{
+  "sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9",
+  "bytes": 1746145824,
+  "verified": true,
+  "mode": "set_o",
+  "frame_counts": {
+    "cloud_with_fake_obj_0": 1510
+  },
+  "total_frames": 1510
+}
