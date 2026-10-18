@@ -8,14 +8,45 @@
 > evening and the shell switch-off against `configs/default.yaml`, the seal manifest and `gate_table.md`; every relative link;
 > 2026-09-29: the web prototype entry against `webapp/`, `scripts/run_webapp.sh` and `.github/workflows/ci.yml` of PR #31 ·
 > **Updated:** 2026-10-16: selected-scope H3/withdrawal/independent H4 at `c9aea87`, final H5
-> at `5211565` and verified 1.1.0 seal below; H6/CI/main and E1 remain pending. **Status:** current
+> at `5211565` and verified 1.1.0 seal below; 2026-10-18: the LiDAR branch is now an
+> unreleased 1.2.0 candidate. Hosted CI, P4 final candidate approval and release remain pending.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
-are team labels; package 1.0.0 dates from 25.09, current package **1.1.0 is sealed 16.10**.
+are team labels; package 1.0.0 dates from 25.09. `main` retains sealed **1.1.0**;
+this work branch declares **1.2.0**, an unreleased candidate.
 The published release remains v1.0.0. Figures are the team's, measured when a change
 landed (detector figures on the 1 cm frame cache). Current results: [`README.md`](README.md),
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
+
+## [1.2.0] — unreleased LiDAR integration candidate, 18.10
+
+This candidate continues `work/n5-labels-c2-acceptance`; it is not a new release or a
+completed P4/J1 judgement. The four version declarations change together. A fresh gate on
+the committed version and its source identity are recorded in the
+[candidate acceptance record](docs/evidence/version_1.2.0_2026-10-18/PLAN.md).
+
+- Falcon ROS/native sensor profiles and explicit orientation readiness; unconfirmed GO is
+  held at CAUTION. Startup orientation replay remains **opt-in**: enabling it lost 13 prior
+  Falcon STOP frames, including four person-associated frames, so it is not the default.
+- Interactive replay pause/rate controls and Pandar/Falcon profile reset; a shared bounded
+  gauge display with explicit stale/invalid state. Node/DDS and display evidence are separate
+  from P4's judge-node replica checks.
+- N5 team labels cover all 1,667 new synthetic frame keys, retaining annotation uncertainty.
+  C2's explicit conservative-range profile uses the captain-approved measured coverage loss;
+  Falcon has no calibrated small-target density prior and claims zero qualified clear range.
+- Selected-default evidence before this version-only bump: full gate 18,329 rows, X3 40 cases
+  / 29,765 rows / 260 checks, and all 4,443 Falcon frames preserve their compared STOP outputs.
+  [Results and exact source identities](docs/evidence/lidar_adaptation_2026-10-18/README.md).
+- Dust measurements are complete but robustness acceptance fails. N6's candidate reaches
+  51.12 m, below 60 m, and fails farther-geometry review. Both production experiments remain
+  off. Side-mounted automatic orientation (L16), curve-axis bias (L10/K2), inherited tall-object
+  misses and the historical Windows Set O frame 332 provenance gap remain unresolved.
+
+P4's development check of `b423562` is not final approval of this version. P1 owns integration
+and sealing; P3 owns further detector changes. The same orientation/axis areas must enter one
+reviewed integration before a later release. Hosted CI is still blocked by account billing;
+no release date or new score is asserted.
 
 ## [1.1.0] — sealed 16.10, unreleased (E1 tag/archive pending)
 
