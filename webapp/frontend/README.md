@@ -35,14 +35,15 @@ src/
                           axis, bed, envelope from a result's track dict), nav.ts (site map),
                           useSize.ts (ResizeObserver size of an element)
   player/                 the 3D engine shared by the Player and the previews: scene.ts (three.js),
-                          engine / clock / motion / frameStore / cloudCache, CloudPreview.tsx (lazy)
+                          engine / clock / motion / frameStore / cloudCache, CloudPreview.tsx (lazy),
+                          screenDisplay.ts (reference-based 3D housing and live render target)
   pages/<Name>/index.tsx  one module per route; page-only components, hooks and tests next to it
   pages/UiGuide           /_ui: the living style guide (every component and state; not in the nav)
 screenshots/              local review screenshots (git-ignored)
 ```
 
 Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/player`, `/player/:runId`
-(16:9 cab, optional fullscreen) · `/compare` · `/live` · `/presets` · `/about` · `/_ui` · `*` NotFound. The Overview's
+(responsive display workspace, optional fullscreen) · `/compare` · `/live` · `/presets` · `/about` · `/_ui` · `*` NotFound. The Overview's
 «Демо» generates a demo recording, queues it and opens `/queue`. Deep links into Загрузка:
 `/upload?source=file|server|demo|list&rec=<recordingId>&preset=<presetId>` (source, chosen recording, preset).
 
@@ -73,5 +74,9 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   label to its station with `useRailSub(name)`.
 - **Pinned navigation.** The top bar and category rail stay above the independently scrolling
   page on every route, including loading/error states and the player. Fullscreen targets the
-  shared shell so both bars remain accessible. The player contains the entire 1600×900 cab;
-  its canvas is rendered at 1600×600 with a matching camera aspect, never clipped to fit.
+  shared shell so both bars remain accessible. Player uses normal page flow at the available
+  width: modeled display → view/scenario controls → telemetry → timeline/transport. Its canvas,
+  offscreen render target, camera aspect, close-up and HUD resize together via ResizeObserver.
+  The display housing is a real Three.js mesh based on the supplied `images (1).jpg`; only the
+  Player enables this presentation, while existing CloudPreview views retain direct rendering.
+  There is no scaled stage, duplicate local header or separate page background.

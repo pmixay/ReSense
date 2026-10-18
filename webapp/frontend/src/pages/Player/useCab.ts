@@ -1,24 +1,5 @@
-// Small hooks of the cab: the 16:9 composition scaled to fit its container, the Fullscreen API
-// with a fallback when the browser refuses it, and the player's keyboard map.
+// Shared-shell fullscreen (with a refused-API fallback) and the player's keyboard map.
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
-
-export const STAGE_W = 1600;
-export const STAGE_H = 900;
-
-/** Fit both dimensions without a minimum scale that would crop narrow viewports. */
-export function useStageScale(ref: RefObject<HTMLElement>): number {
-  const [k, setK] = useState(0);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const on = () => setK(Math.min(el.clientWidth / STAGE_W, el.clientHeight / STAGE_H));
-    on();
-    const observer = new ResizeObserver(on);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [ref]);
-  return k;
-}
 
 /** Fullscreen on an element; when the browser refuses (iframe, policy), a "pseudo" mode instead. */
 export function useFullscreen(ref: RefObject<HTMLElement>) {

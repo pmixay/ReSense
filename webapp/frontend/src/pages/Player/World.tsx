@@ -5,11 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import type { PlayerEngine } from '../../player/engine';
 import type { CamMode } from '../../player/geometry';
 import { PlayerScene } from '../../player/scene';
-import { PIP_RECT, type OverlaySink } from './Hud';
+import type { OverlaySink } from './Hud';
 import styles from './Player.module.css';
-
-export const WORLD_W = 1600;
-export const WORLD_H = 600;
 
 export interface WorldProps {
   engine: PlayerEngine;
@@ -42,6 +39,7 @@ export function World({ engine, mode, pixelRatio, cloudBudget, onFreeChange, sin
     let scene: PlayerScene;
     try {
       scene = new PlayerScene(canvas, {
+        screenDisplay: true,
         interactive: true,
         onFreeChange: (f) => live.current.onFreeChange(f),
         onOverlay: (ov) => sink.current?.(ov),
@@ -52,9 +50,20 @@ export function World({ engine, mode, pixelRatio, cloudBudget, onFreeChange, sin
       live.current.onError('WebGL недоступен в этом браузере — 3D-вид не показать.');
       return;
     }
-    scene.setSize(WORLD_W, WORLD_H, live.current.pixelRatio);
+    const resize = () => {
+      const width = wrap.clientWidth;
+      const height = wrap.clientHeight;
+      if (!width || !height) return;
+      scene.setSize(width, height, Math.min(2, window.devicePixelRatio || live.current.pixelRatio));
+      const viewport = scene.overlay.viewport;
+      const size = Math.max(80, Math.min(180, viewport.width * 0.16, viewport.height * 0.48));
+      scene.setPipRect({ x: viewport.width - size - 14, y: 14, w: size, h: size, radius: 12 });
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(wrap);
+    window.addEventListener('resize', resize);
     if (live.current.cloudBudget) scene.reserve(live.current.cloudBudget);
-    scene.setPipRect(PIP_RECT);
     scene.setMode(live.current.mode, false);
     sceneRef.current = scene;
     engine.attach(scene);
@@ -66,6 +75,8 @@ export function World({ engine, mode, pixelRatio, cloudBudget, onFreeChange, sin
     };
     canvas.addEventListener('webglcontextlost', onLost);
     return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', resize);
       // removed first: dispose() drops the context on purpose
       canvas.removeEventListener('webglcontextlost', onLost);
       engine.detach();
@@ -78,10 +89,6 @@ export function World({ engine, mode, pixelRatio, cloudBudget, onFreeChange, sin
   useEffect(() => {
     sceneRef.current?.setMode(mode);
   }, [mode, sceneRef]);
-
-  useEffect(() => {
-    sceneRef.current?.setSize(WORLD_W, WORLD_H, pixelRatio);
-  }, [pixelRatio, sceneRef]);
 
   useEffect(() => {
     if (cloudBudget) sceneRef.current?.reserve(cloudBudget);

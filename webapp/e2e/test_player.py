@@ -505,57 +505,72 @@ def test_fullscreen_orbit_and_back(app, seeded):
     expect(page.get_by_role("navigation", name="Линия: путь работы с записью")).to_be_visible()
     expect(page.get_by_role("button", name="Выйти из полноэкранного режима (F)")).to_be_visible()
     page.keyboard.press("Escape")
-    expect(page.get_by_role("button", name="Назад", exact=True)).to_be_visible()
+    expect(page.get_by_role("group", name="Параметры просмотра")).to_be_visible()
     expect(page).to_have_url(re.compile(rf"/player/{rid}"))
 
     # dragging the 3D view frees the camera; double-click (or the chip's button) gives it back
     canvas = page.get_by_role("img", name="3D-вид из кабины")
     box = box_of(canvas)
-    page.mouse.move(box["x"] + 800, box["y"] + 350)
+    cx, cy = box["x"] + box["width"] * .5, box["y"] + box["height"] * .5
+    page.mouse.move(cx, cy)
     page.mouse.down()
-    page.mouse.move(box["x"] + 900, box["y"] + 320, steps=8)
+    page.mouse.move(cx + box["width"] * .1, cy - box["height"] * .05, steps=8)
     page.mouse.up()
     expect(page.get_by_text("свободная камера")).to_be_visible()
-    page.mouse.dblclick(box["x"] + 800, box["y"] + 350)
+    page.mouse.dblclick(cx, cy)
     expect(page.get_by_text("кабина · вперёд")).to_be_visible()
-    page.mouse.move(box["x"] + 700, box["y"] + 350)
+    page.mouse.move(cx, cy)
     page.mouse.down()
-    page.mouse.move(box["x"] + 640, box["y"] + 360, steps=8)
+    page.mouse.move(cx - box["width"] * .08, cy + box["height"] * .04, steps=8)
     page.mouse.up()
     expect(page.get_by_text("свободная камера")).to_be_visible()
     page.keyboard.press("Escape")  # Esc first gives the camera back, then leaves
     expect(page.get_by_text("кабина · вперёд")).to_be_visible()
     expect(page).to_have_url(re.compile(rf"/player/{rid}"))
-    # opened directly (no page before it): «Назад» goes to the run's page
-    page.get_by_role("button", name="Назад", exact=True).click()
-    expect(page).to_have_url(re.compile(rf"/runs/{rid}$"))
+    # The global stage rail is the page's navigation; no second header or local back button.
+    page.get_by_role("navigation", name="Линия: путь работы с записью").get_by_role("link", name="Прогоны", exact=True).click()
+    expect(page).to_have_url(re.compile(r"/runs$"))
     assert real_errors(app.errors) == []
 
 
 # ---------------------------------------------------------------------------------------- 12
 
 
-def test_cab_fits_small_viewports(app, seeded):
+def test_workspace_resizes_without_clipping(app, seeded):
     page, rid = app.page, seeded["ids"]["approach"]
-    for w, h in ((1920, 1080), (1440, 900), (1280, 800), (1280, 720), (390, 844)):
+    open_player(app, f"/player/{rid}?pos=30")
+    for w, h in ((1366, 768), (1440, 900), (1920, 1080), (1280, 800), (390, 844)):
         page.set_viewport_size({"width": w, "height": h})
-        open_player(app, f"/player/{rid}?pos=30")
+        page.locator('main').evaluate('el => el.scrollTop = 0')
+        page.wait_for_function('''() => {
+            const cv = document.querySelector('canvas[aria-label="3D-вид из кабины"]');
+            const pr = Math.min(2, devicePixelRatio || 1);
+            return cv && cv.width === Math.floor(cv.clientWidth * pr) && cv.height === Math.floor(cv.clientHeight * pr);
+        }''')
         assert page.evaluate("document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth")
         nav = page.get_by_role("navigation", name="Линия: путь работы с записью")
         expect(nav).to_be_visible()
         canvas = page.get_by_role("img", name="3D-вид из кабины")
         world = canvas.locator("..")
-        stage = world.locator("..")
-        stage_box = box_of(stage, scroll=False)
-        assert abs(stage_box["width"] / stage_box["height"] - 16 / 9) < 0.01
+        workspace = page.locator('[data-player-workspace]')
+        stage_box = box_of(workspace, scroll=False)
         nav_box = box_of(nav, scroll=False)
         assert stage_box["y"] >= nav_box["y"] + nav_box["height"]
         assert stage_box["x"] >= 0 and stage_box["x"] + stage_box["width"] <= w + 1
-        assert stage_box["y"] + stage_box["height"] <= h + 1
+        assert page.locator('main header').count() == 0
+        assert workspace.evaluate('el => getComputedStyle(el).transform') == 'none'
+        assert page.locator('main').evaluate('el => el.scrollWidth <= el.clientWidth')
+        assert abs(stage_box['width'] - page.locator('main').evaluate('el => el.clientWidth - parseFloat(getComputedStyle(el).paddingLeft) - parseFloat(getComputedStyle(el).paddingRight)')) < 2
         assert abs(box_of(canvas, scroll=False)["height"] - box_of(world, scroll=False)["height"]) < 1
+        if w in (1366, 1440, 1920):
+            transport = box_of(page.get_by_role('region', name='Воспроизведение'), scroll=False)
+            assert transport['y'] + transport['height'] <= h + 1, transport
         for name in ("Схема пути", "Решение", "До препятствия", "Задержка и частота", "Исправность"):
-            b = box_of(page.get_by_role("region", name=name), scroll=False)
-            assert b and b["x"] >= 0 and b["y"] >= 0 and b["x"] + b["width"] <= w and b["y"] + b["height"] <= h, (w, h, name, b)
+            panel = page.get_by_role("region", name=name)
+            panel.scroll_into_view_if_needed()
+            b = box_of(panel, scroll=False)
+            assert b and b["x"] >= 0 and b["y"] >= 0 and b["x"] + b["width"] <= w + 1 and b["y"] + b["height"] <= h + 1, (w, h, name, b)
+        slider(page).scroll_into_view_if_needed()
         sb = box_of(slider(page), scroll=False)
-        assert sb["y"] + sb["height"] <= h, (w, h, sb)
+        assert sb["y"] + sb["height"] <= h + 1, (w, h, sb)
     assert real_errors(app.errors) == []

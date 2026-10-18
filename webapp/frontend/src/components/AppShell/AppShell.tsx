@@ -1,6 +1,6 @@
 // Page chrome: the red top bar, the metro line, then the routed page.
 import { Suspense, useLayoutEffect, useRef, useState } from 'react';
-import { Outlet, useLocation, useMatch } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useSystem } from '../../api/hooks';
 import { LineRail } from '../LineRail/LineRail';
 import { Spinner } from '../Spinner/Spinner';
@@ -20,7 +20,6 @@ export function AppShell() {
   const chromeRef = useRef<HTMLDivElement>(null);
   const pageRef = useRef<HTMLElement>(null);
   const { key } = useLocation();
-  const player = useMatch('/player/*');
   const [sub, setSub] = useState<string | undefined>(undefined);
   useLayoutEffect(() => {
     const chrome = chromeRef.current;
@@ -47,7 +46,7 @@ export function AppShell() {
           <TopBar />
           <LineRail sub={sub} queueBusy={queueBusy} />
         </div>
-        <main ref={pageRef} id="main" className={`${styles.page} ${player ? styles.playerPage : ''}`} tabIndex={-1}>
+        <main ref={pageRef} id="main" className={styles.page} tabIndex={-1}>
           <Suspense fallback={<PageFallback />}>
             <Outlet />
           </Suspense>

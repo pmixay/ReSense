@@ -1,5 +1,11 @@
 # UI Screenshots
 
+## Current Player workspace
+
+The integrated Player's current captures and model provenance are in
+[`player-workspace/`](player-workspace/README.md), including 1366×768, 1440×900,
+1920×1080 and mobile. The earlier galleries below retain their capture dates and data provenance.
+
 > **Purpose:** gallery of the browser dashboard's and the web prototype's captures and where their data
 > comes from.
 > **Audience:** jury, team · **Owner:** P2 · **Language:** EN

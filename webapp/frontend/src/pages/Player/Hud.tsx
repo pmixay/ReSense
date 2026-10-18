@@ -6,7 +6,6 @@
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import type { DetectionDict, FrameResultDict } from '../../api/types';
 import { Icon, IconButton, Spinner } from '../../components';
-import { cautionText } from '../../lib/decisions';
 import { POINTS, fmtCount, fmtMeters, fmtNum, fmtNumTrim, plural } from '../../lib/format';
 import { CAMERA_HUD, envelopeText } from './cab';
 import { RULER_MARKS, type SceneOverlay } from '../../player/scene';
@@ -19,9 +18,6 @@ export type OverlaySink = (ov: SceneOverlay) => void;
 /** Up to this many detection labels (the nearest carries the size line). */
 const MAX_DET_LABELS = 3;
 const MAX_WARN_LABELS = 2;
-/** The inset's place in the glass (stage px, as in the mockup). */
-export const PIP_RECT = { x: 1296, y: 136, w: 204, h: 204, radius: 26 };
-
 /** Put a label at a screen point of the 3D view (hidden when the point is off screen). The
  *  individual `translate` property moves it without a layout pass. */
 function place(el: HTMLElement | null | undefined, p: { visible: boolean; x: number; y: number } | undefined, dx = 0): void {
@@ -64,6 +60,7 @@ export interface HudProps {
 }
 
 export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, cloudError, buffering, framesFailed, onRetryCloud, motion, register, noView = false }: HudProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
   const detRefs = useRef<(HTMLDivElement | null)[]>([]);
   const warnRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tickRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -81,6 +78,13 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
   const rulerMarks = useRef<SVGGElement[]>([]);
   const apply = useCallback<OverlaySink>(
     (ov) => {
+      const root = rootRef.current;
+      if (root) {
+        root.style.left = `${ov.viewport.x}px`;
+        root.style.top = `${ov.viewport.y}px`;
+        root.style.width = `${ov.viewport.width}px`;
+        root.style.height = `${ov.viewport.height}px`;
+      }
       const dr = detRefs.current;
       for (let i = 0; i < dr.length; i += 1) place(dr[i], ov.detections[i]);
       const wr = warnRefs.current;
@@ -108,7 +112,15 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
           path.style.visibility = 'visible';
         } else path.style.visibility = 'hidden';
       }
-      if (pipRef.current) pipRef.current.style.visibility = ov.pip.visible ? 'visible' : 'hidden';
+      if (pipRef.current) {
+        pipRef.current.style.visibility = ov.pip.visible ? 'visible' : 'hidden';
+        if (ov.inset) {
+          pipRef.current.style.left = `${ov.inset.x}px`;
+          pipRef.current.style.top = `${ov.inset.y}px`;
+          pipRef.current.style.width = `${ov.inset.w}px`;
+          pipRef.current.style.height = `${ov.inset.h}px`;
+        }
+      }
       const g = rulerRef.current;
       if (g && ov.pip.visible) {
         const ys = ov.pip.ys;
@@ -142,9 +154,8 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
   // the speed the job or the detector reported; the glide's fallback (objects' shift) is not shown as one
   const speedShown = motion.v > 0.05 && (motion.source === 'given' || motion.source === 'estimated');
   return (
-    <div className={`${styles.hud} ${noView ? styles.hudNoView : ''}`}>
+    <div ref={rootRef} className={`${styles.hud} ${noView ? styles.hudNoView : ''}`}>
       <div className={styles.hudc}>
-        {frame?.decision === 'CAUTION' && <div className={styles.g} style={{ maxWidth: 700, whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{cautionText(frame)}</div>}
         <div className={styles.g}>
           <Icon name="camera" size={16} />
           {free ? 'свободная камера' : CAMERA_HUD[mode]}
@@ -154,18 +165,18 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
         </div>
         {hasClouds ? (
           nPoints !== undefined && (
-            <div className={styles.g}>
+            <div className={`${styles.g} ${styles.cloudMeta}`}>
               облако <b>{fmtNum(nPoints, 0)}</b> {plural(nPoints, POINTS)}
             </div>
           )
         ) : (
-          <div className={styles.g}>
+          <div className={`${styles.g} ${styles.cloudMeta}`}>
             <Icon name="cube" size={16} />
             без облака точек
           </div>
         )}
         {speedShown && (
-          <div className={styles.g}>
+          <div className={`${styles.g} ${styles.motionMeta}`}>
             скорость <b>{fmtNumTrim(motion.v, 1)}</b> м/с
           </div>
         )}
@@ -185,7 +196,7 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
         ) : null}
       </div>
 
-      <svg className={styles.brk} width="1600" height="600" aria-hidden>
+      <svg className={styles.brk} width="100%" height="100%" aria-hidden>
         <path ref={brkRef} fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style={{ visibility: 'hidden' }} />
       </svg>
 
@@ -242,7 +253,7 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
       ))}
 
       <div ref={pipRef} className={`${styles.zoom} ${dets.length ? '' : styles.zoomWarn}`} style={{ visibility: 'hidden' }} aria-label="Крупно">
-        <svg className={styles.rul} width={PIP_RECT.w} height={PIP_RECT.h} aria-hidden>
+        <svg className={styles.rul} width="100%" height="100%" aria-hidden>
           <g ref={rulerRef}>
             <line x1="22" x2="22" y1="0" y2="0" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
             {RULER_MARKS.map((h, i) => {

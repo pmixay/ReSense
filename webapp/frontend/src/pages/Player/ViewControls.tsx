@@ -1,42 +1,14 @@
-// The roof of the cab: back, the «Плеер» pill with its mini metro line, the run selector, the
-// decision beacon, the camera switch and the fullscreen toggle.
+// Player-specific tools in normal page flow; global navigation is supplied by AppShell.
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRuns } from '../../api/hooks';
 import type { Decision, Run } from '../../api/types';
-import { DECISION_ICON, DecisionChip, ErrorBanner, Icon, IconButton, Segmented, Spinner } from '../../components';
+import { DecisionChip, ErrorBanner, Icon, IconButton, Segmented, Spinner } from '../../components';
 import { DECISION_CHIP_LABEL, worstDecision } from '../../lib/decisions';
 import { fmtDuration, fmtRelDate } from '../../lib/format';
 import type { CamMode } from '../../player/geometry';
 import { CAMERAS, CAMERA_LABEL } from './cab';
 import styles from './Player.module.css';
-
-/** The ReSense mark in brand red on a white pill (mockup player.html). */
-export function RedMark() {
-  return (
-    <svg className={styles.logoMark} viewBox="0 0 40 38" aria-hidden>
-      <path d="M3.5 19H12" stroke="#E4000D" strokeWidth="7" strokeLinecap="round" />
-      <circle cx="19" cy="19" r="7" fill="#fff" stroke="#E4000D" strokeWidth="5" />
-      <path d="M28.2 11.3A12 12 0 0 1 28.2 26.7M32 8.1A17 17 0 0 1 32 29.9" fill="none" stroke="#E4000D" strokeWidth="2.8" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-export function PlayerPill() {
-  return (
-    <Link to="/" className={styles.rpill} aria-label="На главную">
-      <RedMark />
-      <span className={styles.pn}>Плеер</span>
-      <span className={styles.mline} aria-hidden>
-        <i />
-        <i />
-        <i />
-        <i className={styles.c} />
-        <i />
-      </span>
-    </Link>
-  );
-}
 
 /** Runs for the selector: with clouds first, newest first within each group. */
 export function sortRunsForPlayer(runs: readonly Run[]): Run[] {
@@ -75,15 +47,17 @@ function RunMenu({ runId, name }: { runId: string; name: string }) {
     <div className={styles.menuWrap} ref={wrap}>
       <button
         type="button"
-        className={`${styles.rpill} ${styles.nameBtn}`}
+        className={styles.nameBtn}
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         title={name}
+        aria-label={`Другой прогон: ${name}`}
       >
+        <Icon name="cube" size={16} />
         <span className={styles.runName}>{name}</span>
+        <Icon name="chevron-down" size={16} />
       </button>
-      <IconButton icon="menu" label="Другой прогон" variant="white" size="lg" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-controls={open ? menuId : undefined} />
       {open && (
         <nav id={menuId} className={styles.menu} aria-label="Прогоны">
           {runs.isLoading && (
@@ -128,46 +102,35 @@ function RunMenu({ runId, name }: { runId: string; name: string }) {
 export function Beacon({ decision }: { decision: Decision | null }) {
   if (!decision) return null;
   return (
-    <div className={`${styles.beacon} ${styles[`b_${decision.toLowerCase()}`]}`} role="status" aria-live="polite" aria-label={`Решение: ${DECISION_CHIP_LABEL[decision]}`}>
-      <span className={styles.bo}>
-        <Icon name={DECISION_ICON[decision]} size={26} strokeWidth={2.6} />
-      </span>
-      <span className={styles.bt}>{DECISION_CHIP_LABEL[decision]}</span>
+    <div role="status" aria-live="polite" aria-label={`Решение: ${DECISION_CHIP_LABEL[decision]}`}>
+      <DecisionChip decision={decision} />
     </div>
   );
 }
 
-export interface RoofProps {
+export interface ViewControlsProps {
   runId?: string;
   runName?: string;
   decision: Decision | null;
+  reason?: string;
   mode?: CamMode;
   onMode?: (m: CamMode) => void;
   fullscreen: boolean;
-  /** hide the navigation (pseudo fullscreen: the browser refused the real one) */
-  kiosk: boolean;
   onFullscreen: () => void;
-  onBack: () => void;
 }
 
-export function Roof({ runId, runName, decision, mode, onMode, fullscreen, kiosk, onFullscreen, onBack }: RoofProps) {
+export function ViewControls({ runId, runName, decision, reason, mode, onMode, fullscreen, onFullscreen }: ViewControlsProps) {
   return (
-    <>
-      {!kiosk && (
-        <div className={styles.roofL}>
-          <IconButton icon="arrow-left" label="Назад" variant="white" size="lg" onClick={onBack} tooltip tooltipPlacement="bottom" />
-          <PlayerPill />
-          {runId && runName !== undefined && <RunMenu runId={runId} name={runName} />}
-        </div>
-      )}
+    <div className={styles.controls} role="group" aria-label="Параметры просмотра">
+      {runId && runName !== undefined && <RunMenu runId={runId} name={runName} />}
       <Beacon decision={decision} />
-      <div className={styles.roofR}>
+      {reason && <span className={styles.viewReason}>{reason}</span>}
+      <div className={styles.viewTools}>
         {mode && onMode && (
           <Segmented<CamMode>
             label="Камера"
             tone="white"
             size="sm"
-            className={styles.cseg}
             value={mode}
             onChange={onMode}
             options={CAMERAS.map((c) => ({ value: c, label: CAMERA_LABEL[c], icon: c === 'cab' ? 'train' : undefined }))}
@@ -176,13 +139,13 @@ export function Roof({ runId, runName, decision, mode, onMode, fullscreen, kiosk
         <IconButton
           icon={fullscreen ? 'exit-fullscreen' : 'fullscreen'}
           label={fullscreen ? 'Выйти из полноэкранного режима (F)' : 'Во весь экран (F)'}
-          variant="white"
-          size="lg"
+          variant="outline"
+          size="md"
           onClick={onFullscreen}
           tooltip
           tooltipPlacement="bottom-end"
         />
       </div>
-    </>
+    </div>
   );
 }

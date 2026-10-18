@@ -7,20 +7,14 @@ import { FLAG_CORRIDOR } from '../../api/cloud';
 import type { FrameResultDict } from '../../api/types';
 import { fmtNum } from '../../lib/format';
 import { floorZ, type TrackModelDict } from '../../lib/track';
+import { useSize } from '../../lib/useSize';
+import styles from './Player.module.css';
 
-const MW = 292;
-const MH = 180;
-const X0 = 30;
-const X1 = MW - 22;
-const CY = 94;
-const K = 18;
 const RANGE = 200;
 const BIN_X = 2; // m
 const BIN_Y = 0.25; // m
 const NX = RANGE / BIN_X + 1;
 const NY = 40; // ±5 m
-
-const X = (x: number): number => X0 + (Math.min(RANGE, Math.max(0, x)) / RANGE) * (X1 - X0);
 
 /** Point density → opacity (0,26 for a single point … 0,8), in a few shades so a redraw is a few fills. */
 const ALPHA_LEVELS = 8;
@@ -49,6 +43,7 @@ export function wallBins(cloud: DecodedCloud, track: TrackModelDict): Uint16Arra
 }
 
 export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict | null; cloud: DecodedCloud | null; pixelRatio: number }) {
+  const [wrapRef, width, height] = useSize<HTMLDivElement>();
   const ref = useRef<HTMLCanvasElement>(null);
   const track = frame?.track ?? null;
   const bins = useMemo(() => (cloud && track ? wallBins(cloud, track) : null), [cloud, track]);
@@ -56,6 +51,13 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
   useEffect(() => {
     const cv = ref.current;
     if (!cv) return;
+    const MW = width || 292;
+    const MH = height || 180;
+    const X0 = 24;
+    const X1 = MW - 18;
+    const CY = MH * 0.56;
+    const K = Math.min(18, Math.max(10, (MH - 70) / 2.1));
+    const X = (x: number): number => X0 + (Math.min(RANGE, Math.max(0, x)) / RANGE) * (X1 - X0);
     const pr = Math.min(3, Math.max(1, pixelRatio));
     cv.width = Math.round(MW * pr);
     cv.height = Math.round(MH * pr);
@@ -194,11 +196,11 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
 
     // axis
     ctx.fillStyle = '#FFFFFF';
-    for (const m of [0, 50, 100, 150, 200]) {
+    for (const m of MW < 220 ? [0, 100, 200] : [0, 50, 100, 150, 200]) {
       ctx.textAlign = m === 200 ? 'right' : 'center';
       ctx.fillText(m === 200 ? '200 м' : String(m), m === 200 ? X(m) + 14 : X(m), MH - 13);
     }
-  }, [bins, frame, track, pixelRatio]);
+  }, [bins, frame, track, pixelRatio, width, height]);
 
-  return <canvas ref={ref} style={{ position: 'absolute', inset: 0, width: MW, height: MH }} aria-hidden />;
+  return <div ref={wrapRef} className={styles.mapCanvas}><canvas ref={ref} style={{ width: '100%', height: '100%' }} aria-hidden /></div>;
 }

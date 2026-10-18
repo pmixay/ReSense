@@ -8,6 +8,7 @@
 // animation frame (the "live drive" glide), render(dt). Nothing is allocated per render; the HUD
 // reads the screen positions of labels from `overlay` after each render (onOverlay).
 import * as THREE from 'three';
+import { ScreenDisplay, type DisplayViewport } from './screenDisplay';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { DecodedCloud } from '../api/cloud';
 import type { DetectionDict, FrameResultDict } from '../api/types';
@@ -69,6 +70,9 @@ const EDGE_OFFSETS: readonly [number, number][] = [
 ];
 /** Ruler marks of the close-up (m above the bed). */
 export const RULER_MARKS: readonly number[] = [0, 0.5, 1, 1.5, 2];
+/** Dedicated close-up chrome: never draw the object under its ruler or caption. */
+export const PIP_GUTTER = 44;
+export const PIP_CAPTION = 24;
 
 const LAYER_MAIN = 1;
 const LAYER_PIP = 2;
@@ -84,6 +88,9 @@ export interface ScreenPoint {
 export interface SceneOverlay {
   width: number;
   height: number;
+  /** Active display bounds inside the canvas, excluding the modeled housing. */
+  viewport: DisplayViewport;
+  inset: PipRect | null;
   /** stem tops of frame.detections (same order) */
   detections: ScreenPoint[];
   /** tops of frame.warnings (same order) */
@@ -107,6 +114,8 @@ export interface PipRect {
 }
 
 export interface PlayerSceneOptions {
+  /** Present the live view on the reference display's three-dimensional housing. */
+  screenDisplay?: boolean;
   /** light single-frame view: smaller points, no train, no inset */
   preview?: boolean;
   /** orbit with the mouse */
@@ -153,6 +162,7 @@ export class PlayerScene {
   private readonly pipCam: THREE.PerspectiveCamera;
   private readonly controls: OrbitControls | null = null;
   private readonly disposables: { dispose(): void }[] = [];
+  private readonly display: ScreenDisplay | null;
 
   // points
   private pointsGeo: THREE.BufferGeometry;
@@ -225,11 +235,13 @@ export class PlayerScene {
     this.minPx = opts.preview ? 1.25 : 1.6;
     // the context is asked for here: without WebGL 2 the owner shows its own message (three.js
     // would log errors to the console first)
-    const gl = canvas.getContext('webgl2', { alpha: false, antialias: true, depth: true, stencil: false, powerPreference: 'high-performance' });
+    const alpha = !!opts.screenDisplay;
+    const gl = canvas.getContext('webgl2', { alpha, antialias: true, depth: true, stencil: false, powerPreference: 'high-performance' });
     if (!gl) throw new Error('WebGL 2 недоступен');
-    this.renderer = new THREE.WebGLRenderer({ canvas, context: gl, antialias: true, alpha: false, powerPreference: 'high-performance' });
+    this.renderer = new THREE.WebGLRenderer({ canvas, context: gl, antialias: true, alpha, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.autoClear = false;
+    this.display = opts.screenDisplay ? new ScreenDisplay() : null;
 
     this.camera = new THREE.PerspectiveCamera(24, 1, 0.5, 600);
     this.camera.up.set(0, 0, 1);
@@ -377,6 +389,8 @@ export class PlayerScene {
     this.overlay = {
       width: 1,
       height: 1,
+      viewport: { x: 0, y: 0, width: 1, height: 1 },
+      inset: null,
       detections: Array.from({ length: MAX_DETECTIONS }, sp),
       warnings: Array.from({ length: MAX_WARNINGS }, sp),
       bracket: { visible: false, x0: 0, y0: 0, x1: 0, y1: 0 },
@@ -417,11 +431,16 @@ export class PlayerScene {
 
   /** CSS size of the canvas and the device pixel ratio to render at (≤ 2). */
   setSize(width: number, height: number, pixelRatio: number): void {
-    this.width = Math.max(1, Math.round(width));
-    this.height = Math.max(1, Math.round(height));
+    const canvasW = Math.max(1, Math.round(width));
+    const canvasH = Math.max(1, Math.round(height));
     this.pixelRatio = Math.min(2, Math.max(0.5, pixelRatio));
+    this.display?.setSize(canvasW, canvasH, this.pixelRatio);
+    const viewport = this.display?.viewport ?? { x: 0, y: 0, width: canvasW, height: canvasH };
+    this.width = viewport.width;
+    this.height = viewport.height;
+    Object.assign(this.overlay.viewport, viewport);
     this.renderer.setPixelRatio(this.pixelRatio);
-    this.renderer.setSize(this.width, this.height, false);
+    this.renderer.setSize(canvasW, canvasH, false);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
     this.quadCam.right = this.width;
@@ -437,6 +456,7 @@ export class PlayerScene {
   /** The inset's place in the canvas (CSS px), or null for none. */
   setPipRect(rect: PipRect | null): void {
     this.pipRect = rect;
+    this.overlay.inset = rect;
     this.layoutPip();
     this.touch();
   }
@@ -583,7 +603,8 @@ export class PlayerScene {
     this.trackUniforms.uSpan.value.set(this.span.near - this.sWorld, this.span.far - this.sWorld, this.span.end);
 
     const r = this.renderer;
-    r.setRenderTarget(null);
+    r.setRenderTarget(this.display?.target ?? null);
+    r.setViewport(0, 0, this.width, this.height);
     r.setClearColor(BG, 1);
     r.clear();
     r.render(this.scene, this.camera);
@@ -592,16 +613,19 @@ export class PlayerScene {
     if (pipOn && this.pip && this.pipRect) {
       this.updatePipCamera();
       const pm = this.pipMat.uniforms;
-      pm.uScale.value = ((this.pipRect.h * pr) / (2 * Math.tan((this.pipCam.fov * Math.PI) / 360))) * 0.04;
+      pm.uScale.value = (((this.pipRect.h - PIP_CAPTION) * pr) / (2 * Math.tan((this.pipCam.fov * Math.PI) / 360))) * 0.04;
       pm.uMinPx.value = 2.4 * pr;
       pm.uMaxPx.value = 7 * pr;
       r.setRenderTarget(this.rt);
       r.setClearColor(PIP_BG, 1);
       r.clear();
+      r.setViewport(PIP_GUTTER, 0, this.pipRect.w - PIP_GUTTER, this.pipRect.h - PIP_CAPTION);
       r.render(this.scene, this.pipCam);
-      r.setRenderTarget(null);
+      r.setRenderTarget(this.display?.target ?? null);
+      r.setViewport(0, 0, this.width, this.height);
       r.render(this.quadScene, this.quadCam);
     }
+    this.display?.render(r);
     this.computeOverlay(pipOn);
     this.opts.onOverlay?.(this.overlay);
   }
@@ -616,6 +640,7 @@ export class PlayerScene {
     }
     this.renderer.domElement.removeEventListener('dblclick', this.onDblClick);
     this.pointsGeo.dispose();
+    this.display?.dispose();
     for (const d of this.disposables) d.dispose();
     this.scene.clear();
     this.quadScene.clear();
@@ -935,7 +960,7 @@ export class PlayerScene {
     const u = (this.quad.material as THREE.ShaderMaterial).uniforms;
     (u.uSize.value as THREE.Vector2).set(r.w, r.h);
     u.uRadius.value = r.radius;
-    this.pipCam.aspect = r.w / r.h;
+    this.pipCam.aspect = (r.w - PIP_GUTTER) / (r.h - PIP_CAPTION);
     this.pipCam.updateProjectionMatrix();
   }
 
@@ -1049,7 +1074,7 @@ export class PlayerScene {
       const fz = floorZ(this.track, d.center[0]);
       for (let i = 0; i < RULER_MARKS.length; i += 1) {
         const v = this.tmp2.set(d.center[0] + this.world.position.x, d.center[1] + this.world.position.y, fz + RULER_MARKS[i]).project(this.pipCam);
-        pip.ys[i] = ((1 - v.y) / 2) * this.pipRect.h;
+        pip.ys[i] = PIP_CAPTION + ((1 - v.y) / 2) * (this.pipRect.h - PIP_CAPTION);
       }
     }
   }

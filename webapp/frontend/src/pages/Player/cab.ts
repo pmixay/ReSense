@@ -199,7 +199,7 @@ export function distanceLabels(w: number, free: string, value: string | null, fx
   return { free, value, valueX, mon, monEnd };
 }
 
-/** Width of the scrubber's strip in stage px (1600 − the controls around it). */
+/** Conservative baseline for event-pin packing; the visible strip resizes to its real container. */
 export const SCRUB_LANE_W = 670;
 /** Conservative width of a pin pill (DecisionStrip: Raleway 800 11 px, 7 px padding). */
 export const pinWidth = (label: string): number => 14 + 7 * label.length;
