@@ -1,0 +1,6 @@
+{
+  "status": "rejected historical post-tracker experiment",
+  "source_sha256": "c89a00935639095d1d52a8f6d6a735d9ff10856846f99203a5014059f431bb5c",
+  "archive_sha256": "455c20fb2a1075ee9edf9fdfd27ac31c2b1d5c9356a957535e8ab45068962353",
+  "note": "Unmodified measured exploratory source retained as a data archive; not installed or imported by runtime or tests."
+}

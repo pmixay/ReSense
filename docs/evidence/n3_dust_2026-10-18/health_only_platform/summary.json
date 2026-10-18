@@ -1,0 +1,101 @@
+{
+  "schema": "dust-battery-v1",
+  "seed": 20261018,
+  "detector_root": "/home/resense/data/dust/source_406ffaa",
+  "source_hashes": {
+    "resense/__init__.py": "26224b26e3748484752d554049a2e3efdea00270e37a6c093df333151ab8eb04",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "56f88b4e5cba143498fb6f0d91ff4e00d7da0ae34b4faa3621eb773dc5181dc6",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "8a651cdc0b7955a3dbaecc75b1bc9179f05bbc8bf390f961cdf71b62435e220b",
+    "resense/config.py": "f2c36784adc00fc62b98cda5b3f52a56e41ebbc1fd1d89060ca348c27e03b730",
+    "resense/detector.py": "cef60ccc9d47cf6b0bf547f4ec74f3c8bc0a93d2320a12c397ed01b3a5cb4228",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "a1c0761a713d6e089c420d383c153b0ce52f503405e6c4c0020bcb1e08ffdb16",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "211502e2c826cdc61f60d091ed0e0df414567d1b4497661eeb2e00c56c813ddc",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+    "resense/tracking.py": "4c6d6176e06749a544eceb06e60ab2f276b991fca32dcc862685eac95778eca3",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db"
+  },
+  "config_overrides": [],
+  "generator_sha256": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+  "dust_support": false,
+  "health_only": true,
+  "dim_label_intensity": null,
+  "support_sha256": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+  "commit": "da8c3ce289cdd1c5814f4573415d65ffe033eddc",
+  "cpu_affinity": [
+    0
+  ],
+  "recordings": {
+    "doubleT_platform": {
+      "cache_sha256": "d15dddef14a7d52976b1e7ea46728473f928eb2ca6dfdeb8b159e3a68e074238",
+      "frames": 345,
+      "levels": {
+        "clean": {
+          "GO": 144,
+          "stop_episodes": 0,
+          "degraded_frames": 9,
+          "CAUTION": 201,
+          "objects": {},
+          "frames": 345,
+          "timing_ms": {
+            "median": 316.9515469999169,
+            "p95": 777.7152376002051
+          },
+          "wall_seconds": 179.32993594699656,
+          "raw_sha256": "2ee3a4d607fdd353be658163e2d69eb3a2cf5700681eeb439c534ce4a9657211"
+        },
+        "medium": {
+          "injected_returns": 404562,
+          "attenuated_returns": 855005,
+          "CAUTION": 178,
+          "stop_episodes": 25,
+          "degraded_frames": 345,
+          "STOP": 167,
+          "objects": {},
+          "frames": 345,
+          "timing_ms": {
+            "median": 553.4224889997859,
+            "p95": 809.67186439957
+          },
+          "wall_seconds": 522.9534204579977,
+          "raw_sha256": "4532c434a7306588f3d59a832cc705f580072dc8981fb9fe2ae249f22edb7869",
+          "extra_stop_episodes": 25,
+          "empty_episode_acceptance": false
+        },
+        "high": {
+          "injected_returns": 4045939,
+          "attenuated_returns": 4941189,
+          "CAUTION": 325,
+          "stop_episodes": 3,
+          "degraded_frames": 345,
+          "STOP": 20,
+          "objects": {},
+          "frames": 345,
+          "timing_ms": {
+            "median": 651.6309250000631,
+            "p95": 981.6277236037424
+          },
+          "wall_seconds": 422.53422812999634,
+          "raw_sha256": "f4428d8514daa9ed07176c6623a7daf2e4d5411e41a676ab1def59ec44f8ec0c",
+          "extra_stop_episodes": 3,
+          "empty_episode_acceptance": false
+        }
+      }
+    }
+  }
+}
