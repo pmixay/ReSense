@@ -50,10 +50,16 @@ What it means:
    real floor appears to the side and a tunnel wall appears below the sensor. The calibration accepts that wall as the
    track bed (status `ok`; case 4: `ok` from frame 202, height 2.29 m, roll −0.78°, "tilt corrected"). Even before that,
    decisions are not held back while the mount is `pending`: case 4 gives `STOP` from frame 4. On the moving empty
-   recording this is **395–509 false STOP frames out of 545**, with the mount reported `ok`. It fails safe (no silent
-   `GO`), but the status is misleading. Candidate fixes are P3's: a forward-axis test before the bed test (Falcon
-   README A2), or no `STOP` while the orientation is unconfirmed.
-4. On the obstacle recording the sideways cases that `STOP` do so on the same 193 frames as the real run (+0–4). That is
+   recording this is **395–509 false STOP frames out of 545**, with the mount reported `ok`. The status is misleading.
+   **Corrected 18.10 (after P1's review, re-checked on our saved rows):** it does *not* always fail safe. Case 5 gives
+   `GO` on empty-recording frames 311 and 316 (status `ok`, wrong orientation), and on the obstacle recording it turns
+   **6 real STOP frames (189–194) into `CAUTION`** (and adds STOP on 5–7). The two fixes suggested here do not work:
+   the forward/rear cone test (`calibration.observe_mount`) already runs first and uses `hypot(y, z)`, which a roll
+   about the forward axis leaves unchanged; and the configured orientation already counts as confirmed, 327 of case 5's
+   509 false STOP frames come after status `ok`. A fix needs other mount evidence (P3). Known side mounts can be set
+   explicitly with launch axes; P4 checked that on 1.2.0 ([p1_branch_check](../p1_branch_check_2026-10-18/README.md)).
+4. On the obstacle recording the sideways cases that `STOP` do so on about the same 193 frames as the real run (+0–4; the
+   STOP *count* hides case 5's 6 lost frames, see 3). That is
    not proof that they see the obstacle: the train stands with the obstacle in view on almost every frame, and the empty
    recording shows group C `STOP`s without any obstacle.
 
