@@ -74,3 +74,28 @@ plain metadata types and cycles, reset/overflow behavior, timestamps and replay 
 Test the nested-list reproduction, aliases shared between fields and metadata, and actual
 owned-storage bounds. Require independent review, affected replay tests and a fresh full gate
 on the committed corrected source. Do not waive the limit or relabel earlier source captures.
+
+### N3 independent coordinate-frame finding, 18 October 09:21 UTC
+
+Independent review found that the regular and Set F dust harnesses used a rail height from
+the clean detector's calibrated model with configured-frame input points before that mount
+correction. In the dark-person frame100 example, the vertical inconsistency is approximately
+0.252 m. Those captures remain reproducible configured-coordinate stresses, but cannot claim
+the registered rail-relative cloud geometry. Preserve them under their original source hashes
+as superseded measurements; do not silently overwrite or promote partial runs.
+
+Correct the harnesses, not the frozen production core: freeze the exact applied clean input-to-model
+rotation and rail reference per frame, independently of every dusty detector. Perform attenuation
+and cloud construction in that same clean reference frame, inverse-map only the new cloud returns,
+and recover every retained source XYZ/intensity/ring exactly through its original index. Preserve
+timestamps, clean labels, source identity, existing densities/extinction/seed and the identical
+frozen Set F object placement across densities. Record the reference transform and verify its
+source and per-frame identity. The rail reference must correspond to the actual applied transform,
+including startup/adoption/reset behavior, rather than a later or rounded calibration estimate.
+
+Before fresh complete batteries, test nonzero pitch/roll, exact retained source points, cloud
+bounds after the round trip, deterministic replay and independence from dusty outputs. Strengthen
+the Set F verifier to reconstruct decision/hit/count summaries from raw captures rather than
+trusting aggregate counters. Rerun the seven recording/four density baseline and all30 fixed
+Set F sequences with the corrected geometry; repeat dark-object and health-only controls where
+their claimed conclusions depend on that geometry. Earlier acceptance failures remain recorded.
