@@ -8,14 +8,21 @@ Invalid input holds a grey outline for at most three missing updates, with `soli
 
 ## Play two bags through one node
 
-Build the ordinary image first, then:
+On this development machine, the independently verified selected-default image is
+`resense:lidar-cecab1b`; use that value for `IMAGE` to run the measured revision.
+[Its acceptance record](../lidar_adaptation_2026-10-18/default_off/README.md) identifies
+the exact image and source. No image was published as a new release.
+
+Use the validated image on this machine:
 
 ```bash
-IMAGE=resense:latest scripts/play_bag.sh --interactive --rate 0.5 \
+IMAGE=resense:lidar-cecab1b scripts/play_bag.sh --interactive --rate 0.5 \
   --clear-range-policy conservative \
   --sensor-profile pandar128 /data/PANDAR_BAG \
   --sensor-profile falcon_ros /data/FALCON_ROS_BAG
 ```
+
+On another machine, build this source checkout and substitute the local image tag.
 
 `--sensor-profile` applies to bags that follow it. `manual` preserves explicitly configured axes, `pandar128` selects -Y/+X/+Z, `falcon_ros` selects +X/+Y/+Z for the supplied `/iv_points` recording, and `falcon_native` selects +Z/-Y/+X for native sensor coordinates. Named profiles reset fixed mount angles, calibration prior and range model. The Falcon recording must use `falcon_ros`; a topic name alone does not identify coordinates. The conservative range profile remains explicit; Falcon has no calibrated Pandar small-object density prior, so its `monitored_small` is null and conservative `clear_distance` is zero.
 
@@ -28,10 +35,10 @@ Between players the wrapper waits for input silence, atomically selects the next
 ## Graphics
 
 ```bash
-IMAGE=resense:latest scripts/run_demo.sh --interactive --rate 0.5 \
+IMAGE=resense:lidar-cecab1b scripts/run_demo.sh --interactive --rate 0.5 \
   --sensor-profile pandar128 /data/PANDAR_BAG
 # Software OpenGL fallback, including headless review:
-IMAGE=resense:latest xvfb-run -a scripts/run_demo.sh --software-rendering \
+IMAGE=resense:lidar-cecab1b xvfb-run -a scripts/run_demo.sh --software-rendering \
   --rate 0.5 --sensor-profile pandar128 /data/PANDAR_BAG
 ```
 
@@ -44,7 +51,7 @@ python scripts/make_profile_smoke_bags.py /tmp/profile-bags
 # Actual DDS + native keyboard controls, one node and two distinct sensor profiles:
 docker run --rm --net=host --ipc=host \
   -v /tmp/profile-bags:/bags:ro -v /tmp/profile-check:/out \
-  resense:latest python3 scripts/check_interactive_replay.py /bags --out /out
+  resense:lidar-cecab1b python3 scripts/check_interactive_replay.py /bags --out /out
 # Add -v /path/to/actual-falcon-bag:/falcon:ro to the same Docker command,
 # then --falcon-bag /falcon to exercise the actual second recording.
 # The harness requires every PointCloud2 message counted in each bag's metadata.

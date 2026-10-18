@@ -15,7 +15,11 @@ in aggregate. This violates the unrestricted no-loss protocol; the passing Panda
 gate and X3 measurements do not cancel that failure. The selected default is zero
 replay frames. Its [fresh complete Falcon comparison](falcon_default_off/independent_review.json)
 preserves all 1,372 STOP frames and all eight STOP intervals across 4,443 frames.
-The fresh default gate and X3 remain separate integration checks.
+The selected default also passes the [fresh full gate and X3 review](../lidar_adaptation_2026-10-18/default_off/INDEPENDENT_ACCEPTANCE.md):
+18,329 gate rows and 40 X3 cases covering 29,765 rows, with all 260 X3 checks
+passing and no lost, delayed or shortened existing STOP intervals. The
+[reviewed development seal](../detector_freeze_2026-10-18_lidar.json) binds all
+38 selected source files to measured commit `cecab1b`; it is not a release.
 
 This is development evidence on `work/n5-labels-c2-acceptance`, not a release or
 an independent hidden-set score. The complete sensor proxy experiment below is

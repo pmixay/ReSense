@@ -9,7 +9,10 @@
 > (v1.0.0 detector) by four read-only researchers and one critic; numbers recounted from the judge's
 > per-frame outputs (`docs/evidence/judgement_2026-10-13/out/`, `raw.tar.xz`). Line numbers in
 > `resense/` have shifted with the 1.1.0 reseal (§2): search for the named function.
-> **Updated:** 2026-10-16: selected scope `c9aea87`, H1 DROP; replacement H3/probes and fresh
+> **Updated:** 2026-10-18: selected LiDAR source `cecab1b` sealed after full gate, X3 and complete
+> Falcon preservation checks; startup replay remains opt-in. N1/N4 local acceptance passes;
+> N3 corrected measurements continue, N6 remains off. CI/release are deferred by the captain.
+> 2026-10-16: selected scope `c9aea87`, H1 DROP; replacement H3/probes and fresh
 > independent H4 complete; H5 DONE at `5211565`, 1.1.0 sealed 16.10. Inherited High 8.1 OPEN;
 > H6/CI/main and E1 PENDING.
 > **Status:** current; §2/§2a are the integration ledger, later dates are conditional planning targets;
@@ -35,6 +38,9 @@
   test first, full regression gate exit 0 without `--allow`, independent safety review, then P1
   reseals with the version bump inside the reseal (the bump touches sealed files) and pushes the
   tag. Detector items are therefore shipped as **one bundle per seal**, not one by one.
+  The captain explicitly deferred release/tag work for the 18.10 task: its reviewed development
+  seal retains source version 1.1.0. Any later version change touches frozen files and requires
+  the corresponding acceptance/reseal before release.
 * **Data and tools:** recordings and caches as in [`VM_GUIDE.md`](VM_GUIDE.md) §2 (the ride cache
   is ~5 GB with `scripts/cache_extended_ride.py`). Gate:
   `python scripts/regression_gate.py --cache <cache> --jobs 2 --baseline docs/evidence/results/regression_baseline_2026-09-29_shell_off.json`
@@ -52,7 +58,7 @@ Authoritative scope/acceptance links: [integration checkpoint](evidence/integrat
 Reviewed committed scope is **`c9aea87cb5322092070158cd8987115ee44833c9`**,
 after shipping default withdrawal **`795a243`**. Final measured **1.1.0** source is
 **`52115654417a660669b8dddfce447692c1d782cc`**, with the numerical core/config unchanged.
-The [current 16.10 seal](evidence/detector_freeze_2026-10-16_1.1.0.json) was committed at
+The [historical 16.10 seal](evidence/detector_freeze_2026-10-16_1.1.0.json) was committed at
 `d6319c2` from source/evidence commit `21e1d61`; clean-LF proof `ec81e78` is retained in
 [H5](evidence/integration_2026-10-16/h5/README.md). Published tag/archive remains **v1.0.0**;
 1.1.0 is sealed but **unreleased**, H6/CI/main and E1 pending; no new J1 score.
@@ -1051,9 +1057,12 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
   layouts preserve those results. Sampling changes do not: deduplication loses4 STOP rows, half-channel
   sampling loses128, and the complete Falcon proxy fails36 gated comparisons. Original-recording full gate
   and X3 pass on candidate7b, but actual Falcon replay loses13 prior STOP rows, including four person-associated
-  rows. Independent review blocks default4; the captain selected **replay opt-in**. Sourcececab1b restores
-  default0, passes239 focused and1,906 full tests plus12 subtests, and passes140/140 actualDDS inputs.
-  Its exact full default gate, X3 and full automatic-Falcon parity checks are running; no new seal is claimed.
+  rows. Independent review blocks default 4; the captain selected **replay opt-in**. Source `cecab1b` restores
+  default 0, passes 239 focused and 1,906 full tests plus 12 subtests, and passes 140/140 actual DDS inputs.
+  Its exact 18,329-row default gate and full 4,443-frame Falcon comparison pass with every prior STOP retained.
+  X3 passes all 40 cases / 29,765 rows / 260 checks. Final independent acceptance and the
+  [38-file source seal](evidence/detector_freeze_2026-10-18_lidar.json) pass. **Compatibility and
+  characterization complete; measured sampling and static-support limitations retained.** Release is deferred.
 
 #### N3 · Dust / suspension (revised 17.10: the organizers' data contains none)
 **Owner** P4 + P3 · **Size** M · **Depends on** O1-style question to the organizers
@@ -1099,7 +1108,12 @@ intervals remain explicit; this completion does not imply exact organizer truth 
   this does not deliver a 60 m fix. The combined default gate measures N6 disabled.
   [Evidence](evidence/n6_platform_2026-10-18/README.md).
 
-### 8d. Order up to 23.10 (replaces §4 from 17.10)
+### 8d. Historical plan registered 17.10, through 23.10
+
+The completion records above supersede assignments already delivered on 18.10, including
+N5/C2, Falcon characterization, N1/N4 and N6 attribution. The remaining release, evaluation
+and rehearsal dates below are conditional planning targets, not completed work or a new
+instruction to repeat those deliveries. The captain deferred release until CI is repaired.
 
 * **17.10 captain update:** history preservation and P2/P4 merges are complete. The captain handles GitHub
   billing/quota; release (E1) waits for repaired CI. N5 proceeds by team annotation with explicit uncertainty,

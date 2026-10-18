@@ -20,8 +20,12 @@ Source `cecab1b` changes only the class default and both synchronized YAML files
 opt-in; sensor profiles and the unconfirmed-orientation guard remain. Independent source
 review and 239 focused tests pass. The isolated full suite passes **1,906 tests plus 12 subtests**,
 with seven unavailable historical-fixture deselections. The current Docker/DDS image passes
-all 140 inputs with exact semantic parity. The fresh default gate, X3 and all 4,443 automatic
-Falcon frames are being verified before a new seal.
+all 140 inputs with exact semantic parity. The fresh 18,329-row default gate and complete
+4,443-frame Falcon comparison also pass, preserving every prior STOP. X3 passes all 40 cases,
+29,765 rows and 260 checks. The [joint verdict](default_off/INDEPENDENT_ACCEPTANCE.md) and
+[actual manifest review](default_off/MANIFEST_REVIEW.md) accept the selected source seal.
+The [selected-default record](default_off/README.md) links the current source, raw archives
+and independent reviews. This is source acceptance, with release still deferred.
 Earlier candidate captures keep their original identities and are not selected-default evidence.
 
 ## Work other members can use
@@ -29,8 +33,8 @@ Earlier candidate captures keep their original identities and are not selected-d
 | Dependency | Delivered | Remaining acceptance |
 |---|---|---|
 | P2 display/demo | Shared bounded gauge/status contract; complete 2,308-frame display replay; 140/140-frame same-node Pandar→actual-Falcon check; measured software RViz at rate 0.5; operator commands | Far-range display coverage cost is explicit; hosted CI/release remain deferred |
-| P4 evaluation | Complete verified Falcon cache, reviewed raw target associations, immutable comparison harnesses, all N6 control captures and an independently reviewed full gate on the earlier candidate | Exact opt-in-default acceptance; complete proxy retains measured regressions |
-| P1 integration | Explicit sensor profiles, orientation readiness guard and opt-in startup replay | Exact selected-default full gate/X3/Falcon and reviewed source seal |
+| P4 evaluation | Complete verified Falcon cache, reviewed target associations, N6 controls, complete proxy, selected-default gate/X3/Falcon comparison and verified raw archives | Corrected dust controls and all synthetic-target stress sequences; release-specific J1 later |
+| P1 integration | Explicit sensor profiles, readiness guard and opt-in startup replay; selected-default gate/X3/Falcon accepted with independently reviewed source seal | Dust results must retain failures; no accepted N6 extension |
 | Release | Branch work and local validation | Captain's hosted CI/quota repair and later release decision |
 
 ## Current result by card
@@ -72,7 +76,8 @@ its input containers. Correction `7b7b02c` reserves that growth, charges separat
 independently, and checks actual retained storage before accepting a buffer entry. The original
 reproduction is rejected before copying; 149 affected tests pass. Independent ordinary-input
 checks preserve saved obstacle/Falcon arrays and replay behavior exactly. The earlier f5 gate
-was interrupted and preserved; a fresh full default gate and X3 run measure corrected source.
+was interrupted and preserved; fresh full-gate and X3 runs then measured corrected candidate
+`7b7b02c`, before its default replay setting was withdrawn.
 The [source identity](runtime_identity_metadata_fixed.json) records all 38 files and verifies
 the same enabled native library. Earlier source/image captures are not relabeled as this revision.
 
@@ -93,7 +98,8 @@ and the [second isolated window](isolated_window_metadata_fixed.json). All quali
 
 The subsequent N3 changes affect only offline harnesses. All 30 focused dust/reference/Set F
 tests pass, including actual orientation adoption and bounded replay; the pinned archival lint
-check passes over 351 live files. The 38 frozen production source files still match `7b7b02c`.
+check passed over 351 live files. At that stage the 38 frozen production source files matched
+`7b7b02c`; the later selected-default source and checks are identified above.
 
 The N1 replay wrapper returned external SIGTERM/exit143 when collected, while all four
 reports and complete gzip streams were present. Independent artifact validation confirms
@@ -112,7 +118,8 @@ from the legacy Set F artifact, so independent hit reassignment is not claimed. 
 fresh-control metric comparisons pass; the 15 changed metrics concern latency only.
 The [raw comparison](gate_independent_review.json), [execution receipt](gate_execution_status.json)
 and [verified archive](raw/README.md) retain the complete evidence. These results remain
-valid for candidate7b; the selected default0 requires its own measured gate.
+valid for candidate `7b7b02c`; the selected default 0 subsequently passed its own
+[fresh gate and independent review](default_off/README.md).
 
 The earlier-core `f5ff15f` X3 completed all **40 cases / 29,765 rows**. Independent review
 reconstructed **260/260 passing checks** and exact equality of every shared non-timing output
@@ -123,10 +130,11 @@ Independent strict review preserves all6,284 STOP frames/204 episodes and all sh
 outputs, with260/260 directional checks passing. Its [archive](raw/README.md) and
 [verdict](INDEPENDENT_RESEAL_VERDICT.md) remain candidate4 evidence, not default0 acceptance.
 
-X3 uses the existing complete 1.1.0 baseline:
+X3 uses the existing complete Linux 1.1.0 baseline:
 [reference preparation](x3_reference_preparation.json) reproduces every archived hash for all
 3,133 source frames by changing ZIP container headers only, with no array/compressed-stream
 changes, and revalidates all 40 archived raw entries. The live caches are unchanged.
+This does not resolve the missing historical Windows Set O frame 332 provenance.
 No incomplete or failing run can establish a new detector seal.
 
 ## Hardware and measurement scope

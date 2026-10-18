@@ -22,9 +22,11 @@ N6 rail-axis extension is off; the experimental dust observer is not called by t
 | Full actual Falcon comparison | All 4,443 shared non-timing outputs match the fresh runtime-matched control; all 1,372 STOP frames and eight intervals retained | [Falcon review](../../n2_falcon_2026-10-18/falcon_default_off/README.md) |
 | X3 robustness battery | All 40 cases / 29,765 rows / 260 checks pass; all 6,284 STOP frames and 204 intervals retained | [Complete raw comparison](X3_REVIEW.md) |
 
-The [joint independent verdict](INDEPENDENT_ACCEPTANCE.md) recommends resealing this
-selected source, subject to review of the actual manifest. Earlier replay4 results retain
-their source identities and cannot substitute for the selected-default checks.
+The [joint independent verdict](INDEPENDENT_ACCEPTANCE.md) and subsequent
+[actual manifest review](MANIFEST_REVIEW.md) accept the
+[38-file selected-source seal](../../detector_freeze_2026-10-18_lidar.json).
+The built-in integrity verifier and 12 freeze tests plus six subtests pass. Earlier replay4
+results retain their source identities and cannot substitute for the selected-default checks.
 
 ## Scope and retained limitations
 

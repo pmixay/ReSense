@@ -1,5 +1,12 @@
 # Seyond (Innovusion) Falcon Prime: what the second lidar changes for ReSense
 
+> **Current implementation, 18.10:** the complete recording, sensor profiles, selected-default
+> gate/X3/Falcon comparisons and source seal are accepted with startup replay opt-in. See
+> [current N2 results and limits](../../evidence/n2_falcon_2026-10-18/README.md) and
+> [validated playback commands](../../evidence/n1_n4_2026-10-18/HOWTO.md).
+> The 17.10 design/code audit below is retained as history; its undecoded-data and missing-feature
+> statements are superseded by the dated measurements and implementation record.
+
 > **Source:** the organizers' Falcon Prime documents of 16.10 ([`../../organizers/extended_dataset_2026-10-16.md`](../../organizers/extended_dataset_2026-10-16.md)),
 > read against the code on branch `ccr-027997e8-kqywat`. Its `resense/`, `ros2_ws/` and `configs/` are identical to `origin/main` at `44b462e`.
 > **Owner:** P1 (node, launch, docs), P3 (detector), P4 (evaluation), as in FINALS_BRIEF card **N2**.
