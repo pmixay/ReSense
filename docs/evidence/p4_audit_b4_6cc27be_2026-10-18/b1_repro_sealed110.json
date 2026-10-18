@@ -1,0 +1,2475 @@
+{
+  "source_sha256": {
+    "resense/calibration.py": "9e84d7754f59fbc767db9fbc0a1bdfac5ef0dd0db70e27ce6b29238bc1731c8a",
+    "resense/detector.py": "930c96c0afb22d4f60f6729235ab34664fb8807c8569ead18a69c42c33bb2a92",
+    "resense/health.py": "2c99fb716ab9a7d17b0e1ae8033cd6ee13be9585a030c9430f18b46adb74f45f"
+  },
+  "real_short_window": {
+    "overrides": {
+      "calibration.frames": 5,
+      "calibration.obs_spacing": 1,
+      "calibration.provisional_min_deg": 10.0
+    },
+    "cases": {
+      "0": [
+        {
+          "i": 0,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": ""
+          },
+          "dets": [],
+          "periods": 1,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 1,
+          "recent": 1,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 1,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": ""
+          },
+          "dets": [],
+          "periods": 2,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 2,
+          "recent": 2,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 2,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": ""
+          },
+          "dets": [],
+          "periods": 3,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 3,
+          "recent": 3,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 3,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": ""
+          },
+          "dets": [],
+          "periods": 4,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 4,
+          "recent": 4,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 4,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [],
+          "periods": 5,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 5,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [],
+          "periods": 6,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 6,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [],
+          "periods": 7,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 7,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [],
+          "periods": 8,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 8,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 55.53,
+              "lat": 1.06,
+              "size": [
+                0.32,
+                0.61,
+                1.23
+              ],
+              "n": 46,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.12,
+              "c": [
+                55.68,
+                -0.23,
+                -1.06
+              ]
+            }
+          ],
+          "periods": 9,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 9,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 55.51,
+              "lat": 1.01,
+              "size": [
+                0.36,
+                0.7,
+                1.25
+              ],
+              "n": 48,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.2,
+              "c": [
+                55.7,
+                -0.3,
+                -0.95
+              ]
+            }
+          ],
+          "periods": 10,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 10,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 55.54,
+              "lat": 0.93,
+              "size": [
+                0.35,
+                0.71,
+                1.25
+              ],
+              "n": 50,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.19,
+              "c": [
+                55.72,
+                -0.38,
+                -1.03
+              ]
+            }
+          ],
+          "periods": 11,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 11,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 55.54,
+              "lat": 0.84,
+              "size": [
+                0.4,
+                0.86,
+                1.27
+              ],
+              "n": 51,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.14,
+              "c": [
+                55.74,
+                -0.45,
+                -1.02
+              ]
+            }
+          ],
+          "periods": 12,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 12,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 55.57,
+              "lat": 0.78,
+              "size": [
+                0.4,
+                0.87,
+                1.14
+              ],
+              "n": 51,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.17,
+              "c": [
+                55.76,
+                -0.52,
+                -1.05
+              ]
+            }
+          ],
+          "periods": 13,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 13,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 55.55,
+              "lat": 0.69,
+              "size": [
+                0.44,
+                0.78,
+                1.27
+              ],
+              "n": 50,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 10,
+              "hmin": 0.13,
+              "c": [
+                55.77,
+                -0.6,
+                -1.01
+              ]
+            }
+          ],
+          "periods": 14,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 14,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 55.56,
+              "lat": 0.66,
+              "size": [
+                0.45,
+                0.62,
+                1.11
+              ],
+              "n": 49,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 11,
+              "hmin": 0.12,
+              "c": [
+                55.78,
+                -0.63,
+                -1.02
+              ]
+            }
+          ],
+          "periods": 15,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        }
+      ],
+      "4": [
+        {
+          "i": 0,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": ""
+          },
+          "dets": [],
+          "periods": 1,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 1,
+          "recent": 1,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 1,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": ""
+          },
+          "dets": [],
+          "periods": 2,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 2,
+          "recent": 2,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 2,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": ""
+          },
+          "dets": [],
+          "periods": 3,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 3,
+          "recent": 3,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 3,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": ""
+          },
+          "dets": [],
+          "periods": 4,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 4,
+          "recent": 4,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 4,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [],
+          "periods": 5,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 5,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [],
+          "periods": 6,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 6,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [],
+          "periods": 7,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 7,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [],
+          "periods": 8,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 8,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 16.78,
+              "lat": -0.16,
+              "size": [
+                0.2,
+                0.35,
+                0.07
+              ],
+              "n": 8,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.03,
+              "c": [
+                16.81,
+                0.25,
+                -6.49
+              ]
+            },
+            {
+              "d": 31.23,
+              "lat": -1.17,
+              "size": [
+                1.2,
+                0.41,
+                0.43
+              ],
+              "n": 37,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "edge",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.13,
+              "c": [
+                31.99,
+                -1.06,
+                -6.17
+              ]
+            },
+            {
+              "d": 33.0,
+              "lat": -0.15,
+              "size": [
+                0.05,
+                0.3,
+                0.09
+              ],
+              "n": 6,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.03,
+              "c": [
+                33.04,
+                -0.06,
+                -6.48
+              ]
+            },
+            {
+              "d": 43.51,
+              "lat": -1.01,
+              "size": [
+                2.73,
+                1.03,
+                0.45
+              ],
+              "n": 41,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "edge",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.14,
+              "c": [
+                45.74,
+                -1.2,
+                -6.14
+              ]
+            },
+            {
+              "d": 48.49,
+              "lat": -0.72,
+              "size": [
+                1.37,
+                1.23,
+                0.43
+              ],
+              "n": 52,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.13,
+              "c": [
+                49.37,
+                -0.98,
+                -6.14
+              ]
+            }
+          ],
+          "periods": 9,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 9,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 16.78,
+              "lat": -0.27,
+              "size": [
+                0.19,
+                0.35,
+                0.08
+              ],
+              "n": 10,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.04,
+              "c": [
+                16.8,
+                0.24,
+                -6.5
+              ]
+            },
+            {
+              "d": 31.88,
+              "lat": -1.22,
+              "size": [
+                0.53,
+                0.3,
+                0.41
+              ],
+              "n": 27,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.15,
+              "c": [
+                32.0,
+                -1.01,
+                -6.15
+              ]
+            },
+            {
+              "d": 33.03,
+              "lat": -0.25,
+              "size": [
+                0.02,
+                0.29,
+                0.08
+              ],
+              "n": 5,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.03,
+              "c": [
+                33.04,
+                -0.06,
+                -6.48
+              ]
+            },
+            {
+              "d": 45.83,
+              "lat": -1.05,
+              "size": [
+                1.84,
+                0.92,
+                0.42
+              ],
+              "n": 37,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.14,
+              "c": [
+                45.79,
+                -1.14,
+                -6.15
+              ]
+            },
+            {
+              "d": 48.49,
+              "lat": -0.76,
+              "size": [
+                1.35,
+                1.15,
+                0.37
+              ],
+              "n": 47,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.14,
+              "c": [
+                49.34,
+                -0.92,
+                -6.14
+              ]
+            }
+          ],
+          "periods": 10,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 10,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 16.78,
+              "lat": -0.13,
+              "size": [
+                0.2,
+                0.35,
+                0.08
+              ],
+              "n": 10,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.03,
+              "c": [
+                16.8,
+                0.24,
+                -6.5
+              ]
+            },
+            {
+              "d": 31.88,
+              "lat": -1.17,
+              "size": [
+                0.52,
+                0.46,
+                0.39
+              ],
+              "n": 43,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.14,
+              "c": [
+                31.99,
+                -1.09,
+                -6.16
+              ]
+            },
+            {
+              "d": 33.02,
+              "lat": -0.16,
+              "size": [
+                0.04,
+                0.3,
+                0.07
+              ],
+              "n": 7,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.04,
+              "c": [
+                33.04,
+                -0.1,
+                -6.46
+              ]
+            },
+            {
+              "d": 44.27,
+              "lat": -1.0,
+              "size": [
+                2.68,
+                1.03,
+                0.45
+              ],
+              "n": 44,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.12,
+              "c": [
+                45.67,
+                -1.21,
+                -6.15
+              ]
+            },
+            {
+              "d": 48.5,
+              "lat": -0.68,
+              "size": [
+                1.35,
+                1.23,
+                0.4
+              ],
+              "n": 49,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.14,
+              "c": [
+                49.36,
+                -0.97,
+                -6.14
+              ]
+            }
+          ],
+          "periods": 11,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 11,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 3.58,
+              "lat": -1.0,
+              "size": [
+                4.17,
+                1.05,
+                0.57
+              ],
+              "n": 900,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "edge",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.12,
+              "c": [
+                5.48,
+                -0.26,
+                -6.18
+              ]
+            },
+            {
+              "d": 5.65,
+              "lat": 0.95,
+              "size": [
+                0.34,
+                0.23,
+                0.05
+              ],
+              "n": 12,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.03,
+              "c": [
+                5.85,
+                1.68,
+                -6.52
+              ]
+            },
+            {
+              "d": 8.85,
+              "lat": -1.2,
+              "size": [
+                1.31,
+                0.44,
+                0.41
+              ],
+              "n": 160,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "edge",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.12,
+              "c": [
+                9.25,
+                -0.53,
+                -6.13
+              ]
+            },
+            {
+              "d": 16.78,
+              "lat": -0.26,
+              "size": [
+                0.21,
+                0.35,
+                0.08
+              ],
+              "n": 10,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.03,
+              "c": [
+                16.81,
+                0.24,
+                -6.5
+              ]
+            },
+            {
+              "d": 31.47,
+              "lat": -1.21,
+              "size": [
+                0.93,
+                0.34,
+                0.4
+              ],
+              "n": 30,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "stop_hold",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.13,
+              "c": [
+                31.98,
+                -1.02,
+                -6.17
+              ]
+            },
+            {
+              "d": 33.03,
+              "lat": -0.27,
+              "size": [
+                0.02,
+                0.3,
+                0.07
+              ],
+              "n": 7,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.04,
+              "c": [
+                33.04,
+                -0.1,
+                -6.46
+              ]
+            },
+            {
+              "d": 44.34,
+              "lat": -1.03,
+              "size": [
+                1.87,
+                0.92,
+                0.42
+              ],
+              "n": 38,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.13,
+              "c": [
+                45.81,
+                -1.14,
+                -6.14
+              ]
+            },
+            {
+              "d": 48.49,
+              "lat": -0.77,
+              "size": [
+                1.43,
+                1.23,
+                0.41
+              ],
+              "n": 50,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.13,
+              "c": [
+                49.35,
+                -0.95,
+                -6.14
+              ]
+            }
+          ],
+          "periods": 12,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 12,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 3.59,
+              "lat": -1.08,
+              "size": [
+                4.06,
+                0.94,
+                0.56
+              ],
+              "n": 805,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "stop_hold",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.12,
+              "c": [
+                5.42,
+                -0.23,
+                -6.18
+              ]
+            },
+            {
+              "d": 5.69,
+              "lat": 0.84,
+              "size": [
+                0.3,
+                0.22,
+                0.04
+              ],
+              "n": 9,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.03,
+              "c": [
+                5.88,
+                1.68,
+                -6.53
+              ]
+            },
+            {
+              "d": 8.85,
+              "lat": -1.25,
+              "size": [
+                1.3,
+                0.35,
+                0.4
+              ],
+              "n": 118,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "stop_hold",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.13,
+              "c": [
+                9.23,
+                -0.48,
+                -6.13
+              ]
+            },
+            {
+              "d": 16.78,
+              "lat": -0.36,
+              "size": [
+                0.22,
+                0.35,
+                0.08
+              ],
+              "n": 10,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.03,
+              "c": [
+                16.81,
+                0.24,
+                -6.5
+              ]
+            },
+            {
+              "d": 31.88,
+              "lat": -1.26,
+              "size": [
+                0.52,
+                0.28,
+                0.37
+              ],
+              "n": 26,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.14,
+              "c": [
+                31.98,
+                -1.01,
+                -6.17
+              ]
+            },
+            {
+              "d": 33.03,
+              "lat": -0.33,
+              "size": [
+                0.03,
+                0.3,
+                0.07
+              ],
+              "n": 7,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.04,
+              "c": [
+                33.04,
+                -0.1,
+                -6.46
+              ]
+            },
+            {
+              "d": 45.74,
+              "lat": -1.08,
+              "size": [
+                1.93,
+                0.9,
+                0.37
+              ],
+              "n": 34,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.14,
+              "c": [
+                45.75,
+                -1.12,
+                -6.16
+              ]
+            },
+            {
+              "d": 48.49,
+              "lat": -0.79,
+              "size": [
+                1.28,
+                1.14,
+                0.4
+              ],
+              "n": 44,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.14,
+              "c": [
+                49.36,
+                -0.92,
+                -6.14
+              ]
+            }
+          ],
+          "periods": 13,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 13,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 3.59,
+              "lat": -1.09,
+              "size": [
+                4.16,
+                0.9,
+                0.57
+              ],
+              "n": 744,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "stop_hold",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.12,
+              "c": [
+                5.36,
+                -0.21,
+                -6.18
+              ]
+            },
+            {
+              "d": 5.62,
+              "lat": 0.77,
+              "size": [
+                0.37,
+                0.23,
+                0.06
+              ],
+              "n": 17,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.03,
+              "c": [
+                5.84,
+                1.65,
+                -6.53
+              ]
+            },
+            {
+              "d": 8.85,
+              "lat": -1.27,
+              "size": [
+                1.29,
+                0.31,
+                0.41
+              ],
+              "n": 103,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "stop_hold",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.13,
+              "c": [
+                9.24,
+                -0.46,
+                -6.13
+              ]
+            },
+            {
+              "d": 16.78,
+              "lat": -0.4,
+              "size": [
+                0.21,
+                0.35,
+                0.09
+              ],
+              "n": 10,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 10,
+              "hmin": 0.03,
+              "c": [
+                16.81,
+                0.24,
+                -6.5
+              ]
+            },
+            {
+              "d": 31.89,
+              "lat": -1.28,
+              "size": [
+                0.51,
+                0.22,
+                0.37
+              ],
+              "n": 20,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 10,
+              "hmin": 0.14,
+              "c": [
+                31.98,
+                -0.97,
+                -6.16
+              ]
+            },
+            {
+              "d": 33.02,
+              "lat": -0.39,
+              "size": [
+                0.03,
+                0.3,
+                0.07
+              ],
+              "n": 7,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 10,
+              "hmin": 0.03,
+              "c": [
+                33.04,
+                -0.1,
+                -6.46
+              ]
+            },
+            {
+              "d": 45.88,
+              "lat": -1.08,
+              "size": [
+                1.42,
+                0.84,
+                0.37
+              ],
+              "n": 31,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 10,
+              "hmin": 0.12,
+              "c": [
+                45.87,
+                -1.06,
+                -6.15
+              ]
+            },
+            {
+              "d": 48.49,
+              "lat": -0.8,
+              "size": [
+                1.31,
+                1.01,
+                0.37
+              ],
+              "n": 44,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 10,
+              "hmin": 0.16,
+              "c": [
+                49.33,
+                -0.87,
+                -6.14
+              ]
+            }
+          ],
+          "periods": 14,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        },
+        {
+          "i": 14,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "roll_deg": 2.75,
+            "pitch_deg": 1.59,
+            "yaw_deg": 0.0,
+            "height": 6.6,
+            "lateral": 0.86,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +2.75, pitch +1.59, yaw +0.00 deg"
+          },
+          "dets": [
+            {
+              "d": 3.59,
+              "lat": -1.09,
+              "size": [
+                4.03,
+                0.88,
+                0.57
+              ],
+              "n": 699,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "stop_hold",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.12,
+              "c": [
+                5.34,
+                -0.19,
+                -6.19
+              ]
+            },
+            {
+              "d": 5.69,
+              "lat": 0.78,
+              "size": [
+                0.3,
+                0.22,
+                0.04
+              ],
+              "n": 10,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.03,
+              "c": [
+                5.88,
+                1.67,
+                -6.52
+              ]
+            },
+            {
+              "d": 7.7,
+              "lat": 0.83,
+              "size": [
+                0.2,
+                0.19,
+                0.04
+              ],
+              "n": 5,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.03,
+              "c": [
+                7.79,
+                1.69,
+                -6.53
+              ]
+            },
+            {
+              "d": 8.85,
+              "lat": -1.28,
+              "size": [
+                1.3,
+                0.28,
+                0.4
+              ],
+              "n": 94,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "stop_hold",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.13,
+              "c": [
+                9.22,
+                -0.45,
+                -6.13
+              ]
+            },
+            {
+              "d": 16.78,
+              "lat": -0.43,
+              "size": [
+                0.22,
+                0.35,
+                0.08
+              ],
+              "n": 9,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 11,
+              "hmin": 0.03,
+              "c": [
+                16.81,
+                0.24,
+                -6.49
+              ]
+            },
+            {
+              "d": 31.87,
+              "lat": -1.3,
+              "size": [
+                0.53,
+                0.17,
+                0.37
+              ],
+              "n": 20,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 11,
+              "hmin": 0.13,
+              "c": [
+                31.98,
+                -0.94,
+                -6.16
+              ]
+            },
+            {
+              "d": 33.02,
+              "lat": -0.42,
+              "size": [
+                0.04,
+                0.3,
+                0.08
+              ],
+              "n": 7,
+              "zone": "gauge",
+              "kind": "low",
+              "reason": "",
+              "conf": 1.0,
+              "age": 11,
+              "hmin": 0.03,
+              "c": [
+                33.04,
+                -0.09,
+                -6.45
+              ]
+            },
+            {
+              "d": 45.93,
+              "lat": -1.08,
+              "size": [
+                1.66,
+                0.69,
+                0.35
+              ],
+              "n": 22,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 11,
+              "hmin": 0.14,
+              "c": [
+                45.92,
+                -1.03,
+                -6.14
+              ]
+            },
+            {
+              "d": 48.5,
+              "lat": -0.84,
+              "size": [
+                1.25,
+                1.01,
+                0.37
+              ],
+              "n": 40,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 11,
+              "hmin": 0.15,
+              "c": [
+                49.33,
+                -0.86,
+                -6.14
+              ]
+            }
+          ],
+          "periods": 15,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": null,
+          "R": [
+            [
+              0.9996160508309151,
+              0.001330954087078233,
+              0.027676334338625496
+            ],
+            [
+              0.0,
+              0.9988456791599083,
+              -0.04803445871019698
+            ],
+            [
+              -0.027708318628262,
+              0.04801601591968776,
+              0.9984621731913508
+            ]
+          ]
+        }
+      ]
+    },
+    "matched_frame_sets": {
+      "identity": {
+        "person_crossing": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "rotation_4": {}
+    },
+    "lost_matched_stop_frames": {
+      "person_crossing": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    "preserves_matched_stop": false
+  }
+}
