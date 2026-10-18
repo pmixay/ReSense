@@ -74,3 +74,33 @@ def test_driven_path_composes_poses():
     assert [s for s, _ in ps] == [0] * 5
     a = 4 * STEP / RADIUS
     assert np.allclose(ps[4][1][:2, 3], [RADIUS * np.sin(a), RADIUS * (1 - np.cos(a))], atol=1e-9)
+
+
+
+def _pose(x, y, th):
+    W = np.eye(4)
+    W[:2, :2] = [[np.cos(th), -np.sin(th)], [np.sin(th), np.cos(th)]]
+    W[:2, 3] = [x, y]
+    return W
+
+
+def test_compensated_jitter_removes_real_heading_changes(tmp_path):
+    """Straight track, the car's heading sways +-0.002 rad frame to frame and an exact detector reports it:
+    the drawn edge at 120 m really moves 120 * 0.004 = 0.48 m per frame (raw jitter), while the track itself
+    does not move, so the motion-compensated jitter is ~0. On a circle both are 0 (the view does not change)."""
+    th = [0.002 * (-1) ** k for k in range(N)]
+    W = [_pose(STEP * k, 0.0, th[k]) for k in range(N)]
+    poses = [{"i": 0, "T": None, "fitness": 0.0}]
+    poses += [{"i": k, "T": (np.linalg.inv(W[k - 1]) @ W[k]).tolist(), "fitness": 1.0} for k in range(1, N)]
+    track = [{"i": k, "decision": "GO", "R": np.eye(3).tolist(), "center": 0.0, "tan_yaw": -np.tan(th[k]),
+              "half_curv": 0.0, "axis_valid": 250.0} for k in range(N)]
+    (tmp_path / "poses.json").write_text(json.dumps({"rows": poses}))
+    (tmp_path / "track.json").write_text(json.dumps({"range_max": 250.0, "rows": track}))
+    G.measure(SimpleNamespace(track=str(tmp_path / "track.json"), poses=str(tmp_path / "poses.json"),
+                              out=str(tmp_path / "out.json")))
+    r = json.loads((tmp_path / "out.json").read_text())
+    assert abs(r["jitter"]["120m"]["all"]["p50"] - 0.48) < 0.01, r["jitter"]["120m"]
+    assert r["jitter_compensated"]["120m"]["p90"] < 0.01, r["jitter_compensated"]["120m"]
+    c = _write(tmp_path, 1.0 / RADIUS)
+    # the moved parabola differs from the arc by ~2 cm at 120 m (the same parabola-vs-arc gap as above)
+    assert c["jitter"]["120m"]["all"]["p90"] < 1e-6 and c["jitter_compensated"]["120m"]["p90"] < 0.03

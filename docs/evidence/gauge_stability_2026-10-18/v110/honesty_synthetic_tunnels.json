@@ -1,0 +1,11 @@
+{
+ "run": "/home/user/rs-data/synth_runs/v110_synthetic_tunnels.jsonl",
+ "frames_with_path": 543,
+ "steps_inside": 8161,
+ "steps_beyond": 6805,
+ "inside_over_0.5m": 0.222,
+ "inside_over_1.05m": 0.134,
+ "beyond_over_0.5m": 0.969,
+ "beyond_over_1.05m": 0.902,
+ "inside_error_p90": 1.51
+}

@@ -1,0 +1,11 @@
+{
+ "run": "/home/user/rs-data/j1/prerelease_1.1.0/doubleT_platform.jsonl",
+ "frames_with_path": 286,
+ "steps_inside": 2276,
+ "steps_beyond": 926,
+ "inside_over_0.5m": 0.133,
+ "inside_over_1.05m": 0.086,
+ "beyond_over_0.5m": 0.261,
+ "beyond_over_1.05m": 0.178,
+ "inside_error_p90": 0.81
+}
