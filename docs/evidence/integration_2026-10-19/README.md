@@ -39,15 +39,23 @@ That agrees with P3's own check.
 |---|---|---|
 | R3 (on in `main`) | gate on `3535947` vs `b2c523a`: exit 0; 4 gated rows better (set O `thin_hanging`: STOP frames 15 → 18, first STOP 30.1 → 35.1 m, held from 31.8 → 40.0 m); set F cable recall 43 → 50 % (0–50 m), 47 → 49 % (50–100 m); information row `set_F_straight.cable.sustained_median_m` 34.2 → 17.8 m (worse, ungated); per frame 3 rows differ (set O frames 786–788) | P3: author acceptance PASS on `b14cfd0` ([R3/H1](../r3_h1_2026-10-19/README.md)) |
 | H′ (`cluster.mount_cross_tol` 0.5) | gate on `3535947` with H′ vs without: **0 rows differ** | Falcon: the 8 STOP frames at 9.4 m (the tunnel ceiling under a floor fit that climbed) removed, all 1,360 person STOP frames kept |
-| F1a (`lowobj.local_rail_margin` 0.01, cross-rail off) | final gate and Falcon on `11bb1ab`: **pending** | ride low-kind false STOP episodes 4/6 → 1/1, gate exit 0 (`129415f`, with S2); review finding B1 open (accepted by the captain) |
+| F1a (`lowobj.local_rail_margin` 0.01, cross-rail off) | see the final configuration below | ride low-kind false STOP episodes 4/6 → 1/1, gate exit 0 (`129415f`, with S2); review finding B1 open (accepted by the captain) |
 | K2/K1 | **pending** (variant chosen from v3/v4/v5) | v3: gate exit 1, 12 rows; v4: gate exit 1, 19 rows ([handoff](../k1_k2_gauge_2026-10-19/HANDOFF.md)) |
+
+### The configuration as decided, K2 still off (`11bb1ab`: F1a + H′ + R3 + L16/S3 on)
+
+| check | result |
+|---|---|
+| full gate (seal baseline, no `--allow`) | **exit 0; 8 gated rows better, 0 worse.** Ride: alarm events 27 → 18, STOP episodes 30 → 24, alarm frames 126 → 102. Five empty recordings: events 8 → 7, episodes 12 → 11. `doubleT_platform`: its 1 STOP episode → 0. Set O `thin_hanging` as under R3. Information row `set_F_straight.cable.sustained_median_m` 34.2 → 17.8 m (R3) |
+| real obstacles on the gate | of 50 obstacle rows (`doubleT_obstacle`, every set O object: STOP frames, first STOP, held from), only `thin_hanging` changed, and it improved. `doubleT_obstacle` has 1 STOP episode from frame 8, as before |
+| whole Falcon recording vs `main` | 8 rows differ, all decisions STOP → CAUTION at frames 4394–4401 (the tunnel ceiling, H′). False STOP frames **12 → 4**; the remaining 4 (159, 2312–2314) are the static support at ~115 m that only S2 would remove (S2 off). Person: all 1,360 STOP frames kept, first STOP unchanged at 124.84 m. No new STOP frame. F1a and R3 change nothing on Falcon |
 
 Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–42; the plan per role: [`BACKLOG.md`](../../BACKLOG.md),
 "Current plan".
 
 ## 4. Not done yet / not checked
 
-- The final gate without `--allow`, X3 and the whole Falcon recording on the final commit (after K2).
+- K2 on (variant from v5), then the final gate without `--allow`, X3 and the whole Falcon recording on the final commit.
 - The organizers' dust (13 frames of the marked synthetic bags) on the final configuration.
 - P4's independent review of everything that ships on.
 - The reseal.
@@ -57,8 +65,9 @@ Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–42; the plan per role:
 ## Files
 
 - `runs/gate_*.json`: gate summaries (`base_aec88d2` from the F1 lane; `merged_b2c523a`; `int_3535947_off`;
-  `int_3535947_hprime`).
-- `runs/falcon_*.jsonl.xz`: per-frame Falcon records (`base_aec88d2`, `main_6be817a`, `off_b2c523a`).
+  `int_3535947_hprime`; `int_11bb1ab_final`).
+- `runs/falcon_*.jsonl.xz`: per-frame Falcon records (`base_aec88d2`, `main_6be817a`, `off_b2c523a`, `final_11bb1ab`).
+- `scripts/score_falcon.py`: the F1 lane's Falcon scorer (person frames from the N2 anchors, false STOP attribution).
 - `runs/comparisons.txt`: every comparison above.
 - `scripts/`: `run_gate.sh` (gate wrapper; paths are this session's), `cmp_frames.py` and `cmp_falcon.py` (copies of
   the F1 lane's).
