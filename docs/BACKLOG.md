@@ -9,10 +9,7 @@
 > (v1.0.0 detector) by four read-only researchers and one critic; numbers recounted from the judge's
 > per-frame outputs (`docs/evidence/judgement_2026-10-13/out/`, `raw.tar.xz`). Line numbers in
 > `resense/` have shifted with the 1.1.0 reseal (§2): search for the named function.
-> **Updated:** 2026-10-19: §9 — captain's decisions (no 1.1.0 release, continue 1.2.0; questions sent), status of
-> the jury's comments, the new-lidar check of `aec88d2`, card N7 (300 m on the Falcon), four agent branches and the
-> remaining work per role. Rows below that say "1.1.0 release" or "J1 on 1.1.0" are superseded by §9.
-> 2026-10-18: `det/b4-orientation` contains main `9917851` and P4 `8a0af65`;
+> **Updated:** 2026-10-18: `det/b4-orientation` contains main `9917851` and P4 `8a0af65`;
 > the previous work branch was merged into main, and P4's branch was deleted after its merge.
 > Committed merged source `0779db7` passes fresh paired full gates, X3 and B4 mount sweeps;
 > replacement 1.2.0 candidate seal passes in a clean checkout before/after native build.
@@ -86,7 +83,7 @@ Original handoffs remain dated evidence; their branch names are historical ident
 | E2 | offline rebuild / non-root player | **Local PASS**; new release-workflow check implemented, new tag execution still pending |
 | H0 / X3 / G3 | evaluation | H0 **PASS**, 208/208 non-latency rows identical. X3 **40-case v1.0.0 baseline**, not candidate PASS. G3 **spec only**, no held-out result |
 | P2 D1 / PT1 | documentation / pitch | Pass 1 integrated; final numerical pass waits for J1. Current score/numbers remain explicitly **v1.0.0**, no new judge score |
-| O1 | organizer permission / format | Prepared 15.10; **sent** (captain, reported 19.10), no reply yet |
+| O1 | organizer permission / format | Prepared **not sent**, no reply |
 | Version 1.1.0 / seal / main | release | **H5 DONE:** all four versions 1.1.0 before final gate; 208/208 non-latency rows identical, same 146 gated rows passed, all 18,329 frames unchanged vs reviewed scope outside registered timing. Current 16.10 manifest/clean-LF verification **PASS**. **H6/CI/main and E1 pending**; no new tag/archive or score |
 
 ### 2a. Acceptance results and remaining handoff (16.10)
@@ -125,8 +122,8 @@ Whether anything after v1.0.0 can still count is the organizers' answer (card O1
 | H4 | Revised difference ACCEPTED; no NEW medium+, inherited High OPEN; old safety BLOCKED / correctness PASS preserved | 8.1 (DETECTOR_FREEZE step 3) | P4 | A | S | enabler | done 16.10 |
 | H5 | DONE: all four versions 1.1.0 before passing final gate, 16.10 seal and clean-LF verification (§2a) | 8.6 | P1 | A | S | enabler | done 16.10 |
 | H6 | 17.10: integration merged into `main` as **squash** PR #33 (`44b462e`, detector = sealed 1.1.0); no tag yet; history-preserving merge still needed for the branch archive (§8) | 8.6 | P1 | H | S | enabler | merge done; history fix + E1 next |
-| O1 | Ask the organizers: pitch format, whether v1.1.x may be shown or re-run, results before 23.10 | 8.8 (gates 8.1–8.6) | P1 | H | S | decides ~3–6 | sent (reported 19.10); awaiting reply |
-| E1 | ~~Ship 1.1.0~~ **1.1.0 will not be released (captain, 19.10)**: tag and verify **v1.2.0** on the final seal once CI runs | 8.6 (enabler) | P1 | H+A | S | +0.25 | after CI repair and the 21.10 integration |
+| O1 | Ask the organizers: pitch format, whether v1.1.x may be shown or re-run, results before 23.10 | 8.8 (gates 8.1–8.6) | P1 | H | S | decides ~3–6 | 15.10 |
+| E1 | Ship 1.1.0: PR to `main`, tag `v1.1.0`, verify the release, fix the jury block; repeat as v1.2.0 | 8.6 (enabler) | P1 | H+A | S | +0.25 | 18.10, 20.10 |
 | S1 | FAIL; runtime removed, published queue/freshness retained; new diagnosis remains open | 8.3, 8.6 | P1 | A | M | ~+2 if accepted later | reopen after diagnosis |
 | E2 | Local offline PASS; new release-workflow check awaits tagged execution | 8.6 | P1 | A | S | +0.5 | local done; E1 pending |
 | C1 | Shared v1 selected; v2 offline-only FAIL (30.46%, 19 lost alerts), runtime rejects v2 | 8.1 | P1 | H+A | M | +1 if v2 accepted later | acceptance open |
@@ -1146,128 +1143,3 @@ instruction to repeat those deliveries. The captain deferred release until CI is
 * **21.10:** P4: J1 run 2 on the final seal; G3 by a fresh agent (unchanged; the new data is not G3). P2: deck numbers
   from J1 and N5 (marked development data).
 * **22.10:** rehearsal 2 (Falcon bag included in the demo only if N2's CAUTION issue is understood).
-
-## 9. Update of 19.10: decisions, the jury's comments, the new lidar and the work per role
-
-Owner P1. Checked on 19.10 against `main` `aec88d2`, GitHub (releases, tags, branches, CI runs) and a fresh replay of
-the whole Falcon recording ([falcon_head_check](evidence/falcon_head_check_2026-10-19/README.md)). Dates are targets.
-
-### 9a. Decisions (captain, 19.10; [`DECISIONS.md`](DECISIONS.md) rows 35–38)
-
-* **1.1.0 will not be released.** Development continues on **1.2.0** (`main`, sealed candidate, 38 files
-  `68dee667…`). The next release, J1 and the G3 run use the **final 1.2.0 seal**; the J1 pin to 1.1.0 `3b7d7aa` is
-  dropped. Tagging waits for CI (every run on `main` and on `ui-improvement` fails in 2–3 s and skips the jobs; the
-  BACKLOG of 17.10 attributes it to billing, not confirmed from the logs).
-* **The questions to the organizers were sent** (O1 and the five open questions of 16.10; reported by the captain,
-  send date not recorded); answers pending ([`organizers/answers.md`](organizers/answers.md) §11).
-* **Work that depends only on answered questions starts now**, as four agent branches from `aec88d2`, each with a
-  protocol before measurement, a full gate without `--allow` and an independent review; **cut-off 21.10 12:00 MSK**;
-  P1 integrates what passes into one 1.2.0 reseal:
-
-| branch | scope | answers it serves | owner lane |
-|---|---|---|---|
-| `det/k1-k2-gauge` | gauge stability (K1) and the gauge on curves (K2); display measured on curves and Falcon | jury: "improve gauge stability and its sync with turns" | P3 |
-| `det/f1-false-alarms` | near-field low-object false STOPs (F1); Falcon false STOPs (115 m structure, 9.4 m floor patch) | "a false positive counts as a miss" | P3 |
-| `det/falcon-long-range` | validated ray-cast injector for the Falcon, then long range toward 300 m (card N7) | "300 m is the ideal"; the new lidar | P3 + P4 |
-| `det/n3-dust-robustness` | dust / suspension (N3) on Pandar and Falcon | experts' message: dust in the extended data | P3 + P4 |
-
-Not started because they wait for an answer: **C1** (how CAUTION is read), the object list of the hidden set for
-**R1/R3** priorities, the meaning of "the filter".
-
-### 9b. The jury's comments and criteria: state on 19.10
-
-| comment / criterion | state | evidence | next |
-|---|---|---|---|
-| **Gauge stability** (box blinks, vanishes, leaves the track) | **partly done**: N1 draws a stable box (visible-edge jitter p90 at 40/80/120 m within 0.05/0.08/0.15 m on four recordings, re-derived 19.10) by drawing less: on the curve the drawn box is a median 52 m of 142 m supported; the detector's own axis still jitters (K1 not started until 19.10); on the Falcon the trusted range changes by ≥ 20 m between frames in 34 % of frames; N1 not measured on the Falcon | [N1/N4](evidence/n1_n4_2026-10-18/README.md), [B6](evidence/gauge_stability_2026-10-18/README.md), [check](evidence/falcon_head_check_2026-10-19/README.md) | `det/k1-k2-gauge` |
-| **Gauge synchronised with turns** | **not done**: the curve fit is unchanged since v1.0.0; on `roundT_doubleT` (R ≈ 400 m) the axis curvature is 3.6× too small (−0.00070 vs −0.00248 /m), 1.6 m off the driven path at 60 m, the edge of its trusted range | [B6](evidence/gauge_stability_2026-10-18/README.md), re-check in [falcon_head_check](evidence/falcon_head_check_2026-10-19/README.md) | `det/k1-k2-gauge` |
-| detection range (first detect) | Pandar (judge method, 1.1.0 ≡ 1.2.0): person-size box 218 m straight, 52–83 m on curves, 1 m cube 151 m, 0.3 m ~45 m; Falcon real person: first STOP ~125 m (visible in the raw cloud from ~249 m) | [RELEASE_DAY prebuild](evidence/rejudge_2026-10-16/RELEASE_DAY.md), [check](evidence/falcon_head_check_2026-10-19/README.md) | K2, N7, R1/R2 |
-| gauge range | trusted axis median 120–175 m on Pandar recordings, reported 80–157 m; Falcon 123 m (no bed return beyond ~150 m) | B6, check | K1/K2, N7 |
-| no false positives | judge 13.10 (v1.0.0): ~91 false STOP episodes per hour of empty tunnel, ~2.5 per km on the ride, CAUTION on 43 % of empty frames; Falcon: 12 false STOP frames in 444 s, CAUTION 69 % (two static structures) | [SCORECARD](SCORECARD.md), check | `det/f1-false-alarms`; C1 waits for the answer |
-| no false negatives | tall narrow objects (H1, OPEN 8.1), small far objects (R1/R2 screens rejected 15.10), curves (K2) | §2, [range screen](evidence/range_screen_2026-10-15/README.md) | K2 now; H1/R1/R2 after 23.10 unless a candidate appears |
-| real time 10 Hz | Falcon decode+detect ~17–21 ms per frame; Pandar 360° p95 106–119 ms on 4 vCPU (judge); the literal `ros2 bag play` gives stale results (S1 failed) | [N1/N4](evidence/n1_n4_2026-10-18/README.md), SCORECARD | S2, S5 (not started) |
-| "the filter" | meaning asked (sent); tracker confirmation and false-alarm rules exist | [QUESTIONS](QUESTIONS.md) | wait |
-| extra features | N1 box, N4 interactive launch, Falcon profiles, web prototype, N5 labels | CHANGELOG [1.2.0] | P2 `ui-improvement` (unmerged) |
-| ease of launch | N4 done locally (pause, rate, several bags in one node, Pandar → Falcon switch, software RViz); no published 1.2.0 image | [HOWTO](evidence/n1_n4_2026-10-18/HOWTO.md) | E1 after CI |
-| dust | generator and complete measurement; acceptance FAILS (up to 71 false STOP episodes at medium density, silent GO at high) | [N3](evidence/n3_dust_2026-10-18/README.md) | `det/n3-dust-robustness` |
-| second lidar, different axes | profiles `falcon_ros` / `falcon_native`; default launch adopts the right orientation at frame 1 on the supplied recording; native axes need the explicit profile (default launch fails safe to CAUTION); a 90°-rolled mount gives false STOPs (L16) | [N2](evidence/n2_falcon_2026-10-18/README.md), check | L16 open |
-
-### 9c. Card N7 · Stable obstacle detection to 300 m on the Falcon Prime (new goal, 19.10)
-
-**Owner** P3 (agent `det/falcon-long-range`) + P4 (review) · **Size** L · **Depends on** nothing to start; K2 for curves
-* **Evidence** ([check](evidence/falcon_head_check_2026-10-19/README.md)): datasheet 250 m at 10 % reflectivity,
-  500 m maximum; the recording has returns to 510 m, all beyond 250 m straight ahead and bright; the person has 5–8
-  returns at 240–248 m; the datasheet model gives ~4 returns at 300 m in the ROI, < 1 outside it; corridor returns
-  per frame fall to 26 at 200–250 m and 8 at 250–300 m, and the bed gives none beyond ~150 m. The system today: hard
-  crop `sensor.max_range` 250 m, trusted axis ~123 m, Pandar visibility prior, first person STOP ~125 m.
-* **Cause:** sensor physics (few returns, dark track invisible beyond ~150 m) and our code (crop, axis trust,
-  point bars, prior); the recording has no target beyond 249 m, so 300 m cannot be measured on it directly.
-* **Tasks:** a ray-cast injector on real Falcon frames validated against the real person; baseline by target size,
-  reflectivity and range; Falcon-only changes (crop, prior, straight-track axis extrapolation with growing
-  uncertainty, multi-frame far confirmation); no rise in false alarms; Pandar gate identical.
-* **Done when:** a table of first STOP and held-STOP fraction for person / 1 m / 2 m targets at 150–350 m with the
-  validated injector, for baseline and candidate; real-recording person STOP rows kept; false STOP and CAUTION not
-  worse on the real recording; Pandar gate rows identical; independent review. A 300 m claim is made only for the
-  targets and reflectivities this table supports.
-
-### 9d. Remaining work per role (19.10 → 23.10)
-
-The repository names roles, not people.
-
-**P1 · captain**
-
-| # | work | state | blocks / blocked by | target |
-|---|---|---|---|---|
-| 1 | Record the organizers' replies and act on them (format, version shown, C1) | sent, waiting | blocks C1, the talk length, a re-run request | on reply |
-| 2 | Repair CI (account billing/quota per 17.10) | red on every push | blocks E1, CI on P2's merge, a hosted check of the release | asap |
-| 3 | Integrate the four agent branches: one combined gate, P4's independent review, **reseal 1.2.0** | agents running | blocks J1 run 2, G3, final deck numbers | 21.10 12:00 MSK |
-| 4 | **E1 for 1.2.0**: tag, release workflow, verify archive, update the jury block | waits for 2 and 3 | blocks J1's Docker steps, S5 on the final image, PT2 on the release image | 21.10 |
-| 5 | Pitch: approve the updated deck and speech; lead rehearsal 1 (20.10) and 2 (22.10) | deck update in progress (agent); no rehearsal held | needs P2 (second device, clip), P3/P4 (mock jury) | 20.10, 22.10 |
-| 6 | Review/merge P2's `ui-improvement` (based before #38; needs `main` merged in) or keep it out of the pitch | unmerged | P2's demo UI | 21.10 |
-| 7 | Human read of the 29.09 safety review (CAPTAIN §3 item 8) | open | — | before 23.10 |
-| 8 | Send the organizers the Falcon results and the 1.2.0 status if they allow updates | waits for 1 | — | on reply |
-
-**P2 · frontend / visuals**
-
-| # | work | state | blocks / blocked by | target |
-|---|---|---|---|---|
-| 1 | Bring `ui-improvement` up to `main` (it predates #38) and hand it to P1 | 14 own commits (18–19.10), not merged, red CI | P1 #6 | 20.10 |
-| 2 | Deck visuals: range-by-geometry chart (straight / curve / double track) and the Falcon slide | the deck text is being updated by an agent | P1 #5 | 20.10 |
-| 3 | Second demo device (RViz / web) and a fallback clip re-recorded on the 1.2.0 image (the clip is from 23.09) | open | needs an image (local build is enough) | 21.10 |
-| 3a | **Short Falcon demo bag with the person** (a window of `falcon_test` around 280–330 s, where the person walks in from ~140 m; the 100-frame prefix bag must not be used, it holds a false STOP at 115 m): cut it, check `ros2 bag play` opens it and the node gives STOP, add it to the demo commands; update `web/DEMO_HANDOFF.md` (still v1.0.0, rehearsal 19.10) | open; without it the demo shows Pandar only | P1 #5 (demo) | 21.10 |
-| 4 | S5: bench of the final image on available hardware (2–4 cores accepted) | open | P1 #4 | 21.10 |
-| 5 | D1 pass 2: numbers in docs and GitBook after integration and J1 | open | P1 #3, P4 #3 | 22.10 |
-
-**P3 · detector** (the person; four cards run as agent branches, everything else is P3's own work)
-
-| # | work | state | blocks / blocked by | target |
-|---|---|---|---|---|
-| 1 | **Check each agent's pre-registered protocol as soon as it is pushed** (acceptance numbers, what is measured, no weakened criteria); stop a branch that measures the wrong thing early | branches starting | protects P1 #3 | 19.10 evening |
-| 2 | **Own work, not given to an agent: orientation safety on ring-free lidars (L16)** — a 90°-rolled Falcon mount is adopted wrongly and gives false STOPs ([probe](evidence/falcon_head_check_2026-10-19/out/orient_probe.txt)); B4's channel check needs `ring`. Candidate: the forward-only prior of the sensor notes (W7: the axis with one sign on almost every return is forward) before the rail test; with S3 (cap the orientation-search cost) in the same file | not started | new lidar, false alarms | 21.10 12:00 (own branch `det/l16-ringfree-orientation`) |
-| 3 | **Own work: thin cables (R3)** — the organizers require hanging cables to be detected; hanging 5 cm object STOP only from 30 m, standing cable from 60 m; X1 attribution first, then the dominant cause | not started | — | measurement by 21.10, fix only if it passes |
-| 4 | **Own work: tall narrow objects (H1, the one open High finding, 8.1)** — attribution of the inherited miss and a new candidate idea; the old column free-top fix was dropped after review | open since 16.10 | — | attribution by 22.10; a fix after 23.10 unless it passes earlier |
-| 5 | **Integration on 21.10 with P1:** merge the agent branches that pass (expect conflicts in `configs/default.yaml` / `resense/config.py`), run the one combined gate, hand to P4 for the independent review; P1 reseals | waits for the branches | P1 #3, #4 | 21.10 |
-| 6 | **Read each agent report as the detector owner:** accept or reject each trade-off (range vs false alarms, display vs truth), and the safety reviews | waits | P1 #3 | 21.10 |
-| 7 | **Pitch, technical part:** answers for the Q&A drill on the algorithm, curves, 300 m, dust, the second lidar; review the updated `ALGORITHM.md` / slides for technical truth; mock jury at both rehearsals | open | P1 #5 | 20.10, 22.10 |
-| 8 | After 23.10 unless an answer or time moves them: C1 (CAUTION answer), R1/R2 (new candidate after X1), S2 (360° decode speed), S4 (dual returns), N6 (platform person), G1/G2/T1 | not started | — | — |
-
-Running as agents (P3's lane, the person checks them, #1 and #6): `det/k1-k2-gauge`, `det/f1-false-alarms`,
-`det/falcon-long-range`, `det/n3-dust-robustness`. To avoid conflicts, P3's own branches stay out of
-`resense/track.py`, `resense/lowobj.py` and the dust/visibility-prior code until the 21.10 merge.
-
-**P4 · data / evaluation**
-
-| # | work | state | blocks / blocked by | target |
-|---|---|---|---|---|
-| 1 | Independent review of each agent candidate and of the combined 1.2.0 (DETECTOR_FREEZE step 3) | waits for candidates | blocks P1 #3 | 21.10 |
-| 2 | Final review of the merged B4 source (pending since 18.10) | open | P1 #3 | 20.10 |
-| 3 | J1 on the final 1.2.0 seal: retarget `RELEASE_DAY.md` from 1.1.0; offline steps on the seal, Docker steps on the image | runbook ready for 1.1.0 | needs P1 #3, #4 | 21.10 |
-| 4 | G3 held-out run by a fresh agent on the final seal | spec only | needs P1 #3 | 21.10 |
-| 5 | Review the Falcon injector (N7) before any 300 m claim | — | P3 #3 | 21.10 |
-| 6 | Mock jury at both rehearsals | — | P1 #5 | 20.10, 22.10 |
-| 7 | X2 false-STOP ledger (enables F2) | not started | — | after 23.10 |
-
-### 9e. Documentation refreshed on 19.10
-
-`organizers/answers.md` §11 and `QUESTIONS.md` (sent), `DECISIONS.md` rows 35–38, this section, `CAPTAIN.md`,
-`README.md` (status), `CHANGELOG.md` (1.1.0 not released), `SCORECARD.md` (status note), the J1 runbook note,
-the Falcon sensor notes. The deck, `PRESENTATION.md` and the rehearsal plan are updated separately (P1 with an agent).

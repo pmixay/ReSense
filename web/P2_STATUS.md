@@ -53,33 +53,6 @@ historical and must be updated before rehearsal.
 
 ## Rehearsals
 
-None held yet.
-
-Planned by the captain on 19.10 (roles, pass criteria and the speech:
-[`PRESENTATION.md`](../docs/PRESENTATION.md) «Репетиции»). The live demo is 1.2.0 (an image built from
-`main` `aec88d2`): Pandar `doubleT_obstacle`, then the Falcon recording in the same node.
-
-| # | date | scope | P2's part |
-|---|---|---|---|
-| 1 | **20.10** | full talk with a per-slide stopwatch; live demo (choose `--rate`; check the short Falcon demo bag, not prepared yet); first Q&A drill | second device: join the call as a viewer, confirm the shared RViz is readable, keep the fallback clip [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) open and start it on the captain's cue |
-| 2 | **22.10** | dress rehearsal on the final deck and image; **forced** switch to the fallback clip; full Q&A drill | the same; perform the forced switch and time it |
-
-Pass criteria: total ≤ 5:00; Pandar STOP visible ≤ 30 s after playback starts; switch to the fallback
-clip ≤ 30 s; answers only with the numbers of PRESENTATION's table. Copy the template below for each
-rehearsal **after** it has taken place; an empty template is not a rehearsal.
-
-```text
-### Rehearsal N — DD.10, start HH:MM
-- Present and roles: P1 speaks and drives the demo; P2 second device and fallback clip; P3, P4 mock jury and stopwatch
-- Deck: commit …; PPTX / PDF
-- Image: tag …; `docker image inspect` ID …; source commit …; `detector_freeze.py verify` …
-- Bags: Pandar doubleT_obstacle (sha256 …); Falcon … (sha256 …); --rate …
-- Time per slide (plan / actual): 1 0:08/… 2–3 0:15/… 4 0:13/… 5 0:20/… 6 0:13/… 7 0:15/… 8 0:15/…
-  9 0:22/… 10 0:55/… 11 0:25/… 12 0:15/… 13 0:08/… 14 0:25/… 15 0:15/… 16 0:12/…
-- Total: m:ss (≤ 5:00 yes/no); slides that ran over: …
-- Demo: Pandar STOP after … s of playback, distance … m; Falcon: profile …, first STOP … m after … s;
-  FAULT or stale results after the first frame: …
-- Fallback: switch tried yes/no; … s (≤ 30 s yes/no)
-- Q&A: who asked, question number, answer within 30 s yes/no, what to fix
-- Result per criterion: pass / fail; what to fix before the next one
-```
+None held yet. For each rehearsal add one line here: date; demo commit and image ID; total time and the
+slides that ran over; live demo pass or fail (STOP and distance in RViz); whether the switch to the
+fallback video was tried and how long it took.

@@ -7,8 +7,7 @@
 > [`archive/CAPTAIN_board_2026-09-28.md`](archive/CAPTAIN_board_2026-09-28.md); 16–24.09 in
 > [`archive/CAPTAIN_log_2026-09.md`](archive/CAPTAIN_log_2026-09.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-19: §3–§5 and the decision log against GitHub (releases, tags, branches, CI runs),
-> `main` `aec88d2` (seal PASS) and the captain's decisions of 19.10; earlier: 2026-10-15, D1 pass 1: the judgement of 13.10 (v1.0.0, 66/100),
+> **Last verified:** 2026-10-15, D1 pass 1: the judgement of 13.10 (v1.0.0, 66/100),
 > remote branches and tag `v1.0.0` → `5d6e9b5`, GitHub release metadata (three archive/checksum assets);
 > detector baseline and ownership against the current files. The decision log retains its original dates.
 > **Status:** current
@@ -25,9 +24,8 @@ captain owns the pitch again (deck, speech, demo, rehearsals, the defence on 23.
 and the team records the video ([`PRESENTATION.md`](PRESENTATION.md)).
 
 Dates (organizers' README): upload by **29.09 23:59** (target 18:00; the form takes links),
-technical expertise 30.09–14.10, pitch 23.10, awards 30.10. The detector changes only through the seal
-process (branch, protocol, full gate, independent review, reseal by P1: §6 and
-[`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); the current seal is the 1.2.0 candidate on `main`.
+technical expertise 30.09–14.10, pitch 23.10, awards 30.10. The detector is sealed; only the node,
+the image, the tools and the documents change (§6).
 
 ## 2. The captain's criteria and their score
 
@@ -49,10 +47,8 @@ sealed, so moving those needs the captain to unfreeze it (§3, item 6).
 
 ## 3. Work to do
 
-**Current work per role (19.10): [`BACKLOG.md`](BACKLOG.md) §9d.** The captain's own list there: record the
-organizers' replies (sent, waiting), repair CI, integrate the four agent branches and reseal 1.2.0 by 21.10 12:00 MSK,
-tag and verify v1.2.0, lead the rehearsals of 20.10 and 22.10, merge or park P2's `ui-improvement`, the human read
-of the 29.09 safety review (item 8 below). The tables below are the state of 29.09.
+**Since 15.10 the remaining work after the judgement of 13.10 is in [`BACKLOG.md`](BACKLOG.md)**
+(cards with owners, acceptance checks and the order up to 23.10); the tables below are the state of 29.09.
 
 H = only a person can do it; A = an agent can do it, the captain merges. The full requirement →
 artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) §4–§5.
@@ -76,32 +72,33 @@ artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) �
 | 8 | A human read of the safety review of 29.09 night (the agent review: `shell` BLOCKING → switched off; `explained_run`, the ego veto NON-BLOCKING with documented limits). | P1, P3 |
 | 9 | On available hardware: `scripts/bench_8core.sh` on both original bags, recording actual cores/quota and results. Captain, 17.10: 2–4 cores are acceptable; no 8-core prerequisite. Release waits for repaired CI. | H (+ A) |
 
-## 4. Branches (19.10)
+## 4. Branches other than `main` (15.10)
 
-Remote refs checked 19.10: `main` `aec88d2` (merge of PR #38, the 1.2.0 candidate) and `ui-improvement`; the
-`det/*` branches below are created by the agents started on 19.10. Older work branches of 15–18.10 are merged
-(PR #33, #35–#38) or deleted; `final/silent-misses`, `r3/*` are no longer on the remote.
+Remote refs checked 15.10: `main` plus the four detector work branches below. PR #31 is merged
+as `317eabf`; the web prototype is in `main` and outside the v1.0.0 runtime image.
 
 | branch | state | recommendation |
 |---|---|---|
-| `main` | `aec88d2`, 1.2.0 candidate, seal PASS (38 files, `68dee667…`); CI red (jobs do not start) | base of all work |
-| `ui-improvement` | P2's web Player work, 14 own commits of 18–19.10, based before PR #38, CI red | P2 merges `main` in; P1 reviews and merges, or keeps it out of the pitch |
-| `det/k1-k2-gauge` | agent: gauge stability and curves (jury) | integrate if its acceptance and review pass |
-| `det/f1-false-alarms` | agent: near-field false STOPs, Falcon false STOPs | same |
-| `det/falcon-long-range` | agent: Falcon toward 300 m (N7) | same |
-| `det/n3-dust-robustness` | agent: dust on Pandar and Falcon (N3) | same |
+| `claude/admiring-pascal-ex9v51` | the final documentation pass (item 1): merged into `main` as PR #30 (`70bc265`), deleted on the remote | nothing to do |
+| `final/silent-misses` | `d0d17bb`: candidate fixes and probe harness | BACKLOG H1–H6; not a released seal |
+| `r3/axis` | `972edd2`: monitored-range cap gated, integration/review pending | H3/H4 |
+| `r3/axis-B-trial` | `d77a861`: axis-weighting trials failed the gate | K2; not shipped |
+| `r3/column` | `42108ac`: ungated WIP | H1; measure before integration |
+| `experiment/cross-ring-sparse-evidence`, `claude/funny-gates-3358a8`, `claude/amazing-fermi-t67v8g`, `gpt-score-push-20260928` | merged into `main` (PR #27, #28, #29) or deleted on the remote | nothing to do |
 
 ## 5. Release and submission
 
-**v1.0.0 is the only published release** (tag `5d6e9b5`, 29.09; the only tag on GitHub, checked 19.10), with
-`resense-image-v1.0.0.tar.gz`, its `.sha256` and `SHA256SUMS`; the judge verified it on 13.10. **1.1.0 (sealed 16.10)
-will not be released** (captain, 19.10). `main` carries the **1.2.0 candidate**: all four version declarations are
-1.2.0 (`tests/test_release.py` keeps them equal), the seal `docs/evidence/detector_freeze_2026-10-18_b4_merged.json`
-passes. The next release is v1.2.0 on the final seal after the 21.10 integration: `.github/workflows/release.yml`
-builds the runtime image from a pushed `v*` tag, removes it, loads the archive back, plays both smoke bags with no
-internet, runs the E2 offline-rebuild check and publishes the archive with its checksums. It needs working CI; the
-fallbacks are `scripts/release.sh` and `scripts/export_image.sh` on a machine with internet. The submission was the
-captain's personally (29.09); whether an updated archive may be re-run is asked in O1 (sent).
+**v1.0.0 is published**, tag **`5d6e9b5`** (29.09). GitHub metadata checked 15.10 lists
+`resense-image-v1.0.0.tar.gz` (477 449 541 bytes), its `.sha256` and `SHA256SUMS`.
+The judge verified the checksum and offline launch on 13.10; D1 checked metadata, not a new
+archive download. `.github/workflows/release.yml` builds the runtime image from a pushed version tag,
+removes it, loads the archive back, plays both smoke bags through the loaded image with no internet
+and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The version in
+`pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` on the selected integration
+checkout is **1.1.0**, sealed but unreleased (16.10); published **v1.0.0** remains the release
+reference. H6/E1 and release J1 are pending. Versions are kept equal by
+`tests/test_release.py`. Fallbacks: the CI artifact of a `main` run (GitHub login, 30 days) or
+`scripts/export_image.sh` on a machine with internet. The submission is the captain's personally.
 
 ## 6. Freeze and merge rules
 
@@ -218,11 +215,6 @@ captain's personally (29.09); whether an updated archive may be re-run is asked 
 | 29.09 evening | P2 declined the pitch after delivering the deck with the team's photos; the captain owns the pitch with agent help, the team records the video; the named deck (names and photos) is committed to the public repository (the user's decision; lifts the placeholder rule of 25.09) | the user, 29.09 |
 | 29.09 night | **the `shell` rule off** (`cluster.shell_min_top` 0, `a5455b3`; the user's decision on the safety review): the rule read a floor-standing cluster's own top above the 3.0 m envelope as the lining, so a cable hanging from the vault to the rails, a pole, a standing train were CAUTION beyond 40 m (ray-cast tunnel, 22 m/s: catalogue `cable_low` first STOP 21.0 m on vs 73.8 m off; pole 36.4 vs 104.6 m); alone it bought ride 32 / 31 → 31 / 29. `explained_run` and the ego veto stay (NON-BLOCKING; the ego veto must only get a measured speed). Full gate of the shell-off commit `7464d80` against the `3eeb106` gate: PASS, 6 better, none worse (ride 27 / 30 events / STOP episodes; the five empty recordings, `doubleT_obstacle`, set O and set F first detections as with the rule on); new seal `detector_freeze_2026-09-29_shell_off.json` (`fe27068`) | the user, 29.09; safety review in the doc PR |
 | 29.09 night | release: no release candidate (`rc1` on `7532a6b` would have shipped the `shell` rule); `v1.0.0` on `70bc265` (the merge of PR #30), tagged by ~23:00 MSK so the archive is published and checked before 23:59; the release does not wait for the interface, which the runtime image does not contain | the user, 29.09; §3 item 2 |
-| 19.10 | 1.1.0 will not be released; development continues on 1.2.0; the next release, J1 and G3 use the final 1.2.0 seal | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 35 |
-| 19.10 | O1 and the five open questions of 16.10 sent to the organizers (send date not recorded) | the captain, 19.10; [`organizers/answers.md`](organizers/answers.md) §11 |
-| 19.10 | work that depends only on answered questions starts now on four agent branches (`det/k1-k2-gauge`, `det/f1-false-alarms`, `det/falcon-long-range`, `det/n3-dust-robustness`), cut-off 21.10 12:00 MSK, one combined reseal; C1 waits for the CAUTION answer | the captain, 19.10; [`BACKLOG.md`](BACKLOG.md) §9 |
-| 19.10 | new goal: stable obstacle detection to 300 m on the Falcon Prime (card N7) | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 38 |
-| 19.10 | update the deck, speech and rehearsal plan for 1.2.0 and the second lidar; rehearsals planned for 20.10 and 22.10 | the captain, 19.10; [`PRESENTATION.md`](PRESENTATION.md) |
 
 ## Experimental branch integration, 28.09
 

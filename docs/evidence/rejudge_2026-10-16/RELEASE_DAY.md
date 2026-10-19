@@ -1,13 +1,5 @@
 # J1 on release day — runbook (pre-built 16.10)
 
-> **Captain's note, 19.10:** 1.1.0 will not be released. J1 runs on the **final 1.2.0 seal** after the 21.10
-> integration (and its release image once CI works). The identity check below must then compare against the 1.2.0
-> manifest that P1 writes at the reseal (today's candidate: `docs/evidence/detector_freeze_2026-10-18_b4_merged.json`,
-> digest `68dee667…`), not the 1.1.0 tree `db3f588d…`. Expected values: on Pandar data the 1.2.0 candidate equals
-> 1.1.0 (gate and X3 identical); on the Falcon recording `aec88d2` reproduces the 1.1.0 run frame by frame
-> ([check](../falcon_head_check_2026-10-19/README.md)). A detector change integrated on 21.10 moves these
-> expectations: rebuild the pre-release numbers on the final seal before scoring.
-
 The release J1 (BACKLOG J1) runs on the accepted 1.1.0 release: tag, archive, image. Everything that does
 not need the release image is already run on the sealed 1.1.0 tree and on 707ea9c as a control
 ([prebuild/](prebuild/)). On release day, only the identity check and the steps marked **left** remain.
