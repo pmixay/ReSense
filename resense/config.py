@@ -122,7 +122,7 @@ class TrackConfig:
     floor_verify_min_points: int = 5                 # side points per bin for the bin to count
     floor_verify_max_range: float = 250.0            # m, how far the verification is attempted
     # --- 19.10 (K2, off): joint axis fit of the rail midpoints and the tunnel boundaries (track.joint_axis_fit) ---
-    axis_joint_fit: bool = False                     # off = the axis as before (rail tangent with the prior curvature held, then the boundary curvature); on: tangent, curvature and the far curvature step from one least-squares fit of the near rail-pair midpoints and every boundary segment (each its own offset), grown outward from the rail range
+    axis_joint_fit: bool = True                     # (K2 on: captain 19.10, variant B = v5b without K1) off = the axis as before (rail tangent with the prior curvature held, then the boundary curvature); on: tangent, curvature and the far curvature step from one least-squares fit of the near rail-pair midpoints and every boundary segment (each its own offset), grown outward from the rail range
     axis_joint_knot: float = 60.0                    # m, X from which the curvature may change (C1 piecewise axis: centre_y + curv_step (X - knot)^2 / 2 beyond it); 0 = a single quadratic
     axis_joint_step_sigma: float = 1.0e-3            # 1/m, prior SD of the curvature step at the knot (ridge towards no step)
     axis_joint_min_far_bins: int = 4                 # boundary bins beyond the knot needed to fit a curvature step (else none)
@@ -132,9 +132,9 @@ class TrackConfig:
     axis_joint_grow_start: float = 40.0              # m
     axis_joint_grow_step: float = 16.0               # m
     axis_joint_min_segment: int = 3                  # boundary bins a segment (between structure edges / gaps) needs to take part
-    axis_joint_range: bool = True                    # 20.10: with axis_joint_fit, the trusted range / sides / disagreement also from the joint fit (v3); false: the joint fit sets the axis shape only and the range policy stays the per-side fits' (v4)
-    axis_joint_min_curvature: float = 0.0            # 19.10 (v5, off; 1/m; needs axis_joint_fit and axis_joint_range false): > 0: the estimator without the joint fit runs on its own state every frame and is the output; the joint fit's shape (its own EMA / rate limits) replaces its axis shape only on frames whose curvature is |k| >= this (a curve as that estimator sees it; 1e-4 = its straight test). 0 = off (v4)
-    axis_joint_reach_cap: bool = False               # 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range is also capped at the boundaries' reach along that output axis (track._followed_reach) + axis_valid_margin
+    axis_joint_range: bool = False                    # (variant B: axis shape only, base range policy) 20.10: with axis_joint_fit, the trusted range / sides / disagreement also from the joint fit (v3); false: the joint fit sets the axis shape only and the range policy stays the per-side fits' (v4)
+    axis_joint_min_curvature: float = 0.0001            # (variant B) 19.10 (v5, off; 1/m; needs axis_joint_fit and axis_joint_range false): > 0: the estimator without the joint fit runs on its own state every frame and is the output; the joint fit's shape (its own EMA / rate limits) replaces its axis shape only on frames whose curvature is |k| >= this (a curve as that estimator sees it; 1e-4 = its straight test). 0 = off (v4)
+    axis_joint_reach_cap: bool = True               # (variant B) 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range is also capped at the boundaries' reach along that output axis (track._followed_reach) + axis_valid_margin
     # --- 19.10 (K1, off): yaw / curvature EMA per distance travelled instead of per frame period ---
     walls_smoothing_distance: float = 0.0            # m; > 0: the EMA weight is walls_smoothing ** max(walls_smoothing_min_k, min(k, travel / this)) with travel = the previous frame's speed x the time since it (unknown speed: as before); the axis rate limits scale the same way. 0 = off
     walls_smoothing_min_k: float = 0.05              # lower bound of that exponent (a standing train still follows a real change, slowly)

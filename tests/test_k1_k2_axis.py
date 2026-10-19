@@ -14,14 +14,24 @@ from tests.test_wall_drift import _entry_scene
 
 ROOT = Path(__file__).resolve().parents[1]
 JOINT = dict(axis_joint_fit=True)
+# every switch of this module off (the shipped defaults have K2 variant B on since 19.10): the tests build each
+# variant from this base, so they keep testing the code paths, not the current defaults
+OFF = dict(axis_joint_fit=False, axis_joint_range=True, axis_joint_min_curvature=0.0, axis_joint_reach_cap=False,
+           walls_smoothing_distance=0.0)
 
 
-def test_switches_default_off_in_code_and_both_parameter_files():
+def _cfg(**kw) -> TrackConfig:
+    return TrackConfig(**{**OFF, **kw})
+
+
+def test_shipped_variant_b_in_code_and_both_parameter_files():
+    """The captain's decision of 19.10: K2 on as variant B (v5b without K1): the joint axis shape on curves only,
+    the base trusted-range policy, the reach cap; K1's per-distance smoothing off."""
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         t = cfg.track
-        assert t.axis_joint_fit is False and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is True
-        assert t.axis_joint_min_curvature == 0.0 and t.axis_joint_reach_cap is False      # v5 switches
+        assert t.axis_joint_fit is True and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is False
+        assert t.axis_joint_min_curvature == pytest.approx(1e-4) and t.axis_joint_reach_cap is True   # v5b
         assert (t.axis_joint_knot, t.axis_joint_step_sigma, t.axis_joint_tolerance) == (60.0, 1e-3, 0.3)
 
 
@@ -64,7 +74,7 @@ def test_joint_fit_recovers_the_curve_from_a_too_straight_prior():
     """roundT_doubleT: the prior says straight while the track is R 400 m; the old tangent (a line through the
     slab midpoints with the prior curvature held) is the tangent at ~17 m, the joint fit is not biased."""
     rails, bounds, yt = _curve_obs()
-    cfg = TrackConfig(**JOINT)
+    cfg = _cfg(**JOINT)
     j = joint_axis_fit(rails, bounds, _model(), cfg)
     assert abs(j["t"] - 0.01) < 0.003 and abs(j["k"] - (-0.0025)) < 2e-4, j
     old_t = np.polyfit(rails.xm, rails.mids, 1)[0]
@@ -77,14 +87,14 @@ def test_joint_fit_recovers_the_curve_from_a_too_straight_prior():
 
 def test_joint_fit_follows_a_transition_with_the_step():
     rails, bounds, yt = _curve_obs(k=0.0, step=-0.002, sides=((2.6, 140.0), (-2.6, 140.0)))
-    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    j = joint_axis_fit(rails, bounds, _model(), _cfg(**JOINT))
     assert j["step"] < -0.0012, j
     for x in (80.0, 120.0):
         y = j["c"] + j["t"] * x + 0.5 * j["k"] * x * x + 0.5 * j["step"] * max(x - j["knot"], 0) ** 2
         assert abs(y - yt(x)) < 0.5, (x, y, yt(x))
     # no data beyond the knot: no step
     rails, bounds, _ = _curve_obs(k=0.0, step=-0.002, sides=((2.6, 56.0), (-2.6, 56.0)))
-    assert joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))["step"] == pytest.approx(0.0, abs=1e-9)
+    assert joint_axis_fit(rails, bounds, _model(), _cfg(**JOINT))["step"] == pytest.approx(0.0, abs=1e-9)
 
 
 def test_structure_edge_starts_a_new_segment_and_converging_walls_are_dropped():
@@ -92,13 +102,13 @@ def test_structure_edge_starts_a_new_segment_and_converging_walls_are_dropped():
     x, y = bounds["left"]
     y = y + np.where(x > 30, -0.6, 0.0)                    # a niche / gate edge at 30 m
     bounds["left"] = (x, y)
-    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    j = joint_axis_fit(rails, bounds, _model(), _cfg(**JOINT))
     assert abs(j["k"]) < 5e-5 and abs(j["step"]) < 1e-4, j
     # a platform wall converging 0.04 per metre inside the rail range does not turn the tangent
     rails, bounds, _ = _curve_obs(k=0.0, sides=((2.6, 120.0), (-2.6, 120.0)), noise=0.01)
     x, y = bounds["right"]
     bounds["right"] = (x[x < 40], (y + 0.04 * x)[x < 40])
-    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    j = joint_axis_fit(rails, bounds, _model(), _cfg(**JOINT))
     assert "right" not in j["x_max"] and abs(j["t"] - 0.01) < 0.002, j
 
 
@@ -113,8 +123,8 @@ def test_estimate_track_off_never_bends_on_follows_the_transition():
     """The wall-drift test's curve entry (transition from 30 m, inner wall to 70 m): with the joint fit the
     axis stays within 0.5 m of the track to 120 m, where the quadratic lags by more."""
     xyz, yt = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
-    off = _settle(xyz, TrackConfig())
-    on = _settle(xyz, TrackConfig(**JOINT))
+    off = _settle(xyz, _cfg())
+    on = _settle(xyz, _cfg(**JOINT))
     assert off.curv_step == 0.0 and not off.bent
     e_off = abs(float(off.center_y(120.0)) - float(yt(120.0)))
     e_on = abs(float(on.center_y(120.0)) - float(yt(120.0)))
@@ -126,7 +136,7 @@ def test_estimate_track_off_never_bends_on_follows_the_transition():
 @pytest.mark.skipif(not _native.enabled(), reason="native kernels not built")
 def test_bent_model_uses_the_numpy_paths_with_the_same_result():
     xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
-    m = _settle(xyz, TrackConfig(**JOINT))
+    m = _settle(xyz, _cfg(**JOINT))
     assert m.bent
     from resense.gauge import corridor_coordinates
     dy, h = corridor_coordinates(xyz, m)
@@ -138,7 +148,7 @@ def test_distance_smoothing_exponent_and_rate_limits():
     """K1: at standstill (travel 0) the axis EMA uses walls_smoothing ** walls_smoothing_min_k and the rate
     limits scale the same way; unknown travel and the switch off keep the per-period behaviour."""
     xyz, _ = _entry_scene(j=0.0)
-    base = TrackConfig()
+    base = _cfg()
     prev = _settle(xyz, base)
     prev = replace(prev, yaw=prev.yaw + 0.002, curvature=prev.curvature + 5e-5)   # a noisy previous fit
     a = estimate_track(xyz, base, prev=prev)
@@ -156,7 +166,7 @@ def test_joint_fit_follows_a_curve_that_ends_beyond_the_reach():
     """A wall that bends to the knot and then runs straighter (as at the far end of squareT_platform): the far
     bins join and the axis at 140 m follows the straighter continuation (the step), not the extrapolated curve."""
     rails, bounds, yt = _curve_obs(k=2e-4, step=-2e-4, sides=((2.4, 56.0), (-2.3, 148.0)), noise=0.02)
-    j = joint_axis_fit(rails, bounds, _model(curvature=2e-4), TrackConfig(**JOINT))
+    j = joint_axis_fit(rails, bounds, _model(curvature=2e-4), _cfg(**JOINT))
     assert j["x_max"]["right"] >= 140, j
     y = j["c"] + j["t"] * 140 + 0.5 * j["k"] * 140 ** 2 + 0.5 * j["step"] * (140 - j["knot"]) ** 2
     assert abs(y - yt(140.0)) < 0.5, (y, yt(140.0))
@@ -169,7 +179,7 @@ def test_a_diverging_far_segment_is_not_admitted():
     xf = np.arange(104.0, 152.1, 4.0)
     x, y = bounds["right"]
     bounds["right"] = (np.r_[x, xf], np.r_[y, yt(xf) - 2.3 - 0.08 * (xf - 104.0)])
-    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    j = joint_axis_fit(rails, bounds, _model(), _cfg(**JOINT))
     assert j["x_max"]["right"] <= 84.0, j
     assert abs(j["k"]) < 5e-5 and abs(j["step"]) < 5e-5, j
 
@@ -184,7 +194,7 @@ def test_review_converging_structure_at_the_start_does_not_bend_the_axis():
     xs = np.r_[x[x < 28], x[conv], x[x > 44]]
     ys = np.r_[y[x < 28], y[conv], y[x > 44]]
     bounds["right"] = (xs, ys)
-    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    j = joint_axis_fit(rails, bounds, _model(), _cfg(**JOINT))
     y100 = j["c"] + j["t"] * 100 + 0.5 * j["k"] * 100 ** 2 + 0.5 * j["step"] * max(100 - j["knot"], 0) ** 2
     assert abs(y100 - yt(100.0)) < 0.3, j
     assert j["x_max"].get("left", 0) >= 116, j
@@ -203,7 +213,7 @@ def test_review_non_finite_bins_are_ignored():
     y = y.copy()
     y[5] = np.nan
     bounds["left"] = (x, y)
-    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    j = joint_axis_fit(rails, bounds, _model(), _cfg(**JOINT))
     assert j is not None and all(np.isfinite([j["c"], j["t"], j["k"], j["step"]]))
 
 
@@ -211,7 +221,7 @@ def test_review_straight_track_keeps_the_native_quadratic():
     """Review finding 4: without data beyond the knot the step is exactly 0, the model is not bent."""
     xyz, _ = _entry_scene(j=0.0, inner_to=50.0)
     xyz = xyz[xyz[:, 0] < 58.0]
-    m = _settle(xyz, TrackConfig(**JOINT))
+    m = _settle(xyz, _cfg(**JOINT))
     assert m.curv_step == 0.0 and not m.bent
 
 
@@ -219,8 +229,8 @@ def test_shape_only_mode_keeps_the_axis_shape_and_the_old_range_policy():
     """v4 (axis_joint_range off): the axis shape is the joint fit's (identical to v3's), the trusted range comes
     from the per-side fits as without the joint fit."""
     xyz, yt = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
-    v3 = _settle(xyz, TrackConfig(**JOINT))
-    v4 = _settle(xyz, TrackConfig(axis_joint_fit=True, axis_joint_range=False))
+    v3 = _settle(xyz, _cfg(**JOINT))
+    v4 = _settle(xyz, _cfg(axis_joint_fit=True, axis_joint_range=False))
     X = np.array([30.0, 80.0, 120.0])
     assert np.allclose(v3.center_y(X), v4.center_y(X), atol=1e-9)
     assert abs(float(v4.center_y(120.0)) - float(yt(120.0))) < 0.5
@@ -250,7 +260,7 @@ def test_v5_off_unless_the_joint_fit_is_on_and_shape_only():
     """axis_joint_min_curvature alone (joint fit off) or with the v3 range policy changes nothing; no record field."""
     xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
     for base_kw, kw in (({}, dict(axis_joint_min_curvature=1e-4)), (JOINT, dict(JOINT, axis_joint_min_curvature=1e-4))):
-        a, b = _run(xyz, TrackConfig(**base_kw)), _run(xyz, TrackConfig(**kw))
+        a, b = _run(xyz, _cfg(**base_kw)), _run(xyz, _cfg(**kw))
         assert all(_same(x, y) and y.base is None and y.joint_used is None for x, y in zip(a, b))
         assert "joint_used" not in b[-1].to_dict()
 
@@ -259,7 +269,7 @@ def test_v5_straight_track_is_exactly_the_estimate_without_the_joint_fit():
     """On a straight track (|k| below the limit every frame) the output is the estimator without the joint fit,
     frame by frame and bit for bit; the record says the joint shape was not used."""
     xyz, _ = _entry_scene(j=0.0)
-    off, v5 = _run(xyz, TrackConfig()), _run(xyz, TrackConfig(**V5))
+    off, v5 = _run(xyz, _cfg()), _run(xyz, _cfg(**V5))
     for a, b in zip(off, v5):
         assert abs(a.curvature) < 1e-4
         assert _same(a, b) and b.joint_used is False and not b.bent and b.joint_shape is not None
@@ -271,7 +281,7 @@ def test_v5_curve_follows_the_joint_shape_and_carries_the_unchanged_base_state()
     carried base model is, frame by frame, exactly the model of the estimator without the joint fit (which lags):
     the next frame is estimated from it, so nothing of the joint shape feeds back into the base state."""
     xyz, yt = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
-    off, v5 = _run(xyz, TrackConfig()), _run(xyz, TrackConfig(**V5))
+    off, v5 = _run(xyz, _cfg()), _run(xyz, _cfg(**V5))
     for a, b in zip(off, v5):
         assert _same(a, b.base) and b.base.base is None
     last = v5[-1]
@@ -289,8 +299,8 @@ def test_v5_curve_follows_the_joint_shape_and_carries_the_unchanged_base_state()
 def test_v5_threshold_selects_the_shape():
     """A limit above the base curvature keeps the base shape on the same curve; the joint shape state still runs."""
     xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
-    v5 = _run(xyz, TrackConfig(**V5))
-    hi = _run(xyz, TrackConfig(**dict(V5, axis_joint_min_curvature=abs(v5[-1].base.curvature) * 10)))
+    v5 = _run(xyz, _cfg(**V5))
+    hi = _run(xyz, _cfg(**dict(V5, axis_joint_min_curvature=abs(v5[-1].base.curvature) * 10)))
     assert hi[-1].joint_used is False and _same(hi[-1], v5[-1].base) and hi[-1].joint_shape == v5[-1].joint_shape
 
 
@@ -299,7 +309,7 @@ def test_v5b_reach_cap_only_on_joint_frames_and_never_extends():
     the output axis + margin); on a straight frame nothing changes."""
     from resense.track import _followed_reach, estimate_axis_from_walls
     xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
-    cfg5, cfg5b = TrackConfig(**V5), TrackConfig(**dict(V5, axis_joint_reach_cap=True))
+    cfg5, cfg5b = _cfg(**V5), _cfg(**dict(V5, axis_joint_reach_cap=True))
     a, b = _run(xyz, cfg5), _run(xyz, cfg5b)
     last, capped = a[-1], b[-1]
     assert _same(last.base, capped.base) and capped.joint_used
@@ -318,7 +328,7 @@ def test_v5b_reach_cap_only_on_joint_frames_and_never_extends():
 
 def test_v5_rotation_rotates_the_base_state_and_the_joint_shape():
     xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
-    m = _run(xyz, TrackConfig(**V5))[-1]
+    m = _run(xyz, _cfg(**V5))[-1]
     a = np.radians(0.3)
     dR = np.array([[np.cos(a), -np.sin(a), 0.0], [np.sin(a), np.cos(a), 0.0], [0.0, 0.0, 1.0]])
     r = rotate_track_model(m, dR)
