@@ -217,7 +217,7 @@ def test_candidate_values_in_the_class_and_the_yaml():
     y = DetectorConfig()
     assert y.lowobj.local_rail_margin == pytest.approx(0.01) and not y.lowobj.local_rail_exclude_low
     assert y.lowobj.local_rail_cross_tol == pytest.approx(0.04)
-    assert y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == pytest.approx(0.5)
+    assert not y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == pytest.approx(0.5)
     assert y.cluster.mount_cross_above_only
     assert y.tracking.settle_min_hits == 0
     assert y.lowobj.rail_band_range == 0 and y.lowobj.no_rail_low_within == 0

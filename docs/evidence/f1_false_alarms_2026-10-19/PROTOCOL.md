@@ -271,3 +271,23 @@ linear across the bed). Failing clusters advisory (`below_rail_ref`). Margin 0.0
 with it. **Comparison measured alongside (not selectable unless F1a″ fails A1 and A3–A5):** F1a without exclusion,
 advisory (`local_rail_exclude_low` false, `local_rail_cross_tol` 0).
 Then, for the selected setting: full gate, switch-off identity, Falcon, probes, synthetic bags, X3, tests, review 2.
+
+## Amendment 8 (19.10, ~14:40 UTC) — advisory mode measured; weak mode with the cross-rail reference registered
+
+**Measured (whole ride, one detector, `3fb7cd1`):** F1a″ (cross-rail 0.04, advisory) and the comparison (no
+exclusion, no cross-rail, advisory) give the **same** result: 117 STOP frames, 28 episodes, 25 events, low-kind
+4 / 5 (2668, 6860, 7364, 10484) — A1 fails. The difference to the first F1a (109 / 24 / 20, low 1 / 1) is the
+**advisory mode**: a failing cluster still matches its track, so the hit fraction stays above 0.6 and the hits where
+no rail line is measurable (sparse rails beyond ~40 m) carry the vote to STOP; as weak evidence the failing hits
+break that continuity.
+
+**F1a‴ (registered now, the candidate if it passes):** margin 0.01, cross-rail check 0.04 (amendment 7), no
+exclusion, failing clusters **weak** (`local_rail_advisory` false: they may continue a reported low STOP for
+`tracking.stop_keep_low_s`, never start one). Why weak is acceptable here: B1's mechanism (the object raising its
+own rail's line) is removed by the cross-rail check (unit test); a cluster that does not rise above its own rails
+is below the gauge, which starts at the rail heads (organizers' answer 25.09: a 30×30×10 cm object between the
+rails is not an obstacle), exactly as the existing `min_top` rule already treats it (silently) against the model's
+plane. Residual (reported): pieces of one long, wide object lying along *both* rails would raise both lines.
+Finding 5 (clear distance) remains for weak clusters, as for the existing straddle-weak evidence.
+Measured next on the whole ride; if A1 passes: full gate, switch-off identity, Falcon, probes, synthetic bags,
+X3, tests, review 2.

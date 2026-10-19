@@ -562,7 +562,7 @@ class LowObjectConfig:
     rail_band_margin: float = 0.05       # m ... with this margin above the band's own line, without rail_start_min_ref
     local_rail_exclude_low: bool = False  # amendment 6 (review B1, measured: costs the effect, amendment 7): the rail lines leave out every low cluster's returns
     local_rail_cross_tol: float = 0.04   # amendment 7 (review B1): m; when the two rails' lines differ by more than this, the lower line is the reference (an object along one rail raises only its line); 0 = off
-    local_rail_advisory: bool = True     # amendment 6: a cluster failing (a) / (b) is advisory ('below_rail_ref', a signature), not weak continuation evidence
+    local_rail_advisory: bool = False    # amendment 6 option (measured in amendments 7-8: it costs the effect): a cluster failing (a) / (b) is advisory ('below_rail_ref', a signature), not weak continuation evidence
     no_rail_low_within: float = 0.0      # m, (c) > 0 on: on a frame without the rail pair (track.rail_slabs == 0) a low cluster farther than this is advisory (reason 'no_rail_low', a signature: an earned STOP is kept by tracking.stop_keep_signature)
 
 
