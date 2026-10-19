@@ -669,7 +669,8 @@ class Detector:
                                 dy_alt=dy_alt, keep_thin=keep_thin,
                                 weak_from=cfg.tracking.thin_far_min_distance
                                 if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
-                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0 else None,
+                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0
+                                or cfg.cluster.column_core_margin > 0 else None,
                                 frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1])
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go

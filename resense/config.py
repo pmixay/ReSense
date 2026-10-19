@@ -258,6 +258,12 @@ class ClusterConfig:
     column_width_trim: float = 0.05     # 27.09 (P4 history, on; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
     column_width_trim_min_cut: float = 0.25  # 27.09: m, the trimmed width is used only when it is at least this much narrower than the box (sparse tails: a joined fragment); a dense body keeps its width
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
+    # Positive current-frame collision evidence; zero margin disables the exemption.
+    # Extra rail-relative erosion is a guard, not a calibrated axis-error bound.
+    column_core_margin: float = 0.30
+    column_core_min_voxels: int = 8
+    column_core_min_height: float = 2.2
+    column_core_max_footprint: float = 0.8
     # Development-only free-top exemption, withdrawn from shipping after H4. Zero disables the whole
     # observation/spare path; an explicit positive opt-in (historically 2.95 m) remains unaccepted, with
     # known tall-object misses and dark-continuation false STOPs. Evidence: h4_fixes/columns/WITHDRAWAL.md.

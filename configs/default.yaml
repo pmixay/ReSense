@@ -164,6 +164,10 @@ resense:
     column_width_trim: 0.05         # 27.09 (P4 history, on; 0 = the box width): the column rule's width between these quantiles of the cluster's lateral point positions (a few returns joined at the DBSCAN radius do not widen a column past column_max_width)
     column_width_trim_min_cut: 0.25 # 27.09: m, the trimmed width counts only when it is at least this much narrower than the box width (sparse tails, a joined fragment of a few returns); a dense 1.0-1.1 m body keeps its width
     column_min_width: 0.25         # v0.6: near the axis only clusters this wide are columns (a hanging cable is thinner)
+    column_core_margin: 0.30       # extra rail-relative erosion; 0 disables positive collision core
+    column_core_min_voxels: 8
+    column_core_min_height: 2.2
+    column_core_max_footprint: 0.8
     column_free_max_top: 0.0       # withdrawn from shipping after H4; explicit positive opt-in is experimental/unaccepted (WITHDRAWAL.md)
     column_free_min_core: 0.5      # experimental parameters are inert while column_free_max_top is zero
     column_free_min_returns: 2     # returns beyond the top on that ring (one ray: the recordings hold each echo twice)
