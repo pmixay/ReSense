@@ -48,5 +48,17 @@ open side-panel contents. Charging fittings align to the door pillar and wall
 trim stops before the door; artificial roof bands are omitted from the close wall crop.
 Raleway remains in use; the requested Esh/Struve comparison was deferred by the user.
 
+The latest user-supplied photographs (`IMG_8349.jpeg`, `IMG_8350.jpeg`, and
+`1591221.jpeg`, main commit `7e38c01`) guide the next material pass. Keep the existing
+screen, door and foreground handrail anchors locked. Use warm bronze metalwork,
+off-white molded paneling, layered black glazing surrounds and gray-taupe woven
+cantilevered seating below the screen. Photos remain reference-only.
+
+Changing application sections closes a paired, dimensional metro-door overlay,
+commits the destination behind closed heavily frosted glass, then opens it. Navigation
+must remain reliable by mouse, touch, keyboard and browser history. Player frame,
+camera and run URL changes remain immediate. Reduced motion uses a brief non-spatial
+fade. The decorative doors contain no controls and release keyboard focus to the page.
+
 Target desktop review sizes are 1366×768, 1440×900 and 1920×1080, with mobile content
 flowing vertically. Synthetic capture runs demonstrate the UI and are not evaluation evidence.

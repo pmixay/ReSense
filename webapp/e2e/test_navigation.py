@@ -27,3 +27,52 @@ def test_site_navigation_stays_pinned(app, width, height):
         rail.get_by_role("link", name="Загрузка", exact=True).click()
         expect(page).to_have_url(app.base + "/upload")
         expect(page.locator("main")).to_have_js_property("scrollTop", 0)
+
+
+@pytest.mark.parametrize('width,height', [(1440, 900), (390, 844)])
+def test_train_doors_cover_navigation_before_revealing_destination(app, width, height):
+    page = app.page
+    page.set_viewport_size({'width': width, 'height': height})
+    app.goto('/player')
+    page.evaluate('document.fonts.ready')
+    page.clock.install()
+    page.clock.pause_at(page.evaluate('Date.now()'))
+    rail = page.get_by_role('navigation', name='Линия: путь работы с записью')
+    doors = page.locator('[data-train-doors]')
+    rail.get_by_role('link', name='Прогоны', exact=True).click()
+    expect(doors).to_have_attribute('data-phase', 'closing')
+    expect(page).to_have_url(app.base + '/player')
+    expect(page.locator('main')).to_have_attribute('inert', '')
+    page.clock.run_for(360)
+    expect(page).to_have_url(app.base + '/runs')
+    expect(doors).to_have_attribute('data-phase', 'covered')
+    leaves = page.locator('[data-door-leaf]').evaluate_all('els => els.map(el => el.getBoundingClientRect().toJSON())')
+    assert leaves[0]['left'] <= 0 and leaves[0]['right'] >= width / 2
+    assert leaves[1]['left'] <= width / 2 and leaves[1]['right'] >= width
+    glass = page.locator('[data-door-glass]').first
+    assert '38px' in glass.evaluate('el => getComputedStyle(el).backdropFilter')
+    page.clock.run_for(100)
+    expect(doors).to_have_attribute('data-phase', 'opening')
+    page.clock.run_for(460)
+    expect(doors).to_be_hidden()
+    expect(page.locator('main')).not_to_have_attribute('inert', '')
+    assert page.locator('main').evaluate('el => document.activeElement === el')
+    # History navigation gets the same close/swap/open sequence.
+    page.evaluate('history.back()')
+    expect(doors).to_have_attribute('data-phase', 'closing')
+    # Let lazy Player/GPU initialization use real time rather than freezing its effects.
+    page.clock.resume()
+    expect(page).to_have_url(app.base + '/player')
+    expect(doors).to_be_hidden(timeout=30000)
+
+
+def test_train_doors_reduced_motion_uses_fade(app):
+    page = app.page
+    page.emulate_media(reduced_motion='reduce')
+    app.goto('/runs')
+    page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Загрузка', exact=True).click()
+    doors = page.locator('[data-train-doors]')
+    assert page.locator('[data-door-leaf]').first.evaluate('el => getComputedStyle(el).display') == 'none'
+    expect(page).to_have_url(app.base + '/upload')
+    expect(page.locator('[data-page-fallback]')).to_be_hidden(timeout=30000)
+    expect(doors).to_be_hidden()

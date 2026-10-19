@@ -145,6 +145,29 @@ describe('modeled display projection', () => {
     empty.dispose();
   });
 
+  it('adds reference-style seating below the housing while preserving the fixed door and rail anchors', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1440, 816, 1, { width: 1368, left: 36, height: 611, top: 8 });
+    const door = display.scene.getObjectByName('metro-door-aluminium-stile')!;
+    expect(door.position.toArray()).toEqual([7.78, 0, -.4]);
+    const rail = display.scene.getObjectByName('stainless-grab-rail') as THREE.Mesh<THREE.TubeGeometry>;
+    expect(rail.geometry.parameters.path.getPoint(0).toArray()).toEqual([-7.5, -(816 * 16 / 1440 + 2) / 2, 1.8]);
+    const housing = display.scene.getObjectByName('display-housing')!;
+    const bench = display.scene.getObjectByName('cantilever-bench-shell')!;
+    display.scene.updateMatrixWorld(true);
+    const housingBounds = new THREE.Box3().setFromObject(housing.children[0]);
+    const benchBounds = new THREE.Box3().setFromObject(bench);
+    expect(benchBounds.max.y).toBeLessThan(housingBounds.min.y);
+    let seats = 0;
+    display.scene.traverse(object => { if (object.name === 'contoured-seat-cushion') seats++; });
+    expect(seats).toBeGreaterThanOrEqual(2);
+    const back = display.scene.getObjectByName('woven-individual-seat-back') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
+    const textureDisposal = vi.fn();
+    back.material.map!.addEventListener('dispose', textureDisposal);
+    display.dispose();
+    expect(textureDisposal).toHaveBeenCalledOnce();
+  });
+
   it('keeps the foreground post entirely in front of the train wall at every pressure extreme', () => {
     const display = new ScreenDisplay();
     display.setSize(1440, 844, 1, { width: 1368, left: 36, height: 502, top: 16 });

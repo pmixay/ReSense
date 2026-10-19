@@ -200,6 +200,39 @@ Normalized mouse displacement sets a bounded quadratic pressure target: maximum 
 
 **The Content-Driven Light Rule.** Player emission, wall spill and reflected light on housing, trim and handrail derive from the live image, retaining local hue and emitting nothing from black. Keep them restrained within the lit saloon; environment and rendering constants stay local to the renderer.
 
+### Photo-led interior refinement and section transitions
+
+The uploaded `IMG_8349.jpeg` / `IMG_8350.jpeg` saloon views and `1591221.jpeg`
+exterior in main commit `7e38c01` are the current material/seating/door authority.
+Screen housing, right-hand door and foreground post positions stay locked to their
+existing responsive geometry. Refine the wall toward warm off-white laminate,
+polished bronze rails and brushed aluminium; add a black-enamel glazing lip and
+lower bead to the fixed door. Below the housing, individually piped gray-taupe
+woven backrests, contoured cushions, rounded shells and bronze end armrests form a
+cantilevered bench. A shared 128×128 procedural weave/bump tile is disposed with the
+interior. Seat geometry stays clear of the active display and behind the foreground
+post at all pressure extremes. The dock blur is now 8px with a longer feather, so
+the upper bench remains recognizable while controls retain their dark ground.
+
+Section navigation uses one authored paired-door sequence in AppShell: close in
+350ms, commit the route at 360ms, hold closed for at least 100ms, then open in 450ms.
+If a lazy page chunk is still suspended, hold for up to one additional second. A
+bounded recovery timer prevents stuck occlusion. Query changes and navigation
+within the same section (including Player run changes) are immediate. Browser
+Back/Forward uses the same route blocker. The old page stays mounted while closing;
+the destination mounts behind the closed doors. Native focus/input is inert during
+the overlay, then main receives focus without scrolling.
+
+The overlay is dimensional CSS geometry: paired sliding leaves, metal jambs, enamel
+bevels, rubber center seals, red status strips, recessed glazing and a brushed sill.
+Each pane combines 38px backdrop diffusion with a 92–94% opaque warm neutral frost,
+so page content stays unrecognizable even when backdrop filtering is unavailable.
+The frost is a user-pinned departure from the clear photographed door windows.
+Only the two panes filter during a transition; the overlay is `display:none` at rest
+and adds no renderer, image download or animation dependency. Reduced motion uses a
+75ms cover / 100ms reveal fade with no moving leaves. Initial page loads do not run
+the sequence. Shared Raleway, navigation styling and all page controls are retained.
+
 ## Shapes
 
 Retain the inherited radius ladder: inputs use `r-xs`; selects/tooltips and local Player telemetry use `r-sm`; the intervening tile radii remain available; global Card uses `r-lg`. Shared Button, Chip and Segmented defaults remain pill-shaped. Player camera groups instead use `r-sm` with `r-xs` options; local tools, transport and picker play buttons are rounded squares using `r-xs`. Local telemetry's crisp hairline border (1px), smaller radius and flat white surface do not redefine global Card. The display's rounded housing is generated geometry, not a CSS card-radius token.

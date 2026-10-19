@@ -1,0 +1,105 @@
+{
+  "base": "http://127.0.0.1:8000",
+  "referenceCommit": "7e38c01",
+  "route": "/player/y7oie2mfg0?pos=4",
+  "viewports": [
+    {
+      "width": 1366,
+      "height": 768,
+      "display": {
+        "x": 34.140625,
+        "y": 92,
+        "width": 1297.6875,
+        "height": 479
+      },
+      "transport": {
+        "x": 34.140625,
+        "y": 673,
+        "width": 1297.71875,
+        "height": 83
+      }
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "display": {
+        "x": 36,
+        "y": 92,
+        "width": 1368,
+        "height": 611
+      },
+      "transport": {
+        "x": 36,
+        "y": 805,
+        "width": 1368,
+        "height": 83
+      }
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "display": {
+        "x": 40,
+        "y": 92,
+        "width": 1840,
+        "height": 791
+      },
+      "transport": {
+        "x": 40,
+        "y": 985,
+        "width": 1840,
+        "height": 83
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "display": {
+        "x": 16,
+        "y": 79,
+        "width": 358,
+        "height": 434
+      },
+      "transport": {
+        "x": 12,
+        "y": 659,
+        "width": 366,
+        "height": 173
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "display": {
+        "x": 16,
+        "y": 79,
+        "width": 288,
+        "height": 158
+      },
+      "transport": {
+        "x": 12,
+        "y": 383,
+        "width": 296,
+        "height": 173
+      }
+    }
+  ],
+  "errors": [],
+  "doorGlass": [
+    {
+      "width": 1440,
+      "style": {
+        "blur": "blur(38px) saturate(0.12)",
+        "background": "linear-gradient(110deg, rgba(199, 203, 191, 0.92), rgba(217, 218, 205, 0.93) 40%, rgba(165, 173, 162, 0.937))"
+      }
+    },
+    {
+      "width": 390,
+      "style": {
+        "blur": "blur(38px) saturate(0.12)",
+        "background": "linear-gradient(110deg, rgba(199, 203, 191, 0.92), rgba(217, 218, 205, 0.93) 40%, rgba(165, 173, 162, 0.937))"
+      }
+    }
+  ],
+  "doorBase": "http://127.0.0.1:4173"
+}

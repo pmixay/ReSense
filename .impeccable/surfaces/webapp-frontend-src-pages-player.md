@@ -38,3 +38,10 @@ SIDE TELEMETRY (latest correction, supersedes gesture reveal): Open/close teleme
 INTERIOR DETAIL & LIGHTING: Follow the supplied saloon/touchscreen references for formed gray panels, recessed seams, black door glazing/seals, red diffuser, release fitting, charging sockets and polished copper-toned handrail. Keep the front-on installation and shared shell. Off-camera neutral ceiling lighting, warm fill, cached saloon reflections and GPU image light illuminate wall, trim, housing and rail; black emits no light and split sources retain local hue. Remove invented roof bands from the wall crop. Fit the screen above persistent controls at unchanged width and keep scene/HUD fixed. Check geometry at pressure extremes, responsive sizes and expanded height, preserving playback/recovery paths.
 
 Verify 1366×768, 1440×900, 1920×1080 and mobile, all decision/error states, resize, orbit, run switching, fullscreen, speed, stepping and seeking. Preserve the established global design system; document the page architecture without replacing global design artifacts.
+
+LATEST PHOTO PASS: `IMG_8349.jpeg`, `IMG_8350.jpeg` and `1591221.jpeg` from main
+`7e38c01` pin warm off-white laminate, bronze rails, black enamel/glazing and taupe
+individual moquette seats. Keep display, original handrail path and door anchors
+unchanged. Add a cantilevered bench beneath the housing, never over the active view.
+Keep the independent pressure layers and bounded renderer. The upper dock feather
+is light enough to read the bench backs while preserving white control text.

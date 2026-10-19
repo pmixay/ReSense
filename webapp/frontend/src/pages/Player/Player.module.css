@@ -10,9 +10,9 @@
 }
 .controlDock::after {
   content: ''; position: absolute; inset: -32px 0 0; z-index: -2; pointer-events: none;
-   backdrop-filter: blur(18px) saturate(.85); -webkit-backdrop-filter: blur(18px) saturate(.85);
-  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .25) 24px, #000 64px);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .25) 24px, #000 64px);
+   backdrop-filter: blur(8px) saturate(.85); -webkit-backdrop-filter: blur(8px) saturate(.85);
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .12) 52px, #000 116px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .12) 52px, #000 116px);
 }
 .display {
   position: relative;

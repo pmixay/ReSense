@@ -34,8 +34,8 @@
           "y": 90.8
         }
       },
-      "calls": 44,
-      "triangles": 9278
+      "calls": 75,
+      "triangles": 21562
     },
     "red": {
       "emission": [
@@ -70,8 +70,8 @@
           "y": 90.8
         }
       },
-      "calls": 44,
-      "triangles": 9278
+      "calls": 75,
+      "triangles": 21562
     },
     "green": {
       "emission": [
@@ -106,8 +106,8 @@
           "y": 90.8
         }
       },
-      "calls": 44,
-      "triangles": 9278
+      "calls": 75,
+      "triangles": 21562
     },
     "blue": {
       "emission": [
@@ -142,8 +142,8 @@
           "y": 90.8
         }
       },
-      "calls": 44,
-      "triangles": 9278
+      "calls": 75,
+      "triangles": 21562
     },
     "gray": {
       "emission": [
@@ -178,8 +178,8 @@
           "y": 90.8
         }
       },
-      "calls": 44,
-      "triangles": 9278
+      "calls": 75,
+      "triangles": 21562
     },
     "split": {
       "emission": [
@@ -214,48 +214,48 @@
           "y": 90.8
         }
       },
-      "calls": 44,
-      "triangles": 9278
+      "calls": 75,
+      "triangles": 21562
     }
   },
   "receiverColorEnergy": {
     "wall": {
-      "red": 22746.5,
-      "green": 20777.0,
-      "blue": 21221.5
+      "red": 23976.5,
+      "green": 21711.0,
+      "blue": 21602.0
     },
     "rail": {
-      "red": 12258.5,
-      "green": 9016.5,
-      "blue": 8324.0
+      "red": 13226.0,
+      "green": 9946.5,
+      "blue": 8720.0
     }
   },
   "splitSideEnergy": {
-    "left": 2681,
-    "right": 3032
+    "left": 2903,
+    "right": 3062
   },
   "cachedNeutralIdentical": true,
   "gpuLifetime": {
     "resizes": [
       {
-        "geometries": 46,
-        "textures": 6
+        "geometries": 77,
+        "textures": 7
       },
       {
-        "geometries": 46,
-        "textures": 6
+        "geometries": 77,
+        "textures": 7
       },
       {
-        "geometries": 46,
-        "textures": 6
+        "geometries": 77,
+        "textures": 7
       },
       {
-        "geometries": 46,
-        "textures": 6
+        "geometries": 77,
+        "textures": 7
       },
       {
-        "geometries": 46,
-        "textures": 6
+        "geometries": 77,
+        "textures": 7
       }
     ],
     "afterDispose": {

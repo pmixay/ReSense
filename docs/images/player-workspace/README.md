@@ -1,5 +1,10 @@
 # Integrated Player workspace
 
+Latest material/seating and section-door review:
+[`../metro-2020/`](../metro-2020/), based on the newly uploaded photographs in
+`7e38c01`. That gallery supersedes these earlier captures for interior material
+appearance while retaining the same display, door, rail and control layout.
+
 Real production-build captures from the ReSense backend and Chromium with SwiftShader
 WebGL. `clear-*`, `caution-*`, `stop-*` and `picker-*` cover 1366×768, 1440×900,
 1920×1080 and 390×844. `capture.json` records the synthetic demo runs, exact frame

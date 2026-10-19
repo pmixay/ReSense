@@ -7,10 +7,11 @@ import { Spinner } from '../Spinner/Spinner';
 import { TopBar } from '../TopBar/TopBar';
 import styles from './AppShell.module.css';
 import { RailContext } from './rail';
+import { TrainDoors, useTrainDoors } from './TrainDoors';
 
 export function PageFallback() {
   return (
-    <div className={styles.fallback}>
+    <div className={styles.fallback} data-page-fallback>
       <Spinner size={28} label="Страница загружается" />
     </div>
   );
@@ -22,6 +23,14 @@ export function AppShell() {
   const { key } = useLocation();
   const player = useMatch('/player/*');
   const [sub, setSub] = useState<string | undefined>(undefined);
+  const doors = useTrainDoors();
+  const wasTransitioning = useRef(false);
+  useLayoutEffect(() => {
+    chromeRef.current?.toggleAttribute('inert', doors.active);
+    pageRef.current?.toggleAttribute('inert', doors.active);
+    if (!doors.active && wasTransitioning.current) pageRef.current?.focus({ preventScroll: true });
+    wasTransitioning.current = doors.active;
+  }, [doors.active]);
   useLayoutEffect(() => {
     const chrome = chromeRef.current;
     if (!chrome) return;
@@ -40,7 +49,7 @@ export function AppShell() {
   return (
     <RailContext.Provider value={setSub}>
       <div className={styles.shell} data-app-shell>
-        <a href="#main" className={styles.skip}>
+        <a href="#main" className={styles.skip} tabIndex={doors.active ? -1 : undefined}>
           К содержимому
         </a>
         <div ref={chromeRef} className={styles.chrome}>
@@ -52,6 +61,7 @@ export function AppShell() {
             <Outlet />
           </Suspense>
         </main>
+        <TrainDoors phase={doors.phase} />
       </div>
     </RailContext.Provider>
   );
