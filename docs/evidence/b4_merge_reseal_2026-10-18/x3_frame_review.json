@@ -1,0 +1,3148 @@
+{
+  "status": "RAW_EVIDENCE_REVALIDATED",
+  "cases": {
+    "squareT_platform_squareT_switch/nominal": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 313,
+      "candidate_first_stop": 313,
+      "metrics_identical": true,
+      "reference_raw_sha256": "5b0164fd53e28676bafcf544876b63d0a1f8f94f854940ab8b6a9da90c5d5f87",
+      "candidate_raw_sha256": "def0f8b69e630ca0023a8021587011b9d8fb074723ff1bd70ebae2993bf0731e"
+    },
+    "squareT_platform_squareT_switch/pitch_p2": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 309,
+      "candidate_first_stop": 309,
+      "metrics_identical": true,
+      "reference_raw_sha256": "18a572638c971fd9fad860029a877a4f67ec5a066c96728938083e2145a533c9",
+      "candidate_raw_sha256": "473d32ce47b61484e8f9ca56d8e66e69e840bed60178b3c4600e0616bee15a9c"
+    },
+    "squareT_platform_squareT_switch/pitch_m2": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 310,
+      "candidate_first_stop": 310,
+      "metrics_identical": true,
+      "reference_raw_sha256": "59f63b45d7bfb88be190e55c12f5f9a8fd76fc7c8594d27aa7c233de8a992e5a",
+      "candidate_raw_sha256": "0251c20d001b6177064b66d761686c30b67f431237acd9cc41ef5d802d482c6c"
+    },
+    "squareT_platform_squareT_switch/roll_p2": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 309,
+      "candidate_first_stop": 309,
+      "metrics_identical": true,
+      "reference_raw_sha256": "78bf280ea912d9cec2b625ed68cc29d9f1c113f5fcdd6ee561587eac7f5f7397",
+      "candidate_raw_sha256": "d5cd2cb1ad665edb63ff267d97969593577858be1ba9ebf7ad0914f3fd735297"
+    },
+    "squareT_platform_squareT_switch/hz5": {
+      "frames": 439,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 310,
+      "candidate_first_stop": 310,
+      "metrics_identical": true,
+      "reference_raw_sha256": "6ec66fe64fed4cb7654cf5d28f9c6f1ea249a4198c4a709a9a919e2d9d25f126",
+      "candidate_raw_sha256": "f5ab29bcb995c3a5d8b42dfb929f590b54646c48e3e719e1892737e946bc2a80"
+    },
+    "squareT_platform_squareT_switch/drop30_s1": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 310,
+      "candidate_first_stop": 310,
+      "metrics_identical": true,
+      "reference_raw_sha256": "e30e1aa9a36108052694c597df9e51944f7f43815dc91902409a64f24dbcb209",
+      "candidate_raw_sha256": "4600b5527e62c3150951cb71ff86d0ea18effa9793a2cc1d3310dc2e0d93d429"
+    },
+    "squareT_platform_squareT_switch/drop30_s2": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 307,
+      "candidate_first_stop": 307,
+      "metrics_identical": true,
+      "reference_raw_sha256": "62b085b456aeda71d44cc3de7de7d438c6e9ed55a2b58198e3410e1b9927fe3c",
+      "candidate_raw_sha256": "b5b39e09bc43ea04b09d8c2bb5b7e765444de3986c32c3c5ac6a9942aabbd21b"
+    },
+    "squareT_platform_squareT_switch/drop30_s3": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 308,
+      "candidate_first_stop": 308,
+      "metrics_identical": true,
+      "reference_raw_sha256": "c9aefa4c4c00019ea301e914ef3df09d7899066613bf2c42c19e067ad7a156c3",
+      "candidate_raw_sha256": "6b2318d3474b19daa216e7917b438c1b8c9e5f9aa0aa462648142493443effa9"
+    },
+    "squareT_platform_squareT_switch/drop30_judge7": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 309,
+      "candidate_first_stop": 309,
+      "metrics_identical": true,
+      "reference_raw_sha256": "24e9ca19be9aac358e903a31f0d93086309ceee84ad6da62139b2e29c83b2a3b",
+      "candidate_raw_sha256": "d484f254f1b3f73c42d4d8b0735b2053b6c7be0574bdd5bbd3244c1ea9abc95a"
+    },
+    "squareT_platform_squareT_switch/dedup": {
+      "frames": 877,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 309,
+      "candidate_first_stop": 309,
+      "metrics_identical": true,
+      "reference_raw_sha256": "b86b91e03ec8c3b917a58bbe32d92f8c21649e08ceb33ed9e550cbd68a12716f",
+      "candidate_raw_sha256": "44e1bf8966224d4fd0bf210a3ebe5d8f960dabe1bb311a39834e6d92f9640723"
+    },
+    "doubleT_obstacle/nominal": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 8,
+      "candidate_first_stop": 8,
+      "metrics_identical": true,
+      "reference_raw_sha256": "7160e89ad1770b4477832d6a4398d02b9173449a69440b1788b0ae3997d9ac82",
+      "candidate_raw_sha256": "d40ef10b81ed452839eb2f4ba36a595b7c9f38a0e3d6203517830452b4eef71a"
+    },
+    "doubleT_obstacle/pitch_p2": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 8,
+      "candidate_first_stop": 8,
+      "metrics_identical": true,
+      "reference_raw_sha256": "f41367f43657672b19b1ae7f05d79e98588c504c776788ce897c13290b7dc4dc",
+      "candidate_raw_sha256": "ca52ee51b1bd0f70b89a42e6e93e318c09e15fc75be2cd1246c8acc2ba6c6d9e"
+    },
+    "doubleT_obstacle/pitch_m2": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 8,
+      "candidate_first_stop": 8,
+      "metrics_identical": true,
+      "reference_raw_sha256": "0d4c51a0d25f54ba4fd0e20ad02bf4aeb20efd813c58c2158292cc8e87069071",
+      "candidate_raw_sha256": "22f4413438833e6dd20821dc9852c5bd9383d61f847c52717e6c801fc611169f"
+    },
+    "doubleT_obstacle/roll_p2": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 9,
+      "candidate_first_stop": 9,
+      "metrics_identical": true,
+      "reference_raw_sha256": "ad10599d5e1ddb33c3c7265515164a280296794b92a6c8bc1f405fdf3b1ecbe8",
+      "candidate_raw_sha256": "0ec7d32a5d3ffc0298c3e8fdcf25e909ddafbe6b2595c1e509fdcee1f8aea6b1"
+    },
+    "doubleT_obstacle/hz5": {
+      "frames": 101,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 12,
+      "candidate_first_stop": 12,
+      "metrics_identical": true,
+      "reference_raw_sha256": "a55dbd822359feb2fe849e0529e94e0dae708f790e185e78ceb8843bc56a476f",
+      "candidate_raw_sha256": "e0742da5caebdcf874870d94bacb1161be52c0b021baf98448d68d97dee2ca86"
+    },
+    "doubleT_obstacle/drop30_s1": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 8,
+      "candidate_first_stop": 8,
+      "metrics_identical": true,
+      "reference_raw_sha256": "dde2cae2a00fe7054f0cf0cb302b24b0fae61d1317654861506fa829172b9468",
+      "candidate_raw_sha256": "af4c71f4ea01ff272f0d09df792235e9af28c4568befab14e9450522459a9227"
+    },
+    "doubleT_obstacle/drop30_s2": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 8,
+      "candidate_first_stop": 8,
+      "metrics_identical": true,
+      "reference_raw_sha256": "5982eb6e79781619b79fdc85cd69c13ac6c1c6d6f74104c7b9f7a42173d09e59",
+      "candidate_raw_sha256": "28b847296c3b89fbc2e76253c60aed50cd2d8f47825c92ef7d6b2496f33d16c0"
+    },
+    "doubleT_obstacle/drop30_s3": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 9,
+      "candidate_first_stop": 9,
+      "metrics_identical": true,
+      "reference_raw_sha256": "28c56a3585010b5944ee406224facba5df01c422035e21fed04e09871e6e19d6",
+      "candidate_raw_sha256": "fb629d0fc12deb4469b32ec1e19cc774ea7f69e09609a127998e2b5d63c24712"
+    },
+    "doubleT_obstacle/drop30_judge7": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 8,
+      "candidate_first_stop": 8,
+      "metrics_identical": true,
+      "reference_raw_sha256": "af12accfd24457f62eb97a3ced4b5ca328070de65124695226d71518e2597cde",
+      "candidate_raw_sha256": "b4b5372edaa58befef53a48399cfc84361fa17f23d202aebbfd6dc72bd8d88b5"
+    },
+    "doubleT_obstacle/dedup": {
+      "frames": 201,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 8,
+      "candidate_first_stop": 8,
+      "metrics_identical": true,
+      "reference_raw_sha256": "7f4661efa0530049e57650c0572582311330b29fba30897a7360511a2c860e71",
+      "candidate_raw_sha256": "b6972ea8238fb062c9645b74ab64def72c729876f151dcb8a846a801881fd5a0"
+    },
+    "roundT_squareT_pressureGate_squareT/nominal": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "592b26cbaaba205df3c3d130d3c3858e416abd32ff4872194bca946c629f5242",
+      "candidate_raw_sha256": "3089819c3a17fac7a1dc43de46564426ad3d9b9ee868917866c78d2dbef6fc1c"
+    },
+    "roundT_squareT_pressureGate_squareT/pitch_p2": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "95c67b25d76250f7d1defb0252ff969c8ad5706f97f7cfe091996531225cb3e8",
+      "candidate_raw_sha256": "e0f9215315c1aaa25a3512dbfbbeb5457b9df32c3d5e8167d0195dd5ac5dc80e"
+    },
+    "roundT_squareT_pressureGate_squareT/pitch_m2": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "67f7a3fc31bf171b2c3074cb87fb74ca586881ec0663d6d020948d05fd61ed1c",
+      "candidate_raw_sha256": "1fa8058fc4c671c665e5c4cef043d32beb33a4638b2d4e9781a2632ccfe1930a"
+    },
+    "roundT_squareT_pressureGate_squareT/roll_p2": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "a5c5f14df7626dda3fd6c8a2b613d3397584d2ff98bb106eb8ce7c49d7d43436",
+      "candidate_raw_sha256": "b82c931e0ee86692aa8c7906bb2fd6628631112b748f78128132f02cfd974783"
+    },
+    "roundT_squareT_pressureGate_squareT/hz5": {
+      "frames": 273,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "d9dd98dd6e70af6d4afc80db62e5d5718f34b1cd15a1c4b569f78ca051db9c91",
+      "candidate_raw_sha256": "ca5622e41e4ce1236deaa2648a35e02a62709d3f3215174d5cca17fa9ec93b46"
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s1": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "8bad5111a895bfbb7148970b75111b14af5a7cf88cd7b82c7ba97b38f107d99e",
+      "candidate_raw_sha256": "3280a9a7ee39057caa7d5875e58071503760f3fce051aa03945527c6c94be201"
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s2": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "ba84f15e18b4d874bb614c4109ddb4f6b2766658150cd668f5f78e62f8439fde",
+      "candidate_raw_sha256": "000df959f489c04daabf58d7645886bbbd4d1d9f181122e2272769cd07aeb528"
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s3": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "c83510c28c5460e19d2d591a48c8cf2c3b4a43693799ca59c366e3312914cbe2",
+      "candidate_raw_sha256": "5babf1de59c4f4c5421c2c646a89ca4b96034d631f15a46c952df66ceee2a5a7"
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_judge7": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "947b80f1a52f5e62d197487ad05ca263b3b43ab0df1f44bb381ba9ea1179483c",
+      "candidate_raw_sha256": "378a5f656cafb2647216451a33968e342203310eb5bd1f4d28aad0d8338fea15"
+    },
+    "roundT_squareT_pressureGate_squareT/dedup": {
+      "frames": 545,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": null,
+      "candidate_first_stop": null,
+      "metrics_identical": true,
+      "reference_raw_sha256": "ff0c74faba848245af61aab1bf2bd653c7b9ff5d1fe2345a189af58b2c1f93ac",
+      "candidate_raw_sha256": "6f24c4269df760b4574b01bb44e5d1f61ca84224381357520d635168217d684e"
+    },
+    "cloud_with_fake_obj/nominal": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "3cac00f61f12ba4cc2e9924c3fe7de0de6445746795e4487c823843619d24df7",
+      "candidate_raw_sha256": "d5a19ce4ad8bb38ecd03922277ee87bc19063a58f7176e56e192d4bd1d7398a5"
+    },
+    "cloud_with_fake_obj/pitch_p2": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 9,
+      "candidate_first_stop": 9,
+      "metrics_identical": true,
+      "reference_raw_sha256": "101f0a38aca03693a29069a36ff8317f38fd8a46c6a61a61ef6873c17f3b9e9f",
+      "candidate_raw_sha256": "140dc3cb9f99e883c2b31051dc4b8774018f543f856426adf81a8e44e904827c"
+    },
+    "cloud_with_fake_obj/pitch_m2": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "17fa57c631e6bb0ec85bdc727f870801fca538ddf1361f7821cd4325435d37ea",
+      "candidate_raw_sha256": "5503aa42c10bbe7aae4be4ef7f42710a946ad4901be8b0f91a8d876db9ded27b"
+    },
+    "cloud_with_fake_obj/roll_p2": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "f7ed21c90c59ef1b33f7cb3d7ff752c1f8a1bdfd4602a1581291a79963c8ea3f",
+      "candidate_raw_sha256": "6492ef0bab5e15a6175f69499ae1fdec2263e156fe55b93d17afa79723bc1f78"
+    },
+    "cloud_with_fake_obj/hz5": {
+      "frames": 755,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "9fecc9e32ca4fa016c668c4536093f53ac002f199118a8d183562058c2606b9b",
+      "candidate_raw_sha256": "dd16016b8556fc90786eee55acb2cb6a8071dc1113a732cb9702a98e8b16f36b"
+    },
+    "cloud_with_fake_obj/drop30_s1": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "53b88a819517b0c1b7685996bf4a9cad189c7e3e301967a30d810391e25d9fac",
+      "candidate_raw_sha256": "ab95bf85fda05e0ef32f421f47e75b00c28fdcb04d467399a56aedc941118ff0"
+    },
+    "cloud_with_fake_obj/drop30_s2": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "c9662c17edfc9ad672e2df238810c4f088894276210d2ba7848712919e81abaa",
+      "candidate_raw_sha256": "61415a508de7b138bade9f2ba90aa0be7a8c14feaf96220c1d681748ce212664"
+    },
+    "cloud_with_fake_obj/drop30_s3": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "ee6aa776bc8c4628984fcbf886a66fe1a975fb4781a4e3293547e47c56ca4ef0",
+      "candidate_raw_sha256": "d848b728c631368b42f93b81452a80877c8387849b962ecf0013c86bf54bc746"
+    },
+    "cloud_with_fake_obj/drop30_judge7": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "8cb77bf9933fdc6c2656b152496b1562666b01790b7d7d2250639aea801a98dd",
+      "candidate_raw_sha256": "dbd3f3d8d19fadebf9efdc21e246f40984df4005458de08819bbdbb429db7241"
+    },
+    "cloud_with_fake_obj/dedup": {
+      "frames": 1510,
+      "changed_fields": {},
+      "lost_stop_frames": [],
+      "added_stop_frames": [],
+      "reference_first_stop": 4,
+      "candidate_first_stop": 4,
+      "metrics_identical": true,
+      "reference_raw_sha256": "067d7ef3071a69e0ed7cdd51638ddd2744aef804ffd070f716b367c450ec3fb8",
+      "candidate_raw_sha256": "6264a492811cbb7dcba59e0a03985a01f16d3ee23e9fe9b718edef61d999fdd8"
+    }
+  },
+  "case_count": 40,
+  "rows_compared": 29765,
+  "all_metrics_identical": true,
+  "all_non_timing_fields_identical": true,
+  "source_protocol_labels_identical": true,
+  "candidate_gate_status": "PASS",
+  "comparison_recomputed": {
+    "passed": true,
+    "cases": {
+      "squareT_platform_squareT_switch/nominal": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 3,
+          "current": 3,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/pitch_p2": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 4,
+          "current": 4,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/pitch_m2": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 7,
+          "current": 7,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/roll_p2": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 7,
+          "current": 7,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/hz5": [
+        {
+          "metric": "frames",
+          "baseline": 439,
+          "current": 439,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 9,
+          "current": 9,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/drop30_s1": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 12,
+          "current": 12,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/drop30_s2": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 10,
+          "current": 10,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/drop30_s3": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 13,
+          "current": 13,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/drop30_judge7": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 14,
+          "current": 14,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "squareT_platform_squareT_switch/dedup": [
+        {
+          "metric": "frames",
+          "baseline": 877,
+          "current": 877,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 3,
+          "current": 3,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/nominal": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 193,
+          "current": 193,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 61,
+          "current": 61,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 153,
+          "current": 153,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/pitch_p2": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 192,
+          "current": 192,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 61,
+          "current": 61,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 150,
+          "current": 150,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/pitch_m2": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 193,
+          "current": 193,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 61,
+          "current": 61,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 156,
+          "current": 156,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/roll_p2": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 192,
+          "current": 192,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 60,
+          "current": 60,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 155,
+          "current": 155,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/hz5": [
+        {
+          "metric": "frames",
+          "baseline": 101,
+          "current": 101,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 95,
+          "current": 95,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 29,
+          "current": 29,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 75,
+          "current": 75,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/drop30_s1": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 178,
+          "current": 178,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 61,
+          "current": 61,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 138,
+          "current": 138,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/drop30_s2": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 178,
+          "current": 178,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 61,
+          "current": 61,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 137,
+          "current": 137,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/drop30_s3": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 178,
+          "current": 178,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 60,
+          "current": 60,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 138,
+          "current": 138,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/drop30_judge7": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 154,
+          "current": 154,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 61,
+          "current": 61,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 113,
+          "current": 113,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "doubleT_obstacle/dedup": [
+        {
+          "metric": "frames",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 189,
+          "current": 189,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.inside_stop_rows",
+          "baseline": 61,
+          "current": 61,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_crossing.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.object_on_rail.inside_stop_rows",
+          "baseline": 148,
+          "current": 148,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.person_walkway.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/nominal": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/pitch_p2": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/pitch_m2": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/roll_p2": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/hz5": [
+        {
+          "metric": "frames",
+          "baseline": 273,
+          "current": 273,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/drop30_s1": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/drop30_s2": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/drop30_s3": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/drop30_judge7": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "roundT_squareT_pressureGate_squareT/dedup": [
+        {
+          "metric": "frames",
+          "baseline": 545,
+          "current": 545,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/nominal": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 452,
+          "current": 452,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 209,
+          "current": 209,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 26,
+          "current": 26,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 32,
+          "current": 32,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 18,
+          "current": 18,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 56,
+          "current": 56,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 53,
+          "current": 53,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 6,
+          "current": 6,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/pitch_p2": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 448,
+          "current": 448,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 201,
+          "current": 201,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 26,
+          "current": 26,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 32,
+          "current": 32,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 18,
+          "current": 18,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 2,
+          "current": 2,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 54,
+          "current": 54,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 53,
+          "current": 53,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 2,
+          "current": 2,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 6,
+          "current": 6,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/pitch_m2": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 453,
+          "current": 453,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 209,
+          "current": 209,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 26,
+          "current": 26,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 32,
+          "current": 32,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 21,
+          "current": 21,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 54,
+          "current": 54,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 53,
+          "current": 53,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 6,
+          "current": 6,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/roll_p2": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 449,
+          "current": 449,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 208,
+          "current": 208,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 26,
+          "current": 26,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 32,
+          "current": 32,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 56,
+          "current": 56,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 53,
+          "current": 53,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 7,
+          "current": 7,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/hz5": [
+        {
+          "metric": "frames",
+          "baseline": 755,
+          "current": 755,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 216,
+          "current": 216,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 105,
+          "current": 105,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 12,
+          "current": 12,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 18,
+          "current": 18,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 4,
+          "current": 4,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 5,
+          "current": 5,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 25,
+          "current": 25,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 25,
+          "current": 25,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 6,
+          "current": 6,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 8,
+          "current": 8,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/drop30_s1": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 434,
+          "current": 434,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 209,
+          "current": 209,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 18,
+          "current": 18,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 26,
+          "current": 26,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 16,
+          "current": 16,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 52,
+          "current": 52,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 54,
+          "current": 54,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 13,
+          "current": 13,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 8,
+          "current": 8,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/drop30_s2": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 438,
+          "current": 438,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 207,
+          "current": 207,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 23,
+          "current": 23,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 25,
+          "current": 25,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 18,
+          "current": 18,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 16,
+          "current": 16,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 52,
+          "current": 52,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 54,
+          "current": 54,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 8,
+          "current": 8,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/drop30_s3": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 433,
+          "current": 433,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 209,
+          "current": 209,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 23,
+          "current": 23,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 27,
+          "current": 27,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 17,
+          "current": 17,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 52,
+          "current": 52,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 54,
+          "current": 54,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 10,
+          "current": 10,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 6,
+          "current": 6,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/drop30_judge7": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 428,
+          "current": 428,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 205,
+          "current": 205,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 22,
+          "current": 22,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 26,
+          "current": 26,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 52,
+          "current": 52,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 53,
+          "current": 53,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 8,
+          "current": 8,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ],
+      "cloud_with_fake_obj/dedup": [
+        {
+          "metric": "frames",
+          "baseline": 1510,
+          "current": 1510,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 0,
+          "passed": true
+        },
+        {
+          "metric": "positive_recording.stop_frames",
+          "baseline": 434,
+          "current": 434,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_center.inside_stop_rows",
+          "baseline": 199,
+          "current": 199,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_on_rail.inside_stop_rows",
+          "baseline": 26,
+          "current": 26,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_center.inside_stop_rows",
+          "baseline": 31,
+          "current": 31,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_edge_inside.inside_stop_rows",
+          "baseline": 16,
+          "current": 16,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.small_outside_near.outside_stop_episodes",
+          "baseline": 0,
+          "current": 0,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_edge_inside.inside_stop_rows",
+          "baseline": 14,
+          "current": 14,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_outside.outside_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "objects.big_above.inside_stop_rows",
+          "baseline": 51,
+          "current": 51,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.long_low_on_rails.inside_stop_rows",
+          "baseline": 54,
+          "current": 54,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "objects.thin_hanging.inside_stop_rows",
+          "baseline": 15,
+          "current": 15,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 2,
+          "passed": true
+        },
+        {
+          "metric": "outside_false_stop_episodes",
+          "baseline": 1,
+          "current": 1,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        },
+        {
+          "metric": "unmatched_stop_episodes",
+          "baseline": 7,
+          "current": 7,
+          "delta": 0,
+          "absolute_delta": 0,
+          "worse_by": 0,
+          "tolerance": 1,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "raw_path_relocations": {
+    "reference": null,
+    "candidate": null
+  },
+  "scope": "Both reports' raw SHA, completion identities, input stamps, frame counts and recomputed metrics validated before exact row comparison",
+  "excluded": "decode/detect/total timing and latency-only health warning promotion/text",
+  "input_sha256": {
+    "/home/resense/data/b4_merge_reseal/x3-reference.json": "c8f89e2e1ad8c616c57a67d05c55b9615e2514ee9fdf4e21cf6ed0ed4d287842",
+    "/home/resense/data/b4_merge_reseal/x3.json": "7d486c06c29aba98488441746abff3fd6ee9ffa48094d2189189ae51c71a4165",
+    "/home/resense/ReSense/docs/evidence/lidar_adaptation_2026-10-18/review_x3.py": "f42f42ef2fe94bbb4f1ac291392ff8956c58c4ad0f9a9fb6920898af60872918",
+    "/home/resense/ReSense/scripts/robustness_battery.py": "9c599e3f66a4505025cd2a7de341152f41d8b5bca2887275b81712b9fc1e7783"
+  }
+}

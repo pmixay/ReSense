@@ -1,0 +1,49 @@
+empty 0 0 0 -> 0 lost matches {}
+empty 1 1 0 -> 0 lost matches {}
+empty 2 1 0 -> 0 lost matches {}
+empty 3 1 0 -> 0 lost matches {}
+empty 4 1 395 -> 0 lost matches {}
+empty 5 1 509 -> 0 lost matches {}
+empty 6 1 505 -> 0 lost matches {}
+empty 7 1 505 -> 0 lost matches {}
+empty 8 1 0 -> 0 lost matches {}
+empty 9 1 0 -> 0 lost matches {}
+empty 10 1 0 -> 0 lost matches {}
+empty 11 1 0 -> 0 lost matches {}
+empty 12 1 0 -> 0 lost matches {}
+empty 13 1 0 -> 0 lost matches {}
+empty 14 1 0 -> 0 lost matches {}
+empty 15 1 0 -> 0 lost matches {}
+empty 16 1 509 -> 0 lost matches {}
+empty 17 1 509 -> 0 lost matches {}
+empty 18 1 509 -> 0 lost matches {}
+empty 19 1 509 -> 0 lost matches {}
+empty 20 1 0 -> 0 lost matches {}
+empty 21 1 0 -> 0 lost matches {}
+empty 22 1 0 -> 0 lost matches {}
+empty 23 1 0 -> 0 lost matches {}
+positive 0 0 193 -> 193 lost matches {'person_crossing': [], 'object_on_rail': []}
+positive 1 1 191 -> 191 lost matches {'person_crossing': [], 'object_on_rail': []}
+positive 2 1 191 -> 191 lost matches {'person_crossing': [], 'object_on_rail': []}
+positive 3 1 191 -> 191 lost matches {'person_crossing': [], 'object_on_rail': []}
+positive 4 1 193 -> 193 lost matches {}
+positive 5 1 190 -> 193 lost matches {}
+positive 6 1 196 -> 193 lost matches {}
+positive 7 1 196 -> 193 lost matches {}
+positive 8 1 191 -> 191 lost matches {'person_crossing': [], 'object_on_rail': []}
+positive 9 1 191 -> 191 lost matches {'person_crossing': [], 'object_on_rail': []}
+positive 10 1 191 -> 191 lost matches {'person_crossing': [], 'object_on_rail': []}
+positive 11 1 191 -> 191 lost matches {'person_crossing': [], 'object_on_rail': []}
+positive 12 1 197 -> 193 lost matches {}
+positive 13 1 197 -> 193 lost matches {}
+positive 14 1 0 -> 193 lost matches {}
+positive 15 1 0 -> 193 lost matches {}
+positive 16 1 196 -> 193 lost matches {}
+positive 17 1 196 -> 193 lost matches {}
+positive 18 1 196 -> 193 lost matches {}
+positive 19 1 196 -> 193 lost matches {}
+positive 20 1 0 -> 193 lost matches {}
+positive 21 1 0 -> 193 lost matches {}
+positive 22 1 0 -> 193 lost matches {}
+positive 23 1 0 -> 193 lost matches {}
+PASS failed: []

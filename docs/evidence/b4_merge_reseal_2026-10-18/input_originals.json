@@ -1,0 +1,15 @@
+{
+  "sha256": "e23166801794cdeb2dcd77a3cc8b40a906b1d9cefab6f26739e368234e9168be",
+  "bytes": 3940746006,
+  "verified": true,
+  "mode": "originals",
+  "frame_counts": {
+    "roundT_doubleT_0": 252,
+    "squareT_platform_squareT_switch_0": 877,
+    "doubleT_platform_0": 345,
+    "roundT_squareT_pressureGate_squareT_0": 545,
+    "doubleT_obstacle_0": 201,
+    "roundT_pressureGate_roundT_0": 268
+  },
+  "total_frames": 2488
+}

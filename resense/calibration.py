@@ -15,17 +15,22 @@ What is measured, and from what:
 1. **Orientation** (which signed sensor axis points forward / up): only when the configured
    mapping fails a sanity check on a frame (no rail pair in the near range, or fewer far
    returns ahead than behind). Then the axis-aligned proper rotations are tried - the 8 that
-   keep the configured up axis vertical (upright or inverted: a spinning LiDAR's spin axis is
-   vertical in any real mount) or, with ``keep_up_axis: false``, all 24 - and each
+    keep the configured up axis vertical (upright or inverted, the default mount assumption)
+    or, with ``keep_up_axis: false``, all 24 - and each
    is scored by the rail pair it reveals: two parallel ridges 1.59 m apart, 0.08-0.5 m above a
-   bed that lies below the sensor, running along +X, with the tunnel visible ahead. Nothing
-   but a correctly oriented cloud shows that pattern. A new orientation is adopted only when
+    bed that lies below the sensor, running along +X, with the tunnel visible ahead.
+    A wall can imitate that pattern, so it is not independent orientation proof.
+    A new orientation is adopted only when
    the same candidate wins on ``orientation_votes`` frames and the configured one never
    passed, so a platform or a switch (no rails) cannot flip the mount. (The sideways
    candidates are off by default because a flat side wall of a square tunnel with two cable
    trays on it passes for a bed with a rail pair: measured on ``roundT_squareT_pressureGate_squareT``.
-   For the same reason a sensor that *is* mounted on its side must be described by
-   ``sensor.forward/left/up``: the geometry alone cannot tell such a wall from the bed.)
+    Geometry alone cannot tell such a wall from the bed. With reliable channel
+    cones, the default upright-scanner assumption is checked independently:
+    their common axis must be vertical under the proposed mapping. A gross
+    axis permutation can then be searched in all 24 rotations, restricted by
+    that measured axis. Missing/unusable channels keep the original search.
+    This does not infer gravity for a physically sideways spinning scanner.)
 2. **Roll** from the rail pair: the two rail heads are at the same height in the track's own
    cross-section, so their height difference over the rail spacing is the sensor roll
    relative to the rail plane (which is what the clearance gauge is defined in).
@@ -210,6 +215,68 @@ def axis_label(R: np.ndarray) -> str:
     return " ".join(parts)
 
 
+def scan_axis(xyz: np.ndarray, ring: Optional[np.ndarray]) -> Optional[np.ndarray]:
+    """Unsigned common axis of well-resolved channel cones, or no evidence.
+
+    Unit rays in one spinning-LiDAR channel lie in a plane normal to its spin
+    axis. Require at least three different planes with a common normal; channel
+    numbering/elevation order is irrelevant. This is sensor sampling evidence,
+    not a floor fit. Ring-free/constant/mixed IDs, narrow pencils and translated
+    or deskewed clouds that no longer resolve such planes give no constraint.
+    Work is bounded to 16k rays and eight 128-ray channel fits at startup only.
+    """
+    if ring is None or ring.ndim != 1 or len(ring) != len(xyz) or ring.dtype.kind not in "iu":
+        return None
+    step = max(1, int(np.ceil(len(xyz) / 16384)))
+    p = xyz[::step].astype(np.float64)
+    ids = ring[::step]
+    lengths = np.linalg.norm(p, axis=1)
+    good = np.isfinite(p).all(axis=1) & (lengths > 1.0) & (ids >= 0)
+    p, ids = p[good] / lengths[good, None], ids[good]
+    channels = np.unique(ids)
+    if len(channels) < 3:
+        return None
+    channels = channels[np.linspace(0, len(channels) - 1, min(8, len(channels)), dtype=int)]
+    normals, means = [], []
+    for channel in channels:
+        u = p[ids == channel]
+        if len(u) < 24:
+            continue
+        u = u[::max(1, int(np.ceil(len(u) / 128)))]
+        mean = u.mean(axis=0)
+        centered = u - mean
+        eigen, vectors = np.linalg.eigh(centered.T @ centered / len(u))
+        # Resolve a plane, not a line; <= 0.001 rms in unit-ray coordinates,
+        # and at least 1000x more variance within the plane than normal to it.
+        if eigen[1] < 1e-4 or eigen[0] > min(1e-6, eigen[1] * 1e-3):
+            continue
+        normal = vectors[:, 0]
+        if normals and float(normal @ normals[0]) < 0:
+            normal = -normal
+        normals.append(normal)
+        means.append(mean)
+    if len(normals) < max(3, int(np.ceil(0.75 * len(channels)))):
+        return None
+    axis = np.mean(normals, axis=0)
+    norm = float(np.linalg.norm(axis))
+    if norm < 0.99:
+        return None
+    axis /= norm
+    if np.min(np.asarray(normals) @ axis) < np.cos(np.radians(2.0)):
+        return None
+    offsets = np.sort(np.asarray(means) @ axis)
+    if np.ptp(offsets) < 0.01:
+        return None                         # different IDs must resolve different cones
+    distinct, previous = 1, offsets[0]
+    for offset in offsets[1:]:
+        if offset - previous >= 0.005:
+            distinct += 1
+            previous = offset
+    if distinct < 3:
+        return None
+    return axis
+
+
 @dataclass
 class MountObservation:
     """What one frame says about the mount (in the currently corrected cloud)."""
@@ -278,6 +345,7 @@ class MountCalibration:
     frames_used: int = 0
     drift_deg: float = 0.0          # residual tilt seen by the monitor after freezing
     message: str = ""
+    orientation_conflict: bool = False  # reliable startup evidence contradicts the current mapping
 
     def to_dict(self) -> dict:
         return {
@@ -289,6 +357,7 @@ class MountCalibration:
             "lateral": None if self.lateral is None else round(self.lateral, 2),
             "frames_used": int(self.frames_used), "drift_deg": round(self.drift_deg, 2),
             "message": self.message,
+            "orientation_conflict": self.orientation_conflict,
         }
 
 
@@ -302,6 +371,7 @@ class MountCalibrator:
                                       orientation_confirmed=not cfg.enabled)
         self._R_orient = np.eye(3)
         self._orient_votes: dict = {}
+        self._orient_samples: dict = {}  # valid candidate observations for newly recoverable axis permutations
         self._config_passed = False
         self._obs: List[tuple] = []      # spaced observations for the final tilt: (roll, pitch, yaw, height, lateral)
         self._recent: List[tuple] = []   # the first observations, for the provisional tilt
@@ -317,7 +387,8 @@ class MountCalibrator:
         self._frames = 0
         self._frozen = not cfg.enabled
         self._since_check = 0
-        self._candidates = orientation_candidates(getattr(cfg, "keep_up_axis", True))
+        self._candidates = orientation_candidates()
+        self._scan_axis: Optional[np.ndarray] = None  # a physical scanner axis does not change between startup frames
 
     # ------------------------------------------------------------------
     @property
@@ -354,19 +425,24 @@ class MountCalibrator:
                 float(np.median(a[:, 3])), float(np.median(a[:, 4])))
 
     # ------------------------------------------------------------------
-    def _search_orientation(self, xyz_cfg: np.ndarray) -> Optional[int]:
-        """Index of the best passing candidate orientation for a cloud in the configured frame."""
-        best, best_score = None, 0.0
+    def _search_orientation(self, xyz_cfg: np.ndarray, axis: Optional[np.ndarray] = None) -> Optional[tuple]:
+        """Index and observation of the best passing orientation in the configured frame."""
+        best, best_ob, best_score = None, None, 0.0
+        min_z = np.cos(np.radians(self.cfg.max_tilt_deg)) ** 2
         for k, Rc in enumerate(self._candidates):
             if k == 0:
                 continue
+            if axis is None and self.cfg.keep_up_axis and abs(Rc[2, 2]) != 1.0:
+                continue
+            if axis is not None and abs(float(Rc[2] @ axis)) < min_z:
+                continue
             ob = observe_mount(xyz_cfg @ Rc.T, self.tcfg, None, self.cfg.min_rail_score)
             if ob.ok and ob.rail_score > best_score:
-                best, best_score = k, ob.rail_score
-        return best
+                best, best_ob, best_score = k, ob, ob.rail_score
+        return (best, best_ob) if best is not None else None
 
     def update(self, xyz_cfg: np.ndarray, xyz_cur: np.ndarray, track: Optional[TrackModel],
-               periods: int = 1) -> bool:
+               periods: int = 1, ring: Optional[np.ndarray] = None) -> bool:
         """Feed one frame (``xyz_cfg``: the configured vehicle frame; ``xyz_cur``: the same cloud
         under the current correction; ``track``: the detector's current model). Returns True
         when the correction changed (the caller re-seeds its track model). ``periods``: nominal
@@ -405,12 +481,38 @@ class MountCalibrator:
             # frame with a rail pair after it.
             self._since_obs += step
             return self._finish(False)
-        ob = observe_mount(xyz_cur, self.tcfg, track, cfg.min_rail_score)
+        if cfg.keep_up_axis and not self._config_passed and self._scan_axis is None:
+            self._scan_axis = scan_axis(xyz_cfg, ring)
+        axis = self._scan_axis if not self._config_passed else None
+        # The existing tilt limit is per roll/pitch axis. A valid combined
+        # tilt can exceed max_tilt_deg relative to vertical: cos(roll)*cos(pitch).
+        min_z = np.cos(np.radians(cfg.max_tilt_deg)) ** 2
+        axis_ok = axis is None or abs(float(self.R[2] @ axis)) >= min_z
+        ob = (observe_mount(xyz_cur, self.tcfg, track, cfg.min_rail_score)
+              if axis_ok else MountObservation(ok=False))
+        if not axis_ok:
+            self.state.orientation_conflict = True
+            self.state.message = "channel scan axis contradicts the configured up axis; orientation unconfirmed"
+            # Channel geometry supplies the missing constraint that previously
+            # let cable trays on a wall beat the real rail bed. It supplies no
+            # forward direction/sign: all candidates still need bed/rail proof
+            # and the existing orientation_votes observations.
         changed = False
         # --- 1. orientation: only if the current mapping fails and another one passes repeatedly
         if not ob.ok and cfg.search_orientations and not self._config_passed:
-            k = self._search_orientation(xyz_cfg)
-            if k is not None:
+            candidate = self._search_orientation(xyz_cfg, axis)
+            if candidate is not None:
+                k, observation = candidate
+                if axis is not None:
+                    self.state.orientation_conflict = True
+                    self.state.message = "alternative orientation awaiting confirmation"
+                    if abs(float(axis[2])) < min_z:
+                        # These are already observations in the proposed correct
+                        # frame. Discarding the voting frames would delay the
+                        # provisional tilt and real STOP by two frames (B4).
+                        samples = self._orient_samples.setdefault(k, [])
+                        samples.append((self._frames, (observation.roll, observation.pitch, observation.yaw,
+                                                       observation.height, observation.lateral)))
                 self._orient_votes[k] = self._orient_votes.get(k, 0) + 1
                 if self._orient_votes[k] >= cfg.orientation_votes:
                     self._R_orient = self._candidates[k]
@@ -422,11 +524,28 @@ class MountCalibrator:
                     self._obs.clear()
                     self._recent.clear()
                     self._since_obs = 0
+                    samples = self._orient_samples.get(k, [])
+                    if samples:
+                        self._recent.extend(sample for _, sample in samples)
+                        last_observed = None
+                        for frame, sample in samples:
+                            if last_observed is None or frame - last_observed >= spacing:
+                                self._obs.append(sample)
+                                last_observed = frame
+                        self._since_obs = self._frames - last_observed
                     self._config_passed = True          # stop searching
+                    self.state.orientation_conflict = False
                     self.state.orientation_confirmed = True
+                    if samples:
+                        self._finish(True)
+                        # A tilt may also be due on this frame; the caller must
+                        # still treat the total change as an axis permutation.
+                        self.last_change_deg = 90.0
+                        self.last_change_orientation = True
                     return True
         if ob.ok:
             self._config_passed = True
+            self.state.orientation_conflict = False
             self.state.orientation_confirmed = True
             # absolute estimate = the tilt already applied + the residual seen through it (small angles)
             a_r, a_p, a_y = self._applied

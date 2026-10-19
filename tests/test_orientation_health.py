@@ -68,7 +68,19 @@ def test_adoption_confirms_orientation_without_waiting_for_tilt():
     cfg.calibration.orientation_votes = 1
     cal = MountCalibrator(cfg.calibration, cfg.track)
     with patch("resense.calibration.observe_mount", return_value=MountObservation(ok=False)), \
-         patch.object(cal, "_search_orientation", return_value=1):
+         patch.object(cal, "_search_orientation", return_value=(1, MountObservation(ok=True))):
         cal.update(np.zeros((0, 3)), np.zeros((0, 3)), None)
     assert cal.state.status == "pending"
     assert cal.state.to_dict()["orientation_confirmed"] is True
+
+
+def test_channel_conflict_keeps_fault_and_obstacle_priority_with_readiness_guard():
+    from ros2_ws.src.resense_ros.resense_ros.decision_policy import evaluate_decision
+    h = scene_health({"status": "pending", "orientation_confirmed": False,
+                      "orientation_conflict": True, "message": "channel axis conflict"},
+                     obstacle_distance=40)
+    assert h["decision_level"] == "error"
+    assert h["orientation_confirmed"] is False
+    assert h["monitored_range"] == h["clear_distance"] == 0
+    assert evaluate_decision(SimpleNamespace(obstacle=True, warning=False, health=h)).decision == "STOP"
+    assert evaluate_decision(SimpleNamespace(obstacle=False, warning=False, health=h)).decision == "FAULT"

@@ -1,0 +1,22 @@
+{
+  "p4_gauge_tests": {
+    "passed": 5,
+    "xml": "p4_merge_tests.xml"
+  },
+  "archival_policy_tests": {
+    "passed": 24,
+    "subtests": 11,
+    "xml": "lint_policy_tests.xml"
+  },
+  "original_p4_helper_lint_failure": "lint_after_p4.log",
+  "resolved_pinned_lint": "lint_final.log",
+  "scope": "P4-import gauge helper tests and archival classification checks; detector measurement runs are separate.",
+  "sha256": {
+    "p4_merge_tests.xml": "e20c454d785ae6723154e6e979914d15268a7bda8b2fec8edebf13be99e11ea8",
+    "p4_merge_tests.log": "06ede0035a8c77625d0e9dd43e7df837778d622a76909588727779033bb7b175",
+    "lint_policy_tests.xml": "18b72d6deba6665f5c59fd1118a004a2436df6baf82a05d397c801472a852917",
+    "lint_policy_tests.log": "07496263a42c3576dce211071ad3cedf79b02d0b2471dac85255be75d1a4c0c9",
+    "lint_after_p4.log": "5bf7b56e1afc3f2301a0c1644a9b8964d13b3d0b6c902503e6eea56c391ff7bd",
+    "lint_final.log": "70bb576ed7cc8c087e5ce34b8d38308e927470b55d438c16edaa162947351541"
+  }
+}
