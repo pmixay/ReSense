@@ -1,0 +1,16 @@
+# X3 (G-2): robustness_battery.py --cache /data/decoded_f1 -j 2; base = b2c523a (MEASURED, exit 0), v5b = 343517f (v5b YAML) --reference base
+positive control: this container's base battery vs the registered results/x3_base.json (aec88d2): entries with equal metrics 40 of 40
+v5b status FAIL | comparisons 260 | failed 10
+  doubleT_obstacle/roll_p2: positive_recording.stop_frames base 192 -> v5b 188 (worse by 4, tolerance 2)
+  doubleT_obstacle/roll_p2: objects.person_crossing.inside_stop_rows base 60 -> v5b 56 (worse by 4, tolerance 2)
+  doubleT_obstacle/drop30_s2: objects.person_crossing.inside_stop_rows base 61 -> v5b 58 (worse by 3, tolerance 2)
+  doubleT_obstacle/dedup: objects.person_crossing.inside_stop_rows base 61 -> v5b 58 (worse by 3, tolerance 2)
+  cloud_with_fake_obj/pitch_p2: positive_recording.stop_frames base 448 -> v5b 440 (worse by 8, tolerance 2)
+  cloud_with_fake_obj/pitch_m2: positive_recording.stop_frames base 453 -> v5b 450 (worse by 3, tolerance 2)
+  cloud_with_fake_obj/pitch_m2: objects.small_on_rail.inside_stop_rows base 26 -> v5b 22 (worse by 4, tolerance 2)
+  cloud_with_fake_obj/pitch_m2: unmatched_stop_episodes base 6 -> v5b 8 (worse by 2, tolerance 1)
+  cloud_with_fake_obj/hz5: positive_recording.stop_frames base 216 -> v5b 211 (worse by 5, tolerance 2)
+  cloud_with_fake_obj/hz5: objects.small_center.inside_stop_rows base 18 -> v5b 14 (worse by 4, tolerance 2)
+comparisons changed for the better or within tolerance: 55
+squareT_platform false-STOP episodes per variant (base -> v5b): [('nominal', 3, 0), ('pitch_p2', 4, 0), ('pitch_m2', 7, 0), ('roll_p2', 7, 0), ('hz5', 9, 0), ('drop30_s1', 12, 0), ('drop30_s2', 10, 0), ('drop30_s3', 13, 0), ('drop30_judge7', 14, 0), ('dedup', 3, 0)]
+roundT_squareT false-STOP episodes per variant (base -> v5b): [('nominal', 0, 0), ('pitch_p2', 0, 0), ('pitch_m2', 0, 0), ('roll_p2', 0, 0), ('hz5', 0, 0), ('drop30_s1', 0, 0), ('drop30_s2', 0, 0), ('drop30_s3', 0, 0), ('drop30_judge7', 0, 0), ('dedup', 0, 0)]

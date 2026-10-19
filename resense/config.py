@@ -133,6 +133,8 @@ class TrackConfig:
     axis_joint_grow_step: float = 16.0               # m
     axis_joint_min_segment: int = 3                  # boundary bins a segment (between structure edges / gaps) needs to take part
     axis_joint_range: bool = True                    # 20.10: with axis_joint_fit, the trusted range / sides / disagreement also from the joint fit (v3); false: the joint fit sets the axis shape only and the range policy stays the per-side fits' (v4)
+    axis_joint_min_curvature: float = 0.0            # 19.10 (v5, off; 1/m; needs axis_joint_fit and axis_joint_range false): > 0: the estimator without the joint fit runs on its own state every frame and is the output; the joint fit's shape (its own EMA / rate limits) replaces its axis shape only on frames whose curvature is |k| >= this (a curve as that estimator sees it; 1e-4 = its straight test). 0 = off (v4)
+    axis_joint_reach_cap: bool = False               # 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range is also capped at the boundaries' reach along that output axis (track._followed_reach) + axis_valid_margin
     # --- 19.10 (K1, off): yaw / curvature EMA per distance travelled instead of per frame period ---
     walls_smoothing_distance: float = 0.0            # m; > 0: the EMA weight is walls_smoothing ** max(walls_smoothing_min_k, min(k, travel / this)) with travel = the previous frame's speed x the time since it (unknown speed: as before); the axis rate limits scale the same way. 0 = off
     walls_smoothing_min_k: float = 0.05              # lower bound of that exponent (a standing train still follows a real change, slowly)

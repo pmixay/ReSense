@@ -157,3 +157,50 @@ Trees `/opt/off4`, `/opt/cand4` (= `7dbdd64`, cand4 with the three settings abov
 **The acceptance rows, truths, thresholds and decision rule are those of §3 and §7, unchanged; no new metric.**
 The moving-object section of the report stays post-hoc. Review items N1/2/3/4 concern the joint range policy,
 which v4 does not use; finding 8 (viewers) is addressed separately, not as an acceptance row.
+
+## 9. Revision 4 (19.10, ~16:27 UTC) — v5 (one time-boxed attempt); rows unchanged
+
+Asked by the coordinator after the v4 handoff (`HANDOFF.md`). Branch `k2-v5` from the integration commit
+`b2c523a` (every feature merged with its switches off). Registered **before any v5 measurement**.
+
+**What was looked at before this revision (existing data only, nothing run on a candidate):** the v3 raw gate
+work (`results/raw_v3.tar.xz`: `gatework_cand3`, `gatework_off3`). v3 and v4 have the identical set F summary
+(147.4 / 111.2 / 83.3 / 117.2 / 92.0 m, false 5 / 3 / 0 / 6 / 0), so v3's per-sequence rows stand for v4's.
+(1) Set F places each object on the evaluated frame's own axis (`--placement-mode legacy`); in v3 the placed
+object's vehicle-frame Y jumps frame to frame 2–4× more at 100–200 m (|ΔY| p90 0.24–0.49 vs 0.09–0.19 m),
+e.g. trolley file 140 at 195.9 m: Y −2.16 m (v3) vs −1.18 m (base), no gauge candidate until 162 m (base: from
+196 m). (2) In the ride frames of the set F splits the curvature step bends the axis at 150 m by |0.50| m (p50),
+1.23 m (p90), 2.07 m (max), every frame "bent"; on the straight part of roundT_squareT (frames 0–300) the joint
+curvature itself moves ±2e-4 with the step anti-correlated (e.g. k +2.1e-4 / step −8.3e-4): zeroing the step
+alone would leave ±2.5 m at 150 m. (3) The base curvature is below 0.7e-4 in all 306 frames of the set F splits
+and at or above 1e-4 in 46–88 % of the curved recordings' frames (ride 65 %).
+Hence the handoff's two probes are not taken as they stand: a threshold on the step's own bend at 150 m would
+have to exceed ~2 m and still leaves the joint curvature's noise; "far support on both walls" does not act on
+straight track (both walls are long there) and removes the step where the inner wall is hidden on a curve
+(C: the right wall ends at 61 m).
+
+**Candidates (at most two; both on top of the v4 settings `axis_joint_fit: true`, `axis_joint_range: false`,
+`walls_smoothing_distance: 1.5`; new switches default off, off = `b2c523a` exactly):**
+
+* **v5a** — `track.axis_joint_min_curvature: 1.0e-4` (new; 0 = off). The base estimator runs every frame on
+  its own state (the per-side fits, rails, range policy, straight test, rate limits, exactly as with the joint fit
+  off; its model is carried to the next frame unchanged). The joint fit (shape: centre, tangent, curvature, step;
+  its own EMA and rate limits) also runs every frame, but its shape replaces the base shape in the output only
+  on frames whose base curvature (carried state) is |k| ≥ 1e-4, i.e. where the base itself sees a curve (the
+  same limit as its straight test). On a straight section the output is the base model; on a curve the gauge
+  follows the joint shape with the base range policy (v4). The output records which shape was used
+  (`track.joint_used`, additive, only with the switch on).
+* **v5b** — v5a plus `track.axis_joint_reach_cap: true` (new; false = off): on the frames that use the joint
+  shape, the trusted range (`axis_valid`, `axis_valid_both`) is also capped at the reach of the tunnel boundaries
+  along the final, rate-limited output axis plus `axis_valid_margin` (`_followed_reach`, v3's reach without the
+  raw joint-fit floor and after the rate limits: review N1); never extended.
+
+**Order and decision (budget: two variants × implement + gate + diagnosis, then one full measurement):**
+reference gate runs of `b2c523a` (off = base) and of v4 on `b2c523a` (diagnosis, per-row table); the v5 code
+with every switch off against the base run (identity: `gate_identity.py` and
+`docs/evidence/f1_false_alarms_2026-10-19/scripts/cmp_frames.py`, 0 differing rows / frames incl. set F); then
+the gate on v5a and on v5b. A variant whose gate exits non-zero (no `--allow`) is dropped after diagnosis (which
+frames, which rule: the recorded `joint_used`). If one passes, it gets the full measurement of the rows of §3 /
+§7 that the data in this container allows (missing data is reported as not measured, not estimated); if both
+pass, the one with fewer ride STOP episodes (tie: v5a). **The acceptance rows, truths, thresholds and decision
+rule of §3, §4 and §7 are unchanged; no new metric.** G3 is not touched.
