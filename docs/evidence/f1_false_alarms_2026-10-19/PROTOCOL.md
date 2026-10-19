@@ -99,3 +99,34 @@ Falcon designs are registered in an amendment after B4's attribution, before the
 B1–B5 → commit base evidence → F1a–c measured on B2/B3 + probes (fast screen) → selected setting → full gate,
 probes, Falcon, switch-off identity, X3 if possible → independent review → report to P1. A failed or partial
 attempt is reported as such.
+
+## Amendment 1 (19.10, ~09:35 UTC) — Falcon designs, registered after B4's attribution and before their measurement
+
+**B4 result (base `aec88d2`, one stream, `scripts/falcon_trace.py`):** 4,443 / 4,443 decisions equal to
+`falcon_full_v110.jsonl`; non-timing differences only in wall-clock latency lines (frames 10–19) and frame 0's
+1.2.0 orientation-readiness message. Attribution from the traced state and the raw points of dumped frames:
+
+* **9.4 m, frames 4394–4401 (8 STOP):** not a floor patch. The cluster's points are at z = +2.37…+2.54 m in the
+  processed frame (the floor is at −2.0 m): **the tunnel ceiling**. After the walking person shadowed the near bed
+  and the rail pair was lost, the track model's bed fit climbed (frame 4384: `floor_coef` [0, 0.0439, 1.4382],
+  range 12–112.5 m; the whole recording before: [0, ~0, −1.98]), putting the ceiling 0.15–0.33 m above the
+  modelled rail head. The 6.0 m STOPs of frames 4380–4382 are the person's upper body (1.6–1.8 m above the floor).
+* **115 m, frames 159, 2312–2314 (4 STOP):** a support static in the sensor frame (centroid p5–p95 spread 8 cm
+  along, 10 cm across, 4,246 hits) whose cluster is inside the strict gauge in 8.8 % of its hits (10–14 % of the
+  100 hits before each STOP); the 10-hit vote reaches 6/10 by fluctuation of the axis/support.
+
+**Designs (switches off by default):**
+
+* **H — near-field height cross-check** (`cluster.mount_cross_tol` 0.5, `mount_cross_grade` 0.05,
+  `mount_cross_range` 30 m): where the model's rail head at a gauge cluster's distance X differs from the
+  calibrated mount's rail-head plane (z = −`MountCalibration.height`, final calibration only) by more than
+  0.5 m + 0.05·X, the cluster stays an obstacle only if that plane puts some of its points within 0 … 3.0 m
+  (the envelope's height band); otherwise advisory `height_conflict` (a signature; never near-escalated).
+* **S — settled static scene** (`tracking.settle_min_hits` 50, `settle_window` 100, `settle_max_spread` 0.5 m,
+  `settle_min_share` 0.5): a track whose last ≤ 100 ordinary hits (≥ 50) kept its centroid within 0.5 m per axis
+  is an obstacle only while ≥ 50 % of those hits were inside the strict gauge; near escalation still wins.
+  **Extra safety probes for S (registered now):** the judge's standing-train probes `S_person_{60,100,150}` and
+  `S_cube05_{60,100,150}` (`range_test.py` on `squareT_platform_squareT_switch`, `--start 360 --end 620`) must not
+  lose STOP frames against the base; doubleT_obstacle (standing train, static object on the rail) 193 STOP.
+* Values above are fixed before measurement; if a value fails, the failure is reported, and any retry is a new
+  amendment with its reason.

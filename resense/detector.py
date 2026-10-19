@@ -20,7 +20,7 @@ from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_o
                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
                            widened_profile)
 from resense.health import HealthMonitor
-from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
+from resense.lowobj import BedTemplate, low_candidates, mark_rail_line, rail_reference_check
 from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
@@ -361,6 +361,24 @@ class Detector:
             # are at the axis +- rails_spacing / 2 of the rail coordinate (dy_rail, as the low stage)
             mark_rail_line(clusters + self._low_height, xyz[:, 0], dy_rail, h_all, cfg.lowobj,
                            cfg.track.rails_spacing, cfg.gauge.range_min)
+        if cfg.lowobj.local_rail_margin > 0 or cfg.lowobj.rail_band_range > 0:
+            # 19.10 (F1 a/b, off by default): low clusters that do not rise above the frame's own rail
+            # returns around them are weak low evidence: they may continue a reported low STOP, never start one
+            weak = rail_reference_check(clusters, xyz[:, 0], dy_rail, h_all, cfg.lowobj, cfg.track.rails_spacing)
+            if weak:
+                for c in weak:
+                    c.low_height_weak = True
+                clusters = [c for c in clusters if not c.low_height_weak]
+                self._low_height = self._low_height + weak
+        if cfg.lowobj.no_rail_low_within > 0 and self.track.rail_slabs == 0:
+            # 19.10 (F1 c, off by default): without the rail pair in the near range a low cluster beyond
+            # no_rail_low_within is advisory; a signature, so an earned STOP is kept by the stop-keep rule
+            for c in clusters:
+                if (c.kind == "low" and c.zone == "gauge" and not c.reason
+                        and c.distance > cfg.lowobj.no_rail_low_within):
+                    c.zone, c.reason, c.demoted = "warning", "no_rail_low", True
+        if cfg.cluster.mount_cross_tol > 0:
+            self._mount_cross_check(clusters, xyz)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
@@ -797,6 +815,34 @@ class Detector:
             touch = max(c.shell_touch_min, c.shell_touch_beams * 0.00218 * x0)
             if float(h_all[m].min()) - top <= touch:
                 cl.reason, cl.zone, cl.demoted = "shell", "warning", True
+
+    def _mount_cross_check(self, clusters: List[Cluster], xyz: np.ndarray) -> None:
+        """19.10 (``cluster.mount_cross_tol`` > 0, off by default; F1 lane, Falcon frame 4394): a second
+        height reference in the near field. The calibrated mount puts the rail-head plane at
+        ``z = -height`` (``MountCalibration.height``, frozen with the final tilt). Where the track model's
+        rail head at a gauge cluster's distance X differs from it by more than ``mount_cross_tol`` +
+        ``mount_cross_grade`` * X (a model that lost the bed: the Falcon floor fit that climbed to the
+        ceiling behind a near person), the cluster stays an obstacle only if the mount reference also puts
+        some of its points inside the envelope's height band (0 .. the profile top above the rail head);
+        otherwise it is advisory, reason ``height_conflict`` (a signature: an earned STOP is kept by the
+        stop-keep rule; never near-escalated). Only within ``mount_cross_range`` and once the mount
+        calibration is final; corridor and low clusters alike."""
+        cc = self.cfg.cluster
+        st = self.calib.state
+        if st.height is None or st.status not in ("ok", "identity") or not np.isfinite(st.height):
+            return
+        plane = -float(st.height)
+        top = float(np.asarray(self.cfg.gauge.profile, dtype=np.float64)[:, 1].max())
+        for cl in clusters:
+            if (cl.zone != "gauge" or cl.reason or cl.distance > cc.mount_cross_range
+                    or not cl.points_idx.size):
+                continue
+            x = float(cl.distance)
+            if abs(float(self.track.rail_z(x)) - plane) <= cc.mount_cross_tol + cc.mount_cross_grade * x:
+                continue
+            hm = xyz[cl.points_idx, 2].astype(np.float64) - plane
+            if not np.any((hm >= 0.0) & (hm <= top)):
+                cl.reason, cl.zone, cl.demoted = "height_conflict", "warning", True
 
     # -- 6 -------------------------------------------------------------------------------------
     def _confirm(self, clusters: List[Cluster], speed: Optional[float], dt: float):

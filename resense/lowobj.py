@@ -246,6 +246,90 @@ def low_candidates(X: np.ndarray, dy: np.ndarray, h: np.ndarray, template: BedTe
     return result(idx[keep], x_seen, idx[anomaly], near)
 
 
+def _band_line(X: np.ndarray, dy: np.ndarray, h: np.ndarray, d0: float, d1: float, x_lo: float, x_hi: float,
+               g0: float, g1: float, step: float, min_count: int, min_bins: int) -> Optional[float]:
+    """The height of a lateral band's own line along the track (19.10, F1): the median over ``step``
+    along-track bins in [``x_lo``, ``x_hi``], outside [``g0``, ``g1``] (the cluster's extent and its
+    guard), of each bin's highest return with ``d0 <= dy <= d1`` and -0.3 < h < 0.3 (rail heads, not
+    the structure above them); None with fewer than ``min_bins`` bins of ``min_count`` returns."""
+    m = ((X >= x_lo) & (X < x_hi) & ((X < g0) | (X > g1)) & (dy >= d0) & (dy <= d1) & (h > -0.3) & (h < 0.3))
+    if int(np.count_nonzero(m)) < min_bins * min_count:
+        return None
+    b = np.floor((X[m] - x_lo) / step).astype(np.int64)
+    nb = int(b.max()) + 1
+    cnt = np.bincount(b, minlength=nb)
+    top = np.full(nb, -np.inf)
+    np.maximum.at(top, b, h[m].astype(np.float64))
+    ok = cnt >= min_count
+    if int(ok.sum()) < min_bins:
+        return None
+    return float(np.median(top[ok]))
+
+
+def local_rail_reference(c, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: LowObjectConfig,
+                         rails_spacing: float) -> Optional[float]:
+    """19.10 (F1 task a, ``lowobj.local_rail_margin``): the rail-head height at low cluster ``c``'s
+    lateral position, measured from this frame's own rail returns instead of the model's plane (which is
+    extrapolated beyond ``template_range`` / ``rails_range``). Each rail's line is :func:`_band_line` of
+    the band ``|dy -+ rails_spacing / 2| <= local_rail_band`` within ``local_rail_window`` m of the
+    cluster along the track, 0.5 m bins with >= 1 return, at least ``local_rail_min_bins`` of them
+    (beyond ~40 m a ring crosses the rail head every few metres). Both lines: linear across the bed at
+    the cluster's lateral (a canted track). One line: only for a cluster on that rail's half of the bed
+    within 0.3 m of the rail; otherwise None (no reference, no change). Heights in ``h``'s frame (above
+    the model's rail-head plane)."""
+    w, guard = float(cfg.local_rail_window), 0.3
+    x0, x1 = float(c.bbox_min[0]), float(c.bbox_max[0])
+    half, band = 0.5 * float(rails_spacing), float(cfg.local_rail_band)
+    lines = {}
+    for s in (-1.0, 1.0):
+        lines[s] = _band_line(X, dy, h, s * half - band, s * half + band, x0 - w, x1 + w, x0 - guard, x1 + guard,
+                              0.5, 1, int(cfg.local_rail_min_bins))
+    lat = float(c.lateral)
+    lo, hi = lines[-1.0], lines[1.0]
+    if lo is not None and hi is not None:
+        t = min(1.0, max(0.0, (lat + half) / (2.0 * half)))
+        return lo + t * (hi - lo)
+    for s, line in ((-1.0, lo), (1.0, hi)):
+        if line is not None and s * lat > 0 and abs(lat - s * half) <= 0.3:
+            return line
+    return None
+
+
+def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: LowObjectConfig,
+                         rails_spacing: float) -> list:
+    """19.10 (F1 tasks a and b): the clean low clusters of ``clusters`` (kind ``low``, zone gauge, no
+    reason, not weak) that do not rise above the rails around them: (a) ``local_rail_margin`` > 0 and
+    the top (``height_max``) below :func:`local_rail_reference` + margin; (b) ``rail_band_range`` > 0, the
+    cluster nearer than it, narrow (<= ``rail_start_max_width``), reaching a rail line (within
+    ``rail_start_lateral``, as :func:`mark_rail_line`) and its top at most ``rail_band_margin`` above its
+    own lateral band's line along the track (0.25 m bins, >= 2 returns, >= 4 bins, within
+    ``local_rail_window``; no ``rail_start_min_ref`` condition). Returns them (the detector hands them to
+    the tracker as weak low evidence, which can only continue an already reported low STOP); the
+    clusters themselves are not modified here."""
+    out = []
+    half = 0.5 * float(rails_spacing)
+    for c in clusters:
+        if c.kind != "low" or c.zone != "gauge" or c.reason or c.low_height_weak or not c.points_idx.size:
+            continue
+        top = float(c.height_max)
+        if cfg.local_rail_margin > 0:
+            ref = local_rail_reference(c, X, dy, h, cfg, rails_spacing)
+            if ref is not None and top < ref + float(cfg.local_rail_margin):
+                out.append(c)
+                continue
+        if cfg.rail_band_range > 0 and c.distance < cfg.rail_band_range:
+            d = dy[c.points_idx]
+            d0, d1 = float(d.min()), float(d.max())
+            tol = float(cfg.rail_start_lateral)
+            if (float(c.size[1]) <= cfg.rail_start_max_width
+                    and any(d0 <= s * half + tol and d1 >= s * half - tol for s in (-1.0, 1.0))):
+                x0, x1, w = float(c.bbox_min[0]), float(c.bbox_max[0]), float(cfg.local_rail_window)
+                line = _band_line(X, dy, h, d0, d1, x0 - w, x1 + w, x0 - 0.3, x1 + 0.3, 0.25, 2, 4)
+                if line is not None and top <= line + float(cfg.rail_band_margin):
+                    out.append(c)
+    return out
+
+
 def mark_rail_line(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: LowObjectConfig,
                    rails_spacing: float, range_min: float) -> int:
     """26.09 (P3 rail start, ``rail_start_within`` > 0; docs/evidence/results/p3_rail_start_2026-09-26.json):

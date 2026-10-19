@@ -331,6 +331,15 @@ class ClusterConfig:
     retro_min_fraction: float = 0.5    # fraction of retro returns for a cluster to count as a reflector
     retro_max_height: float = 1.2      # m, taller retro clusters (a person in a hi-vis vest, a train) are kept
     retro_max_width: float = 0.8       # m, narrower retro clusters (plate, sign, marker, post) are demoted to advisory
+    # 19.10 (F1 lane, off by default; Detector._mount_cross_check): where the track model's rail head
+    # at a gauge cluster's distance X is more than mount_cross_tol + mount_cross_grade * X away from the
+    # calibrated mount's rail-head plane (z = -MountCalibration.height), the cluster stays an obstacle only
+    # if that plane also puts some of its points within 0 .. the envelope top; otherwise advisory
+    # ('height_conflict'). Falcon frames 4394-4401: a floor fit that climbed to the ceiling put the
+    # ceiling 0.15-0.33 m above the "rail head".
+    mount_cross_tol: float = 0.0       # m, > 0 on
+    mount_cross_grade: float = 0.05    # m per m of distance (5 %: steeper than a metro gradient)
+    mount_cross_range: float = 30.0    # m, only the near field (the mount plane is a near reference)
 
 
 @dataclass
@@ -446,6 +455,17 @@ class TrackingConfig:
     conf_gain: float = 0.35       # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
+    # 19.10 (F1 lane, off by default; Track.settled_outside): a track whose last settle_window hits (at
+    # least settle_min_hits) kept its cluster centroid within settle_max_spread m in every axis of the
+    # sensor frame is a settled static scene (object and train both still): its gauge verdict can only
+    # change through the reference (the axis), not the object. Such a track is an obstacle only while at
+    # least settle_min_share of those hits were inside the strict gauge, whatever its last zone_window
+    # votes; near escalation still wins. Falcon 115 m support: inside the gauge in 8.8 % of 4,246 hits,
+    # STOP on 4 frames when 6 of the last 10 votes happened to be inside.
+    settle_min_hits: int = 0           # > 0 on
+    settle_window: int = 100           # hits
+    settle_max_spread: float = 0.5     # m, max - min of the centroid per axis over the window
+    settle_min_share: float = 0.5
 
     def frames_to_confirm(self, frame_dt: float | None = None) -> int:
         """Consecutive frames a static, always-matched object needs before it is reported
@@ -525,6 +545,19 @@ class LowObjectConfig:
     rail_start_lateral: float = 0.10     # m; the cluster's lateral extent reaches the model axis +- track.rails_spacing / 2 within this
     rail_start_max_width: float = 0.45   # m across the track; wider is not a rail (an object lying across a rail: 0.5-0.6 m)
     rail_start_min_ref: float = 0.06     # m (safety review of 26.09): only where that band's line is at least this far above the model's rail-head plane, the young-model fault the rule compensates (the finding: 0.135-0.148 m; a correct model ~0)
+    # 19.10 (F1, docs/evidence/f1_false_alarms_2026-10-19; lowobj.rail_reference_check): the rail-head
+    # plane a low cluster's top is compared with is the model's, extrapolated beyond template_range /
+    # rails_range, so bed fixtures there read a few cm above it. (a) and (b) compare the top with the
+    # frame's own rail returns around the cluster instead; a cluster failing them becomes weak low
+    # evidence (Cluster.low_height_weak): it may only continue an already reported low STOP
+    # (tracking.stop_keep_low_s), never start one. No measurable line: no change. All off by default.
+    local_rail_margin: float = 0.0       # m, (a) > 0 on: the top must reach the local rail-head reference + this
+    local_rail_window: float = 5.0       # m along the track on each side of the cluster (its own extent +- 0.3 m excluded)
+    local_rail_band: float = 0.10        # m, half-width of each rail's lateral band around the axis +- track.rails_spacing / 2
+    local_rail_min_bins: int = 2         # 0.5 m along-track bins with rail-band returns that a rail's line needs
+    rail_band_range: float = 0.0         # m, (b) > 0 on: mark_rail_line's same-band test (narrow cluster reaching a rail line) out to this range ...
+    rail_band_margin: float = 0.05       # m ... with this margin above the band's own line, without rail_start_min_ref
+    no_rail_low_within: float = 0.0      # m, (c) > 0 on: on a frame without the rail pair (track.rail_slabs == 0) a low cluster farther than this is advisory (reason 'no_rail_low', a signature: an earned STOP is kept by tracking.stop_keep_signature)
 
 
 @dataclass
