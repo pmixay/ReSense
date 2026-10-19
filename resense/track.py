@@ -54,6 +54,7 @@ class TrackModel:
     rail_axis_support: float = 0.0   # N6: last observed paired-rail station supporting an extension
     curv_step: float = 0.0           # 19.10 (axis_joint_fit): curvature change at curv_knot (1/m): the axis bends by curv_step (X - curv_knot)^2 / 2 more beyond it (C1 piecewise); 0 = a single quadratic
     curv_knot: float = 0.0           # 19.10: X of that change (m)
+    curv_range: float = 0.0          # 20.10 (v4, axis_joint_range off): the per-side fits' curvature, smoothed, for the straight test only (not serialised)
     axis_straight: bool = False      # 19.10: the straight bonus applied this frame (hysteresis with axis_joint_fit; not serialised)
 
     @property
@@ -1291,6 +1292,14 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
                      for n, (xb_, yb_) in bounds.items() if len(xb_)]
             reach = [r_ for r_ in reach if r_ > 0] or list(joint["x_max"].values())
             x_valid, x_valid_min = float(max(reach)), float(min(reach))
+            if not cfg.axis_joint_range:
+                # 20.10 (v4, axis_joint_range off): the joint fit sets the axis shape only; the trusted range, the
+                # side count, the disagreement and the wall quality stay those of the per-side fits (as without the
+                # joint fit), so the range policy of the straight track is unchanged
+                _, curv_est, q, x_valid, n_sides, disagreement, x_valid_min, model.far_support_run = est
+                model.wall_quality = q
+                one_wall = False
+                model.curv_range = a_w * prior.curv_range + (1 - a_w) * curv_est
         if joint is None and est is not None:
             tan_yaw, curv, q, x_valid, n_sides, disagreement, x_valid_min, model.far_support_run = est
             model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(tan_yaw)
@@ -1307,7 +1316,10 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             # 19.10: with a curvature step, "straight" is the same lateral bend at _STRAIGHT_X as |curvature| < 1e-4
             bend = model.curvature + (model.curv_step * (max(_STRAIGHT_X - model.curv_knot, 0.0) / _STRAIGHT_X) ** 2
                                       if model.bent else 0.0)
-            lim = 1.5e-4 if (cfg.axis_joint_fit and prior.axis_straight) else 1e-4   # 19.10: hysteresis (joint fit)
+            if joint is not None and not cfg.axis_joint_range:
+                bend = model.curv_range                      # v4: the straight test of the per-side fits, as before
+            lim = (1.5e-4 if (cfg.axis_joint_fit and cfg.axis_joint_range and prior.axis_straight)
+                   else 1e-4)                               # 19.10: hysteresis (joint fit with its own range)
             straight = abs(bend) < lim and q < 0.2 and (agree or cfg.axis_one_side_range <= 0)
             model.axis_straight = bool(straight)
             bonus = cfg.axis_valid_straight_bonus if straight else 0.0

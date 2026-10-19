@@ -103,6 +103,7 @@ resense:
     axis_joint_grow_start: 40.0    # 19.10: m, first range of the outward growth
     axis_joint_grow_step: 16.0     # 19.10: m, growth step
     axis_joint_min_segment: 3      # 19.10: bins a boundary segment needs to take part
+    axis_joint_range: true         # 20.10: with axis_joint_fit, the trusted range from the joint fit too (v3); false = axis shape only, range policy as before (v4)
     walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
     walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
     walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this

@@ -20,7 +20,7 @@ def test_switches_default_off_in_code_and_both_parameter_files():
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         t = cfg.track
-        assert t.axis_joint_fit is False and t.walls_smoothing_distance == 0.0
+        assert t.axis_joint_fit is False and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is True
         assert (t.axis_joint_knot, t.axis_joint_step_sigma, t.axis_joint_tolerance) == (60.0, 1e-3, 0.3)
 
 
@@ -212,3 +212,14 @@ def test_review_straight_track_keeps_the_native_quadratic():
     xyz = xyz[xyz[:, 0] < 58.0]
     m = _settle(xyz, TrackConfig(**JOINT))
     assert m.curv_step == 0.0 and not m.bent
+
+
+def test_shape_only_mode_keeps_the_axis_shape_and_the_old_range_policy():
+    """v4 (axis_joint_range off): the axis shape is the joint fit's (identical to v3's), the trusted range comes
+    from the per-side fits as without the joint fit."""
+    xyz, yt = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    v3 = _settle(xyz, TrackConfig(**JOINT))
+    v4 = _settle(xyz, TrackConfig(axis_joint_fit=True, axis_joint_range=False))
+    X = np.array([30.0, 80.0, 120.0])
+    assert np.allclose(v3.center_y(X), v4.center_y(X), atol=1e-9)
+    assert abs(float(v4.center_y(120.0)) - float(yt(120.0))) < 0.5
