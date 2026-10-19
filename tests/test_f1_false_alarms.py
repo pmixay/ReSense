@@ -211,14 +211,13 @@ def test_settled_static_track_needs_a_long_majority():
 
 
 def test_candidate_values_in_the_class_and_the_yaml():
-    """Integration of 19.10: every F1 switch off (F1a margin 0, H' tolerance 0; review B1 open, H' awaits its
-    confirming run), the aec88d2 behaviour (proved on the full gate and the whole Falcon recording,
-    docs/evidence/f1_false_alarms_2026-10-19). The candidate values stay as the sub-options: cross-rail 0.04, H'
-    above the envelope only; S2, F1b and F1c opt-in (0)."""
+    """Integration of 19.10: H' on (0.5, above the envelope only; captain's decision), F1a off (margin 0; review
+    B1 open), S2, F1b and F1c opt-in (0); cross-rail 0.04 stays as F1a's sub-option. All off is the aec88d2
+    behaviour (proved on the full gate and the whole Falcon recording, docs/evidence/f1_false_alarms_2026-10-19)."""
     y = DetectorConfig()
     assert y.lowobj.local_rail_margin == 0 and not y.lowobj.local_rail_exclude_low
     assert y.lowobj.local_rail_cross_tol == pytest.approx(0.04)
-    assert not y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == 0
+    assert not y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == pytest.approx(0.5)
     assert y.cluster.mount_cross_above_only
     assert y.tracking.settle_min_hits == 0
     assert y.lowobj.rail_band_range == 0 and y.lowobj.no_rail_low_within == 0
