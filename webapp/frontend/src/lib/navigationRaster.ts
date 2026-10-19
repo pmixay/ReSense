@@ -25,17 +25,23 @@ function snapshotStyles(): Promise<string> {
   return embeddedStyles;
 }
 
-/** Bake motion blur once into a bounded bitmap; travel never re-filters a moving DOM tree. */
-export async function rasterizeNavigationBlur(source: HTMLElement, width: number, height: number): Promise<HTMLCanvasElement> {
+/** Read the loaded page rules once per journey, after lazy styles have settled. */
+export async function navigationRasterStyles(): Promise<string> {
   // Lazy page CSS may arrive between journeys, so include current rules as well as embedded fonts.
-  const styles = await snapshotStyles();
+  const fonts = await snapshotStyles();
   const currentStyles = Array.from(document.styleSheets).flatMap(sheet => {
     try { return Array.from(sheet.cssRules, rule => rule.cssText).filter(rule => !rule.startsWith('@font-face')); } catch { return []; }
   }).join('\n');
+  return `${fonts}\n${currentStyles}\n*{animation:none!important;transition:none!important;caret-color:transparent!important}`;
+}
+
+/** Cache the closed-door optics once; travel only composites the resulting small bitmaps. */
+export async function rasterizeNavigationBlur(source: HTMLElement, width: number, height: number, endpoint = false, stylesheet?: string): Promise<{ blurred: HTMLCanvasElement; sharp: HTMLCanvasElement | null }> {
+  const styles = stylesheet ?? await navigationRasterStyles();
   const clone = source.cloneNode(true) as HTMLElement;
   clone.className = source.className.split(' ').filter(name => !name.includes('frozenBlur')).join(' ');
   const computed = getComputedStyle(source);
-  clone.style.cssText = `width:${width}px;height:${height}px;position:relative;inset:auto;filter:none;visibility:visible;font:${computed.font};color:${computed.color};background:${getComputedStyle(document.body).backgroundColor};font-variant-numeric:lining-nums tabular-nums;`;
+  clone.style.cssText += `width:${width}px;height:${height}px;position:relative;inset:auto;filter:none;visibility:visible;opacity:1;font:${computed.font};color:${computed.color};background:${getComputedStyle(document.body).backgroundColor};font-variant-numeric:lining-nums tabular-nums;`;
   const originals = source.querySelectorAll('canvas');
   Array.from(clone.querySelectorAll('canvas')).forEach((canvas, i) => {
     const image = document.createElement('img');
@@ -58,7 +64,7 @@ export async function rasterizeNavigationBlur(source: HTMLElement, width: number
     clonedNodes[i].style.overflow = 'hidden';
   });
   const style = document.createElement('style');
-  style.textContent = `${styles}\n${currentStyles}\n*{animation:none!important;transition:none!important;caret-color:transparent!important}`;
+  style.textContent = styles;
   clone.prepend(style);
   const ratio = Math.min(1, 640 / width, 400 / height);
   const w = Math.max(1, Math.round(width * ratio));
@@ -67,7 +73,9 @@ export async function rasterizeNavigationBlur(source: HTMLElement, width: number
   const image = new Image();
   image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   await image.decode();
-  const padding = Math.ceil(40 * ratio);
+  // Successive Gaussian motion/glass blurs combine by variance. Match the panes' existing
+  // 20px diffusion, saturation and contrast without re-filtering two full-size backdrops/frame.
+  const padding = Math.ceil((Math.hypot(32, 20) + 8) * ratio);
   const padded = document.createElement('canvas');
   padded.width = w + padding * 2;
   padded.height = h + padding * 2;
@@ -78,14 +86,21 @@ export async function rasterizeNavigationBlur(source: HTMLElement, width: number
   context.drawImage(padded, padding + w - 1, padding, 1, h, padding + w, padding, padding, h);
   context.drawImage(padded, 0, padding, padded.width, 1, 0, 0, padded.width, padding);
   context.drawImage(padded, 0, padding + h - 1, padded.width, 1, 0, padding + h, padded.width, padding);
-  const result = document.createElement('canvas');
-  result.width = w;
-  result.height = h;
-  const resultContext = result.getContext('2d')!;
-  resultContext.filter = `blur(${32 * ratio}px)`;
-  resultContext.drawImage(padded, -padding, -padding);
+  const render = (motionBlur: number) => {
+    const result = document.createElement('canvas');
+    result.width = w;
+    result.height = h;
+    const resultContext = result.getContext('2d')!;
+    resultContext.filter = `blur(${Math.hypot(motionBlur, 20) * ratio}px) saturate(.75) contrast(.94)`;
+    resultContext.drawImage(padded, -padding, -padding);
+    result.style.cssText = 'width:100%;height:100%;display:block';
+    result.dataset.motionRaster = 'true';
+    result.dataset.glassRaster = 'true';
+    return result;
+  };
+  // Reuse the same decoded page for both endpoint appearances instead of serializing/decoding twice.
+  const blurred = render(32);
+  const sharp = endpoint ? render(0) : null;
   padded.width = padded.height = 0;
-  result.style.cssText = 'width:100%;height:100%;display:block';
-  result.dataset.motionRaster = 'true';
-  return result;
+  return { blurred, sharp };
 }

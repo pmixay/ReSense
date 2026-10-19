@@ -7,7 +7,7 @@ import { NavigationPreviewContext } from '../../lib/navigationPreview';
 import type { NavigationJourney } from '../../lib/navigationJourney';
 import { duplicateNavigationSnapshot, mountNavigationSnapshot, navigationSnapshot, type NavigationSnapshot } from '../../lib/navigationSnapshot';
 import { sectionPages } from '../../sectionPages';
-import { rasterizeNavigationBlur } from '../../lib/navigationRaster';
+import { navigationRasterStyles, rasterizeNavigationBlur } from '../../lib/navigationRaster';
 import { LineRail } from '../LineRail/LineRail';
 import { TopBar } from '../TopBar/TopBar';
 import { RailContext } from './rail';
@@ -53,6 +53,7 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
   const preparation = useRef<HTMLDivElement>(null);
   const root = useRef<Root | null>(null);
   const frozen = useRef(false);
+  const glassEndpoints = useRef<Array<{ view: HTMLElement; bitmap: HTMLCanvasElement }>>([]);
   const client = useQueryClient();
   const latest = useRef({ captureDestination, onFinished });
   latest.current = { captureDestination, onFinished };
@@ -105,15 +106,20 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
     observer.observe(prep, { childList: true, subtree: true, characterData: true });
     const bake = async () => {
       const views = Array.from(strip.current!.querySelectorAll<HTMLElement>(`.${styles.frozenBlur}`));
+      const endpoints = views.map(view => view.parentElement!.querySelector<HTMLElement>('[data-sharp-endpoint]'));
       const width = host.current!.clientWidth;
       const height = host.current!.clientHeight;
       let timer = 0;
       const bitmaps = await Promise.race([
-        Promise.all(views.map(view => rasterizeNavigationBlur(view, width, height))),
+        navigationRasterStyles().then(styles => cancelled ? [] : Promise.all(views.map((view, i) => rasterizeNavigationBlur(view, width, height, !!endpoints[i], styles)))),
         new Promise<never>((_, reject) => { timer = window.setTimeout(() => reject(new Error('Navigation raster preparation timed out')), 1800); }),
       ]).finally(() => window.clearTimeout(timer));
       if (cancelled) return;
-      views.forEach((view, i) => view.replaceChildren(bitmaps[i]));
+      views.forEach((view, i) => {
+        view.replaceChildren(bitmaps[i].blurred);
+        // Keep the original sharp DOM under the live glass until travel actually begins.
+        if (endpoints[i] && bitmaps[i].sharp) glassEndpoints.current.push({ view: endpoints[i]!, bitmap: bitmaps[i].sharp! });
+      });
       // Give layout and cached bitmap surfaces two full paints before starting the compositor.
       const warm = () => { if (++settle === 3) onPrepared(true); else raf = requestAnimationFrame(warm); };
       raf = requestAnimationFrame(warm);
@@ -133,6 +139,7 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
         const stage = document.createElement('div');
         stage.className = styles.transitStage;
         stage.dataset.journeyIndex = String(i);
+        stage.dataset.snapshotPath = image.nodes[0].querySelector('nav[aria-label="Линия: путь работы с записью"] a[aria-current="page"]')?.getAttribute('href') ?? '';
         stage.style.left = `${(journey.direction === 'right' ? 1 : -1) * i * host.current!.clientWidth}px`;
         if (i === 0) stage.dataset.outgoingSnapshot = 'ready';
         else if (i === snapshots.length - 1) stage.dataset.destinationSnapshot = 'ready';
@@ -183,6 +190,24 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
   useLayoutEffect(() => {
     if (phase !== 'travelling' || !frozen.current) return;
     const track = strip.current!;
+    if (glassEndpoints.current.length) {
+      for (const { view, bitmap } of glassEndpoints.current) view.replaceChildren(bitmap);
+      glassEndpoints.current = [];
+      host.current!.dataset.transitFrosted = 'true';
+      // Scissor away pixels hidden by the stationary metal. In particular, endpoint opacity
+      // crossfades need not blend two full-screen images behind the opaque crown/foot/stiles.
+      const panes = Array.from(document.querySelectorAll('[data-door-glass]'), pane => pane.getBoundingClientRect());
+      if (panes.length) {
+        const viewport = host.current!.getBoundingClientRect();
+        const insets = [
+          Math.min(...panes.map(pane => pane.top)) - viewport.top,
+          viewport.right - Math.max(...panes.map(pane => pane.right)),
+          viewport.bottom - Math.max(...panes.map(pane => pane.bottom)),
+          Math.min(...panes.map(pane => pane.left)) - viewport.left,
+        ];
+        host.current!.style.clipPath = `inset(${insets.map(value => `${Math.max(0, value)}px`).join(' ')})`;
+      }
+    }
     const destination = track.querySelector<HTMLElement>('[data-destination-snapshot]')!;
     // Derive travel from the actual last stage, never an independent step estimate.
     let distance = -destination.offsetLeft;

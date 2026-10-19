@@ -91,8 +91,12 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
         copied_pixel = page.locator('[data-outgoing-snapshot] canvas').first.evaluate('c=>Array.from(c.getContext("2d").getImageData(Math.floor(c.width/2),Math.floor(c.height/3),1,1).data)')
         assert copied_pixel[3] == 255 and max(copied_pixel[:3]) > 40, copied_pixel
     prepare_travel(page)
+    # During the slide, cached glass optics replace live backdrop passes; door motion is unchanged.
+    expect(page.locator('[data-transit-frosted]')).to_have_count(1)
+    assert glass.evaluate('el => getComputedStyle(el).backdropFilter') == 'none'
     assert page.locator('[data-app-shell]').get_attribute('data-travel-direction') == 'left'
     finish_travel(page)
+    assert '20px' in glass.evaluate('el => getComputedStyle(el).backdropFilter')
     page.clock.run_for(330)
     expect(doors).to_be_hidden()
     expect(page.locator('[data-transit-viewport]')).to_have_count(0)
@@ -169,6 +173,10 @@ def test_long_journey_contains_every_station_without_visiting_its_url(app):
     stations = page.locator('[data-transit-page]').evaluate_all('els=>els.map(el=>el.dataset.transitPage)')
     assert stations == ['queue', 'runs', 'player', 'compare', 'live', 'presets']
     assert page.locator('[data-transit-page] canvas[role="img"]').count() == 0
+    # Every moving surface, including both opacity-crossfade endpoints, is a bounded bitmap.
+    expect(page.locator('[data-glass-raster]')).to_have_count(10)
+    assert page.locator('[data-glass-raster]').evaluate_all('els=>els.every(c=>c.width<=640&&c.height<=400)')
+    assert page.locator('[data-sharp-endpoint] [data-glass-raster]').evaluate_all('els=>els.every(c=>c.getContext("2d").getImageData(Math.floor(c.width/2),Math.floor(c.height/2),1,1).data[3]>250)')
     assert page.locator('[data-transit-preparation]').evaluate('el=>el.children.length') == 0
     # Data/DOM changes after departure cannot alter the frozen moving strip.
     before_strip = page.locator('[data-transit-frozen]').inner_html()
@@ -238,6 +246,8 @@ def test_failed_raster_preparation_reveals_page_and_recovers_next_navigation(app
             break
         page.wait_for_timeout(20)
     expect(page.locator('[data-transit-preparation-error]')).to_have_count(1)
+    expect(page.locator('[data-transit-frosted]')).to_have_count(0)
+    assert '20px' in page.locator('[data-door-glass]').first.evaluate('el=>getComputedStyle(el).backdropFilter')
     # Failed bitmap decoding must still carry every frozen tab through to the destination.
     for _ in range(10):
         page.clock.run_for(50)
@@ -305,7 +315,7 @@ def test_every_visible_tab_passes_in_order_and_target_is_centered_before_open(ap
             if(passed.at(-1)!==index)passed.push(index);
         }
         const target=stages.at(-1).getBoundingClientRect();
-        const targetNav=stages.at(-1).querySelector('nav[aria-label="Линия: путь работы с записью"] a[aria-current="page"]')?.getAttribute('href');
+        const targetNav=stages.at(-1).dataset.snapshotPath;
         return {passed,keys:stages.map((s,i)=>s.dataset.transitPage|| (i===0?'origin':'target')),targetX:target.x,targetNav};
     }''')
     assert samples['passed'] == list(range(len(expected))), samples

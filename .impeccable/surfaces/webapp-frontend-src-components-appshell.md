@@ -23,3 +23,10 @@ BUDGET: CSS transform animation and two bounded backdrop-filter panes, mounted
 once in AppShell and fully hidden at rest. No third WebGL scene or new dependency.
 Glass has an opaque-tint fallback. Native input stays inert only during the cycle,
 and main regains focus afterward. Bound suspension/recovery delays.
+
+PERFORMANCE CORRECTION: Target a smooth 60Hz closed-door slide. Preserve all
+animation phases, tab order/direction, durations/easing, endpoint crossfades,
+alignment/recovery and door geometry. Cache the existing glass diffusion/color
+optics in bounded travel bitmaps, including the endpoints; use the live panes
+for closing, waiting, opening and failed-raster fallback. Keep the slide to
+composited transform/opacity with no per-frame backdrop filtering or live DOM.

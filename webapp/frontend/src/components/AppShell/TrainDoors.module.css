@@ -57,6 +57,18 @@
   box-shadow: inset 1px 1px 0 #eef0df66, inset -1px -1px 0 #26352a80,
     inset 5px 0 16px #1b2a1d14, 0 0 0 8px #141d16, 0 3px 5px #03070399;
 }
+/* Prepared travel frames already contain the exact glass diffusion/color optics. Keep the
+   tint/reflections, but avoid two viewport-sized live backdrop passes while the strip slides.
+   Closing, waiting, opening and raster-failure recovery retain the original live glass. */
+:global([data-transit-frosted]) ~ .portal[data-phase='travelling'] .window {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+:global([data-transit-frosted]) ~ .portal[data-phase='travelling'] .skin {
+  /* Live frost softens the skin's glazing overlap. The cached page must transmit through
+     that same inner aperture rather than exposing two hard metal bands behind the pane. */
+  background-size: var(--stile) 100%, var(--stile) 100%, 100% calc(var(--crown) + 6px), 100% calc(var(--foot) + 6px);
+}
 .glare {
   position: absolute;
   inset: 0;

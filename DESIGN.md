@@ -224,8 +224,17 @@ destination images. Its sharp outgoing/destination endpoint crossfades share
 exactly the same document-timeline start time. Duration is 280ms plus 130ms per
 station interval (410–1320ms), with near-linear cruising rather than an intermediate
 stop. The 32px motion blur is baked once into temporary
-bitmaps capped at 640×400; motion animates transform/opacity only. No moving DOM
-filter is recalculated. Sharp endpoints retain native-size DOM/canvas appearance.
+bitmaps capped at 640×400; motion animates transform/opacity only. During the
+closed-door slide, those bitmaps also cache the glass's existing 20px diffusion,
+75% saturation and 94% contrast. Gaussian blur variances combine once, and each
+endpoint's non-motion-blurred appearance reuses the same decoded source. All
+moving surfaces are therefore small cached images rather than live DOM or
+full-size backdrop-filter passes. The original endpoint DOM/live glass remains
+in place until travel starts; closing, waiting, opening and raster-failure
+fallback retain live optical sampling. Door tint/reflections stay in place.
+A once-measured aperture clip avoids blending moving pixels behind opaque door
+metal. Cached-mode skin paint ends at the inner glazing edge, preventing hard
+overlap bands while preserving the leaf dimensions and all motion keyframes.
 The real destination stays at its final layout geometry, hidden during travel.
 Every stage has an explicit viewport-width offset in navigation order; movement
 uses the actual final-stage offset. After finishing, that final offset is committed
@@ -278,8 +287,10 @@ Actual optical transmission/diffusion and outgoing/incoming projected directions
 are recorded in [`docs/images/moskva-doors/`](docs/images/moskva-doors/). Current
 directional/intermediate travel captures are in
 [`docs/images/directional-travel/`](docs/images/directional-travel/).
-Current jitter-regression captures and CPU-throttled before/after evidence are in
-[`docs/images/travel-stability/`](docs/images/travel-stability/).
+Earlier jitter-regression captures and CPU-throttled evidence are in
+[`docs/images/travel-stability/`](docs/images/travel-stability/); the closed-door
+compositing optimization is recorded in
+[`docs/images/slide-performance/`](docs/images/slide-performance/README.md).
 
 ### Restored interior and restrained controls
 
