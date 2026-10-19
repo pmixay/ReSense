@@ -76,7 +76,7 @@ agent branches. Older work branches of 15–18.10 are merged (PR #33, #35–#38)
 |---|---|---|
 | `main` | `9621024`: the 1.2.0 candidate with P3's L16/S3 and R3 (done, switched on; P4 review pending); `detector_freeze.py verify` FAILS (sealed files changed); CI red (0 of the last 100 runs succeeded) | base of the integration |
 | `claude/optimistic-mccarthy-z5nmwd` | integration of 19.10: `main` + the four agent lanes, merged with an identity proof ([evidence](evidence/integration_2026-10-19/README.md)); F1a and H′ switched on | the base of the final gate, X3 and the combined reseal; P1 merges to `main` after P4's review |
-| `ui-improvement` | P2's web Player work, 14 own commits of 18–19.10, based before PR #38, not merged, CI red | P2 merges `main` in; P1 reviews and merges, or keeps it out of the pitch |
+| `ui-improvement` | P2's web Player work: not merged into `main` (26 commits ahead of it on 19.10, checked with `git rev-list`); CI red | P2 merges `main` in; P1 reviews and merges, or keeps it out of the pitch |
 | `det/k1-k2-gauge`, `det/f1-false-alarms`, `det/falcon-long-range`, `det/n3-dust-robustness` | merged into the integration branch 19.10 with every switch off ([`DECISIONS.md`](DECISIONS.md) row 40); the agents are stopped, handoffs written | the remote branches may be deleted |
 
 ## 5. Release and submission
