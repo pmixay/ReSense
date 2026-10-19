@@ -906,10 +906,14 @@ class Tracker:
         if c.cable_confirm_time_s > 0 and t.cable_kind:
             fast_span = c.hanging_confirm_time_s if t.cable_kind == 2 else c.cable_confirm_time_s
             fast_hits = max(2, c.hanging_confirm_hits) if t.cable_kind == 2 else c.confirm_hits
+            # Sensor stamps jitter by microseconds around a nominal frame period.
+            # Slack is bounded to 1 ms and 1% of both period and requested duration;
+            # it never substitutes for a missing geometry-qualified hit.
+            slack = max(0.0, min(0.001, 0.01 * c.frame_dt, 0.01 * fast_span))
             if (fast_span > 0 and t.cable_hits >= fast_hits
-                    and (not self._timed or t.cable_span_s >= fast_span - 1e-9)):
+                    and (not self._timed or t.cable_span_s >= fast_span - slack - 1e-9)):
                 need_hits = min(need_hits, fast_hits)
-                need_span = min(need_span, fast_span)
+                need_span = min(need_span, fast_span - slack)
         return (t.hits >= need_hits
                 and t.confidence >= c.conf_threshold and t.misses == 0
                 and t.span_s >= need_span - 1e-9
