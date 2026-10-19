@@ -48,6 +48,8 @@ def run(name, repo, args):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('phase',choices=['gate','x3'])
+    p.add_argument('--revision',default='')
+    p.add_argument('--candidate-only',action='store_true')
     a=p.parse_args()
     assert np.__version__=='1.26.4'
     binary=ROOT/'resense/_resense_native.so'
@@ -58,21 +60,26 @@ def main():
     if a.phase=='gate':
         def one(pair):
             side,repo=pair
-            return run(f'gate-{side}',repo,[repo/'scripts/regression_gate.py',
+            name=f'gate-{a.revision+"-" if a.revision else ""}{side}'
+            return run(name,repo,[repo/'scripts/regression_gate.py',
                        '--cache',DATA/'cache','--jobs','4',
                        '--baseline',repo/'docs/evidence/results/regression_baseline_2026-09-29_shell_off.json',
-                       '--out',HERE/f'gate-{side}.json','--work',WORK/f'gate-{side}-work'])
+                       '--out',HERE/f'{name}.json','--work',WORK/f'{name}-work'])
         with ThreadPoolExecutor(max_workers=2) as pool:
-            entries=list(pool.map(one,[('reference',REF),('candidate',ROOT)]))
+            pairs=[('candidate',ROOT)] if a.candidate_only else [('reference',REF),('candidate',ROOT)]
+            entries=list(pool.map(one,pairs))
     else:
         entries=[]
         for side,repo in [('reference',REF),('candidate',ROOT)]:
+            if a.candidate_only and side=='reference':
+                continue
+            name=f'x3-{a.revision+"-" if a.revision else ""}{side}'
             args=[ROOT/'scripts/robustness_battery.py','--repo',repo,'--cache',DATA/'decoded',
-                  '--out',WORK/f'x3-{side}.json','-j','2']
+                  '--out',WORK/f'{name}.json','-j','2']
             if side=='candidate':
                 args+=['--reference',WORK/'x3-reference.json']
-            entries.append(run(f'x3-{side}',repo,args))
-            shutil.copy2(WORK/f'x3-{side}.json',HERE/f'x3-{side}.json')
+            entries.append(run(name,repo,args))
+            shutil.copy2(WORK/f'{name}.json',HERE/f'{name}.json')
     assert all(e['source_unchanged'] for e in entries)
     return 1 if any(e['returncode'] for e in entries) else 0
 

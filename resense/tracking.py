@@ -887,6 +887,7 @@ class Tracker:
         c = self.cfg
         if (c.cable_confirm_time_s <= 0 or cl.zone != "gauge" or cl.reason or cl.thin
                 or cl.weak or cl.low_height_weak or cl.kind not in ("", "hanging")
+                or cl.n_raw != len(cl.points_idx)
                 or max(float(cl.size[0]), float(cl.size[1])) > c.cable_max_footprint):
             return 0
         height = cl.height_max - cl.height_min
