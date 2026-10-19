@@ -43,10 +43,11 @@ interface Props {
   captureDestination: () => NavigationSnapshot | null;
   onPrepared: (ready: boolean) => void;
   onFinished: () => void;
+  registerFinish: (finish: (() => void) | null) => void;
 }
 
 /** Prepare live views once, then move a single frozen strip with transform/opacity only. */
-export function TransitPages({ phase, journey, snapshot, captureDestination, onPrepared, onFinished }: Props) {
+export function TransitPages({ phase, journey, snapshot, captureDestination, onPrepared, onFinished, registerFinish }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const strip = useRef<HTMLDivElement>(null);
   const preparation = useRef<HTMLDivElement>(null);
@@ -106,7 +107,11 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
       const views = Array.from(strip.current!.querySelectorAll<HTMLElement>(`.${styles.frozenBlur}`));
       const width = host.current!.clientWidth;
       const height = host.current!.clientHeight;
-      const bitmaps = await Promise.all(views.map(view => rasterizeNavigationBlur(view, width, height)));
+      let timer = 0;
+      const bitmaps = await Promise.race([
+        Promise.all(views.map(view => rasterizeNavigationBlur(view, width, height))),
+        new Promise<never>((_, reject) => { timer = window.setTimeout(() => reject(new Error('Navigation raster preparation timed out')), 1800); }),
+      ]).finally(() => window.clearTimeout(timer));
       if (cancelled) return;
       views.forEach((view, i) => view.replaceChildren(bitmaps[i]));
       // Give layout and cached bitmap surfaces two full paints before starting the compositor.
@@ -114,7 +119,7 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
       raf = requestAnimationFrame(warm);
     };
     const prepare = (now: number) => {
-      if (prep.querySelectorAll('[data-preparing-page]').length !== journey.via.length || prep.querySelector('[data-transit-loading]') || document.querySelector('[data-page-fallback]') || document.fonts.status === 'loading' || (now - changed < 60 && now - started < 850)) {
+      if (prep.querySelectorAll('[data-preparing-page]').length !== journey.via.length || ((prep.querySelector('[data-transit-loading]') || document.querySelector('[data-page-fallback]') || document.fonts.status === 'loading') && now - started < 1800) || (now - changed < 60 && now - started < 850)) {
         raf = requestAnimationFrame(prepare);
         return;
       }
@@ -127,6 +132,8 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
       const stages = snapshots.map((image, i) => {
         const stage = document.createElement('div');
         stage.className = styles.transitStage;
+        stage.dataset.journeyIndex = String(i);
+        stage.style.left = `${(journey.direction === 'right' ? 1 : -1) * i * host.current!.clientWidth}px`;
         if (i === 0) stage.dataset.outgoingSnapshot = 'ready';
         else if (i === snapshots.length - 1) stage.dataset.destinationSnapshot = 'ready';
         else stage.dataset.transitPage = journey.via[i - 1];
@@ -159,9 +166,14 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
       root.current = null;
       previewRoot?.unmount();
       prep.replaceChildren();
-      // If browser rasterization fails, readiness stays false and the covered fallback reveals safely.
+      // A failed bitmap decode falls back to the same complete frozen-stage journey.
       void bake().catch(error => {
-        if (!cancelled && host.current) host.current.dataset.transitPreparationError = error instanceof Error ? error.message : String(error);
+        if (!cancelled && host.current) {
+          host.current.dataset.transitPreparationError = error instanceof Error ? error.message : String(error);
+          // A decode failure still traverses every frozen stage; glass supplies the diffusion.
+          strip.current?.querySelectorAll<HTMLElement>(`.${styles.frozenBlur}`).forEach(view => { view.style.filter = 'blur(32px)'; });
+          onPrepared(true);
+        }
       });
     };
     raf = requestAnimationFrame(prepare);
@@ -171,8 +183,10 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
   useLayoutEffect(() => {
     if (phase !== 'travelling' || !frozen.current) return;
     const track = strip.current!;
-    const distance = (journey.direction === 'right' ? -1 : 1) * journey.steps * host.current!.clientWidth;
-    const timing = { duration: journey.duration, easing: 'cubic-bezier(.35, .05, .2, 1)', fill: 'both' as const };
+    const destination = track.querySelector<HTMLElement>('[data-destination-snapshot]')!;
+    // Derive travel from the actual last stage, never an independent step estimate.
+    let distance = -destination.offsetLeft;
+    const timing = { duration: journey.duration, easing: 'linear(0, .025 10%, .84 78%, .96 90%, 1)', fill: 'both' as const };
     const movement = track.animate([{ transform: 'translate3d(0,0,0)' }, { transform: `translate3d(${distance}px,0,0)` }], timing);
     movement.id = 'section-travel';
     const outgoing = track.querySelector<HTMLElement>('[data-sharp-endpoint="outgoing"]')!.animate([
@@ -187,18 +201,61 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
     const start = document.timeline.currentTime;
     for (const animation of animations) animation.startTime = start;
     let cancelled = false;
-    void movement.finished.then(() => { if (!cancelled) latest.current.onFinished(); }).catch(() => undefined);
-    const finish = () => { for (const animation of animations) animation.finish(); };
+    let settled = 0;
+    const alignAndReveal = () => {
+      if (cancelled) return;
+      animations.forEach(animation => animation.finish());
+      // Commit the exact final offset, then require it to survive two painted frames.
+      track.style.transform = `translate3d(${distance}px,0,0)`;
+      const confirm = () => {
+        if (cancelled) return;
+        const target = destination.getBoundingClientRect();
+        const viewport = host.current!.getBoundingClientRect();
+        if (Math.abs(target.left - viewport.left) < .5 && Math.abs(target.width - viewport.width) < .5) {
+          host.current!.dataset.destinationAligned = 'true';
+          latest.current.onFinished();
+        } else {
+          // A late ResizeObserver/layout delivery can occur after the finished promise.
+          // Realign the finished endpoint and recheck instead of leaving a closed stale strip.
+          alignToViewport();
+          settled = requestAnimationFrame(() => { settled = requestAnimationFrame(confirm); });
+        }
+      };
+      settled = requestAnimationFrame(() => { settled = requestAnimationFrame(confirm); });
+    };
+    void movement.finished.then(alignAndReveal).catch(() => undefined);
+    const alignToViewport = () => {
+      const width = host.current!.clientWidth;
+      track.querySelectorAll<HTMLElement>('[data-journey-index]').forEach(stage => {
+        stage.style.width = `${width}px`;
+        stage.style.left = `${(journey.direction === 'right' ? 1 : -1) * Number(stage.dataset.journeyIndex) * width}px`;
+      });
+      distance = -destination.offsetLeft;
+      (movement.effect as KeyframeEffect).setKeyframes([{ transform: 'translate3d(0,0,0)' }, { transform: `translate3d(${distance}px,0,0)` }]);
+      track.style.transform = `translate3d(${distance}px,0,0)`;
+      for (const animation of animations) animation.finish();
+    };
+    const finish = () => alignToViewport();
+    registerFinish(finish);
     const visibility = () => { if (document.hidden) finish(); };
     window.addEventListener('resize', finish);
+    let observedWidth = host.current!.clientWidth;
+    const resize = new ResizeObserver(() => {
+      const width = host.current!.clientWidth;
+      if (width !== observedWidth) { observedWidth = width; finish(); }
+    });
+    resize.observe(host.current!);
     document.addEventListener('visibilitychange', visibility);
     return () => {
       cancelled = true;
+      cancelAnimationFrame(settled);
+      registerFinish(null);
       animations.forEach(animation => animation.cancel());
       window.removeEventListener('resize', finish);
+      resize.disconnect();
       document.removeEventListener('visibilitychange', visibility);
     };
-  }, [phase, journey]);
+  }, [phase, journey, registerFinish]);
 
   useEffect(() => () => onPrepared(false), [onPrepared]);
   return <div ref={host} className={styles.transitViewport} data-transit-viewport aria-hidden="true">

@@ -24,10 +24,10 @@
 .portal:is([data-phase='closing'], [data-phase='covered'], [data-phase='travelling']) .leaf {
   transform: translate3d(0, 0, 0);
 }
-.portal[data-phase='closing'] .left { animation: door-close-left 350ms cubic-bezier(.45, 0, .2, 1) both; }
-.portal[data-phase='closing'] .right { animation: door-close-right 350ms cubic-bezier(.45, 0, .2, 1) both; }
-.portal[data-phase='opening'] .left { animation: door-open-left 450ms cubic-bezier(.3, 0, .15, 1) both; }
-.portal[data-phase='opening'] .right { animation: door-open-right 450ms cubic-bezier(.3, 0, .15, 1) both; }
+.portal[data-phase='closing'] .left { animation: door-close-left 260ms cubic-bezier(.45, 0, .2, 1) both; }
+.portal[data-phase='closing'] .right { animation: door-close-right 260ms cubic-bezier(.45, 0, .2, 1) both; }
+.portal[data-phase='opening'] .left { animation: door-open-left 320ms cubic-bezier(.3, 0, .15, 1) both; }
+.portal[data-phase='opening'] .right { animation: door-open-right 320ms cubic-bezier(.3, 0, .15, 1) both; }
 @keyframes door-close-left { from { transform: translate3d(-102%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
 @keyframes door-close-right { from { transform: translate3d(102%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
 @keyframes door-open-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-102%, 0, 0); } }
@@ -120,8 +120,8 @@
 .left .thickness { right: 7px; }
 .right .thickness { left: 7px; }
 /* Only opaque metal/seal details blur; the glass must keep sampling the actual page. */
-.portal[data-phase='closing'] :is(.skin, .seal, .edgeLight, .thickness) { animation: door-metal-motion 350ms ease-out both; }
-.portal[data-phase='opening'] :is(.skin, .seal, .edgeLight, .thickness) { animation: door-metal-motion 450ms ease-out both; }
+.portal[data-phase='closing'] :is(.skin, .seal, .edgeLight, .thickness) { animation: door-metal-motion 260ms ease-out both; }
+.portal[data-phase='opening'] :is(.skin, .seal, .edgeLight, .thickness) { animation: door-metal-motion 320ms ease-out both; }
 @keyframes door-metal-motion {
   0%, 100% { filter: blur(0); }
   35% { filter: blur(3px); }

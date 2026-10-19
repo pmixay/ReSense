@@ -87,3 +87,11 @@ real destination stays hidden at its final geometry. Unmount preview roots befor
 travel so live data/loading/layout cannot change moving pixels. Open doors from
 actual animation completion, with bounded preparation/recovery and resize/hidden
 tab cleanup. Current evidence: `docs/images/travel-stability/`.
+
+STRICT FINAL-STOP RULE (latest): Current → every intermediate station in the
+visible LINE/BRANCH order → final, both directions. Use explicit stage positions
+and the actual destination offset, near-linear cruising, and two painted aligned
+destination frames before reveal. Recovery finishes the journey instead of dropping
+its strip. Close/open are 260/320ms; travel is 280 + 130ms per interval. Native
+dropdowns and form affordances match the shared tokens. Evidence:
+`docs/images/d1-controls-journey/`.

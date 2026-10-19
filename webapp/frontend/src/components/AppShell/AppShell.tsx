@@ -27,12 +27,14 @@ export function AppShell() {
   const [sub, setSub] = useState<string | undefined>(undefined);
   const [snapshot, setSnapshot] = useState<NavigationSnapshot | null>(null);
   const prepared = useRef(false);
+  const completeTravel = useRef<(() => void) | null>(null);
+  const registerFinish = useCallback((finish: (() => void) | null) => { completeTravel.current = finish; }, []);
   const onPrepared = useCallback((ready: boolean) => { prepared.current = ready; }, []);
   const capture = useCallback(() => {
     if (chromeRef.current && pageRef.current) setSnapshot(navigationSnapshot(chromeRef.current, pageRef.current));
   }, []);
   const captureDestination = useCallback(() => chromeRef.current && pageRef.current ? navigationSnapshot(chromeRef.current, pageRef.current) : null, []);
-  const doors = useTrainDoors({ onCover: capture, isPrepared: () => prepared.current });
+  const doors = useTrainDoors({ onCover: capture, isPrepared: () => prepared.current, onFinishRequested: () => completeTravel.current?.() });
   useEffect(() => { if (!doors.active) setSnapshot(null); }, [doors.active]);
   const wasTransitioning = useRef(false);
   useLayoutEffect(() => {
@@ -72,7 +74,7 @@ export function AppShell() {
             <Outlet />
           </Suspense>
         </main>
-        {doors.active && !doors.reduced && doors.phase !== 'opening' && <TransitPages phase={doors.phase} journey={doors.journey} snapshot={snapshot} captureDestination={captureDestination} onPrepared={onPrepared} onFinished={doors.finishTravel} />}
+        {doors.active && !doors.reduced && doors.phase !== 'opening' && <TransitPages phase={doors.phase} journey={doors.journey} snapshot={snapshot} captureDestination={captureDestination} onPrepared={onPrepared} onFinished={doors.finishTravel} registerFinish={registerFinish} />}
         <TrainDoors phase={doors.phase} />
       </div>
     </RailContext.Provider>

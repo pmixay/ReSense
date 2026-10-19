@@ -34,6 +34,7 @@ def prepare_travel(page):
 
 def finish_travel(page):
     page.evaluate("document.getAnimations().filter(a => a.id.startsWith('section-')).forEach(a => a.finish())")
+    page.clock.run_for(100)  # final destination must survive two painted frames before reveal
     expect(page.locator('[data-train-doors]')).to_have_attribute('data-phase', 'opening')
 
 
@@ -74,7 +75,7 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
     expect(doors).to_have_attribute('data-phase', 'closing')
     expect(page).to_have_url(app.base + '/player')
     expect(page.locator('main')).to_have_attribute('inert', '')
-    page.clock.run_for(360)
+    page.clock.run_for(270)
     expect(page).to_have_url(app.base + '/runs')
     expect(doors).to_have_attribute('data-phase', 'covered')
     leaves = page.locator('[data-door-leaf]').evaluate_all('els => els.map(el => el.getBoundingClientRect().toJSON())')
@@ -92,7 +93,7 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
     prepare_travel(page)
     assert page.locator('[data-app-shell]').get_attribute('data-travel-direction') == 'left'
     finish_travel(page)
-    page.clock.run_for(460)
+    page.clock.run_for(330)
     expect(doors).to_be_hidden()
     expect(page.locator('[data-transit-viewport]')).to_have_count(0)
     expect(page.locator('main')).not_to_have_attribute('inert', '')
@@ -127,7 +128,7 @@ def test_section_pages_follow_direction_with_continuous_blurred_intermediates(ap
     hold_travel(page)
     page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Загрузка', exact=True).click()
     doors = page.locator('[data-train-doors]')
-    page.clock.run_for(360)
+    page.clock.run_for(270)
     expect(doors).to_have_attribute('data-phase', 'covered')
     expect(page).to_have_url(app.base + '/upload')
     prepare_travel(page)
@@ -142,7 +143,7 @@ def test_section_pages_follow_direction_with_continuous_blurred_intermediates(ap
     page.clock.run_for(850)
     expect(doors).to_have_attribute('data-phase', 'travelling')
     finish_travel(page)
-    page.clock.run_for(460)
+    page.clock.run_for(330)
     expect(doors).to_be_hidden()
     assert page.locator('main').evaluate('el => getComputedStyle(el).transform === "none" && getComputedStyle(el).filter === "none"')
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
@@ -159,7 +160,7 @@ def test_long_journey_contains_every_station_without_visiting_its_url(app):
     # Use an actual navigation link, including the system-branch destinations.
     page.get_by_role('navigation', name='Разделы').get_by_role('button', name='3 Система').click()
     page.get_by_role('menuitem', name='О системе', exact=False).click()
-    page.clock.run_for(360)
+    page.clock.run_for(270)
     doors = page.locator('[data-train-doors]')
     expect(doors).to_have_attribute('data-phase', 'covered')
     expect(page).to_have_url(app.base + '/about')
@@ -179,7 +180,7 @@ def test_long_journey_contains_every_station_without_visiting_its_url(app):
     assert len(animations) == 3
     assert not any('filter' in a['properties'] for a in animations)
     finish_travel(page)
-    page.clock.run_for(460)
+    page.clock.run_for(330)
     expect(doors).to_be_hidden()
     assert page.evaluate('history.length') == before + 1
     assert page.evaluate('JSON.stringify(localStorage)') == stored
@@ -193,13 +194,17 @@ def test_resize_finishes_travel_without_leaving_a_stale_strip(app):
     expect(page.get_by_role('heading', name='Прогоны', exact=True)).to_be_visible()
     hold_travel(page)
     page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Загрузка', exact=True).click()
-    page.clock.run_for(360)
+    page.clock.run_for(270)
     prepare_travel(page)
     page.set_viewport_size({'width': 1280, 'height': 720})
-    # The resize event is a native rAF task under Playwright's clock.
-    page.clock.run_for(50)
+    # Native resize dispatch is real browser work; drive its subsequent painted-frame checks.
+    for _ in range(20):
+        page.clock.run_for(50)
+        if page.locator('[data-train-doors]').get_attribute('data-phase') == 'opening':
+            break
+        page.wait_for_timeout(20)
     expect(page.locator('[data-train-doors]')).to_have_attribute('data-phase', 'opening')
-    page.clock.run_for(460)
+    page.clock.run_for(330)
     expect(page.locator('[data-train-doors]')).to_be_hidden()
     expect(page.locator('[data-transit-viewport]')).to_have_count(0)
     expect(page).to_have_url(app.base + '/upload')
@@ -226,25 +231,30 @@ def test_failed_raster_preparation_reveals_page_and_recovers_next_navigation(app
     hold_travel(page)
     rail = page.get_by_role('navigation', name='Линия: путь работы с записью')
     rail.get_by_role('link', name='Загрузка', exact=True).click()
-    page.clock.run_for(360)
+    page.clock.run_for(270)
     for _ in range(80):
         page.clock.run_for(50)
         if page.locator('[data-transit-preparation-error]').count():
             break
         page.wait_for_timeout(20)
     expect(page.locator('[data-transit-preparation-error]')).to_have_count(1)
-    page.clock.run_for(5100)
-    expect(page.locator('[data-train-doors]')).to_have_attribute('data-phase', 'opening')
-    page.clock.run_for(460)
+    # Failed bitmap decoding must still carry every frozen tab through to the destination.
+    for _ in range(10):
+        page.clock.run_for(50)
+        if page.locator('[data-train-doors]').get_attribute('data-phase') == 'travelling':
+            break
+    expect(page.locator('[data-train-doors]')).to_have_attribute('data-phase', 'travelling')
+    finish_travel(page)
+    page.clock.run_for(330)
     expect(page.locator('[data-train-doors]')).to_be_hidden()
     expect(page).to_have_url(app.base + '/upload')
     # The failed embedded-font promise is evicted; the next journey can prepare normally.
     page.evaluate('window.travelHeld=false')
     rail.get_by_role('link', name='Очередь', exact=True).click()
-    page.clock.run_for(360)
+    page.clock.run_for(270)
     prepare_travel(page)
     finish_travel(page)
-    page.clock.run_for(460)
+    page.clock.run_for(330)
     expect(page.locator('[data-train-doors]')).to_be_hidden()
     expect(page).to_have_url(app.base + '/queue')
     assert app.errors == []
@@ -256,13 +266,73 @@ def test_hidden_player_suspends_only_its_renderer_during_frozen_travel(app):
     expect(page.get_by_role('heading', name='Очередь', exact=True)).to_be_visible()
     hold_travel(page)
     page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Плеер', exact=True).click()
-    page.clock.run_for(360)
+    page.clock.run_for(270)
     prepare_travel(page)
     canvas = page.locator('main [data-train-backdrop] canvas')
     expect(canvas).to_have_attribute('data-navigation-paused', 'true')
     finish_travel(page)
     expect(canvas).to_have_attribute('data-navigation-paused', 'false')
-    page.clock.run_for(460)
+    page.clock.run_for(330)
     expect(page.locator('[data-train-doors]')).to_be_hidden()
     expect(page.get_by_text('Прогонов пока нет', exact=True)).to_be_visible()
+    assert app.errors == []
+
+
+@pytest.mark.parametrize('source,target,label,expected', [
+    ('/upload', '/player', 'Плеер', ['upload', 'queue', 'runs', 'player']),
+    ('/player', '/upload', 'Загрузка', ['player', 'runs', 'queue', 'upload']),
+    ('/queue', '/compare', 'Сравнение', ['queue', 'runs', 'player', 'compare']),
+    ('/compare', '/queue', 'Очередь', ['compare', 'player', 'runs', 'queue']),
+])
+def test_every_visible_tab_passes_in_order_and_target_is_centered_before_open(app, source, target, label, expected):
+    page = app.page
+    app.goto(source)
+    expect(page.locator('main')).to_be_visible()
+    expect(page.locator('[data-page-fallback]')).to_have_count(0)
+    hold_travel(page)
+    page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name=label, exact=True).click()
+    page.clock.run_for(270)
+    prepare_travel(page)
+    samples = page.evaluate('''() => {
+        const animations=document.getAnimations().filter(a=>a.id.startsWith('section-'));
+        const duration=animations.find(a=>a.id==='section-travel').effect.getTiming().duration;
+        const stages=[...document.querySelector('[data-transit-frozen]').children];
+        const passed=[];
+        for(let i=0;i<=100;i++){
+            animations.forEach(a=>a.currentTime=duration*i/100);
+            const nearest=stages.reduce((a,b)=>Math.abs(a.getBoundingClientRect().x)<Math.abs(b.getBoundingClientRect().x)?a:b);
+            const index=+nearest.dataset.journeyIndex;
+            if(passed.at(-1)!==index)passed.push(index);
+        }
+        const target=stages.at(-1).getBoundingClientRect();
+        const targetNav=stages.at(-1).querySelector('nav[aria-label="Линия: путь работы с записью"] a[aria-current="page"]')?.getAttribute('href');
+        return {passed,keys:stages.map((s,i)=>s.dataset.transitPage|| (i===0?'origin':'target')),targetX:target.x,targetNav};
+    }''')
+    assert samples['passed'] == list(range(len(expected))), samples
+    assert samples['keys'][1:-1] == expected[1:-1], samples
+    assert abs(samples['targetX']) < .5, samples
+    assert samples['targetNav'] == target, samples
+    expect(page.locator('[data-train-doors]')).to_have_attribute('data-phase', 'travelling')
+    finish_travel(page)
+    page.clock.run_for(330)
+    expect(page.locator('[data-train-doors]')).to_be_hidden()
+    expect(page).to_have_url(app.base + target)
+    assert app.errors == []
+
+
+def test_native_dropdown_picker_is_themed_and_retains_keyboard_selection(app, backend):
+    page = app.page
+    preset = backend.api.post('/presets', {'name': 'Проверка списка', 'overrides': {}})
+    app.goto('/upload')
+    expect(page.get_by_role('heading', name='Загрузка', exact=True)).to_be_visible()
+    select = page.get_by_role('combobox', name='Пресет', exact=True)
+    expect(select).to_have_css('appearance', 'base-select')
+    select.focus()
+    page.keyboard.press('Space')
+    expect(page.get_by_role('option', name='Проверка списка', exact=True)).to_be_visible()
+    picker = select.evaluate('el=>({radius:getComputedStyle(el,"::picker(select)").borderRadius,font:getComputedStyle(el,"::picker(select)").fontFamily})')
+    assert picker['radius'] == '16px' and 'Raleway' in picker['font'], picker
+    page.keyboard.press('ArrowDown')
+    page.keyboard.press('Enter')
+    expect(select).to_have_value(preset['id'])
     assert app.errors == []

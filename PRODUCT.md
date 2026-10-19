@@ -63,6 +63,11 @@ The moving visuals are frozen before departure. Motion blur is baked into bounde
 temporary bitmaps; a single compositor timeline moves the complete journey and
 crossfades sharp endpoints. The doors reveal the page only after that animation
 actually finishes, preventing slow-frame/timer races and mid-travel content shifts.
+The strict rule is current tab → every intermediate tab in bar order → final tab,
+in either direction. Movement derives from the final stage's actual geometry and
+must leave it centered for two painted frames before reveal. Closing/opening are
+260/320ms; travel is 410–1320ms. Dropdown pickers and native form affordances use
+the shared type, colors and control shapes.
 The leaves follow the supplied
 Moskva-2020 photographs, with tall glazing, narrow black surrounds, center seals
 and red edge LEDs. Glass is matte and blurred but transparent: broad page colors

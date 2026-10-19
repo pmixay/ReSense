@@ -215,21 +215,27 @@ post at all pressure extremes. The dock blur is now 8px with a longer feather, s
 the upper bench remains recognizable while controls retain their dark ground.
 
 Section navigation uses one authored paired-door sequence in AppShell: close in
-350ms, settle until 360ms, capture the outgoing DOM/canvas appearance and commit
+260ms, settle until 270ms, capture the outgoing DOM/canvas appearance and commit
 the selected destination offscreen. `navigationJourney.ts` follows `LINE` then
 `BRANCH`: a left target enters from the left; a right target enters from the right.
 Every intervening station is included in travel order. One native Web Animations
 timeline translates a frozen strip containing outgoing, intermediate and
 destination images. Its sharp outgoing/destination endpoint crossfades share
-exactly the same document-timeline start time. Duration is 500ms plus 150ms per
-station interval (650–1700ms). The 32px motion blur is baked once into temporary
+exactly the same document-timeline start time. Duration is 280ms plus 130ms per
+station interval (410–1320ms), with near-linear cruising rather than an intermediate
+stop. The 32px motion blur is baked once into temporary
 bitmaps capped at 640×400; motion animates transform/opacity only. No moving DOM
 filter is recalculated. Sharp endpoints retain native-size DOM/canvas appearance.
 The real destination stays at its final layout geometry, hidden during travel.
-The leaves open in 450ms only after the native movement animation finishes;
+Every stage has an explicit viewport-width offset in navigation order; movement
+uses the actual final-stage offset. After finishing, that final offset is committed
+and the destination must align for two painted frames before the leaves open in 320ms;
 a delayed JS timer cannot cut the journey short. Preparation waits at most five
 seconds (including cold font/chunk/image decoding), with a 12-second whole-sequence
-recovery bound and a duration+2-second last-resort animation guard. Query changes and navigation
+recovery bound and a duration+2-second last-resort animation guard. Recovery finishes
+the native journey instead of discarding its strip on an intermediate page. Failed
+raster decoding still traverses the complete frozen stage sequence with CSS diffusion.
+Query changes and navigation
 within the same section (including Player run changes) are immediate. Browser
 Back/Forward uses the same route blocker and direction. Only the selected route
 enters browser history. A temporary outgoing DOM snapshot copies current form,
@@ -309,6 +315,13 @@ Current desktop captures and material provenance are in
 Retain the inherited radius ladder: inputs use `r-xs`; selects/tooltips and local Player telemetry use `r-sm`; the intervening tile radii remain available; global Card uses `r-lg`. Shared Button, Chip and Segmented defaults remain pill-shaped. Player camera groups instead use `r-sm` with `r-xs` options; local tools, transport and picker play buttons are rounded squares using `r-xs`. Local telemetry's crisp hairline border (1px), smaller radius and flat white surface do not redefine global Card. The display's rounded housing is generated geometry, not a CSS card-radius token.
 
 ## Components
+
+**Native controls.** Shared Select retains native keyboard/typeahead/disabled
+semantics. Supporting browsers use a Raleway, 16px-radius white `base-select`
+picker, neutral hover and red selected/checkmark state; other browsers retain
+the styled native fallback. Native accent/caret, scrollbar and file-button
+treatments follow the shared tokens; number fields omit duplicate browser spin
+buttons inside Stepper. Evidence: `docs/images/d1-controls-journey/`.
 
 **Buttons.** Shared Button offers primary, dark (default), outline, ghost, light and ghost-light variants. Medium geometry is in frontmatter; small/large heights are (36px/54px). Primary Button and red IconButton hover use `red-deep`; other hover states change fill or inset stroke. Button active presses down (1px). Disabled uses a neutral well with ink. Keyboard focus uses the inherited ink/white ring, with a white/red treatment on red chrome.
 

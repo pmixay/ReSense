@@ -28,10 +28,12 @@ function setup(reduced = false, initial = '/player/first?pos=4') {
   vi.stubGlobal('Request', class extends NativeRequest {
     constructor(input: RequestInfo | URL, init?: RequestInit) { super(input, { ...init, signal: undefined }); }
   });
-  vi.stubGlobal('matchMedia', () => ({ matches: reduced, addEventListener() {}, removeEventListener() {} }));
+  const listeners = new Set<() => void>();
+  const media = { matches: reduced, addEventListener(_type: string, listener: () => void) { listeners.add(listener); }, removeEventListener(_type: string, listener: () => void) { listeners.delete(listener); } };
+  vi.stubGlobal('matchMedia', () => media);
   const router = createMemoryRouter([{ path: '*', element: <Harness /> }], { initialEntries: [initial] });
   const view = render(<RouterProvider router={router} />);
-  return { router, overlay: view.container.querySelector('[data-train-doors]')! };
+  return { router, overlay: view.container.querySelector('[data-train-doors]')!, reduceMotion() { media.matches = true; listeners.forEach(listener => listener()); } };
 }
 async function advance(ms: number) { await act(async () => { await vi.advanceTimersByTimeAsync(ms); }); }
 async function finishTransition() {
@@ -47,7 +49,7 @@ describe('train door navigation', () => {
     const { router, overlay } = setup();
     fireEvent.click(screen.getByText('Runs'));
     expect(overlay.getAttribute('data-phase')).toBe('closing');
-    await advance(350);
+    await advance(260);
     expect(router.state.location.pathname).toBe('/player/first');
     await advance(10);
     expect(router.state.location.pathname).toBe('/runs');
@@ -82,6 +84,18 @@ describe('train door navigation', () => {
     await advance(75);
     expect(router.state.location.pathname).toBe('/runs');
     await advance(25);
+    expect(overlay.getAttribute('data-phase')).toBe('opening');
+    await advance(100);
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+  });
+
+  it('releases a running journey when reduced motion is enabled mid-transition', async () => {
+    const { overlay, reduceMotion } = setup();
+    fireEvent.click(screen.getByText('Runs'));
+    await advance(270);
+    await advance(25);
+    expect(overlay.getAttribute('data-phase')).toBe('travelling');
+    act(() => reduceMotion());
     expect(overlay.getAttribute('data-phase')).toBe('opening');
     await advance(100);
     expect(overlay.getAttribute('data-phase')).toBe('idle');

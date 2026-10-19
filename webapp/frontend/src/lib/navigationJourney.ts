@@ -18,5 +18,5 @@ export function navigationJourney(from: string, to: string): NavigationJourney {
   const direction = a >= 0 && b >= 0 && b < a ? 'left' : 'right';
   const via = a < 0 || b < 0 ? [] : order.slice(Math.min(a, b) + 1, Math.max(a, b));
   if (direction === 'left') via.reverse();
-  return { direction, via, target, steps, duration: steps ? 500 + steps * 150 : 0 };
+  return { direction, via, target, steps, duration: steps ? 280 + steps * 130 : 0 };
 }

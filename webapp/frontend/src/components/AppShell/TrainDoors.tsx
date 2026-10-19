@@ -8,7 +8,7 @@ type Phase = 'idle' | 'closing' | 'covered' | 'travelling' | 'opening';
 const section = (pathname: string) => pathname.split('/')[1] || 'overview';
 
 /** One continuous directional journey, with intermediate views behind closed glass. */
-export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () => boolean } = {}) {
+export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () => boolean; onFinishRequested?: () => void } = {}) {
   const location = useLocation();
   const blocker = useBlocker(({ currentLocation, nextLocation }) => section(currentLocation.pathname) !== section(nextLocation.pathname));
   const [phase, setPhase] = useState<Phase>('idle');
@@ -48,7 +48,7 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
       if (!reduced) latest.current.onCover?.();
       setPhase('covered');
       proceed.current?.();
-    }, reduced ? 75 : 360);
+    }, reduced ? 75 : 270);
     return () => window.clearTimeout(timer);
   }, [phase, reduced]);
 
@@ -57,9 +57,10 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
     // Keep the outgoing snapshot centered until destination and passing views are ready.
     const started = performance.now();
     const reveal = () => {
-      if ((document.querySelector('[data-page-fallback]') || (!reduced && latest.current.isPrepared?.() === false)) && performance.now() - started < 5000) {
+      const preparing = !reduced && latest.current.isPrepared?.() === false;
+      if (preparing || (document.querySelector('[data-page-fallback]') && performance.now() - started < 5000)) {
         timer = window.setTimeout(reveal, 50);
-      } else setPhase(reduced || latest.current.isPrepared?.() === false ? 'opening' : 'travelling');
+      } else setPhase(reduced ? 'opening' : 'travelling');
     };
     let timer = window.setTimeout(reveal, 25);
     return () => window.clearTimeout(timer);
@@ -67,8 +68,12 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
 
   useEffect(() => {
     if (phase !== 'travelling') return;
+    if (reduced) {
+      setPhase('opening');
+      return;
+    }
     // Normal completion comes from the compositor's finished promise, not a wall-clock race.
-    const timer = window.setTimeout(() => setPhase('opening'), reduced ? 0 : journey.duration + 2000);
+    const timer = window.setTimeout(() => latest.current.onFinishRequested?.(), journey.duration + 2000);
     return () => window.clearTimeout(timer);
   }, [phase, reduced, journey.duration]);
 
@@ -76,7 +81,7 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
 
   useEffect(() => {
     if (phase !== 'opening') return;
-    const timer = window.setTimeout(() => setPhase('idle'), reduced ? 100 : 460);
+    const timer = window.setTimeout(() => setPhase('idle'), reduced ? 100 : 330);
     return () => window.clearTimeout(timer);
   }, [phase, reduced]);
 
@@ -85,6 +90,10 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
   useEffect(() => {
     if (!active) return;
     const timer = window.setTimeout(() => {
+      if (latest.current.onFinishRequested && document.querySelector('[data-section-motion="travelling"]')) {
+        latest.current.onFinishRequested();
+        return;
+      }
       proceed.current?.();
       setPhase('idle');
     }, 12000);
