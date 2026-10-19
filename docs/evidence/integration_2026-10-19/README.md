@@ -50,7 +50,15 @@ That agrees with P3's own check.
 | real obstacles on the gate | of 50 obstacle rows (`doubleT_obstacle`, every set O object: STOP frames, first STOP, held from), only `thin_hanging` changed, and it improved. `doubleT_obstacle` has 1 STOP episode from frame 8, as before |
 | whole Falcon recording vs `main` | 8 rows differ, all decisions STOP → CAUTION at frames 4394–4401 (the tunnel ceiling, H′). False STOP frames **12 → 4**; the remaining 4 (159, 2312–2314) are the static support at ~115 m that only S2 would remove (S2 off). Person: all 1,360 STOP frames kept, first STOP unchanged at 124.84 m. No new STOP frame. F1a and R3 change nothing on Falcon |
 
-Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–42; the plan per role: [`BACKLOG.md`](../../BACKLOG.md),
+### K2 variant B on (`c9e8daa`, the committed defaults)
+
+| check | result |
+|---|---|
+| whole Falcon recording vs the same configuration without K2 (`11bb1ab`) | **the walking person: first STOP 124.84 m → 112.97 m (frame 2972 → 3070); person STOP frames 1,360 → 1,202 (158 lost, frames 2972–3065, 113–125 m)**. Cause in the records: at 113–125 m the person is seen on the axis (lateral 0.07–0.3 m) but only as a warning, beyond the trusted range, which the reach cap sets at 107–123 m (without K2 it was a STOP). The 4 remaining false STOP frames are gone; 9 new STOP frames not on the person (4373–4379 at 6.5 m, 4410–4411 at 3.0 m; not attributed, unverified); CAUTION 3,070 → 2,530 frames, GO 8 → 580. Decisions differ in 622 frames |
+| the organizers' dust (13 frames of the marked synthetic bags) | no STOP, and no detection or warning at a dust box (the CAUTIONs come from warnings at 1.75–152 m, as with 1.1.0): **the dust guard stays off** (captain's decision 5) |
+| STOP detections on the marked bags vs 1.1.0 | platform 187 / 187 on marked objects (1.1.0: 185 / 185); switch 150 / 151 (1.1.0: 133 / 142, the background STOPs at 147 m are gone); tunnels 107 / 111 (1.1.0: 120 / 128). Per marked object, the STOP frames are equal or more, except the **small cube right of `synthetic_tunnels` (marker id 19): 30 → 14**; at 30–55 m (frames 259–273) it is no longer a detection or a warning. Its marker is ~1.45 m right of the sensor axis, probably just outside the 2.1 m gauge (N5: "boundary uncertain"); not verified |
+
+Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–43; the plan per role: [`BACKLOG.md`](../../BACKLOG.md),
 "Current plan".
 
 ## 4. Not done yet / not checked
