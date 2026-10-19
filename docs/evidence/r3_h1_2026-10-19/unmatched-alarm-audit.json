@@ -1,0 +1,2310 @@
+{
+  "nominal": {
+    "baseline_unmatched_frames": 6,
+    "candidate_unmatched_frames": 7,
+    "added_unmatched_frames": [
+      779
+    ],
+    "removed_unmatched_frames": [],
+    "examples": [
+      {
+        "i": 779,
+        "dets": [
+          {
+            "d": 46.56,
+            "lat": 0.2,
+            "size": [
+              0.02,
+              0.0,
+              0.44
+            ],
+            "n": 3,
+            "zone": "gauge",
+            "kind": "hanging",
+            "reason": "",
+            "conf": 0.45,
+            "age": 3,
+            "hmin": 2.98,
+            "c": [
+              46.57,
+              0.0,
+              1.71
+            ]
+          }
+        ],
+        "labels": [],
+        "full_state": {
+          "blobs": [
+            {
+              "fn": "_corridor_cluster",
+              "x0": 3.02,
+              "x1": 5.83,
+              "y": 1.35,
+              "y0": 1.32,
+              "y1": 1.37,
+              "n_vox": 58,
+              "size": [
+                2.81,
+                0.04,
+                0.2
+              ],
+              "fail": "infra_linear_side",
+              "cond": "return (size[0] > cfg.linear_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.linear_max_height",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    2.8141748905181885,
+                    0.042865633964538574,
+                    0.20108187198638916
+                  ],
+                  "h_max": 0.37985007099443013,
+                  "lateral": 1.352702285437023,
+                  "spare_wall": false,
+                  "lat_along": 1.390778439756757,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    2.8141748905181885,
+                    0.042865633964538574,
+                    0.20108187198638916
+                  ],
+                  "min_pts": 5,
+                  "dist": 3.016594171524048,
+                  "weak": false,
+                  "h_max": 0.37985007099443013,
+                  "lat_rules": 1.352702285437023,
+                  "spare": false,
+                  "lateral": 1.352702285437023,
+                  "lat_along": 1.390778439756757,
+                  "factor": 1.0,
+                  "n_vox": 58,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 6.42,
+              "x1": 20.76,
+              "y": 1.32,
+              "y0": 1.23,
+              "y1": 1.35,
+              "n_vox": 136,
+              "size": [
+                14.34,
+                0.12,
+                0.28
+              ],
+              "fail": "oversize_split_refused",
+              "cond": "if part is None:",
+              "evidence": {
+                "_corridor_cluster": {
+                  "keep_thin": true,
+                  "size": [
+                    14.338510513305664,
+                    0.11876380443572998,
+                    0.27756190299987793
+                  ],
+                  "factor": 1.0,
+                  "n_vox": 136,
+                  "part_is_none": true,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 21.64,
+              "x1": 25.61,
+              "y": 1.26,
+              "y0": 1.21,
+              "y1": 1.29,
+              "n_vox": 23,
+              "size": [
+                3.97,
+                0.08,
+                0.19
+              ],
+              "fail": "infra_linear_thin",
+              "cond": "if size[0] > cfg.thin_min_length and size[1] < cfg.thin_max_width and size[2] < cfg.thin_max_height:",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    3.973278045654297,
+                    0.07689845561981201,
+                    0.1917148232460022
+                  ],
+                  "h_max": 0.3291598335565977,
+                  "lateral": 1.2557087385136148,
+                  "spare_wall": false,
+                  "lat_along": 1.3697154210042348,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    3.973278045654297,
+                    0.07689845561981201,
+                    0.1917148232460022
+                  ],
+                  "min_pts": 5,
+                  "dist": 21.639911651611328,
+                  "weak": false,
+                  "h_max": 0.3291598335565977,
+                  "lat_rules": 1.2557087385136148,
+                  "spare": false,
+                  "lateral": 1.2557087385136148,
+                  "lat_along": 1.3697154210042348,
+                  "factor": 1.0,
+                  "n_vox": 23,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 26.9,
+              "x1": 27.87,
+              "y": 1.24,
+              "y0": 1.23,
+              "y1": 1.26,
+              "n_vox": 6,
+              "size": [
+                0.96,
+                0.03,
+                0.21
+              ],
+              "fail": "infra_linear_side",
+              "cond": "return (size[0] > cfg.linear_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.linear_max_height",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    0.9649219512939453,
+                    0.0330653190612793,
+                    0.21173685789108276
+                  ],
+                  "h_max": 0.3646746375414658,
+                  "lateral": 1.2447087439623745,
+                  "spare_wall": false,
+                  "lat_along": 1.373588740841857,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    0.9649219512939453,
+                    0.0330653190612793,
+                    0.21173685789108276
+                  ],
+                  "min_pts": 5,
+                  "dist": 26.904842376708984,
+                  "weak": false,
+                  "h_max": 0.3646746375414658,
+                  "lat_rules": 1.2447087439623745,
+                  "spare": false,
+                  "lateral": 1.2447087439623745,
+                  "lat_along": 1.373588740841857,
+                  "factor": 1.0,
+                  "n_vox": 6,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 29.14,
+              "x1": 30.36,
+              "y": 1.25,
+              "y0": 1.21,
+              "y1": 1.26,
+              "n_vox": 7,
+              "size": [
+                1.22,
+                0.06,
+                0.2
+              ],
+              "fail": "infra_linear_side",
+              "cond": "return (size[0] > cfg.linear_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.linear_max_height",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    1.2212047576904297,
+                    0.05718708038330078,
+                    0.1954246163368225
+                  ],
+                  "h_max": 0.35825650166743017,
+                  "lateral": 1.2477033535639446,
+                  "spare_wall": false,
+                  "lat_along": 1.3856193598223898,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    1.2212047576904297,
+                    0.05718708038330078,
+                    0.1954246163368225
+                  ],
+                  "min_pts": 5,
+                  "dist": 29.143198013305664,
+                  "weak": false,
+                  "h_max": 0.35825650166743017,
+                  "lat_rules": 1.2477033535639446,
+                  "spare": false,
+                  "lateral": 1.2477033535639446,
+                  "lat_along": 1.3856193598223898,
+                  "factor": 1.0,
+                  "n_vox": 7,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 32.79,
+              "x1": 33.65,
+              "y": 1.22,
+              "y0": 1.2,
+              "y1": 1.24,
+              "n_vox": 5,
+              "size": [
+                0.86,
+                0.04,
+                0.22
+              ],
+              "fail": "infra_linear_side",
+              "cond": "return (size[0] > cfg.linear_min_aspect * max(float(size[1]), 0.05) and size[2] < cfg.linear_max_height",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    0.8608512878417969,
+                    0.04176056385040283,
+                    0.2230161428451538
+                  ],
+                  "h_max": 0.3530656130350893,
+                  "lateral": 1.2188524156808853,
+                  "spare_wall": false,
+                  "lat_along": 1.36908312565756,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    0.8608512878417969,
+                    0.04176056385040283,
+                    0.2230161428451538
+                  ],
+                  "min_pts": 5,
+                  "dist": 32.791805267333984,
+                  "weak": false,
+                  "h_max": 0.3530656130350893,
+                  "lat_rules": 1.2188524156808853,
+                  "spare": false,
+                  "lateral": 1.2188524156808853,
+                  "lat_along": 1.36908312565756,
+                  "factor": 1.0,
+                  "n_vox": 5,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 35.75,
+              "x1": 36.74,
+              "y": 1.2,
+              "y0": 1.15,
+              "y1": 1.23,
+              "n_vox": 5,
+              "size": [
+                0.99,
+                0.08,
+                0.14
+              ],
+              "fail": "infra_hardware",
+              "cond": "if h_max < cfg.hardware_max_top and size[1] < cfg.hardware_max_width and size[2] < cfg.hardware_max_height:",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    0.9872512817382812,
+                    0.08372485637664795,
+                    0.14050310850143433
+                  ],
+                  "h_max": 0.3000565163709066,
+                  "lateral": 1.2048432297176785,
+                  "spare_wall": false,
+                  "lat_along": 1.3657080003903068,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    0.9872512817382812,
+                    0.08372485637664795,
+                    0.14050310850143433
+                  ],
+                  "min_pts": 5,
+                  "dist": 35.74870300292969,
+                  "weak": false,
+                  "h_max": 0.3000565163709066,
+                  "lat_rules": 1.2048432297176785,
+                  "spare": false,
+                  "lateral": 1.2048432297176785,
+                  "lat_along": 1.3657080003903068,
+                  "factor": 1.0,
+                  "n_vox": 5,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 38.43,
+              "x1": 38.92,
+              "y": 1.19,
+              "y0": 1.15,
+              "y1": 1.23,
+              "n_vox": 5,
+              "size": [
+                0.49,
+                0.08,
+                0.19
+              ],
+              "fail": "infra_hardware",
+              "cond": "if h_max < cfg.hardware_max_top and size[1] < cfg.hardware_max_width and size[2] < cfg.hardware_max_height:",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    0.4918327331542969,
+                    0.08114099502563477,
+                    0.19246912002563477
+                  ],
+                  "h_max": 0.3468402952739251,
+                  "lateral": 1.1885405949183874,
+                  "spare_wall": false,
+                  "lat_along": 1.3590948241003464,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    0.4918327331542969,
+                    0.08114099502563477,
+                    0.19246912002563477
+                  ],
+                  "min_pts": 5,
+                  "dist": 38.42647933959961,
+                  "weak": false,
+                  "h_max": 0.3468402952739251,
+                  "lat_rules": 1.1885405949183874,
+                  "spare": false,
+                  "lateral": 1.1885405949183874,
+                  "lat_along": 1.3590948241003464,
+                  "factor": 1.0,
+                  "n_vox": 5,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 41.54,
+              "x1": 41.67,
+              "y": 1.18,
+              "y0": 1.16,
+              "y1": 1.21,
+              "n_vox": 3,
+              "size": [
+                0.12,
+                0.05,
+                0.19
+              ],
+              "fail": "min_points",
+              "cond": "if not (ordinary or cross_ring):",
+              "evidence": {
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    0.12329864501953125,
+                    0.05366778373718262,
+                    0.18654489517211914
+                  ],
+                  "min_pts": 5,
+                  "dist": 41.54404830932617,
+                  "ordinary": false,
+                  "cross_ring": false,
+                  "weak": false,
+                  "factor": 1.0,
+                  "n_vox": 3,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 43.7,
+              "x1": 44.04,
+              "y": 1.16,
+              "y0": 1.09,
+              "y1": 1.2,
+              "n_vox": 5,
+              "size": [
+                0.34,
+                0.11,
+                0.19
+              ],
+              "fail": "infra_hardware",
+              "cond": "if h_max < cfg.hardware_max_top and size[1] < cfg.hardware_max_width and size[2] < cfg.hardware_max_height:",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    0.3434257507324219,
+                    0.1102825403213501,
+                    0.19165575504302979
+                  ],
+                  "h_max": 0.32843119101308194,
+                  "lateral": 1.155859845025199,
+                  "spare_wall": false,
+                  "lat_along": 1.3456447391551976,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    0.3434257507324219,
+                    0.1102825403213501,
+                    0.19165575504302979
+                  ],
+                  "min_pts": 5,
+                  "dist": 43.70045471191406,
+                  "weak": false,
+                  "h_max": 0.32843119101308194,
+                  "lat_rules": 1.155859845025199,
+                  "spare": false,
+                  "lateral": 1.155859845025199,
+                  "lat_along": 1.3456447391551976,
+                  "factor": 1.0,
+                  "n_vox": 5,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 46.74,
+              "x1": 46.84,
+              "y": 1.16,
+              "y0": 1.11,
+              "y1": 1.2,
+              "n_vox": 3,
+              "size": [
+                0.11,
+                0.08,
+                0.09
+              ],
+              "fail": "min_points",
+              "cond": "if not (ordinary or cross_ring):",
+              "evidence": {
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    0.10518646240234375,
+                    0.08289480209350586,
+                    0.08763384819030762
+                  ],
+                  "min_pts": 5,
+                  "dist": 46.73506546020508,
+                  "ordinary": false,
+                  "cross_ring": false,
+                  "weak": false,
+                  "factor": 1.0,
+                  "n_vox": 3,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 49.13,
+              "x1": 49.29,
+              "y": 1.12,
+              "y0": 1.06,
+              "y1": 1.17,
+              "n_vox": 5,
+              "size": [
+                0.15,
+                0.11,
+                0.19
+              ],
+              "fail": "infra_hardware",
+              "cond": "if h_max < cfg.hardware_max_top and size[1] < cfg.hardware_max_width and size[2] < cfg.hardware_max_height:",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    0.15470504760742188,
+                    0.10928404331207275,
+                    0.19112074375152588
+                  ],
+                  "h_max": 0.3401100648072446,
+                  "lateral": 1.1323100295252135,
+                  "spare_wall": false,
+                  "lat_along": 1.3323100295252135,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    0.15470504760742188,
+                    0.10928404331207275,
+                    0.19112074375152588
+                  ],
+                  "min_pts": 5,
+                  "dist": 49.13301467895508,
+                  "weak": false,
+                  "h_max": 0.3401100648072446,
+                  "lat_rules": 1.1323100295252135,
+                  "spare": false,
+                  "lateral": 1.1323100295252135,
+                  "lat_along": 1.3323100295252135,
+                  "factor": 1.0,
+                  "n_vox": 5,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 51.65,
+              "x1": 55.25,
+              "y": 1.1,
+              "y0": 1.06,
+              "y1": 1.14,
+              "n_vox": 5,
+              "size": [
+                3.6,
+                0.08,
+                0.14
+              ],
+              "fail": "infra_linear_thin",
+              "cond": "if size[0] > cfg.thin_min_length and size[1] < cfg.thin_max_width and size[2] < cfg.thin_max_height:",
+              "evidence": {
+                "_is_infrastructure": {
+                  "size": [
+                    3.599231719970703,
+                    0.08078110218048096,
+                    0.1435297727584839
+                  ],
+                  "h_max": 0.30386936819742383,
+                  "lateral": 1.120181559404514,
+                  "spare_wall": false,
+                  "lat_along": 1.320181559404514,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                },
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    3.599231719970703,
+                    0.08078110218048096,
+                    0.1435297727584839
+                  ],
+                  "min_pts": 5,
+                  "dist": 51.6536979675293,
+                  "weak": false,
+                  "h_max": 0.30386936819742383,
+                  "lat_rules": 1.120181559404514,
+                  "spare": false,
+                  "lateral": 1.120181559404514,
+                  "lat_along": 1.320181559404514,
+                  "factor": 1.0,
+                  "n_vox": 5,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 66.74,
+              "x1": 70.29,
+              "y": 1.06,
+              "y0": 1.01,
+              "y1": 1.09,
+              "n_vox": 3,
+              "size": [
+                3.55,
+                0.08,
+                0.09
+              ],
+              "fail": "min_points",
+              "cond": "if not (ordinary or cross_ring):",
+              "evidence": {
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    3.55419921875,
+                    0.08337926864624023,
+                    0.08780241012573242
+                  ],
+                  "min_pts": 5,
+                  "dist": 66.73959350585938,
+                  "ordinary": false,
+                  "cross_ring": false,
+                  "weak": false,
+                  "factor": 1.0,
+                  "n_vox": 3,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 75.42,
+              "x1": 77.87,
+              "y": 1.0,
+              "y0": 0.97,
+              "y1": 1.05,
+              "n_vox": 3,
+              "size": [
+                2.45,
+                0.08,
+                0.12
+              ],
+              "fail": "min_points",
+              "cond": "if not (ordinary or cross_ring):",
+              "evidence": {
+                "_corridor_cluster": {
+                  "thin": false,
+                  "keep_thin": true,
+                  "size": [
+                    2.4514236450195312,
+                    0.07641267776489258,
+                    0.11988699436187744
+                  ],
+                  "min_pts": 5,
+                  "dist": 75.41834259033203,
+                  "ordinary": false,
+                  "cross_ring": false,
+                  "weak": false,
+                  "factor": 1.0,
+                  "n_vox": 3,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 143.2,
+              "x1": 154.1,
+              "y": -1.69,
+              "y0": -1.88,
+              "y1": -1.49,
+              "n_vox": 8,
+              "size": [
+                10.91,
+                0.39,
+                1.55
+              ],
+              "fail": "oversize_split_refused",
+              "cond": "if part is None:",
+              "evidence": {
+                "_corridor_cluster": {
+                  "keep_thin": true,
+                  "size": [
+                    10.90625,
+                    0.3910118341445923,
+                    1.5469257831573486
+                  ],
+                  "factor": 1.0,
+                  "n_vox": 8,
+                  "part_is_none": true,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_corridor_cluster",
+              "x0": 166.04,
+              "x1": 183.16,
+              "y": -0.05,
+              "y0": -1.08,
+              "y1": 0.73,
+              "n_vox": 16,
+              "size": [
+                17.12,
+                1.81,
+                2.79
+              ],
+              "fail": "oversize_split_refused",
+              "cond": "if part is None:",
+              "evidence": {
+                "_corridor_cluster": {
+                  "keep_thin": true,
+                  "size": [
+                    17.121536254882812,
+                    1.80718195438385,
+                    2.787092924118042
+                  ],
+                  "factor": 1.0,
+                  "n_vox": 16,
+                  "part_is_none": true,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_low_cluster",
+              "x0": 3.08,
+              "x1": 5.75,
+              "y": 0.72,
+              "y0": 0.65,
+              "y1": 0.73,
+              "n_vox": 39,
+              "size": [
+                2.67,
+                0.09,
+                0.13
+              ],
+              "fail": "low_shape",
+              "cond": "if (size[0] < getattr(low_cfg, \"min_length\", 0.0) or size[0] > low_cfg.max_length or size[1] > low_cfg.max_width or size[2] < low_cfg.min_height or b.n_vox < low_cfg.min_points):",
+              "evidence": {
+                "_low_cluster": {
+                  "size": [
+                    2.668034791946411,
+                    0.08680957555770874,
+                    0.12734556198120117
+                  ],
+                  "n_vox": 39,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  },
+                  "low_cfg": {
+                    "min_length": 0.0,
+                    "max_length": 0.8,
+                    "max_width": 2.2,
+                    "min_height": 0.0,
+                    "min_points": 3,
+                    "min_width": 0.35,
+                    "min_top": 0.1
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_low_cluster",
+              "x0": 11.76,
+              "x1": 12.15,
+              "y": 0.69,
+              "y0": 0.68,
+              "y1": 0.69,
+              "n_vox": 4,
+              "size": [
+                0.39,
+                0.01,
+                0.03
+              ],
+              "fail": "low_narrow",
+              "cond": "if size[1] < low_cfg.min_width:",
+              "evidence": {
+                "_low_cluster": {
+                  "size": [
+                    0.39349842071533203,
+                    0.009230613708496094,
+                    0.028010964393615723
+                  ],
+                  "n_vox": 4,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  },
+                  "low_cfg": {
+                    "min_length": 0.0,
+                    "max_length": 0.8,
+                    "max_width": 2.2,
+                    "min_height": 0.0,
+                    "min_points": 3,
+                    "min_width": 0.35,
+                    "min_top": 0.1
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_low_cluster",
+              "x0": 12.66,
+              "x1": 13.09,
+              "y": 0.68,
+              "y0": 0.68,
+              "y1": 0.69,
+              "n_vox": 3,
+              "size": [
+                0.44,
+                0.01,
+                0.02
+              ],
+              "fail": "low_narrow",
+              "cond": "if size[1] < low_cfg.min_width:",
+              "evidence": {
+                "_low_cluster": {
+                  "size": [
+                    0.4375143051147461,
+                    0.009971022605895996,
+                    0.021857261657714844
+                  ],
+                  "n_vox": 3,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  },
+                  "low_cfg": {
+                    "min_length": 0.0,
+                    "max_length": 0.8,
+                    "max_width": 2.2,
+                    "min_height": 0.0,
+                    "min_points": 3,
+                    "min_width": 0.35,
+                    "min_top": 0.1
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_low_cluster",
+              "x0": 14.47,
+              "x1": 14.94,
+              "y": 0.67,
+              "y0": 0.66,
+              "y1": 0.68,
+              "n_vox": 3,
+              "size": [
+                0.47,
+                0.01,
+                0.03
+              ],
+              "fail": "low_narrow",
+              "cond": "if size[1] < low_cfg.min_width:",
+              "evidence": {
+                "_low_cluster": {
+                  "size": [
+                    0.46518611907958984,
+                    0.014407873153686523,
+                    0.02893209457397461
+                  ],
+                  "n_vox": 3,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  },
+                  "low_cfg": {
+                    "min_length": 0.0,
+                    "max_length": 0.8,
+                    "max_width": 2.2,
+                    "min_height": 0.0,
+                    "min_points": 3,
+                    "min_width": 0.35,
+                    "min_top": 0.1
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_low_cluster",
+              "x0": 38.54,
+              "x1": 38.56,
+              "y": -0.17,
+              "y0": -0.3,
+              "y1": -0.04,
+              "n_vox": 4,
+              "size": [
+                0.02,
+                0.27,
+                0.0
+              ],
+              "fail": "low_narrow",
+              "cond": "if size[1] < low_cfg.min_width:",
+              "evidence": {
+                "_low_cluster": {
+                  "size": [
+                    0.016109466552734375,
+                    0.2690730392932892,
+                    0.000652313232421875
+                  ],
+                  "n_vox": 4,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  },
+                  "low_cfg": {
+                    "min_length": 0.0,
+                    "max_length": 0.8,
+                    "max_width": 2.2,
+                    "min_height": 0.0,
+                    "min_points": 3,
+                    "min_width": 0.35,
+                    "min_top": 0.1
+                  }
+                }
+              }
+            },
+            {
+              "fn": "_low_cluster",
+              "x0": 58.21,
+              "x1": 58.28,
+              "y": -0.23,
+              "y0": -0.33,
+              "y1": -0.13,
+              "n_vox": 4,
+              "size": [
+                0.07,
+                0.2,
+                0.11
+              ],
+              "fail": "low_narrow",
+              "cond": "if size[1] < low_cfg.min_width:",
+              "evidence": {
+                "_low_cluster": {
+                  "size": [
+                    0.07098770141601562,
+                    0.20351921021938324,
+                    0.11240661144256592
+                  ],
+                  "n_vox": 4,
+                  "cfg": {
+                    "max_extent": 8.0,
+                    "oversize_split_max_length": 3.0,
+                    "min_height": 0.08,
+                    "gauge_min_points": 3,
+                    "thin_min_length": 3.0,
+                    "thin_max_width": 0.35,
+                    "thin_max_height": 0.25,
+                    "hardware_max_top": 0.35,
+                    "hardware_max_width": 0.4,
+                    "hardware_max_height": 0.3,
+                    "wall_min_height": 1.9,
+                    "wall_min_lateral": 1.2,
+                    "wall_segment_min_length": 4.0,
+                    "wall_segment_max_width": 1.5,
+                    "linear_min_aspect": 5.0,
+                    "linear_max_height": 0.8,
+                    "linear_min_lateral": 0.8
+                  },
+                  "low_cfg": {
+                    "min_length": 0.0,
+                    "max_length": 0.8,
+                    "max_width": 2.2,
+                    "min_height": 0.0,
+                    "min_points": 3,
+                    "min_width": 0.35,
+                    "min_top": 0.1
+                  }
+                }
+              }
+            }
+          ],
+          "clusters": {},
+          "tracks": [
+            {
+              "id": 352,
+              "hits": 4,
+              "misses": 3,
+              "age": 8,
+              "confidence": 0.1942510051408617,
+              "reported": false,
+              "column_held": false,
+              "approach_block": false,
+              "far_evidence": false,
+              "clean_run": 0,
+              "doubt": 0,
+              "withheld": false,
+              "fresh_blocked": false,
+              "near_escalated": false,
+              "span_s": 0.7999439239501953,
+              "stop_earned": false,
+              "was_stop": false,
+              "kept": false,
+              "hold": 0,
+              "last": 124088943823952,
+              "zone": "warning",
+              "rule_zone": "warning",
+              "vote_zone": "warning",
+              "hit_fraction": 0.5,
+              "timed": true,
+              "zone_hist": [
+                false,
+                false,
+                false,
+                false
+              ],
+              "explained": false,
+              "provisional": false,
+              "qualifies": false,
+              "last_kind": "",
+              "last_low_weak": false,
+              "history_max": 4.59,
+              "column_hist": [
+                false,
+                false,
+                false,
+                false
+              ],
+              "column_hold": 2,
+              "branch": {
+                "gates": [],
+                "zone_eval": {},
+                "qualifies": {
+                  "value": false,
+                  "line": 918,
+                  "guard": "",
+                  "hits": 4,
+                  "need_hits": 3,
+                  "confidence": 0.1942510051408617,
+                  "conf_threshold": 0.6,
+                  "misses": 3,
+                  "span_s": 0.7999439239501953,
+                  "need_span": 0.5,
+                  "hit_fraction": 0.5,
+                  "min_hit_fraction": 0.6
+                },
+                "report_assignment": {
+                  "line": 456,
+                  "q": false,
+                  "reported_before": false,
+                  "misses": 3,
+                  "hold_misses": 1,
+                  "hold": 0,
+                  "explained_blocked": false
+                }
+              }
+            },
+            {
+              "id": 353,
+              "hits": 3,
+              "misses": 1,
+              "age": 6,
+              "confidence": 0.0,
+              "reported": false,
+              "column_held": false,
+              "approach_block": false,
+              "far_evidence": false,
+              "clean_run": 0,
+              "doubt": 0,
+              "withheld": false,
+              "fresh_blocked": false,
+              "near_escalated": false,
+              "span_s": 0.5999319553375244,
+              "stop_earned": false,
+              "was_stop": false,
+              "kept": false,
+              "hold": 0,
+              "last": 124088982740416,
+              "zone": "warning",
+              "rule_zone": "warning",
+              "vote_zone": "warning",
+              "hit_fraction": 0.5,
+              "timed": true,
+              "zone_hist": [
+                false,
+                false,
+                false
+              ],
+              "explained": false,
+              "provisional": false,
+              "qualifies": false,
+              "last_kind": "",
+              "last_low_weak": false,
+              "history_max": 3.76,
+              "column_hist": [
+                false,
+                false,
+                false
+              ],
+              "column_hold": 2,
+              "branch": {
+                "gates": [],
+                "zone_eval": {},
+                "qualifies": {
+                  "value": false,
+                  "line": 918,
+                  "guard": "",
+                  "hits": 3,
+                  "need_hits": 3,
+                  "confidence": 0.0,
+                  "conf_threshold": 0.6,
+                  "misses": 1,
+                  "span_s": 0.5999319553375244,
+                  "need_span": 0.5,
+                  "hit_fraction": 0.5,
+                  "min_hit_fraction": 0.6
+                },
+                "report_assignment": {
+                  "line": 456,
+                  "q": false,
+                  "reported_before": false,
+                  "misses": 1,
+                  "hold_misses": 1,
+                  "hold": 0,
+                  "explained_blocked": false
+                }
+              }
+            },
+            {
+              "id": 354,
+              "hits": 3,
+              "misses": 1,
+              "age": 6,
+              "confidence": 0.44999999999999996,
+              "reported": false,
+              "column_held": false,
+              "approach_block": false,
+              "far_evidence": false,
+              "clean_run": 0,
+              "doubt": 0,
+              "withheld": false,
+              "fresh_blocked": false,
+              "near_escalated": false,
+              "span_s": 0.5999319553375244,
+              "stop_earned": false,
+              "was_stop": false,
+              "kept": false,
+              "hold": 0,
+              "last": 124088982743680,
+              "zone": "warning",
+              "rule_zone": "warning",
+              "vote_zone": "warning",
+              "hit_fraction": 0.5,
+              "timed": true,
+              "zone_hist": [
+                false,
+                false,
+                false
+              ],
+              "explained": false,
+              "provisional": false,
+              "qualifies": false,
+              "last_kind": "",
+              "last_low_weak": false,
+              "history_max": 7.39,
+              "column_hist": [
+                false,
+                false,
+                false
+              ],
+              "column_hold": 2,
+              "branch": {
+                "gates": [],
+                "zone_eval": {},
+                "qualifies": {
+                  "value": false,
+                  "line": 918,
+                  "guard": "",
+                  "hits": 3,
+                  "need_hits": 3,
+                  "confidence": 0.44999999999999996,
+                  "conf_threshold": 0.6,
+                  "misses": 1,
+                  "span_s": 0.5999319553375244,
+                  "need_span": 0.5,
+                  "hit_fraction": 0.5,
+                  "min_hit_fraction": 0.6
+                },
+                "report_assignment": {
+                  "line": 456,
+                  "q": false,
+                  "reported_before": false,
+                  "misses": 1,
+                  "hold_misses": 1,
+                  "hold": 0,
+                  "explained_blocked": false
+                }
+              }
+            },
+            {
+              "id": 356,
+              "hits": 2,
+              "misses": 3,
+              "age": 5,
+              "confidence": 0.0,
+              "reported": false,
+              "column_held": false,
+              "approach_block": false,
+              "far_evidence": false,
+              "clean_run": 0,
+              "doubt": 0,
+              "withheld": false,
+              "fresh_blocked": false,
+              "near_escalated": false,
+              "span_s": 0.49992895126342773,
+              "stop_earned": false,
+              "was_stop": false,
+              "kept": false,
+              "hold": 0,
+              "last": 124088939386720,
+              "zone": "warning",
+              "rule_zone": "warning",
+              "vote_zone": "warning",
+              "hit_fraction": 0.4,
+              "timed": true,
+              "zone_hist": [
+                false,
+                false
+              ],
+              "explained": false,
+              "provisional": false,
+              "qualifies": false,
+              "last_kind": "",
+              "last_low_weak": false,
+              "history_max": 9.01,
+              "column_hist": [
+                false,
+                false
+              ],
+              "column_hold": 2,
+              "branch": {
+                "gates": [],
+                "zone_eval": {},
+                "qualifies": {
+                  "value": false,
+                  "line": 918,
+                  "guard": "",
+                  "hits": 2,
+                  "need_hits": 3,
+                  "confidence": 0.0,
+                  "conf_threshold": 0.6,
+                  "misses": 3,
+                  "span_s": 0.49992895126342773,
+                  "need_span": 0.5,
+                  "hit_fraction": 0.4,
+                  "min_hit_fraction": 0.6
+                },
+                "report_assignment": {
+                  "line": 456,
+                  "q": false,
+                  "reported_before": false,
+                  "misses": 3,
+                  "hold_misses": 1,
+                  "hold": 0,
+                  "explained_blocked": false
+                }
+              }
+            },
+            {
+              "id": 358,
+              "hits": 1,
+              "misses": 3,
+              "age": 4,
+              "confidence": 0.0,
+              "reported": false,
+              "column_held": false,
+              "approach_block": false,
+              "far_evidence": false,
+              "clean_run": 0,
+              "doubt": 0,
+              "withheld": false,
+              "fresh_blocked": false,
+              "near_escalated": false,
+              "span_s": 0.3999300003051758,
+              "stop_earned": false,
+              "was_stop": false,
+              "kept": false,
+              "hold": 0,
+              "last": 124089090940256,
+              "zone": "warning",
+              "rule_zone": "warning",
+              "vote_zone": "warning",
+              "hit_fraction": 0.25,
+              "timed": true,
+              "zone_hist": [
+                false
+              ],
+              "explained": false,
+              "provisional": false,
+              "qualifies": false,
+              "last_kind": "",
+              "last_low_weak": false,
+              "history_max": 14.23,
+              "column_hist": [
+                false
+              ],
+              "column_hold": 2,
+              "branch": {
+                "gates": [],
+                "zone_eval": {},
+                "qualifies": {
+                  "value": false,
+                  "line": 918,
+                  "guard": "",
+                  "hits": 1,
+                  "need_hits": 3,
+                  "confidence": 0.0,
+                  "conf_threshold": 0.6,
+                  "misses": 3,
+                  "span_s": 0.3999300003051758,
+                  "need_span": 0.5,
+                  "hit_fraction": 0.25,
+                  "min_hit_fraction": 0.6
+                },
+                "report_assignment": {
+                  "line": 456,
+                  "q": false,
+                  "reported_before": false,
+                  "misses": 3,
+                  "hold_misses": 1,
+                  "hold": 0,
+                  "explained_blocked": false
+                }
+              }
+            },
+            {
+              "id": 359,
+              "hits": 2,
+              "misses": 1,
+              "age": 3,
+              "confidence": 0.44999999999999996,
+              "reported": true,
+              "column_held": false,
+              "approach_block": false,
+              "far_evidence": false,
+              "clean_run": 0,
+              "doubt": 0,
+              "withheld": false,
+              "fresh_blocked": false,
+              "near_escalated": false,
+              "span_s": 0.2999379634857178,
+              "stop_earned": true,
+              "was_stop": true,
+              "kept": false,
+              "hold": 0,
+              "last": 124088986733408,
+              "zone": "gauge",
+              "rule_zone": "gauge",
+              "vote_zone": "gauge",
+              "hit_fraction": 0.6666666666666666,
+              "timed": true,
+              "zone_hist": [
+                true,
+                true
+              ],
+              "explained": false,
+              "provisional": false,
+              "qualifies": false,
+              "last_kind": "hanging",
+              "last_low_weak": false,
+              "history_max": 49.83,
+              "column_hist": [
+                false,
+                false
+              ],
+              "column_hold": 2,
+              "branch": {
+                "gates": [],
+                "zone_eval": {
+                  "vote_zone": {
+                    "value": "gauge",
+                    "line": 129,
+                    "return": "return \"gauge\" if sum(self.zone_hist) >= self.zone_min_fraction * n - 1e-9 else \"warning\"",
+                    "guard": "",
+                    "withheld": false,
+                    "fresh_blocked": false,
+                    "column_held": false,
+                    "approach_block": false,
+                    "zone_hist": 2,
+                    "near_escalated": false
+                  },
+                  "rule_zone": {
+                    "value": "gauge",
+                    "line": 144,
+                    "return": "return self.vote_zone",
+                    "guard": "",
+                    "withheld": false,
+                    "fresh_blocked": false,
+                    "column_held": false,
+                    "approach_block": false,
+                    "zone_hist": 2,
+                    "near_escalated": false
+                  },
+                  "zone": {
+                    "value": "gauge",
+                    "line": 135,
+                    "return": "return self.rule_zone",
+                    "guard": "",
+                    "withheld": false,
+                    "fresh_blocked": false,
+                    "column_held": false,
+                    "approach_block": false,
+                    "zone_hist": 2,
+                    "near_escalated": false
+                  }
+                },
+                "qualifies": {
+                  "value": false,
+                  "line": 918,
+                  "guard": "",
+                  "hits": 2,
+                  "need_hits": 3,
+                  "confidence": 0.44999999999999996,
+                  "conf_threshold": 0.6,
+                  "misses": 1,
+                  "span_s": 0.2999379634857178,
+                  "need_span": 0.5,
+                  "hit_fraction": 0.6666666666666666,
+                  "min_hit_fraction": 0.6
+                },
+                "report_assignment": {
+                  "line": 456,
+                  "q": false,
+                  "reported_before": true,
+                  "misses": 1,
+                  "hold_misses": 1,
+                  "hold": 0,
+                  "explained_blocked": false
+                }
+              }
+            }
+          ],
+          "dets": [
+            {
+              "d": 46.56,
+              "y": 0.0,
+              "zone": "gauge",
+              "reason": "",
+              "id": 359
+            }
+          ]
+        },
+        "firing_report_assignment": {
+          "line": 456,
+          "q": false,
+          "reported_before": true,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false
+        },
+        "independent_label_interpolation": {
+          "before": 778,
+          "after": 781,
+          "distance": 46.560092639549524,
+          "predicted_distance": 46.56
+        }
+      }
+    ]
+  },
+  "pitch_p2": {
+    "baseline_unmatched_frames": 6,
+    "candidate_unmatched_frames": 7,
+    "added_unmatched_frames": [
+      779
+    ],
+    "removed_unmatched_frames": [],
+    "examples": [
+      {
+        "i": 779,
+        "dets": [
+          {
+            "d": 46.54,
+            "lat": 0.2,
+            "size": [
+              0.02,
+              0.0,
+              0.44
+            ],
+            "n": 3,
+            "zone": "gauge",
+            "kind": "hanging",
+            "reason": "",
+            "conf": 0.45,
+            "age": 3,
+            "hmin": 2.97,
+            "c": [
+              46.54,
+              0.0,
+              2.29
+            ]
+          }
+        ],
+        "labels": []
+      }
+    ]
+  },
+  "pitch_m2": {
+    "baseline_unmatched_frames": 6,
+    "candidate_unmatched_frames": 7,
+    "added_unmatched_frames": [
+      779
+    ],
+    "removed_unmatched_frames": [],
+    "examples": [
+      {
+        "i": 779,
+        "dets": [
+          {
+            "d": 46.54,
+            "lat": 0.2,
+            "size": [
+              0.02,
+              0.0,
+              0.44
+            ],
+            "n": 3,
+            "zone": "gauge",
+            "kind": "hanging",
+            "reason": "",
+            "conf": 0.45,
+            "age": 3,
+            "hmin": 2.97,
+            "c": [
+              46.54,
+              0.0,
+              2.26
+            ]
+          }
+        ],
+        "labels": []
+      }
+    ]
+  },
+  "roll_p2": {
+    "baseline_unmatched_frames": 7,
+    "candidate_unmatched_frames": 8,
+    "added_unmatched_frames": [
+      779
+    ],
+    "removed_unmatched_frames": [],
+    "examples": [
+      {
+        "i": 779,
+        "dets": [
+          {
+            "d": 46.56,
+            "lat": 0.23,
+            "size": [
+              0.02,
+              0.0,
+              0.44
+            ],
+            "n": 3,
+            "zone": "gauge",
+            "kind": "hanging",
+            "reason": "",
+            "conf": 0.45,
+            "age": 3,
+            "hmin": 2.98,
+            "c": [
+              46.57,
+              0.01,
+              1.71
+            ]
+          }
+        ],
+        "labels": []
+      }
+    ]
+  },
+  "hz5": {
+    "baseline_unmatched_frames": 8,
+    "candidate_unmatched_frames": 8,
+    "added_unmatched_frames": [],
+    "removed_unmatched_frames": [],
+    "examples": []
+  },
+  "drop30_s1": {
+    "baseline_unmatched_frames": 10,
+    "candidate_unmatched_frames": 11,
+    "added_unmatched_frames": [
+      779
+    ],
+    "removed_unmatched_frames": [],
+    "examples": [
+      {
+        "i": 779,
+        "dets": [
+          {
+            "d": 45.75,
+            "lat": 0.2,
+            "size": [
+              0.02,
+              0.0,
+              0.42
+            ],
+            "n": 2,
+            "zone": "gauge",
+            "kind": "hanging",
+            "reason": "",
+            "conf": 0.55,
+            "age": 5,
+            "hmin": 2.99,
+            "c": [
+              45.76,
+              0.0,
+              1.88
+            ]
+          }
+        ],
+        "labels": []
+      }
+    ]
+  },
+  "drop30_s2": {
+    "baseline_unmatched_frames": 9,
+    "candidate_unmatched_frames": 10,
+    "added_unmatched_frames": [
+      779
+    ],
+    "removed_unmatched_frames": [],
+    "examples": [
+      {
+        "i": 779,
+        "dets": [
+          {
+            "d": 46.56,
+            "lat": 0.21,
+            "size": [
+              0.02,
+              0.0,
+              0.44
+            ],
+            "n": 3,
+            "zone": "gauge",
+            "kind": "hanging",
+            "reason": "",
+            "conf": 0.45,
+            "age": 3,
+            "hmin": 2.97,
+            "c": [
+              46.57,
+              0.0,
+              1.72
+            ]
+          }
+        ],
+        "labels": []
+      }
+    ]
+  },
+  "drop30_s3": {
+    "baseline_unmatched_frames": 6,
+    "candidate_unmatched_frames": 6,
+    "added_unmatched_frames": [],
+    "removed_unmatched_frames": [],
+    "examples": []
+  },
+  "drop30_judge7": {
+    "baseline_unmatched_frames": 9,
+    "candidate_unmatched_frames": 9,
+    "added_unmatched_frames": [],
+    "removed_unmatched_frames": [],
+    "examples": []
+  },
+  "dedup": {
+    "baseline_unmatched_frames": 7,
+    "candidate_unmatched_frames": 8,
+    "added_unmatched_frames": [
+      779
+    ],
+    "removed_unmatched_frames": [],
+    "examples": [
+      {
+        "i": 779,
+        "dets": [
+          {
+            "d": 46.56,
+            "lat": 0.21,
+            "size": [
+              0.02,
+              0.0,
+              0.44
+            ],
+            "n": 3,
+            "zone": "gauge",
+            "kind": "hanging",
+            "reason": "",
+            "conf": 0.75,
+            "age": 5,
+            "hmin": 2.96,
+            "c": [
+              46.57,
+              0.0,
+              1.72
+            ]
+          }
+        ],
+        "labels": []
+      }
+    ]
+  }
+}

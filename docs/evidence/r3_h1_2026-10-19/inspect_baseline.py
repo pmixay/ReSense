@@ -11,8 +11,8 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'scripts'))
-import range_attrib as ra
-from resense.config import DetectorConfig
+import range_attrib as ra  # noqa: E402
+from resense.config import DetectorConfig  # noqa: E402
 
 OUT = Path('/tmp/opencode/r3-h1/baseline')
 

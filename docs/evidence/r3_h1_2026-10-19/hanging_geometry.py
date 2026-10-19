@@ -7,10 +7,10 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT / 'docs/evidence/judgement_2026-10-13/scripts')]
-from judge_runner import NodeReplica
-from range_test import run_frame
-import resense.detector as D
-import resense.clustering as C
+from judge_runner import NodeReplica  # noqa: E402
+from range_test import run_frame  # noqa: E402
+import resense.detector as D  # noqa: E402
+import resense.clustering as C  # noqa: E402
 
 DATA = Path('/tmp/opencode/resense-b4-data/decoded/cloud_with_fake_obj')
 OUT = Path('/tmp/opencode/r3-h1/baseline')

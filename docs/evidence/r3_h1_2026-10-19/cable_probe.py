@@ -6,8 +6,8 @@ import numpy as np
 
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT/'docs/evidence/judgement_2026-10-13/scripts'))
-import range_test as t
-from probe import rot
+import range_test as t  # noqa: E402
+from probe import rot  # noqa: E402
 
 variant=sys.argv.pop(1)
 orig=t.run_frame
