@@ -297,15 +297,16 @@ N = {
 # 1.2.0 gate equals GATE above (`build_deck.py --check-gate docs/evidence/b4_merge_reseal_2026-10-18/gate.json` ->
 # "GATE matches", 19.10; positive control: the 27.09 baseline differs in 7 keys). Sources: CHANGELOG [1.2.0],
 # docs/evidence/b4_merge_reseal_2026-10-18/README.md, docs/evidence/version_1.2.0_2026-10-18/README.md.
-# tests: the host suite of the selected default cecab1b (18.10, version_1.2.0 README): 1,906 + 12 subtests
-V12 = {"version": "1.2.0", "commit": "aec88d2", "released": "v1.0.0", "judge_score": 66, "tests": "1 906"}
+# tests: the full suite on aec88d2, 19.10: 1,969 passed, 8 deselected (no local caches), 0 failed
+# (docs/evidence/falcon_head_check_2026-10-19/out/tests.txt)
+V12 = {"version": "1.2.0", "commit": "aec88d2", "released": "v1.0.0", "judge_score": 66, "tests": "1 969"}
 # The second lidar, Seyond Falcon Prime: the organizers' real recording falcon_test_second_dark (16.10), a standing
 # train and a person walking along the track toward it. The whole recording through one detector, 1.1.0:
 # docs/evidence/falcon_full_2026-10-18 (B2, check_v110.json: 4 443 frames, 444 s; first STOP 124.8 m at 297 s;
 # false STOP 1 + 3 frames on the static structure at 115 m and 8 frames on a floor patch at 9.4 m; CAUTION
 # 975 + 1 424 + 604 + 59 = 3 062 of 4 443 = 69 %). Re-measured by the captain 19.10 through aec88d2 with
-# identical decisions; the captain's 19.10 figures (pitch, height, first warning, detect time, STOP band) are
-# not yet in a committed evidence file. The person's first returns at ~249 m: docs/evidence/n2_falcon_2026-10-18
+# identical decisions; the 19.10 figures (pitch, height, first warning, detect time, STOP band) are in
+# docs/evidence/falcon_head_check_2026-10-19 (README, out/analysis.txt, out/floor_fit.txt). The person's first returns at ~249 m: docs/evidence/n2_falcon_2026-10-18
 # (raw review, frame 1725). Datasheet: docs/sensor/falcon_prime/README.md. The node crops at 250 m.
 FALCON = {
     "frames": 4443, "seconds": 444,
@@ -1187,8 +1188,8 @@ def s_results(sl):          # template slide 20: left card + five rows
         ("кадр с человеком — STOP · Pandar, реальная запись", {"size": 13}),
         (f"~{FALCON['stop_m']} м", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
         ("первый STOP: человек идёт к поезду · Falcon", {"size": 13}),
-        (f"≤ {GAUGE['jitter_max']} м", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
-        ("дрожание края габарита, p90 до 120 м", {"size": 13}),
+        (f"≈ {GAUGE['jitter_max']} м", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
+        ("дрожание показанного габарита, p90 до 120 м", {"size": 13}),
     ], bullet=False, color="1C1D22")
     rows = [
         f"**Дальность:** прямая {rng('A_person')} м, кривые {rng('B_person')}–{rng('C_person')} м",
@@ -1488,7 +1489,7 @@ NOTES[17] += (" План после оценки: BACKLOG, H1–H6 перед в
 # speech, the Q&A drill and the numbers table: docs/PRESENTATION.md.
 _V = V12["version"]
 _F = FALCON
-SRC_FALCON = ("прогон капитана 19.10: вся запись через aec88d2, решения совпадают с прогоном 1.1.0 "
+SRC_FALCON = ("проверка 19.10, docs/evidence/falcon_head_check_2026-10-19: вся запись через aec88d2, решения совпадают с прогоном 1.1.0 "
               "docs/evidence/falcon_full_2026-10-18 (B2)")
 NOTES[11] = (
     "Одной фразой: описываем нормальный тоннель и ищем препятствия в габарите поезда; ROS 2 и Docker, только CPU. "
@@ -1501,7 +1502,7 @@ NOTES[11] = (
     f"«мнение» о треке: оно может только отложить сомнительный STOP, не больше чем на {opinion_delay()}, но не "
     f"отменить его. Задержку называем с машиной: {e2e()}; {JUDGE['date']} на {JUDGE['vcpus']} vCPU нода 360° — "
     f"p95 {JUDGE['node_360_p95_ms']} мс, 120° — {JUDGE['node_120_p95_ms']} мс ({V12['released']}); Falcon — "
-    f"детектор {_F['detect_ms']} мс на кадр, медиана (прогон капитана 19.10). Стенд организаторов мы не мерили. "
+    f"детектор {_F['detect_ms']} мс на кадр, медиана (docs/evidence/falcon_head_check_2026-10-19). Стенд организаторов мы не мерили. "
     "GPU оценили и не используем: выигрыш — десятки миллисекунд, а контейнер с запросом GPU не стартует без "
     "nvidia-container-toolkit. Источники: CHANGELOG [1.2.0]; docs/evidence/b4_merge_reseal_2026-10-18/README.md; "
     "docs/evidence/version_1.2.0_2026-10-18/README.md; docs/evidence/judgement_2026-10-13/README.md §5.")
@@ -1539,8 +1540,8 @@ NOTES[20] = (
     f"По критериям экспертов 16.10. {of(N['person'])}: человек в габарите на реальной записи doubleT_obstacle — "
     f"STOP в каждом кадре, {person_alarm()}; вся запись — {obstacle_run()}; предмет на рельсе — "
     f"{of(N['rail_object'])} (гейт 29.09 = гейт {_V}; независимая оценка 13.10 воспроизвела). ~{_F['stop_m']} м: "
-    f"Falcon, первый STOP по идущему человеку — 124,8 м на 297 с ({SRC_FALCON}). ≤ {GAUGE['jitter_max']} м: "
-    "дрожание видимого края габарита между кадрами, p90 на 40 / 80 / 120 м — "
+    f"Falcon, первый STOP по идущему человеку — 124,8 м на 297 с ({SRC_FALCON}). ≈ {GAUGE['jitter_max']} м: "
+    "дрожание видимого (рисуемого) края габарита между кадрами, не оси детектора; p90 на 40 / 80 / 120 м — "
     f"{' / '.join(GAUGE['jitter_set_o'])} м на наборе O при пределах {' / '.join(GAUGE['limits'])} м "
     "(docs/evidence/n1_n4_2026-10-18/README.md); цена — на кривой бокс медианно "
     f"{GAUGE['curve_drawn_m'][0]} м из {GAUGE['curve_drawn_m'][1]} м поддержанных. Дальность — следующий слайд. "
@@ -1550,7 +1551,7 @@ NOTES[20] = (
     f"судьи {JUDGE['date']} ({V12['released']}): {JUDGE['ride_episodes']} эпизода, ≈2,5 эпизода/км; все пустые "
     f"данные — {JUDGE['empty_episodes']} эпизодов за {num(JUDGE['empty_s'])} с, ≈{false_per_hour()} в час; на "
     f"этих записях {_V} даёт те же решения. Falcon: {_F['false'][0]} ложных кадров STOP за {_F['seconds']} с. "
-    f"10 Гц: Falcon — детектор {_F['detect_ms']} мс на кадр, медиана (прогон капитана 19.10); Pandar 360° — нода "
+    f"10 Гц: Falcon — детектор {_F['detect_ms']} мс на кадр, медиана (docs/evidence/falcon_head_check_2026-10-19); Pandar 360° — нода "
     f"p95 {JUDGE['node_360_p95_ms']} мс на {JUDGE['vcpus']} vCPU, 120° — {JUDGE['node_120_p95_ms']} мс "
     f"({JUDGE['date']}, {V12['released']}); стенд организаторов не мерили. Запуск: run_demo.sh / play_bag.sh "
     "--interactive — пауза, замедление, несколько бэгов в одном узле, RViz в контейнере, программный рендер "
@@ -1615,8 +1616,8 @@ NOTES[15] = (
 NOTES[17] = (
     "Итог: работающий ROS 2-модуль на CPU в Docker; два лидара с явными профилями осей; габарит — стабильный "
     "3D-бокс по поддержанной геометрии; запуск с паузой, замедлением и сменой бэгов без перезапуска. Тесты: "
-    f"{V12['tests']} тестов хост-набора кандидата 18.10 (cecab1b, плюс 12 подтестов; "
-    "docs/evidence/version_1.2.0_2026-10-18/README.md); слияние B4 — 676 затронутых тестов "
+    f"{V12['tests']} тестов полного набора на aec88d2, 19.10, без падений (docs/evidence/falcon_head_check_2026-10-19/out/tests.txt; "
+    "на cecab1b 18.10 — 1 906, docs/evidence/version_1.2.0_2026-10-18/README.md); слияние B4 — 676 затронутых тестов "
     "(docs/evidence/b4_merge_reseal_2026-10-18/README.md). В работе, без результатов: габарит синхронно с "
     "поворотом (K1/K2), устойчивость к пыли, дальность Falcon к 300 м, меньше ложных STOP (F1). "
     f"{_V} — кандидат, не выпущен: облачный CI заблокирован биллингом аккаунта, даты выпуска нет. Подключение к "
