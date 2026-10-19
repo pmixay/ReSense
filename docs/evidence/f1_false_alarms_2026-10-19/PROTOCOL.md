@@ -205,3 +205,37 @@ in every new `synthetic_` bag. **Consequences registered now:**
    organizers' dust; the dust lane owns them); those bags are only measured.
 3. If time allows (report only, no change): how the production `tracking.ego_veto_min_speed` treats objects moving
    away (E3 probes) and moving erratically.
+
+## Amendment 6 (19.10, ~13:25 UTC) — independent review (A11) and the response, registered before re-measurement
+
+**Review** (fresh remote agent, read-only, code + this protocol + raw archives; verdict **PASS WITH CONDITIONS**;
+full text in `review/REVIEW_1.md`). Blocking **B1**: F1a's band line counts the returns of *other* low clusters in
+the same rail band, so a long low object lying along a rail that the clustering splits into pieces raises the
+reference of each piece (reproduced on synthetic points: six 0.6 m pieces of an 8 cm object, all made weak).
+Non-blocking: (1) the code's bin rule (≥ 1 return per 0.5 m bin, ≥ 2 bins) differs from §5 (≥ 2 returns, ≥ 4 bins)
+without an amendment — **recorded here as a deviation**: it was changed while coding because beyond ~30 m a ring
+crosses the rail head every few metres; every measurement above used the code's rule; (2) S2 ignores height, so a
+settled track can enter the gauge with < 0.5 m horizontal movement (stepping or falling down, lowered from above, an
+axis correction at standstill) and stay advisory until 50 of its last 100 hits are inside (~5 s); (3) H trusts the
+calibrated mount height to ~0.5 m: a wrong mount height could demote a low near object as `height_conflict`;
+(4) the attribution of lost ride STOPs matched by position, not by the track's own history; (5) weak clusters stop
+capping `clear_distance`; (6) missing evidence (gate logs were dropped by `.gitignore *.log`; A4 node path, A6, A9).
+
+**Response (designs fixed now, measured next):**
+* **F1a′** — the band line excludes every point of every low cluster of the frame (clean, straddle continuation,
+  marked), not only the cluster's own extent; and a cluster failing the reference becomes **advisory**
+  (`zone` warning, reason `below_rail_ref`, `demoted`) instead of weak continuation evidence, so a misjudged real
+  object is a CAUTION, never silent, and it still caps `clear_distance` (`lowobj.local_rail_advisory` true).
+  Margin 0.01 unchanged. A unit test reproduces B1 (pieces of a long low object on a rail) and must keep them.
+* **H′** — `height_conflict` only when the mount reference puts the whole cluster **above** the envelope top (the
+  observed Falcon failure, the ceiling); never when it would put it below the rail head (finding 3).
+* **S2 is withdrawn from the candidate** (class and YAML back to 0, implementation kept opt-in): amendment 5 requires
+  no delayed or demoted in-gauge object, and finding 2 shows S2 cannot guarantee it (a release after 10 consecutive
+  inside hits would still delay such an entry by ≥ 0.5 s). Consequence stated now: Falcon is expected at **4**
+  non-person STOP frames (the 115 m support, an undetermined gauge call), not 0.
+* **Attribution** is traced from each lost track's own matched clusters (`replay.py --tracks`).
+* **Re-measured on the new candidate:** whole ride (one detector) with traced attribution, full gate against the
+  seal baseline, switch-off identity (full gate per-frame + whole Falcon), Falcon, rail-head / dynamic probes,
+  synthetic bags (candidate vs switches at 0), X3 against the base battery, full test suite; CAUTION changes
+  reported per recording (C1 out of scope). The S2 measurements already started (dynamic probes, synthetic bags with
+  S2 on) are kept as information on S2.
