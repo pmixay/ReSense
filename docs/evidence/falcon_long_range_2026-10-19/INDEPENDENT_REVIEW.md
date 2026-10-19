@@ -201,3 +201,254 @@ Required: a dated amendment that names C6 and how its values were chosen; seeds 
 - `make_tables.py` and the author's report text.
 - B4 by execution (no moving-ego Falcon replay).
 - The FarConfirm (C4) logic beyond the unit test; it is off by default.
+
+---
+
+## Re-review of e416b4e (19.10, same reviewer, same rules)
+
+This re-review covers commit `e416b4e` (HEAD of `det/falcon-long-range`), on top of `ab26c04`:
+- detector changes in `resense/farline.py`, `resense/detector.py`, `resense/config.py` and `tests/test_farrange.py`;
+- PROTOCOL amendment A2.
+
+I made no edits under `resense/`, `native/`, `configs/`, `ros2_ws/`, `tests/` or `scripts/`, and ran nothing on G3. The runs were small: about 200 real frames per run, 1–2 processes. My scripts are in the session scratchpad:
+- `curve.py`, `diverge.py`: the first review's cases;
+- `adv2.py`: new adversarial cases;
+- `b4.py`, `b4w.py`: accumulation with ego speed given;
+- `fr2731.py`: the final4 false episode;
+- `handover.py`: the handover rule;
+- `pandar_ident.py`: Pandar identity.
+
+The `ab26c04` comparison code was extracted with `git archive` to `scratchpad/old/`, with the same native `.so` (native/ is unchanged).
+
+### Status of B1–B4
+
+| | Status | Evidence |
+|---|---|---|
+| B1 far axis on curves / diverging walls | **Partly resolved. A new failure mode remains: still blocking** | See (1) |
+| B2 C6 post hoc, in-sample | **Resolved procedurally** (A2 §1). The seeds 10–12 numbers (`final4_s10`) were still running, so not checked | A2 text |
+| B3 rule 5.1(b) | **Resolved as reporting** (A2 §5). The rule still **fails** on the new code: `eval_final4.json` gives `all_stop_episodes_le: false`, 12 STOP episodes against the baseline's 8 (`map300`: 11) | `/home/user/data/work/eval_final4.json` |
+| B4 accumulation across axis switches | **Resolved** (verified by execution) | See (2) |
+
+### (1) Adversarial tests of the new far axis
+
+Unit tests: `tests/test_farrange.py` gives 10 passed.
+
+**Cases from the first review now handled.** On `curve.py` and `diverge.py`:
+- Every curve case is either rejected, or accepted with an error inside the stated uncertainty. The worst accepted error is 0.27 m against sigma 0.35 m. No point has error > sigma + 0.3 m.
+- The occluded-inner-wall cases: one rejected, the others within sigma (0.08 m).
+- Diverging walls at slopes 0.006 and 0.009 are rejected. At 0.003 the wall is accepted with error 0.45 m against sigma 0.47 m at 200 m, valid to 208 m.
+- Positive control: straight track accepted to 398 m with error 0.00 m.
+
+**New cases handled correctly** (`adv2.py`; within sigma or rejected):
+- S-curve jogs of 0.25, 0.6 and 1.5 m over 130–190 m: 0.25 m accepted with error 0.12 m against sigma 0.15 m; 0.6 m rejected; 1.5 m accepted only to 128 m, before the jog.
+- A niche (no points at 150–160 m) followed by a curve of R = 300 m from 160 m: support ends at 178 m, error 0.24 m against sigma 0.35 m.
+- The same with a recessed wall (boundary 1 m further out at 150–160 m): same result.
+
+**New failure mode: a straight boundary while the track curves away from it.** The geometry is physically possible:
+- a straight station or cavern wall, or a parked train on a straight siding, beside a track that curves away into an opening;
+- in my first `adv2.py` sign convention the track ran through the wall; those cases are discarded and the results below have the track curving *away* from the straight boundary.
+
+| Scene | Accepted | Trusted to | Error > gauge half-width (1.05 m) from | Worst error inside the trusted range | sigma there |
+|---|---|---|---|---|---|
+| Straight wall on one side only, track curves R 300 m from 100 m | 1 side | 208 m | 130 m | 18.4 m at 205 m | 0.49 m |
+| Same, curve R 500–600 m from 120–150 m | 1 side | 208 m | 160–185 m | 3.0–6.0 m | 0.49 m |
+| Parked straight train 60–260 m at lateral 2.2 m, own walls end at 100 m, track curves R 300–400 m from 110–130 m | 1 side | 208 m | 140–160 m | 9.4–11.3 m | 0.49 m |
+| **Straight wall plus a second side that ends early** (wall or column row ending at 135–190 m), track curves away just after it (R 300–600 m) | **2 sides** | **398 m** | 170–230 m | 46–108 m at 395 m | **0.35 m** |
+
+Causes in the code:
+- In `measure()` the frame's support is `max(f[3] for f in primary)`, so the end of a second side's support never caps the trust.
+- With two sides, the one-side divergence allowance is dropped.
+- The curve lead and the unseen-curvature term start from the *primary* support end (398 m). Up to there a straight boundary looks like evidence that the track is straight.
+- One straight boundary, or two whose overlap ends early, cannot tell "the track is straight" from "the track leaves this boundary".
+
+Result: the strict corridor is moved by metres to tens of metres in 130–400 m. STOP authority and the monitored range follow the wrong line, as in B1.
+
+Compared with the baseline:
+- On such a scene the near parabola (curvature from 4–90 m boundaries) is probably also blind to a curve starting beyond 100 m. Its trust, though, ends at its own `axis_valid` (107–175 m on this recording).
+- With two sides the candidate extends trust to 398 m. With one side it extends to 208 m, and it replaces the near model from 50 m on.
+- I did not build a full-scene comparison (with rails) of the baseline on this geometry. That relative statement is **unverified**.
+
+Suggested fixes:
+- Take the trusted support as the **minimum** over the accepted sides.
+- Beyond the shorter side's end, treat the axis as one-sided, applying the curve lead and the unseen-curvature term from that end.
+- With one side, cap trust at the near model's own `axis_valid` unless a declared map section or far rail evidence supports the axis.
+- Add these scenes as negative tests.
+
+**Real recording (straight track), as observed:**
+- The new far axis is trusted only to about 128–187 m (`fr2731.py`, frames 2721–2736: `valid` jumps 128–180 m from frame to frame, 1 side); about 182–184 m on frames 1295–1305.
+- `final4`: the far walker gets 0 STOP frames (the first candidate had 322), and the main person's first STOP is at 168.7 m (baseline 127 m, first candidate 249 m). `final4_map300`: 0 and 205 m.
+- **New false STOP episode at frames 2731–2734**, at 153 m with raw lateral +2.1 to +3.3 m (a wall or structure), reason `beyond_axis`, zone `gauge`. I reproduced it on a fresh run from frame 2600.
+  - Mechanism: the main person is tracked at 154 m with the far axis. When `far.valid` drops below the person's range (frame 2729: valid 144 m, decision GO while the person is in the gauge at 153.6 m), points beyond `valid` get near-model laterals, 2 m off at 150 m.
+  - The person leaves the corridor and the wall at +2.1 m enters it. The existing STOP track (age 26–29) is re-associated to the wall and held at STOP by the tracker.
+  - Cause: the "far offset only for join < X ≤ valid" change together with a `valid` that fluctuates by tens of metres from frame to frame.
+  - It does not lose a baseline STOP, since the baseline does not STOP at 154 m. It is a false STOP on infrastructure plus STOP flicker on a real person, neither of which the first candidate had.
+  - This is not counted by any rule except 5.1(b) and "false episodes" (1 against the baseline's 3).
+
+**Far axis toggling while moving with ego speed given:** see (2).
+
+### (2) B4 by execution, ego speed given
+
+`b4.py`: real frames 1290–1333 with ego speed 2.0 m/s given, so accumulation is active. Frames 1306–1319 are cropped at 110 m to force the far axis to fail, be held, and drop. I compared `e416b4e` with `ab26c04`.
+
+- **Far axis appears (frame 1295):**
+  - New code: `n_accumulated` is 1, then 2, 3, 4, 5 in the following frames, so the buffer was cleared.
+  - Old code (positive control): `n_accumulated` = 5, merging four frames stored before the axis existed.
+  - At 1295–1297 the old code has two extra warnings at 104.8 and 114.2 m (lateral 1.3 m). They persist to 1298, so I do **not** attribute them to the mixed buffer.
+- **Line moves more than 0.2 m at the range end (during the hold):** buffer clears at 1307–1312.
+- **Axis disappears (1315):** cleared, `n_accumulated` = 1, then 2–5.
+- When the axis returns after the hole, the new code did not re-confirm within 14 frames, while the old code did at 1324. I did not investigate this.
+- `n_accumulated` alone is confounded during the cropped frames: the old code also shows 1 there, with no clear.
+- The appearance transition is a clean test. B4 is resolved.
+
+### (3) Can the handover rule drop a baseline STOP near the sensor?
+
+- **Below 50 m: no, by construction.** `offset` and `sigma` are 0 for X ≤ `axis_join`. The handover sets `axis_valid = end`, with `end ≥ far.valid ≥ axis_join` (50 m; `FarAxisTracker` floors `valid` at `j`). A demotion needs distance > `axis_valid`, which is at least 50 m.
+- **Between 50 m and the near model's `axis_valid`: yes, per frame.**
+  - When the far line and the near model disagree by more than 0.5 m at `end`, `axis_valid = end`, which can be below the near model's `axis_valid`.
+  - Clusters in (end, near `axis_valid`] then get `beyond_axis`, where the baseline (same near-model laterals there) would not.
+  - Test (`handover.py`): real person at 120 m, frames 2900–3029, both runs cropped at 130 m from frame 3010 so the held far axis decays (valid 149 → 64 m).
+  - Frames 3014–3015: the candidate's detection at 119.7 m is `beyond_axis`, while the baseline's at 119.7 m is a clean `gauge` detection.
+  - The **decision** stayed STOP in every frame, identical to the baseline from 3010 to 3029, because the tracker held the track.
+  - A new or young track at 50–125 m during a far-axis hold or a short `valid` could therefore lose a STOP that the baseline gives. On the real recording no baseline person STOP frame was lost (`eval_final4.json`: `lost_person_stop_frames` 0).
+- Suggested fix: never lower `axis_valid` below the near model's own `axis_valid` (use `max(near, end)` always). Separately, decide the lateral beyond `far.valid` by the same agreement rule, so the near model's laterals are not used where it disagrees.
+
+### (4) Pandar re-check
+
+`pandar_ident.py` on `e416b4e`, `doubleT_obstacle`, profile `pandar128`, 100 frames: identical to `aec88d2` on every field except the wall-clock latency health message (same as the first review). Code reading confirms the new detector hooks (buffer clear, handover) are inside the `self.far is not None` / `far is not None` guards.
+
+### Remaining blocking issues after the re-review
+
+- **R1 (from B1).** A straight boundary while the track curves away is accepted. With a second side that ends early, the far axis is trusted to 398 m with sigma 0.35 m and errors of tens of metres. The support must be the minimum over sides, and one-sided trust must be capped.
+- **R2 (new).** Frame-to-frame swings of `far.valid` on straight real track (128–187 m), combined with near-model laterals beyond `valid`, produced a false STOP episode on a wall at 153 m (frames 2731–2734). They also produced a GO frame while the real person stood in the gauge at 153.6 m (frame 2729).
+- **R3 (new, minor in effect on the recording).** The handover rule can lower `axis_valid` below the baseline's in 50–175 m. A per-frame `beyond_axis` demotion was observed at 119.7 m, and the decision was saved only by tracker hysteresis.
+- **B3 still fails as a criterion** (12 > 8) and must be reported as failed (A2 §5 commits to this).
+
+### Not checked in this re-review
+
+- Seeds 10–12 matrices (`final4_s10` was running), the walk control on `final4` (`walk_final4_*`), the full test suite, X3, the regression gate, `map300` beyond its eval summary.
+- Why the far walker gets 0 STOPs in `final4_map300` despite a declared section to 300 m.
+- Why the far axis did not re-confirm after the forced hole in `b4.py`.
+
+---
+
+## Re-review of 89e0f3b (19.10, same reviewer, same rules)
+
+Commit `89e0f3b`. The detector diff since `e416b4e` touches `resense/farline.py`, `resense/detector.py`, `resense/config.py` and `tests/test_farrange.py`.
+- `measure()`: with two sides the support is the shorter side's.
+- One side: trust is capped at the near model's `axis_valid` unless `declared_straight_to > 0`.
+- `axis_valid = max(near, far.valid)`, and the handover rule is removed.
+- Beyond `far.valid` the near model's laterals are used, as in `e416b4e`. `lateral_to` defaults to 0 and is never set, so the 0e49f7c variant is inactive.
+
+No edits under the protected paths and no G3. Small runs only: one or two processes, at most 140 real frames each, plus reads of the replay outputs.
+
+### Checks run
+
+- **Tests:** `tests/test_farrange.py` and `tests/test_range_reporting.py`: 40 passed.
+- **Pandar identity** (`pandar_ident.py`, `doubleT_obstacle`, profile `pandar128`, 100 frames): identical to `aec88d2` except the wall-clock latency message.
+- **`adv3.py`:** `adv2.py` with a realistic near-model `axis_valid` of 123 m and 175 m (the range seen on the recording).
+- **R2 probe:** `fr2731.py`, fresh run of frames 2600–2740.
+- **R3 probe:** `handover.py`, frames 2900–3029, cropped at 130 m from 3010, against the baseline (`with_falcon_profile=false`).
+- **B4 probe:** `b4.py`, ego speed 2 m/s.
+- **Full-recording scans** of `final6.jsonl` against `base_ros2.jsonl`, `final4.jsonl` and `c136.jsonl`:
+  - every STOP detection with raw lateral more than 1.3 m from the raw track reference;
+  - every non-STOP frame whose clear distance reaches a labelled person standing in the gauge. Labels: far-walker labels plus the walk-control path of the main approach, 1055 frames with |lateral| ≤ 0.8 m.
+
+### Adversarial results (`adv3.py`)
+
+**Two sides, the second ending early, track curving away from a straight wall** (8 cases):
+- Trust now ends at the shorter side: `valid` 133–188 m for second sides ending at 135–190 m.
+- Error 0.00 m everywhere inside `valid` (sigma 0.35 m). **Resolved.**
+
+**One straight side (wall or parked train), track curving away:** trust is capped at the near model's `axis_valid`.
+
+| Near `axis_valid` | Result |
+|---|---|
+| 123 m | Worst error 0.67 m at 120 m (sigma 0.26 m); never more than the gauge half-width |
+| 175 m | Errors exceed 1.05 m from 130–160 m, up to 9.4 m at 175 m (R 300 m from 100 m), 5.0–5.3 m for the parked-train and R 300 m from 120 m cases (sigma 0.40 m) |
+
+- This error lies **inside the range the near model already trusts**. A near parabola that is equally blind to a curve beginning beyond its 4–90 m fit has the same error there, so the far axis no longer extends trust on a wrong line.
+- What remains: in 50 m–`axis_valid` the far line replaces the near model's laterals. If the near model had partly captured the curve, the kink limit (0.006 with one side) is the only guard. I did not test this in a full scene with rails. **Residual, unverified, not blocking.**
+
+**Unchanged since the previous round:** S-curve jogs, niche or recess followed by a curve, curves, diverging walls. All are within sigma or rejected; the farline changes do not touch these paths.
+
+### R2 on the real recording
+
+**Frames 2725–2740** (person standing in the gauge at 152–154 m, raw lateral −0.15 m):
+- `final6`: GO in 2722–2735 and 2737–2740; CAUTION at 2736–2737 on a wall warning (`beyond_axis`, lateral +2.2 m). **No STOP on the wall.**
+- My fresh run gives the same picture. One side only, `valid` 107–127 m (capped at the near trust), support 131–173 m.
+- The person is beyond `far.valid`, so the near laterals (2 m off) put it outside the corridor. That is the baseline's behaviour: the baseline is CAUTION there on wall warnings, its first person advisory is at 144 m, and it never STOPs the person beyond 127 m.
+
+**Whole recording, STOP detections more than 1.3 m off the track reference:**
+- `final6`: 7 frames (4241–4247), all on the 115 m structure at lateral 1.8 m. Every one co-occurs with a person STOP at about 22 m; frames 4241–4244 are also baseline frames.
+- Baseline: 29 frames (25–28, 125, 2312–2314, 3925–3932, 4060–4064, 4241–4244, 4253–4256).
+- `final4`: 9 frames at 152–162 m. These were the R2 hijacks; they are gone.
+
+**False-clear scan** (non-STOP frame whose clear distance reaches a labelled in-gauge person, of 1055):
+
+| Run | Frames | Detail |
+|---|---|---|
+| `final6` | 2 | 2700 GO, clear 157.6 m vs person 157.4 m; 3050 CAUTION 115.4 m vs 115.4 m |
+| baseline | 2 | 2800 CAUTION 155.2 m vs 144.8 m; 3050 115.1 m vs 115.4 m |
+| `final4`, `c136` | 0 each | |
+
+The `final6` frames are 0.0–0.2 m beyond the person, within the lateral and range error. Comparable to the baseline.
+
+**R2 resolved** as a regression. The mechanism (near-model laterals beyond `far.valid`, 2 m off at 150 m on this recording) remains, but it is now exactly the baseline's behaviour there.
+
+### R3 (`handover.py`)
+
+Per-frame reasons now match the baseline during the decaying hold:
+- frames 3013 and 3015 `beyond_axis` in both runs; 3014 clean `gauge` in both;
+- the decision is identical to the baseline in every frame 3010–3029.
+
+Code: `axis_valid = max(near, min(far.valid, range_max))` can never be below the near trust. **Resolved.**
+
+One difference seen: at frames 3017–3018 the candidate also has a `gauge` detection at 115.0 m. This is the 115 m structure, the baseline's false-STOP object; the baseline has it as a warning in those frames. It co-occurs with the person STOP at 119 m, so the decision is the same. **Residual, not blocking.**
+
+### B4 again (`b4.py`)
+
+Still cleared on appearance: `n_accumulated` 5 → 1 at frame 1295, then 2, 3. Also cleared on disappearance: 1 at frame 1315, then 2–5. **Resolved.**
+
+### Status per item
+
+| Item | Status at 89e0f3b |
+|---|---|
+| B1 curves / diverging walls | **Resolved** (in-sigma or rejected in every probe) |
+| R1 straight boundary beside a curving track | **Resolved** for two sides. **Residual** for one side: errors up to 9.4 m inside the near model's own trust when that trust is 175 m. It is no longer an extension of trust; the full-scene comparison with the baseline is unverified |
+| R2 hijack / false wall STOP beyond `far.valid` | **Resolved** as a regression: no false wall STOP at 152–162 m; wall-STOP frames 7 (all co-occurring with a person STOP) vs baseline 29 |
+| R3 handover lowering the trust | **Resolved** |
+| B2 C6 post hoc / in-sample | **Resolved procedurally** (A2). The seeds 10–12 numbers were not available to me |
+| B3 rule 5.1(b) | **Fails as a criterion**: 9 STOP episodes vs baseline 8 (`eval_final6.json`, `all_stop_episodes_le: false`). It must be reported as failed (A2 §5); it is not a code defect |
+| B4 accumulation across axis switches | **Resolved** (by execution) |
+
+### Is 89e0f3b acceptable as a Falcon-profile-only candidate?
+
+**Yes, conditionally.** On the measured evidence I found no remaining blocking code defect.
+
+**Supporting evidence:**
+- **Pandar** is byte-identical apart from timing (300 frames over the three rounds; code paths guarded).
+- **Real recording, `eval_final6.json`, against the baseline:**
+  - 0 baseline person-STOP frames lost;
+  - main-person STOP frames 1388 vs 1369;
+  - first person STOP at 146.3 m vs 127.1 m;
+  - STOP episodes without a person 0 vs 3; STOP frames not associated with the person 0 vs 18;
+  - CAUTION share lower.
+- **Adversarial geometry:** no probe extends trust onto a wrong line beyond what the near model already trusts.
+
+**Conditions:**
+1. Report rule 5.1(b) as **failed** (9 > 8).
+2. Report the seeds 10–12 matrix numbers (C6 is post hoc) with the X3 and regression-gate results; I did not see them.
+3. State the measured gain honestly. It is **about 20 m on the first person STOP (127 → 146 m)**, not 250–300 m.
+   - The far walker at 245–307 m gets **0 STOP frames** with `final6` (`far_target_stop_frames` 0).
+   - Longer range needs the declared route-map section (`map300`). That section switches off the unseen-curvature guard up to the declared distance, so it is only as safe as the map.
+   - C5 (48.2 m small-target range) is an expected-count model value, not a measured detection.
+4. Keep the residuals listed as open:
+   - one-sided far axis inside the near trust on a track curving away from a straight boundary;
+   - the 115 m structure is a gauge detection in some candidate frames where the baseline has it as a warning (always co-occurring with a person STOP in my samples);
+   - moving-train operation tested only with synthetic shifting of a static scene (`b4.py`), not with a moving recording.
+
+### Not checked in this round
+
+- Seeds 10–12 matrices, the walk control on `final6`, X3, the regression gate, the full test suite.
+- `map300` on 89e0f3b.
+- The one-sided residual in a full scene with rails.
