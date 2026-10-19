@@ -634,14 +634,22 @@ class FarRangeConfig:
     axis_min_span: float = 80.0        # m between the first and last kept bin of a side
     axis_max_rms: float = 0.15         # m, line residual of a side
     axis_max_bow: float = 0.15         # m, largest quadratic-minus-line difference over the span (a curve fails)
-    axis_max_kink: float = 0.01        # |far slope - near tangent at axis_join| (a curve starting there fails)
+    axis_max_kink: float = 0.01        # |far slope - near tangent at axis_join| with two sides (a curve starting there fails)
+    axis_max_kink_one_side: float = 0.006  # the same with one side (a diverging wall steeper than this fails)
+    axis_one_side_slope_sigma: float = 0.003  # rad added to sigma with one side: a wall diverging less than the kink limit is not detectable
+    axis_second_min_bins: int = 4      # kept bins for the second (confirming) side, e.g. a column row every 30 m
+    axis_max_gap: float = 40.0         # m: the support ends at a gap longer than this between kept bins ...
+    axis_max_rejected_run: int = 2     # ... or at this many consecutive bins off the line (a curve starting)
     axis_max_side_disagreement: float = 0.002  # slope difference of two fitted sides
     axis_smoothing: float = 0.7        # EMA weight of the previous slope
     axis_confirm_frames: int = 5       # consecutive good frames before the far line is used
     axis_hold_frames: int = 10         # failed frames for which the last far line is kept
-    axis_margin: float = 40.0          # m, trusted beyond the last supporting bin
+    axis_margin: float = 15.0          # m, trusted beyond the last supporting bin (an R 300 m curve departs 0.37 m in 15 m)
+    declared_straight_to: float = 0.0  # m: operator / route-map statement that the track is straight to here; 0 = none.
+                                       # Only this extends the trust beyond the observed support (sigma without the unseen-curvature term)
     axis_sigma0: float = 0.15          # m, lateral uncertainty at the join
-    axis_unseen_curvature: float = 1e-5  # 1/m, allowed beyond the last supporting bin (sigma grows as k x^2 / 2)
+    axis_max_sigma: float = 0.5        # m: the far axis is trusted only where sigma(X) stays below this
+    axis_unseen_curvature: float = 1.0 / 300.0  # 1/m, allowed beyond the last supporting bin (sigma grows as k x^2 / 2; metro R >= 300 m)
     axis_core_margin: bool = True      # the strict gauge shrinks by sigma(X) beyond the join
     far_min_height: float = 0.3        # cluster.far_min_height under the profile: beyond the height reference a far
                                        # obstacle's visible part is short (the rays to its foot return from the track first)

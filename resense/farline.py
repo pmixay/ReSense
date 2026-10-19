@@ -8,13 +8,18 @@ beyond ~125 m is ever inside the corridor.
 
 This module fits the far part on its own: per side, the inner tunnel boundary (structures 1.0-2.8 m
 above the rail head, 1.2-4 m from a provisional line, never the gauge itself) per 5 m bin from
-``axis_join`` outwards, a robust straight line through it, and accepts the frame only when the line
-is straight (residual, bow of a quadratic over the span), long, consistent between the sides and
-joins the near model without a kink. The far axis is the near axis' value at ``axis_join`` continued
-with the smoothed far slope. It is trusted to ``axis_margin`` beyond the last supporting bin, with
-a lateral uncertainty ``sigma(X)`` growing with range (offset, slope error, and an allowed unseen
-curvature beyond the support) that shrinks the strict gauge there. On a curve the checks fail and
-the near model is used as before.
+``axis_join`` outwards and a robust straight line through it. A side's *support* is contiguous: it
+ends at the first gap longer than ``axis_max_gap`` between kept bins or at ``axis_max_rejected_run``
+consecutive bins off the line (the start of a curve), and the bins of the last stretch must not lie
+to one side of the line. The frame is accepted only when the supported line is long, straight
+(residual, bow of a quadratic), consistent with a second side when one is seen, and joins the near
+model without a kink (stricter with one side, where a diverging wall cannot be told from the track).
+The far axis is the near axis' value at ``axis_join`` continued with the smoothed far slope, trusted
+``axis_margin`` beyond the support (pessimistic: the support shrinks at once and grows slowly, and
+decays while a failed frame is held), with a lateral uncertainty ``sigma(X)`` (offset, slope error,
+the one-side divergence allowance, and an unseen curvature of R 300 m beyond the support) that shrinks
+the strict gauge. Only an explicit ``declared_straight_to`` (a route-map statement) extends the
+trust beyond the observed support. On a curve the checks fail and the near model is used as before.
 """
 from __future__ import annotations
 
@@ -34,11 +39,13 @@ class FarAxis:
     y_join: float
     slope: float
     slope_se: float
-    support: float           # X of the last supporting bin
+    support: float           # X of the last supporting bin (smoothed, pessimistic)
     valid: float             # X up to which the far line is trusted
     sides: int
     sigma0: float
     unseen_k: float
+    one_side_slope: float = 0.0   # rad, divergence allowance with one fitted side
+    straight_to: float = 0.0      # X from which an unseen curve may start (support minus the lead, or a declared map section)
 
     def offset(self, X: np.ndarray, model: TrackModel) -> np.ndarray:
         """y_far - y_near at X (0 before the join): dy_far = dy_near - offset."""
@@ -52,8 +59,9 @@ class FarAxis:
     def sigma(self, X: np.ndarray) -> np.ndarray:
         X = np.asarray(X, dtype=np.float64)
         d = np.maximum(X - self.join, 0.0)
-        beyond = np.maximum(X - self.support, 0.0)
-        return np.where(X > self.join, np.hypot(self.sigma0, self.slope_se * d) + 0.5 * self.unseen_k * beyond ** 2, 0.0)
+        beyond = np.maximum(X - self.straight_to, 0.0)
+        stat = np.sqrt(self.sigma0 ** 2 + (self.slope_se * d) ** 2 + (self.one_side_slope * d) ** 2)
+        return np.where(X > self.join, stat + 0.5 * self.unseen_k * beyond ** 2, 0.0)
 
     def to_dict(self) -> dict:
         return {"join": self.join, "y_join": round(self.y_join, 3), "slope": round(self.slope, 6),
@@ -61,25 +69,45 @@ class FarAxis:
                 "valid": round(self.valid, 1), "sides": self.sides}
 
 
-def _side_line(xs: np.ndarray, ys: np.ndarray, cfg: FarRangeConfig):
-    """Robust straight line of one boundary: (slope, intercept, slope_se, x_last) or None."""
-    if xs.size < cfg.axis_min_bins:
+def _side_line(xs: np.ndarray, ys: np.ndarray, cfg: FarRangeConfig, min_bins: int):
+    """Robust straight line of one boundary over its contiguous support:
+    (slope, intercept, slope_se, x_support) or None."""
+    if xs.size < min_bins:
         return None
+    o = np.argsort(xs)
+    xs, ys = xs[o], ys[o]
     keep = np.ones(xs.size, dtype=bool)
     for _ in range(3):
-        if keep.sum() < cfg.axis_min_bins:
+        if keep.sum() < min_bins:
             return None
         p = np.polyfit(xs[keep], ys[keep], 1)
         keep = np.abs(ys - np.polyval(p, xs)) < 2.0 * cfg.axis_max_rms
-    if keep.sum() < cfg.axis_min_bins:
+    # the support ends at a long gap between kept bins or at a run of rejected bins
+    end, last, run = -1, None, 0
+    for i in range(xs.size):
+        if keep[i]:
+            if last is not None and xs[i] - xs[last] > cfg.axis_max_gap:
+                break
+            last, run, end = i, 0, i
+        else:
+            run += 1
+            if last is not None and run >= cfg.axis_max_rejected_run:
+                break
+    if end < 0:
         return None
-    x, y = xs[keep], ys[keep]
+    sup = keep.copy()
+    sup[end + 1:] = False
+    if sup.sum() < min_bins:
+        return None
+    x, y = xs[sup], ys[sup]
     if x.max() - x.min() < cfg.axis_min_span:
         return None
     p = np.polyfit(x, y, 1)
     res = y - np.polyval(p, x)
     rms = float(np.sqrt(np.mean(res ** 2)))
     if rms > cfg.axis_max_rms:
+        return None
+    if abs(float(np.mean(res[-3:]))) > cfg.axis_max_rms:        # the last stretch to one side: bending away
         return None
     q = np.polyfit(x, y, 2)
     grid = np.linspace(x.min(), x.max(), 32)
@@ -106,10 +134,10 @@ def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: 
     band = ((h > cfg.axis_band[0]) & (h < cfg.axis_band[1]) & (np.abs(dy0) > cfg.axis_lateral[0])
             & (np.abs(dy0) < cfg.axis_lateral[1]))
     edges = np.arange(lo, hi + cfg.axis_bin, cfg.axis_bin)
-    fits = []
+    primary, second = [], []
     for s in (1.0, -1.0):
         m = band & (np.sign(dy0) == s)
-        if m.sum() < cfg.axis_min_points * cfg.axis_min_bins:
+        if m.sum() < cfg.axis_min_points * min(cfg.axis_min_bins, cfg.axis_second_min_bins):
             continue
         idx = np.digitize(X[m], edges) - 1
         a, yy = np.abs(dy0[m]), Y[m]
@@ -121,23 +149,30 @@ def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: 
             k = q[np.argsort(a[q])[int(0.1 * q.size)]]          # the inner boundary: 10th percentile of |lateral|
             xs.append(0.5 * (edges[b] + edges[b + 1]))
             ys.append(yy[k])
-        f = _side_line(np.asarray(xs), np.asarray(ys), cfg)
+        xs, ys = np.asarray(xs), np.asarray(ys)
+        f = _side_line(xs, ys, cfg, cfg.axis_min_bins)
         if f is not None:
-            fits.append(f)
-    if not fits:
+            primary.append(f)
+        else:
+            f = _side_line(xs, ys, cfg, cfg.axis_second_min_bins)
+            if f is not None:
+                second.append(f)
+    if not primary:
         return None
+    fits = primary + second
     if len(fits) == 2 and abs(fits[0][0] - fits[1][0]) > cfg.axis_max_side_disagreement:
         return None
     w = np.array([1.0 / f[2] ** 2 for f in fits])
     slope = float(np.sum(w * [f[0] for f in fits]) / w.sum())
     se = float(1.0 / np.sqrt(w.sum()))
-    if abs(slope - tj) > cfg.axis_max_kink:
+    kink = cfg.axis_max_kink if len(fits) == 2 else cfg.axis_max_kink_one_side
+    if abs(slope - tj) > kink:
         return None
-    return slope, se, max(f[3] for f in fits), len(fits)
+    return slope, se, max(f[3] for f in primary), len(fits)
 
 
 class FarAxisTracker:
-    """Temporal state of the far line (EMA of the slope, confirmation, hold)."""
+    """Temporal state of the far line (EMA of the slope, pessimistic support, confirmation, hold)."""
 
     def __init__(self, cfg: FarRangeConfig):
         self.cfg = cfg
@@ -159,25 +194,43 @@ class FarAxisTracker:
         m = measure(xyz, model, cfg, max_range)
         if m is None:
             self.bad += 1
-            self.good = 0 if self.bad > cfg.axis_hold_frames else self.good
+            # a held line is stale: its support decays (10 m per failed frame)
+            self.support = max(cfg.axis_join, self.support - 10.0)
             if self.bad > cfg.axis_hold_frames:
-                self.slope = None
+                self.slope, self.good = None, 0
         else:
             slope, se, support, sides = m
             a = cfg.axis_smoothing if self.slope is not None else 0.0
             self.slope = slope if self.slope is None else a * self.slope + (1 - a) * slope
             self.se = se if a == 0.0 else a * self.se + (1 - a) * se
-            self.support = support if a == 0.0 else max(support, a * self.support + (1 - a) * support)
+            if a == 0.0 or support < self.support:
+                self.support = support                       # shrinks at once
+            else:
+                self.support = self.support + (1 - a) * (support - self.support)   # grows slowly
             self.sides = sides
             self.good += 1
             self.bad = 0
         if self.slope is None or self.good < cfg.axis_confirm_frames:
             return None
         j = cfg.axis_join
-        return FarAxis(join=j, y_join=float(model.center_y(np.array([j]))[0]), slope=float(self.slope),
-                       slope_se=float(self.se), support=float(self.support),
-                       valid=float(min(self.support + cfg.axis_margin, max_range)), sides=self.sides,
-                       sigma0=cfg.axis_sigma0, unseen_k=cfg.axis_unseen_curvature)
+        k = float(cfg.axis_unseen_curvature)
+        # a curve departs less than the keep tolerance (2 axis_max_rms) for sqrt(2 tol / k) after its start:
+        # it may already have begun that far before the support's end
+        lead = float(np.sqrt(2.0 * 2.0 * cfg.axis_max_rms / k)) if k > 0 else 0.0
+        straight = max(self.support - lead, float(cfg.declared_straight_to), j)
+        far = FarAxis(join=j, y_join=float(model.center_y(np.array([j]))[0]), slope=float(self.slope),
+                      slope_se=float(self.se), support=float(self.support), valid=0.0, sides=self.sides,
+                      sigma0=cfg.axis_sigma0, unseen_k=k,
+                      one_side_slope=cfg.axis_one_side_slope_sigma if self.sides < 2 else 0.0,
+                      straight_to=straight)
+        # trusted to axis_margin beyond the support (or the declared section), and only while sigma <= axis_max_sigma
+        end = min(max(self.support + cfg.axis_margin, float(cfg.declared_straight_to)), max_range)
+        grid = np.arange(j, end + 1e-6, 1.0)
+        ok = far.sigma(grid) <= cfg.axis_max_sigma
+        far.valid = float(grid[ok].max()) if ok[0] and ok.any() and np.all(ok[:np.flatnonzero(ok).max() + 1]) else j
+        if ok.any() and not ok.all():
+            far.valid = float(grid[:int(np.argmin(ok))].max()) if np.argmin(ok) > 0 else j
+        return far
 
 
 class FarConfirm:

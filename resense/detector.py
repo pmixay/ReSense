@@ -337,7 +337,14 @@ class Detector:
         dt = self._frame_dt(frame.stamp)
         xyz = self._fit_track(frame.xyz, self._periods())
         if self.far is not None:
+            prev = self._far_axis
             self._far_axis = self.far.update(xyz, self.track, cfg.gauge.range_max)
+            # buffered corridor points carry laterals from the axis of their frame: when the far axis
+            # appears, disappears or moves (0.2 m at the far end), the buffer is not comparable
+            if (prev is None) != (self._far_axis is None) or (
+                    prev is not None and abs((self._far_axis.y_join + self._far_axis.slope * (cfg.gauge.range_max - self._far_axis.join))
+                                             - (prev.y_join + prev.slope * (cfg.gauge.range_max - prev.join))) > 0.2):
+                self.buffer.clear()
         self._frame_xyz = xyz
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)

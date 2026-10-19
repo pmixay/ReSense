@@ -75,7 +75,7 @@ def test_far_axis_tracker_confirms_offsets_and_bounds_the_trust():
     out = [tr.update(_walls(seed=k), model, 400.0) for k in range(cfg.axis_confirm_frames)]
     assert all(o is None for o in out[:-1]) and out[-1] is not None
     far = out[-1]
-    assert far.valid <= 260.0 + cfg.axis_margin and far.valid > 250.0
+    assert far.sides == 1 and 200.0 < far.valid < 215.0          # one side: the 0.003 rad divergence allowance bounds sigma 0.5 m at ~209 m
     X = np.array([10.0, 50.0, 150.0, 300.0])
     off = far.offset(X, model)
     assert off[0] == 0.0 and off[1] == 0.0 and abs(off[3] - far.slope * 250.0) < 1e-9
@@ -104,3 +104,111 @@ def test_far_confirm_needs_consistent_range_history():
     assert not hop.ok(7)                                   # returns hopping along the ray
     fc.update([])                                          # the track is gone: its history too
     assert not fc.ok(7)
+
+
+# 19.10 independent review B1: curves starting beyond the join, an occluded inner wall and a single
+# diverging wall. Wherever the far axis claims trust (up to ``valid``), its error must stay within
+# sigma + 0.3 m; rejecting the frame is always acceptable.
+
+def _centre(X, xc, radius):
+    return np.where(X > xc, 0.5 * (X - xc) ** 2 / radius, 0.0)
+
+
+def _curved_walls(xc, radius, seed, occlude_inner=False):
+    rng = np.random.default_rng(seed)
+    out = []
+    for s in (1.0, -1.0):
+        X = np.repeat(np.arange(52.0, 400.0, 1.0), 6)
+        Y = _centre(X, xc, radius) + s * 1.9 + rng.normal(0, 0.03, X.size)
+        Z = -1.75 + rng.uniform(1.1, 2.6, X.size)
+        keep = ~((s < 0) & (X > xc + 20)) if occlude_inner else np.ones(X.size, bool)
+        out.append(np.stack([X, Y, Z], 1)[keep])
+    return np.concatenate(out).astype(np.float32)
+
+
+def _check_within_sigma(far, model, truth):
+    X = np.arange(60.0, far.valid + 1.0, 5.0)
+    err = np.abs(far.offset(X, model) - truth(X))
+    assert np.all(err <= far.sigma(X) + 0.3), (far.to_dict(), float(err.max()), float(X[err.argmax()]))
+
+
+def test_far_axis_never_trusts_a_curve_beyond_its_support():
+    cfg = FarRangeConfig(enabled=True)
+    model = _model()
+    for occl in (False, True):
+        for xc in (120.0, 160.0, 200.0, 240.0):
+            for radius in (300.0, 600.0, 1000.0, 3000.0):
+                tr = FarAxisTracker(cfg)
+                far = None
+                for k in range(8):
+                    far = tr.update(_curved_walls(xc, radius, k, occl), model, 400.0)
+                if far is not None:
+                    _check_within_sigma(far, model, lambda X: _centre(X, xc, radius))
+
+
+def test_far_axis_single_diverging_wall_is_rejected_or_covered():
+    cfg = FarRangeConfig(enabled=True)
+    model = _model()
+    for slope in (0.003, 0.006, 0.009):
+        for other_end in (52.0, 120.0):
+            tr = FarAxisTracker(cfg)
+            far = None
+            for k in range(8):
+                rng = np.random.default_rng(k)
+                pts = []
+                for side, sl, x1 in ((1.0, slope, 350.0), (-1.0, 0.0, other_end)):
+                    if x1 <= 52.0:
+                        continue
+                    X = np.repeat(np.arange(52.0, x1, 1.0), 6)
+                    pts.append(np.stack([X, side * 1.9 + sl * (X - 50) + rng.normal(0, 0.03, X.size),
+                                         -1.75 + rng.uniform(1.1, 2.6, X.size)], 1))
+                far = tr.update(np.concatenate(pts).astype(np.float32), model, 400.0)
+            if far is not None:
+                _check_within_sigma(far, model, lambda X: np.zeros_like(X))
+
+
+def test_far_axis_straight_control_is_accepted_and_declared_map_extends_trust():
+    model = _model()
+    cfg = FarRangeConfig(enabled=True)
+    tr = FarAxisTracker(cfg)
+    for k in range(8):
+        far = tr.update(_curved_walls(1e6, 1e9, k), model, 400.0)
+    assert far is not None and far.sides == 2 and far.join < far.valid <= far.support + cfg.axis_margin
+    _check_within_sigma(far, model, lambda X: np.zeros_like(X))
+    cfg2 = FarRangeConfig(enabled=True, declared_straight_to=450.0)
+    tr2 = FarAxisTracker(cfg2)
+    for k in range(8):
+        far2 = tr2.update(_walls(seed=k, x1=200.0), model, 400.0)
+    assert far2 is not None and far2.sides == 1 and far2.valid > 200.0 and np.all(far2.sigma(np.arange(60.0, far2.valid, 5.0)) <= 0.5)
+
+
+def test_buffer_cleared_when_far_axis_switches(monkeypatch):
+    """Review B4: buffered laterals belong to the axis of their frame; a switch clears the buffer."""
+    from resense.frame import Frame
+
+    cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))
+    resolved, _ = apply_sensor_profile(cfg, "falcon_ros")
+    det = Detector(resolved)
+
+    class Fake:
+        def __init__(self, y):
+            self.y_join, self.slope, self.join, self.valid = y, 0.0, 50.0, 60.0
+
+        def offset(self, X, model):
+            return np.zeros(np.shape(X))
+
+        def sigma(self, X):
+            return np.zeros(np.shape(X))
+
+    seq = [None, Fake(0.0), Fake(0.05), Fake(1.0), Fake(1.0), None]
+    expect = [False, True, False, True, False, True]
+    monkeypatch.setattr(det.far, "update", lambda *a, **k: seq.pop(0))
+    calls = []
+    real_clear = det.buffer.clear
+    monkeypatch.setattr(det.buffer, "clear", lambda: (calls.append(1), real_clear()))
+    rng = np.random.default_rng(0)
+    for i, want in enumerate(expect):
+        calls.clear()
+        xyz = np.c_[rng.uniform(5, 60, 3000), rng.uniform(-3, 3, 3000), rng.uniform(-1.8, 1.0, 3000)].astype(np.float32)
+        det.process(Frame(xyz=xyz, intensity=np.zeros(3000, np.float32), stamp=0.1 * i), ego_speed=5.0)
+        assert bool(calls) == want, (i, calls)
