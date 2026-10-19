@@ -21,8 +21,12 @@ scan. No reference-image pixels are used as the player UI.
 
 The current display is mounted in a modeled metro interior. [`trainInterior.ts`](../../../webapp/frontend/src/player/trainInterior.ts)
 builds a formed laminate wall with an actual opening, recessed rubber mounting gasket,
-panel joints, flush fasteners, warm-metal foreground handrail, aluminium door/window reveal,
-ceiling louvers, linear saloon light and lower wall trim. The wall and housing share
+vertical/service-panel joints, flush fasteners and a curved warm-metal foreground handrail.
+The door has beveled aluminium reveals, rubber seals, black glass with ceiling reflections,
+a recessed red status diffuser and local spill, an emergency-release rosette, and illuminated
+charging sockets when there is sufficient room. The ceiling has a broad segmented white
+diffuser, 150 instanced ventilation fins, an extruded cove lip and warm side lighting.
+The wall and housing share
 the same angle; there is no floating monitor on an abstract backdrop. The reference
 photo informs the installation and materials; the environment is reconstructed 3D
 geometry, not a claim that the app is rendering a photograph of a particular train.
@@ -37,11 +41,13 @@ the earlier dynamic shadow map. It has a smooth penumbra at any render resolutio
 and adds no shadow-map pass during pointer motion. Material grain is a
 deterministic small roughness/bump texture, and a physical clear-coated cover-glass
 mesh sits above the active image. Internal brightness, bloom and wall spill are
-restrained for a lit train interior; a mild ceiling-light reflection stays below the
+restrained for a lit train interior. Neutral overhead area/key light, warm cove fill,
+lower hemispheric bounce and a cached procedural saloon reflection environment give
+metalwork broad luminaire reflections. A mild ceiling-light reflection stays below the
 contrast needed to read the live data. Screen emission follows the existing on-demand playback render loop.
 
 [`installed-display-1440.png`](installed-display-1440.png) is a direct screenshot of
-the full train-wall workspace beneath the header, including its control overlay.
+the visible train-wall viewport beneath the header, including its control overlay.
 The full-page captures also show the sole pinned site navigation.
 
 ## Neutral pose and pressure parallax
@@ -53,6 +59,9 @@ and [`parallax-left-1440.png`](parallax-left-1440.png) show the edge-pressure st
 The handrail and its collars are a separate foreground geometry layer, moving
 at 24% of the background's angles. They sit at least .5 scene units ahead of all
 wall/housing geometry throughout the nine pressure extremes checked by the model tests.
+Collars now sit on and align with the curved centerline instead of using guessed positions.
+Additional raycast tests check the active surface against the interior at 45 combinations
+of viewport/height and pressure; the ceiling valance fits the measured enclosure clearance.
 The near handrail is now rendered sharply in the main physical scene, with the
 dedicated blur target and composite pass removed. Center, pointer leave and window blur reset the
 pose; touch and reduced-motion mode keep a neutral scene.
@@ -62,9 +71,10 @@ HTML/SVG annotation surface applies that exact transform, including the close-up
 Projection tests compare real mesh vertices with the transformed HUD on desktop and
 mobile, verify independent railing motion, neutral settling and full-height wall coverage.
 
-The train backdrop fills the entire Player viewport beneath the shared top bar and
-stage rail. It remains sticky behind vertically scrolling mobile content. The device
-retains its original upper display region, while the wall and railings continue
+The train backdrop fills the complete natural-height Player workspace beneath the shared
+stage rail. It scrolls with the physical display and native HUD, keeping their exact
+alignment even when expanded hardware exceeds one viewport. The device
+retains its upper display region, while the wall and railings continue
 behind telemetry and transport. A dark, backdrop-blurred control dock feathers to
 fully transparent through the upper 64px of the dock, then ramps gently with a 160px
 feather mask. A separate, shorter blur feather stays close to the dock so display annotations remain sharp.
@@ -83,15 +93,21 @@ loop or pointer-driven API/data update.
 fine RGB aperture, local highlight bloom, and light spill driven by the current
 image. The source texture remains continuously sampled. Two small GPU filter passes
 extract/diffuse the live image into an emission map used by the screen, glass and
-surrounding light pool. Hue-preserving compression prevents a bright channel from
+surrounding light pool. `screenLighting.ts` adds a five-sample GPU area-light approximation
+to wall, trim, enclosure and handrail materials. Light is evaluated in display coordinates,
+so it remains attached while the rail moves independently. A black source emits no light.
+Hue-preserving compression prevents a bright channel from
 turning a green or blue source into the same color. No runtime pixel readback or
 extra animation loop is required; the existing engine still renders on demand.
 
-An isolated browser check filled the real display target with black/red/green/blue
-frames and verified distinct matching emission colors, matching colored light on the
-wall 3–18px outside the projected hardware relative to its unlit frame, and an aperture pattern on a uniform gray
-source. Results are in `optics-verification.json`; diagnostic input colors are test
-patterns, not screenshots of application data.
+The current isolated browser check fills the real display target with black/red/green/blue,
+gray and split-red/blue frames. It verifies source-colored emission on both wall and rail,
+local hue on opposite sides of the split image, and pixel-identical cached neutral rendering
+after pressure motion. Five resize cycles keep GPU texture/geometry counts constant;
+disposal returns to only the diagnostic quad and shared renderer lookup textures.
+Results are in `interior-lighting-verification.json`.
+The earlier `optics-verification.json` retains historical aperture/edge-spill evidence.
+Diagnostic input colors are test patterns, not screenshots of application data.
 
 The shared palette now uses more saturated metro red, emerald, amber and violet.
 Player camera/speed selection and primary transport use the brand accent, while
@@ -106,7 +122,8 @@ panels and timeline/transport. The Player uses a full-bleed train background; ot
 application sections retain their shared page ground. There is
 no fixed 1600×900 composition or whole-page scaling.
 
-The default display is taller, with the same usable width. The «Увеличить высоту
+The default display is taller, with the same usable width: at 1440×900 its layout region
+is 1368×688, and expanded mode is approximately 1368×922. The «Увеличить высоту
 экрана» control expands it further at the same width; telemetry remains reachable
 by normal content scrolling. [`taller-display-1440.png`](taller-display-1440.png)
 captures that mode. ResizeObserver resizes the actual live surface when toggled.
@@ -116,8 +133,11 @@ captures that mode. ResizeObserver resizes the actual live surface when toggled.
 The physical canvas is capped at 1.5× device scale and approximately 2.6 million
 pixels; constrained devices are capped at 1×. DOM controls and annotations retain
 their native resolution. Handrails render directly, avoiding a separate blur target
-and composite pass. Dynamic shadow
-maps are disabled. This bounds the added effects; it is not a hardware-specific FPS guarantee.
+and composite pass. Dynamic shadow maps are disabled. Vent fins use one instanced draw;
+the reflection probe is generated once per renderer and cached. A diagnostic 1200×800
+physical scene uses 54 draw calls and 11,176 triangles including both emission filter
+passes. The pixel budget applies to the entire natural-height canvas. This bounds the
+added effects; it is not a hardware-specific FPS guarantee.
 
 ResizeObserver updates the canvas, offscreen target, camera aspect, annotation surface,
 close-up and track map. Projection tests compare the actual screen mesh's projected

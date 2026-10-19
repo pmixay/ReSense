@@ -100,7 +100,8 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
     const pointer = (event: PointerEvent) => {
       if (reduce.matches || event.pointerType !== 'mouse' || event.buttons !== 0) return;
       const r = canvas.getBoundingClientRect();
-      scene.setPointer((event.clientX - r.left) / r.width * 2 - 1, (event.clientY - r.top) / r.height * 2 - 1);
+      const main = wrap.closest('main')?.getBoundingClientRect() ?? r;
+      scene.setPointer((event.clientX - r.left) / r.width * 2 - 1, (event.clientY - main.top) / main.height * 2 - 1);
       invalidate();
     };
     workspace.addEventListener('pointermove', pointer, { passive: true });

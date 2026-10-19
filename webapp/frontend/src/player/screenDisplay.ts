@@ -1,9 +1,13 @@
 // Parametric display modeled from the supplied images (1).jpg: shallow silver housing,
 // rounded black cover glass, and the live LiDAR render target on the active display surface.
 import * as THREE from 'three';
+import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { CONTACT_SHADOW_FRAGMENT, DISPLAY_FRAGMENT, DISPLAY_VERTEX, FILTER_FRAGMENT, FILTER_VERTEX, GLOW_FRAGMENT } from './screenEffects';
 import { roundedRect } from './screenGeometry';
 import { TrainInterior } from './trainInterior';
+import { ScreenLighting } from './screenLighting';
+
+let areaLightTablesReady = false;
 
 export interface DisplayTransform { a: number; b: number; c: number; d: number; x: number; y: number }
 export interface DisplayMotion { sceneX: number; sceneY: number; sceneZ: number; railX: number; railY: number; railZ: number }
@@ -18,7 +22,9 @@ export class ScreenDisplay {
   readonly viewport: DisplayViewport = { x: 0, y: 0, width: 1, height: 1 };
   private readonly body = new THREE.Group();
   private readonly background = new THREE.Group();
-  private readonly interior = new TrainInterior();
+  private readonly lighting = new ScreenLighting(this.emission.texture);
+  private readonly interior = new TrainInterior(this.lighting);
+  private readonly roofLight = new THREE.RectAreaLight(0xf3f6ff, 3, 16, .8);
   private readonly filterTarget = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false });
   private readonly filterScene = new THREE.Scene();
   private readonly filterCamera = new THREE.Camera();
@@ -52,6 +58,7 @@ export class ScreenDisplay {
   private readonly pointerTarget = new THREE.Vector3();
   private surfaceWidth = 1;
   private surfaceHeight = 1;
+  private environment: THREE.WebGLRenderTarget | null = null;
 
   constructor(private readonly wallOnly = false) {
     this.camera.position.set(0, 0, 20);
@@ -68,11 +75,23 @@ export class ScreenDisplay {
     this.glass.emissive.set(0xffffff);
     this.glass.emissiveMap = this.emission.texture;
     this.glass.emissiveIntensity = 0.06;
-    const key = new THREE.DirectionalLight(0xfff8e8, 1.35);
-    key.position.set(-5, 10, 30);
-    const fill = new THREE.DirectionalLight(0xdfe8f4, 0.7);
-    fill.position.set(12, -4, 8);
-    this.scene.add(this.background, this.interior.railings, new THREE.HemisphereLight(0xf1f4ed, 0x657079, 2.0), key, fill);
+    this.lighting.apply(this.metal, .8);
+    this.lighting.apply(this.rear, .5);
+    // Neutral broad overhead LEDs, warmer window-side cove, dimmer lower bounce.
+    if (!areaLightTablesReady) {
+      RectAreaLightUniformsLib.init();
+      areaLightTablesReady = true;
+    }
+    this.roofLight.name = 'broad-ceiling-area-light';
+    const key = new THREE.DirectionalLight(0xf0f5ff, 1.2);
+    key.name = 'neutral-ceiling-led-light';
+    key.position.set(-2, 12, 7);
+    const fill = new THREE.DirectionalLight(0xffdfba, .65);
+    fill.name = 'warm-side-cove-fill';
+    fill.position.set(7, 4, 6);
+    const ceiling = new THREE.HemisphereLight(0xeaf2ff, 0x444d56, 1.25);
+    ceiling.name = 'saloon-soft-ambient';
+    this.scene.add(this.background, this.interior.railings, ceiling, key, fill, this.roofLight);
   }
 
   setSize(width: number, height: number, pixelRatio: number, region: DisplayRegion = { height, top: 0 }): void {
@@ -86,8 +105,10 @@ export class ScreenDisplay {
     const units = 16 / width;
     const w = 16;
     const h = height * units;
+    this.roofLight.position.set(0, h / 2 - .12, 2.6);
+    this.roofLight.lookAt(0, h / 2 - 2.2, -.45);
     const side = Math.max(25, viewWidth * 0.065);
-    const top = Math.min(72, Math.max(38, region.height * 0.16));
+    const top = Math.min(96, Math.max(50, region.height * 0.16));
     const bottom = Math.min(56, Math.max(25, region.height * 0.12));
     const bezel = Math.min(22, Math.max(10, region.height * 0.045));
     Object.assign(this.viewport, { x: viewLeft + side + bezel, y: region.top + top + bezel, width: Math.max(1, viewWidth - (side + bezel) * 2), height: Math.max(1, region.height - top - bottom - bezel * 2) });
@@ -177,7 +198,8 @@ export class ScreenDisplay {
 
   step(dt: number): void {
     if (!this.animating) return;
-    const k = 1 - Math.exp(-Math.min(.1, Math.max(0, dt)) * 10);
+    // Exponential damping remains stable through slow GPU frames and settles in wall time.
+    const k = 1 - Math.exp(-Math.min(.5, Math.max(0, dt)) * 10);
     this.background.rotation.x += (this.pointerTarget.x - this.background.rotation.x) * k;
     this.background.rotation.y += (this.pointerTarget.y - this.background.rotation.y) * k;
     this.background.rotation.z += (this.pointerTarget.z - this.background.rotation.z) * k;
@@ -190,6 +212,7 @@ export class ScreenDisplay {
   private updateProjection(): void {
     this.background.updateMatrixWorld(true);
     this.interior.railings.updateMatrixWorld(true);
+    this.lighting.update(this.body.matrixWorld, this.surfaceWidth, this.surfaceHeight);
     const { width, height } = this.size;
     const vw = this.surfaceWidth;
     const vh = this.surfaceHeight;
@@ -211,6 +234,7 @@ export class ScreenDisplay {
 
   render(renderer: THREE.WebGLRenderer, dt = 1 / 60, imageChanged = true): void {
     this.step(dt);
+    if (!this.environment) this.createEnvironment(renderer);
     // Two small GPU-only passes extract and diffuse the actual image's emitted colors.
     if (imageChanged && !this.wallOnly) {
       const lw = this.emission.width;
@@ -237,6 +261,36 @@ export class ScreenDisplay {
     renderer.render(this.scene, this.camera);
   }
 
+  /** Small, cached saloon reflection probe: broad white roof panels and warm side coves.
+   * Metals need reflected luminaires as well as direct light to read as polished metal. */
+  private createEnvironment(renderer: THREE.WebGLRenderer): void {
+    const width = 256;
+    const height = 128;
+    const data = new Uint8Array(width * height * 4);
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      const v = y / height;
+      const u = x / width;
+      const roof = Math.exp(-Math.pow((v - .23) / .095, 4));
+      const strip = Math.exp(-Math.pow((u - .18) / .025, 2)) + Math.exp(-Math.pow((u - .68) / .025, 2));
+      const cove = Math.exp(-Math.pow((v - .47) / .035, 2)) * .55;
+      const base = .12 + .20 * (1 - v);
+      const i = (y * width + x) * 4;
+      data[i] = Math.min(255, (base + roof * .72 + strip * .52 + cove * .5) * 255);
+      data[i + 1] = Math.min(255, (base + roof * .75 + strip * .50 + cove * .32) * 255);
+      data[i + 2] = Math.min(255, (base + roof * .78 + strip * .48 + cove * .19) * 255);
+      data[i + 3] = 255;
+    }
+    const source = new THREE.DataTexture(data, width, height);
+    source.mapping = THREE.EquirectangularReflectionMapping;
+    source.needsUpdate = true;
+    const generator = new THREE.PMREMGenerator(renderer);
+    this.environment = generator.fromEquirectangular(source);
+    this.scene.environment = this.environment.texture;
+    this.scene.environmentIntensity = .85;
+    source.dispose();
+    generator.dispose();
+  }
+
   dispose(): void {
     for (const g of this.geometries) g.dispose();
     for (const m of [this.metal, this.glass, this.cover, this.rear, this.pixels, this.glow, this.filter, this.contact]) m.dispose();
@@ -246,6 +300,7 @@ export class ScreenDisplay {
     this.target.dispose();
     this.filterTarget.dispose();
     this.emission.dispose();
+    this.environment?.dispose();
     this.interior.dispose();
     this.scene.clear();
     this.filterScene.clear();

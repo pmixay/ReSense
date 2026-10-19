@@ -116,9 +116,13 @@ describe('CloudCache', () => {
     cc.request(3);
     expect(f.calls).toEqual([3]);
     now += 6000;
-    expect(cc.error(3)).toBeNull();
+    expect(cc.error(3)).toBe('404 нет облака');
     cc.request(3);
     expect(f.calls).toEqual([3, 3]);
+    expect(cc.error(3)).toBe('404 нет облака');
+    f.pending.get(3)!.resolve(3);
+    await flush();
+    expect(cc.error(3)).toBeNull();
   });
 
   it('keeps ~capacity clouds (LRU) and finds the newest one at or before a position', async () => {

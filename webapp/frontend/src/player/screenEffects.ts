@@ -55,7 +55,7 @@ export const FILTER_FRAGMENT = /* glsl */ `
     color += texture2D(uImage, vUv - uDirection * 1.384615).rgb * 0.316216;
     color += texture2D(uImage, vUv + uDirection * 3.230769).rgb * 0.070270;
     color += texture2D(uImage, vUv - uDirection * 3.230769).rgb * 0.070270;
-    vec3 extracted = max(vec3(0.0), color - 0.008) * 4.0;
+    vec3 extracted = max(vec3(0.0), color - 0.018) * 5.0;
     // Compress a single luminance scale, not separate channels, to retain emitted hue.
     extracted /= 1.0 + max(extracted.r, max(extracted.g, extracted.b));
     color = mix(color, extracted, uExtract);
@@ -70,7 +70,7 @@ export const GLOW_FRAGMENT = /* glsl */ `
   void main() {
     vec2 uv = (vUv - 0.5) * uFaceScale + 0.5;
     vec2 outside = max(abs(uv - 0.5) - 0.5, vec2(0.0));
-    float falloff = exp(-length(outside * vec2(1.0, 0.65)) * 24.0);
+    float falloff = exp(-length(outside * vec2(1.0, 0.75)) * 15.0);
     float feather = smoothstep(0.0, 0.12, vUv.x) * (1.0 - smoothstep(0.88, 1.0, vUv.x));
     feather *= smoothstep(0.0, 0.18, vUv.y) * (1.0 - smoothstep(0.82, 1.0, vUv.y));
     // Edge spill samples a little inside the image rather than its black cover-glass margin.
@@ -86,10 +86,10 @@ export const GLOW_FRAGMENT = /* glsl */ `
     vec3 radiance = local * 0.72 + ambient * (0.28 / 6.0);
     float energy = max(radiance.r, max(radiance.g, radiance.b));
     vec3 hue = radiance / max(0.025, energy);
-    float emitted = clamp(sqrt(energy) * 2.8, 0.0, 1.0);
-    vec3 color = mix(vec3(0.10, 0.14, 0.19), hue, emitted);
-    float alpha = falloff * feather * (0.006 + emitted * 0.16);
-    gl_FragColor = vec4(color, alpha);
+    float emitted = clamp(energy * 2.4, 0.0, 1.0);
+    // A black source emits no light. Colored content produces proportionate edge spill.
+    float alpha = falloff * feather * emitted * .25;
+    gl_FragColor = vec4(hue, alpha);
   }
 `;
 

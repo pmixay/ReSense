@@ -426,16 +426,28 @@ def test_loading_and_backend_errors(app, seeded):
     alert = page.get_by_role("alert").filter(has_text="Кадры не загрузились")
     expect(alert).to_contain_text("Результаты прогона недоступны")
     expect(page.get_by_text("загрузка кадров")).to_have_count(0)
+    # Keep automatic retries failed until the actual retry button is clicked; otherwise
+    # a slow GPU can let a background retry remove the banner during actionability checks.
+    page.evaluate('''() => {
+        window.playerRetryClicked = false;
+        document.addEventListener('click', event => {
+            if (event.target.closest('[role="alert"] button')) window.playerRetryClicked = true;
+        }, {capture:true});
+    }''')
     page.unroute(frames_re)
+    page.route(frames_re, lambda route: route.continue_() if page.evaluate('window.playerRetryClicked') else route.fulfill(status=503, content_type='application/json', body=json.dumps({'detail':'Результаты прогона недоступны'})))
     alert.get_by_role("button", name="Повторить").click()
     expect(page.get_by_role("alert")).to_have_count(0)
     expect(page.get_by_text(FRAME_RE)).to_have_text(re.compile(r"^кадр 12 / "))
+    page.unroute(frames_re)
 
     # a cloud fails → the HUD says so with the backend's message (the frame itself is still shown)
     cloud_re = api_route(base, rf"/runs/{rid}/clouds/\d+$")
     page.route(cloud_re, lambda route: route.fulfill(status=500, content_type="application/json", body=json.dumps({"detail": "Облако повреждено"})))
+    page.mouse.move(0, 0)
+    page.goto('about:blank')  # discard the previous run's in-flight cloud requests before injecting failure
     app.goto(f"/player/{rid}?pos=20")
-    expect(page.get_by_role("status").filter(has_text="Облако повреждено")).to_be_visible()
+    expect(page.get_by_role("status").filter(has_text="Облако повреждено")).to_be_visible(timeout=60_000)
     expect(beacon(page)).to_be_visible()
     page.unroute(cloud_re)
 
@@ -570,7 +582,8 @@ def test_workspace_resizes_without_clipping(app, seeded):
         assert abs(canvas_box['x'] - main_box['x']) < 1
         assert abs(canvas_box['y'] - main_box['y']) < 1
         assert abs(canvas_box['width'] - main_box['width']) < 1
-        assert abs(canvas_box['height'] - main_box['height']) < 1
+        assert abs(canvas_box['height'] - stage_box['height']) < 1
+        assert canvas_box['height'] >= main_box['height'] - 1
         for name in ("Схема пути", "Решение", "До препятствия", "Задержка и частота", "Исправность"):
             panel = page.get_by_role("region", name=name)
             panel.scroll_into_view_if_needed()
@@ -592,6 +605,12 @@ def test_taller_display_preserves_width_and_returns_to_normal(app, seeded):
     larger = box_of(display, scroll=False)
     assert larger['height'] > normal['height'] * 1.3, (normal, larger)
     assert abs(larger['width'] - normal['width']) < 1
+    # The canvas covers the expanded hardware and scrolls exactly with its native HUD.
+    backdrop = page.locator('[data-train-backdrop]')
+    assert box_of(backdrop, scroll=False)['height'] >= larger['height']
+    top_offset = larger['y'] - box_of(backdrop, scroll=False)['y']
+    page.locator('main').evaluate('el => el.scrollTop = 200')
+    assert abs(box_of(display, scroll=False)['y'] - box_of(backdrop, scroll=False)['y'] - top_offset) < 1
     page.get_by_role('button', name='Обычная высота экрана').scroll_into_view_if_needed()
     page.get_by_role('button', name='Обычная высота экрана').click()
     assert abs(box_of(display)['height'] - normal['height']) < 1
@@ -603,7 +622,7 @@ def test_pointer_pressure_parallax_and_reduced_motion(app, seeded):
     page, rid = app.page, seeded['ids']['approach']
     open_player(app, f'/player/{rid}?pos=30')
     canvas = page.get_by_role('img', name='3D-вид из кабины')
-    box = box_of(canvas, scroll=False)
+    box = box_of(page.locator('main'), scroll=False)
     page.mouse.move(0, 0)
     page.wait_for_function('''() => {
         const cv = document.querySelector('canvas[aria-label="3D-вид из кабины"]');

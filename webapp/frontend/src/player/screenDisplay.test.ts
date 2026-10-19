@@ -121,7 +121,8 @@ describe('modeled display projection', () => {
     expect(railings.rotation.x / background.rotation.x).toBeCloseTo(.24, 8);
     expect(railings.rotation.z / background.rotation.z).toBeCloseTo(.24, 8);
     display.setPointer(0, 0);
-    for (let i = 0; i < 120; i += 1) display.step(1 / 60);
+    // Slow devices still settle in elapsed time, rather than needing 120 costly frames.
+    for (let i = 0; i < 3; i += 1) display.step(.5);
     expect(display.animating).toBe(false);
     expect(background.rotation.x).toBe(0);
     expect(background.rotation.y).toBe(0);
@@ -158,6 +159,52 @@ describe('modeled display projection', () => {
       expect(near.min.z - wall.max.z).toBeGreaterThan(.5);
     }
     expect(display.scene.getObjectByName('antialiased-mount-contact')).toBeDefined();
+    display.dispose();
+  });
+
+  it.each([
+    [1366, 907, 1298, 556], [1440, 1039, 1368, 688], [1920, 1219, 1840, 868],
+    [390, 1230, 358, 410], [1440, 1273, 1368, 922],
+  ])('keeps every interior part clear of the active screen at %s×%s', (width, height, regionWidth, regionHeight) => {
+    const display = new ScreenDisplay();
+    display.setSize(width, height, 1, { width: regionWidth, left: (width - regionWidth) / 2, height: regionHeight, top: 16 });
+    const face = display.scene.getObjectByName('live-display-surface') as THREE.Mesh;
+    const interior = display.scene.getObjectByName('train-wall-installation')!;
+    const background = display.scene.getObjectByName('train-background-layer')!;
+    const rail = display.scene.getObjectByName('stainless-grab-rail') as THREE.Mesh;
+    face.geometry.computeBoundingBox();
+    const bounds = face.geometry.boundingBox!;
+    for (const px of [-1, 0, 1]) for (const py of [-1, 0, 1]) {
+      display.setPointer(px, py);
+      for (let i = 0; i < 100; i++) display.step(1 / 60);
+      display.scene.updateMatrixWorld(true);
+      const railPoints = rail.geometry.getAttribute('position');
+      for (let i = 0; i < railPoints.count; i += 32) {
+        const point = new THREE.Vector3().fromBufferAttribute(railPoints, i).applyMatrix4(rail.matrixWorld);
+        expect(new THREE.Raycaster(point, new THREE.Vector3(0, 0, -1), 0, .5).intersectObject(background, true)).toHaveLength(0);
+      }
+      for (const x of [-.45, 0, .45]) for (const y of [-.45, 0, .45]) {
+        const point = new THREE.Vector3(x * (bounds.max.x - bounds.min.x), y * (bounds.max.y - bounds.min.y), 0).applyMatrix4(face.matrixWorld);
+        const origin = point.clone().add(new THREE.Vector3(0, 0, 20));
+        const ray = new THREE.Raycaster(origin, new THREE.Vector3(0, 0, -1), 0, 19.99);
+        const opaqueHits = ray.intersectObject(interior, true).filter(hit => {
+          const material = (hit.object as THREE.Mesh).material as THREE.Material;
+          return !material.transparent;
+        });
+        expect(opaqueHits).toHaveLength(0);
+      }
+    }
+    const roof = display.scene.getObjectByName('formed-ceiling-valance')!;
+    display.setPointer(0, 0);
+    for (let i = 0; i < 100; i++) display.step(1 / 60);
+    display.scene.updateMatrixWorld(true);
+    const housingTop = new THREE.Box3().setFromObject(display.scene.getObjectByName('protective-cover-glass')!).max.y;
+    expect(new THREE.Box3().setFromObject(roof).min.y).toBeGreaterThan(housingTop);
+    display.scene.traverse(object => {
+      if (!(object instanceof THREE.Mesh)) return;
+      const position = object.geometry.getAttribute('position');
+      for (const value of position.array) expect(Number.isFinite(value)).toBe(true);
+    });
     display.dispose();
   });
 });

@@ -39,7 +39,10 @@ duplicate local logo, title, stage rail or standalone player header.
 On Player the existing metro-line stage rail matches Upload and is the only pinned navigation; grouped
 Data/Analysis/System chrome is omitted to recover display height. A height control
 expands the live view at the same width. The interior follows inspected Moscow-2020
-saloon material cues, with a sharp near-field rail, taller default display and bounded rendering costs.
+saloon material cues, with a sharp curved near-field rail, detailed formed panels and door fittings,
+broad neutral ceiling LEDs, warm side coves and content-driven light on nearby surfaces.
+The taller default display and optional expansion retain width; the scene and annotations scroll
+together while physical rendering stays within a bounded pixel budget.
 
 Target desktop review sizes are 1366×768, 1440×900 and 1920×1080, with mobile content
 flowing vertically. Synthetic capture runs demonstrate the UI and are not evaluation evidence.

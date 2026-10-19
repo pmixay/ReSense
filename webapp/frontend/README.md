@@ -89,7 +89,8 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   The housing and wall share their angle, antialiased analytic contact shading anchors the enclosure, and a clear-coated
   physical cover glass sits above the live surface. Environment geometry, textures, materials and
   render targets are disposed with the display; UI controls still belong to the shared page.
-- **Pressure parallax.** Player uses a full-height sticky train backdrop under the shared chrome.
+- **Pressure parallax.** Player uses a natural-height train backdrop under the shared chrome,
+  scrolling in exact alignment with the physical screen and HUD.
   The default pose is straight; bounded mouse pressure tilts the wall/display group and moves the
   separate foreground railings at 24% strength. The HUD uses the updated affine surface transform.
   Pointer-only renders reuse live image/emission textures, settle to rest, and respect reduced
@@ -98,6 +99,11 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   short blur feather keeps screen labels sharp.
 - **Player space/performance.** Player uses the shared metro-line destination rail, styled like Upload.
   Its height toggle expands the live display without narrowing it. Foreground rails sit ahead
-  of the moving wall and render sharply in the physical scene without a defocus pass. Physical rendering
+  of the moving wall and render sharply in the physical scene without a defocus pass. The detailed
+  Moskva-2020 bay has neutral ceiling LEDs, warm coves, instanced vents and formed door fittings;
+  a cached saloon reflection probe lights its metal. `screenLighting.ts` samples live emission on
+  wall, trim, housing and rail without CPU readback. Scene and HUD scroll together across the full
+  natural-height workspace, including the taller 688px desktop default / 922px expanded region
+  at 1440×900. Physical rendering
   is capped by `displayQuality.ts` (1.5×/2.6M pixels, 1× on constrained devices); DOM controls
   stay native-size. Dynamic shadow maps are disabled in favor of analytic contact shading.
