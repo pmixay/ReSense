@@ -180,3 +180,28 @@ rail at the envelope edge, top 0.15 m above its rail's local line): not an extra
 0.01 (F1a) + `cluster.mount_cross_tol` 0.5 (H) + `tracking.settle_min_hits` 50 with `settle_check_z` false (S2);
 F1b and F1c stay off (no measured benefit). On in both YAML copies; every class default stays off. This candidate
 is now measured as registered: full gate, Falcon, probes, X3, switch-off identity, tests, review.
+
+## Amendment 5 (19.10, ~13:15 UTC) — new organizer information; extra conditions on S2 before any recommendation
+
+**Organizer information of 19.10 (~11:00 UTC, relayed by P1):** objects in front of the train may move, even
+chaotically, and must still be detected; everything that enters the train's gauge is an obstacle; dust is present
+in every new `synthetic_` bag. **Consequences registered now:**
+
+1. S2 (`tracking.settle_*`) is recommended only if, in addition to amendment 1's standing-train probes:
+   * **moving in-gauge objects:** the judge's dynamic probes of `run_range_extra.sh` (E1 crossing at 150 / 80 m,
+     E3 receding at 8 / 5 m/s, E4 appearing at 60 / 100 m, E5 poles on the axis / 0.7 m off it, E6 low cable;
+     background A, unchanged `range_test.py`) lose **no** STOP frame and have **no** later first STOP with the
+     candidate than with the base;
+   * **the three synthetic bags** (`new_synth_data.zst`, streamed, one node replica per bag, team labels N5,
+     `scripts/score_team_labels.py`): per labelled object, STOP frames not fewer and first STOP not later;
+   * **no in-gauge object is ever demoted by S2:** on every run with labelled positives (set O, `doubleT_obstacle`,
+     standing-train and dynamic probes, synthetic bags, the Falcon person) the number of frames where the
+     candidate's decision on a labelled object is lower than the base's is **0**; S2's changes are listed frame by
+     frame with the object they touched.
+   * Whether the Falcon 115 m support is physically inside the gauge is **not known** (the detector's own axis puts
+     4 of ~8–11 voxels inside on 8.8 % of its hits); since "everything that enters the gauge is an obstacle", S2's only
+     measured effect (that support's four frames) is reported as **an undetermined call, not a confirmed false alarm**.
+2. F1 is not tuned on `synthetic_switch` / `synthetic_tunnels` frames (their background STOPs may be the
+   organizers' dust; the dust lane owns them); those bags are only measured.
+3. If time allows (report only, no change): how the production `tracking.ego_veto_min_speed` treats objects moving
+   away (E3 probes) and moving erratically.
