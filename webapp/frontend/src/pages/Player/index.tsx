@@ -56,6 +56,10 @@ function Stage({ children, state, stageRef }: StageProps) {
   );
 }
 
+function SceneLayer({ children }: { children: ReactNode }) {
+  return <div className={styles.sceneAnchor}><div className={styles.sceneLayer} data-train-backdrop>{children}</div></div>;
+}
+
 /** The console tray while a run loads: the scrubber's shape, still. */
 function TraySkeleton() {
   return (
@@ -86,15 +90,23 @@ function TrayActions() {
 
 /** Picker, loading and error states participate in the same page layout. */
 function CabShell({ runId, runName, glass, console: cons }: { runId?: string; runName?: string; glass: ReactNode; console?: ReactNode }) {
+  const displayRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<PlayerScene | null>(null);
+  const sink = useRef<OverlaySink | null>(null);
   const back = useBack(runId);
   const { fs } = useContext(ChromeContext);
   // without a run only F and Esc mean something; every other key keeps its default
   usePlayerKeys({ fullscreen: fs.toggle, escape: () => (fs.active ? void fs.exit() : back()) });
   return (
     <Stage>
-      <div className={styles.stateArea}>{glass}</div>
-      <ViewControls runId={runId} runName={runName} decision={null} fullscreen={fs.active} onFullscreen={fs.toggle} />
-      {cons}
+      <SceneLayer>
+        <World engine={null} mode="cab" pixelRatio={Math.min(2, window.devicePixelRatio || 1)} cloudBudget={null} displayRef={displayRef} sceneRef={sceneRef} sink={sink} onFreeChange={() => undefined} onError={() => undefined} />
+      </SceneLayer>
+      <div ref={displayRef} className={styles.stateArea}>{glass}</div>
+      <div className={styles.controlDock} data-player-controls>
+        <ViewControls runId={runId} runName={runName} decision={null} fullscreen={fs.active} onFullscreen={fs.toggle} />
+        {cons}
+      </div>
     </Stage>
   );
 }
@@ -213,6 +225,7 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
   const back = useBack(run.id);
   const schema = usePresetSchema();
   const stageRef = useRef<HTMLDivElement>(null);
+  const displayRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     document.title = `${run.name} · Плеер · ReSense`;
     return () => {
@@ -338,13 +351,14 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
   const pr = Math.min(2, window.devicePixelRatio || 1);
   return (
     <Stage state={stateAttr} stageRef={stageRef}>
-      <div className={styles.display} data-player-display>
+      <SceneLayer>
         {engine && !webglError && (
           <World
             engine={engine}
             mode={mode}
             pixelRatio={pr}
             cloudBudget={hasClouds ? cloudBudget : null}
+            displayRef={displayRef}
             onFreeChange={setFree}
             sink={sink}
             sceneRef={sceneRef}
@@ -367,6 +381,8 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
           register={register}
           noView={!!webglError}
         />
+      </SceneLayer>
+      <div ref={displayRef} className={styles.display} data-player-display>
         {(webglError || snap.framesError !== null) && (
           <div className={styles.glassBanner}>
             <ErrorBanner
@@ -378,46 +394,48 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
           </div>
         )}
       </div>
-      <ViewControls
-        runId={run.id}
-        runName={run.name}
-        decision={decision}
-        reason={decision === 'CAUTION' ? cautionText(frame) : undefined}
-        mode={mode}
-        onMode={setMode}
-        fullscreen={fs.active}
-        onFullscreen={fs.toggle}
-      />
-      <div className={styles.telemetry} aria-label="Телеметрия прогона">
-        <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />
-        {decision && <DecisionTile decision={decision} frame={frame} frameNo={frameNo} confirmS={confirmS} />}
-        <DistanceTile frame={frame} decision={decision} />
-        <MetricsTile frame={frame} latency={latency} pos={pos} p95={run.summary.latency_ms?.p95 ?? null} playFps={snap.playFps} speed={snap.speed} playing={snap.playing} />
-        <HealthTile frame={frame} minVisibility={minVis} />
+      <div className={styles.controlDock} data-player-controls>
+        <ViewControls
+          runId={run.id}
+          runName={run.name}
+          decision={decision}
+          reason={decision === 'CAUTION' ? cautionText(frame) : undefined}
+          mode={mode}
+          onMode={setMode}
+          fullscreen={fs.active}
+          onFullscreen={fs.toggle}
+        />
+        <div className={styles.telemetry} aria-label="Телеметрия прогона">
+          <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />
+          {decision && <DecisionTile decision={decision} frame={frame} frameNo={frameNo} confirmS={confirmS} />}
+          <DistanceTile frame={frame} decision={decision} />
+          <MetricsTile frame={frame} latency={latency} pos={pos} p95={run.summary.latency_ms?.p95 ?? null} playFps={snap.playFps} speed={snap.speed} playing={snap.playing} />
+          <HealthTile frame={frame} minVisibility={minVis} />
+        </div>
+        <Scrubber
+          decisions={run.summary.decisions}
+          pos={pos}
+          n={n}
+          frameNo={frameNo}
+          lastFrameNo={lastFrameNo}
+          t={seriesT?.[pos] ?? frame?.t ?? null}
+          duration={run.summary.duration_s}
+          playing={snap.playing}
+          speed={snap.speed}
+          loop={snap.loop}
+          markers={markers}
+          hasPrevEvent={prevEv !== null}
+          hasNextEvent={nextEv !== null}
+          posLabel={posLabel}
+          onToggle={actions.toggle}
+          onStep={actions.step}
+          onPrevEvent={actions.prevEvent}
+          onNextEvent={actions.nextEvent}
+          onSeek={seek}
+          onSpeed={(s) => engine?.setSpeed(s)}
+          onLoop={() => engine?.setLoop(!snap.loop)}
+        />
       </div>
-      <Scrubber
-        decisions={run.summary.decisions}
-        pos={pos}
-        n={n}
-        frameNo={frameNo}
-        lastFrameNo={lastFrameNo}
-        t={seriesT?.[pos] ?? frame?.t ?? null}
-        duration={run.summary.duration_s}
-        playing={snap.playing}
-        speed={snap.speed}
-        loop={snap.loop}
-        markers={markers}
-        hasPrevEvent={prevEv !== null}
-        hasNextEvent={nextEv !== null}
-        posLabel={posLabel}
-        onToggle={actions.toggle}
-        onStep={actions.step}
-        onPrevEvent={actions.prevEvent}
-        onNextEvent={actions.nextEvent}
-        onSeek={seek}
-        onSpeed={(s) => engine?.setSpeed(s)}
-        onLoop={() => engine?.setLoop(!snap.loop)}
-      />
     </Stage>
   );
 }

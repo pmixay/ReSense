@@ -163,7 +163,7 @@
   top: -6px;
   width: 1.5px;
   height: 5px;
-  background: var(--ink);
+  background: var(--strip-axis-ink, var(--ink));
 }
 .axis span.t0 {
   transform: none;

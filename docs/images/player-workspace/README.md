@@ -31,20 +31,41 @@ The enclosure casts real cached contact shadows onto the wall. Material grain is
 deterministic small roughness/bump texture, and a physical clear-coated cover-glass
 mesh sits above the active image. Internal brightness, bloom and wall spill are
 restrained for a lit train interior; a mild ceiling-light reflection stays below the
-contrast needed to read the live data. Shadow maps refresh on geometry/size changes,
+contrast needed to read the live data. Shadow maps refresh on geometry/size and pose changes,
 while screen emission follows the existing on-demand playback render loop.
 
-[`installed-display-1440.png`](installed-display-1440.png) is a direct element
-screenshot of this train-wall installation from the running Player. The full-page
-captures also show the sole pinned site navigation, telemetry and transport controls.
+[`installed-display-1440.png`](installed-display-1440.png) is a direct screenshot of
+the full train-wall workspace beneath the header, including its control overlay.
+The full-page captures also show the sole pinned site navigation.
 
-## Tilt, emission and pixel optics
+## Neutral pose and pressure parallax
 
-The housing has a small fixed yaw and pitch so the metal sidewall and rear depth are
-visible. The orthographic screen projection is exported as an affine transform; the
+The wall and display rest perfectly straight. Mouse displacement from the workspace
+center drives a bounded, quadratic, exponentially damped lean (maximum pitch .035 rad,
+yaw .055 rad and coupled roll .004 rad). [`parallax-right-1440.png`](parallax-right-1440.png)
+and [`parallax-left-1440.png`](parallax-left-1440.png) show the edge-pressure states.
+The stainless rail and its fixings are a separate foreground geometry layer, moving
+at 24% of the background's angles. Center, pointer leave and window blur reset the
+pose; touch and reduced-motion mode keep a neutral scene.
+
+The orthographic screen projection is exported as a live affine transform; the
 HTML/SVG annotation surface applies that exact transform, including the close-up.
 Projection tests compare real mesh vertices with the transformed HUD on desktop and
-mobile, and ensure the hardware stays within the canvas bounds.
+mobile, verify independent railing motion, neutral settling and full-height wall coverage.
+
+The train backdrop fills the entire Player viewport beneath the shared top bar and
+stage rail. It remains sticky behind vertically scrolling mobile content. The device
+retains its original upper display region, while the wall and railings continue
+behind telemetry and transport. A dark, backdrop-blurred control dock feathers to
+transparent over 64px above the controls; its mask is shared with the blur so there
+is no hard upper edge. Native-size controls stay stationary and usable.
+
+Pointer-only frames reuse the unchanged LiDAR and emission textures. The existing
+engine draws the physical scene until it settles; selection/error states use a
+bounded on-demand renderer for the same wall. There is no permanent hover animation
+loop or pointer-driven API/data update.
+
+## Emission and pixel optics
 
 [`screenEffects.ts`](../../../webapp/frontend/src/player/screenEffects.ts) adds a
 fine RGB aperture, local highlight bloom, and light spill driven by the current
@@ -67,7 +88,8 @@ compact rounded-square tools and single-level telemetry keep the application hie
 The shared AppShell supplies the sole header and stage navigation. The Player has no
 local logo, duplicate title, stage strip or back-navigation bar. Normal responsive
 page layout owns the display, compact scenario/camera/status controls, five telemetry
-panels and timeline/transport. Background comes from the application shell. There is
+panels and timeline/transport. The Player uses a full-bleed train background; other
+application sections retain their shared page ground. There is
 no fixed 1600×900 composition or whole-page scaling.
 
 ResizeObserver updates the canvas, offscreen target, camera aspect, annotation surface,

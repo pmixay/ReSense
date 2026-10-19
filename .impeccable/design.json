@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-18T23:15:22.294944+00:00",
+  "generatedAt": "2026-10-19T05:12:49.417253+00:00",
   "title": "Design System: ReSense",
   "extensions": {
     "colorMeta": {
@@ -134,23 +134,26 @@
   ],
   "narrative": {
     "northStar": "Линия",
-    "overview": "ReSense inherits a cool, compact engineering application: saturated metro-red chrome, a white station rail, pale continuous page ground and explicit emerald, amber, STOP-red and violet signal states. Self-hosted Raleway supports both Russian labels and tabular telemetry. The approved refinement strengthens color and control definition within this existing identity.\n\nThe Player is a code-led, inherited-world integration. Its pinned onboard display is recessed into a modeled metro saloon wall, with a slight physical tilt, rounded industrial metal housing, protective cover glass and restrained powered-LCD optics. The train interior is confined to the primary visualization; camera controls, telemetry and transport remain in the shared application flow. The Player's Operate contract lives in `.impeccable/surfaces/webapp-frontend-src-pages-player.md`.",
+    "overview": "ReSense inherits a cool, compact engineering application: saturated metro-red chrome, a white station rail, pale continuous page ground and explicit emerald, amber, STOP-red and violet signal states. Self-hosted Raleway supports both Russian labels and tabular telemetry. The approved refinement strengthens color and control definition within this existing identity.\n\nThe Player is a code-led, inherited-world integration. Its pinned onboard display sits exactly straight at rest in a modeled metro saloon wall, retaining rounded industrial metal housing, protective cover glass and restrained powered-LCD optics. The train environment fills the Player beneath the sole pinned application chrome; mouse pressure adds a small damped lean with slower foreground railings, while native-size controls remain stationary over a feathered dark dock. The Player's Operate contract lives in `.impeccable/surfaces/webapp-frontend-src-pages-player.md`.",
     "keyCharacteristics": [
       "One shared header and metro navigation.",
       "Cool neutral work surfaces, saturated red actions and distinct decision colors.",
       "Native-size controls and responsive, vertically flowing content.",
-      "A recessed train-wall display with physical glass, subtle pixel optics and restrained content-driven light."
+      "A straight-at-rest train-wall scene with independent railing parallax, physical glass and restrained live-image optics.",
+      "Full-viewport train context beneath pinned chrome and a feathered, stationary control dock."
     ],
     "rules": [
       { "name": "The Signal Separation Rule", "body": "Keep brand red and STOP distinct in both token choice and meaning; retain decision words, icons and STOP hatching alongside color.", "section": "colors" },
-      { "name": "The One Shell Rule", "body": "The Player uses the full available main-region width and the existing global header/metro navigation, including fullscreen. It has no repeated logo, local Player title, miniature rail or back-navigation bar.", "section": "layout" },
+      { "name": "The One Shell Rule", "body": "The Player fills the available main region beneath the existing pinned global header/metro navigation, including fullscreen. Its train backdrop extends behind native-flow controls without a repeated logo, local Player title, miniature rail or back-navigation bar.", "section": "layout" },
+      { "name": "The Neutral Pressure Rule", "body": "The train scene rests exactly straight. Pressure moves the modeled layers with foreground railings at 24% of the background rotation; native application controls remain stationary, and touch/reduced-motion interaction keeps pressure neutral.", "section": "elevation" },
       { "name": "The Content-Driven Light Rule", "body": "Player light spill and pixel optics derive from the live display texture and stay restrained within the lit train-wall scene; environment and rendering constants do not become shared UI colors or generic glow treatments.", "section": "elevation" }
     ],
     "dos": [
       "**Do** reuse AppShell, TopBar, LineRail and existing shared components/tokens.",
       "**Do** retain Raleway, Russian formatting and explicit decision semantics.",
       "**Do** resize the render targets, model projection, HUD and close-up together; keep map and distance labels responsive at native size.",
-      "**Do** preserve global Card radii and typography when adding local compact panels."
+      "**Do** preserve global Card radii and typography when adding local compact panels.",
+      "**Do** keep the default train pose exactly straight and the native control dock stationary during pressure parallax."
     ],
     "donts": [
       "**Don't** add a second Player identity, header, stage rail or back bar.",

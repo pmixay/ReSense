@@ -6,7 +6,9 @@ import { roundedRect } from './screenGeometry';
 import { TrainInterior } from './trainInterior';
 
 export interface DisplayTransform { a: number; b: number; c: number; d: number; x: number; y: number }
-export interface DisplayViewport { x: number; y: number; width: number; height: number; transform?: DisplayTransform }
+export interface DisplayMotion { sceneX: number; sceneY: number; sceneZ: number; railX: number; railY: number; railZ: number }
+export interface DisplayViewport { x: number; y: number; width: number; height: number; transform?: DisplayTransform; motion?: DisplayMotion }
+export interface DisplayRegion { height: number; top: number; width?: number; left?: number }
 
 export class ScreenDisplay {
   readonly scene = new THREE.Scene();
@@ -15,6 +17,7 @@ export class ScreenDisplay {
   readonly emission = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false });
   readonly viewport: DisplayViewport = { x: 0, y: 0, width: 1, height: 1 };
   private readonly body = new THREE.Group();
+  private readonly background = new THREE.Group();
   private readonly interior = new TrainInterior();
   private shadowDirty = true;
   private readonly shadowLight: THREE.DirectionalLight;
@@ -41,13 +44,19 @@ export class ScreenDisplay {
   });
   private readonly lightPool = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.glow);
   private geometries: THREE.BufferGeometry[] = [];
-  private size = { width: 0, height: 0, pixelRatio: 0 };
+  private size = { width: 0, height: 0, pixelRatio: 0, regionHeight: 0, regionTop: 0, regionWidth: 0, regionLeft: 0 };
+  private readonly motion = { sceneX: 0, sceneY: 0, sceneZ: 0, railX: 0, railY: 0, railZ: 0 };
+  private readonly pointerTarget = new THREE.Vector3();
+  private surfaceWidth = 1;
+  private surfaceHeight = 1;
 
-  constructor() {
+  constructor(private readonly wallOnly = false) {
     this.camera.position.set(0, 0, 20);
     this.body.name = 'display-housing';
-    this.body.rotation.set(-0.075, -0.17, 0);
-    this.interior.group.rotation.copy(this.body.rotation);
+    this.background.name = 'train-background-layer';
+    this.background.add(this.body, this.interior.group);
+    this.body.visible = !wallOnly;
+    this.viewport.motion = this.motion;
     this.lightPool.name = 'content-driven-light';
     this.lightPool.position.set(0, 0, -0.415);
     this.filterScene.add(new THREE.Mesh(this.filterGeometry, this.filter));
@@ -65,29 +74,32 @@ export class ScreenDisplay {
     key.shadow.radius = 3;
     const fill = new THREE.DirectionalLight(0xdfe8f4, 0.7);
     fill.position.set(12, -4, 8);
-    this.scene.add(this.body, this.interior.group, new THREE.HemisphereLight(0xf1f4ed, 0x657079, 2.0), key, fill);
+    this.scene.add(this.background, this.interior.railings, new THREE.HemisphereLight(0xf1f4ed, 0x657079, 2.0), key, fill);
   }
 
-  setSize(width: number, height: number, pixelRatio: number): void {
-    if (this.size.width === width && this.size.height === height && this.size.pixelRatio === pixelRatio) return;
-    Object.assign(this.size, { width, height, pixelRatio });
+  setSize(width: number, height: number, pixelRatio: number, region: DisplayRegion = { height, top: 0 }): void {
+    const viewWidth = region.width ?? width;
+    const viewLeft = region.left ?? (width - viewWidth) / 2;
+    if (this.size.width === width && this.size.height === height && this.size.pixelRatio === pixelRatio && this.size.regionHeight === region.height && this.size.regionTop === region.top && this.size.regionWidth === viewWidth && this.size.regionLeft === viewLeft) return;
+    Object.assign(this.size, { width, height, pixelRatio, regionHeight: region.height, regionTop: region.top, regionWidth: viewWidth, regionLeft: viewLeft });
     for (const g of this.geometries) g.dispose();
     this.geometries = [];
     this.body.clear();
     const units = 16 / width;
     const w = 16;
     const h = height * units;
-    const side = Math.max(25, width * 0.065);
-    const top = Math.min(72, Math.max(38, height * 0.16));
-    const bottom = Math.min(56, Math.max(25, height * 0.12));
-    const bezel = Math.min(22, Math.max(10, height * 0.045));
-    Object.assign(this.viewport, { x: side + bezel, y: top + bezel, width: Math.max(1, width - (side + bezel) * 2), height: Math.max(1, height - top - bottom - bezel * 2) });
+    const side = Math.max(25, viewWidth * 0.065);
+    const top = Math.min(72, Math.max(38, region.height * 0.16));
+    const bottom = Math.min(56, Math.max(25, region.height * 0.12));
+    const bezel = Math.min(22, Math.max(10, region.height * 0.045));
+    Object.assign(this.viewport, { x: viewLeft + side + bezel, y: region.top + top + bezel, width: Math.max(1, viewWidth - (side + bezel) * 2), height: Math.max(1, region.height - top - bottom - bezel * 2) });
     const vw = this.viewport.width * units;
     const vh = this.viewport.height * units;
-    const bodyW = w - side * units * 2;
-    const bodyH = h - (top + bottom) * units;
-    this.body.position.y = (bottom - top) * units / 2;
-    this.interior.setSize(w, h, { width: bodyW, height: bodyH, radius: Math.min(0.42, bodyH * 0.12), centerY: this.body.position.y });
+    const bodyW = (viewWidth - side * 2) * units;
+    const bodyH = (region.height - top - bottom) * units;
+    this.body.position.y = (height / 2 - region.top - region.height / 2 + (bottom - top) / 2) * units;
+    this.body.position.x = (viewLeft + viewWidth / 2 - width / 2) * units;
+    this.interior.setSize(w, h, this.wallOnly ? null : { width: bodyW, height: bodyH, radius: Math.min(0.42, bodyH * 0.12), centerY: this.body.position.y });
     this.shadowDirty = true;
     const radius = Math.min(0.42, bodyH * 0.12);
     const shell = (sw: number, sh: number, r: number, depth: number, z: number, material: THREE.Material) => {
@@ -128,18 +140,11 @@ export class ScreenDisplay {
     this.camera.bottom = -h / 2;
     this.camera.updateProjectionMatrix();
     this.camera.updateMatrixWorld();
-    this.body.updateMatrixWorld(true);
-    const project = (x: number, y: number) => {
-      const p = new THREE.Vector3(x, y, 0.175).applyMatrix4(this.body.matrixWorld).project(this.camera);
-      return { x: (p.x + 1) * width / 2, y: (1 - p.y) * height / 2 };
-    };
-    const tl = project(-vw / 2, vh / 2);
-    const tr = project(vw / 2, vh / 2);
-    const bl = project(-vw / 2, -vh / 2);
-    Object.assign(this.viewport, { x: tl.x, y: tl.y, transform: {
-      a: (tr.x - tl.x) / this.viewport.width, b: (tr.y - tl.y) / this.viewport.width,
-      c: (bl.x - tl.x) / this.viewport.height, d: (bl.y - tl.y) / this.viewport.height, x: tl.x, y: tl.y,
-    } });
+    this.surfaceWidth = vw;
+    this.surfaceHeight = vh;
+    this.updateProjection();
+    Object.assign(this.shadowLight.shadow.camera, { top: Math.max(8, h * .65), bottom: -Math.max(8, h * .65) });
+    this.shadowLight.shadow.camera.updateProjectionMatrix();
     this.pixels.uniforms.uSurfaceSize.value.set(this.viewport.width, this.viewport.height);
     this.lightPool.geometry.dispose();
     const poolW = bodyW + 0.9;
@@ -153,23 +158,77 @@ export class ScreenDisplay {
     this.emission.setSize(lightW, lightH);
   }
 
-  render(renderer: THREE.WebGLRenderer): void {
+  /** Mouse pressure is bounded and quadratic, with an exactly neutral center. */
+  setPointer(x: number, y: number): void {
+    const px = THREE.MathUtils.clamp(x, -1, 1);
+    const py = THREE.MathUtils.clamp(y, -1, 1);
+    if (px === 0 && py === 0) {
+      this.pointerTarget.set(0, 0, 0);
+      return;
+    }
+    // A tiny coupled roll makes pressure perceptible without distorting the live view.
+    this.pointerTarget.set(py * Math.abs(py) * .035, px * Math.abs(px) * .055, -px * Math.abs(px) * .004);
+  }
+
+  get animating(): boolean {
+    return Math.abs(this.background.rotation.x - this.pointerTarget.x) + Math.abs(this.background.rotation.y - this.pointerTarget.y) + Math.abs(this.background.rotation.z - this.pointerTarget.z) > 0.00001;
+  }
+
+  step(dt: number): void {
+    if (!this.animating) return;
+    const k = 1 - Math.exp(-Math.min(.1, Math.max(0, dt)) * 10);
+    this.background.rotation.x += (this.pointerTarget.x - this.background.rotation.x) * k;
+    this.background.rotation.y += (this.pointerTarget.y - this.background.rotation.y) * k;
+    this.background.rotation.z += (this.pointerTarget.z - this.background.rotation.z) * k;
+    if (!this.animating) this.background.rotation.set(this.pointerTarget.x, this.pointerTarget.y, this.pointerTarget.z);
+    this.interior.railings.rotation.set(this.background.rotation.x * .24, this.background.rotation.y * .24, this.background.rotation.z * .24);
+    Object.assign(this.motion, { sceneX: this.background.rotation.x, sceneY: this.background.rotation.y, sceneZ: this.background.rotation.z, railX: this.interior.railings.rotation.x, railY: this.interior.railings.rotation.y, railZ: this.interior.railings.rotation.z });
+    this.shadowDirty = true;
+    this.updateProjection();
+  }
+
+  private updateProjection(): void {
+    this.background.updateMatrixWorld(true);
+    this.interior.railings.updateMatrixWorld(true);
+    const { width, height } = this.size;
+    const vw = this.surfaceWidth;
+    const vh = this.surfaceHeight;
+    const project = (x: number, y: number) => {
+      const p = new THREE.Vector3(x, y, 0.175).applyMatrix4(this.body.matrixWorld).project(this.camera);
+      return { x: (p.x + 1) * width / 2, y: (1 - p.y) * height / 2 };
+    };
+    const tl = project(-vw / 2, vh / 2);
+    const tr = project(vw / 2, vh / 2);
+    const bl = project(-vw / 2, -vh / 2);
+    const transform = this.viewport.transform ??= { a: 1, b: 0, c: 0, d: 1, x: 0, y: 0 };
+    Object.assign(transform, {
+      a: (tr.x - tl.x) / this.viewport.width, b: (tr.y - tl.y) / this.viewport.width,
+      c: (bl.x - tl.x) / this.viewport.height, d: (bl.y - tl.y) / this.viewport.height, x: tl.x, y: tl.y,
+    });
+    this.viewport.x = tl.x;
+    this.viewport.y = tl.y;
+  }
+
+  render(renderer: THREE.WebGLRenderer, dt = 1 / 60, imageChanged = true): void {
+    this.step(dt);
     // Two small GPU-only passes extract and diffuse the actual image's emitted colors.
-    const lw = this.emission.width;
-    const lh = this.emission.height;
-    this.filter.uniforms.uImage.value = this.target.texture;
-    this.filter.uniforms.uDirection.value.set(2.2 / lw, 0);
-    this.filter.uniforms.uExtract.value = 1;
-    renderer.setRenderTarget(this.filterTarget);
-    renderer.setClearColor(0x000000, 1);
-    renderer.clear();
-    renderer.render(this.filterScene, this.filterCamera);
-    this.filter.uniforms.uImage.value = this.filterTarget.texture;
-    this.filter.uniforms.uDirection.value.set(0, 2.2 / lh);
-    this.filter.uniforms.uExtract.value = 0;
-    renderer.setRenderTarget(this.emission);
-    renderer.clear();
-    renderer.render(this.filterScene, this.filterCamera);
+    if (imageChanged && !this.wallOnly) {
+      const lw = this.emission.width;
+      const lh = this.emission.height;
+      this.filter.uniforms.uImage.value = this.target.texture;
+      this.filter.uniforms.uDirection.value.set(2.2 / lw, 0);
+      this.filter.uniforms.uExtract.value = 1;
+      renderer.setRenderTarget(this.filterTarget);
+      renderer.setClearColor(0x000000, 1);
+      renderer.clear();
+      renderer.render(this.filterScene, this.filterCamera);
+      this.filter.uniforms.uImage.value = this.filterTarget.texture;
+      this.filter.uniforms.uDirection.value.set(0, 2.2 / lh);
+      this.filter.uniforms.uExtract.value = 0;
+      renderer.setRenderTarget(this.emission);
+      renderer.clear();
+      renderer.render(this.filterScene, this.filterCamera);
+    }
     renderer.setRenderTarget(null);
     renderer.setViewport(0, 0, this.size.width, this.size.height);
     renderer.setClearColor(0xb8c1bf, 1);

@@ -562,6 +562,12 @@ def test_workspace_resizes_without_clipping(app, seeded):
         assert page.locator('main').evaluate('el => el.scrollWidth <= el.clientWidth')
         assert abs(stage_box['width'] - page.locator('main').evaluate('el => el.clientWidth - parseFloat(getComputedStyle(el).paddingLeft) - parseFloat(getComputedStyle(el).paddingRight)')) < 2
         assert abs(box_of(canvas, scroll=False)["height"] - box_of(world, scroll=False)["height"]) < 1
+        main_box = box_of(page.locator('main'), scroll=False)
+        canvas_box = box_of(canvas, scroll=False)
+        assert abs(canvas_box['x'] - main_box['x']) < 1
+        assert abs(canvas_box['y'] - main_box['y']) < 1
+        assert abs(canvas_box['width'] - main_box['width']) < 1
+        assert abs(canvas_box['height'] - main_box['height']) < 1
         if w in (1366, 1440, 1920):
             transport = box_of(page.get_by_role('region', name='Воспроизведение'), scroll=False)
             assert transport['y'] + transport['height'] <= h + 1, transport
@@ -573,4 +579,36 @@ def test_workspace_resizes_without_clipping(app, seeded):
         slider(page).scroll_into_view_if_needed()
         sb = box_of(slider(page), scroll=False)
         assert sb["y"] + sb["height"] <= h + 1, (w, h, sb)
+    assert real_errors(app.errors) == []
+
+
+def test_pointer_pressure_parallax_and_reduced_motion(app, seeded):
+    page, rid = app.page, seeded['ids']['approach']
+    open_player(app, f'/player/{rid}?pos=30')
+    canvas = page.get_by_role('img', name='3D-вид из кабины')
+    box = box_of(canvas, scroll=False)
+    page.mouse.move(0, 0)
+    page.wait_for_function('''() => {
+        const cv = document.querySelector('canvas[aria-label="3D-вид из кабины"]');
+        return Math.abs(+cv.dataset.sceneTiltX) + Math.abs(+cv.dataset.sceneTiltY) < .00002;
+    }''')
+    page.mouse.move(box['x'] + box['width'] * .96, box['y'] + box['height'] * .18, steps=10)
+    page.wait_for_function('''() => {
+        const d = document.querySelector('canvas[aria-label="3D-вид из кабины"]').dataset;
+        return +d.sceneTiltY > .025 && +d.sceneTiltX < -.005 && Math.abs(+d.railTiltY) < Math.abs(+d.sceneTiltY) * .5;
+    }''')
+    values = canvas.evaluate('el => ({wall:+el.dataset.sceneTiltY, rail:+el.dataset.railTiltY})')
+    assert abs(values['rail'] / values['wall'] - .24) < .001, values
+    page.mouse.move(box['x'] + box['width'] / 2, box['y'] + box['height'] / 2, steps=8)
+    page.wait_for_function('''() => {
+        const d = document.querySelector('canvas[aria-label="3D-вид из кабины"]').dataset;
+        return Math.abs(+d.sceneTiltX) + Math.abs(+d.sceneTiltY) < .00002;
+    }''')
+    page.emulate_media(reduced_motion='reduce')
+    page.mouse.move(box['x'] + box['width'] * .96, box['y'] + box['height'] * .18)
+    page.wait_for_timeout(350)
+    assert canvas.evaluate('el => Math.abs(+el.dataset.sceneTiltX) + Math.abs(+el.dataset.sceneTiltY)') < .00002
+    dock = page.locator('[data-player-controls]')
+    assert 'blur' in dock.evaluate('el => getComputedStyle(el,"::before").backdropFilter')
+    assert 'gradient' in dock.evaluate('el => getComputedStyle(el,"::before").maskImage')
     assert real_errors(app.errors) == []

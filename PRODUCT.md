@@ -31,7 +31,9 @@ glass, silver housing and shallow depth. The modeled display belongs to the prim
 visualization, while surrounding controls inherit the application's shared design.
 The display is installed into a believable modeled train wall, with restrained
 internal illumination, cover-glass reflections and physical mounting details; the
-environment is confined to the visualization rather than becoming a second app shell.
+environment fills the Player workspace beneath the existing navigation without becoming a
+second app shell. Its neutral pose is straight; mouse pressure adds restrained parallax
+with a slower railing layer, while a feathered dark control dock preserves readability.
 The page must feel like another ReSense stage, with a continuous background and no
 duplicate local logo, title, stage rail or standalone player header.
 

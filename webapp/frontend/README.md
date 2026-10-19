@@ -89,3 +89,8 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   The housing and wall share their angle, cached shadows anchor the enclosure, and a clear-coated
   physical cover glass sits above the live surface. Environment geometry, textures, materials and
   the shadow target are disposed with the display; UI controls still belong to the shared page.
+- **Pressure parallax.** Player uses a full-height sticky train backdrop under the shared chrome.
+  The default pose is straight; bounded mouse pressure tilts the wall/display group and moves the
+  separate foreground railings at 24% strength. The HUD uses the updated affine surface transform.
+  Pointer-only renders reuse live image/emission textures, settle to rest, and respect reduced
+  motion and touch. A dark masked backdrop blur beneath native-size controls fades upward over 64px.

@@ -8,7 +8,7 @@
 // animation frame (the "live drive" glide), render(dt). Nothing is allocated per render; the HUD
 // reads the screen positions of labels from `overlay` after each render (onOverlay).
 import * as THREE from 'three';
-import { ScreenDisplay, type DisplayViewport } from './screenDisplay';
+import { ScreenDisplay, type DisplayRegion, type DisplayViewport } from './screenDisplay';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { DecodedCloud } from '../api/cloud';
 import type { DetectionDict, FrameResultDict } from '../api/types';
@@ -116,6 +116,8 @@ export interface PipRect {
 export interface PlayerSceneOptions {
   /** Present the live view on the reference display's three-dimensional housing. */
   screenDisplay?: boolean;
+  /** Empty/error/selection states retain the same train wall without an active display. */
+  wallOnly?: boolean;
   /** light single-frame view: smaller points, no train, no inset */
   preview?: boolean;
   /** orbit with the mouse */
@@ -241,7 +243,7 @@ export class PlayerScene {
     this.renderer = new THREE.WebGLRenderer({ canvas, context: gl, antialias: true, alpha, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.autoClear = false;
-    this.display = opts.screenDisplay ? new ScreenDisplay() : null;
+    this.display = opts.screenDisplay ? new ScreenDisplay(!!opts.wallOnly) : null;
 
     this.camera = new THREE.PerspectiveCamera(24, 1, 0.5, 600);
     this.camera.up.set(0, 0, 1);
@@ -430,15 +432,15 @@ export class PlayerScene {
   // ---------------------------------------------------------------- public API
 
   /** CSS size of the canvas and the device pixel ratio to render at (≤ 2). */
-  setSize(width: number, height: number, pixelRatio: number): void {
+  setSize(width: number, height: number, pixelRatio: number, region?: DisplayRegion): void {
     const canvasW = Math.max(1, Math.round(width));
     const canvasH = Math.max(1, Math.round(height));
     this.pixelRatio = Math.min(2, Math.max(0.5, pixelRatio));
-    this.display?.setSize(canvasW, canvasH, this.pixelRatio);
+    this.display?.setSize(canvasW, canvasH, this.pixelRatio, region);
     const viewport = this.display?.viewport ?? { x: 0, y: 0, width: canvasW, height: canvasH };
     this.width = viewport.width;
     this.height = viewport.height;
-    Object.assign(this.overlay.viewport, viewport);
+    this.overlay.viewport = viewport;
     this.renderer.setPixelRatio(this.pixelRatio);
     this.renderer.setSize(canvasW, canvasH, false);
     this.camera.aspect = this.width / this.height;
@@ -459,6 +461,11 @@ export class PlayerScene {
     this.overlay.inset = rect;
     this.layoutPip();
     this.touch();
+  }
+
+  setPointer(x: number, y: number): void {
+    this.display?.setPointer(x, y);
+    this.opts.onInvalidate?.();
   }
 
   /** Preallocate the point buffers for the run's cloud budget (GET /clouds `points`). */
@@ -587,11 +594,18 @@ export class PlayerScene {
 
   /** Would a render draw something new (a change not yet settled, a moving camera)? */
   needsRender(): boolean {
-    return this.settle > 0 || this.animating;
+    if (this.opts.wallOnly) return !!this.display?.animating;
+    return this.settle > 0 || this.animating || !!this.display?.animating;
   }
 
   render(dt: number): void {
     if (this.disposed) return;
+    // Pointer-only motion reuses the unchanged live image and emission textures.
+    if (this.display && (this.opts.wallOnly || (this.settle <= 0 && !this.animating))) {
+      this.display.render(this.renderer, dt, false);
+      this.opts.onOverlay?.(this.overlay);
+      return;
+    }
     if (this.settle > 0) this.settle -= 1;
     this.updateCamera(Math.min(0.1, Math.max(0, dt)));
     const pr = this.pixelRatio;
@@ -625,7 +639,7 @@ export class PlayerScene {
       r.setViewport(0, 0, this.width, this.height);
       r.render(this.quadScene, this.quadCam);
     }
-    this.display?.render(r);
+    this.display?.render(r, dt);
     this.computeOverlay(pipOn);
     this.opts.onOverlay?.(this.overlay);
   }

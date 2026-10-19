@@ -26,6 +26,7 @@ export interface WallOpening { width: number; height: number; radius: number; ce
 
 export class TrainInterior {
   readonly group = new THREE.Group();
+  readonly railings = new THREE.Group();
   private readonly grain = materialGrain();
   private readonly laminate = new THREE.MeshStandardMaterial({ color: 0xc6c8c0, roughness: 0.72, metalness: 0.03, bumpMap: this.grain, bumpScale: 0.0008 });
   private readonly ceiling = new THREE.MeshStandardMaterial({ color: 0xb7bdb9, roughness: 0.66, metalness: 0.1 });
@@ -39,6 +40,7 @@ export class TrainInterior {
 
   constructor() {
     this.group.name = 'train-wall-installation';
+    this.railings.name = 'train-railings-layer';
   }
 
   private mesh(geometry: THREE.BufferGeometry, material: THREE.Material, x: number, y: number, z: number, name: string): THREE.Mesh {
@@ -56,20 +58,21 @@ export class TrainInterior {
     return this.mesh(new THREE.BoxGeometry(w, h, d), material, x, y, z, name);
   }
 
-  setSize(width: number, height: number, opening: WallOpening): void {
+  setSize(width: number, height: number, opening: WallOpening | null): void {
     for (const g of this.geometries) g.dispose();
     this.geometries = [];
     this.group.clear();
+    this.railings.clear();
     const w = width + 3;
     const h = height + 2;
-    const { width: ow, height: oh, radius, centerY } = opening;
+    const { width: ow, height: oh, radius, centerY } = opening ?? { width: width * .7, height: height * .6, radius: .3, centerY: 0 };
     const wall = roundedRect(w, h, 0.1);
     const hole = roundedRect(ow + 0.16, oh + 0.16, radius + 0.08);
-    wall.holes.push(new THREE.Path(hole.getPoints().map(p => p.add(new THREE.Vector2(0, centerY))).reverse()));
+    if (opening) wall.holes.push(new THREE.Path(hole.getPoints().map(p => p.add(new THREE.Vector2(0, centerY))).reverse()));
     this.mesh(new THREE.ExtrudeGeometry(wall, { depth: 0.12, bevelEnabled: false, curveSegments: 18 }), this.laminate, 0, 0, -0.58, 'laminate-wall-with-display-aperture').castShadow = false;
     const mount = roundedRect(ow + 0.2, oh + 0.2, radius + 0.08);
     mount.holes.push(new THREE.Path(roundedRect(ow - 0.1, oh - 0.1, radius).getPoints().reverse()));
-    this.mesh(new THREE.ExtrudeGeometry(mount, { depth: 0.16, bevelEnabled: false, curveSegments: 18 }), this.rubber, 0, centerY, -0.49, 'recessed-mounting-gasket');
+    if (opening) this.mesh(new THREE.ExtrudeGeometry(mount, { depth: 0.16, bevelEnabled: false, curveSegments: 18 }), this.rubber, 0, centerY, -0.49, 'recessed-mounting-gasket');
 
     // Vertical panels flank the device; their joints continue behind the ceiling and dado.
     for (const x of [-ow / 2 - 0.34, ow / 2 + 0.31]) {
@@ -84,10 +87,11 @@ export class TrainInterior {
     this.box(0.46, h, 0.04, this.window, doorX + 0.08, 0, -0.115, 'dark-door-window');
     this.box(0.022, h, 0.01, this.ceiling, doorX - 0.11, 0, -0.085, 'window-glass-reflection');
     const railX = -width / 2 + 0.27;
-    this.mesh(new THREE.CylinderGeometry(0.055, 0.055, h, 18), this.steel, railX, 0, -0.08, 'stainless-grab-rail');
+    this.railings.add(this.mesh(new THREE.CylinderGeometry(0.055, 0.055, h, 18), this.steel, railX, 0, -0.08, 'stainless-grab-rail'));
     for (const y of [-height * 0.32, height * 0.32]) {
       const boss = this.mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.22, 20), this.steel, railX, y, -0.28, 'grab-rail-wall-fixing');
       boss.rotation.x = Math.PI / 2;
+      this.railings.add(boss);
     }
 
     const top = height / 2 - Math.min(0.20, height * 0.07);
@@ -101,7 +105,7 @@ export class TrainInterior {
     this.box(w, 0.09, 0.17, this.steel, 0, bottom, -0.29, 'brushed-aluminium-wall-dado');
     this.box(w, 0.018, 0.04, this.shadow, 0, bottom + 0.06, -0.21, 'dado-contact-joint');
 
-    for (const x of [-ow / 2 - 0.12, ow / 2 + 0.12]) {
+    for (const x of opening ? [-ow / 2 - 0.12, ow / 2 + 0.12] : []) {
       for (const y of [centerY - oh / 2 + 0.16, centerY + oh / 2 - 0.16]) {
         this.mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.018, 12), this.steel, x, y, -0.44, 'flush-mounting-fastener').rotation.x = Math.PI / 2;
       }
@@ -113,5 +117,6 @@ export class TrainInterior {
     for (const m of [this.laminate, this.ceiling, this.steel, this.shadow, this.rubber, this.window, this.light, this.joint]) m.dispose();
     this.grain.dispose();
     this.group.clear();
+    this.railings.clear();
   }
 }

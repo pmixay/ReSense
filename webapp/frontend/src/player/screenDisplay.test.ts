@@ -6,6 +6,12 @@ describe('modeled display projection', () => {
   it.each([[1366, 320, 1], [1840, 616, 2], [358, 240, 2]])('keeps the live surface and HUD pixel bounds aligned at %s×%s', (width, height, pr) => {
     const display = new ScreenDisplay();
     display.setSize(width, height, pr);
+    expect(display.viewport.transform!.a).toBeCloseTo(1, 8);
+    expect(display.viewport.transform!.d).toBeCloseTo(1, 8);
+    expect(display.viewport.transform!.b).toBe(0);
+    expect(display.viewport.transform!.c).toBe(0);
+    display.setPointer(1, -1);
+    for (let i = 0; i < 100; i += 1) display.step(1 / 60);
     display.camera.updateMatrixWorld();
     const active = display.scene.getObjectByName('live-display-surface') as THREE.Mesh;
     expect(active).toBeDefined();
@@ -52,6 +58,8 @@ describe('modeled display projection', () => {
   it('keeps the tilted hardware visible and derives both optics passes from the live image', () => {
     const display = new ScreenDisplay();
     display.setSize(1298, 280, 2);
+    display.setPointer(1, -1);
+    for (let i = 0; i < 100; i += 1) display.step(1 / 60);
     display.scene.updateMatrixWorld(true);
     const housing = display.scene.getObjectByName('display-housing')!;
     const bounds = new THREE.Box3().setFromObject(housing);
@@ -92,5 +100,47 @@ describe('modeled display projection', () => {
     wall.material.bumpMap!.addEventListener('dispose', disposal);
     display.dispose();
     expect(disposal).toHaveBeenCalledOnce();
+  });
+
+  it('separates the railings, dampens pressure, and settles exactly back to neutral', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1440, 752, 1, { width: 1368, left: 36, height: 410, top: 16 });
+    const background = display.scene.getObjectByName('train-background-layer')!;
+    const railings = display.scene.getObjectByName('train-railings-layer')!;
+    expect(railings.parent).toBe(display.scene);
+    expect(railings.parent).not.toBe(background);
+    const matrix = display.viewport.transform;
+    display.setPointer(1, -.8);
+    expect(display.animating).toBe(true);
+    display.step(1 / 60);
+    expect(background.rotation.y).toBeGreaterThan(0);
+    expect(background.rotation.y).toBeLessThan(.055);
+    for (let i = 0; i < 100; i += 1) display.step(1 / 60);
+    expect(display.viewport.transform).toBe(matrix);
+    expect(railings.rotation.y / background.rotation.y).toBeCloseTo(.24, 8);
+    expect(railings.rotation.x / background.rotation.x).toBeCloseTo(.24, 8);
+    expect(railings.rotation.z / background.rotation.z).toBeCloseTo(.24, 8);
+    display.setPointer(0, 0);
+    for (let i = 0; i < 120; i += 1) display.step(1 / 60);
+    expect(display.animating).toBe(false);
+    expect(background.rotation.x).toBe(0);
+    expect(background.rotation.y).toBe(0);
+    expect(background.rotation.z).toBe(0);
+    expect(railings.rotation.y).toBe(0);
+    display.dispose();
+  });
+
+  it('keeps the original display region within a full-height wall backdrop', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1440, 752, 1, { width: 1368, left: 36, height: 410, top: 16 });
+    expect(display.viewport.y).toBeGreaterThan(16);
+    expect(display.viewport.y + display.viewport.height).toBeLessThan(426);
+    expect(display.camera.top - display.camera.bottom).toBeCloseTo(752 * 16 / 1440);
+    const empty = new ScreenDisplay(true);
+    empty.setSize(1440, 752, 1);
+    expect(empty.scene.getObjectByName('display-housing')!.visible).toBe(false);
+    expect(empty.scene.getObjectByName('recessed-mounting-gasket')).toBeUndefined();
+    display.dispose();
+    empty.dispose();
   });
 });
