@@ -1,0 +1,6357 @@
+{
+  "frames": 340,
+  "full_plain_traced_equal": true,
+  "fixed_previous_latency_ms": 42,
+  "added_matched_rows": [
+    285,
+    286,
+    287,
+    288,
+    289,
+    290,
+    291,
+    292,
+    293,
+    294,
+    295,
+    296,
+    297,
+    298,
+    299,
+    300,
+    301,
+    302,
+    330,
+    331,
+    332,
+    333,
+    334
+  ],
+  "added_unmatched_row": {
+    "k": 335,
+    "info": {
+      "k": 335,
+      "X": 2.41,
+      "n_obj": 0,
+      "lat": 0.0
+    },
+    "node": {
+      "i": 335,
+      "bag_t": 1788356978.2724,
+      "stamp": 946692725.0334,
+      "frame_id": "hesai_lidar",
+      "topic": "/lidar_points",
+      "decision": "STOP",
+      "obstacle": true,
+      "warning": false,
+      "nearest": 2.37,
+      "clear": 2.4,
+      "level": "ok",
+      "dlevel": "ok",
+      "msgs": [],
+      "monitored": 70.0,
+      "rail_lock": 1.0,
+      "dets": [
+        {
+          "d": 2.37,
+          "lat": 0.01,
+          "size": [
+            0.08,
+            0.35,
+            1.99
+          ],
+          "n": 492,
+          "zone": "gauge",
+          "kind": "",
+          "reason": "",
+          "conf": 0.75,
+          "age": 165,
+          "hmin": 0.12,
+          "c": [
+            2.42,
+            -0.0,
+            -0.08
+          ]
+        }
+      ],
+      "warns": [],
+      "n_points": 182310,
+      "decode_ms": 0.0,
+      "detect_ms": 0.0,
+      "track_center": 0.009,
+      "curv": 0.00045882261075324936,
+      "mount": "identity",
+      "mount_h": 1.1,
+      "ego": null
+    },
+    "full_result_hash": "d5118c7d9533781131d3d6ab38da9b410fd75c204308cf3ca897e351eb5f0597",
+    "assignments": [
+      {
+        "id": 2,
+        "q": false,
+        "reported_before": true,
+        "misses": 1,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 3.806072950363159,
+        "core": false,
+        "column_hist": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "zone_hist": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "id": 75,
+        "q": false,
+        "reported_before": false,
+        "misses": 3,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 5.775607109069824,
+        "core": false,
+        "column_hist": [
+          false,
+          false
+        ],
+        "zone_hist": [
+          false,
+          false
+        ]
+      },
+      {
+        "id": 75,
+        "q": false,
+        "reported_before": false,
+        "misses": 3,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 5.775607109069824,
+        "core": false,
+        "column_hist": [
+          false,
+          false
+        ],
+        "zone_hist": [
+          false,
+          false
+        ]
+      },
+      {
+        "id": 75,
+        "q": false,
+        "reported_before": false,
+        "misses": 3,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 5.775607109069824,
+        "core": false,
+        "column_hist": [
+          false,
+          false
+        ],
+        "zone_hist": [
+          false,
+          false
+        ]
+      },
+      {
+        "id": 78,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 7.007450580596924,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 78,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 7.007450580596924,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 78,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 7.007450580596924,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 79,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 9.786859512329102,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 79,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 9.786859512329102,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 79,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 9.786859512329102,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 80,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 64.34590148925781,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 80,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 64.34590148925781,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 80,
+        "q": false,
+        "reported_before": false,
+        "misses": 0,
+        "hold_misses": 1,
+        "hold": 0,
+        "explained_blocked": false,
+        "last_distance": 64.34590148925781,
+        "core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      }
+    ],
+    "tracks": [
+      {
+        "id": 2,
+        "misses": 1,
+        "reported": true,
+        "zone": "gauge",
+        "last_distance": 3.806072950363159,
+        "last_core": false,
+        "column_hist": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "zone_hist": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "id": 75,
+        "misses": 3,
+        "reported": false,
+        "zone": "warning",
+        "last_distance": 5.775607109069824,
+        "last_core": false,
+        "column_hist": [
+          false,
+          false
+        ],
+        "zone_hist": [
+          false,
+          false
+        ]
+      },
+      {
+        "id": 78,
+        "misses": 0,
+        "reported": false,
+        "zone": "warning",
+        "last_distance": 7.007450580596924,
+        "last_core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 79,
+        "misses": 0,
+        "reported": false,
+        "zone": "warning",
+        "last_distance": 9.786859512329102,
+        "last_core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      },
+      {
+        "id": 80,
+        "misses": 0,
+        "reported": false,
+        "zone": "warning",
+        "last_distance": 64.34590148925781,
+        "last_core": false,
+        "column_hist": [
+          false
+        ],
+        "zone_hist": [
+          false
+        ]
+      }
+    ]
+  },
+  "added_matched_states": [
+    {
+      "k": 285,
+      "info": {
+        "k": 285,
+        "X": 76.1,
+        "n_obj": 51,
+        "lat": 0.0,
+        "Y": -0.33,
+        "Zb": -1.42,
+        "axis_valid": 221.0
+      },
+      "node": {
+        "i": 285,
+        "bag_t": 1788356973.2744,
+        "stamp": 946692720.0334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 76.09,
+        "clear": 76.1,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 170.1,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 76.09,
+            "lat": 0.02,
+            "size": [
+              0.04,
+              0.3,
+              2.57
+            ],
+            "n": 48,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 115,
+            "hmin": 0.12,
+            "c": [
+              76.1,
+              -0.32,
+              0.03
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181086,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.015,
+        "curv": 1.7424398786144624e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.83
+      },
+      "full_result_hash": "f8409d7a5b97bb3e93c8e8c6fc90a4b93039518ab6aabec42e7c3275298d9d64",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 76.08529663085938,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 59,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 3.3785479068756104,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 59,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 3.3785479068756104,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 59,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 3.3785479068756104,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 60,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.897212505340576,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 60,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.897212505340576,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 60,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.897212505340576,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 76.08529663085938,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 59,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 3.3785479068756104,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 60,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 7.897212505340576,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 286,
+      "info": {
+        "k": 286,
+        "X": 74.63,
+        "n_obj": 51,
+        "lat": 0.0,
+        "Y": -0.34,
+        "Zb": -1.34,
+        "axis_valid": 221.0
+      },
+      "node": {
+        "i": 286,
+        "bag_t": 1788356973.3684,
+        "stamp": 946692720.1333,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 74.61,
+        "clear": 74.6,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 170.1,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 74.61,
+            "lat": 0.03,
+            "size": [
+              0.06,
+              0.3,
+              2.47
+            ],
+            "n": 50,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 116,
+            "hmin": 0.27,
+            "c": [
+              74.63,
+              -0.32,
+              0.17
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 182382,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.014,
+        "curv": 2.2211025433169467e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.83
+      },
+      "full_result_hash": "370562fa1ce4b4ec13825ca23edf996e21b293807008967209bf9be5d8efb320",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 74.60641479492188,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 59,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 3.3785479068756104,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 59,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 3.3785479068756104,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 59,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 3.3785479068756104,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 60,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.897212505340576,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 60,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.897212505340576,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 60,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.897212505340576,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 74.60641479492188,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 59,
+          "misses": 3,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 3.3785479068756104,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 60,
+          "misses": 3,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 7.897212505340576,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 154.19998168945312,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 287,
+      "info": {
+        "k": 287,
+        "X": 73.16,
+        "n_obj": 36,
+        "lat": 0.0,
+        "Y": -0.35,
+        "Zb": -1.37,
+        "axis_valid": 217.0
+      },
+      "node": {
+        "i": 287,
+        "bag_t": 1788356973.4868,
+        "stamp": 946692720.2333,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 73.14,
+        "clear": 73.1,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 167.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 73.14,
+            "lat": -0.02,
+            "size": [
+              0.05,
+              0.17,
+              2.61
+            ],
+            "n": 36,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 117,
+            "hmin": 0.13,
+            "c": [
+              73.16,
+              -0.38,
+              0.1
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181184,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.017,
+        "curv": 1.2851330957402803e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.88
+      },
+      "full_result_hash": "1de41a4957d0037638397b6d68943936dcd6b87db924d21345d3b8a1b37dadf9",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 73.1371078491211,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 73.1371078491211,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 61,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 154.19998168945312,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 288,
+      "info": {
+        "k": 288,
+        "X": 71.69,
+        "n_obj": 36,
+        "lat": 0.0,
+        "Y": -0.35,
+        "Zb": -1.33,
+        "axis_valid": 217.0
+      },
+      "node": {
+        "i": 288,
+        "bag_t": 1788356973.5617,
+        "stamp": 946692720.3333,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 71.66,
+        "clear": 71.7,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 165.7,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 71.66,
+            "lat": -0.02,
+            "size": [
+              0.05,
+              0.18,
+              2.56
+            ],
+            "n": 33,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 118,
+            "hmin": 0.13,
+            "c": [
+              71.69,
+              -0.37,
+              0.08
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181636,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.015,
+        "curv": 2.4671500611323027e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.88
+      },
+      "full_result_hash": "a9c168a774328575acaed9cdf99de0d01e3c5170a9275cf3f9d031945938e455",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 71.66423797607422,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 71.66423797607422,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 61,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 154.19998168945312,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 289,
+      "info": {
+        "k": 289,
+        "X": 70.21,
+        "n_obj": 36,
+        "lat": 0.0,
+        "Y": -0.34,
+        "Zb": -1.35,
+        "axis_valid": 213.0
+      },
+      "node": {
+        "i": 289,
+        "bag_t": 1788356973.6793,
+        "stamp": 946692720.4333,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 70.18,
+        "clear": 70.2,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 166.2,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 70.18,
+            "lat": -0.02,
+            "size": [
+              0.05,
+              0.16,
+              2.5
+            ],
+            "n": 34,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 119,
+            "hmin": 0.16,
+            "c": [
+              70.21,
+              -0.36,
+              0.08
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181750,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.016,
+        "curv": 2.549040373869097e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.96
+      },
+      "full_result_hash": "9b963b4649b8c9c35e17208f0f72973de1337bd4a537101bb11d73382d0ac4d0",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 70.18236541748047,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 61,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 154.19998168945312,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 70.18236541748047,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 61,
+          "misses": 3,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 154.19998168945312,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 290,
+      "info": {
+        "k": 290,
+        "X": 68.73,
+        "n_obj": 54,
+        "lat": 0.0,
+        "Y": -0.32,
+        "Zb": -1.38,
+        "axis_valid": 189.0
+      },
+      "node": {
+        "i": 290,
+        "bag_t": 1788356973.7729,
+        "stamp": 946692720.5334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 68.7,
+        "clear": 68.7,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 164.5,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 68.7,
+            "lat": 0.04,
+            "size": [
+              0.05,
+              0.29,
+              2.53
+            ],
+            "n": 53,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 120,
+            "hmin": 0.12,
+            "c": [
+              68.73,
+              -0.29,
+              0.07
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 173370,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.015,
+        "curv": 2.868695733095056e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.95
+      },
+      "full_result_hash": "c958d0a84ece49de54754a9b05d6112777b68ee2364c65b7465eb262e92bc869",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 68.7042465209961,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 68.7042465209961,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "k": 291,
+      "info": {
+        "k": 291,
+        "X": 67.25,
+        "n_obj": 57,
+        "lat": 0.0,
+        "Y": -0.31,
+        "Zb": -1.36,
+        "axis_valid": 217.0
+      },
+      "node": {
+        "i": 291,
+        "bag_t": 1788356973.8818,
+        "stamp": 946692720.6334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 67.22,
+        "clear": 67.2,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 118.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 67.22,
+            "lat": 0.02,
+            "size": [
+              0.05,
+              0.28,
+              2.58
+            ],
+            "n": 51,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 121,
+            "hmin": 0.22,
+            "c": [
+              67.25,
+              -0.29,
+              0.15
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 180084,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.017,
+        "curv": 2.1398005197179967e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.92
+      },
+      "full_result_hash": "38e1efb2d6f9fa2a6b78822f27c5f6aa1ef858f736d66acdcaefedfd71578dd5",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 67.21859741210938,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 67.21859741210938,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "k": 292,
+      "info": {
+        "k": 292,
+        "X": 65.76,
+        "n_obj": 57,
+        "lat": 0.0,
+        "Y": -0.3,
+        "Zb": -1.33,
+        "axis_valid": 209.0
+      },
+      "node": {
+        "i": 292,
+        "bag_t": 1788356973.9698,
+        "stamp": 946692720.7334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 65.72,
+        "clear": 65.7,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 160.9,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 65.72,
+            "lat": 0.01,
+            "size": [
+              0.06,
+              0.29,
+              2.53
+            ],
+            "n": 49,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 122,
+            "hmin": 0.2,
+            "c": [
+              65.76,
+              -0.28,
+              0.15
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 180596,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.017,
+        "curv": 1.2654278699585761e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.89
+      },
+      "full_result_hash": "193bb2081c59c129759cc89725fc9cd2d1adba3128274d55221c13713fff917b",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 65.72464752197266,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.362081527709961,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.362081527709961,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.362081527709961,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 65.72464752197266,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 4.362081527709961,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 293,
+      "info": {
+        "k": 293,
+        "X": 64.27,
+        "n_obj": 60,
+        "lat": 0.0,
+        "Y": -0.27,
+        "Zb": -1.36,
+        "axis_valid": 189.0
+      },
+      "node": {
+        "i": 293,
+        "bag_t": 1788356974.0657,
+        "stamp": 946692720.8334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 64.25,
+        "clear": 64.2,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 122.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 64.25,
+            "lat": 0.02,
+            "size": [
+              0.05,
+              0.26,
+              2.47
+            ],
+            "n": 49,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 123,
+            "hmin": 0.16,
+            "c": [
+              64.27,
+              -0.27,
+              0.15
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181742,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.012,
+        "curv": 1.091594734624378e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.93
+      },
+      "full_result_hash": "f54f4cdab95f9406d8352e993328f60eeb6a8dffdf346a0a3637708e13f13ad2",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 64.24695587158203,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.362081527709961,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.362081527709961,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.362081527709961,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 64.24695587158203,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 4.362081527709961,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 6.166069507598877,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 294,
+      "info": {
+        "k": 294,
+        "X": 62.77,
+        "n_obj": 60,
+        "lat": 0.0,
+        "Y": -0.24,
+        "Zb": -1.29,
+        "axis_valid": 185.0
+      },
+      "node": {
+        "i": 294,
+        "bag_t": 1788356974.1699,
+        "stamp": 946692720.9334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 62.75,
+        "clear": 62.8,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 114.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 62.75,
+            "lat": -0.0,
+            "size": [
+              0.04,
+              0.26,
+              2.54
+            ],
+            "n": 48,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 124,
+            "hmin": 0.17,
+            "c": [
+              62.77,
+              -0.27,
+              0.21
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 180354,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.015,
+        "curv": 1.3514875371287751e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.98
+      },
+      "full_result_hash": "b02c8f60dd812ce2ce40ed72e613ba6610c515a960b61130ace25d169f07a6bf",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 62.753273010253906,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 62.753273010253906,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 4.686784267425537,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 6.166069507598877,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 295,
+      "info": {
+        "k": 295,
+        "X": 61.28,
+        "n_obj": 63,
+        "lat": 0.0,
+        "Y": -0.26,
+        "Zb": -1.33,
+        "axis_valid": 217.0
+      },
+      "node": {
+        "i": 295,
+        "bag_t": 1788356974.2743,
+        "stamp": 946692721.0334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 61.26,
+        "clear": 61.3,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 102.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 61.26,
+            "lat": -0.0,
+            "size": [
+              0.04,
+              0.26,
+              2.58
+            ],
+            "n": 60,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 125,
+            "hmin": 0.16,
+            "c": [
+              61.28,
+              -0.26,
+              0.14
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181424,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.012,
+        "curv": 3.0999419079566635e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 15.04
+      },
+      "full_result_hash": "61666f85959117957f01c6edfe3c054356361f522b44f1a71ae75e01a7b4c0b8",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 61.25867462158203,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 112.753662109375,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 112.753662109375,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 112.753662109375,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 61.25867462158203,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 4.686784267425537,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 6.166069507598877,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 112.753662109375,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 296,
+      "info": {
+        "k": 296,
+        "X": 59.78,
+        "n_obj": 63,
+        "lat": 0.0,
+        "Y": -0.26,
+        "Zb": -1.32,
+        "axis_valid": 181.0
+      },
+      "node": {
+        "i": 296,
+        "bag_t": 1788356974.3806,
+        "stamp": 946692721.1334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 59.76,
+        "clear": 59.8,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 118.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 59.76,
+            "lat": 0.0,
+            "size": [
+              0.05,
+              0.25,
+              2.52
+            ],
+            "n": 41,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 126,
+            "hmin": 0.21,
+            "c": [
+              59.79,
+              -0.25,
+              0.13
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 180084,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.01,
+        "curv": 4.151718106543774e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 15.01
+      },
+      "full_result_hash": "6316ec5a82205304d6a6b71b8bed8dbfd9bd88a46a339e51005712c30923c495",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 59.757347106933594,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.166069507598877,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 59.757347106933594,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 4.686784267425537,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 63,
+          "misses": 3,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 6.166069507598877,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 111.25790405273438,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 297,
+      "info": {
+        "k": 297,
+        "X": 58.29,
+        "n_obj": 66,
+        "lat": 0.0,
+        "Y": -0.26,
+        "Zb": -1.3,
+        "axis_valid": 213.0
+      },
+      "node": {
+        "i": 297,
+        "bag_t": 1788356974.4772,
+        "stamp": 946692721.2334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 58.26,
+        "clear": 58.3,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 114.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 58.26,
+            "lat": 0.01,
+            "size": [
+              0.05,
+              0.24,
+              2.59
+            ],
+            "n": 42,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 127,
+            "hmin": 0.2,
+            "c": [
+              58.29,
+              -0.25,
+              0.2
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181718,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.016,
+        "curv": 3.0540382543639834e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 15.0
+      },
+      "full_result_hash": "4648503e503a2d532e0fe1f84048d93479546cfe9ecccd4412ff6c3fe558b10f",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 58.263710021972656,
+          "core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 62,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 4.686784267425537,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 58.263710021972656,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 62,
+          "misses": 3,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 4.686784267425537,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 111.25790405273438,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 298,
+      "info": {
+        "k": 298,
+        "X": 56.79,
+        "n_obj": 66,
+        "lat": 0.0,
+        "Y": -0.24,
+        "Zb": -1.31,
+        "axis_valid": 209.0
+      },
+      "node": {
+        "i": 298,
+        "bag_t": 1788356974.5827,
+        "stamp": 946692721.3334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 56.77,
+        "clear": 56.8,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 153.5,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 56.77,
+            "lat": 0.01,
+            "size": [
+              0.05,
+              0.24,
+              2.64
+            ],
+            "n": 48,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 128,
+            "hmin": 0.12,
+            "c": [
+              56.79,
+              -0.24,
+              0.18
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 178668,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.028,
+        "curv": 8.001621657103084e-06,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 15.02
+      },
+      "full_result_hash": "b2f3bafd9680bb2e5a647370fdcb2c02f259166704b03a8c8986a5abdf46a5ae",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 56.77063751220703,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 111.25790405273438,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 56.77063751220703,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 64,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 111.25790405273438,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 299,
+      "info": {
+        "k": 299,
+        "X": 55.3,
+        "n_obj": 69,
+        "lat": 0.0,
+        "Y": -0.27,
+        "Zb": -1.3,
+        "axis_valid": 213.0
+      },
+      "node": {
+        "i": 299,
+        "bag_t": 1788356974.6769,
+        "stamp": 946692721.4334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 55.28,
+        "clear": 55.3,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 114.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 55.28,
+            "lat": 0.06,
+            "size": [
+              0.04,
+              0.24,
+              2.45
+            ],
+            "n": 45,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 129,
+            "hmin": 0.19,
+            "c": [
+              55.3,
+              -0.23,
+              0.19
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 177948,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.017,
+        "curv": 2.9383606468170662e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 15.04
+      },
+      "full_result_hash": "ef92c18c2761d7a05168492e824a1ea315c5ee5de2141396b94ff750fdcafad7",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 55.275062561035156,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 106.77566528320312,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 106.77566528320312,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 106.77566528320312,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 55.275062561035156,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 64,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 106.77566528320312,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 300,
+      "info": {
+        "k": 300,
+        "X": 53.8,
+        "n_obj": 96,
+        "lat": 0.0,
+        "Y": -0.27,
+        "Zb": -1.27,
+        "axis_valid": 213.0
+      },
+      "node": {
+        "i": 300,
+        "bag_t": 1788356974.7857,
+        "stamp": 946692721.5334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 53.77,
+        "clear": 53.8,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 151.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 53.77,
+            "lat": 0.01,
+            "size": [
+              0.06,
+              0.33,
+              2.52
+            ],
+            "n": 67,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "column",
+            "conf": 1.0,
+            "age": 130,
+            "hmin": 0.15,
+            "c": [
+              53.8,
+              -0.28,
+              0.24
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 178266,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.02,
+        "curv": 3.3772229258718375e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 15.04
+      },
+      "full_result_hash": "2db46d74167c5a80df5126a253f9ee941438b4af32772e137c130c8c4e19d46d",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 53.772972106933594,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 106.77566528320312,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 106.77566528320312,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 106.77566528320312,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 53.772972106933594,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 106.77566528320312,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 301,
+      "info": {
+        "k": 301,
+        "X": 52.31,
+        "n_obj": 72,
+        "lat": 0.0,
+        "Y": -0.29,
+        "Zb": -1.26,
+        "axis_valid": 189.0
+      },
+      "node": {
+        "i": 301,
+        "bag_t": 1788356974.8674,
+        "stamp": 946692721.6334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 52.27,
+        "clear": 52.3,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 114.0,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 52.27,
+            "lat": -0.03,
+            "size": [
+              0.06,
+              0.23,
+              2.44
+            ],
+            "n": 62,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 131,
+            "hmin": 0.17,
+            "c": [
+              52.31,
+              -0.31,
+              0.23
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 179770,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.022,
+        "curv": 3.5685643172902945e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.98
+      },
+      "full_result_hash": "d6c500af41da6883d159783277973092d3482be76515f18119d99799a9ea26a7",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 52.27470397949219,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 103.75224304199219,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 103.75224304199219,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "id": 64,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 103.75224304199219,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 52.27470397949219,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        },
+        {
+          "id": 64,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 103.75224304199219,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 302,
+      "info": {
+        "k": 302,
+        "X": 50.82,
+        "n_obj": 78,
+        "lat": 0.0,
+        "Y": -0.28,
+        "Zb": -1.28,
+        "axis_valid": 205.0
+      },
+      "node": {
+        "i": 302,
+        "bag_t": 1788356974.9816,
+        "stamp": 946692721.7334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": true,
+        "nearest": 50.79,
+        "clear": 50.8,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 148.5,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 50.79,
+            "lat": -0.02,
+            "size": [
+              0.05,
+              0.21,
+              2.5
+            ],
+            "n": 68,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 132,
+            "hmin": 0.21,
+            "c": [
+              50.82,
+              -0.31,
+              0.28
+            ]
+          }
+        ],
+        "warns": [
+          {
+            "d": 102.29,
+            "lat": -1.25,
+            "size": [
+              5.06,
+              0.32,
+              1.87
+            ],
+            "n": 14,
+            "zone": "warning",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 8,
+            "hmin": 0.14,
+            "c": [
+              105.57,
+              -1.68,
+              -0.51
+            ]
+          }
+        ],
+        "n_points": 179382,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.018,
+        "curv": 4.811421496532434e-05,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.97
+      },
+      "full_result_hash": "79d59d37bfed167a7842ec127ba3c6d801f8ae0e76e6063576d672c18ee29c09",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 50.79160690307617,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 64,
+          "q": true,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 102.28852844238281,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 50.79160690307617,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 64,
+          "misses": 0,
+          "reported": true,
+          "zone": "warning",
+          "last_distance": 102.28852844238281,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 330,
+      "info": {
+        "k": 330,
+        "X": 9.58,
+        "n_obj": 1469,
+        "lat": 0.0,
+        "Y": -0.08,
+        "Zb": -1.14,
+        "axis_valid": 127.0
+      },
+      "node": {
+        "i": 330,
+        "bag_t": 1788356977.7608,
+        "stamp": 946692724.5333,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 9.55,
+        "clear": 9.5,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 118.7,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 9.55,
+            "lat": -0.01,
+            "size": [
+              0.07,
+              0.33,
+              2.68
+            ],
+            "n": 257,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 160,
+            "hmin": 0.12,
+            "c": [
+              9.58,
+              -0.08,
+              -0.06
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 183066,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.003,
+        "curv": 0.0003208919567337801,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": 14.73
+      },
+      "full_result_hash": "105098fa090261bda354e87a8f7b0c4577caa7eb6b64a81982af76607ff4a416",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.548796653747559,
+          "core": true,
+          "column_hist": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.084733486175537,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.084733486175537,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.084733486175537,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 8.680538177490234,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 8.680538177490234,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 8.680538177490234,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 9.548796653747559,
+          "last_core": true,
+          "column_hist": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 6.084733486175537,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 8.680538177490234,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 9.304777145385742,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 331,
+      "info": {
+        "k": 331,
+        "X": 8.15,
+        "n_obj": 1827,
+        "lat": 0.0,
+        "Y": -0.06,
+        "Zb": -1.13,
+        "axis_valid": 127.0
+      },
+      "node": {
+        "i": 331,
+        "bag_t": 1788356977.8712,
+        "stamp": 946692724.6333,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 8.11,
+        "clear": 8.1,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 118.1,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 8.11,
+            "lat": -0.0,
+            "size": [
+              0.07,
+              0.33,
+              2.62
+            ],
+            "n": 311,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 161,
+            "hmin": 0.14,
+            "c": [
+              8.15,
+              -0.06,
+              -0.02
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181628,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": -0.001,
+        "curv": 0.0003538502534114411,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": null
+      },
+      "full_result_hash": "f5136381bc989e3a7409e68875c8967d11f0c2aaa0a3baa8ae74192380a00e87",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 8.114728927612305,
+          "core": true,
+          "column_hist": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.084733486175537,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.084733486175537,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.084733486175537,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 8.114728927612305,
+          "last_core": true,
+          "column_hist": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "misses": 3,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 6.084733486175537,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 7.8227105140686035,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 9.304777145385742,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 332,
+      "info": {
+        "k": 332,
+        "X": 6.72,
+        "n_obj": 2470,
+        "lat": 0.0,
+        "Y": -0.05,
+        "Zb": -1.12,
+        "axis_valid": 127.0
+      },
+      "node": {
+        "i": 332,
+        "bag_t": 1788356977.9685,
+        "stamp": 946692724.7333,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 6.68,
+        "clear": 6.7,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 118.1,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 6.68,
+            "lat": 0.0,
+            "size": [
+              0.08,
+              0.34,
+              2.62
+            ],
+            "n": 487,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 162,
+            "hmin": 0.12,
+            "c": [
+              6.72,
+              -0.05,
+              0.04
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 183798,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": 0.002,
+        "curv": 0.00038312108048678135,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": null
+      },
+      "full_result_hash": "33983a28165e845d93b5126bcaf4a827ebcfb3dfcf02e0984114f1f56139d4d9",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 6.678257465362549,
+          "core": true,
+          "column_hist": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 6.678257465362549,
+          "last_core": true,
+          "column_hist": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "misses": 0,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 5.775607109069824,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 7.8227105140686035,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 9.304777145385742,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 333,
+      "info": {
+        "k": 333,
+        "X": 5.28,
+        "n_obj": 3232,
+        "lat": 0.0,
+        "Y": -0.03,
+        "Zb": -1.11,
+        "axis_valid": 123.0
+      },
+      "node": {
+        "i": 333,
+        "bag_t": 1788356978.0751,
+        "stamp": 946692724.8333,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 5.25,
+        "clear": 5.2,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 117.5,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 5.25,
+            "lat": 0.0,
+            "size": [
+              0.07,
+              0.35,
+              2.34
+            ],
+            "n": 415,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 163,
+            "hmin": 0.12,
+            "c": [
+              5.28,
+              -0.04,
+              0.01
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 181658,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": 0.004,
+        "curv": 0.00041498865469035274,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": null
+      },
+      "full_result_hash": "91f21f74ef5db76217ddaac4a90dc6c92e84ce06588f00fce15cfd592fbc651d",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.249817371368408,
+          "core": true,
+          "column_hist": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 1,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 9.304777145385742,
+          "core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 5.249817371368408,
+          "last_core": true,
+          "column_hist": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "misses": 1,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 5.775607109069824,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 7.8227105140686035,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 77,
+          "misses": 3,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 9.304777145385742,
+          "last_core": false,
+          "column_hist": [
+            false
+          ],
+          "zone_hist": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "k": 334,
+      "info": {
+        "k": 334,
+        "X": 3.85,
+        "n_obj": 4905,
+        "lat": 0.0,
+        "Y": -0.02,
+        "Zb": -1.11,
+        "axis_valid": 123.0
+      },
+      "node": {
+        "i": 334,
+        "bag_t": 1788356978.167,
+        "stamp": 946692724.9334,
+        "frame_id": "hesai_lidar",
+        "topic": "/lidar_points",
+        "decision": "STOP",
+        "obstacle": true,
+        "warning": false,
+        "nearest": 3.81,
+        "clear": 3.8,
+        "level": "ok",
+        "dlevel": "ok",
+        "msgs": [],
+        "monitored": 115.6,
+        "rail_lock": 1.0,
+        "dets": [
+          {
+            "d": 3.81,
+            "lat": 0.01,
+            "size": [
+              0.08,
+              0.35,
+              1.99
+            ],
+            "n": 492,
+            "zone": "gauge",
+            "kind": "",
+            "reason": "",
+            "conf": 1.0,
+            "age": 164,
+            "hmin": 0.12,
+            "c": [
+              3.85,
+              -0.02,
+              -0.06
+            ]
+          }
+        ],
+        "warns": [],
+        "n_points": 184528,
+        "decode_ms": 0.0,
+        "detect_ms": 0.0,
+        "track_center": 0.005,
+        "curv": 0.00041542108615572396,
+        "mount": "identity",
+        "mount_h": 1.1,
+        "ego": null
+      },
+      "full_result_hash": "57120b8115e7bd0d6c3e22e22d8d1b023e303697c3486d21ae665310f6bccd21",
+      "assignments": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 3.806072950363159,
+          "core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 75,
+          "q": false,
+          "reported_before": false,
+          "misses": 2,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 5.775607109069824,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "q": false,
+          "reported_before": false,
+          "misses": 3,
+          "hold_misses": 1,
+          "hold": 0,
+          "explained_blocked": false,
+          "last_distance": 7.8227105140686035,
+          "core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "id": 2,
+          "misses": 0,
+          "reported": true,
+          "zone": "gauge",
+          "last_distance": 3.806072950363159,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "id": 75,
+          "misses": 2,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 5.775607109069824,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        },
+        {
+          "id": 76,
+          "misses": 3,
+          "reported": false,
+          "zone": "warning",
+          "last_distance": 7.8227105140686035,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false
+          ],
+          "zone_hist": [
+            false,
+            false
+          ]
+        }
+      ]
+    }
+  ]
+}
