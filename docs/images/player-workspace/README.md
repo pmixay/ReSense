@@ -53,8 +53,8 @@ and [`parallax-left-1440.png`](parallax-left-1440.png) show the edge-pressure st
 The handrail and its collars are a separate foreground geometry layer, moving
 at 24% of the background's angles. They sit at least .5 scene units ahead of all
 wall/housing geometry throughout the nine pressure extremes checked by the model tests.
-A cached, narrow offscreen strip gives only the near handrail a mild 1.8px blur;
-the display and its annotations remain sharp. Center, pointer leave and window blur reset the
+The near handrail is now rendered sharply in the main physical scene, with the
+dedicated blur target and composite pass removed. Center, pointer leave and window blur reset the
 pose; touch and reduced-motion mode keep a neutral scene.
 
 The orthographic screen projection is exported as a live affine transform; the
@@ -97,7 +97,7 @@ The shared palette now uses more saturated metro red, emerald, amber and violet.
 Player camera/speed selection and primary transport use the brand accent, while
 compact rounded-square tools and single-level telemetry keep the application hierarchy.
 
-On Player, the shared stage destinations form the sole compact pinned tab strip.
+On Player, the destinations use the same red metro-line rail and station-ring styling as Upload.
 The grouped Data/Analysis/System header is not mounted, and other application routes
 retain their existing navigation. The Player has no
 local logo, duplicate title, stage strip or back-navigation bar. Normal responsive
@@ -106,7 +106,7 @@ panels and timeline/transport. The Player uses a full-bleed train background; ot
 application sections retain their shared page ground. There is
 no fixed 1600×900 composition or whole-page scaling.
 
-The recovered header space makes the default display taller. The «Увеличить высоту
+The default display is taller, with the same usable width. The «Увеличить высоту
 экрана» control expands it further at the same width; telemetry remains reachable
 by normal content scrolling. [`taller-display-1440.png`](taller-display-1440.png)
 captures that mode. ResizeObserver resizes the actual live surface when toggled.
@@ -115,8 +115,8 @@ captures that mode. ResizeObserver resizes the actual live surface when toggled.
 
 The physical canvas is capped at 1.5× device scale and approximately 2.6 million
 pixels; constrained devices are capped at 1×. DOM controls and annotations retain
-their native resolution. The handrail cache is at most 160×900 pixels, redraws only
-on geometry/pose changes, and composites just the narrow left strip. Dynamic shadow
+their native resolution. Handrails render directly, avoiding a separate blur target
+and composite pass. Dynamic shadow
 maps are disabled. This bounds the added effects; it is not a hardware-specific FPS guarantee.
 
 ResizeObserver updates the canvas, offscreen target, camera aspect, annotation surface,
@@ -125,7 +125,7 @@ UV coordinates with HUD pixel bounds, and verify disposal of replaced GPU resour
 Browser tests cover playback, seeking, event stepping, speed, run switching, orbit,
 fullscreen/fallback, loading, backend failures, FAULT and lost-context recovery.
 
-The primary desktop sizes keep the complete workspace and transport in view. Narrow
-layouts flow vertically with native-size controls and accessible scrolling panels.
+The taller display takes priority in the first viewport; lower telemetry and transport
+remain reachable through normal vertical scrolling. Controls retain native sizing.
 Earlier Player galleries document previous revisions; this directory is the current
 integrated layout.

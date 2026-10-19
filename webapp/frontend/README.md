@@ -96,8 +96,8 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   motion and touch. The control tint is clear through the upper 64px, ramps gently with a 160px
   feather and is capped at 56%. Its near-black stop stays beyond the painted edge; a separate
   short blur feather keeps screen labels sharp.
-- **Player space/performance.** Only the compact destination tab strip is mounted on Player.
+- **Player space/performance.** Player uses the shared metro-line destination rail, styled like Upload.
   Its height toggle expands the live display without narrowing it. Foreground rails sit ahead
-  of the moving wall and use a cached, mildly blurred narrow render target. Physical rendering
+  of the moving wall and render sharply in the physical scene without a defocus pass. Physical rendering
   is capped by `displayQuality.ts` (1.5×/2.6M pixels, 1× on constrained devices); DOM controls
   stay native-size. Dynamic shadow maps are disabled in favor of analytic contact shading.

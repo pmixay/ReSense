@@ -108,21 +108,3 @@ export const CONTACT_SHADOW_FRAGMENT = /* glsl */ `
     gl_FragColor = vec4(.055, .07, .085, penumbra * .22);
   }
 `;
-
-export const RAIL_BLUR_FRAGMENT = /* glsl */ `
-  uniform sampler2D uImage;
-  uniform vec2 uTexel;
-  varying vec2 vUv;
-  void main() {
-    vec4 color = texture2D(uImage, vUv) * .25;
-    color += texture2D(uImage, vUv + vec2(uTexel.x, 0.0)) * .125;
-    color += texture2D(uImage, vUv - vec2(uTexel.x, 0.0)) * .125;
-    color += texture2D(uImage, vUv + vec2(0.0, uTexel.y)) * .125;
-    color += texture2D(uImage, vUv - vec2(0.0, uTexel.y)) * .125;
-    color += texture2D(uImage, vUv + uTexel) * .0625;
-    color += texture2D(uImage, vUv - uTexel) * .0625;
-    color += texture2D(uImage, vUv + vec2(uTexel.x, -uTexel.y)) * .0625;
-    color += texture2D(uImage, vUv + vec2(-uTexel.x, uTexel.y)) * .0625;
-    gl_FragColor = color;
-  }
-`;

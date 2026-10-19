@@ -36,10 +36,10 @@ second app shell. Its neutral pose is straight; mouse pressure adds restrained p
 with a slower railing layer, while a feathered dark control dock preserves readability.
 The page must feel like another ReSense stage, with a continuous background and no
 duplicate local logo, title, stage rail or standalone player header.
-On Player the existing stage destinations are the only pinned navigation; grouped
+On Player the existing metro-line stage rail matches Upload and is the only pinned navigation; grouped
 Data/Analysis/System chrome is omitted to recover display height. A height control
 expands the live view at the same width. The interior follows inspected Moscow-2020
-saloon material cues, with a mildly defocused near-field rail and bounded rendering costs.
+saloon material cues, with a sharp near-field rail, taller default display and bounded rendering costs.
 
 Target desktop review sizes are 1366×768, 1440×900 and 1920×1080, with mobile content
 flowing vertically. Synthetic capture runs demonstrate the UI and are not evaluation evidence.

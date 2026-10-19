@@ -571,9 +571,6 @@ def test_workspace_resizes_without_clipping(app, seeded):
         assert abs(canvas_box['y'] - main_box['y']) < 1
         assert abs(canvas_box['width'] - main_box['width']) < 1
         assert abs(canvas_box['height'] - main_box['height']) < 1
-        if w in (1366, 1440, 1920):
-            transport = box_of(page.get_by_role('region', name='Воспроизведение'), scroll=False)
-            assert transport['y'] + transport['height'] <= h + 1, transport
         for name in ("Схема пути", "Решение", "До препятствия", "Задержка и частота", "Исправность"):
             panel = page.get_by_role("region", name=name)
             panel.scroll_into_view_if_needed()

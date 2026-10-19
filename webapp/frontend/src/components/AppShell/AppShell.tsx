@@ -45,7 +45,7 @@ export function AppShell() {
         </a>
         <div ref={chromeRef} className={styles.chrome}>
           {!player && <TopBar />}
-          <LineRail sub={sub} queueBusy={queueBusy} compact={!!player} />
+          <LineRail sub={sub} queueBusy={queueBusy} hideBranch={!!player} />
         </div>
         <main ref={pageRef} id="main" className={`${styles.page} ${player ? styles.playerPage : ''}`} tabIndex={-1}>
           <Suspense fallback={<PageFallback />}>

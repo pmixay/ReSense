@@ -12,11 +12,11 @@ export interface LineRailProps {
   sub?: string;
   /** marks the Очередь station as busy (jobs running or waiting) */
   queueBusy?: boolean;
-  /** Player keeps only the stage destinations, in a compact pinned tab strip. */
-  compact?: boolean;
+  /** Omit off-line system destinations while keeping the shared rail styling. */
+  hideBranch?: boolean;
 }
 
-export function LineRail({ sub, queueBusy, compact = false }: LineRailProps) {
+export function LineRail({ sub, queueBusy, hideBranch = false }: LineRailProps) {
   const { pathname } = useLocation();
   const current = pageOfPath(pathname);
   const onBranch = current !== null && BRANCH.includes(current);
@@ -40,12 +40,12 @@ export function LineRail({ sub, queueBusy, compact = false }: LineRailProps) {
   };
 
   return (
-    <nav className={[styles.band, onBranch ? styles.branched : '', compact ? styles.compact : ''].join(' ')} aria-label="Линия: путь работы с записью">
+    <nav className={[styles.band, onBranch ? styles.branched : ''].join(' ')} aria-label="Линия: путь работы с записью">
       <div className={styles.main}>
         <div className={styles.line} aria-hidden />
         <div className={styles.stations}>{LINE.map((k, i) => station(k, i, LINE))}</div>
       </div>
-      {!compact && <div className={styles.branch} aria-hidden={!onBranch}>
+      {!hideBranch && <div className={styles.branch} aria-hidden={!onBranch}>
         <span className={styles.transfer} aria-hidden />
         <span className={styles.roundel} title="Ветка «Система»">
           3
