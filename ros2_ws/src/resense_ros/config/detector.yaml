@@ -213,6 +213,7 @@ resense:
     mount_cross_tol: 0.5           # m, > 0 on (19.10 candidate; 0 = off): model rail head vs mount plane disagreement before the check applies (+ grade * X)
     mount_cross_grade: 0.05        # m per m
     mount_cross_range: 30.0        # m
+    mount_cross_above_only: true   # only a cluster the mount puts entirely above the envelope top (amendment 6)
   tracking:
     stop_keep_low_s: 0.3          # seconds of actual sensor time for continuation by current low-object evidence
     gate_base: 1.5
@@ -261,7 +262,7 @@ resense:
     conf_decay: 0.25
     conf_threshold: 0.6
     # 19.10 (F1 lane, off): a settled static track (centroid within settle_max_spread over its last settle_window hits) is an obstacle only while >= settle_min_share of them were inside the gauge (Tracker._settle)
-    settle_min_hits: 50            # > 0 on (19.10 candidate; 0 = off)
+    settle_min_hits: 0             # > 0 on (opt-in; withdrawn from the 19.10 candidate, amendment 6)
     settle_window: 100
     settle_max_spread: 0.5         # m per axis
     settle_min_share: 0.5
@@ -342,6 +343,8 @@ resense:
     local_rail_min_bins: 2         # 0.5 m bins with rail-band returns per line
     rail_band_range: 0.0           # m, (b) > 0 on: same-band rail-line test out to this range ...
     rail_band_margin: 0.05         # m ... with this margin, without rail_start_min_ref
+    local_rail_exclude_low: true   # the rail lines leave out every low cluster's returns (amendment 6, review B1)
+    local_rail_advisory: true      # a cluster failing (a) / (b) is advisory 'below_rail_ref', not weak evidence (amendment 6)
     no_rail_low_within: 0.0        # m, (c) > 0 on: no rail pair -> a low cluster beyond this is advisory (no_rail_low)
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true

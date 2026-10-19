@@ -295,25 +295,39 @@ def local_rail_reference(c, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: L
     return None
 
 
+def low_free_mask(n: int, clusters) -> np.ndarray:
+    """19.10 (F1a', amendment 6): the frame's returns that belong to no low cluster of ``clusters`` (kind
+    ``low``: clean, straddle-continuation or marked alike). The rail lines of :func:`rail_reference_check` are
+    measured on these only, so the pieces of one long low object lying along a rail cannot raise each other's
+    reference (independent review 1, finding B1)."""
+    free = np.ones(int(n), dtype=bool)
+    for c in clusters:
+        if c.kind == "low" and c.points_idx.size:
+            free[c.points_idx] = False
+    return free
+
+
 def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: LowObjectConfig,
-                         rails_spacing: float) -> list:
+                         rails_spacing: float, free: Optional[np.ndarray] = None) -> list:
     """19.10 (F1 tasks a and b): the clean low clusters of ``clusters`` (kind ``low``, zone gauge, no
     reason, not weak) that do not rise above the rails around them: (a) ``local_rail_margin`` > 0 and
     the top (``height_max``) below :func:`local_rail_reference` + margin; (b) ``rail_band_range`` > 0, the
     cluster nearer than it, narrow (<= ``rail_start_max_width``), reaching a rail line (within
     ``rail_start_lateral``, as :func:`mark_rail_line`) and its top at most ``rail_band_margin`` above its
     own lateral band's line along the track (0.25 m bins, >= 2 returns, >= 4 bins, within
-    ``local_rail_window``; no ``rail_start_min_ref`` condition). Returns them (the detector hands them to
-    the tracker as weak low evidence, which can only continue an already reported low STOP); the
+    ``local_rail_window``; no ``rail_start_min_ref`` condition). ``free`` (amendment 6): the frame's returns
+    the lines may be measured on (:func:`low_free_mask`); None = every return (the first measured version).
+    Returns them; the detector makes them advisory (``local_rail_advisory``) or weak low evidence. The
     clusters themselves are not modified here."""
     out = []
     half = 0.5 * float(rails_spacing)
+    Xr, dyr, hr = (X, dy, h) if free is None else (X[free], dy[free], h[free])
     for c in clusters:
         if c.kind != "low" or c.zone != "gauge" or c.reason or c.low_height_weak or not c.points_idx.size:
             continue
         top = float(c.height_max)
         if cfg.local_rail_margin > 0:
-            ref = local_rail_reference(c, X, dy, h, cfg, rails_spacing)
+            ref = local_rail_reference(c, Xr, dyr, hr, cfg, rails_spacing)
             if ref is not None and top < ref + float(cfg.local_rail_margin):
                 out.append(c)
                 continue
@@ -324,7 +338,7 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
             if (float(c.size[1]) <= cfg.rail_start_max_width
                     and any(d0 <= s * half + tol and d1 >= s * half - tol for s in (-1.0, 1.0))):
                 x0, x1, w = float(c.bbox_min[0]), float(c.bbox_max[0]), float(cfg.local_rail_window)
-                line = _band_line(X, dy, h, d0, d1, x0 - w, x1 + w, x0 - 0.3, x1 + 0.3, 0.25, 2, 4)
+                line = _band_line(Xr, dyr, hr, d0, d1, x0 - w, x1 + w, x0 - 0.3, x1 + 0.3, 0.25, 2, 4)
                 if line is not None and top <= line + float(cfg.rail_band_margin):
                     out.append(c)
     return out

@@ -17,7 +17,7 @@ from resense.clustering import Cluster
 from resense.config import DetectorConfig, LowObjectConfig, TrackingConfig
 from resense.detector import Detector
 from resense.frame import Frame
-from resense.lowobj import local_rail_reference, no_rail_advisory, rail_reference_check
+from resense.lowobj import local_rail_reference, low_free_mask, no_rail_advisory, rail_reference_check
 from resense.synthetic import ObstacleSpec, synthetic_tunnel_frame
 from resense.track import TrackModel
 from resense.tracking import Tracker
@@ -150,6 +150,17 @@ def test_mount_cross_check_demotes_only_what_the_mount_puts_outside():
     det._mount_cross_check([ceiling, person], xyz)
     assert ceiling.zone == "warning" and ceiling.reason == "height_conflict" and ceiling.demoted
     assert person.zone == "gauge" and not person.reason        # 1.5 m above the mount's rail head: inside
+    # amendment 6 (H'): a cluster the mount puts below the rail head is never demoted (a wrong mount height
+    # must not hide a low near object); without mount_cross_above_only it would be
+    below_xyz = np.array([[9.5, 0.0, -2.3]] * 5, dtype=np.float32)
+    below = _corridor(range(5), 9.4)
+    det._mount_cross_check([below], below_xyz)
+    assert below.zone == "gauge" and not below.reason
+    det.cfg.cluster.mount_cross_above_only = False
+    below2 = _corridor(range(5), 9.4)
+    det._mount_cross_check([below2], below_xyz)
+    assert below2.zone == "warning" and below2.reason == "height_conflict"
+    det.cfg.cluster.mount_cross_above_only = True
     # a model that agrees with the mount: nothing changes, wherever the points are
     det.track = TrackModel(floor_coef=np.array([0.0, 0.0, -1.98]), floor_range=(10.0, 40.0), center=0.0,
                            yaw=0.0, curvature=0.0, rail_offset=0.22)
@@ -200,10 +211,59 @@ def test_settled_static_track_needs_a_long_majority():
 
 
 def test_candidate_values_in_the_class_and_the_yaml():
-    """The 19.10 candidate (F1a 0.01, H 0.5, S2); F1b / F1c stay off. 0 restores the aec88d2 behaviour (proved
-    on the full gate and the whole Falcon recording, docs/evidence/f1_false_alarms_2026-10-19)."""
+    """The 19.10 candidate after amendment 6: F1a' (0.01, low clusters excluded from the lines, advisory) and H'
+    (above the envelope only); S2, F1b and F1c opt-in (0). 0 / false restores the aec88d2 behaviour (proved on the
+    full gate and the whole Falcon recording, docs/evidence/f1_false_alarms_2026-10-19)."""
     y = DetectorConfig()
-    assert y.lowobj.local_rail_margin == pytest.approx(0.01) and y.cluster.mount_cross_tol == pytest.approx(0.5)
-    assert y.tracking.settle_min_hits == 50 and not y.tracking.settle_check_z
+    assert y.lowobj.local_rail_margin == pytest.approx(0.01) and y.lowobj.local_rail_exclude_low
+    assert y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == pytest.approx(0.5)
+    assert y.cluster.mount_cross_above_only
+    assert y.tracking.settle_min_hits == 0
     assert y.lowobj.rail_band_range == 0 and y.lowobj.no_rail_low_within == 0
     assert DetectorConfig.from_yaml("configs/default.yaml").to_dict() == y.to_dict()
+
+
+def _long_object_on_the_left_rail():
+    """Rail-head returns on both rails at the model's plane, one ring crossing every 3 m (as at 40-50 m), and a
+    long 8 cm object lying along the left rail at 35-41 m that the clustering split into six 0.6 m pieces 1 m
+    apart (independent review 1, B1)."""
+    X, dy, h = _rails(25.0, 55.0, step=3.0)
+    pieces, xs, ds, hs = [], [], [], []
+    n0 = X.size
+    for k in range(6):
+        x0 = 35.0 + k * 1.0
+        px = np.arange(x0, x0 + 0.6, 0.1)
+        idx = np.arange(n0 + len(xs), n0 + len(xs) + px.size)
+        xs += list(px)
+        ds += [HALF] * px.size
+        hs += [0.08] * px.size
+        pieces.append(_low(x0, HALF, 0.08, length=0.6, idx=idx))
+    return (np.concatenate([X, xs]), np.concatenate([dy, ds]), np.concatenate([h, hs])), pieces
+
+
+def test_pieces_of_a_long_object_on_a_rail_keep_their_reference():
+    (X, dy, h), pieces = _long_object_on_the_left_rail()
+    cfg = LowObjectConfig(local_rail_margin=0.01)
+    # the first measured version (every return counts): the other pieces raise each piece's line -> all flagged
+    assert len(rail_reference_check(pieces, X, dy, h, cfg, 1.59)) == 6
+    # amendment 6: the lines leave out every low cluster's returns -> none flagged
+    free = low_free_mask(X.size, pieces)
+    assert rail_reference_check(pieces, X, dy, h, cfg, 1.59, free) == []
+    assert all(local_rail_reference(c, X[free], dy[free], h[free], cfg, 1.59) == pytest.approx(0.0) for c in pieces)
+
+
+def test_a_cluster_failing_the_reference_is_advisory_not_silent():
+    X, dy, h = _rails(30.0, 50.0, left=0.05, right=0.05)
+    xyz = np.stack([X, dy, h], axis=1).astype(np.float32)
+    for advisory in (True, False):
+        cfg = DetectorConfig()
+        cfg.lowobj.local_rail_advisory = advisory
+        det = Detector(cfg)
+        det._low_height = []
+        fixture, box = _low(40.0, 0.0, 0.06, idx=np.array([0])), _low(40.0, HALF, 0.11, idx=np.array([1]))
+        out = det._rail_reference([fixture, box], xyz, dy, h)
+        if advisory:
+            assert out == [fixture, box] and fixture.zone == "warning" and fixture.reason == "below_rail_ref"
+            assert fixture.demoted and box.zone == "gauge" and not box.reason
+        else:
+            assert out == [box] and fixture.low_height_weak and det._low_height == [fixture]

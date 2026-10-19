@@ -239,3 +239,11 @@ capping `clear_distance`; (6) missing evidence (gate logs were dropped by `.giti
   synthetic bags (candidate vs switches at 0), X3 against the base battery, full test suite; CAUTION changes
   reported per recording (C1 out of scope). The S2 measurements already started (dynamic probes, synthetic bags with
   S2 on) are kept as information on S2.
+
+**Amendment 6b (19.10, ~13:50 UTC, before measurement):** running the affected tests with F1a′ on showed two
+interactions, both resolved by design, not by tuning: (1) the **opt-in near-bed path** (`lowobj.near_enabled`,
+off by default) reports objects *below* the rail head by design, so F1a′ exempts its clusters (otherwise enabling it
+would be a no-op); (2) `tests/test_rail_start.py` reproduces the card's **frame-2838** finding (rail heads 2.9–3.1 m
+ahead of a standing fresh start, above a young model's plane) as a counterfactual with the rail-start rule off: with
+F1a′ on that counterfactual no longer STOPs (the rail heads do not rise above their own rail line). The test keeps
+its original assertions with F1a′ off and now also asserts the F1a′-on result.

@@ -340,6 +340,7 @@ class ClusterConfig:
     mount_cross_tol: float = 0.5       # m, > 0 on (19.10 candidate; 0 = off, the aec88d2 behaviour)
     mount_cross_grade: float = 0.05    # m per m of distance (5 %: steeper than a metro gradient)
     mount_cross_range: float = 30.0    # m, only the near field (the mount plane is a near reference)
+    mount_cross_above_only: bool = True  # amendment 6: advisory only when the mount puts the cluster entirely above the envelope top (the ceiling), never below the rail head
 
 
 @dataclass
@@ -462,7 +463,7 @@ class TrackingConfig:
     # least settle_min_share of those hits were inside the strict gauge, whatever its last zone_window
     # votes; near escalation still wins. Falcon 115 m support: inside the gauge in 8.8 % of 4,246 hits,
     # STOP on 4 frames when 6 of the last 10 votes happened to be inside.
-    settle_min_hits: int = 50          # > 0 on (19.10 candidate; 0 = off, the aec88d2 behaviour)
+    settle_min_hits: int = 0           # > 0 on (opt-in; withdrawn from the 19.10 candidate by amendment 6: it can delay an object entering the gauge without moving 0.5 m horizontally)
     settle_window: int = 100           # hits
     settle_max_spread: float = 0.5     # m, max - min of the centroid per axis over the window
     settle_min_share: float = 0.5
@@ -559,6 +560,8 @@ class LowObjectConfig:
     local_rail_min_bins: int = 2         # 0.5 m along-track bins with rail-band returns that a rail's line needs
     rail_band_range: float = 0.0         # m, (b) > 0 on: mark_rail_line's same-band test (narrow cluster reaching a rail line) out to this range ...
     rail_band_margin: float = 0.05       # m ... with this margin above the band's own line, without rail_start_min_ref
+    local_rail_exclude_low: bool = True  # amendment 6 (review B1): the rail lines leave out every low cluster's returns, so the pieces of one long low object cannot raise each other's reference
+    local_rail_advisory: bool = True     # amendment 6: a cluster failing (a) / (b) is advisory ('below_rail_ref', a signature), not weak continuation evidence
     no_rail_low_within: float = 0.0      # m, (c) > 0 on: on a frame without the rail pair (track.rail_slabs == 0) a low cluster farther than this is advisory (reason 'no_rail_low', a signature: an earned STOP is kept by tracking.stop_keep_signature)
 
 

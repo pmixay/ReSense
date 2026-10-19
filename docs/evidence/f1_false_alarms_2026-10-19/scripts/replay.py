@@ -62,6 +62,7 @@ def main():
     ap.add_argument("--end", type=int, default=10 ** 9)
     ap.add_argument("--full", action="store_true", help="write the whole to_dict() (else a compact record)")
     ap.add_argument("--lowref", action="store_true", help="record every low cluster's top against the rail lines (lowref.py)")
+    ap.add_argument("--tracks", action="store_true", help="record every matched track's own cluster (traced attribution)")
     a = ap.parse_args()
 
     import eval_real
@@ -134,6 +135,10 @@ def main():
                 lows.append(info)
             if lows:
                 x["low"] = lows
+            if a.tracks:
+                x["tracks"] = [[t.id, round(float(t.last.distance), 2), round(float(t.last.lateral), 3), t.last.kind,
+                                t.last.zone, t.last.reason, bool(t.last.low_height_weak)]
+                               for t in det.tracker.tracks if t.misses == 0 and t.last is not None]
             if a.lowref:
                 import lowref
                 lc = lowref.frame_info(det, res)
