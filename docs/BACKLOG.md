@@ -1236,15 +1236,22 @@ The repository names roles, not people.
 | 4 | S5: bench of the final image on available hardware (2–4 cores accepted) | open | P1 #4 | 21.10 |
 | 5 | D1 pass 2: numbers in docs and GitBook after integration and J1 | open | P1 #3, P4 #3 | 22.10 |
 
-**P3 · detector** (agents on branches; the person reads their reports and the reviews)
+**P3 · detector** (the person; four cards run as agent branches, everything else is P3's own work)
 
 | # | work | state | blocks / blocked by | target |
 |---|---|---|---|---|
-| 1 | K1/K2 gauge stability and curves (`det/k1-k2-gauge`) | running | P1 #3 | 21.10 12:00 |
-| 2 | F1 + Falcon false STOPs (`det/f1-false-alarms`) | running | P1 #3 | 21.10 12:00 |
-| 3 | N7 Falcon long range (`det/falcon-long-range`) | running | P1 #3 | 21.10 12:00 |
-| 4 | N3 dust (`det/n3-dust-robustness`) | running | P1 #3 | 21.10 12:00 |
-| 5 | Later / waiting: C1 (answer), R1/R2 (new candidate after X1), R3, S2, S3, S4, H1 tall miss (OPEN 8.1), L16 for ring-free sensors, G1/G2/T1 | not started | — | after 23.10 unless an answer moves them |
+| 1 | **Check each agent's pre-registered protocol as soon as it is pushed** (acceptance numbers, what is measured, no weakened criteria); stop a branch that measures the wrong thing early | branches starting | protects P1 #3 | 19.10 evening |
+| 2 | **Own work, not given to an agent: orientation safety on ring-free lidars (L16)** — a 90°-rolled Falcon mount is adopted wrongly and gives false STOPs ([probe](evidence/falcon_head_check_2026-10-19/out/orient_probe.txt)); B4's channel check needs `ring`. Candidate: the forward-only prior of the sensor notes (W7: the axis with one sign on almost every return is forward) before the rail test; with S3 (cap the orientation-search cost) in the same file | not started | new lidar, false alarms | 21.10 12:00 (own branch `det/l16-ringfree-orientation`) |
+| 3 | **Own work: thin cables (R3)** — the organizers require hanging cables to be detected; hanging 5 cm object STOP only from 30 m, standing cable from 60 m; X1 attribution first, then the dominant cause | not started | — | measurement by 21.10, fix only if it passes |
+| 4 | **Own work: tall narrow objects (H1, the one open High finding, 8.1)** — attribution of the inherited miss and a new candidate idea; the old column free-top fix was dropped after review | open since 16.10 | — | attribution by 22.10; a fix after 23.10 unless it passes earlier |
+| 5 | **Integration on 21.10 with P1:** merge the agent branches that pass (expect conflicts in `configs/default.yaml` / `resense/config.py`), run the one combined gate, hand to P4 for the independent review; P1 reseals | waits for the branches | P1 #3, #4 | 21.10 |
+| 6 | **Read each agent report as the detector owner:** accept or reject each trade-off (range vs false alarms, display vs truth), and the safety reviews | waits | P1 #3 | 21.10 |
+| 7 | **Pitch, technical part:** answers for the Q&A drill on the algorithm, curves, 300 m, dust, the second lidar; review the updated `ALGORITHM.md` / slides for technical truth; mock jury at both rehearsals | open | P1 #5 | 20.10, 22.10 |
+| 8 | After 23.10 unless an answer or time moves them: C1 (CAUTION answer), R1/R2 (new candidate after X1), S2 (360° decode speed), S4 (dual returns), N6 (platform person), G1/G2/T1 | not started | — | — |
+
+Running as agents (P3's lane, the person checks them, #1 and #6): `det/k1-k2-gauge`, `det/f1-false-alarms`,
+`det/falcon-long-range`, `det/n3-dust-robustness`. To avoid conflicts, P3's own branches stay out of
+`resense/track.py`, `resense/lowobj.py` and the dust/visibility-prior code until the 21.10 merge.
 
 **P4 · data / evaluation**
 
