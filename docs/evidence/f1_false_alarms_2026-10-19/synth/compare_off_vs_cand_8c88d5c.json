@@ -1,0 +1,588 @@
+{
+ "synthetic_platform": {
+  "decisions": {
+   "off": {
+    "CAUTION": 135,
+    "GO": 66,
+    "STOP": 185
+   },
+   "cand": {
+    "CAUTION": 135,
+    "GO": 66,
+    "STOP": 185
+   }
+  },
+  "transitions": {},
+  "lowered": [],
+  "objects": {
+   "obj01": {
+    "stop_match_frames_bounds": [
+     [
+      38,
+      38
+     ],
+     [
+      38,
+      38
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     86.76,
+     86.76
+    ],
+    "first_stop_m_possible_assignment": [
+     86.76,
+     86.76
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      41,
+      41
+     ],
+     [
+      41,
+      41
+     ]
+    ]
+   },
+   "obj02": {
+    "stop_match_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     null,
+     null
+    ],
+    "first_stop_m_possible_assignment": [
+     null,
+     null
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      30,
+      30
+     ],
+     [
+      30,
+      30
+     ]
+    ]
+   },
+   "obj03": {
+    "stop_match_frames_bounds": [
+     [
+      147,
+      147
+     ],
+     [
+      147,
+      147
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     44.01,
+     44.01
+    ],
+    "first_stop_m_possible_assignment": [
+     44.01,
+     44.01
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      147,
+      147
+     ],
+     [
+      147,
+      147
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      127,
+      127
+     ],
+     [
+      127,
+      127
+     ]
+    ]
+   }
+  },
+  "p1_background_stop_frames": {
+   "off": [],
+   "cand": []
+  },
+  "unmatched_stop_detections": {
+   "off": 0,
+   "cand": 0
+  }
+ },
+ "synthetic_switch": {
+  "decisions": {
+   "off": {
+    "CAUTION": 294,
+    "GO": 300,
+    "STOP": 142
+   },
+   "cand": {
+    "CAUTION": 294,
+    "GO": 300,
+    "STOP": 142
+   }
+  },
+  "transitions": {},
+  "lowered": [],
+  "objects": {
+   "box_left_2": {
+    "stop_match_frames_bounds": [
+     [
+      32,
+      32
+     ],
+     [
+      32,
+      32
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     51.38465,
+     51.38465
+    ],
+    "first_stop_m_possible_assignment": [
+     51.38465,
+     51.38465
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      9,
+      9
+     ],
+     [
+      9,
+      9
+     ]
+    ]
+   },
+   "box_left_4": {
+    "stop_match_frames_bounds": [
+     [
+      4,
+      4
+     ],
+     [
+      4,
+      4
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     23.38265,
+     23.38265
+    ],
+    "first_stop_m_possible_assignment": [
+     23.38265,
+     23.38265
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "box_right_1": {
+    "stop_match_frames_bounds": [
+     [
+      11,
+      11
+     ],
+     [
+      11,
+      11
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     110.58591,
+     110.58591
+    ],
+    "first_stop_m_possible_assignment": [
+     110.58591,
+     110.58591
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      101,
+      101
+     ],
+     [
+      101,
+      101
+     ]
+    ]
+   },
+   "box_right_5": {
+    "stop_match_frames_bounds": [
+     [
+      41,
+      41
+     ],
+     [
+      41,
+      41
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     104.02412,
+     104.02412
+    ],
+    "first_stop_m_possible_assignment": [
+     104.02412,
+     104.02412
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      31,
+      31
+     ],
+     [
+      31,
+      31
+     ]
+    ]
+   },
+   "hanging_3": {
+    "stop_match_frames_bounds": [
+     [
+      42,
+      42
+     ],
+     [
+      42,
+      42
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     69.1269,
+     69.1269
+    ],
+    "first_stop_m_possible_assignment": [
+     69.1269,
+     69.1269
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      36,
+      36
+     ],
+     [
+      36,
+      36
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      5,
+      5
+     ],
+     [
+      5,
+      5
+     ]
+    ]
+   }
+  },
+  "p1_background_stop_frames": {
+   "off": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+   ],
+   "cand": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+   ]
+  },
+  "unmatched_stop_detections": {
+   "off": 12,
+   "cand": 12
+  }
+ },
+ "synthetic_tunnels": {
+  "decisions": {
+   "off": {
+    "CAUTION": 223,
+    "GO": 196,
+    "STOP": 126
+   },
+   "cand": {
+    "CAUTION": 223,
+    "GO": 196,
+    "STOP": 126
+   }
+  },
+  "transitions": {},
+  "lowered": [],
+  "objects": {
+   "box_left_4": {
+    "stop_match_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     null,
+     null
+    ],
+    "first_stop_m_possible_assignment": [
+     null,
+     null
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      7,
+      7
+     ],
+     [
+      7,
+      7
+     ]
+    ]
+   },
+   "box_right_1": {
+    "stop_match_frames_bounds": [
+     [
+      30,
+      30
+     ],
+     [
+      30,
+      30
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     54.99849,
+     54.99849
+    ],
+    "first_stop_m_possible_assignment": [
+     54.99849,
+     54.99849
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "flat_crossrail_3": {
+    "stop_match_frames_bounds": [
+     [
+      37,
+      37
+     ],
+     [
+      37,
+      37
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     70.38702,
+     70.38702
+    ],
+    "first_stop_m_possible_assignment": [
+     70.38702,
+     70.38702
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      31,
+      31
+     ],
+     [
+      31,
+      31
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "panel_2": {
+    "stop_match_frames_bounds": [
+     [
+      51,
+      51
+     ],
+     [
+      51,
+      51
+     ]
+    ],
+    "first_stop_m_certain_assignment": [
+     96.82542,
+     96.82542
+    ],
+    "first_stop_m_possible_assignment": [
+     96.82542,
+     96.82542
+    ],
+    "certain_inside_stop_frames_bounds": [
+     [
+      30,
+      30
+     ],
+     [
+      30,
+      30
+     ]
+    ],
+    "warning_match_frames_bounds": [
+     [
+      13,
+      13
+     ],
+     [
+      13,
+      13
+     ]
+    ]
+   }
+  },
+  "p1_background_stop_frames": {
+   "off": [
+    147,
+    148,
+    149,
+    367
+   ],
+   "cand": [
+    147,
+    148,
+    149,
+    367
+   ]
+  },
+  "unmatched_stop_detections": {
+   "off": 10,
+   "cand": 10
+  }
+ }
+}

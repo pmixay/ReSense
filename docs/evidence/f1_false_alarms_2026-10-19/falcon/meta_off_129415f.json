@@ -1,0 +1,21 @@
+{
+ "src": "https://disk.yandex.ru/d/SfBeRHbs8bNJAQ",
+ "bytes": 20281548800,
+ "found": 4443,
+ "kept": 4443,
+ "lost": 0,
+ "order_violations": 0,
+ "duplicates": 0,
+ "frames": 4443,
+ "set": [
+  "lowobj.local_rail_margin=0",
+  "cluster.mount_cross_tol=0",
+  "tracking.settle_min_hits=0",
+  "tracking.settle_check_z=true"
+ ],
+ "repo": "/home/user/ReSense-f1",
+ "resets": [],
+ "wall_s": 341.3,
+ "cpu_s": 328.7,
+ "rss_peak_mb": 1399.2
+}

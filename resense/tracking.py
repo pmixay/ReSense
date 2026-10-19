@@ -58,7 +58,7 @@ from resense.opinion import OBS_KEEP, load_opinion, observation, track_features
 
 # 26.09: demotions a near escalation never overrides (Tracker._near): a column, and a cluster outside
 # the range where the corridor's axis or height reference is trusted
-_NOT_ESCALATED = ("column", "beyond_axis", "beyond_height_ref", "diffuse_low_support")
+_NOT_ESCALATED = ("column", "beyond_axis", "beyond_height_ref", "diffuse_low_support", "height_conflict")
 
 
 @dataclass
@@ -107,6 +107,9 @@ class Track:
     provisional_explained_hist: List[bool] = field(default_factory=list)  # imputed columns awaiting free-top corroboration and a clean run
     clean_run: int = 0              # 29.09 (explained_run): consecutive clean strict-gauge hits, broken by a miss
     odo: List[tuple] = field(default_factory=list)  # 29.09 (ego_veto_*): (odometry segment, train travel m, distance m) of the last hits
+    settle_hist: List[bool] = field(default_factory=list)  # 19.10 (settle_*): last settle_window ordinary hits: inside the strict gauge?
+    settle_cen: List[np.ndarray] = field(default_factory=list)  # 19.10 (settle_*): their cluster centroids (sensor frame)
+    settled_out: bool = False       # 19.10 (settle_*): a settled static track mostly outside the gauge (Tracker._settle)
 
     @property
     def near_escalated(self) -> bool:
@@ -138,6 +141,8 @@ class Track:
             return "warning"
         if self.near_escalated:
             return "gauge"
+        if self.settled_out:
+            return "warning"
         return self.vote_zone
 
     @property
@@ -337,6 +342,10 @@ class Tracker:
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 if nk:
                     t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
+                if c.settle_min_hits > 0:
+                    sw = max(1, int(c.settle_window))
+                    t.settle_hist = (t.settle_hist + [g])[-sw:]
+                    t.settle_cen = (t.settle_cen + [np.asarray(cl.centroid, dtype=np.float64)])[-sw:]
                 self._note(t, cl, False, zw, "ordinary")
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
@@ -380,6 +389,8 @@ class Tracker:
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
                     obs=[observation(cl)] if self.record else [],
                     low_clean=cl if cl.kind == "low" else None,
+                    settle_hist=[cl.zone == "gauge"] if c.settle_min_hits > 0 else [],
+                    settle_cen=[np.asarray(cl.centroid, dtype=np.float64)] if c.settle_min_hits > 0 else [],
                 ))
                 self._note(self.tracks[-1], cl, False, zw, "ordinary")
                 self._next_id += 1
@@ -394,6 +405,8 @@ class Tracker:
             self._note(t, cl, True, zw, "far_thin")
             self.tracks.append(t)
             self._next_id += 1
+        if c.settle_min_hits > 0:
+            self._settle()
         # reported: confirmed now, or reported in the previous frame and missed for at most
         # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
         # a re-seed hold window (reseed; matched or not)
@@ -480,6 +493,27 @@ class Tracker:
             for t in self.tracks:
                 t.was_stop = t.reported and t.zone == "gauge"
         return self.tracks
+
+    def _settle(self) -> None:
+        """19.10 (``settle_min_hits`` > 0, off by default): ``Track.settled_out`` for every track whose
+        last ``settle_window`` ordinary hits (at least ``settle_min_hits``) kept the cluster centroid
+        within ``settle_max_spread`` m per axis (a static object seen from a standing train: its gauge
+        verdict can change only with the reference, not with the object) and were inside the strict gauge
+        in less than ``settle_min_share`` of them. Such a track is advisory (``Track.rule_zone``) whatever
+        its last ``zone_window`` votes; near escalation wins. A moving object or a moving train breaks the
+        spread at once; an object that really enters the gauge moves."""
+        c = self.cfg
+        for t in self.tracks:
+            n = len(t.settle_hist)
+            t.settled_out = False
+            if n < c.settle_min_hits or n != len(t.settle_cen):
+                continue
+            if sum(t.settle_hist) >= c.settle_min_share * n - 1e-9:
+                continue
+            spread = np.ptp(np.stack(t.settle_cen), axis=0)
+            if not c.settle_check_z:
+                spread = spread[:2]          # the ground-plane position only (a tall object's sampled part varies)
+            t.settled_out = bool(np.all(spread <= c.settle_max_spread))
 
     @staticmethod
     def _low_height_agrees(t: Track, cl: Cluster, predicted: np.ndarray) -> bool:

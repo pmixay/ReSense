@@ -503,8 +503,14 @@ def test_floor_shadow_hold_is_released_after_the_cap(tunnel):
     assert res[cap - 1].to_dict()["track"]["floor_hold_run"] == cap
     cfg = DetectorConfig()
     cfg.track = replace(cfg.track, floor_shadow_max_hold=0)
+    f1 = _pitch_step(frame, cfg)
+    cfg.lowobj.local_rail_margin = 0.0          # 19.10: the counterfactual without the F1 local rail reference
     locked = _pitch_step(frame, cfg)
     assert all(r.track.floor_held for r in locked) and locked[-1].obstacle
+    # 19.10 (F1a, docs/evidence/f1_false_alarms_2026-10-19): the rising bed's patch does not rise above its
+    # rails, so under the locked model it is not a lasting STOP (weak low evidence; advisory with
+    # lowobj.local_rail_advisory)
+    assert not f1[-1].obstacle and not any(d.kind == "low" for d in f1[-1].detections)
 
 
 def _band_points(bins: dict) -> np.ndarray:

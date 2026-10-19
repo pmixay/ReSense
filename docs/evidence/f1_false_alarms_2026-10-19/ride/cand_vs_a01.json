@@ -1,0 +1,781 @@
+{
+ "frames": 11271,
+ "decisions": {
+  "GO": 6391,
+  "CAUTION": 4771,
+  "STOP": 109
+ },
+ "stop_frames": 109,
+ "stop_episodes": 24,
+ "stop_events": 20,
+ "low_onset_episodes": 1,
+ "low_any_episodes": 1,
+ "episodes": [
+  {
+   "onset": 23,
+   "frame_id": "new_data_0_0023",
+   "n": 8,
+   "last": 30,
+   "dets": [
+    {
+     "id": 3,
+     "kind": "",
+     "d": 143.58,
+     "lat": -0.19,
+     "size": [
+      0.1,
+      0.39,
+      0.96
+     ],
+     "reason": "",
+     "hmin": 0.52
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.195,
+   "ego": 1.72,
+   "dist": [
+    143.58,
+    142.23
+   ]
+  },
+  {
+   "onset": 1378,
+   "frame_id": "new_data_27_0001",
+   "n": 1,
+   "last": 1378,
+   "dets": [
+    {
+     "id": 388,
+     "kind": "",
+     "d": 138.92,
+     "lat": -0.15,
+     "size": [
+      0.17,
+      0.27,
+      1.89
+     ],
+     "reason": "",
+     "hmin": 0.88
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.179,
+   "ego": null,
+   "dist": [
+    138.92,
+    138.92
+   ]
+  },
+  {
+   "onset": 1393,
+   "frame_id": "new_data_27_0016",
+   "n": 3,
+   "last": 1395,
+   "dets": [
+    {
+     "id": 388,
+     "kind": "",
+     "d": 123.93,
+     "lat": 0.13,
+     "size": [
+      0.44,
+      0.7,
+      1.61
+     ],
+     "reason": "",
+     "hmin": 1.19
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.176,
+   "ego": null,
+   "dist": [
+    123.93,
+    121.96
+   ]
+  },
+  {
+   "onset": 2671,
+   "frame_id": "new_data_52_0019",
+   "n": 3,
+   "last": 2673,
+   "dets": [
+    {
+     "id": 709,
+     "kind": "",
+     "d": 82.54,
+     "lat": -0.18,
+     "size": [
+      6.8,
+      1.79,
+      0.32
+     ],
+     "reason": "",
+     "hmin": 0.23
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.125,
+   "ego": 14.56,
+   "dist": [
+    82.54,
+    86.49
+   ]
+  },
+  {
+   "onset": 3046,
+   "frame_id": "new_data_59_0037",
+   "n": 2,
+   "last": 3047,
+   "dets": [
+    {
+     "id": 958,
+     "kind": "",
+     "d": 101.57,
+     "lat": 0.3,
+     "size": [
+      1.67,
+      0.32,
+      0.91
+     ],
+     "reason": "",
+     "hmin": 0.87
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.189,
+   "ego": null,
+   "dist": [
+    101.57,
+    101.64
+   ]
+  },
+  {
+   "onset": 3058,
+   "frame_id": "new_data_59_0049",
+   "n": 4,
+   "last": 3061,
+   "dets": [
+    {
+     "id": 963,
+     "kind": "",
+     "d": 96.82,
+     "lat": 0.42,
+     "size": [
+      1.78,
+      0.07,
+      0.86
+     ],
+     "reason": "",
+     "hmin": 1.96
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.186,
+   "ego": null,
+   "dist": [
+    96.82,
+    96.8
+   ]
+  },
+  {
+   "onset": 4131,
+   "frame_id": "new_data_81_0000",
+   "n": 15,
+   "last": 4145,
+   "dets": [
+    {
+     "id": 1428,
+     "kind": "",
+     "d": 93.12,
+     "lat": 0.23,
+     "size": [
+      0.05,
+      0.21,
+      0.15
+     ],
+     "reason": "",
+     "hmin": 0.35
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.157,
+   "ego": 14.53,
+   "dist": [
+    93.12,
+    86.9
+   ]
+  },
+  {
+   "onset": 4147,
+   "frame_id": "new_data_81_0016",
+   "n": 2,
+   "last": 4148,
+   "dets": [
+    {
+     "id": 1429,
+     "kind": "",
+     "d": 87.43,
+     "lat": -0.58,
+     "size": [
+      2.14,
+      0.3,
+      0.34
+     ],
+     "reason": "beyond_axis",
+     "hmin": 0.68
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.158,
+   "ego": 13.75,
+   "dist": [
+    87.43,
+    86.24
+   ]
+  },
+  {
+   "onset": 5699,
+   "frame_id": "new_data_111_0038",
+   "n": 6,
+   "last": 5704,
+   "dets": [
+    {
+     "id": 2083,
+     "kind": "",
+     "d": 111.73,
+     "lat": -0.68,
+     "size": [
+      0.24,
+      0.5,
+      1.44
+     ],
+     "reason": "",
+     "hmin": 0.5
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.174,
+   "ego": 14.45,
+   "dist": [
+    111.73,
+    104.42
+   ]
+  },
+  {
+   "onset": 6860,
+   "frame_id": "new_data_134_0026",
+   "n": 2,
+   "last": 6861,
+   "dets": [
+    {
+     "id": 2541,
+     "kind": "low",
+     "d": 38.52,
+     "lat": -1.02,
+     "size": [
+      1.36,
+      0.18,
+      0.08
+     ],
+     "reason": "",
+     "hmin": 0.04
+    }
+   ],
+   "low_onset": true,
+   "low_any": true,
+   "low_trace": [
+    {
+     "id": 2541,
+     "zone": "gauge",
+     "reason": "",
+     "d": 38.52,
+     "top": 0.118,
+     "hmin": 0.039,
+     "lat": -1.025,
+     "size": [
+      1.36,
+      0.18,
+      0.08
+     ],
+     "n": 4,
+     "rail_line": false,
+     "misses": 0,
+     "weak": false
+    }
+   ],
+   "rail_slabs": 3,
+   "rail_score": 0.167,
+   "ego": 18.13,
+   "dist": [
+    38.52,
+    37.12
+   ]
+  },
+  {
+   "onset": 7351,
+   "frame_id": "new_data_144_0007",
+   "n": 3,
+   "last": 7353,
+   "dets": [
+    {
+     "id": 2752,
+     "kind": "",
+     "d": 97.93,
+     "lat": -0.55,
+     "size": [
+      0.72,
+      0.34,
+      0.68
+     ],
+     "reason": "",
+     "hmin": 0.14
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.172,
+   "ego": 14.01,
+   "dist": [
+    97.93,
+    95.39
+   ]
+  },
+  {
+   "onset": 7355,
+   "frame_id": "new_data_144_0011",
+   "n": 5,
+   "last": 7359,
+   "dets": [
+    {
+     "id": 2752,
+     "kind": "",
+     "d": 92.18,
+     "lat": -0.22,
+     "size": [
+      2.74,
+      2.65,
+      0.79
+     ],
+     "reason": "",
+     "hmin": 0.34
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.158,
+   "ego": 12.66,
+   "dist": [
+    92.18,
+    87.28
+   ]
+  },
+  {
+   "onset": 7790,
+   "frame_id": "new_data_152_0038",
+   "n": 3,
+   "last": 7792,
+   "dets": [
+    {
+     "id": 2945,
+     "kind": "",
+     "d": 79.44,
+     "lat": 1.05,
+     "size": [
+      7.96,
+      1.14,
+      1.51
+     ],
+     "reason": "",
+     "hmin": 0.12
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.193,
+   "ego": 1.89,
+   "dist": [
+    79.44,
+    78.92
+   ]
+  },
+  {
+   "onset": 7794,
+   "frame_id": "new_data_152_0042",
+   "n": 3,
+   "last": 7796,
+   "dets": [
+    {
+     "id": 2945,
+     "kind": "",
+     "d": 78.59,
+     "lat": 1.06,
+     "size": [
+      5.23,
+      0.98,
+      1.24
+     ],
+     "reason": "",
+     "hmin": 0.2
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.193,
+   "ego": 2.27,
+   "dist": [
+    78.59,
+    77.81
+   ]
+  },
+  {
+   "onset": 7859,
+   "frame_id": "new_data_154_0005",
+   "n": 8,
+   "last": 7866,
+   "dets": [
+    {
+     "id": 2970,
+     "kind": "",
+     "d": 47.65,
+     "lat": 1.16,
+     "size": [
+      5.48,
+      0.77,
+      1.45
+     ],
+     "reason": "",
+     "hmin": 0.17
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.169,
+   "ego": 6.59,
+   "dist": [
+    47.65,
+    42.38
+   ]
+  },
+  {
+   "onset": 7868,
+   "frame_id": "new_data_154_0014",
+   "n": 2,
+   "last": 7869,
+   "dets": [
+    {
+     "id": 2970,
+     "kind": "",
+     "d": 40.82,
+     "lat": 1.21,
+     "size": [
+      6.0,
+      0.67,
+      1.42
+     ],
+     "reason": "",
+     "hmin": 0.2
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.169,
+   "ego": 6.67,
+   "dist": [
+    40.82,
+    40.1
+   ]
+  },
+  {
+   "onset": 7943,
+   "frame_id": "new_data_155_0038",
+   "n": 11,
+   "last": 7953,
+   "dets": [
+    {
+     "id": 2999,
+     "kind": "",
+     "d": 104.27,
+     "lat": -0.69,
+     "size": [
+      2.79,
+      1.55,
+      1.6
+     ],
+     "reason": "",
+     "hmin": 0.13
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.169,
+   "ego": 10.84,
+   "dist": [
+    104.27,
+    94.56
+   ]
+  },
+  {
+   "onset": 9263,
+   "frame_id": "new_data_181_0032",
+   "n": 6,
+   "last": 9268,
+   "dets": [
+    {
+     "id": 3504,
+     "kind": "",
+     "d": 109.59,
+     "lat": -0.15,
+     "size": [
+      1.24,
+      0.63,
+      1.95
+     ],
+     "reason": "",
+     "hmin": 0.28
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.171,
+   "ego": 13.04,
+   "dist": [
+    109.59,
+    104.52
+   ]
+  },
+  {
+   "onset": 9284,
+   "frame_id": "new_data_182_0002",
+   "n": 3,
+   "last": 9286,
+   "dets": [
+    {
+     "id": 3509,
+     "kind": "",
+     "d": 123.38,
+     "lat": 0.35,
+     "size": [
+      0.08,
+      0.56,
+      0.57
+     ],
+     "reason": "",
+     "hmin": 0.4
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.172,
+   "ego": 11.88,
+   "dist": [
+    123.38,
+    120.83
+   ]
+  },
+  {
+   "onset": 9786,
+   "frame_id": "new_data_191_0045",
+   "n": 2,
+   "last": 9787,
+   "dets": [
+    {
+     "id": 3693,
+     "kind": "",
+     "d": 124.52,
+     "lat": -0.55,
+     "size": [
+      0.1,
+      0.45,
+      0.24
+     ],
+     "reason": "",
+     "hmin": 1.15
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.195,
+   "ego": null,
+   "dist": [
+    124.52,
+    124.22
+   ]
+  },
+  {
+   "onset": 9800,
+   "frame_id": "new_data_192_0008",
+   "n": 10,
+   "last": 9809,
+   "dets": [
+    {
+     "id": 3693,
+     "kind": "",
+     "d": 118.44,
+     "lat": -0.22,
+     "size": [
+      1.18,
+      0.6,
+      0.5
+     ],
+     "reason": "",
+     "hmin": 0.87
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.179,
+   "ego": null,
+   "dist": [
+    118.44,
+    115.55
+   ]
+  },
+  {
+   "onset": 10237,
+   "frame_id": "new_data_200_0037",
+   "n": 2,
+   "last": 10238,
+   "dets": [
+    {
+     "id": 3847,
+     "kind": "",
+     "d": 75.09,
+     "lat": 1.0,
+     "size": [
+      5.49,
+      1.16,
+      0.17
+     ],
+     "reason": "",
+     "hmin": 0.13
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.166,
+   "ego": 16.96,
+   "dist": [
+    75.09,
+    72.99
+   ]
+  },
+  {
+   "onset": 10644,
+   "frame_id": "new_data_208_0036",
+   "n": 3,
+   "last": 10646,
+   "dets": [
+    {
+     "id": 4014,
+     "kind": "",
+     "d": 98.27,
+     "lat": -0.0,
+     "size": [
+      5.71,
+      2.11,
+      0.21
+     ],
+     "reason": "",
+     "hmin": 0.2
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.173,
+   "ego": null,
+   "dist": [
+    98.27,
+    95.66
+   ]
+  },
+  {
+   "onset": 10648,
+   "frame_id": "new_data_208_0040",
+   "n": 2,
+   "last": 10649,
+   "dets": [
+    {
+     "id": 4014,
+     "kind": "",
+     "d": 95.99,
+     "lat": 0.7,
+     "size": [
+      7.87,
+      1.92,
+      0.62
+     ],
+     "reason": "",
+     "hmin": 0.17
+    }
+   ],
+   "low_onset": false,
+   "low_any": false,
+   "low_trace": [],
+   "rail_slabs": 3,
+   "rail_score": 0.179,
+   "ego": 16.0,
+   "dist": [
+    95.99,
+    95.72
+   ]
+  }
+ ],
+ "transitions": {},
+ "stop_lost": [],
+ "stop_new": []
+}
