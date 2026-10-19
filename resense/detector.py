@@ -671,7 +671,8 @@ class Detector:
                                 if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
                                 frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0
                                 or cfg.cluster.column_core_margin > 0 else None,
-                                frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1])
+                                 frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1],
+                                 frame_track=self.track, frame_track_cfg=cfg.track)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them

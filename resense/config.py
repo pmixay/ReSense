@@ -259,8 +259,8 @@ class ClusterConfig:
     column_width_trim_min_cut: float = 0.25  # 27.09: m, the trimmed width is used only when it is at least this much narrower than the box (sparse tails: a joined fragment); a dense body keeps its width
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
     # Positive current-frame collision evidence; zero margin disables the exemption.
-    # Extra rail-relative erosion is a guard, not a calibrated axis-error bound.
-    column_core_margin: float = 0.30
+    # Fresh raw rail-anchor and boundary hypotheses are checked in addition to this erosion.
+    column_core_margin: float = 0.05
     column_core_min_voxels: int = 8
     column_core_min_height: float = 2.2
     column_core_max_footprint: float = 0.8

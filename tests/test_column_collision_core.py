@@ -13,14 +13,19 @@ from resense.detector import Detector
 from resense.frame import Frame
 from resense.gauge import gauge_core_mask, point_in_polygon, widened_profile
 from resense.tracking import Tracker
+from resense.track import TrackModel
 
-physical_column = runpy.run_path(str(Path(__file__).parent / "fixtures/h1_physical.py"))["physical_column"]
+_cast = runpy.run_path(str(Path(__file__).parent / "fixtures/h1_physical.py"))["physical_column"]
+
+
+def physical_column(**kwargs):
+    return _cast(**dict({'rails': True}, **kwargs))
 
 
 def column_clusters(xyz, ring, cfg=None, axis_error=0.0, union_error=None, axis_valid=225.0,
-                    history_above=None):
+                    history_above=None, yaw_error=0.0):
     cfg = cfg or DetectorConfig()
-    rail_dy, h = xyz[:, 1] - axis_error, xyz[:, 2] + 1.83
+    rail_dy, h = xyz[:, 1] - axis_error - yaw_error * xyz[:, 0], xyz[:, 2] + 1.83
     dy = rail_dy if union_error is None else xyz[:, 1] - union_error
     warning = point_in_polygon(dy, h, widened_profile(cfg.gauge, cfg.gauge.warning_margin))
     warning &= (xyz[:, 0] >= cfg.gauge.range_min) & (xyz[:, 0] <= cfg.gauge.range_max)
@@ -33,7 +38,9 @@ def column_clusters(xyz, ring, cfg=None, axis_error=0.0, union_error=None, axis_
                          frame_idx=frame_idx, gauge=cfg.gauge, axis_valid=axis_valid, height_valid=225,
                          ring=None if ring is None else ring[idx], dy_report=rail_dy[idx],
                          in_rail=gauge_core_mask(rail_dy[idx], h[idx], xyz[idx, 0], cfg.gauge),
-                         frame_xyz=xyz, frame_h=h, frame_dy=rail_dy, frame_ring=ring)
+                          frame_xyz=xyz, frame_h=h, frame_dy=rail_dy, frame_ring=ring,
+                          frame_track=TrackModel(np.array([0., 0., -2.18]), (3., 120.),
+                                                 axis_error, np.arctan(yaw_error), 0.), frame_track_cfg=cfg.track)
 
 
 def matched(xyz, ring, labels, **kwargs):
@@ -51,8 +58,12 @@ def stop_history(c, misses=()):
 
 
 def test_case45_raw_positive_control():
-    xyz, ring, labels = physical_column()
+    xyz, ring, labels = _cast()
     assert hashlib.sha256(xyz.tobytes()).hexdigest() == "680878ed4f0b233cec517f999ca8648b1193522c929b7ce0f9df9fad7d545a20"
+    c, = matched(xyz, ring, labels)
+    assert (int((labels == 1).sum()), c.n_gauge, c.ring_count) == (84, 80, 20)
+    assert (c.zone, c.reason, c.collision_core) == ('warning', 'column', False)
+    xyz, ring, labels = physical_column()
     c, = matched(xyz, ring, labels)
     assert (int((labels == 1).sum()), c.n_gauge, c.ring_count) == (84, 80, 20)
     assert (c.zone, c.reason) == ("gauge", "")
@@ -73,7 +84,7 @@ def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, 
 
 @pytest.mark.parametrize("distance", [37.0, 67.0, 109.0, 137.0])
 @pytest.mark.parametrize("lateral", [-1.29, 1.29, -1.5, 1.5])
-@pytest.mark.parametrize("axis_error", [-0.3, 0.0, 0.3])
+@pytest.mark.parametrize("axis_error", [-0.6, -0.3, 0.0, 0.3, 0.6])
 def test_outside_body_under_bounded_model_errors_never_gains_core(distance, lateral, axis_error):
     assert abs(lateral) - 0.23 > 1.05  # independent physical truth
     xyz, ring, labels = physical_column(distance=distance, lateral=lateral, top=4.12)

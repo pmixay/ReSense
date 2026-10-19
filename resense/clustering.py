@@ -11,10 +11,10 @@ from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
 
 from resense import _native
-from resense.config import ClusterConfig, GaugeConfig
+from resense.config import ClusterConfig, GaugeConfig, TrackConfig
 from resense.gauge import gauge_core_mask, gauge_reach_mask
 from resense.sensor import AZIMUTH_STEP_DEG, expected_points
-from resense.track import bin_percentile
+from resense.track import TrackModel, bin_percentile, estimate_rails
 
 
 @dataclass
@@ -163,7 +163,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
                   low_height_margin: float = 0.0, frame_xyz: Optional[np.ndarray] = None,
                   frame_ring: Optional[np.ndarray] = None, frame_h: Optional[np.ndarray] = None,
-                  frame_dy: Optional[np.ndarray] = None) -> List[Cluster]:
+                  frame_dy: Optional[np.ndarray] = None, frame_track: Optional[TrackModel] = None,
+                  frame_track_cfg: Optional[TrackConfig] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -251,7 +252,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         return out
     if frame_idx is None:
         frame_idx = np.arange(xyz.shape[0])
-    rays = None if frame_xyz is None else FrameRays(frame_xyz, frame_ring, frame_h, frame_dy)
+    rays = None if frame_xyz is None else FrameRays(frame_xyz, frame_ring, frame_h, frame_dy,
+                                                   frame_track, frame_track_cfg)
     vox, inv = voxelize(xyz, cfg)
     vlabels = cluster_labels(vox, cfg)
     labels = vlabels[inv]                       # raw point labels
@@ -381,21 +383,50 @@ class FrameRays:
     SCALE, MID = 105.0, 127.0         # bucket = SCALE tan(azimuth) + MID: +-50 deg (the sensor's field) in 2-252
 
     def __init__(self, xyz: np.ndarray, ring: Optional[np.ndarray] = None, h: Optional[np.ndarray] = None,
-                 dy: Optional[np.ndarray] = None):
+                 dy: Optional[np.ndarray] = None, track: Optional[TrackModel] = None,
+                 track_cfg: Optional[TrackConfig] = None):
         self.xyz, self.ring, self.h, self.dy = xyz, ring, h, dy
+        self.track, self.track_cfg = track, track_cfg
         self._keys: Optional[np.ndarray] = None
         self._band: Optional[tuple] = None
         self._core_boundaries: Optional[list] = None
+        self._core_anchor: Optional[tuple] = None
+        self._core_anchor_checked = False
+
+    def collision_axis_anchor(self) -> Optional[tuple]:
+        """Absolute current rail-midpoint residuals, not the smoothed model's label.
+
+        Re-measure the raw near ridges lazily, once per frame needing a tall core.
+        A held floor, missing pair or missing slab support supplies no exemption.
+        The bin-sized padding is observational slack, not a calibrated error bound.
+        """
+        if not self._core_anchor_checked:
+            self._core_anchor_checked = True
+            model, cfg = self.track, self.track_cfg
+            if model is None or cfg is None or not cfg.rails_enabled or model.floor_held:
+                return None
+            rails = estimate_rails(self.xyz, model, cfg, model.center, prior=model)
+            if (rails.score < cfg.rails_min_score or rails.n_slabs < max(2, cfg.rails_yaw_min_slabs)
+                    or rails.xm is None or rails.mids is None):
+                return None
+            residual = rails.mids - model.center_y(rails.xm)
+            if np.isfinite(residual).all():
+                self._core_anchor = (float(residual.min()) - cfg.rails_bin,
+                                     float(residual.max()) + cfg.rails_bin)
+        return self._core_anchor
 
     def collision_axis_interval(self, x: float) -> Optional[tuple]:
         """Hull of independently observed left/right boundary continuation axes.
 
-        Each boundary is anchored near the rails, so asymmetric tunnels need no
-        assumed centre/width. Preserve disagreement and observed spread instead
-        of averaging it away. Missing support gives no exemption. This is a
-        consistency interval, not a calibrated ground-truth error bound.
+        Fresh raw rail midpoints supply the absolute near anchor; the boundary
+        changes cannot cancel a constant error in the fitted axis. Asymmetric
+        tunnels need no assumed centre/width. Missing support gives no exemption.
+        This is an observed consistency interval, not a certified truth bound.
         """
         if self.h is None or self.dy is None:
+            return None
+        anchor = self.collision_axis_anchor()
+        if anchor is None:
             return None
         if self._core_boundaries is None:
             profiles = []
@@ -405,8 +436,11 @@ class FrameRays:
                 for side in [-1, 1]:
                     k = np.flatnonzero(band & (side * self.dy > 1.4) & (side * self.dy < 5.0))
                     bins = np.floor(X[k] / 2).astype(int)
-                    values, _ = bin_percentile(self.dy[k], bins, 125, 50.0, min_points=4)
-                    ok = np.isfinite(values)
+                    values, _ = bin_percentile(self.dy[k], bins, 125, 50.0, min_points=2)
+                    bottom, top = np.full(125, np.inf), np.full(125, -np.inf)
+                    np.minimum.at(bottom, bins, self.h[k])
+                    np.maximum.at(top, bins, self.h[k])
+                    ok = np.isfinite(values) & (top - bottom >= 0.15)
                     profiles.append((2 * np.flatnonzero(ok) + 1, values[ok]))
             self._core_boundaries = profiles
         lower = upper = 0.0
@@ -418,8 +452,8 @@ class FrameRays:
                 return None
             a, b = float(np.median(near)), float(np.median(local))
             spread = float(np.max(np.abs(near - a)) + np.max(np.abs(local - b))) + 0.10
-            lower = min(lower, b - a - spread)
-            upper = max(upper, b - a + spread)
+            lower = min(lower, b - a + anchor[0] - spread)
+            upper = max(upper, b - a + anchor[1] + spread)
         return lower, upper
 
     def _bucket(self, t: float) -> int:
