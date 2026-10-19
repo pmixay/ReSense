@@ -1,0 +1,11 @@
+{
+ "run": "/home/user/rs-data/j1/prerelease_1.1.0/roundT_pressureGate_roundT.jsonl",
+ "frames_with_path": 267,
+ "steps_inside": 4877,
+ "steps_beyond": 2848,
+ "inside_over_0.5m": 0.061,
+ "inside_over_1.05m": 0.022,
+ "beyond_over_0.5m": 0.915,
+ "beyond_over_1.05m": 0.762,
+ "inside_error_p90": 0.42
+}

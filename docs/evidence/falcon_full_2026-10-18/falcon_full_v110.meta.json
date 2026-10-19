@@ -1,0 +1,17 @@
+{
+ "src": "https://disk.yandex.ru/d/SfBeRHbs8bNJAQ",
+ "bytes": 20281548800,
+ "found": 4443,
+ "kept": 4443,
+ "lost": 0,
+ "order_violations": 0,
+ "max_gap_s": 0.111498553,
+ "first_ts": 1791508466987445231,
+ "last_ts": 1791508911190163516,
+ "duplicates": 0,
+ "wall_s": 262.7,
+ "cpu_s": 248.3,
+ "rss_peak_mb": 1422.7,
+ "frames": 4443,
+ "resets": []
+}

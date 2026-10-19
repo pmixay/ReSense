@@ -1,0 +1,64 @@
+{
+  "status": "CLEAN_CHECKOUT_SEAL_PASS_BEFORE_AND_AFTER_NATIVE_BUILD",
+  "checked_utc": "2026-10-18T20:13:59Z",
+  "checkout": "/home/resense/data/b4_merge_reseal/sealed",
+  "checkout_commit": "e7cb2709a4644f29f52f4349f4072039cba59304",
+  "measured_commit": "0779db74beddc07fcb8cb89cda6e2837e31e4d62",
+  "manifest": "docs/evidence/detector_freeze_2026-10-18_b4_merged.json",
+  "manifest_sha256": "a6e8d50bd721c32c006131868507e61b7f98ed5dbda0287bd400e50aee4baca5",
+  "source_files": 38,
+  "fingerprint_before": "68dee667f19e862913575c72fada3820199ec29cf497697cd7194b9e897f16d3",
+  "fingerprint_after": "68dee667f19e862913575c72fada3820199ec29cf497697cd7194b9e897f16d3",
+  "supporting_refs_checked_against_committed_blobs": 71,
+  "native": {
+    "_resense_native.so": "67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394"
+  },
+  "tracked_tree_clean": true,
+  "commands": [
+    {
+      "name": "verify_before",
+      "command": [
+        "/usr/bin/python3",
+        "scripts/detector_freeze.py",
+        "verify"
+      ],
+      "exit": 0,
+      "log": "verify_before.log",
+      "sha256": "c9e603855b5790181cfe7e918160b735aa2ee875e66b37ce81eb7796fcde4777"
+    },
+    {
+      "name": "native_build",
+      "command": [
+        "bash",
+        "scripts/build_native.sh"
+      ],
+      "exit": 0,
+      "log": "native_build.log",
+      "sha256": "e0507f3eea29ae828336952d5f223854ce5f52c04678d8a8523fe5f73d1736f0"
+    },
+    {
+      "name": "verify_after",
+      "command": [
+        "/usr/bin/python3",
+        "scripts/detector_freeze.py",
+        "verify"
+      ],
+      "exit": 0,
+      "log": "verify_after.log",
+      "sha256": "c9e603855b5790181cfe7e918160b735aa2ee875e66b37ce81eb7796fcde4777"
+    },
+    {
+      "name": "native_loaded",
+      "command": [
+        "/home/resense/.venv/bin/python",
+        "-c",
+        "from resense import _native; assert _native.enabled(); print(_native.status())"
+      ],
+      "exit": 0,
+      "log": "native_loaded.log",
+      "sha256": "e0507f3eea29ae828336952d5f223854ce5f52c04678d8a8523fe5f73d1736f0"
+    }
+  ],
+  "verifier_sha256": "441dabcae6408edc213cd5db9f76869c8614b052a39116aff24e36a1dc1bbc2e",
+  "release_authorized": false
+}

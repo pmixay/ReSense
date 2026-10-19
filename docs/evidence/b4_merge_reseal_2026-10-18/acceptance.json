@@ -1,0 +1,93 @@
+{
+  "status": "PAIRED_MERGED_SOURCE_CHECKS_PASS",
+  "measured_commit": "0779db74beddc07fcb8cb89cda6e2837e31e4d62",
+  "measurement_protocol_commit": "008a7ec255c33a52bce63e21b2e49ed7cc9e2c3e",
+  "reference_commit": "e9d8fc649f2dd51dd5cd1e4b04ac8c306cc02569",
+  "source_sha256": "68dee667f19e862913575c72fada3820199ec29cf497697cd7194b9e897f16d3",
+  "frozen_files": 38,
+  "changed_frozen_files_vs_main": [
+    "resense/calibration.py",
+    "resense/detector.py",
+    "resense/health.py"
+  ],
+  "native": {
+    "_resense_native.so": "67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394"
+  },
+  "ordinary_gate_rows": 15269,
+  "set_F_rows": 3060,
+  "ordinary_stop_frames": 805,
+  "ordinary_stop_intervals": 51,
+  "ordinary_payload_changes": "only added false mount.orientation_conflict",
+  "x3_cases": 40,
+  "x3_rows": 29765,
+  "x3_checks": 260,
+  "x3_stop_frames": 6284,
+  "x3_stop_intervals": 204,
+  "b4_rows": 35808,
+  "b4_checks": 202,
+  "archives": {
+    "gate-reference": {
+      "path": "gate-reference.tar.gz",
+      "sha256": "e0ed14a525b3269f487b2b9a47fe56279d3d1dfd098611d7db32857bd7fae5bd",
+      "members": 17
+    },
+    "gate": {
+      "path": "gate.tar.gz",
+      "sha256": "f462890f3ea608b3d78c01861007a1f7d6bbfe821c0809b5bfee1c55516f9247",
+      "members": 17
+    },
+    "x3-reference.raw": {
+      "path": "x3-reference_raw.tar.gz",
+      "sha256": "093a3e173f5c339607aad53b73ad129f473097602f7b7785d89b30364c25a17b",
+      "members": 160
+    },
+    "x3.raw": {
+      "path": "x3_raw.tar.gz",
+      "sha256": "e13ad61fb8d34aced33ef8bf6374fa76b78d66f35953fe93ac3749a297b3838c",
+      "members": 160
+    },
+    "b4": {
+      "path": "b4.tar.gz",
+      "sha256": "7e7233467a18e112fafb438b87bfb94dfe18e4d0911e602dcac2db96c70d0d98",
+      "members": 4
+    }
+  },
+  "P4_final_acceptance": "PENDING",
+  "release_authorized": false,
+  "reviewer": "Integrating agent mechanical frame/source audit; not independent P4 acceptance",
+  "input_sha256": {
+    "docs/evidence/b4_merge_reseal_2026-10-18/finalize.py": "79e9fafa6d37b6099fd8217938751ed80ef19e8cae1d635df5fdc23d073b95ab",
+    "docs/evidence/b4_merge_reseal_2026-10-18/PROTOCOL.md": "84f0dc3543fe514709dacc36c9408e2ad76033d70c717ce5e37830a60d213b61",
+    "docs/evidence/b4_merge_reseal_2026-10-18/initial_clean_build.json": "32d947ffa5eeded9b80242456f2be7deca5f8c5a44e71373b4090f921c8a7cf0",
+    "docs/evidence/b4_merge_reseal_2026-10-18/affected_tests.log": "9d1f36bdacfd6c30b55358534925ef393d18930ed6aaabfdd5754d84714f8eb4",
+    "docs/evidence/b4_merge_reseal_2026-10-18/params.log": "21cb1bb4757cfbdc97cd5d5ad77942748a1f6b11de557f8eba64641b5dd52ca6",
+    "docs/evidence/b4_merge_reseal_2026-10-18/directed.log": "898c6fe2da1a7ccf91130fd57fc336afcd2d6d453d92148a79fefea84f2b441a",
+    "docs/evidence/b4_merge_reseal_2026-10-18/tests_execution.json": "2ecf32bedc7833e6e756217bdc2862c003b0db0285d3636b99469429508a2e5b",
+    "docs/evidence/b4_merge_reseal_2026-10-18/gate-reference.log": "79bc62304d3f1e4c091351f675932e34b7c247869d0e005c15b307758a03a550",
+    "docs/evidence/b4_merge_reseal_2026-10-18/gate-reference_execution.json": "7a79b22d43f8cc8e41bfc41a49fe3d1efda013aa7912fcceeed66bc27d04aaf4",
+    "docs/evidence/b4_merge_reseal_2026-10-18/gate.log": "7ec04155647decac82efe03c5c7e12d41d85c75de16c053919c7e064f35a8370",
+    "docs/evidence/b4_merge_reseal_2026-10-18/gate_execution.json": "8da3bfaaf40c0a0b8c56fced6d7814a5ac8ec12f432efde54ac75a3e3f1aa0e6",
+    "docs/evidence/b4_merge_reseal_2026-10-18/x3-reference.log": "aceda36d998e29cf8c0f394feec25f9f0c54eb9def77350bf43dddee64774cea",
+    "docs/evidence/b4_merge_reseal_2026-10-18/x3-reference_execution.json": "b504b3aa44e4dd173b32c88b3f7c430e6db4e9a45fecf7929dbbbc4f5a23555b",
+    "docs/evidence/b4_merge_reseal_2026-10-18/x3.log": "c949b1a199efa6bbff205f47b4e5cd3b3180a61acc3501f98aac3a6ac85ae073",
+    "docs/evidence/b4_merge_reseal_2026-10-18/x3_execution.json": "bff858ffe685f4bcf9b43d89e9671a968911db6f3a806d6dd8b0efcbeac59950",
+    "docs/evidence/b4_merge_reseal_2026-10-18/b4-baseline-empty.log": "963af224ce734d394badb7c3c1f612f493c01a066ea270c6d0d249d7539f15e1",
+    "docs/evidence/b4_merge_reseal_2026-10-18/b4-baseline-positive.log": "78c5abf898274f115a880ee80f603f110e3411a867004c429339d5b8fab75079",
+    "docs/evidence/b4_merge_reseal_2026-10-18/b4-candidate-empty.log": "6c89dccc48ed4924cad125a8979b5797aa0c6564a8beef49a1ee47d150954657",
+    "docs/evidence/b4_merge_reseal_2026-10-18/b4-candidate-positive.log": "744bceb6601301a109f2bc4dc80e294dc4293981d8059be7183f1a0b54649da2",
+    "docs/evidence/b4_merge_reseal_2026-10-18/b4-summary.log": "9cb3f9af81fa6b91a20201b5438dabf4716483ae7682f3ae4095f0609bddf00e",
+    "docs/evidence/b4_merge_reseal_2026-10-18/b4_execution.json": "9bec5961e5acdf0ca5fa248833fa5c0a6cba0ffb6761c415317cc671309ee191",
+    "docs/evidence/lidar_adaptation_2026-10-18/review_gate_frames.py": "652b372455d8477e47483a02d8c355ba00ee61417958acda9ea48ad4d7748791",
+    "docs/evidence/lidar_adaptation_2026-10-18/review_x3.py": "f42f42ef2fe94bbb4f1ac291392ff8956c58c4ad0f9a9fb6920898af60872918",
+    "docs/evidence/b4_merge_reseal_2026-10-18/run_measurements.py": "b026be020f0cd4c727f78b459e69a8e193c74b31654edef3967efced6f994262",
+    "docs/evidence/b4_merge_reseal_2026-10-18/gate.json": "764698f63d1fbbe33a86074ea36dad89d931a8708b8570c09bac120bb3626ee0",
+    "docs/evidence/b4_merge_reseal_2026-10-18/gate-reference.json": "a9cfd9d704434c6d591e29214c404dce009febbd07f8c7b8d25e0f1ced052f59",
+    "docs/evidence/b4_merge_reseal_2026-10-18/gate_frame_review.json": "4d48b7965f7e29b471e50d8de319696a2b20822a23e022f15812d6fcd85469ff",
+    "docs/evidence/b4_merge_reseal_2026-10-18/x3.json": "7d486c06c29aba98488441746abff3fd6ee9ffa48094d2189189ae51c71a4165",
+    "docs/evidence/b4_merge_reseal_2026-10-18/x3-reference.json": "c8f89e2e1ad8c616c57a67d05c55b9615e2514ee9fdf4e21cf6ed0ed4d287842",
+    "docs/evidence/b4_merge_reseal_2026-10-18/x3_frame_review.json": "6fbe1ebbd250e41d13c5d3766f8a42accdde00d3a0f910fabbeba46f0dfea3bc",
+    "docs/evidence/b4_merge_reseal_2026-10-18/b4_summary.json": "5f8cef5844717e86cabddc526d99fea61cd156a2f469f30ece185a2e7f935498",
+    "docs/evidence/b4_merge_reseal_2026-10-18/directed.json": "9311fcbcca3d1dad8d6b52e098b21dd0e90447cd505a2c2cd954ee90b7d73e2e",
+    "docs/evidence/b4_merge_reseal_2026-10-18/affected_tests.xml": "7105f555956afc305115bd546cd44225d354d16ee256d8c0786a92598ac37e73"
+  }
+}

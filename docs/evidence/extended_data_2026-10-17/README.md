@@ -99,7 +99,7 @@ they were written the day before by playing and recording.
   recovered from the sqlite overflow chains with `scripts/window_bag.py`. On a test file its output is byte-identical
   to sqlite's own read.
 
-t = 98–241 s and 329–444 s were not seen.
+t = 98–241 s and 329–444 s were not seen here; they are read in [B2](../falcon_full_2026-10-18/README.md) (18.10).
 
 ## 4. Characterization
 
@@ -224,6 +224,9 @@ tunnels 19 / 204. In every bag the mount is `pending` for the first 190 frames, 
 * Window frames 568–873: `STOP` on an object 0.3–0.6 m deep, ~0.8–0.9 m wide and 0.8–1.7 m tall. It comes from
   ~127 m to ~97 m at ~1.2 m/s and turns back, *(inferred)* a person walking in the track. On a real obstacle this
   `STOP` is the right answer. It starts at 123 m.
+* **Corrected 18.10 ([B2, whole recording](../falcon_full_2026-10-18/README.md)):** the person does not turn back;
+  they walk on to 6 m in front of the train (the window ended at 329 s). Window frames 640–641 are the person
+  (lateral −0.30 m), not the static 115 m object. t = 98–241 s and 329–444 s are now read.
 
 Outputs: `/home/user/rs-data/extended/runs/*.jsonl|csv|meta.json|summary.json` (`falcon_*_axes_xyz.jsonl` for the
 variant). Per-frame stats: `/home/user/rs-data/extended/char/`. Sample frames (.npz, 76 MB):

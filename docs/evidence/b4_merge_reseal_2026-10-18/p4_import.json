@@ -1,0 +1,18 @@
+{
+  "merge_commit": "eb03c9840b6998931e2dc0e886fa729d6721b918",
+  "merged_p4_tip": "8a0af65c816c221d72434565e9201a13a3da9e25",
+  "remote_target": "det/b4-orientation",
+  "target_push_verified": true,
+  "remote_p4_deleted": true,
+  "detector_source_unchanged_from_measured_0779db7": true,
+  "verified_review_archives": [
+    {
+      "path": "docs/evidence/p4_audit_b4_6cc27be_2026-10-18/raw_6cc27be.tar.xz",
+      "sha256": "2db7175bcb65fd05088d56432a014e42815ade8224832b70406b62f2882b5c8c"
+    },
+    {
+      "path": "docs/evidence/p4_review_1.2.0_2026-10-18/x3_raw_1.2.0.tar.xz",
+      "sha256": "c48c0c676d22c1b2947b86ab8ec28152f755b9a4871f59b612915258ed2f0839"
+    }
+  ]
+}

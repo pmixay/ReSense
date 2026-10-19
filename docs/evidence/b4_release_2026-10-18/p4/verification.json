@@ -1,0 +1,75 @@
+{
+  "reviewer": "separate independent AI reviewer; not human approval",
+  "date": "2026-10-18",
+  "branch": "det/b4-orientation",
+  "observed_head": "3b7d7aa7cbbf238c21f84330497697da131b7cb9",
+  "disposition": "BLOCK_NOT_ACCEPTED",
+  "candidate_source_sha256": {
+    "resense/calibration.py": "b340acda96830a6641b85a4da2172b7138ef0c27bce897341b3b45d9ab514429",
+    "resense/detector.py": "4fa84cf71daac501e811383eed4db18b1f8057af8cd3448fc86265dbff100c84",
+    "resense/health.py": "6b392b75f49c8065d73e120a962954ae1c0dad52b8ecb427c25999e532b45144"
+  },
+  "reference_commit": "1b880168ce2dbeec2071838892ac05eed5a9166a",
+  "sealed_reference_paths_verified": 36,
+  "historical_author_protocol_committed_before_experiments": false,
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "description": "Discarded spaced voting observation delays a matched person STOP under supported non-default calibration settings",
+      "overrides": {
+        "calibration.frames": 5,
+        "calibration.obs_spacing": 1,
+        "calibration.provisional_min_deg": 10.0
+      },
+      "recording": "doubleT_obstacle",
+      "control_rotation": 0,
+      "candidate_recovery_rotation": 4,
+      "first_stop_control": 8,
+      "first_stop_recovery": 9,
+      "lost_matched_stop_frames": {"person_crossing": [8]},
+      "label_distance_m": 55.51,
+      "real_observation_and_detector": true,
+      "no_loss_assertion_exit": 1
+    },
+    {
+      "id": "B2",
+      "description": "Prospective committed protocol/candidate, fresh complete gate pair and complete X3 pair unavailable at review close"
+    }
+  ],
+  "nonblocking_findings": [
+    {"id": "N1", "description": "Known excluded late-ring case retains false mapping; empty rotation 4 STOPs from frame 4 after only frame-0 rings are omitted"},
+    {"id": "N2", "description": "Three channel IDs with only two distinct cones pass the scan-axis evidence bar"},
+    {"id": "N3", "description": "Physical scan-axis/gravity and channel provenance limits; no new ring-free or physically horizontal-scanner guarantee"},
+    {"id": "N4", "description": "Jury label associations may reuse a detection; independently checked one-to-one retention too"}
+  ],
+  "historical_evidence_audit": {
+    "sha256sums_entries_verified": 10,
+    "b4_frames": 35808,
+    "b4_default_config_pass": true,
+    "b4_jury_matched_stop_loss": 0,
+    "b4_one_to_one_matched_stop_loss": 0,
+    "gate_real_set_o_ride_frames": 15269,
+    "gate_set_f_frames": 3060,
+    "gate_set_f_sequences": 30,
+    "gate_gated_rows": 146,
+    "gate_identical_non_latency_metric_rows": 208,
+    "gate_raw_sections_reconstruct_exactly": true,
+    "author_junit_test_cases": 421,
+    "author_junit_failures_errors_skips": 0,
+    "audit_exit": 0
+  },
+  "independently_rerun_pytest": {"tests": 38, "passed": 38, "seconds": 0.63, "exit": 0},
+  "reviewer_script_ruff_exit": 0,
+  "git_diff_check_exit": 0,
+  "scripts_sha256": {
+    "audit_evidence.py": "43333abe2c1dd762421916a33ae4d8f2c248ced85b6607506c8fb2028b52c9b5",
+    "directed_checks.py": "c728db104838e7b88c1f163e666e8c67a50dcf1ddeba4a11690323f9a91e2fc1"
+  },
+  "temporary_outputs_sha256": {
+    "/tmp/opencode/p4-b4-audit.json": "98b76e537d2e7ea382710fc08b2da853ac2096f752f3c7aad7a7173625798c94",
+    "/tmp/opencode/p4-b4-directed.json": "d45ac7d43f6e98132f12c9b822114f563545fe26c84a6c78ef03e66d05afe7f7",
+    "/tmp/opencode/p4-b4-minimal-repro.json": "21a6fe3aaa4bcba1642ffc3a211737a5f519a0fdc3b3fadafb30f4ff3c805475",
+    "/tmp/opencode/p4-b4-baseline-short-window.json": "be63e753bb184d0de75218d2f831695b4e12090dcff88463d8dc448045af22a7",
+    "/tmp/opencode/p4-b4-pytest.xml": "383d8c5d8f77b9901a62978703d5ec6493017bf111b74b563027df20cb29cb49"
+  }
+}

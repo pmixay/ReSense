@@ -1,0 +1,11 @@
+{
+ "run": "/home/user/rs-data/synth_runs/v100_synthetic_platform.jsonl",
+ "frames_with_path": 366,
+ "steps_inside": 4346,
+ "steps_beyond": 1578,
+ "inside_over_0.5m": 0.569,
+ "inside_over_1.05m": 0.419,
+ "beyond_over_0.5m": 0.34,
+ "beyond_over_1.05m": 0.318,
+ "inside_error_p90": 2.62
+}

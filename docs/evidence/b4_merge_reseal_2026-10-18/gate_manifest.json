@@ -1,0 +1,93 @@
+{
+  "archive": "gate.tar.gz",
+  "sha256": "f462890f3ea608b3d78c01861007a1f7d6bbfe821c0809b5bfee1c55516f9247",
+  "bytes": 2759394,
+  "members": [
+    {
+      "path": "cloud_with_fake_obj.jsonl",
+      "bytes": 2835350,
+      "sha256": "053d9aaf9faec441979a4e0261ab145a8060731ed82fe962bbaee81ee79a14cd"
+    },
+    {
+      "path": "config.yaml",
+      "bytes": 9396,
+      "sha256": "d7750028009e9db06ded33546349f48bf183befd216321ca960e1b67067c62cf"
+    },
+    {
+      "path": "doubleT_obstacle.jsonl",
+      "bytes": 424243,
+      "sha256": "3f76580e6ff7b7077a5d25deb65246eac33f98dff65773b3f651aabcbde99d11"
+    },
+    {
+      "path": "doubleT_platform.jsonl",
+      "bytes": 645872,
+      "sha256": "9252c7c1ba1db5116ab6cbe893649486d2662c4f5b5d509cc0d56020111e1e16"
+    },
+    {
+      "path": "new_data_0.jsonl",
+      "bytes": 2625464,
+      "sha256": "a3392073ab23aaec910466efa2783de99915ecf7ee2bdf82f872b7dd3bbc5712"
+    },
+    {
+      "path": "new_data_1.jsonl",
+      "bytes": 2884750,
+      "sha256": "f26bc4a8e7a42a42b318dee5a7c7dcd4819afec83045362f0b1ee81bdd631784"
+    },
+    {
+      "path": "new_data_2.jsonl",
+      "bytes": 2678003,
+      "sha256": "f893fa10d2b95ee6baf989a0b46b521ea15a7c4cddc293f8085498ddd48df51d"
+    },
+    {
+      "path": "new_data_3.jsonl",
+      "bytes": 2751775,
+      "sha256": "938793f4f911b15f4f4c539adaaacff933bcf5e2d7979b6269cceb0b1307f578"
+    },
+    {
+      "path": "new_data_4.jsonl",
+      "bytes": 2721739,
+      "sha256": "b6e176e5db0eac47e561fad44351e9ea14731a4b8c220655c146de5f83ff6675"
+    },
+    {
+      "path": "new_data_5.jsonl",
+      "bytes": 2543095,
+      "sha256": "80a47badcbc1997bf76a05fc4b1a257a87466fe5b96a4627c17fe1668b6d1ac5"
+    },
+    {
+      "path": "new_data_6.jsonl",
+      "bytes": 2565151,
+      "sha256": "6709e0fd32b11902ee6e1321a1b9878a393961bb2b99fa81ecb78cef932a9ba2"
+    },
+    {
+      "path": "new_data_7.jsonl",
+      "bytes": 2474184,
+      "sha256": "1a741886776dc48ee7a09537e3098b31cff63773e75aba9965e189ac4a7c6f21"
+    },
+    {
+      "path": "roundT_doubleT.jsonl",
+      "bytes": 489775,
+      "sha256": "058b11d7f8f651cb47400aec79b932d407d32bb2c256a075bed23fba9bb4aca1"
+    },
+    {
+      "path": "roundT_pressureGate_roundT.jsonl",
+      "bytes": 497506,
+      "sha256": "0227324a7fcf3ea383188b31a8666415f15eef5b193656fb0aeae8a8a0864f75"
+    },
+    {
+      "path": "roundT_squareT_pressureGate_squareT.jsonl",
+      "bytes": 990550,
+      "sha256": "37c12281fa88fda2d126c6cc0fdc5934e142baad4f7e30f5d95b3da6b9692424"
+    },
+    {
+      "path": "setF_straight.json",
+      "bytes": 1817191,
+      "sha256": "2e307045f28e0ffc2e2291a155e64d89cd55a68ddfe8e82919e1a2498912ef91"
+    },
+    {
+      "path": "squareT_platform_squareT_switch.jsonl",
+      "bytes": 1756498,
+      "sha256": "cb9c8516c589e4cb83f0374517900b7fcba672e6a92d9433219a0925774b751a"
+    }
+  ],
+  "reopened_all_members_verified": true
+}

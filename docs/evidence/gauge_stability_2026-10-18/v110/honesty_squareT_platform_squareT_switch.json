@@ -1,0 +1,11 @@
+{
+ "run": "/home/user/rs-data/j1/prerelease_1.1.0/squareT_platform_squareT_switch.jsonl",
+ "frames_with_path": 876,
+ "steps_inside": 16792,
+ "steps_beyond": 4508,
+ "inside_over_0.5m": 0.286,
+ "inside_over_1.05m": 0.117,
+ "beyond_over_0.5m": 0.374,
+ "beyond_over_1.05m": 0.229,
+ "inside_error_p90": 1.12
+}
