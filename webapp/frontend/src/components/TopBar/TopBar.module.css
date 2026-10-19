@@ -1,6 +1,7 @@
 .top {
   height: var(--topbar-h);
-  background: var(--red);
+  background: var(--control-sheen), var(--red);
+  box-shadow: inset 0 1px 0 #ffffff40, inset 0 -1px 0 #68081c33;
   color: var(--white);
   display: flex;
   align-items: center;

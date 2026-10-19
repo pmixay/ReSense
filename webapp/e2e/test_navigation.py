@@ -29,7 +29,7 @@ def test_site_navigation_stays_pinned(app, width, height):
         expect(page.locator("main")).to_have_js_property("scrollTop", 0)
 
 
-@pytest.mark.parametrize('width,height', [(1440, 900), (1920, 1080)])
+@pytest.mark.parametrize('width,height', [(1280, 720), (1366, 768), (1440, 900), (1920, 1080)])
 def test_train_doors_cover_navigation_before_revealing_destination(app, width, height):
     page = app.page
     page.set_viewport_size({'width': width, 'height': height})
@@ -49,6 +49,9 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
     leaves = page.locator('[data-door-leaf]').evaluate_all('els => els.map(el => el.getBoundingClientRect().toJSON())')
     assert leaves[0]['left'] <= 0 and leaves[0]['right'] >= width / 2
     assert leaves[1]['left'] <= width / 2 and leaves[1]['right'] >= width
+    assert all(leaf['top'] == 0 and leaf['bottom'] == height for leaf in leaves)
+    # The user's screen is the frame: no stationary header, jambs or sill may remain.
+    assert doors.locator(':scope > :not([data-door-leaf])').count() == 0
     glass = page.locator('[data-door-glass]').first
     assert '38px' in glass.evaluate('el => getComputedStyle(el).backdropFilter')
     page.clock.run_for(100)

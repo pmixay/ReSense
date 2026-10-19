@@ -1,6 +1,6 @@
 .band {
   height: var(--rail-h);
-  background: var(--white);
+  background: var(--surface-sheen);
   border-bottom: 1px solid var(--hair);
   position: relative;
   z-index: 10;
@@ -28,6 +28,7 @@
   height: 10px;
   border-radius: 5px;
   background: var(--red);
+  box-shadow: inset 0 1px 0 #ffffff4d, inset 0 -1px 1px #710f2733;
 }
 .line::before,
 .line::after,

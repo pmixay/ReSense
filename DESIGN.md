@@ -223,15 +223,51 @@ Back/Forward uses the same route blocker. The old page stays mounted while closi
 the destination mounts behind the closed doors. Native focus/input is inert during
 the overlay, then main receives focus without scrolling.
 
-The overlay is dimensional CSS geometry: paired sliding leaves, metal jambs, enamel
-bevels, rubber center seals, red status strips, recessed glazing and a brushed sill.
-Each pane combines 38px backdrop diffusion with a 92–94% opaque warm neutral frost,
+The overlay is dimensional CSS geometry: only two full-viewport sliding leaves,
+graphite enamel bevels, rubber center seals, red status strips, recessed grips,
+laminated glazing and brushed-metal kick plates. Every visible detail moves with
+its leaf; the screen itself is the frame. No stationary header, side jamb or sill
+is mounted. Each pane combines 38px backdrop diffusion with a 95–96% opaque neutral frost,
 so page content stays unrecognizable even when backdrop filtering is unavailable.
 The frost is a user-pinned departure from the clear photographed door windows.
 Only the two panes filter during a transition; the overlay is `display:none` at rest
 and adds no renderer, image download or animation dependency. Reduced motion uses a
 75ms cover / 100ms reveal fade with no moving leaves. Initial page loads do not run
 the sequence. Shared Raleway, navigation styling and all page controls are retained.
+
+### Glossy material refinement
+
+The current finish uses physical clear-coated warm off-white laminate, directional
+brushed aluminium, polished champagne-bronze rails, glossy graphite door enamel
+and lower-roughness black safety glass. Fine machining is a shared deterministic
+128×128 roughness texture. Smoother rail cross-sections and formed panel bevels
+catch the lighting without changing the screen, door or foreground-rail anchors.
+Door glazing uses real environment reflections rather than painted reflection bars.
+The taupe upholstery stays matte and woven, preserving material contrast.
+
+`trainMaterials.ts` creates a cached, bounded 256×128 HDR saloon reflection probe
+with luminous ceiling strips, dark window breaks and warm coves. The physical
+screen/wall pass alone uses ACES highlight roll-off and sRGB output; it restores the
+renderer settings afterward. The live-display shader still writes authored display
+values directly, and data/emission targets keep their existing color pipeline.
+Black-image emission, local RGB/split-color light, exact neutral return and GPU
+resource lifetime are checked in `docs/images/glossy-materials/material-verification.json`.
+
+`trainModel.ts` replaces the outside cameras' block carriage with rounded formed
+shells, wraparound cab glazing, individual side panes, paired sliding leaves,
+recessed LED running lights, wipers, roof equipment, bogie frames and steel wheels.
+Repeated parts share geometry; model-owned materials, machining texture and
+reflection target are disposed. Its PBR light is compressed and encoded locally
+before joining the display-valued LiDAR target. Dedicated lights affect only the
+outside-camera layer. Playback, camera framing and the clearance model retain
+their existing coordinates.
+
+The inherited UI gets a restrained material finish through shared `control-sheen`,
+`surface-sheen` and `control-edge` tokens: shallow highlights on red actions,
+selected camera/speed controls, chrome and pale surfaces. Existing geometry,
+Russian copy, semantic decisions and keyboard rings remain authoritative.
+Current desktop captures and material provenance are in
+[`docs/images/glossy-materials/`](docs/images/glossy-materials/).
 
 ## Shapes
 

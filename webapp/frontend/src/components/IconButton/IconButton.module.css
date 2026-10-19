@@ -14,12 +14,13 @@
   background: var(--well-2);
   color: var(--ink);
   box-shadow: none;
+  background-image: none;
 }
 .well {
   background: var(--well);
 }
 .well:hover:not(:disabled) {
-  background: var(--well-2);
+  background-color: var(--well-2);
 }
 .white {
   background: var(--white);
@@ -37,7 +38,7 @@
   color: var(--white);
 }
 .dark:hover:not(:disabled) {
-  background: #2A2930;
+  background-color: #2A2930;
 }
 .fault {
   background: var(--fault);
@@ -47,7 +48,7 @@
   background: var(--red);
   color: var(--white);
 }
-.red:hover:not(:disabled) { background: var(--red-deep); }
+.red:hover:not(:disabled) { background-color: var(--red-deep); }
 .glass {
   background: var(--glass);
   color: var(--white);
@@ -57,3 +58,8 @@
   background: var(--ink);
   color: var(--white);
 }
+.well, .white, .dark, .red, .active {
+  background-image: var(--control-sheen);
+  box-shadow: var(--control-edge), 0 3px 7px -4px rgba(5, 15, 27, .5);
+}
+.ib:focus-visible { box-shadow: var(--focus); }

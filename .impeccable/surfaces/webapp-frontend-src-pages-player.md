@@ -45,3 +45,11 @@ individual moquette seats. Keep display, original handrail path and door anchors
 unchanged. Add a cantilevered bench beneath the housing, never over the active view.
 Keep the independent pressure layers and bounded renderer. The upper dock feather
 is light enough to read the bench backs while preserving white control text.
+
+GLOSSY MATERIALS (current refinement): Keep the current desktop scene composition
+and anchors. Use clear-coated warm neutral panels, brushed aluminium, polished
+bronze, glossy graphite enamel and reflective safety glass, contrasted with matte
+woven seats. Outside cameras use the detailed rounded metro carriage. Navigation
+shows only two full-height sliding leaves: the screen is the frame, with no added
+header, jambs or sill. Keep frosted panes, route timing, reduced-motion fade and
+on-demand rendering. Material tone mapping must not alter LiDAR/data colors.

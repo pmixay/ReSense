@@ -60,6 +60,12 @@ must remain reliable by mouse, touch, keyboard and browser history. Player frame
 camera and run URL changes remain immediate. Reduced motion uses a brief non-spatial
 fade. The decorative doors contain no controls and release keyboard focus to the page.
 
+The current material direction is glossy and modern: coated off-white panels,
+polished bronze, directional brushed metal and reflective black safety glazing.
+The outside-camera train is a rounded, detailed metro carriage. Navigation shows
+only two full-height sliding leaves; the user's screen is the doorway frame, with
+no added jambs, overhead header or threshold around the transition.
+
 The interface is desktop-only with a minimum workspace width of 1280px. Build and
 verify this single layout at 1280×720, 1366×768, 1440×900 and 1920×1080. Keep this
 desktop-only scope for future changes, screenshots and documentation. Synthetic

@@ -4,6 +4,7 @@
 import * as THREE from 'three';
 import { roundedRect } from './screenGeometry';
 import type { ScreenLighting } from './screenLighting';
+import { brushedMetalTexture } from './trainMaterials';
 
 function materialGrain(): THREE.DataTexture {
   const side = 128;
@@ -52,20 +53,21 @@ export class TrainInterior {
   readonly railings = new THREE.Group();
   private readonly grain = materialGrain();
   private readonly weave = seatWeave();
-  private readonly laminate = new THREE.MeshStandardMaterial({ color: 0xc9cdca, roughness: 0.64, metalness: 0.025, bumpMap: this.grain, bumpScale: 0.00012 });
-  private readonly ceiling = new THREE.MeshStandardMaterial({ color: 0xe0e0d7, roughness: 0.48, metalness: 0.04 });
-  private readonly steel = new THREE.MeshStandardMaterial({ color: 0xb3b6b3, roughness: 0.28, metalness: 0.83, roughnessMap: this.grain });
-  private readonly copper = new THREE.MeshStandardMaterial({ color: 0xbe9176, roughness: 0.23, metalness: 0.86 });
+  private readonly brushed = brushedMetalTexture();
+  private readonly laminate = new THREE.MeshPhysicalMaterial({ color: 0xd7d8cf, roughness: .36, metalness: .025, clearcoat: .65, clearcoatRoughness: .24, bumpMap: this.grain, bumpScale: .00010 });
+  private readonly ceiling = new THREE.MeshPhysicalMaterial({ color: 0xe1e0d6, roughness: .32, metalness: .04, clearcoat: .5, clearcoatRoughness: .2 });
+  private readonly steel = new THREE.MeshPhysicalMaterial({ color: 0xc0c7cb, roughness: .26, metalness: .94, roughnessMap: this.brushed, bumpMap: this.brushed, bumpScale: .0003, anisotropy: .55 });
+  private readonly copper = new THREE.MeshPhysicalMaterial({ color: 0xb68155, roughness: .22, metalness: .95, clearcoat: .25, clearcoatRoughness: .16, anisotropy: .35, anisotropyRotation: Math.PI / 2 });
   private readonly upholstery = new THREE.MeshStandardMaterial({ color: 0xd7d3cc, map: this.weave, bumpMap: this.weave, bumpScale: .008, roughness: .94 });
   private readonly piping = new THREE.MeshStandardMaterial({ color: 0x746e65, roughness: .97 });
-  private readonly seatShell = new THREE.MeshStandardMaterial({ color: 0xbebeb5, roughness: .42, metalness: .18 });
+  private readonly seatShell = new THREE.MeshPhysicalMaterial({ color: 0xc8c9c2, roughness: .3, metalness: .12, clearcoat: .6, clearcoatRoughness: .22 });
   private readonly floor = new THREE.MeshStandardMaterial({ color: 0x777d78, roughness: .89, bumpMap: this.grain, bumpScale: .002 });
   private readonly doorLight = new THREE.MeshBasicMaterial({ color: 0xe82a45 });
   private readonly shadow = new THREE.MeshStandardMaterial({ color: 0x151a1c, roughness: 0.95 });
-  private readonly rubber = new THREE.MeshStandardMaterial({ color: 0x282d2e, roughness: 0.92 });
-  private readonly window = new THREE.MeshPhysicalMaterial({ color: 0x26332f, roughness: 0.32, metalness: 0.18, clearcoat: .75, clearcoatRoughness: .2 });
+  private readonly rubber = new THREE.MeshStandardMaterial({ color: 0x141b20, roughness: .82 });
+  private readonly enamel = new THREE.MeshPhysicalMaterial({ color: 0x101922, roughness: .2, metalness: .35, clearcoat: 1, clearcoatRoughness: .12 });
+  private readonly window = new THREE.MeshPhysicalMaterial({ color: 0x12232c, roughness: .12, metalness: .28, clearcoat: 1, clearcoatRoughness: .08, ior: 1.52 });
   private readonly socketLight = new THREE.MeshBasicMaterial({ color: 0xc3b5ff });
-  private readonly reflection = new THREE.MeshBasicMaterial({ color: 0xaabec8, transparent: true, opacity: .13, depthWrite: false });
   private readonly doorWash = new THREE.ShaderMaterial({
     vertexShader: 'varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
     fragmentShader: 'varying vec2 vUv; void main(){float a=exp(-pow((vUv.x-.5)*5.0,2.0))*.20;gl_FragColor=vec4(1.0,.025,.09,a);}',
@@ -77,7 +79,7 @@ export class TrainInterior {
   constructor(lighting?: ScreenLighting) {
     this.group.name = 'train-wall-installation';
     this.railings.name = 'train-railings-layer';
-    for (const m of [this.laminate, this.ceiling, this.steel, this.rubber, this.window, this.joint, this.upholstery, this.seatShell, this.floor]) lighting?.apply(m, .6);
+    for (const m of [this.laminate, this.ceiling, this.steel, this.rubber, this.enamel, this.window, this.joint, this.upholstery, this.seatShell, this.floor]) lighting?.apply(m, .6);
     lighting?.apply(this.copper, 1.1);
   }
 
@@ -98,12 +100,12 @@ export class TrainInterior {
 
   private panel(w: number, h: number, radius: number, depth: number, material: THREE.Material, x: number, y: number, z: number, name: string): THREE.Mesh {
     return this.mesh(new THREE.ExtrudeGeometry(roundedRect(w, h, Math.min(radius, w / 2 - .001, h / 2 - .001)), {
-      depth, bevelEnabled: true, bevelSize: .018, bevelThickness: .012, bevelSegments: 2, curveSegments: 8,
+      depth, bevelEnabled: true, bevelSize: Math.min(.018, w * .12, h * .12), bevelThickness: Math.min(.012, depth * .4), bevelSegments: 3, curveSegments: 12,
     }), material, x, y, z, name);
   }
 
   private tube(points: THREE.Vector3[], radius: number, material: THREE.Material, name: string): THREE.Mesh {
-    return this.mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 32, radius, 12, false), material, 0, 0, 0, name);
+    return this.mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 48, radius, 20, false), material, 0, 0, 0, name);
   }
 
   setSize(width: number, height: number, opening: WallOpening | null): void {
@@ -131,20 +133,24 @@ export class TrainInterior {
     // Real door/window reveal and stainless grab rail remain visible at the crop's right edge.
     const doorX = width / 2 - .22;
     this.panel(.70, h, .10, .16, this.steel, doorX, 0, -.40, 'metro-door-aluminium-stile');
+    this.panel(.58, h - .06, .12, .035, this.enamel, doorX + .04, 0, -.23, 'gloss-enamel-door-leaf');
     this.panel(.50, h - .16, .14, .06, this.rubber, doorX + .08, 0, -.21, 'door-window-rubber-seal');
     this.panel(.40, h - .24, .12, .025, this.window, doorX + .09, 0, -.12, 'dark-door-window');
     this.box(.016, h, .012, this.ceiling, doorX - .20, 0, -.09, 'door-stile-machined-highlight');
     this.box(.045, h, .025, this.rubber, doorX - .30, 0, -.16, 'door-status-diffuser-channel');
     this.box(.025, h - .06, .018, this.doorLight, doorX - .30, 0, -.12, 'moskva-2020-door-edge-light');
     this.mesh(new THREE.PlaneGeometry(.25, h - .06), this.doorWash, doorX - .30, 0, -.083, 'red-door-diffuser-spill');
-    for (const y of [-height * .31, height * .26]) {
-      const streak = this.box(.32, .055, .008, this.reflection, doorX + .09, y, -.07, 'door-glass-ceiling-reflection');
-      streak.rotation.z = -.16;
-    }
     // Black enamel faces, a recessed glazing lip and a brushed sill give the fixed
     // doorway the same layered construction as the supplied 81-775 photographs.
-    this.box(.026, h - .20, .018, this.shadow, doorX - .155, 0, -.065, 'black-enamel-door-glazing-lip');
+    this.box(.026, h - .20, .018, this.enamel, doorX - .155, 0, -.065, 'black-enamel-door-glazing-lip');
     this.box(.34, .035, .025, this.steel, doorX + .09, -height / 2 + .20, -.07, 'door-bottom-glazing-bead');
+    // Captive glass retainers sit flush; the recessed grip belongs to the moving leaf.
+    for (const y of [-height * .36, height * .36]) {
+      const screw = this.mesh(new THREE.CylinderGeometry(.014, .014, .009, 16), this.steel, doorX - .20, y, -.07, 'door-captive-glazing-fastener');
+      screw.rotation.x = Math.PI / 2;
+    }
+    this.panel(.07, .34, .028, .012, this.rubber, doorX - .205, -height * .20, -.065, 'door-recessed-grip');
+    this.panel(.018, .25, .007, .014, this.steel, doorX - .19, -height * .20, -.042, 'door-grip-machined-edge');
     // Recessed door pillar, visible captive screws and emergency-release rosette.
     const pillarX = ow / 2 + .28;
     const pillarW = Math.max(.14, doorX - .40 - pillarX);
@@ -245,8 +251,9 @@ export class TrainInterior {
 
   dispose(): void {
     for (const g of this.geometries) g.dispose();
-    for (const m of [this.laminate, this.ceiling, this.steel, this.copper, this.doorLight, this.shadow, this.rubber, this.window, this.socketLight, this.reflection, this.doorWash, this.joint, this.upholstery, this.piping, this.seatShell, this.floor]) m.dispose();
+    for (const m of [this.laminate, this.ceiling, this.steel, this.copper, this.doorLight, this.shadow, this.rubber, this.enamel, this.window, this.socketLight, this.doorWash, this.joint, this.upholstery, this.piping, this.seatShell, this.floor]) m.dispose();
     this.grain.dispose();
+    this.brushed.dispose();
     this.weave.dispose();
     this.group.clear();
     this.railings.clear();

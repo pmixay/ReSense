@@ -9,6 +9,7 @@
 // reads the screen positions of labels from `overlay` after each render (onOverlay).
 import * as THREE from 'three';
 import { ScreenDisplay, type DisplayRegion, type DisplayViewport } from './screenDisplay';
+import { TrainModel } from './trainModel';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { DecodedCloud } from '../api/cloud';
 import type { DetectionDict, FrameResultDict } from '../api/types';
@@ -344,7 +345,7 @@ export class PlayerScene {
     lines.renderOrder = 2;
     this.trainFixed.add(mesh, lines);
     if (!opts.preview) {
-      this.buildTrain(fogD);
+      this.buildTrain();
       this.buildGrid(trackMat);
     }
     this.scene.add(this.trainFixed);
@@ -808,39 +809,10 @@ export class PlayerScene {
     });
   }
 
-  /** A simple train nose for the outside cameras: body, windscreen, red stripe, headlights. */
-  private buildTrain(fogD: { value: number }): void {
-    const shaded = (w: number, d: number, h: number, color: number): THREE.Mesh => {
-      const g = new THREE.BoxGeometry(w, d, h).toNonIndexed();
-      const nrm = g.getAttribute('normal');
-      const col = new Float32Array(nrm.count * 3);
-      for (let i = 0; i < nrm.count; i += 1) {
-        const s = 0.72 + 0.26 * nrm.getZ(i) + 0.1 * nrm.getX(i) - 0.04 * Math.abs(nrm.getY(i));
-        col.set([s, s, s], i * 3);
-      }
-      g.setAttribute('color', new THREE.BufferAttribute(col, 3));
-      const m = flatMaterial(color, 1, { uFogD: fogD }, { vertexColors: true, depthWrite: true });
-      this.disposables.push(g, m);
-      const mesh = new THREE.Mesh(g, m);
-      mesh.layers.set(LAYER_MAIN);
-      return mesh;
-    };
-    const part = (w: number, d: number, h: number, color: number, x: number, y: number, z: number): THREE.Mesh => {
-      const m = shaded(w, d, h, color);
-      m.position.set(x, y, z);
-      this.trainBody.add(m);
-      return m;
-    };
-    const L = 16;
-    const xc = -0.8 - L / 2;
-    part(L, 2.7, 3.1, 0xf2efea, xc, 0, 1.55); // body
-    part(L - 1.2, 2.76, 0.95, 0x1c1f28, xc - 0.3, 0, 1.95); // side window band
-    part(L - 0.2, 2.74, 0.2, 0xe4000d, xc, 0, 1.12); // brand stripe
-    part(L - 4, 1.7, 0.3, 0xcfc8be, xc - 1, 0, 3.25); // roof equipment
-    for (const y of [1.22, -1.22]) part(L - 0.6, 0.16, 0.05, 0xe4000d, xc + 0.1, y, 3.12); // brand lines along the roof
-    part(0.08, 2.3, 1.2, 0x1c1f28, -0.78, 0, 2.2); // windscreen
-    part(0.08, 2.72, 0.2, 0xe4000d, -0.78, 0, 1.12); // front band
-    for (const y of [0.9, -0.9]) part(0.08, 0.36, 0.16, 0xfff4d6, -0.76, y, 0.72); // headlights
+  private buildTrain(): void {
+    const model = new TrainModel(this.renderer, LAYER_MAIN);
+    this.trainBody.add(model.group);
+    this.disposables.push(model);
     this.trainBody.visible = false;
     this.trainFixed.add(this.trainBody);
   }

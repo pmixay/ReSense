@@ -73,24 +73,23 @@ export function useTrainDoors() {
 export function TrainDoors({ phase }: { phase: Phase }) {
   return (
     <div className={styles.portal} data-train-doors data-phase={phase} aria-hidden="true">
-      <div className={styles.header}><span /><i /><span /></div>
-      <div className={styles.frame}>
-        {(['left', 'right'] as const).map(side => (
-          <div key={side} className={`${styles.leaf} ${styles[side]}`} data-door-leaf={side}>
-            <div className={styles.skin}>
-              <div className={styles.window} data-door-glass>
-                <div className={styles.glare} />
-                <div className={styles.safetyMark}><span /><span /></div>
-              </div>
-              <div className={styles.lowerPanel}><span /><i /></div>
-              <span className={styles.edgeLight} />
-              <span className={styles.seal} />
+      {(['left', 'right'] as const).map(side => (
+        <div key={side} className={`${styles.leaf} ${styles[side]}`} data-door-leaf={side}>
+          <div className={styles.skin}>
+            <div className={styles.window} data-door-glass>
+              <div className={styles.glare} />
+              <div className={styles.safetyMark}><span /><span /></div>
             </div>
-            <div className={styles.thickness} />
+            <div className={styles.lowerPanel}>
+              <span className={styles.recess}><i /></span>
+              <span className={styles.kickPlate}><i /><i /></span>
+            </div>
+            <span className={styles.edgeLight} />
+            <span className={styles.seal} />
           </div>
-        ))}
-      </div>
-      <div className={styles.sill} />
+          <span className={styles.thickness} />
+        </div>
+      ))}
     </div>
   );
 }

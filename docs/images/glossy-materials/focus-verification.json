@@ -1,0 +1,30 @@
+{
+  "base": "http://127.0.0.1:4176",
+  "frontendSourceSha256": "f539c3ba57f4f7e81c0f28da668c4116228a5d5ccd9147dc9e4a8b23fa467900",
+  "viewport": [
+    1440,
+    900
+  ],
+  "checks": [
+    {
+      "name": "\u0422\u0435\u043b\u0435\u043c\u0435\u0442\u0440\u0438\u044f",
+      "focused": true,
+      "shadow": "rgb(185, 197, 211) 0px 0px 0px 1.5px inset, rgb(255, 255, 255) 0px 0px 0px 3px, rgb(17, 24, 39) 0px 0px 0px 5.5px"
+    },
+    {
+      "name": "\u041a\u0430\u0431\u0438\u043d\u0430",
+      "focused": true,
+      "shadow": "rgb(255, 255, 255) 0px 0px 0px 3px, rgb(17, 24, 39) 0px 0px 0px 5.5px"
+    },
+    {
+      "name": "1\u00d7",
+      "focused": true,
+      "shadow": "rgb(255, 255, 255) 0px 0px 0px 3px, rgb(17, 24, 39) 0px 0px 0px 5.5px"
+    },
+    {
+      "name": "\u0412\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0441\u0442\u0438 (\u043f\u0440\u043e\u0431\u0435\u043b)",
+      "focused": true,
+      "shadow": "rgb(255, 255, 255) 0px 0px 0px 3px, rgb(17, 24, 39) 0px 0px 0px 5.5px"
+    }
+  ]
+}

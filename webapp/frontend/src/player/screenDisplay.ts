@@ -6,6 +6,7 @@ import { CONTACT_SHADOW_FRAGMENT, DISPLAY_FRAGMENT, DISPLAY_VERTEX, FILTER_FRAGM
 import { roundedRect } from './screenGeometry';
 import { TrainInterior } from './trainInterior';
 import { ScreenLighting } from './screenLighting';
+import { brushedMetalTexture, createTrainEnvironment } from './trainMaterials';
 
 let areaLightTablesReady = false;
 
@@ -39,9 +40,10 @@ export class ScreenDisplay {
     uniforms: { uSize: { value: new THREE.Vector2() }, uHalfSize: { value: new THREE.Vector2() }, uRadius: { value: .3 } },
   });
   private readonly mountShadow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.contact);
-  private readonly metal = new THREE.MeshStandardMaterial({ color: 0xadb6bd, metalness: 0.7, roughness: 0.3 });
-  private readonly glass = new THREE.MeshStandardMaterial({ color: 0x080b10, metalness: 0.12, roughness: 0.18 });
-  private readonly cover = new THREE.MeshPhysicalMaterial({ color: 0xdfe9ed, transparent: true, opacity: 0.025, roughness: 0.14, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.1, depthWrite: false });
+  private readonly brushed = brushedMetalTexture();
+  private readonly metal = new THREE.MeshPhysicalMaterial({ color: 0xc5cdd2, metalness: .94, roughness: .24, roughnessMap: this.brushed, anisotropy: .45, clearcoat: .2 });
+  private readonly glass = new THREE.MeshPhysicalMaterial({ color: 0x05090f, metalness: .18, roughness: .14, clearcoat: 1, clearcoatRoughness: .09 });
+  private readonly cover = new THREE.MeshPhysicalMaterial({ color: 0xdfe9ed, transparent: true, opacity: .025, roughness: .1, metalness: 0, clearcoat: 1, clearcoatRoughness: .07, depthWrite: false });
   private readonly rear = new THREE.MeshStandardMaterial({ color: 0x323940, roughness: 0.6 });
   private readonly pixels = new THREE.ShaderMaterial({
     vertexShader: DISPLAY_VERTEX, fragmentShader: DISPLAY_FRAGMENT, toneMapped: false,
@@ -89,7 +91,7 @@ export class ScreenDisplay {
     const fill = new THREE.DirectionalLight(0xffdfba, .65);
     fill.name = 'warm-side-cove-fill';
     fill.position.set(7, 4, 6);
-    const ceiling = new THREE.HemisphereLight(0xeaf2ff, 0x444d56, 1.25);
+    const ceiling = new THREE.HemisphereLight(0xeaf2ff, 0x444d56, 1.05);
     ceiling.name = 'saloon-soft-ambient';
     this.scene.add(this.background, this.interior.railings, ceiling, key, fill, this.roofLight);
   }
@@ -258,37 +260,26 @@ export class ScreenDisplay {
     renderer.setClearColor(0xb8c1bf, 1);
     renderer.clear();
     renderer.shadowMap.enabled = false;
-    renderer.render(this.scene, this.camera);
+    // Encode and roll off PBR highlights only in the physical pass. The authored display
+    // shader writes its existing display values directly; data/emission targets stay linear.
+    const colorSpace = renderer.outputColorSpace;
+    const toneMapping = renderer.toneMapping;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    try {
+      renderer.render(this.scene, this.camera);
+    } finally {
+      renderer.outputColorSpace = colorSpace;
+      renderer.toneMapping = toneMapping;
+    }
   }
 
   /** Small, cached saloon reflection probe: broad white roof panels and warm side coves.
    * Metals need reflected luminaires as well as direct light to read as polished metal. */
   private createEnvironment(renderer: THREE.WebGLRenderer): void {
-    const width = 256;
-    const height = 128;
-    const data = new Uint8Array(width * height * 4);
-    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
-      const v = y / height;
-      const u = x / width;
-      const roof = Math.exp(-Math.pow((v - .23) / .095, 4));
-      const strip = Math.exp(-Math.pow((u - .18) / .025, 2)) + Math.exp(-Math.pow((u - .68) / .025, 2));
-      const cove = Math.exp(-Math.pow((v - .47) / .035, 2)) * .55;
-      const base = .12 + .20 * (1 - v);
-      const i = (y * width + x) * 4;
-      data[i] = Math.min(255, (base + roof * .72 + strip * .52 + cove * .5) * 255);
-      data[i + 1] = Math.min(255, (base + roof * .75 + strip * .50 + cove * .32) * 255);
-      data[i + 2] = Math.min(255, (base + roof * .78 + strip * .48 + cove * .19) * 255);
-      data[i + 3] = 255;
-    }
-    const source = new THREE.DataTexture(data, width, height);
-    source.mapping = THREE.EquirectangularReflectionMapping;
-    source.needsUpdate = true;
-    const generator = new THREE.PMREMGenerator(renderer);
-    this.environment = generator.fromEquirectangular(source);
+    this.environment = createTrainEnvironment(renderer);
     this.scene.environment = this.environment.texture;
-    this.scene.environmentIntensity = .85;
-    source.dispose();
-    generator.dispose();
+    this.scene.environmentIntensity = .65;
   }
 
   dispose(): void {
@@ -300,6 +291,7 @@ export class ScreenDisplay {
     this.target.dispose();
     this.filterTarget.dispose();
     this.emission.dispose();
+    this.brushed.dispose();
     this.environment?.dispose();
     this.interior.dispose();
     this.scene.clear();
