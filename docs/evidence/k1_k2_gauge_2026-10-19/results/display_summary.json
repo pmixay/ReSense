@@ -1,0 +1,278 @@
+{
+ "cloud_with_fake_obj": {
+  "base": {
+   "drawn_p50_p90": [
+    86.0,
+    133.73000000000002
+   ],
+   "support_p50": 130.14999999999998,
+   "vis3d_p90": {
+    "40": 0.018174186788902102,
+    "80": 0.029750554068344145,
+    "120": 0.0402900309782391
+   },
+   "pairs": {
+    "40": 1394,
+    "80": 842,
+    "120": 255
+   },
+   "within_N1_limits": {
+    "40": true,
+    "80": true,
+    "120": true
+   },
+   "decisions": {
+    "GO": 736,
+    "STOP": 452,
+    "FAULT": 2,
+    "CAUTION": 320
+   },
+   "detector_results_unchanged": true
+  },
+  "cand": {
+   "drawn_p50_p90": [
+    85.0,
+    131.10000000000014
+   ],
+   "support_p50": 133.2,
+   "vis3d_p90": {
+    "40": 0.016632914751460722,
+    "80": 0.031173658579514846,
+    "120": 0.040062896312916416
+   },
+   "pairs": {
+    "40": 1370,
+    "80": 842,
+    "120": 216
+   },
+   "within_N1_limits": {
+    "40": true,
+    "80": true,
+    "120": true
+   },
+   "decisions": {
+    "GO": 735,
+    "STOP": 456,
+    "FAULT": 2,
+    "CAUTION": 317
+   },
+   "detector_results_unchanged": true
+  }
+ },
+ "doubleT_platform": {
+  "base": {
+   "drawn_p50_p90": [
+    45.0,
+    120.0
+   ],
+   "support_p50": 120.0,
+   "vis3d_p90": {
+    "40": 0.01955189742207642,
+    "80": 0.013636227215761097,
+    "120": 0.020134939718971342
+   },
+   "pairs": {
+    "40": 256,
+    "80": 115,
+    "120": 64
+   },
+   "within_N1_limits": {
+    "40": true,
+    "80": true,
+    "120": true
+   },
+   "decisions": {
+    "GO": 144,
+    "CAUTION": 201
+   },
+   "detector_results_unchanged": true
+  },
+  "cand": {
+   "drawn_p50_p90": [
+    53.0,
+    85.0
+   ],
+   "support_p50": 115.0,
+   "vis3d_p90": {
+    "40": 0.016999664054645446,
+    "80": 0.019165570140720584,
+    "120": null
+   },
+   "pairs": {
+    "40": 294,
+    "80": 47,
+    "120": 0
+   },
+   "within_N1_limits": {
+    "40": true,
+    "80": true,
+    "120": false
+   },
+   "decisions": {
+    "GO": 296,
+    "CAUTION": 49
+   },
+   "detector_results_unchanged": true
+  }
+ },
+ "roundT_doubleT": {
+  "base": {
+   "drawn_p50_p90": [
+    52.0,
+    101.9
+   ],
+   "support_p50": 141.9,
+   "vis3d_p90": {
+    "40": 0.03253131320519,
+    "80": 0.030551169136923288,
+    "120": 0.028455158237050707
+   },
+   "pairs": {
+    "40": 161,
+    "80": 44,
+    "120": 11
+   },
+   "within_N1_limits": {
+    "40": true,
+    "80": true,
+    "120": true
+   },
+   "decisions": {
+    "GO": 83,
+    "CAUTION": 169
+   },
+   "detector_results_unchanged": true
+  },
+  "cand": {
+   "drawn_p50_p90": [
+    51.0,
+    93.9
+   ],
+   "support_p50": 120.0,
+   "vis3d_p90": {
+    "40": 0.030520873563289627,
+    "80": 0.042738703470682135,
+    "120": null
+   },
+   "pairs": {
+    "40": 152,
+    "80": 46,
+    "120": 0
+   },
+   "within_N1_limits": {
+    "40": true,
+    "80": true,
+    "120": false
+   },
+   "decisions": {
+    "GO": 134,
+    "CAUTION": 112,
+    "STOP": 6
+   },
+   "detector_results_unchanged": true
+  }
+ },
+ "roundT_pressureGate_roundT": {
+  "base": {
+   "drawn_p50_p90": [
+    45.0,
+    98.0
+   ],
+   "support_p50": 102.0,
+   "vis3d_p90": {
+    "40": 0.032929016492507804,
+    "80": 0.030435455785012566,
+    "120": 0.03868470769636952
+   },
+   "pairs": {
+    "40": 154,
+    "80": 54,
+    "120": 7
+   },
+   "within_N1_limits": {
+    "40": true,
+    "80": true,
+    "120": true
+   },
+   "decisions": {
+    "GO": 150,
+    "CAUTION": 116,
+    "STOP": 2
+   },
+   "detector_results_unchanged": true
+  },
+  "cand": {
+   "drawn_p50_p90": [
+    43.0,
+    88.60000000000002
+   ],
+   "support_p50": 122.95,
+   "vis3d_p90": {
+    "40": 0.03685346106582733,
+    "80": 0.030496486547158662,
+    "120": null
+   },
+   "pairs": {
+    "40": 152,
+    "80": 34,
+    "120": 0
+   },
+   "within_N1_limits": {
+    "40": true,
+    "80": true,
+    "120": false
+   },
+   "decisions": {
+    "GO": 175,
+    "CAUTION": 93
+   },
+   "detector_results_unchanged": true
+  }
+ },
+ "falcon": {
+  "base": {
+   "drawn_p50_p90": [
+    102.0,
+    119.0
+   ],
+   "lateral_step": {
+    "40": {
+     "p90": 0.004,
+     "pairs": 4289
+    },
+    "80": {
+     "p90": 0.01,
+     "pairs": 4013
+    },
+    "120": {
+     "p90": 0.018,
+     "pairs": 225
+    }
+   },
+   "valid_frames": 4442,
+   "frames": 4443
+  },
+  "cand": {
+   "drawn_p50_p90": [
+    111.0,
+    123.0
+   ],
+   "lateral_step": {
+    "40": {
+     "p90": 0.002,
+     "pairs": 4311
+    },
+    "80": {
+     "p90": 0.003,
+     "pairs": 4107
+    },
+    "120": {
+     "p90": 0.024,
+     "pairs": 472
+    }
+   },
+   "valid_frames": 4442,
+   "frames": 4443
+  }
+ }
+}

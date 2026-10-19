@@ -41,7 +41,7 @@ def widened_profile(cfg: GaugeConfig, margin: float):
 
 def corridor_coordinates(xyz: np.ndarray, track: TrackModel):
     """(dy, h): lateral offset from the track axis and height above the rail head."""
-    if _native.enabled() and np.asarray(track.floor_coef).size == 3:
+    if _native.enabled() and np.asarray(track.floor_coef).size == 3 and not getattr(track, "bent", False):
         res = _native.corridor_coordinates(xyz, track.floor_range, np.asarray(track.floor_coef, dtype=np.float64),
                                            track.rail_offset, *track.center_coefs())
         if res is not None:

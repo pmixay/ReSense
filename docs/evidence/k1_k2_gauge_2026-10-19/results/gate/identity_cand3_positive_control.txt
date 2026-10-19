@@ -1,0 +1,17 @@
+json rows compared 425 of 471 | differing: 105 ['five_empty.advisory_frames', 'five_empty.alarm_events', 'five_empty.alarm_frames', 'five_empty.stop_episodes', 'gate.better', 'gate.info_changed', 'gate.passed', 'gate.same', 'gate.worse_gated', 'recordings.doubleT_obstacle.advisory_frames', 'recordings.doubleT_obstacle.labelled.distance_error_max_m', 'recordings.doubleT_obstacle.labelled.hits', 'recordings.doubleT_obstacle.labelled.per_label.object_on_rail.hits', 'recordings.doubleT_obstacle.monitored_range_median', 'recordings.doubleT_platform.advisory_frames', 'recordings.doubleT_platform.alarm_dist', 'recordings.doubleT_platform.alarm_frames', 'recordings.doubleT_platform.first_alarm_frame', 'recordings.doubleT_platform.monitored_range_median', 'recordings.roundT_doubleT.advisory_frames', 'recordings.roundT_doubleT.monitored_range_median', 'recordings.roundT_pressureGate_roundT.advisory_frames', 'recordings.roundT_pressureGate_roundT.monitored_range_median', 'recordings.roundT_squareT_pressureGate_squareT.advisory_frames', 'recordings.roundT_squareT_pressureGate_squareT.monitored_range_median', 'recordings.squareT_platform_squareT_switch.advisory_frames', 'recordings.squareT_platform_squareT_switch.alarm_dist', 'recordings.squareT_platform_squareT_switch.alarm_events', 'recordings.squareT_platform_squareT_switch.alarm_frames', 'recordings.squareT_platform_squareT_switch.first_alarm_frame'] | health-level counts differing (latency-dependent): ['recordings.doubleT_obstacle.health.ok', 'recordings.doubleT_obstacle.health.warn', 'recordings.doubleT_platform.health.ok', 'recordings.doubleT_platform.health.warn', 'recordings.roundT_doubleT.health.ok', 'recordings.roundT_doubleT.health.warn', 'ride.health.ok', 'ride.health.warn']
+  frames differing cloud_with_fake_obj.jsonl 1510
+  frames differing doubleT_obstacle.jsonl 200
+  frames differing doubleT_platform.jsonl 345
+  frames differing new_data_0.jsonl 1409
+  frames differing new_data_1.jsonl 1409
+  frames differing new_data_2.jsonl 1403
+  frames differing new_data_3.jsonl 1409
+  frames differing new_data_4.jsonl 1409
+  frames differing new_data_5.jsonl 1408
+  frames differing new_data_6.jsonl 1408
+  frames differing new_data_7.jsonl 1408
+  frames differing roundT_doubleT.jsonl 251
+  frames differing roundT_pressureGate_roundT.jsonl 268
+  frames differing roundT_squareT_pressureGate_squareT.jsonl 545
+  frames differing squareT_platform_squareT_switch.jsonl 877
+per-frame files: frames differing in total (timing excluded): 15259

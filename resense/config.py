@@ -121,6 +121,23 @@ class TrackConfig:
     floor_verify_tolerance: float = 0.5              # m, allowed deviation of the far side base from its near-range height
     floor_verify_min_points: int = 5                 # side points per bin for the bin to count
     floor_verify_max_range: float = 250.0            # m, how far the verification is attempted
+    # --- 19.10 (K2, off): joint axis fit of the rail midpoints and the tunnel boundaries (track.joint_axis_fit) ---
+    axis_joint_fit: bool = False                     # off = the axis as before (rail tangent with the prior curvature held, then the boundary curvature); on: tangent, curvature and the far curvature step from one least-squares fit of the near rail-pair midpoints and every boundary segment (each its own offset), grown outward from the rail range
+    axis_joint_knot: float = 60.0                    # m, X from which the curvature may change (C1 piecewise axis: centre_y + curv_step (X - knot)^2 / 2 beyond it); 0 = a single quadratic
+    axis_joint_step_sigma: float = 1.0e-3            # 1/m, prior SD of the curvature step at the knot (ridge towards no step)
+    axis_joint_min_far_bins: int = 4                 # boundary bins beyond the knot needed to fit a curvature step (else none)
+    axis_joint_rail_sigma: float = 0.03              # m, assumed SD of a rail-pair slab midpoint
+    axis_joint_wall_sigma: float = 0.10              # m, assumed SD of a boundary bin
+    axis_joint_tolerance: float = 0.3                # m, a boundary bin joins the fit when within this of the current fit, the range growing by axis_joint_grow_step from axis_joint_grow_start
+    axis_joint_grow_start: float = 40.0              # m
+    axis_joint_grow_step: float = 16.0               # m
+    axis_joint_min_segment: int = 3                  # boundary bins a segment (between structure edges / gaps) needs to take part
+    axis_joint_range: bool = True                    # 20.10: with axis_joint_fit, the trusted range / sides / disagreement also from the joint fit (v3); false: the joint fit sets the axis shape only and the range policy stays the per-side fits' (v4)
+    # --- 19.10 (K1, off): yaw / curvature EMA per distance travelled instead of per frame period ---
+    walls_smoothing_distance: float = 0.0            # m; > 0: the EMA weight is walls_smoothing ** max(walls_smoothing_min_k, min(k, travel / this)) with travel = the previous frame's speed x the time since it (unknown speed: as before); the axis rate limits scale the same way. 0 = off
+    walls_smoothing_min_k: float = 0.05              # lower bound of that exponent (a standing train still follows a real change, slowly)
+    walls_smoothing_standstill_speed: float = 1.0    # m/s; with no speed estimate, a frame whose texture profile shows no change at all counts as standing (travel 0) while the last confident estimate is at most this
+    walls_smoothing_standstill_max: float = 60.0     # s; that standing rule applies at most this long in a row (backlog K1: never one fit held for more than 60 s)
 
 
 @dataclass
