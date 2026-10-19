@@ -14,8 +14,8 @@ no range/geometry production-source change or measured candidate improvement.
 
 ## Replayed inputs and scope
 
-Read with [EXPERIMENT_FRESH_STOP_EVIDENCE.md](EXPERIMENT_FRESH_STOP_EVIDENCE.md) and
-[EXPERIMENT_FAR_STRUCTURE.md](EXPERIMENT_FAR_STRUCTURE.md).
+Read with [EXPERIMENT_FRESH_STOP_EVIDENCE.md](../../EXPERIMENT_FRESH_STOP_EVIDENCE.md) and
+[EXPERIMENT_FAR_STRUCTURE.md](../../EXPERIMENT_FAR_STRUCTURE.md).
 
 The local stress cache contains 102 frames, splits 46 and 47. Although the saved jobs request
 80 frames each, the actual approach starting at split 46 stops after **68 frames, 150.0–9.1 m**

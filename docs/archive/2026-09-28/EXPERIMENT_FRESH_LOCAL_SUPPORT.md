@@ -12,7 +12,7 @@ synthetic person/cable subsets, but a retained false event passes the identical 
 
 ## Direct replay and parity
 
-[`scripts/trace_fresh_support.py`](../scripts/trace_fresh_support.py) warms each selected ride piece
+[`scripts/trace_fresh_support.py`](../../../scripts/trace_fresh_support.py) warms each selected ride piece
 from its original detector reset. It hashes every processed raw cache frame against the audited
 manifest. An independent plain detector and the instrumented detector both match the **saved fresh
 configuration's semantic output** on every processed frame; only runtime-dependent latency/health
@@ -30,14 +30,14 @@ Per matched row, the trace stores the actual `_note` input route and before/afte
 `_fresh_stop_ok` calls, tracker state, exact descriptor component and output membership, current
 point indices, observed channels (never invented rings), effective strict/rail membership, voxel
 IDs and unrounded `TrackModel` plus mount rotation. A missed row has **no current support**.
-The [analyzer](../scripts/analyze_fresh_support.py) replays **439 actual accepted corridor
+The [analyzer](../../../scripts/analyze_fresh_support.py) replays **439 actual accepted corridor
 descriptors** using their original intensity, gauge, ring, wall/reference and far-height parameters;
 all match their original emitted descriptors. Low-stage eligibility is explicitly separate from
 strict polygon membership.
 
 The large raw trace (including frame-local points and manifest hashes) is kept at
 `C:/Users/alikh/AppData/Local/Temp/opencode/direct-fresh-support-all/`; the compact, reproducible
-comparison is [`evidence/results/fresh_local_support_2026-09-28.json`](evidence/results/fresh_local_support_2026-09-28.json).
+comparison is [`evidence/results/fresh_local_support_2026-09-28.json`](../../evidence/results/fresh_local_support_2026-09-28.json).
 Both output artifacts include SHA-256 provenance. The full data capture is local, not committed.
 
 ## What the Fresh histories show
@@ -60,7 +60,7 @@ strict bodies, have these last bounded provenance entries:
 
 These are nine selected examples from 27, not nine independent physical surfaces. `ordinary` is
 the tracker's input route; it includes low-object candidates. The full event catalog remains in
-[the inventory](RESIDUAL_EVENTS_2026-09-28.md).
+[the inventory](../../RESIDUAL_EVENTS_2026-09-28.md).
 
 The most informative local-distance counterexample is `1:74`: the emitted full cluster reaches
 **155.44 m** (inside the **160 m** effective height-reference limit), while its isolated strict

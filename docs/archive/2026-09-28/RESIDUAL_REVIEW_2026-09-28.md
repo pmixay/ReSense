@@ -24,7 +24,7 @@ justified by the measured evidence.** Fresh STOP remains the previously measured
 experiment: ride **130/32/31 → 117/27/26** STOP frames/events/episodes, with the previously recorded
 set O result **447/9 → 447/9**. This closeout does not add a new full-ride or set O replay.
 
-* [Inventory](RESIDUAL_EVENTS_2026-09-28.md): independently regenerated all **27 events**, **117 node
+* [Inventory](../../RESIDUAL_EVENTS_2026-09-28.md): independently regenerated all **27 events**, **117 node
   STOP frames**, **26 episodes**, **133 STOP track-frames** across 11,271 saved ride frames. All first
   onsets have current mapped support: 18 ordinary and nine low. Saved-default/base semantic parity
   was revalidated by the analyzer; its source-default mapping limitations still apply.

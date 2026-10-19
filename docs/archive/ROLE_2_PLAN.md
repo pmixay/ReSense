@@ -1,10 +1,13 @@
 # Role 2 — execution plan through the 23 October defence
 
+> **Archived 19.10:** a record of the plan of 16–17.10. The current work per role, with priorities instead of dates, is
+> [`BACKLOG.md`](../BACKLOG.md) "Current plan"; dates, versions (1.1.0) and statuses below are those of their day.
+
 > **Purpose:** finish P2's interface, documentation, visual evidence and demo support against
 > the organizer requirements and the team's accepted work. **Owner:** P2 · **Language:** EN
 > **Registered:** 2026-10-16 · **Branch:** `role-2`
 > **Base:** `b0c9c17cde65a59ddf93fb2799bc94a8a6a31bd1` (`integration/2026-10-15-16`).
-> **Status:** implementation in review; [execution receipt](evidence/p2_execution_2026-10-16/README.md)
+> **Status:** implementation in review; [execution receipt](../evidence/p2_execution_2026-10-16/README.md)
 > tracks completed preparation and pending acceptance. Release, measurements and approvals remain pending.
 
 16.10 execution update: P4's verified export and raw archive have been received;
@@ -20,9 +23,9 @@ are internal; the organizers publish eight criteria, not numeric weights. P2 com
 does not itself establish a new system score. J1 and the organizers' decision O1 determine
 what improvements can be credited.
 
-Read this alongside [BACKLOG](BACKLOG.md) §5 and cards D1/C1/PT1/PT2/S5/D2,
-[CAPTAIN](CAPTAIN.md) §8, the [integration ledger](evidence/integration_2026-10-16/README.md),
-and the [review/source register](evidence/p2_plan_2026-10-16/README.md).
+Read this alongside [BACKLOG](../BACKLOG.md) §5 and cards D1/C1/PT1/PT2/S5/D2,
+[CAPTAIN](../CAPTAIN.md) §8, the [integration ledger](../evidence/integration_2026-10-16/README.md),
+and the [review/source register](../evidence/p2_plan_2026-10-16/README.md).
 The dated integration acceptance takes precedence over older proposed implementations.
 
 ### Accepted state to build on
@@ -43,7 +46,7 @@ The dated integration acceptance takes precedence over older proposed implementa
 ## 2. Requirement and scoring coverage
 
 Every acceptance row below must have an artifact and a dated check. Targets are work-completion
-conditions, not self-awarded points. [SCORECARD](SCORECARD.md) remains the score source.
+conditions, not self-awarded points. [SCORECARD](../SCORECARD.md) remains the score source.
 
 | Criterion / current score | P2 contribution | Acceptance / dependency for the remaining score |
 |---|---|---|
@@ -126,8 +129,8 @@ handoffs explicitly list any owner-blocked correction. This pass may complete be
 ### P2-02 · C1 display and faithful decision presentation — 16–18 October
 
 **Budget:** 6 h plus 2 h coordinated webapp/marker work. **Inputs:** accepted v1 source and
-[C1 contract](evidence/caution_policy_2026-10-15/CONTRACT.md), interpreted with the later
-[runtime selection](evidence/integration_2026-10-16/runtime_selection.md).
+[C1 contract](../evidence/caution_policy_2026-10-15/CONTRACT.md), interpreted with the later
+[runtime selection](../evidence/integration_2026-10-16/runtime_selection.md).
 
 **Implementation sequence:**
 

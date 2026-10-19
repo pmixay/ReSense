@@ -14,7 +14,7 @@ export/archive verified and accepted; a draft PPTX/PDF and charts (folder remove
 prepared with corrected prerelease captions. Final release J1 and P1 approval
 remain pending; no new score or held-out claim.
 
-**Current execution plan:** [`docs/ROLE_2_PLAN.md`](../docs/ROLE_2_PLAN.md).
+**Current execution plan:** [`docs/ROLE_2_PLAN.md`](../docs/archive/ROLE_2_PLAN.md).
 Checkpoint reconciliation and C1 consumer implementation are prepared for review. Package 1.1.0 is
 sealed but unreleased; published v1.0.0 and its 13.10 score **66/100** remain the release/score
 reference. H1 free-top and S1 were withdrawn, runtime C1 v2 rejected; shared v1 and its additive

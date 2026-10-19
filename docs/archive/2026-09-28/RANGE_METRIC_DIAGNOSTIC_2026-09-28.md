@@ -7,7 +7,7 @@ range gain, false-alarm result or score change is claimed.
 four measured far frames, but all four still have only two strict source voxels against
 the required three. Radial voxel subdivision adds no far-cube source support. This
 diagnostic supplies **no demonstrated STOP gain** and does not justify lowering that bar.
-The [138-frame evidence packet](evidence/results/range_metric_2026-09-28/README.md)
+The [138-frame evidence packet](../../evidence/results/range_metric_2026-09-28/README.md)
 records the findings and limitations.
 
 ## Hypothesis and existing evidence

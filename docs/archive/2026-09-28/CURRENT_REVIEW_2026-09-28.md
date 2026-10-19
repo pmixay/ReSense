@@ -8,7 +8,7 @@ A separate fresh-context Astra reviewer gave the candidate **66/100** in
 new reserved/runtime evidence. Presenting that score as a replacement for 69 was
 a reporting error: unlike reviewers cannot establish a three-point code regression.
 Both reviews are retained. The subsequent
-[same-reviewer paired comparison](evidence/cycle_2026-09-28/checkpoint1_astra_paired.md)
+[same-reviewer paired comparison](../../evidence/cycle_2026-09-28/checkpoint1_astra_paired.md)
 gives baseline 66 and candidate 66: zero whole-point change, with the narrow
 continuity gain explicitly credited.
 
@@ -31,7 +31,7 @@ Reviewed branch: `gpt-score-push-20260928`. Reviewed source:
 69-point review. The review commit adds documentation and evidence; it does not change the detector.
 
 This is an internal engineering assessment using the existing weights for the organizers'
-[eight criteria](organizers/technical_specification_case05.txt). The organizers publish no
+[eight criteria](../../organizers/technical_specification_case05.txt). The organizers publish no
 numerical weights. Three specialist agent reviews supported the lead review; all had access to
 the earlier scores. This is a reassessment with fresh checks, not a blinded judging panel or an
 official competition score. The earlier paired **66.5** on `806b6c4` and single-review **69**
@@ -94,7 +94,7 @@ credit the established experiment discipline. Neither new commit justifies anoth
 ## Verification and limits
 
 Fresh verification records are kept in
-[`evidence/current_review_2026-09-28/`](evidence/current_review_2026-09-28/).
+[`evidence/current_review_2026-09-28/`](../../evidence/current_review_2026-09-28/).
 
 - **Source integrity:** detector seal passes for 31 files; parameter copies match; Ruff passes.
 - **Local tests:** 764 tests and six subtests passed in the full run; its only failure was the
