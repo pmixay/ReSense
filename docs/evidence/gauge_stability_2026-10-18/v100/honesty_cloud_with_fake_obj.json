@@ -1,0 +1,11 @@
+{
+ "run": "/home/user/rs-data/synth_runs/v100_cloud_with_fake_obj.jsonl",
+ "frames_with_path": 1506,
+ "steps_inside": 33396,
+ "steps_beyond": 13150,
+ "inside_over_0.5m": 0.079,
+ "inside_over_1.05m": 0.03,
+ "beyond_over_0.5m": 0.662,
+ "beyond_over_1.05m": 0.539,
+ "inside_error_p90": 0.4
+}

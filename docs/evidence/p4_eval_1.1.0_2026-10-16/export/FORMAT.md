@@ -2,7 +2,7 @@
 
 Built by [`build_export.py`](build_export.py) from committed evidence only; re-run it after any new
 P4 result. `python build_export.py --check` re-reads every exported number from its source and
-fails on any difference (last run: **3,105 numbers, 0 mismatches**). Proposed by P4 on 16.10.
+fails on any difference (last run 18.10: **3,396 numbers, 0 mismatches**; the 3,105 rows of 16.10 unchanged). Proposed by P4 on 16.10.
 **Not yet agreed:** P2 confirms the columns, or names the changes, and the format then becomes "v1 agreed".
 
 ## `case_register.csv` / `.json` — one row per case × detector version
@@ -10,18 +10,18 @@ fails on any difference (last run: **3,105 numbers, 0 mismatches**). Proposed by
 | column | meaning |
 |---|---|
 | `case_id` | `<stage>/<recording or case>/<variant>`, stable across versions |
-| `stage` | `X3` robustness battery, `X1` range attribution, `J1` judge pipeline on the bags, `J1-range` the judge's 37 range jobs (pre-built), `G3` held-out (registered) |
+| `stage` | `X3` robustness battery, `X1` range attribution, `J1` judge pipeline on the bags, `J1-range` the judge's 37 range jobs (pre-built), `G3` held-out (registered); added 18.10: `SYN` the organizers' 16.10 synthetic platform (exact labels, frames 0–314) and its attribution (A5), `B2` the whole Falcon recording in one detector, `B3` Pandar ↔ Falcon switch in one node, `B8` frame time per sensor, `B6` gauge range and stability against the driven path |
 | `recording`, `alias` | organizer recording; alias A/B/C/S/D/obstacle/platform/Set O (B = roundT_doubleT, C = roundT_pressureGate_roundT) |
 | `object` | labelled / synthetic object or `none (empty)` |
 | `variant` | X3 perturbation, X1 judge arguments, G3 motion + its 11 variants |
 | `version`, `commit` | `v1.0.0` = `707ea9c`, `1.1.0` = sealed tree of `492e407` (= measured `5211565`) |
 | `runtime` | where it was measured |
-| `status` | `MEASURED`, `PASS vs control`, `MEASURED (attributed)`, `DRY RUN`, `PRE-RELEASE, not a J1 result`, `REGISTERED, NOT RUN` |
+| `status` | `MEASURED`, `PASS vs control`, `MEASURED (attributed)`, `DRY RUN`, `PRE-RELEASE, not a J1 result`, `REGISTERED, NOT RUN`, `MEASURED (development data, observation)` (the 18.10 stages) |
 | `scope` | `development data (in-sample)` or `held-out synthetic probes` |
 | `result` | one-line human summary |
 | `evidence` | committed source file |
 
-Current content: **312 rows**. X3 has 120 rows: 40 cases × 3 runs (v1.0.0 Windows, the v1.0.0
+Current content: **343 rows** (18.10). New: SYN 6 (3 objects × 2 versions), B2 1, B3 4 (2 orders × 2 versions), B6 20 (10 recordings × 2 versions); B8 numbers sit under `b8/<sensor>` without register rows. Before: X3 has 120 rows: 40 cases × 3 runs (v1.0.0 Windows, the v1.0.0
 Linux control and 1.1.0). X1 has 22 (11 cases × 2 versions), J1 has 12 (6 bags × 2) and J1-range has 74
 (the judge's 37 range jobs × 2, pre-built). G3 has
 **84 registered cases (924 planned runs), none run.**
@@ -32,10 +32,10 @@ Linux control and 1.1.0). X1 has 22 (11 cases × 2 versions), J1 has 12 (6 bags 
 |---|---|
 | `stage`, `case_id`, `version` | as in the register |
 | `metric` | dotted name, e.g. `stop_frames`, `object.small_on_rail.first_stop_m`, `cause.no_blob.150-200m`, `label_check.track:confirm_time.confirmed` |
-| `value`, `unit` | the number exactly as in the source; unit `frames`, `episodes`, `rows`, `m`, `frame index`, `bool`, `cases`, `runs` |
+| `value`, `unit` | the number exactly as in the source; unit `frames`, `episodes`, `rows`, `m`, `frame index`, `bool`, `cases`, `runs`, `ms`, `share` (0–1), `events` |
 | `status`, `scope`, `runtime` | as in the register; `in-sample` for all measured rows |
 | `source`, `pointer`, `source_sha256` | committed JSON file, RFC 6901 JSON pointer into it, SHA-256 of the file used |
-| `derived` | empty for read values; else the formula of a total computed by the builder (126 rows: X3 summed inside rows, acceptance counts, G3 counts, wrong-label counts) |
+| `derived` | empty for read values; else the formula of a total computed by the builder (146 rows: X3 summed inside rows, acceptance counts, G3 counts, wrong-label counts, and the B6 reported-range medians) |
 
 Use for charts: filter `stage`, `version`, `metric`. Every chart number can then be traced to a file
 and pointer. Do **not** mix stages in one series: X3 / X1 / J1 use the node-decoded path, the team's
