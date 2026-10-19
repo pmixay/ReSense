@@ -88,3 +88,26 @@ single-frame offline fits on captured wall observations (`/opt/work/joint.py`, `
 changes driven by those runs: the joint fit itself, the segment rule, the parallel test in the rail range,
 the straight test as a bend at 150 m, its hysteresis, the reach floor (own-side fit reach), the inner-wall far
 support for the disagreement. No range probe, gate, X3, ride or Falcon run was made on any draft.
+
+## 6. Revision 1 (19.10, ~12:10 UTC) — candidate v1 failed, v2 is the candidate; criteria unchanged
+
+Measured on v1 (`97d55f1` + switches) before this revision, as the protocol required: B6 (all ten), the
+wall-referenced error K2-1, `probe.py` on squareT_platform and doubleT_obstacle, the Falcon stream, part of
+the range probes. **v1 fails K1-3 badly**: squareT_platform 319 STOP frames in 14 episodes on a static
+structure at 147.45 m during the standstill (base: 11 frames, 3 episodes). Raw top view (frame 450): the right
+wall runs straight to 170 m, both axes bend left, v1's less; the structure (y ≈ +1.5 m) is outside the gauge of a
+straight track. Cause: far boundary segments joined the joint fit without a consistency test and the curvature
+was extrapolated beyond the walls' reach. These v1 results are kept and reported as v1.
+
+v2 = commit `f07f5dd`: during the outward growth a segment's remaining bins (or a new segment) join only as
+a group whose refit keeps every used bin within `axis_joint_tolerance` and the rail midpoints within 3 SD.
+Development checks of v2 before this revision (development data, the same recordings): squareT_platform
+`probe.py` 15 STOP frames, 1 episode; B6 `track`/`measure` on the nine moving recordings. Everything in §2–§3
+is re-run on v2 (`/opt/off2`, `/opt/cand2` = `f07f5dd`, the latter with the same two switches on). The
+acceptance numbers, truths and decision rule are unchanged. A failure that remains is reported as a failure.
+
+Measurement incident (instrumentation): installing matplotlib at 11:54:52 UTC upgraded numpy to 2.5.4 for
+14 s (11:54:52–11:55:06). Every process that started in that window (v1 range-cand baseline, base X3, off B6
+tracks) was killed and its output deleted; numpy 1.26.4 restored and asserted at the start of every later lane.
+Runs before the window (base gate, base range probes, base/cand B6, Falcon) are unaffected. Plotting uses a
+separate virtualenv (`/opt/plotvenv`).
