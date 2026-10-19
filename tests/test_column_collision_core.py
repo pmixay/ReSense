@@ -146,6 +146,46 @@ def test_one_positive_core_cannot_release_a_measured_column_history():
     assert any(t.zone == "gauge" for t in tracker.confirmed())
 
 
+def test_full_fresh_confirmation_releases_only_the_old_column_hold():
+    xyz, ring, labels = physical_column()
+    core, = matched(xyz, ring, labels)
+    cfg = DetectorConfig()
+    cfg.cluster.column_core_margin = 0
+    column, = matched(xyz, ring, labels, cfg=cfg)
+    tracker = Tracker(cfg.tracking)
+    for _ in range(12):
+        tracker.update([copy.deepcopy(column)], frame_dt=0.1)
+    for _ in range(4):
+        tracker.update([copy.deepcopy(core)], frame_dt=0.1)
+        assert not any(t.zone == "gauge" for t in tracker.confirmed())
+    tracker.update([copy.deepcopy(core)], frame_dt=0.1)
+    track, = tracker.tracks
+    assert sum(track.column_hist) == 5  # measured history was not erased
+    assert not track.column_held
+    assert any(t.zone == "gauge" for t in tracker.confirmed())
+    tracker.update([copy.deepcopy(column)], frame_dt=0.1)
+    assert track.column_held
+    assert not any(t.zone == "gauge" for t in tracker.confirmed())
+
+
+def test_a_missing_scan_breaks_the_collision_reconfirmation_run():
+    xyz, ring, labels = physical_column()
+    core, = matched(xyz, ring, labels)
+    cfg = DetectorConfig()
+    cfg.cluster.column_core_margin = 0
+    column, = matched(xyz, ring, labels, cfg=cfg)
+    tracker = Tracker(cfg.tracking)
+    for c in [column] * 12 + [core] * 4:
+        tracker.update([copy.deepcopy(c)], frame_dt=0.1)
+    tracker.update([], frame_dt=0.1)
+    tracker.update([copy.deepcopy(core)], frame_dt=0.1)
+    track, = tracker.tracks
+    assert track.column_held
+    for _ in range(4):
+        tracker.update([copy.deepcopy(core)], frame_dt=0.1)
+    assert not track.column_held
+
+
 @pytest.mark.parametrize("lateral", [-0.68, 0.68, -1.29, 1.29])
 def test_full_detector_uses_observed_rails_without_oracle_model(lateral):
     xyz, ring, labels = physical_column(lateral=lateral, rails=True)
