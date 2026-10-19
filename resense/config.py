@@ -629,12 +629,21 @@ class DustGuardConfig:
     on_density: float = 0.3                              # isolated interior returns per m^3 that switch the guard on
     off_density: float = 0.15                            # ... below which it may switch off
     hold_frames: int = 10                                # frames below off_density before it switches off
+    cell: Tuple[float, float, float] = (5.0, 0.5, 0.6)  # m, interior cells (X, dy, h) for the spread of isolated returns
+    on_spread: float = 0.35                              # share of interior cells holding an isolated return, to switch on
+    off_spread: float = 0.2                              # ... below which it may switch off
+    attach_factor: float = 0.0                           # unsupported returns within this many r(R) of a supported one are kept (0 = off)
+    track_filter: bool = True                            # while active, unsupported returns near the track are withheld from the track model
+    track_margin: float = 10.0                           # m beyond interior_range[1] where that applies
+    light_window: int = 20                               # frames of the sustained light-field test (track filter only)
+    light_density: float = 0.05                          # mean isolated interior returns per m^3 over that window
+    light_spread: float = 0.08                           # mean spread over that window; 0 = no light mode
     min_support: int = 3                                 # neighbours a candidate return needs while active (at least)
     max_support: int = 12                                # cap of the density-scaled requirement
     false_support: float = 0.001                         # chance-support probability of a diffuse return at the measured density
     max_density: float = 50.0                            # bound of the corrected field density (per m^3)
-    roi_half_width: float = 4.0                          # m, |dy| of the returns that can support a candidate
-    roi_height: Tuple[float, float] = (-1.0, 5.0)        # m above the rail head, likewise
+    roi_half_width: float = 3.0                          # m, |dy| of the returns that can support a candidate
+    roi_height: Tuple[float, float] = (-0.8, 4.5)        # m above the rail head, likewise
 
 
 @dataclass

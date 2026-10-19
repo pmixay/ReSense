@@ -14,7 +14,7 @@ from resense import dust
 from dust_reference import augment_in_reference, process_clean_reference
 p = argparse.ArgumentParser()
 p.add_argument("--cache", type=Path, required=True); p.add_argument("--bags", required=True)
-p.add_argument("--levels", default="clean"); p.add_argument("--seed", type=int, default=7)
+p.add_argument("--levels", default="clean"); p.add_argument("--atten-only", action="store_true"); p.add_argument("--seed", type=int, default=7)
 a = p.parse_args()
 for bag in a.bags.split(","):
     folder = a.cache / bag; meta = json.loads((folder / "meta.json").read_text())
@@ -22,7 +22,7 @@ for bag in a.bags.split(","):
         cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")); cfg.calibration.enabled = True
         rot = axis_matrix(cfg.sensor).astype(np.float32)
         clean, dusty = Detector(cfg), Detector(cfg)
-        g = DustGuard(replace(cfg.dust, on_density=1e-12))
+        g = DustGuard(replace(cfg.dust, on_density=1e-12, on_spread=0.0))
         dens = []
         for i, m in enumerate(meta):
             with np.load(folder / f"f_{i:05d}.npz") as d:
@@ -31,10 +31,10 @@ for bag in a.bags.split(","):
             cres, ref = process_clean_reference(clean, fr)
             det = clean
             if level != "clean":
-                dfr, _, _ = augment_in_reference(fr, dust.PRESETS[level], ref, seed=a.seed, frame_index=i)
+                dfr, _, _ = augment_in_reference(fr, replace(dust.PRESETS[level], density=0.0) if a.atten_only else dust.PRESETS[level], ref, seed=a.seed, frame_index=i)
                 dusty.process(dfr); det = dusty
             st = g.assess(det._frame_xyz, det._dy_rail, det._frame_hd[1])
-            dens.append((st["isolated_density"], st["interior_returns"], st["field_density"]))
+            dens.append((st["isolated_density"], st["interior_returns"], st["field_density"], st["isolated_spread"]))
         d = np.array(dens)
         print(f"{bag:38s} {level:6s} iso/m3 p50 {np.median(d[:,0]):.3f} p99 {np.percentile(d[:,0],99):.3f} max {d[:,0].max():.3f} (frame {int(d[:,0].argmax())}) "
-              f"interior p50 {np.median(d[:,1]):.0f} max {d[:,1].max():.0f} field p50 {np.median(d[:,2]):.2f} | frames >=0.3: {(d[:,0]>=0.3).sum()} >=0.15: {(d[:,0]>=0.15).sum()}", flush=True)
+              f"spread p50 {np.median(d[:,3]):.3f} max {d[:,3].max():.3f} both(>=.3,>=.35) {((d[:,0]>=.3)&(d[:,3]>=.35)).sum()} interior p50 {np.median(d[:,1]):.0f} max {d[:,1].max():.0f} field p50 {np.median(d[:,2]):.2f} | frames >=0.3: {(d[:,0]>=0.3).sum()} >=0.15: {(d[:,0]>=0.15).sum()}", flush=True)

@@ -15,7 +15,7 @@ import yaml
 p = argparse.ArgumentParser()
 p.add_argument("--cache", type=Path, required=True); p.add_argument("--bag", required=True)
 p.add_argument("--level", required=True); p.add_argument("--set", action="append", default=[])
-p.add_argument("--first", type=int, default=0); p.add_argument("--last", type=int, default=10**9)
+p.add_argument("--seed", type=int, default=20261018); p.add_argument("--first", type=int, default=0); p.add_argument("--last", type=int, default=10**9); p.add_argument("--drop", type=float, default=0.02)
 a = p.parse_args()
 def make():
     cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")); cfg.calibration.enabled = True
@@ -23,7 +23,9 @@ def make():
         k, v = o.split("=", 1); s, k = k.split(".", 1); setattr(getattr(cfg, s), k, yaml.safe_load(v))
     return cfg
 base = dust.PRESETS[a.level]
-variants = {"full": base, "inject_only": replace(base, extinction=0.0), "atten_only": replace(base, density=0.0)}
+variants = {"full": base, "inject_only": replace(base, extinction=0.0), "atten_only": replace(base, density=0.0),
+            "uniform_drop": None}   # non-dust control: drop a uniform random share of ALL returns (--drop)
+p2 = a.drop
 folder = a.cache / a.bag; meta = json.loads((folder / "meta.json").read_text())
 rot = axis_matrix(make().sensor).astype(np.float32)
 clean = Detector(make()); dets = {k: Detector(make()) for k in variants}
@@ -44,7 +46,12 @@ for i, m in enumerate(meta):
     cres, ref = process_clean_reference(clean, fr)
     if cres.obstacle: stops["clean"].append(i)
     for k, spec in variants.items():
-        dfr, _, _ = augment_in_reference(fr, spec, ref, seed=20261018, frame_index=i)
+        if spec is None:
+            keep = np.random.default_rng([a.seed, i, 99]).random(fr.n) >= a.drop
+            dfr = Frame(fr.xyz[keep], fr.intensity[keep], None if fr.ring is None else fr.ring[keep], fr.stamp, fr.frame_id,
+                        {**fr.meta, "n_raw": int(fr.meta.get("n_raw", fr.n)) - int((~keep).sum())})
+        else:
+            dfr, _, _ = augment_in_reference(fr, spec, ref, seed=a.seed, frame_index=i)
         r = dets[k].process(dfr)
         if r.obstacle: stops[k].append(i)
         if i >= a.first:

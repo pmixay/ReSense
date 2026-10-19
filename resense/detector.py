@@ -434,7 +434,17 @@ class Detector:
         # N6 uses supplied scan-line IDs only, never a Pandar table inferred for an
         # unknown sensor. Keep the older experimental curvature-refit path separate.
         rail_args = {"axis_ring": self._frame_ring} if cfg.track.rails_axis_extension else {}
-        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring, **rail_args)
+        fit_xyz = xyz
+        guard = self.dust_guard
+        if guard is not None and (guard.active or guard.light) and cfg.dust.track_filter:
+            # 19.10 N3 (dust.track_filter): diffuse returns must not move the bed / rail / axis fits
+            keep = guard.track_input(xyz, self.track)
+            if not keep.all():
+                fit_xyz = xyz[keep]
+                ring = None if ring is None else ring[keep]
+                if rail_args.get("axis_ring") is not None:
+                    rail_args = {"axis_ring": rail_args["axis_ring"][keep]}
+        self.track = estimate_track(fit_xyz, cfg.track, prev=self.track, periods=periods, ring=ring, **rail_args)
         R_old = self.calib.R.copy()
         if self.calib.update(xyz_cfg, xyz, self.track, periods=periods, ring=self._frame_ring):
             xyz = self.calib.apply(xyz_cfg)

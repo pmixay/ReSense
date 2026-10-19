@@ -28,6 +28,7 @@ new sensor's intensity scale is not assumed). The guard never promotes GO.
 from __future__ import annotations
 
 import math
+from collections import deque
 from typing import Optional
 
 import numpy as np
@@ -63,6 +64,8 @@ class DustGuard:
         self.last: Optional[dict] = None
         self._tree = None
         self._roi_idx = None
+        self._window = deque(maxlen=max(1, int(cfg.light_window)))
+        self.light = False
 
     def reset(self) -> None:
         self.active = False
@@ -70,6 +73,8 @@ class DustGuard:
         self.last = None
         self._tree = None
         self._roi_idx = None
+        self._window.clear()
+        self.light = False
 
     def _neighbours(self, xyz: np.ndarray, idx: np.ndarray) -> np.ndarray:
         """Distinct other returns within r(R) of each queried frame point."""
@@ -88,15 +93,27 @@ class DustGuard:
         interior = np.flatnonzero((x >= x0) & (x < x1) & (np.abs(dy) <= cfg.interior_half_width)
                                   & (h >= h0) & (h < h1))
         volume = (x1 - x0) * 2.0 * cfg.interior_half_width * (h1 - h0)
-        n_iso = 0
-        if interior.size >= cfg.on_density * volume or self.active:
+        n_iso, spread = 0, 0.0
+        if interior.size >= min(cfg.on_density, cfg.light_density) * volume or self.active:
             self._build(xyz, dy, h)
-            n_iso = int((self._neighbours(xyz, interior) == 0).sum()) if interior.size else 0
+            iso = interior[self._neighbours(xyz, interior) == 0] if interior.size else interior
+            n_iso = int(iso.size)
+            # A diffuse field fills the whole interior; isolated returns of real clutter (a thinly
+            # sampled structure, an edge) stay where that structure is.
+            nx = max(1, int(round((x1 - x0) / cfg.cell[0])))
+            ny = max(1, int(round(2.0 * cfg.interior_half_width / cfg.cell[1])))
+            nz = max(1, int(round((h1 - h0) / cfg.cell[2])))
+            if n_iso:
+                cx = np.clip(((x[iso] - x0) / cfg.cell[0]).astype(np.int64), 0, nx - 1)
+                cy = np.clip(((dy[iso] + cfg.interior_half_width) / cfg.cell[1]).astype(np.int64), 0, ny - 1)
+                cz = np.clip(((h[iso] - h0) / cfg.cell[2]).astype(np.int64), 0, nz - 1)
+                spread = np.unique((cx * ny + cy) * nz + cz).size / float(nx * ny * nz)
         density = n_iso / volume
-        if density >= cfg.on_density:
+        if density >= cfg.on_density and spread >= cfg.on_spread:
             self.active, self._quiet = True, 0
         elif self.active:
-            self._quiet = self._quiet + 1 if density < cfg.off_density else 0
+            low = density < cfg.off_density or spread < cfg.off_spread
+            self._quiet = self._quiet + 1 if low else 0
             if self._quiet > cfg.hold_frames:
                 self.active, self._quiet = False, 0
         # Density of the field for the chance-support threshold: isolated returns underestimate a
@@ -109,7 +126,17 @@ class DustGuard:
             rho = min(density * math.exp(min(rho * v_mid, 3.0)), cfg.max_density)
         self.last = {"active": self.active, "interior_returns": int(interior.size),
                      "isolated_returns": n_iso, "isolated_density": round(density, 4),
+                     "isolated_spread": round(spread, 4),
                      "field_density": round(rho, 4), "quiet_frames": self._quiet}
+        # Light diffuse returns (below the degraded-visibility level) still move the far track
+        # model; a sustained, spread signal over light_window frames lets only the track filter run.
+        self._window.append((density, spread))
+        if cfg.light_spread > 0 and len(self._window) == self._window.maxlen:
+            d, sp = np.mean(np.asarray(self._window), axis=0)
+            self.light = bool(d >= cfg.light_density and sp >= cfg.light_spread)
+        else:
+            self.light = False
+        self.last["light"] = self.light
         return self.last
 
     def _build(self, xyz, dy, h):
@@ -118,9 +145,42 @@ class DustGuard:
                              & (h <= cfg.roi_height[1]) & (xyz[:, 0] > 0))
         P = xyz[roi].astype(np.float64)
         # distinct returns: coincident echoes (dual return, duplicated points) are one ray hit
-        _, first = np.unique(np.round(P / cfg.dedup).astype(np.int64), axis=0, return_index=True)
+        q = np.round(P / cfg.dedup).astype(np.int64)
+        q -= q.min(axis=0) if len(q) else 0
+        span = q.max(axis=0) + 1 if len(q) else np.ones(3, dtype=np.int64)
+        _, first = np.unique((q[:, 0] * span[1] + q[:, 1]) * span[2] + q[:, 2], return_index=True)
         self._tree = cKDTree(P[np.sort(first)])
         self._roi_idx = roi
+
+    def track_input(self, xyz: np.ndarray, prev_track) -> np.ndarray:
+        """Keep-mask of the frame for the track model while active (the previous frame's state
+        and model): unsupported returns near the track (the volume a diffuse field fills) are
+        withheld from the bed / rail / axis fits only; everything else is kept."""
+        from resense.gauge import corridor_coordinates
+        cfg = self.cfg
+        keep = np.ones(len(xyz), dtype=bool)
+        if not (self.active or self.light) or prev_track is None or self.last is None or not len(xyz):
+            return keep
+        dy, h = corridor_coordinates(xyz, prev_track)
+        x = xyz[:, 0]
+        roi = np.flatnonzero((x > 0) & (x < cfg.interior_range[1] + cfg.track_margin)
+                             & (np.abs(dy) <= cfg.roi_half_width)
+                             & (h >= cfg.roi_height[0]) & (h <= cfg.roi_height[1]))
+        if not roi.size:
+            return keep
+        P = xyz[roi].astype(np.float64)
+        q = np.round(P / cfg.dedup).astype(np.int64)
+        q -= q.min(axis=0)
+        span = q.max(axis=0) + 1
+        _, first = np.unique((q[:, 0] * span[1] + q[:, 1]) * span[2] + q[:, 2], return_index=True)
+        tree = cKDTree(P[np.sort(first)])
+        rng = np.linalg.norm(P, axis=1)
+        r = support_radius(rng, cfg)
+        counts = np.asarray(tree.query_ball_point(P, r, return_length=True), dtype=np.int64) - 1
+        lam = self.last["field_density"] * 4.0 / 3.0 * math.pi * r ** 3
+        lam = np.where(P[:, 0] > cfg.interior_range[1], 0.0, lam)
+        keep[roi] = counts >= required_support(lam, cfg)
+        return keep
 
     def supported(self, xyz: np.ndarray, idx: np.ndarray, dy: np.ndarray, h: np.ndarray) -> np.ndarray:
         """Boolean per queried frame index: enough local support to be obstacle evidence while
@@ -138,7 +198,19 @@ class DustGuard:
         counts = self._neighbours(xyz, q)
         rng = np.linalg.norm(xyz[q].astype(np.float64), axis=1)
         lam = self.last["field_density"] * 4.0 / 3.0 * math.pi * support_radius(rng, self.cfg) ** 3
-        keep[cur] = counts >= required_support(lam, self.cfg)
+        # The field is measured inside the interior only; beyond it the base requirement applies
+        # (a far, sparsely sampled real object must stay detectable where no field was observed).
+        lam = np.where(xyz[q, 0] > self.cfg.interior_range[1], 0.0, lam)
+        solid = counts >= required_support(lam, self.cfg)
+        loose = np.flatnonzero(~solid)
+        if loose.size and solid.any() and self.cfg.attach_factor > 0:
+            # The fringe of a real structure (a thinly sampled edge, a sparse row next to a
+            # surface) stays with it: an unsupported return within attach_factor * r(R) of a
+            # supported candidate return is kept. Only returns away from all solid evidence go.
+            near = cKDTree(xyz[q[solid]].astype(np.float64))
+            dist, _ = near.query(xyz[q[loose]].astype(np.float64), k=1)
+            solid[loose[dist <= self.cfg.attach_factor * support_radius(rng[loose], self.cfg)]] = True
+        keep[cur] = solid
         return keep
 
 
