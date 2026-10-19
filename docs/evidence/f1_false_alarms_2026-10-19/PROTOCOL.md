@@ -164,3 +164,19 @@ margin still keeps the box there).
 **Consequence (rule of §5):** ≥ 1.5 cm headroom below 0.034 m allows a margin ≤ **0.019 m**. The registered sweep
 0.02 / 0.03 / 0.04 is still measured and reported in full, but only a margin ≤ 0.019 can be selected; **0.01** is
 added to the sweep. Selection among admissible settings: fewest ride low-kind episodes, then the gate.
+
+## Amendment 4 (19.10, ~12:20 UTC) — selection by the registered rule, before the candidate's full gate / Falcon / X3
+
+**Base one-detector ride (B2, cache path, `aec88d2` behaviour):** 130 STOP frames, 30 episodes, 28 events;
+low-kind episodes **4 at onset** (frames 2668, 2671, 6860, 10484), **6 on any frame** (also 4153, 7361). The card's
+v1.0.0 node-path list (2838, 5714, 5901) does not recur on this path; 4153 / 7361 correspond to the card's 4152 / 7362.
+**Sweep (whole ride, one detector each; every lost episode attributed to F1 firings, 0 unexplained):**
+F1a 0.01: 109 / 24 / 20, low 1 / 1; 0.02: 111 / 24 / 21, low 1 / 1; 0.03 and 0.04: 111 / 24 / 22, low 1 / 1;
+F1b 0.03: 119 / 26 / 24, low 1 / 2; F1b 0.05: 117 / 25 / 23, low 1 / 2; F1c 15 m: no change. No setting added a
+STOP frame. The remaining low-kind episode in every setting is 6860 (a 1.36 × 0.18 m line 0.23 m outside the right
+rail at the envelope edge, top 0.15 m above its rail's local line): not an extrapolated-plane case.
+
+**Selected candidate (the only admissible margin with the fewest low-kind episodes):** `lowobj.local_rail_margin`
+0.01 (F1a) + `cluster.mount_cross_tol` 0.5 (H) + `tracking.settle_min_hits` 50 with `settle_check_z` false (S2);
+F1b and F1c stay off (no measured benefit). On in both YAML copies; every class default stays off. This candidate
+is now measured as registered: full gate, Falcon, probes, X3, switch-off identity, tests, review.

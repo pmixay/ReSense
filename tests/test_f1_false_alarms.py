@@ -198,8 +198,12 @@ def test_settled_static_track_needs_a_long_majority():
     assert all(inside[10:])
 
 
-def test_switches_are_off_by_default():
-    cfg = DetectorConfig.from_yaml("configs/default.yaml")
+def test_switches_are_off_in_the_class_and_the_candidate_in_the_yaml():
+    cfg = DetectorConfig()
     assert cfg.lowobj.local_rail_margin == 0 and cfg.lowobj.rail_band_range == 0
     assert cfg.lowobj.no_rail_low_within == 0 and cfg.cluster.mount_cross_tol == 0
-    assert cfg.tracking.settle_min_hits == 0
+    assert cfg.tracking.settle_min_hits == 0 and cfg.tracking.settle_check_z
+    y = DetectorConfig.from_yaml("configs/default.yaml")
+    assert y.lowobj.local_rail_margin == pytest.approx(0.01) and y.cluster.mount_cross_tol == pytest.approx(0.5)
+    assert y.tracking.settle_min_hits == 50 and not y.tracking.settle_check_z
+    assert y.lowobj.rail_band_range == 0 and y.lowobj.no_rail_low_within == 0
