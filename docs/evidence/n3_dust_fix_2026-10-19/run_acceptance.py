@@ -40,7 +40,7 @@ def identity(repo):
     sys.path.pop(0)
     files = source_hashes(repo)
     git = lambda *w: subprocess.check_output(["git", *w], cwd=repo, text=True).strip()
-    return {"path": str(repo), "commit": git("rev-parse", "HEAD"), "dirty": git("status", "--porcelain"),
+    return {"path": str(repo), "commit": git("rev-parse", "HEAD"), "dirty": git("status", "--porcelain", "--", ".", ":!docs/evidence/n3_dust_fix_2026-10-19"),
             "frozen_set_sha256": source_digest(files),
             "detector_files": {str(p.relative_to(repo)): sha(p) for p in sorted((repo / "resense").glob("*.py"))},
             "config_sha256": sha(repo / "configs/default.yaml"),
