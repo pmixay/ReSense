@@ -59,8 +59,10 @@ Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–42; the plan per role:
 - The organizers' dust (13 frames of the marked synthetic bags) on the final configuration.
 - P4's independent review of everything that ships on.
 - The reseal.
-- The full test suite on the final commit. Only the targeted suites ran here: 311 feature/node tests after the
-  merge, 271 after F1a.
+- The full test suite on the final commit (after K2). On `ff91d40` (the configuration as decided, K2 off):
+  **2,133 passed, 0 failed**, 8 deselected. 7 are deselected by default (local datasets). The 8th is
+  `test_lidar_proxy_hook::test_child_process_inherits_hook_and_bad_source_fails_closed`, an environment failure of
+  this container: it fails identically on untouched `aec88d2`, according to the F1 lane.
 
 ## Files
 
