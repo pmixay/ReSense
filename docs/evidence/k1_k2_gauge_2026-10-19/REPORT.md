@@ -11,7 +11,7 @@
 **Ship OFF** (merge the code with both switches at their committed defaults: off ⇒ every output identical to
 `aec88d2`, proven below). **Do not turn the switches on for 23.10**: the candidate fails the full regression gate
 (far first-detection range on straight track, set F; one more ride event; set O `small_center` −2 STOP frames)
-and 9 of the 17 primary acceptance rows. The change is a large step on what the experts named — the gauge now
+and 10 of the 17 primary acceptance rows (incl. X3). The change is a large step on what the experts named — the gauge now
 follows curves (curve axis error at 80–120 m down 2–7×), the standing-train STOP at 100 m goes from 82 to 255 of
 260 frames, false STOPs on the empty recordings fall from 12 episodes to 1, and the Falcon 115 m static false
 STOP disappears — but it buys that with ~50 m of trusted range on straight track. One identified follow-up
@@ -58,7 +58,7 @@ Base = `aec88d2`, cand = v3 with both switches on. Primary B6 truth = validity-f
 | K1-5 | person appearing at 100 m on the standing background: frames to first STOP | 28 | **5** | ≤ 5 | PASS |
 | F-1 | Falcon: every one of the 1,360 reference person STOP frames still STOP | 1,360 | 1,353 (7 lost: 2972–2975, 3037–3038, 4380) | all | **FAIL** |
 | G-1 | full regression gate vs `regression_baseline_2026-09-29_shell_off.json`, no `--allow` | exit 0 | exit 1, 12 gated rows worse | exit 0 | **FAIL** |
-| G-2 | X3 battery vs base battery | MEASURED | see X3 | PASS | see X3 section |
+| G-2 | X3 battery vs base battery (`results/x3_*.json`) | MEASURED | FAIL: 13 of 260 comparisons | PASS | **FAIL** |
 | ID | switch-off identity (gate, B6, all ten) | — | 0 differing rows / frames | identical | PASS |
 
 Secondary (backlog, reported): S_cube05_100 94 → 36/260 (backlog ≥ 150: fail); S_cube05_60 and S_person_60
@@ -84,6 +84,17 @@ The far losses come from the trusted range on straight track: ride frames with a
 from 23 % to 14 % (median 139 → 135 m). On straight `roundT_squareT…` the curvature-step estimate carries
 ±2e-4 noise from the sparse far wall bins, which bends the far axis by up to 0.8 m at 150 m; the reach measured
 against that axis then ends near 100 m where the base (quadratic, +50 m straight bonus) trusted 156 m.
+
+## X3 robustness battery (G-2; 4 recordings × 10 variants, against the base battery)
+
+**FAIL**, 13 of 260 comparisons, all of the "fewer STOP frames on a positive" or "more outside false STOPs" kind:
+doubleT_obstacle person crossing −5 (nominal), −4 (roll +2°), −3 (dropout s2) STOP rows (tolerance 2; the
+gauge-edge crossing above); set O positive STOP frames −5 / −6 / −8 under 30 % dropout, `big_center` −4
+(pitch −2°), `small_center` −4 (5 Hz), `long_low_on_rails` −6 (dropout s3); `big_outside` 0 → 2 outside
+false-STOP episodes (dropout judge7); roundT_squareT pitch +2° 0 → 1 false-STOP episode (backlog: 0).
+On the other side, squareT_platform false-STOP episodes fall to **0 in every variant** (base: nominal 3,
+pitch +2° 4, pitch −2° 7, roll 7, 5 Hz 9, dropout 10–14, dedup 3) — the backlog's K1 X3 target (≤ 3 each) is
+met there.
 
 ## B6 before / after (v3; `results/b6/b6_table_v3.json`, both truths)
 
@@ -167,8 +178,14 @@ because N1 limits drawing by its own lag rules. Base reproduces N1's committed 5
   base 0.07–0.16 m: both lag, the candidate less — the crossing person stands at the gauge edge in frames 8–12,
   which is why its first STOP moves by 5 frames; crude estimator, supporting only), the Falcon early STOPs against
   the raw-reviewed person trajectory (157.26 vs 157.35 m at frame 2700).
-* **Independent review:** two fresh subagents (code + criteria). v2: "code OK with fixes (off), two findings block
-  on; criteria: issues" — findings 1–7 fixed in v3 with a test each; v3 review: see `REVIEW_v3.md`.
+* **Independent review:** two fresh subagents (code + criteria, not these conclusions). v2 (`REVIEW.md`): "code
+  OK with fixes (off), two findings block a default-on; criteria: issues". v3 (`REVIEW_v3.md`): **switches off:
+  OK** (read + end-to-end on two recordings, positive control); **switches on: OK with fixes** — findings 1, 5, 6
+  resolved; 2 (reach can still rest on the raw joint-fit floor, taken before the rate limits), 3 (one-wall cap only
+  when the second wall ends ≤ ~54 m), 4 (the step is non-zero on most real frames: native kernels bypassed),
+  7 (rate limits 5 % at standstill, speed age) only partly; 8 (web / webapp / node text / one script rebuild
+  the axis without the step) open; new N1 (take the reach after the rate limits), N2 (a stop before convergence
+  keeps a wrong, far-trusted axis up to 60 s). All of these matter only with the switches on.
 * **Measurement incident:** a matplotlib install upgraded numpy to 2.5.4 for 14 s (11:54:52–11:55:06 UTC); every
   process started in the window was killed and its output deleted; later lanes assert numpy 1.26.4 at start.
 * **Not checked / unverified:** the ROS node and Docker path with the switches on; the web cab view and webapp
@@ -186,6 +203,12 @@ because N1 limits drawing by its own lag rules. Base reproduces N1's committed 5
 * **v2** (`f07f5dd`): group admission; reviewed (REVIEW.md); measurement stopped after the review.
 * **v3** (`83c8894`): review fixes; the measured candidate.
 
+## Tests
+
+Full suite on the branch (switches off): **1,983 passed**, 7 deselected, 1 failed —
+`tests/test_lidar_proxy_hook.py::test_child_process_inherits_hook_and_bad_source_fails_closed`, environmental
+(a child process without `PYTHONPATH`); it fails identically on the untouched `aec88d2` worktree.
+
 ## What remains / next step (not done)
 
 1. **Keep the base trust-range policy, use the joint fit for the axis shape only** (`axis_valid`, sides, bonus,
@@ -193,4 +216,6 @@ because N1 limits drawing by its own lag rules. Base reproduces N1's committed 5
    B's 60 m double-track cap would then need the joint-tangent disagreement only. Untested.
 2. A stronger prior or minimum far support for the curvature step on straight track (the ±2e-4 noise above).
 3. Platforms (synthetic_platform, doubleT_platform at 135 m) are not solved by either version.
-4. Web / webapp axis rendering with `curv_step` before any default-on.
+4. Web / webapp axis rendering with `curv_step` before any default-on; the open review items N1, N2, 2, 3, 4, 7.
+5. Real-obstacle losses at the gauge edge (doubleT_obstacle crossing, set O under dropout) must be understood
+   before any default-on, even where the axis itself is the more accurate one.
