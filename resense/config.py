@@ -260,7 +260,7 @@ class ClusterConfig:
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
     # Positive current-frame collision evidence; zero margin disables the exemption.
     # Fresh raw rail-anchor and boundary hypotheses are checked in addition to this erosion.
-    column_core_margin: float = 0.05
+    column_core_margin: float = 0.02
     column_core_min_voxels: int = 8
     column_core_min_height: float = 2.2
     column_core_max_footprint: float = 0.8

@@ -392,6 +392,7 @@ class FrameRays:
         self._core_boundaries: Optional[list] = None
         self._core_anchor: Optional[tuple] = None
         self._core_anchor_checked = False
+        self._core_rail_stations: Optional[np.ndarray] = None
 
     def collision_axis_anchor(self) -> Optional[tuple]:
         """Absolute current rail-midpoint residuals, not the smoothed model's label.
@@ -413,6 +414,7 @@ class FrameRays:
             if np.isfinite(residual).all():
                 self._core_anchor = (float(residual.min()) - cfg.rails_bin,
                                      float(residual.max()) + cfg.rails_bin)
+                self._core_rail_stations = rails.xm.copy()
         return self._core_anchor
 
     def collision_axis_interval(self, x: float) -> Optional[tuple]:
@@ -428,6 +430,12 @@ class FrameRays:
         anchor = self.collision_axis_anchor()
         if anchor is None:
             return None
+        stations = self._core_rail_stations
+        if stations is not None and stations.size >= 3 and stations.min() <= x <= stations.max():
+            # Locally observed paired rails support the axis directly. A wall
+            # widening, gate or platform inside this range is not an alternative
+            # track position. Never extrapolate this rail-only proof past support.
+            return min(0.0, anchor[0]), max(0.0, anchor[1])
         if self._core_boundaries is None:
             profiles = []
             X = self.xyz[:, 0]
