@@ -51,6 +51,6 @@ JSON output was compressed with deterministic gzip (`mtime=0`) for storage. The 
 manifest hashes the four outputs and summary. Native parity compares `rows` before and
 after `scripts/build_native.sh`; metadata correctly reports the differing runtime mode.
 
-The [diagnostic protocol](../../../RANGE_METRIC_DIAGNOSTIC_2026-09-28.md) records the
+The [diagnostic protocol](../../../archive/2026-09-28/RANGE_METRIC_DIAGNOSTIC_2026-09-28.md) records the
 factorial comparison, false-alarm controls, and next motion-supplied upper-bound study.
 That study remains proposed; no accumulated candidate or STOP result has been measured.

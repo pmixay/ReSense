@@ -98,6 +98,8 @@ def track(a):
         if t is not None:
             row.update(center=float(t.center), tan_yaw=float(np.tan(t.yaw)), half_curv=float(0.5 * t.curvature),
                        axis_valid=float(t.axis_valid))
+            if getattr(t, "curv_step", 0.0):          # 19.10: a C1 piecewise axis (track.axis_joint_fit); absent = quadratic
+                row.update(half_step=float(0.5 * t.curv_step), knot=float(t.curv_knot))
         rows.append(row)
     json.dump({"cache": a.cache, "repo": os.environ.get("RESENSE_REPO", ""), "range_max": range_max,
                "rows": rows}, open(a.out, "w"))
@@ -105,7 +107,10 @@ def track(a):
 
 
 def lateral(r, x):
-    return r["center"] + r["tan_yaw"] * x + r["half_curv"] * x * x
+    y = r["center"] + r["tan_yaw"] * x + r["half_curv"] * x * x
+    if "half_step" in r:                               # 19.10: the curvature step beyond the knot
+        y += r["half_step"] * max(x - r["knot"], 0.0) ** 2
+    return y
 
 
 def driven_path(prows):

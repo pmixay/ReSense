@@ -101,7 +101,7 @@ def _sector_counts(values: np.ndarray, edges: np.ndarray) -> np.ndarray:
 def visibility_along_track(xyz: np.ndarray, center_y, band: float = 3.0, k: int = 20) -> float:
     """X of the ``k``-th farthest return within ``band`` metres of the track axis (m)."""
     model = getattr(center_y, "__self__", None)       # TrackModel.center_y: one native pass
-    if _native.enabled() and hasattr(model, "center_coefs"):
+    if _native.enabled() and hasattr(model, "center_coefs") and not getattr(model, "bent", False):
         v = _native.visibility(xyz, *model.center_coefs(), band, k)
         if v is not None:
             return v

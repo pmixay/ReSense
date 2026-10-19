@@ -1,0 +1,10 @@
+ROS FLU as recorded                          | default launch (Pandar axes + auto)  | decisions f0-9: FA GO GO GO GO CA CA CA CA CA | orientation at f9: forward=+y left=-x up=+z | confirmed from frame: 1
+   control: identity mount reproduces the main run's decisions of frames 0-9: True
+yaw +90                                      | default launch (Pandar axes + auto)  | decisions f0-9: FA GO GO GO GO CA CA CA CA CA | orientation at f9: forward=-x left=-y up=+z | confirmed from frame: 1
+yaw 180                                      | default launch (Pandar axes + auto)  | decisions f0-9: FA GO GO GO GO CA CA CA CA CA | orientation at f9: forward=-y left=+x up=+z | confirmed from frame: 1
+yaw 270                                      | default launch (Pandar axes + auto)  | decisions f0-9: GO GO GO GO GO CA CA CA CA CA | orientation at f9: configured | confirmed from frame: 0
+upside-down (roll 180)                       | default launch (Pandar axes + auto)  | decisions f0-9: FA GO GO GO GO CA CA CA CA CA | orientation at f9: forward=+y left=+x up=-z | confirmed from frame: 1
+upside-down + yaw 90                         | default launch (Pandar axes + auto)  | decisions f0-9: CA GO GO GO GO CA CA CA CA CA | orientation at f9: forward=+x left=-y up=-z | confirmed from frame: 1
+manufacturer native (x up, y right, z fwd)   | default launch (Pandar axes + auto)  | decisions f0-9: CA CA CA CA CA CA CA CA CA CA | orientation at f9: configured | confirmed from frame: None
+manufacturer native (x up, y right, z fwd)   | explicit falcon_native profile axes  | decisions f0-9: GO GO GO GO GO CA CA CA CA CA | orientation at f9: configured | confirmed from frame: 0
+roll 90 (sideways)                           | default launch (Pandar axes + auto)  | decisions f0-9: FA CA CA CA CA ST ST ST ST ST | orientation at f9: forward=+y left=-x up=+z | confirmed from frame: 1

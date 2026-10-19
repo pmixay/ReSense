@@ -1,0 +1,21 @@
+marker object 1 ids [12] frames 0-255 (256 marked, 255 at 2.5-250 m): N5 match in 256 frames {'box_right_1': 256}; median N5 - marker 0.02 m; size [0.48, 0.47, 0.36]
+marker object 2 ids [0] frames 13-353 (111 marked, 102 at 2.5-250 m): N5 match in 100 frames {'box_left_2': 100}; median N5 - marker 0.01 m; size [0.35, 0.35, 0.3]
+marker object 3 ids [1] frames 181-415 (140 marked, 139 at 2.5-250 m): N5 match in 139 frames {'hanging_3': 139}; median N5 - marker 0.04 m; size [0.62, 0.49, 2.36]
+marker object 4 ids [13] frames 365-554 (57 marked, 51 at 2.5-250 m): N5 match in 45 frames {'box_left_4': 45}; median N5 - marker 0.0 m; size [0.44, 0.48, 0.48]
+marker object 5 ids [14] frames 505-684 (143 marked, 140 at 2.5-250 m): N5 match in 141 frames {'box_right_5': 141}; median N5 - marker 0.01 m; size [0.49, 0.45, 0.4]
+N5 track box_left_2: 102 rows, 100 match a marker object, 2 do not
+    unmatched {'frame': 328, 'n5_distance': 39.4, 'n5_lateral': 1.49, 'n5_points': 1, 'nearest_marker': {'ids': [0], 'fwd': 37.02, 'lat': 1.06}}
+    unmatched {'frame': 330, 'n5_distance': 36.44, 'n5_lateral': 1.64, 'n5_points': 2, 'nearest_marker': {'ids': [0], 'fwd': 34.14, 'lat': 1.02}}
+N5 track box_left_4: 54 rows, 45 match a marker object, 9 do not
+    unmatched {'frame': 510, 'n5_distance': 69.47, 'n5_lateral': 6.38, 'n5_points': 1, 'nearest_marker': None}
+    unmatched {'frame': 521, 'n5_distance': 48.88, 'n5_lateral': 4.5, 'n5_points': 1, 'nearest_marker': {'ids': [13], 'fwd': 52.41, 'lat': 4.33}}
+    unmatched {'frame': 523, 'n5_distance': 44.38, 'n5_lateral': 4.1, 'n5_points': 4, 'nearest_marker': {'ids': [13], 'fwd': 49.28, 'lat': 3.92}}
+    unmatched {'frame': 524, 'n5_distance': 43.2, 'n5_lateral': 3.67, 'n5_points': 1, 'nearest_marker': {'ids': [13], 'fwd': 48.16, 'lat': 3.72}}
+    unmatched {'frame': 525, 'n5_distance': 42.34, 'n5_lateral': 3.98, 'n5_points': 1, 'nearest_marker': {'ids': [13], 'fwd': 46.86, 'lat': 3.54}}
+    unmatched {'frame': 526, 'n5_distance': 40.1, 'n5_lateral': 3.53, 'n5_points': 1, 'nearest_marker': {'ids': [14], 'fwd': 242.81, 'lat': 11.49}}
+    unmatched {'frame': 527, 'n5_distance': 38.57, 'n5_lateral': 3.33, 'n5_points': 1, 'nearest_marker': None}
+    unmatched {'frame': 528, 'n5_distance': 38.65, 'n5_lateral': 3.06, 'n5_points': 1, 'nearest_marker': {'ids': [13], 'fwd': 42.11, 'lat': 3.03}}
+    unmatched {'frame': 529, 'n5_distance': 37.11, 'n5_lateral': 2.96, 'n5_points': 1, 'nearest_marker': {'ids': [13], 'fwd': 40.52, 'lat': 2.86}}
+N5 track box_right_1: 256 rows, 256 match a marker object, 0 do not
+N5 track box_right_5: 141 rows, 141 match a marker object, 0 do not
+N5 track hanging_3: 139 rows, 139 match a marker object, 0 do not

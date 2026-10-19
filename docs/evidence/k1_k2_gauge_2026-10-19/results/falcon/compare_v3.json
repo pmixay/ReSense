@@ -1,0 +1,61 @@
+{
+ "frames": 4443,
+ "base_vs_reference_decision_differences": 0,
+ "diff_frames": [],
+ "person_stop_frames_reference": 1360,
+ "base": {
+  "decisions": {
+   "FAULT": 1,
+   "GO": 8,
+   "CAUTION": 3062,
+   "STOP": 1372
+  },
+  "person_stop_lost": 0,
+  "lost_frames": [],
+  "stop_before_284s": 4,
+  "static_115_stop_frames": [
+   159,
+   2312,
+   2313,
+   2314
+  ],
+  "other_early_stop": [],
+  "axis_range_p10_p50_p90": [
+   107.0,
+   123.0,
+   167.0
+  ],
+  "axis_range_change_ge20_share": 0.343,
+  "axis_range_change_p90": 48.0,
+  "stop_frames": 1372
+ },
+ "cand": {
+  "decisions": {
+   "FAULT": 1,
+   "GO": 561,
+   "CAUTION": 2479,
+   "STOP": 1402
+  },
+  "person_stop_lost": 7,
+  "lost_frames": [
+   2972,
+   2973,
+   2974,
+   2975,
+   3037,
+   3038,
+   4380
+  ],
+  "stop_before_284s": 0,
+  "static_115_stop_frames": [],
+  "other_early_stop": [],
+  "axis_range_p10_p50_p90": [
+   111.0,
+   123.0,
+   131.0
+  ],
+  "axis_range_change_ge20_share": 0.162,
+  "axis_range_change_p90": 32.0,
+  "stop_frames": 1402
+ }
+}

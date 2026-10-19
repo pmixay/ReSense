@@ -4,7 +4,7 @@ Status: **integrated into the score development branch at `84763cf`; deployment 
 The exact measured `ef1d8f5` source passed the full quality gate, reserved comparison,
 all 33 history checks and 841 installed-image tests. Local positive ROS runtime fails
 for candidate and baseline; the clear-bag run passes. See the
-[checkpoint review](../../../CHECKPOINT1_REVIEW_2026-09-28.md) and
+[checkpoint review](../../../archive/2026-09-28/CHECKPOINT1_REVIEW_2026-09-28.md) and
 [image evidence](../image_candidate/README.md). This work uses a previously inspected
 organizer recording and generated development scenes; it is not holdout evidence.
 

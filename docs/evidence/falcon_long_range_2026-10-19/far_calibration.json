@@ -1,0 +1,334 @@
+{
+ "fit": {
+  "k": 3.0,
+  "rho_lower": 0.08,
+  "rho_upper": 0.1,
+  "fill": 0.9,
+  "error": 2.6970006770365202
+ },
+ "previous_model": {
+  "k": 2.35,
+  "rho_lower": 0.05,
+  "rho_upper": 0.3
+ },
+ "even_fit": {
+  "anchor 150-160": {
+   "n": 1,
+   "real": 18.0,
+   "model": 20.58,
+   "lat_median": -0.11
+  },
+  "anchor 160-170": {
+   "n": 2,
+   "real": 19.0,
+   "model": 17.19,
+   "lat_median": -0.12
+  },
+  "anchor 170-180": {
+   "n": 2,
+   "real": 12.5,
+   "model": 13.66,
+   "lat_median": -0.14
+  },
+  "anchor 180-190": {
+   "n": 1,
+   "real": 12.0,
+   "model": 13.17,
+   "lat_median": -0.03
+  },
+  "anchor 190-200": {
+   "n": 2,
+   "real": 10.0,
+   "model": 10.71,
+   "lat_median": -0.1
+  },
+  "anchor 200-210": {
+   "n": 2,
+   "real": 9.0,
+   "model": 8.05,
+   "lat_median": -0.07
+  },
+  "anchor 210-220": {
+   "n": 1,
+   "real": 8.0,
+   "model": 6.11,
+   "lat_median": 0.08
+  },
+  "anchor 220-230": {
+   "n": 2,
+   "real": 7.0,
+   "model": 5.95,
+   "lat_median": 0.06
+  },
+  "anchor 230-240": {
+   "n": 2,
+   "real": 7.0,
+   "model": 4.76,
+   "lat_median": -0.03
+  },
+  "anchor 240-250": {
+   "n": 6,
+   "real": 6.83,
+   "model": 4.01,
+   "lat_median": 0.01
+  },
+  "walker 240-250": {
+   "n": 12,
+   "real": 4.42,
+   "model": 3.8,
+   "lat_median": -0.03
+  },
+  "walker 250-260": {
+   "n": 29,
+   "real": 4.59,
+   "model": 3.15,
+   "lat_median": -0.09
+  },
+  "walker 260-270": {
+   "n": 37,
+   "real": 2.89,
+   "model": 2.55,
+   "lat_median": -0.19
+  },
+  "walker 270-280": {
+   "n": 39,
+   "real": 1.67,
+   "model": 2.0,
+   "lat_median": -0.37
+  },
+  "walker 280-290": {
+   "n": 14,
+   "real": 0.0,
+   "model": 1.58,
+   "lat_median": -0.45
+  }
+ },
+ "odd_heldout": {
+  "anchor 150-160": {
+   "n": 2,
+   "real": 16.5,
+   "model": 19.8,
+   "lat_median": -0.17
+  },
+  "anchor 160-170": {
+   "n": 2,
+   "real": 16.5,
+   "model": 16.14,
+   "lat_median": -0.12
+  },
+  "anchor 170-180": {
+   "n": 1,
+   "real": 14.0,
+   "model": 14.77,
+   "lat_median": -0.21
+  },
+  "anchor 180-190": {
+   "n": 2,
+   "real": 12.5,
+   "model": 13.08,
+   "lat_median": -0.09
+  },
+  "anchor 190-200": {
+   "n": 1,
+   "real": 8.0,
+   "model": 9.62,
+   "lat_median": 0.01
+  },
+  "anchor 200-210": {
+   "n": 2,
+   "real": 8.5,
+   "model": 8.94,
+   "lat_median": 0.04
+  },
+  "anchor 210-220": {
+   "n": 2,
+   "real": 8.5,
+   "model": 6.65,
+   "lat_median": 0.03
+  },
+  "anchor 220-230": {
+   "n": 2,
+   "real": 6.5,
+   "model": 5.96,
+   "lat_median": 0.01
+  },
+  "anchor 230-240": {
+   "n": 2,
+   "real": 6.5,
+   "model": 4.34,
+   "lat_median": 0.11
+  },
+  "anchor 240-250": {
+   "n": 5,
+   "real": 7.0,
+   "model": 3.85,
+   "lat_median": 0.06
+  },
+  "walker 240-250": {
+   "n": 11,
+   "real": 4.82,
+   "model": 3.99,
+   "lat_median": 0.05
+  },
+  "walker 250-260": {
+   "n": 29,
+   "real": 4.21,
+   "model": 3.07,
+   "lat_median": -0.09
+  },
+  "walker 260-270": {
+   "n": 37,
+   "real": 3.3,
+   "model": 2.48,
+   "lat_median": -0.24
+  },
+  "walker 270-280": {
+   "n": 39,
+   "real": 1.54,
+   "model": 2.01,
+   "lat_median": -0.32
+  },
+  "walker 280-290": {
+   "n": 14,
+   "real": 1.0,
+   "model": 1.6,
+   "lat_median": -0.46
+  }
+ },
+ "walker_edge_285_310_not_fitted": {
+  "walker 240-250": {
+   "n": 4,
+   "real": 3.25,
+   "model": 3.95,
+   "lat_median": -0.95
+  },
+  "walker 270-280": {
+   "n": 2,
+   "real": 1.5,
+   "model": 1.83,
+   "lat_median": -0.63
+  },
+  "walker 280-290": {
+   "n": 33,
+   "real": 0.36,
+   "model": 1.48,
+   "lat_median": -0.68
+  },
+  "walker 290-300": {
+   "n": 60,
+   "real": 0.32,
+   "model": 1.2,
+   "lat_median": -0.84
+  },
+  "walker 300-310": {
+   "n": 30,
+   "real": 0.6,
+   "model": 0.91,
+   "lat_median": -0.94
+  }
+ },
+ "previous_model_on_all": {
+  "anchor 150-160": {
+   "n": 3,
+   "real": 17.0,
+   "model": 20.6,
+   "lat_median": -0.13
+  },
+  "anchor 160-170": {
+   "n": 4,
+   "real": 17.75,
+   "model": 17.81,
+   "lat_median": -0.12
+  },
+  "anchor 170-180": {
+   "n": 3,
+   "real": 13.0,
+   "model": 15.98,
+   "lat_median": -0.21
+  },
+  "anchor 180-190": {
+   "n": 3,
+   "real": 12.33,
+   "model": 14.19,
+   "lat_median": -0.07
+  },
+  "anchor 190-200": {
+   "n": 3,
+   "real": 9.33,
+   "model": 12.04,
+   "lat_median": -0.01
+  },
+  "anchor 200-210": {
+   "n": 4,
+   "real": 8.75,
+   "model": 9.66,
+   "lat_median": 0.01
+  },
+  "anchor 210-220": {
+   "n": 3,
+   "real": 8.33,
+   "model": 7.87,
+   "lat_median": 0.08
+  },
+  "anchor 220-230": {
+   "n": 4,
+   "real": 6.75,
+   "model": 7.63,
+   "lat_median": 0.04
+  },
+  "anchor 230-240": {
+   "n": 4,
+   "real": 6.75,
+   "model": 6.34,
+   "lat_median": 0.07
+  },
+  "anchor 240-250": {
+   "n": 11,
+   "real": 6.91,
+   "model": 6.06,
+   "lat_median": 0.01
+  },
+  "walker 240-250": {
+   "n": 27,
+   "real": 4.41,
+   "model": 5.98,
+   "lat_median": -0.01
+  },
+  "walker 250-260": {
+   "n": 58,
+   "real": 4.4,
+   "model": 5.3,
+   "lat_median": -0.09
+  },
+  "walker 260-270": {
+   "n": 74,
+   "real": 3.09,
+   "model": 4.98,
+   "lat_median": -0.21
+  },
+  "walker 270-280": {
+   "n": 80,
+   "real": 1.6,
+   "model": 4.71,
+   "lat_median": -0.35
+  },
+  "walker 280-290": {
+   "n": 61,
+   "real": 0.43,
+   "model": 4.38,
+   "lat_median": -0.57
+  },
+  "walker 290-300": {
+   "n": 60,
+   "real": 0.32,
+   "model": 4.18,
+   "lat_median": -0.84
+  },
+  "walker 300-310": {
+   "n": 30,
+   "real": 0.6,
+   "model": 3.59,
+   "lat_median": -0.94
+  }
+ }
+}

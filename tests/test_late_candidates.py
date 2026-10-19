@@ -506,8 +506,15 @@ def test_floor_shadow_hold_is_released_after_the_cap(tunnel):
     assert res[cap - 1].to_dict()["track"]["floor_hold_run"] == cap
     cfg = DetectorConfig()
     cfg.track = replace(cfg.track, floor_shadow_max_hold=0)
+    cfg.lowobj.local_rail_margin = 0.01         # the F1a candidate (off by default since the 19.10 integration)
+    f1 = _pitch_step(frame, cfg)
+    cfg.lowobj.local_rail_margin = 0.0          # 19.10: the counterfactual without the F1 local rail reference
     locked = _pitch_step(frame, cfg)
     assert all(r.track.floor_held for r in locked) and locked[-1].obstacle
+    # 19.10 (F1a, docs/evidence/f1_false_alarms_2026-10-19): the rising bed's patch does not rise above its
+    # rails, so under the locked model it is not a lasting STOP (weak low evidence; advisory with
+    # lowobj.local_rail_advisory)
+    assert not f1[-1].obstacle and not any(d.kind == "low" for d in f1[-1].detections)
 
 
 def _band_points(bins: dict) -> np.ndarray:
@@ -586,8 +593,17 @@ def _station_scene(curvature: float = 0.0, platform: bool = True, seed: int = 25
     return np.concatenate(parts).astype(np.float32)
 
 
-def _far_support_cfg(value: float = FAR_SUPPORT, frames: int = 1) -> DetectorConfig:
+def _legacy() -> DetectorConfig:
+    """The axis without K2 (``track.axis_joint_fit`` off: the shipped default; K2 held for P4 on 19.10): the station
+    and hall scenes below document its faults and the rules made for them; K2 variant B is checked separately
+    (``test_k2_variant_b_in_the_station_scene``)."""
     cfg = DetectorConfig()
+    cfg.track = replace(cfg.track, axis_joint_fit=False)
+    return cfg
+
+
+def _far_support_cfg(value: float = FAR_SUPPORT, frames: int = 1, legacy: bool = False) -> DetectorConfig:
+    cfg = _legacy() if legacy else DetectorConfig()
     cfg.track = replace(cfg.track, walls_min_far_support=value, walls_far_support_frames=frames)
     return cfg
 
@@ -616,25 +632,25 @@ def test_far_support_keeps_the_station_axis_on_the_supported_side():
     and a station on a curve (the supported side bends: never overruled) are identical with
     and without the rule."""
     station = _station_scene()
-    off = _settled_track(station, DetectorConfig())
-    on = _settled_track(station, _far_support_cfg())
+    off = _settled_track(station, _legacy())
+    on = _settled_track(station, _far_support_cfg(legacy=True))
     assert abs(float(off.center_y(83.0))) > 0.5, off.to_dict()
     assert abs(float(on.center_y(83.0))) < 0.15, on.to_dict()
     assert abs(on.curvature) < 1e-4 and on.axis_sides == 2
     # walls_far_support_frames N: the rule sets the shape from the N-th consecutive frame only
     from resense.track import estimate_axis_from_walls
-    held = _far_support_cfg(frames=10).track
+    held = _far_support_cfg(frames=10, legacy=True).track
     tan = float(np.tan(on.yaw))
-    first = estimate_axis_from_walls(station, on, _far_support_cfg().track, tan)
-    average = estimate_axis_from_walls(station, on, DetectorConfig().track, tan)
+    first = estimate_axis_from_walls(station, on, _far_support_cfg(legacy=True).track, tan)
+    average = estimate_axis_from_walls(station, on, _legacy().track, tan)
     assert first[-1] == 1 and average[-1] == 0 and first[1] != average[1]      # the supported side vs the average
     assert estimate_axis_from_walls(station, on, held, tan, far_support_run=0)[:6] == average[:6]
     tenth = estimate_axis_from_walls(station, on, held, tan, far_support_run=9)
     assert tenth[-1] == 10 and tenth[:6] == first[:6]
     for curvature, platform in ((1 / 1000, False), (1 / 350, False), (-1 / 1000, False), (1 / 1000, True)):
         scene = _station_scene(curvature, platform)
-        a = _settled_track(scene, DetectorConfig()).to_dict()
-        b = _settled_track(scene, _far_support_cfg()).to_dict()
+        a = _settled_track(scene, _legacy()).to_dict()
+        b = _settled_track(scene, _far_support_cfg(legacy=True)).to_dict()
         assert a == b, (curvature, platform)
         if not platform:
             assert abs(a["curvature"] - curvature) < 0.1 * abs(curvature), a
@@ -660,11 +676,11 @@ def test_far_support_station_obstacle_still_stops():
         """``_box_surface`` placed in this scene: front at x0, centred at y0, bottom at z0."""
         return _box_surface(x0, length, y0 - AXIS_Y, z0 - RAIL_HEAD_Z, height, width)
 
-    on = _far_support_cfg()
+    on = _far_support_cfg(legacy=True)
     end = box(82.9, 1.9, 2.2, 0.4, 1.25)
     res = last(end, on)
     assert not res.obstacle, [(c.distance, c.lateral, c.zone, c.reason) for c in res.candidates]
-    off = _far_support_cfg(0.0)
+    off = _far_support_cfg(0.0, legacy=True)
     res = last(np.concatenate([end, box(60.0, -0.6, 0.4, 0.5, 1.7)]), off)
     assert not res.obstacle and res.warning
     for dist in (83.0, 60.0, 25.0):
@@ -675,6 +691,38 @@ def test_far_support_station_obstacle_still_stops():
 
 
 # --- cluster.far_axis_both_sides (25.09, far_switch; 0 = off) ---------------------------------
+
+
+def test_k2_variant_b_in_the_station_scene():
+    """K2 variant B (held for P4 on 19.10; far-support rule off as shipped since 25.09) in the same
+    station scene: the platform-end structure alone is neither a STOP nor a warning, and a person 0.5 x 0.4 x
+    1.7 m at 60 or 25 m, on the axis or 0.6 m to either side, is a STOP (the old axis read the person at 60 m,
+    0.6 m right, as advisory only). At 83 m, as with the old axis without the far-support rule, no STOP."""
+    station = _station_scene()
+    bed = -1.5
+
+    def last(extra, cfg, n=10):
+        pts = np.concatenate([station, extra]).astype(np.float32)
+        det = Detector(cfg)
+        res = None
+        for k in range(n):
+            res = det.process(Frame(xyz=pts, intensity=np.full(len(pts), 30.0, np.float32), stamp=0.1 * k))
+        return res
+
+    def box(x0, y0, length, width, height, z0=bed):
+        return _box_surface(x0, length, y0 - AXIS_Y, z0 - RAIL_HEAD_Z, height, width)
+
+    cfg = DetectorConfig()
+    cfg.track = replace(cfg.track, axis_joint_fit=True, axis_joint_range=False, axis_joint_min_curvature=1e-4,
+                        axis_joint_reach_cap=True)
+    assert cfg.track.walls_min_far_support == 0.0
+    end = box(82.9, 1.9, 2.2, 0.4, 1.25)
+    res = last(end, cfg)
+    assert not res.obstacle and not res.warning
+    for dist in (60.0, 25.0):
+        for lateral in (0.0, -0.6, 0.6):
+            res = last(np.concatenate([end, box(dist, lateral, 0.4, 0.5, 1.7)]), cfg)
+            assert res.obstacle and abs(res.nearest_distance - dist) < 1.0, (dist, lateral)
 
 def _far_scene(tunnel_frame: Frame, hall: bool) -> Frame:
     """The ray-cast tunnel with the bed cut beyond 70 m and the low side structure beyond 100 m,
@@ -696,8 +744,8 @@ def _far_scene(tunnel_frame: Frame, hall: bool) -> Frame:
     return Frame(xyz=p, intensity=np.full(len(p), 12.0, np.float32))
 
 
-def _both_sides(mode: int) -> DetectorConfig:
-    cfg = DetectorConfig()
+def _both_sides(mode: int, legacy: bool = False) -> DetectorConfig:
+    cfg = _legacy() if legacy else DetectorConfig()
     cfg.cluster = replace(cfg.cluster, far_axis_both_sides=mode)
     return cfg
 
@@ -718,7 +766,7 @@ def test_far_axis_both_sides_range_of_the_track_model(tunnel):
     longer side's; in the straight tunnel mode 1's range is within a few metres of ``axis_valid``
     and mode 2 sets no limit."""
     frame, _, _ = tunnel
-    cfg = DetectorConfig()
+    cfg = _legacy()
     t = Detector(cfg).process(_far_scene(frame, hall=True)).track
     assert t.axis_sides == 2 and abs(t.curvature) > 1e-4
     short = 76.0 + cfg.track.axis_valid_margin
@@ -736,17 +784,17 @@ def test_far_axis_both_sides_hall_curvature_no_longer_carries_a_far_stop(tunnel)
     mode advisory ``beyond_axis``, and the verified-clear range ends at the height reference."""
     frame, _, _ = tunnel
     scene = _far_scene(frame, hall=True)
-    t = Detector(DetectorConfig()).process(scene).track
+    t = Detector(_legacy()).process(scene).track
     lat = float(t.center_y(np.array([125.0]))[0]) - AXIS_Y            # ~1 m left of the real track axis
     pts = _box_surface(125.0, 0.3, lat, 0.3, 1.7, 0.5)
-    base = DetectorConfig()
+    base = _legacy()
     # the learned track opinion (tracking.doubt_*, on since 27.09) withholds this far STOP (4 frames, then the
     # lateral drifts out of the envelope as the hall axis settles); off here, so "off" is the flag's baseline
     base.tracking = replace(base.tracking, doubt_extra_hits=0)
     off = _run_with(scene, pts, base, n=5)                        # the 5th frame confirms it
     assert off.obstacle and off.detections[0].reason == "" and abs(off.detections[0].distance - 125.0) < 1.0
     for mode in (1, 2):
-        on = _run_with(scene, pts, _both_sides(mode), n=5)
+        on = _run_with(scene, pts, _both_sides(mode, legacy=True), n=5)
         assert not on.obstacle and on.warning and on.warnings[0].reason == "beyond_axis", mode
         assert on.health["monitored_range"] < off.health["monitored_range"]
         assert on.health["monitored_range"] >= _height_ref(on.track, DetectorConfig()) - 1e-6
@@ -759,12 +807,12 @@ def test_far_axis_both_sides_mode_2_keeps_other_reasons(tunnel):
     which hid a column from the hold on roundT_doubleT (EXPERIMENTS §1h)."""
     frame, _, _ = tunnel
     scene = _far_scene(frame, hall=True)
-    t = Detector(DetectorConfig()).process(scene).track
+    t = Detector(_legacy()).process(scene).track
     lat = float(t.center_y(np.array([125.0]))[0]) - AXIS_Y
     column = _box_surface(125.0, 0.3, lat + 0.8, 0.0, VAULT_H, 0.3)
     reasons = {}
     for mode in (0, 1, 2):
-        res = _run_with(scene, column, _both_sides(mode))
+        res = _run_with(scene, column, _both_sides(mode, legacy=True))
         assert not res.obstacle
         reasons[mode] = [c.reason for c in res.candidates if abs(c.distance - 125.0) < 1.0]
     assert reasons[0] == ["column"] and reasons[2] == ["column"] and reasons[1] == ["beyond_axis"], reasons

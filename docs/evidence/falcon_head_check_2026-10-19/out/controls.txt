@@ -1,0 +1,11 @@
+== wrapper primary vs plain stream_falcon.py, first 300 frames
+frames compared: 300 (a=300, b=300)
+fields that differ (count of frames, first frame): {'level': (12, 10)}
+health messages differing (ignoring the wall-clock latency line): 0
+decision pairs (a,b): {('FAULT', 'FAULT'): 1, ('GO', 'GO'): 8, ('CAUTION', 'CAUTION'): 290, ('STOP', 'STOP'): 1}
+
+== aec88d2 (all 4443) vs committed 1.1.0 B2 run
+frames compared: 4443 (a=4443, b=4443)
+fields that differ (count of frames, first frame): {'level': (2, 20)}
+health messages differing (ignoring the wall-clock latency line): 1
+decision pairs (a,b): {('FAULT', 'FAULT'): 1, ('GO', 'GO'): 8, ('CAUTION', 'CAUTION'): 3062, ('STOP', 'STOP'): 1372}

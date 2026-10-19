@@ -1,0 +1,4 @@
+cloud_with_fake_obj  n=1510 | drawn p90 40/80/120 m: 0.0182/0.0298/0.0403 | N1 reported: 0.0182/0.0297/0.0403 | raw axis, same pairs: 0.042/0.114/0.133 | visible pairs: 1394/842/255 of 1509
+doubleT_obstacle     n= 201 | drawn p90 40/80/120 m: 0.0039/0.0124/0.0219 | N1 reported: 0.0039/0.0124/0.0219 | raw axis, same pairs: 0.019/0.066/0.183 | visible pairs: 188/180/143 of 200
+roundT_doubleT       n= 252 | drawn p90 40/80/120 m: 0.0325/0.0306/0.0285 | N1 reported: 0.0325/0.0306/0.0285 | raw axis, same pairs: 0.062/0.139/0.205 | visible pairs: 161/44/11 of 251
+doubleT_platform     n= 345 | drawn p90 40/80/120 m: 0.0196/0.0136/0.0201 | N1 reported: 0.0196/0.0136/0.0201 | raw axis, same pairs: 0.078/0.080/0.191 | visible pairs: 256/115/64 of 344

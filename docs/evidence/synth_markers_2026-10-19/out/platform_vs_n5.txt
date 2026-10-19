@@ -1,0 +1,6 @@
+marker object 1 ids [23] frames 0-178 (179 marked, 175 at 2.5-250 m): N5 match in 177 frames {'obj01': 177}; median N5 - marker 0.02 m; size [0.45, 0.52, 0.44]
+marker object 2 ids [15, 16, 17, 18, 19, 20, 21, 22] frames 0-385 (386 marked, 329 at 2.5-250 m): N5 match in 329 frames {'obj03': 329}; median N5 - marker 0.0 m; size [0.24, 0.6, 1.73]
+marker object 3 ids [24] frames 8-257 (209 marked, 188 at 2.5-250 m): N5 match in 190 frames {'obj02': 190}; median N5 - marker 0.02 m; size [0.56, 0.54, 0.46]
+N5 track obj01: 177 rows, 177 match a marker object, 0 do not
+N5 track obj02: 190 rows, 190 match a marker object, 0 do not
+N5 track obj03: 329 rows, 329 match a marker object, 0 do not

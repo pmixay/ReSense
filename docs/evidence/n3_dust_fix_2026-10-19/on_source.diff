@@ -1,0 +1,26 @@
+diff --git a/configs/default.yaml b/configs/default.yaml
+index 7bfb2c7..87910ea 100644
+--- a/configs/default.yaml
++++ b/configs/default.yaml
+@@ -399,7 +399,7 @@ resense:
+     persist_tol_shift: 0.08          # m per nominal period, change of apparent displacement speed between links
+   dust:                            # 19.10 N3 diffuse-return guard (resense/dust_guard.py); off = detector unchanged.
+     # Synthetic-model evidence only (docs/evidence/n3_dust_fix_2026-10-19): no physical dust recording exists.
+-    enabled: false
++    enabled: true
+     interior_range: [5.0, 60.0]      # m along X: the gauge interior examined for diffuse returns
+     interior_half_width: 1.0         # m, |dy| of that interior
+     interior_height: [0.3, 2.7]      # m above the rail head
+diff --git a/ros2_ws/src/resense_ros/config/detector.yaml b/ros2_ws/src/resense_ros/config/detector.yaml
+index 7bfb2c7..87910ea 100644
+--- a/ros2_ws/src/resense_ros/config/detector.yaml
++++ b/ros2_ws/src/resense_ros/config/detector.yaml
+@@ -399,7 +399,7 @@ resense:
+     persist_tol_shift: 0.08          # m per nominal period, change of apparent displacement speed between links
+   dust:                            # 19.10 N3 diffuse-return guard (resense/dust_guard.py); off = detector unchanged.
+     # Synthetic-model evidence only (docs/evidence/n3_dust_fix_2026-10-19): no physical dust recording exists.
+-    enabled: false
++    enabled: true
+     interior_range: [5.0, 60.0]      # m along X: the gauge interior examined for diffuse returns
+     interior_half_width: 1.0         # m, |dy| of that interior
+     interior_height: [0.3, 2.7]      # m above the rail head

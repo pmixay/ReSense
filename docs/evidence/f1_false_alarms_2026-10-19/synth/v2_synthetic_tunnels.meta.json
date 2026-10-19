@@ -1,0 +1,16 @@
+{
+ "bag": "synthetic_tunnels",
+ "frames": 545,
+ "expected": 545,
+ "off_overrides": {
+  "lowobj.local_rail_margin": 0.0,
+  "cluster.mount_cross_tol": 0.0,
+  "tracking.settle_min_hits": 0
+ },
+ "repo": "/home/user/ReSense-f1",
+ "resets": {
+  "off": [],
+  "cand": []
+ },
+ "wall_s": 161.7
+}

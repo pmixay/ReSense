@@ -1,0 +1,13 @@
+Test suite on aec88d2 (exported with git archive), Python 3.12.3, numpy 1.26.4, scipy 1.11.4, scikit-learn 1.4.2,
+native kernels built with scripts/build_native.sh flags; RESENSE_REPO/PYTHONPATH = the exported copy;
+OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1.
+
+Run 1 (open3d not installed, package not pip-installed):
+  24 failed, 1741 passed, 174 skipped, 8 deselected, 2 errors, 17 subtests passed
+  cause of all 26: environment. 25 x "ModuleNotFoundError: No module named 'open3d'" (a declared dev dependency),
+  1 x a child process of test_lidar_proxy_hook could not import resense (package not installed).
+
+Run 2 (open3d 0.20.0 + libegl1 installed, package installed with pip install --no-deps -e in the exported copy;
+resense.__file__ checked to be the exported copy, not the main checkout):
+  the 6 affected files: 72 passed
+  full suite: 1969 passed, 8 deselected (their recorded data caches are not on this machine), 17 subtests passed, 0 failed

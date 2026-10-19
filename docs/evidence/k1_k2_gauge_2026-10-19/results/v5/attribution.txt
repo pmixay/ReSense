@@ -1,0 +1,19 @@
+controls: the dev harness reproduces the gate rows (frames differing, timing/latency-level excluded)
+  dp/v5a.jsonl vs gate v5a/work/doubleT_platform.jsonl : 0 of 345
+  dp/base_off.jsonl vs gate base/work/doubleT_platform.jsonl : 0 of 345
+  yamlchk/yaml.jsonl vs gate v5b/work/roundT_doubleT.jsonl : 0 of 252
+  sq/off.jsonl vs gate base/work/roundT_squareT_pressureGate_squareT.jsonl : 0 of 545
+doubleT_platform (gate: base 1 episode, v5a / v5b 2)
+  base_off  STOP frames [36, 37] episodes 1
+  k1        STOP frames [36, 37, 40, 41, 186, 187, 190, 191] episodes 4
+  v5a       STOP frames [36, 37, 40, 41] episodes 2
+  v5a_noK1  STOP frames [36, 37] episodes 1
+  v5b_noK1  STOP frames [36, 37] episodes 1
+roundT_doubleT (gate: base 0, v5a 1 episode frames 96-99, v5b 0)
+  k1        STOP frames [] episodes 0 joint_used at them []
+  v5a_noK1  STOP frames [96, 97, 98, 99] episodes 1 joint_used at them [True, True, True, True]
+set O (gate: base small_center 32 / 55.8 m, bg 0; v5a 30 / 52.5, bg 5; v5b 30 / 52.5, bg 0)
+  k1        small_center STOP 34 first 59.2 m | background 0 frames 0 ids
+  v5a_noK1  small_center STOP 30 first 52.5 m | background 6 frames 2 ids
+  v5b_noK1  small_center STOP 30 first 52.5 m | background 0 frames 0 ids
+configs: k1 = walls_smoothing_distance 1.5 only; v5a_noK1 / v5b_noK1 = the variant with walls_smoothing_distance 0

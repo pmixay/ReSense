@@ -1,0 +1,81 @@
+{
+ "stop_frames": 185,
+ "stop_dets": 185,
+ "matched_object": 185,
+ "matched_dust": 0,
+ "unmatched": [],
+ "dust_frames": [
+  {
+   "frame": 21,
+   "decision": "GO",
+   "dust_boxes": [
+    [
+     0,
+     3.47,
+     1.48
+    ],
+    [
+     1,
+     4.37,
+     1.75
+    ]
+   ],
+   "dets": [],
+   "warns": []
+  },
+  {
+   "frame": 27,
+   "decision": "GO",
+   "dust_boxes": [
+    [
+     6,
+     4.36,
+     1.4
+    ],
+    [
+     7,
+     6.07,
+     1.77
+    ]
+   ],
+   "dets": [],
+   "warns": []
+  },
+  {
+   "frame": 35,
+   "decision": "CAUTION",
+   "dust_boxes": [
+    [
+     12,
+     4.24,
+     -0.38
+    ],
+    [
+     13,
+     4.94,
+     0.17
+    ]
+   ],
+   "dets": [],
+   "warns": [
+    [
+     1.75,
+     1.39
+    ]
+   ]
+  },
+  {
+   "frame": 36,
+   "decision": "GO",
+   "dust_boxes": [
+    [
+     13,
+     3.9,
+     0.17
+    ]
+   ],
+   "dets": [],
+   "warns": []
+  }
+ ]
+}

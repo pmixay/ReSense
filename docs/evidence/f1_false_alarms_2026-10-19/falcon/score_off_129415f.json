@@ -1,0 +1,36 @@
+{
+ "base_stop": 1372,
+ "cand_stop": 1372,
+ "false_attributed_base": 12,
+ "false_attributed_remaining": [
+  159,
+  2312,
+  2313,
+  2314,
+  4394,
+  4395,
+  4396,
+  4397,
+  4398,
+  4399,
+  4400,
+  4401
+ ],
+ "person_ref": 1360,
+ "person_kept": 1360,
+ "person_lost": [],
+ "n_person_lost": 0,
+ "new_stop_frames": [],
+ "n_new_stop": 0,
+ "first_person_stop_base": [
+  2972,
+  124.84
+ ],
+ "first_person_stop_cand": [
+  2972,
+  124.84
+ ],
+ "decision_transitions": {},
+ "caution_base": 3062,
+ "caution_cand": 3062
+}

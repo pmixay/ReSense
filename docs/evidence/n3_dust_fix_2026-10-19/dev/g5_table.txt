@@ -1,0 +1,30 @@
+doubleT_obstacle
+   clean: ep 1 STOP 193 GO 8 deg 0 object:128/185@56.13 person:61/61@55.51
+   low: ep 7 STOP 167 GO 21 deg 0 object:100/185@56.11 person:60/61@55.51
+   medium: ep 1 STOP 193 GO 0 deg 201 object:132/185@56.12 person:61/61@55.51
+   high: ep 1 STOP 63 GO 0 deg 201 object:0/185@None person:59/61@55.52
+doubleT_platform
+   clean: ep 0 STOP 0 GO 144 deg 9 
+   low: ep 3 STOP 7 GO 133 deg 24 
+   medium: ep 3 STOP 24 GO 0 deg 345 
+   high: ep 2 STOP 12 GO 0 deg 345 
+roundT_doubleT
+   clean: ep 0 STOP 0 GO 83 deg 0 
+   low: ep 0 STOP 0 GO 83 deg 0 
+   medium: ep 1 STOP 13 GO 0 deg 252 
+   high: ep 5 STOP 34 GO 0 deg 252 
+roundT_pressureGate_roundT
+   clean: ep 1 STOP 2 GO 150 deg 0 
+   low: ep 0 STOP 0 GO 164 deg 0 
+   medium: ep 8 STOP 42 GO 0 deg 268 
+   high: ep 11 STOP 76 GO 0 deg 268 
+roundT_squareT_pressureGate_squareT
+   clean: ep 0 STOP 0 GO 354 deg 0 
+   low: ep 0 STOP 0 GO 382 deg 0 
+   medium: ep 2 STOP 20 GO 0 deg 545 
+   high: ep 10 STOP 100 GO 0 deg 545 
+squareT_platform_squareT_switch
+   clean: ep 3 STOP 11 GO 420 deg 0 
+   low: ep 15 STOP 74 GO 415 deg 0 
+   medium: ep 5 STOP 51 GO 0 deg 877 
+   high: ep 0 STOP 0 GO 0 deg 877 

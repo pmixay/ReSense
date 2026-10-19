@@ -93,6 +93,23 @@ resense:
     floor_verify_tolerance: 0.5    # m, allowed deviation of the far side base from its near-range height
     floor_verify_min_points: 5     # side points per bin for the bin to count
     floor_verify_max_range: 250.0  # m, how far the verification is attempted
+    axis_joint_fit: false          # (K2 held off for P4, captain 19.10; variant B: true / range false / min_curvature 0.0001 / reach_cap true) 19.10 (K2, off): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
+    axis_joint_knot: 60.0          # 19.10: m, X from which the curvature may change (C1 piecewise axis); 0 = a single quadratic
+    axis_joint_step_sigma: 0.001   # 19.10: 1/m, prior SD of that curvature step
+    axis_joint_min_far_bins: 4     # 19.10: boundary bins beyond the knot needed to fit a step
+    axis_joint_rail_sigma: 0.03    # 19.10: m, SD of a rail-pair slab midpoint
+    axis_joint_wall_sigma: 0.1     # 19.10: m, SD of a boundary bin
+    axis_joint_tolerance: 0.3      # 19.10: m, a boundary bin joins the fit within this of the current fit
+    axis_joint_grow_start: 40.0    # 19.10: m, first range of the outward growth
+    axis_joint_grow_step: 16.0     # 19.10: m, growth step
+    axis_joint_min_segment: 3      # 19.10: bins a boundary segment needs to take part
+    axis_joint_range: true         # 20.10: with axis_joint_fit, the trusted range from the joint fit too (v3); false = axis shape only, range policy as before (v4)
+    axis_joint_min_curvature: 0.0  # 19.10 (v5, off; 1/m; with axis_joint_fit and axis_joint_range false): > 0 = the estimator without the joint fit runs on its own state and is the output; the joint fit's shape replaces its axis shape only on frames with |curvature| >= this (a curve as it sees it); 0 = off (v4)
+    axis_joint_reach_cap: false    # 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range also capped at the boundaries' reach along that axis + axis_valid_margin
+    walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
+    walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
+    walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this
+    walls_smoothing_standstill_max: 60.0  # 19.10 (K1): s; that standing rule at most this long in a row
   gauge:
     # v0.6: the train envelope given by the organizers (Q&A session): 2.1 m wide x 3.0 m high above the rail head,
     # from 0.12 m (lower objects on the track: the lowobj stage); the v0.5 polygon (1.40 m) is the advisory zone
@@ -213,6 +230,11 @@ resense:
     retro_min_fraction: 0.5    # fraction of retro returns for a cluster to count as a reflector
     retro_max_height: 1.2      # m, taller retro clusters (person in a hi-vis vest, train) keep their zone
     retro_max_width: 0.8       # m, narrower retro clusters (plate, sign, marker, post) -> advisory
+    # 19.10 (F1 lane, off): near-field height cross-check against the calibrated mount (Detector._mount_cross_check)
+    mount_cross_tol: 0.5           # m, > 0 on (H′, switched on by the captain 19.10; 0 = off): model rail head vs mount plane disagreement before the check applies (+ grade * X)
+    mount_cross_grade: 0.05        # m per m
+    mount_cross_range: 30.0        # m
+    mount_cross_above_only: true   # only a cluster the mount puts entirely above the envelope top (amendment 6)
   tracking:
     stop_keep_low_s: 0.3          # seconds of actual sensor time for continuation by current low-object evidence
     gate_base: 1.5
@@ -267,6 +289,12 @@ resense:
     conf_gain: 0.35
     conf_decay: 0.25
     conf_threshold: 0.6
+    # 19.10 (F1 lane, off): a settled static track (centroid within settle_max_spread over its last settle_window hits) is an obstacle only while >= settle_min_share of them were inside the gauge (Tracker._settle)
+    settle_min_hits: 0             # > 0 on (opt-in; withdrawn from the 19.10 candidate, amendment 6)
+    settle_window: 100
+    settle_max_spread: 0.5         # m per axis
+    settle_min_share: 0.5
+    settle_check_z: false          # (19.10 candidate) false: the spread on the ground-plane position only (X, Y); true: also z
   accumulation:
     enabled: true
     n_frames: 5                    # frames merged (the current one included)
@@ -336,6 +364,17 @@ resense:
     rail_start_lateral: 0.10       # m, the cluster reaches the axis +- rails_spacing / 2 within this
     rail_start_max_width: 0.45     # m across the track (an object lying across a rail is wider)
     rail_start_min_ref: 0.06       # m (safety review of 26.09): only where the band's line is at least this far above the model's rail-head plane (the young-model fault: 0.135-0.148 m in the finding; a correct model ~0)
+    # 19.10 (F1, off): compare a low cluster's top with the frame's own rail returns around it (lowobj.rail_reference_check); failing clusters only continue an existing low STOP
+    local_rail_margin: 0.01        # m, (a) > 0 on (switched on by the captain 19.10, review B1 accepted, P3 improves; 0 = off): top >= local rail-head reference + margin
+    local_rail_window: 5.0         # m along the track each side
+    local_rail_band: 0.10          # m, half-width of each rail's band
+    local_rail_min_bins: 2         # 0.5 m bins with rail-band returns per line
+    rail_band_range: 0.0           # m, (b) > 0 on: same-band rail-line test out to this range ...
+    rail_band_margin: 0.05         # m ... with this margin, without rail_start_min_ref
+    local_rail_exclude_low: false  # amendment 6 option (measured: it costs the effect, amendment 7)
+    local_rail_cross_tol: 0.0      # m, 0 = off since 19.10 (it added a false STOP at ride 5714); > 0: rails' lines differing by more than this: the lower line is the reference (amendment 7, review B1)
+    local_rail_advisory: false     # true: a cluster failing (a) / (b) is advisory 'below_rail_ref' instead of weak evidence (amendment 6 option; amendment 8)
+    no_rail_low_within: 0.0        # m, (c) > 0 on: no rail pair -> a low cluster beyond this is advisory (no_rail_low)
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
     enabled: true
     frames: 20                       # v0.6.1: final tilt = median of 20 observations ...
@@ -408,4 +447,32 @@ resense:
     persist_tol_dy: 0.12             # m, lateral match between frames
     persist_tol_h: 0.2               # m, height match between frames
     persist_tol_shift: 0.08          # m per nominal period, change of apparent displacement speed between links
+  dust:                            # 19.10 N3 diffuse-return guard (resense/dust_guard.py); off = detector unchanged.
+    # Synthetic-model evidence only (docs/evidence/n3_dust_fix_2026-10-19): no physical dust recording exists.
+    enabled: false
+    interior_range: [5.0, 60.0]      # m along X: the gauge interior examined for diffuse returns
+    interior_half_width: 1.0         # m, |dy| of that interior
+    interior_height: [0.3, 2.7]      # m above the rail head
+    support_radius: 0.10             # m, r(R) = support_radius + R * support_radius_per_m
+    support_radius_per_m: 0.004
+    dedup: 0.02                      # m, coincident returns count once
+    on_density: 0.3                  # isolated interior returns per m^3 that switch the guard on ...
+    off_density: 0.15                # ... and below which it may switch off
+    hold_frames: 10
+    cell: [5.0, 0.5, 0.6]            # m, interior cells (X, dy, h) for the spread of isolated returns
+    on_spread: 0.35
+    off_spread: 0.2
+    attach_factor: 0.0
+    track_filter: true               # while on (or light), unsupported returns near the track are withheld from the track model
+    track_margin: 10.0
+    track_min_height: 0.15           # m above the rail head: rails / bed below are never withheld from the track model
+    light_window: 20
+    light_density: 0.05
+    light_spread: 0.0                # 0 = off; 0.08 lost real STOPs at low density in development
+    min_support: 3
+    max_support: 12
+    false_support: 0.001
+    max_density: 50.0
+    roi_half_width: 3.0
+    roi_height: [-0.8, 4.5]
   voxel: 0.0

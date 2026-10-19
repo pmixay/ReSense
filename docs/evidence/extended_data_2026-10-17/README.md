@@ -1,5 +1,11 @@
 # Extended dataset of 16.10: intake, characterization, sealed 1.1.0 observation
 
+**19.10 correction: the synthetic bags do contain dust.** The organizers said so on 19.10, and their marked copies
+of the same bags locate it: 11 bursts of 1–4 boxes of 3–6 cm, 1–14 points each, for one or two frames, 3.4–7.2 m
+ahead (platform frames 21, 27, 35–36; switch 481, 483, 611, 613; tunnels 70, 166–167, 195, 446). The searches below
+looked for a volume of dust and could not see it. Finding 1 ("no dust or suspension") and row 7 of the risk table are
+wrong. See [`../synth_markers_2026-10-19/`](../synth_markers_2026-10-19/README.md).
+
 **18.10 correction to the historical partial observation below:** the complete verified Falcon decode now
 covers all 4,443 frames. Its valid `is_2nd_return` flags show a median 2,005 second-return points per frame;
 the earlier blanket "single return" description is superseded. Raw maximum range is 509.97 m. The original
