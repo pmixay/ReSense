@@ -18,6 +18,20 @@ import json  # noqa: E402
 import lowref  # noqa: E402
 import range_test  # noqa: E402
 
+# F1_SET="section.key=value;section.key=value": config overrides for the replica range_test builds
+# (range_test.py has no override option; its cached baseline track model, <cache>_baseline.json, is the
+# base detector's and is reused, so the object is placed exactly as for the base run)
+_sets = [s for s in os.environ.get("F1_SET", "").split(";") if s]
+if _sets:
+    import yaml
+    _over = {k: yaml.safe_load(v) for k, v in (s.split("=", 1) for s in _sets)}
+
+    class _Replica(range_test.NodeReplica):
+        def __init__(self, *a, **k):
+            k.setdefault("overrides", _over)
+            super().__init__(*a, **k)
+
+    range_test.NodeReplica = _Replica
 sink: list = []
 lowref.patch_detector(sink)
 sys.argv = [os.path.join(REPO, "docs/evidence/judgement_2026-10-13/scripts/range_test.py")] + sys.argv[1:]
