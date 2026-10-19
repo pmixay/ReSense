@@ -85,6 +85,23 @@ from 23 % to 14 % (median 139 → 135 m). On straight `roundT_squareT…` the cu
 ±2e-4 noise from the sparse far wall bins, which bends the far axis by up to 0.8 m at 150 m; the reach measured
 against that axis then ends near 100 m where the base (quadratic, +50 m straight bonus) trusted 156 m.
 
+## Moving objects (post-hoc, added 19.10 13:25 after the coordinator's note that objects may move; not pre-registered)
+
+Already in the measured range run and the gate (same trees, nothing re-run):
+
+| probe | base first STOP / STOP frames | cand v3 |
+|---|---|---|
+| E1 person crossing at 150 m (`--vy 1.0`) | 129.6 m / 20 of 96 | 129.6 m / 22 of 92 |
+| E2 person crossing at 80 m (`--vy 1.0`) | 53.3 m / 26 of 60 | **50.8 m / 23 of 60** (worse) |
+| E3 object receding 5 / 8 m/s | 97.1 / 96.2 m; 101 / 101 frames | same; 104 / 101 frames |
+| E4 object appearing at 60 / 100 m | 53.8 / 92.0 m | same |
+| doubleT_obstacle real person crossing (gate labelled hits; `probe.py` STOP frames) | 61; 193 | 61; **188** (first STOP 5 frames later) |
+| K1-5 person appearing on the standing background | 28 frames to STOP | 5 frames |
+
+The K1 logic smooths only the *axis* by the train's own travel; no object or track logic assumes a static
+object. Still, the two crossing persons lose STOP frames (E2 −3, doubleT −5) at the gauge edge: one more reason
+not to switch on.
+
 ## X3 robustness battery (G-2; 4 recordings × 10 variants, against the base battery)
 
 **FAIL**, 13 of 260 comparisons, all of the "fewer STOP frames on a positive" or "more outside false STOPs" kind:
