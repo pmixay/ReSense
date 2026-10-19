@@ -9,7 +9,12 @@ design «Линия» ([`design/mockup/`](design/mockup/README.md)).
 
 ## Run it
 
-**Live: [resense.arbuz.lol](https://resense.arbuz.lol/)** — a deployed instance, nothing to install. Your own instance:
+**Live preview of `ui-improvement`: [hack.amdm.life](https://hack.amdm.life/).**
+After changes on this server, run `scripts/deploy_webapp.sh` to update it. Deployment
+and service details are in [`../deploy/README.md`](../deploy/README.md); the live
+`/deployment.json` endpoint identifies the deployed commit.
+
+Your own instance:
 
 ```bash
 scripts/run_webapp.sh              # http://localhost:8080 — builds the frontend if needed, one port

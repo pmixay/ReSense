@@ -1,0 +1,17 @@
+[Unit]
+Description=ReSense live web application
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=@REPO@
+EnvironmentFile=@ENVFILE@
+ExecStart=/bin/bash @SERVE@
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=45
+KillMode=control-group
+UMask=0022
+
+[Install]
+WantedBy=default.target
