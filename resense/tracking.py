@@ -511,6 +511,8 @@ class Tracker:
             if sum(t.settle_hist) >= c.settle_min_share * n - 1e-9:
                 continue
             spread = np.ptp(np.stack(t.settle_cen), axis=0)
+            if not c.settle_check_z:
+                spread = spread[:2]          # the ground-plane position only (a tall object's sampled part varies)
             t.settled_out = bool(np.all(spread <= c.settle_max_spread))
 
     @staticmethod

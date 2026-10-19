@@ -130,3 +130,17 @@ attempt is reported as such.
   lose STOP frames against the base; doubleT_obstacle (standing train, static object on the rail) 193 STOP.
 * Values above are fixed before measurement; if a value fails, the failure is reported, and any retry is a new
   amendment with its reason.
+
+## Amendment 2 (19.10, ~10:05 UTC) — S measured; S2 registered before its measurement
+
+**Measured (Falcon, H + S as registered, `falcon_trace.py --set cluster.mount_cross_tol=0.5 --set
+tracking.settle_min_hits=50`):** non-person STOP frames 12 → 1 (159 remains); all 1,360 person STOP frames kept
+with the same detections (distance and lateral within 0.5 m of the base's); first person STOP 124.84 m (base
+124.84); no new STOP frame; the 11 removed frames became CAUTION (CAUTION 3,062 → 3,073). **Why 159 remains:**
+the track's centroid spread over its last 100 hits was 0.28 m along, 0.17 m across, **0.55 m vertically** (which
+part of a ~1 m tall object is sampled at 115 m), above the 0.5 m limit.
+
+**S2 (registered now):** the settle spread is measured on the ground-plane position only (X, Y), because only a
+horizontal move can take an object into or out of the gauge; z is not used (`tracking.settle_check_z` false).
+Every other S value unchanged. S2 is measured on the same Falcon stream, and S and S2 both on the standing-train
+probes of amendment 1 (`S_person_*`, `S_cube05_*`), doubleT_obstacle, the full gate and the ride.

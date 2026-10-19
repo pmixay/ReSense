@@ -466,6 +466,7 @@ class TrackingConfig:
     settle_window: int = 100           # hits
     settle_max_spread: float = 0.5     # m, max - min of the centroid per axis over the window
     settle_min_share: float = 0.5
+    settle_check_z: bool = True        # the spread limit also on the centroid height (false: ground-plane X / Y only, S2)
 
     def frames_to_confirm(self, frame_dt: float | None = None) -> int:
         """Consecutive frames a static, always-matched object needs before it is reported
