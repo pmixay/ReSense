@@ -143,3 +143,17 @@ Changes to the measurement (review C1, C3, C4, C6, C7); thresholds unchanged:
   in one frame and comes back to ≥ 90 % of the previous value within 10 frames.
 * **C2** acknowledged: K1-3 (squareT_platform) was used to diagnose v1 and to check v2/v3; it is reported as a
   development-informed result, not as an independent pre-registered test.
+
+## 8. Revision 3 (19.10, ~13:40 UTC) — v4 at the coordinator's request; rows unchanged
+
+P1 asked (19.10 13:22) for the report's next step as v4. **v4 = commit `7dbdd64`**: new switch
+`track.axis_joint_range` (default true = v3 behaviour). The **v4 candidate** = `axis_joint_fit: true`,
+`axis_joint_range: false`, `walls_smoothing_distance: 1.5`: the joint fit sets the axis shape (centre, tangent,
+curvature, step); the trusted range, side count, disagreement, wall quality and the straight test come from the
+per-side fits exactly as without the joint fit (the straight test on their own smoothed curvature).
+Development check before this revision: B6 `track`/`measure` on roundT_squareT, roundT_doubleT, C,
+squareT_platform, Set O (trusted range p50 185 / 159 / 147 / 159 / 159 m vs base 175 / 157 / 143 / 151 / 155).
+Trees `/opt/off4`, `/opt/cand4` (= `7dbdd64`, cand4 with the three settings above committed locally for X3).
+**The acceptance rows, truths, thresholds and decision rule are those of §3 and §7, unchanged; no new metric.**
+The moving-object section of the report stays post-hoc. Review items N1/2/3/4 concern the joint range policy,
+which v4 does not use; finding 8 (viewers) is addressed separately, not as an acceptance row.
