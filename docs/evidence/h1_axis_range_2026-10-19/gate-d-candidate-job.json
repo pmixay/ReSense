@@ -1,0 +1,13 @@
+{
+  "pid": 3909698,
+  "command": [
+    "/tmp/opencode/resense-b4-venv/bin/python",
+    "/home/aiops/resense/docs/evidence/h1_axis_range_2026-10-19/run_checks.py",
+    "gate",
+    "--revision",
+    "d",
+    "--side",
+    "candidate"
+  ],
+  "log": "/tmp/opencode/h1-axis-range/gate-d-candidate-driver.log"
+}

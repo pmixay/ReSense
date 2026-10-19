@@ -257,16 +257,19 @@ def test_free_standing_post_is_a_stop(tunnel):
     takes a 0.3 m column this near the axis, through the envelope top, for a hanging object)."""
     frame, _, _ = tunnel
     cfg = DetectorConfig()
-    cfg.cluster = replace(cfg.cluster, column_free_max_top=2.95)
+    # Isolate the withdrawn free-top experiment. The current observed-core path
+    # independently accepts this inside body (including a body up to the vault),
+    # so it must be off when checking the legacy spare/column timings below.
+    cfg.cluster = replace(cfg.cluster, column_free_max_top=2.95, column_core_margin=0.0)
     cfg.gauge = replace(cfg.gauge, reference=0)
     off = DetectorConfig()
     off.gauge = replace(off.gauge, reference=0)
-    off.cluster = replace(off.cluster, column_free_max_top=0.0)
+    off.cluster = replace(off.cluster, column_free_max_top=0.0, column_core_margin=0.0)
     unhung = DetectorConfig()
     unhung.gauge = replace(unhung.gauge, reference=0)
-    unhung.cluster = replace(unhung.cluster, column_free_max_top=2.95, hanging_enabled=False)
+    unhung.cluster = replace(unhung.cluster, column_free_max_top=2.95, hanging_enabled=False, column_core_margin=0.0)
     believe_all = DetectorConfig()
-    believe_all.cluster = replace(believe_all.cluster, column_free_max_top=2.95)
+    believe_all.cluster = replace(believe_all.cluster, column_free_max_top=2.95, column_core_margin=0.0)
     believe_all.gauge = replace(believe_all.gauge, reference=0)
     believe_all.tracking = replace(believe_all.tracking, column_free_min_spares=1)
     confirm = cfg.tracking.frames_to_confirm() - 1
