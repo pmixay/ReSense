@@ -9,9 +9,13 @@
 > (v1.0.0 detector) by four read-only researchers and one critic; numbers recounted from the judge's
 > per-frame outputs (`docs/evidence/judgement_2026-10-13/out/`, `raw.tar.xz`). Line numbers in
 > `resense/` have shifted with the 1.1.0 reseal (§2): search for the named function.
-> **Updated:** 2026-10-18: captain selected sealed `main` 1.1.0 for next P4 J1. The existing work
-> branch is now unreleased 1.2.0 (`e9d8fc6`, four version lines only), reviewed separately; P4 final
-> approval and P3 coordination acknowledgement remain pending. [Handoff](evidence/p4_followup_2026-10-18/README.md).
+> **Updated:** 2026-10-18: `det/b4-orientation` contains main `9917851` and P4 `8a0af65`;
+> the previous work branch was merged into main, and P4's branch was deleted after its merge.
+> Committed merged source `0779db7` passes fresh paired full gates, X3 and B4 mount sweeps;
+> replacement 1.2.0 candidate seal passes in a clean checkout before/after native build.
+> [Evidence and remaining limits](evidence/b4_merge_reseal_2026-10-18/README.md).
+> Parent P4 reviews are preserved; final review of this merged source is pending.
+> The captain's next J1 selection stays pinned to sealed 1.1.0 `3b7d7aa`, not current main.
 > Earlier selected LiDAR source `cecab1b` sealed after full gate, X3 and complete
 > Falcon preservation checks; startup replay remains opt-in. N1/N4 local acceptance passes;
 > N3 generator/measurements are complete but robustness acceptance fails; N6 remains off.

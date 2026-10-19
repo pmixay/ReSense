@@ -1,0 +1,10 @@
+{
+ "frames": 985,
+ "wall_s": 19.8,
+ "cpu_s": 19.7,
+ "rss_peak_mb": 141.3,
+ "resets": [],
+ "bags": [
+  "/home/user/rs-data/b3/falcon_prefix"
+ ]
+}

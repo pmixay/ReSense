@@ -1,0 +1,17 @@
+{
+  "originals": {
+    "receipt_sha256": "6c2f2b31f1b4c288fc01996af1f6dc0a7f9b418a10f5b09abeec6d9f1a6ef27e",
+    "same_as_previously_committed_receipt": "docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_originals.json",
+    "frames": 2488
+  },
+  "set_o": {
+    "receipt_sha256": "7f036e7d0016d7bdc114a2aaa2bef942133a0f63c1b574833a6ecac79b8ba1f9",
+    "same_as_previously_committed_receipt": "docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_set_o.json",
+    "frames": 1510
+  },
+  "ride": {
+    "receipt_sha256": "89e6b448c7d6108a34ef2fe16453f28573a88aa1e4711fb46ef6665e4bca8752",
+    "same_as_previously_committed_receipt": "docs/evidence/lidar_adaptation_2026-10-18/default_off/gate_intake_ride.json",
+    "frames": 11271
+  }
+}

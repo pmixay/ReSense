@@ -1,0 +1,158 @@
+{
+ "track": "v100/track_doubleT_obstacle.json",
+ "poses": "poses_doubleT_obstacle.json",
+ "frames": 201,
+ "frames_without_track": 0,
+ "decisions": {
+  "GO": 8,
+  "STOP": 193
+ },
+ "range": {
+  "p10": 139.0,
+  "p50": 151.0,
+  "p90": 171.0,
+  "n": 201,
+  "share_ge_60m": 1.0,
+  "share_ge_100m": 1.0,
+  "share_ge_150m": 0.627
+ },
+ "blinks": 0,
+ "jitter": {
+  "40m": {
+   "all": {
+    "p50": 0.005,
+    "p90": 0.013,
+    "n": 200
+   },
+   "within_trusted": {
+    "p50": 0.005,
+    "p90": 0.013,
+    "n": 200
+   }
+  },
+  "80m": {
+   "all": {
+    "p50": 0.013,
+    "p90": 0.038,
+    "n": 200
+   },
+   "within_trusted": {
+    "p50": 0.013,
+    "p90": 0.038,
+    "n": 200
+   }
+  },
+  "120m": {
+   "all": {
+    "p50": 0.026,
+    "p90": 0.089,
+    "n": 200
+   },
+   "within_trusted": {
+    "p50": 0.026,
+    "p90": 0.089,
+    "n": 199
+   }
+  }
+ },
+ "jitter_compensated": {
+  "40m": {
+   "p50": 0.005,
+   "p90": 0.015,
+   "n": 200
+  },
+  "80m": {
+   "p50": 0.016,
+   "p90": 0.043,
+   "n": 200
+  },
+  "120m": {
+   "p50": 0.031,
+   "p90": 0.092,
+   "n": 200
+  }
+ },
+ "offtrack": {
+  "8-25": {
+   "within_trusted": {
+    "n": 0
+   },
+   "beyond_trusted": {
+    "n": 0
+   },
+   "share_over_0.5m": null,
+   "share_over_1.05m": null
+  },
+  "25-40": {
+   "within_trusted": {
+    "n": 0
+   },
+   "beyond_trusted": {
+    "n": 0
+   },
+   "share_over_0.5m": null,
+   "share_over_1.05m": null
+  },
+  "40-60": {
+   "within_trusted": {
+    "n": 0
+   },
+   "beyond_trusted": {
+    "n": 0
+   },
+   "share_over_0.5m": null,
+   "share_over_1.05m": null
+  },
+  "60-80": {
+   "within_trusted": {
+    "n": 0
+   },
+   "beyond_trusted": {
+    "n": 0
+   },
+   "share_over_0.5m": null,
+   "share_over_1.05m": null
+  },
+  "80-100": {
+   "within_trusted": {
+    "n": 0
+   },
+   "beyond_trusted": {
+    "n": 0
+   },
+   "share_over_0.5m": null,
+   "share_over_1.05m": null
+  },
+  "100-120": {
+   "within_trusted": {
+    "n": 0
+   },
+   "beyond_trusted": {
+    "n": 0
+   },
+   "share_over_0.5m": null,
+   "share_over_1.05m": null
+  },
+  "120-150": {
+   "within_trusted": {
+    "n": 0
+   },
+   "beyond_trusted": {
+    "n": 0
+   },
+   "share_over_0.5m": null,
+   "share_over_1.05m": null
+  },
+  "150-200": {
+   "within_trusted": {
+    "n": 0
+   },
+   "beyond_trusted": {
+    "n": 0
+   },
+   "share_over_0.5m": null,
+   "share_over_1.05m": null
+  }
+ },
+ "path_segments": 1
+}

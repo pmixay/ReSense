@@ -1,0 +1,160 @@
+{
+  "geometry": {
+    "six_distinct_cones": [
+      -5.403541839131874e-10,
+      -9.735499721425941e-11,
+      1.0
+    ],
+    "three_ids_two_distinct_cones": null,
+    "three_ids_one_cone": null,
+    "float_ids": null,
+    "two_dimensional_ids": null,
+    "missing": null,
+    "constant": null,
+    "negative": null,
+    "short": null,
+    "mixed": null,
+    "shuffled_points": [
+      2.0921922792863235e-10,
+      -2.223265030815435e-10,
+      1.0
+    ]
+  },
+  "real_late_ring_decisions": {
+    "normal_channels": [
+      "FAULT",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "CAUTION",
+      "CAUTION",
+      "GO",
+      "GO"
+    ],
+    "first_frame_no_ring": [
+      "CAUTION",
+      "CAUTION",
+      "CAUTION",
+      "CAUTION",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP"
+    ]
+  },
+  "real_short_window_decisions": {
+    "0": [
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP"
+    ],
+    "4": [
+      "FAULT",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "GO",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP",
+      "STOP"
+    ]
+  },
+  "lost_matched_stop_frames": {
+    "person_crossing": []
+  },
+  "cadence": [
+    {
+      "spacing": 1,
+      "periods_per_frame": 1,
+      "remounted": false,
+      "frozen_frame": 4
+    },
+    {
+      "spacing": 1,
+      "periods_per_frame": 1,
+      "remounted": true,
+      "frozen_frame": 4
+    },
+    {
+      "spacing": 1,
+      "periods_per_frame": 2,
+      "remounted": false,
+      "frozen_frame": 4
+    },
+    {
+      "spacing": 1,
+      "periods_per_frame": 2,
+      "remounted": true,
+      "frozen_frame": 4
+    },
+    {
+      "spacing": 1,
+      "periods_per_frame": 5,
+      "remounted": false,
+      "frozen_frame": 4
+    },
+    {
+      "spacing": 1,
+      "periods_per_frame": 5,
+      "remounted": true,
+      "frozen_frame": 4
+    },
+    {
+      "spacing": 10,
+      "periods_per_frame": 1,
+      "remounted": false,
+      "frozen_frame": 40
+    },
+    {
+      "spacing": 10,
+      "periods_per_frame": 1,
+      "remounted": true,
+      "frozen_frame": 40
+    },
+    {
+      "spacing": 10,
+      "periods_per_frame": 2,
+      "remounted": false,
+      "frozen_frame": 20
+    },
+    {
+      "spacing": 10,
+      "periods_per_frame": 2,
+      "remounted": true,
+      "frozen_frame": 20
+    },
+    {
+      "spacing": 10,
+      "periods_per_frame": 5,
+      "remounted": false,
+      "frozen_frame": 8
+    },
+    {
+      "spacing": 10,
+      "periods_per_frame": 5,
+      "remounted": true,
+      "frozen_frame": 8
+    }
+  ]
+}

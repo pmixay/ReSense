@@ -1,0 +1,15 @@
+{
+  "prior_native": {
+    "resense/_resense_native.cpython-312-x86_64-linux-gnu.so": "511f7766639f0ddab471a77263f7a343de19d0a8217dd7cd3a11635c8a7db2c8"
+  },
+  "prior_files_preserved_at": "/home/resense/data/b4_merge_reseal/working_native_backup",
+  "current_native": {
+    "resense/_resense_native.so": "67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394"
+  },
+  "build_exit": 0,
+  "command": [
+    "bash",
+    "scripts/build_native.sh"
+  ],
+  "loaded_status": "native (_resense_native.so)"
+}

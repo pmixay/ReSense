@@ -208,6 +208,8 @@ class HealthMonitor:
         orientation_confirmed = None
         if calibration:
             st = calibration.get("status")
+            if calibration.get("orientation_conflict", False):
+                flag(2, "mount orientation unconfirmed: " + calibration.get("message", "axis conflict"))
             # Orientation readiness is separate from the final tilt fit. An inverted
             # sensor can otherwise produce GO before the search adopts a valid map.
             # Legacy external status dictionaries have no readiness field; completed

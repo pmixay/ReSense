@@ -16,7 +16,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = 'docs/evidence/integration_ci_2026-10-16/lint_record/snapshot_lock.json'
-LOCK_SHA256 = 'b78312866a4b14a32ae69b8146c8b0729d04455240b1f86851731ac0db07a0be'
+LOCK_SHA256 = 'f7404106697ddb09c6c562fb152b3d08a93c3acef943cb3533b089f9ff0c6378'
 RUFF_VERSION = '0.15.8'
 
 
@@ -89,6 +89,13 @@ def verify(root, lock):
                 raise ValueError('launch provenance does not pin the helper')
             if source['source_blob'] != git_blob(blobs[entry['path']]):
                 raise ValueError('launch source blob mismatch')
+        elif source['kind'] == 'reviewed-git-blob':
+            # Integration receipt verified against the original review commit.
+            # Keep verification usable in archives without a Git checkout.
+            if (recorded['path'] != entry['path'] or recorded['commit'] != source['commit']
+                    or recorded['git_blob'] != git_blob(blobs[entry['path']])
+                    or recorded['sha256'] != sha256(blobs[entry['path']])):
+                raise ValueError('reviewed Git blob provenance mismatch')
         else:
             raise ValueError('unknown provenance kind')
     return paths

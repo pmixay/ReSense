@@ -119,6 +119,25 @@ class ArchivedLintContract(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'live reference'):
             policy.audit_live_references(self.root, self.lock)
 
+    def test_reviewed_git_blob_receipt_rejects_mismatched_identity(self):
+        record = {'path': self.helper, 'commit': 'a' * 40,
+                  'git_blob': policy.git_blob(self.data), 'sha256': policy.sha256(self.data)}
+        provenance = {'kind': 'reviewed-git-blob', 'path': self.index, 'pointer': ['source'],
+                      'commit': record['commit']}
+        self.lock['exclusions'][0]['provenance'] = provenance
+        for key in (None, 'path', 'commit', 'git_blob', 'sha256'):
+            with self.subTest(field=key):
+                changed = dict(record)
+                if key:
+                    changed[key] = 'wrong'
+                (self.root / self.index).write_text(json.dumps({'source': changed}))
+                self.lock['files'][1] = self.record(self.index)
+                if key:
+                    with self.assertRaisesRegex(ValueError, 'reviewed Git blob provenance'):
+                        policy.verify(self.root, self.lock)
+                else:
+                    self.assertEqual(policy.verify(self.root, self.lock), [self.helper])
+
     def test_live_module_import_fails(self):
         (self.root / 'resense').mkdir()
         (self.root / 'resense/live.py').write_text('from docs.evidence.frozen.helper import value\n')

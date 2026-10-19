@@ -1,0 +1,28 @@
+{
+  "archive": "b4.tar.gz",
+  "sha256": "7e7233467a18e112fafb438b87bfb94dfe18e4d0911e602dcac2db96c70d0d98",
+  "bytes": 1468131,
+  "members": [
+    {
+      "path": "b4-baseline-empty.json",
+      "bytes": 13518828,
+      "sha256": "92f2203224c8bfbd431b9bf347cff71ba119482388003caa7a7de14af69bdf9f"
+    },
+    {
+      "path": "b4-baseline-positive.json",
+      "bytes": 7654644,
+      "sha256": "177b26c361def2289524bf2e1e0c8c40758aff2ea0a7c3fc18409da3c35f1c8a"
+    },
+    {
+      "path": "b4-candidate-empty.json",
+      "bytes": 10445497,
+      "sha256": "bf1556298c315c624a7bbc8a5afaee86fec53d98f628e5253b4fd3fc7631856f"
+    },
+    {
+      "path": "b4-candidate-positive.json",
+      "bytes": 5249193,
+      "sha256": "3fa3644ec947559f8816ec088dcaea9a6a2325d9e02c172fbbf8e02f91772b7c"
+    }
+  ],
+  "reopened_all_members_verified": true
+}

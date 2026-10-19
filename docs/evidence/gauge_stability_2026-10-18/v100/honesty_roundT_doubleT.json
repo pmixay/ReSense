@@ -1,0 +1,11 @@
+{
+ "run": "/home/user/rs-data/j1/707ea9c/roundT_doubleT.jsonl",
+ "frames_with_path": 251,
+ "steps_inside": 5226,
+ "steps_beyond": 2345,
+ "inside_over_0.5m": 0.505,
+ "inside_over_1.05m": 0.412,
+ "beyond_over_0.5m": 0.999,
+ "beyond_over_1.05m": 0.997,
+ "inside_error_p90": 7.69
+}
