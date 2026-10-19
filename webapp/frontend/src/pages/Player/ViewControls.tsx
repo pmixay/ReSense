@@ -117,15 +117,18 @@ export interface ViewControlsProps {
   onMode?: (m: CamMode) => void;
   fullscreen: boolean;
   onFullscreen: () => void;
+  expanded?: boolean;
+  onHeight?: () => void;
 }
 
-export function ViewControls({ runId, runName, decision, reason, mode, onMode, fullscreen, onFullscreen }: ViewControlsProps) {
+export function ViewControls({ runId, runName, decision, reason, mode, onMode, fullscreen, onFullscreen, expanded, onHeight }: ViewControlsProps) {
   return (
     <div className={styles.controls} role="group" aria-label="Параметры просмотра">
       {runId && runName !== undefined && <RunMenu runId={runId} name={runName} />}
       <Beacon decision={decision} />
       {reason && <span className={styles.viewReason}>{reason}</span>}
       <div className={styles.viewTools}>
+        {onHeight && <IconButton icon="display-height" label={expanded ? 'Обычная высота экрана' : 'Увеличить высоту экрана'} active={expanded} onClick={onHeight} variant="outline" className={styles.toolButton} tooltip />}
         {mode && onMode && (
           <Segmented<CamMode>
             label="Камера"

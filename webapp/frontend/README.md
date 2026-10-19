@@ -86,9 +86,9 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   disposed with the display; no readback or independent animation loop is used.
 - **Train installation.** `trainInterior.ts` builds a real wall aperture and recessed gasket,
   laminate panels, stainless grab rail, door reveal and ceiling fixtures around the device.
-  The housing and wall share their angle, cached shadows anchor the enclosure, and a clear-coated
+  The housing and wall share their angle, antialiased analytic contact shading anchors the enclosure, and a clear-coated
   physical cover glass sits above the live surface. Environment geometry, textures, materials and
-  the shadow target are disposed with the display; UI controls still belong to the shared page.
+  render targets are disposed with the display; UI controls still belong to the shared page.
 - **Pressure parallax.** Player uses a full-height sticky train backdrop under the shared chrome.
   The default pose is straight; bounded mouse pressure tilts the wall/display group and moves the
   separate foreground railings at 24% strength. The HUD uses the updated affine surface transform.
@@ -96,3 +96,8 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   motion and touch. The control tint is clear through the upper 64px, ramps gently with a 160px
   feather and is capped at 56%. Its near-black stop stays beyond the painted edge; a separate
   short blur feather keeps screen labels sharp.
+- **Player space/performance.** Only the compact destination tab strip is mounted on Player.
+  Its height toggle expands the live display without narrowing it. Foreground rails sit ahead
+  of the moving wall and use a cached, mildly blurred narrow render target. Physical rendering
+  is capped by `displayQuality.ts` (1.5×/2.6M pixels, 1× on constrained devices); DOM controls
+  stay native-size. Dynamic shadow maps are disabled in favor of analytic contact shading.

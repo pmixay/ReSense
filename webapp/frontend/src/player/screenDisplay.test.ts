@@ -143,4 +143,21 @@ describe('modeled display projection', () => {
     display.dispose();
     empty.dispose();
   });
+
+  it('keeps the foreground post entirely in front of the train wall at every pressure extreme', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1440, 844, 1, { width: 1368, left: 36, height: 502, top: 16 });
+    const background = display.scene.getObjectByName('train-background-layer')!;
+    const railings = display.scene.getObjectByName('train-railings-layer')!;
+    for (const x of [-1, 0, 1]) for (const y of [-1, 0, 1]) {
+      display.setPointer(x, y);
+      for (let i = 0; i < 100; i += 1) display.step(1 / 60);
+      display.scene.updateMatrixWorld(true);
+      const wall = new THREE.Box3().setFromObject(background);
+      const near = new THREE.Box3().setFromObject(railings);
+      expect(near.min.z - wall.max.z).toBeGreaterThan(.5);
+    }
+    expect(display.scene.getObjectByName('antialiased-mount-contact')).toBeDefined();
+    display.dispose();
+  });
 });

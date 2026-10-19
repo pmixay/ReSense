@@ -1,7 +1,7 @@
 // Parametric display modeled from the supplied images (1).jpg: shallow silver housing,
 // rounded black cover glass, and the live LiDAR render target on the active display surface.
 import * as THREE from 'three';
-import { DISPLAY_FRAGMENT, DISPLAY_VERTEX, FILTER_FRAGMENT, FILTER_VERTEX, GLOW_FRAGMENT } from './screenEffects';
+import { CONTACT_SHADOW_FRAGMENT, DISPLAY_FRAGMENT, DISPLAY_VERTEX, FILTER_FRAGMENT, FILTER_VERTEX, GLOW_FRAGMENT, RAIL_BLUR_FRAGMENT } from './screenEffects';
 import { roundedRect } from './screenGeometry';
 import { TrainInterior } from './trainInterior';
 
@@ -19,8 +19,16 @@ export class ScreenDisplay {
   private readonly body = new THREE.Group();
   private readonly background = new THREE.Group();
   private readonly interior = new TrainInterior();
-  private shadowDirty = true;
-  private readonly shadowLight: THREE.DirectionalLight;
+  private railDirty = true;
+  private railStripWidth = 1;
+  private readonly railCamera = new THREE.OrthographicCamera(-8, -6, 1, -1, .1, 50);
+  private readonly railTarget = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: true });
+  private readonly railComposite = new THREE.Scene();
+  private readonly railBlur = new THREE.ShaderMaterial({
+    vertexShader: FILTER_VERTEX, fragmentShader: RAIL_BLUR_FRAGMENT,
+    uniforms: { uImage: { value: this.railTarget.texture }, uTexel: { value: new THREE.Vector2() } },
+    transparent: true, premultipliedAlpha: true, depthTest: false, depthWrite: false,
+  });
   private readonly filterTarget = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false });
   private readonly filterScene = new THREE.Scene();
   private readonly filterCamera = new THREE.Camera();
@@ -30,6 +38,11 @@ export class ScreenDisplay {
     uniforms: { uImage: { value: this.target.texture }, uDirection: { value: new THREE.Vector2() }, uExtract: { value: 0 } },
     depthTest: false, depthWrite: false,
   });
+  private readonly contact = new THREE.ShaderMaterial({
+    vertexShader: DISPLAY_VERTEX, fragmentShader: CONTACT_SHADOW_FRAGMENT, transparent: true, depthWrite: false,
+    uniforms: { uSize: { value: new THREE.Vector2() }, uHalfSize: { value: new THREE.Vector2() }, uRadius: { value: .3 } },
+  });
+  private readonly mountShadow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.contact);
   private readonly metal = new THREE.MeshStandardMaterial({ color: 0xadb6bd, metalness: 0.7, roughness: 0.3 });
   private readonly glass = new THREE.MeshStandardMaterial({ color: 0x080b10, metalness: 0.12, roughness: 0.18 });
   private readonly cover = new THREE.MeshPhysicalMaterial({ color: 0xdfe9ed, transparent: true, opacity: 0.025, roughness: 0.14, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.1, depthWrite: false });
@@ -56,22 +69,19 @@ export class ScreenDisplay {
     this.background.name = 'train-background-layer';
     this.background.add(this.body, this.interior.group);
     this.body.visible = !wallOnly;
+    this.mountShadow.name = 'antialiased-mount-contact';
+    this.mountShadow.position.z = -.442;
     this.viewport.motion = this.motion;
     this.lightPool.name = 'content-driven-light';
     this.lightPool.position.set(0, 0, -0.415);
     this.filterScene.add(new THREE.Mesh(this.filterGeometry, this.filter));
+    this.railComposite.add(new THREE.Mesh(this.filterGeometry, this.railBlur));
+    this.railCamera.position.z = 20;
     this.glass.emissive.set(0xffffff);
     this.glass.emissiveMap = this.emission.texture;
     this.glass.emissiveIntensity = 0.06;
     const key = new THREE.DirectionalLight(0xfff8e8, 1.35);
-    this.shadowLight = key;
     key.position.set(-5, 10, 30);
-    key.castShadow = true;
-    key.shadow.mapSize.set(2048, 1024);
-    Object.assign(key.shadow.camera, { left: -12, right: 12, top: 8, bottom: -8, near: 0.5, far: 55 });
-    key.shadow.normalBias = 0.04;
-    key.shadow.bias = -0.0004;
-    key.shadow.radius = 3;
     const fill = new THREE.DirectionalLight(0xdfe8f4, 0.7);
     fill.position.set(12, -4, 8);
     this.scene.add(this.background, this.interior.railings, new THREE.HemisphereLight(0xf1f4ed, 0x657079, 2.0), key, fill);
@@ -100,7 +110,7 @@ export class ScreenDisplay {
     this.body.position.y = (height / 2 - region.top - region.height / 2 + (bottom - top) / 2) * units;
     this.body.position.x = (viewLeft + viewWidth / 2 - width / 2) * units;
     this.interior.setSize(w, h, this.wallOnly ? null : { width: bodyW, height: bodyH, radius: Math.min(0.42, bodyH * 0.12), centerY: this.body.position.y });
-    this.shadowDirty = true;
+    this.railDirty = true;
     const radius = Math.min(0.42, bodyH * 0.12);
     const shell = (sw: number, sh: number, r: number, depth: number, z: number, material: THREE.Material) => {
       const geometry = new THREE.ExtrudeGeometry(roundedRect(sw, sh, r), { depth, bevelEnabled: true, bevelSize: 0.035, bevelThickness: 0.035, bevelSegments: 3, steps: 1, curveSegments: 12 });
@@ -134,6 +144,12 @@ export class ScreenDisplay {
     cover.renderOrder = 2;
     this.body.add(cover);
     this.body.add(this.lightPool);
+    this.mountShadow.geometry.dispose();
+    this.mountShadow.geometry = new THREE.PlaneGeometry(bodyW + .6, bodyH + .6);
+    this.contact.uniforms.uSize.value.set(bodyW + .6, bodyH + .6);
+    this.contact.uniforms.uHalfSize.value.set(bodyW / 2, bodyH / 2);
+    this.contact.uniforms.uRadius.value = radius;
+    this.body.add(this.mountShadow);
     this.camera.left = -w / 2;
     this.camera.right = w / 2;
     this.camera.top = h / 2;
@@ -143,8 +159,16 @@ export class ScreenDisplay {
     this.surfaceWidth = vw;
     this.surfaceHeight = vh;
     this.updateProjection();
-    Object.assign(this.shadowLight.shadow.camera, { top: Math.max(8, h * .65), bottom: -Math.max(8, h * .65) });
-    this.shadowLight.shadow.camera.updateProjectionMatrix();
+    this.railStripWidth = Math.min(width, Math.ceil(width * .11 + 24));
+    this.railCamera.left = -w / 2;
+    this.railCamera.right = -w / 2 + this.railStripWidth * units;
+    this.railCamera.top = h / 2;
+    this.railCamera.bottom = -h / 2;
+    this.railCamera.updateProjectionMatrix();
+    const railW = Math.min(160, this.railStripWidth);
+    const railH = Math.min(900, Math.ceil(height * .7));
+    this.railTarget.setSize(railW, railH);
+    this.railBlur.uniforms.uTexel.value.set(1.8 / this.railStripWidth, 1.8 / height);
     this.pixels.uniforms.uSurfaceSize.value.set(this.viewport.width, this.viewport.height);
     this.lightPool.geometry.dispose();
     const poolW = bodyW + 0.9;
@@ -183,7 +207,7 @@ export class ScreenDisplay {
     if (!this.animating) this.background.rotation.set(this.pointerTarget.x, this.pointerTarget.y, this.pointerTarget.z);
     this.interior.railings.rotation.set(this.background.rotation.x * .24, this.background.rotation.y * .24, this.background.rotation.z * .24);
     Object.assign(this.motion, { sceneX: this.background.rotation.x, sceneY: this.background.rotation.y, sceneZ: this.background.rotation.z, railX: this.interior.railings.rotation.x, railY: this.interior.railings.rotation.y, railZ: this.interior.railings.rotation.z });
-    this.shadowDirty = true;
+    this.railDirty = true;
     this.updateProjection();
   }
 
@@ -233,25 +257,40 @@ export class ScreenDisplay {
     renderer.setViewport(0, 0, this.size.width, this.size.height);
     renderer.setClearColor(0xb8c1bf, 1);
     renderer.clear();
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.shadowMap.autoUpdate = false;
-    renderer.shadowMap.needsUpdate = this.shadowDirty;
+    renderer.shadowMap.enabled = false;
+    this.interior.railings.visible = false;
     renderer.render(this.scene, this.camera);
-    this.shadowDirty = false;
+    if (this.railDirty) {
+      this.background.visible = false;
+      this.interior.railings.visible = true;
+      renderer.setRenderTarget(this.railTarget);
+      renderer.setClearColor(0, 0);
+      renderer.clear();
+      renderer.render(this.scene, this.railCamera);
+      this.background.visible = true;
+      this.interior.railings.visible = false;
+      this.railDirty = false;
+    }
+    renderer.setRenderTarget(null);
+    renderer.setViewport(0, 0, this.railStripWidth, this.size.height);
+    renderer.render(this.railComposite, this.filterCamera);
+    renderer.setViewport(0, 0, this.size.width, this.size.height);
+    this.interior.railings.visible = true;
   }
 
   dispose(): void {
     for (const g of this.geometries) g.dispose();
-    for (const m of [this.metal, this.glass, this.cover, this.rear, this.pixels, this.glow, this.filter]) m.dispose();
+    for (const m of [this.metal, this.glass, this.cover, this.rear, this.pixels, this.glow, this.filter, this.contact, this.railBlur]) m.dispose();
     this.lightPool.geometry.dispose();
+    this.mountShadow.geometry.dispose();
     this.filterGeometry.dispose();
     this.target.dispose();
     this.filterTarget.dispose();
     this.emission.dispose();
+    this.railTarget.dispose();
     this.interior.dispose();
-    this.shadowLight.shadow.dispose();
     this.scene.clear();
     this.filterScene.clear();
+    this.railComposite.clear();
   }
 }

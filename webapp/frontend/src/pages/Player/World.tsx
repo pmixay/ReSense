@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type RefObject } from 'react';
 import type { PlayerEngine } from '../../player/engine';
 import type { CamMode } from '../../player/geometry';
 import { PlayerScene } from '../../player/scene';
+import { displayPixelRatio } from '../../player/displayQuality';
 import type { OverlaySink } from './Hud';
 import styles from './Player.module.css';
 
@@ -77,7 +78,11 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
       const height = wrap.clientHeight;
       const view = displayRef.current;
       if (!width || !height || !view) return;
-      scene.setSize(width, height, Math.min(2, window.devicePixelRatio || live.current.pixelRatio), {
+      const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+      const constrained = (memory !== undefined && memory <= 4) || (navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4);
+      const ratio = displayPixelRatio(width, height, window.devicePixelRatio || live.current.pixelRatio, constrained);
+      canvas.dataset.renderPixelRatio = String(ratio);
+      scene.setSize(width, height, ratio, {
         width: view.clientWidth, left: view.offsetLeft, height: view.clientHeight, top: view.offsetTop,
       });
       const viewport = scene.overlay.viewport;

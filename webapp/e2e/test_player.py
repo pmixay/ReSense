@@ -544,7 +544,7 @@ def test_workspace_resizes_without_clipping(app, seeded):
         page.locator('main').evaluate('el => el.scrollTop = 0')
         page.wait_for_function('''() => {
             const cv = document.querySelector('canvas[aria-label="3D-вид из кабины"]');
-            const pr = Math.min(2, devicePixelRatio || 1);
+            const pr = +cv?.dataset.renderPixelRatio || 1;
             return cv && cv.width === Math.floor(cv.clientWidth * pr) && cv.height === Math.floor(cv.clientHeight * pr);
         }''')
         assert page.evaluate("document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth")
@@ -558,6 +558,9 @@ def test_workspace_resizes_without_clipping(app, seeded):
         assert stage_box["y"] >= nav_box["y"] + nav_box["height"]
         assert stage_box["x"] >= 0 and stage_box["x"] + stage_box["width"] <= w + 1
         assert page.locator('main header').count() == 0
+        expect(page.get_by_role('navigation', name='Разделы')).to_have_count(0)
+        expect(page.get_by_role('button', name='1 Данные')).to_have_count(0)
+        expect(page.get_by_role('button', name='3 Система')).to_have_count(0)
         assert workspace.evaluate('el => getComputedStyle(el).transform') == 'none'
         assert page.locator('main').evaluate('el => el.scrollWidth <= el.clientWidth')
         assert abs(stage_box['width'] - page.locator('main').evaluate('el => el.clientWidth - parseFloat(getComputedStyle(el).paddingLeft) - parseFloat(getComputedStyle(el).paddingRight)')) < 2
@@ -579,6 +582,23 @@ def test_workspace_resizes_without_clipping(app, seeded):
         slider(page).scroll_into_view_if_needed()
         sb = box_of(slider(page), scroll=False)
         assert sb["y"] + sb["height"] <= h + 1, (w, h, sb)
+    assert real_errors(app.errors) == []
+
+
+def test_taller_display_preserves_width_and_returns_to_normal(app, seeded):
+    page, rid = app.page, seeded['ids']['approach']
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    open_player(app, f'/player/{rid}?pos=30')
+    display = page.locator('[data-player-display]')
+    normal = box_of(display, scroll=False)
+    page.get_by_role('button', name='Увеличить высоту экрана').click()
+    larger = box_of(display, scroll=False)
+    assert larger['height'] > normal['height'] * 1.3, (normal, larger)
+    assert abs(larger['width'] - normal['width']) < 1
+    page.get_by_role('button', name='Обычная высота экрана').scroll_into_view_if_needed()
+    page.get_by_role('button', name='Обычная высота экрана').click()
+    assert abs(box_of(display)['height'] - normal['height']) < 1
+    assert page.locator('main').evaluate('el => el.scrollWidth <= el.clientWidth')
     assert real_errors(app.errors) == []
 
 

@@ -226,3 +226,15 @@
   }
   .st:focus-visible { box-shadow: var(--focus); }
 }
+
+.compact.band { height: auto; min-height: 56px; padding: 6px var(--pad); }
+.compact .main { position: static; }
+.compact .line, .compact .c { display: none; }
+.compact .stations { position: static; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 4px 8px; padding: 0; }
+.compact .st { display: flex; align-items: center; width: auto; height: 44px; padding: 0 14px; border-radius: var(--r-xs); }
+.compact .lbl { position: static; transform: none; font-size: 14px; line-height: 20px; }
+.compact .st:hover { background: var(--well-3); }
+.compact .cur { background: var(--well); }
+.compact .cur .lbl { font-weight: 800; text-underline-offset: 7px; }
+.compact .st:focus-visible { box-shadow: var(--focus); }
+@media (max-width: 700px) { .compact .st { padding-inline: 10px; } .compact .stations { column-gap: 2px; } }

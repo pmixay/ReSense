@@ -92,3 +92,37 @@ export const GLOW_FRAGMENT = /* glsl */ `
     gl_FragColor = vec4(color, alpha);
   }
 `;
+
+/** Smooth rounded-enclosure penumbra without a resolution-dependent shadow map. */
+export const CONTACT_SHADOW_FRAGMENT = /* glsl */ `
+  uniform vec2 uSize;
+  uniform vec2 uHalfSize;
+  uniform float uRadius;
+  varying vec2 vUv;
+  void main() {
+    vec2 p = (vUv - .5) * uSize - vec2(.012, -.035);
+    vec2 q = abs(p) - uHalfSize + uRadius;
+    float distance = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - uRadius;
+    float feather = max(.045, fwidth(distance) * 1.5);
+    float penumbra = exp(-pow(max(distance, 0.0) / (feather * 1.7), 2.0));
+    gl_FragColor = vec4(.055, .07, .085, penumbra * .22);
+  }
+`;
+
+export const RAIL_BLUR_FRAGMENT = /* glsl */ `
+  uniform sampler2D uImage;
+  uniform vec2 uTexel;
+  varying vec2 vUv;
+  void main() {
+    vec4 color = texture2D(uImage, vUv) * .25;
+    color += texture2D(uImage, vUv + vec2(uTexel.x, 0.0)) * .125;
+    color += texture2D(uImage, vUv - vec2(uTexel.x, 0.0)) * .125;
+    color += texture2D(uImage, vUv + vec2(0.0, uTexel.y)) * .125;
+    color += texture2D(uImage, vUv - vec2(0.0, uTexel.y)) * .125;
+    color += texture2D(uImage, vUv + uTexel) * .0625;
+    color += texture2D(uImage, vUv - uTexel) * .0625;
+    color += texture2D(uImage, vUv + vec2(uTexel.x, -uTexel.y)) * .0625;
+    color += texture2D(uImage, vUv + vec2(-uTexel.x, uTexel.y)) * .0625;
+    gl_FragColor = color;
+  }
+`;

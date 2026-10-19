@@ -28,9 +28,11 @@ export class TrainInterior {
   readonly group = new THREE.Group();
   readonly railings = new THREE.Group();
   private readonly grain = materialGrain();
-  private readonly laminate = new THREE.MeshStandardMaterial({ color: 0xc6c8c0, roughness: 0.72, metalness: 0.03, bumpMap: this.grain, bumpScale: 0.0008 });
-  private readonly ceiling = new THREE.MeshStandardMaterial({ color: 0xb7bdb9, roughness: 0.66, metalness: 0.1 });
+  private readonly laminate = new THREE.MeshStandardMaterial({ color: 0xbcc3c8, roughness: 0.72, metalness: 0.03, bumpMap: this.grain, bumpScale: 0.0006 });
+  private readonly ceiling = new THREE.MeshStandardMaterial({ color: 0xd0d5d8, roughness: 0.66, metalness: 0.1 });
   private readonly steel = new THREE.MeshStandardMaterial({ color: 0x9ba5ad, roughness: 0.32, metalness: 0.8, roughnessMap: this.grain });
+  private readonly copper = new THREE.MeshStandardMaterial({ color: 0xb8795d, roughness: 0.34, metalness: 0.74 });
+  private readonly doorLight = new THREE.MeshBasicMaterial({ color: 0xe82a45 });
   private readonly shadow = new THREE.MeshStandardMaterial({ color: 0x151a1c, roughness: 0.95 });
   private readonly rubber = new THREE.MeshStandardMaterial({ color: 0x282d2e, roughness: 0.92 });
   private readonly window = new THREE.MeshStandardMaterial({ color: 0x101b21, roughness: 0.25, metalness: 0.28 });
@@ -86,12 +88,21 @@ export class TrainInterior {
     this.box(0.56, h, 0.08, this.rubber, doorX + 0.04, 0, -0.18, 'door-window-rubber-seal');
     this.box(0.46, h, 0.04, this.window, doorX + 0.08, 0, -0.115, 'dark-door-window');
     this.box(0.022, h, 0.01, this.ceiling, doorX - 0.11, 0, -0.085, 'window-glass-reflection');
-    const railX = -width / 2 + 0.27;
-    this.railings.add(this.mesh(new THREE.CylinderGeometry(0.055, 0.055, h, 18), this.steel, railX, 0, -0.08, 'stainless-grab-rail'));
-    for (const y of [-height * 0.32, height * 0.32]) {
-      const boss = this.mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.22, 20), this.steel, railX, y, -0.28, 'grab-rail-wall-fixing');
-      boss.rotation.x = Math.PI / 2;
-      this.railings.add(boss);
+    this.box(.024, h, .018, this.doorLight, doorX - .31, 0, -.085, 'moskva-2020-door-edge-light');
+    const railX = -width / 2 + 0.50;
+    const path = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(railX, -h / 2, 1.8),
+      new THREE.Vector3(railX, height * .20, 1.8),
+      new THREE.Vector3(railX + .05, height * .40, 1.8),
+      new THREE.Vector3(railX + .28, h / 2, 1.72),
+    ]);
+    const rail = this.mesh(new THREE.TubeGeometry(path, 24, .105, 12, false), this.copper, 0, 0, 0, 'stainless-grab-rail');
+    rail.castShadow = rail.receiveShadow = false;
+    this.railings.add(rail);
+    for (const y of [-height * .38, height * .38]) {
+      const collar = this.mesh(new THREE.CylinderGeometry(.123, .123, .07, 12), this.steel, railX, y, 1.8, 'foreground-post-collar');
+      collar.castShadow = collar.receiveShadow = false;
+      this.railings.add(collar);
     }
 
     const top = height / 2 - Math.min(0.20, height * 0.07);
@@ -114,7 +125,7 @@ export class TrainInterior {
 
   dispose(): void {
     for (const g of this.geometries) g.dispose();
-    for (const m of [this.laminate, this.ceiling, this.steel, this.shadow, this.rubber, this.window, this.light, this.joint]) m.dispose();
+    for (const m of [this.laminate, this.ceiling, this.steel, this.copper, this.doorLight, this.shadow, this.rubber, this.window, this.light, this.joint]) m.dispose();
     this.grain.dispose();
     this.group.clear();
     this.railings.clear();

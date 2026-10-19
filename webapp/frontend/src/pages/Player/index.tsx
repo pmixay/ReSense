@@ -36,10 +36,12 @@ function useBack(runId?: string) {
 type Fullscreen = ReturnType<typeof useFullscreen>;
 interface CabChrome {
   fs: Fullscreen;
+  expanded: boolean;
+  toggleHeight: () => void;
 }
 
 /** Fullscreen state outlives run switches and the picker; AppShell remains the fullscreen element. */
-const ChromeContext = createContext<CabChrome>({ fs: { active: false, real: false, pseudo: false, toggle: () => undefined, exit: async () => undefined } });
+const ChromeContext = createContext<CabChrome>({ expanded: false, toggleHeight: () => undefined, fs: { active: false, real: false, pseudo: false, toggle: () => undefined, exit: async () => undefined } });
 
 interface StageProps {
   children: ReactNode;
@@ -116,13 +118,15 @@ function CabShell({ runId, runName, glass, console: cons }: { runId?: string; ru
 export default function Player() {
   const { runId } = useParams();
   const rootRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const toggleHeight = useCallback(() => setExpanded(value => !value), []);
   const fs = useFullscreen(rootRef);
-  const chrome = useMemo(() => ({ fs }), [fs]);
+  const chrome = useMemo(() => ({ fs, expanded, toggleHeight }), [fs, expanded, toggleHeight]);
   useEffect(() => {
     document.title = 'Плеер · ReSense';
   }, []);
   return (
-    <div ref={rootRef} className={styles.root}>
+    <div ref={rootRef} className={styles.root} data-expanded={expanded || undefined}>
       <ChromeContext.Provider value={chrome}>
         {runId ? <PlayerRun key={runId} runId={runId} /> : <CabShell glass={<RunPickerGlass />} console={<PickerConsole />} />}
       </ChromeContext.Provider>
@@ -283,7 +287,7 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
   const minVis = minVisibility(run, schema.data?.find((p) => p.key === 'health.min_visibility')?.default as number | undefined);
 
   // controls
-  const { fs } = useContext(ChromeContext);
+  const { fs, expanded, toggleHeight } = useContext(ChromeContext);
   const seek = useCallback((p: number) => engine?.seek(p), [engine]);
   const stepBy = useCallback((d: number) => engine?.step(d), [engine]);
   const prevEv = prevEventPos(marks, pos);
@@ -404,6 +408,8 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
           onMode={setMode}
           fullscreen={fs.active}
           onFullscreen={fs.toggle}
+          expanded={expanded}
+          onHeight={toggleHeight}
         />
         <div className={styles.telemetry} aria-label="Телеметрия прогона">
           <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />

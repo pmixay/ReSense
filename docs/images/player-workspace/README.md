@@ -17,22 +17,28 @@ The housing adapts parametrically to the workspace's aspect ratio; it is a
 reference-based reconstruction rather than a photographic asset or a dimensional
 scan. No reference-image pixels are used as the player UI.
 
-## Train-wall installation
+## Moscow-2020-inspired train installation
 
 The current display is mounted in a modeled metro interior. [`trainInterior.ts`](../../../webapp/frontend/src/player/trainInterior.ts)
 builds a formed laminate wall with an actual opening, recessed rubber mounting gasket,
-panel joints, flush fasteners, stainless grab rail, aluminium door/window reveal,
+panel joints, flush fasteners, warm-metal foreground handrail, aluminium door/window reveal,
 ceiling louvers, linear saloon light and lower wall trim. The wall and housing share
 the same angle; there is no floating monitor on an abstract backdrop. The reference
 photo informs the installation and materials; the environment is reconstructed 3D
 geometry, not a claim that the app is rendering a photograph of a particular train.
 
-The enclosure casts real cached contact shadows onto the wall. Material grain is a
+The cool-gray paneling, black display surround, copper-toned rails and red door-edge
+lighting follow the inspected [Moskva-2020 saloon](https://commons.wikimedia.org/wiki/File:Москва-2020,_салон.jpg)
+and [touchscreen installation](https://commons.wikimedia.org/wiki/File:Москва-2020,_салон_-_сенсорный_дисплей.jpg)
+reference photographs. They are reference-only; no photograph is shipped as the background.
+
+The enclosure uses analytic, antialiased rounded contact shading on the wall, replacing
+the earlier dynamic shadow map. It has a smooth penumbra at any render resolution
+and adds no shadow-map pass during pointer motion. Material grain is a
 deterministic small roughness/bump texture, and a physical clear-coated cover-glass
 mesh sits above the active image. Internal brightness, bloom and wall spill are
 restrained for a lit train interior; a mild ceiling-light reflection stays below the
-contrast needed to read the live data. Shadow maps refresh on geometry/size and pose changes,
-while screen emission follows the existing on-demand playback render loop.
+contrast needed to read the live data. Screen emission follows the existing on-demand playback render loop.
 
 [`installed-display-1440.png`](installed-display-1440.png) is a direct screenshot of
 the full train-wall workspace beneath the header, including its control overlay.
@@ -44,8 +50,11 @@ The wall and display rest perfectly straight. Mouse displacement from the worksp
 center drives a bounded, quadratic, exponentially damped lean (maximum pitch .035 rad,
 yaw .055 rad and coupled roll .004 rad). [`parallax-right-1440.png`](parallax-right-1440.png)
 and [`parallax-left-1440.png`](parallax-left-1440.png) show the edge-pressure states.
-The stainless rail and its fixings are a separate foreground geometry layer, moving
-at 24% of the background's angles. Center, pointer leave and window blur reset the
+The handrail and its collars are a separate foreground geometry layer, moving
+at 24% of the background's angles. They sit at least .5 scene units ahead of all
+wall/housing geometry throughout the nine pressure extremes checked by the model tests.
+A cached, narrow offscreen strip gives only the near handrail a mild 1.8px blur;
+the display and its annotations remain sharp. Center, pointer leave and window blur reset the
 pose; touch and reduced-motion mode keep a neutral scene.
 
 The orthographic screen projection is exported as a live affine transform; the
@@ -88,12 +97,27 @@ The shared palette now uses more saturated metro red, emerald, amber and violet.
 Player camera/speed selection and primary transport use the brand accent, while
 compact rounded-square tools and single-level telemetry keep the application hierarchy.
 
-The shared AppShell supplies the sole header and stage navigation. The Player has no
+On Player, the shared stage destinations form the sole compact pinned tab strip.
+The grouped Data/Analysis/System header is not mounted, and other application routes
+retain their existing navigation. The Player has no
 local logo, duplicate title, stage strip or back-navigation bar. Normal responsive
 page layout owns the display, compact scenario/camera/status controls, five telemetry
 panels and timeline/transport. The Player uses a full-bleed train background; other
 application sections retain their shared page ground. There is
 no fixed 1600×900 composition or whole-page scaling.
+
+The recovered header space makes the default display taller. The «Увеличить высоту
+экрана» control expands it further at the same width; telemetry remains reachable
+by normal content scrolling. [`taller-display-1440.png`](taller-display-1440.png)
+captures that mode. ResizeObserver resizes the actual live surface when toggled.
+
+## Rendering budget
+
+The physical canvas is capped at 1.5× device scale and approximately 2.6 million
+pixels; constrained devices are capped at 1×. DOM controls and annotations retain
+their native resolution. The handrail cache is at most 160×900 pixels, redraws only
+on geometry/pose changes, and composites just the narrow left strip. Dynamic shadow
+maps are disabled. This bounds the added effects; it is not a hardware-specific FPS guarantee.
 
 ResizeObserver updates the canvas, offscreen target, camera aspect, annotation surface,
 close-up and track map. Projection tests compare the actual screen mesh's projected
