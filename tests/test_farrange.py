@@ -213,3 +213,32 @@ def test_buffer_cleared_when_far_axis_switches(monkeypatch):
         xyz = np.c_[rng.uniform(5, 60, 3000), rng.uniform(-3, 3, 3000), rng.uniform(-1.8, 1.0, 3000)].astype(np.float32)
         det.process(Frame(xyz=xyz, intensity=np.zeros(3000, np.float32), stamp=0.1 * i), ego_speed=5.0)
         assert bool(calls) == want, (i, calls)
+
+
+def _side(fy, s, x0, x1, rng, step=1.0, n=6, lat=1.9):
+    X = np.repeat(np.arange(x0, x1, step), n).astype(float)
+    return np.stack([X, fy(X) + s * lat + rng.normal(0, 0.03, X.size), -1.75 + rng.uniform(1.1, 2.6, X.size)], 1)
+
+
+def test_one_straight_wall_never_trusted_beyond_the_near_model():
+    """Re-review R1: a straight wall (station, parked train) while the track curves away from it cannot be
+    told from a straight track; one side is trusted no further than the near model (unless declared)."""
+    cfg = FarRangeConfig(enabled=True)
+    model = _model()
+    model.axis_valid = 150.0
+    tr = FarAxisTracker(cfg)
+    for k in range(8):
+        far = tr.update(_side(lambda X: 0 * X, 1.0, 52, 400, np.random.default_rng(k)).astype(np.float32), model, 400.0)
+    assert far is not None and far.sides == 1 and far.valid <= 150.0
+
+
+def test_two_sides_trust_ends_at_the_shorter_side():
+    cfg = FarRangeConfig(enabled=True)
+    model = _model()
+    for cend in (135.0, 150.0, 190.0):
+        tr = FarAxisTracker(cfg)
+        for k in range(8):
+            r = np.random.default_rng(k)
+            pts = [_side(lambda X: 0 * X, 1.0, 52, 400, r), _side(lambda X: 0 * X, -1.0, 52, cend, r)]
+            far = tr.update(np.concatenate(pts).astype(np.float32), model, 400.0)
+        assert far is not None and far.sides == 2 and far.valid <= cend + cfg.axis_margin

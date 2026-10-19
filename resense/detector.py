@@ -339,6 +339,9 @@ class Detector:
         if self.far is not None:
             prev = self._far_axis
             self._far_axis = self.far.update(xyz, self.track, cfg.gauge.range_max)
+            if self._far_axis is not None:
+                # the far line gives the laterals over the whole trusted range (review R2)
+                self._far_axis.lateral_to = max(self._far_axis.valid, min(self.track.axis_valid, cfg.gauge.range_max))
             # buffered corridor points carry laterals from the axis of their frame: when the far axis
             # appears, disappears or moves (0.2 m at the far end), the buffer is not comparable
             if (prev is None) != (self._far_axis is None) or (
@@ -548,11 +551,9 @@ class Detector:
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
         if far is not None:
-            # beyond the far line's trusted end the near model takes over only where the two agree there
-            # (the near parabola can be metres off once the far line shows the track straight)
-            end = min(far.valid, cfg.gauge.range_max)
-            gap = abs(float(far.y_join + far.slope * (end - far.join) - self.track.center_y(np.array([end]))[0]))
-            axis_valid = max(axis_valid, end) if gap <= cfg.farrange.axis_handover_max_offset else end
+            # never below the near model's trust (review R3); the far line gives the laterals over the whole
+            # trusted range, never the near parabola beyond its end (review R2)
+            axis_valid = max(axis_valid, min(far.valid, cfg.gauge.range_max))
         valid = min(axis_valid, floor_valid) if cfg.cluster.far_min_height <= 0 else axis_valid
         if cfg.cluster.far_axis_both_sides == 1:
             # 25.09 (far_switch), opt-in, mode 1: beyond the height reference only as far as both

@@ -46,12 +46,13 @@ class FarAxis:
     unseen_k: float
     one_side_slope: float = 0.0   # rad, divergence allowance with one fitted side
     straight_to: float = 0.0      # X from which an unseen curve may start (support minus the lead, or a declared map section)
+    lateral_to: float = 0.0       # X up to which the far line gives the laterals (>= valid: the whole trusted range)
 
     def offset(self, X: np.ndarray, model: TrackModel) -> np.ndarray:
         """y_far - y_near at X (0 before the join): dy_far = dy_near - offset."""
         X = np.asarray(X, dtype=np.float64)
         out = np.zeros(X.shape, dtype=np.float64)
-        far = (X > self.join) & (X <= self.valid)      # only where the far line is trusted; the near model beyond
+        far = (X > self.join) & (X <= max(self.valid, self.lateral_to))   # the whole trusted range; the near model beyond
         if far.any():
             out[far] = self.y_join + self.slope * (X[far] - self.join) - model.center_y(X[far])
         return out
@@ -61,7 +62,7 @@ class FarAxis:
         d = np.maximum(X - self.join, 0.0)
         beyond = np.maximum(X - self.straight_to, 0.0)
         stat = np.sqrt(self.sigma0 ** 2 + (self.slope_se * d) ** 2 + (self.one_side_slope * d) ** 2)
-        return np.where((X > self.join) & (X <= self.valid), stat + 0.5 * self.unseen_k * beyond ** 2, 0.0)
+        return np.where((X > self.join) & (X <= max(self.valid, self.lateral_to)), stat + 0.5 * self.unseen_k * beyond ** 2, 0.0)
 
     def to_dict(self) -> dict:
         return {"join": self.join, "y_join": round(self.y_join, 3), "slope": round(self.slope, 6),
@@ -168,7 +169,9 @@ def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: 
     kink = cfg.axis_max_kink if len(fits) == 2 else cfg.axis_max_kink_one_side
     if abs(slope - tj) > kink:
         return None
-    return slope, se, max(f[3] for f in primary), len(fits)
+    # the trust ends where the shorter side's support ends (review R1): beyond it the line is one-sided
+    support = min(f[3] for f in fits) if len(fits) == 2 else primary[0][3]
+    return slope, se, support, len(fits)
 
 
 class FarAxisTracker:
@@ -223,8 +226,12 @@ class FarAxisTracker:
                       sigma0=cfg.axis_sigma0, unseen_k=k,
                       one_side_slope=cfg.axis_one_side_slope_sigma if self.sides < 2 else 0.0,
                       straight_to=straight)
-        # trusted to axis_margin beyond the support (or the declared section), and only while sigma <= axis_max_sigma
+        # trusted to axis_margin beyond the support (or the declared section), and only while sigma <= axis_max_sigma;
+        # with one side a straight wall cannot tell a track curving away from it (review R1): no further than
+        # the near model's own trusted range unless a straight section is declared
         end = min(max(self.support + cfg.axis_margin, float(cfg.declared_straight_to)), max_range)
+        if self.sides < 2 and cfg.declared_straight_to <= 0:
+            end = min(end, max(float(model.axis_valid), j))
         grid = np.arange(j, end + 1e-6, 1.0)
         far.valid = float(end)
         ok = far.sigma(grid) <= cfg.axis_max_sigma
