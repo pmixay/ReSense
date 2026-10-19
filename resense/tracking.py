@@ -99,6 +99,9 @@ class Track:
     cable_kind: int = 0             # 1 = resolved tall body, 2 = narrow hanging group; current run only
     cable_hits: int = 0
     cable_span_s: float = 0.0
+    collision_core_hits: int = 0    # uninterrupted current positive-core evidence
+    collision_core_span_s: float = 0.0
+    collision_core_ready: bool = False  # suspends only column hold; never erases measured history
     was_stop: bool = False          # 27.09: reported in zone gauge (a STOP) after the previous update (thin_far_min_distance only)
     approach_block: bool = False    # 27.09: far evidence without an approach holds a reported advisory track advisory (zone)
     evidence_hist: List[str] = field(default_factory=list)  # opt-in fresh_stop_evidence: recent hit provenance
@@ -120,7 +123,8 @@ class Track:
 
     @property
     def column_held(self) -> bool:
-        return self.column_hold > 0 and sum(self.column_hist) >= self.column_hold
+        return (self.column_hold > 0 and sum(self.column_hist) >= self.column_hold
+                and not self.collision_core_ready)
 
     @property
     def vote_zone(self) -> str:
@@ -359,6 +363,7 @@ class Tracker:
         for i, t in enumerate(self.tracks):
             if not matched_t[i]:
                 t.cable_kind, t.cable_hits, t.cable_span_s = 0, 0, 0.0
+                t.collision_core_hits, t.collision_core_span_s, t.collision_core_ready = 0, 0.0, False
                 t.since_clean += kdt
                 t.misses += 1
                 t.age += 1
@@ -685,6 +690,13 @@ class Tracker:
         continuation source supplies fresh evidence for a new STOP onset.
         """
         c = self.cfg
+        if source == "ordinary" and cl.collision_core and cl.zone == "gauge" and not cl.reason:
+            t.collision_core_hits += 1
+            t.collision_core_span_s += self._cable_dt
+            t.collision_core_ready = (t.collision_core_hits >= c.confirm_hits
+                                      and t.collision_core_span_s >= c.confirm_time_s - 1e-9)
+        else:
+            t.collision_core_hits, t.collision_core_span_s, t.collision_core_ready = 0, 0.0, False
         cable_kind = self._cable_kind(cl) if source == "ordinary" else 0
         if cable_kind:
             if t.cable_kind != cable_kind:

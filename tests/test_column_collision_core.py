@@ -162,6 +162,8 @@ def test_full_fresh_confirmation_releases_only_the_old_column_hold():
     track, = tracker.tracks
     assert sum(track.column_hist) == 5  # measured history was not erased
     assert not track.column_held
+    assert not any(t.zone == "gauge" for t in tracker.confirmed())  # 5/10 fails the unchanged 60% vote
+    tracker.update([copy.deepcopy(core)], frame_dt=0.1)
     assert any(t.zone == "gauge" for t in tracker.confirmed())
     tracker.update([copy.deepcopy(column)], frame_dt=0.1)
     assert track.column_held

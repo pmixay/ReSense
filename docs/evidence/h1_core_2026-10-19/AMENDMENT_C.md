@@ -20,3 +20,8 @@ original history on loss of proof. Re-run affected tests, complete gate, X3 and
 critical probes on the exact committed C source. Preserve every prior positive;
 no added empty/ride STOP. Repeat moving physical cases and publish actual ranges,
 including the remaining misses. No guaranteed100 m or braking claim.
+
+Test clarification before acceptance: the initial new unit incorrectly demanded
+a STOP on the fifth core despite only5/10 gauge votes. The unchanged vote needs
+60%; the corrected test checks hold release at five, **no STOP yet**, and STOP
+at six. Production thresholds are unchanged; the failed `units-c.xml` is retained.
