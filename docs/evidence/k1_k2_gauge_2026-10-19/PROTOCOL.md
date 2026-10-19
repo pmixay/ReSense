@@ -13,7 +13,7 @@
 | **off** | this branch, switches at their committed defaults (off) | the branch commit that carries this file |
 | **cand** | the same commit with the two switches on (nothing else changed) | `/opt/cand` worktree of that commit, `configs/default.yaml` **and** `ros2_ws/src/resense_ros/config/detector.yaml` with `track.axis_joint_fit: true`, `track.walls_smoothing_distance: 1.5` |
 
-Code under test: commit `4068f0d` (`resense/track.py` `joint_axis_fit` and its use in `estimate_track`;
+Code under test: commit `4068f0d` (v1; superseded, see §6 and §7: the candidate is v3 = `83c8894`) (`resense/track.py` `joint_axis_fit` and its use in `estimate_track`;
 `resense/detector.py` `_travel`; `TrackModel.curv_step / curv_knot / bent`; native kernels skipped only when
 `bent`; `gauge.py` / `health.py` one-line native guards; `scripts/gauge_stability.py` records the step).
 All other parameters at the committed defaults (`axis_joint_knot` 60, `axis_joint_step_sigma` 1e-3,
@@ -111,3 +111,35 @@ Measurement incident (instrumentation): installing matplotlib at 11:54:52 UTC up
 tracks) was killed and its output deleted; numpy 1.26.4 restored and asserted at the start of every later lane.
 Runs before the window (base gate, base range probes, base/cand B6, Falcon) are unaffected. Plotting uses a
 separate virtualenv (`/opt/plotvenv`).
+
+## 7. Revision 2 (19.10, ~13:00 UTC) — independent review of v2, v3 is the candidate
+
+A fresh subagent reviewed v2 code and these criteria (`REVIEW.md`): code "OK with fixes" (switches off), two
+findings blocking a default-on, criteria "issues". v2 measurements were stopped before completion; none is used.
+
+**v3 = commit `83c8894`** fixes findings 1–7 (initial fit held to the consistency test; reach against the final
+axis; one-wall cap; |step| < 1e-7 is none; rotation range; non-finite inputs; K1 off during warm-up and the
+standstill rule at most 60 s in a row). Development checks of v3 before this revision: `probe.py`
+squareT_platform 0 STOP episodes; B6 `track`/`measure` on the nine moving recordings. Trees: `/opt/off3`,
+`/opt/cand3` = `83c8894` (cand3 with the two switches on). Everything in §2–§3 is re-run on v3.
+
+Changes to the measurement (review C1, C3, C4, C6, C7); thresholds unchanged:
+* **C1**: `scripts/gate_identity.py` excludes only the metadata prefixes `created`, `code.`, `config.`,
+  `native.`, `run.`, `latency_ms.`, `gate.baseline_`; health-level counts are listed separately (they follow the
+  wall-clock latency budget); per-frame files are compared without `timing_ms`, health latency fields / messages,
+  and the health level only where either record carries a latency message. Off-identity = 0 differing rows and
+  0 differing frames.
+* **C3**: added row **K1-5** (backlog K1): an object appearing on the standing background —
+  `range_test.py` on squareT_platform `--obj 0.5,0.5,1.75 --start 450 --d0 100 --end 620 --appear 100` (the
+  person appears at frame 450 at 100 m after 90 standing frames): PASS if the first STOP comes within 5 frames
+  (0.5 s) of its appearance. Also reported (backlog K1, not gated here): `S_cube05_100` ≥ 150/260,
+  `S_cube05_60`/`S_person_60` ≥ 255; X3 per variant: squareT ≤ 3 STOP episodes, roundT_squareT 0.
+* **C4**: K2-1 reference = `true_axis_all.py` (round 3, `investigate_curve/`) on the base run, side +1 (the
+  outer, left wall; the right wall reaches 61 m only), frames 57–117, every frame with a reference (61 of 61 on
+  base); the script asserts the mount rotation equals the base run's in every frame of the window. The reference
+  is wall-based (not independent of the candidate's input); the independent check is B6 against the driven path.
+* **C6**: B6-1 is over the nine recordings with a driven path (doubleT_obstacle: the train stands). "Blink" is
+  `gauge_stability.py measure`'s definition: the trusted range (capped at `gauge.range_max`) falls to at most half
+  in one frame and comes back to ≥ 90 % of the previous value within 10 frames.
+* **C2** acknowledged: K1-3 (squareT_platform) was used to diagnose v1 and to check v2/v3; it is reported as a
+  development-informed result, not as an independent pre-registered test.
