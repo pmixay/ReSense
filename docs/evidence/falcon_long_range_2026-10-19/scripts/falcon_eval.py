@@ -3,7 +3,7 @@
 
     falcon_eval.py --base <baseline.jsonl> --cand <candidate.jsonl> [...] --out <json>
 
-Person association: the N2 raw-geometry association (``n2_falcon_2026-10-18/summarize_falcon.py``,
+Person association (amendment A1: also the raw-labelled far target, far_walker_labels.json): the N2 raw-geometry association (``n2_falcon_2026-10-18/summarize_falcon.py``,
 reviewed anchors, interpolation within 25 frames, margins 1.0/0.6/1.2 m; explicit ROS axes).
 """
 import argparse
@@ -16,6 +16,21 @@ from pathlib import Path
 REPO = Path(os.environ.get("RESENSE_REPO", Path(__file__).resolve().parents[4]))
 sys.path.insert(0, str(REPO / "docs/evidence/n2_falcon_2026-10-18"))
 import summarize_falcon as N2  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from assoc import associate  # noqa: E402
+
+FAR = json.loads((Path(__file__).resolve().parents[1] / "far_walker_labels.json").read_text())
+
+
+def far_stop_frames(rows):
+    """Frames whose STOP has a detection on the raw-labelled far target (amendment A1)."""
+    out = set()
+    for ep in FAR["episodes"].values():
+        path = ep["path"]
+        for a in associate(rows, path, FAR["track_reference"], [f for f, _, _ in path]):
+            if a["stop"]:
+                out.add(a["i"])
+    return out
 
 
 def episodes(rows, lo=0, hi=None):
@@ -26,6 +41,8 @@ def episodes(rows, lo=0, hi=None):
 def evaluate(rows, by_frame):
     s = N2.summarize(rows, "explicit_ros", by_frame)
     person = set(s["associated_targets"]["main_approach"]["stop"]) | set(s["associated_targets"]["early_uncertain"]["stop"])
+    far = far_stop_frames(rows)
+    person |= far
     stop = [r["i"] for r in rows if r["decision"] == "STOP"]
     out = {"decisions": dict(Counter(r["decision"] for r in rows)), "stop_episodes": episodes(rows),
            "caution_share": round(sum(r["decision"] == "CAUTION" for r in rows) / len(rows), 4),
@@ -35,6 +52,7 @@ def evaluate(rows, by_frame):
                             "stop_frames_not_person": len([i for i in stop if i <= 1700 and i not in person]),
                             "caution_share": round(sum(r["decision"] == "CAUTION" for r in rows[:1701]) / 1701, 4)},
            "person_stop_frames": sorted(person),
+           "far_target_stop_frames": len(far),
            "main_person": {k: s["associated_targets"]["main_approach"][k]
                            for k in ("stop_frames", "advisory_frames", "first_stop_frame", "first_stop_raw_forward_m",
                                      "first_advisory_raw_forward_m", "suffix_90pct_raw_forward_m")},

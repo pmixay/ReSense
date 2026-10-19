@@ -90,3 +90,28 @@ frame 1200). Lateral 0 = track reference centre; bottom −0.2 m (bed level). Se
 
 Not used: the held-out G3 set. No parameter is tuned on the injected matrix's seeds 0–2 without
 re-running on seeds 10–12 for the reported numbers (stated in the report if done).
+
+## Amendments
+
+### A1 (19.10, ~12:30 UTC, before any candidate injection matrix; after the baseline matrix and the first candidate replays of the real recording)
+
+1. **The "empty" frames 0–1700 are not empty.** Raw returns (no detector output) show a target in the
+   corridor, lateral ≈ −0.2 m, walking away from 253 m (frame 0) to 307 m (frame ~600) and back to 245 m
+   (frame 1240), then stepping aside behind the 250 m structure and standing beside the track at 251 m
+   (lateral ≈ −0.9 m) until the reviewed main approach starts at frame 1725
+   (`scripts/far_walker_labels.py`, `far_walker_labels.json`, `far_walker.png`). It was found because the
+   first far-axis candidate STOPped on it. Consequences:
+   * §5.1 "not associated with the person" now also excludes outputs associated with these labels
+     (`far_walker`, `far_251`); the frames 0–1700 rule is kept with that definition.
+   * The injection matrix moves to frames where the far target is hidden: prefix 0–1289, static targets
+     frames 1290–1439, approach from frame 1290 (passes 250 m at frame 1440). The baseline matrix is re-run
+     in this window; the earlier baseline matrix (frames 300+) is kept as `matrix_baseline_frames300.json`.
+   * New endpoint **E4**: the real far walker per 10 m band (STOP fraction, any-output fraction), baseline
+     vs candidates (`scripts/far_walker_eval.py`). Beyond ~280 m the walker is at lateral −0.5…−1.0 m
+     (gauge edge or beside it), so there it is reported, not required to STOP.
+2. **POD fall-off recalibrated on real data beyond 250 m** (`scripts/calibrate_far.py`,
+   `far_calibration.json`): the near-calibrated person over-predicts the walker 2–10× beyond 260 m.
+   The matrix uses POD exponent **k = 3** (fit) for every target and two calibrated persons:
+   `person_front` (main approach, facing the sensor: fill 0.9, ρ 0.05 / 0.30) and `person_back`
+   (far walker: fill 0.9, ρ 0.08 / 0.10, the fitted values). `person_dark` is dropped.
+3. Acceptance rule 1 otherwise unchanged. The far-walker discovery is reported as a finding about the data.

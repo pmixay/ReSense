@@ -30,17 +30,20 @@ from inject import Injector  # noqa: E402
 import run_cache  # noqa: E402
 
 CACHE = Path("/home/user/data/falcon")
-PREFIX = 300
+PREFIX = 1290
 STATIC_FRAMES = 150
 RANGES = (150, 200, 250, 300, 350)
+K_POD = 3.0
 APPROACH = {"start": 400.0, "speed": 10.0, "stop_at": 100.0, "frames": 310}
 EV = HERE.parent
 
 
 def targets():
+    """PROTOCOL.md section 3 with amendment A1 (persons calibrated on the real person, POD k = 3)."""
     person = json.loads((EV / "person_model.json").read_text())
-    base = {k: person[k] for k in ("size", "bottom", "fill", "rho", "intensity")}
-    t = {"person": base, "person_dark": dict(base, rho={"split": 0.8, "lower": 0.05, "upper": 0.10})}
+    base = {k: person[k] for k in ("size", "bottom", "fill", "intensity")}
+    t = {"person_front": dict(base, rho={"split": 0.8, "lower": 0.05, "upper": 0.30}),
+         "person_back": dict(base, rho={"split": 0.8, "lower": 0.08, "upper": 0.10})}
     for rho in (0.1, 0.2, 0.5):
         t[f"cube{int(rho * 100)}"] = {"size": [1, 1, 1], "bottom": -0.2, "rho": rho, "intensity": 20.0}
         t[f"box2_{int(rho * 100)}"] = {"size": [2, 2, 2], "bottom": -0.2, "rho": rho, "intensity": 20.0}
@@ -104,7 +107,7 @@ def run_case(args):
         det = pickle.load(f)
     cfg = run_cache.build_cfg("falcon_ros", cfg_sets[0], cfg_sets[1])
     R_vs = run_cache.axis_matrix(cfg.sensor).astype(np.float32)
-    inj = Injector({"track": track, "seed": 100 + c["seed"] * 7919 + zlib.crc32(c["case"].encode()) % 1000, "targets": [c["spec"]]})
+    inj = Injector({"track": track, "k_pod": K_POD, "seed": 100 + c["seed"] * 7919 + zlib.crc32(c["case"].encode()) % 1000, "targets": [c["spec"]]})
     hi = c["spec"]["to"]
     rows = []
     run_frames(det, cfg, R_vs, PREFIX, hi, inj, rows)
@@ -155,7 +158,7 @@ def main():
     if a.check_prefix:
         c = next(x for x in cs if x["mode"] == "approach")
         det2 = run_cache.Detector(cfg)
-        inj = Injector({"track": track, "seed": 100 + c["seed"] * 7919 + zlib.crc32(c["case"].encode()) % 1000, "targets": [c["spec"]]})
+        inj = Injector({"track": track, "k_pod": K_POD, "seed": 100 + c["seed"] * 7919 + zlib.crc32(c["case"].encode()) % 1000, "targets": [c["spec"]]})
         rows2 = []
         run_frames(det2, cfg, R_vs, 0, c["spec"]["to"], inj, rows2)
         ref = [json.loads(line) for line in open(out / f"{c['case']}.jsonl")]
