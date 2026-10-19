@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.359" timestamp="2026-10-19T15:10:43.268145+00:00" hostname="kuber"><testcase classname="tests.test_cable_confirmation" name="test_historical_raw_points_cannot_supply_fast_confirmation[-2.6-13-3]" time="0.003"><failure message="assert not True&#10; +  where True = stops(&lt;resense.tracking.Tracker object at 0x7023fe6389b0&gt;)">kind = '', height = 2.6, n = 13, count = 3
+
+    @pytest.mark.parametrize('kind,height,n,count', [('',2.6,13,3),('hanging',.44,3,2)])
+    def test_historical_raw_points_cannot_supply_fast_confirmation(kind,height,n,count):
+        tr = Tracker(DetectorConfig().tracking)
+        for _ in range(count):
+            cl = cable(kind=kind,height=height,n=n,distance=48.2)
+            # Exactly the descriptor contract of a blob containing old accumulation:
+            # points_idx excludes historical entries while n_raw includes them.
+            cl.n_raw += n
+            tr.update([cl], frame_dt=.1)
+&gt;           assert not stops(tr)
+E           assert not True
+E            +  where True = stops(&lt;resense.tracking.Tracker object at 0x7023fe6389b0&gt;)
+
+tests/test_cable_confirmation.py:100: AssertionError</failure></testcase><testcase classname="tests.test_cable_confirmation" name="test_historical_raw_points_cannot_supply_fast_confirmation[hanging-0.44-3-2]" time="0.001"><failure message="assert not True&#10; +  where True = stops(&lt;resense.tracking.Tracker object at 0x7023f8c17410&gt;)">kind = 'hanging', height = 0.44, n = 3, count = 2
+
+    @pytest.mark.parametrize('kind,height,n,count', [('',2.6,13,3),('hanging',.44,3,2)])
+    def test_historical_raw_points_cannot_supply_fast_confirmation(kind,height,n,count):
+        tr = Tracker(DetectorConfig().tracking)
+        for _ in range(count):
+            cl = cable(kind=kind,height=height,n=n,distance=48.2)
+            # Exactly the descriptor contract of a blob containing old accumulation:
+            # points_idx excludes historical entries while n_raw includes them.
+            cl.n_raw += n
+            tr.update([cl], frame_dt=.1)
+&gt;           assert not stops(tr)
+E           assert not True
+E            +  where True = stops(&lt;resense.tracking.Tracker object at 0x7023f8c17410&gt;)
+
+tests/test_cable_confirmation.py:100: AssertionError</failure></testcase></testsuite></testsuites>

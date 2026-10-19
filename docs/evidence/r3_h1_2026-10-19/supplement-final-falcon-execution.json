@@ -1,0 +1,16 @@
+[
+  {
+    "name": "candidate-Falcon",
+    "repo": "/home/aiops/resense",
+    "command": [
+      "/tmp/opencode/resense-b4-venv/bin/python",
+      "/home/aiops/resense/docs/evidence/judgement_2026-10-13/scripts/probe.py",
+      "/tmp/opencode/l16-s3/falcon-decoded",
+      "/tmp/opencode/r3-h1/supplement-final-falcon/candidate-Falcon"
+    ],
+    "returncode": 0,
+    "commit": "b14cfd0d8aed4b174518f28313dd666c3055a6cd",
+    "started": "2026-10-19T15:38:58.097143+00:00",
+    "finished": "2026-10-19T15:42:48.581883+00:00"
+  }
+]

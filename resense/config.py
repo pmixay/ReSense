@@ -389,6 +389,13 @@ class TrackingConfig:
     confirm_hits: int = 3          # consecutive frames before an obstacle is reported
     low_confirm_hits: int = 5      # v0.6: hits before a low (bed-level) object is reported: it is static and in view for seconds, while rail-area clutter flickers for 2-3 frames
     confirm_time_s: float = 0.5    # s of sensor time a track must have been observed (frames x interval, first frame included: 0.5 s = 5 frames at 10 Hz, v0.6.2; 0.3 = 3 frames, the v0.3-v0.6.1 persistence); applied when the caller supplies the frame interval (the Detector does); 0 = hits only
+    cable_confirm_time_s: float = 0.3  # 0 = off; consecutive resolved thin vertical hits, not generic clutter
+    cable_max_footprint: float = 0.15  # m, maximum observed extent in both X and Y
+    cable_min_height: float = 1.5     # m, tall-body evidence inside the strict gauge
+    cable_min_voxels: int = 8         # current strict voxels, never accumulated weak evidence
+    hanging_confirm_time_s: float = 0.2  # narrow hanging group with positive below/above-top support
+    hanging_confirm_hits: int = 2
+    hanging_confirm_min_height: float = 0.25  # m, exclude a single horizontal scan line
     hit_window: int = 10           # frames of a track's recent history kept for min_hit_fraction
     min_hit_fraction: float = 0.6  # a track must have been matched in this share of its last hit_window frames (flickering structures are not reported); 0 = off
     zone_window: int = 10          # hits over which the zone (gauge / advisory) is decided (5 in v0.3)

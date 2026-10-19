@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="13" time="0.374" timestamp="2026-10-19T13:41:15.670357+00:00" hostname="kuber"><testcase classname="tests.test_cable_confirmation" name="test_three_frame_tall_cable_burst_confirms_before_visibility_gap" time="0.003"><failure message="assert False == (2 == 2)&#10; +  where False = stops(&lt;resense.tracking.Tracker object at 0x7663b2c95e50&gt;)">def test_three_frame_tall_cable_burst_confirms_before_visibility_gap():
+        tr = Tracker(DetectorConfig().tracking)
+        for k in range(3):
+            tr.update([cable(distance=89.1-1.44*k)], frame_dt=.1)
+&gt;           assert stops(tr) == (k == 2)
+E           assert False == (2 == 2)
+E            +  where False = stops(&lt;resense.tracking.Tracker object at 0x7663b2c95e50&gt;)
+
+tests/test_cable_confirmation.py:30: AssertionError</failure></testcase><testcase classname="tests.test_cable_confirmation" name="test_two_frame_hanging_burst_confirms_at_48m" time="0.001"><failure message="assert False == (1 == 1)&#10; +  where False = stops(&lt;resense.tracking.Tracker object at 0x7663b6162270&gt;)">def test_two_frame_hanging_burst_confirms_at_48m():
+        tr = Tracker(DetectorConfig().tracking)
+        for k in range(2):
+            tr.update([cable(kind='hanging', distance=49.83-1.64*k, height=.44, n=3)], frame_dt=.1)
+&gt;           assert stops(tr) == (k == 1)
+E           assert False == (1 == 1)
+E            +  where False = stops(&lt;resense.tracking.Tracker object at 0x7663b6162270&gt;)
+
+tests/test_cable_confirmation.py:37: AssertionError</failure></testcase><testcase classname="tests.test_cable_confirmation" name="test_weak_wide_demoted_low_or_flat_evidence_keeps_ordinary_confirmation[change0]" time="0.001" /><testcase classname="tests.test_cable_confirmation" name="test_weak_wide_demoted_low_or_flat_evidence_keeps_ordinary_confirmation[change1]" time="0.001" /><testcase classname="tests.test_cable_confirmation" name="test_weak_wide_demoted_low_or_flat_evidence_keeps_ordinary_confirmation[change2]" time="0.001" /><testcase classname="tests.test_cable_confirmation" name="test_weak_wide_demoted_low_or_flat_evidence_keeps_ordinary_confirmation[change3]" time="0.001" /><testcase classname="tests.test_cable_confirmation" name="test_weak_wide_demoted_low_or_flat_evidence_keeps_ordinary_confirmation[change4]" time="0.001" /><testcase classname="tests.test_cable_confirmation" name="test_weak_wide_demoted_low_or_flat_evidence_keeps_ordinary_confirmation[change5]" time="0.001" /><testcase classname="tests.test_cable_confirmation" name="test_weak_wide_demoted_low_or_flat_evidence_keeps_ordinary_confirmation[change6]" time="0.001" /><testcase classname="tests.test_cable_confirmation" name="test_weak_wide_demoted_low_or_flat_evidence_keeps_ordinary_confirmation[change7]" time="0.001" /><testcase classname="tests.test_cable_confirmation" name="test_sparse_fast_input_still_needs_sensor_time" time="0.001"><failure message="assert False&#10; +  where False = stops(&lt;resense.tracking.Tracker object at 0x7663b20926c0&gt;)">def test_sparse_fast_input_still_needs_sensor_time():
+        tr = Tracker(DetectorConfig().tracking)
+        for _ in range(3):
+            tr.update([cable()], frame_dt=.05)
+            assert not stops(tr)
+        for _ in range(3):
+            tr.update([cable()], frame_dt=.05)
+&gt;       assert stops(tr)
+E       assert False
+E        +  where False = stops(&lt;resense.tracking.Tracker object at 0x7663b20926c0&gt;)
+
+tests/test_cable_confirmation.py:59: AssertionError</failure></testcase><testcase classname="tests.test_cable_confirmation" name="test_missed_and_ineligible_hits_do_not_supply_fast_confirmation" time="0.002"><failure message="AttributeError: 'Track' object has no attribute 'cable_hits'. Did you mean: 'gauge_hits'?">def test_missed_and_ineligible_hits_do_not_supply_fast_confirmation():
+        tr = Tracker(DetectorConfig().tracking)
+        tr.update([cable()], frame_dt=.1)
+        tr.update([], frame_dt=.1)
+        tr.update([cable()], frame_dt=.1)
+        assert not stops(tr)
+        tr.update([cable(width=.25)], frame_dt=.1)
+        tr.update([cable()], frame_dt=.1)
+        # Generic confirmation can now qualify independently after .5s; inspect the
+        # special run itself to exclude stale or ineligible hit borrowing.
+        t = tr.tracks[0]
+&gt;       assert t.cable_hits == 1 and t.cable_span_s == pytest.approx(.1)
+               ^^^^^^^^^^^^
+E       AttributeError: 'Track' object has no attribute 'cable_hits'. Did you mean: 'gauge_hits'?
+
+tests/test_cable_confirmation.py:73: AttributeError</failure></testcase><testcase classname="tests.test_cable_confirmation" name="test_hanging_one_scanline_never_uses_short_confirmation" time="0.001" /></testsuite></testsuites>

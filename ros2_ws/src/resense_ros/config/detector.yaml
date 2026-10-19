@@ -238,6 +238,13 @@ resense:
     confirm_hits: 3
     low_confirm_hits: 5            # v0.6: hits before a low (bed-level) object is reported
     confirm_time_s: 0.5
+    cable_confirm_time_s: 0.3       # consecutive clean thin vertical evidence only; 0 disables both shortcuts
+    cable_max_footprint: 0.15
+    cable_min_height: 1.5
+    cable_min_voxels: 8
+    hanging_confirm_time_s: 0.2
+    hanging_confirm_hits: 2
+    hanging_confirm_min_height: 0.25
     hit_window: 10
     min_hit_fraction: 0.6
     zone_window: 10
