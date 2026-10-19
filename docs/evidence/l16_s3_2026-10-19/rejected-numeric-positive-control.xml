@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="20" skipped="0" tests="24" time="0.555" timestamp="2026-10-19T10:15:06.267571+00:00" hostname="kuber"><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation0]" time="0.003" /><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation1]" time="0.002" /><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation2]" time="0.002" /><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation3]" time="0.002" /><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation4]" time="0.003"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 2125 / 12000 (17.7%)&#10;Max absolute difference: 7.6293945e-06&#10;Max relative difference: 0.00011057&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 1.,  0.,  0.],
+       [ 0.,  0.,  1.],
+       [ 0., -1.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321785e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 2125 / 12000 (17.7%)
+E           Max absolute difference: 7.6293945e-06
+E           Max relative difference: 0.00011057
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation5]" time="0.003"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 2125 / 12000 (17.7%)&#10;Max absolute difference: 7.6293945e-06&#10;Max relative difference: 0.00011057&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 1.,  0.,  0.],
+       [ 0.,  0., -1.],
+       [ 0.,  1.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321785e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 2125 / 12000 (17.7%)
+E           Max absolute difference: 7.6293945e-06
+E           Max relative difference: 0.00011057
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation6]" time="0.003"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 2125 / 12000 (17.7%)&#10;Max absolute difference: 7.6293945e-06&#10;Max relative difference: 0.00011057&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[-1.,  0.,  0.],
+       [ 0.,  0.,  1.],
+       [ 0.,  1.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321785e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 2125 / 12000 (17.7%)
+E           Max absolute difference: 7.6293945e-06
+E           Max relative difference: 0.00011057
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation7]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 2125 / 12000 (17.7%)&#10;Max absolute difference: 7.6293945e-06&#10;Max relative difference: 0.00011057&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[-1.,  0.,  0.],
+       [ 0.,  0., -1.],
+       [ 0., -1.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321785e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 2125 / 12000 (17.7%)
+E           Max absolute difference: 7.6293945e-06
+E           Max relative difference: 0.00011057
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation8]" time="0.003"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 3253 / 12000 (27.1%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 0.00018997&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  1.,  0.],
+       [ 1.,  0.,  0.],
+       [ 0.,  0., -1.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321785e+01,  6.3554473e+00,  8.0413783e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3253 / 12000 (27.1%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 0.00018997
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation9]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 3253 / 12000 (27.1%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 0.00018997&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  1.,  0.],
+       [-1.,  0.,  0.],
+       [ 0.,  0.,  1.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321785e+01,  6.3554473e+00,  8.0413783e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3253 / 12000 (27.1%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 0.00018997
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation10]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 3253 / 12000 (27.1%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 0.00018997&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0., -1.,  0.],
+       [ 1.,  0.,  0.],
+       [ 0.,  0.,  1.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321785e+01,  6.3554473e+00,  8.0413783e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3253 / 12000 (27.1%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 0.00018997
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation11]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 3253 / 12000 (27.1%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 0.00018997&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0., -1.,  0.],
+       [-1.,  0.,  0.],
+       [ 0.,  0., -1.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321785e+01,  6.3554473e+00,  8.0413783e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3253 / 12000 (27.1%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 0.00018997
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation12]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 4465 / 12000 (37.2%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 7.874198e-05&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[0., 1., 0.],
+       [0., 0., 1.],
+       [1., 0., 0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 4465 / 12000 (37.2%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 7.874198e-05
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation13]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 4465 / 12000 (37.2%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 7.874198e-05&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  1.,  0.],
+       [ 0.,  0., -1.],
+       [-1.,  0.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 4465 / 12000 (37.2%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 7.874198e-05
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation14]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 4465 / 12000 (37.2%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 7.874198e-05&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0., -1.,  0.],
+       [ 0.,  0.,  1.],
+       [-1.,  0.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 4465 / 12000 (37.2%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 7.874198e-05
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation15]" time="0.003"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 4465 / 12000 (37.2%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 7.874198e-05&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0., -1.,  0.],
+       [ 0.,  0., -1.],
+       [ 1.,  0.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 4465 / 12000 (37.2%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 7.874198e-05
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation16]" time="0.003"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 3994 / 12000 (33.3%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 0.00022716&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274032e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[0., 0., 1.],
+       [1., 0., 0.],
+       [0., 1., 0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413795e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3994 / 12000 (33.3%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 0.00022716
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274032e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation17]" time="0.003"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 3994 / 12000 (33.3%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 0.00022716&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274032e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  0.,  1.],
+       [-1.,  0.,  0.],
+       [ 0., -1.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413795e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3994 / 12000 (33.3%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 0.00022716
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274032e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation18]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 3994 / 12000 (33.3%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 0.00022716&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274032e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  0., -1.],
+       [ 1.,  0.,  0.],
+       [ 0., -1.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413795e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3994 / 12000 (33.3%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 0.00022716
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274032e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation19]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 3994 / 12000 (33.3%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 0.00022716&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274032e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  0., -1.],
+       [-1.,  0.,  0.],
+       [ 0.,  1.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413795e-01],
+       [ 3.8373001e+01, -1.0567715e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3994 / 12000 (33.3%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 0.00022716
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274032e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation20]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 4615 / 12000 (38.5%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 7.874198e-05&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  0.,  1.],
+       [ 0.,  1.,  0.],
+       [-1.,  0.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567716e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 4615 / 12000 (38.5%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 7.874198e-05
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation21]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 4615 / 12000 (38.5%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 7.874198e-05&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  0.,  1.],
+       [ 0., -1.,  0.],
+       [ 1.,  0.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567716e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 4615 / 12000 (38.5%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 7.874198e-05
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation22]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 4615 / 12000 (38.5%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 7.874198e-05&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  0., -1.],
+       [ 0.,  1.,  0.],
+       [ 1.,  0.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567716e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 4615 / 12000 (38.5%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 7.874198e-05
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase><testcase classname="tests.test_orientation_numeric" name="test_new_directional_mode_preserves_canonical_float32_geometry[rotation23]" time="0.002"><failure message="AssertionError: &#10;Arrays are not equal&#10;&#10;Mismatched elements: 4615 / 12000 (38.5%)&#10;Max absolute difference: 1.5258789e-05&#10;Max relative difference: 7.874198e-05&#10; x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...&#10; y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],&#10;       [ 3.837300e+01, -1.056772e+00,  1.274033e-01],&#10;       [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...">rotation = array([[ 0.,  0., -1.],
+       [ 0., -1.,  0.],
+       [-1.,  0.,  0.]])
+
+    @pytest.mark.parametrize('rotation', orientation_candidates())
+    def test_new_directional_mode_preserves_canonical_float32_geometry(rotation):
+        rng = np.random.default_rng(12)
+        xyz = rng.uniform([3, -6, -3], [200, 6, 4], (4000, 3)).astype(np.float32)
+        cfg = DetectorConfig()
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        cal._R_orient = rotation.T.copy()
+        cal._canonical_axes = True
+        roll, pitch, yaw = np.radians([3., -2.4, 1.])
+        cal._set_tilt(roll, pitch, yaw)
+        tilt = rot_z(yaw) @ rot_y(pitch) @ rot_x(roll)
+        expected = xyz @ tilt.T.astype(np.float32)
+        seen = xyz @ rotation.T.astype(np.float32)
+&gt;       np.testing.assert_array_equal(cal.apply(seen), expected)
+
+resense/tests/test_orientation_numeric.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (&lt;built-in function eq&gt;, array([[ 5.2321781e+01,  6.3554473e+00,  8.0413789e-01],
+       [ 3.8373001e+01, -1.0567716e+...4479523e+01,  1.2805747e+00,  1.9107647e+00],
+       [ 1.1419539e+01, -3.1148226e+00,  8.1026423e-01]], dtype=float32))
+kwds = {'err_msg': '', 'verbose': True, 'header': 'Arrays are not equal', 'strict': False}
+
+    @wraps(func)
+    def inner(*args, **kwds):
+        with self._recreate_cm():
+&gt;           return func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 4615 / 12000 (38.5%)
+E           Max absolute difference: 1.5258789e-05
+E           Max relative difference: 7.874198e-05
+E            x: array([[ 5.232178e+01,  6.355447e+00,  8.041379e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+E            y: array([[ 5.232178e+01,  6.355447e+00,  8.041378e-01],
+E                  [ 3.837300e+01, -1.056772e+00,  1.274033e-01],
+E                  [ 1.348955e+02, -2.430193e+00,  8.681751e+00],...
+
+/usr/lib/python3.12/contextlib.py:81: AssertionError</failure></testcase></testsuite></testsuites>

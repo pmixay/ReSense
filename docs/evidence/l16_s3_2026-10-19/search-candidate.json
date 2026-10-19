@@ -1,0 +1,16 @@
+{
+  "repo": "/home/aiops/resense",
+  "points": 340610,
+  "search_ms": [
+    12.010623002424836,
+    12.352536898106337,
+    12.609230121597648,
+    11.966638965532184,
+    11.876694858074188
+  ],
+  "median_ms": 12.010623002424836,
+  "max_observation_points": 56769,
+  "calls_per_search": 7,
+  "winning_candidate": 9,
+  "scope": "Five repetitions after warmup, current shared 8-vCPU development VM, not idle 4-vCPU acceptance."
+}

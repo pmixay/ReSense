@@ -1,0 +1,27 @@
+{
+  "archive": "instrumentation_traced.tar.gz",
+  "sha256": "4555d927bf67e7c986d8b8ef276beb37f0fac1b101b659d33355e4f48897472d",
+  "members": {
+    "case_00.json": {
+      "bytes": 2034,
+      "sha256": "8444b3cd563309970d98bc489eb535e82e6e732852a0cd6827437391801668a7"
+    },
+    "case_00.jsonl": {
+      "bytes": 187325,
+      "sha256": "451fcd42f337c01551ac55758b8c4a986d3d1ca726a1d2ddc8e1de9d5c486d58"
+    },
+    "case_04.json": {
+      "bytes": 2626,
+      "sha256": "da7b4fed58efb0e849b2f4deda7167d35fe63c704d3e34a7e642b93a1a0f8a43"
+    },
+    "case_04.jsonl": {
+      "bytes": 195674,
+      "sha256": "25e26056bb938952c87a849b06566b7cbf019bf93975ee47844e0369129aee86"
+    },
+    "summary.json": {
+      "bytes": 8404,
+      "sha256": "ea5f0930f2663c9ef6c1c86dfea0f0a77a052cdba02d96c11bdb478385f3f1f3"
+    }
+  },
+  "all_members_reopened_and_verified": true
+}

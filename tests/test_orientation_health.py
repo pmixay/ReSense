@@ -67,7 +67,8 @@ def test_adoption_confirms_orientation_without_waiting_for_tilt():
     cfg = DetectorConfig()
     cfg.calibration.orientation_votes = 1
     cal = MountCalibrator(cfg.calibration, cfg.track)
-    with patch("resense.calibration.observe_mount", return_value=MountObservation(ok=False)), \
+    with patch("resense.calibration.observe_mount",
+               side_effect=[MountObservation(ok=False), MountObservation(ok=True)]), \
          patch.object(cal, "_search_orientation", return_value=(1, MountObservation(ok=True))):
         cal.update(np.zeros((0, 3)), np.zeros((0, 3)), None)
     assert cal.state.status == "pending"

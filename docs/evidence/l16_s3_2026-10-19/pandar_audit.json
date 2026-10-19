@@ -1,0 +1,260 @@
+[
+  {
+    "frame": 0,
+    "points": 184770,
+    "has_ring": true,
+    "input_sha256": "a97639ee1385abd6e69a408f5c711af0e838e698ec6bdbf94c445ad291ecc778",
+    "positive_fraction": [
+      1.0,
+      0.48584231718404985,
+      0.29555786465774775
+    ],
+    "forward_axis": 0,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -49.13209285155785,
+        -26.51724247864465
+      ],
+      [
+        -48.24727296165165,
+        -25.122240493132782
+      ],
+      [
+        -40.74040391886789,
+        -16.678283334720806
+      ],
+      [
+        -1.7459960401754042,
+        -2.6455649573269886
+      ],
+      [
+        37.607791272225114,
+        7.157568296576152
+      ],
+      [
+        45.5972742246905,
+        14.16627092746758
+      ],
+      [
+        46.55803735130668,
+        15.176458258728259
+      ]
+    ],
+    "observations": [
+      {
+        "rotation": 0,
+        "observation": {
+          "ok": true,
+          "rail_score": 0.17837147877652387,
+          "roll": -0.004663289568147997,
+          "pitch": -0.005569212455836113,
+          "yaw": 0.0033860007293530702,
+          "height": 1.0875085750551188,
+          "lateral": -0.04427982872514456,
+          "forward_ratio": 20973.0
+        },
+        "accepted": true,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": true,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        }
+      },
+      {
+        "rotation": 4,
+        "observation": {
+          "ok": true,
+          "rail_score": 0.06097052428502106,
+          "roll": -0.025564343491700812,
+          "pitch": 0.003507850672568491,
+          "yaw": 0.0044673274607038545,
+          "height": 2.262402626306053,
+          "lateral": 0.6882826153791916,
+          "forward_ratio": 20973.0
+        },
+        "accepted": true,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": true,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        }
+      },
+      {
+        "rotation": 5,
+        "observation": {
+          "ok": true,
+          "rail_score": 0.0758657737943392,
+          "roll": -0.010117966862151434,
+          "pitch": -0.002347567797000131,
+          "yaw": -0.00404517688362193,
+          "height": 2.2091975558265804,
+          "lateral": -0.39226522572907296,
+          "forward_ratio": 20973.0
+        },
+        "accepted": true,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": true,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        }
+      }
+    ]
+  },
+  {
+    "frame": 1,
+    "points": 188994,
+    "has_ring": true,
+    "input_sha256": "42fe6c71ef4a3cd243d0dacf425f7b96cfdafaf0dbe653fe9182ffee23d6cd9b",
+    "positive_fraction": [
+      1.0,
+      0.4944126984126984,
+      0.30234920634920637
+    ],
+    "forward_axis": 0,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -49.12199167444843,
+        -25.58926029666647
+      ],
+      [
+        -48.19005992949311,
+        -24.139479231229952
+      ],
+      [
+        -40.48377144323021,
+        -15.854126488682855
+      ],
+      [
+        -0.7515234464123234,
+        -2.60769955433968
+      ],
+      [
+        39.669973581708376,
+        7.889708059355728
+      ],
+      [
+        47.75607501089621,
+        14.810577361405189
+      ],
+      [
+        48.85404242102782,
+        15.630378720432194
+      ]
+    ]
+  },
+  {
+    "frame": 50,
+    "points": 186538,
+    "has_ring": true,
+    "input_sha256": "15d79a18503e7c06ae61c5097060e1c4c23a59ad8c48399ca0677f66dcb36c9e",
+    "positive_fraction": [
+      1.0,
+      0.5040849147635896,
+      0.30852364104213575
+    ],
+    "forward_axis": 0,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -47.72869398914861,
+        -27.44380182134101
+      ],
+      [
+        -46.71968813324513,
+        -25.26974939946996
+      ],
+      [
+        -40.118211791709136,
+        -16.69308625071332
+      ],
+      [
+        0.47097656374314545,
+        -2.717843086630466
+      ],
+      [
+        39.832992631414236,
+        6.532396417149153
+      ],
+      [
+        48.05367099186884,
+        15.404251172636458
+      ],
+      [
+        49.00711546661496,
+        16.425424764608202
+      ]
+    ]
+  },
+  {
+    "frame": 100,
+    "points": 189208,
+    "has_ring": true,
+    "input_sha256": "3006a6d0aa40760178958cc13d377eb58e96c47d97933378d47f78b66a7dd4bc",
+    "positive_fraction": [
+      1.0,
+      0.4952435312024353,
+      0.294583967529173
+    ],
+    "forward_axis": 0,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -49.142034893129086,
+        -26.940554252496675
+      ],
+      [
+        -48.32061135486986,
+        -25.657295877713974
+      ],
+      [
+        -38.900001808438134,
+        -16.939656550885445
+      ],
+      [
+        -0.5295117092316204,
+        -2.69139795466272
+      ],
+      [
+        39.533799429511745,
+        6.75035896090884
+      ],
+      [
+        47.76588850550722,
+        14.40685653656857
+      ],
+      [
+        48.811312899737,
+        15.573388544934522
+      ]
+    ]
+  }
+]

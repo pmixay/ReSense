@@ -1,0 +1,15 @@
+{
+  "archive": "falcon_node_reference.tar.gz",
+  "sha256": "0b186fedadeae203760b39a96fbc0b357a407d2917c87b3c00a04d2ace3b3c1e",
+  "members": {
+    "baseline.jsonl": {
+      "bytes": 8415336,
+      "sha256": "df30f44a6b19587f255f4053adc7d4c8e4f7d7c6a9a239ef77cd4030a87ffa5b"
+    },
+    "summary.json": {
+      "bytes": 4201,
+      "sha256": "5bda395520f75d1fb261e11152bc76f316eaf27301eb332a4d7346dd2a801cf4"
+    }
+  },
+  "all_members_reopened_and_verified": true
+}

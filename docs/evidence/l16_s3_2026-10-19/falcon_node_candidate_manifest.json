@@ -1,0 +1,15 @@
+{
+  "archive": "falcon_node_candidate.tar.gz",
+  "sha256": "e7f0e6a4b235b6622906a45174f5ba0457e051f46608fa0c2adea048295a01a9",
+  "members": {
+    "baseline.jsonl": {
+      "bytes": 8442888,
+      "sha256": "04e6be936844f1a631b734a4444636b7dc5eda22e22c1d010fff10218617f9f3"
+    },
+    "summary.json": {
+      "bytes": 4184,
+      "sha256": "714b8174aea323be1a651d48ffc4882f305b0733d2739f925b54135f28be4c6b"
+    }
+  },
+  "all_members_reopened_and_verified": true
+}

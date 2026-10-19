@@ -1,0 +1,163 @@
+{
+  "raw_sqlite_messages": 4443,
+  "cache_frames": 4443,
+  "metadata_rows_compared": 4443,
+  "known_cdr_hashes_exact": 100,
+  "manual_numpy_decode_samples": [
+    {
+      "frame": 0,
+      "points": 94831,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "ed84dd0b52f3cab2b6ba9069bd2d8a5384ded0003a7cd05e8c41b8fe49cc74da",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5567166854720503,
+        0.4669570077295399
+      ]
+    },
+    {
+      "frame": 1,
+      "points": 94772,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "bc247ff55926b2f845b9095189d64ae927f14b7e86a70920f6a34642978f02fa",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5572954037057358,
+        0.4670788840585827
+      ]
+    },
+    {
+      "frame": 50,
+      "points": 94789,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "6035dbf93fa97db28c5e3953f1ceffab897daa709dd6ed968515d5c30dec9b93",
+      "positive_xyz_fraction": [
+        1.0,
+        0.556551920581502,
+        0.46695291647765036
+      ]
+    },
+    {
+      "frame": 99,
+      "points": 94922,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "d9e5ce4b108d363295b7d41d8f4c4c35018d93c2a14ded251d133cd334f67d76",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5562988559027412,
+        0.46645666968669014
+      ]
+    },
+    {
+      "frame": 100,
+      "points": 95057,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "3d48e6e3816476c07f8a380c80e7e67e3c04205662b813e5dd744d26d27e98c4",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5570447205360994,
+        0.4658678477124252
+      ]
+    },
+    {
+      "frame": 500,
+      "points": 94872,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "dbccf04c9e08f2b650f61586b90db9adf79ba6625df307570a2ab0a3a9044aec",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5567185260139978,
+        0.46676574753351885
+      ]
+    },
+    {
+      "frame": 1000,
+      "points": 94719,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "39f53080cfdb83a28cc07625a99546907789309c95aa942afe0386ff04e4e46c",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5570688035135506,
+        0.46723466252810947
+      ]
+    },
+    {
+      "frame": 2000,
+      "points": 94897,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "82e29229f0ac76884b023db709ac99e0828667ae5c76c69969c5fe94277cb766",
+      "positive_xyz_fraction": [
+        1.0,
+        0.557414881397726,
+        0.466400413079444
+      ]
+    },
+    {
+      "frame": 3000,
+      "points": 95196,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "f5c4f4be5b34a12df7cdc5169cb942321e1f9bbff8155e049b0eadea4aa96dcd",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5568091096264549,
+        0.46548174293037525
+      ]
+    },
+    {
+      "frame": 3800,
+      "points": 94930,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "592f91fb2e9e5ae3a83b277bb852825ea93f4964cf611ec1af9da94d311edebe",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5573580533024334,
+        0.4661750763720636
+      ]
+    },
+    {
+      "frame": 4200,
+      "points": 95148,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "14c7c52607807fc25533b74da0a90ff77baa81792cdf5fd820b3841647e791e1",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5569533778954892,
+        0.4653382099466095
+      ]
+    },
+    {
+      "frame": 4370,
+      "points": 95042,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "5accef956a7fe124875d65b8b0fc85e61042200d4137ae83a2e63f8fc66c9a74",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5576166326466194,
+        0.46597293827991837
+      ]
+    },
+    {
+      "frame": 4400,
+      "points": 94728,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "051e1d6447540b4432eb95bbee5f3b63ce8adaac6e682d3b76c55c2c1bb29485",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5569630943332489,
+        0.4670952622244743
+      ]
+    },
+    {
+      "frame": 4442,
+      "points": 95166,
+      "exact_manual_numpy_view_match": true,
+      "raw_cdr_sha256": "f0ca3949ec154f6e681c0e3b75873f6c2bab098855ec9f2718daba945b212d5e",
+      "positive_xyz_fraction": [
+        1.0,
+        0.5563961919172814,
+        0.4651871466700292
+      ]
+    }
+  ],
+  "changed_byte_positive_control": true
+}

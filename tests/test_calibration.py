@@ -47,16 +47,18 @@ def test_default_search_keeps_the_spin_axis_vertical():
         assert any(np.allclose(R, M.T, atol=1e-9) for R in c)
 
 
-def test_sideways_mount_only_with_the_full_search(tunnel):
-    """A spinning LiDAR on its side is not searched by default (the mapping is kept and the
-    calibration reports it); with ``keep_up_axis: false`` the 24-candidate search finds it."""
+def test_resolved_directional_fov_allows_ring_free_sideways_recovery(tunnel):
+    """The ray-cast forward FOV resolves unsigned up independently of the bed.
+    Ambiguous FOVs retain the original family (test_directional_orientation).
+    Explicit full search remains available without that constraint."""
     frame, _, _ = tunnel
     M = rot_x(np.pi / 2)
     cfg = DetectorConfig()
     cfg.calibration.max_frames = 12
     det = Detector(cfg)
     res = _run(det, _remount(frame, M), 14)
-    assert res.mount["orientation"] == "configured" and res.mount["status"] == "fallback", res.mount
+    assert _angle_deg(det.mount_rotation @ M) < 0.5, res.mount
+    assert res.mount['orientation_confirmed'] and not res.obstacle
     cfg = DetectorConfig()
     cfg.calibration.keep_up_axis = False
     det = Detector(cfg)

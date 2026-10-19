@@ -1,0 +1,16 @@
+{
+  "repo": "/tmp/opencode/l16-s3/reference",
+  "points": 340610,
+  "search_ms": [
+    103.04204700514674,
+    104.51665380969644,
+    98.44979387708008,
+    96.42633493058383,
+    96.98454500176013
+  ],
+  "median_ms": 98.44979387708008,
+  "max_observation_points": 340610,
+  "calls_per_search": 7,
+  "winning_candidate": 9,
+  "scope": "Five repetitions after warmup, current shared 8-vCPU development VM, not idle 4-vCPU acceptance."
+}

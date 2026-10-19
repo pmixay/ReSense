@@ -249,7 +249,16 @@ class Detector:
 
     def process(self, frame: Frame, ego_speed: Optional[float] = None) -> FrameResult:
         """Process one current input; optional bounded startup replay never publishes old inputs."""
+        if (type(self) is Detector and self.cfg.calibration.orientation_replay_frames == 0
+                and self._orientation_replay.reason == "disabled"
+                and self.calib.directional_startup_history(frame.xyz, frame.ring)):
+            # A newly recoverable ring-free side mapping has no valid prior
+            # model in the old coordinates. Rebuild only this startup; existing
+            # supported mappings retain their default-off history semantics.
+            self._orientation_replay = OrientationReplayBuffer(4)
+            self.calib._canonical_axes = True
         pending = self._orientation_replay
+        directional_history = self.cfg.calibration.orientation_replay_frames == 0 and pending.max_frames > 0
         if pending.finished or not self.cfg.calibration.enabled or self.calib._config_passed:
             return self._process_once(frame, ego_speed)
         wall_start, cpu_start = time.perf_counter(), time.process_time()
@@ -273,6 +282,7 @@ class Detector:
             fresh.calib.state.orientation = orientation
             fresh.calib.state.orientation_confirmed = True
             fresh.calib._config_passed = True
+            fresh.calib._canonical_axes = directional_history
             fresh.calib.state.message = f"sensor orientation found from the data: {orientation}"
             for saved, speed in pending.frames:
                 replayed = fresh._process_once(saved, speed)
@@ -296,6 +306,8 @@ class Detector:
         self._previous_latency_ms = elapsed
         result.timing_ms["total"] = elapsed
         if event is not None:
+            if directional_history:
+                event["trigger"] = "directional_up_axis"
             event["physical_call_ms"] = elapsed
             event["physical_cpu_ms"] = (time.process_time() - cpu_start) * 1000
             result.mount["orientation_replay"] = event

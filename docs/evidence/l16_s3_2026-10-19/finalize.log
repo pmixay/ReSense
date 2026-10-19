@@ -1,0 +1,119 @@
+{"status": "SERIALIZED_EVIDENCE_REVALIDATED", "ordinary_rows": 15269, "set_F_rows": 3060}
+{
+  "repo": "/tmp/opencode/l16-s3/reference",
+  "points": 340610,
+  "search_ms": [
+    103.04204700514674,
+    104.51665380969644,
+    98.44979387708008,
+    96.42633493058383,
+    96.98454500176013
+  ],
+  "median_ms": 98.44979387708008,
+  "max_observation_points": 340610,
+  "calls_per_search": 7,
+  "winning_candidate": 9,
+  "scope": "Five repetitions after warmup, current shared 8-vCPU development VM, not idle 4-vCPU acceptance."
+}
+{
+  "repo": "/home/aiops/resense",
+  "points": 340610,
+  "search_ms": [
+    11.944505153223872,
+    12.661259854212403,
+    12.524547055363655,
+    12.705554021522403,
+    12.640170054510236
+  ],
+  "median_ms": 12.640170054510236,
+  "max_observation_points": 56769,
+  "calls_per_search": 7,
+  "winning_candidate": 9,
+  "scope": "Five repetitions after warmup, current shared 8-vCPU development VM, not idle 4-vCPU acceptance."
+}
+{
+  "status": "P3_AUTHOR_CHECKS_PASS",
+  "base_commit": "aec88d248fb1a48a275937607bd36c3587dc0dc9",
+  "source_sha256": "aacfd664bac988dfde9e911997b84589d409709af471af4bd758187e73b59c85",
+  "changed_frozen_files": [
+    "resense/calibration.py",
+    "resense/detector.py"
+  ],
+  "tests_passed": 226,
+  "old_numeric_tests_detecting_difference": 20,
+  "gate_rows": 18329,
+  "non_latency_gate_metrics_equal": 208,
+  "groups": {
+    "pandar-empty-ringfree": {
+      "cases": 24,
+      "frames_per_case": 545,
+      "stop_count_distribution": {
+        "0": 24
+      },
+      "scope": "Directional-FOV recovery or existing B4 channel support"
+    },
+    "pandar-positive-ringfree": {
+      "cases": 24,
+      "frames_per_case": 201,
+      "stop_count_distribution": {
+        "193": 2,
+        "191": 7,
+        "190": 1,
+        "196": 6,
+        "197": 2,
+        "0": 6
+      },
+      "scope": "Unresolved 360-degree ring-free control: abstention is intentional; inherited L16 remains."
+    },
+    "falcon": {
+      "cases": 24,
+      "frames_per_case": 4443,
+      "stop_count_distribution": {
+        "1387": 17,
+        "1372": 7
+      },
+      "scope": "Directional-FOV recovery or existing B4 channel support"
+    },
+    "pandar-positive-ring": {
+      "cases": 24,
+      "frames_per_case": 201,
+      "stop_count_distribution": {
+        "193": 17,
+        "191": 7
+      },
+      "scope": "Directional-FOV recovery or existing B4 channel support"
+    },
+    "pandar-empty-ring": {
+      "cases": 24,
+      "frames_per_case": 545,
+      "stop_count_distribution": {
+        "0": 24
+      },
+      "scope": "Directional-FOV recovery or existing B4 channel support"
+    }
+  },
+  "search": {
+    "repo": "/home/aiops/resense",
+    "points": 340610,
+    "search_ms": [
+      11.944505153223872,
+      12.661259854212403,
+      12.524547055363655,
+      12.705554021522403,
+      12.640170054510236
+    ],
+    "median_ms": 12.640170054510236,
+    "max_observation_points": 56769,
+    "calls_per_search": 7,
+    "winning_candidate": 9,
+    "scope": "Five repetitions after warmup, current shared 8-vCPU development VM, not idle 4-vCPU acceptance."
+  },
+  "formal_committed_X3": "NOT_RUN: source is uncommitted",
+  "independent_P4_acceptance": "PENDING",
+  "reseal": "P1 after actual committed-source acceptance",
+  "limits": [
+    "General L16 without resolved directional/channel evidence",
+    "Physical sideways scanning plane / gravity inference",
+    "Formal committed-source X3 and independent P4 review"
+  ]
+}
