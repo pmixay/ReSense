@@ -144,3 +144,23 @@ part of a ~1 m tall object is sampled at 115 m), above the 0.5 m limit.
 horizontal move can take an object into or out of the gauge; z is not used (`tracking.settle_check_z` false).
 Every other S value unchanged. S2 is measured on the same Falcon stream, and S and S2 both on the standing-train
 probes of amendment 1 (`S_person_*`, `S_cube05_*`), doubleT_obstacle, the full gate and the ride.
+
+## Amendment 3 (19.10, ~11:15 UTC) — F1a headroom measured; before any ride measurement of F1a–c
+
+**S2 on Falcon (registered in amendment 2):** non-person STOP frames 12 → **0**; all 1,360 person STOP frames
+kept with the same detections; first person STOP 124.84 m (base 124.84); no new STOP; the 12 frames became
+CAUTION (3,062 → 3,074). Traced per frame: 159 and 2312–2314 by S2 (same gauge cluster and 6–7 / 10 vote as the
+base, track settled outside → advisory), 4394–4401 by H (`height_conflict` on every frame; the track never
+earned a STOP, so nothing is held at 4400–4401).
+
+**How far real / ray-cast low objects rise above the F1a reference** (`lowref.py`, read-only, base detector):
+the judge's rail-head box (0.3×0.3×0.15 on the axis) ≥ 0.077 m beyond 25 m; the 10 cm box on the left / right
+rail head ≥ **0.034** / 0.052 m (worst frame: left rail, 31.5 m, top 0.078, reference 0.044); set O inside objects'
+low-kind clusters (3–12 m) ≥ 0.083 m; the real object on the rail in `doubleT_obstacle` ≥ 0.288 m (beyond ~38 m the
+reference reads 0.1–0.25 m below the plane: many 0.5 m bins hold only bed / sleeper returns, so far out F1a can only
+be lenient). The synthetic ray-cast tunnel exercises F1a at 10 / 25 m only (at 45 / 50 m no reference: a 0.2 m
+margin still keeps the box there).
+
+**Consequence (rule of §5):** ≥ 1.5 cm headroom below 0.034 m allows a margin ≤ **0.019 m**. The registered sweep
+0.02 / 0.03 / 0.04 is still measured and reported in full, but only a margin ≤ 0.019 can be selected; **0.01** is
+added to the sweep. Selection among admissible settings: fewest ride low-kind episodes, then the gate.
