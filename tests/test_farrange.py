@@ -76,11 +76,12 @@ def test_far_axis_tracker_confirms_offsets_and_bounds_the_trust():
     assert all(o is None for o in out[:-1]) and out[-1] is not None
     far = out[-1]
     assert far.sides == 1 and 200.0 < far.valid < 215.0          # one side: the 0.003 rad divergence allowance bounds sigma 0.5 m at ~209 m
-    X = np.array([10.0, 50.0, 150.0, 300.0])
+    X = np.array([10.0, 50.0, 150.0, 200.0, 300.0])
     off = far.offset(X, model)
-    assert off[0] == 0.0 and off[1] == 0.0 and abs(off[3] - far.slope * 250.0) < 1e-9
+    assert off[0] == 0.0 and off[1] == 0.0 and abs(off[3] - far.slope * 150.0) < 1e-9
+    assert off[4] == 0.0                                   # beyond the trusted range: the near model as before
     s = far.sigma(X)
-    assert s[0] == 0.0 and s[2] >= cfg.axis_sigma0 and s[3] > s[2]
+    assert s[0] == 0.0 and s[2] >= cfg.axis_sigma0 and s[3] > s[2] and s[4] == 0.0
     for k in range(cfg.axis_hold_frames + 1):              # no boundary: held, then dropped
         res = tr.update(np.zeros((0, 3), np.float32), model, 400.0)
     assert res is None

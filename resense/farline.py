@@ -34,7 +34,7 @@ from resense.track import TrackModel
 
 @dataclass
 class FarAxis:
-    """y_far(X) = y_join + slope (X - join) for X >= join; valid up to ``valid``."""
+    """y_far(X) = y_join + slope (X - join) for join < X <= valid; the near model elsewhere."""
     join: float
     y_join: float
     slope: float
@@ -51,7 +51,7 @@ class FarAxis:
         """y_far - y_near at X (0 before the join): dy_far = dy_near - offset."""
         X = np.asarray(X, dtype=np.float64)
         out = np.zeros(X.shape, dtype=np.float64)
-        far = X > self.join
+        far = (X > self.join) & (X <= self.valid)      # only where the far line is trusted; the near model beyond
         if far.any():
             out[far] = self.y_join + self.slope * (X[far] - self.join) - model.center_y(X[far])
         return out
@@ -61,7 +61,7 @@ class FarAxis:
         d = np.maximum(X - self.join, 0.0)
         beyond = np.maximum(X - self.straight_to, 0.0)
         stat = np.sqrt(self.sigma0 ** 2 + (self.slope_se * d) ** 2 + (self.one_side_slope * d) ** 2)
-        return np.where(X > self.join, stat + 0.5 * self.unseen_k * beyond ** 2, 0.0)
+        return np.where((X > self.join) & (X <= self.valid), stat + 0.5 * self.unseen_k * beyond ** 2, 0.0)
 
     def to_dict(self) -> dict:
         return {"join": self.join, "y_join": round(self.y_join, 3), "slope": round(self.slope, 6),
@@ -226,10 +226,11 @@ class FarAxisTracker:
         # trusted to axis_margin beyond the support (or the declared section), and only while sigma <= axis_max_sigma
         end = min(max(self.support + cfg.axis_margin, float(cfg.declared_straight_to)), max_range)
         grid = np.arange(j, end + 1e-6, 1.0)
+        far.valid = float(end)
         ok = far.sigma(grid) <= cfg.axis_max_sigma
-        far.valid = float(grid[ok].max()) if ok[0] and ok.any() and np.all(ok[:np.flatnonzero(ok).max() + 1]) else j
-        if ok.any() and not ok.all():
-            far.valid = float(grid[:int(np.argmin(ok))].max()) if np.argmin(ok) > 0 else j
+        bad = np.flatnonzero(~ok)
+        if bad.size:
+            far.valid = float(grid[bad[0] - 1]) if bad[0] > 0 else j
         return far
 
 

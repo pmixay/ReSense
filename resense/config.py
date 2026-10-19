@@ -639,7 +639,7 @@ class FarRangeConfig:
     axis_one_side_slope_sigma: float = 0.003  # rad added to sigma with one side: a wall diverging less than the kink limit is not detectable
     axis_second_min_bins: int = 4      # kept bins for the second (confirming) side, e.g. a column row every 30 m
     axis_max_gap: float = 40.0         # m: the support ends at a gap longer than this between kept bins ...
-    axis_max_rejected_run: int = 2     # ... or at this many consecutive bins off the line (a curve starting)
+    axis_max_rejected_run: int = 3     # ... or at this many consecutive bins off the line (a curve starting; a wall niche is 1-2 bins)
     axis_max_side_disagreement: float = 0.002  # slope difference of two fitted sides
     axis_smoothing: float = 0.7        # EMA weight of the previous slope
     axis_confirm_frames: int = 5       # consecutive good frames before the far line is used
