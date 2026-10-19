@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="59" time="2.531" timestamp="2026-10-19T16:32:07.433486+00:00" hostname="kuber"><testcase classname="tests.test_column_collision_core" name="test_case45_raw_positive_control" time="0.076"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">def test_case45_raw_positive_control():
+        xyz, ring, labels = physical_column()
+        assert hashlib.sha256(xyz.tobytes()).hexdigest() == "680878ed4f0b233cec517f999ca8648b1193522c929b7ce0f9df9fad7d545a20"
+        c, = matched(xyz, ring, labels)
+        assert (int((labels == 1).sum()), c.n_gauge, c.ring_count) == (84, 80, 20)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:51: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_observed_inside_body_remains_collision_with_any_upper_surface[3.22-None-False--0.68]" time="0.040"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">lateral = -0.68, top = 3.22, absorbing = None, beam = False
+
+    @pytest.mark.parametrize("lateral", [-0.68, 0.68])
+    @pytest.mark.parametrize("top,absorbing,beam", [(3.22, None, False), (4.12, None, False),
+                                                   (4.12, (2.54, 4.12), False), (2.72, None, True)])
+    def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, top, absorbing, beam):
+        xyz, ring, labels = physical_column(lateral=lateral, top=top, absorbing=absorbing, beam=beam)
+        c, = matched(xyz, ring, labels)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:63: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_observed_inside_body_remains_collision_with_any_upper_surface[3.22-None-False-0.68]" time="0.030"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">lateral = 0.68, top = 3.22, absorbing = None, beam = False
+
+    @pytest.mark.parametrize("lateral", [-0.68, 0.68])
+    @pytest.mark.parametrize("top,absorbing,beam", [(3.22, None, False), (4.12, None, False),
+                                                   (4.12, (2.54, 4.12), False), (2.72, None, True)])
+    def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, top, absorbing, beam):
+        xyz, ring, labels = physical_column(lateral=lateral, top=top, absorbing=absorbing, beam=beam)
+        c, = matched(xyz, ring, labels)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:63: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_observed_inside_body_remains_collision_with_any_upper_surface[4.12-None-False--0.68]" time="0.033"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">lateral = -0.68, top = 4.12, absorbing = None, beam = False
+
+    @pytest.mark.parametrize("lateral", [-0.68, 0.68])
+    @pytest.mark.parametrize("top,absorbing,beam", [(3.22, None, False), (4.12, None, False),
+                                                   (4.12, (2.54, 4.12), False), (2.72, None, True)])
+    def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, top, absorbing, beam):
+        xyz, ring, labels = physical_column(lateral=lateral, top=top, absorbing=absorbing, beam=beam)
+        c, = matched(xyz, ring, labels)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:63: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_observed_inside_body_remains_collision_with_any_upper_surface[4.12-None-False-0.68]" time="0.034"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">lateral = 0.68, top = 4.12, absorbing = None, beam = False
+
+    @pytest.mark.parametrize("lateral", [-0.68, 0.68])
+    @pytest.mark.parametrize("top,absorbing,beam", [(3.22, None, False), (4.12, None, False),
+                                                   (4.12, (2.54, 4.12), False), (2.72, None, True)])
+    def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, top, absorbing, beam):
+        xyz, ring, labels = physical_column(lateral=lateral, top=top, absorbing=absorbing, beam=beam)
+        c, = matched(xyz, ring, labels)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:63: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_observed_inside_body_remains_collision_with_any_upper_surface[4.12-absorbing2-False--0.68]" time="0.033"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">lateral = -0.68, top = 4.12, absorbing = (2.54, 4.12), beam = False
+
+    @pytest.mark.parametrize("lateral", [-0.68, 0.68])
+    @pytest.mark.parametrize("top,absorbing,beam", [(3.22, None, False), (4.12, None, False),
+                                                   (4.12, (2.54, 4.12), False), (2.72, None, True)])
+    def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, top, absorbing, beam):
+        xyz, ring, labels = physical_column(lateral=lateral, top=top, absorbing=absorbing, beam=beam)
+        c, = matched(xyz, ring, labels)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:63: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_observed_inside_body_remains_collision_with_any_upper_surface[4.12-absorbing2-False-0.68]" time="0.027"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">lateral = 0.68, top = 4.12, absorbing = (2.54, 4.12), beam = False
+
+    @pytest.mark.parametrize("lateral", [-0.68, 0.68])
+    @pytest.mark.parametrize("top,absorbing,beam", [(3.22, None, False), (4.12, None, False),
+                                                   (4.12, (2.54, 4.12), False), (2.72, None, True)])
+    def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, top, absorbing, beam):
+        xyz, ring, labels = physical_column(lateral=lateral, top=top, absorbing=absorbing, beam=beam)
+        c, = matched(xyz, ring, labels)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:63: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_observed_inside_body_remains_collision_with_any_upper_surface[2.72-None-True--0.68]" time="0.040"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">lateral = -0.68, top = 2.72, absorbing = None, beam = True
+
+    @pytest.mark.parametrize("lateral", [-0.68, 0.68])
+    @pytest.mark.parametrize("top,absorbing,beam", [(3.22, None, False), (4.12, None, False),
+                                                   (4.12, (2.54, 4.12), False), (2.72, None, True)])
+    def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, top, absorbing, beam):
+        xyz, ring, labels = physical_column(lateral=lateral, top=top, absorbing=absorbing, beam=beam)
+        c, = matched(xyz, ring, labels)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:63: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_observed_inside_body_remains_collision_with_any_upper_surface[2.72-None-True-0.68]" time="0.038"><failure message="AssertionError: assert ('warning', 'column') == ('gauge', '')&#10;  &#10;  At index 0 diff: 'warning' != 'gauge'&#10;  Use -v to get more diff">lateral = 0.68, top = 2.72, absorbing = None, beam = True
+
+    @pytest.mark.parametrize("lateral", [-0.68, 0.68])
+    @pytest.mark.parametrize("top,absorbing,beam", [(3.22, None, False), (4.12, None, False),
+                                                   (4.12, (2.54, 4.12), False), (2.72, None, True)])
+    def test_observed_inside_body_remains_collision_with_any_upper_surface(lateral, top, absorbing, beam):
+        xyz, ring, labels = physical_column(lateral=lateral, top=top, absorbing=absorbing, beam=beam)
+        c, = matched(xyz, ring, labels)
+&gt;       assert (c.zone, c.reason) == ("gauge", "")
+E       AssertionError: assert ('warning', 'column') == ('gauge', '')
+E         
+E         At index 0 diff: 'warning' != 'gauge'
+E         Use -v to get more diff
+
+tests/test_column_collision_core.py:63: AssertionError</failure></testcase><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3--1.29-37.0]" time="0.033" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3--1.29-67.0]" time="0.029" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3--1.29-109.0]" time="0.029" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3--1.29-137.0]" time="0.029" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3-1.29-37.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3-1.29-67.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3-1.29-109.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3-1.29-137.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3--1.5-37.0]" time="0.031" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3--1.5-67.0]" time="0.030" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3--1.5-109.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3--1.5-137.0]" time="0.030" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3-1.5-37.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3-1.5-67.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3-1.5-109.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[-0.3-1.5-137.0]" time="0.025" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0--1.29-37.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0--1.29-67.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0--1.29-109.0]" time="0.029" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0--1.29-137.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0-1.29-37.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0-1.29-67.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0-1.29-109.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0-1.29-137.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0--1.5-37.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0--1.5-67.0]" time="0.028" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0--1.5-109.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0--1.5-137.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0-1.5-37.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0-1.5-67.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0-1.5-109.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.0-1.5-137.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3--1.29-37.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3--1.29-67.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3--1.29-109.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3--1.29-137.0]" time="0.044" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3-1.29-37.0]" time="0.293" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3-1.29-67.0]" time="0.078" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3-1.29-109.0]" time="0.045" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3-1.29-137.0]" time="0.030" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3--1.5-37.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3--1.5-67.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3--1.5-109.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3--1.5-137.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3-1.5-37.0]" time="0.027" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3-1.5-67.0]" time="0.026" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3-1.5-109.0]" time="0.029" /><testcase classname="tests.test_column_collision_core" name="test_outside_body_under_bounded_model_errors_never_gains_core[0.3-1.5-137.0]" time="0.030" /><testcase classname="tests.test_column_collision_core" name="test_sensor_union_cannot_substitute_for_rail_relative_support" time="0.029" /><testcase classname="tests.test_column_collision_core" name="test_core_cannot_override_axis_validity" time="0.030" /></testsuite></testsuites>
