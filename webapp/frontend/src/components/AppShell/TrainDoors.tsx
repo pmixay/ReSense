@@ -2,10 +2,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useBlocker, useLocation } from 'react-router-dom';
 import styles from './TrainDoors.module.css';
 
-type Phase = 'idle' | 'closing' | 'covered' | 'opening';
+type Phase = 'idle' | 'closing' | 'departing' | 'covered' | 'arriving' | 'opening';
 const section = (pathname: string) => pathname.split('/')[1] || 'overview';
 
-/** Close before committing navigation. Query edits and run/camera changes stay immediate. */
+/** Close, move the old page right, swap offscreen, bring the new page in from the left. */
 export function useTrainDoors() {
   const location = useLocation();
   const blocker = useBlocker(({ currentLocation, nextLocation }) => section(currentLocation.pathname) !== section(nextLocation.pathname));
@@ -32,24 +32,41 @@ export function useTrainDoors() {
   useEffect(() => {
     if (phase !== 'closing') return;
     const timer = window.setTimeout(() => {
-      setPhase('covered');
-      proceed.current?.();
+      if (reduced) {
+        setPhase('covered');
+        proceed.current?.();
+      } else setPhase('departing');
     }, reduced ? 75 : 360);
     return () => window.clearTimeout(timer);
   }, [phase, reduced]);
 
   useEffect(() => {
+    if (phase !== 'departing') return;
+    const timer = window.setTimeout(() => {
+      setPhase('covered');
+      proceed.current?.();
+    }, reduced ? 0 : 160);
+    return () => window.clearTimeout(timer);
+  }, [phase, reduced]);
+
+  useEffect(() => {
     if (phase !== 'covered' || location.key === origin.current) return;
-    // Give the committed destination a paint behind the closed, opaque-frosted leaves.
+    // Hold an unloaded chunk offscreen; the frosted panes keep the lateral swap continuous.
     const started = performance.now();
     const reveal = () => {
       if (document.querySelector('[data-page-fallback]') && performance.now() - started < 1000) {
         timer = window.setTimeout(reveal, 50);
-      } else setPhase('opening');
+      } else setPhase(reduced ? 'opening' : 'arriving');
     };
-    let timer = window.setTimeout(reveal, reduced ? 25 : 100);
+    let timer = window.setTimeout(reveal, 25);
     return () => window.clearTimeout(timer);
   }, [location.key, phase, reduced]);
+
+  useEffect(() => {
+    if (phase !== 'arriving') return;
+    const timer = window.setTimeout(() => setPhase('opening'), reduced ? 0 : 230);
+    return () => window.clearTimeout(timer);
+  }, [phase, reduced]);
 
   useEffect(() => {
     if (phase !== 'opening') return;
@@ -58,16 +75,17 @@ export function useTrainDoors() {
   }, [phase, reduced]);
 
   // Back/Forward can cancel an in-flight departure. Always release the overlay.
+  const active = phase !== 'idle';
   useEffect(() => {
-    if (phase === 'idle') return;
+    if (!active) return;
     const timer = window.setTimeout(() => {
       proceed.current?.();
       setPhase('idle');
-    }, 2000);
+    }, 3500);
     return () => window.clearTimeout(timer);
-  }, [phase]);
+  }, [active]);
 
-  return { phase, active: phase !== 'idle' };
+  return { phase, active };
 }
 
 export function TrainDoors({ phase }: { phase: Phase }) {
@@ -75,18 +93,14 @@ export function TrainDoors({ phase }: { phase: Phase }) {
     <div className={styles.portal} data-train-doors data-phase={phase} aria-hidden="true">
       {(['left', 'right'] as const).map(side => (
         <div key={side} className={`${styles.leaf} ${styles[side]}`} data-door-leaf={side}>
-          <div className={styles.skin}>
-            <div className={styles.window} data-door-glass>
-              <div className={styles.glare} />
-              <div className={styles.safetyMark}><span /><span /></div>
-            </div>
-            <div className={styles.lowerPanel}>
-              <span className={styles.recess}><i /></span>
-              <span className={styles.kickPlate}><i /><i /></span>
-            </div>
-            <span className={styles.edgeLight} />
-            <span className={styles.seal} />
+          <div className={styles.skin} />
+          <div className={styles.window} data-door-glass>
+            <div className={styles.glare} />
+            <span className={styles.glazingMark}><i /><i /><i /></span>
           </div>
+          <span className={styles.glazingBead} />
+          <span className={styles.edgeLight} />
+          <span className={styles.seal} />
           <span className={styles.thickness} />
         </div>
       ))}

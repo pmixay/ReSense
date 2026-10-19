@@ -215,25 +215,38 @@ post at all pressure extremes. The dock blur is now 8px with a longer feather, s
 the upper bench remains recognizable while controls retain their dark ground.
 
 Section navigation uses one authored paired-door sequence in AppShell: close in
-350ms, commit the route at 360ms, hold closed for at least 100ms, then open in 450ms.
-If a lazy page chunk is still suspended, hold for up to one additional second. A
-bounded recovery timer prevents stuck occlusion. Query changes and navigation
+350ms, settle until 360ms, then send the current page/chrome right in 160ms with
+blur peaking at 12px. Commit the destination at 520ms in the offscreen-left pose.
+After a 25ms covered handover, the destination enters from the left in 220ms,
+decelerating and shedding its 10px blur. At 230ms the arrival phase finishes and
+the leaves open in 450ms. If a lazy page chunk is suspended, hold the offscreen
+destination for up to one additional second; a 3.5-second whole-sequence recovery
+timer prevents stuck occlusion. Query changes and navigation
 within the same section (including Player run changes) are immediate. Browser
-Back/Forward uses the same route blocker. The old page stays mounted while closing;
-the destination mounts behind the closed doors. Native focus/input is inert during
+Back/Forward uses the same route blocker. One live route stays mounted while
+closing/departing; its destination then mounts offscreen behind the closed doors.
+There is no duplicated Player, cloned DOM or photographic page snapshot. Native focus/input is inert during
 the overlay, then main receives focus without scrolling.
 
 The overlay is dimensional CSS geometry: only two full-viewport sliding leaves,
-graphite enamel bevels, rubber center seals, red status strips, recessed grips,
-laminated glazing and brushed-metal kick plates. Every visible detail moves with
+following the uploaded `IMG_8349.jpeg`, `IMG_8350.jpeg` and `1591221.jpeg`:
+tall glazing occupying approximately 91% of the height, narrow black enamel
+stiles, deep center seals, red edge strips and a small lower glazing bead. The
+invented recessed grips and broad metal kick plates are removed. Every detail moves with
 its leaf; the screen itself is the frame. No stationary header, side jamb or sill
-is mounted. Each pane combines 38px backdrop diffusion with a 95–96% opaque neutral frost,
-so page content stays unrecognizable even when backdrop filtering is unavailable.
-The frost is a user-pinned departure from the clear photographed door windows.
-Only the two panes filter during a transition; the overlay is `display:none` at rest
+is mounted. Each pane combines 20px backdrop diffusion, 75% saturation and a
+26–32% warm neutral tint. This is genuinely transmitting frosted glass: page
+light/color and lateral movement remain visible while fine text is diffused.
+The matte finish is user-pinned relative to the clear photographed glazing.
+Only the two panes backdrop-filter; brief blur on opaque door details and page
+surfaces supplies motion blur without isolating the panes' backdrop sampling.
+The overlay is `display:none` at rest
 and adds no renderer, image download or animation dependency. Reduced motion uses a
 75ms cover / 100ms reveal fade with no moving leaves. Initial page loads do not run
 the sequence. Shared Raleway, navigation styling and all page controls are retained.
+All temporary page transforms, filters and `will-change` hints end with the sequence.
+Actual optical transmission/diffusion and outgoing/incoming projected directions
+are recorded with current captures in [`docs/images/moskva-doors/`](docs/images/moskva-doors/).
 
 ### Restored interior and restrained controls
 

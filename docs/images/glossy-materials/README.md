@@ -2,6 +2,8 @@
 
 Historical material pass. The latest interior/button correction is documented in
 [`../interior-restored/`](../interior-restored/).
+The current reference-led translucent door sequence is in
+[`../moskva-doors/`](../moskva-doors/).
 
 This gallery supersedes the earlier metro-2020 material captures. It preserves
 the existing desktop composition, display/door/rail anchors and application flows.

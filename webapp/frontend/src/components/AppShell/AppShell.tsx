@@ -48,7 +48,7 @@ export function AppShell() {
   const queueBusy = !!counts && counts.jobs_running + counts.jobs_queued > 0;
   return (
     <RailContext.Provider value={setSub}>
-      <div className={styles.shell} data-app-shell>
+      <div className={styles.shell} data-app-shell data-section-motion={doors.phase}>
         <a href="#main" className={styles.skip} tabIndex={doors.active ? -1 : undefined}>
           К содержимому
         </a>

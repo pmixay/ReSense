@@ -59,3 +59,13 @@ from `af2ecd8^`, including materials, geometry, original saloon lighting and scr
 housing/rendering. Reduce button sheen, light edges and shadows by roughly two
 thirds, including camera/speed and transport controls. Full-strength keyboard focus
 rings remain. Current captures are in `docs/images/interior-restored/`.
+
+MOSKVA-2020 TRANSITIONS (latest): Reconstruct the paired navigation leaves from
+the uploaded train photographs: tall glazing, slim black enamel surrounds, center
+seals, red LEDs and a small bottom bead. The viewport remains the frame. Matte
+glass must stay transparent, transmitting broad page colors/movement through
+20px diffusion and a 26–32% tint. Close, move the current page/chrome right with
+motion blur, commit offscreen, immediately arrive from the left, then open. Use
+one live route, brief bounded CSS effects, safe lazy-chunk waits and native focus
+release. Reduced motion keeps the short non-spatial fade. Latest transition
+captures and optical/motion evidence are in `docs/images/moskva-doors/`.

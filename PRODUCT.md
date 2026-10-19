@@ -55,7 +55,11 @@ off-white molded paneling, layered black glazing surrounds and gray-taupe woven
 cantilevered seating below the screen. Photos remain reference-only.
 
 Changing application sections closes a paired, dimensional metro-door overlay,
-commits the destination behind closed heavily frosted glass, then opens it. Navigation
+slides the current page right with motion blur, commits the destination offscreen,
+and slides it in from the left before opening. The leaves follow the supplied
+Moskva-2020 photographs, with tall glazing, narrow black surrounds, center seals
+and red edge LEDs. Glass is matte and blurred but transparent: broad page colors
+and movement remain visible through the frost. Navigation
 must remain reliable by mouse, touch, keyboard and browser history. Player frame,
 camera and run URL changes remain immediate. Reduced motion uses a brief non-spatial
 fade. The decorative doors contain no controls and release keyboard focus to the page.

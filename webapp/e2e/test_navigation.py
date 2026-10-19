@@ -44,6 +44,9 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
     expect(page).to_have_url(app.base + '/player')
     expect(page.locator('main')).to_have_attribute('inert', '')
     page.clock.run_for(360)
+    expect(doors).to_have_attribute('data-phase', 'departing')
+    expect(page).to_have_url(app.base + '/player')
+    page.clock.run_for(160)
     expect(page).to_have_url(app.base + '/runs')
     expect(doors).to_have_attribute('data-phase', 'covered')
     leaves = page.locator('[data-door-leaf]').evaluate_all('els => els.map(el => el.getBoundingClientRect().toJSON())')
@@ -53,8 +56,10 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
     # The user's screen is the frame: no stationary header, jambs or sill may remain.
     assert doors.locator(':scope > :not([data-door-leaf])').count() == 0
     glass = page.locator('[data-door-glass]').first
-    assert '38px' in glass.evaluate('el => getComputedStyle(el).backdropFilter')
-    page.clock.run_for(100)
+    assert '20px' in glass.evaluate('el => getComputedStyle(el).backdropFilter')
+    page.clock.run_for(25)
+    expect(doors).to_have_attribute('data-phase', 'arriving')
+    page.clock.run_for(230)
     expect(doors).to_have_attribute('data-phase', 'opening')
     page.clock.run_for(460)
     expect(doors).to_be_hidden()
@@ -76,6 +81,41 @@ def test_train_doors_reduced_motion_uses_fade(app):
     page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Загрузка', exact=True).click()
     doors = page.locator('[data-train-doors]')
     assert page.locator('[data-door-leaf]').first.evaluate('el => getComputedStyle(el).display') == 'none'
+    assert page.locator('main').evaluate('el => getComputedStyle(el).transform') == 'none'
     expect(page).to_have_url(app.base + '/upload')
     expect(page.locator('[data-page-fallback]')).to_be_hidden(timeout=30000)
     expect(doors).to_be_hidden()
+
+
+def test_section_pages_leave_right_and_arrive_from_left(app):
+    page = app.page
+    app.goto('/upload')
+    expect(page.get_by_role('heading', name='Загрузка', exact=True)).to_be_visible()
+    app.goto('/runs')
+    expect(page.get_by_role('heading', name='Прогоны', exact=True)).to_be_visible()
+    page.clock.install()
+    page.clock.pause_at(page.evaluate('Date.now()'))
+    page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Загрузка', exact=True).click()
+    doors = page.locator('[data-train-doors]')
+    page.clock.run_for(360)
+    expect(doors).to_have_attribute('data-phase', 'departing')
+    page.evaluate("document.getAnimations().forEach(a => {if (a.effect?.target === document.querySelector('main')) {a.pause();a.currentTime=80;}})")
+    departing = page.locator('main').evaluate('el => ({x:new DOMMatrixReadOnly(getComputedStyle(el).transform).m41,blur:parseFloat(getComputedStyle(el).filter.slice(5))})')
+    assert departing['x'] > 0 and departing['blur'] > 8, departing
+    expect(page).to_have_url(app.base + '/runs')
+    page.clock.run_for(160)
+    expect(doors).to_have_attribute('data-phase', 'covered')
+    expect(page).to_have_url(app.base + '/upload')
+    page.clock.run_for(25)
+    expect(doors).to_have_attribute('data-phase', 'arriving')
+    page.evaluate("document.getAnimations().forEach(a => {if (a.effect?.target === document.querySelector('main')) {a.pause();a.currentTime=55;}})")
+    arriving = page.locator('main').evaluate('el => ({x:new DOMMatrixReadOnly(getComputedStyle(el).transform).m41,blur:parseFloat(getComputedStyle(el).filter.slice(5))})')
+    assert arriving['x'] < 0 and arriving['blur'] > 0, arriving
+    assert page.locator('[data-door-leaf]').first.evaluate('el => el.getBoundingClientRect().left') == 0
+    page.clock.run_for(230)
+    expect(doors).to_have_attribute('data-phase', 'opening')
+    page.clock.run_for(460)
+    expect(doors).to_be_hidden()
+    assert page.locator('main').evaluate('el => getComputedStyle(el).transform === "none" && getComputedStyle(el).filter === "none"')
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+    assert app.errors == []

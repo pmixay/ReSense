@@ -29,6 +29,40 @@
   box-shadow: none;
 }
 .playerPage { padding: 0; overflow: hidden; background: #abb3b1; }
+/* One live routed page: leave right, commit offscreen, arrive from the left.
+   Closed translucent doors diffuse the brief offscreen handover. */
+.shell:is([data-section-motion='departing'], [data-section-motion='covered'], [data-section-motion='arriving']) > :is(.chrome, .page) {
+  will-change: transform, filter;
+  pointer-events: none;
+}
+.shell[data-section-motion='departing'] > :is(.chrome, .page) {
+  animation: section-depart 160ms cubic-bezier(.45, 0, .75, .5) both;
+}
+.shell[data-section-motion='covered'] > :is(.chrome, .page) {
+  transform: translate3d(-100%, 0, 0);
+  filter: blur(10px);
+}
+.shell[data-section-motion='arriving'] > :is(.chrome, .page) {
+  animation: section-arrive 220ms cubic-bezier(.16, 1, .3, 1) both;
+}
+@keyframes section-depart {
+  0% { transform: translate3d(0, 0, 0); filter: blur(0); }
+  45% { filter: blur(12px); }
+  100% { transform: translate3d(100%, 0, 0); filter: blur(10px); }
+}
+@keyframes section-arrive {
+  0% { transform: translate3d(-100%, 0, 0); filter: blur(10px); }
+  45% { filter: blur(5px); }
+  100% { transform: translate3d(0, 0, 0); filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shell:is([data-section-motion='departing'], [data-section-motion='covered'], [data-section-motion='arriving']) > :is(.chrome, .page) {
+    transform: none;
+    filter: none;
+    animation: none;
+    will-change: auto;
+  }
+}
 .skip {
   position: fixed;
   left: 12px;

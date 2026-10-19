@@ -1,4 +1,6 @@
-/* Full-bleed sliding leaves. The viewport is the doorway; every detail travels with a leaf. */
+/* Moskva-2020 / 81-775 leaves, following the uploaded interior/exterior photographs.
+   Tall safety glazing, narrow black enamel stiles, interlocking seals and red edge LEDs.
+   Every visible piece moves with a leaf. The viewport supplies the doorway frame. */
 .portal {
   position: fixed;
   inset: 0;
@@ -8,148 +10,125 @@
 }
 .portal[data-phase='idle'] { display: none; }
 .leaf {
+  --stile: clamp(30px, 3.1vw, 60px);
+  --crown: clamp(26px, 3.8vh, 42px);
+  --foot: clamp(34px, 5.2vh, 58px);
   position: absolute;
   inset-block: 0;
   width: calc(50% + 1px);
-  /* Keep panes flat: preserve-3d suppresses Chromium's backdrop diffusion. */
+  /* No filter/preserve-3d on this parent: both would isolate backdrop sampling. */
   will-change: transform;
-  transition: transform 350ms cubic-bezier(.45, 0, .2, 1);
 }
-.left { left: 0; transform: translate3d(-102%, 0, 0); --reflection: 108deg; }
-.right { right: 0; transform: translate3d(102%, 0, 0); --reflection: 72deg; }
-.portal[data-phase='closing'] .leaf,
-.portal[data-phase='covered'] .leaf { transform: translate3d(0, 0, 0); }
+.left { left: 0; transform: translate3d(-102%, 0, 0); --reflection: 105deg; }
+.right { right: 0; transform: translate3d(102%, 0, 0); --reflection: 75deg; }
+.portal:is([data-phase='closing'], [data-phase='departing'], [data-phase='covered'], [data-phase='arriving']) .leaf {
+  transform: translate3d(0, 0, 0);
+}
 .portal[data-phase='closing'] .left { animation: door-close-left 350ms cubic-bezier(.45, 0, .2, 1) both; }
 .portal[data-phase='closing'] .right { animation: door-close-right 350ms cubic-bezier(.45, 0, .2, 1) both; }
-.portal[data-phase='opening'] .leaf { transition-duration: 450ms; transition-timing-function: cubic-bezier(.3, 0, .15, 1); }
+.portal[data-phase='opening'] .left { animation: door-open-left 450ms cubic-bezier(.3, 0, .15, 1) both; }
+.portal[data-phase='opening'] .right { animation: door-open-right 450ms cubic-bezier(.3, 0, .15, 1) both; }
 @keyframes door-close-left { from { transform: translate3d(-102%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
 @keyframes door-close-right { from { transform: translate3d(102%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+@keyframes door-open-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-102%, 0, 0); } }
+@keyframes door-open-right { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(102%, 0, 0); } }
 .skin {
-  --stile: clamp(28px, 3.8vw, 68px);
-  --crown: clamp(26px, 5vh, 54px);
   position: absolute;
   inset: 0;
-  padding: var(--crown) var(--stile) 0;
-  /* Enamel surrounds a real aperture. The center stays unpainted behind the frost. */
+  /* The real aperture stays unpainted so frosted glass can transmit the moving page. */
   background:
-    linear-gradient(90deg, #11171c, #596169 4%, #282f36 9%, #161d23 44%, #303941 86%, #10161b) left top / var(--stile) 100% no-repeat,
-    linear-gradient(90deg, #151c22, #39434b 55%, #6e767a 91%, #141b20 98%) right top / var(--stile) 100% no-repeat,
-    linear-gradient(176deg, #657078, #303a43 12%, #141c23 64%, #39424a) center top / 100% calc(var(--crown) + 40px) no-repeat,
-    linear-gradient(var(--reflection), #131b22, #35414b 42%, #222d36 65%, #10171d) center bottom / 100% calc((100% - var(--crown)) * .26 + 40px) no-repeat;
-  box-shadow: inset 1px 0 0 #eef5fa80, inset -1px 0 0 #020609, 10px 0 28px #030a1266;
+    linear-gradient(90deg, #060c0d, #252c2b 5%, #101716 12%, #171e1c 83%, #080e0d) left top / var(--stile) 100% no-repeat,
+    linear-gradient(90deg, #0a1110, #1c2320 80%, #3b423d 92%, #070c0b) right top / var(--stile) 100% no-repeat,
+    linear-gradient(178deg, #343c36, #151d18 20%, #0b120f 65%, #1c241e) center top / 100% calc(var(--crown) + 26px) no-repeat,
+    linear-gradient(178deg, #1b241d, #0c140f 50%, #202821 96%, #070c09) center bottom / 100% calc(var(--foot) + 26px) no-repeat;
+  box-shadow: inset 1px 0 0 #8b948b66, inset -1px 0 0 #020604, 8px 0 18px #050a0b4d;
 }
 .window {
-  position: relative;
-  height: 74%;
+  position: absolute;
+  inset: var(--crown) var(--stile) var(--foot);
   overflow: hidden;
-  border-radius: clamp(22px, 2.6vw, 38px);
-  border: 8px solid #080f15;
-  outline: 2px solid #7d8b9180;
-  /* Neutral laminated safety glass: the destination is unreadable even without blur. */
-  background: linear-gradient(118deg, #e0e6e8f5, #c4cfd3f2 43%, #acbbc3f5);
-  backdrop-filter: blur(38px) saturate(.12);
-  -webkit-backdrop-filter: blur(38px) saturate(.12);
-  box-shadow: inset 1px 1px 0 #ffffffd9, inset -2px -1px 0 #71858b,
-    inset 8px 0 24px #52677133, 0 3px 5px #02070b, 0 0 0 12px #1c262e;
+  border-radius: clamp(12px, 1.25vw, 23px);
+  border: 6px solid #090f0c;
+  outline: 2px solid #52594a;
+  /* Matte diffusion, not an opaque cover: page color/light remains visible through it. */
+  background: linear-gradient(112deg, #d5d9cc52, #dfe3d742 45%, #b8c3b84d);
+  backdrop-filter: blur(20px) saturate(.75) contrast(.94);
+  -webkit-backdrop-filter: blur(20px) saturate(.75) contrast(.94);
+  box-shadow: inset 1px 1px 0 #eef0df66, inset -1px -1px 0 #26352a80,
+    inset 5px 0 16px #1b2a1d14, 0 0 0 8px #141d16, 0 3px 5px #03070399;
 }
 .glare {
   position: absolute;
   inset: 0;
-  background: linear-gradient(var(--reflection), transparent 15%, #ffffff40 26%, #ffffff08 29%, transparent 42%, #ffffff29 68%, transparent 82%);
+  background: linear-gradient(var(--reflection), transparent 15%, #ffffec12 30%, transparent 52%, #ffffe50b 80%, transparent);
 }
 .glare::before {
   content: '';
   position: absolute;
-  top: 8%;
-  left: -12%;
-  width: 125%;
-  height: 2.5%;
-  transform: rotate(-12deg);
-  background: linear-gradient(transparent, #fffffff0 35%, #ffffff80 65%, transparent);
-  filter: blur(2px);
-  opacity: .48;
+  top: 4%;
+  left: 6%;
+  right: 6%;
+  height: 7%;
+  background: linear-gradient(transparent, #fffce319, transparent);
+  filter: blur(12px);
 }
-.glare::after {
-  content: '';
+.glazingMark {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, #ffffff24, transparent 8%, transparent 94%, #42535c26);
+  bottom: 3%;
+  right: 6%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: .35;
 }
-.safetyMark { position: absolute; top: 61%; left: 50%; display: flex; gap: 8px; transform: translateX(-50%); opacity: .7; }
-.safetyMark > span { width: 5px; height: 28px; border-radius: 2px; background: #f9fcfd; }
-.lowerPanel {
-  position: relative;
-  height: 26%;
-  margin-top: 14px;
-  border-top: 1px solid #7d8a9266;
-  box-shadow: 0 -1px 0 #03090e;
-}
-.recess {
+.glazingMark > i { width: 5px; height: 5px; border: 1px solid #26352a; border-radius: 50%; }
+.glazingMark > i:last-child { width: 10px; height: 3px; border-radius: 0; }
+.glazingBead {
   position: absolute;
-  top: 12%;
-  width: 28px;
-  height: 65px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #060d13, #18222b 66%, #394751);
-  box-shadow: inset 2px 2px 5px #0009, 1px 1px 0 #89959c66;
+  left: calc(var(--stile) + 8px);
+  right: calc(var(--stile) + 8px);
+  bottom: calc(var(--foot) - 7px);
+  height: 2px;
+  background: linear-gradient(90deg, #3b4535, #89917a 45%, #3e4938);
+  box-shadow: 0 2px 2px #03090299;
 }
-.left .recess { right: 4%; }
-.right .recess { left: 4%; }
-.recess > i {
-  position: absolute;
-  inset: 7px 7px 7px 14px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #b3bec5, #ecf2f4 30%, #788a95 65%, #3b4a54);
-  box-shadow: -3px 2px 4px #0009;
-}
-.kickPlate {
-  position: absolute;
-  inset: 51% -4% 0;
-  border-radius: 5px 5px 0 0;
-  background:
-    repeating-linear-gradient(0deg, #ffffff06 0 1px, #0b1b2506 1px 3px),
-    linear-gradient(105deg, #6c7e89, #c0cbd1 22%, #e0e7ea 44%, #93a3ad 69%, #647681);
-  box-shadow: inset 0 1px 0 #f5fafb, 0 -2px 4px #040b1280;
-}
-.kickPlate > i {
-  position: absolute;
-  top: 12px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #e7eef0, #526773);
-  box-shadow: 0 1px 2px #17232d80;
-}
-.kickPlate > i:first-child { left: 16px; }
-.kickPlate > i:last-child { right: 16px; }
 .seal {
   position: absolute;
   inset-block: 0;
   width: 7px;
-  background: linear-gradient(90deg, #020609, #3b454c 30%, #0c141a 55%, #020609 80%);
+  background: linear-gradient(90deg, #010502, #252e25 28%, #081007 55%, #010501 80%);
 }
 .left .seal { right: 0; }
 .right .seal { left: 0; }
 .edgeLight {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: calc(var(--crown) - 4px);
+  bottom: calc(var(--foot) - 4px);
   width: 3px;
-  background: linear-gradient(90deg, #8b0c25, #ff6072 48%, #e72646);
-  box-shadow: 0 0 6px #f6325655;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #920a24, #ff6577 50%, #db1c3b);
+  box-shadow: 0 0 4px #f42b4f4d;
 }
-.left .edgeLight { right: 16px; }
-.right .edgeLight { left: 16px; }
+.left .edgeLight { right: 17px; }
+.right .edgeLight { left: 17px; }
 .thickness {
   position: absolute;
   inset-block: 0;
-  width: 5px;
-  background: linear-gradient(90deg, #060c12, #9facb3 45%, #293843 75%, #080f15);
+  width: 4px;
+  background: linear-gradient(90deg, #020803, #6c7764 40%, #192617 70%, #040b03);
 }
 .left .thickness { right: 7px; }
 .right .thickness { left: 7px; }
+/* Only opaque metal/seal details blur; the glass must keep sampling the actual page. */
+.portal[data-phase='closing'] :is(.skin, .seal, .edgeLight, .thickness) { animation: door-metal-motion 350ms ease-out both; }
+.portal[data-phase='opening'] :is(.skin, .seal, .edgeLight, .thickness) { animation: door-metal-motion 450ms ease-out both; }
+@keyframes door-metal-motion {
+  0%, 100% { filter: blur(0); }
+  35% { filter: blur(3px); }
+  70% { filter: blur(1px); }
+}
 @media (prefers-reduced-motion: reduce) {
-  .portal { background: #c4cfd3; opacity: 0; transition: opacity 70ms linear !important; }
-  .portal[data-phase='closing'], .portal[data-phase='covered'] { opacity: 1; }
+  .portal { background: #c4cbd0; opacity: 0; transition: opacity 70ms linear !important; }
+  .portal:is([data-phase='closing'], [data-phase='departing'], [data-phase='covered'], [data-phase='arriving']) { opacity: 1; }
   .leaf { display: none; }
 }

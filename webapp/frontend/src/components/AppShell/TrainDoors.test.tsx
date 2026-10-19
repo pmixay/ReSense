@@ -11,6 +11,7 @@ function Harness() {
   return <>
     <output>{location.pathname}{location.search}</output>
     <button onClick={() => navigate('/runs')}>Runs</button>
+    <button onClick={() => navigate('/upload')}>Upload</button>
     <button onClick={() => navigate('/player/second?pos=20')}>Run switch</button>
     <button onClick={() => navigate(-1)}>Back</button>
     <TrainDoors phase={doors.phase} />
@@ -30,20 +31,28 @@ function setup(reduced = false) {
   return { router, overlay: view.container.querySelector('[data-train-doors]')! };
 }
 async function advance(ms: number) { await act(async () => { await vi.advanceTimersByTimeAsync(ms); }); }
+async function finishTransition() {
+  for (const ms of [360, 160, 25, 230, 460]) await advance(ms);
+}
 
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 describe('train door navigation', () => {
-  it('keeps the departing page until both leaves close, then opens over the destination', async () => {
+  it('closes, sends the old page right, commits offscreen, then arrives before opening', async () => {
     const { router, overlay } = setup();
     fireEvent.click(screen.getByText('Runs'));
     expect(overlay.getAttribute('data-phase')).toBe('closing');
     await advance(350);
     expect(router.state.location.pathname).toBe('/player/first');
     await advance(10);
+    expect(router.state.location.pathname).toBe('/player/first');
+    expect(overlay.getAttribute('data-phase')).toBe('departing');
+    await advance(160);
     expect(router.state.location.pathname).toBe('/runs');
     expect(overlay.getAttribute('data-phase')).toBe('covered');
-    await advance(100);
+    await advance(25);
+    expect(overlay.getAttribute('data-phase')).toBe('arriving');
+    await advance(230);
     expect(overlay.getAttribute('data-phase')).toBe('opening');
     await advance(460);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
@@ -55,14 +64,10 @@ describe('train door navigation', () => {
     expect(router.state.location.pathname).toBe('/player/second');
     expect(overlay.getAttribute('data-phase')).toBe('idle');
     fireEvent.click(screen.getByText('Runs'));
-    await advance(360);
-    await advance(100);
-    await advance(460);
+    await finishTransition();
     fireEvent.click(screen.getByText('Back'));
     expect(overlay.getAttribute('data-phase')).toBe('closing');
-    await advance(360);
-    await advance(100);
-    await advance(460);
+    await finishTransition();
     expect(router.state.location.pathname).toBe('/player/second');
     expect(overlay.getAttribute('data-phase')).toBe('idle');
   });
@@ -73,6 +78,7 @@ describe('train door navigation', () => {
     await advance(75);
     expect(router.state.location.pathname).toBe('/runs');
     await advance(25);
+    expect(overlay.getAttribute('data-phase')).toBe('opening');
     await advance(100);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
   });
@@ -84,12 +90,40 @@ describe('train door navigation', () => {
     document.body.append(fallback);
     fireEvent.click(screen.getByText('Runs'));
     await advance(360);
+    await advance(160);
     await advance(300);
     expect(overlay.getAttribute('data-phase')).toBe('covered');
     fallback.remove();
     await advance(50);
+    expect(overlay.getAttribute('data-phase')).toBe('arriving');
+    await advance(230);
     expect(overlay.getAttribute('data-phase')).toBe('opening');
     await advance(460);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
+  });
+
+  it('commits the most recently requested section during closing', async () => {
+    const { router, overlay } = setup();
+    fireEvent.click(screen.getByText('Runs'));
+    await advance(150);
+    fireEvent.click(screen.getByText('Upload'));
+    await advance(210);
+    await advance(160);
+    expect(router.state.location.pathname).toBe('/upload');
+    expect(overlay.getAttribute('data-phase')).toBe('covered');
+    for (const ms of [25, 230, 460]) await advance(ms);
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+  });
+
+  it('reveals a persistent loading state instead of leaving doors stuck shut', async () => {
+    const { router, overlay } = setup();
+    const fallback = document.createElement('div');
+    fallback.dataset.pageFallback = '';
+    document.body.append(fallback);
+    fireEvent.click(screen.getByText('Runs'));
+    for (const ms of [360, 160, 1100, 230, 460]) await advance(ms);
+    expect(router.state.location.pathname).toBe('/runs');
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+    fallback.remove();
   });
 });
