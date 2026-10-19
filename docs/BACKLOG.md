@@ -1233,6 +1233,7 @@ The repository names roles, not people.
 | 1 | Bring `ui-improvement` up to `main` (it predates #38) and hand it to P1 | 14 own commits (18–19.10), not merged, red CI | P1 #6 | 20.10 |
 | 2 | Deck visuals: range-by-geometry chart (straight / curve / double track) and the Falcon slide | the deck text is being updated by an agent | P1 #5 | 20.10 |
 | 3 | Second demo device (RViz / web) and a fallback clip re-recorded on the 1.2.0 image (the clip is from 23.09) | open | needs an image (local build is enough) | 21.10 |
+| 3a | **Short Falcon demo bag with the person** (a window of `falcon_test` around 280–330 s, where the person walks in from ~140 m; the 100-frame prefix bag must not be used, it holds a false STOP at 115 m): cut it, check `ros2 bag play` opens it and the node gives STOP, add it to the demo commands; update `web/DEMO_HANDOFF.md` (still v1.0.0, rehearsal 19.10) | open; without it the demo shows Pandar only | P1 #5 (demo) | 21.10 |
 | 4 | S5: bench of the final image on available hardware (2–4 cores accepted) | open | P1 #4 | 21.10 |
 | 5 | D1 pass 2: numbers in docs and GitBook after integration and J1 | open | P1 #3, P4 #3 | 22.10 |
 
