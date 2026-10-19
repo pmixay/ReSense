@@ -316,6 +316,27 @@ Retain the inherited radius ladder: inputs use `r-xs`; selects/tooltips and loca
 
 ## Components
 
+### About: reading hierarchy and progressive disclosure
+
+`pages/About` uses a concise two-column overview: the existing purpose, a text-only
+seven-stage workflow, and the four decision meanings. Small semantic GO/CAUTION/
+STOP/FAULT labels retain their established colors and STOP hatch; explanations
+wrap in full. The large illustrated metro pipeline, repeated question-mark help,
+six competing KPI tiles and compressed four-column lower row are replaced by
+quiet native disclosures. «Подробнее об обработке» exposes every original stage
+explanation. Measurements retain their values and full conditions in one expanded
+list, labelled as historical README data. ROS commands (including the UDP setup),
+web launch/version/features and team descriptions each have their own expandable
+section; commands stay copyable. Documentation is a plain list of links.
+
+The default view contains no decorative icons. Only expanded copy controls use
+icons. One desktop layout flows vertically at all supported widths; `main` owns
+scrolling and opened detail grows naturally. No height fractions, forced local
+scroll areas, ellipsis or nowrap constraints are used for content. Versions and
+long commands wrap. Native summary controls expose expanded state and work with
+Enter/Space, retain keyboard focus, and have restrained hover treatment.
+Current captures and checks: [`docs/images/about-clean/`](docs/images/about-clean/).
+
 **Native controls.** Shared Select retains native keyboard/typeahead/disabled
 semantics. Supporting browsers use a Raleway, 16px-radius white `base-select`
 picker, neutral hover and red selected/checkmark state; other browsers retain

@@ -19,6 +19,15 @@ decision and distance at a selected moment, then seek, step events or replay it.
 - Russian UI copy and existing number/date/unit formatting.
 - Preserve the detector, processing, data contracts, API behavior, playback clock and URL semantics.
 
+## About surface
+
+«О системе» is a reading surface: a concise description, a compact text workflow
+and readable meanings for all four decisions come first. Measurements/conditions,
+ROS commands, web launch/server details and team responsibilities open in native
+disclosures. Documentation links stay directly reachable. Use one flowing desktop
+layout with wrapping text and main-page scrolling; avoid forced viewport-height
+cards, clipped labels, decorative icon grids and nested panel scrolling.
+
 ## Player surface
 
 The workspace presents the live 3D LiDAR view first, then compact scenario/camera
