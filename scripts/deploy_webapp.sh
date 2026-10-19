@@ -23,6 +23,8 @@ for arg in "$@"; do
   esac
 done
 mkdir -p "$STATE/releases" "$STATE/site" "$STATE/data" "$STATE/server-data" "$CONFIG" "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
+exec 9>"$STATE/deploy.lock"
+flock 9
 if [ "$INSTALL" = 1 ]; then
   [ -x "$STATE/venv/bin/python" ] || python3 -m venv "$STATE/venv"
   PIP_ARGS=()
@@ -123,14 +125,20 @@ import hashlib, json, os, shutil, subprocess, sys
 from datetime import datetime, timezone
 from pathlib import Path
 repo, built, site = map(Path, sys.argv[1:4])
-for source in built.iterdir():
+for source in sorted(built.rglob('*')):
+    relative = source.relative_to(built)
     if source.name == 'index.html':
         continue
-    target = site / source.name
+    target = site / relative
     if source.is_dir():
-        shutil.copytree(source, target, dirs_exist_ok=True)
+        target.mkdir(parents=True, exist_ok=True)
     else:
-        shutil.copy2(source, target)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if target.is_file() and target.read_bytes() == source.read_bytes():
+            continue
+        temp_asset = target.with_name('.' + target.name + '.new')
+        shutil.copy2(source, temp_asset)
+        os.replace(temp_asset, target)
 # Retain previous hashed assets so open tabs can load their lazy routes after a deploy.
 temp = site / '.index.html.new'
 shutil.copy2(built / 'index.html', temp)
