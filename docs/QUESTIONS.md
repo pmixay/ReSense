@@ -4,11 +4,15 @@
 > send, and why each matters.
 > **Audience:** P1, team (the message: the organizers) · **Owner:** P1 · **Language:** RU message,
 > EN rationale
-> **Last verified:** 2026-10-16: against [`organizers/answers.md`](organizers/answers.md) §10 and the experts'
+> **Last verified:** 2026-10-19: both messages below were sent by the captain (reported 19.10), no reply yet;
+> 2026-10-16: against [`organizers/answers.md`](organizers/answers.md) §10 and the experts'
 > message; 2026-09-29: against [`organizers/answers.md`](organizers/answers.md) §9 and the
 > sealed detector · **Status:** current
 
-**Status: five questions open (16.10).** Q1 and Q2 (sent on 25.09) were answered on 29.09: the envelope is
+**Status: five questions and O1 sent, awaiting answers (19.10).** The captain reported on 19.10 that the
+messages below were sent; the exact send date is not recorded. Record each reply in
+[`organizers/answers.md`](organizers/answers.md) §11.
+Earlier status, five questions open (16.10): Q1 and Q2 (sent on 25.09) were answered on 29.09: the envelope is
 measured from the rail heads, the rails may run at any angle to the LiDAR, and the synthetic objects are placed
 approximately; the organizers correct for that when checking
 ([`organizers/answers.md`](organizers/answers.md) §9). The live Q&A of 16.10 left two questions without an answer
@@ -19,7 +23,7 @@ data look like, how the bags will be played). Every answered question is recorde
 matters. Channel: the case moderator (Telegram [@gorbatovaol](https://t.me/gorbatovaol)) or
 info.leaders@develop.mos.ru.
 
-## Open: message to send (16.10, RU, open form for a live conversation)
+## Sent, awaiting answers: the five open questions (16.10, RU, open form for a live conversation)
 
 Spoken form, most important first; each question can be asked as is.
 
@@ -48,7 +52,7 @@ Not asked again, answered in §10 of [`organizers/answers.md`](organizers/answer
 how false alarms count against misses (equally), the hidden set's mix (real and synthetic), the range (300 m in the
 ideal), ground truth (not available), the results' explanation (promised, to be confirmed).
 
-## O1 · Message ready for the captain to send (15.10)
+## O1 · Sent, awaiting answer (prepared 15.10)
 
 > Добрый день! Команда «Молоток», кейс 05, решение ReSense. Подскажите, пожалуйста, по защите 23 октября:
 >

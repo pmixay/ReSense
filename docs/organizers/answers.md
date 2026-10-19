@@ -3,7 +3,8 @@
 > **Purpose:** every answer the organizers gave to our questions (case 05), verbatim where it was
 > written, and what each answer changed in ReSense.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, the answers verbatim in RU
-> **Last verified:** 2026-10-16: §10 added (live Q&A and the experts' message of 16.10, as relayed by the team);
+> **Last verified:** 2026-10-19: §11 — the open questions and O1 were sent by the captain (reported 19.10), no reply yet;
+> 2026-10-16: §10 added (live Q&A and the experts' message of 16.10, as relayed by the team);
 > 2026-09-29: §9 against the sealed detector's `gauge.*` settings and the labels
 > of `cloud_with_fake_obj` · **Status:** current
 
@@ -31,8 +32,8 @@ from these sources:
 
 The questions that are still open are in [`../QUESTIONS.md`](../QUESTIONS.md)
 (five since 16.10: how `CAUTION` is read, the object types and scenes of the hidden set, what "the filter" is,
-what the new data look like, how the bags will be played). On 15.10 the O1 pitch/update/re-run message was
-prepared; dispatch and an organizer reply are pending (§11).
+what the new data look like, how the bags will be played). They and the O1 pitch/update/re-run message were
+**sent by the captain** (reported 19.10; the exact send date was not recorded); no reply yet (§11).
 
 ## 1. Answers by question (Q&A session 22.09 + written answers 23.09)
 
@@ -208,15 +209,19 @@ different axis directions"); four launch requests (Docker with graphics, RViz in
 the console, switch bags without restarting the container). What the shipped system does for each, and the cards that
 follow, are in [`../FINALS_BRIEF_2026-10-16.md`](../FINALS_BRIEF_2026-10-16.md) §2–§4.
 
-## 11. O1: pitch format, post-submission updates and results (prepared 15.10)
+## 11. O1 and the open questions: pitch format, post-submission updates, results (prepared 15–16.10, sent)
 
-**Pending dispatch by the captain. No organizer answer has been received or inferred.**
-The ready-to-send three-question message is in [`../QUESTIONS.md`](../QUESTIONS.md).
-It asks for pitch/Q&A/demo format, whether 1.1.x may be shown or re-run and affect scores,
-and whether hidden-check/expert results or another archive submission are available before 23.10.
+**Sent by the captain; reported in the team session of 19.10.** The exact send date and channel were not
+recorded here (add them). **No organizer answer has been received or inferred** as of 19.10.
+The messages are in [`../QUESTIONS.md`](../QUESTIONS.md): O1 asks for the pitch/Q&A/demo format, whether
+1.1.x may be shown or re-run and affect scores, and whether hidden-check/expert results or another
+archive submission are available before 23.10; the five open questions of 16.10 ask how `CAUTION` is read,
+which objects and scenes the hidden set has, what "the filter" is, what the new data look like and how the
+bags will be played. Since 19.10 the team develops **1.2.0** and will not release 1.1.0 (captain's decision,
+[`../DECISIONS.md`](../DECISIONS.md)): an answer about "1.1.x" is read as applying to the updated version.
 
-After dispatch, record its actual date here. After the reply, append its dated verbatim
-text and the resulting decisions; update `PRESENTATION.md` and the backlog's O1 branch.
+When a reply arrives, append its dated verbatim text and the resulting decisions here; update
+`PRESENTATION.md` and the backlog (§9 of [`../BACKLOG.md`](../BACKLOG.md)).
 The current five-minute preparation budget and the submitted v1.0.0 are unchanged assumptions,
 not a new answer from the organizers.
 
