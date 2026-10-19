@@ -54,6 +54,7 @@ class TrackModel:
     rail_axis_support: float = 0.0   # N6: last observed paired-rail station supporting an extension
     curv_step: float = 0.0           # 19.10 (axis_joint_fit): curvature change at curv_knot (1/m): the axis bends by curv_step (X - curv_knot)^2 / 2 more beyond it (C1 piecewise); 0 = a single quadratic
     curv_knot: float = 0.0           # 19.10: X of that change (m)
+    axis_straight: bool = False      # 19.10: the straight bonus applied this frame (hysteresis with axis_joint_fit; not serialised)
 
     @property
     def bent(self) -> bool:
@@ -507,6 +508,7 @@ _DRIFT_GAP_BINS = 3        # 15.10 (axis_wall_drift): a boundary is followed out
 _DRIFT_NEAR_MAD = 0.25     # m, the boundary's offset in the rail range must be this consistent (median absolute deviation) to be the reference
 _DRIFT_NEAR_SLOPE = 0.02   # and run this parallel to the rails there (|slope| of a line through its offsets: 0.4 m over 20 m)
 _DRIFT_MAX_CURVATURE = 2e-3  # 1/m (R 500 m): a curvature error this large moves a boundary by at most this x X x dX between bins at X; a faster change is a structure edge
+_STRAIGHT_X = 150.0        # 19.10: m, where a curvature step's bend is compared with the straight test's (|curvature| < 1e-4)
 
 
 def wall_drift_range(boundaries: dict, model: TrackModel, cfg: TrackConfig) -> float:
@@ -590,8 +592,10 @@ def joint_axis_fit(rails: RailsFit, boundaries: dict, prior: TrackModel, cfg: Tr
     ``rails.mids``: ``y = c + t x + k x^2 / 2``) and the boundary bins (``y = a_s + t x + k x^2 / 2``) share t and k.
 
     * Each boundary (``estimate_axis_from_walls``' ``boundaries``) is cut into segments at gaps of more than
-      ``_DRIFT_GAP_BINS`` bins and at structure edges (consecutive bins whose offset from the prior axis changes
-      faster than a curvature error of ``_DRIFT_MAX_CURVATURE`` can move it, as in :func:`wall_drift_range`);
+      ``_DRIFT_GAP_BINS`` bins and at structure edges (a step of the offset from the prior axis that departs
+      from the neighbouring steps' slope by more than ``axis_joint_tolerance`` and than a curvature error of
+      ``_DRIFT_MAX_CURVATURE`` moves it between the two bins: a jump, not the smoothly growing slope of a curvature
+      error of the prior);
       each segment of at least ``axis_joint_min_segment`` bins has its own offset ``a_s``: a wall is piecewise
       parallel to the track (niches, gates, platform screens).
     * The fit grows outward: the bins up to ``axis_joint_grow_start`` first, then ``axis_joint_grow_step`` further
@@ -620,9 +624,17 @@ def joint_axis_fit(rails: RailsFit, boundaries: dict, prior: TrackModel, cfg: Tr
         if x.size < cfg.axis_joint_min_segment:
             continue
         a = y - prior.center_y(x)
+        dx, da = np.diff(x), np.diff(a)
+        slope = da / dx
+        # the local slope of the offset from the neighbouring steps: a curvature error of the prior grows the slope
+        # smoothly (R 400 m against a straight prior: 0.01 per metre at 100 m), a structure edge is a jump
+        nb_ = np.stack([np.r_[slope[:1], slope[:-1]], np.r_[slope[1:], slope[-1:]]], axis=1)
+        local = np.where(np.arange(slope.size) == 0, nb_[:, 1],
+                         np.where(np.arange(slope.size) == slope.size - 1, nb_[:, 0], np.median(nb_, axis=1)))
         cut = np.zeros(x.size, dtype=bool)
-        cut[1:] = ((np.diff(x) > _DRIFT_GAP_BINS * cfg.walls_bin)
-                   | (np.abs(np.diff(a)) > _DRIFT_MAX_CURVATURE * x[1:] * np.diff(x)))
+        cut[1:] = (dx > _DRIFT_GAP_BINS * cfg.walls_bin) | (np.abs(da - local * dx)
+                                                             > np.maximum(cfg.axis_joint_tolerance,
+                                                                          _DRIFT_MAX_CURVATURE * x[1:] * dx))
         sid = np.cumsum(cut)
         for s in range(int(sid[-1]) + 1):
             m = sid == s
@@ -1185,8 +1197,14 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
                 if f is not None:
                     fits[name] = f
             n_sides = len(fits) or len(joint["x_max"])
-            disagreement = abs(fits["left"][1] - fits["right"][1]) if len(fits) == 2 else 0.0
-            reach = [joint["x_max"][n] for n in fits if n in joint["x_max"]] or list(joint["x_max"].values())
+            # a side with fewer than walls_min_bins bins beyond the rail range (an inner wall hidden by the curve)
+            # has no curvature of its own to disagree with
+            far_ok = [n for n, f in fits.items() if f[5] >= cfg.walls_min_bins]
+            disagreement = abs(fits["left"][1] - fits["right"][1]) if len(far_ok) == 2 else 0.0
+            # the reach of each side: as far as the joint fit followed it, at least as far as its own fit with the
+            # joint tangent keeps bins (the trusted range as before; a frame whose growth stops early does not blink)
+            reach = ([max(joint["x_max"].get(n, 0.0), f[4]) for n, f in fits.items()]
+                     or list(joint["x_max"].values()))
             x_valid, x_valid_min = float(max(reach)), float(min(reach))
             q = float(min(f[2] for f in fits.values())) if fits else joint["rms"]
             model.far_support_run = est[7]
@@ -1210,8 +1228,12 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             model.axis_sides = n_sides
             model.axis_valid = x_valid + cfg.axis_valid_margin
             agree = n_sides == 2 and (cfg.axis_sides_max_disagreement <= 0 or disagreement <= cfg.axis_sides_max_disagreement)
-            straight = (abs(model.curvature) < 1e-4 and abs(model.curvature + model.curv_step) < 1e-4
-                        and q < 0.2 and (agree or cfg.axis_one_side_range <= 0))
+            # 19.10: with a curvature step, "straight" is the same lateral bend at _STRAIGHT_X as |curvature| < 1e-4
+            bend = model.curvature + (model.curv_step * (max(_STRAIGHT_X - model.curv_knot, 0.0) / _STRAIGHT_X) ** 2
+                                      if model.bent else 0.0)
+            lim = 1.5e-4 if (cfg.axis_joint_fit and prior.axis_straight) else 1e-4   # 19.10: hysteresis (joint fit)
+            straight = abs(bend) < lim and q < 0.2 and (agree or cfg.axis_one_side_range <= 0)
+            model.axis_straight = bool(straight)
             bonus = cfg.axis_valid_straight_bonus if straight else 0.0
             model.axis_valid += bonus
             # 25.09: the range both boundaries support (cluster.far_axis_both_sides); the caps

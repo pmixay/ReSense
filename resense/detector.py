@@ -324,7 +324,8 @@ class Detector:
         frame = _finite_only(frame)
         self._frame_ring = frame.ring
         dt = self._frame_dt(frame.stamp)
-        xyz = self._fit_track(frame.xyz, self._periods(), self._travel(dt))
+        self._travel_m = self._travel(dt)        # 19.10 (K1): read by _fit_track; None unless walls_smoothing_distance > 0
+        xyz = self._fit_track(frame.xyz, self._periods())
         self._frame_xyz = xyz
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
@@ -430,7 +431,7 @@ class Detector:
             v = 0.0
         return None if v is None else abs(float(v)) * float(dt)
 
-    def _fit_track(self, xyz_cfg: np.ndarray, periods: int = 1, travel: Optional[float] = None) -> np.ndarray:
+    def _fit_track(self, xyz_cfg: np.ndarray, periods: int = 1) -> np.ndarray:
         """Track model (bed profile, rail-head level, axis) and the mount calibration (first
         frames, then a drift check every few seconds). Returns the cloud in the corrected frame."""
         cfg = self.cfg
@@ -442,8 +443,8 @@ class Detector:
         # N6 uses supplied scan-line IDs only, never a Pandar table inferred for an
         # unknown sensor. Keep the older experimental curvature-refit path separate.
         rail_args = {"axis_ring": self._frame_ring} if cfg.track.rails_axis_extension else {}
-        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring, travel=travel,
-                                    **rail_args)
+        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring,
+                                    travel=getattr(self, "_travel_m", None), **rail_args)
         R_old = self.calib.R.copy()
         if self.calib.update(xyz_cfg, xyz, self.track, periods=periods, ring=self._frame_ring):
             xyz = self.calib.apply(xyz_cfg)
