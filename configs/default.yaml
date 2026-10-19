@@ -359,14 +359,14 @@ resense:
     rail_start_max_width: 0.45     # m across the track (an object lying across a rail is wider)
     rail_start_min_ref: 0.06       # m (safety review of 26.09): only where the band's line is at least this far above the model's rail-head plane (the young-model fault: 0.135-0.148 m in the finding; a correct model ~0)
     # 19.10 (F1, off): compare a low cluster's top with the frame's own rail returns around it (lowobj.rail_reference_check); failing clusters only continue an existing low STOP
-    local_rail_margin: 0.0         # m, (a) > 0 on (19.10 candidate 0.01; 0 = off; off at integration 19.10, review B1 open): top >= local rail-head reference + margin
+    local_rail_margin: 0.01        # m, (a) > 0 on (switched on by the captain 19.10, review B1 accepted, P3 improves; 0 = off): top >= local rail-head reference + margin
     local_rail_window: 5.0         # m along the track each side
     local_rail_band: 0.10          # m, half-width of each rail's band
     local_rail_min_bins: 2         # 0.5 m bins with rail-band returns per line
     rail_band_range: 0.0           # m, (b) > 0 on: same-band rail-line test out to this range ...
     rail_band_margin: 0.05         # m ... with this margin, without rail_start_min_ref
     local_rail_exclude_low: false  # amendment 6 option (measured: it costs the effect, amendment 7)
-    local_rail_cross_tol: 0.04     # m, rails' lines differing by more than this: the lower line is the reference (amendment 7, review B1)
+    local_rail_cross_tol: 0.0      # m, 0 = off since 19.10 (it added a false STOP at ride 5714); > 0: rails' lines differing by more than this: the lower line is the reference (amendment 7, review B1)
     local_rail_advisory: false     # true: a cluster failing (a) / (b) is advisory 'below_rail_ref' instead of weak evidence (amendment 6 option; amendment 8)
     no_rail_low_within: 0.0        # m, (c) > 0 on: no rail pair -> a low cluster beyond this is advisory (no_rail_low)
   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)

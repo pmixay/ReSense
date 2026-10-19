@@ -578,14 +578,14 @@ class LowObjectConfig:
     # evidence (Cluster.low_height_weak): it may only continue an already reported low STOP
     # (tracking.stop_keep_low_s), never start one. No measurable line: no change. Candidate: (a) 0.01 on, (b) and
     # (c) off.
-    local_rail_margin: float = 0.0       # m, (a) > 0 on (19.10 candidate 0.01; 0 = off, the aec88d2 behaviour; off at integration 19.10, review B1 open): the top must reach the local rail-head reference + this
+    local_rail_margin: float = 0.01      # m, (a) > 0 on (switched on by the captain 19.10, review B1 accepted, P3 improves; 0 = off, the aec88d2 behaviour): the top must reach the local rail-head reference + this
     local_rail_window: float = 5.0       # m along the track on each side of the cluster (its own extent +- 0.3 m excluded)
     local_rail_band: float = 0.10        # m, half-width of each rail's lateral band around the axis +- track.rails_spacing / 2
     local_rail_min_bins: int = 2         # 0.5 m along-track bins with rail-band returns that a rail's line needs
     rail_band_range: float = 0.0         # m, (b) > 0 on: mark_rail_line's same-band test (narrow cluster reaching a rail line) out to this range ...
     rail_band_margin: float = 0.05       # m ... with this margin above the band's own line, without rail_start_min_ref
     local_rail_exclude_low: bool = False  # amendment 6 (review B1, measured: costs the effect, amendment 7): the rail lines leave out every low cluster's returns
-    local_rail_cross_tol: float = 0.04   # amendment 7 (review B1): m; when the two rails' lines differ by more than this, the lower line is the reference (an object along one rail raises only its line); 0 = off
+    local_rail_cross_tol: float = 0.0    # amendment 7 (review B1), off since 19.10 (it added a false STOP at ride 5714): m; when the two rails' lines differ by more than this, the lower line is the reference (an object along one rail raises only its line); 0 = off
     local_rail_advisory: bool = False    # amendment 6 option (measured in amendments 7-8: it costs the effect): a cluster failing (a) / (b) is advisory ('below_rail_ref', a signature), not weak continuation evidence
     no_rail_low_within: float = 0.0      # m, (c) > 0 on: on a frame without the rail pair (track.rail_slabs == 0) a low cluster farther than this is advisory (reason 'no_rail_low', a signature: an earned STOP is kept by tracking.stop_keep_signature)
 
