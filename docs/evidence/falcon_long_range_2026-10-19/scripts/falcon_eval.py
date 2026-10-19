@@ -44,7 +44,21 @@ def evaluate(rows, by_frame):
     far = far_stop_frames(rows)
     person |= far
     stop = [r["i"] for r in rows if r["decision"] == "STOP"]
+    eps, cur = [], None
+    for r in rows:
+        if r["decision"] == "STOP":
+            cur = cur if cur is not None else []
+            cur.append(r["i"])
+        elif cur is not None:
+            eps.append(cur)
+            cur = None
+    if cur is not None:
+        eps.append(cur)
+    false_eps = [e for e in eps if not any(i in person for i in e)]
     out = {"decisions": dict(Counter(r["decision"] for r in rows)), "stop_episodes": episodes(rows),
+           "stop_episodes_without_person": len(false_eps),
+           "stop_episodes_without_person_0_1700": len([e for e in false_eps if e[0] <= 1700]),
+           "false_episode_frames": [[e[0], e[-1]] for e in false_eps],
            "caution_share": round(sum(r["decision"] == "CAUTION" for r in rows) / len(rows), 4),
            "stop_frames_not_person": len([i for i in stop if i not in person]),
            "empty_0_1700": {"stop_episodes": episodes(rows, 0, 1701),
@@ -80,6 +94,7 @@ def main():
             "empty_stop_frames_not_person_le": e0["stop_frames_not_person"] <= b0["stop_frames_not_person"],
             "empty_caution_share_le": e0["caution_share"] <= b0["caution_share"],
             "all_stop_episodes_le": c["stop_episodes"] <= base["stop_episodes"],
+            "false_stop_episodes_le": c["stop_episodes_without_person"] <= base["stop_episodes_without_person"],
             "all_caution_share_le": c["caution_share"] <= base["caution_share"],
             "all_stop_frames_not_person_le": c["stop_frames_not_person"] <= base["stop_frames_not_person"],
             "person_stop_rows_kept": not lost}
@@ -87,7 +102,7 @@ def main():
                                           "lost_person_stop_frames": lost, "checks": checks,
                                           "pass": all(checks.values())}
     Path(a.out).write_text(json.dumps(res, indent=1))
-    short = {k: (v["decisions"], v["stop_episodes"], v["caution_share"], v["stop_frames_not_person"], v["empty_0_1700"],
+    short = {k: (v["decisions"], v["stop_episodes"], "false_eps", v["stop_episodes_without_person"], v["false_episode_frames"], v["caution_share"], v["stop_frames_not_person"], v["empty_0_1700"],
                  v["main_person"]["first_stop_raw_forward_m"], v.get("checks"), len(v.get("lost_person_stop_frames", [])))
              for k, v in [("baseline", res["baseline"])] + list(res["candidates"].items())}
     for k, v in short.items():

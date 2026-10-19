@@ -25,6 +25,9 @@ def test_default_and_pandar_profiles_leave_farrange_off():
         assert resolved.sensor.max_range == resolved.gauge.range_max == resolved.track.floor_verify_max_range == 250.0
     det = Detector(cfg)
     assert det.far is None and det.far_confirm is None
+    resolved, _ = apply_sensor_profile(cfg, "falcon_ros")
+    det = Detector(resolved)
+    assert det.far is not None and det.far_confirm is None          # far confirmation is off by default
 
 
 def test_falcon_profiles_enable_farrange_and_the_long_crop():
@@ -88,7 +91,7 @@ def _tracks(ds, tid=7):
 
 
 def test_far_confirm_needs_consistent_range_history():
-    cfg = FarRangeConfig(enabled=True)
+    cfg = FarRangeConfig(enabled=True, confirm_enabled=True)
     fc = FarConfirm(cfg)
     for d in (260.0, 259.9, 259.8, 259.7):
         fc.update(_tracks([d]))

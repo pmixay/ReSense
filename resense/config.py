@@ -643,7 +643,10 @@ class FarRangeConfig:
     axis_sigma0: float = 0.15          # m, lateral uncertainty at the join
     axis_unseen_curvature: float = 1e-5  # 1/m, allowed beyond the last supporting bin (sigma grows as k x^2 / 2)
     axis_core_margin: bool = True      # the strict gauge shrinks by sigma(X) beyond the join
-    confirm_enabled: bool = True       # far confirmation (resense/farline.py FarConfirm)
+    far_min_height: float = 0.3        # cluster.far_min_height under the profile: beyond the height reference a far
+                                       # obstacle's visible part is short (the rays to its foot return from the track first)
+    far_max_length: float = 4.0        # cluster.far_max_length under the profile (a 2 m deep box measures 3.1-3.2 m)
+    confirm_enabled: bool = False      # far confirmation (resense/farline.py FarConfirm); measured 19.10: no false alarm removed, held fraction lower, so off
     confirm_from: float = 150.0        # m: a strict-gauge track beyond this needs range-consistent evidence to STOP
     confirm_window: int = 10           # frames looked back
     confirm_min_hits: int = 5          # matched frames in the window

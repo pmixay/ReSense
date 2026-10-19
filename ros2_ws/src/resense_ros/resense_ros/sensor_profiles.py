@@ -48,4 +48,6 @@ def apply_sensor_profile(cfg, profile: str):
         resolved.sensor.max_range = far.max_range
         resolved.gauge.range_max = far.max_range
         resolved.track.floor_verify_max_range = far.max_range
+        resolved.cluster.far_min_height = far.far_min_height
+        resolved.cluster.far_max_length = far.far_max_length
     return resolved, range_model
