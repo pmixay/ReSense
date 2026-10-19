@@ -102,7 +102,7 @@ def run_case(args):
     c, state_path, cfg_sets, out, track = args
     with open(state_path, "rb") as f:
         det = pickle.load(f)
-    cfg = run_cache.build_cfg("falcon_ros", cfg_sets)
+    cfg = run_cache.build_cfg("falcon_ros", cfg_sets[0], cfg_sets[1])
     R_vs = run_cache.axis_matrix(cfg.sensor).astype(np.float32)
     inj = Injector({"track": track, "seed": 100 + c["seed"] * 7919 + zlib.crc32(c["case"].encode()) % 1000, "targets": [c["spec"]]})
     hi = c["spec"]["to"]
@@ -128,6 +128,7 @@ def main():
     ap.add_argument("--name", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--set", action="append", default=[])
+    ap.add_argument("--pre", action="append", default=[])
     ap.add_argument("--seeds", default="0,1,2")
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("--only", default="", help="comma list of target names")
@@ -137,7 +138,7 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     META = json.loads((CACHE / "meta.json").read_text())
     track = json.loads((EV / "track_reference.json").read_text())["track"]
-    cfg = run_cache.build_cfg("falcon_ros", a.set)
+    cfg = run_cache.build_cfg("falcon_ros", a.set, a.pre)
     det = run_cache.Detector(cfg)
     R_vs = run_cache.axis_matrix(cfg.sensor).astype(np.float32)
     prefix_rows = []
@@ -149,8 +150,8 @@ def main():
     if a.only:
         cs = [c for c in cs if c["target"] in a.only.split(",")]
     with Pool(a.jobs, initializer=_init, initargs=(META,)) as pool:
-        rows = pool.map(run_case, [(c, state, a.set, out, track) for c in cs], chunksize=1)
-    res = {"name": a.name, "set": a.set, "cases": rows}
+        rows = pool.map(run_case, [(c, state, (a.set, a.pre), out, track) for c in cs], chunksize=1)
+    res = {"name": a.name, "set": a.set, "pre": a.pre, "cases": rows}
     if a.check_prefix:
         c = next(x for x in cs if x["mode"] == "approach")
         det2 = run_cache.Detector(cfg)

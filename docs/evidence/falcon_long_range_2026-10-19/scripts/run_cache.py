@@ -41,9 +41,19 @@ def crop(xyz, lo, hi):
     return (r2 >= lo * lo) & (r2 <= hi * hi)
 
 
-def build_cfg(profile, sets):
+def _apply(cfg, sets):
+    for s in sets:
+        k, v = s.split("=", 1)
+        sec, key = k.split(".", 1)
+        setattr(getattr(cfg, sec), key, yaml.safe_load(v))
+
+
+def build_cfg(profile, sets, pre=()):
+    """The node's order: YAML, auto_calibrate, ``pre`` (YAML-level overrides), the sensor profile,
+    then ``sets`` (overrides after the profile)."""
     cfg = DetectorConfig.from_yaml(CONFIG)
     cfg.calibration.enabled = True
+    _apply(cfg, pre)
     cfg, _ = apply_sensor_profile(cfg, profile)
     for s in sets:
         k, v = s.split("=", 1)
@@ -58,13 +68,14 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--profile", default="manual")
     ap.add_argument("--set", action="append", default=[])
+    ap.add_argument("--pre", action="append", default=[], help="sec.key=val applied before the profile")
     ap.add_argument("--frames", default="")
     ap.add_argument("--inject", default="")
     a = ap.parse_args()
     cache = Path(a.cache)
     meta = json.loads((cache / "meta.json").read_text())
     lo, hi = (int(v) for v in a.frames.split(":")) if a.frames else (0, len(meta))
-    cfg = build_cfg(a.profile, a.set)
+    cfg = build_cfg(a.profile, a.set, a.pre)
     det = Detector(cfg)
     R_vs = axis_matrix(cfg.sensor).astype(np.float32)
     injector = None

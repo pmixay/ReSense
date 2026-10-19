@@ -14,6 +14,7 @@ from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.evidence import PersistentEvidence
+from resense.farline import FarAxisTracker, FarConfirm
 from resense.farrails import ring_index
 from resense.frame import Frame
 from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
@@ -198,6 +199,11 @@ class Detector:
         self._evidence_dt: Optional[float] = None  # validated sensor interval for sparse clear-distance evidence
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
         self._orientation_replay = OrientationReplayBuffer(self.cfg.calibration.orientation_replay_frames)
+        # 19.10 (farrange, Falcon profiles only): the far straight axis beyond farrange.axis_join
+        fr = self.cfg.farrange
+        self.far = FarAxisTracker(fr) if fr.enabled and fr.axis_enabled else None
+        self._far_axis = None
+        self.far_confirm = FarConfirm(fr) if fr.enabled and fr.confirm_enabled else None
 
     @property
     def mount_rotation(self) -> np.ndarray:
@@ -225,6 +231,11 @@ class Detector:
         self._evidence_dt = None
         self._gaps.clear()
         self._orientation_replay.stop("scene_reset")
+        if self.far is not None:
+            self.far.reset()
+        self._far_axis = None
+        if self.far_confirm is not None:
+            self.far_confirm.reset()
 
     def _frame_dt(self, stamp: float) -> float:
         """Time since the previous frame from the stamps when they are sane, else the nominal
@@ -325,6 +336,8 @@ class Detector:
         self._frame_ring = frame.ring
         dt = self._frame_dt(frame.stamp)
         xyz = self._fit_track(frame.xyz, self._periods())
+        if self.far is not None:
+            self._far_axis = self.far.update(xyz, self.track, cfg.gauge.range_max)
         self._frame_xyz = xyz
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
@@ -465,6 +478,10 @@ class Detector:
         (``clustering.find_clusters``, ``far_min_height``)."""
         cfg = self.cfg
         dy_all, h_all = corridor_coordinates(xyz, self.track)
+        far = self._far_axis
+        if far is not None:
+            # 19.10 (farrange): beyond the join the lateral is measured from the far straight axis
+            dy_all = dy_all - far.offset(xyz[:, 0], self.track)
         self._dy_rail = dy_all
         if cfg.gauge.axis_union == 2:
             # 26.09 (candidate B, off by default): the corridor coordinate re-measured so that the strict
@@ -510,6 +527,10 @@ class Detector:
                                 edge_margin_per_100m2=cfg.gauge.edge_margin_per_100m2 * s)
                     core[ok] = gauge_core_mask(cand.dy[ok], cand.h[ok], cand.xyz[ok, 0], g)
             cand.in_gauge = cand.in_gauge & core
+        if far is not None and cfg.farrange.axis_core_margin:
+            # 19.10 (farrange): the strict gauge shrinks by the far axis' lateral uncertainty
+            half = float(np.max(np.abs(np.asarray(cfg.gauge.profile, dtype=np.float64)[:, 0])))
+            cand.in_gauge = cand.in_gauge & (np.abs(cand.dy) <= half - far.sigma(cand.xyz[:, 0]))
         if cfg.gauge.axis_union in (1, 3):
             # 26.09 (candidates A and B2, off by default): also inside when inside the envelope measured
             # from the sensor axis (near field, straight track, the two axes within axis_union_max_offset)
@@ -519,6 +540,8 @@ class Detector:
                 cand.in_gauge = cand.in_gauge | ax
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
+        if far is not None:
+            axis_valid = max(axis_valid, min(far.valid, cfg.gauge.range_max))
         valid = min(axis_valid, floor_valid) if cfg.cluster.far_min_height <= 0 else axis_valid
         if cfg.cluster.far_axis_both_sides == 1:
             # 25.09 (far_switch), opt-in, mode 1: beyond the height reference only as far as both
@@ -617,6 +640,8 @@ class Detector:
                 else:
                     dro = dyo - ref[1]
             yo = self.track.center_y(Xo64) + (dyo if dro is None else dro)
+            if self._far_axis is not None:
+                yo = yo + self._far_axis.offset(Xo64, self.track)       # 19.10 (farrange)
             xyz_o = np.stack([Xo64, yo, self.track.rail_z(Xo64) + ho], axis=1).astype(np.float32)
             merged = cand.concat(Candidates(xyz=xyz_o, dy=dyo, h=ho, in_gauge=go, intensity=io,
                                             idx=np.full(Xo.size, -1, dtype=cand.idx.dtype),
@@ -831,6 +856,12 @@ class Detector:
             if pending and d.kind == "low" and d.zone == "gauge" and d.distance > low.pending_advisory_within:
                 # 26.09 (P3 start-up, candidate a, off): a low track is advisory while the calibration is pending
                 d.zone, d.reason = "warning", "calibration_pending"
+        if self.far_confirm is not None:
+            # 19.10 (farrange.confirm_*): far STOPs need range-consistent evidence over frames
+            self.far_confirm.update(self.tracker.tracks)
+            for d in dets:
+                if d.zone == "gauge" and d.distance > self.cfg.farrange.confirm_from and not self.far_confirm.ok(d.id):
+                    d.zone, d.reason = "warning", "far_unconfirmed"
         dets.sort(key=lambda d: d.distance)
         return [d for d in dets if d.zone == "gauge"], [d for d in dets if d.zone != "gauge"]
 
