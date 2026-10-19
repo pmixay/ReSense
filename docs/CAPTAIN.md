@@ -224,6 +224,9 @@ captain's personally (29.09); whether an updated archive may be re-run is asked 
 | 19.10 | new goal: stable obstacle detection to 300 m on the Falcon Prime (card N7) | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 38 |
 | 19.10 | update the deck, speech and rehearsal plan for 1.2.0 and the second lidar; rehearsals planned for 20.10 and 22.10 | the captain, 19.10; [`PRESENTATION.md`](PRESENTATION.md) |
 | 19.10 | organizers' answers recorded (in-gauge = obstacle, moving objects, no labels but marked bags + `obstacles.md`, dust in every synthetic bag); the markers become the reference for the synthetic bags; the organizers' dust is a non-regression set; the four agents informed | organizers via the captain, 19.10; [`organizers/answers.md`](organizers/answers.md) §12, [`DECISIONS.md`](DECISIONS.md) row 39, [evidence](evidence/synth_markers_2026-10-19/README.md) |
+| 19.10 | the four agent branches merged into the integration branch with every switch off (identity proven on the full gate per frame and the whole Falcon recording); agents stopped with handoffs, their remaining work continues in P1's session and per role | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 40 |
+| 19.10 | switches: F1a on (B1 risk accepted, P3 improves), H′ on, R3 on, L16/S3 on, K2 on (variant from v5, P4 develops), Falcon clear-distance model kept; S2, Falcon far range (P3) and the dust guard off | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 41 |
+| 19.10 | code stop 20.10 23:59 MSK; dated targets replaced by priorities (P0 before code stop, P1 before the pitch, P2 after 23.10) | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 42, [`BACKLOG.md`](BACKLOG.md) "Current plan" |
 
 ## Experimental branch integration, 28.09
 

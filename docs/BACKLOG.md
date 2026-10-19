@@ -9,7 +9,8 @@
 > (v1.0.0 detector) by four read-only researchers and one critic; numbers recounted from the judge's
 > per-frame outputs (`docs/evidence/judgement_2026-10-13/out/`, `raw.tar.xz`). Line numbers in
 > `resense/` have shifted with the 1.1.0 reseal (§2): search for the named function.
-> **Updated:** 2026-10-19: §9 — captain's decisions (no 1.1.0 release, continue 1.2.0; questions sent), status of
+> **Updated:** 2026-10-19 (evening): "Current plan" below — priorities instead of dates, code stop 20.10 23:59 MSK,
+> the captain's switch decisions and the work per role; it supersedes §9d and every dated target. 2026-10-19: §9 — captain's decisions (no 1.1.0 release, continue 1.2.0; questions sent), status of
 > the jury's comments, the new-lidar check of `aec88d2`, card N7 (300 m on the Falcon), four agent branches and the
 > remaining work per role. Rows below that say "1.1.0 release" or "J1 on 1.1.0" are superseded by §9.
 > 2026-10-18: `det/b4-orientation` contains main `9917851` and P4 `8a0af65`;
@@ -29,6 +30,80 @@
 > **Status:** current; §2/§2a are the integration ledger, later dates are conditional planning targets;
 > §2a hands the session's unfinished work over, §5 distributes all of it per role (15.10);
 > §7 (16.10) attaches the competitor survey and the experts' message of 16.10 (cards N1–N4)
+
+
+## Current plan (19.10, evening): priorities, code stop 20.10 23:59 MSK
+
+This section replaces every dated target below. **P0** must be in before the code stop (code, configuration, seal);
+**P1** before the pitch on 23.10 (evaluation, documents, deck, rehearsals; no code); **P2** after 23.10 unless time
+remains. Integration branch: `claude/optimistic-mccarthy-z5nmwd` (`main` with P3's L16/S3 and R3, plus the four agent
+lanes K1/K2, F1, Falcon long range and N3, merged 19.10 with an identity proof; [evidence](evidence/integration_2026-10-19/README.md)).
+
+### Detector switches decided by the captain (19.10, [`DECISIONS.md`](DECISIONS.md) row 41)
+
+| switch | state in 1.2.0 | why | follow-up owner |
+|---|---|---|---|
+| F1a local rail reference (`lowobj.local_rail_margin` 0.01, cross-rail rule off) | **on** | ride low-kind false STOP episodes 4/6 → 1/1, gate exit 0 (F1 lane) | P3: make it safe for a long low object along one rail (review B1, accepted risk) |
+| H′ mount cross-check (`cluster.mount_cross_tol` 0.5) | **on** | removes the 8 false STOP frames on the Falcon tunnel ceiling; 0 gate rows change | — |
+| S2 settle (`tracking.settle_min_hits`) | off | can delay an object entering the gauge | — |
+| R3 cable confirmation (P3) | **on** | hanging cable in set O: first STOP 35.1 m (was 30.1), held from 40.0 m (was 31.8); gate exit 0 | P3: the set F cable sustained-median row 34.2 → 17.8 m |
+| L16/S3 orientation (P3) | **on** | rotated ring-free mounts no longer adopt a wrong orientation; gate and Falcon identical | — |
+| K2/K1 axis on curves (`track.axis_joint_fit`, `walls_smoothing_distance`) | **on** (variant chosen from v3/v4/v5 on 20.10) | the jury's "gauge follows turns"; v4 keeps range but adds false STOPs on the gate | P4: develop the shipped variant |
+| Falcon clear-distance model (`small_target_limit`, falcon_prime) | **on** | reports up to 48.2 m from the measured Falcon raster (density model, as for Pandar) instead of 0 | — |
+| Falcon far range (`farrange.with_falcon_profile`) | off | person STOP 146 m (was 127) but rule 5.1(b) fails (9 vs 8 episodes), no long-range gain on injected targets | P3: improve (route-map variant, second boundary) |
+| Dust guard (`dust.enabled`) | off | fails its own acceptance; the organizers' dust gives no STOP/CAUTION on 1.1.0 (re-checked on the final configuration) | P4, only if that re-check fails |
+
+### P1 · captain
+
+| prio | work | state / depends on |
+|---|---|---|
+| P0 | Repair CI (account billing): 0 of the last 100 runs succeeded, the jobs stop before any step | blocks E1 and a hosted check of the release |
+| P0 | Reseal 1.2.0 after the last code change (`scripts/detector_freeze.py`), with P4's review and the final gate/X3 | needs P4 P0 and P1's agent P0 |
+| P1 | E1: tag and release 1.2.0, verify the archive | needs CI and the reseal |
+| P1 | Final numbers into the deck and speech; two rehearsals with P2, P3, P4 | needs the reseal |
+| P1 | S5: bench of the final image on the available hardware (2–4 cores accepted) | needs an image |
+| P1 | Read the 29.09 safety review yourself ([`CAPTAIN.md`](CAPTAIN.md) §3 item 8) | — |
+| P1 | Send the organizers the Falcon results and the 1.2.0 status if updates are allowed (O1 unanswered) | — |
+
+### P1's agent (Claude, integration branch)
+
+| prio | work | state |
+|---|---|---|
+| P0 | K2: switch on the variant chosen from v3/v4/v5 and measure it on the integration commit | v5 attempt running (stops 20.10 06:00 UTC) |
+| P0 | Final gate (without `--allow`), X3 and the whole Falcon recording on the final commit; integration evidence for the reseal | after K2 |
+| P0 | The organizers' dust (13 frames of the marked synthetic bags) on the final configuration: no STOP or CAUTION from it → the dust guard stays off; otherwise hand to P4 | after K2 |
+| P1 | Documentation clean-up: remove old handoffs and unused documents, fix stale statements, compact the long documents | agent |
+| done | merge of the four agent lanes with identity proof; F1a and H′ switched on; decisions recorded | 19.10 |
+
+### P2 · frontend / visuals
+
+| prio | work | state / depends on |
+|---|---|---|
+| P0 | Move the three photos out of the repository root (`1591221.jpeg`, `IMG_8349.jpeg`, `IMG_8350.jpeg`, commit `7e38c01`): into the deck's assets if used and licensed, otherwise delete | nothing links to them |
+| P1 | Short Falcon demo bag with the person: a window of `falcon_test` around 280–330 s (not the 100-frame prefix: it holds a false STOP at 115 m); check that `ros2 bag play` opens it; update the demo handoff | — |
+| P1 | Second demo device (RViz / web) and a fallback clip re-recorded on the 1.2.0 image (the clip is from 23.09) | needs an image |
+| P1 | Deck visuals: range-by-geometry chart (straight / curve / double track) and the Falcon slide | deck text updated 19.10 |
+| P1 | Final numbers in the documents and GitBook | after the reseal and J1 |
+
+### P3 · detector
+
+| prio | work | state / depends on |
+|---|---|---|
+| P0 | Answer P4's review of R3 and L16/S3; explain the set F cable sustained-median row (34.2 → 17.8 m) under R3; no detector edits after the code stop except review fixes the captain approves | P4 P0 |
+| P1 | Q&A preparation and mock jury: the algorithm, curves (what K2 ships and costs), why not 300 m, dust, the second lidar, false alarms; technical check of `ALGORITHM.md` and the slides | — |
+| P1 | H1 (tall narrow objects, the open High finding): document the proposed approach, no code | cause reproduced ([R3/H1](evidence/r3_h1_2026-10-19/README.md)) |
+| P2 | F1a without the B1 risk (a long low object along one rail raises its own reference); Falcon far range (route-map variant, second boundary); M1 moving-object probes (the organizers: objects may move); C1, R1/R2, S4, N6 | after 23.10 |
+
+### P4 · data / evaluation
+
+| prio | work | state / depends on |
+|---|---|---|
+| P0 | Independent review of what ships on: L16/S3, R3, F1a, H′, K2 (`DETECTOR_FREEZE.md` step 3) | blocks the reseal |
+| P0 | Review the integration identity proof (gate per frame, Falcon) | [evidence](evidence/integration_2026-10-19/README.md) |
+| P1 | On the final seal: J1 (retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0) and the G3 held-out run by a fresh agent | needs the reseal |
+| P1 | N5 labels: add the missed tunnel cube (marker id 18, frames 4–60), mark the 12 unmatched rows, re-score the final 1.2.0 against the markers | [markers](evidence/synth_markers_2026-10-19/README.md) |
+| P1 | Mock jury at both rehearsals | — |
+| P2 | K2: develop the shipped variant (its measured costs); the dust guard if the organizers' dust re-check fails; X2 false-STOP ledger | after 23.10 unless the captain moves it earlier |
 
 ## 1. How to use it
 

@@ -1,0 +1,16 @@
+# per-frame gate comparisons (cmp_frames.py <a> <b>), timing excluded
+## gate_base_aec88d2 vs gate_merged_b2c523a
+{"files": 15, "rows": 15269, "rows_different": 0, "rows_latency_level_only": 101, "first_differences": [], "setF_straight_equal": true}
+## gate_base_aec88d2 vs gate_cand_129415f
+{"files": 15, "rows": 15269, "rows_different": 2716, "rows_latency_level_only": 66, "first_differences": [["doubleT_platform.jsonl", 29], ["doubleT_platform.jsonl", 30], ["doubleT_platform.jsonl", 31], ["doubleT_platform.jsonl", 32], ["doubleT_platform.jsonl", 33], ["doubleT_platform.jsonl", 34], ["doubleT_platform.jsonl", 35], ["doubleT_platform.jsonl", 36], ["doubleT_platform.jsonl", 37], ["doubleT_platform.jsonl", 38]], "setF_straight_equal": true}
+## gate_merged_b2c523a vs gate_int_3535947_off
+{"files": 15, "rows": 15269, "rows_different": 3, "rows_latency_level_only": 1443, "first_differences": [["cloud_with_fake_obj.jsonl", 786], ["cloud_with_fake_obj.jsonl", 787], ["cloud_with_fake_obj.jsonl", 788]], "setF_straight_equal": false}
+## gate_int_3535947_off vs gate_int_3535947_hprime
+{"files": 15, "rows": 15269, "rows_different": 0, "rows_latency_level_only": 1436, "first_differences": [], "setF_straight_equal": true}
+# Falcon (cmp_falcon.py)
+## base aec88d2 vs merged-off b2c523a
+{"rows": [4443, 4443], "non_timing_diff_rows": 1, "first": [0], "decision_diff_rows": 0, "decision_first": []}
+## main 6be817a vs merged-off b2c523a
+{"rows": [4443, 4443], "non_timing_diff_rows": 0, "first": [], "decision_diff_rows": 0, "decision_first": []}
+## base aec88d2 vs main 6be817a
+{"rows": [4443, 4443], "non_timing_diff_rows": 1, "first": [0], "decision_diff_rows": 0, "decision_first": []}
