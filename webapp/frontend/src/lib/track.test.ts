@@ -34,6 +34,12 @@ describe('track model', () => {
   it('floor_z: quadratic inside floor_range, linear outside', () => {
     close(XS.map((x) => floorZ(track, x)), [-1.62192, -1.662, -1.70208, -2.142, -2.4166368, -2.53848, -2.55072, -2.57952]);
   });
+  it('center_y / heading with a curvature step (track.axis_joint_fit), values from resense.track.TrackModel', () => {
+    const tb = { ...track, curv_step: -0.001, curv_knot: 60.0 };
+    close(XS.map((x) => centerY(tb, x)), [-0.137, -0.129219951, -0.122679901, -0.150499259, -0.382639427, -1.260177876, -3.664997036, -15.296995061]);
+    expect(headingAt(tb, 100)).toBeCloseTo(Math.atan(Math.tan(0.0042) - 0.031 - 0.04), 9);
+    expect(centerY({ ...track, curv_step: 0, curv_knot: 60 }, 120)).toBeCloseTo(centerY(track, 120), 12);
+  });
   it('floor_z of a cubic profile', () => {
     const t3 = { ...track, floor_coef: [1e-6, 0.00012, -0.021, -1.62], center: 0, yaw: 0, curvature: 0 };
     close(XS.map((x) => floorZ(t3, x)), [-1.622048, -1.662032, -1.702016, -2.115, -2.244757184, -1.902424, -1.160272, 0.585968]);
