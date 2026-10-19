@@ -250,3 +250,24 @@ its original assertions with F1a′ off and now also asserts the F1a′-on resul
 (3) `tests/test_late_candidates.py::test_floor_shadow_hold_is_released_after_the_cap` asserts a counterfactual
 (floor-shadow cap off: a model locked on a flat bed while the bed rises at 6 %) that STOPs at ~4.4 m; traced: F1a′
 alone makes that low cluster advisory `below_rail_ref` (H′ plays no part). Same treatment as (2).
+
+## Amendment 7 (19.10, ~14:05 UTC) — F1a′ measured; a cross-rail design registered before its measurement
+
+**Measured (whole ride, one detector, `8c88d5c`):** switches at 0 → identical to the base (130 STOP frames,
+30 episodes, no transition). **F1a′ (exclusion + advisory) + H′: 116 STOP frames, 28 episodes, 25 events, low-kind
+4 / 4** (2668, 6860, 7364, 10484) — A1 **fails**. Why: in the real false-alarm case (2666–2676) the rail head itself
+breaks into low clusters on both rails; excluding every low cluster's returns removes the very returns the reference
+needs, so the remaining (lower) returns let the fragments "rise" above it.
+
+**What separates the two cases** (B1 vs the ride's fragments): an object lying along *one* rail raises only that
+rail's line; a raised model plane, a vertical curve or a young model raises *both* lines together (2668: L 0.109,
+R 0.092; 2671: L 0.183 / R 0.087 with the cluster on the right rail, own line 0.087).
+
+**F1a″ (registered now):** no exclusion (`local_rail_exclude_low` false); a **cross-rail check**
+(`lowobj.local_rail_cross_tol` 0.04 m, fixed a priori from the rail-line agreement seen on straight track, ±0.02):
+when the two rails' lines differ by more than 0.04 m, the reference is the **lower** line for every cluster
+(a long object on one rail, or real cant: the lenient choice); otherwise as before (the nearer rail's line, or
+linear across the bed). Failing clusters advisory (`below_rail_ref`). Margin 0.01. The B1 unit test must pass
+with it. **Comparison measured alongside (not selectable unless F1a″ fails A1 and A3–A5):** F1a without exclusion,
+advisory (`local_rail_exclude_low` false, `local_rail_cross_tol` 0).
+Then, for the selected setting: full gate, switch-off identity, Falcon, probes, synthetic bags, X3, tests, review 2.

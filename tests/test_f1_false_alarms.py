@@ -215,7 +215,8 @@ def test_candidate_values_in_the_class_and_the_yaml():
     (above the envelope only); S2, F1b and F1c opt-in (0). 0 / false restores the aec88d2 behaviour (proved on the
     full gate and the whole Falcon recording, docs/evidence/f1_false_alarms_2026-10-19)."""
     y = DetectorConfig()
-    assert y.lowobj.local_rail_margin == pytest.approx(0.01) and y.lowobj.local_rail_exclude_low
+    assert y.lowobj.local_rail_margin == pytest.approx(0.01) and not y.lowobj.local_rail_exclude_low
+    assert y.lowobj.local_rail_cross_tol == pytest.approx(0.04)
     assert y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == pytest.approx(0.5)
     assert y.cluster.mount_cross_above_only
     assert y.tracking.settle_min_hits == 0
@@ -243,13 +244,27 @@ def _long_object_on_the_left_rail():
 
 def test_pieces_of_a_long_object_on_a_rail_keep_their_reference():
     (X, dy, h), pieces = _long_object_on_the_left_rail()
-    cfg = LowObjectConfig(local_rail_margin=0.01)
+    cfg = LowObjectConfig(local_rail_margin=0.01, local_rail_cross_tol=0.0)
     # the first measured version (every return counts): the other pieces raise each piece's line -> all flagged
     assert len(rail_reference_check(pieces, X, dy, h, cfg, 1.59)) == 6
-    # amendment 6: the lines leave out every low cluster's returns -> none flagged
+    # amendment 6 option: the lines leave out every low cluster's returns -> none flagged
     free = low_free_mask(X.size, pieces)
     assert rail_reference_check(pieces, X, dy, h, cfg, 1.59, free) == []
     assert all(local_rail_reference(c, X[free], dy[free], h[free], cfg, 1.59) == pytest.approx(0.0) for c in pieces)
+    # amendment 7 (the candidate): no exclusion; the left line (raised by the pieces) disagrees with the right
+    # one by more than 0.04 m -> the lower line -> none flagged
+    cross = LowObjectConfig(local_rail_margin=0.01, local_rail_cross_tol=0.04)
+    assert rail_reference_check(pieces, X, dy, h, cross, 1.59) == []
+    assert all(local_rail_reference(c, X, dy, h, cross, 1.59) == pytest.approx(0.0) for c in pieces)
+
+
+def test_both_rails_raised_together_still_reject_a_rail_fragment():
+    """The ride's false STOPs (frames 2666-2676): the model's plane is ~0.1 m low, both rails read high together;
+    a rail-head fragment does not rise above them, with or without the cross-rail check."""
+    X, dy, h = _rails(30.0, 50.0, left=0.11, right=0.10)
+    frag = _low(40.0, HALF - 0.08, 0.108, idx=np.array([0]))
+    for cfg in (LowObjectConfig(local_rail_margin=0.01, local_rail_cross_tol=0.04), LowObjectConfig(local_rail_margin=0.01)):
+        assert rail_reference_check([frag], X, dy, h, cfg, 1.59) == [frag]
 
 
 def test_a_cluster_failing_the_reference_is_advisory_not_silent():

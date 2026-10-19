@@ -287,6 +287,11 @@ def local_rail_reference(c, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: L
     lat = float(c.lateral)
     lo, hi = lines[-1.0], lines[1.0]
     if lo is not None and hi is not None:
+        cross = float(getattr(cfg, "local_rail_cross_tol", 0.0))
+        if cross > 0 and abs(hi - lo) > cross:
+            # amendment 7 (F1a''): the rails disagree - an object along one rail raises only its line (review 1,
+            # B1), real cant makes one rail higher: the lower line, the lenient choice, for every cluster
+            return min(lo, hi)
         t = min(1.0, max(0.0, (lat + half) / (2.0 * half)))
         return lo + t * (hi - lo)
     for s, line in ((-1.0, lo), (1.0, hi)):
