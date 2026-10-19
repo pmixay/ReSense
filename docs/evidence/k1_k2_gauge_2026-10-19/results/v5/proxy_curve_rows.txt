@@ -1,0 +1,20 @@
+# PROXY curve rows from the gate's per-frame track rows (eval_real on the int16 gate cache), NOT the registered method
+# (judge node replica on the node-decoded cache; C / B decoded caches are not in this container). Controls: the registered
+# base B6 track (b6_raw.tar.xz v110) and the registered v3 track (raw_v3.tar.xz b6_cand3) through the same scripts.
+## K2-1 (k2_wall_error.py, true_left.json, frames 57-117): median at 80/90/100/110/120 m
+v110 (registered B6 track if v110/cand3, else gate proxy): [0.719, 1.025, 1.394, 1.896, 3.431] n [61, 61, 61, 56, 33]
+cand3 (registered B6 track if v110/cand3, else gate proxy): [0.403, 0.47, 0.511, 0.522, 0.561] n [61, 61, 61, 56, 33]
+base (registered B6 track if v110/cand3, else gate proxy): [0.651, 0.97, 1.379, 1.883, 3.487] n [61, 61, 61, 56, 33]
+v3 (registered B6 track if v110/cand3, else gate proxy): [0.395, 0.451, 0.426, 0.364, 0.447] n [61, 61, 61, 56, 33]
+v4 (registered B6 track if v110/cand3, else gate proxy): [0.395, 0.451, 0.426, 0.364, 0.447] n [61, 61, 61, 56, 33]
+v5a (registered B6 track if v110/cand3, else gate proxy): [0.38, 0.416, 0.46, 0.433, 0.433] n [61, 61, 61, 56, 33]
+v5b (registered B6 track if v110/cand3, else gate proxy): [0.38, 0.416, 0.46, 0.433, 0.433] n [61, 61, 61, 56, 33]
+## B6-2 (gauge_stability.py measure vs posesV_roundT_doubleT: off-track p50 80-100 m within the trusted range)
+b6base p50 1.7 n 112 | 120-150 p50 6.807 | range p50 157.0
+cand3 p50 0.498 n 129 | 120-150 p50 1.965 | range p50 135.0
+base p50 1.834 n 110 | 120-150 p50 6.929 | range p50 157.0
+v3 p50 0.482 n 126 | 120-150 p50 1.839 | range p50 135.0
+v4 p50 0.513 n 133 | 120-150 p50 1.28 | range p50 163.0
+v5a p50 0.517 n 107 | 120-150 p50 1.671 | range p50 157.0
+v5b p50 0.465 n 47 | 120-150 p50 5.295 | range p50 119.0
+(b6base = registered base track; cand3 = registered v3 track; the rest = gate-row proxies on b2c523a)

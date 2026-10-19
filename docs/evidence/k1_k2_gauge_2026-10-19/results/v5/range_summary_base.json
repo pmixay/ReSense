@@ -1,0 +1,221 @@
+{
+ "tag": "base",
+ "commit": "b2c523afdf8b29c3b3e93d89faa06937c434dd25",
+ "config_diff": "",
+ "jobs": [
+  {
+   "job": "A_person",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340",
+   "exit": 0,
+   "wall_s": 22.2,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 218.38,
+    "held_from_X": 221.78,
+    "visible_frames": 185,
+    "stop_frames": 158,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "21/21",
+     "60-100": "27/27",
+     "100-150": "39/39",
+     "150-200": "44/45",
+     "200-260": "9/35"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 22,
+     "STOP": 158,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 4,
+     "150": 10,
+     "100": 24,
+     "60": 65,
+     "30": 280
+    }
+   }
+  },
+  {
+   "job": "S_person_60",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,1.75 --start 360 --d0 60 --end 620",
+   "exit": 0,
+   "wall_s": 36.3,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 60.0,
+    "first_visible_X": 60.0,
+    "first_stop_X": 60.0,
+    "held_from_X": 60.0,
+    "visible_frames": 260,
+    "stop_frames": 255,
+    "bins": {
+     "30-60": "97/97",
+     "60-100": "158/163"
+    },
+    "decisions_while_visible": {
+     "GO": 0,
+     "CAUTION": 5,
+     "STOP": 255,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 52,
+     "150": 52,
+     "100": 52,
+     "60": 52,
+     "30": null
+    }
+   }
+  },
+  {
+   "job": "S_person_100",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,1.75 --start 360 --d0 100 --end 620",
+   "exit": 0,
+   "wall_s": 35.7,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 100.0,
+    "first_visible_X": 100.0,
+    "first_stop_X": 100.0,
+    "held_from_X": 99.99,
+    "visible_frames": 260,
+    "stop_frames": 82,
+    "bins": {
+     "60-100": "32/97",
+     "100-150": "50/163"
+    },
+    "decisions_while_visible": {
+     "GO": 11,
+     "CAUTION": 166,
+     "STOP": 83,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 24,
+     "150": 24,
+     "100": 24,
+     "60": null,
+     "30": null
+    }
+   }
+  },
+  {
+   "job": "S_person_150",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,1.75 --start 360 --d0 150 --end 620",
+   "exit": 0,
+   "wall_s": 35.0,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 150.0,
+    "first_visible_X": 150.0,
+    "first_stop_X": 150.0,
+    "held_from_X": null,
+    "visible_frames": 259,
+    "stop_frames": 90,
+    "bins": {
+     "100-150": "45/97",
+     "150-200": "45/162"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 162,
+     "STOP": 92,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 8,
+     "150": 8,
+     "100": null,
+     "60": null,
+     "30": null
+    }
+   }
+  },
+  {
+   "job": "K15",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,1.75 --start 450 --d0 100 --end 620 --appear 100",
+   "exit": 0,
+   "wall_s": 31.3,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 450,
+    "d0": 100.0,
+    "first_visible_X": 100.0,
+    "first_stop_X": 100.0,
+    "held_from_X": null,
+    "visible_frames": 170,
+    "stop_frames": 21,
+    "bins": {
+     "60-100": "2/96",
+     "100-150": "19/74"
+    },
+    "decisions_while_visible": {
+     "GO": 14,
+     "CAUTION": 133,
+     "STOP": 23,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 24,
+     "150": 24,
+     "100": 24,
+     "60": null,
+     "30": null
+    }
+   }
+  }
+ ]
+}
