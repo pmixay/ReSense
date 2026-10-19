@@ -149,3 +149,25 @@ def test_distance_smoothing_exponent_and_rate_limits():
     # the standing frame stays near the previous model: weight 0.6 ** 0.05 = 0.975 (rate limits 5 % as well)
     assert abs(s.yaw - prev.yaw) < 0.2 * abs(a.yaw - prev.yaw)
     assert abs(s.curvature - prev.curvature) <= 0.05 * base.axis_max_curvature_rate + 1e-12
+
+
+def test_joint_fit_follows_a_curve_that_ends_beyond_the_reach():
+    """A wall that bends to the knot and then runs straighter (as at the far end of squareT_platform): the far
+    bins join and the axis at 140 m follows the straighter continuation (the step), not the extrapolated curve."""
+    rails, bounds, yt = _curve_obs(k=2e-4, step=-2e-4, sides=((2.4, 56.0), (-2.3, 148.0)), noise=0.02)
+    j = joint_axis_fit(rails, bounds, _model(curvature=2e-4), TrackConfig(**JOINT))
+    assert j["x_max"]["right"] >= 140, j
+    y = j["c"] + j["t"] * 140 + 0.5 * j["k"] * 140 ** 2 + 0.5 * j["step"] * (140 - j["knot"]) ** 2
+    assert abs(y - yt(140.0)) < 0.5, (y, yt(140.0))
+
+
+def test_a_diverging_far_segment_is_not_admitted():
+    """A far structure after a gap that diverges from the track (a hall wall, 0.08 m per metre) does not join:
+    no shape with a curvature step explains it within the tolerance together with the rest."""
+    rails, bounds, yt = _curve_obs(k=0.0, sides=((2.4, 120.0), (-2.3, 84.0)), noise=0.02)
+    xf = np.arange(104.0, 152.1, 4.0)
+    x, y = bounds["right"]
+    bounds["right"] = (np.r_[x, xf], np.r_[y, yt(xf) - 2.3 - 0.08 * (xf - 104.0)])
+    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    assert j["x_max"]["right"] <= 84.0, j
+    assert abs(j["k"]) < 5e-5 and abs(j["step"]) < 5e-5, j

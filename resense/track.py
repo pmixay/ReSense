@@ -599,9 +599,11 @@ def joint_axis_fit(rails: RailsFit, boundaries: dict, prior: TrackModel, cfg: Tr
       each segment of at least ``axis_joint_min_segment`` bins has its own offset ``a_s``: a wall is piecewise
       parallel to the track (niches, gates, platform screens).
     * The fit grows outward: the bins up to ``axis_joint_grow_start`` first, then ``axis_joint_grow_step`` further
-      each round, a bin joining only within ``axis_joint_tolerance`` of the current fit (a bin of a segment not yet
-      in the fit joins with its segment). So a far wall that bends with a transition curve is followed, and a
-      structure that is not parallel never joins.
+      each round, a bin joining only within ``axis_joint_tolerance`` of the current fit; then, nearest first, the
+      remaining bins of a segment (or a new segment) as a group, kept only when the refit (which may change the
+      step) keeps every bin used within the tolerance and the rail midpoints within 3 SD. So a far wall that bends
+      with a transition curve, or straightens where a curve ends, is followed, and a structure that is not
+      parallel never joins.
     * With ``axis_joint_knot`` > 0 the axis may bend by a curvature step ``s (x - knot)^2 / 2`` beyond the knot
       (C1: a transition curve, where the curvature grows with the distance), fitted only with at least
       ``axis_joint_min_far_bins`` bins beyond it and drawn towards 0 with prior SD ``axis_joint_step_sigma``.
@@ -654,53 +656,73 @@ def joint_axis_fit(rails: RailsFit, boundaries: dict, prior: TrackModel, cfg: Tr
     nshape = 3 if knot > 0 else 2
     wr, ww = 1.0 / cfg.axis_joint_rail_sigma, 1.0 / cfg.axis_joint_wall_sigma
     Br = _joint_basis(xm, knot)
-    sol, used, lim = None, [], float(cfg.axis_joint_grow_start)
+    tol = float(cfg.axis_joint_tolerance)
+
+    def solve(masks: dict):
+        """(solution, segment order) of the fit of the rails and the masked bins of each segment."""
+        order = sorted(masks)
+        n = len(order)
+        rows = [np.concatenate([[1.0], Br[i], np.zeros(n)]) * wr for i in range(xm.size)]
+        rhs = list(ym * wr)
+        far = 0
+        for j, g in enumerate(order):
+            x, y = segs[g][1][masks[g]], segs[g][2][masks[g]]
+            e = np.zeros((x.size, n))
+            e[:, j] = 1.0
+            rows.extend(np.hstack([np.zeros((x.size, 1)), _joint_basis(x, knot), e]) * ww)
+            rhs.extend(y * ww)
+            far += int(np.count_nonzero(x > knot)) if knot > 0 else 0
+        if knot > 0:                                       # the step: ridge towards 0, or none without far data
+            reg = np.zeros(1 + nshape + n)
+            reg[nshape] = 1e6 if far < cfg.axis_joint_min_far_bins else 1.0 / cfg.axis_joint_step_sigma
+            rows.append(reg)
+            rhs.append(0.0)
+        return np.linalg.lstsq(np.array(rows), np.array(rhs), rcond=None)[0], order
+
+    def residual(sol, order, g, x, y):
+        return y - (sol[nshape + 1 + order.index(g)] + _joint_basis(x, knot) @ sol[1:nshape + 1])
+
+    def consistent(sol, order, masks) -> bool:
+        """every bin used within the tolerance, the rail midpoints within 3 SD"""
+        if np.any(np.abs(ym - (sol[0] + Br @ sol[1:nshape + 1])) > 3.0 * cfg.axis_joint_rail_sigma):
+            return False
+        return all(np.all(np.abs(residual(sol, order, g, segs[g][1][m], segs[g][2][m])) < tol)
+                   for g, m in masks.items())
+
+    lim = float(cfg.axis_joint_grow_start)
     x_end = max(float(cfg.walls_range[1]), lim)
-    while True:
-        new_used = []
-        for g, (name, x, y) in enumerate(segs):
-            m = x <= lim
-            if sol is not None and g in used:
-                j = used.index(g)
-                pred = sol[nshape + 1 + j] + _joint_basis(x, knot) @ sol[1:nshape + 1]
-                m &= np.abs(y - pred) < cfg.axis_joint_tolerance
-            if m.sum() >= cfg.axis_joint_min_segment:
-                new_used.append((g, m))
-        if not new_used:
-            if sol is None:
-                return None
-        else:
-            used, masks = [g for g, _ in new_used], [m for _, m in new_used]
-            n = len(used)
-            rows = [np.concatenate([[1.0], Br[i], np.zeros(n)]) * wr for i in range(xm.size)]
-            rhs = list(ym * wr)
-            far = 0
-            for j, (g, m) in enumerate(zip(used, masks)):
-                x, y = segs[g][1][m], segs[g][2][m]
-                B = _joint_basis(x, knot)
-                e = np.zeros((x.size, n))
-                e[:, j] = 1.0
-                rows.extend(np.hstack([np.zeros((x.size, 1)), B, e]) * ww)
-                rhs.extend(y * ww)
-                if knot > 0:
-                    far += int(np.count_nonzero(x > knot))
-            if knot > 0:                                   # the step: ridge towards 0, or none without far data
-                reg = np.zeros(1 + nshape + n)
-                reg[nshape] = 1e6 if far < cfg.axis_joint_min_far_bins else 1.0 / cfg.axis_joint_step_sigma
-                rows.append(reg)
-                rhs.append(0.0)
-            sol, *_ = np.linalg.lstsq(np.array(rows), np.array(rhs), rcond=None)
-            fit_masks = masks
-        if lim >= x_end:
-            break
+    masks = {g: x <= lim for g, (_, x, _) in enumerate(segs)}
+    masks = {g: m for g, m in masks.items() if m.sum() >= cfg.axis_joint_min_segment}
+    if not masks:
+        return None
+    sol, order = solve(masks)
+    while lim < x_end:
         lim += float(cfg.axis_joint_grow_step)
+        # single bins of the segments in the fit that lie within the tolerance of its extrapolation
+        for g in list(masks):
+            _, x, y = segs[g]
+            masks[g] = masks[g] | ((x <= lim) & (np.abs(residual(sol, order, g, x, y)) < tol))
+        sol, order = solve(masks)
+        # then, nearest first, a segment's remaining bins (or a new segment) as a group: kept only when the
+        # refit, which may bend beyond the knot, keeps every bin used within the tolerance (a curve that ends or
+        # tightens beyond the reach so far is followed; a structure that is not parallel is not)
+        for g in sorted(range(len(segs)), key=lambda g: float(segs[g][1][0])):
+            _, x, _ = segs[g]
+            add = (x <= lim) & ~masks.get(g, np.zeros(x.size, dtype=bool))
+            if add.sum() < (3 if g in masks else cfg.axis_joint_min_segment):
+                continue
+            trial = dict(masks)
+            trial[g] = masks.get(g, np.zeros(x.size, dtype=bool)) | add
+            s2, o2 = solve(trial)
+            if consistent(s2, o2, trial):
+                masks, sol, order = trial, s2, o2
     x_max: dict = {}
     res = []
-    for j, (g, m) in enumerate(zip(used, fit_masks)):
+    for g in order:
         name, x, y = segs[g]
-        x, y = x[m], y[m]
+        x, y = x[masks[g]], y[masks[g]]
         x_max[name] = max(x_max.get(name, 0.0), float(x.max()))
-        res.append(y - (sol[nshape + 1 + j] + _joint_basis(x, knot) @ sol[1:nshape + 1]))
+        res.append(residual(sol, order, g, x, y))
     r = np.concatenate(res)
     return {"c": float(sol[0]), "t": float(sol[1]), "k": float(sol[2]),
             "step": float(sol[3]) if knot > 0 else 0.0, "knot": knot, "x_max": x_max,
