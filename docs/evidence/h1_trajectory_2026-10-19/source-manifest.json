@@ -1,0 +1,278 @@
+{
+  "configs/default.yaml": {
+    "bytes": 53370,
+    "sha256": "a262e8bd32f2ad0cdd45926922675a985c5adf30807bd873182a86d452800d9a"
+  },
+  "configs/experimental_cross_ring.yaml": {
+    "bytes": 419,
+    "sha256": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c"
+  },
+  "configs/experimental_far_rail_rings.yaml": {
+    "bytes": 746,
+    "sha256": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77"
+  },
+  "configs/experimental_fresh_stop_evidence.yaml": {
+    "bytes": 274,
+    "sha256": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb"
+  },
+  "configs/experimental_low_local_support.yaml": {
+    "bytes": 385,
+    "sha256": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b"
+  },
+  "docs/evidence/h1_reference_2026-10-19/deskew_reference.py": {
+    "bytes": 6179,
+    "sha256": "ef022683f2c33259400350d20f805d9f26a06984dfe411cfbc2f02709932307c"
+  },
+  "docs/evidence/h1_reference_2026-10-19/direct-reference-deskew.json": {
+    "bytes": 144303,
+    "sha256": "e3ffeafdf3a5794576f4e11cd77462ea8f0a220a72e89e8dd37c6aeafb6c69a3"
+  },
+  "docs/evidence/h1_reference_2026-10-19/direct-reference.json": {
+    "bytes": 144134,
+    "sha256": "19a8a94538757358aa2d82cccea23fe5892ba43b1ce1af8451f9712ae634fb2d"
+  },
+  "docs/evidence/h1_reference_2026-10-19/reference.py": {
+    "bytes": 10064,
+    "sha256": "f0a12ddb8739bf140284173ad2203e9c8aa08a70208151e9e2ad47043e0c7fef"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/LANDMARK_BUNDLE.md": {
+    "bytes": 1868,
+    "sha256": "4acc5cb632352ecae473aa486106867145a2efe23c26050ee1b2a1254cd8b7cb"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/PROTOCOL.md": {
+    "bytes": 2653,
+    "sha256": "71a6fc9fd2e628ca88610e119eeffe4aa3044286cf8e2f936ef9a4adecf1ba91"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/README.md": {
+    "bytes": 10127,
+    "sha256": "0fb154cc63a7e2ebd8893687ca5efc13d74a42f05ba95923ef40148af5d20e3e"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/REFERENCE_AMENDMENT.md": {
+    "bytes": 1339,
+    "sha256": "389bcfd150d715a2705ee02efc34410c7da198f1280b8ad08e48a490ab8b89a5"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/audit_results.py": {
+    "bytes": 9681,
+    "sha256": "00847e5d5db1aa9b0dd5627789132d3ac50af07fe1aa541f739c6ffaa60bb864"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/colored_registration.py": {
+    "bytes": 5182,
+    "sha256": "3cfa737fbd40c79434f177b5a4b06344ecab9ac1c7e7036b3feddb9a2e70c2d5"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/direct_gicp.py": {
+    "bytes": 8548,
+    "sha256": "049ca218c16d37da92db9fa4be69d167760530734414f80bc0991f7534c1dff6"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/feature_odometry.py": {
+    "bytes": 3287,
+    "sha256": "efd72b763ef17206bf9ed9138139255603ae9bc5895a9841cde49eb8569954d3"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/inspect_registration.py": {
+    "bytes": 1320,
+    "sha256": "ae8b15704d16a472a80309d562b0da6be3783b58b9709ed7aed51f29be10f000"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/landmark_bundle.py": {
+    "bytes": 8710,
+    "sha256": "9c879acd5b4134a891aae0590790c91929b97d8e8f26ceffa0cb2c5814437989"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/landmarks.py": {
+    "bytes": 2728,
+    "sha256": "fa787594f9c2bff9e495712b9a2745894e970621bf09fe20b43f312d3e156346"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/local_odometry.py": {
+    "bytes": 2826,
+    "sha256": "cbbd8abd7c6595ebbe9753d6aac34a45bbc2a1a04fad20fdc8bff5c0e17f6897"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/package_results.py": {
+    "bytes": 4619,
+    "sha256": "5ea18d74e7acbec246e76bd9be84efddb52b22a9af274fe795ea426daa9cc126"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/rail_plane_check.py": {
+    "bytes": 1359,
+    "sha256": "01abbe9e66748f2716e9d07b9b3ad52502bc2168670cd0fd3af48583f87aa1da"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/raw_far_rails.py": {
+    "bytes": 1944,
+    "sha256": "b845ac25bac0004f51f5b90584b83e4ae0eb4507ba854f20c96dc97b01db76be"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/run_checks.py": {
+    "bytes": 1741,
+    "sha256": "9cef0e253263835272147cc87fe11ac1bfd9088926ee91e99eba2f2fbf11ac98"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/scan_map.py": {
+    "bytes": 3627,
+    "sha256": "a9fecf71d45ea3710fc24ef7f1112219d08977f64ee1614c12e1f8f5104e4743"
+  },
+  "docs/evidence/h1_trajectory_2026-10-19/validate_reconstruction.py": {
+    "bytes": 5089,
+    "sha256": "876b8ac74e0a43dbaf26e6d00274e15d3385f80a9af20e2af76246bf8b042991"
+  },
+  "native/resense_native.cpp": {
+    "bytes": 14635,
+    "sha256": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1"
+  },
+  "pyproject.toml": {
+    "bytes": 1133,
+    "sha256": "bd429ed92c6c9606ee933607c3361548f15e3ba18c6a5415611195ce320b5866"
+  },
+  "resense/__init__.py": {
+    "bytes": 579,
+    "sha256": "0afadc11f9d78b09e83b15805b3b1cb3281e77b51013d74c837781df144bc27a"
+  },
+  "resense/_native.py": {
+    "bytes": 14814,
+    "sha256": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58"
+  },
+  "resense/_resense_native.so": {
+    "bytes": 29408,
+    "sha256": "67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394"
+  },
+  "resense/accumulate.py": {
+    "bytes": 3674,
+    "sha256": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd"
+  },
+  "resense/calibration.py": {
+    "bytes": 43647,
+    "sha256": "029243c62f541a206aeb5ec1fe457e9f25c4e5d7966c9e00561f6dc787293dfd"
+  },
+  "resense/cli.py": {
+    "bytes": 25778,
+    "sha256": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f"
+  },
+  "resense/clustering.py": {
+    "bytes": 73024,
+    "sha256": "cd905d05b30dbc0953f914bf6ada69a49d922e4cd371c5a2cd84b3267d3244c3"
+  },
+  "resense/config.py": {
+    "bytes": 89041,
+    "sha256": "86e6c174ffd9659dfbe732e814e640ce449eb0de5bd707228abfa9aece098412"
+  },
+  "resense/detector.py": {
+    "bytes": 74266,
+    "sha256": "836b773a48fd6a7b3dcedda57bec4367447014a71afa8f9f52d219677f216793"
+  },
+  "resense/dust.py": {
+    "bytes": 5799,
+    "sha256": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9"
+  },
+  "resense/dust_guard.py": {
+    "bytes": 13517,
+    "sha256": "0198978ca5931d4ba9032842d7cc420ed1ea618679b231b580c5cc4b786950f1"
+  },
+  "resense/dust_health.py": {
+    "bytes": 5904,
+    "sha256": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0"
+  },
+  "resense/egomotion.py": {
+    "bytes": 12039,
+    "sha256": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284"
+  },
+  "resense/evidence.py": {
+    "bytes": 10741,
+    "sha256": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5"
+  },
+  "resense/farline.py": {
+    "bytes": 13566,
+    "sha256": "a7edb0956f6544f658c1ea62cc5f24bf58a8cb1000ac8cf0854840705a45dfe0"
+  },
+  "resense/farrails.py": {
+    "bytes": 12440,
+    "sha256": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b"
+  },
+  "resense/frame.py": {
+    "bytes": 3011,
+    "sha256": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9"
+  },
+  "resense/gauge.py": {
+    "bytes": 13323,
+    "sha256": "54870e9998584f5d8fcf1d1d50e76fe8685e95aad40e2da7f371c600f354d16a"
+  },
+  "resense/health.py": {
+    "bytes": 13770,
+    "sha256": "c1708e456b096cfb4d60333211697dec70cccc7fba584ba5bd0a7dcddc7d579f"
+  },
+  "resense/io.py": {
+    "bytes": 5272,
+    "sha256": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34"
+  },
+  "resense/lowobj.py": {
+    "bytes": 24343,
+    "sha256": "bd6cda1c95ec790cc6a6bbf35d32c9c502b4aa349f2928389c46e8015455284d"
+  },
+  "resense/metrics.py": {
+    "bytes": 25928,
+    "sha256": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a"
+  },
+  "resense/opinion.py": {
+    "bytes": 5707,
+    "sha256": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8"
+  },
+  "resense/pointcloud.py": {
+    "bytes": 6860,
+    "sha256": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053"
+  },
+  "resense/sensor.py": {
+    "bytes": 4401,
+    "sha256": "cfbc2684877faafc2b4b84a524021524f6fe8796d877851984a292524a6a5948"
+  },
+  "resense/synthetic.py": {
+    "bytes": 23039,
+    "sha256": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747"
+  },
+  "resense/track.py": {
+    "bytes": 91281,
+    "sha256": "e125696a41d8fbe443e5aebe41eabc02b6e75eb69af521aafc597ec5c11f259c"
+  },
+  "resense/tracking.py": {
+    "bytes": 60703,
+    "sha256": "c0ce26c693ce41410411c2841e9786a525c0ae83451bd2c7a3b3b97be73b4ed2"
+  },
+  "resense/viz.py": {
+    "bytes": 3164,
+    "sha256": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db"
+  },
+  "ros2_ws/src/resense_ros/config/detector.yaml": {
+    "bytes": 53370,
+    "sha256": "a262e8bd32f2ad0cdd45926922675a985c5adf30807bd873182a86d452800d9a"
+  },
+  "ros2_ws/src/resense_ros/launch/detector.launch.py": {
+    "bytes": 10174,
+    "sha256": "805bce047394041039a54b4a9e58bc97a09f0bc6dbb38d8d0e4dd484377d9fb2"
+  },
+  "ros2_ws/src/resense_ros/package.xml": {
+    "bytes": 1192,
+    "sha256": "5c7cc14ac93aaf5692d5e55e02bcaee5bd5ff76b1995ebc958fe63e5c057bf1d"
+  },
+  "ros2_ws/src/resense_ros/resense_ros/__init__.py": {
+    "bytes": 678,
+    "sha256": "dcf728222a541706e7746a50f13c25bf8b3a5d8b3c9530b5b66addfc4187462c"
+  },
+  "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": {
+    "bytes": 12691,
+    "sha256": "7f18a9eccd7245fb1d04bff03b0e2a15ff6d3f6cdd4f5b57994964d830d455b1"
+  },
+  "ros2_ws/src/resense_ros/resense_ros/detector_node.py": {
+    "bytes": 97107,
+    "sha256": "828377a2cf7e677b4677cf5411784e972f2c864dcfba96db14d2dd48a1c07690"
+  },
+  "ros2_ws/src/resense_ros/resense_ros/fastcloud.py": {
+    "bytes": 10277,
+    "sha256": "22133bffa0e54654f6798501da1f5102c1fa4680c286f671b0c589ccb0eaa98e"
+  },
+  "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": {
+    "bytes": 7791,
+    "sha256": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b"
+  },
+  "ros2_ws/src/resense_ros/resense_ros/sensor_profiles.py": {
+    "bytes": 2507,
+    "sha256": "d5bf5f45613c3cc720a22a745323b12abf3d72ce7ed6e2c81acf20b5798bf218"
+  },
+  "ros2_ws/src/resense_ros/setup.py": {
+    "bytes": 890,
+    "sha256": "a5fa427eadb38402e22a22f887e0c565f8e34e506e93a828b56929013230f162"
+  },
+  "setup.py": {
+    "bytes": 1015,
+    "sha256": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  }
+}
