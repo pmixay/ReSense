@@ -210,12 +210,15 @@ def small_target_limit(sensor_model: str, min_points_far: int = 3,
             or min_points_far < 1):
         raise ValueError("min_points_far must be a positive integer")
     max_range = _nonnegative(max_range, "max_range")
-    if sensor_model != "pandar128":
+    if sensor_model == "unknown":
         return None
     if max_range == 0:
         return 0.0
     import numpy as np
-    from resense.sensor import expected_points
+    from resense.sensor import expected_points, falcon_expected_points
+    if sensor_model == "falcon_prime":
+        # 19.10: the Falcon's measured outside-ROI raster, which holds over the whole field of view
+        expected_points = falcon_expected_points
     grid = np.linspace(0.0, max_range, 4097)
     eligible = np.flatnonzero(expected_points(grid, 0.3, 0.3) >= min_points_far)
     if not eligible.size:

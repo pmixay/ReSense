@@ -77,7 +77,16 @@ def test_approved_conservative_profile_names_the_qualified_cap_without_changing_
                              min_points_far=threshold, profile="conservative_2026_10_17")
 
 
-@pytest.mark.parametrize("sensor", ["unknown", "falcon_prime"])
+def test_falcon_small_target_limit_uses_the_measured_fov_raster():
+    # 19.10: 0.3 x 0.3 m, 3 returns on the outside-ROI grid 0.18 x 0.235 deg (never the Pandar table)
+    limit = small_target_limit("falcon_prime")
+    assert 48.0 < limit < 48.6 and limit != small_target_limit("pandar128")
+    assert small_target_limit("falcon_prime", max_range=400.0) == limit
+    result = candidate_ranges(row(), sensor_model="falcon_prime", cap_small_target=True)
+    assert result["monitored_small"] == 48.2 and result["monitored_small_model"]["available"] is True
+
+
+@pytest.mark.parametrize("sensor", ["unknown"])
 def test_unknown_scan_model_is_unavailable_never_pandar(sensor):
     assert small_target_limit(sensor) is None
     result = candidate_ranges(row(), sensor_model=sensor)
