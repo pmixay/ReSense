@@ -1,7 +1,7 @@
 # K1 / K2: gauge stability and curve synchronisation — P3 report (19.10)
 
 > Branch `det/k1-k2-gauge`. Final candidate code **v3 = `83c8894`** (two switches, **both off by default**).
-> Evidence: this folder. Protocol pre-registered in [`PROTOCOL.md`](PROTOCOL.md) before any candidate
+> Evidence: this folder (`results/`; raw per-frame data `results/raw_v3.tar.xz`, checksums `SHA256SUMS`). Protocol pre-registered in [`PROTOCOL.md`](PROTOCOL.md) before any candidate
 > measurement, with two dated revisions (§6 v1 failed; §7 independent review → v3). Reviews:
 > [`REVIEW.md`](REVIEW.md) (v2, fresh subagent), [`REVIEW_v3.md`](REVIEW_v3.md) (v3 fixes, a second fresh subagent).
 > Development data only; G3 not touched. No version, seal, README, CHANGELOG, BACKLOG or other shared doc changed.
