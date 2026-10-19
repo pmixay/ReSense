@@ -93,6 +93,19 @@ resense:
     floor_verify_tolerance: 0.5    # m, allowed deviation of the far side base from its near-range height
     floor_verify_min_points: 5     # side points per bin for the bin to count
     floor_verify_max_range: 250.0  # m, how far the verification is attempted
+    axis_joint_fit: false          # 19.10 (K2, off): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
+    axis_joint_knot: 60.0          # 19.10: m, X from which the curvature may change (C1 piecewise axis); 0 = a single quadratic
+    axis_joint_step_sigma: 0.001   # 19.10: 1/m, prior SD of that curvature step
+    axis_joint_min_far_bins: 4     # 19.10: boundary bins beyond the knot needed to fit a step
+    axis_joint_rail_sigma: 0.03    # 19.10: m, SD of a rail-pair slab midpoint
+    axis_joint_wall_sigma: 0.1     # 19.10: m, SD of a boundary bin
+    axis_joint_tolerance: 0.3      # 19.10: m, a boundary bin joins the fit within this of the current fit
+    axis_joint_grow_start: 40.0    # 19.10: m, first range of the outward growth
+    axis_joint_grow_step: 16.0     # 19.10: m, growth step
+    axis_joint_min_segment: 3      # 19.10: bins a boundary segment needs to take part
+    walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
+    walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
+    walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this
   gauge:
     # v0.6: the train envelope given by the organizers (Q&A session): 2.1 m wide x 3.0 m high above the rail head,
     # from 0.12 m (lower objects on the track: the lowobj stage); the v0.5 polygon (1.40 m) is the advisory zone
