@@ -22,14 +22,14 @@
 | документ | зачем читать |
 |---|---|
 | [README](https://github.com/pmixay/ReSense/blob/main/README.md) | команды для жюри, главные результаты и ограничения |
-| [SCORECARD](https://github.com/pmixay/ReSense/blob/main/docs/SCORECARD.md) | независимая оценка 28.09 (детектор до изменений 29.09): как измеряли, результаты по каждой записи, главные риски |
+| [SCORECARD](https://github.com/pmixay/ReSense/blob/main/docs/SCORECARD.md) | независимая оценка 13.10 (v1.0.0, 66/100) и история оценок: как измеряли, главные риски (разбор 28–29.09 по записям — в архиве) |
 | [ARCHITECTURE](https://github.com/pmixay/ReSense/blob/main/docs/ARCHITECTURE.md) | компоненты, поток данных, бюджет времени, ядра на C++, развёртывание без интернета |
 | [ALGORITHM](https://github.com/pmixay/ReSense/blob/main/docs/ALGORITHM.md) | метод по этапам, правило решения, параметры, ограничения |
 | [EXPERIMENTS](https://github.com/pmixay/ReSense/blob/main/docs/EXPERIMENTS.md) | измерения: дальность, задержка, FPS, ложные тревоги, трудные случаи, что не сработало |
 | [EVALUATION](https://github.com/pmixay/ReSense/blob/main/docs/EVALUATION.md) | протокол оценки и наборы данных |
 | [DATASET](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md), [SENSOR](https://github.com/pmixay/ReSense/blob/main/docs/SENSOR.md) | записи, форматы, Hesai Pandar128 |
 | [DECISIONS](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md), [RESEARCH](https://github.com/pmixay/ReSense/blob/main/docs/RESEARCH.md) | ключевые решения на одной странице; обзор литературы и рассмотренные подходы |
-| [DETECTOR_FREEZE](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md) | печать детектора (текущая — 29.09 ночь, после выключения `shell`, `7464d80`) и её проверка |
+| [DETECTOR_FREEZE](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md) | печать детектора (v1.0.0 — 29.09 ночь, `7464d80`; эталон кандидата 1.2.0 — 18.10, на 19.10 не проходит `verify` до перепечатки) и её проверка |
 | [VM_GUIDE](https://github.com/pmixay/ReSense/blob/main/docs/VM_GUIDE.md) | пробный прогон на чистой машине, замеры производительности и репетиция без интернета на облачной ВМ |
 | [CHANGELOG](https://github.com/pmixay/ReSense/blob/main/CHANGELOG.md) | что изменилось — по версиям |
 | [webapp/README](https://github.com/pmixay/ReSense/blob/main/webapp/README.md), [webapp/API](https://github.com/pmixay/ReSense/blob/main/webapp/API.md) | веб-прототип: запуск, страницы, архитектура, тесты; HTTP-контракт бэкенда и фронтенда |
