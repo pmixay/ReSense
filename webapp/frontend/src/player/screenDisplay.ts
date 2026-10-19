@@ -108,8 +108,8 @@ export class ScreenDisplay {
     this.roofLight.position.set(0, h / 2 - .12, 2.6);
     this.roofLight.lookAt(0, h / 2 - 2.2, -.45);
     const side = Math.max(25, viewWidth * 0.065);
-    const top = Math.min(96, Math.max(50, region.height * 0.16));
-    const bottom = Math.min(56, Math.max(25, region.height * 0.12));
+    const top = Math.min(54, Math.max(38, region.height * 0.08));
+    const bottom = Math.min(30, Math.max(25, region.height * 0.05));
     const bezel = Math.min(22, Math.max(10, region.height * 0.045));
     Object.assign(this.viewport, { x: viewLeft + side + bezel, y: region.top + top + bezel, width: Math.max(1, viewWidth - (side + bezel) * 2), height: Math.max(1, region.height - top - bottom - bezel * 2) });
     const vw = this.viewport.width * units;

@@ -20,6 +20,8 @@ import { Scrubber } from './Scrubber';
 import { DecisionTile, DistanceTile, HealthTile, MapTile, MetricsTile } from './Tiles';
 import { useFullscreen, usePlayerKeys } from './useCab';
 import { World } from './World';
+import { TelemetryTray } from './TelemetryTray';
+import { useDockHeight } from './useDockHeight';
 import styles from './Player.module.css';
 
 // ---------------------------------------------------------------- the stage
@@ -93,6 +95,9 @@ function TrayActions() {
 /** Picker, loading and error states participate in the same page layout. */
 function CabShell({ runId, runName, glass, console: cons }: { runId?: string; runName?: string; glass: ReactNode; console?: ReactNode }) {
   const displayRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const dockRef = useRef<HTMLDivElement>(null);
+  useDockHeight(stageRef, dockRef);
   const sceneRef = useRef<PlayerScene | null>(null);
   const sink = useRef<OverlaySink | null>(null);
   const back = useBack(runId);
@@ -100,12 +105,12 @@ function CabShell({ runId, runName, glass, console: cons }: { runId?: string; ru
   // without a run only F and Esc mean something; every other key keeps its default
   usePlayerKeys({ fullscreen: fs.toggle, escape: () => (fs.active ? void fs.exit() : back()) });
   return (
-    <Stage>
+    <Stage stageRef={stageRef}>
       <SceneLayer>
         <World engine={null} mode="cab" pixelRatio={Math.min(2, window.devicePixelRatio || 1)} cloudBudget={null} displayRef={displayRef} sceneRef={sceneRef} sink={sink} onFreeChange={() => undefined} onError={() => undefined} />
       </SceneLayer>
       <div ref={displayRef} className={styles.stateArea}>{glass}</div>
-      <div className={styles.controlDock} data-player-controls>
+      <div ref={dockRef} className={styles.controlDock} data-player-controls>
         <ViewControls runId={runId} runName={runName} decision={null} fullscreen={fs.active} onFullscreen={fs.toggle} />
         {cons}
       </div>
@@ -230,6 +235,8 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
   const schema = usePresetSchema();
   const stageRef = useRef<HTMLDivElement>(null);
   const displayRef = useRef<HTMLDivElement>(null);
+  const dockRef = useRef<HTMLDivElement>(null);
+  useDockHeight(stageRef, dockRef);
   useEffect(() => {
     document.title = `${run.name} · Плеер · ReSense`;
     return () => {
@@ -398,49 +405,53 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
           </div>
         )}
       </div>
-      <div className={styles.controlDock} data-player-controls>
-        <ViewControls
-          runId={run.id}
-          runName={run.name}
-          decision={decision}
-          reason={decision === 'CAUTION' ? cautionText(frame) : undefined}
-          mode={mode}
-          onMode={setMode}
-          fullscreen={fs.active}
-          onFullscreen={fs.toggle}
-          expanded={expanded}
-          onHeight={toggleHeight}
-        />
-        <div className={styles.telemetry} aria-label="Телеметрия прогона">
-          <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />
-          {decision && <DecisionTile decision={decision} frame={frame} frameNo={frameNo} confirmS={confirmS} />}
-          <DistanceTile frame={frame} decision={decision} />
-          <MetricsTile frame={frame} latency={latency} pos={pos} p95={run.summary.latency_ms?.p95 ?? null} playFps={snap.playFps} speed={snap.speed} playing={snap.playing} />
-          <HealthTile frame={frame} minVisibility={minVis} />
+      <div ref={dockRef} className={styles.controlDock} data-player-controls>
+        <TelemetryTray workspaceRef={stageRef}>
+          <div className={styles.telemetry} aria-label="Телеметрия прогона">
+            <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />
+            {decision && <DecisionTile decision={decision} frame={frame} frameNo={frameNo} confirmS={confirmS} />}
+            <DistanceTile frame={frame} decision={decision} />
+            <MetricsTile frame={frame} latency={latency} pos={pos} p95={run.summary.latency_ms?.p95 ?? null} playFps={snap.playFps} speed={snap.speed} playing={snap.playing} />
+            <HealthTile frame={frame} minVisibility={minVis} />
+          </div>
+        </TelemetryTray>
+        <div className={styles.persistentControls} data-player-persistent>
+          <ViewControls
+            runId={run.id}
+            runName={run.name}
+            decision={decision}
+            reason={decision === 'CAUTION' ? cautionText(frame) : undefined}
+            mode={mode}
+            onMode={setMode}
+            fullscreen={fs.active}
+            onFullscreen={fs.toggle}
+            expanded={expanded}
+            onHeight={toggleHeight}
+          />
+          <Scrubber
+            decisions={run.summary.decisions}
+            pos={pos}
+            n={n}
+            frameNo={frameNo}
+            lastFrameNo={lastFrameNo}
+            t={seriesT?.[pos] ?? frame?.t ?? null}
+            duration={run.summary.duration_s}
+            playing={snap.playing}
+            speed={snap.speed}
+            loop={snap.loop}
+            markers={markers}
+            hasPrevEvent={prevEv !== null}
+            hasNextEvent={nextEv !== null}
+            posLabel={posLabel}
+            onToggle={actions.toggle}
+            onStep={actions.step}
+            onPrevEvent={actions.prevEvent}
+            onNextEvent={actions.nextEvent}
+            onSeek={seek}
+            onSpeed={(s) => engine?.setSpeed(s)}
+            onLoop={() => engine?.setLoop(!snap.loop)}
+          />
         </div>
-        <Scrubber
-          decisions={run.summary.decisions}
-          pos={pos}
-          n={n}
-          frameNo={frameNo}
-          lastFrameNo={lastFrameNo}
-          t={seriesT?.[pos] ?? frame?.t ?? null}
-          duration={run.summary.duration_s}
-          playing={snap.playing}
-          speed={snap.speed}
-          loop={snap.loop}
-          markers={markers}
-          hasPrevEvent={prevEv !== null}
-          hasNextEvent={nextEv !== null}
-          posLabel={posLabel}
-          onToggle={actions.toggle}
-          onStep={actions.step}
-          onPrevEvent={actions.prevEvent}
-          onNextEvent={actions.nextEvent}
-          onSeek={seek}
-          onSpeed={(s) => engine?.setSpeed(s)}
-          onLoop={() => engine?.setLoop(!snap.loop)}
-        />
       </div>
     </Stage>
   );

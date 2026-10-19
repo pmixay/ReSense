@@ -403,6 +403,7 @@ export class PlayerScene {
 
     if (opts.interactive) {
       const c = new OrbitControls(this.camera, canvas);
+      c.enableZoom = !opts.screenDisplay; // wheel/trackpad reveals telemetry in the fixed Player workspace
       c.enableDamping = true;
       c.dampingFactor = 0.12;
       c.rotateSpeed = 0.6;

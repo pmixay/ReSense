@@ -82,8 +82,10 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
       const constrained = (memory !== undefined && memory <= 4) || (navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4);
       const ratio = displayPixelRatio(width, height, window.devicePixelRatio || live.current.pixelRatio, constrained);
       canvas.dataset.renderPixelRatio = String(ratio);
+      const bounds = view.getBoundingClientRect();
+      const canvasBounds = wrap.getBoundingClientRect();
       scene.setSize(width, height, ratio, {
-        width: view.clientWidth, left: view.offsetLeft, height: view.clientHeight, top: view.offsetTop,
+        width: view.clientWidth, left: bounds.left - canvasBounds.left, height: view.clientHeight, top: bounds.top - canvasBounds.top,
       });
       const viewport = scene.overlay.viewport;
       const size = Math.max(80, Math.min(180, viewport.width * .16, viewport.height * .48));
@@ -96,6 +98,8 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
     if (displayRef.current) observer.observe(displayRef.current);
     window.addEventListener('resize', resize);
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const stopTouchOrbit = (event: PointerEvent) => { if (event.pointerType === 'touch') event.stopImmediatePropagation(); };
+    canvas.addEventListener('pointerdown', stopTouchOrbit, true);
     const reset = () => { scene.setPointer(0, 0); invalidate(); };
     const pointer = (event: PointerEvent) => {
       if (reduce.matches || event.pointerType !== 'mouse' || event.buttons !== 0) return;
@@ -127,6 +131,7 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
       workspace.removeEventListener('pointerleave', reset);
       window.removeEventListener('blur', reset);
       reduce.removeEventListener('change', reset);
+      canvas.removeEventListener('pointerdown', stopTouchOrbit, true);
       cancelAnimationFrame(raf);
       canvas.removeEventListener('webglcontextlost', onLost);
       engine?.detach();

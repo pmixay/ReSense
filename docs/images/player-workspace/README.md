@@ -24,8 +24,10 @@ builds a formed laminate wall with an actual opening, recessed rubber mounting g
 vertical/service-panel joints, flush fasteners and a curved warm-metal foreground handrail.
 The door has beveled aluminium reveals, rubber seals, black glass with ceiling reflections,
 a recessed red status diffuser and local spill, an emergency-release rosette, and illuminated
-charging sockets when there is sufficient room. The ceiling has a broad segmented white
-diffuser, 150 instanced ventilation fins, an extruded cove lip and warm side lighting.
+charging sockets when there is sufficient room. Both fittings share the pillar centerline;
+the paired charging indicators are centered on their plate. Horizontal wall seams and dado
+terminate before the door. The artificial roof/vent/light bands have been removed from
+this close wall crop, while off-camera ceiling lighting and saloon reflections remain.
 The wall and housing share
 the same angle; there is no floating monitor on an abstract backdrop. The reference
 photo informs the installation and materials; the environment is reconstructed 3D
@@ -61,7 +63,7 @@ at 24% of the background's angles. They sit at least .5 scene units ahead of all
 wall/housing geometry throughout the nine pressure extremes checked by the model tests.
 Collars now sit on and align with the curved centerline instead of using guessed positions.
 Additional raycast tests check the active surface against the interior at 45 combinations
-of viewport/height and pressure; the ceiling valance fits the measured enclosure clearance.
+of viewport/height and pressure. Tests also verify socket/pillar alignment and trim/door clearance.
 The near handrail is now rendered sharply in the main physical scene, with the
 dedicated blur target and composite pass removed. Center, pointer leave and window blur reset the
 pose; touch and reduced-motion mode keep a neutral scene.
@@ -71,16 +73,14 @@ HTML/SVG annotation surface applies that exact transform, including the close-up
 Projection tests compare real mesh vertices with the transformed HUD on desktop and
 mobile, verify independent railing motion, neutral settling and full-height wall coverage.
 
-The train backdrop fills the complete natural-height Player workspace beneath the shared
-stage rail. It scrolls with the physical display and native HUD, keeping their exact
-alignment even when expanded hardware exceeds one viewport. The device
-retains its upper display region, while the wall and railings continue
-behind telemetry and transport. A dark, backdrop-blurred control dock feathers to
-fully transparent through the upper 64px of the dock, then ramps gently with a 160px
-feather mask. A separate, shorter blur feather stays close to the dock so display annotations remain sharp.
-The visible tint never exceeds 56%; its near-black stop lies 240px past
-the painted bottom edge, so the wall remains visible without extra scroll space.
-There is no hard upper edge. Native-size controls stay stationary and usable.
+The train backdrop, physical display and native HUD stay fixed in the viewport beneath
+the shared navigation. Playback, seeking, speed, loop, scenario, camera and fullscreen
+controls are pinned at the bottom and always remain visible. A measured responsive dock
+height reserves the live screen's space. Wheel/trackpad, the labeled native reveal slider
+and touch swipes raise telemetry above the dock; information starts hidden and scrolls
+inside its own clipped panel on narrow screens. Opening it never moves the scene or
+transport. `telemetry-open-1440.png` and `telemetry-open-390.png` capture the revealed state.
+A short feathered backdrop blur and clear-to-dark tint keep controls readable.
 
 Pointer-only frames reuse the unchanged LiDAR and emission textures. The existing
 engine draws the physical scene until it settles; selection/error states use a
@@ -122,21 +122,21 @@ panels and timeline/transport. The Player uses a full-bleed train background; ot
 application sections retain their shared page ground. There is
 no fixed 1600×900 composition or whole-page scaling.
 
-The default display is taller, with the same usable width: at 1440×900 its layout region
-is 1368×688, and expanded mode is approximately 1368×922. The «Увеличить высоту
-экрана» control expands it further at the same width; telemetry remains reachable
-by normal content scrolling. [`taller-display-1440.png`](taller-display-1440.png)
-captures that mode. ResizeObserver resizes the actual live surface when toggled.
+The display fills the space above the measured dock without reducing width. The height
+toggle adds 36px while the canvas and bottom controls remain fixed; the live face uses
+tighter physical margins. [`taller-display-1440.png`](taller-display-1440.png) captures
+that mode. ResizeObserver resizes the actual live surface when toggled. Raleway remains
+the application font: Esh/Struve test screenshots were deferred by the user.
 
 ## Rendering budget
 
 The physical canvas is capped at 1.5× device scale and approximately 2.6 million
 pixels; constrained devices are capped at 1×. DOM controls and annotations retain
 their native resolution. Handrails render directly, avoiding a separate blur target
-and composite pass. Dynamic shadow maps are disabled. Vent fins use one instanced draw;
-the reflection probe is generated once per renderer and cached. A diagnostic 1200×800
-physical scene uses 54 draw calls and 11,176 triangles including both emission filter
-passes. The pixel budget applies to the entire natural-height canvas. This bounds the
+and composite pass. Dynamic shadow maps are disabled. The reflection probe is generated
+once per renderer and cached. `interior-lighting-verification.json` records the current
+draw/triangle counts and GPU resource lifetime. The pixel budget applies to the fixed
+viewport canvas. This bounds the
 added effects; it is not a hardware-specific FPS guarantee.
 
 ResizeObserver updates the canvas, offscreen target, camera aspect, annotation surface,
@@ -145,7 +145,7 @@ UV coordinates with HUD pixel bounds, and verify disposal of replaced GPU resour
 Browser tests cover playback, seeking, event stepping, speed, run switching, orbit,
 fullscreen/fallback, loading, backend failures, FAULT and lost-context recovery.
 
-The taller display takes priority in the first viewport; lower telemetry and transport
-remain reachable through normal vertical scrolling. Controls retain native sizing.
+The display and transport fit the first viewport; telemetry is opt-in and overlays the
+fixed scene. Alignment checks include 320px phones and landscape. Controls retain native sizing.
 Earlier Player galleries document previous revisions; this directory is the current
 integrated layout.

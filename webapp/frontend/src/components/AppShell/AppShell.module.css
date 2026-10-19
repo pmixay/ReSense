@@ -27,7 +27,7 @@
 .page:focus-visible {
   box-shadow: none;
 }
-.playerPage { padding: 0; background: #abb3b1; }
+.playerPage { padding: 0; overflow: hidden; background: #abb3b1; }
 .skip {
   position: fixed;
   left: 12px;

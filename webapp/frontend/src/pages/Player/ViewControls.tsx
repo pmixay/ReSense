@@ -148,7 +148,7 @@ export function ViewControls({ runId, runName, decision, reason, mode, onMode, f
           size="md"
           onClick={onFullscreen}
           tooltip
-          tooltipPlacement="bottom-end"
+          tooltipPlacement="top-end"
         />
       </div>
     </div>

@@ -65,7 +65,7 @@ describe('modeled display projection', () => {
     const bounds = new THREE.Box3().setFromObject(housing);
     expect(bounds.getSize(new THREE.Vector3()).z).toBeGreaterThan(1);
     housing.traverse((object) => {
-      if (!(object instanceof THREE.Mesh) || object.name === 'content-driven-light') return;
+      if (!(object instanceof THREE.Mesh) || object.name === 'content-driven-light' || object.name === 'antialiased-mount-contact') return;
       const p = object.geometry.getAttribute('position');
       for (let i = 0; i < p.count; i += 1) {
         const v = new THREE.Vector3().fromBufferAttribute(p, i).applyMatrix4(object.matrixWorld).project(display.camera);
@@ -194,16 +194,28 @@ describe('modeled display projection', () => {
         expect(opaqueHits).toHaveLength(0);
       }
     }
-    const roof = display.scene.getObjectByName('formed-ceiling-valance')!;
     display.setPointer(0, 0);
     for (let i = 0; i < 100; i++) display.step(1 / 60);
     display.scene.updateMatrixWorld(true);
-    const housingTop = new THREE.Box3().setFromObject(display.scene.getObjectByName('protective-cover-glass')!).max.y;
-    expect(new THREE.Box3().setFromObject(roof).min.y).toBeGreaterThan(housingTop);
+    expect(display.scene.getObjectByName('formed-ceiling-valance')).toBeUndefined();
+    expect(display.scene.getObjectByName('ceiling-ventilation-louvers')).toBeUndefined();
+    const pillar = new THREE.Box3().setFromObject(display.scene.getObjectByName('formed-door-pillar')!);
+    const sockets = display.scene.getObjectByName('charging-socket-service-plate');
+    const door = new THREE.Box3().setFromObject(display.scene.getObjectByName('metro-door-aluminium-stile')!);
+    if (sockets) {
+      const socket = new THREE.Box3().setFromObject(sockets);
+      expect(socket.getCenter(new THREE.Vector3()).x).toBeCloseTo(pillar.getCenter(new THREE.Vector3()).x, 6);
+      expect(socket.max.x).toBeLessThan(door.min.x);
+      expect(socket.min.x).toBeGreaterThan(pillar.min.x);
+    }
+    for (const name of ['brushed-aluminium-wall-dado', 'lower-service-panel-joint']) {
+      const trim = new THREE.Box3().setFromObject(display.scene.getObjectByName(name)!);
+      expect(trim.max.x).toBeLessThan(door.min.x);
+    }
     display.scene.traverse(object => {
       if (!(object instanceof THREE.Mesh)) return;
       const position = object.geometry.getAttribute('position');
-      for (const value of position.array) expect(Number.isFinite(value)).toBe(true);
+      expect(Array.from(position.array).every(Number.isFinite)).toBe(true);
     });
     display.dispose();
   });

@@ -80,6 +80,10 @@ def speed_pill(page, label: str):
     return page.get_by_role("group", name="Скорость").get_by_role("button", name=label, exact=True)
 
 
+def show_telemetry(page):
+    page.get_by_role('slider', name='Показать телеметрию').fill('100')
+
+
 def camera(page, label: str):
     return page.get_by_role("radiogroup", name="Камера").get_by_role("radio", name=label)
 
@@ -247,6 +251,7 @@ def test_events_scrubber_loop_and_end(app, seeded):
     stop = next(e for e in det["events"] if e["decision"] == "STOP")
     app.goto(f"/player/{rid}?pos={min(stop['first_frame'] + 2, stop['last_frame'])}")
     expect(beacon(page)).to_have_accessible_name("Решение: СТОП")
+    show_telemetry(page)
     tile = page.get_by_role("region", name="До препятствия")
     expect(tile).to_contain_text(re.compile(r"\d+,\d\s?м"))
     expect(page.get_by_role("region", name="Решение")).to_contain_text("в габарите 2,1 × 3,0 м")
@@ -295,6 +300,7 @@ def test_deep_link_shows_real_values(app, backend, seeded):
     expect(speed_pill(page, "2×")).to_have_attribute("aria-pressed", "true")
     expect(camera(page, "Сверху")).to_have_attribute("aria-checked", "true")
     expect(beacon(page)).to_have_accessible_name("Решение: СТОП")
+    show_telemetry(page)
     expect(page.get_by_role("region", name="До препятствия")).to_contain_text(fixed(fr["nearest_distance"], 1))
     expect(page.get_by_role("region", name="Решение")).to_contain_text(f"кадр {fr['frame']}")
     expect(page.get_by_text(re.compile(r"^облако [\d\u2009\u00a0]+ точ"))).to_be_visible()
@@ -399,6 +405,7 @@ def test_schematic_and_fault_runs(app, seeded):
 
     open_player(app, f"/player/{ids['fault']}?pos=15")
     expect(beacon(page)).to_have_accessible_name("Решение: ОШИБКА")
+    show_telemetry(page)
     expect(page.get_by_role("region", name="Путь не проверен")).to_contain_text("не проверено")
     expect(page.get_by_role("region", name="Решение")).to_contain_text("сбой датчика")
     expect(page.get_by_title("кадр 10")).to_be_visible()  # the FAULT event's pin
@@ -584,6 +591,7 @@ def test_workspace_resizes_without_clipping(app, seeded):
         assert abs(canvas_box['width'] - main_box['width']) < 1
         assert abs(canvas_box['height'] - stage_box['height']) < 1
         assert canvas_box['height'] >= main_box['height'] - 1
+        show_telemetry(page)
         for name in ("Схема пути", "Решение", "До препятствия", "Задержка и частота", "Исправность"):
             panel = page.get_by_role("region", name=name)
             panel.scroll_into_view_if_needed()
@@ -592,6 +600,9 @@ def test_workspace_resizes_without_clipping(app, seeded):
         slider(page).scroll_into_view_if_needed()
         sb = box_of(slider(page), scroll=False)
         assert sb["y"] + sb["height"] <= h + 1, (w, h, sb)
+        playback = box_of(page.get_by_role('region', name='Воспроизведение'), scroll=False)
+        assert playback['y'] >= 0 and playback['y'] + playback['height'] <= h + 1
+        page.get_by_role('slider', name='Показать телеметрию').fill('0')
     assert real_errors(app.errors) == []
 
 
@@ -603,18 +614,58 @@ def test_taller_display_preserves_width_and_returns_to_normal(app, seeded):
     normal = box_of(display, scroll=False)
     page.get_by_role('button', name='Увеличить высоту экрана').click()
     larger = box_of(display, scroll=False)
-    assert larger['height'] > normal['height'] * 1.3, (normal, larger)
+    assert larger['height'] >= normal['height'] + 30, (normal, larger)
     assert abs(larger['width'] - normal['width']) < 1
-    # The canvas covers the expanded hardware and scrolls exactly with its native HUD.
+    # Wheel/trackpad reveals information while hardware, HUD and playback stay fixed.
     backdrop = page.locator('[data-train-backdrop]')
     assert box_of(backdrop, scroll=False)['height'] >= larger['height']
     top_offset = larger['y'] - box_of(backdrop, scroll=False)['y']
-    page.locator('main').evaluate('el => el.scrollTop = 200')
+    page.mouse.move(600, 300)
+    page.mouse.wheel(0, 400)
+    expect(page.get_by_role('slider', name='Показать телеметрию')).not_to_have_value('0')
     assert abs(box_of(display, scroll=False)['y'] - box_of(backdrop, scroll=False)['y'] - top_offset) < 1
     page.get_by_role('button', name='Обычная высота экрана').scroll_into_view_if_needed()
     page.get_by_role('button', name='Обычная высота экрана').click()
     assert abs(box_of(display)['height'] - normal['height']) < 1
     assert page.locator('main').evaluate('el => el.scrollWidth <= el.clientWidth')
+    assert real_errors(app.errors) == []
+
+
+def test_telemetry_gestures_leave_scene_and_transport_fixed(app, seeded):
+    page, rid = app.page, seeded['ids']['approach']
+    open_player(app, f'/player/{rid}?pos=30')
+    page.emulate_media(reduced_motion='reduce')
+    reveal = page.get_by_role('slider', name='Показать телеметрию')
+    canvas = page.get_by_role('img', name='3D-вид из кабины')
+    display = page.locator('[data-player-display]')
+    playback = page.get_by_role('region', name='Воспроизведение')
+    before = [box_of(el, scroll=False) for el in (canvas, display, playback)]
+    expect(reveal).to_have_value('0')
+    expect(page.get_by_role('region', name='До препятствия')).to_have_count(0)
+    page.mouse.move(600, 300)
+    page.mouse.wheel(0, 500)
+    expect(reveal).to_have_value('100')
+    expect(page.get_by_role('region', name='До препятствия')).to_be_visible()
+    after = [box_of(el, scroll=False) for el in (canvas, display, playback)]
+    assert before == after
+    assert page.locator('main').evaluate('el=>el.scrollTop') == 0
+    page.mouse.wheel(0, -500)
+    expect(reveal).to_have_value('0')
+    reveal.focus()
+    reveal.press('End')
+    expect(reveal).to_have_value('100')
+    reveal.press('Home')
+    expect(reveal).to_have_value('0')
+    # Native touch drag on the tray handle uses the same reveal path.
+    handle = reveal.locator('..')
+    handle.evaluate('''el => {
+        const touch = y => new Touch({identifier:1,target:el,clientX:50,clientY:y});
+        el.dispatchEvent(new TouchEvent('touchstart',{bubbles:true,touches:[touch(500)]}));
+        el.dispatchEvent(new TouchEvent('touchmove',{bubbles:true,cancelable:true,touches:[touch(100)]}));
+        el.dispatchEvent(new TouchEvent('touchend',{bubbles:true,touches:[]}));
+    }''')
+    expect(reveal).to_have_value('100')
+    assert before == [box_of(el, scroll=False) for el in (canvas, display, playback)]
     assert real_errors(app.errors) == []
 
 
@@ -646,5 +697,5 @@ def test_pointer_pressure_parallax_and_reduced_motion(app, seeded):
     assert canvas.evaluate('el => Math.abs(+el.dataset.sceneTiltX) + Math.abs(+el.dataset.sceneTiltY)') < .00002
     dock = page.locator('[data-player-controls]')
     assert dock.evaluate('el => ["::before", "::after"].some(p => getComputedStyle(el, p).backdropFilter.includes("blur"))')
-    assert 'gradient' in dock.evaluate('el => getComputedStyle(el,"::before").maskImage')
+    assert 'gradient' in dock.evaluate('el => getComputedStyle(el,"::before").backgroundImage')
     assert real_errors(app.errors) == []

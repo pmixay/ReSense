@@ -41,8 +41,11 @@ Data/Analysis/System chrome is omitted to recover display height. A height contr
 expands the live view at the same width. The interior follows inspected Moscow-2020
 saloon material cues, with a sharp curved near-field rail, detailed formed panels and door fittings,
 broad neutral ceiling LEDs, warm side coves and content-driven light on nearby surfaces.
-The taller default display and optional expansion retain width; the scene and annotations scroll
-together while physical rendering stays within a bounded pixel budget.
+The display and interior remain fixed in the viewport. Playback and demo-affecting controls
+stay visible at the bottom; other telemetry is revealed above them only through wheel/trackpad,
+a native reveal slider or touch swipes. Charging fittings align to the door pillar and wall
+trim stops before the door; artificial roof bands are omitted from the close wall crop.
+Raleway remains in use; the requested Esh/Struve comparison was deferred by the user.
 
 Target desktop review sizes are 1366×768, 1440×900 and 1920×1080, with mobile content
 flowing vertically. Synthetic capture runs demonstrate the UI and are not evaluation evidence.

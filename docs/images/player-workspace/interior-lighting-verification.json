@@ -1,5 +1,5 @@
 {
-  "method": "Real ScreenDisplay GPU render, Chromium SwiftShader 1200x800 DPR1; diagnostic uniform/split source textures, black baseline, pointer-only cache return.",
+  "method": "Real ScreenDisplay GPU render, Chromium SwiftShader 1200x800 DPR1; diagnostic uniform/split source textures, black baseline, pointer-only cache return. Wall sampled at y=62,64,66 and 650,653,656, outside enclosure y=70..646.",
   "frames": {
     "black": {
       "emission": [
@@ -14,9 +14,9 @@
       },
       "viewport": {
         "x": 126.09999999999997,
-        "y": 134.00000000000003,
+        "y": 90.8,
         "width": 947.8,
-        "height": 464,
+        "height": 533.2,
         "motion": {
           "sceneX": 0,
           "sceneY": 0,
@@ -31,11 +31,11 @@
           "c": 0,
           "d": 1,
           "x": 126.09999999999997,
-          "y": 134.00000000000003
+          "y": 90.8
         }
       },
-      "calls": 54,
-      "triangles": 11176
+      "calls": 44,
+      "triangles": 9278
     },
     "red": {
       "emission": [
@@ -50,9 +50,9 @@
       },
       "viewport": {
         "x": 126.09999999999997,
-        "y": 134.00000000000003,
+        "y": 90.8,
         "width": 947.8,
-        "height": 464,
+        "height": 533.2,
         "motion": {
           "sceneX": 0,
           "sceneY": 0,
@@ -67,11 +67,11 @@
           "c": 0,
           "d": 1,
           "x": 126.09999999999997,
-          "y": 134.00000000000003
+          "y": 90.8
         }
       },
-      "calls": 54,
-      "triangles": 11176
+      "calls": 44,
+      "triangles": 9278
     },
     "green": {
       "emission": [
@@ -86,9 +86,9 @@
       },
       "viewport": {
         "x": 126.09999999999997,
-        "y": 134.00000000000003,
+        "y": 90.8,
         "width": 947.8,
-        "height": 464,
+        "height": 533.2,
         "motion": {
           "sceneX": 0,
           "sceneY": 0,
@@ -103,11 +103,11 @@
           "c": 0,
           "d": 1,
           "x": 126.09999999999997,
-          "y": 134.00000000000003
+          "y": 90.8
         }
       },
-      "calls": 54,
-      "triangles": 11176
+      "calls": 44,
+      "triangles": 9278
     },
     "blue": {
       "emission": [
@@ -122,9 +122,9 @@
       },
       "viewport": {
         "x": 126.09999999999997,
-        "y": 134.00000000000003,
+        "y": 90.8,
         "width": 947.8,
-        "height": 464,
+        "height": 533.2,
         "motion": {
           "sceneX": 0,
           "sceneY": 0,
@@ -139,11 +139,11 @@
           "c": 0,
           "d": 1,
           "x": 126.09999999999997,
-          "y": 134.00000000000003
+          "y": 90.8
         }
       },
-      "calls": 54,
-      "triangles": 11176
+      "calls": 44,
+      "triangles": 9278
     },
     "gray": {
       "emission": [
@@ -158,9 +158,9 @@
       },
       "viewport": {
         "x": 126.09999999999997,
-        "y": 134.00000000000003,
+        "y": 90.8,
         "width": 947.8,
-        "height": 464,
+        "height": 533.2,
         "motion": {
           "sceneX": 0,
           "sceneY": 0,
@@ -175,11 +175,11 @@
           "c": 0,
           "d": 1,
           "x": 126.09999999999997,
-          "y": 134.00000000000003
+          "y": 90.8
         }
       },
-      "calls": 54,
-      "triangles": 11176
+      "calls": 44,
+      "triangles": 9278
     },
     "split": {
       "emission": [
@@ -194,9 +194,9 @@
       },
       "viewport": {
         "x": 126.09999999999997,
-        "y": 134.00000000000003,
+        "y": 90.8,
         "width": 947.8,
-        "height": 464,
+        "height": 533.2,
         "motion": {
           "sceneX": 0,
           "sceneY": 0,
@@ -211,18 +211,18 @@
           "c": 0,
           "d": 1,
           "x": 126.09999999999997,
-          "y": 134.00000000000003
+          "y": 90.8
         }
       },
-      "calls": 54,
-      "triangles": 11176
+      "calls": 44,
+      "triangles": 9278
     }
   },
   "receiverColorEnergy": {
     "wall": {
-      "red": 25385.0,
-      "green": 23669.5,
-      "blue": 24579.0
+      "red": 22746.5,
+      "green": 20777.0,
+      "blue": 21221.5
     },
     "rail": {
       "red": 12258.5,
@@ -231,30 +231,30 @@
     }
   },
   "splitSideEnergy": {
-    "left": 2875,
-    "right": 3588
+    "left": 2681,
+    "right": 3032
   },
   "cachedNeutralIdentical": true,
   "gpuLifetime": {
     "resizes": [
       {
-        "geometries": 56,
+        "geometries": 46,
         "textures": 6
       },
       {
-        "geometries": 56,
+        "geometries": 46,
         "textures": 6
       },
       {
-        "geometries": 56,
+        "geometries": 46,
         "textures": 6
       },
       {
-        "geometries": 56,
+        "geometries": 46,
         "textures": 6
       },
       {
-        "geometries": 56,
+        "geometries": 46,
         "textures": 6
       }
     ],

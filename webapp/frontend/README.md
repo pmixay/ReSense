@@ -75,7 +75,9 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
 - **Pinned navigation.** The top bar and category rail stay above the independently scrolling
   page on every route, including loading/error states and the player. Fullscreen targets the
   shared shell so both bars remain accessible. Player uses normal page flow at the available
-  width: modeled display → view/scenario controls → telemetry → timeline/transport. Its canvas,
+  width: a fixed modeled display and a pinned bottom dock with demo settings and transport.
+  Telemetry starts hidden and rises over the scene through wheel/trackpad, a native range
+  slider or touch swipe. Its canvas,
   offscreen render target, camera aspect, close-up and HUD resize together via ResizeObserver.
   The display housing is a real Three.js mesh based on the supplied `images (1).jpg`; only the
   Player enables this presentation, while existing CloudPreview views retain direct rendering.
@@ -85,25 +87,24 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   aperture, local bloom and GPU-diffused light emission. Two low-resolution filter targets are
   disposed with the display; no readback or independent animation loop is used.
 - **Train installation.** `trainInterior.ts` builds a real wall aperture and recessed gasket,
-  laminate panels, stainless grab rail, door reveal and ceiling fixtures around the device.
+  laminate panels, stainless grab rail and door reveal around the device. Charging indicators
+  are centered on the pillar, trim ends before the door, and invented roof bands are omitted.
   The housing and wall share their angle, antialiased analytic contact shading anchors the enclosure, and a clear-coated
   physical cover glass sits above the live surface. Environment geometry, textures, materials and
   render targets are disposed with the display; UI controls still belong to the shared page.
-- **Pressure parallax.** Player uses a natural-height train backdrop under the shared chrome,
-  scrolling in exact alignment with the physical screen and HUD.
+- **Pressure parallax.** Player uses a fixed viewport train backdrop under the shared chrome,
+  with an exactly aligned physical screen and HUD; only the information tray scrolls.
   The default pose is straight; bounded mouse pressure tilts the wall/display group and moves the
   separate foreground railings at 24% strength. The HUD uses the updated affine surface transform.
   Pointer-only renders reuse live image/emission textures, settle to rest, and respect reduced
-  motion and touch. The control tint is clear through the upper 64px, ramps gently with a 160px
-  feather and is capped at 56%. Its near-black stop stays beyond the painted edge; a separate
-  short blur feather keeps screen labels sharp.
+  motion and touch. A clear-to-dark dock tint and short blur feather preserve label sharpness.
 - **Player space/performance.** Player uses the shared metro-line destination rail, styled like Upload.
   Its height toggle expands the live display without narrowing it. Foreground rails sit ahead
   of the moving wall and render sharply in the physical scene without a defocus pass. The detailed
-  Moskva-2020 bay has neutral ceiling LEDs, warm coves, instanced vents and formed door fittings;
+  Moskva-2020 bay has off-camera neutral ceiling illumination, warm fill and formed door fittings;
   a cached saloon reflection probe lights its metal. `screenLighting.ts` samples live emission on
-  wall, trim, housing and rail without CPU readback. Scene and HUD scroll together across the full
-  natural-height workspace, including the taller 688px desktop default / 922px expanded region
-  at 1440×900. Physical rendering
+  wall, trim, housing and rail without CPU readback. Scene and HUD remain fixed; a measured
+  responsive dock keeps playback/settings visible while `TelemetryTray.tsx` reveals other data.
+  Physical rendering
   is capped by `displayQuality.ts` (1.5×/2.6M pixels, 1× on constrained devices); DOM controls
   stay native-size. Dynamic shadow maps are disabled in favor of analytic contact shading.
