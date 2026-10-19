@@ -42,8 +42,9 @@ expands the live view at the same width. The interior follows inspected Moscow-2
 saloon material cues, with a sharp curved near-field rail, detailed formed panels and door fittings,
 broad neutral ceiling LEDs, warm side coves and content-driven light on nearby surfaces.
 The display and interior remain fixed in the viewport. Playback and demo-affecting controls
-stay visible at the bottom; other telemetry is revealed above them only through wheel/trackpad,
-a native reveal slider or touch swipes. Charging fittings align to the door pillar and wall
+stay visible at the bottom. Tapping «Телеметрия» toggles compact left/right side panels;
+the central image stays clear and most of the display remains visible. Scrolling affects only
+open side-panel contents. Charging fittings align to the door pillar and wall
 trim stops before the door; artificial roof bands are omitted from the close wall crop.
 Raleway remains in use; the requested Esh/Struve comparison was deferred by the user.
 

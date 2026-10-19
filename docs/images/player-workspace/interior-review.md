@@ -1,11 +1,11 @@
-# Fixed-scene Player and door-alignment review
+# Button-toggled side telemetry review
 
 Disposition: **ship**
 
 ## Persistence
 
 `PRODUCT.md`, `DESIGN.md`, the Player surface brief and design sidecar describe the
-current fixed installation, persistent bottom transport and gesture-revealed telemetry.
+current fixed installation, persistent bottom transport and button-toggled side telemetry.
 PNG provenance is embedded. `capture.json` contains all four requested viewport
 sizes and no page errors. This is a code-led refinement of the existing installation.
 
@@ -19,7 +19,9 @@ sizes and no page errors. This is a code-led refinement of the existing installa
 | Interior fittings | Match | Charging indicators and release centered on the pillar; wall trim ends before the door; artificial roof/vent/light bands removed |
 | Screen size | Match | Fills space above measured bottom dock; height toggle adds 36px at unchanged width, remaining inside the viewport canvas |
 | Image-derived light | Match | Real black/RGB/split-color GPU diagnostic verifies wall and handrail hue, local split response and exact cached neutral return |
-| Scroll / projection | Match | Wheel, trackpad, reveal slider and touch expose telemetry; physical screen/HUD and playback bounds remain identical |
+| Side telemetry | Match | Button opens map/decision left and distance/timing/health right; independent internal scrolling, no wheel/swipe toggle |
+| Screen visibility | Match | The central 40% stays clear on desktop, mobile and 320px phones; bounded side height preserves most of the image |
+| Scroll / projection | Match | Physical screen/HUD and playback bounds remain identical when panels open; button has native Enter/Space support and Escape restores focus |
 | Persistent controls | Match | Playback, seek, scenario, camera, speed and loop remain visible; no overlapping or offscreen control rectangles at seven sizes including 320px and landscape |
 | Type variants | Deferred | User explicitly said not to use Esh/Struve for now; Raleway retained |
 | Parallax / geometry | Match | Neutral rest, 24% rail motion, active-surface and foreground-clearance checks at nine pressure poses across five viewport/height combinations |
@@ -38,17 +40,18 @@ No artificial ceiling geometry, dynamic shadow maps or runtime pixel readback.
 
 ## Material fixes
 
-Clear. Fixed during this pass: off-center charging fittings, invented ceiling bands,
-wall seams crossing the door, playback/settings scrolling out of view, scene/HUD
-moving with information, phone camera labels crowding fullscreen, and picker actions
-overlapping its scrollable list. The reveal tray alone scrolls; transport never moves.
+Clear. Replaced gesture/range reveal and full-width bottom telemetry with a shared
+tap-to-toggle button and left/right side columns. Compact map ticks and mobile
+telemetry typography avoid collisions. Open panels leave the live scene fixed and
+preserve a clear image center. Bottom transport/settings never move.
 
 ## Verification / keep
 
 - Production TypeScript/Vite build passes.
-- 339 frontend tests pass, including reveal-wheel/range/touch and geometry tests.
-- 18 Player/navigation scenarios pass in the full browser suite; the new gesture
-  scenario and picker regression pass in the focused post-fix run (19 distinct cases).
+- 339 frontend tests pass, including button state, Escape/focus, ignored wheel/swipe
+  input and geometry tests.
+- Focused browser checks cover side placement, center clearance, button/keyboard
+  operation, fixed scene/transport, resize, telemetry content and height switching.
 - Desktop 1366×768, 1440×900, 1920×1080 and mobile 390×844 captures reviewed,
   including expanded and pressure states.
 - `interior-lighting-verification.json` records actual GPU receiver colors, stable

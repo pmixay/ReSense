@@ -76,10 +76,12 @@ mobile, verify independent railing motion, neutral settling and full-height wall
 The train backdrop, physical display and native HUD stay fixed in the viewport beneath
 the shared navigation. Playback, seeking, speed, loop, scenario, camera and fullscreen
 controls are pinned at the bottom and always remain visible. A measured responsive dock
-height reserves the live screen's space. Wheel/trackpad, the labeled native reveal slider
-and touch swipes raise telemetry above the dock; information starts hidden and scrolls
-inside its own clipped panel on narrow screens. Opening it never moves the scene or
-transport. `telemetry-open-1440.png` and `telemetry-open-390.png` capture the revealed state.
+height reserves the live screen's space. Tapping the «Телеметрия» button opens compact
+left/right columns: map/decision on the left, distance/timing/health on the right. Each
+side scrolls independently; wheel/trackpad and swipes never toggle it. The central 40%
+remains clear, with bounded column height preserving most of the live display. Opening
+never moves the scene or transport. `telemetry-open-1440.png` and `telemetry-open-390.png`
+capture the open state.
 A short feathered backdrop blur and clear-to-dark tint keep controls readable.
 
 Pointer-only frames reuse the unchanged LiDAR and emission textures. The existing

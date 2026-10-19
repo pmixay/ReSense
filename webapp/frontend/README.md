@@ -76,8 +76,8 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   page on every route, including loading/error states and the player. Fullscreen targets the
   shared shell so both bars remain accessible. Player uses normal page flow at the available
   width: a fixed modeled display and a pinned bottom dock with demo settings and transport.
-  Telemetry starts hidden and rises over the scene through wheel/trackpad, a native range
-  slider or touch swipe. Its canvas,
+  Telemetry starts hidden; its button toggles independently scrollable left/right side
+  columns while keeping the image center clear. Its canvas,
   offscreen render target, camera aspect, close-up and HUD resize together via ResizeObserver.
   The display housing is a real Three.js mesh based on the supplied `images (1).jpg`; only the
   Player enables this presentation, while existing CloudPreview views retain direct rendering.
@@ -93,7 +93,7 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   physical cover glass sits above the live surface. Environment geometry, textures, materials and
   render targets are disposed with the display; UI controls still belong to the shared page.
 - **Pressure parallax.** Player uses a fixed viewport train backdrop under the shared chrome,
-  with an exactly aligned physical screen and HUD; only the information tray scrolls.
+  with an exactly aligned physical screen and HUD; only the open telemetry side columns scroll.
   The default pose is straight; bounded mouse pressure tilts the wall/display group and moves the
   separate foreground railings at 24% strength. The HUD uses the updated affine surface transform.
   Pointer-only renders reuse live image/emission textures, settle to rest, and respect reduced

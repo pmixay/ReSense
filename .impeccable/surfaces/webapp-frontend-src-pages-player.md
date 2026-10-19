@@ -17,7 +17,7 @@ OWN-WORLD: Inherit the application's cool page ground, white telemetry surfaces,
 
 STORY: Open a run, inspect the live point cloud on the modeled display, select another scenario/camera, read metrics, then seek or replay events. Every control stays readable at its native CSS size.
 
-FIRST VIEWPORT: Fixed full-width visualization above persistent bottom scenario/camera and playback controls. Telemetry starts hidden in a gesture-revealed overlay tray. The renderer and HUD resize together through ResizeObserver without moving when telemetry opens. Continuous page background; no player logo, duplicated stage rail or artificial outer frame.
+FIRST VIEWPORT: Fixed full-width visualization above persistent bottom scenario/camera and playback controls. Telemetry starts hidden; tapping its button opens left/right side columns while the image center remains clear. The renderer and HUD resize together through ResizeObserver without moving when telemetry opens. Continuous page background; no player logo, duplicated stage rail or artificial outer frame.
 
 FORM: Brief-pinned engineering workspace; seed: none (user-pinned). Model materials and rounded housing follow the uploaded photograph; the live viewport adapts to available workspace dimensions.
 
@@ -32,6 +32,8 @@ MOSKVA-2020 & PERFORMANCE: Use the inspected 81-775 saloon/touchscreen photos fo
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
 
 FIXED SCENE & BOTTOM CONTROLS (current user correction): Keep the screen, HUD and train interior fixed in the viewport during scrolling. Playback and all demo-affecting settings remain visible at the bottom at every supported width. Other information starts hidden in a lower overlay tray, revealed by wheel/trackpad, a native range slider or touch swipe; the tray alone scrolls. Preserve mouse orbit and existing pressure parallax. Center charging indicators on their pillar plate, terminate trim before the door, and remove artificial horizontal roof/vent/light bands above the screen. Retain off-camera ceiling lighting and content-derived emission. Esh/Struve screenshot variants are deferred at the user's request; keep Raleway.
+
+SIDE TELEMETRY (latest correction, supersedes gesture reveal): Open/close telemetry only by tapping its button, with native keyboard support and Escape. Put map/decision left and distance/metrics/health right in compact independently scrollable side columns. Preserve the central 40% clear at all widths, keep most screen area visible, and leave the fixed scene and bottom controls unmoved. Wheel, trackpad and swipes must not toggle telemetry.
 
 INTERIOR DETAIL & LIGHTING: Follow the supplied saloon/touchscreen references for formed gray panels, recessed seams, black door glazing/seals, red diffuser, release fitting, charging sockets and polished copper-toned handrail. Keep the front-on installation and shared shell. Off-camera neutral ceiling lighting, warm fill, cached saloon reflections and GPU image light illuminate wall, trim, housing and rail; black emits no light and split sources retain local hue. Remove invented roof bands from the wall crop. Fit the screen above persistent controls at unchanged width and keep scene/HUD fixed. Check geometry at pressure extremes, responsive sizes and expanded height, preserving playback/recovery paths.
 

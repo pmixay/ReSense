@@ -81,7 +81,9 @@ def speed_pill(page, label: str):
 
 
 def show_telemetry(page):
-    page.get_by_role('slider', name='Показать телеметрию').fill('100')
+    toggle = page.get_by_role('button', name='Телеметрия', exact=True)
+    if toggle.get_attribute('aria-expanded') != 'true':
+        toggle.click()
 
 
 def camera(page, label: str):
@@ -602,7 +604,7 @@ def test_workspace_resizes_without_clipping(app, seeded):
         assert sb["y"] + sb["height"] <= h + 1, (w, h, sb)
         playback = box_of(page.get_by_role('region', name='Воспроизведение'), scroll=False)
         assert playback['y'] >= 0 and playback['y'] + playback['height'] <= h + 1
-        page.get_by_role('slider', name='Показать телеметрию').fill('0')
+        page.get_by_role('button', name='Телеметрия', exact=True).click()
     assert real_errors(app.errors) == []
 
 
@@ -616,13 +618,11 @@ def test_taller_display_preserves_width_and_returns_to_normal(app, seeded):
     larger = box_of(display, scroll=False)
     assert larger['height'] >= normal['height'] + 30, (normal, larger)
     assert abs(larger['width'] - normal['width']) < 1
-    # Wheel/trackpad reveals information while hardware, HUD and playback stay fixed.
+    # Button reveals side information while hardware, HUD and playback stay fixed.
     backdrop = page.locator('[data-train-backdrop]')
     assert box_of(backdrop, scroll=False)['height'] >= larger['height']
     top_offset = larger['y'] - box_of(backdrop, scroll=False)['y']
-    page.mouse.move(600, 300)
-    page.mouse.wheel(0, 400)
-    expect(page.get_by_role('slider', name='Показать телеметрию')).not_to_have_value('0')
+    show_telemetry(page)
     assert abs(box_of(display, scroll=False)['y'] - box_of(backdrop, scroll=False)['y'] - top_offset) < 1
     page.get_by_role('button', name='Обычная высота экрана').scroll_into_view_if_needed()
     page.get_by_role('button', name='Обычная высота экрана').click()
@@ -631,40 +631,45 @@ def test_taller_display_preserves_width_and_returns_to_normal(app, seeded):
     assert real_errors(app.errors) == []
 
 
-def test_telemetry_gestures_leave_scene_and_transport_fixed(app, seeded):
+def test_telemetry_button_keeps_center_scene_and_transport_clear(app, seeded):
     page, rid = app.page, seeded['ids']['approach']
     open_player(app, f'/player/{rid}?pos=30')
     page.emulate_media(reduced_motion='reduce')
-    reveal = page.get_by_role('slider', name='Показать телеметрию')
+    reveal = page.get_by_role('button', name='Телеметрия', exact=True)
     canvas = page.get_by_role('img', name='3D-вид из кабины')
     display = page.locator('[data-player-display]')
     playback = page.get_by_role('region', name='Воспроизведение')
     before = [box_of(el, scroll=False) for el in (canvas, display, playback)]
-    expect(reveal).to_have_value('0')
+    expect(reveal).to_have_attribute('aria-expanded', 'false')
     expect(page.get_by_role('region', name='До препятствия')).to_have_count(0)
     page.mouse.move(600, 300)
     page.mouse.wheel(0, 500)
-    expect(reveal).to_have_value('100')
+    expect(reveal).to_have_attribute('aria-expanded', 'false')
+    reveal.click()
+    expect(reveal).to_have_attribute('aria-expanded', 'true')
     expect(page.get_by_role('region', name='До препятствия')).to_be_visible()
     after = [box_of(el, scroll=False) for el in (canvas, display, playback)]
     assert before == after
     assert page.locator('main').evaluate('el=>el.scrollTop') == 0
+    for w, h in ((1440, 900), (390, 844), (320, 568)):
+        page.set_viewport_size({'width':w, 'height':h})
+        left = box_of(page.get_by_role('complementary', name='Телеметрия слева'), scroll=False)
+        right = box_of(page.get_by_role('complementary', name='Телеметрия справа'), scroll=False)
+        assert left['x'] + left['width'] < w * .4
+        assert right['x'] > w * .6
+        # Sides cover only the lower corners, leaving the central 40% clear end to end.
+        assert left['y'] + left['height'] <= box_of(playback, scroll=False)['y']
+        assert right['y'] + right['height'] <= box_of(playback, scroll=False)['y']
+    page.set_viewport_size({'width':1600, 'height':1000})
     page.mouse.wheel(0, -500)
-    expect(reveal).to_have_value('0')
-    reveal.focus()
-    reveal.press('End')
-    expect(reveal).to_have_value('100')
-    reveal.press('Home')
-    expect(reveal).to_have_value('0')
-    # Native touch drag on the tray handle uses the same reveal path.
-    handle = reveal.locator('..')
-    handle.evaluate('''el => {
-        const touch = y => new Touch({identifier:1,target:el,clientX:50,clientY:y});
-        el.dispatchEvent(new TouchEvent('touchstart',{bubbles:true,touches:[touch(500)]}));
-        el.dispatchEvent(new TouchEvent('touchmove',{bubbles:true,cancelable:true,touches:[touch(100)]}));
-        el.dispatchEvent(new TouchEvent('touchend',{bubbles:true,touches:[]}));
-    }''')
-    expect(reveal).to_have_value('100')
+    expect(reveal).to_have_attribute('aria-expanded', 'true')
+    reveal.press('Escape')
+    expect(reveal).to_have_attribute('aria-expanded', 'false')
+    reveal.press('Enter')
+    expect(reveal).to_have_attribute('aria-expanded', 'true')
+    reveal.press('Space')
+    expect(reveal).to_have_attribute('aria-expanded', 'false')
+    expect(page).to_have_url(re.compile(rf'/player/{rid}'))
     assert before == [box_of(el, scroll=False) for el in (canvas, display, playback)]
     assert real_errors(app.errors) == []
 

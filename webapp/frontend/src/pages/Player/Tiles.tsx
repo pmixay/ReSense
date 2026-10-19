@@ -53,7 +53,7 @@ export function DecisionTile({ decision, frame, frameNo, confirmS }: { decision:
         </span>
         {frameNo !== null && <span className={styles.decFrame}>кадр {fmtInt(frameNo)}</span>}
       </div>
-      <div className={styles.decBig} style={{ fontSize: Math.min(30, decisionWordSize(word)) }}>
+      <div className={styles.decBig} style={{ fontSize: `min(var(--decision-size, 30px), ${decisionWordSize(word)}px)` }}>
         {word}
       </div>
       <div className={styles.decL1}>{t.line1}</div>

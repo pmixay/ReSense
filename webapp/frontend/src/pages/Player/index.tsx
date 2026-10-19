@@ -406,15 +406,17 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
         )}
       </div>
       <div ref={dockRef} className={styles.controlDock} data-player-controls>
-        <TelemetryTray workspaceRef={stageRef}>
-          <div className={styles.telemetry} aria-label="Телеметрия прогона">
+        <TelemetryTray
+          left={<>
             <MapTile frame={frame} cloud={engine?.cloudAt(snap.cloudPos) ?? null} pixelRatio={pr} />
             {decision && <DecisionTile decision={decision} frame={frame} frameNo={frameNo} confirmS={confirmS} />}
+          </>}
+          right={<>
             <DistanceTile frame={frame} decision={decision} />
             <MetricsTile frame={frame} latency={latency} pos={pos} p95={run.summary.latency_ms?.p95 ?? null} playFps={snap.playFps} speed={snap.speed} playing={snap.playing} />
             <HealthTile frame={frame} minVisibility={minVis} />
-          </div>
-        </TelemetryTray>
+          </>}
+        />
         <div className={styles.persistentControls} data-player-persistent>
           <ViewControls
             runId={run.id}

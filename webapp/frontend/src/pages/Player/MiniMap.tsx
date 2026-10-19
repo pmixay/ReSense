@@ -53,9 +53,10 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
     if (!cv) return;
     const MW = width || 292;
     const MH = height || 180;
-    const X0 = 24;
-    const X1 = MW - 18;
-    const CY = MH * 0.56;
+    const compact = MW < 150;
+    const X0 = compact ? 14 : 24;
+    const X1 = MW - (compact ? 10 : 18);
+    const CY = MH * (compact ? .64 : .56);
     const K = Math.min(18, Math.max(10, (MH - 70) / 2.1));
     const X = (x: number): number => X0 + (Math.min(RANGE, Math.max(0, x)) / RANGE) * (X1 - X0);
     const pr = Math.min(3, Math.max(1, pixelRatio));
@@ -144,7 +145,7 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
     }
 
     // visibility
-    ctx.font = '800 12px Raleway, system-ui, sans-serif';
+    ctx.font = `800 ${compact ? 10 : 12}px Raleway, system-ui, sans-serif`;
     if (vis !== null) {
       const vx = X(vis);
       ctx.setLineDash([4, 4]);
@@ -157,7 +158,7 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
       ctx.setLineDash([]);
       ctx.fillStyle = '#FFFFFF';
       ctx.textAlign = vis > 110 ? 'right' : 'left';
-      ctx.fillText(`видимость ${fmtNum(vis, 0)} м`, vis > 110 ? vx - 6 : vx + 6, CY - 34);
+      ctx.fillText(`${compact ? '' : 'видимость '}${fmtNum(vis, 0)} м`, vis > 110 ? vx - 6 : vx + 6, CY - (compact ? 26 : 34));
     }
 
     // the train
@@ -196,9 +197,9 @@ export function MiniMap({ frame, cloud, pixelRatio }: { frame: FrameResultDict |
 
     // axis
     ctx.fillStyle = '#FFFFFF';
-    for (const m of MW < 220 ? [0, 100, 200] : [0, 50, 100, 150, 200]) {
+    for (const m of compact ? [0, 200] : MW < 220 ? [0, 100, 200] : [0, 50, 100, 150, 200]) {
       ctx.textAlign = m === 200 ? 'right' : 'center';
-      ctx.fillText(m === 200 ? '200 м' : String(m), m === 200 ? X(m) + 14 : X(m), MH - 13);
+      ctx.fillText(m === 200 ? '200 м' : String(m), m === 200 ? X(m) + (compact ? 4 : 14) : X(m), MH - 13);
     }
   }, [bins, frame, track, pixelRatio, width, height]);
 
