@@ -211,13 +211,14 @@ def test_settled_static_track_needs_a_long_majority():
 
 
 def test_candidate_values_in_the_class_and_the_yaml():
-    """The 19.10 candidate after amendment 6: F1a' (0.01, low clusters excluded from the lines, advisory) and H'
-    (above the envelope only); S2, F1b and F1c opt-in (0). 0 / false restores the aec88d2 behaviour (proved on the
-    full gate and the whole Falcon recording, docs/evidence/f1_false_alarms_2026-10-19)."""
+    """Integration of 19.10: every F1 switch off (F1a margin 0, H' tolerance 0; review B1 open, H' awaits its
+    confirming run), the aec88d2 behaviour (proved on the full gate and the whole Falcon recording,
+    docs/evidence/f1_false_alarms_2026-10-19). The candidate values stay as the sub-options: cross-rail 0.04, H'
+    above the envelope only; S2, F1b and F1c opt-in (0)."""
     y = DetectorConfig()
-    assert y.lowobj.local_rail_margin == pytest.approx(0.01) and not y.lowobj.local_rail_exclude_low
+    assert y.lowobj.local_rail_margin == 0 and not y.lowobj.local_rail_exclude_low
     assert y.lowobj.local_rail_cross_tol == pytest.approx(0.04)
-    assert not y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == pytest.approx(0.5)
+    assert not y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == 0
     assert y.cluster.mount_cross_above_only
     assert y.tracking.settle_min_hits == 0
     assert y.lowobj.rail_band_range == 0 and y.lowobj.no_rail_low_within == 0
@@ -272,6 +273,7 @@ def test_a_cluster_failing_the_reference_is_advisory_not_silent():
     xyz = np.stack([X, dy, h], axis=1).astype(np.float32)
     for advisory in (True, False):
         cfg = DetectorConfig()
+        cfg.lowobj.local_rail_margin = 0.01           # the F1a candidate (off by default since the 19.10 integration)
         cfg.lowobj.local_rail_advisory = advisory
         det = Detector(cfg)
         det._low_height = []

@@ -210,8 +210,8 @@ def test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop():
             cfg.lowobj.rail_start_within = 0.0              # the shipped association gate alone
         else:
             cfg.tracking.gate_along_only = False            # the counterfactual of 26.09
-        if within != "f1":
-            cfg.lowobj.local_rail_margin = 0.0              # 19.10: the finding without the F1 local rail reference
+        # 19.10: the F1a candidate (local rail reference, off by default since the integration) only in "f1"
+        cfg.lowobj.local_rail_margin = 0.01 if within == "f1" else 0.0
         det = Detector(cfg)
         stops = []
         for k, f in enumerate(files[i0:i0 + 40]):

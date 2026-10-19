@@ -337,7 +337,7 @@ class ClusterConfig:
     # if that plane also puts some of its points within 0 .. the envelope top; otherwise advisory
     # ('height_conflict'). Falcon frames 4394-4401: a floor fit that climbed to the ceiling put the
     # ceiling 0.15-0.33 m above the "rail head".
-    mount_cross_tol: float = 0.5       # m, > 0 on (19.10 candidate; 0 = off, the aec88d2 behaviour)
+    mount_cross_tol: float = 0.0       # m, > 0 on (19.10 candidate 0.5, H′; 0 = off, the aec88d2 behaviour; off at integration 19.10)
     mount_cross_grade: float = 0.05    # m per m of distance (5 %: steeper than a metro gradient)
     mount_cross_range: float = 30.0    # m, only the near field (the mount plane is a near reference)
     mount_cross_above_only: bool = True  # amendment 6: advisory only when the mount puts the cluster entirely above the envelope top (the ceiling), never below the rail head
@@ -554,7 +554,7 @@ class LowObjectConfig:
     # evidence (Cluster.low_height_weak): it may only continue an already reported low STOP
     # (tracking.stop_keep_low_s), never start one. No measurable line: no change. Candidate: (a) 0.01 on, (b) and
     # (c) off.
-    local_rail_margin: float = 0.01      # m, (a) > 0 on (19.10 candidate; 0 = off, the aec88d2 behaviour): the top must reach the local rail-head reference + this
+    local_rail_margin: float = 0.0       # m, (a) > 0 on (19.10 candidate 0.01; 0 = off, the aec88d2 behaviour; off at integration 19.10, review B1 open): the top must reach the local rail-head reference + this
     local_rail_window: float = 5.0       # m along the track on each side of the cluster (its own extent +- 0.3 m excluded)
     local_rail_band: float = 0.10        # m, half-width of each rail's lateral band around the axis +- track.rails_spacing / 2
     local_rail_min_bins: int = 2         # 0.5 m along-track bins with rail-band returns that a rail's line needs

@@ -503,6 +503,7 @@ def test_floor_shadow_hold_is_released_after_the_cap(tunnel):
     assert res[cap - 1].to_dict()["track"]["floor_hold_run"] == cap
     cfg = DetectorConfig()
     cfg.track = replace(cfg.track, floor_shadow_max_hold=0)
+    cfg.lowobj.local_rail_margin = 0.01         # the F1a candidate (off by default since the 19.10 integration)
     f1 = _pitch_step(frame, cfg)
     cfg.lowobj.local_rail_margin = 0.0          # 19.10: the counterfactual without the F1 local rail reference
     locked = _pitch_step(frame, cfg)
