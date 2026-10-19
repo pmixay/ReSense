@@ -78,11 +78,11 @@ def test_rail_reference_check_keeps_what_rises_above_the_rails():
     fixture = _low(40.0, 0.0, 0.06)                        # 1 cm above the rail heads: bed fixture
     box = _low(40.0, HALF, 0.11)                           # 6 cm above its rail head: an object on it
     assert [c is fixture for c in rail_reference_check([fixture, box], X, dy, h, cfg, 1.59)] == [True]
-    assert rail_reference_check([fixture, box], X, dy, h, LowObjectConfig(), 1.59) == []   # off
+    assert rail_reference_check([fixture, box], X, dy, h, LowObjectConfig(local_rail_margin=0.0), 1.59) == []   # off
 
 
 def test_rail_band_line_marks_a_rail_fitting_far_out():
-    cfg = LowObjectConfig(rail_band_range=60.0, rail_band_margin=0.05)
+    cfg = LowObjectConfig(local_rail_margin=0.0, rail_band_range=60.0, rail_band_margin=0.05)
     xs = np.arange(30.0, 50.0, 0.05)
     X = np.repeat(xs, 2)
     dy = np.tile([HALF - 0.05, HALF + 0.05], xs.size)
@@ -188,22 +188,22 @@ def _votes(cfg, pattern, drift=0.0):
 def test_settled_static_track_needs_a_long_majority():
     """The Falcon 115 m support: inside the gauge 1 hit in 10, then 6 of 10 by chance."""
     pattern = ([False] * 9 + [True]) * 10 + [True, False, True, True, False, True, False, True, True, False]
-    base = _votes(TrackingConfig(), pattern)
+    off = TrackingConfig(settle_min_hits=0)
+    base = _votes(off, pattern)
     assert any(base[-10:])                                     # the base STOPs on the burst
-    cfg = TrackingConfig(settle_min_hits=50)
+    cfg = TrackingConfig(settle_min_hits=50, settle_check_z=False)
     assert not any(_votes(cfg, pattern)[-10:])                 # settled: advisory
     moving = _votes(cfg, pattern, drift=-0.5)                  # an approaching object (or a moving train)
-    assert moving[-10:] == _votes(TrackingConfig(), pattern, drift=-0.5)[-10:]
+    assert moving[-10:] == _votes(off, pattern, drift=-0.5)[-10:]
     inside = _votes(cfg, [True] * 110)                         # a static object inside the gauge stays a STOP
     assert all(inside[10:])
 
 
-def test_switches_are_off_in_the_class_and_the_candidate_in_the_yaml():
-    cfg = DetectorConfig()
-    assert cfg.lowobj.local_rail_margin == 0 and cfg.lowobj.rail_band_range == 0
-    assert cfg.lowobj.no_rail_low_within == 0 and cfg.cluster.mount_cross_tol == 0
-    assert cfg.tracking.settle_min_hits == 0 and cfg.tracking.settle_check_z
-    y = DetectorConfig.from_yaml("configs/default.yaml")
+def test_candidate_values_in_the_class_and_the_yaml():
+    """The 19.10 candidate (F1a 0.01, H 0.5, S2); F1b / F1c stay off. 0 restores the aec88d2 behaviour (proved
+    on the full gate and the whole Falcon recording, docs/evidence/f1_false_alarms_2026-10-19)."""
+    y = DetectorConfig()
     assert y.lowobj.local_rail_margin == pytest.approx(0.01) and y.cluster.mount_cross_tol == pytest.approx(0.5)
     assert y.tracking.settle_min_hits == 50 and not y.tracking.settle_check_z
     assert y.lowobj.rail_band_range == 0 and y.lowobj.no_rail_low_within == 0
+    assert DetectorConfig.from_yaml("configs/default.yaml").to_dict() == y.to_dict()

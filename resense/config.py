@@ -337,7 +337,7 @@ class ClusterConfig:
     # if that plane also puts some of its points within 0 .. the envelope top; otherwise advisory
     # ('height_conflict'). Falcon frames 4394-4401: a floor fit that climbed to the ceiling put the
     # ceiling 0.15-0.33 m above the "rail head".
-    mount_cross_tol: float = 0.0       # m, > 0 on
+    mount_cross_tol: float = 0.5       # m, > 0 on (19.10 candidate; 0 = off, the aec88d2 behaviour)
     mount_cross_grade: float = 0.05    # m per m of distance (5 %: steeper than a metro gradient)
     mount_cross_range: float = 30.0    # m, only the near field (the mount plane is a near reference)
 
@@ -462,11 +462,11 @@ class TrackingConfig:
     # least settle_min_share of those hits were inside the strict gauge, whatever its last zone_window
     # votes; near escalation still wins. Falcon 115 m support: inside the gauge in 8.8 % of 4,246 hits,
     # STOP on 4 frames when 6 of the last 10 votes happened to be inside.
-    settle_min_hits: int = 0           # > 0 on
+    settle_min_hits: int = 50          # > 0 on (19.10 candidate; 0 = off, the aec88d2 behaviour)
     settle_window: int = 100           # hits
     settle_max_spread: float = 0.5     # m, max - min of the centroid per axis over the window
     settle_min_share: float = 0.5
-    settle_check_z: bool = True        # the spread limit also on the centroid height (false: ground-plane X / Y only, S2)
+    settle_check_z: bool = False       # true: the spread limit also on the centroid height (S); false: ground-plane X / Y only (S2, the candidate)
 
     def frames_to_confirm(self, frame_dt: float | None = None) -> int:
         """Consecutive frames a static, always-matched object needs before it is reported
@@ -551,8 +551,9 @@ class LowObjectConfig:
     # rails_range, so bed fixtures there read a few cm above it. (a) and (b) compare the top with the
     # frame's own rail returns around the cluster instead; a cluster failing them becomes weak low
     # evidence (Cluster.low_height_weak): it may only continue an already reported low STOP
-    # (tracking.stop_keep_low_s), never start one. No measurable line: no change. All off by default.
-    local_rail_margin: float = 0.0       # m, (a) > 0 on: the top must reach the local rail-head reference + this
+    # (tracking.stop_keep_low_s), never start one. No measurable line: no change. Candidate: (a) 0.01 on, (b) and
+    # (c) off.
+    local_rail_margin: float = 0.01      # m, (a) > 0 on (19.10 candidate; 0 = off, the aec88d2 behaviour): the top must reach the local rail-head reference + this
     local_rail_window: float = 5.0       # m along the track on each side of the cluster (its own extent +- 0.3 m excluded)
     local_rail_band: float = 0.10        # m, half-width of each rail's lateral band around the axis +- track.rails_spacing / 2
     local_rail_min_bins: int = 2         # 0.5 m along-track bins with rail-band returns that a rail's line needs

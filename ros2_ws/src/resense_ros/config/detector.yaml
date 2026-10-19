@@ -265,7 +265,7 @@ resense:
     settle_window: 100
     settle_max_spread: 0.5         # m per axis
     settle_min_share: 0.5
-    settle_check_z: false          # (19.10 candidate) false: the spread on the ground-plane position only (X, Y)
+    settle_check_z: false          # (19.10 candidate) false: the spread on the ground-plane position only (X, Y); true: also z
   accumulation:
     enabled: true
     n_frames: 5                    # frames merged (the current one included)
