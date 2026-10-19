@@ -93,4 +93,6 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   The default pose is straight; bounded mouse pressure tilts the wall/display group and moves the
   separate foreground railings at 24% strength. The HUD uses the updated affine surface transform.
   Pointer-only renders reuse live image/emission textures, settle to rest, and respect reduced
-  motion and touch. A dark masked backdrop blur beneath native-size controls fades upward over 64px.
+  motion and touch. The control tint is clear through the upper 64px, ramps gently with a 160px
+  feather and is capped at 56%. Its near-black stop stays beyond the painted edge; a separate
+  short blur feather keeps screen labels sharp.

@@ -609,6 +609,6 @@ def test_pointer_pressure_parallax_and_reduced_motion(app, seeded):
     page.wait_for_timeout(350)
     assert canvas.evaluate('el => Math.abs(+el.dataset.sceneTiltX) + Math.abs(+el.dataset.sceneTiltY)') < .00002
     dock = page.locator('[data-player-controls]')
-    assert 'blur' in dock.evaluate('el => getComputedStyle(el,"::before").backdropFilter')
+    assert dock.evaluate('el => ["::before", "::after"].some(p => getComputedStyle(el, p).backdropFilter.includes("blur"))')
     assert 'gradient' in dock.evaluate('el => getComputedStyle(el,"::before").maskImage')
     assert real_errors(app.errors) == []

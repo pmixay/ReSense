@@ -57,8 +57,11 @@ The train backdrop fills the entire Player viewport beneath the shared top bar a
 stage rail. It remains sticky behind vertically scrolling mobile content. The device
 retains its original upper display region, while the wall and railings continue
 behind telemetry and transport. A dark, backdrop-blurred control dock feathers to
-transparent over 64px above the controls; its mask is shared with the blur so there
-is no hard upper edge. Native-size controls stay stationary and usable.
+fully transparent through the upper 64px of the dock, then ramps gently with a 160px
+feather mask. A separate, shorter blur feather stays close to the dock so display annotations remain sharp.
+The visible tint never exceeds 56%; its near-black stop lies 240px past
+the painted bottom edge, so the wall remains visible without extra scroll space.
+There is no hard upper edge. Native-size controls stay stationary and usable.
 
 Pointer-only frames reuse the unchanged LiDAR and emission textures. The existing
 engine draws the physical scene until it settles; selection/error states use a

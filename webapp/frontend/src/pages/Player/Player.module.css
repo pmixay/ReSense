@@ -5,11 +5,16 @@
 .sceneLayer { position: absolute; top: 0; left: 0; width: 100%; height: calc(100dvh - var(--site-chrome-h, 148px)); pointer-events: auto; background: #abb3b1; }
 .controlDock { position: relative; isolation: isolate; z-index: 2; display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding: 16px var(--pad) 24px; color: var(--white); --strip-axis-ink: var(--white); }
 .controlDock::before {
-  content: ''; position: absolute; inset: -64px 0 0; z-index: -1; pointer-events: none;
-  background: linear-gradient(to bottom, rgba(7, 12, 19, 0), rgba(7, 12, 19, .38) 32px, rgba(7, 12, 19, .8) 64px, rgba(7, 12, 19, .9) 160px);
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(7, 12, 19, 0) 64px, rgba(7, 12, 19, .06) 120px, rgba(7, 12, 19, .24) 200px, rgba(7, 12, 19, .56) 100%, rgba(7, 12, 19, .98) calc(100% + 240px));
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .45) 80px, #000 160px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .45) 80px, #000 160px);
+}
+.controlDock::after {
+  content: ''; position: absolute; inset: -32px 0 0; z-index: -2; pointer-events: none;
   backdrop-filter: blur(18px) saturate(.85); -webkit-backdrop-filter: blur(18px) saturate(.85);
-  mask-image: linear-gradient(to bottom, transparent, #000 64px);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 64px);
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .25) 24px, #000 64px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .25) 24px, #000 64px);
 }
 .display {
   position: relative;
@@ -63,7 +68,7 @@
 .cameraModes > button[aria-checked='true'] { background: var(--red); color: var(--white); }
 .toolButton, .pbtn, .sbtn { border-radius: var(--r-xs); }
 .viewTools { display: flex; align-items: center; gap: 10px; margin-left: auto; min-width: 0; }
-.viewReason { font-size: 12px; font-weight: 600; }
+.viewReason { color: var(--ink); font-size: 12px; font-weight: 600; }
 .menuWrap { position: relative; min-width: 0; }
 .nameBtn { display: flex; align-items: center; gap: 10px; height: 40px; max-width: min(360px, 75vw); padding: 0 12px; border: 1px solid var(--hair-2); border-radius: var(--r-xs); background: var(--card); color: var(--ink); font-weight: 700; }
 .nameBtn:hover { border-color: var(--red); background: var(--well-3); }
@@ -156,7 +161,7 @@
 .pickName { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; font-weight: 800; }
 .pickMeta { margin-right: auto; font-size: 12px; }
 .pickPlay { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-xs); background: var(--red); color: var(--white); flex: none; }
-.tKeys { padding: 12px 0; min-height: 0; border: 0; border-radius: 0; background: transparent; color: inherit; }
+.tKeys { padding: 12px 0; min-height: 0; border: 0; border-radius: 0; background: transparent; color: var(--ink); }
 .keys { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 12px; }
 .key { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
 .key kbd { padding: 4px 8px; border: 1px solid var(--hair-2); border-radius: 6px; font-family: var(--f-body); font-weight: 700; background: var(--card); color: var(--ink); }
