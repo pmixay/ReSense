@@ -1,0 +1,134 @@
+{
+ "base_ros2": {
+  "far_walker": {
+   "frames": 1183,
+   "stop_frames": 0,
+   "output_frames": 0,
+   "first_stop": null,
+   "bands": {
+    "240-250": {
+     "frames": 94,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "250-260": {
+     "frames": 175,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "260-270": {
+     "frames": 223,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "270-280": {
+     "frames": 238,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "280-290": {
+     "frames": 184,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "290-300": {
+     "frames": 180,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "300-310": {
+     "frames": 89,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  },
+  "far_251": {
+   "frames": 254,
+   "stop_frames": 0,
+   "output_frames": 0,
+   "first_stop": null,
+   "bands": {
+    "240-250": {
+     "frames": 18,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "250-260": {
+     "frames": 236,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  }
+ },
+ "final": {
+  "far_walker": {
+   "frames": 1183,
+   "stop_frames": 309,
+   "output_frames": 399,
+   "first_stop": [
+    9,
+    253.7
+   ],
+   "bands": {
+    "240-250": {
+     "frames": 94,
+     "stop": 0.84,
+     "output": 0.957
+    },
+    "250-260": {
+     "frames": 175,
+     "stop": 0.783,
+     "output": 0.914
+    },
+    "260-270": {
+     "frames": 223,
+     "stop": 0.368,
+     "output": 0.507
+    },
+    "270-280": {
+     "frames": 238,
+     "stop": 0.046,
+     "output": 0.151
+    },
+    "280-290": {
+     "frames": 184,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "290-300": {
+     "frames": 180,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "300-310": {
+     "frames": 89,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  },
+  "far_251": {
+   "frames": 254,
+   "stop_frames": 13,
+   "output_frames": 45,
+   "first_stop": [
+    1712,
+    249.8
+   ],
+   "bands": {
+    "240-250": {
+     "frames": 18,
+     "stop": 0.722,
+     "output": 1.0
+    },
+    "250-260": {
+     "frames": 236,
+     "stop": 0.0,
+     "output": 0.114
+    }
+   }
+  }
+ }
+}

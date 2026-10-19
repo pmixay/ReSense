@@ -1,0 +1,140 @@
+{
+ "real": {
+  "frames": 911,
+  "first_output_x": 207.3,
+  "first_stop_x": 207.3,
+  "first_stop_frame": 2290,
+  "held_fraction_after_first_stop": 0.986,
+  "bands": {
+   "210-175": {
+    "frames": 268,
+    "stop": 0.951,
+    "output": 0.996,
+    "reported_lat_median": -0.16
+   },
+   "175-150": {
+    "frames": 202,
+    "stop": 1.0,
+    "output": 1.0,
+    "reported_lat_median": -0.17
+   },
+   "150-125": {
+    "frames": 210,
+    "stop": 1.0,
+    "output": 1.0,
+    "reported_lat_median": -0.15
+   },
+   "125-100": {
+    "frames": 205,
+    "stop": 1.0,
+    "output": 1.0,
+    "reported_lat_median": 0.18
+   }
+  },
+  "other_stop_frames": 0
+ },
+ "injected": {
+  "walk_final_s0": {
+   "frames": 911,
+   "first_output_x": 206.8,
+   "first_stop_x": 206.8,
+   "first_stop_frame": 305,
+   "held_fraction_after_first_stop": 0.967,
+   "bands": {
+    "210-175": {
+     "frames": 268,
+     "stop": 0.869,
+     "output": 0.981,
+     "reported_lat_median": -0.2
+    },
+    "175-150": {
+     "frames": 202,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": -0.16
+    },
+    "150-125": {
+     "frames": 210,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": -0.18
+    },
+    "125-100": {
+     "frames": 205,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": 0.2
+    }
+   },
+   "other_stop_frames": 0
+  },
+  "walk_final_s1": {
+   "frames": 911,
+   "first_output_x": 206.8,
+   "first_stop_x": 206.8,
+   "first_stop_frame": 305,
+   "held_fraction_after_first_stop": 0.948,
+   "bands": {
+    "210-175": {
+     "frames": 268,
+     "stop": 0.806,
+     "output": 0.981,
+     "reported_lat_median": -0.21
+    },
+    "175-150": {
+     "frames": 202,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": -0.16
+    },
+    "150-125": {
+     "frames": 210,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": -0.18
+    },
+    "125-100": {
+     "frames": 205,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": 0.19
+    }
+   },
+   "other_stop_frames": 0
+  },
+  "walk_final_s2": {
+   "frames": 911,
+   "first_output_x": 206.8,
+   "first_stop_x": 206.8,
+   "first_stop_frame": 305,
+   "held_fraction_after_first_stop": 0.967,
+   "bands": {
+    "210-175": {
+     "frames": 268,
+     "stop": 0.869,
+     "output": 0.981,
+     "reported_lat_median": -0.21
+    },
+    "175-150": {
+     "frames": 202,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": -0.16
+    },
+    "150-125": {
+     "frames": 210,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": -0.17
+    },
+    "125-100": {
+     "frames": 205,
+     "stop": 1.0,
+     "output": 1.0,
+     "reported_lat_median": 0.2
+    }
+   },
+   "other_stop_frames": 0
+  }
+ }
+}
