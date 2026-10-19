@@ -28,7 +28,7 @@ lanes K1/K2, F1, Falcon long range and N3, merged 19.10 with an identity proof; 
 | S2 settle (`tracking.settle_min_hits`) | off | can delay an object entering the gauge | — |
 | R3 cable confirmation (P3) | **on** | hanging cable in set O: first STOP 35.1 m (was 30.1), held from 40.0 m (was 31.8); gate exit 0 | P3: the set F cable sustained-median row 34.2 → 17.8 m |
 | L16/S3 orientation (P3) | **on** | rotated ring-free mounts no longer adopt a wrong orientation; gate and Falcon identical | — |
-| K2 axis on curves (`track.axis_joint_*`), variant B = v5b without K1 | **on** | the jury's "gauge follows turns". Gate: ride STOP episodes 24 → 9, five empty recordings 11 → 0; costs set O `small_center` first STOP 55.8 → 52.5 m (6 gated rows, a gate exception accepted by the captain) | **P4 P0**: improve ([package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md)) |
+| K2 axis on curves (`track.axis_joint_*`), variant B = v5b without K1 | **held off** (captain 19.10, [`DECISIONS.md`](DECISIONS.md) rows 43–44) | the jury's "gauge follows turns". Pandar gate: ride STOP episodes 24 → 9, five empty recordings 11 → 0, set O `small_center` first STOP 55.8 → 52.5 m; but on Falcon the walking person's first STOP 124.8 → 113.0 m (158 STOP frames lost) | **P4 P0**: resolve the problems, then a new decision ([package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md)) |
 | K1 per-distance axis smoothing (`track.walls_smoothing_distance`) | off | standing train STOP at 100 m 82 → 255 / 260, but adds a false STOP on `doubleT_platform` (gate A measured on the integration branch) | P4, in the same package |
 | Falcon clear-distance model (`small_target_limit`, falcon_prime) | **on** | reports up to 48.2 m from the measured Falcon raster (density model, as for Pandar) instead of 0 | — |
 | Falcon far range (`farrange.with_falcon_profile`) | off | person STOP 146 m (was 127) but rule 5.1(b) fails (9 vs 8 episodes), no long-range gain on injected targets | P3: improve (route-map variant, second boundary) |
@@ -50,7 +50,7 @@ lanes K1/K2, F1, Falcon long range and N3, merged 19.10 with an identity proof; 
 
 | prio | work | state |
 |---|---|---|
-| P0 | Measure the shipped configuration (variant B) on the final commit: gate, X3, whole Falcon, standing-person probes; gate A (B + K1) for P4 | running |
+| P0 | Final measurements of the shipped configuration (K2 off) on the final commit: gate per frame (identity with `11bb1ab`), X3, whole Falcon; for the reseal | running |
 | P0 | Final gate (without `--allow`), X3 and the whole Falcon recording on the final commit; integration evidence for the reseal | after K2 |
 | P0 | The organizers' dust (13 frames of the marked synthetic bags) on the final configuration: no STOP or CAUTION from it → the dust guard stays off; otherwise hand to P4 | after K2 |
 | P1 | Documentation clean-up: remove old handoffs and unused documents, fix stale statements, compact the long documents | agent |
@@ -79,7 +79,7 @@ lanes K1/K2, F1, Falcon long range and N3, merged 19.10 with an identity proof; 
 
 | prio | work | state / depends on |
 |---|---|---|
-| **P0 (first)** | **Improve K2 / K1** from the shipped variant B, in this order: set O `small_center` (the only gate failure), the standing person at 150 m, X3, curve accuracy (K2-1/2/3, B6), the 3 new ride episodes, K1's false STOP, the open review items. Hand each candidate to the captain with its row table; the review is done by P3 or a fresh agent, because P4 is its author | [package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md); before the code stop |
+| **P0 (first)** | **K2 / K1 (held off): resolve the problems and bring a variant back to the captain.** In order: the Falcon person stopped 12 m later (the reach cap cuts the trusted range), set O `small_center` 3.3 m later (the only gate failure), the standing person at 150 m, X3, curve accuracy (K2-1/2/3, B6), new ride and near-field STOP episodes, K1's false STOP, the review items. Each candidate goes to the captain with its row table, including the whole Falcon recording; the review is by P3 or a fresh agent, because P4 is its author. A switch-on before the code stop needs the captain's decision and P1's final measurement | [package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md) |
 | P0 | Independent review of what ships on: L16/S3, R3, F1a, H′ (`DETECTOR_FREEZE.md` step 3); K2 is reviewed by P3 or a fresh agent (see above) | blocks the reseal |
 | P0 | Review the integration identity proof (gate per frame, Falcon) | [evidence](evidence/integration_2026-10-19/README.md) |
 | P1 | On the final seal: J1 (retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0) and the G3 held-out run by a fresh agent | needs the reseal |

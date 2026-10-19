@@ -24,14 +24,14 @@ def _cfg(**kw) -> TrackConfig:
     return TrackConfig(**{**OFF, **kw})
 
 
-def test_shipped_variant_b_in_code_and_both_parameter_files():
-    """The captain's decision of 19.10: K2 on as variant B (v5b without K1): the joint axis shape on curves only,
-    the base trusted-range policy, the reach cap; K1's per-distance smoothing off."""
+def test_switches_default_off_in_code_and_both_parameter_files():
+    """K2 held off for P4 (captain, 19.10 evening: variant B delayed the Falcon person's first STOP by 12 m);
+    variant B = axis_joint_fit true, axis_joint_range false, axis_joint_min_curvature 1e-4, reach cap on."""
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         t = cfg.track
-        assert t.axis_joint_fit is True and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is False
-        assert t.axis_joint_min_curvature == pytest.approx(1e-4) and t.axis_joint_reach_cap is True   # v5b
+        assert t.axis_joint_fit is False and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is True
+        assert t.axis_joint_min_curvature == 0.0 and t.axis_joint_reach_cap is False      # v5 switches
         assert (t.axis_joint_knot, t.axis_joint_step_sigma, t.axis_joint_tolerance) == (60.0, 1e-3, 0.3)
 
 

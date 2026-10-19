@@ -50,7 +50,7 @@ That agrees with P3's own check.
 | real obstacles on the gate | of 50 obstacle rows (`doubleT_obstacle`, every set O object: STOP frames, first STOP, held from), only `thin_hanging` changed, and it improved. `doubleT_obstacle` has 1 STOP episode from frame 8, as before |
 | whole Falcon recording vs `main` | 8 rows differ, all decisions STOP → CAUTION at frames 4394–4401 (the tunnel ceiling, H′). False STOP frames **12 → 4**; the remaining 4 (159, 2312–2314) are the static support at ~115 m that only S2 would remove (S2 off). Person: all 1,360 STOP frames kept, first STOP unchanged at 124.84 m. No new STOP frame. F1a and R3 change nothing on Falcon |
 
-### K2 variant B on (`c9e8daa`, the committed defaults)
+### K2 variant B (measured on `c9e8daa`; held off afterwards, [`DECISIONS.md`](../../DECISIONS.md) row 44)
 
 | check | result |
 |---|---|
@@ -58,7 +58,7 @@ That agrees with P3's own check.
 | the organizers' dust (13 frames of the marked synthetic bags) | no STOP, and no detection or warning at a dust box (the CAUTIONs come from warnings at 1.75–152 m, as with 1.1.0): **the dust guard stays off** (captain's decision 5) |
 | STOP detections on the marked bags vs 1.1.0 | platform 187 / 187 on marked objects (1.1.0: 185 / 185); switch 150 / 151 (1.1.0: 133 / 142, the background STOPs at 147 m are gone); tunnels 107 / 111 (1.1.0: 120 / 128). Per marked object, the STOP frames are equal or more, except the **small cube right of `synthetic_tunnels` (marker id 19): 30 → 14**; at 30–55 m (frames 259–273) it is no longer a detection or a warning. Its marker is ~1.45 m right of the sensor axis, probably just outside the 2.1 m gauge (N5: "boundary uncertain"); not verified |
 
-Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–43; the plan per role: [`BACKLOG.md`](../../BACKLOG.md),
+Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–44; the plan per role: [`BACKLOG.md`](../../BACKLOG.md),
 "Current plan".
 
 ## 4. Not done yet / not checked

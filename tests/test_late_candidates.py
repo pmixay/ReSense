@@ -591,9 +591,9 @@ def _station_scene(curvature: float = 0.0, platform: bool = True, seed: int = 25
 
 
 def _legacy() -> DetectorConfig:
-    """The axis before K2 (``track.axis_joint_fit`` off, the shipped default until 19.10): the station and hall
-    scenes below document its faults and the rules made for them; the shipped K2 axis is checked separately
-    (``test_shipped_k2_axis_in_the_station_scene``)."""
+    """The axis without K2 (``track.axis_joint_fit`` off: the shipped default; K2 held for P4 on 19.10): the station
+    and hall scenes below document its faults and the rules made for them; K2 variant B is checked separately
+    (``test_k2_variant_b_in_the_station_scene``)."""
     cfg = DetectorConfig()
     cfg.track = replace(cfg.track, axis_joint_fit=False)
     return cfg
@@ -690,8 +690,8 @@ def test_far_support_station_obstacle_still_stops():
 # --- cluster.far_axis_both_sides (25.09, far_switch; 0 = off) ---------------------------------
 
 
-def test_shipped_k2_axis_in_the_station_scene():
-    """The shipped K2 axis (variant B, captain 19.10; far-support rule off as shipped since 25.09) in the same
+def test_k2_variant_b_in_the_station_scene():
+    """K2 variant B (held for P4 on 19.10; far-support rule off as shipped since 25.09) in the same
     station scene: the platform-end structure alone is neither a STOP nor a warning, and a person 0.5 x 0.4 x
     1.7 m at 60 or 25 m, on the axis or 0.6 m to either side, is a STOP (the old axis read the person at 60 m,
     0.6 m right, as advisory only). At 83 m, as with the old axis without the far-support rule, no STOP."""
@@ -710,7 +710,9 @@ def test_shipped_k2_axis_in_the_station_scene():
         return _box_surface(x0, length, y0 - AXIS_Y, z0 - RAIL_HEAD_Z, height, width)
 
     cfg = DetectorConfig()
-    assert cfg.track.axis_joint_fit and cfg.track.walls_min_far_support == 0.0
+    cfg.track = replace(cfg.track, axis_joint_fit=True, axis_joint_range=False, axis_joint_min_curvature=1e-4,
+                        axis_joint_reach_cap=True)
+    assert cfg.track.walls_min_far_support == 0.0
     end = box(82.9, 1.9, 2.2, 0.4, 1.25)
     res = last(end, cfg)
     assert not res.obstacle and not res.warning

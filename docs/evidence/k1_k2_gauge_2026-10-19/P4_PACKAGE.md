@@ -1,13 +1,26 @@
-# K2 / K1: the work package for P4 (P0, highest priority; set by the captain on 19.10)
+# K2 / K1: handoff to P4 (P0, highest priority; set by the captain on 19.10)
 
 > **Owner:** P4 (develop and measure). **Review:** P3 or a fresh agent, because P4 is the author of these changes
 > and cannot review them. **Decides:** the captain. **Limit:** code stop 20.10 23:59 MSK; after that only
 > measurements and documents.
 
-## 1. What ships now (integration branch `claude/optimistic-mccarthy-z5nmwd`, `c9e8daa` and later)
+## 0. State: K2 is held OFF
 
-**Variant B** = v5b without K1. The values are in `resense/config.py` and in both YAML files (`configs/default.yaml`,
-`ros2_ws/src/resense_ros/config/detector.yaml`; keep them in sync with `scripts/sync_params.sh --check`):
+The captain switched K2 on as variant B, then **held it off on 19.10 (evening)** after the whole Falcon recording
+showed **the walking person stopped 12 m later** ([`DECISIONS.md`](../../DECISIONS.md) rows 43–44). The shipped
+configuration has every K2/K1 switch at its value before variant B (`axis_joint_fit: false` and the rest off). It is
+the configuration measured on `11bb1ab` (gate exit 0, Falcon false STOPs 12 → 4, person kept).
+
+**Your task:** resolve the problems in §3, starting with the Falcon delay, and bring a variant back to the captain
+with its full row table (gate, Falcon, probes, X3; the curve rows if you can get the data). It is switched on only by
+the captain's decision and P1's final measurement. Figure out the approach yourself; §3 says where the evidence
+points, not what to do.
+
+## 1. Variant B, the starting point (held off)
+
+**Variant B** = v5b without K1. To switch it on, set these in `resense/config.py` and in both YAML files
+(`configs/default.yaml`, `ros2_ws/src/resense_ros/config/detector.yaml`; keep them in sync with
+`scripts/sync_params.sh --check`):
 
 ```yaml
     axis_joint_fit: true               # K2: joint least-squares axis (rails + every tunnel-boundary segment)
@@ -20,8 +33,8 @@
 
 How v5 works: [`V5.md`](V5.md) §1–§2. Code: `resense/track.py` (`estimate_track`, `joint_axis_fit`,
 `_followed_reach`, the v5 block after the base estimate). Tests: `tests/test_k1_k2_axis.py` builds every variant from an
-explicit all-off base (`OFF`, `_cfg`). `tests/test_late_candidates.py::test_shipped_k2_axis_in_the_station_scene`
-checks the shipped axis in the station scene. The legacy station and hall tests pin the old axis (`_legacy()`).
+explicit all-off base (`OFF`, `_cfg`). `tests/test_late_candidates.py::test_k2_variant_b_in_the_station_scene`
+checks variant B in the station scene. The legacy station and hall tests pin the old axis (`_legacy()`).
 
 ## 2. What B gains and costs (measured)
 
@@ -40,7 +53,7 @@ The comparison is against the same configuration without K2 (`gate_int_11bb1ab_f
 | set F cable recall 0–50 / 50–100 m | 50 / 49 % | 52 / 44 % |
 | every other set O object and set F target, first STOP and held from | — | unchanged |
 
-The captain accepted B with the `small_center` gate exception (19.10). The integration evidence lists the remaining
+The captain accepted B with the `small_center` gate exception (19.10), then held it off after the Falcon run (§0, §3 row 0). The integration evidence lists the remaining
 runs on the committed defaults: final gate, X3, the whole Falcon recording, the standing-person probes, and gate A
 (B + K1). Each one is added there when it is measured
 ([integration README](../integration_2026-10-19/README.md)).
@@ -49,6 +62,7 @@ runs on the committed defaults: final gate, X3, the whole Falcon recording, the 
 
 | # | problem | evidence | where to look |
 |---|---|---|---|
+| 0 | **The Falcon walking person is stopped 12 m later** (first STOP 124.84 → 112.97 m; 158 of 1,360 person STOP frames lost at 113–125 m). The person is seen on the axis (lateral 0.07–0.3 m) but only as a warning, because it is beyond the trusted range, which the reach cap sets at 107–123 m. Also 9 new STOP frames at 3–6.5 m near the end (frames 4373–4379, 4410–4411, unattributed). This is why K2 is held | [integration evidence](../integration_2026-10-19/README.md) ("K2 variant B on"), `runs/falcon_k2B_c9e8daa.jsonl.xz` vs `runs/falcon_final_11bb1ab.jsonl.xz` | `axis_joint_reach_cap` and the trusted range on joint-shape frames; whether Falcon's straight tunnel even needs the joint shape there |
 | 1 | **set O `small_center` is confirmed 3.3 m later** (55.8 → 52.5 m, 2 STOP frames fewer). This is the only gate failure, so it is what keeps the gate exception | gate B above; the same in v3, v4 and v5a ([`V5.md`](V5.md) costs table) | the joint shape on the curve frames of set O. Trace which candidate rule demotes or delays it (`resense/detector.py` candidate reasons; `scripts/v5/` has the attribution helpers) |
 | 2 | **standing person at 150 m in front of the standing train** (probe `S_person_150`, squareT platform): v5b 0 / 260 STOP frames, base 90 / 259. 65 of base's 90 matched a static structure, so base's real hits were ≤ 25 | [`V5.md`](V5.md) K1-2 row. B (K1 off) is being measured on the integration branch | v5b places the person on its own straight axis at Y ≈ −0.95 m; the candidates are demoted `beyond_axis` (reach cap) and `beyond_height_ref` |
 | 3 | **X3 robustness:** v5b fails 10 of 260 comparisons (tilt, dropout, 5 Hz; STOP frames lost on real objects; 2 extra set O episodes at −2° pitch) | [`V5.md`](V5.md) G-2 row; X3 of B is being measured | `scripts/robustness_battery.py` |
@@ -56,8 +70,7 @@ runs on the committed defaults: final gate, X3, the whole Falcon recording, the 
 | 5 | 3 new ride STOP episodes under B (onsets at 24.1, 40.6, 91.8 m) | gate B per frame (`/data/work_f1/gate_k2B_cf58128/new_data_{5,6,7}.jsonl` frames 317, 923, 354 in this session; repeat with the gate) | joint-shape frames, as in v5b ([`V5.md`](V5.md) §6) |
 | 6 | **K1** (`walls_smoothing_distance`): standing train STOP at 100 m 82 → 255 / 260 and fast appearance (28 → 5 frames), but on its own it adds false STOPs on `doubleT_platform` | [`V5.md`](V5.md) §6; gate A (B + K1) on the integration branch | `resense/track.py` `estimate_track(travel=…)`, `resense/detector.py` `_travel` |
 | 7 | open review items of the K2 code: N1 (take the reach after the rate limits), N2 (a stop before convergence keeps a wrong, far-trusted axis up to 60 s), 2, 3, 4, 7 | [`REVIEW_v3.md`](REVIEW_v3.md) | — |
-| 8 | **Falcon (F-1) with B: the walking person is stopped 12 m later** (first STOP 124.84 → 112.97 m) and 158 of 1,360 person STOP frames are lost (113–125 m): the person is seen on the axis but beyond the trusted range the reach cap sets (107–123 m); 9 new STOP frames at 3–6.5 m near the end (unattributed) | [integration evidence](../integration_2026-10-19/README.md), `runs/falcon_k2B_c9e8daa.jsonl.xz` | the reach cap (`axis_joint_reach_cap`) and the trusted range on Falcon frames; `docs/evidence/f1_false_alarms_2026-10-19/scripts/falcon_trace.py` + `../integration_2026-10-19/scripts/score_falcon.py` |
-| 9 | the small cube right of `synthetic_tunnels` (marker id 19): STOP frames 30 → 14; not a detection or a warning at 30–55 m | marked-bag runs in the integration evidence | first decide whether it is in the gauge (marker ~1.45 m right of the sensor axis; check the rails in the raw cloud) |
+| 8 | the small cube right of `synthetic_tunnels` (marker id 19): STOP frames 30 → 14; not a detection or a warning at 30–55 m | marked-bag runs in the integration evidence | first decide whether it is in the gauge (marker ~1.45 m right of the sensor axis; check the rails in the raw cloud) |
 
 ## 4. How to work
 
