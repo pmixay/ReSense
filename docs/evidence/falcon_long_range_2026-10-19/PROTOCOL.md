@@ -115,3 +115,28 @@ re-running on seeds 10–12 for the reported numbers (stated in the report if do
    `person_front` (main approach, facing the sensor: fill 0.9, ρ 0.05 / 0.30) and `person_back`
    (far walker: fill 0.9, ρ 0.08 / 0.10, the fitted values). `person_dark` is dropped.
 3. Acceptance rule 1 otherwise unchanged. The far-walker discovery is reported as a finding about the data.
+
+### A2 (19.10, 12:55 UTC, after the independent review `INDEPENDENT_REVIEW.md`)
+
+1. **C6 was not pre-registered.** `cluster.far_min_height` 0.6 → 0.3 m and `far_max_length` 3.0 → 4.0 m
+   under the Falcon profile were added at 12:23 after the C1+C3 / C1+C3+C4 matrices and the real-recording
+   replays had been seen (diagnosis: `beyond_height_ref` demotions of the cube and the 2 m box). It is
+   a post-hoc change. Its numbers are reported on fresh seeds 10–12 (§4 rule), and every real-recording
+   result with C6 (E4, the far walker) is **in-sample** for C6.
+2. **C4 (far confirmation) is off by default**: measured no false-alarm benefit and a lower held fraction.
+3. **C3 redesigned after the review (blocking B1, B4).** The first far axis trusted curves that begin
+   beyond the join and single diverging walls. New rules (code `resense/farline.py`, tests
+   `tests/test_farrange.py` with the reviewer's 16 curve cases, the occluded-inner-wall cases and the
+   diverging-wall cases): contiguous support, a curve lead of √(2·0.3 m·R) before the support end with an
+   unseen curvature of R 300 m, a 0.003 rad divergence allowance and a 0.006 kink limit with one side, trust
+   only where sigma ≤ 0.5 m, a pessimistic support filter, decay while held; the accumulation buffer is
+   cleared when the far axis switches or moves. All earlier C3 results (c13, c134, c136, final) are
+   superseded; they are kept as history. The redesigned candidate is re-measured on the real recording,
+   the walk control and the matrix with seeds 10–12.
+4. **New, explicitly labelled variant `map300`**: `farrange.declared_straight_to = 300` stands for an
+   operator / route-map statement that the track is straight to 300 m (on this recording only supported by
+   the rail fit to 90 m and the reviewed person's path to 250 m). It is reported separately and is not the
+   default.
+5. **Rule 5.1(b) is not changed.** "Whole recording STOP episodes ≤ baseline" is reported as written,
+   including its failure if it fails; the count of STOP episodes without any person-associated frame is
+   reported beside it as a post-hoc diagnostic, not as a replacement.
