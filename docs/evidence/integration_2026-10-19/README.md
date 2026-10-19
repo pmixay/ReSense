@@ -65,7 +65,8 @@ That agrees with P3's own check.
 | full gate (seal baseline, no `--allow`) | **exit 0, 8 gated rows better, 0 worse** ([`runs/gate_final_4cf8e27.json`](runs/gate_final_4cf8e27.json)); per frame **identical to `11bb1ab`** (15,269 rows, 0 differ; latency level only in 1,427), so every number of "the configuration as decided" above holds |
 | X3 robustness battery (40 cases, 260 comparisons, reference `aec88d2`) | **PASS, 0 failed** ([`runs/x3_final_4cf8e27.json`](runs/x3_final_4cf8e27.json)). 27 comparisons moved within tolerance: set O positive STOP frames +5 and the hanging cable's inside STOP rows 15 → 19 (R3) in every perturbation; set O unmatched STOP episodes +1 (e.g. 6 → 7; tolerance 1) |
 | whole Falcon recording | **identical to `11bb1ab`** (4,443 rows, 0 differ): false STOP frames 12 → 4, all 1,360 person STOP frames kept, first STOP 124.84 m |
-| organizers' dust, marked synthetic bags | measured with K2 B on (above): no STOP or warning from the dust. With K2 off the configuration is the decided one; not re-run |
+| organizers' dust and the marked synthetic bags (1,667 frames) | 13 dust frames: **no STOP, no detection or warning at a dust box** (the dust guard stays off). Against the committed 1.1.0 runs: **every decision and detection identical**; only the reported clear distance differs on 4 frames (platform 1, tunnels 3; switch identical in every field). So the 12 background false STOP frames of 1.1.0 (switch 7–14, tunnels 147–149 and 367) remain |
+| full test suite | **2,140 passed, 0 failed**, 8 deselected (7 by default; `test_lidar_proxy_hook` is the container's environment failure, see below) |
 
 Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–44; the plan per role: [`BACKLOG.md`](../../BACKLOG.md),
 "Current plan".
@@ -73,11 +74,10 @@ Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–44; the plan per role:
 ## 4. Not done yet / not checked
 
 - K2: held off; P4 resolves its problems ([package](../k1_k2_gauge_2026-10-19/P4_PACKAGE.md)).
-- The organizers' dust (13 frames of the marked synthetic bags) on the final configuration.
 - P4's independent review of everything that ships on.
 - The reseal.
-- The full test suite on the final commit (after K2). On `ff91d40` (the configuration as decided, K2 off):
-  **2,133 passed, 0 failed**, 8 deselected. 7 are deselected by default (local datasets). The 8th is
+- The full test suite: on `4cf8e27` 2,140 passed, 0 failed (on `ff91d40` 2,133 passed), 8 deselected. 7 are
+  deselected by default (local datasets). The 8th is
   `test_lidar_proxy_hook::test_child_process_inherits_hook_and_bad_source_fails_closed`, an environment failure of
   this container: it fails identically on untouched `aec88d2`, according to the F1 lane.
 
