@@ -330,6 +330,19 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
     return out
 
 
+def no_rail_advisory(clusters, within: float) -> int:
+    """19.10 (F1 task c, ``lowobj.no_rail_low_within``; the detector calls it on a frame without the rail
+    pair, ``track.rail_slabs == 0``): a clean low cluster farther than ``within`` is advisory, reason
+    ``no_rail_low``; a signature (``demoted``), so a STOP already earned is kept by the stop-keep rule.
+    Returns how many."""
+    n = 0
+    for c in clusters:
+        if c.kind == "low" and c.zone == "gauge" and not c.reason and c.distance > within:
+            c.zone, c.reason, c.demoted = "warning", "no_rail_low", True
+            n += 1
+    return n
+
+
 def mark_rail_line(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: LowObjectConfig,
                    rails_spacing: float, range_min: float) -> int:
     """26.09 (P3 rail start, ``rail_start_within`` > 0; docs/evidence/results/p3_rail_start_2026-09-26.json):

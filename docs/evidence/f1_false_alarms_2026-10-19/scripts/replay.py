@@ -31,7 +31,7 @@ import time  # noqa: E402
 from pathlib import Path  # noqa: E402
 
 ROOT = Path(os.environ.get("RESENSE_REPO", Path(__file__).resolve().parents[4]))
-for p in (ROOT, ROOT / "scripts"):
+for p in (ROOT, ROOT / "scripts", Path(__file__).resolve().parent):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
@@ -61,6 +61,7 @@ def main():
     ap.add_argument("--start", type=int, default=0)
     ap.add_argument("--end", type=int, default=10 ** 9)
     ap.add_argument("--full", action="store_true", help="write the whole to_dict() (else a compact record)")
+    ap.add_argument("--lowref", action="store_true", help="record every low cluster's top against the rail lines (lowref.py)")
     a = ap.parse_args()
 
     import eval_real
@@ -133,6 +134,11 @@ def main():
                 lows.append(info)
             if lows:
                 x["low"] = lows
+            if a.lowref:
+                import lowref
+                lc = lowref.frame_info(det, res)
+                if lc:
+                    x["lowc"] = lc
             rec["x"] = x
             fh.write(json.dumps(rec) + "\n")
     meta = {"bag": a.bag, "frames": len(files), "written_from": a.start, "set": a.set, "trace": a.trace,

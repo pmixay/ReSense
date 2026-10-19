@@ -20,7 +20,7 @@ from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_o
                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
                            widened_profile)
 from resense.health import HealthMonitor
-from resense.lowobj import BedTemplate, low_candidates, mark_rail_line, rail_reference_check
+from resense.lowobj import BedTemplate, low_candidates, mark_rail_line, no_rail_advisory, rail_reference_check
 from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
@@ -373,10 +373,7 @@ class Detector:
         if cfg.lowobj.no_rail_low_within > 0 and self.track.rail_slabs == 0:
             # 19.10 (F1 c, off by default): without the rail pair in the near range a low cluster beyond
             # no_rail_low_within is advisory; a signature, so an earned STOP is kept by the stop-keep rule
-            for c in clusters:
-                if (c.kind == "low" and c.zone == "gauge" and not c.reason
-                        and c.distance > cfg.lowobj.no_rail_low_within):
-                    c.zone, c.reason, c.demoted = "warning", "no_rail_low", True
+            no_rail_advisory(clusters, cfg.lowobj.no_rail_low_within)
         if cfg.cluster.mount_cross_tol > 0:
             self._mount_cross_check(clusters, xyz)
         t5 = time.perf_counter()
