@@ -1,0 +1,27 @@
+# 1.1.0 (3b7d7aa) replay of the marked bag vs the committed 1.1.0 run of the 16.10 bag (synthetic_labels_2026-10-17/runs)
+frames 386 vs 386; key sets equal: True
+decisions a: {'GO': 66, 'CAUTION': 135, 'STOP': 185}
+decisions b: {'GO': 66, 'CAUTION': 135, 'STOP': 185}
+frames whose health level differs only by latency messages: 10 [10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+IDENTICAL in every non-timing field on all 386 frames
+
+# control: the same replay vs the committed 1.0.0 run (a different detector must show differences)
+frames 386 vs 386; key sets equal: True
+decisions a: {'GO': 66, 'CAUTION': 135, 'STOP': 185}
+decisions b: {'GO': 66, 'CAUTION': 135, 'STOP': 185}
+frames whose health level differs only by latency messages: 10 [10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+DIFFERENT clear: 8 frames, first [43, 44, 46, 48, 49, 50, 54, 80]
+DIFFERENT monitored: 8 frames, first [43, 44, 46, 48, 49, 50, 54, 80]
+
+# replay meta
+{
+ "frames": 386,
+ "wall_s": 21.5,
+ "cpu_s": 20.3,
+ "rss_peak_mb": 110.1,
+ "resets": [],
+ "bags": [
+  "/data/synth_markers/raw/synthetic_platform_cloud_with_markers"
+ ]
+}
+aae9b2117dbb588ade9bbcdd4e339caa7ba0c2470d11db6b8dfc859b184d28c8  v110_marked_platform.jsonl

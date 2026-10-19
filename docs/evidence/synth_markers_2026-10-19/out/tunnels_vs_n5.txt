@@ -1,0 +1,10 @@
+marker object 1 ids [0] frames 2-444 (167 marked, 102 at 2.5-250 m): N5 match in 101 frames {'panel_2': 101}; median N5 - marker -0.0 m; size [2.18, 2.18, 2.0]
+marker object 2 ids [18] frames 4-60 (35 marked, 34 at 2.5-250 m): N5 match in 0 frames {}; median N5 - marker None m; size [0.45, 0.44, 0.34]
+marker object 3 ids [19] frames 166-289 (103 marked, 101 at 2.5-250 m): N5 match in 102 frames {'box_right_1': 102}; median N5 - marker 0.01 m; size [0.44, 0.49, 0.42]
+marker object 4 ids [1] frames 351-489 (50 marked, 50 at 2.5-250 m): N5 match in 42 frames {'flat_crossrail_3': 42}; median N5 - marker 0.0 m; size [0.19, 2.25, 0.14]
+marker object 5 ids [20] frames 446-495 (50 marked, 49 at 2.5-250 m): N5 match in 50 frames {'box_left_4': 50}; median N5 - marker 0.01 m; size [0.51, 0.51, 0.4]
+N5 track box_left_4: 50 rows, 50 match a marker object, 0 do not
+N5 track box_right_1: 102 rows, 102 match a marker object, 0 do not
+N5 track flat_crossrail_3: 42 rows, 42 match a marker object, 0 do not
+N5 track panel_2: 102 rows, 101 match a marker object, 1 do not
+    unmatched {'frame': 346, 'n5_distance': 173.96, 'n5_lateral': -22.09, 'n5_points': 1, 'nearest_marker': {'ids': [0], 'fwd': 173.65, 'lat': -23.2}}

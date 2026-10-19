@@ -1,7 +1,7 @@
 # Current review evidence — 28 September 2026
 
 Reviewed source: `20e82297bbf859e7d63bee35044d6c8314f746c5` on
-`gpt-score-push-20260928`. [Assessment](../../CURRENT_REVIEW_2026-09-28.md): **69/100**.
+`gpt-score-push-20260928`. [Assessment](../../archive/2026-09-28/CURRENT_REVIEW_2026-09-28.md): **69/100**.
 [Machine-readable scores](score.json) retain the prior internal weights and assign zero delta.
 
 ## Fresh checks

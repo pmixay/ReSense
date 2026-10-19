@@ -17,6 +17,8 @@ export interface TrackModelDict {
   yaw: number; // rad
   curvature: number; // 1/m (+ = left)
   rail_offset: number; // rail head above the bed reference (m)
+  curv_step?: number; // 1/m, curvature change at curv_knot (C1 piecewise axis, track.axis_joint_fit); absent = quadratic
+  curv_knot?: number; // m
   rail_score?: number;
   wall_quality?: number;
   axis_valid?: number; // X up to which the axis is supported by observed boundaries
@@ -65,12 +67,14 @@ export function polyder(c: readonly number[], x: number): number {
 
 /** Lateral position of the track axis at X (TrackModel.center_y). */
 export function centerY(t: TrackModelDict, x: number): number {
-  return t.center + Math.tan(t.yaw) * x + 0.5 * t.curvature * x * x;
+  const d = t.curv_step ? Math.max(x - (t.curv_knot ?? 0), 0) : 0;
+  return t.center + Math.tan(t.yaw) * x + 0.5 * t.curvature * x * x + (t.curv_step ? 0.5 * t.curv_step * d * d : 0);
 }
 
 /** Heading of the axis at X (rad, + = turning left): atan(dy/dx). */
 export function headingAt(t: TrackModelDict, x: number): number {
-  return Math.atan(Math.tan(t.yaw) + t.curvature * x);
+  const d = t.curv_step ? Math.max(x - (t.curv_knot ?? 0), 0) : 0;
+  return Math.atan(Math.tan(t.yaw) + t.curvature * x + (t.curv_step ? t.curv_step * d : 0));
 }
 
 /** Bed reference height at X, linearly extrapolated beyond floor_range (TrackModel.floor_z). */

@@ -31,7 +31,7 @@ judges' findings (DECISIONS rows 18–27). Open: the team slides (P2 / team), th
 
 **27.09 integration:** the P1/P2 completion branch is integrated, with startup cadence,
 dashboard reconnect handling and remote-viewer checks. Completed experiment histories are
-retained without enabling rejected detector variants. The [integration record](BRANCH_INTEGRATION_2026-09-27.md)
+retained without enabling rejected detector variants. The integration record (`BRANCH_INTEGRATION_2026-09-27.md`, deleted 19.10)
 maps the source branches and validation; the earlier `d480b13` archive below is dated delivery evidence.
 
 **27.09 operating procedure:** the captain's follow-up request adopts the proven ten-message

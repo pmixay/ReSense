@@ -1,0 +1,203 @@
+{
+ "base_ros2": {
+  "far_walker": {
+   "frames": 1183,
+   "stop_frames": 0,
+   "output_frames": 0,
+   "first_stop": null,
+   "bands": {
+    "240-250": {
+     "frames": 94,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "250-260": {
+     "frames": 175,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "260-270": {
+     "frames": 223,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "270-280": {
+     "frames": 238,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "280-290": {
+     "frames": 184,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "290-300": {
+     "frames": 180,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "300-310": {
+     "frames": 89,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  },
+  "far_251": {
+   "frames": 254,
+   "stop_frames": 0,
+   "output_frames": 0,
+   "first_stop": null,
+   "bands": {
+    "240-250": {
+     "frames": 18,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "250-260": {
+     "frames": 236,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  }
+ },
+ "c13": {
+  "far_walker": {
+   "frames": 1183,
+   "stop_frames": 180,
+   "output_frames": 399,
+   "first_stop": [
+    43,
+    256.5
+   ],
+   "bands": {
+    "240-250": {
+     "frames": 94,
+     "stop": 0.798,
+     "output": 0.957
+    },
+    "250-260": {
+     "frames": 175,
+     "stop": 0.451,
+     "output": 0.914
+    },
+    "260-270": {
+     "frames": 223,
+     "stop": 0.085,
+     "output": 0.507
+    },
+    "270-280": {
+     "frames": 238,
+     "stop": 0.029,
+     "output": 0.151
+    },
+    "280-290": {
+     "frames": 184,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "290-300": {
+     "frames": 180,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "300-310": {
+     "frames": 89,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  },
+  "far_251": {
+   "frames": 254,
+   "stop_frames": 9,
+   "output_frames": 45,
+   "first_stop": [
+    1716,
+    249.8
+   ],
+   "bands": {
+    "240-250": {
+     "frames": 18,
+     "stop": 0.5,
+     "output": 1.0
+    },
+    "250-260": {
+     "frames": 236,
+     "stop": 0.0,
+     "output": 0.114
+    }
+   }
+  }
+ },
+ "c134": {
+  "far_walker": {
+   "frames": 1183,
+   "stop_frames": 163,
+   "output_frames": 399,
+   "first_stop": [
+    43,
+    256.5
+   ],
+   "bands": {
+    "240-250": {
+     "frames": 94,
+     "stop": 0.798,
+     "output": 0.957
+    },
+    "250-260": {
+     "frames": 175,
+     "stop": 0.354,
+     "output": 0.914
+    },
+    "260-270": {
+     "frames": 223,
+     "stop": 0.085,
+     "output": 0.507
+    },
+    "270-280": {
+     "frames": 238,
+     "stop": 0.029,
+     "output": 0.151
+    },
+    "280-290": {
+     "frames": 184,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "290-300": {
+     "frames": 180,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "300-310": {
+     "frames": 89,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  },
+  "far_251": {
+   "frames": 254,
+   "stop_frames": 9,
+   "output_frames": 45,
+   "first_stop": [
+    1716,
+    249.8
+   ],
+   "bands": {
+    "240-250": {
+     "frames": 18,
+     "stop": 0.5,
+     "output": 1.0
+    },
+    "250-260": {
+     "frames": 236,
+     "stop": 0.0,
+     "output": 0.114
+    }
+   }
+  }
+ }
+}

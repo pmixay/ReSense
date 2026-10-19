@@ -1,0 +1,75 @@
+frames: primary 4443, explicit-ROS 4443, extra 4443
+
+== default launch (Pandar axes + auto_calibrate): {'FAULT': 1, 'GO': 8, 'CAUTION': 3062, 'STOP': 1372}
+   first frame of each decision: {'GO': 1, 'CAUTION': 5, 'STOP': 159}
+
+== explicit falcon_ros axes: {'GO': 13, 'CAUTION': 3043, 'STOP': 1387}
+   first frame of each decision: {'GO': 0, 'CAUTION': 5, 'STOP': 25}
+
+== calibration (mount) of the primary (default launch)
+   frame    0: decision FAULT   status=pending   orient=configured roll=0.0 pitch=0.0 height=None lateral=None used=0 conflict=False
+   frame    1: decision GO      status=pending   orient=forward=+y left=-x up=+z roll=0.0 pitch=0.0 height=None lateral=None used=0 conflict=False
+   frame    2: decision GO      status=pending   orient=forward=+y left=-x up=+z roll=0.0 pitch=0.0 height=None lateral=None used=0 conflict=False
+   frame    3: decision GO      status=pending   orient=forward=+y left=-x up=+z roll=0.0 pitch=0.0 height=None lateral=None used=0 conflict=False
+   frame    5: decision CAUTION status=pending   orient=forward=+y left=-x up=+z roll=0.0 pitch=0.0 height=None lateral=None used=0 conflict=False
+   frame   10: decision CAUTION status=pending   orient=forward=+y left=-x up=+z roll=0.0 pitch=0.0 height=None lateral=None used=0 conflict=False
+   frame   50: decision CAUTION status=pending   orient=forward=+y left=-x up=+z roll=0.0 pitch=0.0 height=None lateral=None used=0 conflict=False
+   frame  100: decision CAUTION status=pending   orient=forward=+y left=-x up=+z roll=0.0 pitch=0.0 height=None lateral=None used=0 conflict=False
+   frame  200: decision CAUTION status=ok        orient=forward=+y left=-x up=+z roll=0.0 pitch=-2.39 height=1.77 lateral=0.77 used=20 conflict=False
+   frame  400: decision CAUTION status=ok        orient=forward=+y left=-x up=+z roll=0.0 pitch=-2.39 height=1.77 lateral=0.77 used=20 conflict=False
+   frame 1000: decision CAUTION status=ok        orient=forward=+y left=-x up=+z roll=0.0 pitch=-2.39 height=1.77 lateral=0.77 used=20 conflict=False
+   frame 2000: decision CAUTION status=ok        orient=forward=+y left=-x up=+z roll=0.0 pitch=-2.39 height=1.77 lateral=0.77 used=20 conflict=False
+   frame 3000: decision STOP    status=ok        orient=forward=+y left=-x up=+z roll=0.0 pitch=-2.39 height=1.77 lateral=0.77 used=20 conflict=False
+   frame 4000: decision STOP    status=ok        orient=forward=+y left=-x up=+z roll=0.0 pitch=-2.39 height=1.77 lateral=0.77 used=20 conflict=False
+   frame 4442: decision CAUTION status=ok        orient=forward=+y left=-x up=+z roll=0.0 pitch=-2.39 height=1.77 lateral=0.77 used=20 conflict=False
+   keys of mount dict: ['drift_deg', 'frames_used', 'height', 'lateral', 'message', 'orientation', 'orientation_confirmed', 'orientation_conflict', 'pitch_deg', 'roll_deg', 'status', 'yaw_deg']
+   mount status over all frames: {'pending': 192, 'ok': 4251}
+   explicit ROS mount status over all frames: {'pending': 190, 'ok': 4253}
+
+== person association, default launch (distance match |d - person_x| <= max(4 m, 3 %)
+   frames inside reviewed trajectory: 2676; STOP frames matched to the person: 1360
+   first matched warning (frame, person range, det d, det lat): (2713, 155.76152221679686, 154.7, -0.24)
+   first matched STOP    (frame, person range, det d, det lat): (2972, 124.77016357421876, 124.84, -0.61)
+   from the first matched STOP to the end of the trajectory: 1360/1429 frames matched STOP (95.2 %)
+     person range 100-130 m: 282/326 frames STOP matched
+     person range  60-100 m: 648/648 frames STOP matched
+     person range  20- 60 m: 320/320 frames STOP matched
+     person range   0- 20 m: 110/135 frames STOP matched
+   frames with the person farther than the first-STOP range: 1243 (none of them matched as STOP by definition)
+
+== person association, explicit ROS (distance match |d - person_x| <= max(4 m, 3 %)
+   frames inside reviewed trajectory: 2676; STOP frames matched to the person: 1379
+   first matched warning (frame, person range, det d, det lat): (2713, 155.76152221679686, 154.7, -0.33)
+   first matched STOP    (frame, person range, det d, det lat): (2950, 127.18362426757812, 127.18, -0.89)
+   from the first matched STOP to the end of the trajectory: 1379/1451 frames matched STOP (95.0 %)
+     person range 100-130 m: 294/348 frames STOP matched
+     person range  60-100 m: 648/648 frames STOP matched
+     person range  20- 60 m: 320/320 frames STOP matched
+     person range   0- 20 m: 117/135 frames STOP matched
+   frames with the person farther than the first-STOP range: 1220 (none of them matched as STOP by definition)
+
+== reviewed raw returns inside the person crop (anchor file) by range
+   240-260 m: median     7 returns (n=11 anchors)
+   200-240 m: median     7 returns (n=15 anchors)
+   150-200 m: median    14 returns (n=16 anchors)
+   120-150 m: median    26 returns (n=10 anchors)
+    90-120 m: median    50 returns (n=28 anchors)
+    50- 90 m: median   104 returns (n=12 anchors)
+    20- 50 m: median   234 returns (n=10 anchors)
+     0- 20 m: median   786 returns (n=6 anchors)
+
+== uncropped raw returns
+   raw points per frame: median 94991 (min 94183, max 95494)
+   returns > 250 m per frame: median 15, max 37; frames with any: 4427/4443
+   returns > 300 m per frame: median 4, max 19; frames with >=10: 197/4443
+   per-frame max range: median 373 m, p95 442 m, max 510 m
+   returns per 10 m bin summed over all frames (millions): 0-50 m: 397.84M  50-100 m: 21.13M  100-150 m: 2.43M  150-200 m: 0.39M  200-250 m: 0.15M  250-300 m: 0.05M  300-350 m: 0.00M  350-400 m: 0.01M  400-450 m: 0.00M  500-550 m: 0.00M  
+
+== trusted axis / monitored range (default launch)
+   axis_valid: median 123 m, p10 107, p90 167, max 1000000000; frames >= 250: 1
+   monitored : median 115 m, p10 102, p90 158, max 175; frames >= 250: 0
+   clear_distance (legacy policy in this replica): median 107 m, max 167 m
+
+== frames with a STOP detection NOT matched to the person (default launch)
+   12 STOP frames unmatched; their detection distances (m) by 10-m band:
+    {0: 8, 110: 4}

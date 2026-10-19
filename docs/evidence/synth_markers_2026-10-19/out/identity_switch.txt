@@ -1,0 +1,27 @@
+# 1.1.0 (3b7d7aa) replay of the marked bag vs the committed 1.1.0 run of the 16.10 bag (synthetic_labels_2026-10-17/runs)
+frames 736 vs 736; key sets equal: True
+decisions a: {'GO': 300, 'CAUTION': 294, 'STOP': 142}
+decisions b: {'GO': 300, 'CAUTION': 294, 'STOP': 142}
+frames whose health level differs only by latency messages: 39 [88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+IDENTICAL in every non-timing field on all 736 frames
+
+# control: the same replay vs the committed 1.0.0 run (a different detector must show differences)
+frames 736 vs 736; key sets equal: True
+decisions a: {'GO': 300, 'CAUTION': 294, 'STOP': 142}
+decisions b: {'GO': 300, 'CAUTION': 294, 'STOP': 142}
+frames whose health level differs only by latency messages: 82 [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+DIFFERENT monitored: 179 frames, first [173, 174, 178, 181, 183, 184, 185, 186]
+DIFFERENT clear: 139 frames, first [185, 186, 187, 188, 189, 190, 198, 199]
+
+# replay meta
+{
+ "frames": 736,
+ "wall_s": 36.9,
+ "cpu_s": 36.3,
+ "rss_peak_mb": 116.1,
+ "resets": [],
+ "bags": [
+  "/data/synth_markers/raw/synthetic_switch_cloud_with_markers"
+ ]
+}
+94e34744d069a3608d2c699aa360e5b244bc17f58d84fadb9c6c13fa6629faa6  v110_marked_switch.jsonl

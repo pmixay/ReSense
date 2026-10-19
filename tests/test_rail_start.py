@@ -204,12 +204,14 @@ def test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop():
     i0 = [cache_file_stem(f) for f in files].index("new_data_55_0013")
     stamps = load_cache_stamps(RIDE)
     runs = {}
-    for within in (0.0, 4.0, "gate"):
-        cfg = _on(4.0 if within == "gate" else within)
+    for within in (0.0, 4.0, "gate", "f1"):
+        cfg = _on(4.0 if within == "gate" else 0.0 if within == "f1" else within)
         if within == "gate":
             cfg.lowobj.rail_start_within = 0.0              # the shipped association gate alone
         else:
             cfg.tracking.gate_along_only = False            # the counterfactual of 26.09
+        # 19.10: the F1a candidate (local rail reference, off by default since the integration) only in "f1"
+        cfg.lowobj.local_rail_margin = 0.01 if within == "f1" else 0.0
         det = Detector(cfg)
         stops = []
         for k, f in enumerate(files[i0:i0 + 40]):
@@ -223,6 +225,9 @@ def test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop():
     assert all(kind == "low" and 2.8 <= d <= 3.2 for _, kind, d in runs[0.0])
     assert runs[4.0] == []
     assert runs["gate"] == []
+    # 19.10 (F1a', docs/evidence/f1_false_alarms_2026-10-19): the rail heads do not rise above their own rail
+    # line, so the counterfactual (no rail-start rule, the old gate) does not STOP with the local reference on
+    assert runs["f1"] == []
 
 
 # --- every blind-zone case of the 4 m rule stays a STOP (ray-cast) -------------------------------

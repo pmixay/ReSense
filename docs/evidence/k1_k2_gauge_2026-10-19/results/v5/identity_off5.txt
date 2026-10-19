@@ -1,0 +1,12 @@
+# off identity: v5 code a82c86a, every switch off (gate off5) vs b2c523a (gate base), same container, 19.10
+## gate_identity.py base off5 (json rows + per-frame files)
+json rows compared 425 of 471 | differing: 0 [] | health-level counts differing (latency-dependent): ['recordings.doubleT_obstacle.health.ok', 'recordings.doubleT_obstacle.health.warn', 'recordings.doubleT_platform.health.ok', 'recordings.doubleT_platform.health.warn', 'recordings.roundT_doubleT.health.ok', 'recordings.roundT_doubleT.health.warn', 'recordings.roundT_squareT_pressureGate_squareT.health.ok', 'recordings.roundT_squareT_pressureGate_squareT.health.warn', 'recordings.squareT_platform_squareT_switch.health.ok', 'recordings.squareT_platform_squareT_switch.health.warn', 'ride.health.ok', 'ride.health.warn']
+per-frame files: frames differing in total (timing excluded): 0
+## cmp_frames.py (F1) base off5 (per-frame incl. setF_straight.json)
+{"files": 15, "rows": 15269, "rows_different": 0, "rows_latency_level_only": 2314, "first_differences": [], "setF_straight_equal": true}
+## positive control: the same checkers, base vs v4 (b2c523a, v4 switches; no added record field)
+per-frame files: frames differing in total (timing excluded): 15259
+{"files": 15, "rows": 15269, "rows_different": 15259, "rows_latency_level_only": 0, "first_differences": [["cloud_with_f
+## base b2c523a vs the K1/K2 v3 lane's base (aec88d2, results/gate/gate_base.json) and off3
+json rows compared 425 of 471 | differing: 1 ['gate.baseline'] | health-level counts differing (latency-dependent): ['recordings.doubleT_platform.health.ok', 'recordings.doubleT_platform.health.warn', 'recordings.roundT_squareT_pressureGate_squareT.health.ok', 'recordings.roundT_squareT_pressureGate_squareT.health.warn', 'recordings.squareT_platform_squareT_switch.health.ok', 'recordings.squareT_platform_squareT_switch.health.warn', 'ride.health.ok', 'ride.health.warn']
+json rows compared 425 of 471 | differing: 1 ['gate.baseline'] | health-level counts differing (latency-dependent): ['recordings.doubleT_platform.health.ok', 'recordings.doubleT_platform.health.warn', 'recordings.roundT_squareT_pressureGate_squareT.health.ok', 'recordings.roundT_squareT_pressureGate_squareT.health.warn', 'recordings.squareT_platform_squareT_switch.health.ok', 'recordings.squareT_platform_squareT_switch.health.warn', 'ride.health.ok', 'ride.health.warn']

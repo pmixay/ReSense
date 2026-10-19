@@ -68,3 +68,18 @@ def ray_directions(fov_deg=AZIMUTH_FOV_DEG, az_step_deg=AZIMUTH_STEP_DEG,
         [np.cos(el_g) * np.cos(az_g), np.cos(el_g) * np.sin(az_g), np.sin(el_g)], axis=-1
     )
     return d.reshape(-1, 3)
+
+
+# 19.10 (Falcon long range): the Seyond Falcon Prime raster measured on the organizers' recording
+# (docs/evidence/falcon_long_range_2026-10-19): ROI lines 0.088 deg in azimuth, 0.06 deg apart in
+# elevation (60 lines over raw elevation -3.98..+0.72 deg); outside the ROI 0.18 x 0.235 deg. The ROI
+# is a configurable sensor setting, so only the outside grid holds over the whole field of view.
+FALCON_ROI_STEP_DEG = (0.088, 0.06)
+FALCON_FOV_STEP_DEG = (0.18, 0.235)
+
+
+def falcon_expected_points(range_m, width_m, height_m, roi: bool = False):
+    """Expected returns on a flat target on the Falcon raster (the outside-ROI grid by default)."""
+    r = np.maximum(np.asarray(range_m, dtype=np.float64), 1e-3)
+    d_az, d_el = np.radians(FALCON_ROI_STEP_DEG if roi else FALCON_FOV_STEP_DEG)
+    return (width_m / (r * d_az)) * (height_m / (r * d_el))

@@ -1,6 +1,6 @@
 # P2 planning review — 16 October 2026
 
-**Deliverable:** [Role 2 execution plan](../../ROLE_2_PLAN.md), branch `role-2`.
+**Deliverable:** [Role 2 execution plan](../../archive/ROLE_2_PLAN.md), branch `role-2`.
 This records repository/source review and integrity checks, not implementation completion
 or a new detector evaluation.
 

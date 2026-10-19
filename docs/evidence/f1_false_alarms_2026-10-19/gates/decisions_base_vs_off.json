@@ -1,0 +1,100 @@
+{
+ "cloud_with_fake_obj": {
+  "base": {
+   "GO": 737,
+   "STOP": 447,
+   "FAULT": 2,
+   "CAUTION": 324
+  },
+  "cand": {
+   "GO": 737,
+   "STOP": 447,
+   "FAULT": 2,
+   "CAUTION": 324
+  },
+  "transitions": {}
+ },
+ "doubleT_obstacle": {
+  "base": {
+   "GO": 8,
+   "STOP": 193
+  },
+  "cand": {
+   "GO": 8,
+   "STOP": 193
+  },
+  "transitions": {}
+ },
+ "doubleT_platform": {
+  "base": {
+   "GO": 150,
+   "CAUTION": 193,
+   "STOP": 2
+  },
+  "cand": {
+   "GO": 150,
+   "CAUTION": 193,
+   "STOP": 2
+  },
+  "transitions": {}
+ },
+ "new_data": {
+  "base": {
+   "GO": 6440,
+   "CAUTION": 4705,
+   "STOP": 126
+  },
+  "cand": {
+   "GO": 6440,
+   "CAUTION": 4705,
+   "STOP": 126
+  },
+  "transitions": {}
+ },
+ "roundT_doubleT": {
+  "base": {
+   "GO": 79,
+   "CAUTION": 173
+  },
+  "cand": {
+   "GO": 79,
+   "CAUTION": 173
+  },
+  "transitions": {}
+ },
+ "roundT_pressureGate_roundT": {
+  "base": {
+   "GO": 161,
+   "CAUTION": 107
+  },
+  "cand": {
+   "GO": 161,
+   "CAUTION": 107
+  },
+  "transitions": {}
+ },
+ "roundT_squareT_pressureGate_squareT": {
+  "base": {
+   "GO": 399,
+   "CAUTION": 146
+  },
+  "cand": {
+   "GO": 399,
+   "CAUTION": 146
+  },
+  "transitions": {}
+ },
+ "squareT_platform_squareT_switch": {
+  "base": {
+   "GO": 454,
+   "CAUTION": 386,
+   "STOP": 37
+  },
+  "cand": {
+   "GO": 454,
+   "CAUTION": 386,
+   "STOP": 37
+  },
+  "transitions": {}
+ }
+}

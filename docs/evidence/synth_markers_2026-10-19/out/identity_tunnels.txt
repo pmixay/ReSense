@@ -1,0 +1,27 @@
+# 1.1.0 (3b7d7aa) replay of the marked bag vs the committed 1.1.0 run of the 16.10 bag (synthetic_labels_2026-10-17/runs)
+frames 545 vs 545; key sets equal: True
+decisions a: {'GO': 196, 'CAUTION': 223, 'STOP': 126}
+decisions b: {'GO': 196, 'CAUTION': 223, 'STOP': 126}
+frames whose health level differs only by latency messages: 52 [123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134]
+IDENTICAL in every non-timing field on all 545 frames
+
+# control: the same replay vs the committed 1.0.0 run (a different detector must show differences)
+frames 545 vs 545; key sets equal: True
+decisions a: {'GO': 196, 'CAUTION': 223, 'STOP': 126}
+decisions b: {'GO': 196, 'CAUTION': 223, 'STOP': 126}
+frames whose health level differs only by latency messages: 0 []
+DIFFERENT clear: 88 frames, first [1, 2, 3, 4, 5, 6, 7, 8]
+DIFFERENT monitored: 99 frames, first [1, 2, 3, 4, 5, 6, 7, 8]
+
+# replay meta
+{
+ "frames": 545,
+ "wall_s": 29.5,
+ "cpu_s": 29.0,
+ "rss_peak_mb": 132.1,
+ "resets": [],
+ "bags": [
+  "/data/synth_markers/raw/synthetic_tunnels_cloud_with_markers"
+ ]
+}
+604e42704f2c95c10f82084296c89a6487cd47e8cf9e33a6cfa3b625f8b26865  v110_marked_tunnels.jsonl

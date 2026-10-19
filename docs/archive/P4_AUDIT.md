@@ -96,7 +96,8 @@ reproducibility rather than a performance change.
 | **Total** | **100** | **66.5** | **0** |
 
 The inherited detector and product evidence behind these values is the 28.09 independent report
-([`rejudge_2026-09-28.json`](evidence/results/rejudge_2026-09-28.json)); the P4 replay adds the
+(`rejudge_2026-09-28.json`, since removed from the tree; the independent judgement's evidence is
+[`judgement_2026-09-28`](../evidence/judgement_2026-09-28/README.md)); the P4 replay adds the
 complete-data gate and candidate audit described above. The organizers provide no published
 numerical weights, and this total is only a provisional internal reference.
 

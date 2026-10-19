@@ -1,0 +1,30 @@
+[
+ {
+  "frame": 439,
+  "id": 0,
+  "fwd": 12.65,
+  "lat": -0.54,
+  "up": -0.13,
+  "size_fwd_lat_up": [
+   2.0,
+   2.0,
+   2.0
+  ],
+  "pts_in_box": 12445,
+  "pts_within_1m": 10
+ },
+ {
+  "frame": 442,
+  "id": 0,
+  "fwd": 6.53,
+  "lat": -0.54,
+  "up": -0.13,
+  "size_fwd_lat_up": [
+   2.0,
+   2.0,
+   2.0
+  ],
+  "pts_in_box": 36000,
+  "pts_within_1m": 0
+ }
+]

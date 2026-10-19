@@ -1,0 +1,2 @@
+json rows compared 425 of 471 | differing: 0 [] | health-level counts differing (latency-dependent): ['recordings.doubleT_platform.health.ok', 'recordings.doubleT_platform.health.warn', 'ride.health.ok', 'ride.health.warn']
+per-frame files: frames differing in total (timing excluded): 0
