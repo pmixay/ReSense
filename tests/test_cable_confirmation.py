@@ -78,3 +78,11 @@ def test_hanging_one_scanline_never_uses_short_confirmation():
     for _ in range(2):
         tr.update([cable(kind='hanging',height=.01,n=3)], frame_dt=.1)
         assert not stops(tr)
+
+
+@pytest.mark.parametrize('dt,expected', [(.099995, True), (.09, False), (.05, False)])
+def test_hanging_timestamp_jitter_is_bounded_not_an_extra_hit(dt, expected):
+    tr = Tracker(DetectorConfig().tracking)
+    for _ in range(2):
+        tr.update([cable(kind='hanging', distance=48.2, height=.44, n=3)], frame_dt=dt)
+    assert stops(tr) == expected
