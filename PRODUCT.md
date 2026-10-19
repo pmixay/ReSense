@@ -55,8 +55,11 @@ off-white molded paneling, layered black glazing surrounds and gray-taupe woven
 cantilevered seating below the screen. Photos remain reference-only.
 
 Changing application sections closes a paired, dimensional metro-door overlay,
-slides the current page right with motion blur, commits the destination offscreen,
-and slides it in from the left before opening. The leaves follow the supplied
+then glides through the station order toward the selected tab. Targets to the left
+enter from the left; targets to the right enter from the right. Every intervening
+tab passes behind the glass in order, with stronger motion blur and one continuous
+decelerating trajectory. Only the destination creates a browser-history entry.
+The leaves follow the supplied
 Moskva-2020 photographs, with tall glazing, narrow black surrounds, center seals
 and red edge LEDs. Glass is matte and blurred but transparent: broad page colors
 and movement remain visible through the frost. Navigation

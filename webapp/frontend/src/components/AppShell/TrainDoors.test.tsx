@@ -3,6 +3,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createMemoryRouter, RouterProvider, useLocation, useNavigate } from 'react-router-dom';
 import { TrainDoors, useTrainDoors } from './TrainDoors';
+vi.mock('../../sectionPages', () => ({ preloadSections: vi.fn() }));
 
 function Harness() {
   const doors = useTrainDoors();
@@ -10,6 +11,7 @@ function Harness() {
   const navigate = useNavigate();
   return <>
     <output>{location.pathname}{location.search}</output>
+    <output data-journey>{JSON.stringify(doors.journey)}</output>
     <button onClick={() => navigate('/runs')}>Runs</button>
     <button onClick={() => navigate('/upload')}>Upload</button>
     <button onClick={() => navigate('/player/second?pos=20')}>Run switch</button>
@@ -18,7 +20,7 @@ function Harness() {
   </>;
 }
 
-function setup(reduced = false) {
+function setup(reduced = false, initial = '/player/first?pos=4') {
   vi.useFakeTimers();
   // Node's Request rejects jsdom's AbortSignal. There are no loaders/fetches here.
   const NativeRequest = globalThis.Request;
@@ -26,33 +28,30 @@ function setup(reduced = false) {
     constructor(input: RequestInfo | URL, init?: RequestInit) { super(input, { ...init, signal: undefined }); }
   });
   vi.stubGlobal('matchMedia', () => ({ matches: reduced, addEventListener() {}, removeEventListener() {} }));
-  const router = createMemoryRouter([{ path: '*', element: <Harness /> }], { initialEntries: ['/player/first?pos=4'] });
+  const router = createMemoryRouter([{ path: '*', element: <Harness /> }], { initialEntries: [initial] });
   const view = render(<RouterProvider router={router} />);
   return { router, overlay: view.container.querySelector('[data-train-doors]')! };
 }
 async function advance(ms: number) { await act(async () => { await vi.advanceTimersByTimeAsync(ms); }); }
 async function finishTransition() {
-  for (const ms of [360, 160, 25, 230, 460]) await advance(ms);
+  for (const ms of [360, 25, 670, 460]) await advance(ms);
 }
 
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 describe('train door navigation', () => {
-  it('closes, sends the old page right, commits offscreen, then arrives before opening', async () => {
+  it('closes before committing, then glides into the destination before opening', async () => {
     const { router, overlay } = setup();
     fireEvent.click(screen.getByText('Runs'));
     expect(overlay.getAttribute('data-phase')).toBe('closing');
     await advance(350);
     expect(router.state.location.pathname).toBe('/player/first');
     await advance(10);
-    expect(router.state.location.pathname).toBe('/player/first');
-    expect(overlay.getAttribute('data-phase')).toBe('departing');
-    await advance(160);
     expect(router.state.location.pathname).toBe('/runs');
     expect(overlay.getAttribute('data-phase')).toBe('covered');
     await advance(25);
-    expect(overlay.getAttribute('data-phase')).toBe('arriving');
-    await advance(230);
+    expect(overlay.getAttribute('data-phase')).toBe('travelling');
+    await advance(670);
     expect(overlay.getAttribute('data-phase')).toBe('opening');
     await advance(460);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
@@ -90,13 +89,12 @@ describe('train door navigation', () => {
     document.body.append(fallback);
     fireEvent.click(screen.getByText('Runs'));
     await advance(360);
-    await advance(160);
     await advance(300);
     expect(overlay.getAttribute('data-phase')).toBe('covered');
     fallback.remove();
     await advance(50);
-    expect(overlay.getAttribute('data-phase')).toBe('arriving');
-    await advance(230);
+    expect(overlay.getAttribute('data-phase')).toBe('travelling');
+    await advance(670);
     expect(overlay.getAttribute('data-phase')).toBe('opening');
     await advance(460);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
@@ -108,10 +106,9 @@ describe('train door navigation', () => {
     await advance(150);
     fireEvent.click(screen.getByText('Upload'));
     await advance(210);
-    await advance(160);
     expect(router.state.location.pathname).toBe('/upload');
     expect(overlay.getAttribute('data-phase')).toBe('covered');
-    for (const ms of [25, 230, 460]) await advance(ms);
+    for (const ms of [25, 970, 460]) await advance(ms);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
   });
 
@@ -121,9 +118,22 @@ describe('train door navigation', () => {
     fallback.dataset.pageFallback = '';
     document.body.append(fallback);
     fireEvent.click(screen.getByText('Runs'));
-    for (const ms of [360, 160, 1100, 230, 460]) await advance(ms);
+    for (const ms of [360, 1300, 670, 460]) await advance(ms);
     expect(router.state.location.pathname).toBe('/runs');
     expect(overlay.getAttribute('data-phase')).toBe('idle');
     fallback.remove();
+  });
+
+  it('passes Runs between Queue and Player and creates only the selected history entry', async () => {
+    const { router, overlay } = setup(false, '/queue');
+    fireEvent.click(screen.getByText('Run switch'));
+    expect(JSON.parse(document.querySelector('[data-journey]')!.textContent!)).toMatchObject({ direction: 'right', via: ['runs'], steps: 2 });
+    for (const ms of [360, 25, 820, 460]) await advance(ms);
+    expect(router.state.location.pathname).toBe('/player/second');
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+    fireEvent.click(screen.getByText('Back'));
+    expect(JSON.parse(document.querySelector('[data-journey]')!.textContent!)).toMatchObject({ direction: 'left', via: ['runs'] });
+    for (const ms of [360, 25, 820, 460]) await advance(ms);
+    expect(router.state.location.pathname).toBe('/queue');
   });
 });

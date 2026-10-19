@@ -4,17 +4,11 @@ import { createBrowserRouter, RouterProvider, useRouteError, type RouteObject } 
 import { AppShell } from './components/AppShell/AppShell';
 import { Button } from './components/Button/Button';
 import { ErrorBanner } from './components/ErrorBanner/ErrorBanner';
+import { sectionPages } from './sectionPages';
 
-const Overview = lazy(() => import('./pages/Overview'));
-const Upload = lazy(() => import('./pages/Upload'));
-const Queue = lazy(() => import('./pages/Queue'));
-const Runs = lazy(() => import('./pages/Runs'));
+const { overview: Overview, upload: Upload, queue: Queue, runs: Runs, player: Player,
+  compare: Compare, live: Live, presets: Presets, about: About } = sectionPages;
 const RunDetail = lazy(() => import('./pages/RunDetail'));
-const Player = lazy(() => import('./pages/Player'));
-const Compare = lazy(() => import('./pages/Compare'));
-const Live = lazy(() => import('./pages/Live'));
-const Presets = lazy(() => import('./pages/Presets'));
-const About = lazy(() => import('./pages/About'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const UiGuide = lazy(() => import('./pages/UiGuide'));
 

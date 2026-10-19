@@ -69,3 +69,13 @@ motion blur, commit offscreen, immediately arrive from the left, then open. Use
 one live route, brief bounded CSS effects, safe lazy-chunk waits and native focus
 release. Reduced motion keeps the short non-spatial fade. Latest transition
 captures and optical/motion evidence are in `docs/images/moskva-doors/`.
+
+DIRECTIONAL STATION TRAVEL (latest): Use one continuous, decelerating page strip
+following the shared LINE/BRANCH order. Left targets enter from the left, right
+targets from the right; include every intermediate section behind the glass.
+Increase motion blur to 32px at speed and clear it at rest. Preserve the outgoing
+DOM/canvas appearance during the final route handover. Intermediate sections are
+inert memory-route previews sharing cached data, without global shortcuts,
+preference writes or additional Player/Live WebGL scenes. Only the selected route
+enters history. Clean up previews/snapshots, retain reduced-motion fade and native
+focus release. Evidence: `docs/images/directional-travel/`.

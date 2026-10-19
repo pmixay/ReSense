@@ -7,6 +7,7 @@ import { PlayerScene } from '../../player/scene';
 import { displayPixelRatio } from '../../player/displayQuality';
 import type { OverlaySink } from './Hud';
 import styles from './Player.module.css';
+import { useNavigationPreview } from '../../lib/navigationPreview';
 
 export interface WorldProps {
   engine: PlayerEngine | null;
@@ -21,12 +22,14 @@ export interface WorldProps {
 }
 
 export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFreeChange, sink, sceneRef, onError }: WorldProps) {
+  const preview = useNavigationPreview();
   const wrapRef = useRef<HTMLDivElement>(null);
   const live = useRef({ mode, pixelRatio, cloudBudget, onFreeChange, onError });
   live.current = { mode, pixelRatio, cloudBudget, onFreeChange, onError };
   const [ok, setOk] = useState(true);
 
   useEffect(() => {
+    if (preview) return;
     const wrap = wrapRef.current;
     if (!wrap) return;
     const workspace = wrap.closest<HTMLElement>('[data-player-workspace]') ?? wrap;
@@ -139,7 +142,7 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
       scene.dispose();
       canvas.remove();
     };
-  }, [engine, sink, sceneRef, displayRef]);
+  }, [engine, sink, sceneRef, displayRef, preview]);
 
   useEffect(() => { sceneRef.current?.setMode(mode); }, [mode, sceneRef]);
   useEffect(() => { if (cloudBudget) sceneRef.current?.reserve(cloudBudget); }, [cloudBudget, sceneRef]);

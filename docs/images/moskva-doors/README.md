@@ -1,5 +1,9 @@
 # Moskva-2020 doors and lateral section navigation
 
+The current smoother, bidirectional intermediate-page journey is documented in
+[`../directional-travel/`](../directional-travel/). This gallery remains the door
+material/proportion and optical-transmission reference.
+
 ## Reference and finish
 
 The supplied `IMG_8349.jpeg`, `IMG_8350.jpeg` and `1591221.jpeg` guide the

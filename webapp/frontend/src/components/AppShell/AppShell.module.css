@@ -1,4 +1,5 @@
 .shell {
+  position: relative;
   min-width: 1280px;
   height: 100dvh;
   display: flex;
@@ -29,39 +30,51 @@
   box-shadow: none;
 }
 .playerPage { padding: 0; overflow: hidden; background: #abb3b1; }
-/* One live routed page: leave right, commit offscreen, arrive from the left.
-   Closed translucent doors diffuse the brief offscreen handover. */
-.shell:is([data-section-motion='departing'], [data-section-motion='covered'], [data-section-motion='arriving']) > :is(.chrome, .page) {
+/* The destination and outgoing/intermediate strip share one continuous trajectory. */
+.shell:is([data-section-motion='covered'], [data-section-motion='travelling']) > :is(.chrome, .page) {
   will-change: transform, filter;
   pointer-events: none;
 }
-.shell[data-section-motion='departing'] > :is(.chrome, .page) {
-  animation: section-depart 160ms cubic-bezier(.45, 0, .75, .5) both;
-}
 .shell[data-section-motion='covered'] > :is(.chrome, .page) {
-  transform: translate3d(-100%, 0, 0);
-  filter: blur(10px);
+  transform: translate3d(calc(var(--travel-sign) * var(--travel-steps) * 100%), 0, 0);
+  filter: blur(18px);
 }
-.shell[data-section-motion='arriving'] > :is(.chrome, .page) {
-  animation: section-arrive 220ms cubic-bezier(.16, 1, .3, 1) both;
+.shell[data-section-motion='travelling'] > :is(.chrome, .page) {
+  animation: section-destination var(--travel-duration) cubic-bezier(.35, .05, .2, 1) both;
 }
-@keyframes section-depart {
-  0% { transform: translate3d(0, 0, 0); filter: blur(0); }
-  45% { filter: blur(12px); }
-  100% { transform: translate3d(100%, 0, 0); filter: blur(10px); }
+.transitViewport { position: absolute; inset: 0; z-index: 40; overflow: hidden; pointer-events: none; }
+.shell[data-section-motion='closing'] > .transitViewport { visibility: hidden; }
+.transitStrip { position: absolute; inset: 0; display: flex; width: 100%; height: 100%; will-change: transform; }
+.transitStrip[data-travel-direction='left'] { flex-direction: row-reverse; }
+.transitStrip[data-travel-phase='travelling'] { animation: section-strip var(--travel-duration) cubic-bezier(.35, .05, .2, 1) both; }
+.transitStrip[data-travel-phase='travelling'] > .transitStage { animation: section-passing-blur var(--travel-duration) cubic-bezier(.35, .05, .2, 1) both; }
+.transitStage { flex: 0 0 100%; width: 100%; height: 100%; min-width: 1280px; overflow: hidden; }
+.snapshot { display: flex; flex-direction: column; width: 100%; height: 100%; }
+.previewFallback { display: grid; place-items: center; height: 100%; font-size: var(--fs-title); font-weight: 800; }
+@keyframes section-strip {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(var(--travel-sign) * var(--travel-steps) * -100%), 0, 0); }
 }
-@keyframes section-arrive {
-  0% { transform: translate3d(-100%, 0, 0); filter: blur(10px); }
-  45% { filter: blur(5px); }
+/* Blur viewport-sized pages individually, avoiding an eight-viewport-wide filter target. */
+@keyframes section-passing-blur {
+  0%, 100% { filter: blur(0); }
+  25%, 55% { filter: blur(32px); }
+  80% { filter: blur(20px); }
+}
+@keyframes section-destination {
+  0% { transform: translate3d(calc(var(--travel-sign) * var(--travel-steps) * 100%), 0, 0); filter: blur(18px); }
+  25%, 55% { filter: blur(32px); }
+  80% { filter: blur(20px); }
   100% { transform: translate3d(0, 0, 0); filter: blur(0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .shell:is([data-section-motion='departing'], [data-section-motion='covered'], [data-section-motion='arriving']) > :is(.chrome, .page) {
+  .shell:is([data-section-motion='covered'], [data-section-motion='travelling']) > :is(.chrome, .page) {
     transform: none;
     filter: none;
     animation: none;
     will-change: auto;
   }
+  .transitViewport { display: none; }
 }
 .skip {
   position: fixed;

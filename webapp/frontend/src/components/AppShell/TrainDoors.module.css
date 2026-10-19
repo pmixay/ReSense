@@ -21,7 +21,7 @@
 }
 .left { left: 0; transform: translate3d(-102%, 0, 0); --reflection: 105deg; }
 .right { right: 0; transform: translate3d(102%, 0, 0); --reflection: 75deg; }
-.portal:is([data-phase='closing'], [data-phase='departing'], [data-phase='covered'], [data-phase='arriving']) .leaf {
+.portal:is([data-phase='closing'], [data-phase='covered'], [data-phase='travelling']) .leaf {
   transform: translate3d(0, 0, 0);
 }
 .portal[data-phase='closing'] .left { animation: door-close-left 350ms cubic-bezier(.45, 0, .2, 1) both; }
@@ -129,6 +129,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .portal { background: #c4cbd0; opacity: 0; transition: opacity 70ms linear !important; }
-  .portal:is([data-phase='closing'], [data-phase='departing'], [data-phase='covered'], [data-phase='arriving']) { opacity: 1; }
+  .portal:is([data-phase='closing'], [data-phase='covered'], [data-phase='travelling']) { opacity: 1; }
   .leaf { display: none; }
 }

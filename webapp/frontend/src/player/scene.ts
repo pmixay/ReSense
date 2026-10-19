@@ -10,6 +10,7 @@
 import * as THREE from 'three';
 import { ScreenDisplay, type DisplayRegion, type DisplayViewport } from './screenDisplay';
 import { TrainModel } from './trainModel';
+import { NAVIGATION_SNAPSHOT_EVENT } from '../lib/navigationSnapshot';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { DecodedCloud } from '../api/cloud';
 import type { DetectionDict, FrameResultDict } from '../api/types';
@@ -429,7 +430,10 @@ export class PlayerScene {
       this.renderer.setRenderTarget(null);
       this.renderer.compile(this.quadScene, this.quadCam);
     }
+    canvas.addEventListener(NAVIGATION_SNAPSHOT_EVENT, this.onNavigationSnapshot);
   }
+
+  private onNavigationSnapshot = (): void => { if (!this.disposed) this.render(0); };
 
   // ---------------------------------------------------------------- public API
 
@@ -655,6 +659,7 @@ export class PlayerScene {
       this.controls.dispose();
     }
     this.renderer.domElement.removeEventListener('dblclick', this.onDblClick);
+    this.renderer.domElement.removeEventListener(NAVIGATION_SNAPSHOT_EVENT, this.onNavigationSnapshot);
     this.pointsGeo.dispose();
     this.display?.dispose();
     for (const d of this.disposables) d.dispose();

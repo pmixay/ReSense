@@ -1,5 +1,5 @@
 // Page chrome: the red top bar, the metro line, then the routed page.
-import { Suspense, useLayoutEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { Outlet, useLocation, useMatch } from 'react-router-dom';
 import { useSystem } from '../../api/hooks';
 import { LineRail } from '../LineRail/LineRail';
@@ -8,6 +8,8 @@ import { TopBar } from '../TopBar/TopBar';
 import styles from './AppShell.module.css';
 import { RailContext } from './rail';
 import { TrainDoors, useTrainDoors } from './TrainDoors';
+import { TransitPages } from './TransitPages';
+import { navigationSnapshot, type NavigationSnapshot } from '../../lib/navigationSnapshot';
 
 export function PageFallback() {
   return (
@@ -23,7 +25,14 @@ export function AppShell() {
   const { key } = useLocation();
   const player = useMatch('/player/*');
   const [sub, setSub] = useState<string | undefined>(undefined);
-  const doors = useTrainDoors();
+  const [snapshot, setSnapshot] = useState<NavigationSnapshot | null>(null);
+  const prepared = useRef(false);
+  const onPrepared = useCallback((ready: boolean) => { prepared.current = ready; }, []);
+  const capture = useCallback(() => {
+    if (chromeRef.current && pageRef.current) setSnapshot(navigationSnapshot(chromeRef.current, pageRef.current));
+  }, []);
+  const doors = useTrainDoors({ onCover: capture, isPrepared: () => prepared.current });
+  useEffect(() => { if (!doors.active) setSnapshot(null); }, [doors.active]);
   const wasTransitioning = useRef(false);
   useLayoutEffect(() => {
     chromeRef.current?.toggleAttribute('inert', doors.active);
@@ -48,7 +57,8 @@ export function AppShell() {
   const queueBusy = !!counts && counts.jobs_running + counts.jobs_queued > 0;
   return (
     <RailContext.Provider value={setSub}>
-      <div className={styles.shell} data-app-shell data-section-motion={doors.phase}>
+      <div className={styles.shell} data-app-shell data-section-motion={doors.phase} data-travel-direction={doors.journey.direction}
+        style={{ '--travel-sign': doors.journey.direction === 'right' ? 1 : -1, '--travel-steps': doors.journey.steps, '--travel-duration': `${doors.journey.duration}ms` } as CSSProperties}>
         <a href="#main" className={styles.skip} tabIndex={doors.active ? -1 : undefined}>
           К содержимому
         </a>
@@ -61,6 +71,7 @@ export function AppShell() {
             <Outlet />
           </Suspense>
         </main>
+        {doors.active && !doors.reduced && doors.phase !== 'opening' && <TransitPages phase={doors.phase} journey={doors.journey} snapshot={snapshot} onPrepared={onPrepared} />}
         <TrainDoors phase={doors.phase} />
       </div>
     </RailContext.Provider>

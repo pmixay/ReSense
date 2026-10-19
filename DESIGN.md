@@ -215,17 +215,27 @@ post at all pressure extremes. The dock blur is now 8px with a longer feather, s
 the upper bench remains recognizable while controls retain their dark ground.
 
 Section navigation uses one authored paired-door sequence in AppShell: close in
-350ms, settle until 360ms, then send the current page/chrome right in 160ms with
-blur peaking at 12px. Commit the destination at 520ms in the offscreen-left pose.
-After a 25ms covered handover, the destination enters from the left in 220ms,
-decelerating and shedding its 10px blur. At 230ms the arrival phase finishes and
-the leaves open in 450ms. If a lazy page chunk is suspended, hold the offscreen
-destination for up to one additional second; a 3.5-second whole-sequence recovery
-timer prevents stuck occlusion. Query changes and navigation
+350ms, settle until 360ms, capture the outgoing DOM/canvas appearance and commit
+the selected destination offscreen. `navigationJourney.ts` follows `LINE` then
+`BRANCH`: a left target enters from the left; a right target enters from the right.
+Every intervening station is included in travel order. One shared cubic-bezier
+trajectory moves the outgoing/intermediate strip and the live destination together,
+with no exit/entry gap. Duration is 500ms plus 150ms per station interval (650–1700ms);
+motion blur peaks at 32px, then clears as the destination settles. Passing-page
+blur is scoped to viewport-sized stages instead of one oversized filter target
+spanning every station. The leaves open in 450ms after travel. Preparation waits
+at most 1.2 seconds, with a six-second
+whole-sequence recovery bound. Query changes and navigation
 within the same section (including Player run changes) are immediate. Browser
-Back/Forward uses the same route blocker. One live route stays mounted while
-closing/departing; its destination then mounts offscreen behind the closed doors.
-There is no duplicated Player, cloned DOM or photographic page snapshot. Native focus/input is inert during
+Back/Forward uses the same route blocker and direction. Only the selected route
+enters browser history. A temporary outgoing DOM snapshot copies current form,
+scroll and canvas appearance; `PlayerScene` refreshes its canvas synchronously
+without advancing the playback clock before the pixel copy. Passing tabs use the
+actual section components in isolated, inert memory routers sharing the query
+cache. Their global shortcuts, Player title/fullscreen hooks and Live preferences
+are disabled. Passing Player/Live avoid new WebGL scenes; the live destination
+retains the normal renderer. Transit roots, snapshots and temporary hints are
+released before the doors finish opening. Native focus/input is inert during
 the overlay, then main receives focus without scrolling.
 
 The overlay is dimensional CSS geometry: only two full-viewport sliding leaves,
@@ -241,12 +251,14 @@ The matte finish is user-pinned relative to the clear photographed glazing.
 Only the two panes backdrop-filter; brief blur on opaque door details and page
 surfaces supplies motion blur without isolating the panes' backdrop sampling.
 The overlay is `display:none` at rest
-and adds no renderer, image download or animation dependency. Reduced motion uses a
+and adds no WebGL renderer, image download or animation dependency. Reduced motion uses a
 75ms cover / 100ms reveal fade with no moving leaves. Initial page loads do not run
 the sequence. Shared Raleway, navigation styling and all page controls are retained.
 All temporary page transforms, filters and `will-change` hints end with the sequence.
 Actual optical transmission/diffusion and outgoing/incoming projected directions
-are recorded with current captures in [`docs/images/moskva-doors/`](docs/images/moskva-doors/).
+are recorded in [`docs/images/moskva-doors/`](docs/images/moskva-doors/). Current
+directional/intermediate travel captures are in
+[`docs/images/directional-travel/`](docs/images/directional-travel/).
 
 ### Restored interior and restrained controls
 

@@ -1,23 +1,27 @@
 // Shared-shell fullscreen (with a refused-API fallback) and the player's keyboard map.
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { useNavigationPreview } from '../../lib/navigationPreview';
 
 /** Fullscreen on an element; when the browser refuses (iframe, policy), a "pseudo" mode instead. */
 export function useFullscreen(ref: RefObject<HTMLElement>) {
+  const preview = useNavigationPreview();
   const [real, setReal] = useState(false);
   const [pseudo, setPseudo] = useState(false);
 
   useEffect(() => {
+    if (preview) return;
     const on = () => setReal(!!document.fullscreenElement && document.fullscreenElement === ref.current?.closest('[data-app-shell]'));
     on();
     document.addEventListener('fullscreenchange', on);
     return () => document.removeEventListener('fullscreenchange', on);
-  }, [ref]);
+  }, [ref, preview]);
 
   useEffect(() => {
+    if (preview) return;
     const shell = ref.current?.closest('[data-app-shell]');
     if (pseudo) shell?.setAttribute('data-kiosk', '');
     return () => shell?.removeAttribute('data-kiosk');
-  }, [pseudo, ref]);
+  }, [pseudo, ref, preview]);
 
   const enter = useCallback(async () => {
     // Keep the category selector and top bar visible in real and fallback fullscreen.
@@ -102,10 +106,11 @@ export function keyAction(code: string, shift: boolean, k: Partial<PlayerKeys>):
  *  passes only the keys it uses: the others keep their default (Space on a focused button, arrows
  *  scrolling a list). */
 export function usePlayerKeys(keys: Partial<PlayerKeys>, enabled = true): void {
+  const preview = useNavigationPreview();
   const ref = useRef(keys);
   ref.current = keys;
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled || preview) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
       const el = e.target instanceof HTMLElement ? e.target : null;
@@ -117,5 +122,5 @@ export function usePlayerKeys(keys: Partial<PlayerKeys>, enabled = true): void {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [enabled]);
+  }, [enabled, preview]);
 }

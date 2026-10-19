@@ -23,6 +23,7 @@ import { World } from './World';
 import { TelemetryTray } from './TelemetryTray';
 import { useDockHeight } from './useDockHeight';
 import styles from './Player.module.css';
+import { useNavigationPreview } from '../../lib/navigationPreview';
 
 // ---------------------------------------------------------------- the stage
 
@@ -121,6 +122,7 @@ function CabShell({ runId, runName, glass, console: cons }: { runId?: string; ru
 // ---------------------------------------------------------------- route
 
 export default function Player() {
+  const preview = useNavigationPreview();
   const { runId } = useParams();
   const rootRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
@@ -128,8 +130,9 @@ export default function Player() {
   const fs = useFullscreen(rootRef);
   const chrome = useMemo(() => ({ fs, expanded, toggleHeight }), [fs, expanded, toggleHeight]);
   useEffect(() => {
+    if (preview) return;
     document.title = 'Плеер · ReSense';
-  }, []);
+  }, [preview]);
   return (
     <div ref={rootRef} className={styles.root} data-expanded={expanded || undefined}>
       <ChromeContext.Provider value={chrome}>
