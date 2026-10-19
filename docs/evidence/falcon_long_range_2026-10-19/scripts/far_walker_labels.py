@@ -46,10 +46,11 @@ for k, i in enumerate(fr_all):
         confirmed[int(i)] = per[int(i)]
 # a label more than 3 m from both labelled neighbours is a stray return (the static 307.7 m points)
 fr_s = sorted(confirmed)
-for k in range(1, len(fr_s) - 1):
-    a_, i, b_ = fr_s[k - 1], fr_s[k], fr_s[k + 1]
-    if abs(confirmed[i][0] - confirmed[a_][0]) > 3 and abs(confirmed[i][0] - confirmed[b_][0]) > 3:
-        confirmed.pop(i)
+stray = [fr_s[k] for k in range(1, len(fr_s) - 1)
+         if abs(confirmed[fr_s[k]][0] - confirmed[fr_s[k - 1]][0]) > 3
+         and abs(confirmed[fr_s[k]][0] - confirmed[fr_s[k + 1]][0]) > 3]
+for i in stray:
+    confirmed.pop(i)
 frames = sorted(confirmed)
 episodes = {"far_walker": [], "far_251": []}
 split = None
