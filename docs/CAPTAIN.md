@@ -223,6 +223,7 @@ captain's personally (29.09); whether an updated archive may be re-run is asked 
 | 19.10 | work that depends only on answered questions starts now on four agent branches (`det/k1-k2-gauge`, `det/f1-false-alarms`, `det/falcon-long-range`, `det/n3-dust-robustness`), cut-off 21.10 12:00 MSK, one combined reseal; C1 waits for the CAUTION answer | the captain, 19.10; [`BACKLOG.md`](BACKLOG.md) §9 |
 | 19.10 | new goal: stable obstacle detection to 300 m on the Falcon Prime (card N7) | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 38 |
 | 19.10 | update the deck, speech and rehearsal plan for 1.2.0 and the second lidar; rehearsals planned for 20.10 and 22.10 | the captain, 19.10; [`PRESENTATION.md`](PRESENTATION.md) |
+| 19.10 | organizers' answers recorded (in-gauge = obstacle, moving objects, no labels but marked bags + `obstacles.md`, dust in every synthetic bag); the markers become the reference for the synthetic bags; the organizers' dust is a non-regression set; the four agents informed | organizers via the captain, 19.10; [`organizers/answers.md`](organizers/answers.md) §12, [`DECISIONS.md`](DECISIONS.md) row 39, [evidence](evidence/synth_markers_2026-10-19/README.md) |
 
 ## Experimental branch integration, 28.09
 

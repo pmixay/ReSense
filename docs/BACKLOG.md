@@ -1034,7 +1034,8 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
   explicit uncertainty now replace the missing-label blocker (N5 below). Platform: a box at the rail (STOP from 87 m), a box
   outside (CAUTION), a **person-shaped object STOP only from 44 m** although visible from 201 m (CAUTION from ~166 m;
   `monitored_range` capped at 45 m at the platform). Switch / tunnels: ≥ 5 and ≥ 3 objects; false STOP on background
-  8 frames (switch) and 3 + 1 frames (tunnels). **No dust or suspension in this delivery.**
+  8 frames (switch) and 3 + 1 frames (tunnels). ~~No dust or suspension in this delivery.~~ **Corrected 19.10: wrong —
+  the organizers say every synthetic bag contains dust at least twice; `obstacles.md` lists 11 dust clouds (§9f).**
 * **`falcon_test`** (initial 17.10 observation; superseded by the full 18.10 replay below): topic `/iv_points`, `frame_id`
   `seyond`, **ROS axes** (x forward, y left, z up), no `ring`, ~95 k points per frame, header stamp =
   sensor uptime. The default launch works: 1 `FAULT` frame, orientation adopted at frame 1, mount 1.77 m / −2.4°.
@@ -1075,9 +1076,13 @@ The sealed 1.1.0 was run on it **for observation only**; if anyone tunes on it, 
   [38-file source seal](evidence/detector_freeze_2026-10-18_lidar.json) pass. **Compatibility and
   characterization complete; measured sampling and static-support limitations retained.** Release is deferred.
 
-#### N3 · Dust / suspension (revised 17.10: the organizers' data contains none)
+#### N3 · Dust / suspension (revised 17.10: "the organizers' data contains none" — corrected 19.10: it does, §9f)
 **Owner** P4 + P3 · **Size** M · **Depends on** nothing for the registered synthetic measurements;
 physical validation needs actual dust recordings.
+* **19.10: the organizers' dust located** with their markers ([evidence](evidence/synth_markers_2026-10-19/README.md)):
+  11 bursts (platform frames 21, 27, 35–36; switch 481, 483, 611, 613; tunnels 70, 166–167, 195, 446), each 1–4
+  boxes of 3–6 cm with 1–14 points, for one or two frames, 3.4–7.2 m ahead. 1.1.0 ignores it (no `STOP` or
+  `CAUTION` from it). Any dust-guard candidate must keep it that way: these 13 frames are a non-regression set.
 * **18.10 measurement deliverable COMPLETE; robustness acceptance FAIL.** The deterministic generator and
   corrected frozen-placement harness `b9ad5f4` preserve clean reference coordinates and retained source points.
   All seven recordings at four densities, all 30 Set F sequences at four densities and matched dark/health
@@ -1100,6 +1105,11 @@ physical validation needs actual dust recordings.
 additional tunnel box and corrected a near-pass tracker attachment before freezing labels.
 The two archived detector versions score identically. Uncertain gauge placement and unsupported
 intervals remain explicit; this completion does not imply exact organizer truth or fixed detector misses.
+* **19.10: checked against the organizers' markers** ([evidence](evidence/synth_markers_2026-10-19/README.md)):
+  1,672 of 1,684 rows match a marked object (median offset ≤ 0.04 m); 12 sparse 1–4 point rows do not (switch 11,
+  tunnels 1); **one object is missing**: the first small cube of `synthetic_tunnels` (marker id 18, frames 4–60,
+  83 → 1.2 m, left of the track). The 12 "false STOP" frames are background structures, not dust. Open for P4:
+  add the cube, mark the 12 rows, use the markers as the reference from now on.
 * **Captain direction 17.10:** annotate the data ourselves; missing organizer labels do not block N5.
   Intensity 1 is only a candidate feature. Use exact Set O differences for platform frames 0–314,
   reviewed raw geometry and temporal continuity elsewhere, and explicitly retain sparse support,
@@ -1271,3 +1281,17 @@ Running as agents (P3's lane, the person checks them, #1 and #6): `det/k1-k2-gau
 `organizers/answers.md` §11 and `QUESTIONS.md` (sent), `DECISIONS.md` rows 35–38, this section, `CAPTAIN.md`,
 `README.md` (status), `CHANGELOG.md` (1.1.0 not released), `SCORECARD.md` (status note), the J1 runbook note,
 the Falcon sensor notes. The deck, `PRESENTATION.md` and the rehearsal plan are updated separately (P1 with an agent).
+
+### 9f. The organizers' answers of 19.10 and what they change
+
+Verbatim in [`organizers/answers.md`](organizers/answers.md) §12; the order of the objects in
+[`organizers/obstacles_2026-10-19.md`](organizers/obstacles_2026-10-19.md). Passed to the four agents on 19.10, ~12:45 UTC.
+
+| answer | consequence | owner / where |
+|---|---|---|
+| **Everything inside the train's gauge is an obstacle** (no further guidance on what to react to) | an in-gauge object reported as `CAUTION` or `GO` is a **miss**. C1's question is settled for in-gauge objects: `CAUTION` stays only for objects outside or at the edge of the gauge. Demotions of in-gauge clusters to advisory become miss risks to measure: the `column` demotion and `column_hold` (inherited High H1), `beyond_axis` where the axis is wrong (K2), `explained_run`, the dust guard, F1's settle switch | P3 (H1, K2 agent, F1 agent, dust agent); C1 re-scoped by P1 |
+| **Objects may move, even chaotically**; this must not confuse detection | review every rule that assumes a static or approaching object: `tracking.ego_veto_min_speed` 4 m/s (no STOP start beyond 25 m for a track whose distance does not shrink with the train's travel: an object moving away or sideways), the approach requirement of weak far evidence (`cluster.weak_min_points`) and of far scan lines (`tracking.thin_far_min_distance`), stationarity/settle tests (F1 agent), world-frame persistence in the dust guard (dust agent), the far confirmation of the Falcon agent. New card **M1**: a moving-object probe set (crossing, receding, lateral random walk, stop-and-go, at 30–150 m) through the judge's ray-cast tool, measured on the 1.2.0 seal and each candidate; any rule that loses an in-gauge moving object is fixed or switched off | M1: P3 + P4 (after the 21.10 merge; agents check their own rules now) |
+| **No labels; marked bags + order of appearance** («можете ориентироваться на маркеры») | **intake done 19.10** ([evidence](evidence/synth_markers_2026-10-19/README.md)): same clouds as 16.10 (1.1.0 replay identical on 1,667 frames); markers = a separate `MarkerArray` topic, one box per object (person 8), published while the object has returns; 24/24 agreement with `obstacles.md`; N5 matches (1,672 / 1,684 rows) but **missed the first small cube of `synthetic_tunnels`** (marker id 18, frames 4–60). Left: add that cube to N5, mark the 12 unmatched sparse rows, re-score 1.2.0 and the agents' branches against the markers (objects inside 2.5–250 m; beyond is not a miss — synthetic returns reach 737 m; a missing marker is not a negative) | P1 intake (done), P4 labels and scoring |
+| **Dust in every new synthetic bag, at least twice** | our 17.10 "no dust in this delivery" was wrong. **Checked 19.10:** the organizers' dust is 11 bursts of 1–4 boxes, 1–14 points within 0.1 m of each box, for one or two frames, 3.4–7.2 m ahead; 1.1.0 gives no `STOP` and no `CAUTION` on it (13 frames). The N5 "false STOPs on background" (switch 8 frames, tunnels 3 + 1) are background structures, **not dust** (F1's subject). The organizers' dust is a non-regression set for the dust guard; N3's volumetric generator stays the robustness test | dust agent (informed), F1 agent, P4 re-scoring |
+| Not answered: the filter (Q3), bag playback (Q5), O1 (pitch format, whether an updated version counts) | unchanged assumptions | P1 |
+

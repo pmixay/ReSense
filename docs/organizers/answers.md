@@ -3,7 +3,8 @@
 > **Purpose:** every answer the organizers gave to our questions (case 05), verbatim where it was
 > written, and what each answer changed in ReSense.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, the answers verbatim in RU
-> **Last verified:** 2026-10-19: §11 — the open questions and O1 were sent by the captain (reported 19.10), no reply yet;
+> **Last verified:** 2026-10-19: §12 — the organizers' answers of 19.10 and the marked synthetic bags + `obstacles.md`;
+> §11 — the open questions and O1 were sent by the captain (reported 19.10);
 > 2026-10-16: §10 added (live Q&A and the experts' message of 16.10, as relayed by the team);
 > 2026-09-29: §9 against the sealed detector's `gauge.*` settings and the labels
 > of `cloud_with_fake_obj` · **Status:** current
@@ -33,7 +34,10 @@ from these sources:
 The questions that are still open are in [`../QUESTIONS.md`](../QUESTIONS.md)
 (five since 16.10: how `CAUTION` is read, the object types and scenes of the hidden set, what "the filter" is,
 what the new data look like, how the bags will be played). They and the O1 pitch/update/re-run message were
-**sent by the captain** (reported 19.10; the exact send date was not recorded); no reply yet (§11).
+**sent by the captain** (reported 19.10; the exact send date was not recorded). **The organizers answered on 19.10**
+(§12): objects may move chaotically, there are no labels but there are marked bags and an order of appearance,
+everything inside the train's gauge is an obstacle, dust is in every new synthetic bag. Still unanswered: the pitch
+format and whether an updated version counts (O1), what "the filter" is, how the bags will be played.
 
 ## 1. Answers by question (Q&A session 22.09 + written answers 23.09)
 
@@ -224,4 +228,43 @@ When a reply arrives, append its dated verbatim text and the resulting decisions
 `PRESENTATION.md` and the backlog (§9 of [`../BACKLOG.md`](../BACKLOG.md)).
 The current five-minute preparation budget and the submitted v1.0.0 are unchanged assumptions,
 not a new answer from the organizers.
+
+## 12. Organizers' answers of 19.10 (relayed by the captain) and the marked synthetic bags
+
+Relayed by the captain on 19.10 (the organizers' wording, as passed on):
+
+> Объекты перед поездом не обязательно всегда статичные, они могут двигаться, причём достаточно хаотично. Это не
+> должно смущать алгоритм при их обнаружении.
+> Разметки конкретной нет, добавил по той же ссылке описание последовательности появления объектов и бэги с
+> маркерами, можете ориентироваться на маркеры.
+> На что конкретно должен или не должен реагировать алгоритм подсказать не могу, всё, что попадает в габарит поезда —
+> препятствие.
+> Объекты бывают не только статичными, это не должно вызывать каких-то больших проблем, насколько я могу судить.
+> Пыль была в каждом новом synthetic_ бэге, причём минимум 2 раза в каждом.
+
+> Мы добавили по той же ссылке новый набор бэгов — та же синтетика, но с маркерами вокруг объектов.
+> Архив — new_synth_data_with_markers.zst. Плюс добавили словесное описание последовательности появления объектов в
+> бэге — obstacles.md.
+
+New files in https://disk.yandex.ru/d/SfBeRHbs8bNJAQ (Yandex Disk API listing, 19.10): `new_synth_data_with_markers.zst`
+2,533,631,921 bytes, modified 2026-10-19 10:21 UTC, SHA-256 `04d176b49526e5da…`; `obstacles.md` 1,024 bytes, 10:57 UTC,
+recorded verbatim in [`obstacles_2026-10-19.md`](obstacles_2026-10-19.md). The other four files are unchanged.
+
+| our question | answer | status | consequence in ReSense |
+|---|---|---|---|
+| how `CAUTION` is read (16.10 Q1) | not answered as such: «всё, что попадает в габарит поезда — препятствие» | **closed for in-gauge objects** | an object inside the gauge must be a `STOP`; a `CAUTION` (or a silent `GO`) on an in-gauge object counts as a miss. `CAUTION` stays a hint for objects outside or at the edge. Every rule that demotes an in-gauge cluster to advisory is now a miss risk to measure: the `column` demotion (inherited High H1), `beyond_axis` where the axis is wrong (K2), `explained_run`, `ego_veto`, the dust guard, F1's settle switch ([`../BACKLOG.md`](../BACKLOG.md) §9f) |
+| which objects and scenes (16.10 Q2) | objects are **not always static, they may move, even chaotically**; this must not confuse the algorithm | **partly closed** | rules that assume a static or approaching object are reviewed: `tracking.ego_veto_min_speed` (no STOP start beyond 25 m for a track whose distance does not shrink with the train's travel), the approach requirement of weak far evidence and thin far scan lines, any stationarity/"settle" test, the dust guard's persistence idea; the hidden set's object list itself is still not given |
+| what the new data look like (16.10 Q4) | no labels; an order of appearance (`obstacles.md`) and the same bags with **markers around the objects** («можете ориентироваться на маркеры»); **dust in every new synthetic bag, at least twice** | **closed** | our 17.10 statement "no dust in this delivery" was **wrong**: `obstacles.md` lists 11 dust clouds (3 + 4 + 4) and 13 objects; the team labels (N5) and their scoring are re-checked against the markers; the organizers' dust becomes acceptance data for N3 |
+| what "the filter" is (16.10 Q3) | not answered | open | — |
+| how the bags will be played (16.10 Q5) | not answered | open | — |
+| O1: pitch format, whether an updated version counts, results before 23.10 | not answered | open | the five-minute plan and the 1.2.0 demo stay assumptions |
+
+**The marked bags, checked 19.10** ([`../evidence/synth_markers_2026-10-19/`](../evidence/synth_markers_2026-10-19/README.md)):
+the clouds are the bags of 16.10 (the 1.1.0 replay is identical on all 1,667 frames), so every earlier result on them
+stands. The markers are a separate `MarkerArray` topic: one wire box per object (8 for the person), no class, no
+reused ids, published only while the object has returns. Ordered by the frame where the train passes them, they
+reproduce `obstacles.md` 24 of 24. Our N5 labels match them (1,672 of 1,684 rows); N5 missed the first small cube of
+`synthetic_tunnels`. The organizers' **dust is 1–14 points for one or two frames, 3–7 m ahead**; 1.1.0 gives no
+`STOP` and no `CAUTION` on it. The 12 false-`STOP` frames N5 found on these bags are background structures, not dust.
+Synthetic objects have returns up to 737 m, beyond any real sensor; frames beyond our 250 m crop are not misses.
 

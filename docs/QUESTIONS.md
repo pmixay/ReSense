@@ -9,7 +9,12 @@
 > message; 2026-09-29: against [`organizers/answers.md`](organizers/answers.md) §9 and the
 > sealed detector · **Status:** current
 
-**Status: five questions and O1 sent, awaiting answers (19.10).** The captain reported on 19.10 that the
+**Status (19.10, evening): partly answered.** The organizers answered on 19.10
+([`organizers/answers.md`](organizers/answers.md) §12): everything inside the train's gauge is an obstacle (closes
+Q1 for in-gauge objects); objects may move, even chaotically (Q2 in part); no labels, but an order of appearance
+(`obstacles.md`) and marked bags, and dust in every new synthetic bag (Q4). **Still open: Q3 (the filter), Q5 (how the
+bags are played) and O1 (pitch format, whether an updated version counts).**
+Earlier: five questions and O1 sent, awaiting answers (19.10). The captain reported on 19.10 that the
 messages below were sent; the exact send date is not recorded. Record each reply in
 [`organizers/answers.md`](organizers/answers.md) §11.
 Earlier status, five questions open (16.10): Q1 and Q2 (sent on 25.09) were answered on 29.09: the envelope is
@@ -73,6 +78,9 @@ a new submission. Until a reply, the five-minute talk remains a planning assumpt
 
 | # | question | answer | what it settled | recorded in |
 |---|---|---|---|---|
+| 16.10 Q1 | how is `CAUTION` read | «всё, что попадает в габарит поезда — препятствие» (19.10) | an in-gauge object must be a `STOP`; `CAUTION` on it is a miss | [`organizers/answers.md`](organizers/answers.md) §12 |
+| 16.10 Q2 (part) | which objects and scenes | objects may move, even chaotically; this must not confuse detection (19.10); the hidden set's object list not given | rules assuming static or approaching objects are reviewed (BACKLOG §9f) | §12 |
+| 16.10 Q4 | what the new data look like | no labels; `obstacles.md` (order of appearance) and the synthetic bags with markers; dust at least twice in every synthetic bag (19.10) | intake of the marked bags; N5 labels re-checked; organizers' dust used for N3 | §12, [`organizers/obstacles_2026-10-19.md`](organizers/obstacles_2026-10-19.md) |
 | Q1 | in the synthetic check, is the envelope measured from the LiDAR's (train's) axis or from the rails? (`cloud_with_fake_obj`: rails at 0.24° to the LiDAR's axis, so the edge tests change sides along the track) | from the **rail heads**; the rails may run at any angle to the LiDAR; the synthetic objects are placed approximately and may drift relative to the envelope along the track, and the organizers correct for that when checking (29.09) | the organizers' envelope is the rails' one, as the detector builds it. `gauge.reference` 3 (the union with the sensor-axis envelope within 60 m on straight track, at most 0.2 m wider, never narrower) stays: it costs no measured false alarm and keeps measured recall ([`DECISIONS.md`](DECISIONS.md) row 18); `gauge.axis_union` stays off. Set O's edge-test labels keep the organizers' intent, within their stated tolerance | [`organizers/answers.md`](organizers/answers.md) §9 |
 | Q2 | is «2х2 сверху габарита» (bottom 2.4–2.9 m above the rail head, 0.1–0.6 m inside the 3.0 m envelope) an obstacle? | follows from Q1: the envelope's top is 3.0 m above the rail head, so the object reaches into it (29.09; not answered separately) | an obstacle: the label `in_gauge: true` and its STOPs (from ~111 m) stand | [`organizers/answers.md`](organizers/answers.md) §9 |
 | Q3 | is a 30 × 30 × 10 cm object on the bed between the rails (below the rail head) an obstacle? | no, it is not inside the train's envelope (25.09); the shipped policy stands and the opt-in near-bed path stays off | — | [`organizers/answers.md`](organizers/answers.md) §8 |
