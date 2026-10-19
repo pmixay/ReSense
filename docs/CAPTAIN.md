@@ -12,6 +12,11 @@
 > detector baseline and ownership against the current files. The decision log retains its original dates.
 > **Status:** current
 
+19.10 D1 supplement: current package/source, release distinction and P2 ownership
+were reconciled against the available 18.10 evidence; [receipt and open owner
+requests](evidence/p2_d1_2026-10-19/README.md). The earlier review/date and decision
+log below remain historical; no fresh public release availability is asserted.
+
 ## 1. Role and dates
 
 P1 is the captain: system analyst and ROS 2 / integration developer ([`PLAN.md`](PLAN.md)). The
@@ -94,9 +99,13 @@ The judge verified the checksum and offline launch on 13.10; D1 checked metadata
 archive download. `.github/workflows/release.yml` builds the runtime image from a pushed version tag,
 removes it, loads the archive back, plays both smoke bags through the loaded image with no internet
 and publishes `resense-image-<tag>.tar.gz`, its `.sha256` and `SHA256SUMS`. The version in
-`pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` on the selected integration
-checkout is **1.1.0**, sealed but unreleased (16.10); published **v1.0.0** remains the release
-reference. H6/E1 and release J1 are pending. Versions are kept equal by
+`pyproject.toml`, `resense/__init__.py`, `package.xml` and `setup.py` in the current
+checkout is **1.2.0**, an unreleased candidate (D1 reconciliation 19.10).
+Its merged measured source is `0779db7`, with the 38-file B4 seal; final merged-source
+P4 acceptance and release authorization remain pending. The separately selected
+J1 source stays sealed **1.1.0 `3b7d7aa`**, not the latest main/UI checkout.
+Published **v1.0.0** remains the release reference. H6/E1 and release J1 are pending.
+[Dated source and acceptance ledger](evidence/p2_d1_2026-10-19/README.md). Versions are kept equal by
 `tests/test_release.py`. Fallbacks: the CI artifact of a `main` run (GitHub login, 30 days) or
 `scripts/export_image.sh` on a machine with internet. The submission is the captain's personally.
 

@@ -3,7 +3,7 @@
 A web stand for the ReSense LiDAR obstacle detector of a driverless metro train (ЛЦТ 2026, кейс 05,
 Московский метрополитен). Upload a ride (rosbag2, `.mcap`, `.npy/.npz`, a results `.jsonl`) or make
 a synthetic demo, run the **sealed** detector on it, and inspect every frame: decisions
-СВОБОДНО / ВНИМАНИЕ / СТОП / ОШИБКА, distances, latency, the score against labels, a 3D player
+GO («Препятствие не обнаружено») / ВНИМАНИЕ / СТОП / ОШИБКА, distances, latency, the score against labels, a 3D player
 from the cab, comparisons of runs and presets, and a live view of the ROS 2 node. Russian UI,
 design «Линия» ([`design/mockup/`](design/mockup/README.md)).
 
