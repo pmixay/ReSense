@@ -106,6 +106,7 @@ resense:
     walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
     walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
     walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this
+    walls_smoothing_standstill_max: 60.0  # 19.10 (K1): s; that standing rule at most this long in a row
   gauge:
     # v0.6: the train envelope given by the organizers (Q&A session): 2.1 m wide x 3.0 m high above the rail head,
     # from 0.12 m (lower objects on the track: the lowobj stage); the v0.5 polygon (1.40 m) is the advisory zone

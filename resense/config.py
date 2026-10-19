@@ -136,6 +136,7 @@ class TrackConfig:
     walls_smoothing_distance: float = 0.0            # m; > 0: the EMA weight is walls_smoothing ** max(walls_smoothing_min_k, min(k, travel / this)) with travel = the previous frame's speed x the time since it (unknown speed: as before); the axis rate limits scale the same way. 0 = off
     walls_smoothing_min_k: float = 0.05              # lower bound of that exponent (a standing train still follows a real change, slowly)
     walls_smoothing_standstill_speed: float = 1.0    # m/s; with no speed estimate, a frame whose texture profile shows no change at all counts as standing (travel 0) while the last confident estimate is at most this
+    walls_smoothing_standstill_max: float = 60.0     # s; that standing rule applies at most this long in a row (backlog K1: never one fit held for more than 60 s)
 
 
 @dataclass

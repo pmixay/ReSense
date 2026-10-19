@@ -424,10 +424,13 @@ class Detector:
             return None
         v = getattr(self, "_odo_speed", None)
         est = getattr(self, "_ego_last", None)
-        if (v is None and est is not None and est.speed is None and est.speed_profile == 0.0 and est.corr == 0.0
-                and self.ego.last_speed is not None and self.ego.last_speed <= tc.walls_smoothing_standstill_speed):
-            # the texture profile saw no change at all (zero energy) after the last confident speed was a crawl:
-            # standing (squareT_platform frames 320-690: 0.0, then no estimate)
+        still = (v is None and est is not None and est.speed is None and est.speed_profile == 0.0 and est.corr == 0.0
+                 and self.ego.last_speed is not None and self.ego.last_speed <= tc.walls_smoothing_standstill_speed)
+        # the texture profile saw no change at all (zero energy) after the last confident speed was a crawl:
+        # standing (squareT_platform frames 320-690: 0.0, then no estimate); at most walls_smoothing_standstill_max
+        # seconds in a row (no texture can also mean a featureless tunnel)
+        self._still_s = (getattr(self, "_still_s", 0.0) + float(dt)) if still else 0.0
+        if still and self._still_s <= tc.walls_smoothing_standstill_max:
             v = 0.0
         return None if v is None else abs(float(v)) * float(dt)
 

@@ -171,3 +171,44 @@ def test_a_diverging_far_segment_is_not_admitted():
     j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
     assert j["x_max"]["right"] <= 84.0, j
     assert abs(j["k"]) < 5e-5 and abs(j["step"]) < 5e-5, j
+
+
+def test_review_converging_structure_at_the_start_does_not_bend_the_axis():
+    """Review finding 1: a short converging structure at 28-44 m (3-4 bins) must not enter the first fit and bend
+    the shared curvature on straight track; the real wall keeps its reach."""
+    rails, bounds, yt = _curve_obs(k=0.0, sides=((2.4, 120.0), (-2.3, 120.0)), noise=0.01)
+    x, y = bounds["right"]
+    conv = (x >= 28) & (x <= 44)
+    y = np.where(conv, y + 0.12 * (x - 28.0), y)              # 0.12 per metre towards the axis
+    xs = np.r_[x[x < 28], x[conv], x[x > 44]]
+    ys = np.r_[y[x < 28], y[conv], y[x > 44]]
+    bounds["right"] = (xs, ys)
+    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    y100 = j["c"] + j["t"] * 100 + 0.5 * j["k"] * 100 ** 2 + 0.5 * j["step"] * max(100 - j["knot"], 0) ** 2
+    assert abs(y100 - yt(100.0)) < 0.3, j
+    assert j["x_max"].get("left", 0) >= 116, j
+
+
+def test_review_rotation_keeps_the_step_far_out():
+    m = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(4.0, 55.0), center=0.0, yaw=0.0,
+                   curvature=1e-4, curv_step=-1e-3, curv_knot=60.0)       # the bed ends before the knot
+    r = rotate_track_model(m, np.eye(3))
+    assert abs(float(r.center_y(150.0)) - float(m.center_y(150.0))) < 0.05
+
+
+def test_review_non_finite_bins_are_ignored():
+    rails, bounds, _ = _curve_obs(k=0.0, sides=((2.4, 120.0), (-2.3, 120.0)))
+    x, y = bounds["left"]
+    y = y.copy()
+    y[5] = np.nan
+    bounds["left"] = (x, y)
+    j = joint_axis_fit(rails, bounds, _model(), TrackConfig(**JOINT))
+    assert j is not None and all(np.isfinite([j["c"], j["t"], j["k"], j["step"]]))
+
+
+def test_review_straight_track_keeps_the_native_quadratic():
+    """Review finding 4: without data beyond the knot the step is exactly 0, the model is not bent."""
+    xyz, _ = _entry_scene(j=0.0, inner_to=50.0)
+    xyz = xyz[xyz[:, 0] < 58.0]
+    m = _settle(xyz, TrackConfig(**JOINT))
+    assert m.curv_step == 0.0 and not m.bent
