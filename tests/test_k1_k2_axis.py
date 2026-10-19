@@ -21,6 +21,7 @@ def test_switches_default_off_in_code_and_both_parameter_files():
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         t = cfg.track
         assert t.axis_joint_fit is False and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is True
+        assert t.axis_joint_min_curvature == 0.0 and t.axis_joint_reach_cap is False      # v5 switches
         assert (t.axis_joint_knot, t.axis_joint_step_sigma, t.axis_joint_tolerance) == (60.0, 1e-3, 0.3)
 
 
@@ -223,3 +224,107 @@ def test_shape_only_mode_keeps_the_axis_shape_and_the_old_range_policy():
     X = np.array([30.0, 80.0, 120.0])
     assert np.allclose(v3.center_y(X), v4.center_y(X), atol=1e-9)
     assert abs(float(v4.center_y(120.0)) - float(yt(120.0))) < 0.5
+
+
+# --- v5 (axis_joint_min_curvature, axis_joint_reach_cap): the joint shape on curves only -------------------------
+V4 = dict(axis_joint_fit=True, axis_joint_range=False)
+V5 = dict(V4, axis_joint_min_curvature=1e-4)
+_SHAPE = ("center", "yaw", "curvature", "curv_step", "curv_knot")
+_STATE = _SHAPE + ("floor_range", "rail_offset", "axis_valid", "axis_valid_both", "axis_valid_bent", "axis_sides",
+                   "wall_quality", "far_support_run", "disagree_left", "axis_straight", "wall_drift", "floor_verified", "age")
+
+
+def _same(a: TrackModel, b: TrackModel, fields=_STATE) -> bool:
+    return all(getattr(a, f) == getattr(b, f) for f in fields) and np.array_equal(a.floor_coef, b.floor_coef)
+
+
+def _run(xyz, cfg, n=8):
+    out, m = [], None
+    for _ in range(n):
+        m = estimate_track(xyz, cfg, prev=m)
+        out.append(m)
+    return out
+
+
+def test_v5_off_unless_the_joint_fit_is_on_and_shape_only():
+    """axis_joint_min_curvature alone (joint fit off) or with the v3 range policy changes nothing; no record field."""
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    for base_kw, kw in (({}, dict(axis_joint_min_curvature=1e-4)), (JOINT, dict(JOINT, axis_joint_min_curvature=1e-4))):
+        a, b = _run(xyz, TrackConfig(**base_kw)), _run(xyz, TrackConfig(**kw))
+        assert all(_same(x, y) and y.base is None and y.joint_used is None for x, y in zip(a, b))
+        assert "joint_used" not in b[-1].to_dict()
+
+
+def test_v5_straight_track_is_exactly_the_estimate_without_the_joint_fit():
+    """On a straight track (|k| below the limit every frame) the output is the estimator without the joint fit,
+    frame by frame and bit for bit; the record says the joint shape was not used."""
+    xyz, _ = _entry_scene(j=0.0)
+    off, v5 = _run(xyz, TrackConfig()), _run(xyz, TrackConfig(**V5))
+    for a, b in zip(off, v5):
+        assert abs(a.curvature) < 1e-4
+        assert _same(a, b) and b.joint_used is False and not b.bent and b.joint_shape is not None
+    assert v5[-1].to_dict()["joint_used"] is False and "joint_used" not in off[-1].to_dict()
+
+
+def test_v5_curve_follows_the_joint_shape_and_carries_the_unchanged_base_state():
+    """On the curve entry the output takes the joint shape (within 0.5 m of the track at 120 m, as v4) while the
+    carried base model is, frame by frame, exactly the model of the estimator without the joint fit (which lags):
+    the next frame is estimated from it, so nothing of the joint shape feeds back into the base state."""
+    xyz, yt = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    off, v5 = _run(xyz, TrackConfig()), _run(xyz, TrackConfig(**V5))
+    for a, b in zip(off, v5):
+        assert _same(a, b.base) and b.base.base is None
+    last = v5[-1]
+    assert last.joint_used is True and abs(last.base.curvature) >= 1e-4 and last.bent
+    assert (last.center, last.yaw, last.curvature, last.curv_step, last.curv_knot) == last.joint_shape
+    assert not _same(last, last.base, _SHAPE)                               # positive control: the shapes differ
+    e_v5 = abs(float(last.center_y(120.0)) - float(yt(120.0)))
+    e_base = abs(float(last.base.center_y(120.0)) - float(yt(120.0)))
+    assert e_v5 < 0.5 < e_base, (e_v5, e_base)
+    # the range policy is the base estimator's (v4): trusted range and side count unchanged
+    assert (last.axis_valid, last.axis_sides) == (last.base.axis_valid, last.base.axis_sides)
+    assert last.to_dict()["joint_used"] is True
+
+
+def test_v5_threshold_selects_the_shape():
+    """A limit above the base curvature keeps the base shape on the same curve; the joint shape state still runs."""
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    v5 = _run(xyz, TrackConfig(**V5))
+    hi = _run(xyz, TrackConfig(**dict(V5, axis_joint_min_curvature=abs(v5[-1].base.curvature) * 10)))
+    assert hi[-1].joint_used is False and _same(hi[-1], v5[-1].base) and hi[-1].joint_shape == v5[-1].joint_shape
+
+
+def test_v5b_reach_cap_only_on_joint_frames_and_never_extends():
+    """axis_joint_reach_cap: on a joint-shape frame the trusted range is min(base range, farthest boundary reach along
+    the output axis + margin); on a straight frame nothing changes."""
+    from resense.track import _followed_reach, estimate_axis_from_walls
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    cfg5, cfg5b = TrackConfig(**V5), TrackConfig(**dict(V5, axis_joint_reach_cap=True))
+    a, b = _run(xyz, cfg5), _run(xyz, cfg5b)
+    last, capped = a[-1], b[-1]
+    assert _same(last.base, capped.base) and capped.joint_used
+    bounds: dict = {}
+    estimate_axis_from_walls(xyz, last.base, cfg5, np.tan(last.base.yaw), boundaries=bounds)
+    assert capped.axis_valid <= last.axis_valid
+    assert capped.axis_valid_both <= last.axis_valid_both
+    if capped.axis_valid < last.axis_valid:
+        assert capped.joint_reach == capped.axis_valid and capped.to_dict()["joint_reach"] == round(capped.axis_valid, 1)
+    reach = [_followed_reach(x, y, capped, cfg5b) for x, y in bounds.values() if len(x)]
+    assert max(reach) > 0
+    xs, _ = _entry_scene(j=0.0)
+    s5, s5b = _run(xs, cfg5)[-1], _run(xs, cfg5b)[-1]
+    assert not s5b.joint_used and _same(s5, s5b) and s5b.joint_reach == 0.0
+
+
+def test_v5_rotation_rotates_the_base_state_and_the_joint_shape():
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    m = _run(xyz, TrackConfig(**V5))[-1]
+    a = np.radians(0.3)
+    dR = np.array([[np.cos(a), -np.sin(a), 0.0], [np.sin(a), np.cos(a), 0.0], [0.0, 0.0, 1.0]])
+    r = rotate_track_model(m, dR)
+    assert _same(r.base, rotate_track_model(m.base, dR)) and r.joint_used and r.base.base is None
+    assert (r.center, r.yaw, r.curvature, r.curv_step, r.curv_knot) == r.joint_shape
+    assert abs(r.axis_valid - m.axis_valid) == 0.0
+    X = np.array([40.0, 90.0])
+    rot = np.stack([X, m.center_y(X), np.zeros(2)], 1) @ dR.T          # the joint axis, rotated
+    assert np.allclose(r.center_y(rot[:, 0]), rot[:, 1], atol=0.02)
