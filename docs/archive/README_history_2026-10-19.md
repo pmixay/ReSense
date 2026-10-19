@@ -186,3 +186,68 @@ STOP и вернуло ложные обнаружения коробки 1 м �
 [`EXPERIMENT_LOW_LOCAL_SUPPORT`](../EXPERIMENT_LOW_LOCAL_SUPPORT.md)) и дальние рельсы по кольцам
 LiDAR (`track.rails_far_rings`: шлюз не проходит). Подробности, цифры каждого шага и отвергнутые
 варианты: [`CHANGELOG.md`](../../CHANGELOG.md).
+
+## Пересборка E2 (первоначальный текст раздела «Сборка»)
+<!-- README.md lines 91-103 before the clean-up of 19.10 -->
+
+Для **нового E2-совместимого** архива после `docker load` доступна пересборка исходников:
+
+```bash
+docker build --network none --pull=false --build-arg RELEASE_IMAGE=resense:<версия> -f docker/Dockerfile.offline -t resense:offline .
+docker run --rm --network none -w / resense:offline python3 /opt/resense/scripts/check_offline_image.py
+```
+
+Родительский образ должен содержать подготовленные зависимости и инструменты сборки;
+архивы до E2 этим свойством не проверены. В новых образах `ROS_HOME=/tmp/.ros` и
+`ROS_LOG_DIR=/tmp/.ros/log`: плеер uid 1000 работает без переопределения `HOME`.
+Локальная офлайн-пересборка E2 — **PASS** (первый прогон 18,609 с, последующая
+интегрированная пересборка 19,156 с; [E2](../evidence/offline_rebuild_2026-10-15/README.md)).
+Новая проверка включена в release workflow, но на новом теге ещё не запускалась.
+
+## «Как это работает»: абзац по кадрам (первоначальный текст)
+<!-- README.md lines 300-308 before the clean-up of 19.10 -->
+
+Для каждого кадра: облако читается прямо из сериализованных байтов; крепление калибруется по
+рельсам; подбираются полотно, головки рельсов и ось пути (кривизна — по стенам, поэтому коридор
+следует изгибам); габарит протягивается вдоль оси; точки внутри него кластеризуются DBSCAN с
+адаптивным к дальности радиусом; кластеры, соответствующие инфраструктуре тоннеля (колонны, грани
+стен, воздушные линии, знаки), — это предупреждение; кластер, сохраняющийся 0,5 с внутри габарита,
+— это `STOP`. Начать `STOP` не могут трек с недавней историей инфраструктуры без 5 чистых попаданий
+подряд и, при ходе поезда, трек, расстояние до которого не сокращается вместе с пробегом (правила
+29.09; такой трек остаётся `CAUTION`). Небольшая обученная модель может задержать сомнительный
+дальний `STOP` не более чем на 10 обработанных кадров; она никогда не отменяет его.
+
+## Веб-прототип: абзац (первоначальный текст)
+<!-- README.md lines 349-356 before the clean-up of 19.10 -->
+
+Многостраничный сайт для жюри с русским интерфейсом ([PR #31](https://github.com/pmixay/ReSense/pull/31)):
+Python ≥ 3.10 и Node.js 20.19+ или 22.12+ (только для сборки фронтенда), без ROS и Docker. Бэг rosbag2
+(`.db3`, `.mcap`) или кадры `.npy`/`.npz` — файлом или из папки на сервере — либо синтетическую
+демо-запись сервер обрабатывает тем же опечатанным детектором (готовый `results.jsonl` тоже открывается),
+а на сайте видны решения по кадрам с оценкой по разметке, 3D-плеер из кабины, сравнение прогонов и
+наборов параметров, прямой эфир ноды через rosbridge. Детектор прототип не меняет, в образ Docker и
+релиз `v1.0.0` не входит. Описание — [`webapp/README.md`](../../webapp/README.md) и GitBook
+[«Веб-прототип»](https://resense.gitbook.io/resense-docs/visualisation/web-prototype).
+
+## Параметры: файл конфигурации (первоначальный текст)
+<!-- README.md lines 381-387 before the clean-up of 19.10 -->
+
+Параметры детектора находятся в одном файле, [`configs/default.yaml`](../../configs/default.yaml) (пакет
+ROS содержит проверяемую копию): габарит `gauge.profile` (|dy| ≤ 1,05 м, 0,12–3,0 м над головкой
+рельса, зона предупреждения +0,35 м), `tracking.confirm_time_s` 0,5 с, `cluster.eps` 0,35 м, растущий
+с дальностью, сигнатуры инфраструктуры и их пределы. Каждый объяснён в
+[`docs/ALGORITHM.md`](../ALGORITHM.md) §5; правила 29.09 (`tracking.explained_run`,
+`tracking.ego_veto_min_speed`; `cluster.shell_min_top` выключен, 0) и выключенные экспериментальные флаги — в
+комментариях самого файла и в [GitBook — «Файл конфигурации»](https://resense.gitbook.io/resense-docs/reference/configuration).
+
+## Параметры: топики (первоначальный текст)
+<!-- README.md lines 389-396 before the clean-up of 19.10 -->
+
+Топики: `/resense/decision`, `/resense/obstacle_detected`, `/resense/warning`,
+`/resense/nearest_distance`, `/resense/clear_distance`, `/resense/health`, `/resense/detections`
+(`vision_msgs/Detection3DArray`), `/resense/status` (JSON: каждый объект с расстоянием, боковым
+смещением, размером, уверенностью; модель пути; исправность; время обработки; свежесть),
+`/resense/latency_ms`, `/resense/fps`, для RViz — `/resense/markers` и `/resense/corridor_points`.
+Потребитель должен читать `freshness.valid` в JSON статуса и сам отбрасывать устаревшие результаты;
+после прекращения входа `STOP` удерживается (`stop_held`) до свежего кадра без `STOP`. Контракт:
+[GitBook — «Топики и JSON статуса»](https://resense.gitbook.io/resense-docs/reference/topics).
