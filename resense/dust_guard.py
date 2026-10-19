@@ -54,6 +54,16 @@ def required_support(lam: np.ndarray, cfg) -> np.ndarray:
     return k
 
 
+def count_within(tree, P: np.ndarray, r: np.ndarray, cap: int) -> np.ndarray:
+    """min(tree points within r of each query point, cap): a capped nearest-neighbour query, so
+    dense surfaces cost O(cap) per point instead of all their neighbours."""
+    if not len(P):
+        return np.zeros(0, dtype=np.int64)
+    d, _ = tree.query(P, k=int(cap), distance_upper_bound=float(np.max(r)) * (1 + 1e-9) + 1e-12)
+    d = d.reshape(len(P), -1)
+    return (d <= r[:, None]).sum(axis=1).astype(np.int64)
+
+
 class DustGuard:
     """Per-detector state of the diffuse-return guard (hysteresis)."""
 
@@ -76,12 +86,13 @@ class DustGuard:
         self._window.clear()
         self.light = False
 
-    def _neighbours(self, xyz: np.ndarray, idx: np.ndarray) -> np.ndarray:
-        """Distinct other returns within r(R) of each queried frame point."""
+    def _neighbours(self, xyz: np.ndarray, idx: np.ndarray, cap: Optional[int] = None) -> np.ndarray:
+        """Distinct other returns within r(R) of each queried frame point, capped at ``cap``
+        (default max_support)."""
         P = xyz[idx].astype(np.float64)
         rng = np.linalg.norm(P, axis=1)
-        counts = self._tree.query_ball_point(P, support_radius(rng, self.cfg), return_length=True)
-        return np.asarray(counts, dtype=np.int64) - 1          # the query point itself
+        cap = int(self.cfg.max_support) if cap is None else int(cap)
+        return count_within(self._tree, P, support_radius(rng, self.cfg), cap + 1) - 1   # minus the point itself
 
     def assess(self, xyz: np.ndarray, dy: np.ndarray, h: np.ndarray) -> dict:
         """Measure the diffuse signal of this frame and update the hysteresis state."""
@@ -94,9 +105,10 @@ class DustGuard:
                                   & (h >= h0) & (h < h1))
         volume = (x1 - x0) * 2.0 * cfg.interior_half_width * (h1 - h0)
         n_iso, spread = 0, 0.0
-        if interior.size >= min(cfg.on_density, cfg.light_density) * volume or self.active:
+        low_bar = min(cfg.on_density, cfg.light_density) if cfg.light_spread > 0 else cfg.on_density
+        if interior.size >= low_bar * volume or self.active:
             self._build(xyz, dy, h)
-            iso = interior[self._neighbours(xyz, interior) == 0] if interior.size else interior
+            iso = interior[self._neighbours(xyz, interior, cap=1) == 0] if interior.size else interior
             n_iso = int(iso.size)
             # A diffuse field fills the whole interior; isolated returns of real clutter (a thinly
             # sampled structure, an edge) stay where that structure is.
@@ -165,18 +177,25 @@ class DustGuard:
         x = xyz[:, 0]
         roi = np.flatnonzero((x > 0) & (x < cfg.interior_range[1] + cfg.track_margin)
                              & (np.abs(dy) <= cfg.roi_half_width)
-                             & (h >= cfg.roi_height[0]) & (h <= cfg.roi_height[1]))
+                             & (h >= cfg.track_min_height) & (h <= cfg.roi_height[1]))
         if not roi.size:
             return keep
-        P = xyz[roi].astype(np.float64)
-        q = np.round(P / cfg.dedup).astype(np.int64)
+        # Supporters come from the whole near-track volume (bed and rails included); only returns
+        # above the rail-head band are candidates for withholding: far rail and bed returns are
+        # single grazing hits per scan line and must stay in the fit.
+        sup = np.flatnonzero((x > 0) & (x < cfg.interior_range[1] + cfg.track_margin + 1.0)
+                             & (np.abs(dy) <= cfg.roi_half_width + 0.5)
+                             & (h >= cfg.roi_height[0]) & (h <= cfg.roi_height[1] + 0.5))
+        S = xyz[sup].astype(np.float64)
+        q = np.round(S / cfg.dedup).astype(np.int64)
         q -= q.min(axis=0)
         span = q.max(axis=0) + 1
         _, first = np.unique((q[:, 0] * span[1] + q[:, 1]) * span[2] + q[:, 2], return_index=True)
-        tree = cKDTree(P[np.sort(first)])
+        tree = cKDTree(S[np.sort(first)])
+        P = xyz[roi].astype(np.float64)
         rng = np.linalg.norm(P, axis=1)
         r = support_radius(rng, cfg)
-        counts = np.asarray(tree.query_ball_point(P, r, return_length=True), dtype=np.int64) - 1
+        counts = count_within(tree, P, r, int(cfg.max_support) + 1) - 1
         lam = self.last["field_density"] * 4.0 / 3.0 * math.pi * r ** 3
         lam = np.where(P[:, 0] > cfg.interior_range[1], 0.0, lam)
         keep[roi] = counts >= required_support(lam, cfg)

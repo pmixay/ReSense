@@ -415,9 +415,10 @@ resense:
     attach_factor: 0.0
     track_filter: true               # while on (or light), unsupported returns near the track are withheld from the track model
     track_margin: 10.0
+    track_min_height: 0.15           # m above the rail head: rails / bed below are never withheld from the track model
     light_window: 20
     light_density: 0.05
-    light_spread: 0.08
+    light_spread: 0.0                # 0 = off; 0.08 lost real STOPs at low density in development
     min_support: 3
     max_support: 12
     false_support: 0.001

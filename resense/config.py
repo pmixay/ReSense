@@ -635,9 +635,10 @@ class DustGuardConfig:
     attach_factor: float = 0.0                           # unsupported returns within this many r(R) of a supported one are kept (0 = off)
     track_filter: bool = True                            # while active, unsupported returns near the track are withheld from the track model
     track_margin: float = 10.0                           # m beyond interior_range[1] where that applies
+    track_min_height: float = 0.15                       # m above the rail head: rails and bed below it are never withheld
     light_window: int = 20                               # frames of the sustained light-field test (track filter only)
     light_density: float = 0.05                          # mean isolated interior returns per m^3 over that window
-    light_spread: float = 0.08                           # mean spread over that window; 0 = no light mode
+    light_spread: float = 0.0                            # mean spread over that window; 0 = no light mode (19.10 dev: 0.08 lost real STOPs at low)
     min_support: int = 3                                 # neighbours a candidate return needs while active (at least)
     max_support: int = 12                                # cap of the density-scaled requirement
     false_support: float = 0.001                         # chance-support probability of a diffuse return at the measured density
