@@ -86,3 +86,15 @@ def test_hanging_timestamp_jitter_is_bounded_not_an_extra_hit(dt, expected):
     for _ in range(2):
         tr.update([cable(kind='hanging', distance=48.2, height=.44, n=3)], frame_dt=dt)
     assert stops(tr) == expected
+
+
+@pytest.mark.parametrize('kind,height,n,count', [('',2.6,13,3),('hanging',.44,3,2)])
+def test_historical_raw_points_cannot_supply_fast_confirmation(kind,height,n,count):
+    tr = Tracker(DetectorConfig().tracking)
+    for _ in range(count):
+        cl = cable(kind=kind,height=height,n=n,distance=48.2)
+        # Exactly the descriptor contract of a blob containing old accumulation:
+        # points_idx excludes historical entries while n_raw includes them.
+        cl.n_raw += n
+        tr.update([cl], frame_dt=.1)
+        assert not stops(tr)
