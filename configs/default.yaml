@@ -434,4 +434,32 @@ resense:
     persist_tol_dy: 0.12             # m, lateral match between frames
     persist_tol_h: 0.2               # m, height match between frames
     persist_tol_shift: 0.08          # m per nominal period, change of apparent displacement speed between links
+  dust:                            # 19.10 N3 diffuse-return guard (resense/dust_guard.py); off = detector unchanged.
+    # Synthetic-model evidence only (docs/evidence/n3_dust_fix_2026-10-19): no physical dust recording exists.
+    enabled: false
+    interior_range: [5.0, 60.0]      # m along X: the gauge interior examined for diffuse returns
+    interior_half_width: 1.0         # m, |dy| of that interior
+    interior_height: [0.3, 2.7]      # m above the rail head
+    support_radius: 0.10             # m, r(R) = support_radius + R * support_radius_per_m
+    support_radius_per_m: 0.004
+    dedup: 0.02                      # m, coincident returns count once
+    on_density: 0.3                  # isolated interior returns per m^3 that switch the guard on ...
+    off_density: 0.15                # ... and below which it may switch off
+    hold_frames: 10
+    cell: [5.0, 0.5, 0.6]            # m, interior cells (X, dy, h) for the spread of isolated returns
+    on_spread: 0.35
+    off_spread: 0.2
+    attach_factor: 0.0
+    track_filter: true               # while on (or light), unsupported returns near the track are withheld from the track model
+    track_margin: 10.0
+    track_min_height: 0.15           # m above the rail head: rails / bed below are never withheld from the track model
+    light_window: 20
+    light_density: 0.05
+    light_spread: 0.0                # 0 = off; 0.08 lost real STOPs at low density in development
+    min_support: 3
+    max_support: 12
+    false_support: 0.001
+    max_density: 50.0
+    roi_half_width: 3.0
+    roi_height: [-0.8, 4.5]
   voxel: 0.0

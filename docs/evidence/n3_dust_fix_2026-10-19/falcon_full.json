@@ -1,0 +1,38 @@
+{
+ "reference": {
+  "frames": 4443,
+  "stop_frames": 1372,
+  "stop_intervals": 8
+ },
+ "lanes": {
+  "clean_off": {
+   "frames": 4443,
+   "stop_frames": 1372,
+   "stop_intervals": 8,
+   "lost_stop_frames": [],
+   "added_stop_frames": [],
+   "decision_differences": [],
+   "n_decision_differences": 0,
+   "field_difference_counts": {
+    "msgs": 1
+   },
+   "rows_latency_message_differs": 10,
+   "guard_frames": 0
+  },
+  "clean_on": {
+   "frames": 4443,
+   "stop_frames": 1372,
+   "stop_intervals": 8,
+   "lost_stop_frames": [],
+   "added_stop_frames": [],
+   "decision_differences": [],
+   "n_decision_differences": 0,
+   "field_difference_counts": {
+    "msgs": 1
+   },
+   "rows_latency_message_differs": 10,
+   "guard_frames": 0
+  }
+ },
+ "switch_on_vs_off_non_timing_differences": {}
+}

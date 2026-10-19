@@ -12,6 +12,7 @@ from resense.accumulate import CandidateBuffer
 from resense.calibration import MountCalibrator, OrientationReplayBuffer
 from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
+from resense.dust_guard import DustGuard, degraded_health
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.evidence import PersistentEvidence
 from resense.farline import FarAxisTracker, FarConfirm
@@ -205,6 +206,7 @@ class Detector:
         self.far = FarAxisTracker(fr) if fr.enabled and fr.axis_enabled else None
         self._far_axis = None
         self.far_confirm = FarConfirm(fr) if fr.enabled and fr.confirm_enabled else None
+        self.dust_guard = DustGuard(self.cfg.dust) if self.cfg.dust.enabled else None  # 19.10 N3, off by default
 
     @property
     def mount_rotation(self) -> np.ndarray:
@@ -237,6 +239,8 @@ class Detector:
         self._far_axis = None
         if self.far_confirm is not None:
             self.far_confirm.reset()
+        if self.dust_guard is not None:
+            self.dust_guard.reset()
 
     def _frame_dt(self, stamp: float) -> float:
         """Time since the previous frame from the stamps when they are sane, else the nominal
@@ -372,6 +376,9 @@ class Detector:
                           if self.track.rail_axis_support > 0 else axis_valid)
         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
                                                min(low_axis_valid, floor_valid))
+        dust_removed = None
+        if self.dust_guard is not None:
+            cand, straddle, near, dust_removed = self._dust_qualify(xyz, dy_rail, h_all, cand, straddle, near)
         t2 = time.perf_counter()
         speed, source, est = self._speed(xyz, dy_rail, h_all, dt, ego_speed)
         if cfg.tracking.ego_veto_min_speed > 0 and est is None and ego_speed is None:
@@ -415,6 +422,8 @@ class Detector:
                                     wall_drift=drift if drift < 1e9 else None)
         health["latency_basis"] = "previous_complete_process"
         health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
+        if dust_removed is not None:
+            health = degraded_health(health, self.dust_guard.last, dust_removed)
         t7 = time.perf_counter()
 
         result = FrameResult(
@@ -487,7 +496,17 @@ class Detector:
         # N6 uses supplied scan-line IDs only, never a Pandar table inferred for an
         # unknown sensor. Keep the older experimental curvature-refit path separate.
         rail_args = {"axis_ring": self._frame_ring} if cfg.track.rails_axis_extension else {}
-        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring,
+        fit_xyz = xyz
+        guard = self.dust_guard
+        if guard is not None and (guard.active or guard.light) and cfg.dust.track_filter:
+            # 19.10 N3 (dust.track_filter): diffuse returns must not move the bed / rail / axis fits
+            keep = guard.track_input(xyz, self.track)
+            if not keep.all():
+                fit_xyz = xyz[keep]
+                ring = None if ring is None else ring[keep]
+                if rail_args.get("axis_ring") is not None:
+                    rail_args = {"axis_ring": rail_args["axis_ring"][keep]}
+        self.track = estimate_track(fit_xyz, cfg.track, prev=self.track, periods=periods, ring=ring,
                                     travel=getattr(self, "_travel_m", None), **rail_args)
         R_old = self.calib.R.copy()
         if self.calib.update(xyz_cfg, xyz, self.track, periods=periods, ring=self._frame_ring):
@@ -650,6 +669,30 @@ class Detector:
                               intensity=intensity[nidx], idx=nidx, low=ones,
                               ring=None if self._frame_ring is None else self._frame_ring[nidx])
         return cand, straddle, near
+
+    # -- 2c ------------------------------------------------------------------------------------
+    def _dust_qualify(self, xyz, dy_all, h_all, cand: Candidates, straddle: Optional[Candidates],
+                      near: Optional[Candidates]):
+        """19.10 N3 (``dust.enabled``, off by default; resense/dust_guard.py): while diffuse volumetric
+        returns are observed in the gauge interior, keep only locally supported returns as obstacle
+        candidates (corridor, low, straddle, near). Returns the sets and the number of candidate
+        returns kept out, or ``None`` for that number when the guard is inactive (nothing changes)."""
+        guard = self.dust_guard
+        guard.assess(xyz, dy_all, h_all)
+        if not guard.active:
+            return cand, straddle, near, None
+        removed = 0
+        out = []
+        for c in (cand, straddle, near):
+            if c is None or not len(c):
+                out.append(c)
+                continue
+            keep = guard.supported(xyz, c.idx, dy_all, h_all)
+            if c is cand:
+                removed = int((~keep).sum())
+            out.append(c if keep.all() else c.subset(keep))
+        straddle = out[1] if out[1] is None or len(out[1]) >= 3 else None
+        return out[0], straddle, out[2], removed
 
     # -- 3 -------------------------------------------------------------------------------------
     def _speed(self, xyz, dy_all, h_all, dt: float, ego_speed: Optional[float]):

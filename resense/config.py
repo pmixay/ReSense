@@ -719,6 +719,38 @@ class FarRangeConfig:
 
 
 @dataclass
+class DustGuardConfig:
+    """N3 diffuse-return guard (resense/dust_guard.py), 19.10, off by default. Synthetic-model
+    evidence only (docs/evidence/n3_dust_fix_2026-10-19). Off: the detector is unchanged."""
+    enabled: bool = False
+    interior_range: Tuple[float, float] = (5.0, 60.0)    # m along X: the gauge interior examined for diffuse returns
+    interior_half_width: float = 1.0                     # m, |dy| of that interior
+    interior_height: Tuple[float, float] = (0.3, 2.7)    # m above the rail head
+    support_radius: float = 0.10                         # m, r(R) = support_radius + R * support_radius_per_m
+    support_radius_per_m: float = 0.004                  # ~0.23 deg: about two beam spacings of a 128-line sensor
+    dedup: float = 0.02                                  # m, coincident returns count once
+    on_density: float = 0.3                              # isolated interior returns per m^3 that switch the guard on
+    off_density: float = 0.15                            # ... below which it may switch off
+    hold_frames: int = 10                                # frames below off_density before it switches off
+    cell: Tuple[float, float, float] = (5.0, 0.5, 0.6)  # m, interior cells (X, dy, h) for the spread of isolated returns
+    on_spread: float = 0.35                              # share of interior cells holding an isolated return, to switch on
+    off_spread: float = 0.2                              # ... below which it may switch off
+    attach_factor: float = 0.0                           # unsupported returns within this many r(R) of a supported one are kept (0 = off)
+    track_filter: bool = True                            # while active, unsupported returns near the track are withheld from the track model
+    track_margin: float = 10.0                           # m beyond interior_range[1] where that applies
+    track_min_height: float = 0.15                       # m above the rail head: rails and bed below it are never withheld
+    light_window: int = 20                               # frames of the sustained light-field test (track filter only)
+    light_density: float = 0.05                          # mean isolated interior returns per m^3 over that window
+    light_spread: float = 0.0                            # mean spread over that window; 0 = no light mode (19.10 dev: 0.08 lost real STOPs at low)
+    min_support: int = 3                                 # neighbours a candidate return needs while active (at least)
+    max_support: int = 12                                # cap of the density-scaled requirement
+    false_support: float = 0.001                         # chance-support probability of a diffuse return at the measured density
+    max_density: float = 50.0                            # bound of the corrected field density (per m^3)
+    roi_half_width: float = 3.0                          # m, |dy| of the returns that can support a candidate
+    roi_height: Tuple[float, float] = (-0.8, 4.5)        # m above the rail head, likewise
+
+
+@dataclass
 class DetectorConfig:
     sensor: SensorConfig = field(default_factory=SensorConfig)
     track: TrackConfig = field(default_factory=TrackConfig)
@@ -730,13 +762,14 @@ class DetectorConfig:
     calibration: CalibrationConfig = field(default_factory=CalibrationConfig)
     health: HealthConfig = field(default_factory=HealthConfig)
     farrange: FarRangeConfig = field(default_factory=FarRangeConfig)
+    dust: DustGuardConfig = field(default_factory=DustGuardConfig)
     voxel: float = 0.0             # optional voxel downsampling of corridor candidates (0 = off)
 
     # ---- (de)serialisation -------------------------------------------------
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "DetectorConfig":
         cfg = cls()
-        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health", "farrange"):
+        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health", "farrange", "dust"):
             if section in d and d[section]:
                 obj = getattr(cfg, section)
                 for k, v in d[section].items():

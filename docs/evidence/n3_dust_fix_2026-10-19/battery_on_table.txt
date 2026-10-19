@@ -1,0 +1,35 @@
+cloud_with_fake_obj
+   clean: ep 8 STOP 452 GO 736 deg 15 big_ce:209/213@98.16 small_:26/49@47.96 small_:32/79@55.84 small_:18/83@34.97 big_ed:7/125@18.26 big_ab:56/124@111.42 long_l:53/86@88.97 thin_h:15/42@30.12
+   low: ep 8 STOP 447 GO 737 deg 15 big_ce:209/213@98.16 small_:24/49@44.42 small_:33/79@57.49 small_:18/83@34.97 big_ed:2/125@18.26 big_ab:56/124@111.42 long_l:52/86@90.75 thin_h:15/42@30.12
+   medium: ep 11 STOP 418 GO 0 deg 1510 big_ce:209/213@98.16 small_:23/49@42.66 small_:23/79@40.78 small_:16/83@31.27 big_ed:7/125@18.26 big_ab:52/124@103.39 long_l:44/86@73.73 thin_h:0/42@None
+   high: ep 27 STOP 540 GO 0 deg 1510 big_ce:154/213@93.11 small_:13/49@24.84 small_:15/79@28.93 small_:15/83@29.41 big_ed:8/125@32.18 big_ab:21/124@87.25 long_l:21/86@35.45 thin_h:0/42@None
+doubleT_obstacle
+   clean: ep 1 STOP 193 GO 8 deg 0 object:128/185@56.13 person:61/61@55.51
+   low: ep 5 STOP 170 GO 19 deg 0 object:104/185@56.11 person:61/61@55.51
+   medium: ep 2 STOP 192 GO 0 deg 201 object:129/185@56.11 person:61/61@55.51
+   high: ep 1 STOP 61 GO 0 deg 201 object:0/185@None person:57/61@55.54
+doubleT_platform
+   clean: ep 0 STOP 0 GO 144 deg 9 
+   low: ep 1 STOP 4 GO 120 deg 6 
+   medium: ep 6 STOP 21 GO 0 deg 345 
+   high: ep 3 STOP 8 GO 0 deg 345 
+roundT_doubleT
+   clean: ep 0 STOP 0 GO 83 deg 0 
+   low: ep 0 STOP 0 GO 72 deg 0 
+   medium: ep 2 STOP 9 GO 0 deg 252 
+   high: ep 5 STOP 28 GO 0 deg 252 
+roundT_pressureGate_roundT
+   clean: ep 1 STOP 2 GO 150 deg 0 
+   low: ep 1 STOP 3 GO 150 deg 0 
+   medium: ep 7 STOP 61 GO 0 deg 268 
+   high: ep 9 STOP 81 GO 0 deg 268 
+roundT_squareT_pressureGate_squareT
+   clean: ep 0 STOP 0 GO 354 deg 0 
+   low: ep 0 STOP 0 GO 356 deg 0 
+   medium: ep 5 STOP 16 GO 0 deg 545 
+   high: ep 12 STOP 204 GO 0 deg 545 
+squareT_platform_squareT_switch
+   clean: ep 3 STOP 11 GO 420 deg 0 
+   low: ep 12 STOP 67 GO 417 deg 0 
+   medium: ep 2 STOP 31 GO 0 deg 877 
+   high: ep 0 STOP 0 GO 0 deg 877 
