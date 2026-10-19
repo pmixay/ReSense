@@ -96,6 +96,9 @@ class Track:
     thin_hist: List[bool] = field(default_factory=list)  # 27.09 (thin_far_min_distance): last zone_window hits: a far scan line?
     approach: List[tuple] = field(default_factory=list)  # 27.09: (sensor time s, distance m) of the last hits (approach_*)
     far_evidence: bool = False      # 27.09: the track was ever matched by a far scan line / weak far cluster (thin_far_min_distance)
+    cable_kind: int = 0             # 1 = resolved tall body, 2 = narrow hanging group; current run only
+    cable_hits: int = 0
+    cable_span_s: float = 0.0
     was_stop: bool = False          # 27.09: reported in zone gauge (a STOP) after the previous update (thin_far_min_distance only)
     approach_block: bool = False    # 27.09: far evidence without an approach holds a reported advisory track advisory (zone)
     evidence_hist: List[str] = field(default_factory=list)  # opt-in fresh_stop_evidence: recent hit provenance
@@ -291,6 +294,7 @@ class Tracker:
         # 26.09 (stop_keep_max_s): the sensor time of this frame for the keep cap (the nominal period
         # when the caller gives no interval), so that the cap is in seconds at any input rate
         kdt = dt if dt > 0 else float(c.frame_dt)
+        self._cable_dt = kdt
         low_dt = float(low_frame_dt) if low_frame_dt is not None and low_frame_dt > 0 else kdt
         for t in self.tracks:
             t.low_since_clean += low_dt
@@ -354,6 +358,7 @@ class Tracker:
         # unmatched tracks
         for i, t in enumerate(self.tracks):
             if not matched_t[i]:
+                t.cable_kind, t.cable_hits, t.cable_span_s = 0, 0, 0.0
                 t.since_clean += kdt
                 t.misses += 1
                 t.age += 1
@@ -680,6 +685,15 @@ class Tracker:
         continuation source supplies fresh evidence for a new STOP onset.
         """
         c = self.cfg
+        cable_kind = self._cable_kind(cl) if source == "ordinary" else 0
+        if cable_kind:
+            if t.cable_kind != cable_kind:
+                t.cable_hits, t.cable_span_s = 0, 0.0
+            t.cable_kind = cable_kind
+            t.cable_hits += 1
+            t.cable_span_s += self._cable_dt
+        else:
+            t.cable_kind, t.cable_hits, t.cable_span_s = 0, 0, 0.0
         if c.ego_veto_min_speed > 0 and source in ("ordinary", "far_thin"):
             t.odo = (t.odo + [(self._odo_seg, self._odo_x, float(cl.distance))])[-10:]
         if c.explained_run > 0 and source == "ordinary":
@@ -863,6 +877,23 @@ class Tracker:
             d[:, b] = np.inf
         return [thin[j] for j in free]
 
+    def _cable_kind(self, cl: Cluster) -> int:
+        """Positive current-frame vertical support, never a shape-demoted or sparse continuation.
+
+        Hanging groups already carry independent below/above-envelope support from
+        find_hanging. A tall body needs many strict voxels; a flat/weak scan line,
+        low object or a column signature cannot shorten ordinary confirmation.
+        """
+        c = self.cfg
+        if (c.cable_confirm_time_s <= 0 or cl.zone != "gauge" or cl.reason or cl.thin
+                or cl.weak or cl.low_height_weak or cl.kind not in ("", "hanging")
+                or max(float(cl.size[0]), float(cl.size[1])) > c.cable_max_footprint):
+            return 0
+        height = cl.height_max - cl.height_min
+        if cl.kind == "hanging":
+            return 2 if (height >= c.hanging_confirm_min_height and cl.n >= 2 and cl.n_gauge >= 1) else 0
+        return 1 if height >= c.cable_min_height and cl.n_gauge >= c.cable_min_voxels else 0
+
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg
         if (c.low_min_seen_distance > 0 and t.last is not None and t.last.kind == "low" and t.history
@@ -871,7 +902,15 @@ class Tracker:
             # starts (the rail heads just ahead of a standing train under a young model)
             return False
         need_span = c.confirm_time_s if (self._timed and c.confirm_time_s > 0) else 0.0
-        return (t.hits >= (c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits)
+        need_hits = c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits
+        if c.cable_confirm_time_s > 0 and t.cable_kind:
+            fast_span = c.hanging_confirm_time_s if t.cable_kind == 2 else c.cable_confirm_time_s
+            fast_hits = max(2, c.hanging_confirm_hits) if t.cable_kind == 2 else c.confirm_hits
+            if (fast_span > 0 and t.cable_hits >= fast_hits
+                    and (not self._timed or t.cable_span_s >= fast_span - 1e-9)):
+                need_hits = min(need_hits, fast_hits)
+                need_span = min(need_span, fast_span)
+        return (t.hits >= need_hits
                 and t.confidence >= c.conf_threshold and t.misses == 0
                 and t.span_s >= need_span - 1e-9
                 and (c.min_hit_fraction <= 0 or t.hit_fraction >= c.min_hit_fraction - 1e-9))
