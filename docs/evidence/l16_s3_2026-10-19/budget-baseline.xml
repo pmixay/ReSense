@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="0.866" timestamp="2026-10-19T08:59:14.531978+00:00" hostname="kuber"><testcase classname="tests.test_orientation_budget" name="test_every_candidate_observation_is_bounded_on_a_large_cloud" time="0.517"><failure message="assert 350003 &lt;= 60000&#10; +  where 350003 = max([350003, 350003, 350003, 350003, 350003, 350003, ...])">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7a934c5fb5c0&gt;
+
+    def test_every_candidate_observation_is_bounded_on_a_large_cloud(monkeypatch):
+        import resense.calibration as mod
+        cfg = DetectorConfig()
+        cfg.calibration.keep_up_axis = False
+        cal = MountCalibrator(cfg.calibration, cfg.track)
+        seen = []
+    
+        def observe(xyz, *args, **kwargs):
+            seen.append(len(xyz))
+            return MountObservation(ok=False)
+    
+        monkeypatch.setattr(mod, 'observe_mount', observe)
+        xyz = np.random.default_rng(7).normal(size=(350003, 3)).astype(np.float32)
+        cal._search_orientation(xyz)
+        assert len(seen) == 23
+&gt;       assert max(seen) &lt;= 60000
+E       assert 350003 &lt;= 60000
+E        +  where 350003 = max([350003, 350003, 350003, 350003, 350003, 350003, ...])
+
+resense/tests/test_orientation_budget.py:23: AssertionError</failure></testcase><testcase classname="tests.test_orientation_budget" name="test_search_does_not_run_after_configured_mount_passes" time="0.003" /></testsuite></testsuites>

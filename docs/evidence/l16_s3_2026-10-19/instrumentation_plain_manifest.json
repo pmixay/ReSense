@@ -1,0 +1,27 @@
+{
+  "archive": "instrumentation_plain.tar.gz",
+  "sha256": "0be028d05638db3dfc8c2213725afe3b013487bf37725139b8442631c3dea126",
+  "members": {
+    "case_00.json": {
+      "bytes": 2034,
+      "sha256": "f39d900ed34f70677dffe094319679181f645b5f90c70f7a5a7c2cf598697ba6"
+    },
+    "case_00.jsonl": {
+      "bytes": 187259,
+      "sha256": "1e5ea21e3141f179838d4f8d26a3e2d2c8f836b1c22b8dc12c28cbb848d8ceb9"
+    },
+    "case_04.json": {
+      "bytes": 2630,
+      "sha256": "0b71e49461eb69e76628ca60befcdec3cbca3ff0ee39cc7b36b3a761e30f2f5c"
+    },
+    "case_04.jsonl": {
+      "bytes": 195639,
+      "sha256": "65dc4fd131f170ab983dbbdc3821af511f622859854e610fe0b3354d980bca89"
+    },
+    "summary.json": {
+      "bytes": 8408,
+      "sha256": "d8db793335f55f9387e3c192251bac25e9edc2f467411f2b954c8327c1e0f47b"
+    }
+  },
+  "all_members_reopened_and_verified": true
+}

@@ -194,9 +194,11 @@ def test_recovered_sideways_mount_keeps_its_real_voting_observations(monkeypatch
     assert cal.state.status == 'provisional'
 
 
-def test_no_channel_proof_keeps_the_original_eight_candidate_search(monkeypatch):
+def test_no_channel_or_directional_proof_keeps_the_original_eight_candidate_search(monkeypatch):
     import resense.calibration as mod
     xyz, _ = _cones()
+    # Directional FOV is now an independent cue. A balanced scan supplies neither.
+    xyz = np.concatenate([xyz, -xyz])
     observed = []
 
     def observe(p, *a, **kw):

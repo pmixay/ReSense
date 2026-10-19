@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.232" timestamp="2026-10-19T10:04:40.682590+00:00" hostname="kuber"><testcase classname="tests.test_directional_history" name="test_new_side_recovery_matches_the_correct_startup_model_and_observations" time="1.543"><failure message="assert [(-0.00051074...748546215117)] == [(-0.00096246...145387724138)]&#10;  &#10;  At index 0 diff: (-0.0005107408432651686, 8.565439072840944e-05, -0.001448981540511042, 1.3199585684524502, -0.3620748546215117) != (-0.0009624622937677708, 8.298206080329496e-05, 1.3204404683102982e-06, 1.3200555064927755, -0.3458145387724116)&#10;  Use -v to get more diff">tunnel = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],
+       [ 2.0674713 , -2.4552011 ,  0.8242414 ],
+       [ 2....0000000.0, axis_valid_bent=1000000000.0, wall_drift=1000000000.0, axis_valid_without_rails=0.0, rail_axis_support=0.0))
+
+    def test_new_side_recovery_matches_the_correct_startup_model_and_observations(tunnel):
+        frame, _, _ = tunnel
+        xyz = frame.xyz.copy()
+        xyz[:, 1] -= .6  # Offset track makes an incorrect default prior observable.
+        rotation = np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]], dtype=np.float32)
+        correct, side = Detector(), Detector()
+        for i in range(8):
+            expected = correct.process(Frame(xyz, frame.intensity, stamp=.1 * i))
+            recovered = side.process(Frame(xyz @ rotation.T, frame.intensity, stamp=.1 * i))
+            if i &gt;= 1:
+&gt;               assert side.calib._recent == correct.calib._recent
+E               assert [(-0.00051074...748546215117)] == [(-0.00096246...145387724138)]
+E                 
+E                 At index 0 diff: (-0.0005107408432651686, 8.565439072840944e-05, -0.001448981540511042, 1.3199585684524502, -0.3620748546215117) != (-0.0009624622937677708, 8.298206080329496e-05, 1.3204404683102982e-06, 1.3200555064927755, -0.3458145387724116)
+E                 Use -v to get more diff
+
+resense/tests/test_directional_history.py:65: AssertionError</failure></testcase></testsuite></testsuites>

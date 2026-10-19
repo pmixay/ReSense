@@ -1,0 +1,69 @@
+{
+  "scope": "uncommitted P3 author source; not formal committed-source acceptance",
+  "runs": [
+    {
+      "name": "pandar-empty-ringfree-reference",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/tmp/opencode/l16-s3/reference",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/decoded/roundT_squareT_pressureGate_squareT",
+        "--out",
+        "/tmp/opencode/l16-s3/pandar-empty-ringfree-reference",
+        "--cases",
+        "0,4,5,12",
+        "--jobs",
+        "4"
+      ],
+      "started": "2026-10-19T09:10:11.561112+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T09:11:10.433611+00:00",
+      "log_sha256": "1b71a6c4ae008c9d3c86ebe629f67c8ec83b70c5b22fa94eeb31a237c140d726"
+    },
+    {
+      "name": "pandar-empty-ringfree-candidate",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/home/aiops/resense",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/decoded/roundT_squareT_pressureGate_squareT",
+        "--out",
+        "/tmp/opencode/l16-s3/pandar-empty-ringfree-candidate",
+        "--cases",
+        "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
+        "--jobs",
+        "4"
+      ],
+      "started": "2026-10-19T09:11:10.434639+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T09:15:19.036531+00:00",
+      "log_sha256": "fd4efb94651cdf16d8216aa3b34d5e37083c198e90ff4013bafca4265a788e93"
+    },
+    {
+      "name": "pandar-positive-ringfree-reference",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/tmp/opencode/l16-s3/reference",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/decoded/doubleT_obstacle",
+        "--out",
+        "/tmp/opencode/l16-s3/pandar-positive-ringfree-reference",
+        "--cases",
+        "0,4,5,12",
+        "--jobs",
+        "4"
+      ],
+      "started": "2026-10-19T09:15:19.037054+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T09:17:13.588619+00:00",
+      "log_sha256": "64fd2d334b7a588a35fa34464279acfea0948237e8db50affa35533f444b3aaf"
+    }
+  ],
+  "calibration_sha256": "3d0b67e6fceceadbedf997ceb558ae62ef42bffdea50cdbec179d3ef6c9ea85f"
+}

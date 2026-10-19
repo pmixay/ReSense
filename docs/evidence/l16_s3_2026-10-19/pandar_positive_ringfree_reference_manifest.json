@@ -1,0 +1,43 @@
+{
+  "archive": "pandar_positive_ringfree_reference.tar.gz",
+  "sha256": "22db2fbceff060da8512c4f3324fc99ca6ff4685c23a284fc4789a80216acc11",
+  "members": {
+    "case_00.json": {
+      "bytes": 3769,
+      "sha256": "592b4babe55c7cf2946f70585f4ec09901a74267146be926499e84bbaecd7a2b"
+    },
+    "case_00.jsonl": {
+      "bytes": 367199,
+      "sha256": "4a0733396bd922d9c4ed7435d708dfc2c99d1a4f00def830ff7faa5344e4414d"
+    },
+    "case_04.json": {
+      "bytes": 5474,
+      "sha256": "d326d7ce29daac2d6cadaa398da08013fdc0b17230f7bc38e686d1ea2b5a5e31"
+    },
+    "case_04.jsonl": {
+      "bytes": 707503,
+      "sha256": "975854d4e8332933dc0a32f6a9e893131164af31100886968000c3ddeef44523"
+    },
+    "case_05.json": {
+      "bytes": 5442,
+      "sha256": "f205beea3d089c24767d50fb400044e3d9d3eeee535572e92ce77b9d9bba23f5"
+    },
+    "case_05.jsonl": {
+      "bytes": 461675,
+      "sha256": "706ebc177314e116c08f1218b8aa5324b4c90b5f53d9437a38df6b653e76afda"
+    },
+    "case_12.json": {
+      "bytes": 3723,
+      "sha256": "4d74de7e961c365861dc8e9a3b3975f8e73b32e408acfeb0a4ef21ae26da7506"
+    },
+    "case_12.jsonl": {
+      "bytes": 336222,
+      "sha256": "6ad28e8cb6845b47cdb96e376ad920b60616373ccc5adf2d8569e4144dd41b67"
+    },
+    "summary.json": {
+      "bytes": 27520,
+      "sha256": "154a906c15bb1c204511e9550c6fb9c66322d9a209b642ef31b2dedc915a8c69"
+    }
+  },
+  "all_members_reopened_and_verified": true
+}

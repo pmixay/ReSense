@@ -1,0 +1,43 @@
+{
+  "archive": "falcon_reference.tar.gz",
+  "sha256": "5777313afe1616694a0d43776e2de2f104fb70f6f0eb7659322cfd708f60a192",
+  "members": {
+    "case_00.json": {
+      "bytes": 15866,
+      "sha256": "b830f6673766204973a8b3073914b61792744f5887a8107c2e3d2b20144afdb5"
+    },
+    "case_00.jsonl": {
+      "bytes": 9096672,
+      "sha256": "8468a164b7d42adf114ad573dcc5621d7b5ee5a27d02c44f07f8952072799f6e"
+    },
+    "case_04.json": {
+      "bytes": 88675,
+      "sha256": "79372721a748e3454e11c9bf2ae207521059d7279d13640e266d0cda50691f90"
+    },
+    "case_04.jsonl": {
+      "bytes": 19571845,
+      "sha256": "7b410c801cd6730a8047a8d74b92b1d1a566f40bea0a1cf79ac22a2160187e8c"
+    },
+    "case_05.json": {
+      "bytes": 88675,
+      "sha256": "5d5c486802324f927d449363f9823a987a6a32731486c7c16b80a52c7f058696"
+    },
+    "case_05.jsonl": {
+      "bytes": 19035931,
+      "sha256": "dad9a897c1cf8d3021911173aadf4ac555d258d4b04c3490bddc1b86e40a5c58"
+    },
+    "case_12.json": {
+      "bytes": 2012,
+      "sha256": "dc1f75ea0e60ef038f337b13fecfadc0e420487ec862d025af7f3b5c3d60adb7"
+    },
+    "case_12.jsonl": {
+      "bytes": 7012146,
+      "sha256": "ea72177542b53d5802e70d8545c52e0ef0072d3211de1d8e23da0d203d908907"
+    },
+    "summary.json": {
+      "bytes": 276189,
+      "sha256": "f5d8d9a55726d033238cb0954aad22d700a94e6aa19db1ebc1ec615ea9d5ea94"
+    }
+  },
+  "all_members_reopened_and_verified": true
+}

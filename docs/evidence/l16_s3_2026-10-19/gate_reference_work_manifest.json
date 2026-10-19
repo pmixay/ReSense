@@ -1,0 +1,75 @@
+{
+  "archive": "gate_reference_work.tar.gz",
+  "sha256": "3cb345f5d3c4c4c6bd416953a4e60eca7a069c30679a0e812e2afe742adf4209",
+  "members": {
+    "cloud_with_fake_obj.jsonl": {
+      "bytes": 2903649,
+      "sha256": "c01a6995df5caccaffbc0ed1543680b8ffe1127da4fc7db2dca0670101fd9b4e"
+    },
+    "config.yaml": {
+      "bytes": 9396,
+      "sha256": "d7750028009e9db06ded33546349f48bf183befd216321ca960e1b67067c62cf"
+    },
+    "doubleT_obstacle.jsonl": {
+      "bytes": 433152,
+      "sha256": "54a14f4ee02cb5c19d01c0bc80a9f93e9c1c37c0d47cc2b7e01cf483cc389f08"
+    },
+    "doubleT_platform.jsonl": {
+      "bytes": 657536,
+      "sha256": "ea7aef7f7e7919d5e317ec4a033f93580b45ac11784ec48a7876597dfe43e980"
+    },
+    "new_data_0.jsonl": {
+      "bytes": 2692157,
+      "sha256": "2a55b64f0a616e8e6a0966303c1572a1bbcaca829f03f83018aab42c18075205"
+    },
+    "new_data_1.jsonl": {
+      "bytes": 2950129,
+      "sha256": "a856f6aa25655eba1fcd847f663838721946de3e2a641d37e961a907bda11bec"
+    },
+    "new_data_2.jsonl": {
+      "bytes": 2745399,
+      "sha256": "5ef00df80e8fd308daa8d7b7abd1c555cfba54d56708b5fac9792b65a160b41a"
+    },
+    "new_data_3.jsonl": {
+      "bytes": 2819919,
+      "sha256": "5ed6fb7cea4c6a49d138204923818ec6a091c5b8f51371a19e54352d597cab03"
+    },
+    "new_data_4.jsonl": {
+      "bytes": 2790293,
+      "sha256": "3b273d622839e1bc7c49b2d4021c8f475130f490a90c03d4a4100f994799c316"
+    },
+    "new_data_5.jsonl": {
+      "bytes": 2612209,
+      "sha256": "c2a90b715f43d9ba8391e2050ea88074117fa9d7f781ecf005cf07fa687c515d"
+    },
+    "new_data_6.jsonl": {
+      "bytes": 2634481,
+      "sha256": "d5abbb0966f2332761b50dd230a5671d57776daf44266654c565e87f981903ec"
+    },
+    "new_data_7.jsonl": {
+      "bytes": 2543423,
+      "sha256": "0069fec15e368399fd696866d5c62443563d307ebadff2a8690b48f9054b8abf"
+    },
+    "roundT_doubleT.jsonl": {
+      "bytes": 501038,
+      "sha256": "fd47529ad0d37661618bab2c2e6f807844562394cc8c77987fd6823581152762"
+    },
+    "roundT_pressureGate_roundT.jsonl": {
+      "bytes": 505943,
+      "sha256": "17bee972d779ed918c480e03fe02fd6e742c03fe7934354eb4fada71b7dd78ec"
+    },
+    "roundT_squareT_pressureGate_squareT.jsonl": {
+      "bytes": 1015692,
+      "sha256": "db65e94c9441d01ec987691bc321d631ba125c5d15bd0039ff46ff49c740f6ee"
+    },
+    "setF_straight.json": {
+      "bytes": 1817200,
+      "sha256": "67fc12110399489e432fc2cf3ba290c05eed6a7339fbd0c186d2c3a11ca61542"
+    },
+    "squareT_platform_squareT_switch.jsonl": {
+      "bytes": 1797333,
+      "sha256": "3790b8da01ae23b77f9c67dabad5bcd987835026d38de29ff2efb51f3edbf102"
+    }
+  },
+  "all_members_reopened_and_verified": true
+}

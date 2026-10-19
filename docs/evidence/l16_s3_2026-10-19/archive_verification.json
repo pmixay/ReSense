@@ -1,0 +1,6 @@
+{
+  "system_tool": "sha256sum --check",
+  "archives_checked": 16,
+  "wrong_checksum_positive_control_rejected": true,
+  "returncode": 0
+}
