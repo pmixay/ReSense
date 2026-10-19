@@ -62,7 +62,11 @@ for i, m in enumerate(meta):
                      "n_vox": dd.n_points, "n_idx": int(idx.size), "n_real": int(real.sum()),
                      "n_acc": int(t.last.n_raw - idx.size), "imax": float(dfr.intensity[idx].max()) if idx.size else None,
                      "size": [round(float(s), 2) for s in dd.size], "age": dd.age, "misses": t.misses,
-                     "nb_ge2": int((nb >= 2).sum()), "nb_ge2_real": int(((nb >= 2) & real).sum())})
+                     "nb_ge2": int((nb >= 2).sum()), "nb_ge2_real": int(((nb >= 2) & real).sum()),
+                     "lat": round(float(dd.lateral), 2),
+                     "d_center": round(float(det.track.center_y(np.array([dd.distance]))[0] - clean.track.center_y(np.array([dd.distance]))[0]), 3),
+                     "d_railz": round(float(det.track.rail_z(np.array([dd.distance]))[0] - clean.track.rail_z(np.array([dd.distance]))[0]), 3),
+                     "clean_near": [(round(k.distance, 1), k.zone[0], k.reason[:7], round(k.lateral, 2)) for k in cres.candidates if abs(k.distance - dd.distance) < 1.5]})
     out.write(json.dumps({"i": i, "stop": bool(res.obstacle), "clean_stop": bool(cres.obstacle), "dets": rows,
                           "speed": res.ego_speed, "axis": float(res.track.axis_valid), "n_acc": res.n_accumulated}) + "\n")
 out.close()

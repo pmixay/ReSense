@@ -195,10 +195,12 @@ class DustGuard:
         P = xyz[roi].astype(np.float64)
         rng = np.linalg.norm(P, axis=1)
         r = support_radius(rng, cfg)
-        counts = count_within(tree, P, r, int(cfg.max_support) + 1) - 1
         lam = self.last["field_density"] * 4.0 / 3.0 * math.pi * r ** 3
         lam = np.where(P[:, 0] > cfg.interior_range[1], 0.0, lam)
-        keep[roi] = counts >= required_support(lam, cfg)
+        need = required_support(lam, cfg)
+        # counts above the largest requirement do not matter: cap the query there
+        counts = count_within(tree, P, r, int(need.max()) + 1) - 1
+        keep[roi] = counts >= need
         return keep
 
     def supported(self, xyz: np.ndarray, idx: np.ndarray, dy: np.ndarray, h: np.ndarray) -> np.ndarray:
@@ -214,13 +216,14 @@ class DustGuard:
         if not cur.any():
             return keep
         q = idx[cur]
-        counts = self._neighbours(xyz, q)
         rng = np.linalg.norm(xyz[q].astype(np.float64), axis=1)
         lam = self.last["field_density"] * 4.0 / 3.0 * math.pi * support_radius(rng, self.cfg) ** 3
         # The field is measured inside the interior only; beyond it the base requirement applies
         # (a far, sparsely sampled real object must stay detectable where no field was observed).
         lam = np.where(xyz[q, 0] > self.cfg.interior_range[1], 0.0, lam)
-        solid = counts >= required_support(lam, self.cfg)
+        need = required_support(lam, self.cfg)
+        counts = self._neighbours(xyz, q, cap=int(need.max()))
+        solid = counts >= need
         loose = np.flatnonzero(~solid)
         if loose.size and solid.any() and self.cfg.attach_factor > 0:
             # The fringe of a real structure (a thinly sampled edge, a sparse row next to a

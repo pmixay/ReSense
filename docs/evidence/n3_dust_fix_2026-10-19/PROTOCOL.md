@@ -28,8 +28,14 @@ On, per frame:
    No frame point is deleted from the cloud; unsupported returns cannot feed a STOP;
    (c) `track_filter`: unsupported returns near the track (|dy| ≤ 3 m, X < 70 m) are withheld
    from the track-model fit only.
-3. **Light mode** (track filter only, no health change, no candidate filtering): a 20-frame mean
-   isolated density ≥ 0.05 /m³ and mean spread ≥ 0.08.
+3. **Light mode** exists in code but is **off** (`light_spread: 0`): in development it lost real
+   STOP frames at low density (doubleT_obstacle 193 → 66 STOP frames) because far rail returns are
+   single grazing hits per scan line. The track filter therefore only withholds returns ≥ 0.15 m
+   above the rail head (`track_min_height`); rails and bed are never withheld.
+
+Frozen parameters are the `dust:` block of `configs/default.yaml` at the registration commit
+(identical to the `DustGuardConfig` defaults), with `enabled: true` set by `--set` for the
+"on" runs.
 
 ## Development record (not acceptance)
 
@@ -43,7 +49,29 @@ oversize blob and is lost; (iii) the far-field / platform false STOPs that remai
 structures** whose zone flips because the dust (injection and attenuation alike) perturbs the
 track model — with the clean track model (oracle) they disappear; (iv) a non-dust control (2 %
 uniform random point drop) also raises squareT_platform_squareT_switch from 3 to 7 STOP episodes:
-part of the low-density failure is pre-existing sensitivity of the track model.
+part of the low-density failure is pre-existing sensitivity of the track model; (v) at medium and
+high the remaining false STOPs are real wall-side structures; the dusty track's wall-derived
+curvature deviates (e.g. 0.8e-3 vs clean 2.2e-3 /m on a curve) and shifts the axis by 0.5–2 m
+at 40–60 m. The guard does not repair attenuated walls.
+
+Development tables (dev seed 7; `dev/g5_table.txt` = frozen candidate, `dev/g6_table.txt` = the
+same code with `track_filter=false`; g1/g2 are earlier versions, g1–g4 also loaded a stray local
+native build, see the report). STOP episodes, empty recordings, clean → low / medium / high:
+
+| Recording | clean | g5 low | g5 med | g5 high | g6 med | g6 high |
+|---|---:|---:|---:|---:|---:|---:|
+| doubleT_platform | 0 | 3 | 3 | 2 | 5 | 3 |
+| roundT_doubleT | 0 | 0 | 1 | 5 | 0 | 5 |
+| roundT_pressureGate_roundT | 1 | 0 | 8 | 11 | 7 | 1 |
+| roundT_squareT_pressureGate_squareT | 0 | 0 | 2 | 10 | 0 | 21 |
+| squareT_platform_squareT_switch | 3 | 15 | 5 | 0 | 11 | 1 |
+
+Real obstacle (doubleT_obstacle), g5: medium 193/193 STOP frames, person 61/61, rail object
+132/185 rows (clean 128); high person 59/61, rail object 0. g6: medium rail object 0/185, high
+person 41/61. The track filter is kept for real-object retention although g6 passes more empty
+cells. **Expectation registered before acceptance: criteria 1 (several cells at every density)
+and 2 (rail object rows at low, guard inactive there) are expected to FAIL**; the acceptance runs
+measure by how much on the registered seed, and the remaining criteria.
 
 ## Acceptance (unchanged from the task / N3 registration; seed 20261018; densities as registered)
 
