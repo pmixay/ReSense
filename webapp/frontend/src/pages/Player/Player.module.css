@@ -115,7 +115,7 @@
 .distNum { margin-top: 8px; font-family: var(--f-head); font-size: 44px; font-weight: 800; letter-spacing: -0.035em; line-height: 1; white-space: nowrap; }
 .distNum small { margin-left: 6px; font-size: 20px; }
 .dbar { display: block; width: 100%; max-width: 100%; height: 40px; margin-top: 8px; }
-.barLabels { position: relative; height: 16px; font-size: 12px; line-height: 16px; font-weight: 700; }
+.barLabels { position: relative; height: 16px; overflow: hidden; font-size: 12px; line-height: 16px; font-weight: 700; }
 .barLabels > span { position: absolute; left: 0; white-space: nowrap; }
 .barValue { transform: translateX(-50%); }
 .barMonitored { transform: translateX(-100%); }

@@ -110,8 +110,8 @@ function DistanceBar({
       </svg>
       <div className={styles.barLabels}>
         <span>{labels.free}</span>
-        {labels.value && <span className={styles.barValue} style={{ left: labels.valueX }}>{labels.value}</span>}
-        {labels.mon && <span className={styles.barMonitored} style={{ left: labels.monEnd }}>{labels.mon}</span>}
+        {labels.value && <span className={styles.barValue} style={{ left: `${labels.valueX / W * 100}%` }}>{labels.value}</span>}
+        {labels.mon && <span className={styles.barMonitored} style={{ left: `${labels.monEnd / W * 100}%` }}>{labels.mon}</span>}
       </div>
     </div>
   );
