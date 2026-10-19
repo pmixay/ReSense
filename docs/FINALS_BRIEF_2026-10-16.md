@@ -8,7 +8,9 @@
 > player script, calibration, node input handling) read by the lead in the source; the numbers from
 > [`evidence/axis_profile_2026-10-16/`](evidence/axis_profile_2026-10-16/README.md) and the
 > [13.10 judgement](evidence/judgement_2026-10-13/README.md). Nothing was run in Docker for this note.
-> **Status:** current; the new cards are proposals, not scheduled work
+> **Status:** the message and the 16.10 analysis are kept as written; the state of each criterion and card on
+> 19.10 (N1, N4 done locally; N2 measured; N3 failing, in work; gauge stability and curves in work) is in
+> [`BACKLOG.md`](BACKLOG.md) §9b
 
 ## 1. The message (verbatim, as relayed by the team)
 

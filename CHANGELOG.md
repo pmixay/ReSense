@@ -10,11 +10,12 @@
 > **Updated:** 2026-10-16: selected-scope H3/withdrawal/independent H4 at `c9aea87`, final H5
 > at `5211565` and verified 1.1.0 seal below; 2026-10-18: the LiDAR branch is now an
 > unreleased 1.2.0 candidate. Hosted CI, P4 final candidate approval and release remain pending.
+> 2026-10-19: 1.1.0 will not be released; development continues on 1.2.0 (captain); independent whole-Falcon check
+> of `aec88d2` added under [1.2.0].
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4
-are team labels; package 1.0.0 dates from 25.09. `main` now contains the merged **1.2.0** candidate (PR #37);
-`det/b4-orientation` integrates B4 and P4 work. The selected next J1 source remains
-pinned sealed **1.1.0 `3b7d7aa`**, not the moving main branch.
+are team labels; package 1.0.0 dates from 25.09. `main` contains the merged **1.2.0** candidate (PR #37, PR #38,
+`aec88d2`). **1.1.0 will not be released** (captain, 19.10); the next release, J1 and G3 use the final 1.2.0 seal.
 The published release remains v1.0.0. Figures are the team's, measured when a change
 landed (detector figures on the 1 cm frame cache). Current results: [`README.md`](README.md),
 [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
@@ -53,12 +54,19 @@ the committed version and its source identity are recorded in the
   off. L16 coverage beyond the tested B4 channel-evidence scope, curve-axis bias (L10/K2), inherited tall-object
   misses and the historical Windows Set O frame 332 provenance gap remain unresolved.
 
+- **19.10, independent check of merged `aec88d2` on the second lidar** ([evidence](docs/evidence/falcon_head_check_2026-10-19/README.md)):
+  the whole Falcon recording (4,443 frames) gives the same decisions as the committed 1.1.0 run, so the B4 change
+  did not alter it; orientation adopted at frame 1, pitch −2.39° (independent bed fit −2.37°); the walking person:
+  first warning 139–156 m, first STOP ~125 m, STOP on every frame from 100 m to 20 m; 12 false STOP frames;
+  CAUTION 69 %; no bed return beyond ~150 m. Re-derived: the curve axis is 3.6× too straight on `roundT_doubleT`;
+  N1's jitter figures. Full test suite 1,969 passed.
+
 P4's development check of `b423562` is not final approval of this version. P1 owns integration
 and sealing; P3 owns further detector changes. The same orientation/axis areas must enter one
 reviewed integration before a later release. Hosted CI is still blocked by account billing;
 no release date or new score is asserted.
 
-## [1.1.0] — sealed 16.10, unreleased (E1 tag/archive pending)
+## [1.1.0] — sealed 16.10, will not be released (captain, 19.10; its content is part of 1.2.0)
 
 **H5 DONE:** final measured source `5211565`, numerical core unchanged from reviewed `c9aea87`;
 replacement H3, withdrawal probes, independent H4 and final version-bumped gate/seal complete.
