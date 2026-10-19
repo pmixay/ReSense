@@ -649,6 +649,7 @@ class FarRangeConfig:
                                        # Only this extends the trust beyond the observed support (sigma without the unseen-curvature term)
     axis_sigma0: float = 0.15          # m, lateral uncertainty at the join
     axis_max_sigma: float = 0.5        # m: the far axis is trusted only where sigma(X) stays below this
+    axis_handover_max_offset: float = 0.5  # m: beyond the far line's end the near model is trusted only if they agree there
     axis_unseen_curvature: float = 1.0 / 300.0  # 1/m, allowed beyond the last supporting bin (sigma grows as k x^2 / 2; metro R >= 300 m)
     axis_core_margin: bool = True      # the strict gauge shrinks by sigma(X) beyond the join
     far_min_height: float = 0.3        # cluster.far_min_height under the profile: beyond the height reference a far

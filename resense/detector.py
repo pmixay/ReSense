@@ -548,7 +548,11 @@ class Detector:
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
         if far is not None:
-            axis_valid = max(axis_valid, min(far.valid, cfg.gauge.range_max))
+            # beyond the far line's trusted end the near model takes over only where the two agree there
+            # (the near parabola can be metres off once the far line shows the track straight)
+            end = min(far.valid, cfg.gauge.range_max)
+            gap = abs(float(far.y_join + far.slope * (end - far.join) - self.track.center_y(np.array([end]))[0]))
+            axis_valid = max(axis_valid, end) if gap <= cfg.farrange.axis_handover_max_offset else end
         valid = min(axis_valid, floor_valid) if cfg.cluster.far_min_height <= 0 else axis_valid
         if cfg.cluster.far_axis_both_sides == 1:
             # 25.09 (far_switch), opt-in, mode 1: beyond the height reference only as far as both
