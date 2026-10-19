@@ -1,0 +1,181 @@
+[
+  {
+    "bag": "/tmp/opencode/resense-b4-data/for_hackathon/roundT_squareT_pressureGate_squareT/roundT_squareT_pressureGate_squareT_0.db3",
+    "point_step": 26,
+    "fields": [
+      {
+        "name": "x",
+        "offset": 0,
+        "datatype": 7
+      },
+      {
+        "name": "y",
+        "offset": 4,
+        "datatype": 7
+      },
+      {
+        "name": "z",
+        "offset": 8,
+        "datatype": 7
+      },
+      {
+        "name": "intensity",
+        "offset": 12,
+        "datatype": 7
+      },
+      {
+        "name": "ring",
+        "offset": 16,
+        "datatype": 4
+      },
+      {
+        "name": "timestamp",
+        "offset": 18,
+        "datatype": 8
+      }
+    ],
+    "timing": {
+      "timestamp": {
+        "min": 946692690.533414,
+        "max": 946692690.566724,
+        "distinct": 1200,
+        "sample": [
+          946692690.533414,
+          946692690.537581,
+          946692690.541749,
+          946692690.545916,
+          946692690.550083,
+          946692690.55425,
+          946692690.558417,
+          946692690.562584
+        ]
+      }
+    }
+  },
+  {
+    "bag": "/tmp/opencode/resense-b4-data/for_hackathon/roundT_pressureGate_roundT/roundT_pressureGate_roundT_0.db3",
+    "point_step": 26,
+    "fields": [
+      {
+        "name": "x",
+        "offset": 0,
+        "datatype": 7
+      },
+      {
+        "name": "y",
+        "offset": 4,
+        "datatype": 7
+      },
+      {
+        "name": "z",
+        "offset": 8,
+        "datatype": 7
+      },
+      {
+        "name": "intensity",
+        "offset": 12,
+        "datatype": 7
+      },
+      {
+        "name": "ring",
+        "offset": 16,
+        "datatype": 4
+      },
+      {
+        "name": "timestamp",
+        "offset": 18,
+        "datatype": 8
+      }
+    ],
+    "timing": {
+      "timestamp": {
+        "min": 946692902.433449,
+        "max": 946692902.466757,
+        "distinct": 1200,
+        "sample": [
+          946692902.433449,
+          946692902.437617,
+          946692902.441784,
+          946692902.44595,
+          946692902.450117,
+          946692902.454284,
+          946692902.458451,
+          946692902.462618
+        ]
+      }
+    }
+  },
+  {
+    "bag": "/tmp/opencode/l16-s3/falcon_test_second_dark/falcon_test_second_dark_0.db3",
+    "point_step": 48,
+    "fields": [
+      {
+        "name": "x",
+        "offset": 0,
+        "datatype": 7
+      },
+      {
+        "name": "y",
+        "offset": 4,
+        "datatype": 7
+      },
+      {
+        "name": "z",
+        "offset": 8,
+        "datatype": 7
+      },
+      {
+        "name": "timestamp",
+        "offset": 16,
+        "datatype": 8
+      },
+      {
+        "name": "intensity",
+        "offset": 24,
+        "datatype": 7
+      },
+      {
+        "name": "flags",
+        "offset": 28,
+        "datatype": 2
+      },
+      {
+        "name": "elongation",
+        "offset": 29,
+        "datatype": 2
+      },
+      {
+        "name": "scan_id",
+        "offset": 30,
+        "datatype": 4
+      },
+      {
+        "name": "scan_idx",
+        "offset": 32,
+        "datatype": 4
+      },
+      {
+        "name": "is_2nd_return",
+        "offset": 34,
+        "datatype": 2
+      }
+    ],
+    "timing": {
+      "timestamp": {
+        "min": 3105.292503368,
+        "max": 3105.3874223599996,
+        "distinct": 8300,
+        "sample": [
+          3105.292503368,
+          3105.304180312,
+          3105.315904464,
+          3105.3283493999993,
+          3105.3394806399997,
+          3105.3511487439996,
+          3105.36283508,
+          3105.3745585359993
+        ]
+      }
+    }
+  }
+]

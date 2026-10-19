@@ -1,0 +1,325 @@
+{
+  "status": "FAR_REAL_AXIS_REFERENCE_NOT_ACCEPTED",
+  "rows": [
+    {
+      "sequence": "A",
+      "frame": 50,
+      "station": 60.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 50,
+      "station": 100.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 50,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 100,
+      "station": 60.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 100,
+      "station": 100.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 100,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 150,
+      "station": 60.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 150,
+      "station": 100.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 150,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 180,
+      "station": 60.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 180,
+      "station": 100.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 180,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 220,
+      "station": 60.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 220,
+      "station": 100.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 220,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 260,
+      "station": 60.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 260,
+      "station": 100.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "A",
+      "frame": 260,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "C",
+      "frame": 0,
+      "station": 60.0,
+      "executed_gate": "reverse_rotation"
+    },
+    {
+      "sequence": "C",
+      "frame": 0,
+      "station": 100.0,
+      "executed_gate": "reverse_rotation"
+    },
+    {
+      "sequence": "C",
+      "frame": 0,
+      "station": 140.0,
+      "executed_gate": "reverse_translation"
+    },
+    {
+      "sequence": "C",
+      "frame": 25,
+      "station": 60.0,
+      "executed_gate": "reverse_rotation"
+    },
+    {
+      "sequence": "C",
+      "frame": 25,
+      "station": 100.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "C",
+      "frame": 25,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "C",
+      "frame": 50,
+      "station": 60.0,
+      "executed_gate": "reverse_translation"
+    },
+    {
+      "sequence": "C",
+      "frame": 50,
+      "station": 100.0,
+      "executed_gate": "reverse_translation"
+    },
+    {
+      "sequence": "C",
+      "frame": 50,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "C",
+      "frame": 75,
+      "station": 60.0,
+      "executed_gate": "reverse_translation"
+    },
+    {
+      "sequence": "C",
+      "frame": 75,
+      "station": 100.0,
+      "executed_gate": "reverse_translation"
+    },
+    {
+      "sequence": "C",
+      "frame": 75,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "C",
+      "frame": 100,
+      "station": 60.0,
+      "executed_gate": "reverse_translation"
+    },
+    {
+      "sequence": "C",
+      "frame": 100,
+      "station": 100.0,
+      "executed_gate": "reverse_translation"
+    },
+    {
+      "sequence": "C",
+      "frame": 100,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "C",
+      "frame": 125,
+      "station": 60.0,
+      "executed_gate": "reverse_translation"
+    },
+    {
+      "sequence": "C",
+      "frame": 125,
+      "station": 100.0,
+      "executed_gate": "initializations_disagree"
+    },
+    {
+      "sequence": "C",
+      "frame": 125,
+      "station": 140.0,
+      "executed_gate": "initializations_disagree"
+    }
+  ],
+  "gates": {
+    "initializations_disagree": 25,
+    "reverse_rotation": 3,
+    "reverse_translation": 8
+  },
+  "nonzero_positive_control": {
+    "primary": {
+      "T": [
+        [
+          0.9998476951563914,
+          -0.017452406437283522,
+          3.8873037026923245e-18,
+          80.0
+        ],
+        [
+          0.017452406437283526,
+          0.9998476951563912,
+          -2.836256686263094e-16,
+          0.20000000000000054
+        ],
+        [
+          1.0619667870863109e-18,
+          2.8335158718956526e-16,
+          1.0,
+          0.04999999999999993
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "fitness": 1.0,
+      "rmse": 2.2863965036567195e-14,
+      "points": 470
+    },
+    "alternate_seed_result": {
+      "T": [
+        [
+          0.9998476951563914,
+          -0.017452406437283536,
+          -1.7067805161992883e-18,
+          80.0
+        ],
+        [
+          0.017452406437283536,
+          0.9998476951563913,
+          3.373463058086291e-16,
+          0.20000000000000082
+        ],
+        [
+          -4.188133128145648e-18,
+          -3.377142937724941e-16,
+          1.0,
+          0.0499999999999993
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "fitness": 1.0,
+      "rmse": 2.2124431845239824e-14,
+      "points": 470
+    },
+    "reverse": {
+      "T": [
+        [
+          0.999847695156391,
+          0.017452406437283508,
+          -2.7904713875091344e-20,
+          -79.99130609379874
+        ],
+        [
+          -0.01745240643728351,
+          0.9998476951563914,
+          1.7446859250760266e-17,
+          1.1962229759514023
+        ],
+        [
+          3.284484597388181e-19,
+          -1.7145011625256255e-17,
+          1.0,
+          -0.05000000000000023
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "fitness": 1.0,
+      "rmse": 1.1085194213933788e-14,
+      "points": 439
+    },
+    "projected_disagreement_m": 4.965068306494546e-16,
+    "reverse_translation_m": 8.059876985673011e-16,
+    "reverse_rotation_deg": 0.0,
+    "executed_gate": "accepted"
+  }
+}

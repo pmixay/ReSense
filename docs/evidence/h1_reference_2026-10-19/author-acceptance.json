@@ -1,0 +1,508 @@
+{
+  "status": "H1_OPEN_BLOCKED_INDEPENDENT_FAR_AXIS_REFERENCE",
+  "source_commit": "7d0f57187df82974a876d77ddb152a7b3c8a9ad5",
+  "source_files": {
+    "configs/default.yaml": "2ba61ae838911b759fda4b4854cbba58e2dbb0619521f580606462ddb3a99c72",
+    "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+    "configs/experimental_far_rail_rings.yaml": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+    "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+    "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "bd429ed92c6c9606ee933607c3361548f15e3ba18c6a5415611195ce320b5866",
+    "resense/__init__.py": "0afadc11f9d78b09e83b15805b3b1cb3281e77b51013d74c837781df144bc27a",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "029243c62f541a206aeb5ec1fe457e9f25c4e5d7966c9e00561f6dc787293dfd",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "cd905d05b30dbc0953f914bf6ada69a49d922e4cd371c5a2cd84b3267d3244c3",
+    "resense/config.py": "15cbc79a5b83f029ff32a0b9d3723648c0df81d41c5298ab0642dc5a9f91c04b",
+    "resense/detector.py": "98c28abc42a191512d7a49376bf4c82cb0e33638ada43167ad4471778aa4fb9e",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "92f56f03552fc51054b6d6f380bfa769f41eb90d6793e5631cd71278a9676f62",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+    "resense/tracking.py": "3d896a3ea99ecbfe5940f0386fe1607ba26f1854f96fc9ce90427901b0d1a5e5",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "2ba61ae838911b759fda4b4854cbba58e2dbb0619521f580606462ddb3a99c72",
+    "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "source_fingerprint": "722e29682153579ebbd709486c1ffaac4e6c3fe9f697e53708bf0de9ebe4bd7a",
+  "run_source_continuity": {
+    "gate-e-candidate": {
+      "commit": "7d0f57187df82974a876d77ddb152a7b3c8a9ad5",
+      "source_bytes_match": true
+    },
+    "probes-e-candidate-A-axis": {
+      "commit": "7d0f57187df82974a876d77ddb152a7b3c8a9ad5",
+      "source_bytes_match": true
+    },
+    "probes-e-candidate-C-person": {
+      "commit": "7d0f57187df82974a876d77ddb152a7b3c8a9ad5",
+      "source_bytes_match": true
+    },
+    "probes-e-candidate-E6": {
+      "commit": "7d0f57187df82974a876d77ddb152a7b3c8a9ad5",
+      "source_bytes_match": true
+    },
+    "probes-e-candidate-Falcon": {
+      "commit": "7d0f57187df82974a876d77ddb152a7b3c8a9ad5",
+      "source_bytes_match": true
+    },
+    "trace-e-candidate": {
+      "commit": "7d0f57187df82974a876d77ddb152a7b3c8a9ad5",
+      "source_bytes_match": true
+    },
+    "x3-e-candidate": {
+      "commit": "7d0f57187df82974a876d77ddb152a7b3c8a9ad5",
+      "source_bytes_match": true
+    }
+  },
+  "physical": {
+    "previous_matches": 293,
+    "matched": 320,
+    "outside_cases": 280,
+    "false_STOP": 0,
+    "moving_cases": 12
+  },
+  "stationary_after_confirmation": "all32 cases match every scan4..13",
+  "moving": [
+    {
+      "geometry": {},
+      "lateral": -0.68,
+      "continuous_from": 130.8
+    },
+    {
+      "geometry": {},
+      "lateral": 0.68,
+      "continuous_from": 135.2
+    },
+    {
+      "geometry": {
+        "azimuth_phase": -0.049
+      },
+      "lateral": -0.68,
+      "continuous_from": 139.6
+    },
+    {
+      "geometry": {
+        "azimuth_phase": -0.049
+      },
+      "lateral": 0.68,
+      "continuous_from": 128.6
+    },
+    {
+      "geometry": {
+        "azimuth_phase": 0.0
+      },
+      "lateral": -0.68,
+      "continuous_from": 146.2
+    },
+    {
+      "geometry": {
+        "azimuth_phase": 0.0
+      },
+      "lateral": 0.68,
+      "continuous_from": 146.2
+    },
+    {
+      "geometry": {
+        "azimuth_phase": 0.049
+      },
+      "lateral": -0.68,
+      "continuous_from": 139.6
+    },
+    {
+      "geometry": {
+        "azimuth_phase": 0.049
+      },
+      "lateral": 0.68,
+      "continuous_from": 130.8
+    },
+    {
+      "geometry": {
+        "wall_left": 3.25,
+        "wall_right": -1.85,
+        "rail_center": -0.25
+      },
+      "lateral": -0.68,
+      "continuous_from": 128.6
+    },
+    {
+      "geometry": {
+        "wall_left": 3.25,
+        "wall_right": -1.85,
+        "rail_center": -0.25
+      },
+      "lateral": 0.68,
+      "continuous_from": 146.2
+    },
+    {
+      "geometry": {
+        "wall_left": 3.25,
+        "wall_right": -1.85,
+        "rail_center": 0.25
+      },
+      "lateral": -0.68,
+      "continuous_from": 130.8
+    },
+    {
+      "geometry": {
+        "wall_left": 3.25,
+        "wall_right": -1.85,
+        "rail_center": 0.25
+      },
+      "lateral": 0.68,
+      "continuous_from": 139.6
+    }
+  ],
+  "full_gate": {
+    "PASS": true,
+    "rows": 18329,
+    "metrics": {
+      "same": 208
+    },
+    "non_timing_equal": true
+  },
+  "X3": {
+    "PASS": true,
+    "cases": 40,
+    "rows": 29765,
+    "non_timing_equal": true
+  },
+  "critical_probes": {
+    "phase": "probes",
+    "ranges": {
+      "A-axis": {
+        "previous": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.3,
+            0.3,
+            2.8
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 228.36,
+          "first_stop_X": 218.38,
+          "held_from_X": 11.02,
+          "visible_frames": 177,
+          "stop_frames": 109,
+          "bins": {
+            "3-30": "6/18",
+            "30-60": "10/21",
+            "60-100": "27/27",
+            "100-150": "20/39",
+            "150-200": "35/42",
+            "200-260": "11/30"
+          },
+          "decisions_while_visible": {
+            "GO": 5,
+            "CAUTION": 63,
+            "STOP": 109,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 6,
+            "150": 16,
+            "100": 26,
+            "60": 63,
+            "30": 228
+          }
+        },
+        "candidate": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.3,
+            0.3,
+            2.8
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 228.36,
+          "first_stop_X": 218.38,
+          "held_from_X": 19.75,
+          "visible_frames": 177,
+          "stop_frames": 114,
+          "bins": {
+            "3-30": "11/18",
+            "30-60": "10/21",
+            "60-100": "27/27",
+            "100-150": "20/39",
+            "150-200": "35/42",
+            "200-260": "11/30"
+          },
+          "decisions_while_visible": {
+            "GO": 5,
+            "CAUTION": 58,
+            "STOP": 114,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 6,
+            "150": 16,
+            "100": 26,
+            "60": 63,
+            "30": 228
+          }
+        },
+        "lost": [],
+        "added": [
+          324,
+          325,
+          326,
+          327,
+          328
+        ],
+        "new_unmatched": []
+      },
+      "C-person": {
+        "previous": {
+          "cache": "roundT_pressureGate_roundT",
+          "obj": [
+            0.5,
+            0.5,
+            1.75
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 0,
+          "d0": 230.0,
+          "first_visible_X": 230.0,
+          "first_stop_X": 82.77,
+          "held_from_X": 91.63,
+          "visible_frames": 153,
+          "stop_frames": 55,
+          "bins": {
+            "3-30": "19/19",
+            "30-60": "20/20",
+            "60-100": "16/27",
+            "100-150": "0/34",
+            "150-200": "0/33",
+            "200-260": "0/20"
+          },
+          "decisions_while_visible": {
+            "GO": 42,
+            "CAUTION": 56,
+            "STOP": 55,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 4,
+            "150": 5,
+            "100": 24,
+            "60": 70,
+            "30": 260
+          }
+        },
+        "candidate": {
+          "cache": "roundT_pressureGate_roundT",
+          "obj": [
+            0.5,
+            0.5,
+            1.75
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 0,
+          "d0": 230.0,
+          "first_visible_X": 230.0,
+          "first_stop_X": 82.77,
+          "held_from_X": 91.63,
+          "visible_frames": 153,
+          "stop_frames": 55,
+          "bins": {
+            "3-30": "19/19",
+            "30-60": "20/20",
+            "60-100": "16/27",
+            "100-150": "0/34",
+            "150-200": "0/33",
+            "200-260": "0/20"
+          },
+          "decisions_while_visible": {
+            "GO": 42,
+            "CAUTION": 56,
+            "STOP": 55,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 4,
+            "150": 5,
+            "100": 24,
+            "60": 70,
+            "30": 260
+          }
+        },
+        "lost": [],
+        "added": [],
+        "new_unmatched": []
+      },
+      "E6": {
+        "previous": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.05,
+            0.05,
+            2.6
+          ],
+          "lat": 0.0,
+          "base": 0.2,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 222.61,
+          "first_stop_X": 86.25,
+          "held_from_X": 61.28,
+          "visible_frames": 59,
+          "stop_frames": 34,
+          "bins": {
+            "3-30": "18/18",
+            "30-60": "13/15",
+            "60-100": "3/10",
+            "100-150": "0/6",
+            "150-200": "0/4",
+            "200-260": "0/6"
+          },
+          "decisions_while_visible": {
+            "GO": 22,
+            "CAUTION": 3,
+            "STOP": 34,
+            "FAULT": 0
+          },
+          "go_within_60m": 1,
+          "n_obj_at": {
+            "200": 6,
+            "150": 9,
+            "100": 13,
+            "60": 20,
+            "30": 35
+          }
+        },
+        "candidate": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.05,
+            0.05,
+            2.6
+          ],
+          "lat": 0.0,
+          "base": 0.2,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 222.61,
+          "first_stop_X": 86.25,
+          "held_from_X": 61.28,
+          "visible_frames": 59,
+          "stop_frames": 34,
+          "bins": {
+            "3-30": "18/18",
+            "30-60": "13/15",
+            "60-100": "3/10",
+            "100-150": "0/6",
+            "150-200": "0/4",
+            "200-260": "0/6"
+          },
+          "decisions_while_visible": {
+            "GO": 22,
+            "CAUTION": 3,
+            "STOP": 34,
+            "FAULT": 0
+          },
+          "go_within_60m": 1,
+          "n_obj_at": {
+            "200": 6,
+            "150": 9,
+            "100": 13,
+            "60": 20,
+            "30": 35
+          }
+        },
+        "lost": [],
+        "added": [],
+        "new_unmatched": []
+      }
+    },
+    "Falcon": {
+      "frames": 4443,
+      "previous_STOP": 1372,
+      "candidate_STOP": 1372,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "PASS": true
+  },
+  "tests": {
+    "full-tests-e.xml": {
+      "tests": 2206,
+      "failures": [
+        "test_child_process_inherits_hook_and_bad_source_fails_closed"
+      ]
+    },
+    "units-e-first.xml": {
+      "tests": 206,
+      "failures": []
+    }
+  },
+  "full_pytest_all_green": false,
+  "reference_status": "FAR_REAL_AXIS_REFERENCE_NOT_ACCEPTED",
+  "reference_checks": {
+    "initializations_disagree": 17,
+    "reverse_translation": 16,
+    "reverse_rotation": 3
+  },
+  "deskew_reference_checks": {
+    "initializations_disagree": 25,
+    "reverse_rotation": 3,
+    "reverse_translation": 8
+  },
+  "nonzero_reference_control": "accepted",
+  "rejected_F": "no output differences on A-axis and fixed physical screen",
+  "source_archive": {
+    "file": "final-source.tar.gz",
+    "sha256": "0e110609e831708215c97444e5dd181e8805945736f2f0b628638b4ced46e777",
+    "bytes": 1093354,
+    "every_member_reopened_and_verified": true
+  },
+  "raw_archive": {
+    "file": "raw-evidence.tar.gz",
+    "sha256": "b249c40f02352ce3b7a5c3c49959dcfe25a77aab2871977b99f9d3f8c7651ebf",
+    "bytes": 28047230,
+    "every_member_reopened_and_verified": true
+  },
+  "independent_P4_review": "PENDING",
+  "P1_selection_reseal": "PENDING",
+  "blocking_inputs": [
+    "Independent surveyed/annotated far track axis or a synchronized independently validated trajectory.",
+    "Current LiDAR-only retrospective reconstructions failed real cross-view validation."
+  ],
+  "limitations": [
+    "Real far-axis error percentiles from both attempted reconstructions are unverified and not accepted.",
+    "63 A-axis visible unmatched rows remain; this injection follows the baseline detector axis.",
+    "No-rail scenes and plausible wrong-pair/route errors still lack a universal collision proof.",
+    "Additional-rail controls select the correct pair; they do not validate wrong-pair recovery.",
+    "No real-world 100m range or braking sufficiency is established."
+  ]
+}
