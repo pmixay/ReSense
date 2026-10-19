@@ -616,6 +616,28 @@ class HealthConfig:
 
 
 @dataclass
+class DustGuardConfig:
+    """N3 diffuse-return guard (resense/dust_guard.py), 19.10, off by default. Synthetic-model
+    evidence only (docs/evidence/n3_dust_fix_2026-10-19). Off: the detector is unchanged."""
+    enabled: bool = False
+    interior_range: Tuple[float, float] = (5.0, 60.0)    # m along X: the gauge interior examined for diffuse returns
+    interior_half_width: float = 1.0                     # m, |dy| of that interior
+    interior_height: Tuple[float, float] = (0.3, 2.7)    # m above the rail head
+    support_radius: float = 0.10                         # m, r(R) = support_radius + R * support_radius_per_m
+    support_radius_per_m: float = 0.004                  # ~0.23 deg: about two beam spacings of a 128-line sensor
+    dedup: float = 0.02                                  # m, coincident returns count once
+    on_density: float = 0.3                              # isolated interior returns per m^3 that switch the guard on
+    off_density: float = 0.15                            # ... below which it may switch off
+    hold_frames: int = 10                                # frames below off_density before it switches off
+    min_support: int = 3                                 # neighbours a candidate return needs while active (at least)
+    max_support: int = 12                                # cap of the density-scaled requirement
+    false_support: float = 0.001                         # chance-support probability of a diffuse return at the measured density
+    max_density: float = 50.0                            # bound of the corrected field density (per m^3)
+    roi_half_width: float = 4.0                          # m, |dy| of the returns that can support a candidate
+    roi_height: Tuple[float, float] = (-1.0, 5.0)        # m above the rail head, likewise
+
+
+@dataclass
 class DetectorConfig:
     sensor: SensorConfig = field(default_factory=SensorConfig)
     track: TrackConfig = field(default_factory=TrackConfig)
@@ -626,13 +648,14 @@ class DetectorConfig:
     lowobj: LowObjectConfig = field(default_factory=LowObjectConfig)
     calibration: CalibrationConfig = field(default_factory=CalibrationConfig)
     health: HealthConfig = field(default_factory=HealthConfig)
+    dust: DustGuardConfig = field(default_factory=DustGuardConfig)
     voxel: float = 0.0             # optional voxel downsampling of corridor candidates (0 = off)
 
     # ---- (de)serialisation -------------------------------------------------
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "DetectorConfig":
         cfg = cls()
-        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health"):
+        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health", "dust"):
             if section in d and d[section]:
                 obj = getattr(cfg, section)
                 for k, v in d[section].items():
