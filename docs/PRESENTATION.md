@@ -352,4 +352,4 @@ python scripts/build_deck.py --template /tmp/template.pptx --team docs/presentat
 ```
 
 Без `--team` — публичная колода с ролями P1–P4. Любая сборка останавливается, если на слайде осталось поле
-`<…>` или превышен бюджет слов. Черновик P2 от 16.10 — [`presentation/draft_2026-10-16/`](presentation/draft_2026-10-16/README.md).
+`<…>` или превышен бюджет слов.

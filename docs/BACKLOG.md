@@ -397,7 +397,7 @@ the policy reversal) · **Mode** A · **Size** M · **Points** ~+2 (8.3 +1 to +1
   processed, 0 fresh, age p50 7.33 s / max 10.51 s, RSS 3,357 MB; README flags 35/201 fresh, age max
   1.2 s; roundT_doubleT literal 47 FAULT results in the first ~5 s. The team's own A/B with
   `catchup_startup_step` 0.2 ([`evidence/node_startup_2026-09-29/`](evidence/node_startup_2026-09-29/README.md))
-  cut the first-3 s median e2e from 312–325 to 38–105 ms; [`MAIN_SYNC_2026-09-28.md`](MAIN_SYNC_2026-09-28.md)
+  cut the first-3 s median e2e from 312–325 to 38–105 ms; `MAIN_SYNC_2026-09-28.md` (deleted 19.10)
   kept 0 because STOP counts were 185–189 instead of 190.
 * **Cause** (`ros2_ws/src/resense_ros/resense_ros/detector_node.py`): `input_queue_depth` 40,
   `catchup_startup_max_lag` 20 s, `catchup_startup_step` 0.0 (repeated in `launch/detector.launch.py`);

@@ -10,7 +10,7 @@
 > Execution receipt: [`p2_execution_2026-10-16`](../docs/evidence/p2_execution_2026-10-16/README.md).
 
 16.10 update: all 47 webapp E2E tests pass on the frozen build. P4 `6d6aaca`
-export/archive verified and accepted; [draft PPTX/PDF and charts](../docs/presentation/draft_2026-10-16/README.md)
+export/archive verified and accepted; a draft PPTX/PDF and charts (folder removed 19.10)
 prepared with corrected prerelease captions. Final release J1 and P1 approval
 remain pending; no new score or held-out claim.
 

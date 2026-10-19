@@ -8,7 +8,7 @@
 > tracks completed preparation and pending acceptance. Release, measurements and approvals remain pending.
 
 16.10 execution update: P4's verified export and raw archive have been received;
-[draft charts/deck](presentation/draft_2026-10-16/README.md) are prepared.
+a draft chart/deck set is prepared (folder removed 19.10).
 All 47 webapp browser tests pass. Final release J1 and external acceptance remain open.
 
 ## 1. Goal and starting point
