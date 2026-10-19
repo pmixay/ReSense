@@ -148,7 +148,7 @@ def test_c1_reasons_are_readable_and_cleared_on_transition(app):
         reason = b.get_by_text("Предупреждение об объекте · Снижена достоверность данных · Причина: <b>unknown</b>", exact=True)
         expect(reason).to_be_visible()
         assert reason.locator("b").count() == 0
-        for width, height in ((1280, 720), (1920, 1080), (390, 844)):
+        for width, height in ((1280, 720), (1920, 1080), (1440, 900)):
             page.set_viewport_size({"width": width, "height": height})
             expect(reason).to_be_visible()
             rb, cb = reason.bounding_box(), b.bounding_box()

@@ -60,5 +60,7 @@ must remain reliable by mouse, touch, keyboard and browser history. Player frame
 camera and run URL changes remain immediate. Reduced motion uses a brief non-spatial
 fade. The decorative doors contain no controls and release keyboard focus to the page.
 
-Target desktop review sizes are 1366×768, 1440×900 and 1920×1080, with mobile content
-flowing vertically. Synthetic capture runs demonstrate the UI and are not evaluation evidence.
+The interface is desktop-only with a minimum workspace width of 1280px. Build and
+verify this single layout at 1280×720, 1366×768, 1440×900 and 1920×1080. Keep this
+desktop-only scope for future changes, screenshots and documentation. Synthetic
+capture runs demonstrate the UI and are not evaluation evidence.

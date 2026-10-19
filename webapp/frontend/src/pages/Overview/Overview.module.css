@@ -2,21 +2,6 @@
   grid-template-rows: minmax(0, 262fr) minmax(0, 462fr);
 }
 
-@media (max-width: 1100px) {
-  .ov:global(.fill-viewport) { height: auto; min-height: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
-  .ov .cta, .ov .pc, .ov .sys, .ov .runs { grid-column: 1; grid-row: auto; }
-  .ov .cta { min-height: 280px; }
-  .ov .pc { width: 100%; min-height: 0; aspect-ratio: 16 / 9; }
-  .ov .sys { min-height: 260px; }
-  .ov .runs { min-height: 240px; }
-  .ov .sysBody { grid-template-columns: minmax(0, 100px) minmax(0, 1fr); gap: 16px; }
-  .ov .runs > header { flex-wrap: wrap; }
-  .ov .rtWrap { overflow-x: auto; }
-  .ov .rt { min-width: 640px; }
-  .ov .acts, .ov .last { flex-wrap: wrap; white-space: normal; }
-  .ov .fmts { flex-wrap: wrap; }
-  .ov .lastName { max-width: 150px; }
-}
 /* fits 1280×800 without a page scroll (the foundation's floor is 600 px) */
 .ov:global(.fill-viewport) {
   min-height: 540px;

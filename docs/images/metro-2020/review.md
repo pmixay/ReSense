@@ -19,8 +19,8 @@ as a diagnostic with dock visibility disabled.
 
 ## Rendered review
 
-- Native Player captures: 1366×768, 1440×900, 1920×1080, 390×844 and 320×568.
-- Actual closing/covered/opening door captures: 1440×900 and 390×844.
+- Native Player captures: 1366×768, 1440×900 and 1920×1080.
+- Actual closing/covered/opening door captures: 1440×900.
 - Closed glass obscures the page; a rendered checkerboard/control comparison
   confirms 99.25% attenuation of 8px neighbor contrast. Outer glazing corners are
   sealed by the enamel surround. Opening reveals the destination through the gap.
@@ -28,12 +28,12 @@ as a diagnostic with dock visibility disabled.
   screen size, fixed controls and side telemetry. No reference photo is used as
   background pixels.
 - Every new PNG carries embedded runtime-capture provenance. `capture.json`
-  records five viewport bounds and no page errors.
+  records three desktop viewport bounds and no page errors.
 
 ## Verification
 
 - Production build / TypeScript: pass.
-- 344 frontend tests in 44 files: pass.
+- 342 frontend tests in 44 files: pass.
 - Seven distinct navigation browser scenarios: pinned chrome at four sizes,
   normal paired-door coverage/history at two sizes, reduced-motion fade.
 - Three additional Player browser scenarios: fullscreen/orbit/departure,
@@ -51,3 +51,11 @@ attempts; those attempts were not treated as passing results.
 The Player is an adaptive reference-led installation, not a factory-dimensional
 model. GPU verification uses Chromium SwiftShader; hardware-specific FPS is not
 claimed. Existing data, APIs, playback and route query behavior remain authoritative.
+
+## Desktop-only contract
+
+The application uses one desktop layout with a minimum workspace width of 1280px.
+Shared chrome, page grids, Player tools and door proportions retain their desktop
+geometry. Review and capture sizes are 1280×720, 1366×768, 1440×900 and 1920×1080.
+This scope is recorded in `AGENTS.md`, `PRODUCT.md` and the Player surface brief
+for future work. Retained gallery manifests contain only desktop captures.

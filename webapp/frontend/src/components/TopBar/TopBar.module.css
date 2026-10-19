@@ -265,23 +265,3 @@
     margin-right: 8px;
   }
 }
-
-@media (max-width: 1100px) {
-  .top {
-    height: auto;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    padding: 10px 16px;
-    gap: 8px 12px;
-  }
-  .logo { margin-right: 0; }
-  .right { gap: 6px; justify-self: end; }
-  .right .chip { padding: 0 8px; }
-  .right > .chip { display: none; }
-  .nav { grid-column: 1 / -1; grid-row: 2; width: 100%; height: auto; flex-wrap: wrap; }
-  .pill { padding: 0 12px; }
-  .grpWrap { position: static; }
-  .dd { top: 100%; left: 12px; right: 12px; width: auto; min-width: 0; }
-  .dd::before { display: none; }
-  .ddS { white-space: normal; }
-}

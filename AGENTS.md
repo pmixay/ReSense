@@ -2,6 +2,12 @@
 
 The repository is deployed from the `ui-improvement` checkout on this server.
 
+## Interface scope
+
+Build and verify desktop layouts only, with a minimum workspace width of 1280px.
+Do not introduce alternate device layouts, narrow-screen breakpoints, or screenshots
+and documentation for widths below that desktop baseline.
+
 ## After requested application changes
 
 1. Run the checks appropriate to the change and commit the completed work.

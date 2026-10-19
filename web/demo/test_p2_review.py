@@ -163,17 +163,6 @@ def test_label_import_preserves_evaluator_metadata_and_obstacle_extensions(page)
     assert exported['00042'][0]['speed_mps'] == 12
 
 
-def test_label_tool_phone_table_scrolls_without_widening_the_page(page):
-    page.set_viewport_size({'width': 390, 'height': 844})
-    page.goto('file://' + LABEL_TOOL)
-    page.evaluate("resenseLabel.loadGT({'00042': [{kind:'person',distance:50}], '00043': []})")
-    assert page.evaluate('document.documentElement.scrollWidth') <= 390
-    assert page.locator('.table-scroll').evaluate('el => el.scrollWidth > el.clientWidth')
-    page.locator('#frames li[data-key="00043"]').focus()
-    page.keyboard.press('Enter')
-    assert page.evaluate('resenseLabel.state.current') == '00043'
-
-
 def test_label_file_reads_are_applied_in_selection_order(page):
     page.goto('file://' + LABEL_TOOL)
     page.evaluate("""() => {

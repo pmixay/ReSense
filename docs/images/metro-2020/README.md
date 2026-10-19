@@ -19,7 +19,7 @@ tests verify the lock.
 
 ## Captures
 
-`interior-{1366,1440,1920,390,320}.png` are native production-build screenshots from
+`interior-{1366,1440,1920}.png` are native production-build screenshots from
 Chromium/SwiftShader at `http://127.0.0.1:8000`, with neutral/reduced-motion pressure.
 They retain the real dock and all controls. `capture.json` records route, synthetic
 demonstration frame, viewport and measured display/transport bounds. The upper
@@ -29,7 +29,7 @@ bench is visible beneath the display; lower cushions sit behind the pinned dock.
 visibility temporarily disabled. It exposes the modeled upholstery, cushions,
 cantilever shells and bronze end armrests; it is not the default application state.
 
-`doors-{closing,closed,opening}-{1440,390}.png` capture actual CSS door geometry
+`doors-{closing,closed,opening}-1440.png` capture actual CSS door geometry
 from the production build in Vite preview at `http://127.0.0.1:4173`.
 The route goes from `/runs` to `/upload`. Browser time is held and native animation
 interpolation is paused at 180ms into closing / 225ms into opening for repeatable
@@ -48,7 +48,7 @@ composites.
   during navigation; fully hidden at rest.
 - Unit tests verify route timing, history, immediate within-Player URL edits,
   reduced motion, suspended chunks, anchor/seat clearance and resource lifetime.
-- Browser scenarios cover pinned navigation, desktop/mobile door coverage, history,
+- Browser scenarios cover pinned navigation, desktop door coverage, history,
   input/focus restoration, reduced motion, fullscreen/orbit, responsive layout and
   fixed-scene side telemetry.
 - [`../player-workspace/interior-lighting-verification.json`](../player-workspace/interior-lighting-verification.json)

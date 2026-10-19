@@ -9,6 +9,6 @@ describe('physical scene resolution budget', () => {
       expect(width * height * ratio * ratio).toBeLessThanOrEqual(2_600_001);
       expect(displayPixelRatio(width, height, 3, true)).toBeLessThanOrEqual(1);
     }
-    expect(displayPixelRatio(390, 744, 1)).toBe(1);
+    expect(displayPixelRatio(1366, 768, 1)).toBe(1);
   });
 });

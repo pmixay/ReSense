@@ -8,11 +8,11 @@ positions used for each decision state; those IDs are specific to the capture st
 
 ## Review
 
-Each view was captured at 1920×1080, 1280×720, 820×1180 and 390×844:
+Each retained view was captured at 1920×1080 or 1280×720:
 
 - `overview-*`: Raleway, metro-red actions, cool neutral surfaces, responsive overview.
 - `upload-*`: source selector, upload controls and processing options beneath pinned navigation.
-- `about-*`: system category and its navigation branch; the processing diagram becomes vertical on phones.
+- `about-*`: system category, processing diagram and its navigation branch.
 - `picker-*`: run selection inside the borderless, rounded player window.
 - `player-clear-*`, `player-caution-*`, `player-stop-*`: real GO, CAUTION and STOP frames.
 
@@ -25,7 +25,7 @@ The existing steel backdrop, top controls and instrument perspective remain.
 
 The top bar and category rail remain outside the scrolling content on every route,
 including the player picker, loading/error states and both real/fallback fullscreen.
-Browser checks cover all ten page categories at the four sizes; player tests also
+Browser checks cover all ten page categories at desktop sizes; player tests also
 cover 1440×900 and 1280×800, playback, seeking, camera orbit, error recovery and fullscreen.
 
 `web/demo/capture_gallery.py` was also run against the legacy dashboard into a

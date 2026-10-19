@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { ScreenDisplay } from './screenDisplay';
 
 describe('modeled display projection', () => {
-  it.each([[1366, 320, 1], [1840, 616, 2], [358, 240, 2]])('keeps the live surface and HUD pixel bounds aligned at %s×%s', (width, height, pr) => {
+  it.each([[1366, 320, 1], [1840, 616, 2]])('keeps the live surface and HUD pixel bounds aligned at %s×%s', (width, height, pr) => {
     const display = new ScreenDisplay();
     display.setSize(width, height, pr);
     expect(display.viewport.transform!.a).toBeCloseTo(1, 8);
@@ -187,7 +187,7 @@ describe('modeled display projection', () => {
 
   it.each([
     [1366, 907, 1298, 556], [1440, 1039, 1368, 688], [1920, 1219, 1840, 868],
-    [390, 1230, 358, 410], [1440, 1273, 1368, 922],
+    [1440, 1273, 1368, 922],
   ])('keeps every interior part clear of the active screen at %s×%s', (width, height, regionWidth, regionHeight) => {
     const display = new ScreenDisplay();
     display.setSize(width, height, 1, { width: regionWidth, left: (width - regionWidth) / 2, height: regionHeight, top: 16 });

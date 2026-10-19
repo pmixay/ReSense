@@ -6,7 +6,7 @@ Disposition: **ship**
 
 `PRODUCT.md`, `DESIGN.md`, the Player surface brief and design sidecar describe the
 current fixed installation, persistent bottom transport and button-toggled side telemetry.
-PNG provenance is embedded. `capture.json` contains all four requested viewport
+PNG provenance is embedded. `capture.json` contains the three desktop viewport
 sizes and no page errors. This is a code-led refinement of the existing installation.
 
 ## Fidelity
@@ -20,11 +20,11 @@ sizes and no page errors. This is a code-led refinement of the existing installa
 | Screen size | Match | Fills space above measured bottom dock; height toggle adds 36px at unchanged width, remaining inside the viewport canvas |
 | Image-derived light | Match | Real black/RGB/split-color GPU diagnostic verifies wall and handrail hue, local split response and exact cached neutral return |
 | Side telemetry | Match | Button opens map/decision left and distance/timing/health right; independent internal scrolling, no wheel/swipe toggle |
-| Screen visibility | Match | The central 40% stays clear on desktop, mobile and 320px phones; bounded side height preserves most of the image |
+| Screen visibility | Match | The central 40% stays clear on desktop; bounded side height preserves most of the image |
 | Scroll / projection | Match | Physical screen/HUD and playback bounds remain identical when panels open; button has native Enter/Space support and Escape restores focus |
-| Persistent controls | Match | Playback, seek, scenario, camera, speed and loop remain visible; no overlapping or offscreen control rectangles at seven sizes including 320px and landscape |
+| Persistent controls | Match | Playback, seek, scenario, camera, speed and loop remain visible at the supported desktop sizes |
 | Type variants | Deferred | User explicitly said not to use Esh/Struve for now; Raleway retained |
-| Parallax / geometry | Match | Neutral rest, 24% rail motion, active-surface and foreground-clearance checks at nine pressure poses across five viewport/height combinations |
+| Parallax / geometry | Match | Neutral rest, 24% rail motion, active-surface and foreground-clearance checks at nine pressure poses across desktop viewport/height combinations |
 
 The wide responsive screen is an intentional adaptation of the supplied display
 reference. The scene remains a close front-on installation rather than an aisle-wide
@@ -41,8 +41,8 @@ No artificial ceiling geometry, dynamic shadow maps or runtime pixel readback.
 ## Material fixes
 
 Clear. Replaced gesture/range reveal and full-width bottom telemetry with a shared
-tap-to-toggle button and left/right side columns. Compact map ticks and mobile
-telemetry typography avoid collisions. Open panels leave the live scene fixed and
+tap-to-toggle button and left/right side columns. Native-size telemetry avoids
+collisions. Open panels leave the live scene fixed and
 preserve a clear image center. Bottom transport/settings never move.
 
 ## Verification / keep
@@ -52,7 +52,7 @@ preserve a clear image center. Bottom transport/settings never move.
   input and geometry tests.
 - Focused browser checks cover side placement, center clearance, button/keyboard
   operation, fixed scene/transport, resize, telemetry content and height switching.
-- Desktop 1366×768, 1440×900, 1920×1080 and mobile 390×844 captures reviewed,
+- Desktop 1366×768, 1440×900 and 1920×1080 captures reviewed,
   including expanded and pressure states.
 - `interior-lighting-verification.json` records actual GPU receiver colors, stable
   geometry/texture counts across five resize cycles and resource disposal.

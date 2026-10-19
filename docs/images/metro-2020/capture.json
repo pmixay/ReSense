@@ -50,51 +50,12 @@
         "width": 1840,
         "height": 83
       }
-    },
-    {
-      "width": 390,
-      "height": 844,
-      "display": {
-        "x": 16,
-        "y": 79,
-        "width": 358,
-        "height": 434
-      },
-      "transport": {
-        "x": 12,
-        "y": 659,
-        "width": 366,
-        "height": 173
-      }
-    },
-    {
-      "width": 320,
-      "height": 568,
-      "display": {
-        "x": 16,
-        "y": 79,
-        "width": 288,
-        "height": 158
-      },
-      "transport": {
-        "x": 12,
-        "y": 383,
-        "width": 296,
-        "height": 173
-      }
     }
   ],
   "errors": [],
   "doorGlass": [
     {
       "width": 1440,
-      "style": {
-        "blur": "blur(38px) saturate(0.12)",
-        "background": "linear-gradient(110deg, rgba(199, 203, 191, 0.92), rgba(217, 218, 205, 0.93) 40%, rgba(165, 173, 162, 0.937))"
-      }
-    },
-    {
-      "width": 390,
       "style": {
         "blur": "blur(38px) saturate(0.12)",
         "background": "linear-gradient(110deg, rgba(199, 203, 191, 0.92), rgba(217, 218, 205, 0.93) 40%, rgba(165, 173, 162, 0.937))"

@@ -7,7 +7,7 @@ appearance while retaining the same display, door, rail and control layout.
 
 Real production-build captures from the ReSense backend and Chromium with SwiftShader
 WebGL. `clear-*`, `caution-*`, `stop-*` and `picker-*` cover 1366×768, 1440×900,
-1920×1080 and 390×844. `capture.json` records the synthetic demo runs, exact frame
+1920×1080. `capture.json` records the synthetic demo runs, exact frame
 positions and measured workspace/display/transport bounds. These are UI demonstration
 data from six-second approach/crossing runs, not detector evaluation evidence.
 
@@ -76,7 +76,7 @@ pose; touch and reduced-motion mode keep a neutral scene.
 The orthographic screen projection is exported as a live affine transform; the
 HTML/SVG annotation surface applies that exact transform, including the close-up.
 Projection tests compare real mesh vertices with the transformed HUD on desktop and
-mobile, verify independent railing motion, neutral settling and full-height wall coverage.
+verify independent railing motion, neutral settling and full-height wall coverage.
 
 The train backdrop, physical display and native HUD stay fixed in the viewport beneath
 the shared navigation. Playback, seeking, speed, loop, scenario, camera and fullscreen
@@ -85,8 +85,7 @@ height reserves the live screen's space. Tapping the «Телеметрия» bu
 left/right columns: map/decision on the left, distance/timing/health on the right. Each
 side scrolls independently; wheel/trackpad and swipes never toggle it. The central 40%
 remains clear, with bounded column height preserving most of the live display. Opening
-never moves the scene or transport. `telemetry-open-1440.png` and `telemetry-open-390.png`
-capture the open state.
+never moves the scene or transport. `telemetry-open-1440.png` captures the open state.
 A short feathered backdrop blur and clear-to-dark tint keep controls readable.
 
 Pointer-only frames reuse the unchanged LiDAR and emission textures. The existing
@@ -153,6 +152,6 @@ Browser tests cover playback, seeking, event stepping, speed, run switching, orb
 fullscreen/fallback, loading, backend failures, FAULT and lost-context recovery.
 
 The display and transport fit the first viewport; telemetry is opt-in and overlays the
-fixed scene. Alignment checks include 320px phones and landscape. Controls retain native sizing.
+fixed scene. Alignment checks cover the supported desktop sizes. Controls retain native sizing.
 Earlier Player galleries document previous revisions; this directory is the current
 integrated layout.

@@ -281,12 +281,3 @@
     display: none;
   }
 }
-
-@media (max-width: 1100px) {
-  .drop { container-type: normal; min-height: 230px; }
-  .prompt { padding-block: 16px; }
-  .big { display: none; }
-  .h { white-space: normal; font-size: 20px; }
-  .or { flex-wrap: wrap; gap: 8px; }
-  .fm { justify-content: flex-start; }
-}

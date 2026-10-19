@@ -145,7 +145,7 @@ handoffs explicitly list any owner-blocked correction. This pass may complete be
 4. Replace misleading unqualified GO wording (`СВОБОДНО` in `src/lib/decisions.ts`) with
    **«Препятствие не обнаружено»**, or a compact `GO` with that explanation visibly adjacent.
    `clear_distance` is **estimated monitored range**, not guaranteed free path. Keep layout
-   readable at 1280×720 and 1920×1080 screen-share sizes and in the existing mobile layout.
+   readable at 1280×720 and 1920×1080 desktop screen-share sizes.
 5. P1 updates the RViz status marker using the already evaluated policy reasons; P2 checks
    the view and Foxglove layout. No new ROS plugin should be needed. Foxglove LAST-value
    behaviour must be explained; disconnection is not current GO.

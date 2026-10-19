@@ -72,10 +72,6 @@
 .left .thickness { right: -7px; }
 .right .thickness { left: -7px; }
 .sill { position: absolute; z-index: 5; inset: auto 0 0; height: 16px; background: linear-gradient(#a5a796, #e1dfc6 20%, #707669 25%, #333e31 46%, #aeb1a0 52%, #626c5b); box-shadow: 0 -2px 8px #101c234d; }
-@media (max-width: 700px) {
-  .skin { --frame-top: 26px; --frame-side: 20px; }
-  .window { height: 79%; }
-}
 @media (prefers-reduced-motion: reduce) {
   .portal { background: #c6cbbf; opacity: 0; transition: opacity 70ms linear !important; }
   .portal[data-phase='closing'], .portal[data-phase='covered'] { opacity: 1; }

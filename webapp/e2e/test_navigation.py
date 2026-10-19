@@ -5,7 +5,7 @@ pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
 
-@pytest.mark.parametrize("width,height", [(1920, 1080), (1280, 720), (820, 1180), (390, 844)])
+@pytest.mark.parametrize("width,height", [(1920, 1080), (1280, 720), (1366, 768), (1440, 900)])
 def test_site_navigation_stays_pinned(app, width, height):
     page = app.page
     page.set_viewport_size({"width": width, "height": height})
@@ -29,7 +29,7 @@ def test_site_navigation_stays_pinned(app, width, height):
         expect(page.locator("main")).to_have_js_property("scrollTop", 0)
 
 
-@pytest.mark.parametrize('width,height', [(1440, 900), (390, 844)])
+@pytest.mark.parametrize('width,height', [(1440, 900), (1920, 1080)])
 def test_train_doors_cover_navigation_before_revealing_destination(app, width, height):
     page = app.page
     page.set_viewport_size({'width': width, 'height': height})

@@ -616,31 +616,3 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
-
-@media (max-width: 700px) {
-  .line {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding-block: 8px;
-  }
-  .line::before { left: 73px; top: 30px; bottom: 30px; width: 6px; height: auto; right: auto; }
-  .line::after { display: none; }
-  .st {
-    display: grid;
-    grid-template-columns: 44px 40px minmax(0, 1fr);
-    column-gap: 12px;
-    row-gap: 4px;
-    min-height: 44px;
-    align-items: center;
-  }
-  .stTop { grid-column: 1; grid-row: 1 / 3; }
-  .dot, .stEnd .dot { grid-column: 2; grid-row: 1 / 3; justify-self: center; margin-top: 0; }
-  .stName, .stEnd .stName { grid-column: 3; grid-row: 1; margin-top: 0; white-space: normal; font-size: 14px; }
-  .stVal { grid-column: 3; grid-row: 2; margin-top: 0; }
-  .decisions { grid-template-columns: 1fr; }
-  .sigLabel { white-space: normal; line-height: 1.25; }
-  .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .bottom { grid-template-columns: 1fr; }
-}

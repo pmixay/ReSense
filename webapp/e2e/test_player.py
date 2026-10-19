@@ -560,7 +560,7 @@ def test_fullscreen_orbit_and_back(app, seeded):
 def test_workspace_resizes_without_clipping(app, seeded):
     page, rid = app.page, seeded["ids"]["approach"]
     open_player(app, f"/player/{rid}?pos=30")
-    for w, h in ((1366, 768), (1440, 900), (1920, 1080), (1280, 800), (390, 844)):
+    for w, h in ((1366, 768), (1440, 900), (1920, 1080), (1280, 800)):
         page.set_viewport_size({"width": w, "height": h})
         page.locator('main').evaluate('el => el.scrollTop = 0')
         page.wait_for_function('''() => {
@@ -651,7 +651,7 @@ def test_telemetry_button_keeps_center_scene_and_transport_clear(app, seeded):
     after = [box_of(el, scroll=False) for el in (canvas, display, playback)]
     assert before == after
     assert page.locator('main').evaluate('el=>el.scrollTop') == 0
-    for w, h in ((1440, 900), (390, 844), (320, 568)):
+    for w, h in ((1440, 900), (1366, 768), (1920, 1080)):
         page.set_viewport_size({'width':w, 'height':h})
         left = box_of(page.get_by_role('complementary', name='Телеметрия слева'), scroll=False)
         right = box_of(page.get_by_role('complementary', name='Телеметрия справа'), scroll=False)
