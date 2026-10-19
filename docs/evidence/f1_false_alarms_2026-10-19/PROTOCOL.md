@@ -247,3 +247,6 @@ would be a no-op); (2) `tests/test_rail_start.py` reproduces the card's **frame-
 ahead of a standing fresh start, above a young model's plane) as a counterfactual with the rail-start rule off: with
 F1a′ on that counterfactual no longer STOPs (the rail heads do not rise above their own rail line). The test keeps
 its original assertions with F1a′ off and now also asserts the F1a′-on result.
+(3) `tests/test_late_candidates.py::test_floor_shadow_hold_is_released_after_the_cap` asserts a counterfactual
+(floor-shadow cap off: a model locked on a flat bed while the bed rises at 6 %) that STOPs at ~4.4 m; traced: F1a′
+alone makes that low cluster advisory `below_rail_ref` (H′ plays no part). Same treatment as (2).
