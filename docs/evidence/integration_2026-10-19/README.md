@@ -58,12 +58,21 @@ That agrees with P3's own check.
 | the organizers' dust (13 frames of the marked synthetic bags) | no STOP, and no detection or warning at a dust box (the CAUTIONs come from warnings at 1.75–152 m, as with 1.1.0): **the dust guard stays off** (captain's decision 5) |
 | STOP detections on the marked bags vs 1.1.0 | platform 187 / 187 on marked objects (1.1.0: 185 / 185); switch 150 / 151 (1.1.0: 133 / 142, the background STOPs at 147 m are gone); tunnels 107 / 111 (1.1.0: 120 / 128). Per marked object, the STOP frames are equal or more, except the **small cube right of `synthetic_tunnels` (marker id 19): 30 → 14**; at 30–55 m (frames 259–273) it is no longer a detection or a warning. Its marker is ~1.45 m right of the sensor axis, probably just outside the 2.1 m gauge (N5: "boundary uncertain"); not verified |
 
+### The final commit `4cf8e27` (K2 held off; F1a, H′, R3, L16/S3 on): for P4's review and the reseal
+
+| check | result |
+|---|---|
+| full gate (seal baseline, no `--allow`) | **exit 0, 8 gated rows better, 0 worse** ([`runs/gate_final_4cf8e27.json`](runs/gate_final_4cf8e27.json)); per frame **identical to `11bb1ab`** (15,269 rows, 0 differ; latency level only in 1,427), so every number of "the configuration as decided" above holds |
+| X3 robustness battery (40 cases, 260 comparisons, reference `aec88d2`) | **PASS, 0 failed** ([`runs/x3_final_4cf8e27.json`](runs/x3_final_4cf8e27.json)). 27 comparisons moved within tolerance: set O positive STOP frames +5 and the hanging cable's inside STOP rows 15 → 19 (R3) in every perturbation; set O unmatched STOP episodes +1 (e.g. 6 → 7; tolerance 1) |
+| whole Falcon recording | **identical to `11bb1ab`** (4,443 rows, 0 differ): false STOP frames 12 → 4, all 1,360 person STOP frames kept, first STOP 124.84 m |
+| organizers' dust, marked synthetic bags | measured with K2 B on (above): no STOP or warning from the dust. With K2 off the configuration is the decided one; not re-run |
+
 Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–44; the plan per role: [`BACKLOG.md`](../../BACKLOG.md),
 "Current plan".
 
 ## 4. Not done yet / not checked
 
-- K2 on (variant from v5), then the final gate without `--allow`, X3 and the whole Falcon recording on the final commit.
+- K2: held off; P4 resolves its problems ([package](../k1_k2_gauge_2026-10-19/P4_PACKAGE.md)).
 - The organizers' dust (13 frames of the marked synthetic bags) on the final configuration.
 - P4's independent review of everything that ships on.
 - The reseal.
