@@ -1,0 +1,1796 @@
+{
+  "source_sha256": {
+    "resense/calibration.py": "2bcf99e2624b8e6915ea74ed254c94dd8dd378f1afcc376efc0b831bd4992855",
+    "resense/detector.py": "8d23881ae9a31d230ef369e845995e5008e9fcfb42b3faa35634a5c25e815c5b",
+    "resense/health.py": "92f56f03552fc51054b6d6f380bfa769f41eb90d6793e5631cd71278a9676f62"
+  },
+  "real_short_window": {
+    "overrides": {
+      "calibration.frames": 5,
+      "calibration.obs_spacing": 1,
+      "calibration.provisional_min_deg": 10.0
+    },
+    "cases": {
+      "0": [
+        {
+          "i": 0,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": "",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 1,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 1,
+          "recent": 1,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 1,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": "",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 2,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 2,
+          "recent": 2,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 2,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": "",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 3,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 3,
+          "recent": 3,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 3,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": "",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 4,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 4,
+          "recent": 4,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 4,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 5,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 5,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 6,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 6,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 7,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 7,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 8,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 8,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.53,
+              "lat": 1.06,
+              "size": [
+                0.32,
+                0.61,
+                1.23
+              ],
+              "n": 46,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.12,
+              "c": [
+                55.68,
+                -0.23,
+                -1.06
+              ]
+            }
+          ],
+          "periods": 9,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 9,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.51,
+              "lat": 1.01,
+              "size": [
+                0.36,
+                0.7,
+                1.25
+              ],
+              "n": 48,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.2,
+              "c": [
+                55.7,
+                -0.3,
+                -0.95
+              ]
+            }
+          ],
+          "periods": 10,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 10,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.54,
+              "lat": 0.93,
+              "size": [
+                0.35,
+                0.71,
+                1.25
+              ],
+              "n": 50,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.19,
+              "c": [
+                55.72,
+                -0.38,
+                -1.03
+              ]
+            }
+          ],
+          "periods": 11,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 11,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.54,
+              "lat": 0.84,
+              "size": [
+                0.4,
+                0.86,
+                1.27
+              ],
+              "n": 51,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.14,
+              "c": [
+                55.74,
+                -0.45,
+                -1.02
+              ]
+            }
+          ],
+          "periods": 12,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 12,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.57,
+              "lat": 0.78,
+              "size": [
+                0.4,
+                0.87,
+                1.14
+              ],
+              "n": 51,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.17,
+              "c": [
+                55.76,
+                -0.52,
+                -1.05
+              ]
+            }
+          ],
+          "periods": 13,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 13,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.55,
+              "lat": 0.69,
+              "size": [
+                0.44,
+                0.78,
+                1.27
+              ],
+              "n": 50,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 10,
+              "hmin": 0.13,
+              "c": [
+                55.77,
+                -0.6,
+                -1.01
+              ]
+            }
+          ],
+          "periods": 14,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        },
+        {
+          "i": 14,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "configured",
+            "orientation_confirmed": true,
+            "roll_deg": 3.62,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "tilt corrected: roll +3.62, pitch -0.81, yaw +0.00 deg",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.56,
+              "lat": 0.66,
+              "size": [
+                0.45,
+                0.62,
+                1.11
+              ],
+              "n": 49,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 11,
+              "hmin": 0.12,
+              "c": [
+                55.78,
+                -0.63,
+                -1.02
+              ]
+            }
+          ],
+          "periods": 15,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            3.4231576406977767e-10,
+            -8.200537821279008e-10,
+            1.0
+          ],
+          "R": [
+            [
+              0.9999002813017036,
+              -0.0008919073686072274,
+              -0.014093684898553237
+            ],
+            [
+              0.0,
+              0.9980035506068212,
+              -0.06315784176314132
+            ],
+            [
+              0.014121878514343744,
+              0.06315154374537349,
+              0.9979040309918595
+            ]
+          ]
+        }
+      ],
+      "4": [
+        {
+          "i": 0,
+          "decision": "FAULT",
+          "mount": {
+            "status": "pending",
+            "orientation": "configured",
+            "orientation_confirmed": false,
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": "alternative orientation awaiting confirmation",
+            "orientation_conflict": true
+          },
+          "dets": [],
+          "periods": 1,
+          "confirmed": false,
+          "status": "pending",
+          "conflict": true,
+          "observations": 0,
+          "recent": 0,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "i": 1,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 2,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 2,
+          "recent": 2,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ]
+          ]
+        },
+        {
+          "i": 2,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 3,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 3,
+          "recent": 3,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ]
+          ]
+        },
+        {
+          "i": 3,
+          "decision": "GO",
+          "mount": {
+            "status": "pending",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 0.0,
+            "pitch_deg": 0.0,
+            "yaw_deg": 0.0,
+            "height": null,
+            "lateral": null,
+            "frames_used": 0,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 4,
+          "confirmed": true,
+          "status": "pending",
+          "conflict": false,
+          "observations": 4,
+          "recent": 4,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ]
+          ]
+        },
+        {
+          "i": 4,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 5,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 5,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 6,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 6,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 7,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 7,
+          "decision": "GO",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [],
+          "periods": 8,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 8,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.53,
+              "lat": 1.07,
+              "size": [
+                0.32,
+                0.62,
+                1.22
+              ],
+              "n": 45,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 5,
+              "hmin": 0.12,
+              "c": [
+                55.68,
+                -0.24,
+                -1.05
+              ]
+            }
+          ],
+          "periods": 9,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 9,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.51,
+              "lat": 1.01,
+              "size": [
+                0.36,
+                0.71,
+                1.25
+              ],
+              "n": 48,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 6,
+              "hmin": 0.2,
+              "c": [
+                55.7,
+                -0.31,
+                -0.95
+              ]
+            }
+          ],
+          "periods": 10,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 10,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.54,
+              "lat": 0.94,
+              "size": [
+                0.35,
+                0.72,
+                1.25
+              ],
+              "n": 50,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 7,
+              "hmin": 0.19,
+              "c": [
+                55.72,
+                -0.39,
+                -1.03
+              ]
+            }
+          ],
+          "periods": 11,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 11,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.54,
+              "lat": 0.86,
+              "size": [
+                0.4,
+                0.86,
+                1.26
+              ],
+              "n": 53,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 8,
+              "hmin": 0.14,
+              "c": [
+                55.74,
+                -0.47,
+                -1.01
+              ]
+            }
+          ],
+          "periods": 12,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 12,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.57,
+              "lat": 0.79,
+              "size": [
+                0.4,
+                0.88,
+                1.13
+              ],
+              "n": 50,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 9,
+              "hmin": 0.17,
+              "c": [
+                55.76,
+                -0.53,
+                -1.04
+              ]
+            }
+          ],
+          "periods": 13,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 13,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.55,
+              "lat": 0.7,
+              "size": [
+                0.44,
+                0.78,
+                1.26
+              ],
+              "n": 52,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 10,
+              "hmin": 0.13,
+              "c": [
+                55.77,
+                -0.62,
+                -1.0
+              ]
+            }
+          ],
+          "periods": 14,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        },
+        {
+          "i": 14,
+          "decision": "STOP",
+          "mount": {
+            "status": "ok",
+            "orientation": "forward=+x left=-z up=+y",
+            "orientation_confirmed": true,
+            "roll_deg": 3.24,
+            "pitch_deg": -0.81,
+            "yaw_deg": 0.0,
+            "height": 1.51,
+            "lateral": -0.06,
+            "frames_used": 5,
+            "drift_deg": 0.0,
+            "message": "sensor orientation found from the data: forward=+x left=-z up=+y",
+            "orientation_conflict": false
+          },
+          "dets": [
+            {
+              "d": 55.56,
+              "lat": 0.65,
+              "size": [
+                0.45,
+                0.62,
+                1.12
+              ],
+              "n": 49,
+              "zone": "gauge",
+              "kind": "",
+              "reason": "",
+              "conf": 1.0,
+              "age": 11,
+              "hmin": 0.12,
+              "c": [
+                55.78,
+                -0.65,
+                -1.03
+              ]
+            }
+          ],
+          "periods": 15,
+          "confirmed": true,
+          "status": "ok",
+          "conflict": false,
+          "observations": 5,
+          "recent": 5,
+          "since_obs": 0,
+          "scan_axis": [
+            -3.4231576256352034e-10,
+            -1.0,
+            -8.200536777414058e-10
+          ],
+          "R": [
+            [
+              0.9999003330536873,
+              -0.014095644359211363,
+              0.0007979782100844948
+            ],
+            [
+              0.0,
+              -0.05652118780367843,
+              -0.9984013999034964
+            ],
+            [
+              0.014118213737053876,
+              0.9983018922847737,
+              -0.05651555450948807
+            ]
+          ]
+        }
+      ]
+    },
+    "matched_frame_sets": {
+      "identity": {
+        "person_crossing": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "rotation_4": {
+        "person_crossing": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      }
+    },
+    "lost_matched_stop_frames": {
+      "person_crossing": []
+    },
+    "preserves_matched_stop": true
+  }
+}
