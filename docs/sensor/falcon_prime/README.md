@@ -7,13 +7,6 @@
 > The 17.10 design/code audit below is retained as history; its undecoded-data and missing-feature
 > statements are superseded by the dated measurements and implementation record.
 
-> **19.10 check of `main` `aec88d2` (1.2.0 candidate)** ([evidence](../../evidence/falcon_head_check_2026-10-19/README.md)):
-> the whole recording gives the same decisions as the 1.1.0 run; the datasheet values above were checked in the PDF
-> (250 m at 10 %, 500 m max, ROI 0.09°×0.08°, non-ROI 0.18°×0.24°); the datasheet raster model matches the reviewed
-> person's returns at 245 m (model 6.2, measured 5–8) and gives ~4 returns at 300 m in the ROI; in this tunnel the bed
-> returns nothing beyond ~150 m. The detector still uses the Pandar visibility prior and the 250 m crop (R1, V1 in §4
-> remain open; card N7 in [`BACKLOG.md`](../../BACKLOG.md) §9c).
-
 > **Source:** the organizers' Falcon Prime documents of 16.10 ([`../../organizers/extended_dataset_2026-10-16.md`](../../organizers/extended_dataset_2026-10-16.md)),
 > read against the code on branch `ccr-027997e8-kqywat`. Its `resense/`, `ros2_ws/` and `configs/` are identical to `origin/main` at `44b462e`.
 > **Owner:** P1 (node, launch, docs), P3 (detector), P4 (evaluation), as in FINALS_BRIEF card **N2**.
