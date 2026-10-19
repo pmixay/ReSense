@@ -621,7 +621,7 @@ class FarRangeConfig:
     profiles (``resense_ros.sensor_profiles``) switch it on when ``with_falcon_profile``. Pandar
     runs never read it. ``resense/farline.py`` has the far axis; the keys below the crop are its."""
     enabled: bool = False
-    with_falcon_profile: bool = True   # the falcon_ros / falcon_native profiles enable this block
+    with_falcon_profile: bool = False  # True: the falcon_ros / falcon_native profiles enable this block (off: report 19.10)
     max_range: float = 400.0           # m: sensor crop, gauge.range_max and track.floor_verify_max_range under the profile
     axis_enabled: bool = True          # the far straight axis beyond axis_join (resense/farline.py)
     axis_join: float = 50.0            # m: the near track model is used up to here, the far line from here on

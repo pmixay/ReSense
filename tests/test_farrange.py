@@ -25,6 +25,7 @@ def test_default_and_pandar_profiles_leave_farrange_off():
         assert resolved.sensor.max_range == resolved.gauge.range_max == resolved.track.floor_verify_max_range == 250.0
     det = Detector(cfg)
     assert det.far is None and det.far_confirm is None
+    cfg.farrange.with_falcon_profile = True
     resolved, _ = apply_sensor_profile(cfg, "falcon_ros")
     det = Detector(resolved)
     assert det.far is not None and det.far_confirm is None          # far confirmation is off by default
@@ -32,12 +33,15 @@ def test_default_and_pandar_profiles_leave_farrange_off():
 
 def test_falcon_profiles_enable_farrange_and_the_long_crop():
     cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))
+    resolved, _ = apply_sensor_profile(cfg, "falcon_ros")      # default: off, the Falcon profile as before
+    assert resolved.farrange.enabled is False and resolved.sensor.max_range == 250.0
+    cfg.farrange.with_falcon_profile = True                     # explicit switch
     for name in ("falcon_ros", "falcon_native"):
         resolved, model = apply_sensor_profile(cfg, name)
         assert model == "falcon_prime" and resolved.farrange.enabled is True
         assert resolved.sensor.max_range == resolved.gauge.range_max == resolved.track.floor_verify_max_range == 400.0
         assert cfg.farrange.enabled is False                    # the input config is not modified
-    cfg.farrange.with_falcon_profile = False                    # explicit opt-out keeps the old Falcon behaviour
+    cfg.farrange.with_falcon_profile = False                    # opt-out keeps the old Falcon detector behaviour
     resolved, _ = apply_sensor_profile(cfg, "falcon_ros")
     assert resolved.farrange.enabled is False and resolved.sensor.max_range == 250.0
 
@@ -188,6 +192,7 @@ def test_buffer_cleared_when_far_axis_switches(monkeypatch):
     from resense.frame import Frame
 
     cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))
+    cfg.farrange.with_falcon_profile = True
     resolved, _ = apply_sensor_profile(cfg, "falcon_ros")
     det = Detector(resolved)
 
