@@ -160,6 +160,7 @@ The rows of 22–29.09 that are still binding; the full log of 22–29.09 (55 ro
 | 19.10 | the four agent branches merged into the integration branch with every switch off (identity proven on the full gate per frame and the whole Falcon recording); agents stopped with handoffs, their remaining work continues in P1's session and per role | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 40 |
 | 19.10 | switches: F1a on (B1 risk accepted, P3 improves), H′ on, R3 on, L16/S3 on, K2 on (variant from v5, P4 develops), Falcon clear-distance model kept; S2, Falcon far range (P3) and the dust guard off | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 41 |
 | 19.10 | code stop 20.10 23:59 MSK; dated targets replaced by priorities (P0 before code stop, P1 before the pitch, P2 after 23.10) | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 42, [`BACKLOG.md`](BACKLOG.md) "Current plan" |
+| 19.10 | K2 on as variant B (v5b without K1), the set O `small_center` gate exception accepted; improving K2/K1 is P4's first P0 | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 43, [package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md) |
 
 *Experimental branch integration of 28.09:* accepted P3 changes and health histogram optimization: measured commits, acceptance
 checks and remaining work in [`P3_SCORE_SYNC_2026-09-28.md`](P3_SCORE_SYNC_2026-09-28.md) and the

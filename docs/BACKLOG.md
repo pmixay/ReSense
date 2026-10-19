@@ -28,7 +28,8 @@ lanes K1/K2, F1, Falcon long range and N3, merged 19.10 with an identity proof; 
 | S2 settle (`tracking.settle_min_hits`) | off | can delay an object entering the gauge | — |
 | R3 cable confirmation (P3) | **on** | hanging cable in set O: first STOP 35.1 m (was 30.1), held from 40.0 m (was 31.8); gate exit 0 | P3: the set F cable sustained-median row 34.2 → 17.8 m |
 | L16/S3 orientation (P3) | **on** | rotated ring-free mounts no longer adopt a wrong orientation; gate and Falcon identical | — |
-| K2/K1 axis on curves (`track.axis_joint_fit`, `walls_smoothing_distance`) | **on** (variant chosen from v3/v4/v5 on 20.10) | the jury's "gauge follows turns"; v4 keeps range but adds false STOPs on the gate | P4: develop the shipped variant |
+| K2 axis on curves (`track.axis_joint_*`), variant B = v5b without K1 | **on** | the jury's "gauge follows turns". Gate: ride STOP episodes 24 → 9, five empty recordings 11 → 0; costs set O `small_center` first STOP 55.8 → 52.5 m (6 gated rows, a gate exception accepted by the captain) | **P4 P0**: improve ([package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md)) |
+| K1 per-distance axis smoothing (`track.walls_smoothing_distance`) | off | standing train STOP at 100 m 82 → 255 / 260, but adds a false STOP on `doubleT_platform` (gate A measured on the integration branch) | P4, in the same package |
 | Falcon clear-distance model (`small_target_limit`, falcon_prime) | **on** | reports up to 48.2 m from the measured Falcon raster (density model, as for Pandar) instead of 0 | — |
 | Falcon far range (`farrange.with_falcon_profile`) | off | person STOP 146 m (was 127) but rule 5.1(b) fails (9 vs 8 episodes), no long-range gain on injected targets | P3: improve (route-map variant, second boundary) |
 | Dust guard (`dust.enabled`) | off | fails its own acceptance; the organizers' dust gives no STOP/CAUTION on 1.1.0 (re-checked on the final configuration) | P4, only if that re-check fails |
@@ -49,7 +50,7 @@ lanes K1/K2, F1, Falcon long range and N3, merged 19.10 with an identity proof; 
 
 | prio | work | state |
 |---|---|---|
-| P0 | K2: switch on the variant chosen from v3/v4/v5 and measure it on the integration commit | v5 attempt running (stops 20.10 06:00 UTC) |
+| P0 | Measure the shipped configuration (variant B) on the final commit: gate, X3, whole Falcon, standing-person probes; gate A (B + K1) for P4 | running |
 | P0 | Final gate (without `--allow`), X3 and the whole Falcon recording on the final commit; integration evidence for the reseal | after K2 |
 | P0 | The organizers' dust (13 frames of the marked synthetic bags) on the final configuration: no STOP or CAUTION from it → the dust guard stays off; otherwise hand to P4 | after K2 |
 | P1 | Documentation clean-up: remove old handoffs and unused documents, fix stale statements, compact the long documents | agent |
@@ -78,12 +79,13 @@ lanes K1/K2, F1, Falcon long range and N3, merged 19.10 with an identity proof; 
 
 | prio | work | state / depends on |
 |---|---|---|
-| P0 | Independent review of what ships on: L16/S3, R3, F1a, H′, K2 (`DETECTOR_FREEZE.md` step 3) | blocks the reseal |
+| **P0 (first)** | **Improve K2 / K1** from the shipped variant B, in this order: set O `small_center` (the only gate failure), the standing person at 150 m, X3, curve accuracy (K2-1/2/3, B6), the 3 new ride episodes, K1's false STOP, the open review items. Hand each candidate to the captain with its row table; the review is done by P3 or a fresh agent, because P4 is its author | [package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md); before the code stop |
+| P0 | Independent review of what ships on: L16/S3, R3, F1a, H′ (`DETECTOR_FREEZE.md` step 3); K2 is reviewed by P3 or a fresh agent (see above) | blocks the reseal |
 | P0 | Review the integration identity proof (gate per frame, Falcon) | [evidence](evidence/integration_2026-10-19/README.md) |
 | P1 | On the final seal: J1 (retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0) and the G3 held-out run by a fresh agent | needs the reseal |
 | P1 | N5 labels: add the missed tunnel cube (marker id 18, frames 4–60), mark the 12 unmatched rows, re-score the final 1.2.0 against the markers | [markers](evidence/synth_markers_2026-10-19/README.md) |
 | P1 | Mock jury at both rehearsals | — |
-| P2 | K2: develop the shipped variant (its measured costs); the dust guard if the organizers' dust re-check fails; X2 false-STOP ledger | after 23.10 unless the captain moves it earlier |
+| P2 | The dust guard if the organizers' dust re-check fails; X2 false-STOP ledger | after 23.10 |
 
 ## 1. How to use it
 
