@@ -1,57 +1,33 @@
 # Open Questions to the Organizers
 
-> **Purpose:** the questions to the organizers that are still unanswered, as one message ready to
-> send, and why each matters.
-> **Audience:** P1, team (the message: the organizers) · **Owner:** P1 · **Language:** RU message,
-> EN rationale
-> **Last verified:** 2026-10-19: both messages below were sent by the captain (reported 19.10), no reply yet;
-> 2026-10-16: against [`organizers/answers.md`](organizers/answers.md) §10 and the experts'
-> message; 2026-09-29: against [`organizers/answers.md`](organizers/answers.md) §9 and the
-> sealed detector · **Status:** current
+> **Purpose:** the questions to the organizers that are still unanswered, as messages ready to send, and why each matters.
+> **Audience:** P1, team (the message: the organizers) · **Owner:** P1 · **Language:** RU message, EN rationale
+> **Last verified:** 2026-10-19 (evening): against [`organizers/answers.md`](organizers/answers.md) §12; the messages below were
+> sent by the captain (reported 19.10, send date not recorded) · **Status:** current
 
-**Status (19.10, evening): partly answered.** The organizers answered on 19.10
-([`organizers/answers.md`](organizers/answers.md) §12): everything inside the train's gauge is an obstacle (closes
-Q1 for in-gauge objects); objects may move, even chaotically (Q2 in part); no labels, but an order of appearance
-(`obstacles.md`) and marked bags, and dust in every new synthetic bag (Q4). **Still open: Q3 (the filter), Q5 (how the
-bags are played) and O1 (pitch format, whether an updated version counts).**
-Earlier: five questions and O1 sent, awaiting answers (19.10). The captain reported on 19.10 that the
-messages below were sent; the exact send date is not recorded. Record each reply in
-[`organizers/answers.md`](organizers/answers.md) §11.
-Earlier status, five questions open (16.10): Q1 and Q2 (sent on 25.09) were answered on 29.09: the envelope is
-measured from the rail heads, the rails may run at any angle to the LiDAR, and the synthetic objects are placed
-approximately; the organizers correct for that when checking
-([`organizers/answers.md`](organizers/answers.md) §9). The live Q&A of 16.10 left two questions without an answer
-(how `CAUTION` is read; which objects and scenes the hidden set has), and the experts' message of the same day
-([`FINALS_BRIEF_2026-10-16.md`](FINALS_BRIEF_2026-10-16.md)) raises three more (what "the filter" is, what the new
-data look like, how the bags will be played). Every answered question is recorded in
-[`organizers/answers.md`](organizers/answers.md); a new question goes here as a message ready to send, with why it
-matters. Channel: the case moderator (Telegram [@gorbatovaol](https://t.me/gorbatovaol)) or
-info.leaders@develop.mos.ru.
+**Status (19.10, evening): partly answered.** The organizers answered on 19.10 ([`organizers/answers.md`](organizers/answers.md)
+§12): everything inside the train's gauge is an obstacle (closes Q1 for in-gauge objects); objects may move, even chaotically (Q2
+in part); no labels, but an order of appearance (`obstacles.md`) and marked bags, and dust in every new synthetic bag (Q4).
+**Still open: Q3 (the filter), Q5 (how the bags are played) and O1 (pitch format, whether an updated version counts).** Q1 and Q2 of
+25.09 were answered on 29.09 ([`answers.md`](organizers/answers.md) §9). Record each reply in
+[`answers.md`](organizers/answers.md) §11–§12. The five-question message of 16.10 (open form, RU), the earlier status paragraphs and
+the rationale rows of Q1, Q2 and Q4 are in [`archive/QUESTIONS_history_2026-10-19.md`](archive/QUESTIONS_history_2026-10-19.md).
+Channel: the case moderator (Telegram [@gorbatovaol](https://t.me/gorbatovaol)) or info.leaders@develop.mos.ru.
 
-## Sent, awaiting answers: the five open questions (16.10, RU, open form for a live conversation)
+## Open: Q3 (the filter) and Q5 (how the bags are played), sent 16.10, no reply
 
-Spoken form, most important first; each question can be asked as is.
+Spoken form, most important first; each question can be asked as is (numbering as in the sent message of five questions).
 
-1. **Как вы относитесь к уровню «осторожно» в нашем ответе?** У нас есть «тревога» и «осторожно» (подсказка: объект у
-   границы габарита или известная инфраструктура). Что для вас считается ответом «препятствие есть», а что нет?
-2. **Какие объекты и какие участки будут в проверке?** Какие размеры и формы, есть ли тонкие висящие, движущиеся
-   (человек идёт), как выглядит пыль. Будут ли станции, платформы, стрелки, повороты, двухпутные участки; бывают ли
-   моменты, когда поезд стоит или едет очень медленно?
 3. **Что вы называете «работой фильтра»?** Фильтрацию ложных срабатываний, фильтр сопровождения (подтверждение
    объекта по нескольким кадрам) или фильтр пыли?
-4. **Что будет в новых данных?** Когда их выдадут; для записи с другого лидара: модель, поля облака (есть ли номер
-   луча), число лучей, угол обзора, как направлены оси; объекты в новой синтетике закреплены в тоннеле, как в
-   `cloud_with_fake_obj`, или иначе?
+
 5. **Как вы будете проигрывать бэги?** Какая команда, скорость, нужны ли пауза и замедление из консоли, сколько
    ядер процессора будет доступно.
 
 | # | why it matters (EN) | what changes with the answer |
 |---|---|---|
-| 1 | `CAUTION` is on 43 % of empty frames (judge, 13.10); if it counts as an alarm, false positives (scored like misses) multiply | the output mapping and the `CAUTION` policy (C1) |
-| 2 | N3 (dust), the small-object and thin-cable cards (R1, R3), and the standing-train rules (K1) depend on what the hidden set contains | priorities between R, K, F cards; the dust generator's parameters |
-| 3 | criterion 7 of the experts' list is not defined | whether N3, the tracker, or the false-alarm work is what is meant |
-| 4 | N2 (second lidar): the orientation search is limited to 8 rotations with the up axis vertical, and the far multi-ring rules assume 128 elevation channels; the objects' placement decides whether `ego_veto` is safe | N2's battery and the jury README for the second lidar; whether to keep `ego_veto` as it is |
-| 5 | the player's flags decide the stale-result problem (S1); pause and slow need the player's keyboard controls (N4); the core count bounds 360° speed (S5) | S1, N4, the launch notes |
+| 3 | criterion 7 of the experts' list is not defined | whether N3 (dust), the tracker, or the false-alarm work is what is meant |
+| 5 | the player's flags decide the stale-result problem (the literal `ros2 bag play` gives stale results; S1 failed); pause and slow need the player's keyboard controls (N4, done locally); the core count bounds 360° speed (S5) | the launch notes, S5 |
 
 Not asked again, answered in §10 of [`organizers/answers.md`](organizers/answers.md): how the result is scored,
 how false alarms count against misses (equally), the hidden set's mix (real and synthetic), the range (300 m in the
@@ -72,7 +48,8 @@ post-submission detector work may count; (3) fixes the evidence and delivery pat
 The captain records the actual dispatch date and the reply verbatim in
 [`organizers/answers.md`](organizers/answers.md) §11, then updates
 [`PRESENTATION.md`](PRESENTATION.md). Preparing this text does not close O1 or authorize
-a new submission. Until a reply, the five-minute talk remains a planning assumption.
+a new submission. Until a reply, the five-minute talk remains a planning assumption. The message was written when 1.1.x was the plan; 1.1.0 will not
+be released (19.10), so "the updated version" now means 1.2.0.
 
 ## Answered
 
