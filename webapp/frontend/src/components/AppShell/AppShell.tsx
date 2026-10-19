@@ -31,6 +31,7 @@ export function AppShell() {
   const capture = useCallback(() => {
     if (chromeRef.current && pageRef.current) setSnapshot(navigationSnapshot(chromeRef.current, pageRef.current));
   }, []);
+  const captureDestination = useCallback(() => chromeRef.current && pageRef.current ? navigationSnapshot(chromeRef.current, pageRef.current) : null, []);
   const doors = useTrainDoors({ onCover: capture, isPrepared: () => prepared.current });
   useEffect(() => { if (!doors.active) setSnapshot(null); }, [doors.active]);
   const wasTransitioning = useRef(false);
@@ -71,7 +72,7 @@ export function AppShell() {
             <Outlet />
           </Suspense>
         </main>
-        {doors.active && !doors.reduced && doors.phase !== 'opening' && <TransitPages phase={doors.phase} journey={doors.journey} snapshot={snapshot} onPrepared={onPrepared} />}
+        {doors.active && !doors.reduced && doors.phase !== 'opening' && <TransitPages phase={doors.phase} journey={doors.journey} snapshot={snapshot} captureDestination={captureDestination} onPrepared={onPrepared} onFinished={doors.finishTravel} />}
         <TrainDoors phase={doors.phase} />
       </div>
     </RailContext.Provider>

@@ -79,3 +79,11 @@ inert memory-route previews sharing cached data, without global shortcuts,
 preference writes or additional Player/Live WebGL scenes. Only the selected route
 enters history. Clean up previews/snapshots, retain reduced-motion fade and native
 focus release. Evidence: `docs/images/directional-travel/`.
+
+JITTER FIX (current): Freeze outgoing, passing and destination visuals before
+movement. Bake the strong 32px blur into transient 640×400-capped bitmaps; move one
+strip and crossfade sharp endpoints on the same native compositor timeline. The
+real destination stays hidden at its final geometry. Unmount preview roots before
+travel so live data/loading/layout cannot change moving pixels. Open doors from
+actual animation completion, with bounded preparation/recovery and resize/hidden
+tab cleanup. Current evidence: `docs/images/travel-stability/`.

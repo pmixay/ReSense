@@ -41,14 +41,16 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
     let scene: PlayerScene;
     let raf = 0;
     let last = 0;
+    let transitPaused = false;
     const standaloneFrame = (now: number) => {
       raf = 0;
+      if (transitPaused) return;
       scene.render(last ? Math.min(.1, (now - last) / 1000) : 1 / 60);
       last = now;
       if (scene.needsRender()) raf = requestAnimationFrame(standaloneFrame);
     };
     const invalidate = () => {
-      if (!engine && !raf) raf = requestAnimationFrame(standaloneFrame);
+      if (!engine && !raf && !transitPaused) raf = requestAnimationFrame(standaloneFrame);
     };
     try {
       scene = new PlayerScene(canvas, {
@@ -120,6 +122,26 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
     scene.setMode(live.current.mode, false);
     sceneRef.current = scene;
     engine?.attach(scene);
+    // The frozen journey already contains our pixels; a hidden live GPU pass only steals frames.
+    const shell = wrap.closest('[data-app-shell]');
+    const syncTransit = () => {
+      const paused = shell?.getAttribute('data-section-motion') === 'travelling';
+      if (paused === transitPaused) return;
+      transitPaused = paused;
+      canvas.dataset.navigationPaused = String(paused);
+      if (paused) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+        engine?.detach(); // playback clock and API/frame state continue normally
+      } else {
+        last = 0;
+        engine?.attach(scene);
+        invalidate();
+      }
+    };
+    const transitObserver = new MutationObserver(syncTransit);
+    if (shell) transitObserver.observe(shell, { attributes: true, attributeFilter: ['data-section-motion'] });
+    syncTransit();
     const onLost = (event: Event) => {
       event.preventDefault();
       engine?.detach();
@@ -128,6 +150,7 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
     canvas.addEventListener('webglcontextlost', onLost);
     return () => {
       observer.disconnect();
+      transitObserver.disconnect();
       window.removeEventListener('resize', resize);
       workspace.removeEventListener('pointermove', pointer);
       workspace.removeEventListener('pointerup', pointer);

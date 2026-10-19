@@ -59,6 +59,10 @@ then glides through the station order toward the selected tab. Targets to the le
 enter from the left; targets to the right enter from the right. Every intervening
 tab passes behind the glass in order, with stronger motion blur and one continuous
 decelerating trajectory. Only the destination creates a browser-history entry.
+The moving visuals are frozen before departure. Motion blur is baked into bounded
+temporary bitmaps; a single compositor timeline moves the complete journey and
+crossfades sharp endpoints. The doors reveal the page only after that animation
+actually finishes, preventing slow-frame/timer races and mid-travel content shifts.
 The leaves follow the supplied
 Moskva-2020 photographs, with tall glazing, narrow black surrounds, center seals
 and red edge LEDs. Glass is matte and blurred but transparent: broad page colors

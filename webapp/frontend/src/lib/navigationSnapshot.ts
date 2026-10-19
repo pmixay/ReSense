@@ -6,8 +6,25 @@ export interface NavigationSnapshot {
   chromeHeight: string;
 }
 
+export function mountNavigationSnapshot(target: HTMLElement, snapshot: NavigationSnapshot): void {
+  target.replaceChildren(...snapshot.nodes);
+  target.style.setProperty('--site-chrome-h', snapshot.chromeHeight);
+  for (const { node, top, left } of snapshot.scroll) { node.scrollTop = top; node.scrollLeft = left; }
+}
+
+/** Copy a frozen endpoint for a sharp/blurred opacity crossfade; never re-render a GPU scene. */
+export function duplicateNavigationSnapshot(snapshot: NavigationSnapshot): NavigationSnapshot {
+  const [chrome, page] = snapshot.nodes;
+  const copy = navigationSnapshot(chrome, page, false);
+  copy.chromeHeight = snapshot.chromeHeight;
+  const originals = snapshot.nodes.flatMap(node => [node, ...node.querySelectorAll<HTMLElement>('*')]);
+  const copies = copy.nodes.flatMap(node => [node, ...node.querySelectorAll<HTMLElement>('*')]);
+  copy.scroll = snapshot.scroll.map(({ node, top, left }) => ({ node: copies[originals.indexOf(node)], top, left }));
+  return copy;
+}
+
 /** A short-lived DOM snapshot, including a freshly rendered copy of live canvas pixels. */
-export function navigationSnapshot(chrome: HTMLElement, page: HTMLElement): NavigationSnapshot {
+export function navigationSnapshot(chrome: HTMLElement, page: HTMLElement, refreshCanvas = true): NavigationSnapshot {
   const scroll: NavigationSnapshot['scroll'] = [];
   const nodes = [chrome, page].map(source => {
     const cloned = source.cloneNode(true) as HTMLElement;
@@ -22,7 +39,7 @@ export function navigationSnapshot(chrome: HTMLElement, page: HTMLElement): Navi
       copy.removeAttribute('id');
       if (original.scrollTop || original.scrollLeft) scroll.push({ node: copy, top: original.scrollTop, left: original.scrollLeft });
       if (original instanceof HTMLCanvasElement && copy instanceof HTMLCanvasElement) {
-        original.dispatchEvent(new Event(NAVIGATION_SNAPSHOT_EVENT));
+        if (refreshCanvas) original.dispatchEvent(new Event(NAVIGATION_SNAPSHOT_EVENT));
         copy.width = original.width;
         copy.height = original.height;
         try { copy.getContext('2d')?.drawImage(original, 0, 0); } catch { /* Lost contexts already have a page-level recovery state. */ }

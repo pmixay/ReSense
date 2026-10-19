@@ -1,5 +1,9 @@
 # Directional station travel behind the glass
 
+The current timing/blur stabilization is documented in
+[`../travel-stability/`](../travel-stability/). This gallery records the preceding
+direction/order implementation.
+
 ## Current motion
 
 The navigation order is the shared metro line followed by its system branch:

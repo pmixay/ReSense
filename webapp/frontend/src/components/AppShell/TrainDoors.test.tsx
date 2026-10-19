@@ -16,6 +16,7 @@ function Harness() {
     <button onClick={() => navigate('/upload')}>Upload</button>
     <button onClick={() => navigate('/player/second?pos=20')}>Run switch</button>
     <button onClick={() => navigate(-1)}>Back</button>
+    <button onClick={doors.finishTravel}>Travel finished</button>
     <TrainDoors phase={doors.phase} />
   </>;
 }
@@ -34,7 +35,9 @@ function setup(reduced = false, initial = '/player/first?pos=4') {
 }
 async function advance(ms: number) { await act(async () => { await vi.advanceTimersByTimeAsync(ms); }); }
 async function finishTransition() {
-  for (const ms of [360, 25, 670, 460]) await advance(ms);
+  for (const ms of [360, 25, 670]) await advance(ms);
+  fireEvent.click(screen.getByText('Travel finished'));
+  await advance(460);
 }
 
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); });
@@ -52,6 +55,8 @@ describe('train door navigation', () => {
     await advance(25);
     expect(overlay.getAttribute('data-phase')).toBe('travelling');
     await advance(670);
+    expect(overlay.getAttribute('data-phase')).toBe('travelling');
+    fireEvent.click(screen.getByText('Travel finished'));
     expect(overlay.getAttribute('data-phase')).toBe('opening');
     await advance(460);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
@@ -95,6 +100,7 @@ describe('train door navigation', () => {
     await advance(50);
     expect(overlay.getAttribute('data-phase')).toBe('travelling');
     await advance(670);
+    fireEvent.click(screen.getByText('Travel finished'));
     expect(overlay.getAttribute('data-phase')).toBe('opening');
     await advance(460);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
@@ -108,7 +114,9 @@ describe('train door navigation', () => {
     await advance(210);
     expect(router.state.location.pathname).toBe('/upload');
     expect(overlay.getAttribute('data-phase')).toBe('covered');
-    for (const ms of [25, 970, 460]) await advance(ms);
+    for (const ms of [25, 970]) await advance(ms);
+    fireEvent.click(screen.getByText('Travel finished'));
+    await advance(460);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
   });
 
@@ -118,7 +126,9 @@ describe('train door navigation', () => {
     fallback.dataset.pageFallback = '';
     document.body.append(fallback);
     fireEvent.click(screen.getByText('Runs'));
-    for (const ms of [360, 1300, 670, 460]) await advance(ms);
+    for (const ms of [360, 5100, 670]) await advance(ms);
+    fireEvent.click(screen.getByText('Travel finished'));
+    await advance(460);
     expect(router.state.location.pathname).toBe('/runs');
     expect(overlay.getAttribute('data-phase')).toBe('idle');
     fallback.remove();
@@ -128,12 +138,16 @@ describe('train door navigation', () => {
     const { router, overlay } = setup(false, '/queue');
     fireEvent.click(screen.getByText('Run switch'));
     expect(JSON.parse(document.querySelector('[data-journey]')!.textContent!)).toMatchObject({ direction: 'right', via: ['runs'], steps: 2 });
-    for (const ms of [360, 25, 820, 460]) await advance(ms);
+    for (const ms of [360, 25, 820]) await advance(ms);
+    fireEvent.click(screen.getByText('Travel finished'));
+    await advance(460);
     expect(router.state.location.pathname).toBe('/player/second');
     expect(overlay.getAttribute('data-phase')).toBe('idle');
     fireEvent.click(screen.getByText('Back'));
     expect(JSON.parse(document.querySelector('[data-journey]')!.textContent!)).toMatchObject({ direction: 'left', via: ['runs'] });
-    for (const ms of [360, 25, 820, 460]) await advance(ms);
+    for (const ms of [360, 25, 820]) await advance(ms);
+    fireEvent.click(screen.getByText('Travel finished'));
+    await advance(460);
     expect(router.state.location.pathname).toBe('/queue');
   });
 });

@@ -218,24 +218,37 @@ Section navigation uses one authored paired-door sequence in AppShell: close in
 350ms, settle until 360ms, capture the outgoing DOM/canvas appearance and commit
 the selected destination offscreen. `navigationJourney.ts` follows `LINE` then
 `BRANCH`: a left target enters from the left; a right target enters from the right.
-Every intervening station is included in travel order. One shared cubic-bezier
-trajectory moves the outgoing/intermediate strip and the live destination together,
-with no exit/entry gap. Duration is 500ms plus 150ms per station interval (650–1700ms);
-motion blur peaks at 32px, then clears as the destination settles. Passing-page
-blur is scoped to viewport-sized stages instead of one oversized filter target
-spanning every station. The leaves open in 450ms after travel. Preparation waits
-at most 1.2 seconds, with a six-second
-whole-sequence recovery bound. Query changes and navigation
+Every intervening station is included in travel order. One native Web Animations
+timeline translates a frozen strip containing outgoing, intermediate and
+destination images. Its sharp outgoing/destination endpoint crossfades share
+exactly the same document-timeline start time. Duration is 500ms plus 150ms per
+station interval (650–1700ms). The 32px motion blur is baked once into temporary
+bitmaps capped at 640×400; motion animates transform/opacity only. No moving DOM
+filter is recalculated. Sharp endpoints retain native-size DOM/canvas appearance.
+The real destination stays at its final layout geometry, hidden during travel.
+The leaves open in 450ms only after the native movement animation finishes;
+a delayed JS timer cannot cut the journey short. Preparation waits at most five
+seconds (including cold font/chunk/image decoding), with a 12-second whole-sequence
+recovery bound and a duration+2-second last-resort animation guard. Query changes and navigation
 within the same section (including Player run changes) are immediate. Browser
 Back/Forward uses the same route blocker and direction. Only the selected route
 enters browser history. A temporary outgoing DOM snapshot copies current form,
 scroll and canvas appearance; `PlayerScene` refreshes its canvas synchronously
 without advancing the playback clock before the pixel copy. Passing tabs use the
 actual section components in isolated, inert memory routers sharing the query
-cache. Their global shortcuts, Player title/fullscreen hooks and Live preferences
-are disabled. Passing Player/Live avoid new WebGL scenes; the live destination
-retains the normal renderer. Transit roots, snapshots and temporary hints are
-released before the doors finish opening. Native focus/input is inert during
+cache only during preparation. After font/layout settling they are snapshotted
+and their preview React root is unmounted before travel. Their global shortcuts,
+Player title/fullscreen hooks and Live preferences are disabled. Passing Player/Live
+avoid new WebGL scenes; the real destination retains the normal renderer. A native
+SVG foreignObject capture embeds current project styles and the self-hosted font,
+copies canvas pixels and bakes the blur with clamped edges. Three paint opportunities
+warm the frozen surfaces before motion. No API/loading update can change the moving
+images. Passing views mount only after the leaves have closed, preventing expensive
+React work during door travel. The hidden destination Player temporarily detaches
+only its renderer during frozen motion; its playback clock/data continue, and the
+scene reattaches on reveal. Resize/visibility changes safely finish the journey; cancellation releases
+native animations and pending preparation frames. Transit roots, snapshots and
+temporary hints are released before the doors finish opening. Native focus/input is inert during
 the overlay, then main receives focus without scrolling.
 
 The overlay is dimensional CSS geometry: only two full-viewport sliding leaves,
@@ -259,6 +272,8 @@ Actual optical transmission/diffusion and outgoing/incoming projected directions
 are recorded in [`docs/images/moskva-doors/`](docs/images/moskva-doors/). Current
 directional/intermediate travel captures are in
 [`docs/images/directional-travel/`](docs/images/directional-travel/).
+Current jitter-regression captures and CPU-throttled before/after evidence are in
+[`docs/images/travel-stability/`](docs/images/travel-stability/).
 
 ### Restored interior and restrained controls
 

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useBlocker, useLocation } from 'react-router-dom';
 import styles from './TrainDoors.module.css';
 import { navigationJourney } from '../../lib/navigationJourney';
@@ -57,9 +57,9 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
     // Keep the outgoing snapshot centered until destination and passing views are ready.
     const started = performance.now();
     const reveal = () => {
-      if ((document.querySelector('[data-page-fallback]') || (!reduced && latest.current.isPrepared?.() === false)) && performance.now() - started < 1200) {
+      if ((document.querySelector('[data-page-fallback]') || (!reduced && latest.current.isPrepared?.() === false)) && performance.now() - started < 5000) {
         timer = window.setTimeout(reveal, 50);
-      } else setPhase(reduced ? 'opening' : 'travelling');
+      } else setPhase(reduced || latest.current.isPrepared?.() === false ? 'opening' : 'travelling');
     };
     let timer = window.setTimeout(reveal, 25);
     return () => window.clearTimeout(timer);
@@ -67,9 +67,12 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
 
   useEffect(() => {
     if (phase !== 'travelling') return;
-    const timer = window.setTimeout(() => setPhase('opening'), reduced ? 0 : journey.duration + 20);
+    // Normal completion comes from the compositor's finished promise, not a wall-clock race.
+    const timer = window.setTimeout(() => setPhase('opening'), reduced ? 0 : journey.duration + 2000);
     return () => window.clearTimeout(timer);
   }, [phase, reduced, journey.duration]);
+
+  const finishTravel = useCallback(() => setPhase(current => current === 'travelling' ? 'opening' : current), []);
 
   useEffect(() => {
     if (phase !== 'opening') return;
@@ -84,11 +87,11 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
     const timer = window.setTimeout(() => {
       proceed.current?.();
       setPhase('idle');
-    }, 6000);
+    }, 12000);
     return () => window.clearTimeout(timer);
   }, [active]);
 
-  return { phase, active, journey, reduced };
+  return { phase, active, journey, reduced, finishTravel };
 }
 
 export function TrainDoors({ phase }: { phase: Phase }) {
