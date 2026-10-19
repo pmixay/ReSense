@@ -53,3 +53,9 @@ woven seats. Outside cameras use the detailed rounded metro carriage. Navigation
 shows only two full-height sliding leaves: the screen is the frame, with no added
 header, jambs or sill. Keep frosted panes, route timing, reduced-motion fade and
 on-demand rendering. Material tone mapping must not alter LiDAR/data colors.
+
+LATEST CORRECTION: Restore the pre-gloss Player interior and display implementation
+from `af2ecd8^`, including materials, geometry, original saloon lighting and screen
+housing/rendering. Reduce button sheen, light edges and shadows by roughly two
+thirds, including camera/speed and transport controls. Full-strength keyboard focus
+rings remain. Current captures are in `docs/images/interior-restored/`.

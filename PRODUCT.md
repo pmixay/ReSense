@@ -60,8 +60,10 @@ must remain reliable by mouse, touch, keyboard and browser history. Player frame
 camera and run URL changes remain immediate. Reduced motion uses a brief non-spatial
 fade. The decorative doors contain no controls and release keyboard focus to the page.
 
-The current material direction is glossy and modern: coated off-white panels,
-polished bronze, directional brushed metal and reflective black safety glazing.
+The current user correction restores the Player interior from before the glossy
+material pass: the original wall, copper-toned rails, door, seats, screen housing
+and saloon lighting/reflections. Button highlights and shadows are restrained,
+with their light/edge opacity reduced by roughly two thirds.
 The outside-camera train is a rounded, detailed metro carriage. Navigation shows
 only two full-height sliding leaves; the user's screen is the doorway frame, with
 no added jambs, overhead header or threshold around the transition.

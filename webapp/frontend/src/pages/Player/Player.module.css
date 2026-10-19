@@ -144,7 +144,7 @@
 .spd { display: flex; align-items: center; padding: 3px; border-radius: var(--r-xs); background: var(--well); }
 .spd button { display: grid; place-items: center; height: 34px; min-width: 34px; padding: 0 7px; border: 0; border-radius: 8px; background: transparent; color: var(--ink); font-size: 12px; font-weight: 700; }
 .spd button:hover { background: var(--card); }
-.spd button.on { color: var(--white); background: var(--control-sheen), var(--red); box-shadow: var(--control-edge), 0 2px 4px #14233826; }
+.spd button.on { color: var(--white); background: var(--control-sheen), var(--red); box-shadow: var(--control-edge), 0 1px 3px #1423380f; }
 .spd button:focus-visible { box-shadow: var(--focus); }
 .scrubPick { display: flex; flex-wrap: wrap; gap: 10px; }
 .scrubSkel { display: flex; gap: 12px; }

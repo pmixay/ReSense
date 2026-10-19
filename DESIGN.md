@@ -235,23 +235,15 @@ and adds no renderer, image download or animation dependency. Reduced motion use
 75ms cover / 100ms reveal fade with no moving leaves. Initial page loads do not run
 the sequence. Shared Raleway, navigation styling and all page controls are retained.
 
-### Glossy material refinement
+### Restored interior and restrained controls
 
-The current finish uses physical clear-coated warm off-white laminate, directional
-brushed aluminium, polished champagne-bronze rails, glossy graphite door enamel
-and lower-roughness black safety glass. Fine machining is a shared deterministic
-128×128 roughness texture. Smoother rail cross-sections and formed panel bevels
-catch the lighting without changing the screen, door or foreground-rail anchors.
-Door glazing uses real environment reflections rather than painted reflection bars.
-The taupe upholstery stays matte and woven, preserving material contrast.
-
-`trainMaterials.ts` creates a cached, bounded 256×128 HDR saloon reflection probe
-with luminous ceiling strips, dark window breaks and warm coves. The physical
-screen/wall pass alone uses ACES highlight roll-off and sRGB output; it restores the
-renderer settings afterward. The live-display shader still writes authored display
-values directly, and data/emission targets keep their existing color pipeline.
-Black-image emission, local RGB/split-color light, exact neutral return and GPU
-resource lifetime are checked in `docs/images/glossy-materials/material-verification.json`.
+The latest user correction restores `trainInterior.ts` and `screenDisplay.ts`
+byte-for-byte to the pre-gloss `af2ecd8^` implementation. Original wall/door/seat
+geometry, copper-toned rails, material roughness, screen housing, ceiling lighting,
+reflection probe and direct physical rendering are authoritative again. This also
+restores the original screen/glass materials and removes the later ACES/sRGB pass.
+The supplied photograph-led installation, woven bench and existing independent
+pressure layers remain the visual reference.
 
 `trainModel.ts` replaces the outside cameras' block carriage with rounded formed
 shells, wraparound cab glazing, individual side panes, paired sliding leaves,
@@ -264,10 +256,13 @@ their existing coordinates.
 
 The inherited UI gets a restrained material finish through shared `control-sheen`,
 `surface-sheen` and `control-edge` tokens: shallow highlights on red actions,
-selected camera/speed controls, chrome and pale surfaces. Existing geometry,
+selected camera/speed controls, chrome and pale surfaces. Control sheen now peaks
+at 5.5% white, with a 16% light edge and 4% lower edge; primary red shadow opacity
+is 16%. Selected segments/speed use 6% soft shadow and icon buttons use 16% bounded
+drop shadow. Keyboard focus rings retain their full strength. Existing geometry,
 Russian copy, semantic decisions and keyboard rings remain authoritative.
 Current desktop captures and material provenance are in
-[`docs/images/glossy-materials/`](docs/images/glossy-materials/).
+[`docs/images/interior-restored/`](docs/images/interior-restored/).
 
 ## Shapes
 

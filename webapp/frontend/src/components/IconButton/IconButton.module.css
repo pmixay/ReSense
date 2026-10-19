@@ -60,6 +60,6 @@
 }
 .well, .white, .dark, .red, .active {
   background-image: var(--control-sheen);
-  box-shadow: var(--control-edge), 0 3px 7px -4px rgba(5, 15, 27, .5);
+  box-shadow: var(--control-edge), 0 2px 5px -4px rgba(5, 15, 27, .16);
 }
 .ib:focus-visible { box-shadow: var(--focus); }
