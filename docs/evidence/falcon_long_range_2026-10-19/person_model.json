@@ -1,0 +1,3 @@
+{"size": [0.5, 0.5, 1.75], "bottom": -0.2, "fill": 0.9,
+ "rho": {"split": 0.8, "lower": 0.05, "upper": 0.3}, "intensity": 25.0,
+ "note": "person-like target calibrated on the reviewed real person (scripts/calibrate_person.py, person_calibration.json): 0.5 x 0.5 m box from -0.2 to 1.55 m above the rail-head reference, silhouette fill 0.9, effective reflectivity (injector POD model) 0.05 below 0.8 m and 0.3 above; fit on even anchors 60-250 m, odd anchors and the early episode held out"}

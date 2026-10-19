@@ -1105,13 +1105,25 @@ def test_c2_candidate_node_ranges_match_scalar_status_and_freshness_latch(freshn
 
 
 @pytest.mark.parametrize("freshness_driver", [{"clear_range_policy": "small_candidate",
-                                             "range_sensor_model": "unknown"},
-                                            {"clear_range_policy": "small_candidate",
                                              "range_sensor_model": "falcon_prime"},
                                             {"clear_range_policy": "conservative",
+                                             "range_sensor_model": "falcon_prime"}], indirect=True)
+def test_c2_falcon_uses_its_own_measured_raster_prior(freshness_driver):
+    # 19.10 (Falcon long range): the Falcon's outside-ROI raster, never the Pandar table
+    node, clock, send = freshness_driver
+    send(20.0, topic="/iv_points", frame_id="falcon")
+    result = send(20.1, topic="/iv_points", frame_id="falcon")
+    assert result["monitored_small"] == 48.2
+    assert result["monitored_small_model"]["available"] is True
+    assert result["freshness"]["valid"] and result["decision"] == "GO"
+    assert result["clear_distance"] == node.published["/resense/clear_distance"][-1].data == 48.2
+    assert result["detector_clear_distance"] == 100.0
+
+
+@pytest.mark.parametrize("freshness_driver", [{"clear_range_policy": "small_candidate",
                                              "range_sensor_model": "unknown"},
                                             {"clear_range_policy": "conservative",
-                                             "range_sensor_model": "falcon_prime"}], indirect=True)
+                                             "range_sensor_model": "unknown"}], indirect=True)
 def test_c2_candidate_unknown_sensor_never_inherits_pandar_prior(freshness_driver):
     node, clock, send = freshness_driver
     send(20.0, topic="/iv_points", frame_id="falcon")

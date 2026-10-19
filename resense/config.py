@@ -672,6 +672,53 @@ class HealthConfig:
 
 
 @dataclass
+class FarRangeConfig:
+    """19.10 (Falcon long range, P3 ``det/falcon-long-range``): off by default; the Falcon sensor
+    profiles (``resense_ros.sensor_profiles``) switch it on when ``with_falcon_profile``. Pandar
+    runs never read it. ``resense/farline.py`` has the far axis; the keys below the crop are its."""
+    enabled: bool = False
+    with_falcon_profile: bool = False  # True: the falcon_ros / falcon_native profiles enable this block (off: report 19.10)
+    max_range: float = 400.0           # m: sensor crop, gauge.range_max and track.floor_verify_max_range under the profile
+    axis_enabled: bool = True          # the far straight axis beyond axis_join (resense/farline.py)
+    axis_join: float = 50.0            # m: the near track model is used up to here, the far line from here on
+    axis_fit_range: Tuple[float, float] = (50.0, 400.0)  # m: tunnel-boundary bins fitted by the far line
+    axis_bin: float = 5.0              # m
+    axis_band: Tuple[float, float] = (1.0, 2.8)    # m above the rail head: boundary points
+    axis_lateral: Tuple[float, float] = (1.2, 4.0)  # m |lateral| from the provisional line: boundary points (never the gauge)
+    axis_min_points: int = 3           # per bin
+    axis_min_bins: int = 8             # kept bins of a side
+    axis_min_span: float = 80.0        # m between the first and last kept bin of a side
+    axis_max_rms: float = 0.15         # m, line residual of a side
+    axis_max_bow: float = 0.15         # m, largest quadratic-minus-line difference over the span (a curve fails)
+    axis_max_kink: float = 0.01        # |far slope - near tangent at axis_join| with two sides (a curve starting there fails)
+    axis_max_kink_one_side: float = 0.006  # the same with one side (a diverging wall steeper than this fails)
+    axis_one_side_slope_sigma: float = 0.003  # rad added to sigma with one side: a wall diverging less than the kink limit is not detectable
+    axis_second_min_bins: int = 4      # kept bins for the second (confirming) side, e.g. a column row every 30 m
+    axis_max_gap: float = 40.0         # m: the support ends at a gap longer than this between kept bins ...
+    axis_max_rejected_run: int = 3     # ... or at this many consecutive bins off the line (a curve starting; a wall niche is 1-2 bins)
+    axis_max_side_disagreement: float = 0.002  # slope difference of two fitted sides
+    axis_smoothing: float = 0.7        # EMA weight of the previous slope
+    axis_confirm_frames: int = 5       # consecutive good frames before the far line is used
+    axis_hold_frames: int = 10         # failed frames for which the last far line is kept
+    axis_margin: float = 15.0          # m, trusted beyond the last supporting bin (an R 300 m curve departs 0.37 m in 15 m)
+    declared_straight_to: float = 0.0  # m: operator / route-map statement that the track is straight to here; 0 = none.
+                                       # Only this extends the trust beyond the observed support (sigma without the unseen-curvature term)
+    axis_sigma0: float = 0.15          # m, lateral uncertainty at the join
+    axis_max_sigma: float = 0.5        # m: the far axis is trusted only where sigma(X) stays below this
+    axis_unseen_curvature: float = 1.0 / 300.0  # 1/m, allowed beyond the last supporting bin (sigma grows as k x^2 / 2; metro R >= 300 m)
+    axis_core_margin: bool = True      # the strict gauge shrinks by sigma(X) beyond the join
+    far_min_height: float = 0.3        # cluster.far_min_height under the profile: beyond the height reference a far
+                                       # obstacle's visible part is short (the rays to its foot return from the track first)
+    far_max_length: float = 4.0        # cluster.far_max_length under the profile (a 2 m deep box measures 3.1-3.2 m)
+    confirm_enabled: bool = False      # far confirmation (resense/farline.py FarConfirm); measured 19.10: no false alarm removed, held fraction lower, so off
+    confirm_from: float = 150.0        # m: a strict-gauge track beyond this needs range-consistent evidence to STOP
+    confirm_window: int = 10           # frames looked back
+    confirm_min_hits: int = 5          # matched frames in the window
+    confirm_max_residual: float = 0.75  # m, rms of the matched distances about a straight line in time
+    confirm_max_step: float = 3.0      # m per frame, |slope| of that line (a train at 30 m/s)
+
+
+@dataclass
 class DetectorConfig:
     sensor: SensorConfig = field(default_factory=SensorConfig)
     track: TrackConfig = field(default_factory=TrackConfig)
@@ -682,13 +729,14 @@ class DetectorConfig:
     lowobj: LowObjectConfig = field(default_factory=LowObjectConfig)
     calibration: CalibrationConfig = field(default_factory=CalibrationConfig)
     health: HealthConfig = field(default_factory=HealthConfig)
+    farrange: FarRangeConfig = field(default_factory=FarRangeConfig)
     voxel: float = 0.0             # optional voxel downsampling of corridor candidates (0 = off)
 
     # ---- (de)serialisation -------------------------------------------------
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "DetectorConfig":
         cfg = cls()
-        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health"):
+        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health", "farrange"):
             if section in d and d[section]:
                 obj = getattr(cfg, section)
                 for k, v in d[section].items():
